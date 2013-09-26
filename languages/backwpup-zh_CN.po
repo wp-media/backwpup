@@ -1,0 +1,4619 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BackWPup 中文包\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-05-12 11:25+0800\n"
+"PO-Revision-Date: 2013-05-12 22:19+0800\n"
+"Last-Translator: 倡萌@WordPress大学 <admin@cmhello.com>\n"
+"Language-Team: 倡萌@WordPress大学 <admin@cmhello.com>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-Basepath: .\n"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+# @ backwpup
+#: ../backwpup.php:42
+msgid ""
+"BackWPup requires PHP version 5.2.6 or greater and WordPress 3.2 or greater."
+msgstr "BackWPup 要求 PHP 为 5.2.6 及以上版本，WordPress 为 3.2 及以上版本。"
+
+# @ backwpup
+#: ../inc/class-admin.php:123 ../inc/class-help.php:29
+msgid "https://marketpress.com/documentation/backwpup-pro/"
+msgstr "https://marketpress.com/documentation/backwpup-pro/"
+
+# @ backwpup
+#: ../inc/class-admin.php:123
+msgid "Documentation"
+msgstr "文档"
+
+# @ backwpup
+#: ../inc/class-admin.php:125 ../inc/class-help.php:26
+msgid "https://marketpress.com/support/forum/plugins/backwpup-pro/"
+msgstr "https://marketpress.com/support/forum/plugins/backwpup-pro/"
+
+# @ backwpup
+#: ../inc/class-admin.php:125 ../inc/class-help.php:26
+msgid "Pro Support"
+msgstr "专业版支持"
+
+# @ backwpup
+#: ../inc/class-admin.php:127 ../inc/class-help.php:28
+msgid "http://wordpress.org/support/plugin/backwpup/"
+msgstr "http://wordpress.org/support/plugin/backwpup/"
+
+# @ backwpup
+#: ../inc/class-admin.php:127 ../inc/class-help.php:28
+msgid "Support"
+msgstr "支持"
+
+# @ backwpup
+#: ../inc/class-admin.php:146
+msgid "BackWPup Dashboard"
+msgstr "BackWPup 仪表盘"
+
+# @ backwpup
+#: ../inc/class-admin.php:146
+msgid "Dashboard"
+msgstr "仪表盘"
+
+# @ backwpup
+# @ backwpupadminbar
+#: ../inc/class-admin.php:165 ../inc/class-adminbar.php:84
+#: ../inc/class-page-settings.php:103
+msgid "Jobs"
+msgstr "计划"
+
+# @ backwpup
+#: ../inc/class-admin.php:180
+msgid "Add New Job"
+msgstr "新计划"
+
+# @ backwpup
+# @ backwpupadminbar
+#: ../inc/class-admin.php:196 ../inc/class-adminbar.php:100
+#: ../inc/class-page-backups.php:366 ../inc/class-page-logs.php:281
+#: ../inc/class-page-settings.php:103
+msgid "Logs"
+msgstr "日志"
+
+# @ backwpup
+# @ backwpupadminbar
+#: ../inc/class-admin.php:211 ../inc/class-adminbar.php:108
+msgid "Backups"
+msgstr "备份"
+
+# @ backwpup
+#: ../inc/class-admin.php:226
+msgid "Settings"
+msgstr "设置"
+
+# @ backwpup
+#: ../inc/class-admin.php:240
+msgid "About"
+msgstr "关于"
+
+# @ backwpup
+#: ../inc/class-admin.php:280 ../inc/class-admin.php:286
+msgid "Cheating, huh?"
+msgstr "作弊？"
+
+# @ backwpup
+#: ../inc/class-admin.php:320
+msgid "Jobs overview"
+msgstr "计划概况"
+
+# @ backwpup
+#: ../inc/class-admin.php:320 ../inc/class-page-jobs.php:134
+msgid "Run now"
+msgstr "马上执行"
+
+# @ backwpup
+#: ../inc/class-admin.php:397
+#, php-format
+msgctxt "link to Inpsyde.com, link text: Inpsyde GmbH"
+msgid "A project of %s"
+msgstr " %s 的项目"
+
+# @ backwpup
+#: ../inc/class-admin.php:398
+#, php-format
+msgctxt "developer name, link text: Daniel Hüsken"
+msgid "Developer: %s"
+msgstr ""
+"开发者：%s   简体中文支持：<a href=\"http://www.cmhello.com\" target=\"_blank"
+"\">倡萌</a> @ <a href=\"http://www.wpdaxue.com\" target=\"_blank\">WordPress"
+"大学</a>"
+
+# @ backwpup
+#: ../inc/class-admin.php:415
+#, php-format
+msgid "version %s"
+msgstr "版本 %s"
+
+# @ backwpup
+#: ../inc/class-admin.php:431
+#, php-format
+msgid ""
+"You have activated or updated BackWPup. Please check <a href=\"%s\">this "
+"page</a>."
+msgstr "你已启用或更新 BackWPup，请检查 <a href=\"%s\"> 这个页面 </a>。"
+
+# @ backwpup
+#: ../inc/class-admin.php:448
+msgid "BackWPup Role"
+msgstr "BackWPup 角色"
+
+#: ../inc/class-admin.php:452
+msgid "None"
+msgstr "没有"
+
+#: ../inc/class-admin.php:463
+msgid "Role that the user have on BackWPup"
+msgstr "BackWPup 的用户角色"
+
+# @ backwpupadminbar
+#: ../inc/class-adminbar.php:53
+msgid "running"
+msgstr "执行中"
+
+# @ backwpupadminbar
+#: ../inc/class-adminbar.php:62
+msgid "BackWPup"
+msgstr "BackWPup"
+
+# @ backwpupadminbar
+#: ../inc/class-adminbar.php:69
+msgid "Now Running"
+msgstr "正在执行"
+
+# @ backwpupadminbar
+#: ../inc/class-adminbar.php:75
+msgid "Abort!"
+msgstr "终止！"
+
+# @ backwpupadminbar
+# @ backwpup
+#: ../inc/class-adminbar.php:92
+msgid "Add New"
+msgstr "新增"
+
+# @ backwpupadminbar
+#: ../inc/class-adminbar.php:130
+msgid "Run Now"
+msgstr "立即执行"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:72
+msgid "The file name of an archive cannot be empty."
+msgstr "存档文件名不能为空"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:79
+#, php-format
+msgctxt "%s = Folder name"
+msgid "Folder %s for archive not found"
+msgstr "用来存档的文件夹 %s 不存在"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:85 ../inc/class-create-archive.php:116
+#: ../inc/class-create-archive.php:131 ../inc/class-mysqldump.php:110
+msgid "Functions for gz compression not available"
+msgstr "gz 压缩功能无法使用"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:91 ../inc/class-create-archive.php:137
+#: ../inc/class-mysqldump.php:114
+msgid "Functions for bz2 compression not available"
+msgstr "bz2 压缩功能无法使用"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:112
+#, php-format
+msgctxt "ZipArchive open() result"
+msgid "Cannot create zip archive: %d"
+msgstr "无法创建 ZIP 存档： %d"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:142
+#, php-format
+msgctxt "%s = file name"
+msgid "Method to archive file %s not detected"
+msgstr "没有检测到文件存档方法 %s "
+
+# @ backwpup
+#: ../inc/class-create-archive.php:147
+msgid "Cannot open archive file"
+msgstr "无法打开存档文件"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:165 ../inc/class-create-archive.php:289
+#, php-format
+msgid "PclZip archive add error: %s"
+msgstr "PclZip 存档添加出错： %s"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:221
+msgid "File name cannot be empty"
+msgstr "文件名不能为空"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:226
+#, php-format
+msgctxt "File path to add to archive"
+msgid "File %s does not exist or is not readable"
+msgstr "文件 %s 不存在或不可读"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:236 ../inc/class-create-archive.php:250
+#: ../inc/class-create-archive.php:330 ../inc/class-create-archive.php:334
+msgid "This archive method can only add one file"
+msgstr "这种归档方法只能添加一个文件"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:241 ../inc/class-create-archive.php:255
+#: ../inc/class-create-archive.php:426
+#, php-format
+msgid "Cannot open source file %s to archive"
+msgstr "无法打开资源文件到  %s 到存档"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:281 ../inc/class-create-archive.php:345
+#, php-format
+msgid "Cannot add \"%s\" to zip archive!"
+msgstr "无法添加 \"%s\" 到 ZIP 存档！"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:316
+msgid "Folder name cannot be empty"
+msgstr "文件夹名称不能为空"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:321
+#, php-format
+msgctxt "Folder path to add to archive"
+msgid "Folder %s does not exist or is not readable"
+msgstr "文件夹 %s 不存在或不可读"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:369
+msgid "(ER_MULTIDISK) Multi-disk zip archives not supported"
+msgstr "（ER_MULTIDISK）不支持多盘zip存档"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:370
+msgid "(ER_RENAME) Renaming temporary file failed"
+msgstr "（ER_RENAME）重命名临时文件失败"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:371
+msgid "(ER_CLOSE) Closing zip archive failed"
+msgstr "（ER_CLOSE）关闭zip存档失败"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:372
+msgid "(ER_SEEK) Seek error"
+msgstr "（ER_SEEK）查找（seek）错误"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:373
+msgid "(ER_READ) Read error"
+msgstr "（ER_READ）读取错误"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:374
+msgid "(ER_WRITE) Write error"
+msgstr "（ER_WRITE）写入错误"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:375
+msgid "(ER_CRC) CRC error"
+msgstr "（ER_CRC）CRC错误"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:376
+msgid "(ER_ZIPCLOSED) Containing zip archive was closed"
+msgstr "（ER_ZIPCLOSED）zip存档文件被关闭"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:377
+msgid "(ER_NOENT) No such file"
+msgstr "（ER_NOENT）没有这样的文件"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:378
+msgid "(ER_EXISTS) File already exists"
+msgstr "（ER_EXISTS）文件已存在"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:379
+msgid "(ER_OPEN) Can't open file"
+msgstr "（ER_OPEN）无法打开文件"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:380
+msgid "(ER_TMPOPEN) Failure to create temporary file"
+msgstr "（ER_TMPOPEN）创建临时文件失败"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:381
+msgid "(ER_ZLIB) Zlib error"
+msgstr "（ER_ZLIB）Zlib 错误"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:382
+msgid "(ER_MEMORY) Malloc failure"
+msgstr "（ER_MEMORY）Malloc 失败"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:383
+msgid "(ER_CHANGED) Entry has been changed"
+msgstr "（ER_CHANGED）条目已经改变"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:384
+msgid "(ER_COMPNOTSUPP) Compression method not supported"
+msgstr "（ER_COMPNOTSUPP）压缩方法不支持"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:385
+msgid "(ER_EOF) Premature EOF"
+msgstr "（ER_EOF）过早 EOF"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:386
+msgid "(ER_INVAL) Invalid argument"
+msgstr "（ER_INVAL）无效的参数"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:387
+msgid "(ER_NOZIP) Not a zip archive"
+msgstr "（ER_NOZIP）不是一个zip存档"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:388
+msgid "(ER_INTERNAL) Internal error"
+msgstr "（ER_INTERNAL）内部错误"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:389
+msgid "(ER_INCONS) Zip archive inconsistent"
+msgstr "（ER_INCONS）Zip文件不一致"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:390
+msgid "(ER_REMOVE) Can't remove file"
+msgstr "（ER_REMOVE）无法删除文件"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:391
+msgid "(ER_DELETED) Entry has been deleted"
+msgstr "（ER_DELETED）条目已被删除"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:398
+#, php-format
+msgctxt "Text of ZipArchive status Message"
+msgid "ZipArchive returns status: %s"
+msgstr "Zip 存档返回状态：%s"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:418
+#, php-format
+msgid "File name \"%1$s\" too long to be saved correctly in %2$s archive!"
+msgstr "文件名 \"%1$s\" 过长，无法正常保存在 %2$s 存档！"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:420
+#, php-format
+msgid "File path \"%1$s\" too long to be saved correctly in %2$s archive!"
+msgstr "文件路径 \"%1$s\" 过长，无法正常保存在 %2$s 存档！"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:430 ../inc/class-create-archive.php:431
+#: ../inc/class-create-archive.php:514 ../inc/class-create-archive.php:515
+msgid "Unknown"
+msgstr "未知"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:507
+#, php-format
+msgid "Folder name \"%1$s\" too long to be saved correctly in %2$s archive!"
+msgstr "文件夹名称 \"%1$s\" 过长，无法正常保存在 %2$s 存档！"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:509
+#, php-format
+msgid "Folder path \"%1$s\" too long to be saved correctly in %2$s archive!"
+msgstr "文件夹路径 \"%1$s\" 过长，无法正常保存在 %2$s 存档！"
+
+# @ backwpup
+#: ../inc/class-cron.php:53 ../inc/class-job.php:1010
+#: ../inc/class-page-jobs.php:402 ../inc/class-page-jobs.php:637
+#: ../inc/class-wp-cli.php:52
+msgid "ERROR:"
+msgstr "错误:"
+
+# @ backwpup
+#: ../inc/class-cron.php:53
+msgid "Aborted, because no progress for 2 hours!"
+msgstr "已终止，已经2个小时没有任何进度！"
+
+# @ backwpup
+#: ../inc/class-cron.php:84 ../inc/class-job.php:1242
+#, php-format
+msgid "[%3$s] BackWPup log %1$s: %2$s"
+msgstr "[%3$s] BackWPup 日志 %1$s: %2$s"
+
+# @ backwpup
+#: ../inc/class-cron.php:84 ../inc/class-job.php:1238
+msgid "ERROR"
+msgstr "错误"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:13
+msgid "Dropbox"
+msgstr "Dropbox"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:14 ../inc/class-page-about.php:233
+msgid "Backup to Dropbox"
+msgstr "备份到 Dropbox"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:39
+msgid "Dropbox authentication not approved"
+msgstr "Dropbox 无法认证"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:50
+msgid "Dropbox authentication complete!"
+msgstr "Dropbox 认证完成"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:57
+#: ../inc/class-destination-dropbox.php:133
+#: ../inc/class-destination-dropbox.php:152
+#: ../inc/class-destination-dropbox.php:278
+#: ../inc/class-destination-dropbox.php:328
+#, php-format
+msgid "Dropbox API: %s"
+msgstr "Dropbox-API: %s"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:63
+msgid "Login"
+msgstr "登录"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:67
+msgid "Authenticate"
+msgstr "认证"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:69
+msgid "Not authenticated!"
+msgstr "未通过身份验证"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:69
+msgid "Create Account"
+msgstr "创建账户"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:71
+#: ../inc/class-destination-sugarsync.php:63
+msgid "Authenticated!"
+msgstr "已认证"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:73
+msgid "Reauthenticate (Sandbox)"
+msgstr "重新验证 (Sandbox)"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:74
+msgid "Reauthenticate (full Dropbox)"
+msgstr "重新验证 (full Dropbox)"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:80
+#: ../inc/class-destination-folder.php:41 ../inc/class-destination-ftp.php:67
+#: ../inc/class-destination-msazure.php:86 ../inc/class-destination-rsc.php:97
+#: ../inc/class-destination-sugarsync.php:100
+msgid "Backup settings"
+msgstr "备份设置"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:84
+msgid "Folder in Dropbox"
+msgstr "Dropbox 的文件夹"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:90
+#: ../inc/class-destination-folder.php:51 ../inc/class-destination-ftp.php:77
+#: ../inc/class-destination-sugarsync.php:110
+msgid "File Deletion"
+msgstr "文件删除"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:96
+#: ../inc/class-destination-folder.php:57
+#: ../inc/class-destination-msazure.php:102
+#: ../inc/class-destination-rsc.php:113 ../inc/class-destination-s3-v1.php:172
+#: ../inc/class-destination-s3.php:177
+#: ../inc/class-destination-sugarsync.php:116
+msgid "Number of files to keep in folder."
+msgstr "存储到文件夹中的文件数"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:96
+#: ../inc/class-destination-folder.php:57 ../inc/class-destination-ftp.php:83
+#: ../inc/class-destination-msazure.php:102
+#: ../inc/class-destination-rsc.php:113 ../inc/class-destination-s3-v1.php:172
+#: ../inc/class-destination-s3.php:177
+#: ../inc/class-destination-sugarsync.php:116
+msgid "Oldest files will be deleted first. 0 = no deletion"
+msgstr "最早的文件将会被先删除。0 = 不删除"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:100
+#: ../inc/class-destination-folder.php:61 ../inc/class-destination-ftp.php:87
+#: ../inc/class-destination-msazure.php:106
+#: ../inc/class-destination-rsc.php:117 ../inc/class-destination-s3-v1.php:176
+#: ../inc/class-destination-s3.php:181
+#: ../inc/class-destination-sugarsync.php:120
+msgid "Do not delete files while syncing to destination!"
+msgstr "在同步到目的地时，不要删除文件！"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:238
+#, php-format
+msgid "%d. Try to send backup file to Dropbox&#160;&hellip;"
+msgstr "%d. 正在发送备份文件到 Dropbox …"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:246
+#, php-format
+msgid "Authenticated with Dropbox of user %s"
+msgstr "Dropbox 用户 %s 已认证 "
+
+#: ../inc/class-destination-dropbox.php:251
+msgid "Your Dropbox appears to be full."
+msgstr "你的 Dropbox 似乎已满。"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:256
+#, php-format
+msgid "%s available on your Dropbox"
+msgstr "Dropbox 可用空间剩余 %s "
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:260
+msgid "Uploading to Dropbox&#160;&hellip;"
+msgstr "正在上传到 Dropbox …"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:266
+#: ../inc/class-destination-msazure.php:250
+#: ../inc/class-destination-sugarsync.php:272
+#, php-format
+msgid "Backup transferred to %s"
+msgstr "备份传输进度 %s"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:270
+msgid "Uploaded file size and local file size don't match."
+msgstr "上传的文件大小和本地文件大小不匹配。"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:272
+#, php-format
+msgid "Error on transfer backup to Dropbox: %s"
+msgstr "传输到 Dropbox出错: %s"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:319
+#, php-format
+msgid "Error while deleting file from Dropbox: %s"
+msgstr "从 Dropbox 删除文件出错： %s"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:322
+#, php-format
+msgid "One file deleted from Dropbox"
+msgid_plural "%d files deleted on Dropbox"
+msgstr[0] "已从 Dropbox 删除1个文件"
+msgstr[1] "已从 Dropbox 删除 %d 个文件"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:19
+msgid "E-Mail"
+msgstr "电子邮箱"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:20
+msgid "Backup sent by e-mail"
+msgstr "备份到 电子邮箱"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:55
+msgid "E-Mail Address"
+msgstr "邮箱地址"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:58
+msgid "E-Mail address"
+msgstr "邮箱地址"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:62
+msgid "E-Mail address to which Backups are sent."
+msgstr "接收备份的电子邮箱"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:66 ../inc/class-destination-email.php:68
+msgid "Send test e-mail"
+msgstr "发送测试邮件"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:73
+msgid "Send e-mail settings"
+msgstr "发送邮件设置"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:76
+msgid "Maximum file size"
+msgstr "最大文件大小"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:77
+msgid "MB"
+msgstr "MB"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:78
+msgid "Maximum file size to be included in an e-mail. 0 = unlimited"
+msgstr "邮件中发送的文件大小 0 = 无限制"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:82 ../inc/class-destination-email.php:86
+msgid "Sender e-mail address"
+msgstr "发件人邮箱"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:90
+msgid "Sender name"
+msgstr "发件人名字"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:94
+msgid "Name of e-mail sender"
+msgstr "发件人名称"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:98
+msgid "Sending method"
+msgstr "发送邮件的方式"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:102
+msgid "Use site settings"
+msgstr "使用网站的默认设置"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:103
+msgid "PHP: mail()"
+msgstr "PHP函数：mail()"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:104
+msgid "Sendmail"
+msgstr "Sendmail"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:105
+msgid "SMTP"
+msgstr "SMTP"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:108
+msgid ""
+"- Use site settings: retrieves the e-mail settings of your site. -PHP mail"
+"(): needs more PHP memory"
+msgstr ""
+"- 使用网站的默认设置：检索你网站的邮件设置。- PHP mail()：需要更多的PHP内存"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:112
+msgid "Sendmail path"
+msgstr "Sendmail的路径"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:120
+msgid "SMTP host name"
+msgstr "SMTP 主机名"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:125 ../inc/class-destination-ftp.php:46
+msgid "Port:"
+msgstr "端口:"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:131
+msgid "SMTP secure connection"
+msgstr "SMTP 加密连接"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:135
+#: ../inc/class-destination-s3-v1.php:189 ../inc/class-destination-s3.php:205
+#: ../inc/class-jobtype-dbdump.php:68 ../inc/class-jobtype-dbdump.php:103
+#: ../inc/class-jobtype-wpexp.php:70 ../inc/class-jobtype-wpplugin.php:56
+#: ../inc/class-page-backwpup.php:218 ../inc/class-page-backwpup.php:283
+msgid "none"
+msgstr "无"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:136
+msgid "SSL"
+msgstr "SSL"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:137
+msgid "TLS"
+msgstr "TLS"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:142
+msgid "SMTP username"
+msgstr "SMTP 用户名"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:149
+msgid "SMTP password"
+msgstr "SMTP 密码"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:225
+#, php-format
+msgid "%d. Trying to send backup with e-mail&hellip;"
+msgstr "%d. 正在通过邮件发送备份…"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:230
+msgid "Backup archive too big to be sent by e-mail!"
+msgstr "备份存档超过了邮件所支持的附件大小！"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:237
+#, php-format
+msgid "Sending e-mail to %s&hellip;"
+msgstr "发送邮件到 %s ..."
+
+# @ backwpup
+#: ../inc/class-destination-email.php:309
+#, php-format
+msgid "BackWPup archive from %1$s: %2$s"
+msgstr "BackWPup 存档来自 %1$s: %2$s"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:312
+#, php-format
+msgid "Backup archive: %s"
+msgstr "备份存档：%s"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:326
+#: ../inc/class-destination-email.php:447
+msgid "Error while sending e-mail!"
+msgstr "邮件发送失败！"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:332
+#: ../inc/class-destination-email.php:449
+msgid "E-Mail sent."
+msgstr "邮件已发送"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:431
+msgid "BackWPup archive sending TEST Message"
+msgstr "BackWPup 存档发送测试消息"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:434
+msgid ""
+"If this message reaches your inbox, sending backup archives via e-mail "
+"should work for you."
+msgstr ""
+"如果这个信息成功发送到你的收件箱，说明通过邮件发送备份文件是可以实现的。"
+
+# @ backwpup
+#: ../inc/class-destination-folder.php:13 ../inc/class-page-backups.php:228
+msgid "Folder"
+msgstr "文件夹"
+
+# @ backwpup
+#: ../inc/class-destination-folder.php:14
+msgid "Backup to Folder"
+msgstr "备份到 当前服务器"
+
+# @ backwpup
+#: ../inc/class-destination-folder.php:45
+msgid "Folder to store backups in"
+msgstr "存放备份的文件夹"
+
+# @ backwpup
+#: ../inc/class-destination-folder.php:209
+#, php-format
+msgid "One backup file deleted"
+msgid_plural "%d backup files deleted"
+msgstr[0] "备份已删除"
+msgstr[1] "%d 个备份已删除"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:13
+msgid "FTP"
+msgstr "FTP"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:14
+msgid "Backup to FTP"
+msgstr "备份到 FTP"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:38
+msgid "FTP server and login"
+msgstr "FTP 服务器和登录"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:42
+msgid "FTP server"
+msgstr "FTP 服务器"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:52 ../inc/class-destination-rsc.php:50
+msgid "Username"
+msgstr "用户名"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:59
+msgid "Password"
+msgstr "密码"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:71
+msgid "Folder to store files in"
+msgstr "存放文件的文件夹"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:83
+msgid "Maximum number of files to keep in folder."
+msgstr "保存文件的最大数量"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:93
+msgid "FTP specific settings"
+msgstr "FTP 设置"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:97
+msgid "Timeout for FTP connection"
+msgstr "FTP连接超时"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:101 ../inc/class-page-logs.php:212
+#: ../inc/class-page-settings.php:417
+msgid "seconds"
+msgstr "秒"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:105
+msgid "SSL-FTP connection"
+msgstr "SSL-FTP 连接"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:109
+msgid "Use explicit SSL-FTP connection."
+msgstr "使用明文 SSL-FTP 连接"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:114
+msgid "FTP Passive Mode"
+msgstr "FTP 被动传输模式"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:118
+msgid "Use FTP Passive Mode."
+msgstr "使用 FTP 被动传输模式"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:194
+msgid "FTP: Login failure!"
+msgstr "FTP: 登录失败"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:217
+#, php-format
+msgid "%d. Try to send backup file to an FTP server&#160;&hellip;"
+msgstr "%d. 开始发送备份文件到 FTP 服务器 …"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:223
+#, php-format
+msgid "Connected via explicit SSL-FTP to server: %s"
+msgstr "SSL-FTP 明文连接到服务器：%s"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:225
+#, php-format
+msgid "Cannot connect via explicit SSL-FTP to server: %s"
+msgstr "使用明文 SSL-FTP 连接失败：%s"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:231
+msgid "PHP function to connect with explicit SSL-FTP to server does not exist!"
+msgstr "明文连接 SSL-FTP 的PHP参数不支持"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:239
+#, php-format
+msgid "Connected to FTP server: %s"
+msgstr "连接FTP服务器: %s"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:241
+#, php-format
+msgid "Cannot connect to FTP server: %s"
+msgstr "无法连接到 FTP 服务器：%s"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:248 ../inc/class-destination-ftp.php:256
+#: ../inc/class-destination-ftp.php:267 ../inc/class-destination-ftp.php:311
+#, php-format
+msgid "FTP client command: %s"
+msgstr "FTP 客户端命令：%s"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:250
+#, php-format
+msgid "FTP server response: %s"
+msgstr "FTP 服务器回应：%s"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:254 ../inc/class-destination-ftp.php:258
+#: ../inc/class-destination-ftp.php:270 ../inc/class-destination-ftp.php:272
+#: ../inc/class-destination-ftp.php:314 ../inc/class-destination-ftp.php:316
+#: ../inc/class-destination-ftp.php:320 ../inc/class-destination-ftp.php:322
+#, php-format
+msgid "FTP server reply: %s"
+msgstr "FTP 服务器回应：%s"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:272
+msgid "Error getting SYSTYPE"
+msgstr "错误获得SYSTYPE"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:290
+#, php-format
+msgid "FTP Folder \"%s\" created!"
+msgstr "FTP 文件夹 \"%s\" 已完成!"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:294
+#, php-format
+msgid "FTP Folder \"%s\" cannot be created!"
+msgstr "FTP 文件夹 \"%s\" 创建失败！"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:304
+#, php-format
+msgid "FTP current folder is: %s"
+msgstr "FTP 传输当前文件名: %s"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:314
+msgid "Entering passive mode"
+msgstr "切换到被动模式"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:316
+msgid "Cannot enter passive mode"
+msgstr "无法切换到被动模式"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:320
+msgid "Entering normal mode"
+msgstr "切换普通模式"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:322
+msgid "Cannot enter normal mode"
+msgstr "无法切换到普通模式"
+
+#: ../inc/class-destination-ftp.php:326
+msgid "Starting upload to FTP &#160;&hellip;"
+msgstr "开始上传到FTP..."
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:335
+msgid "Cannot transfer backup to FTP server!"
+msgstr "无法发送备份文件到 FTP 服务器！"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:341
+#, php-format
+msgid "Backup transferred to FTP server: %s"
+msgstr "备份传送到FTP服务器： %s"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:387
+#, php-format
+msgid "Cannot delete \"%s\" on FTP server!"
+msgstr "无法删除 FTP 服务器的 \"%s\""
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:390
+#, php-format
+msgid "One file deleted on FTP server"
+msgid_plural "%d files deleted on FTP server"
+msgstr[0] "已删除 FTP 服务器的 1 个文件"
+msgstr[1] "已删除 FTP 服务器的 %d 个文件"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:21
+msgid "MS Azure"
+msgstr "MS Azure"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:22
+msgid "Backup to Microsoft Azure (Blob)"
+msgstr "备份到 Microsoft Azure (Blob)"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:44
+msgid "MS Azure access keys"
+msgstr "MS Azure access keys"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:48
+msgid "Account name"
+msgstr "账户名称"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:55
+msgid "Access key"
+msgstr "Access key"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:63
+msgid "Blob container"
+msgstr "Blob 容器"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:67 ../inc/class-destination-rsc.php:78
+msgid "Container selection"
+msgstr "容器选择"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:79 ../inc/class-destination-rsc.php:90
+msgid "Create a new container"
+msgstr "新建容器"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:90
+msgid "Folder in container"
+msgstr "容器内部文件夹"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:96
+#: ../inc/class-destination-rsc.php:107 ../inc/class-destination-s3-v1.php:166
+#: ../inc/class-destination-s3.php:171
+msgid "File deletion"
+msgstr "文件删除"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:144
+#, php-format
+msgid "MS Azure container \"%s\" created."
+msgstr "MS Azure 容器 \"%s\" 已创建。"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:147
+#, php-format
+msgid "MS Azure container create: %s"
+msgstr "MS Azure 容器创建：%s"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:222
+#, php-format
+msgid "%d. Try sending backup to a Microsoft Azure (Blob)&#160;&hellip;"
+msgstr "%d. 开始发送备份文件到 Microsoft Azure (Blob)…"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:239
+#, php-format
+msgid "MS Azure container \"%s\" does not exist!"
+msgstr "MS Azure 容器  \"%s\" 不存在！"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:243
+#, php-format
+msgid "Connected to MS Azure container \"%s\"."
+msgstr "已连接到 MS Azure 容器 \"%s\""
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:247
+msgid "Starting upload to MS Azure&#160;&hellip;"
+msgstr "开始上传文件到 Microsoft Azure …"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:292
+#, php-format
+msgid "One file deleted on Microsoft Azure container."
+msgid_plural "%d files deleted on Microsoft Azure container."
+msgstr[0] "在 Microsoft Azure 容器删除了 1 个文件。"
+msgstr[1] "在 Microsoft Azure 容器删除了 %d 个文件。"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:298
+#, php-format
+msgid "Microsoft Azure API: %s"
+msgstr "Microsoft Azure API： %s"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:380
+msgid "Missing account name!"
+msgstr "缺少帐户名！"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:382
+#: ../inc/class-destination-s3-v1.php:587 ../inc/class-destination-s3.php:628
+msgid "Missing access key!"
+msgstr "缺少 access key！"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:386
+msgid "No container found!"
+msgstr "未发现容器！"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:23
+msgid "RSC"
+msgstr "RSC"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:24 ../inc/class-page-about.php:238
+msgid "Backup to Rackspace Cloud Files"
+msgstr "备份到 Rackspace Cloud  "
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:46
+msgid "Rack Space Cloud Keys"
+msgstr "Rack Space Cloud Keys"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:57
+msgid "API Key"
+msgstr "API Key"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:65
+msgid "Select region"
+msgstr "选择地区"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:69 ../inc/class-destination-rsc.php:71
+msgid "Rackspace Cloud Files Region"
+msgstr "Rackspace Cloud 文件区"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:72
+msgid "Dallas (DFW)"
+msgstr "Dallas (DFW)"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:73
+msgid "Chicago (ORD)"
+msgstr "Chicago (ORD)"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:101 ../inc/class-destination-s3-v1.php:160
+#: ../inc/class-destination-s3.php:165
+msgid "Folder in bucket"
+msgstr "Bucket 内部文件夹"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:158
+#, php-format
+msgid "Rackspace Cloud container \"%s\" created."
+msgstr "Rackspace Cloud 容器  \"%s\" 已创建。"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:162 ../inc/class-destination-rsc.php:271
+#: ../inc/class-destination-rsc.php:299 ../inc/class-destination-rsc.php:347
+#, php-format
+msgid "Rackspace Cloud API: %s"
+msgstr "Rackspace Cloud API： %s"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:252
+#, php-format
+msgid "%d. Trying to send backup file to Rackspace cloud &hellip;"
+msgstr "%d. 正在尝试发送备份文件到 Rackspace cloud…"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:268
+#, php-format
+msgid "Connected to Rackspace cloud files container %s"
+msgstr "已连接到 Rackspace Cloud 容器 %s"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:280
+msgid "Upload to Rackspace cloud started &hellip;"
+msgstr "已开始上传到 Rackspace Cloud …"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:289
+msgid "Backup File transferred to RSC://"
+msgstr "备份文件转移到RSC://"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:293
+msgid "Cannot transfer backup to Rackspace cloud."
+msgstr "无法发送备份文件到 Rackspace cloud"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:341
+#, php-format
+msgid "One file deleted on Rackspace cloud container."
+msgid_plural "%d files deleted on Rackspace cloud container."
+msgstr[0] "在 Rackspace cloud 容器中已删除 1 个文件"
+msgstr[1] "在 Rackspace cloud 容器中已删除 %d 个文件"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:451
+msgid "Missing username!"
+msgstr "缺少用户名！"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:453
+msgid "Missing API Key!"
+msgstr "缺少 API Key！"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:457
+msgid "A container could not be found!"
+msgstr "未发现容器！"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:21 ../inc/class-destination-s3-v1.php:84
+#: ../inc/class-destination-s3.php:26 ../inc/class-destination-s3.php:89
+msgid "S3 Service"
+msgstr "S3 服务"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:22 ../inc/class-destination-s3.php:27
+msgid "Backup to an S3 Service"
+msgstr "备份到 S3 服务器"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:88 ../inc/class-destination-s3.php:93
+msgid "Select an S3 service"
+msgstr "选择一个 S3 服务器"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:90 ../inc/class-destination-s3.php:95
+msgid "Amazon S3 Region"
+msgstr "Amazon S3 地区"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:91 ../inc/class-destination-s3.php:96
+msgid "Amazon S3: US Standard"
+msgstr "Amazon S3: US Standard"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:92 ../inc/class-destination-s3.php:97
+msgid "Amazon S3: US West (Northern California)"
+msgstr "Amazon S3: US West (Northern California)"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:93 ../inc/class-destination-s3.php:98
+msgid "Amazon S3: US West (Oregon)"
+msgstr "Amazon S3: US West (Oregon)"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:94 ../inc/class-destination-s3.php:99
+msgid "Amazon S3: EU (Ireland)"
+msgstr "Amazon S3: EU (Ireland)"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:95 ../inc/class-destination-s3.php:100
+msgid "Amazon S3: Asia Pacific (Tokyo)"
+msgstr "Amazon S3: Asia Pacific (Tokyo)"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:96 ../inc/class-destination-s3.php:101
+msgid "Amazon S3: Asia Pacific (Singapore)"
+msgstr "Amazon S3: Asia Pacific (Singapore)"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:97 ../inc/class-destination-s3.php:102
+msgid "Amazon S3: Asia Pacific (Sydney)"
+msgstr "Amazon S3: Asia Pacific (Sydney)"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:98 ../inc/class-destination-s3.php:103
+msgid "Amazon S3: South America (Sao Paulo)"
+msgstr "Amazon S3: South America (Sao Paulo)"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:99 ../inc/class-destination-s3.php:104
+msgid "Google Storage (Interoperable Access)"
+msgstr "Google Storage（可互操作的访问）"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:100 ../inc/class-destination-s3.php:105
+msgid "Hosteurope Cloud Storage"
+msgstr "Hosteurope 云存储"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:101 ../inc/class-destination-s3.php:106
+msgid "Dream Host Cloud Storage"
+msgstr "Dream Host 云存储"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:106 ../inc/class-destination-s3.php:111
+msgid "Or an S3 Server URL"
+msgstr "或者一个 S3 服务器 URL"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:113 ../inc/class-destination-s3.php:118
+msgid "S3 Access Keys"
+msgstr "S3 Access Keys"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:117 ../inc/class-destination-s3.php:122
+msgid "Access Key"
+msgstr "Access Key"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:124 ../inc/class-destination-s3.php:129
+msgid "Secret Key"
+msgstr "Secret Key"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:132 ../inc/class-destination-s3.php:137
+msgid "S3 Bucket"
+msgstr "S3 Bucket"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:136 ../inc/class-destination-s3.php:141
+msgid "Bucket selection"
+msgstr "Bucket 选择"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:149 ../inc/class-destination-s3.php:154
+msgid "Create a new bucket"
+msgstr "新建一个存储库（Bucket）"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:156 ../inc/class-destination-s3.php:161
+msgid "S3 Backup settings"
+msgstr "S3 备份设置"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:182 ../inc/class-destination-s3.php:198
+msgid "Amazon specific settings"
+msgstr "Amazon 特定设置"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:186
+#: ../inc/class-destination-s3-v1.php:188 ../inc/class-destination-s3.php:202
+#: ../inc/class-destination-s3.php:204
+msgid "Amazon: Storage Class"
+msgstr "Amazon：存储类"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:190 ../inc/class-destination-s3.php:206
+msgid "Reduced Redundancy"
+msgstr "减少冗余"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:195 ../inc/class-destination-s3.php:211
+msgid "Server side encryption"
+msgstr "服务器端加密"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:199 ../inc/class-destination-s3.php:215
+msgid "Save files encrypted (AES256) on server."
+msgstr "在服务器上加密保存文件（AES256）"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:260 ../inc/class-destination-s3.php:271
+#, php-format
+msgid "Bucket %1$s created in %2$s."
+msgstr "存储库（Bucket） %1$s 已在 %2$s 内创建"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:262 ../inc/class-destination-s3.php:273
+#, php-format
+msgid "Bucket %s could not be created."
+msgstr "Bucket %s 无法创建！"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:309
+#: ../inc/class-destination-s3-v1.php:431
+#: ../inc/class-destination-s3-v1.php:482 ../inc/class-destination-s3.php:317
+#: ../inc/class-destination-s3.php:421 ../inc/class-destination-s3.php:451
+#: ../inc/class-destination-s3.php:472 ../inc/class-destination-s3.php:531
+#, php-format
+msgid "S3 Service API: %s"
+msgstr "S3服务 API：%s"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:374 ../inc/class-destination-s3.php:380
+#, php-format
+msgid "%d. Trying to send backup file to S3 Service&#160;&hellip;"
+msgstr "%d. 开始发送备份文件到 S3 服务器…"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:395 ../inc/class-destination-s3.php:392
+#, php-format
+msgid "Connected to S3 Bucket \"%1$s\" in %2$s"
+msgstr "已连接到 S3 Bucket \"%1$s\" in %2$s"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:398 ../inc/class-destination-s3.php:395
+#, php-format
+msgid "S3 Bucket \"%s\" does not exist!"
+msgstr "S3 Bucket \"%s\" 不存在！"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:404 ../inc/class-destination-s3.php:401
+msgid "Starting upload to S3 Service&#160;&hellip;"
+msgstr "开始上传文件到 S3 服务器 …"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:422 ../inc/class-destination-s3.php:463
+#, php-format
+msgid "Backup transferred to %s."
+msgstr "备份已转移到 %s"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:427 ../inc/class-destination-s3.php:468
+#, php-format
+msgid "Cannot transfer backup to S3! (%1$d) %2$s"
+msgstr "无法发送文件到 S3 服务器！ (%1$d) %2$s"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:472 ../inc/class-destination-s3.php:521
+#, php-format
+msgid "Cannot delete backup from %s."
+msgstr "无法从 %s 删除备份"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:476 ../inc/class-destination-s3.php:525
+#, php-format
+msgid "One file deleted on S3 Bucket."
+msgid_plural "%d files deleted on S3 Bucket"
+msgstr[0] "在 S3 Bucket 中删除了 1 个文件"
+msgstr[1] "在 S3 Bucket 中删除了 %d 个文件"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:589 ../inc/class-destination-s3.php:630
+msgid "Missing secret access key!"
+msgstr "缺少 secret access key！"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:593 ../inc/class-destination-s3.php:634
+msgid "No bucket found!"
+msgstr "没有找到 Bucket！"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:187
+msgid "Multipart Upload"
+msgstr "多部分上传"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:191
+msgid "Use multipart upload for uploading a file"
+msgstr "使用多部分上传来上传文件"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:192
+msgid ""
+"Multipart splits file into multiple chunks while uploading. This is "
+"necessary for displaying the upload process and to transfer bigger files. "
+"Beware: There is a known issue at Google storage with this option!"
+msgstr ""
+"将备份文件切割成多个小文件然后上传，这样有利于大文件的上传。注意：目前已知该"
+"功能无法在 Google storage 上使用。"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:275
+#, php-format
+msgid " %s is not a valid bucket name."
+msgstr "%s 不是一个有效的 Bucket 名称"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:13
+msgid "SugarSync"
+msgstr "SugarSync"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:14 ../inc/class-page-about.php:253
+msgid "Backup to SugarSync"
+msgstr "备份到 SugarSync"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:36
+msgid "Sugarsync Login"
+msgstr "SugarSync 登录"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:42
+#: ../inc/class-destination-sugarsync.php:61
+#: ../inc/class-page-settings.php:318
+msgid "Authentication"
+msgstr "认证"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:44
+msgid "E-Mail address:"
+msgstr "邮箱地址："
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:48
+#: ../inc/class-page-settings.php:330
+msgid "Password:"
+msgstr "密码："
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:54
+#: ../inc/class-destination-sugarsync.php:135
+msgid "Sugarsync authenticate!"
+msgstr "SugarSync 认证！"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:56
+#: ../inc/class-destination-sugarsync.php:151
+msgid "Create Sugarsync account"
+msgstr "创建 SugarSync 账户"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:65
+#: ../inc/class-destination-sugarsync.php:147
+msgid "Delete Sugarsync authentication!"
+msgstr "删除 SugarSync 认证！"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:71
+msgid "SugarSync Root"
+msgstr "SugarSync 根目录"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:75
+msgid "Sync folder selection"
+msgstr "选择同步文件夹"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:83
+msgid "No Syncfolders found!"
+msgstr "没有找到同步文件夹！"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:104
+msgid "Folder in root"
+msgstr "根目录的文件夹"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:243
+#, php-format
+msgid "%d. Try to send backup to SugarSync&#160;&hellip;"
+msgstr "%d. 开始发送备份文件到 SugarSync …"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:250
+#, php-format
+msgid "Authenticated to SugarSync with nickname %s"
+msgstr "SugarSync 用户昵称 %s 已认证"
+
+#: ../inc/class-destination-sugarsync.php:253
+#, php-format
+msgctxt "Available space on SugarSync"
+msgid "Not enough disk space available on SugarSync. Available: %s."
+msgstr "你的 SugarSync 没有足够的可用磁盘空间。可供选择：%s"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:259
+#, php-format
+msgid "%s available at SugarSync"
+msgstr "SugarSync 可用空间剩余 %s"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:266
+msgid "Starting upload to SugarSync&#160;&hellip;"
+msgstr "开始上传文件到 SugarSync …"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:275
+msgid "Cannot transfer backup to SugarSync!"
+msgstr "无法上传文件到 SugarSync ！"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:314
+#, php-format
+msgid "One file deleted on SugarSync folder"
+msgid_plural "%d files deleted on SugarSync folder"
+msgstr[0] "从 SugarSync 文件夹中删除了 1 个文件"
+msgstr[1] "从 SugarSync 文件夹中删除了 %d 个文件"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:320
+#, php-format
+msgid "SugarSync API: %s"
+msgstr "SugarSync API：%s"
+
+# @ backwpup
+#: ../inc/class-help.php:15
+msgid "Plugin Info"
+msgstr "插件信息"
+
+# @ backwpup
+#: ../inc/class-help.php:17
+#, php-format
+msgctxt "Plugin name and link; Plugin Version"
+msgid ""
+"%1$s version %2$s. A project by <a href=\"http://inpsyde.com\">Inpsyde GmbH</"
+"a>. Developed by <a href=\"http://danielhuesken.de\">Daniel Hüsken</a>."
+msgstr ""
+"%1$s 版本 %2$s ，<a href=\"http://inpsyde.com\">Inpsyde GmbH</a> 的项目，开发"
+"者：<a href=\"http://danielhuesken.de\">Daniel Hüsken</a>。"
+
+# @ backwpup
+#: ../inc/class-help.php:18
+msgid ""
+"BackWPup comes with ABSOLUTELY NO WARRANTY. This is free software, and you "
+"are welcome to redistribute it under certain conditions."
+msgstr "BackWPup 绝对没有担保。这是自由软件，欢迎你在一定条件下重新发布它。"
+
+# @ backwpup
+#: ../inc/class-help.php:21
+msgid "For more information:"
+msgstr "欲了解更多信息，请访问："
+
+# @ backwpup
+#: ../inc/class-help.php:23
+msgid "Plugin on wordpress.org"
+msgstr "wordpress.org 插件"
+
+# @ backwpup
+#: ../inc/class-help.php:24
+msgid "https://marketpress.com/news/"
+msgstr "https://marketpress.com/news/"
+
+# @ backwpup
+#: ../inc/class-help.php:24
+msgid "News"
+msgstr "新闻"
+
+# @ backwpup
+#: ../inc/class-help.php:29
+msgid "Manual"
+msgstr "手册"
+
+# @ backwpup
+#: ../inc/class-install.php:49
+msgid "BackWPup Admin"
+msgstr "BackWPup 管理"
+
+# @ backwpup
+#: ../inc/class-install.php:62
+msgid "BackWPup jobs checker"
+msgstr "BackWPup 计划检查"
+
+# @ backwpup
+#: ../inc/class-install.php:75
+msgid "BackWPup jobs helper"
+msgstr "BackWPup 计划帮助"
+
+# @ backwpup
+#: ../inc/class-job.php:161
+msgid "Starting job"
+msgstr "启动计划"
+
+# @ backwpup
+#: ../inc/class-job.php:178
+msgid "Job Start"
+msgstr "计划启动"
+
+# @ backwpup
+#: ../inc/class-job.php:212
+msgid "Creates archive"
+msgstr "创建存档"
+
+# @ backwpup
+#: ../inc/class-job.php:244
+msgid "Job End"
+msgstr "计划已完成"
+
+# @ backwpup
+#: ../inc/class-job.php:250
+#, php-format
+msgid "BackWPup log for %1$s from %2$s at %3$s"
+msgstr "BackWPup 日志文件 %1$s 来自 %2$s  %3$s"
+
+# @ backwpup
+#: ../inc/class-job.php:268
+#, php-format
+msgctxt "Plugin name; Plugin Version; WordPress Version"
+msgid ""
+"[INFO] %1$s version %2$s; WordPress version %3$s; A project of Inpsyde GmbH "
+"developed by Daniel Hüsken"
+msgstr ""
+"[INFO] %1$s 版本 %2$s; WordPress 版本 %3$s; 一个由 Daniel Hüsken 开发的 "
+"Inpsyde GmbH 项目。"
+
+# @ backwpup
+#: ../inc/class-job.php:269
+msgid ""
+"[INFO] This program comes with ABSOLUTELY NO WARRANTY. This is free "
+"software, and you are welcome to redistribute it under certain conditions."
+msgstr ""
+"[INFO] 这个程序是绝对没有担保。这是自由软件，欢迎您在一定条件下重新发布它。"
+
+# @ backwpup
+#: ../inc/class-job.php:270
+#, php-format
+msgid "[INFO] BackWPup job: %1$s; %2$s"
+msgstr "[INFO] BackWPup 计划: %1$s; %2$s"
+
+# @ backwpup
+#: ../inc/class-job.php:272
+msgid "[INFO] BackWPup cron:"
+msgstr "[INFO] BackWPup 定时："
+
+# @ backwpup
+#: ../inc/class-job.php:274
+msgid "[INFO] BackWPup job started from wp-cron"
+msgstr "[INFO] BackWPup 计划已根据 wp-cron 启动"
+
+# @ backwpup
+#: ../inc/class-job.php:276
+msgid "[INFO] BackWPup job started manually"
+msgstr "[INFO] BackWPup 计划已手动启动"
+
+# @ backwpup
+#: ../inc/class-job.php:278
+msgid "[INFO] BackWPup job started from external url"
+msgstr "[INFO] BackWPup 计划已从外部 URL 启动"
+
+# @ backwpup
+#: ../inc/class-job.php:280
+msgid "[INFO] BackWPup job started form commandline interface"
+msgstr "[INFO] BackWPup 计划已从命令行界面启动"
+
+# @ backwpup
+#: ../inc/class-job.php:281
+msgid "[INFO] PHP ver.:"
+msgstr "[INFO] PHP 版本："
+
+# @ backwpup
+#: ../inc/class-job.php:282
+#, php-format
+msgid "[INFO] Maximum script execution time is %1$d seconds"
+msgstr "[INFO] 最大脚本的执行时间是 %1$d 秒"
+
+# @ backwpup
+#: ../inc/class-job.php:283
+#, php-format
+msgid "[INFO] MySQL ver.: %s"
+msgstr "[INFO] MySQL 版本：%s"
+
+# @ backwpup
+#: ../inc/class-job.php:286
+#, php-format
+msgid "[INFO] curl ver.: %1$s; %2$s"
+msgstr "[INFO] curl 版本：%1$s; %2$s"
+
+# @ backwpup
+#: ../inc/class-job.php:288
+#, php-format
+msgid "[INFO] Temp folder is: %s"
+msgstr "[INFO] 临时文件夹是：%s"
+
+# @ backwpup
+#: ../inc/class-job.php:289
+#, php-format
+msgid "[INFO] Logfile folder is: %s"
+msgstr "[INFO] 日志文件夹是：%s"
+
+# @ backwpup
+#: ../inc/class-job.php:290
+#, php-format
+msgid "[INFO] Backup type is: %s"
+msgstr "[INFO] 备份类型是：%s"
+
+# @ backwpup
+#: ../inc/class-job.php:292
+#, php-format
+msgid "[INFO] Backup file is: %s"
+msgstr "[INFO] 备份文件是：%s"
+
+# @ backwpup
+#: ../inc/class-job.php:309
+msgid ""
+"No destination correctly defined for backup! Please correct job settings."
+msgstr "没有正确定义备份的目的地！"
+
+# @ backwpup
+#: ../inc/class-job.php:438 ../inc/class-job.php:439 ../inc/class-job.php:518
+#: ../inc/class-job.php:519 ../inc/class-job.php:570
+msgid "Wrong BackWPup JobID"
+msgstr "错误的 BackWPup 计划 ID"
+
+# @ backwpup
+#: ../inc/class-job.php:443 ../inc/class-job.php:444 ../inc/class-job.php:524
+#: ../inc/class-job.php:576
+msgid "Log folder does not exist or is not writable for BackWPup"
+msgstr "BackWPup 日志文件夹不存在或不可写！"
+
+# @ backwpup
+#: ../inc/class-job.php:447 ../inc/class-job.php:448 ../inc/class-job.php:528
+#: ../inc/class-job.php:581
+msgid "Temp folder does not exist or is not writable for BackWPup"
+msgstr "BackWPup 临时文件夹不存在或不可写！"
+
+# @ backwpup
+#: ../inc/class-job.php:452 ../inc/class-job.php:453
+msgid "Backups folder does not exist or is not writable for BackWPup"
+msgstr "BackWPup 备份文件夹不存在或不可写！"
+
+# @ backwpup
+#: ../inc/class-job.php:458 ../inc/class-job.php:459
+msgid "No BackWPup job running"
+msgstr "没有 BackWPup 备份计划正在执行"
+
+# @ backwpup
+#: ../inc/class-job.php:462 ../inc/class-job.php:463 ../inc/class-job.php:532
+#: ../inc/class-job.php:533 ../inc/class-job.php:588
+msgid "A BackWPup job is already running"
+msgstr "一个 BackWPup 备份计划已在执行"
+
+# @ backwpup
+#: ../inc/class-job.php:523
+msgid "Log folder does not exist or is not writable"
+msgstr "日志文件夹不存在或不可写"
+
+# @ backwpup
+#: ../inc/class-job.php:527
+msgid "Temp folder does not exist or is not writable"
+msgstr "临时文件夹不存在或不可写"
+
+# @ default
+#: ../inc/class-job.php:539
+msgid "Job Started"
+msgstr "计划已启动"
+
+# @ backwpup
+#: ../inc/class-job.php:620
+msgid "Job restart due to inactivity for more than 5 minutes."
+msgstr "由于闲置超过 5 分钟，计划重新启动。"
+
+# @ backwpup
+#: ../inc/class-job.php:623
+msgid ""
+"Second process start terminated, because a other job is already running!"
+msgstr "第二个启动进程已终止，因为其他的计划已在执行！"
+
+# @ backwpup
+#: ../inc/class-job.php:731
+msgid "Step aborted: too many attempts!"
+msgstr "步骤中止：尝试次数过多！"
+
+# @ backwpup
+#: ../inc/class-job.php:875
+#, php-format
+msgid "Signal %d is sent to script!"
+msgstr "信号 %d 已经发送到脚本！"
+
+# @ backwpup
+#: ../inc/class-job.php:879
+msgid "Script stopped! Will start again."
+msgstr "脚本已停止！将再次尝试。"
+
+# @ backwpup
+#: ../inc/class-job.php:904
+#, php-format
+msgid "Please use another folder: %1$s"
+msgstr "请使用其他文件夹：%1$s"
+
+# @ backwpup
+#: ../inc/class-job.php:911
+#, php-format
+msgid "Cannot create folder: %1$s"
+msgstr "无法创建文件夹： %1$s"
+
+# @ backwpup
+#: ../inc/class-job.php:919
+#, php-format
+msgid "Folder \"%1$s\" is not writable"
+msgstr "文件夹 \"%1$s\" 不可写"
+
+# @ backwpup
+#: ../inc/class-job.php:944
+#, php-format
+msgid "Exception caught in %1$s: %2$s"
+msgstr "异常发生于 %1$s: %2$s"
+
+# @ backwpup
+#: ../inc/class-job.php:1001 ../inc/class-page-jobs.php:639
+msgid "WARNING:"
+msgstr "警告："
+
+# @ backwpup
+#: ../inc/class-job.php:1014
+msgid "DEPRECATED:"
+msgstr "弃用："
+
+# @ backwpup
+#: ../inc/class-job.php:1017
+msgid "STRICT NOTICE:"
+msgstr "严格注意："
+
+# @ backwpup
+#: ../inc/class-job.php:1020
+msgid "RECOVERABLE ERROR:"
+msgstr "可恢复的错误："
+
+# @ backwpup
+#: ../inc/class-job.php:1155
+#, php-format
+msgid "One old log deleted"
+msgid_plural "%d old logs deleted"
+msgstr[0] "已删除 1 个旧的日志"
+msgstr[1] "已删除 %d 个旧的日志"
+
+#: ../inc/class-job.php:1161 ../inc/class-page-jobs.php:637
+#, php-format
+msgid ""
+"Job has ended with errors in %s seconds. You must resolve the errors for "
+"correct execution."
+msgstr "计划已结束，用时 %s 秒，有错误。为正确执行，请解决这些错误。"
+
+#: ../inc/class-job.php:1163 ../inc/class-page-jobs.php:639
+#, php-format
+msgid ""
+"Job has done with warnings in %s seconds. Please resolve them for correct "
+"execution."
+msgstr "计划已完成，用时 %s 秒，有警告。为正确执行，请解决这些警告。"
+
+# @ backwpup
+#: ../inc/class-job.php:1165 ../inc/class-page-jobs.php:641
+#, php-format
+msgid "Job done in %s seconds."
+msgstr "计划已完成，用时 %s 秒"
+
+# @ backwpup
+#: ../inc/class-job.php:1231
+msgid "SUCCESSFUL"
+msgstr "成功"
+
+# @ backwpup
+#: ../inc/class-job.php:1234
+msgid "WARNING"
+msgstr "警告"
+
+# @ backwpup
+#: ../inc/class-job.php:1559
+#, php-format
+msgctxt "Folder name"
+msgid "Folder %s not exists"
+msgstr "文件夹 %s 不存在"
+
+# @ backwpup
+#: ../inc/class-job.php:1563
+#, php-format
+msgctxt "Folder name"
+msgid "Folder %s not readable"
+msgstr "文件夹 %s 不可读"
+
+# @ backwpup
+#: ../inc/class-job.php:1579
+#, php-format
+msgid "File \"%s\" is not readable!"
+msgstr "文件 \"%s\" 不可读"
+
+# @ backwpup
+#: ../inc/class-job.php:1581
+#, php-format
+msgid "Link \"%s\" not followed."
+msgstr "链接 \"%s\" 没有跟随"
+
+# @ backwpup
+#: ../inc/class-job.php:1613
+#, php-format
+msgid "%d. Trying to create backup archive &hellip;"
+msgstr "%d. 正在尝试创建备份存档 …"
+
+# @ backwpup
+#: ../inc/class-job.php:1620
+#, php-format
+msgctxt "Archive compression method"
+msgid "Compression method is %s"
+msgstr "压缩格式为 %s"
+
+# @ backwpup
+#: ../inc/class-job.php:1674
+msgid "Backup archive created."
+msgstr "备份存档已创建"
+
+# @ backwpup
+#: ../inc/class-job.php:1683
+#, php-format
+msgid "Archive size is %s."
+msgstr "存档大小为 %s"
+
+# @ backwpup
+#: ../inc/class-job.php:1684
+#, php-format
+msgid "%1$d Files with %2$s in Archive."
+msgstr "%1$d 文件和 %2$s 在存档中"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:13
+msgid "DB Check"
+msgstr "检查表"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:14
+msgid "Check database tables"
+msgstr "检查数据表"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:35
+msgid "Settings for database check"
+msgstr "数据库检查设置"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:39 ../inc/class-jobtype-dboptimize.php:40
+msgid "WordPress tables only"
+msgstr "仅 WordPress 数据表"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:44
+msgid "Check WordPress database tables only"
+msgstr "只检查wordpress本身的数据表"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:49
+msgid "Repair"
+msgstr "修复"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:54
+msgid "Try to repair defect table"
+msgstr "尝试修复数据表"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:79
+#, php-format
+msgid "%d. Trying to check database&#160;&hellip;"
+msgstr "%d. 开始检查数据表 …"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:111
+#, php-format
+msgid "Table %1$s is a view. Not checked."
+msgstr "数据表 %1$s 是一个view，不用检查。"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:116
+#, php-format
+msgid "Table %1$s is not a MyISAM/InnoDB table. Not checked."
+msgstr "数据表 %1$s 不是一个有效的 MyISAM/InnoDB 表，不进行检查。"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:123 ../inc/class-jobtype-dbcheck.php:125
+#: ../inc/class-jobtype-dbcheck.php:127
+#, php-format
+msgid "Result of table check for %1$s is: %2$s"
+msgstr "检查数据表 %1$s 结果：%2$s"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:133 ../inc/class-jobtype-dbcheck.php:135
+#: ../inc/class-jobtype-dbcheck.php:137
+#, php-format
+msgid "Result of table repair for %1$s is: %2$s"
+msgstr "修复数据表 %1$s 结果:：%2$s"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:142
+msgid "Database check done!"
+msgstr "数据库检查完毕!"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:145
+msgid "No tables to check."
+msgstr "没有数据表要检查"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:13
+msgid "DB Backup"
+msgstr "数据库"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:14
+msgid "Database backup"
+msgstr "数据库"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:15
+msgid "Creates an .sql database dump file"
+msgstr "创建一个 .sql 数据库转存文件"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:61
+msgid "Settings for database backup"
+msgstr "设置数据库备份"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:65
+msgid "Tables to backup"
+msgstr "选择数据表"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:67
+msgid "all"
+msgstr "全选"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:92
+msgid "Dumpfile name"
+msgstr "转储文件名"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:100
+msgid "Dumpfile compression"
+msgstr "转储文件压缩"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:105 ../inc/class-jobtype-dbdump.php:107
+#: ../inc/class-jobtype-wpexp.php:72 ../inc/class-jobtype-wpexp.php:74
+#: ../inc/class-jobtype-wpplugin.php:58 ../inc/class-jobtype-wpplugin.php:60
+msgid "GZip"
+msgstr "GZip"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:109 ../inc/class-jobtype-dbdump.php:111
+#: ../inc/class-jobtype-wpexp.php:76 ../inc/class-jobtype-wpexp.php:78
+#: ../inc/class-jobtype-wpplugin.php:62 ../inc/class-jobtype-wpplugin.php:64
+msgid "BZip2"
+msgstr "BZip2"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:155
+#, php-format
+msgid "%d. Try to dump database&#160;&hellip;"
+msgstr "%d. 开始转储数据表 …"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:167
+#, php-format
+msgid "Connected to database %1$s on %2$s"
+msgstr "已连接 %1$s 数据库在主机 %2$s "
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:179
+msgid "No tables to dump."
+msgstr "没有数据库要转储"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:188
+#, php-format
+msgid "Dump database table \"%s\""
+msgstr "转储数据表 \"%s\""
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:208
+#, php-format
+msgid "Added database dump \"%1$s\" with %2$s to backup file list"
+msgstr "添加转储数据表列表 \"%1$s\" ，大小  %2$s"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:211
+msgid "Database dump done!"
+msgstr "数据库转储完成！"
+
+# @ backwpup
+#: ../inc/class-jobtype-dboptimize.php:13
+msgid "DB Optimize"
+msgstr "优化表"
+
+# @ backwpup
+#: ../inc/class-jobtype-dboptimize.php:14
+msgid "Optimize database tables"
+msgstr "优化数据表"
+
+# @ backwpup
+#: ../inc/class-jobtype-dboptimize.php:36
+msgid "Settings for database optimization"
+msgstr "数据库优化设置"
+
+# @ backwpup
+#: ../inc/class-jobtype-dboptimize.php:45
+msgid "Optimize WordPress Database tables only"
+msgstr "仅优化 WordPress 本身数据表"
+
+# @ backwpup
+#: ../inc/class-jobtype-dboptimize.php:50
+#: ../inc/class-jobtype-dboptimize.php:53
+msgid "Table types to optimize"
+msgstr "优化的表类型"
+
+# @ backwpup
+#: ../inc/class-jobtype-dboptimize.php:57
+msgid "Optimize MyISAM Tables"
+msgstr "优化 MyISAM 表"
+
+# @ backwpup
+#: ../inc/class-jobtype-dboptimize.php:58
+msgid "Optimize will be done with OPTIMIZE TABLE `table`."
+msgstr "优化即将完成 OPTIMIZE TABLE `table`."
+
+# @ backwpup
+#: ../inc/class-jobtype-dboptimize.php:62
+msgid "Optimize InnoDB tables"
+msgstr "优化 InnoDB 表"
+
+# @ backwpup
+#: ../inc/class-jobtype-dboptimize.php:63
+msgid "Optimize will done with ALTER TABLE `table` ENGINE=InnoDB"
+msgstr "优化即将完成 ALTER TABLE `table` ENGINE=InnoDB "
+
+# @ backwpup
+#: ../inc/class-jobtype-dboptimize.php:90
+#, php-format
+msgid "%d. Trying to optimize database&#160;&hellip;"
+msgstr "%d. 正在优化数据库  …"
+
+# @ backwpup
+#: ../inc/class-jobtype-dboptimize.php:119
+#, php-format
+msgid "Views cannot optimize! View %1$s"
+msgstr "Views 无法优化！产看 %1$s"
+
+# @ backwpup
+#: ../inc/class-jobtype-dboptimize.php:126
+#: ../inc/class-jobtype-dboptimize.php:128
+#: ../inc/class-jobtype-dboptimize.php:130
+#, php-format
+msgid "Result of MyISAM table optimize for %1$s is: %2$s"
+msgstr "MyISAM 数据表 %1$s 优化的结果：%2$s"
+
+# @ backwpup
+#: ../inc/class-jobtype-dboptimize.php:135
+#, php-format
+msgid "InnoDB Table %1$s optimizing done."
+msgstr "InnoDB 数据表 %1$s 优化已完成"
+
+# @ backwpup
+#: ../inc/class-jobtype-dboptimize.php:138
+#, php-format
+msgid "%2$s table %1$s not optimized."
+msgstr "%2$s 数据表 %1$s 没有优化"
+
+# @ backwpup
+#: ../inc/class-jobtype-dboptimize.php:143
+msgid "Database optimization done!"
+msgstr "数据库优化已完成！"
+
+# @ backwpup
+#: ../inc/class-jobtype-dboptimize.php:146
+msgid "No tables to optimize."
+msgstr "没有数据表要优化"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:13
+msgid "Files"
+msgstr "文件"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:14
+msgid "File backup"
+msgstr "文件备份"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:60
+msgid "Folders to backup"
+msgstr "备份的文件夹"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:64
+msgid "Backup root folder"
+msgstr "备份根目录"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:75 ../inc/class-jobtype-file.php:102
+#: ../inc/class-jobtype-file.php:129 ../inc/class-jobtype-file.php:156
+#: ../inc/class-jobtype-file.php:183
+msgid "Exclude:"
+msgstr "排除："
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:91
+msgid "Backup content folder"
+msgstr "备份 wp-content 文件夹"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:118
+msgid "Backup plugins"
+msgstr "备份插件"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:145
+msgid "Backup themes"
+msgstr "备份主题"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:172
+msgid "Backup uploads folder"
+msgstr "备份上传文件夹"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:199
+msgid "Extra folders to backup"
+msgstr "排除文件夹"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:199
+msgid ""
+"Separate folder names with a line-break or a comma. Folders must be set with "
+"their absolute path!"
+msgstr ""
+"多个文件夹用英文逗号隔开，或者一行一个文件夹名称。必须设置为文件夹的绝对路"
+"径！"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:206
+msgid "Exclude from backup"
+msgstr "排除"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:210
+msgid "Thumbnails in uploads"
+msgstr "上传文件夹里的缩略图"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:214
+msgid "Don't backup thumbnails from the site's uploads folder."
+msgstr "不要备份网站上传文件夹的缩略图"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:214
+msgid ""
+"All images with -???x???. will be excluded. Use a plugin like Regenerate "
+"Thumbnails to rebuild them after a restore."
+msgstr ""
+"所有以 -???x??? 命名的图片都会被排除。恢复备份后，请使用插件 Regenerate "
+"Thumbnails 重新生成缩略图。"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:218
+msgid "Exclude files/folders from backup"
+msgstr "排除文件后缀"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:218
+msgid ""
+"Separate file / folder name parts with a line-break or a comma. For example /"
+"logs/,.log,.tmp"
+msgstr "使用英文逗号分隔多个文件/文件名，或者一行一个。例如  /logs/,.log,.tmp"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:225
+msgid "Special option"
+msgstr "特别选项"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:229
+msgid "Include special files"
+msgstr "包含特殊文件"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:233
+msgid ""
+"Backup wp-config.php, robots.txt, .htaccess, .htpasswd and favicon.ico from "
+"root."
+msgstr ""
+"备份下面特殊的系统文件 wp-config.php, robots.txt, .htaccess, .htpasswd ，"
+"favicon.ico "
+
+#: ../inc/class-jobtype-file.php:233
+msgid ""
+"If the WordPress root folder is not included in this backup job, check this "
+"option to additionally include wp-config.php, robots.txt, .htaccess, ."
+"htpasswd and favicon.ico into the backup. Your wp-config.php will be "
+"included even if you placed it in the parent directory of your root folder."
+msgstr ""
+"如果 WordPress 根目录不包含在备份计划中，勾选这个选项以便添加 wp-config.php, "
+"robots.txt, .htaccess, .htpasswd 和 favicon.ico 到备份计划。你的 wp-config."
+"php 文件都会被添加，即使你把它放在根目录的父目录。"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:310
+#, php-format
+msgid "%d. Trying to make a list of folders to back up&#160;&hellip;"
+msgstr "%d. 正在创建需要备份的文件列表 …"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:392 ../inc/class-jobtype-file.php:399
+#: ../inc/class-jobtype-file.php:406 ../inc/class-jobtype-file.php:412
+#: ../inc/class-jobtype-file.php:418 ../inc/class-jobtype-file.php:424
+#, php-format
+msgid "Added \"%s\" to backup file list"
+msgstr "已添加 \"%s\" 到备份文件列表"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:429
+msgid "No folder to back up."
+msgstr "没有文件夹要备份"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:431
+#, php-format
+msgid "%1$d folders to back up."
+msgstr "%1$d 个文件需要备份"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:468
+#, php-format
+msgid "Folder \"%s\" is not readable!"
+msgstr "文件夹 \"%s\" 不可读！"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:13
+msgid "XML export"
+msgstr "XML 输出"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:14 ../inc/class-page-about.php:188
+msgid "WordPress XML export"
+msgstr "WordPress XML 输出"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:46
+msgid "Items to export"
+msgstr "要输出的项目"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:48
+msgid "All content"
+msgstr "所有内容"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:49
+msgid "Posts"
+msgstr "文章"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:50
+msgid "Pages"
+msgstr "页面"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:59
+msgid "XML Export file name"
+msgstr "XML 输出文件名"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:67 ../inc/class-jobtype-wpplugin.php:53
+msgid "File compression"
+msgstr "文件压缩"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:105
+#, php-format
+msgid "%d. Trying to create a WordPress export to XML file&#160;&hellip;"
+msgstr "%d. 正在尝试创建 WordPress 输出到 XML 文件…"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:126
+#, php-format
+msgid "Added XML export \"%1$s\" with %2$s to backup file list."
+msgstr "已添加 XML 输出 \"%1$s\" 和 %2$s 到备份文件列表"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpplugin.php:13
+msgid "Plugins"
+msgstr "插件"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpplugin.php:14
+msgid "Installed plugins list"
+msgstr "已安装的插件"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpplugin.php:45
+msgid "Plugin list file name"
+msgstr "插件列表文件名"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpplugin.php:91
+#, php-format
+msgid "%d. Trying to generate a file with installed plugin names&#160;&hellip;"
+msgstr "%d. 正在尝试生成一个已安装插件的名称的文件…"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpplugin.php:118
+msgid "All plugin information:"
+msgstr "所有插件信息："
+
+# @ backwpup
+#: ../inc/class-jobtype-wpplugin.php:120
+#, php-format
+msgid "from %s"
+msgstr "从 %s"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpplugin.php:122
+msgid "Active plugins:"
+msgstr "已启用的插件："
+
+# @ backwpup
+#: ../inc/class-jobtype-wpplugin.php:128
+msgid "Inactive plugins:"
+msgstr "未启用的插件："
+
+# @ backwpup
+#: ../inc/class-jobtype-wpplugin.php:140
+#, php-format
+msgid "Added plugin list file \"%1$s\" with %2$s to backup file list."
+msgstr "已添加插件列表文件 \"%1$s\" 和 %2$s 到备份文件列表"
+
+# @ backwpup
+#: ../inc/class-mysqldump.php:56
+msgid "No MySQLi extension found. Please install it."
+msgstr "没有发现 MySQLi 扩展，请安装它。"
+
+# @ backwpup
+#: ../inc/class-mysqldump.php:90
+#, php-format
+msgid "Cannot connect to MySQL database %1$d: %2$s"
+msgstr "无法连接到 MySQL 数据库 %1$d：%2$s"
+
+# @ backwpup
+#: ../inc/class-mysqldump.php:96
+#, php-format
+msgctxt "Database Charset"
+msgid "Cannot set DB charset to %s"
+msgstr "无法设置数据库编码为 %s"
+
+# @ backwpup
+#: ../inc/class-mysqldump.php:126
+msgid "Cannot open dump file"
+msgstr "无法打开转储文件"
+
+# @ backwpup
+#: ../inc/class-mysqldump.php:132 ../inc/class-mysqldump.php:143
+#: ../inc/class-mysqldump.php:222 ../inc/class-mysqldump.php:235
+#: ../inc/class-mysqldump.php:249 ../inc/class-mysqldump.php:262
+#: ../inc/class-mysqldump.php:302 ../inc/class-mysqldump.php:324
+#: ../inc/class-mysqldump.php:339
+#, php-format
+msgid "Database error %1$s for query %2$s"
+msgstr "数据库错误 %1$s 查询 %2$s"
+
+# @ backwpup
+#: ../inc/class-mysqldump.php:401
+msgid "Error while writing file!"
+msgstr "写入文件时出错！"
+
+# @ backwpup
+#: ../inc/class-option.php:115
+msgid "New Job"
+msgstr "新计划"
+
+# @ backwpup
+#: ../inc/class-page-about.php:51
+#, php-format
+msgid "%s Welcome"
+msgstr "欢迎使用 %s"
+
+# @ backwpup
+#: ../inc/class-page-about.php:57
+msgid "Heads up! You have updated from version 2.x"
+msgstr "祝贺你！已经从 2.x 版本升级啦！"
+
+# @ backwpup
+#: ../inc/class-page-about.php:58
+#, php-format
+msgid ""
+"Please <a href=\"%s\">check your settings</a> after updating from version 2."
+"x:"
+msgstr "从 2.x 升级以后，请 <a href=\"%s\">检查你的设置</a>"
+
+# @ backwpup
+#: ../inc/class-page-about.php:59
+msgid "Dropbox authentication must be re-entered"
+msgstr "Dropbox 必须重新认证"
+
+# @ backwpup
+#: ../inc/class-page-about.php:60
+msgid "SugarSync authentication must be re-entered"
+msgstr "SugarSync 必须重新认证"
+
+# @ backwpup
+#: ../inc/class-page-about.php:61
+msgid "S3 Settings"
+msgstr "S3 设置"
+
+# @ backwpup
+#: ../inc/class-page-about.php:62
+msgid "Google Storage is now a part of S3 service settings"
+msgstr "Google Storage 现在是 S3 服务器设置的一部分"
+
+# @ backwpup
+#: ../inc/class-page-about.php:63
+msgid "All your passwords"
+msgstr "所有的密码"
+
+# @ backwpup
+#: ../inc/class-page-about.php:72
+msgid "Welcome to BackWPup Pro"
+msgstr "欢迎升级到 BackWPup 专业版"
+
+# @ backwpup
+#: ../inc/class-page-about.php:73 ../inc/class-page-backwpup.php:86
+msgid "Here you can schedule backup plans with a wizard."
+msgstr "这里可以引导你创建备份计划"
+
+# @ backwpup
+#: ../inc/class-page-about.php:74 ../inc/class-page-about.php:84
+#: ../inc/class-page-backwpup.php:87 ../inc/class-page-backwpup.php:93
+msgid ""
+"The backup files can be used to save your whole installation including "
+"<code>/wp-content/</code> and push them to an external Backup Service, if "
+"you don’t want to save the backups on the same server. With a single backup "
+"file you are able to restore an installation."
+msgstr ""
+"backWPup可以帮你备份整个服务器文件，包括<code>/wp-content/</code> 下的文件，"
+"既可以保存到本地服务器，又可以备份到线上服务器，轻松又便捷。"
+
+# @ backwpup
+#: ../inc/class-page-about.php:75
+#, php-format
+msgid ""
+"First <a href=\"%1$s\">set up a job</a>, and plan what you want to save. You "
+"can <a href=\"%2$s\">use the wizards</a> or the expert mode."
+msgstr ""
+"首先 <a href=\"%1$s\">添加一个备份计划</a>，设置你要备份的文件。你可以使用 "
+"<a href=\"%2$s\">向导模式</a> 或者专家模式。"
+
+# @ backwpup
+#: ../inc/class-page-about.php:82
+msgid "Welcome to BackWPup"
+msgstr "欢迎使用 BackWPup"
+
+# @ backwpup
+#: ../inc/class-page-about.php:85
+msgid "First set up a job, and plan what you want to save."
+msgstr "首先添加一个备份计划，然后计划你要保存什么。"
+
+# @ backwpup
+#: ../inc/class-page-about.php:102
+msgid "Please activate your license"
+msgstr "请激活您的许可证"
+
+# @ backwpup
+#: ../inc/class-page-about.php:103
+msgid ""
+"Please go to your plugin page and active the license to have the autoupdates "
+"enabled."
+msgstr "请到你的插件页面激活许可证来启用自动更新。"
+
+# @ backwpup
+#: ../inc/class-page-about.php:112
+msgid "Save your database"
+msgstr "保存你的数据库"
+
+# @ backwpup
+#: ../inc/class-page-about.php:115
+msgid "Save your database regularly"
+msgstr "定期保存数据库"
+
+# @ backwpup
+#: ../inc/class-page-about.php:116
+#, php-format
+msgid ""
+"With BackWPup you can schedule the database backup to run automatically. "
+"With a single backup file you can restore your database. You should <a href="
+"\"%s\">set up a backup job</a>, so you will never forget it. There is also "
+"an option to repair and optimize the database after each backup."
+msgstr ""
+"通过 BackWPup，你可以定期自动备份数据库，还可以通过一个简单的备份文件来恢复数"
+"据库。你应该 <a href=\"%s\">添加一个备份计划</a>，这样你永远不会忘记它。当"
+"然，你还可以在每次备份数据库时修复和优化它。"
+
+# @ backwpup
+#: ../inc/class-page-about.php:121 ../inc/class-page-about.php:125
+msgid "WordPress XML Export"
+msgstr "WordPress XML 输出"
+
+# @ backwpup
+#: ../inc/class-page-about.php:122
+msgid ""
+"You can choose the built-in WordPress export format in addition or exclusive "
+"to save your data. This works in automated backups too of course. The "
+"advantage is: you can import these files into a blog with the regular "
+"WordPress importer."
+msgstr ""
+"你可以选择内置的 WordPress 导出格式来保存数据。这样做的好处：你可以通过正规"
+"的 WordPress 导入接口将这些文件导入网站。 "
+
+# @ backwpup
+#: ../inc/class-page-about.php:130
+msgid "Save all data from the webserver"
+msgstr "从网络服务器中保存所有的数据"
+
+# @ backwpup
+#: ../inc/class-page-about.php:133
+msgid "Save all files"
+msgstr "保存所有文件"
+
+# @ backwpup
+#: ../inc/class-page-about.php:134
+#, php-format
+msgid ""
+"You can back up all your attachments, also all system files, plugins and "
+"themes in a single file. You can <a href=\"%s\">create a job</a> to update a "
+"backup copy of your file system only when files are changed."
+msgstr ""
+"你可以备份所有附件、系统文件、插件和主题在一个单独的文件里。你可以 <a href="
+"\"%s\">创建一个备份计划</a> 来更新你的文件系统的备份副本，只有当文件被更改以"
+"后。"
+
+# @ backwpup
+#: ../inc/class-page-about.php:139 ../inc/class-page-about.php:143
+msgid "Security!"
+msgstr "安全！"
+
+# @ backwpup
+#: ../inc/class-page-about.php:140
+msgid ""
+"By default everything is encrypted: connections to external services, local "
+"files and access to directories."
+msgstr "默认情况下，一切都是加密进行的：连接到外部服务，访问本地文件和目录。"
+
+# @ backwpup
+#: ../inc/class-page-about.php:148 ../inc/class-page-about.php:151
+msgid "Cloud Support"
+msgstr "云支持"
+
+# @ backwpup
+#: ../inc/class-page-about.php:152
+msgid ""
+"BackWPup supports multiple cloud services in parallel. This ensures the "
+"backups are redundant."
+msgstr "BackWPup 支持多个云服务并行。这可确保备份是多余的。"
+
+# @ backwpup
+#: ../inc/class-page-about.php:160
+msgid "Features / differences between Free and Pro"
+msgstr "免费版和专业版的差异"
+
+# @ backwpup
+#: ../inc/class-page-about.php:163
+msgid "Features"
+msgstr "特点"
+
+# @ backwpup
+#: ../inc/class-page-about.php:164
+msgid "FREE"
+msgstr "免费版"
+
+# @ backwpup
+#: ../inc/class-page-about.php:165
+msgid "PRO"
+msgstr "专业版"
+
+# @ backwpup
+#: ../inc/class-page-about.php:168
+msgid "Complete database backup"
+msgstr "数据库备份"
+
+# @ backwpup
+#: ../inc/class-page-about.php:173
+msgid "Complete file backup"
+msgstr "文件备份"
+
+# @ backwpup
+#: ../inc/class-page-about.php:178
+msgid "Database check"
+msgstr "数据库检查"
+
+# @ backwpup
+#: ../inc/class-page-about.php:183
+msgid "Data compression"
+msgstr "数据压缩"
+
+# @ backwpup
+#: ../inc/class-page-about.php:193
+msgid "List of installed plugins"
+msgstr "已安装的插件列表"
+
+# @ backwpup
+#: ../inc/class-page-about.php:198
+msgid "Backup archives management"
+msgstr "备份存档管理"
+
+# @ backwpup
+#: ../inc/class-page-about.php:203
+msgid "Log file management"
+msgstr "日志文件管理"
+
+# @ backwpup
+#: ../inc/class-page-about.php:208
+msgid "Start jobs per WP-Cron, URL, system, backend or WP-CLI"
+msgstr "根据 WP-Cron, URL, 系统, 后端 或 WP-CLI 启动计划"
+
+# @ backwpup
+#: ../inc/class-page-about.php:213
+msgid "Log report via email"
+msgstr "通过邮件发送日志通告"
+
+# @ backwpup
+#: ../inc/class-page-about.php:218
+msgid "Backup to Microsoft Azure"
+msgstr "备份到 Microsoft Azure"
+
+# @ backwpup
+#: ../inc/class-page-about.php:223
+msgid "Backup as email"
+msgstr "备份到 电子邮件"
+
+# @ backwpup
+#: ../inc/class-page-about.php:228
+msgid ""
+"Backup to S3 services <small>(Amazon, Google Storage, Hosteurope and more)</"
+"small>"
+msgstr ""
+"备份到 S3 服务 <small>(Amazon, Google Storage, Hosteurope and more)</small>"
+
+# @ backwpup
+#: ../inc/class-page-about.php:243
+msgid "Backup to FTP server"
+msgstr "备份到 FTP 服务器"
+
+# @ backwpup
+#: ../inc/class-page-about.php:248
+msgid "Backup to your web space"
+msgstr "备份到你的网站空间"
+
+# @ backwpup
+#: ../inc/class-page-about.php:258
+msgid "Custom API keys for DropBox and SugarSync"
+msgstr "自定义 DropBox 和 SugarSync 的 API keys"
+
+# @ backwpup
+#: ../inc/class-page-about.php:263
+msgid "XML database backup as PHPMyAdmin schema"
+msgstr "XML 数据库备份为 PHPMyAdmin 架构"
+
+# @ backwpup
+#: ../inc/class-page-about.php:268
+msgid "Database backup as mysqldump per command line"
+msgstr "使用命令行进行 MySQL 数据库转储备份"
+
+# @ backwpup
+#: ../inc/class-page-about.php:273
+msgid "Database backup for additional MySQL databases"
+msgstr "备份其他 MySQL 数据库"
+
+# @ backwpup
+#: ../inc/class-page-about.php:278
+msgid "Import and export job settings as XML"
+msgstr "导入和导出计划设置为 XML 文件"
+
+# @ backwpup
+#: ../inc/class-page-about.php:283
+msgid "Wizard for system tests"
+msgstr "系统测试向导"
+
+# @ backwpup
+#: ../inc/class-page-about.php:288
+msgid "Wizard for scheduled backup jobs"
+msgstr "定时备份计划向导"
+
+# @ backwpup
+#: ../inc/class-page-about.php:293
+msgid "Wizard to import settings and backup jobs"
+msgstr "导入设置和备份计划向导"
+
+# @ backwpup
+#: ../inc/class-page-about.php:298
+msgid "Differential backup of changed directories to Dropbox"
+msgstr "差异备份更改目录到 Dropbox"
+
+# @ backwpup
+#: ../inc/class-page-about.php:303
+msgid "Differential backup of changed directories to Rackspace Cloud Files"
+msgstr "差异备份更改目录到 Rackspace Cloud Files"
+
+# @ backwpup
+#: ../inc/class-page-about.php:308
+msgid "Differential backup of changed directories to S3"
+msgstr "差异备份更改目录到 S3"
+
+# @ backwpup
+#: ../inc/class-page-about.php:313
+msgid "Differential backup of changed directories to MS Azure"
+msgstr "差异备份更改目录到 MS Azure"
+
+# @ backwpup
+#: ../inc/class-page-about.php:318
+msgid "<strong>Premium support</strong>"
+msgstr "<strong>付费支持</strong>"
+
+# @ backwpup
+#: ../inc/class-page-about.php:323
+msgid "<strong>Dynamically loaded documentation</strong>"
+msgstr "<strong>动态加载文件</strong>"
+
+# @ backwpup
+#: ../inc/class-page-about.php:328
+msgid "<strong>Automatic update from MarketPress</strong>"
+msgstr "<strong>自动从 MarketPress 更新</strong>"
+
+# @ backwpup
+#: ../inc/class-page-about.php:335
+msgid "http://marketpress.com/product/backwpup-pro/"
+msgstr "http://marketpress.com/product/backwpup-pro/"
+
+# @ backwpup
+#: ../inc/class-page-about.php:335
+msgid "GET PRO"
+msgstr "获取专业版"
+
+# @ backwpup
+#: ../inc/class-page-about.php:342
+msgid "Backup now!"
+msgstr "马上备份！"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:147
+msgid "No files could be found. (List will be generated during next backup.)"
+msgstr "没有备份文件（文件列表将在下次备份时创建）"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:159 ../inc/class-page-backups.php:288
+#: ../inc/class-page-jobs.php:56 ../inc/class-page-jobs.php:130
+#: ../inc/class-page-logs.php:103 ../inc/class-page-logs.php:185
+msgid "Delete"
+msgstr "删除"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:189
+msgid "Change destination"
+msgstr "更改目的地"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:227
+msgid "File"
+msgstr "文件"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:229 ../inc/class-page-logs.php:118
+msgid "Size"
+msgstr "大小"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:230 ../inc/class-page-backwpup.php:176
+#: ../inc/class-page-backwpup.php:237
+msgid "Time"
+msgstr "时间"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:288
+msgid ""
+"You are about to delete this backup archive. \n"
+"  'Cancel' to stop, 'OK' to delete."
+msgstr ""
+"你确认要删除这个存档吗？ \n"
+"  'Cancel' 就取消， 'OK' 就删除。"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:290 ../inc/class-page-jobs.php:219
+#: ../inc/class-page-logs.php:186
+msgid "Download"
+msgstr "下载"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:305
+msgid "?"
+msgstr "?"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:312 ../inc/class-page-jobs.php:210
+#: ../inc/class-page-logs.php:181
+#, php-format
+msgid "%1$s at %2$s"
+msgstr "%1$s %2$s"
+
+#: ../inc/class-page-backups.php:334 ../inc/class-page-backups.php:346
+#: ../inc/class-page-editjob.php:41 ../inc/class-page-jobs.php:312
+msgid "Sorry, you don't have permissions to do that."
+msgstr "抱歉，你没有权限进行操作。"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:412
+#, php-format
+msgid "%s Manage Backup Archives"
+msgstr "%s 管理备份文件"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:80
+#, php-format
+msgid "%s Dashboard"
+msgstr "%s 仪表盘"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:88
+msgid ""
+"First set up a job, and plan what you want to save. You can use the wizards "
+"or the normal mode. Please note: the plugin author gives no warranty for "
+"your data."
+msgstr ""
+"首先添加一个备份计划，然后计划你要保存什么。你可以使用向导模式或正常模式。请"
+"注意：插件作者不为您的数据提供任何保证。"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:92
+msgid ""
+"Use the short links in the <b>First steps</b> box to schedule backup plans."
+msgstr "请按照右侧<b>第一步</b>的步骤进行设置"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:94
+msgid ""
+"First set up a job, and plan what you want to save. Please note: the plugin "
+"author gives no warranty for your data."
+msgstr ""
+"首先添加一个备份计划，然后计划你要保存什么。提示：该插件作者不为您的数据提供"
+"任何保证。<br /><br />"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:122
+msgid "Start wizard"
+msgstr "启动向导"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:131
+msgid "First Steps"
+msgstr "第一步"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:135
+msgid "Test the installation"
+msgstr "测试安装"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:136 ../inc/class-page-backwpup.php:139
+msgid "Create a Job"
+msgstr "创建备份计划"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:138
+msgid "Check the installation"
+msgstr "检查安装"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:141
+msgid "Run the created job"
+msgstr "执行已创建的计划"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:142
+msgid "Check the job log"
+msgstr "查看计划日志"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:150
+msgid "One click backup"
+msgstr "一键备份"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:152
+msgid ""
+"Generate a database backup of WordPress tables and download it right away!"
+msgstr "马上生成 WordPress 数据库备份和下载！"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:152
+msgid "Download database backup"
+msgstr "下载数据库备份"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:175
+msgid "Last logs"
+msgstr "最近日志"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:176 ../inc/class-page-backwpup.php:238
+#: ../inc/class-page-logs.php:114
+msgid "Job"
+msgstr "计划"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:176
+msgid "Result"
+msgstr "结果"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:206
+#, php-format
+msgid "%d ERROR"
+msgid_plural "%d ERRORS"
+msgstr[0] "%d 个错误"
+msgstr[1] "%d 个错误"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:208
+#, php-format
+msgid "%d WARNING"
+msgid_plural "%d WARNINGS"
+msgstr[0] "%d 个警告"
+msgstr[1] "%d 个警告"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:210
+msgid "OK"
+msgstr "成功"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:235
+msgid "Next scheduled jobs"
+msgstr "下一个预定计划"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:261
+#, php-format
+msgid "working since %d seconds"
+msgstr "运行自从 %d 秒"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:263 ../inc/class-page-jobs.php:493
+msgid "Abort"
+msgstr "终止"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:277 ../inc/class-page-jobs.php:197
+msgid "Not scheduled!"
+msgstr "预定！"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:279
+msgid "Edit Job"
+msgstr "编辑计划"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:28
+msgid "Overview"
+msgstr "预览"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:176
+#, php-format
+msgid "Changes for job <i>%s</i> saved."
+msgstr "计划 <i>%s</i> 更改已经保存"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:309
+msgid ""
+"Working as <a href=\"http://wikipedia.org/wiki/Cron\">Cron</a> schedule:"
+msgstr ""
+"根据 <a href=\"http://wikipedia.org/wiki/Cron\"> Cron </a> 时间表执行："
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:318
+#, php-format
+msgid "ATTENTION: Job runs every %d minutes!"
+msgstr "警告：计划将会 %d 分钟执行一次！"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:324
+#, php-format
+msgid "ATTENTION: Job runs every %d hours!"
+msgstr "警告：计划将会 %d 小时执行一次！"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:328
+msgid "ATTENTION: Can't calculate cron!"
+msgstr "注意：无法计算时间！"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:331
+msgid "Next runtime:"
+msgstr "预定时间："
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:369 ../inc/class-page-settings.php:103
+msgid "General"
+msgstr "一般"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:369
+msgid "Schedule"
+msgstr "时间表"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:384
+#, php-format
+msgid "To: %s"
+msgstr "备份到：%s"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:390
+#, php-format
+msgid "%s Job:"
+msgstr "%s 计划："
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:417 ../inc/class-page-jobs.php:69
+msgid "Job Name"
+msgstr "计划名称"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:421
+msgid "Please name this job."
+msgstr "计划名称"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:429
+msgid "Job Tasks"
+msgstr "计划任务"
+
+#: ../inc/class-page-editjob.php:433
+msgid "This job is a&#160;&hellip;"
+msgstr "计划任务是"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:436
+msgid "Job tasks"
+msgstr "计划任务"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:452
+msgid "Backup File Creation"
+msgstr "创建备份文件"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:457 ../inc/class-page-editjob.php:460
+msgid "Backup type"
+msgstr "备份类型"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:465
+msgid "Synchronize file by file to destination"
+msgstr "同步文件到目的地"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:469
+msgid "Create a backup archive"
+msgstr "创建备份存档"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:475
+msgid "Archive name"
+msgstr "存档名称"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:482
+#, php-format
+msgid "%d = Two digit day of the month, with leading zeros"
+msgstr "%d = 天（两位数，带前缀0，例如 03）"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:483
+msgid "%j = Day of the month, without leading zeros"
+msgstr "%j = 天（不带前缀0，例如 3）"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:484
+msgid "%m = Day of the month, with leading zeros"
+msgstr "%m = 天（两位数，带前缀0，如 03）"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:485
+msgid "%n = Representation of the month (without leading zeros)"
+msgstr "%n = 月份（不带前缀0）"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:486
+msgid "%Y = Four digit representation for the year"
+msgstr "%Y = 年份（四位数 如 2013）"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:487
+msgid "%y = Two digit representation of the year"
+msgstr "%Y = 年份（两位数 如 13）"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:488
+msgid "%a = Lowercase ante meridiem (am) and post meridiem (pm)"
+msgstr "%a = 小写字母 上午（am）和 下午（pm）"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:489
+msgid "%A = Uppercase ante meridiem (AM) and post meridiem (PM)"
+msgstr "%A = 大写字母 上午（AM）和 下午（PM）"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:490
+msgid "%B = Swatch Internet Time"
+msgstr "%B = 同步网络时间"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:491
+msgid "%g = Hour in 12-hour format, without leading zeros"
+msgstr "%g = 时（12小时制，不带前缀0）"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:492
+msgid "%G = Hour in 24-hour format, without leading zeros"
+msgstr "%G = 时（24小时制，不带前缀0）"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:493
+msgid "%h = Hour in 12-hour format, with leading zeros"
+msgstr "%h = 时（12小时制，带前缀0）"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:494
+msgid "%H = Hour in 24-hour format, with leading zeros"
+msgstr "%H = 时（24小时制，带前缀0）"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:495
+msgid "%i = Two digit representation of the minute"
+msgstr "%i = 分（两位数，带前缀0）"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:496
+#, php-format
+msgid "%s = Two digit representation of the second"
+msgstr "%s = 秒（两位数，带前缀0）"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:497
+#, php-format
+msgid "%u = Two digit representation of the microsecond"
+msgstr "%u = 微秒（两位数，带前缀0）"
+
+#: ../inc/class-page-editjob.php:498
+msgid "%U = UNIX timestamp (seconds since January 1 1970 00:00:00 GMT)"
+msgstr "%U = UNIX 时间戳 (seconds since January 1 1970 00:00:00 GMT)"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:502
+msgid "Replacement patterns:"
+msgstr "替换模式："
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:515 ../inc/class-page-editjob.php:518
+msgid "Archive Format"
+msgstr "存档格式"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:521 ../inc/class-page-editjob.php:523
+msgid "Zip"
+msgstr "Zip"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:521
+msgid ""
+"PHP Zip functions will be used if available (needs less memory). Otherwise "
+"the PCLZip class will be used."
+msgstr "使用 PHP ZIP 函数，如果可用（需要更少的内存）；否则使用 PCLZip 类。"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:523 ../inc/class-page-editjob.php:528
+#: ../inc/class-page-editjob.php:532
+msgid "Disabled due to missing PHP function."
+msgstr "已禁用，由于缺少所需的 PHP 函数"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:524
+msgid "Tar"
+msgstr "Tar"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:524
+msgid "A tarballed, not compressed archive (fast and less memory)"
+msgstr "一个压缩包，未压缩存档（快速和更少内存）"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:526 ../inc/class-page-editjob.php:528
+msgid "Tar GZip"
+msgstr "Tar GZip"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:526
+msgid "A tarballed, GZipped archive (fast and less memory)"
+msgstr "一个压缩包，GZip压缩存档（快速和更少内存）"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:530 ../inc/class-page-editjob.php:532
+msgid "Tar BZip2"
+msgstr "Tar BZip2"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:530
+msgid "A tarballed, BZipped archive (fast and less memory)"
+msgstr "一个压缩包，BZip压缩存档（快速和更少内存）"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:538
+msgid "Job Destination"
+msgstr "目的地"
+
+#: ../inc/class-page-editjob.php:542 ../inc/class-page-editjob.php:545
+msgid "Where should your backup file be stored?"
+msgstr "应该在哪里存储你的备份文件？"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:561
+msgid "Log Files"
+msgstr "日志文件"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:565
+msgid "Send log to e-mail address"
+msgstr "发送日志到邮箱"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:569
+msgid "Leave empty to not have log sent."
+msgstr "留空不发送日志"
+
+#: ../inc/class-page-editjob.php:573
+msgid "E-Mail FROM field"
+msgstr "邮件“来自”字段"
+
+#: ../inc/class-page-editjob.php:577
+msgid ""
+"E-Mail \"From\" field (Name &lt;&#160;you@your-email-address.tld&#160;&gt;)"
+msgstr "邮件“来自”字段（姓名 &lt;&#160;you@your-email-address.tld&#160;&gt;）"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:581
+msgid "Errors only"
+msgstr "仅出错时"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:586
+msgid "Send e-mail with log only when errors occur during job execution."
+msgstr "只有在计划执行发生错误时，才发送日志到邮件"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:597
+msgid "Job Schedule"
+msgstr "计划时间表"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:601 ../inc/class-page-editjob.php:604
+msgid "Start job"
+msgstr "启动计划"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:608
+msgid "manually only"
+msgstr "手动执行"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:612
+msgid "with WordPress cron"
+msgstr "通过 WordPress cron 定时执行"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:619
+msgid "with a link"
+msgstr "点击链接执行"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:621
+msgid ""
+"Copy the link for an external start. This option has to be activated to make "
+"the link work."
+msgstr "复制链接来外部启动。此选项已被激活，以使链接工作。"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:628
+msgid "Start job with CLI"
+msgstr "使用 CLI 启动计划"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:631
+#, php-format
+msgid ""
+"Use <a href=\"http://wp-cli.org/\">WP-CLI</a> to run jobs from commandline "
+"or <a href=\"%s\">get the start script</a>."
+msgstr ""
+"使用<a href=\"http://wp-cli.org/\">WP-CLI</a> 命令来执行计划，或者 <a href="
+"\"%s\"> 获取启动脚本 </a>。"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:632
+msgid ""
+"Generate a server script file to let the job start with the server’s cron on "
+"command line interface. Alternatively use WP-CLI commands."
+msgstr ""
+"创建一个服务器脚本文件，以便让备份计划根据服务器的定时命令执行。此外，也可以"
+"使用 WP-CLI 命令。"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:637
+msgid "Schedule execution time"
+msgstr "计划执行时间"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:641 ../inc/class-page-editjob.php:644
+msgid "Scheduler type"
+msgstr "计划类型"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:649
+msgid "basic"
+msgstr "基本"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:653
+msgid "advanced"
+msgstr "高级"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:682 ../inc/class-page-editjob.php:750
+msgid "Scheduler"
+msgstr "设定时间"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:687 ../inc/class-page-jobs.php:70
+#: ../inc/class-page-logs.php:115
+msgid "Type"
+msgstr "类型"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:692
+msgid "Hour"
+msgstr "小时"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:695
+msgid "Minute"
+msgstr "分钟"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:699
+msgid "monthly"
+msgstr "每个月一次"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:701
+msgid "on"
+msgstr " "
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:711
+msgid "weekly"
+msgstr "每周一次"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:713 ../inc/class-page-editjob.php:820
+msgid "Sunday"
+msgstr "星期天"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:714 ../inc/class-page-editjob.php:821
+msgid "Monday"
+msgstr "星期一"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:715 ../inc/class-page-editjob.php:822
+msgid "Tuesday"
+msgstr "星期二"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:716 ../inc/class-page-editjob.php:823
+msgid "Wednesday"
+msgstr "星期三"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:717 ../inc/class-page-editjob.php:824
+msgid "Thursday"
+msgstr "星期四"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:718 ../inc/class-page-editjob.php:825
+msgid "Friday"
+msgstr "星期五"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:719 ../inc/class-page-editjob.php:826
+msgid "Saturday"
+msgstr "星期六"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:729
+msgid "daily"
+msgstr "每天一次"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:739
+msgid "hourly"
+msgstr "每小时一次"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:753
+msgid "Minutes:"
+msgstr "分："
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:755 ../inc/class-page-editjob.php:768
+#: ../inc/class-page-editjob.php:780 ../inc/class-page-editjob.php:794
+#: ../inc/class-page-editjob.php:816
+msgid "Any (*)"
+msgstr "全部 (*)"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:765
+msgid "Hours:"
+msgstr "小时："
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:778
+msgid "Day of Month:"
+msgstr "天"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:792
+msgid "Month:"
+msgstr "月："
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:798
+msgid "January"
+msgstr "1月"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:799
+msgid "February"
+msgstr "2月"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:800
+msgid "March"
+msgstr "3月"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:801
+msgid "April"
+msgstr "4月"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:802
+msgid "May"
+msgstr "5月"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:803
+msgid "June"
+msgstr "6月"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:804
+msgid "July"
+msgstr "7月"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:805
+msgid "August"
+msgstr "8月"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:806
+msgid "September"
+msgstr "9月"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:807
+msgid "October"
+msgstr "10月"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:808
+msgid "November"
+msgstr "11月"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:809
+msgid "December"
+msgstr "12月"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:814
+msgid "Day of Week:"
+msgstr "周："
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:850
+msgid "Save changes"
+msgstr "保存更改"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:44
+msgid "No Jobs."
+msgstr "没有计划"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:68
+msgid "ID"
+msgstr "ID"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:71
+msgid "Destinations"
+msgstr "目的地"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:72
+msgid "Next Run"
+msgstr "下次执行"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:73
+msgid "Last Run"
+msgstr "最近执行"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:128
+msgid "Edit"
+msgstr "编辑"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:129
+msgid "Copy"
+msgstr "复制"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:181
+msgid "Not needed or set"
+msgstr "不需要或设置"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:189
+#, php-format
+msgid "Running for: %s seconds"
+msgstr "执行：%s 秒"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:195
+#, php-format
+msgid "Cron: %s"
+msgstr "定时： %s"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:195
+#, php-format
+msgid "%1$s at %2$s by WP-Cron"
+msgstr "%1$s  %2$s 使用 WP-Cron 定时备份"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:200
+msgid "Inactive"
+msgstr "暂无"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:212
+#, php-format
+msgid "Runtime: %d seconds"
+msgstr "用时：%d 秒"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:215
+msgid "not yet"
+msgstr "无"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:219
+msgid "Download last backup"
+msgstr "下载最近的备份"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:224
+msgid "Log"
+msgstr "日志"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:271
+msgid "Copy of"
+msgstr "副本"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:319
+#, php-format
+msgid ""
+"Temp folder %s not read or writable. Please set proper write permissions."
+msgstr "临时文件夹 %s 不可写，请赋予正确的写入权限。"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:322
+#, php-format
+msgid ""
+"Temp folder %s does not exist and cannot be created. Please create it and "
+"set proper write permissions."
+msgstr "临时文件夹 %s 不存在且无法创建，请创建它并赋予正确的写入权限。"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:328
+#, php-format
+msgid ""
+"Logs folder %s is not read or writable. Please set proper write permissions."
+msgstr "日志文件夹 %s 不可写，请赋予正确的写入权限。"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:331
+#, php-format
+msgid ""
+"Logs folder %s does not exist and cannot be created. Please create it and "
+"set proper write permissions."
+msgstr "日志文件夹 %s 不存在且无法创建，请创建它并赋予正确的写入权限。"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:339
+#, php-format
+msgid ""
+"Backups folder %s is not read or writable. Please set proper write "
+"permissions."
+msgstr "备份文件夹 %s 不可写，请赋予正确的写入权限。"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:342
+#, php-format
+msgid ""
+"Backups folder %s does not exist and cannot be created. Please create it and "
+"set proper write permissions."
+msgstr "备份文件夹 %s 不存在且无法创建，请创建它并赋予正确的写入权限。"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:356 ../inc/class-page-settings.php:379
+#, php-format
+msgid "The HTTP response test get a error \"%s\""
+msgstr "HTTP响应测试得到一个错误 \"%s\""
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:358 ../inc/class-page-settings.php:381
+#, php-format
+msgid "The HTTP response test get a false http status (%s)"
+msgstr "HTTP响应测试得到一个错误的HTTP状态(%s)"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:365
+#, php-format
+msgid "Job \"%s\" started."
+msgstr "计划 \"%s\" 已开始"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:402 ../inc/class-wp-cli.php:52
+msgid "Aborted by user!"
+msgstr "由用户中止！"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:431 ../inc/class-wp-cli.php:82
+msgid "Job will be terminated."
+msgstr "计划将被终止"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:471
+#, php-format
+msgid "%s Jobs"
+msgstr "%s 备份计划"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:489
+#, php-format
+msgid "Job currently running: %s"
+msgstr "当前正在执行的计划： %s"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:490
+msgid "Warnings:"
+msgstr "警告:"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:491
+msgid "Errors:"
+msgstr "错误:"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:492
+msgid "Working job log"
+msgstr "计划执行日志"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:492
+msgid "Display working log"
+msgstr "显示执行日志"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:494
+msgid "Close working screen"
+msgstr "关闭执行窗口"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:494
+msgid "close"
+msgstr "关闭"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:635
+msgid "Job end"
+msgstr "计划完成"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:91
+msgid "No Logs."
+msgstr "没有日志"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:116
+msgid "Backup/Log Date/Time"
+msgstr "备份/日志/时间"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:117
+msgid "Status"
+msgstr "状态"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:119
+msgid "Runtime"
+msgstr "用时"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:183
+msgid "View"
+msgstr "查看"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:193
+#, php-format
+msgid "1 ERROR"
+msgid_plural "%d ERRORS"
+msgstr[0] "1 个错误"
+msgstr[1] "%d 个错误"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:195
+#, php-format
+msgid "1 WARNING"
+msgid_plural "%d WARNINGS"
+msgstr[0] "1 个警告"
+msgstr[1] "%d 个警告"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:197
+msgid "O.K."
+msgstr "成功"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:206
+msgid "Log only"
+msgstr "仅日志"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:336
+#, php-format
+msgid "%s Logs"
+msgstr "%s 日志"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:55
+msgid "Settings reset to default"
+msgstr "重置为默认设置"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:89
+msgid "Settings saved"
+msgstr "设置已保存"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:101
+#, php-format
+msgid "%s Settings"
+msgstr "%s 设置"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:103
+msgid "Network"
+msgstr "网络"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:103
+msgid "API Keys"
+msgstr "API Keys"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:103
+msgid "Information"
+msgstr "详情"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:120
+msgid "Display Settings"
+msgstr "显示设置"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:121
+msgid "Do you want to see BackWPup in the WordPress admin bar?"
+msgstr "想在顶部管理栏显示 BackWPup 吗？"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:124
+msgid "Admin bar"
+msgstr "顶部管理栏"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:127
+msgid "Admin Bar"
+msgstr "顶部管理栏"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:132
+msgid "Show BackWPup links in admin bar."
+msgstr "在顶部管理栏显示 BackWPup 链接"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:137 ../inc/class-page-settings.php:140
+msgid "Folder sizes"
+msgstr "文件夹大小"
+
+#: ../inc/class-page-settings.php:145
+msgid ""
+"Display folder sizes on Files tab if job edited. (Might increase loading "
+"time of Files tab.)"
+msgstr ""
+"编辑备份计划时，在“文件”选项卡中显示文件夹大小（可能会增加“文件”选项卡的加载"
+"时间）"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:150
+msgid "Security"
+msgstr "安全性"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:151
+msgid "Security option for BackWPup"
+msgstr "BackWPup 插件安全"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:154 ../inc/class-page-settings.php:157
+msgid "Protect folders"
+msgstr "保护文件夹"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:162
+msgid ""
+"Protect BackWPup folders ( Temp, Log and Backups ) with <code>.htaccess</"
+"code> and <code>index.php</code>"
+msgstr ""
+"通过<code>.htaccess</code>  和 <code>index.php</code>保护 BackWPup 目录下的文"
+"件夹"
+
+#: ../inc/class-page-settings.php:175
+msgid ""
+"Every time BackWPup runs a backup job a log file is being generated. Choose "
+"where to store your log files and how many of them."
+msgstr ""
+"每次 BackWPup 执行备份计划都会生成日志文件。选择存放日志文件的目录和日志数"
+"量。"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:178
+msgid "Log file folder"
+msgstr "日志路径"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:186
+msgid "Maximum number of log files in folder"
+msgstr "最多保存日志文件数量"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:191
+msgid "Oldest files will be deleted first."
+msgstr "最先保存的将会先删除"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:195 ../inc/class-page-settings.php:198
+msgid "Compression"
+msgstr "压缩"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:203
+msgid "Compress log files with GZip."
+msgstr "用 Gzip 压缩日志文件"
+
+#: ../inc/class-page-settings.php:212
+msgid "There are a couple of general options for backup jobs. Set them here."
+msgstr "下面是备份计划的基本选项，请进行设置。"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:216
+msgid "Maximum number of retries for job steps"
+msgstr "失败重试次数"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:224 ../inc/class-page-settings.php:227
+msgid "Restart on every main step"
+msgstr "重启主要步骤"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:232
+msgid "Restart the job on every main step on a running job"
+msgstr "重启每一个计划的重要步骤"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:233
+msgid ""
+"The job will be restarted on every main step to prevent running in an "
+"execution time out. This will not work on cli run. If "
+"<code>ALTERNATE_WP_CRON</code> has been defined, WordPress Cron will be used."
+msgstr ""
+"计划将在每个重要步骤重启，以免导致超时。如果 cli 运行，这个设置就没办法生效。"
+"如果<code>ALTERNATE_WP_CRON</code>已经定义，WordPress  Cron 将被使用。"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:239 ../inc/class-page-settings.php:242
+msgid "Restart on archive creation"
+msgstr "在创建存档时重启"
+
+#: ../inc/class-page-settings.php:247
+msgid ""
+"MB. 0 = disabled. Restart the job once a given number of Megabytes has been "
+"added to an archive"
+msgstr ""
+"MB. 0 = 禁用。一旦添加了所设定大小的新的文件到备份存档时，重启备份计划。"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:248
+msgid ""
+"The job will be restarted once a given number of Megabytes has been added to "
+"an archive to prevent running in an execution time out. This will not work "
+"on cli run. If <code>ALTERNATE_WP_CRON</code> has been defined, WordPress "
+"Cron will be used."
+msgstr ""
+"一旦添加更多的文件到存档时，计划将重启，以免导致超时。如果 cli 运行，这个设置"
+"就没办法生效。如果<code>ALTERNATE_WP_CRON</code>已经定义，WordPress  Cron 将"
+"被使用。"
+
+#: ../inc/class-page-settings.php:254 ../inc/class-page-settings.php:257
+msgid "Method for creating ZIP archive"
+msgstr "创建ZIP存档的方法"
+
+#: ../inc/class-page-settings.php:261
+msgid "Auto"
+msgstr "自动"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:262
+msgid "ZipArchive"
+msgstr "Zip存档"
+
+#: ../inc/class-page-settings.php:263
+msgid "PclZip"
+msgstr "PclZip"
+
+#: ../inc/class-page-settings.php:266
+msgid ""
+"Auto = Uses PHP class ZipArchive if available; otherwise uses PclZip.<br /"
+">ZipArchive = Uses less memory, but many open files at a time.<br />PclZip = "
+"Uses more memory, but only 2 open files at a time."
+msgstr ""
+"自动 = 使用 PHP 类 ZIP 存档（如果可用），否者使用 PclZip。<br />ZIP 存档 = 使"
+"用较少的内存，但每次打开多个文件。<br />PclZip = 使用更多的内存，但每次打开 "
+"2 个文件。"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:272
+msgid "Key to start jobs externally with an URL"
+msgstr "通过URL启动计划的key"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:277
+msgid ""
+"empty = deactivated. Will be used to protect job starts from unauthorized "
+"persons."
+msgstr "空=停用。将用于保护计划不让未经授权的人使用。"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:281
+msgid "No translation"
+msgstr "无需翻译"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:284
+msgid "No Translation"
+msgstr "日志翻译"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:289
+msgid "No translation for the job, the log will be written in English"
+msgstr "日志将以英文形式保存"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:295 ../inc/class-page-settings.php:298
+msgid "Reduce server load"
+msgstr "减少服务器负载"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:302
+msgid "disabled"
+msgstr "禁用"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:303
+msgid "minimum"
+msgstr "轻微"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:304
+msgid "medium"
+msgstr "中等"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:305
+msgid "maximum"
+msgstr "极限"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:308
+msgid ""
+"This adds short pauses to the process. Can be used to reduce the CPU load. "
+"Disabled = off, minimum = shortest sleep, maximum = longest sleep"
+msgstr ""
+"增加短暂停的到进程中，可以用来减少CPU负载。Disabled = 关闭， minimum = 最短的"
+"睡眠，maximum = 最长的睡眠"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:319
+msgid ""
+"Is your blog protected with HTTP basic authentication (.htaccess)? Then "
+"please set the username and password for authentication here."
+msgstr ""
+"如果你的网站已经通过 PHP 基本身份验证 (.htaccess) 设置保护了，那么请在这里设"
+"计用户名和密码进行认证。"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:322
+msgid "Username:"
+msgstr "用户名"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:350 ../inc/class-page-settings.php:351
+msgid "Setting"
+msgstr "设置"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:350 ../inc/class-page-settings.php:351
+msgid "Value"
+msgstr "值"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:352
+msgid "WordPress version"
+msgstr "WordPress 版本"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:354
+msgid "BackWPup version"
+msgstr "BackWPup 版本"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:354
+msgid "Get pro."
+msgstr "获取专业版"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:356
+msgid "BackWPup Pro version"
+msgstr "BackWPup Pro 版本"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:357
+msgid "PHP version"
+msgstr "PHP 版本"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:358
+msgid "MySQL version"
+msgstr "MySQL 版本"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:361 ../inc/class-page-settings.php:365
+msgid "cURL version"
+msgstr "cURL 版本"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:362
+msgid "cURL SSL version"
+msgstr "cURL SSL 版本"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:365
+msgid "unavailable"
+msgstr "无法使用"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:376
+msgid "Server self connect:"
+msgstr "服务器自连接："
+
+# @ backwpup
+#: ../inc/class-page-settings.php:384
+#, php-format
+msgid "The BackWPup HTTP response header gives back the false value \"%s\""
+msgstr "BackWPup HTTP响应头返回 false 值  \"%s\""
+
+# @ backwpup
+#: ../inc/class-page-settings.php:387
+msgid "Response Test O.K."
+msgstr "响应测试成功"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:393
+msgid "Temp folder:"
+msgstr "临时文件夹:"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:395
+#, php-format
+msgid "Temp folder %s not exist and can't created."
+msgstr "临时文件夹 %s 不存在且无法创建"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:397
+#, php-format
+msgid "Temp folder %s not writable."
+msgstr "临时文件夹 %s  不可写"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:403
+msgid "Logs folder:"
+msgstr "日志文件夹："
+
+# @ backwpup
+#: ../inc/class-page-settings.php:405
+#, php-format
+msgid "Logs folder %s not exist and can't created."
+msgstr "日志文件夹 %s 不存在且无法创建"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:407
+#, php-format
+msgid "Logs folder %s not writable."
+msgstr "日志文件夹 %s 不可写"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:411
+msgid "Server"
+msgstr "服务器"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:412
+msgid "Operating System"
+msgstr "操作系统"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:413
+msgid "PHP SAPI"
+msgstr "PHP SAPI"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:414
+msgid "Current PHP user"
+msgstr "当前 PHP 用户"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:415 ../inc/class-page-settings.php:419
+#: ../inc/class-page-settings.php:423
+msgid "On"
+msgstr "开启"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:415 ../inc/class-page-settings.php:421
+#: ../inc/class-page-settings.php:425
+msgid "Off"
+msgstr "关闭"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:416
+msgid "Safe Mode"
+msgstr "安全模式"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:417
+msgid "Maximum execution time"
+msgstr "最大的执行时间"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:419 ../inc/class-page-settings.php:421
+msgid "Alternative WP Cron"
+msgstr "替换 WP-Cron"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:423 ../inc/class-page-settings.php:425
+msgid "Disabled WP Cron"
+msgstr "禁用 WP-Cron"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:427 ../inc/class-page-settings.php:429
+msgid "CHMOD Dir"
+msgstr "目录权限"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:431
+msgid "Server Time"
+msgstr "服务器时间"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:432
+msgid "Blog Time"
+msgstr "网站时间"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:433
+msgid "Blog Timezone"
+msgstr "网站时区"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:434
+msgid "Blog Time offset"
+msgstr "网站时间偏移"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:434
+#, php-format
+msgid "%s hours"
+msgstr "%s 小时"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:435
+msgid "Blog language"
+msgstr "网站语言"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:436
+msgid "MySQL Client encoding"
+msgstr "MySQL 客户端编码"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:439
+msgid "Blog charset"
+msgstr "网站编码"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:440
+msgid "PHP Memory limit"
+msgstr "PHP 内存限制"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:441
+msgid "WP memory limit"
+msgstr "WP 内存限制"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:442
+msgid "WP Maximum memory limit"
+msgstr "WP 最大内存限制"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:443
+msgid "Memory in use"
+msgstr "已用内存"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:448
+msgid "Disabled PHP Functions:"
+msgstr "禁用 PHP 函数："
+
+# @ backwpup
+#: ../inc/class-page-settings.php:453
+msgid "Loaded PHP Extensions:"
+msgstr "加载的 PHP 扩展："
+
+# @ backwpup
+#: ../inc/class-page-settings.php:465
+msgid "Save Changes"
+msgstr "保存更改"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:467
+msgid "Reset all settings to default"
+msgstr "重置"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:18
+msgid "A job is already running."
+msgstr "已经有一个计划在执行"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:21
+msgid "No job ID specified!"
+msgstr "没有指定计划ID！"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:25
+msgid "Job ID does not exist!"
+msgstr "计划ID不存在！"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:40
+msgid "Nothing to abort!"
+msgstr "没有放弃！"
+
+#: ../inc/class-wp-cli.php:46 ../inc/class-wp-cli.php:115
+msgid "Running file can't read. tra again."
+msgstr "执行文件无法读取，请重试。"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:94
+msgid "List of jobs"
+msgstr "计划列表"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:97 ../inc/class-wp-cli.php:118
+#, php-format
+msgid "ID: %1$d Name: %2$s"
+msgstr "ID： %1$d 名称： %2$s"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:113
+msgid "No job running"
+msgstr "没有计划在执行"
+
+# @ backwpupadminbar
+#: ../inc/class-wp-cli.php:116
+msgid "Running job"
+msgstr "正在执行的计划"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:119
+#, php-format
+msgid "Warnings: %1$d Errors: %2$d"
+msgstr "警告： %1$d 错误： %2$d"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:120
+#, php-format
+msgid "Steps in percent: %1$d percent of step: %2$d"
+msgstr "步骤: %1$d 步骤: %2$d"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:121
+#, php-format
+msgid "On step: %s"
+msgstr "步骤： %s"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:122
+#, php-format
+msgid "Last message: %s"
+msgstr "最近消息： %s"

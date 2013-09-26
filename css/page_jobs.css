@@ -1,0 +1,95 @@
+.column-id {
+    width: 3%;
+    text-align: center;
+}
+
+.column-last, .column-next, .column-type, .column-dest {
+    width: 15%;
+}
+
+#TB_ajaxContent {
+    background-color: black;
+    color: white;
+}
+#showworking {
+    font-family: Fixedsys, Courier, monospace;
+    line-height: 15px;
+    font-size: 12px;
+    white-space: pre;
+    display: block;
+    width: 100%;
+}
+#runningjob {
+	padding:10px;
+	background-image:url(../images/progresshg.jpg);
+	position:relative;
+	margin: 15px 0 25px 0;
+	padding-bottom:25px;
+}
+#runniginfos {
+	font-size: 14px;
+	font-family: sans-serif,"Arial";
+}
+h2#runnigtitle {
+	font-size: 18px;
+	margin-bottom: 15px;
+	padding: 0;
+}
+#warningsid, #errorid {
+    margin-right: 10px;
+}
+
+.infobuttons {
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+}
+a#showworkingbutton {
+	float: left;
+	padding: 10px;
+	font-size: 12px;
+	font-family: sans-serif,"Arial";
+	text-decoration :none;
+	background-color: #93b509;
+	color: #fff;
+	border: none;
+}
+a#abortbutton, a#showworkingclose {
+	float: left;
+	margin-left: 10px;
+	padding: 10px;
+	font-size: 12px;
+	font-family: sans-serif,"Arial";
+	text-decoration: none;
+	background-color: #cd1212;
+	color: #fff;
+	border: none;
+}
+.progressbar {
+    margin-top: 20px;
+	height: auto;
+    background: #f6f6f6 url(../images/progressbarhg.jpg);
+}
+
+#lastmsg, #onstep, #lasterrormsg {
+   text-align: center;
+   margin-bottom: 20px;
+}
+
+#progressstep {
+    background-color: #1d94cf;
+    color: #fff;
+	padding: 5px 0;
+    text-align: center;
+	font-size: 14px;
+	font-family: sans-serif,"Arial";
+}
+
+#progresssteps {
+    background-color: #007fb6;
+    color: #fff;
+	padding: 5px 0;
+    text-align: center;
+	font-size: 14px;
+	font-family: sans-serif,"Arial";
+}
