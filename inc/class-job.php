@@ -170,7 +170,7 @@ final class BackWPup_Job {
 		if ( ! in_array( $start_type, array( 'runnow', 'runnowalt', 'cronrun', 'runext', 'runcli' ) ) )
 			return;
 
-		file_put_contents( BackWPup::get_plugin_data( 'running_file' ), json_encode( array() ), LOCK_EX );
+		file_put_contents( BackWPup::get_plugin_data( 'running_file' ), json_encode( array() ) );
 
 		if ( is_int( $job_settings ) )
 			$this->job      = BackWPup_Option::get_job( $job_settings );
@@ -344,7 +344,7 @@ final class BackWPup_Job {
 		$head .= sprintf( __( '[INFO] Backup type is: %s', 'backwpup' ), $this->job[ 'backuptype' ] ) . PHP_EOL;
 		if ( ! empty( $this->backup_file ) && $this->job[ 'backuptype' ] == 'archive' )
 			$head .= sprintf( __( '[INFO] Backup file is: %s', 'backwpup' ), $this->backup_folder . $this->backup_file ) . PHP_EOL;
-		file_put_contents( $this->logfile, $head, FILE_APPEND | LOCK_EX );
+		file_put_contents( $this->logfile, $head, FILE_APPEND );
 		//output info on cli
 		if ( defined( 'STDIN' ) && defined( 'STDOUT' ) )
 			fwrite( STDOUT, strip_tags( $head ) ) ;
@@ -1130,7 +1130,7 @@ final class BackWPup_Job {
 		if ( $error_or_warning )
 			$this->lasterrormsg = $messagetype . $message . '</samp>';
 		//write log file
-		file_put_contents( $this->logfile, $timestamp . $messagetype . $message . '</samp>' . PHP_EOL, FILE_APPEND | LOCK_EX  );
+		file_put_contents( $this->logfile, $timestamp . $messagetype . $message . '</samp>' . PHP_EOL, FILE_APPEND  );
 
 		//write new log header
 		if ( $error_or_warning ) {
@@ -1217,7 +1217,7 @@ final class BackWPup_Job {
 			$this->substep_percent = 1;
 		$this->timestamp_last_update = microtime( TRUE );
 
-		file_put_contents( BackWPup::get_plugin_data( 'running_file' ), json_encode( get_object_vars( $this ) ), LOCK_EX );
+		file_put_contents( BackWPup::get_plugin_data( 'running_file' ), json_encode( get_object_vars( $this ) ) );
 
 		return TRUE;
 	}
@@ -1299,7 +1299,7 @@ final class BackWPup_Job {
 		}
 
 		//logfile end
-		file_put_contents( $this->logfile, "</body>" . PHP_EOL . "</html>", FILE_APPEND | LOCK_EX );
+		file_put_contents( $this->logfile, "</body>" . PHP_EOL . "</html>", FILE_APPEND );
 
 		//Send mail with log
 		$sendmail = FALSE;
@@ -1735,7 +1735,7 @@ final class BackWPup_Job {
 				$manifest[ 'archive' ][ 'themes' ] = trailingslashit( str_replace( $this->remove_path, '', str_replace( '\\', '/', get_theme_root() ) ) );
 		}
 
-		if ( ! file_put_contents( BackWPup::get_plugin_data( 'TEMP' ) . 'manifest.json', json_encode( $manifest ), LOCK_EX ) )
+		if ( ! file_put_contents( BackWPup::get_plugin_data( 'TEMP' ) . 'manifest.json', json_encode( $manifest ) ) )
 			return FALSE;
 		$this->substeps_done = 1;
 
@@ -1743,7 +1743,7 @@ final class BackWPup_Job {
 		$readme_text  = __( 'You may have noticed the manifest.json file in this archive.', 'backwpup' ) . PHP_EOL;
 		$readme_text .= __( 'manifest.json might be needed for later restoring a backup from this archive.', 'backwpup' ) . PHP_EOL;
 		$readme_text .= __( 'Please leave manifest.json untouched and in place. Otherwise it is safe to be ignored.', 'backwpup' ) . PHP_EOL;
-		if ( ! file_put_contents( BackWPup::get_plugin_data( 'TEMP' ) . 'backwpup_readme.txt', $readme_text, LOCK_EX ) )
+		if ( ! file_put_contents( BackWPup::get_plugin_data( 'TEMP' ) . 'backwpup_readme.txt', $readme_text ) )
 			return FALSE;
 		$this->substeps_done = 2;
 
@@ -1931,7 +1931,7 @@ final class BackWPup_Job {
 		$file = BackWPup::get_plugin_data( 'temp' ) . 'backwpup-' . substr( md5( NONCE_SALT ), 19, 6 ) . '-'.$storage.'.json';
 
 		if ( ! empty( $data ) ) {
-			file_put_contents( $file, json_encode( $data ), LOCK_EX );
+			file_put_contents( $file, json_encode( $data ) );
 		}
 		elseif ( is_file( $file ) ) {
 			$json = file_get_contents( $file );
