@@ -55,19 +55,3 @@ Have a look at our other premium plugins at [MarketPress.com](http://marketpress
 4. [Manage backup archives](https://raw.github.com/inpsyde/backwpup/master/screenshot-4.png)
 5. [Dashboard](https://raw.github.com/inpsyde/backwpup/master/screenshot-5.png)
 
-
-## Changelog
-### Version 3.0.14-beta
-* Fixed: Message about aborted step did not display correctly
-* Improved: Overall performance while generating backup archives
-* Improved: Uploads of backup archives to FTP/S3/Dropbox/Azure can be continued
-* Improved: Script re-starts based upon time while generating archives and uploading
-* Improved: Reduced risk of running scripts being stopped via external processes in fcgi mode
-* Improved: Backup destinations and their dependencies only being loaded when needed
-* Improved: Required dependencies for destinations being displayed now
-* Improved: Displaying of error messages as error messages (red, not yellow)
-* Improved: Reduced size of vendor/SDK directory by 50%
-* Updated: AWS SDK to Version 2.4.4 (PHP 5.3.3+)
-* Updated: RSC SDK to Version 1.5.10
-* Updated: SwiftMailer to Version 5.0.1
-* PRO: Wizards using a separate session handling now

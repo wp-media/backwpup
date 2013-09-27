@@ -63,8 +63,8 @@ if ( ! class_exists( 'BackWPup' ) ) {
 		 */
 		private function __construct() {
 
-			// Nothing else matters if we're on WP-MS and not on the main site
-			if ( is_multisite() && ! is_main_site() )
+			// Nothing else matters if we're not on the main site
+			if ( ! is_main_site() )
 				return;
 			//auto loader
 			spl_autoload_register( array( $this, 'autoloader' ) );
