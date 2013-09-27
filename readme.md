@@ -49,28 +49,11 @@ Have a look at our other premium plugins at [MarketPress.com](http://marketpress
 
 ## Screenshots
 
-[Working job and jobs overview](https://raw.github.com/inpsyde/backwpup/master/screenshot-1.png)
-[Job creation/edit](https://raw.github.com/inpsyde/backwpup/master/screenshot-2.png)
-[Displaying logs](https://raw.github.com/inpsyde/backwpup/master/screenshot-3.png)
-[Manage backup archives](https://raw.github.com/inpsyde/backwpup/master/screenshot-4.png)
-[Dashboard](https://raw.github.com/inpsyde/backwpup/master/screenshot-5.png)
-
-## Upgrade Notice
-### After an upgrade from version 2
-
-Please check all settings after the update:
-
-* Dropbox authentication must be done again
-* SugarSync authentication must be done again
-* S3 Settings
-* Google Storage is now in S3
-* Check all your passwords
-
-## Installation
-
-1. Download the BackWPup plugin.
-2. Decompress the ZIP file and upload the contents of the archive into `/wp-content/plugins/`.
-3. Activate the plugin through the 'Plugins' menu in WordPress
+1. [Working job and jobs overview](https://raw.github.com/inpsyde/backwpup/master/screenshot-1.png)
+2. [Job creation/edit](https://raw.github.com/inpsyde/backwpup/master/screenshot-2.png)
+3. [Displaying logs](https://raw.github.com/inpsyde/backwpup/master/screenshot-3.png)
+4. [Manage backup archives](https://raw.github.com/inpsyde/backwpup/master/screenshot-4.png)
+5. [Dashboard](https://raw.github.com/inpsyde/backwpup/master/screenshot-5.png)
 
 
 ## Changelog
