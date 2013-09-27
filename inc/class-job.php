@@ -637,10 +637,10 @@ final class BackWPup_Job {
 		if ( ! $job_array = self::get_working_data( 'ARRAY' ) )
 			return;
 		$last_update = microtime( TRUE ) - $job_array[ 'timestamp_last_update' ];
-		if ( ! empty( $job_array[ 'PID' ] ) && $last_update > 300) {
+		if ( ! empty( $job_array[ 'pid' ] ) && $last_update > 300) {
 			$this->log( __( 'Job restart due to inactivity for more than 5 minutes.', 'backwpup' ), E_USER_WARNING );
 		}
-		elseif ( $this->pid != 0 && $job_array[ 'PID' ] != self::get_pid() ) {
+		elseif ( $this->pid != 0 && $job_array[ 'pid' ] != self::get_pid() ) {
 			$this->log( __( 'Second process start terminated, because a other job is already running!', 'backwpup' ), E_USER_WARNING );
 			return;
 		}
