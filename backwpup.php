@@ -72,7 +72,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			if ( get_site_option( 'backwpup_version' ) != self::get_plugin_data( 'Version' ) && class_exists( 'BackWPup_Install' ) )
 				BackWPup_Install::activate();
 			//load pro features
-			if ( is_file( dirname( __FILE__ ) . '/inc/pro/class-pro.php' ) )
+			if ( file_exists( dirname( __FILE__ ) . '/inc/pro/class-pro.php' ) )
 				require dirname( __FILE__ ) . '/inc/pro/class-pro.php';
 			//WP-Cron
 			if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
@@ -189,7 +189,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 					$dir .=  'pro' . DIRECTORY_SEPARATOR;
 					$class_file_name = str_replace( '-pro','', $class_file_name );
 				}
-				if ( is_file( $dir . $class_file_name ) )
+				if ( file_exists( $dir . $class_file_name ) )
 					require $dir . $class_file_name;
 			}
 		}

@@ -122,7 +122,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 		@ob_flush(); //send rest of data
 		@ob_end_clean(); //End output buffering
 
-		if ( !is_file( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'wpexportfile' ] )  ) {
+		if ( ! is_readable( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'wpexportfile' ] )  ) {
 			$job_object->log( __( 'WP Export file could not generated.', 'backwpup' ), E_USER_ERROR );
 
 			return FALSE;

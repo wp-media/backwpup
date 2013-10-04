@@ -419,7 +419,7 @@ class BackWPup_Destination_SugarSync_API {
 		curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, TRUE );
 		curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, 2 );
 		curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
-		if ( is_file( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
+		if ( file_exists( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
 			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' );
 
 		if ( $method == 'POST' ) {
@@ -429,7 +429,7 @@ class BackWPup_Destination_SugarSync_API {
 			$headers[ ] = 'Content-Length: ' . strlen( $data );
 		}
 		elseif ( $method == 'PUT' ) {
-			if ( is_file( $data ) && is_readable( $data ) ) {
+			if ( is_readable( $data ) ) {
 				$headers[ ] = 'Content-Length: ' . filesize( $data );
 				$datafilefd = fopen( $data, 'r' );
 				curl_setopt( $curl, CURLOPT_PUT, TRUE );
@@ -504,7 +504,7 @@ class BackWPup_Destination_SugarSync_API {
 		curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, TRUE );
 		curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, 2 );
 		curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
-		if ( is_file( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
+		if ( file_exists( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
 			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' );
 		curl_setopt( $curl, CURLOPT_HEADER, TRUE );
 		curl_setopt( $curl, CURLOPT_HTTPHEADER, array( 'Content-Type: application/xml; charset=UTF-8', 'Content-Length: ' . strlen( $auth ) ) );
@@ -564,7 +564,7 @@ class BackWPup_Destination_SugarSync_API {
 		curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, TRUE );
 		curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, 2 );
 		curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
-		if ( is_file( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
+		if ( file_exists( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
 			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' );
 		curl_setopt( $curl, CURLOPT_HEADER, TRUE );
 		curl_setopt( $curl, CURLOPT_HTTPHEADER, array( 'Content-Type: application/xml; charset=UTF-8', 'Content-Length: ' . strlen( $auth ) ) );
@@ -622,7 +622,7 @@ class BackWPup_Destination_SugarSync_API {
 		curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, TRUE );
 		curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, 2 );
 		curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
-		if ( is_file( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
+		if ( file_exists( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
 			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' );
 		curl_setopt( $curl, CURLOPT_HEADER, TRUE );
 		curl_setopt( $curl, CURLOPT_HTTPHEADER, array( 'Content-Type: application/xml; charset=UTF-8', 'Content-Length: ' . strlen( $auth ) ) );
@@ -841,7 +841,7 @@ class BackWPup_Destination_SugarSync_API {
 		$xmlrequest .= '<file>';
 		$xmlrequest .= '<displayName>' . mb_convert_encoding( $name, 'UTF-8', $this->encoding ) . '</displayName>';
 
-		if ( ! is_file( $file ) ) {
+		if ( ! is_readable( $file ) ) {
 			$finfo = fopen( $file, 'r' );
 			$xmlrequest .= '<mediaType>' . mime_content_type( $finfo ) . '</mediaType>';
 			fclose( $finfo );

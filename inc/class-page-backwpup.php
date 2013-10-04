@@ -193,7 +193,7 @@ class BackWPup_Page_BackWPup {
 			$logfiles = array();
 			if ( is_writeable( BackWPup_Option::get( 'cfg', 'logfolder' ) ) && $dir = @opendir( BackWPup_Option::get( 'cfg', 'logfolder' ) ) ) {
 				while ( ( $file = readdir( $dir ) ) !== FALSE ) {
-					if ( is_file( BackWPup_Option::get( 'cfg', 'logfolder' ) . $file ) && strstr( $file, 'backwpup_log_' ) && ( strstr( $file, '.html' ) ||  strstr( $file, '.html.gz' ) ) )
+					if ( is_readable( BackWPup_Option::get( 'cfg', 'logfolder' ) . $file ) && ! is_link( BackWPup_Option::get( 'cfg', 'logfolder' ) . $file ) && ! is_dir( BackWPup_Option::get( 'cfg', 'logfolder' ) . $file ) && strstr( $file, 'backwpup_log_' ) && ( strstr( $file, '.html' ) ||  strstr( $file, '.html.gz' ) ) )
 						$logfiles[ ] = $file;
 				}
 				closedir( $dir );

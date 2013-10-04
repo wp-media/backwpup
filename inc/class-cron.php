@@ -58,7 +58,7 @@ class BackWPup_Cron {
 			foreach ( $jobids as $jobid ) {
 				$log_file = BackWPup_Option::get( $jobid, 'logfile' );
 				//compress uncompressed
-				if ( is_file( $log_file ) && '.html' == substr( $log_file, -5 ) ) {
+				if ( is_writeable( $log_file ) && '.html' == substr( $log_file, -5 ) ) {
 					$compress = new BackWPup_Create_Archive( $log_file . '.gz' );
 					if ( $compress->add_file( $log_file ) ) {
 						BackWPup_Option::update( $jobid, 'logfile', $log_file. '.gz' );
@@ -71,7 +71,7 @@ class BackWPup_Cron {
 			//Compress old not compressed logs
 			if ( $dir = opendir( BackWPup_Option::get( 'cfg', 'logfolder' ) ) ) {
 				while ( FALSE !== ( $file = readdir( $dir ) ) ) {
-					if ( is_file( BackWPup_Option::get( 'cfg', 'logfolder' ) . $file ) && '.html' == substr( $file, -5 ) ) {
+					if ( is_writeable( BackWPup_Option::get( 'cfg', 'logfolder' ) . $file ) && '.html' == substr( $file, -5 ) ) {
 						$compress = new BackWPup_Create_Archive(  BackWPup_Option::get( 'cfg', 'logfolder' ) . $file . '.gz' );
 						if ( $compress->add_file( BackWPup_Option::get( 'cfg', 'logfolder' ) . $file ) ) {
 							unlink( BackWPup_Option::get( 'cfg', 'logfolder' ) . $file );

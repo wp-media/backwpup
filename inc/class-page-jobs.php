@@ -602,12 +602,12 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 		$logpos  = isset( $_GET[ 'logpos' ] ) ? (int)$_GET[ 'logpos' ] : 0;
 
 		//check if logfile renamed
-		if ( is_file( $logfile . '.gz' ) )
+		if ( is_readable( $logfile . '.gz' ) )
 			$logfile .= '.gz';
-		if ( is_file( $logfile . '.bz2' ) )
+		if ( is_readable( $logfile . '.bz2' ) )
 			$logfile .= '.bz2';
 
-		if ( is_file( $logfile ) ) {
+		if ( is_readable( $logfile ) ) {
 			$job_array = BackWPup_Job::get_working_data( 'ARRAY' );
 			$done = 0;
 			if ( ! empty( $job_array ) ) {

@@ -866,7 +866,7 @@ final class BackWPup_Job {
 	 */
 	public static function get_working_data( $type = 'OBJECT' ) {
 
-		if ( ! is_file( BackWPup::get_plugin_data( 'running_file' ) ) )
+		if ( ! is_readable( BackWPup::get_plugin_data( 'running_file' ) ) )
 			return FALSE;
 
 		switch ( $type ) {
@@ -914,7 +914,7 @@ final class BackWPup_Job {
 
 		//get metadata of logfile
 		$metas = array();
-		if ( is_file( $logfile ) ) {
+		if ( is_readable( $logfile ) ) {
 			if (  '.gz' == substr( $logfile, -3 )  )
 				$metas = (array)get_meta_tags( 'compress.zlib://' . $logfile );
 			elseif (  '.bz2' == substr( $logfile, -4 )  )
@@ -1016,9 +1016,9 @@ final class BackWPup_Job {
 		}
 
 		//create .htaccess for apache and index.php for folder security
-		if ( BackWPup_Option::get( 'cfg', 'protectfolders') && ! is_file( $folder . '/.htaccess' ) )
+		if ( BackWPup_Option::get( 'cfg', 'protectfolders') && ! file_exists( $folder . '/.htaccess' ) )
 			file_put_contents( $folder . '/.htaccess', "<Files \"*\">" . PHP_EOL . "<IfModule mod_access.c>" . PHP_EOL . "Deny from all" . PHP_EOL . "</IfModule>" . PHP_EOL . "<IfModule !mod_access_compat>" . PHP_EOL . "<IfModule mod_authz_host.c>" . PHP_EOL . "Deny from all" . PHP_EOL . "</IfModule>" . PHP_EOL . "</IfModule>" . PHP_EOL . "<IfModule mod_access_compat>" . PHP_EOL . "Deny from all" . PHP_EOL . "</IfModule>" . PHP_EOL . "</Files>" );
-		if ( BackWPup_Option::get( 'cfg', 'protectfolders') && ! is_file( $folder . '/index.php' ) )
+		if ( BackWPup_Option::get( 'cfg', 'protectfolders') && ! file_exists( $folder . '/index.php' ) )
 			file_put_contents( $folder . '/index.php', "<?php" . PHP_EOL . "header( \$_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found' );" . PHP_EOL . "header( 'Status: 404 Not Found' );" . PHP_EOL );
 
 		return TRUE;
@@ -1433,7 +1433,7 @@ final class BackWPup_Job {
 	 */
 	public function get_mime_type( $file ) {
 
-		if ( ! is_file( $file ) )
+		if ( ! is_readable( $file ) || is_dir( $file ) )
 			return FALSE;
 
 		if ( function_exists( 'fileinfo' ) ) {
@@ -1666,11 +1666,11 @@ final class BackWPup_Job {
 				}
 				if ( $this->job[ 'backupexcludethumbs' ] && strpos( $folder, BackWPup_File::get_upload_dir() ) !== FALSE && preg_match( "/\-[0-9]{2,4}x[0-9]{2,4}\.(jpg|png|gif)$/i", $file ) )
 					continue;
-				if ( ! is_dir( $folder . $file ) && ! is_readable( $folder . $file ) )
+				if ( ! is_readable( $folder . $file ) )
 					$this->log( sprintf( __( 'File "%s" is not readable!', 'backwpup' ), $folder . $file ), E_USER_WARNING );
 				elseif ( is_link( $folder . $file ) )
 					$this->log( sprintf( __( 'Link "%s" not followed.', 'backwpup' ), $folder . $file ), E_USER_WARNING );
-				elseif ( is_file( $folder . $file ) ) {
+				elseif ( ! is_dir( $folder . $file ) ) {
 					$files[ ] = $folder . $file;
 					$this->count_files_in_folder ++;
 					$this->count_filesize_in_folder = $this->count_filesize_in_folder + @filesize( $folder . $file );
@@ -1867,7 +1867,7 @@ final class BackWPup_Job {
 
 		$name = str_replace( $datevars, $datevalues, $name );
 		$name = sanitize_file_name( $name ) . $suffix; //prevent _ in extension name that sanitize_file_name add.
-		if ( $delete_temp_file && is_file( BackWPup::get_plugin_data( 'TEMP' ) . $name ) )
+		if ( $delete_temp_file && is_writeable( BackWPup::get_plugin_data( 'TEMP' ) . $name ) && !is_dir( BackWPup::get_plugin_data( 'TEMP' ) . $name ) && !is_link( BackWPup::get_plugin_data( 'TEMP' ) . $name ) )
 			unlink( BackWPup::get_plugin_data( 'TEMP' ) . $name );
 
 		return $name;
@@ -1933,7 +1933,7 @@ final class BackWPup_Job {
 		if ( ! empty( $data ) ) {
 			file_put_contents( $file, json_encode( $data ) );
 		}
-		elseif ( is_file( $file ) ) {
+		elseif ( is_readable( $file ) ) {
 			$json = file_get_contents( $file );
 			$data = json_decode( $json, TRUE );
 		}
@@ -1989,9 +1989,9 @@ final class BackWPup_Job {
 
 		if ( $dir = opendir( $temp_dir ) ) {
 			while ( FALSE !== ( $file = readdir( $dir ) ) ) {
-				if ( in_array( $file, $do_not_delete_files ) )
+				if ( in_array( $file, $do_not_delete_files ) || is_dir( $temp_dir . $file ) || is_link( $temp_dir . $file ) )
 					continue;
-				if ( is_file( $temp_dir . $file ) )
+				if ( is_writeable( $temp_dir . $file ) )
 					unlink( $temp_dir . $file );
 			}
 			closedir( $dir );

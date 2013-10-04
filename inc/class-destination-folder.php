@@ -74,7 +74,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	 */
 	public function file_delete( $jobdest, $backupfile ) {
 
-		if ( is_file( $backupfile ) )
+		if ( is_writeable( $backupfile ) && !is_dir( $backupfile ) && !is_link( $backupfile ) )
 			 unlink( $backupfile );
 
 	}
@@ -85,7 +85,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	 */
 	public function file_download( $jobid, $get_file ) {
 
-		if ( is_file( $get_file ) ) {
+		if ( is_readable( $get_file ) ) {
 			header( "Pragma: public" );
 			header( "Expires: 0" );
 			header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
@@ -119,16 +119,16 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	 * @return mixed
 	 */
 	public function file_get_list( $jobdest ) {
-		
+
 		list( $jobid, $dest ) = explode( '_', $jobdest );
 		$filecounter    = 0;
 		$files          = array();
 		$backup_folder  = BackWPup_Option::get( $jobid, 'backupdir' );
 		if ( $dir = opendir( $backup_folder ) ) { //make file list
 			while ( FALSE !== ( $file = readdir( $dir ) ) ) {
-				if ( in_array( $file, array( '.', '..', 'index.php', '.htaccess' ) ) )
+				if ( in_array( $file, array( '.', '..', 'index.php', '.htaccess' ) ) || is_dir( $backup_folder . $file ) || is_link( $backup_folder . $file ) )
 					continue;
-				if ( is_file( $backup_folder . $file ) ) {
+				if ( is_readable( $backup_folder . $file ) ) {
 					//file list for backups
 					$files[ $filecounter ][ 'folder' ]      = $backup_folder;
 					$files[ $filecounter ][ 'file' ]        = $backup_folder . $file;
@@ -168,7 +168,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 		$files          = array();
 		if ( $dir = opendir( $job_object->backup_folder ) ) { //make file list
 			while ( FALSE !== ( $file = readdir( $dir ) ) ) {
-				if ( is_file( $job_object->backup_folder . $file ) ) {
+				if ( is_writeable( $job_object->backup_folder . $file ) && ! is_dir( $job_object->backup_folder . $file ) && ! is_link( $job_object->backup_folder . $file ) ) {
 					//list for deletion
 					if ( $job_object->is_backup_archive( $file ) )
 						$backupfilelist[ filemtime( $job_object->backup_folder . $file ) ] = $file;

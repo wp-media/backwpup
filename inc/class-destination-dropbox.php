@@ -456,7 +456,7 @@ final class BackWPup_Destination_Dropbox_API {
 
 		$file = str_replace( "\\", "/", $file );
 
-		if ( ! is_readable( $file ) or ! is_file( $file ) )
+		if ( ! is_readable( $file ) )
 			throw new BackWPup_Destination_Dropbox_API_Exception( "Error: File \"$file\" is not readable or doesn't exist." );
 
 		$filesize = filesize( $file );
@@ -487,7 +487,7 @@ final class BackWPup_Destination_Dropbox_API {
 
 		$file = str_replace( "\\", "/", $file );
 
-		if ( ! is_readable( $file ) or ! is_file( $file ) )
+		if ( ! is_readable( $file ) )
 			throw new BackWPup_Destination_Dropbox_API_Exception( "Error: File \"$file\" is not readable or doesn't exist." );
 
 		$chunk_size = 4194304; //4194304 = 4MB
@@ -623,7 +623,7 @@ final class BackWPup_Destination_Dropbox_API {
 		curl_setopt( $ch, CURLOPT_SSLVERSION, 3 );
 		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, TRUE );
 		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 2 );
-		if ( is_file( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
+		if ( file_exists( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
 			curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' );
 		curl_setopt( $ch, CURLOPT_AUTOREFERER, TRUE );
 		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
@@ -667,7 +667,7 @@ final class BackWPup_Destination_Dropbox_API {
 		curl_setopt( $ch, CURLOPT_SSLVERSION, 3 );
 		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, TRUE );
 		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 2 );
-		if ( is_file( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
+		if ( file_exists( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
 			curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' );
 		curl_setopt( $ch, CURLOPT_AUTOREFERER, TRUE );
 		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
@@ -733,7 +733,7 @@ final class BackWPup_Destination_Dropbox_API {
 		curl_setopt( $ch, CURLOPT_SSLVERSION, 3 );
 		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, TRUE );
 		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 2 );
-		if ( is_file( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
+		if ( file_exists( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
 			curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' );
 		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
 		$output = '';

@@ -18,7 +18,7 @@ class BackWPup_File {
 			elseif ( is_dir( trailingslashit( WP_CONTENT_DIR ) . 'uploads/sites') )
 				return str_replace( '\\', '/', trailingslashit( WP_CONTENT_DIR ) . 'uploads/sites/' );
 			elseif ( is_dir( trailingslashit( WP_CONTENT_DIR ) . 'uploads' ) )
-				return str_replace( '\\', '/', trailingslashit( WP_CONTENT_DIR ) . 'uploads/' );	
+				return str_replace( '\\', '/', trailingslashit( WP_CONTENT_DIR ) . 'uploads/' );
 			else
 				return trailingslashit( str_replace( '\\', '/', WP_CONTENT_DIR ) );
 		} else {
@@ -65,18 +65,19 @@ class BackWPup_File {
 	public static function get_folder_size( $folder, $deep = TRUE ) {
 
 		$files_size = 0;
-		
+
 		if ( ! is_readable( $folder ) )
-			return $files_size; 
-		
+			return $files_size;
+
 		if ( $dir = opendir( $folder ) ) {
 			while ( FALSE !== ( $file = readdir( $dir ) ) ) {
-				if ( in_array( $file, array( '.', '..' ) ) )
+				if ( in_array( $file, array( '.', '..' ) ) || is_link( $folder . '/' . $file ) )
 					continue;
-				if ( is_file( $folder . '/' . $file ) )
-					$files_size = $files_size + @filesize( $folder . '/' . $file );
 				if ( $deep && is_dir( $folder . '/' . $file ) )
 					$files_size = $files_size + self::get_folder_size( $folder . '/' . $file, TRUE );
+				elseif ( is_readable( $folder . '/' . $file ) )
+					$files_size = $files_size + @filesize( $folder . '/' . $file );
+
 			}
 			closedir( $dir );
 		}
