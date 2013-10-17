@@ -100,7 +100,7 @@ Please set CHMOD 775 on the /wp-content/ directory and refresh the BackWPup dash
 
 
 = I don’t see an option to configure Dropbox, S3 or other destinations. =
-If you don’t see those options in the Add new job->General tab, it is most likely your server running a PHP version below 5.3.
+If you don’t see those options in the Add new job->General tab, it is most likely your server running a PHP version below 5.3 or the PHP5-CURL extension is not installed.
 
 
 = Backup jobs are running forever! =
