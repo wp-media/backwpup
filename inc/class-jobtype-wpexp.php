@@ -5,9 +5,9 @@
 class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 
 	/**
-	 * @var $backwpup_job_object BackWPup_Job
+	 * @var $export_file string Export File
 	 */
-	private static $backwpup_job_object = NULL;
+	private static $export_file = '';
 
 	/**
 	 *
@@ -103,7 +103,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 	 * @param $job_object
 	 * @return bool
 	 */
-	public function job_run( $job_object ) {
+	public function job_run( &$job_object ) {
 
 		$job_object->substeps_todo = 2;
 
@@ -112,17 +112,17 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 		$job_object->temp[ 'wpexportfile' ] = $job_object->generate_filename( $job_object->job[ 'wpexportfile' ], 'xml' );
 
 		//include WP export function
+		self::$export_file = $job_object->temp[ 'wpexportfile' ];
 		require_once ABSPATH . 'wp-admin/includes/export.php';
-		self::$backwpup_job_object = $job_object;
 		ob_start( array( $this, 'wp_export_ob_bufferwrite' ), 1048576 ); //start output buffering
 		$args = array(
 			'content' =>  $job_object->job[ 'wpexportcontent' ]
 		);
 		@export_wp( $args ); //WP export
-		@ob_flush(); //send rest of data
-		@ob_end_clean(); //End output buffering
+		ob_end_flush(); //End output buffering
+		$job_object->update_working_data();
 
-		if ( ! is_readable( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'wpexportfile' ] )  ) {
+		if ( ! is_readable( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'wpexportfile' ] ) || filesize( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'wpexportfile' ] ) < 250 ) {
 			$job_object->log( __( 'WP Export file could not generated.', 'backwpup' ), E_USER_ERROR );
 
 			return FALSE;
@@ -262,9 +262,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 		// not allowed UTF-8 chars in XML
 		$pattern = '/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u';
 
-		self::$backwpup_job_object->log( self::$backwpup_job_object->temp[ 'wpexportfile' ] );
-		file_put_contents( BackWPup::get_plugin_data( 'TEMP' ) . self::$backwpup_job_object->temp[ 'wpexportfile' ], preg_replace( $pattern, '', $output ), FILE_APPEND );
-		self::$backwpup_job_object->update_working_data();
+		file_put_contents( BackWPup::get_plugin_data( 'TEMP' ) . self::$export_file, preg_replace( $pattern, '', $output ), FILE_APPEND );
 	}
 
 }

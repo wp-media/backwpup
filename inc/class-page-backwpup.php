@@ -191,9 +191,9 @@ class BackWPup_Page_BackWPup {
 			<?php
 			//get log files
 			$logfiles = array();
-			if ( is_writeable( BackWPup_Option::get( 'cfg', 'logfolder' ) ) && $dir = @opendir( BackWPup_Option::get( 'cfg', 'logfolder' ) ) ) {
+			if ( is_writeable( get_site_option( 'backwpup_cfg_logfolder' ) ) && $dir = @opendir( get_site_option( 'backwpup_cfg_logfolder' ) ) ) {
 				while ( ( $file = readdir( $dir ) ) !== FALSE ) {
-					if ( is_readable( BackWPup_Option::get( 'cfg', 'logfolder' ) . $file ) && ! is_link( BackWPup_Option::get( 'cfg', 'logfolder' ) . $file ) && ! is_dir( BackWPup_Option::get( 'cfg', 'logfolder' ) . $file ) && strstr( $file, 'backwpup_log_' ) && ( strstr( $file, '.html' ) ||  strstr( $file, '.html.gz' ) ) )
+					if ( is_readable( get_site_option( 'backwpup_cfg_logfolder' ) . $file ) && ! is_link( get_site_option( 'backwpup_cfg_logfolder' ) . $file ) && ! is_dir( get_site_option( 'backwpup_cfg_logfolder' ) . $file ) && strstr( $file, 'backwpup_log_' ) && ( strstr( $file, '.html' ) ||  strstr( $file, '.html.gz' ) ) )
 						$logfiles[ ] = $file;
 				}
 				closedir( $dir );
@@ -204,7 +204,7 @@ class BackWPup_Page_BackWPup {
 				$count = 0;
 				$alternate = TRUE;
 				foreach ( $logfiles as $logfile ) {
-					$logdata = BackWPup_Job::read_logheader( BackWPup_Option::get( 'cfg', 'logfolder' ) . $logfile );
+					$logdata = BackWPup_Job::read_logheader( get_site_option( 'backwpup_cfg_logfolder' ) . $logfile );
 					if ( ! $alternate ) {
 						echo '<tr>';
 						$alternate = TRUE;
@@ -257,9 +257,9 @@ class BackWPup_Page_BackWPup {
 			sort( $mainsactive );
 			$alternate = TRUE;
 			// add working job if it not in active jobs
-			$job_array = BackWPup_Job::get_working_data( 'ARRAY' );
-			if ( ! empty( $job_array[ 'job' ][ 'jobid' ] ) && ! in_array( $job_array[ 'job' ][ 'jobid' ], $mainsactive ) )
-				$mainsactive[ ] = $job_array[ 'job' ][ 'jobid' ];
+			$job_object = BackWPup_Job::get_working_data();
+			if ( ! empty( $job_object ) && ! empty( $job_object->job[ 'jobid' ] ) && ! in_array($job_object->job[ 'jobid' ], $mainsactive ) )
+				$mainsactive[ ] = $job_object->job[ 'jobid' ];
 			foreach ( $mainsactive as $jobid ) {
 				$name = BackWPup_Option::get( $jobid, 'name' );
 				if ( ! empty( $job_object ) && $job_object->job[ 'jobid' ] == $jobid ) {

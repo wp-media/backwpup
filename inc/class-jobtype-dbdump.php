@@ -146,7 +146,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 	 *
 	 * @return bool
 	 */
-	public function job_run( $job_object ) {
+	public function job_run( &$job_object ) {
 
 		$job_object->substeps_todo = 1;
 
@@ -248,6 +248,9 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 			$job_object->count_filesize = $job_object->count_filesize + @filesize( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->steps_data[ $job_object->step_working ][ 'dbdumpfile' ] );
 			$job_object->log( sprintf( __( 'Added database dump "%1$s" with %2$s to backup file list', 'backwpup' ), $job_object->steps_data[ $job_object->step_working ][ 'dbdumpfile' ], size_format( filesize( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->steps_data[ $job_object->step_working ][ 'dbdumpfile' ] ), 2 ) ) );
 		}
+
+		//cleanups
+		unset( $job_object->steps_data[ $job_object->step_working ][ 'tables' ] );
 
 		$job_object->log( __( 'Database dump done!', 'backwpup' ) );
 

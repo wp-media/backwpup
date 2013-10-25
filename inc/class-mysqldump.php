@@ -69,7 +69,7 @@ class BackWPup_MySQLDump {
 
 		//set empty host to localhost
 		if ( empty( $args[ 'dbhost' ] ) )
-			$args[ 'dbhost' ] = 'localhost';
+			$args[ 'dbhost' ] = '127.0.0.1';
 
 		//check if port or socket in hostname and set port and socket
 		$args[ 'dbport' ]   = NULL;
@@ -83,10 +83,21 @@ class BackWPup_MySQLDump {
 				$args[ 'dbsocket' ] = $hostparts[ 1 ] ;
 		}
 
+		$this->mysqli = mysqli_init();
+		if ( ! $this->mysqli )
+			throw new BackWPup_MySQLDump_Exception( __( 'Cannot init MySQLi database connection', 'backwpup' ) );
+
+		if ( ! empty( $args[ 'dbcharset' ] ) ) {
+			if ( ! $this->mysqli->options( MYSQLI_INIT_COMMAND, 'SET NAMES ' . $args[ 'dbcharset' ] . ';' ) )
+				throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Setting of MySQLi init command "%s" failed', 'backwpup' ), 'SET NAMES ' . $args[ 'dbcharset' ] . ';' ) );
+		}
+
+		if ( ! $this->mysqli->options( MYSQLI_OPT_CONNECT_TIMEOUT, 5 ) )
+			throw new BackWPup_MySQLDump_Exception( __( 'Setting of MySQLi connection timeout failed', 'backwpup' ) );
+
 		//connect to Database
-		$this->mysqli = new mysqli( $args[ 'dbhost' ], $args[ 'dbuser' ], $args[ 'dbpassword' ], $args[ 'dbname' ], $args[ 'dbport' ], $args[ 'dbsocket' ] );
-		if ( $this->mysqli->connect_error )
-			throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Cannot connect to MySQL database %1$d: %2$s', 'backwpup' ), $this->mysqli->connect_errno, $this->mysqli->connect_error ) );
+		if ( ! $this->mysqli->real_connect( $args[ 'dbhost' ], $args[ 'dbuser' ], $args[ 'dbpassword' ], $args[ 'dbname' ], $args[ 'dbport' ], $args[ 'dbsocket' ] ) )
+			throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Cannot connect to MySQL database %1$d: %2$s', 'backwpup' ), mysqli_connect_errno(), mysqli_connect_error() ) );
 
 		//set charset
 		if ( ! empty( $args[ 'dbcharset' ] ) && method_exists( $this->mysqli, 'set_charset' ) ) {

@@ -107,5 +107,5 @@ abstract class BackWPup_JobTypes {
 	 * @param $job_object BackWPup_Job Object
 	 * @return bool
 	 */
-	abstract public function job_run( $job_object );
+	abstract public function job_run( &$job_object );
 }

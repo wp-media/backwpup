@@ -2,7 +2,7 @@
 Contributors: inpsyde, danielhuesken, Bueltge, nullbyte
 Tags: Amazon, Amazon S3, back up, backup, chinese, cloud, cloud files, database, db backup, dropbox, dump, file, french, ftp, ftps, german, migrate, multisite, russian, schedule, sftp, storage, S3, time, upload, xml
 Requires at least: 3.2
-Tested up to: 3.6.1
+Tested up to: 3.7
 Stable tag: 3.0.13
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -98,11 +98,6 @@ BackWPup performs a simple HTTP request to the server itself every time you clic
 = I get a fatal error: `Can not create folder: […]/wp-content/backwpup-[…]-logs in […]/wp-content/plugins/backwpup/inc/class-job.php …` =
 Please set CHMOD 775 on the /wp-content/ directory and refresh the BackWPup dashboard. If that doesn’t help, try CHMOD 777. You can revert it to 755 once BackWPup has created its folder.
 
-
-= I don’t see an option to configure Dropbox, S3 or other destinations. =
-If you don’t see those options in the Add new job->General tab, it is most likely your server running a PHP version below 5.3 or the PHP5-CURL extension is not installed.
-
-
 = Backup jobs are running forever! =
 Almost all web hosts have limited allowed script execution time on their servers. As a consequence, BackWPup might be “interrupted” in its job execution when executing the job takes longer than script execution is allowed for by the server (i.e. when the job requires to add a lot of files to a ZIP archive). Whenever BackWPup’s execution is stopped by the server, it waits 5 minutes before it tries to restart the job. If it is stopped again, it waits another five minutes. Those interruptions can then add up to what looks like 20-40 minutes of execution while really most of it is waiting time for a job to be restarted.
 
@@ -153,8 +148,6 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 * %H = Hour in 24-hour format, with leading zeros
 * %i = Two digit representation of the minute
 * %s = Two digit representation of the second
-* %u = Two digit representation of the microsecond
-* %U = [UNIX timestamp](http://www.php.net/manual/en/function.time.php) (seconds since January 1 1970 00:00:00 GMT)
 
 == Screenshots ==
 
@@ -193,10 +186,11 @@ Please check all settings after the update:
 * Improved: Required dependencies for destinations being displayed now
 * Improved: Displaying of error messages as error messages (red, not yellow)
 * Improved: Reduced size of vendor/SDK directory by 50%
-* Updated: AWS SDK to Version 2.4.4 (PHP 5.3.3+)
+* Updated: AWS SDK to Version 2.4.7 (PHP 5.3.3+)
 * Updated: RSC SDK to Version 1.5.10
 * Updated: SwiftMailer to Version 5.0.1
 * PRO: Wizards using a separate session handling now
+* PRO: Hash that BackWPup uses is changeable
 
 = Version 3.0.13 =
 * Improved: Redirect when accessing the WordPress backend

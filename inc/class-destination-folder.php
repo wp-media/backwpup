@@ -12,7 +12,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 
 		$upload_dir = wp_upload_dir();
 
-		return array( 'maxbackups' => 15, 'backupdir' => trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . substr( md5( md5( NONCE_SALT ) ),12 ,5 ) . '-backups/', 'backupsyncnodelete' => TRUE );
+		return array( 'maxbackups' => 15, 'backupdir' => trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . substr( BackWPup::get_plugin_data( 'hash' ),12 ,5 ) . '-backups/', 'backupsyncnodelete' => TRUE );
 	}
 
 
@@ -154,7 +154,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	 * @param $job_object
 	 * @return bool
 	 */
-	public function job_run_archive( $job_object ) {
+	public function job_run_archive( &$job_object ) {
 
 		$job_object->substeps_todo = 1;
 		if ( ! empty( $job_object->job[ 'jobid' ] ) )

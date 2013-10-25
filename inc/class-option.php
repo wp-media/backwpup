@@ -4,6 +4,56 @@
  */
 final class BackWPup_Option {
 
+	public function __construct() {
+
+		//add filter for site Option defaults
+		$this->default_site_options();
+	}
+
+	/**
+	 *
+	 * add filter for Site option defaults
+	 *
+	 */
+	public static function default_site_options() {
+
+		//global
+		add_filter( 'default_site_option_backwpup_version', create_function( '', 'return "0.0.0";') );
+		//job default
+		add_filter( 'default_site_option_backwpup_jobs', create_function( '', 'return array();') );
+		//general
+		add_filter( 'default_site_option_backwpup_cfg_showadminbar', create_function( '', 'return 0;') );
+		add_filter( 'default_site_option_backwpup_cfg_showfoldersize', create_function( '', 'return 0;') );
+		add_filter( 'default_site_option_backwpup_cfg_protectfolders', create_function( '', 'return 1;') );
+		//job
+		add_filter( 'default_site_option_backwpup_cfg_jobmaxexecutiontime', create_function( '', 'return 0;') );
+		add_filter( 'default_site_option_backwpup_cfg_jobziparchivemethod', create_function( '', 'return "";') );
+		add_filter( 'default_site_option_backwpup_cfg_jobstepretry', create_function( '', 'return 3;') );
+		add_filter( 'default_site_option_backwpup_cfg_jobsteprestart', create_function( '', 'return 0;') );
+		add_filter( 'default_site_option_backwpup_cfg_jobrunauthkey', create_function( '', 'return substr( BackWPup::get_plugin_data( "hash" ), 11, 8 );') );
+		add_filter( 'default_site_option_backwpup_cfg_jobnotranslate', create_function( '', 'return 0;') );
+		add_filter( 'default_site_option_backwpup_cfg_jobwaittimems', create_function( '', 'return 0;') );
+		//Logs
+		add_filter( 'default_site_option_backwpup_cfg_maxlogs', create_function( '', 'return 30;') );
+		add_filter( 'default_site_option_backwpup_cfg_gzlogs', create_function( '', 'return 0;') );
+		$upload_dir = wp_upload_dir();
+		$upload_dir = trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . substr( BackWPup::get_plugin_data( 'hash' ), 9, 5 ) . '-logs/';
+		add_filter( 'default_site_option_backwpup_cfg_logfolder', create_function( '', 'return "' . $upload_dir . '";' ) );
+		//Network Auth
+		add_filter( 'default_site_option_backwpup_cfg_httpauthuser', create_function( '', 'return "";') );
+		add_filter( 'default_site_option_backwpup_cfg_httpauthpassword', create_function( '', 'return "";') );
+		//API Keys
+		add_filter( 'default_site_option_backwpup_cfg_hash', create_function( '', 'return md5( md5( BackWPup::get_plugin_data( "mainfile" ) ) );') );
+		add_filter( 'default_site_option_backwpup_cfg_dropboxappkey', create_function( '', 'return base64_decode( "dHZkcjk1MnRhZnM1NmZ2" );') );
+		add_filter( 'default_site_option_backwpup_cfg_dropboxappsecret', create_function( '', 'return base64_decode( "OWV2bDR5MHJvZ2RlYmx1" );') );
+		add_filter( 'default_site_option_backwpup_cfg_dropboxsandboxappkey', create_function( '', 'return base64_decode( "cHVrZmp1a3JoZHR5OTFk" );') );
+		add_filter( 'default_site_option_backwpup_cfg_dropboxsandboxappsecret', create_function( '', 'return base64_decode( "eGNoYzhxdTk5eHE0eWdq" );') );
+		add_filter( 'default_site_option_backwpup_cfg_sugarsynckey', create_function( '', 'return base64_decode( "TlRBek1EY3lOakV6TkRrMk1URXhNemM0TWpJ" );') );
+		add_filter( 'default_site_option_backwpup_cfg_sugarsyncsecret', create_function( '', 'return base64_decode( "TkRFd01UazRNVEpqTW1Ga05EaG1NR0k1TVRFNFpqa3lPR1V6WlRVMk1tTQ==" );') );
+		add_filter( 'default_site_option_backwpup_cfg_sugarsyncappid', create_function( '', 'return "/sc/5030726/449_18207099";') );
+	}
+
+
 	/**
 	 *
 	 * Load BackWPup Options
@@ -25,7 +75,7 @@ final class BackWPup_Option {
 			}
 		}
 
-		return get_site_option( 'backwpup_jobs', array( ), $use_cache );
+		return get_site_option( 'backwpup_jobs', NULL, $use_cache );
 	}
 
 	/**
@@ -40,61 +90,6 @@ final class BackWPup_Option {
 		return update_site_option( 'backwpup_jobs', $options );
 	}
 
-	/**
-	 *
-	 * Get default option for BackWPup option
-	 *
-	 * @param string $group Option group
-	 * @param string $key   Option key
-	 *
-	 * @return bool|mixed
-	 */
-	public static function defaults( $group, $key ) {
-
-		$group = sanitize_key( trim( $group ) );
-		$key   = sanitize_key( trim( $key ) );
-
-		$upload_dir = wp_upload_dir();
-		$default[ 'cfg' ] = array();
-		//set defaults
-		if ( $group == 'cfg' ) { //for settings
-			//generel
-			$default[ 'cfg' ][ 'showadminbar' ]      = TRUE;
-			$default[ 'cfg' ][ 'showfoldersize' ]    = FALSE;
-			$default[ 'cfg' ][ 'protectfolders' ]    = TRUE;
-			//job
-			$default[ 'cfg' ][ 'jobmaxexecutiontime' ] = 0;
-			$default[ 'cfg' ][ 'jobziparchivemethod' ] = '';
-			$default[ 'cfg' ][ 'jobstepretry' ]      = 3;
-			$default[ 'cfg' ][ 'jobsteprestart' ]    = FALSE;
-			$default[ 'cfg' ][ 'jobrunauthkey' ]     = substr( md5( md5( SECURE_AUTH_KEY ) ), 11, 8 );
-			$default[ 'cfg' ][ 'jobnotranslate' ] 	 = FALSE;
-			$default[ 'cfg' ][ 'jobwaittimems' ] 	 = 0;
-			//Logs
-			$default[ 'cfg' ][ 'maxlogs' ]           = 30;
-			$default[ 'cfg' ][ 'gzlogs' ]            = FALSE;
-			$default[ 'cfg' ][ 'logfolder' ]         = trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . substr( md5( md5( SECURE_AUTH_KEY ) ), 9, 5 ) . '-logs/';
-			//Network Auth
-			$default[ 'cfg' ][ 'httpauthuser' ]      = '';
-			$default[ 'cfg' ][ 'httpauthpassword' ]  = '';
-			//API Keys
-			$default[ 'cfg' ][ 'dropboxappkey' ]     = base64_decode( 'dHZkcjk1MnRhZnM1NmZ2' );
-			$default[ 'cfg' ][ 'dropboxappsecret' ]  = base64_decode( 'OWV2bDR5MHJvZ2RlYmx1' );
-			$default[ 'cfg' ][ 'dropboxsandboxappkey' ]     = base64_decode( 'cHVrZmp1a3JoZHR5OTFk' );
-			$default[ 'cfg' ][ 'dropboxsandboxappsecret' ]  = base64_decode( 'eGNoYzhxdTk5eHE0eWdq' );
-			$default[ 'cfg' ][ 'sugarsynckey' ]     = base64_decode( 'TlRBek1EY3lOakV6TkRrMk1URXhNemM0TWpJ' );
-			$default[ 'cfg' ][ 'sugarsyncsecret' ]  = base64_decode( 'TkRFd01UazRNVEpqTW1Ga05EaG1NR0k1TVRFNFpqa3lPR1V6WlRVMk1tTQ==' );
-			$default[ 'cfg' ][ 'sugarsyncappid' ]   = '/sc/5030726/449_18207099';
-		}
-		//return defaults of main
-		if ( empty( $key ) )
-			return $default[ $group ];
-		//return one default setting
-		if ( isset( $default[ $group ][ $key ] ) )
-			return $default[ $group ][ $key ];
-		else
-			return FALSE;
-	}
 
 	/**
 	 *
@@ -123,7 +118,7 @@ final class BackWPup_Option {
 		$default[ 'mailerroronly' ]  = TRUE;
 		$default[ 'backuptype' ]     = 'archive';
 		$default[ 'archiveformat' ] = '.tar.gz';
-		$default[ 'archivename' ]    = 'backwpup_' . substr( md5( md5( SECURE_AUTH_KEY ) ), 15, 6 ). '_%Y-%m-%d_%H-%i-%s';
+		$default[ 'archivename' ]    = 'backwpup_' . substr( BackWPup::get_plugin_data( 'hash' ), 15, 6 ). '_%Y-%m-%d_%H-%i-%s';
 		//defaults vor destinations
 		foreach ( BackWPup::get_registered_destinations() as $dest_key => $dest ) {
 			if ( ! empty( $dest[ 'class' ] ) ) {
@@ -150,32 +145,24 @@ final class BackWPup_Option {
 	 *
 	 * Update a BackWPup option
 	 *
-	 * @param string|int $group      Option group or the job id
-	 * @param string     $key        Option key
+	 * @param int 		 $jobid      the job id
+	 * @param string     $option     Option key
 	 * @param mixed      $value      the value to store
 	 *
 	 * @return bool if option save or not
 	 */
-	public static function update( $group, $key, $value ) {
+	public static function update( $jobid, $option, $value ) {
 
-		$group = sanitize_key( trim( $group ) );
-		$key   = sanitize_key( trim( $key ) );
+		$jobid  = (int) $jobid;
+		$option = sanitize_key( trim( $option ) );
 
-		if ( empty( $group ) || empty( $key ) || $group == 'jobs' )
+		if ( empty( $jobid ) || empty( $option ) )
 			return FALSE;
 
 		//Update option
-		if ( is_numeric( $group ) ) { //update job option
-			$jobs_options = self::jobs_options( FALSE );
-			$group  = intval( $group );
-			$jobs_options[ $group ][ $key ] = $value;
-			return self::update_jobs_options( $jobs_options );
-		}
-		else {
-			return update_site_option( 'backwpup_' . $group . '_' . $key , $value );
-		}
-
-
+		$jobs_options = self::jobs_options( FALSE );
+		$jobs_options[ $jobid ][ $option ] = $value;
+		return self::update_jobs_options( $jobs_options );
 	}
 
 
@@ -183,35 +170,27 @@ final class BackWPup_Option {
 	 *
 	 * Get a BackWPup Option
 	 *
-	 * @param string|int $group      Option group or the job id
-	 * @param string     $key        Option key
-	 * @param mixed      $default    returned if no value, if null the the default BackWPup option will get
-	 * @param bool       $use_cache
-	 *
+	 * @param int    $jobid   Option the job id
+	 * @param string $option  Option key
+	 * @param mixed  $default returned if no value, if null the the default BackWPup option will get
+	 * @param bool   $use_cache USe the cache
 	 * @return bool|mixed        false if nothing can get else the option value
 	 */
-	public static function get( $group, $key, $default = NULL, $use_cache = TRUE ) {
+	public static function get( $jobid, $option, $default = NULL, $use_cache = TRUE ) {
 
-		$group = sanitize_key( trim( $group ) );
-		$key   = sanitize_key( trim( $key ) );
+		$jobid  = (int) $jobid;
+		$option = sanitize_key( trim( $option ) );
 
-		if ( empty( $group ) || empty( $key ) || $group == 'jobs' )
+		if ( empty( $jobid ) || empty( $option ) )
 			return FALSE;
 
-		if ( is_numeric( $group ) ) { //get job option
-			$jobs_options = self::jobs_options( $use_cache );
-			$group 		  = intval( $group );
-			if ( ! isset( $jobs_options[ $group ][ $key ] ) && isset( $default ) )
-				return $default;
-			elseif ( ! isset($jobs_options[ $group ][ $key ] ) )
-				return self::defaults_job( $key );
-			else
-				return $jobs_options[ $group ][ $key ];
-		}
-		else {
-			return get_site_option( 'backwpup_' . $group . '_' . $key , self::defaults( $group, $key ) , $use_cache );
-		}
-
+		$jobs_options = self::jobs_options( $use_cache );
+		if ( ! isset( $jobs_options[ $jobid ][ $option ] ) && isset( $default ) )
+			return $default;
+		elseif ( ! isset( $jobs_options[ $jobid ][ $option ] ) )
+			return self::defaults_job( $option );
+		else
+			return $jobs_options[ $jobid ][ $option ];
 	}
 
 	/**
@@ -239,29 +218,23 @@ final class BackWPup_Option {
 	 *
 	 * Delete a BackWPup Option
 	 *
-	 * @param string|int $group      Option group or the job id
-	 * @param string     $key        Option key
+	 * @param int 		 $jobid      the job id
+	 * @param string     $option     Option key
 	 *
 	 * @return bool deleted or not
 	 */
-	public static function delete( $group, $key ) {
+	public static function delete( $jobid, $option ) {
 
-		$group = sanitize_key( trim( $group ) );
-		$key   = sanitize_key( trim( $key ) );
+		$jobid  = (int) $jobid;
+		$option = sanitize_key( trim( $option ) );
 
-		if ( empty( $group ) || empty( $key ) || $group == 'jobs' )
+		if ( empty( $jobid ) || empty( $option ) )
 			return FALSE;
 
 		//delete option
-		if ( is_numeric( $group ) ) { //update job option
-			$jobs_options = self::jobs_options( FALSE );
-			$group = intval( $group );
-			unset( $jobs_options[ $group ][ $key ] );
-			return self::update_jobs_options( $jobs_options );
-		}
-		else {
-			return delete_site_option( 'backwpup_' . $group . '_' . $key );
-		}
+		$jobs_options = self::jobs_options( FALSE );
+		unset( $jobs_options[ $jobid ][ $option ] );
+		return self::update_jobs_options( $jobs_options );
 
 
 	}

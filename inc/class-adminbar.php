@@ -11,7 +11,7 @@ class BackWPup_Adminbar {
 	 */
 	private function __construct() {
 
-		if ( defined( 'DOING_CRON' )  || ! current_user_can( 'backwpup' ) || ! is_admin_bar_showing() || ! BackWPup_Option::get( 'cfg', 'showadminbar' ) )
+		if ( defined( 'DOING_CRON' )  || ! current_user_can( 'backwpup' ) || ! is_admin_bar_showing() || ! get_site_option( 'backwpup_cfg_showadminbar' ) )
 			return;
 
 		//load text domain
@@ -46,10 +46,9 @@ class BackWPup_Adminbar {
 		global $wp_admin_bar;
 		/* @var WP_Admin_Bar $wp_admin_bar */
 
-		$job_bool = BackWPup_Job::get_working_data( 'BOOL' );
 		$menu_title = '<span class="ab-icon"></span><span class="ab-label">' . BackWPup::get_plugin_data( 'name' ) . '</span>';
 		$menu_herf  = network_admin_url( 'admin.php' ) . '?page=backwpup';
-		if ( $job_bool && current_user_can( 'backwpup_jobs_start' ) ) {
+		if ( file_exists( BackWPup::get_plugin_data( 'running_file' ) ) && current_user_can( 'backwpup_jobs_start' ) ) {
 			$menu_title = '<span class="ab-icon"></span><span class="ab-label">' . BackWPup::get_plugin_data( 'name' )  . ' <span id="backwpup-adminbar-running">' .__( 'running', 'backwpupadminbar') . '</span></span>';
 			$menu_herf  = network_admin_url( 'admin.php' ) . '?page=backwpupjobs';
 		}
@@ -62,7 +61,7 @@ class BackWPup_Adminbar {
 										  'meta'  => array( 'title' => __( 'BackWPup', 'backwpupadminbar' ) )
 									 ) );
 
-		if ( $job_bool && current_user_can( 'backwpup_jobs_start' ) ) {
+		if ( file_exists( BackWPup::get_plugin_data( 'running_file' ) ) && current_user_can( 'backwpup_jobs_start' ) ) {
 			$wp_admin_bar->add_menu( array(
 										  'id'     => 'backwpup_working',
 										  'parent' => 'backwpup_jobs',

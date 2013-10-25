@@ -40,9 +40,9 @@ class BackWPup_Page_Logs extends WP_List_Table {
 
 		//load logs
 		$logfiles = array();
-		if ( $dir = @opendir( BackWPup_Option::get( 'cfg', 'logfolder' ) ) ) {
+		if ( $dir = @opendir( get_site_option( 'backwpup_cfg_logfolder' ) ) ) {
 			while ( ( $file = readdir( $dir ) ) !== FALSE ) {
-				if ( is_readable( BackWPup_Option::get( 'cfg', 'logfolder' ) . '/' . $file ) && ! is_link( BackWPup_Option::get( 'cfg', 'logfolder' ) . '/' . $file ) && ! is_dir( BackWPup_Option::get( 'cfg', 'logfolder' ) . '/' . $file ) && strstr( $file, 'backwpup_log_' ) && ( strstr( $file, '.html' ) || strstr( $file, '.html.gz' ) ) )
+				if ( is_readable( get_site_option( 'backwpup_cfg_logfolder' ) . '/' . $file ) && ! is_link( get_site_option( 'backwpup_cfg_logfolder' ) . '/' . $file ) && ! is_dir( get_site_option( 'backwpup_cfg_logfolder' ) . '/' . $file ) && strstr( $file, 'backwpup_log_' ) && ( strstr( $file, '.html' ) || strstr( $file, '.html.gz' ) ) )
 					$logfiles[ ] = $file;
 			}
 			closedir( $dir );
@@ -65,7 +65,7 @@ class BackWPup_Page_Logs extends WP_List_Table {
 		$this->items = array();
 		$j = 0;
 		for ( $i = $start; $i < $end; $i ++ ) {
-			$this->items[$j] = BackWPup_Job::read_logheader( BackWPup_Option::get( 'cfg', 'logfolder' ) . '/' . $logfiles[ $i ] );
+			$this->items[$j] = BackWPup_Job::read_logheader( get_site_option( 'backwpup_cfg_logfolder' ) . '/' . $logfiles[ $i ] );
 			$this->items[$j]['file'] = $logfiles[ $i ];
 			$j++;
 		}
@@ -252,8 +252,8 @@ class BackWPup_Page_Logs extends WP_List_Table {
 					check_admin_referer( 'bulk-logs' );
 					$num = 0;
 					foreach ( $_GET[ 'logfiles' ] as $logfile ) {
-						if ( is_writeable( BackWPup_Option::get( 'cfg', 'logfolder' ) . $logfile ) && ! is_dir( BackWPup_Option::get( 'cfg', 'logfolder' ) . $logfile ) && ! is_link( BackWPup_Option::get( 'cfg', 'logfolder' ) . $logfile ) )
-							unlink( BackWPup_Option::get( 'cfg', 'logfolder' ) . $logfile );
+						if ( is_writeable( get_site_option( 'backwpup_cfg_logfolder' ) . $logfile ) && ! is_dir( get_site_option( 'backwpup_cfg_logfolder' ) . $logfile ) && ! is_link( get_site_option( 'backwpup_cfg_logfolder' ) . $logfile ) )
+							unlink( get_site_option( 'backwpup_cfg_logfolder' ) . $logfile );
 						$num ++;
 					}
 				}
@@ -262,15 +262,15 @@ class BackWPup_Page_Logs extends WP_List_Table {
 				if ( ! current_user_can( 'backwpup_logs' ) )
 					break;
 				check_admin_referer( 'download-backup_' . $_GET[ 'file' ] );
-				if ( is_readable( BackWPup_Option::get( 'cfg', 'logfolder' ) . $_GET[ 'file' ] ) && ! is_dir( BackWPup_Option::get( 'cfg', 'logfolder' ) . $_GET[ 'file' ] ) && !is_link( BackWPup_Option::get( 'cfg', 'logfolder' ) . $_GET[ 'file' ] ) ) {
+				if ( is_readable( get_site_option( 'backwpup_cfg_logfolder' ) . $_GET[ 'file' ] ) && ! is_dir( get_site_option( 'backwpup_cfg_logfolder' ) . $_GET[ 'file' ] ) && !is_link( get_site_option( 'backwpup_cfg_logfolder' ) . $_GET[ 'file' ] ) ) {
 					header( "Pragma: public" );
 					header( "Expires: 0" );
 					header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
 					header( "Content-Type: application/force-download" );
-					header( "Content-Disposition: attachment; filename=" . BackWPup_Option::get( 'cfg', 'logfolder' ) . $_GET[ 'file' ] . ";" );
+					header( "Content-Disposition: attachment; filename=" . get_site_option( 'backwpup_cfg_logfolder' ) . $_GET[ 'file' ] . ";" );
 					header( "Content-Transfer-Encoding: binary" );
-					header( "Content-Length: " . filesize( BackWPup_Option::get( 'cfg', 'logfolder' ) . $_GET[ 'file' ] ) );
-					@readfile( BackWPup_Option::get( 'cfg', 'logfolder' ) . $_GET[ 'file' ] );
+					header( "Content-Length: " . filesize( get_site_option( 'backwpup_cfg_logfolder' ) . $_GET[ 'file' ] ) );
+					@readfile( get_site_option( 'backwpup_cfg_logfolder' ) . $_GET[ 'file' ] );
 					die();
 				}
 				else {
@@ -367,7 +367,7 @@ class BackWPup_Page_Logs extends WP_List_Table {
 		if ( ! current_user_can( 'backwpup_logs' ) )
 			die( -1 );
 		check_ajax_referer( 'view-logs' );
-		$log_file = BackWPup_Option::get( 'cfg', 'logfolder' ) . $_GET[ 'logfile' ];
+		$log_file = get_site_option( 'backwpup_cfg_logfolder' ) . $_GET[ 'logfile' ];
 		if ( ! is_readable( $log_file ) && ! is_readable( $log_file . '.gz' ) && ! is_readable( $log_file . '.bz2' ) )
 			die( -1 );
 		//change file end if not html helps if log file compression is on
@@ -378,8 +378,6 @@ class BackWPup_Page_Logs extends WP_List_Table {
 		//output file
 		if ( '.gz' == substr( $log_file, -3 ) )
 			echo file_get_contents( 'compress.zlib://' .$log_file, FALSE );
-		elseif ( '.bz2' == substr( $log_file, -4 ) )
-			echo file_get_contents( 'compress.bzip2://' . $log_file, FALSE );
 		else
 			echo file_get_contents( $log_file, FALSE );
 		die();

@@ -221,7 +221,7 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 	 * @param $job_object
 	 * @return bool
 	 */
-	public function job_run_archive( $job_object ) {
+	public function job_run_archive( &$job_object ) {
 
 		$job_object->substeps_todo = 2 + $job_object->backup_filesize;
 		$job_object->log( sprintf( __( '%d. Try to send backup to SugarSync&#160;&hellip;', 'backwpup' ), $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] ), E_USER_NOTICE );
@@ -248,7 +248,7 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 			//Upload to SugarSync
 			$job_object->substeps_done = 0;
 			$job_object->log( __( 'Starting upload to SugarSync&#160;&hellip;', 'backwpup' ), E_USER_NOTICE );
-			self::$backwpup_job_object = $job_object;
+			self::$backwpup_job_object = &$job_object;
 			$reponse = $sugarsync->upload( $job_object->backup_folder . $job_object->backup_file );
 			if ( is_object( $reponse ) ) {
 				if ( ! empty( $job_object->job[ 'jobid' ] ) )
@@ -489,8 +489,8 @@ class BackWPup_Destination_SugarSync_API {
 
 		$auth = '<?xml version="1.0" encoding="UTF-8" ?>';
 		$auth .= '<tokenAuthRequest>';
-		$auth .= '<accessKeyId>' . BackWPup_Option::get( 'cfg', 'sugarsynckey' ) . '</accessKeyId>';
-		$auth .= '<privateAccessKey>' . BackWPup_Option::get( 'cfg', 'sugarsyncsecret' ) . '</privateAccessKey>';
+		$auth .= '<accessKeyId>' . get_site_option( 'backwpup_cfg_sugarsynckey' ) . '</accessKeyId>';
+		$auth .= '<privateAccessKey>' . get_site_option( 'backwpup_cfg_sugarsyncsecret' ) . '</privateAccessKey>';
 		$auth .= '<refreshToken>' . trim( $this->refresh_token ) . '</refreshToken>';
 		$auth .= '</tokenAuthRequest>';
 		// init
@@ -549,9 +549,9 @@ class BackWPup_Destination_SugarSync_API {
 		$auth .= '<appAuthorization>';
 		$auth .= '<username>' . mb_convert_encoding( $email, 'UTF-8', $this->encoding ) . '</username>';
 		$auth .= '<password>' . mb_convert_encoding( $password, 'UTF-8', $this->encoding ) . '</password>';
-		$auth .= '<application>' . BackWPup_Option::get( 'cfg', 'sugarsyncappid' ) . '</application>';
-		$auth .= '<accessKeyId>' . BackWPup_Option::get( 'cfg', 'sugarsynckey' ) . '</accessKeyId>';
-		$auth .= '<privateAccessKey>' . BackWPup_Option::get( 'cfg', 'sugarsyncsecret' ) . '</privateAccessKey>';
+		$auth .= '<application>' . get_site_option( 'backwpup_cfg_sugarsyncappid' ) . '</application>';
+		$auth .= '<accessKeyId>' . get_site_option( 'backwpup_cfg_sugarsynckey' ) . '</accessKeyId>';
+		$auth .= '<privateAccessKey>' . get_site_option( 'backwpup_cfg_sugarsyncsecret' ) . '</privateAccessKey>';
 		$auth .= '</appAuthorization>';
 		// init
 		$curl = curl_init();
@@ -608,8 +608,8 @@ class BackWPup_Destination_SugarSync_API {
 		$auth .= '<user>';
 		$auth .= '<email>' . mb_convert_encoding( $email, 'UTF-8', $this->encoding ) . '</email>';
 		$auth .= '<password>' . mb_convert_encoding( $password, 'UTF-8', $this->encoding ) . '</password>';
-		$auth .= '<accessKeyId>' . BackWPup_Option::get( 'cfg', 'sugarsynckey' ) . '</accessKeyId>';
-		$auth .= '<privateAccessKey>' . BackWPup_Option::get( 'cfg', 'sugarsyncsecret' ) . '</privateAccessKey>';
+		$auth .= '<accessKeyId>' . get_site_option( 'backwpup_cfg_sugarsynckey' ) . '</accessKeyId>';
+		$auth .= '<privateAccessKey>' . get_site_option( 'backwpup_cfg_sugarsyncsecret' ) . '</privateAccessKey>';
 		$auth .= '</user>';
 		// init
 		$curl = curl_init();

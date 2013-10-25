@@ -83,10 +83,10 @@ class BackWPup_JobType_DBOptimize extends BackWPup_JobTypes {
 	 * @param $job_object
 	 * @return bool
 	 */
-	public function job_run( $job_object ) {
+	public function job_run( &$job_object ) {
 		global $wpdb;
 		/* @var wpdb $wpdb */
-		
+
 		$job_object->log( sprintf( __( '%d. Trying to optimize database&#160;&hellip;', 'backwpup' ), $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] ) );
 		if ( ! isset( $job_object->steps_data[ $job_object->step_working ][ 'DONETABLE' ] ) || ! is_array( $job_object->steps_data[ $job_object->step_working ][ 'DONETABLE' ] ) )
 			$job_object->steps_data[ $job_object->step_working ][ 'DONETABLE' ] = array();
@@ -95,9 +95,9 @@ class BackWPup_JobType_DBOptimize extends BackWPup_JobTypes {
 		$tables = array();
 		$tablestype = array();
 		$restables = $wpdb->get_results( 'SHOW FULL TABLES FROM `' . DB_NAME . '`', ARRAY_N );
-		foreach ( $restables as $table ) {		
-			if ( $job_object->job[ 'dboptimizewponly' ] && substr( $table[ 0 ], 0, strlen( $wpdb->prefix ) ) != $wpdb->prefix ) 
-				continue;		
+		foreach ( $restables as $table ) {
+			if ( $job_object->job[ 'dboptimizewponly' ] && substr( $table[ 0 ], 0, strlen( $wpdb->prefix ) ) != $wpdb->prefix )
+				continue;
 			$tables[ ]                 = $table[ 0 ];
 			$tablestype[ $table[ 0 ] ] = $table[ 1 ];
 		}

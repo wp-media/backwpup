@@ -116,7 +116,7 @@ return array (
             'documentationUrl' => 'http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadComplete.html',
             'data' => array(
                 'xmlRoot' => array(
-                    'name' => 'MultipartUpload',
+                    'name' => 'CompleteMultipartUpload',
                     'namespaces' => array(
                         'http://s3.amazonaws.com/doc/2006-03-01/',
                     ),
@@ -399,6 +399,7 @@ return array (
                         'us-west-1',
                         'us-west-2',
                         'ap-southeast-1',
+                        'ap-southeast-2',
                         'ap-northeast-1',
                         'sa-east-1',
                     ),
@@ -1898,6 +1899,7 @@ return array (
                         'http://s3.amazonaws.com/doc/2006-03-01/',
                     ),
                 ),
+                'xmlAllowEmpty' => true,
             ),
             'parameters' => array(
                 'Bucket' => array(
@@ -1906,7 +1908,6 @@ return array (
                     'location' => 'uri',
                 ),
                 'LoggingEnabled' => array(
-                    'required' => true,
                     'type' => 'object',
                     'location' => 'xml',
                     'properties' => array(
@@ -3001,7 +3002,7 @@ return array (
             'additionalProperties' => true,
             'properties' => array(
                 'DeleteMarker' => array(
-                    'type' => 'string',
+                    'type' => 'boolean',
                     'location' => 'header',
                     'sentAs' => 'x-amz-delete-marker',
                 ),
@@ -3530,7 +3531,7 @@ return array (
                     'location' => 'body',
                 ),
                 'DeleteMarker' => array(
-                    'type' => 'string',
+                    'type' => 'boolean',
                     'location' => 'header',
                     'sentAs' => 'x-amz-delete-marker',
                 ),
@@ -3718,7 +3719,7 @@ return array (
             'additionalProperties' => true,
             'properties' => array(
                 'DeleteMarker' => array(
-                    'type' => 'string',
+                    'type' => 'boolean',
                     'location' => 'header',
                     'sentAs' => 'x-amz-delete-marker',
                 ),
@@ -3873,6 +3874,10 @@ return array (
                     'type' => 'string',
                     'location' => 'xml',
                 ),
+                'Prefix' => array(
+                    'type' => 'string',
+                    'location' => 'xml',
+                ),
                 'NextUploadIdMarker' => array(
                     'type' => 'string',
                     'location' => 'xml',
@@ -3932,10 +3937,6 @@ return array (
                             ),
                         ),
                     ),
-                ),
-                'Prefix' => array(
-                    'type' => 'string',
-                    'location' => 'xml',
                 ),
                 'CommonPrefixes' => array(
                     'type' => 'array',

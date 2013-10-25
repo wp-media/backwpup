@@ -194,7 +194,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 	 * @param $job_object
 	 * @return bool
 	 */
-	public function job_run_archive( $job_object ) {
+	public function job_run_archive( &$job_object ) {
 
 		$job_object->substeps_todo = $job_object->backup_filesize + 2;
 

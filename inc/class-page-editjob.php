@@ -440,7 +440,7 @@ class BackWPup_Page_Editjob {
 								</legend><?php
 								foreach ( $job_types as $id => $typeclass ) {
 									$fileclass = '';
-									if ( call_user_func( array( $typeclass, 'creates_file' ) ) )
+									if ( $typeclass->creates_file() )
 										$fileclass = ' filetype';
 									echo '<label for="jobtype-select-' . strtolower( $id ) . '"><input class="jobtype-select checkbox' . $fileclass . '" id="jobtype-select-' . strtolower( $id ) . '" type="checkbox" ' . checked( TRUE, in_array( $id, BackWPup_Option::get( $jobid, 'type' ) ), FALSE ) . ' name="type[]" value="' . $id . '" /> ' . $typeclass->info[ 'description' ];
 									if ( ! empty( $typeclass->info[ 'help' ] ) )
@@ -497,8 +497,6 @@ class BackWPup_Page_Editjob {
 								__( '%H = Hour in 24-hour format, with leading zeros', 'backwpup' ),
 								__( '%i = Two digit representation of the minute', 'backwpup' ),
 								__( '%s = Two digit representation of the second', 'backwpup' ),
-								__( '%u = Two digit representation of the microsecond', 'backwpup' ),
-								__( '%U = UNIX timestamp (seconds since January 1 1970 00:00:00 GMT)', 'backwpup' ),
 							);
 
 							BackWPup_Help::tip(
@@ -506,8 +504,8 @@ class BackWPup_Page_Editjob {
 								. join( '<br />', $patterns )
 							);
 
-							$datevars    = array( '%d', '%j', '%m', '%n', '%Y', '%y', '%a', '%A', '%B', '%g', '%G', '%h', '%H', '%i', '%s', '%u', '%U' );
-							$datevalues  = array( date_i18n( 'd' ), date_i18n( 'j' ), date_i18n( 'm' ), date_i18n( 'n' ), date_i18n( 'Y' ), date_i18n( 'y' ), date_i18n( 'a' ), date_i18n( 'A' ), date_i18n( 'B' ), date_i18n( 'g' ), date_i18n( 'G' ), date_i18n( 'h' ), date_i18n( 'H' ), date_i18n( 'i' ), date_i18n( 's' ), date_i18n( 'u' ), date_i18n( 'U' ) );
+							$datevars    = array( '%d', '%j', '%m', '%n', '%Y', '%y', '%a', '%A', '%B', '%g', '%G', '%h', '%H', '%i', '%s' );
+							$datevalues  = array( date_i18n( 'd' ), date_i18n( 'j' ), date_i18n( 'm' ), date_i18n( 'n' ), date_i18n( 'Y' ), date_i18n( 'y' ), date_i18n( 'a' ), date_i18n( 'A' ), date_i18n( 'B' ), date_i18n( 'g' ), date_i18n( 'G' ), date_i18n( 'h' ), date_i18n( 'H' ), date_i18n( 'i' ), date_i18n( 's' ) );
 							$archivename = str_replace( $datevars, $datevalues, BackWPup_Option::get( $jobid, 'archivename' ) );
 							$archivename = sanitize_file_name( $archivename );
 							echo '<p>Preview: <code><span id="archivefilename">' . $archivename . '</span><span id="archiveformat">' . BackWPup_Option::get( $jobid, 'archiveformat' ) . '</span></code></p>';

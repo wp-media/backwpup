@@ -256,7 +256,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 	 * @param $job_object
 	 * @return bool
 	 */
-	public function job_run_archive( $job_object ) {
+	public function job_run_archive( &$job_object ) {
 
 		$job_object->substeps_todo = 2 + $job_object->backup_filesize;
 		$job_object->substeps_done = 0;
@@ -290,7 +290,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			$job_object->substeps_done    = 0;
 			$job_object->log( __( 'Upload to Rackspace cloud started &hellip;', 'backwpup' ), E_USER_NOTICE );
 
-			self::$backwpup_job_object = $job_object;
+			self::$backwpup_job_object = &$job_object;
 
 			$backupfile = $container->DataObject();
 			$uploded = $backupfile->Create( array(

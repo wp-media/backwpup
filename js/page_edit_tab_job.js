@@ -325,8 +325,6 @@ jQuery(document).ready(function ($) {
 		filename = filename.replace( '%H', date( 'H' ) );
 		filename = filename.replace( '%i', date( 'i' ) );
 		filename = filename.replace( '%s', date( 's' ) );
-		filename = filename.replace( '%u', date( 'u' ) );
-		filename = filename.replace( '%U', date( 'U' ) );
         $('#archivefilename').replaceWith('<span id="archivefilename">' + backwpup_htmlspecialchars( filename ) + '</span>');
     });
 

@@ -1,5 +1,5 @@
 <?php
-// Amazon S3 SDK v2.4.4
+// Amazon S3 SDK v2.4.7
 // http://aws.amazon.com/de/sdkforphp2/
 // https://github.com/aws/aws-sdk-php
 include_once BackWPup::get_plugin_data( 'PluginDir' ) . '/vendor/autoloader.php';
@@ -350,7 +350,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 	 * @param $job_object
 	 * @return bool
 	 */
-	public function job_run_archive( $job_object ) {
+	public function job_run_archive( &$job_object ) {
 
 		$job_object->substeps_todo = 2 + $job_object->backup_filesize;
 		if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] != $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] )
@@ -375,8 +375,23 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 					return TRUE;
 				}
 
+				if ( $job_object->job[ 's3multipart' ] ) {
+					//Check for aboded Multipart Uploads
+					$job_object->log( __( 'Checking for not aborted multipart Uploads&#160;&hellip;', 'backwpup' ) );
+					$multipart_uploads = $s3->listMultipartUploads( array( 	'Bucket' => $job_object->job[ 's3bucket' ] ) );
+					$uploads = $multipart_uploads->get( 'Uploads' );
+					if ( ! empty( $uploads ) ) {
+						foreach( $uploads as $upload ) {
+							if ( empty( $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ] ) || $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ] != $upload[ 'UploadId' ] ) {
+								$s3->abortMultipartUpload( array( 'Bucket' => $job_object->job[ 's3bucket' ], 'Key' => $upload[ 'Key' ], 'UploadId' => $upload[ 'UploadId' ] ) );
+								$job_object->log( sprintf( __( 'Upload for %s aborted.', 'backwpup' ), $upload[ 'Key' ] ) );
+							}
+						}
+					}
+				}
+
 				//transfer file to S3
-				$job_object->log( __( 'Starting upload to S3 Service&#160;&hellip;', 'backwpup' ), E_USER_NOTICE );
+				$job_object->log( __( 'Starting upload to S3 Service&#160;&hellip;', 'backwpup' ) );
 			}
 
 

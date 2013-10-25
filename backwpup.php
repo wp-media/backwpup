@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.0.14-beta
+ * Version: 3.0.14-beta2
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -68,6 +68,8 @@ if ( ! class_exists( 'BackWPup' ) ) {
 				return;
 			//auto loader
 			spl_autoload_register( array( $this, 'autoloader' ) );
+			//Options
+			new BackWPup_Option();
 			//start upgrade if needed
 			if ( get_site_option( 'backwpup_version' ) != self::get_plugin_data( 'Version' ) && class_exists( 'BackWPup_Install' ) )
 				BackWPup_Install::activate();
@@ -151,13 +153,16 @@ if ( ! class_exists( 'BackWPup' ) ) {
 				self::$plugin_data[ 'basename' ] = plugin_basename( dirname( __FILE__ ) );
 				self::$plugin_data[ 'mainfile' ] = __FILE__ ;
 				self::$plugin_data[ 'plugindir' ] = untrailingslashit( dirname( __FILE__ ) ) ;
+				self::$plugin_data[ 'hash' ] = get_site_option( 'backwpup_cfg_hash' );
+				if ( strlen( self::$plugin_data[ 'hash' ] ) != 32 )
+					delete_site_option( 'backwpup_cfg_hash' );
 				if ( defined( 'WP_TEMP_DIR' ) && is_dir( WP_TEMP_DIR ) ) {
-					self::$plugin_data[ 'temp' ] = trailingslashit( str_replace( '\\', '/', WP_TEMP_DIR ) ) . 'backwpup-' . substr( md5( md5( SECURE_AUTH_KEY ) ), - 5 ) . '/';
+					self::$plugin_data[ 'temp' ] = trailingslashit( str_replace( '\\', '/', realpath( WP_TEMP_DIR ) ) . '/backwpup-' . substr( self::$plugin_data[ 'hash' ], - 5 ) );
 				} else {
 					$upload_dir = wp_upload_dir();
-					self::$plugin_data[ 'temp' ] = trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . substr( md5( md5( SECURE_AUTH_KEY ) ), - 5 ) . '-temp/';
+					self::$plugin_data[ 'temp' ] = trailingslashit( str_replace( '\\', '/', realpath( $upload_dir[ 'basedir' ] ) ) . '/backwpup-' . substr( self::$plugin_data[ 'hash' ], - 5 ) . '-temp' );
 				}
-				self::$plugin_data[ 'running_file' ] = self::$plugin_data[ 'temp' ] . 'backwpup-' . substr( md5( NONCE_SALT ), 13, 6 ) . '-working.json';
+				self::$plugin_data[ 'running_file' ] = self::$plugin_data[ 'temp' ] . 'backwpup-' . substr( self::$plugin_data[ 'hash' ], 13, 6 ) . '-working.php';
 				self::$plugin_data[ 'url' ] = plugins_url( '', __FILE__ );
 				//get unmodified WP Versions
 				include ABSPATH . WPINC . '/version.php';
@@ -202,7 +207,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 		public function plugin_init() {
 
 			//Add Admin Bar
-			if ( ! defined( 'DOING_CRON' ) && current_user_can( 'backwpup' ) && current_user_can( 'backwpup' ) && is_admin_bar_showing() && get_site_option( 'backwpup_cfg_showadminbar', FALSE ) )
+			if ( ! defined( 'DOING_CRON' ) && current_user_can( 'backwpup' ) && current_user_can( 'backwpup' ) && is_admin_bar_showing() && get_site_option( 'backwpup_cfg_showadminbar' ) )
 				BackWPup_Adminbar::get_instance();
 		}
 

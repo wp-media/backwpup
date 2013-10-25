@@ -45,44 +45,53 @@ class BackWPup_Page_Settings {
 
 		//set default options if button clicked
 		if ( isset( $_POST[ 'default_settings' ] ) && $_POST[ 'default_settings' ] ) {
-			$default_cfg = BackWPup_Option::defaults( 'cfg', null );
-			foreach( $default_cfg as $optionkey => $option ) {
-				if ( $option == FALSE )
-					unset( $_POST[ $optionkey ] );
-				else
-					$_POST[ $optionkey ] = $option;
-			}
+
+			delete_site_option( 'backwpup_cfg_showadminbar' );
+			delete_site_option( 'backwpup_cfg_showfoldersize' );
+			delete_site_option( 'backwpup_cfg_jobsteprestart' );
+			delete_site_option( 'backwpup_cfg_jobstepretry' );
+			delete_site_option( 'backwpup_cfg_jobmaxexecutiontime' );
+			delete_site_option( 'backwpup_cfg_jobziparchivemethod' );
+			delete_site_option( 'backwpup_cfg_jobnotranslate' );
+			delete_site_option( 'backwpup_cfg_jobwaittimems' );
+			delete_site_option( 'backwpup_cfg_maxlogs' );
+			delete_site_option( 'backwpup_cfg_gzlogs' );
+			delete_site_option( 'backwpup_cfg_protectfolders' );
+			delete_site_option( 'backwpup_cfg_httpauthuser' );
+			delete_site_option( 'backwpup_cfg_httpauthpassword' );
+			delete_site_option( 'backwpup_cfg_logfolder' );
+
 			BackWPup_Admin::message( __( 'Settings reset to default', 'backwpup' ) );
+			return;
 		}
 
-		BackWPup_Option::update( 'cfg', 'showadminbar', isset( $_POST[ 'showadminbar' ] ) ? TRUE : FALSE );
-		BackWPup_Option::update( 'cfg', 'showfoldersize', isset( $_POST[ 'showfoldersize' ] ) ? TRUE : FALSE );
-		BackWPup_Option::update( 'cfg', 'jobsteprestart', isset( $_POST[ 'jobsteprestart' ] ) ? TRUE : FALSE );
+		update_site_option( 'backwpup_cfg_showadminbar', isset( $_POST[ 'showadminbar' ] ) ? 1 : 0 );
+		update_site_option( 'backwpup_cfg_showfoldersize', isset( $_POST[ 'showfoldersize' ] ) ? 1 : 0 );
+		update_site_option( 'backwpup_cfg_jobsteprestart', isset( $_POST[ 'jobsteprestart' ] ) ? 1 : 0 );
 		if ( 100 > $_POST[ 'jobstepretry' ] && 0 < $_POST[ 'jobstepretry' ] )
 			$_POST[ 'jobstepretry' ] = (int)$_POST[ 'jobstepretry' ];
 		if ( empty( $_POST[ 'jobstepretry' ] ) or ! is_int( $_POST[ 'jobstepretry' ] ) )
 			$_POST[ 'jobstepretry' ] = 3;
-		BackWPup_Option::update( 'cfg', 'jobstepretry', $_POST[ 'jobstepretry' ] );
-		BackWPup_Option::update( 'cfg', 'jobmaxexecutiontime', abs( (int) $_POST[ 'jobmaxexecutiontime' ] ) );
-		BackWPup_Option::update( 'cfg', 'jobziparchivemethod', ( $_POST[ 'jobziparchivemethod' ] == '' || $_POST[ 'jobziparchivemethod' ] == 'PclZip' || $_POST[ 'jobziparchivemethod' ] == 'ZipArchive' ) ? $_POST[ 'jobziparchivemethod' ] : '' );
-		BackWPup_Option::update( 'cfg', 'jobnotranslate', isset( $_POST[ 'jobnotranslate' ] ) ? TRUE : FALSE );
-		BackWPup_Option::update( 'cfg', 'jobwaittimems', $_POST[ 'jobwaittimems' ] );
-		BackWPup_Option::update( 'cfg', 'maxlogs', abs( (int)$_POST[ 'maxlogs' ] ) );
-		BackWPup_Option::update( 'cfg', 'gzlogs', isset( $_POST[ 'gzlogs' ] ) ? TRUE : FALSE );
-		BackWPup_Option::update( 'cfg', 'protectfolders', isset( $_POST[ 'protectfolders' ] ) ? TRUE : FALSE );
-		BackWPup_Option::update( 'cfg', 'httpauthuser', $_POST[ 'httpauthuser' ] );
-		BackWPup_Option::update( 'cfg', 'httpauthpassword', BackWPup_Encryption::encrypt( $_POST[ 'httpauthpassword' ] ) );
+		update_site_option( 'backwpup_cfg_jobstepretry', $_POST[ 'jobstepretry' ] );
+		update_site_option( 'backwpup_cfg_jobmaxexecutiontime', abs( (int) $_POST[ 'jobmaxexecutiontime' ] ) );
+		update_site_option( 'backwpup_cfg_jobziparchivemethod', ( $_POST[ 'jobziparchivemethod' ] == '' || $_POST[ 'jobziparchivemethod' ] == 'PclZip' || $_POST[ 'jobziparchivemethod' ] == 'ZipArchive' ) ? $_POST[ 'jobziparchivemethod' ] : '' );
+		update_site_option( 'backwpup_cfg_jobnotranslate', isset( $_POST[ 'jobnotranslate' ] ) ? 1 : 0 );
+		update_site_option( 'backwpup_cfg_jobwaittimems', $_POST[ 'jobwaittimems' ] );
+		update_site_option( 'backwpup_cfg_maxlogs', abs( (int)$_POST[ 'maxlogs' ] ) );
+		update_site_option( 'backwpup_cfg_gzlogs', isset( $_POST[ 'gzlogs' ] ) ? 1 : 0 );
+		update_site_option( 'backwpup_cfg_protectfolders', isset( $_POST[ 'protectfolders' ] ) ? 1 : 0 );
+		update_site_option( 'backwpup_cfg_httpauthuser', $_POST[ 'httpauthuser' ] );
+		update_site_option( 'backwpup_cfg_httpauthpassword', BackWPup_Encryption::encrypt( $_POST[ 'httpauthpassword' ] ) );
 		$_POST[ 'jobrunauthkey' ] = preg_replace( '/[^a-zA-Z0-9]/', '', trim( $_POST[ 'jobrunauthkey' ] ) );
-		BackWPup_Option::update( 'cfg', 'jobrunauthkey', $_POST[ 'jobrunauthkey' ] );
+		update_site_option( 'backwpup_cfg_jobrunauthkey', $_POST[ 'jobrunauthkey' ] );
 		$_POST[ 'logfolder' ] = trailingslashit( str_replace( '\\', '/', trim( stripslashes( $_POST[ 'logfolder' ] ) ) ) );
 		if ( $_POST[ 'logfolder' ][ 0 ] == '.' || ( $_POST[ 'logfolder' ][ 0 ] != '/' && ! preg_match( '#^[a-zA-Z]:/#', $_POST[ 'logfolder' ] ) ) )
 			$_POST[ 'logfolder' ] = trailingslashit( str_replace( '\\', '/', ABSPATH ) ) . $_POST[ 'logfolder' ];
 		//set def. folders
-		if ( empty( $_POST[ 'logfolder' ] ) || $_POST[ 'logfolder' ] == '/' ) {
-			$upload_dir = wp_upload_dir();
-			$_POST[ 'logfolder' ] = trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . substr( md5( md5( SECURE_AUTH_KEY ) ), 9, 5 ) . '-logs/';
-		}
-		BackWPup_Option::update( 'cfg', 'logfolder', $_POST[ 'logfolder' ] );
+		if ( empty( $_POST[ 'logfolder' ] ) || $_POST[ 'logfolder' ] == '/' )
+			delete_site_option( 'backwpup_cfg_logfolder' );
+		else
+			update_site_option( 'backwpup_cfg_logfolder', $_POST[ 'logfolder' ] );
 
 		do_action( 'backwpup_page_settings_save' );
 
@@ -128,7 +137,7 @@ class BackWPup_Page_Settings {
                             </legend>
                             <label for="showadminbar">
                                 <input name="showadminbar" type="checkbox" id="showadminbar"
-                                       value="1" <?php checked( BackWPup_Option::get( 'cfg', 'showadminbar' ), TRUE ); ?> />
+                                       value="1" <?php checked( get_site_option( 'backwpup_cfg_showadminbar' ), TRUE ); ?> />
 								<?php _e( 'Show BackWPup links in admin bar.', 'backwpup' ); ?></label>
                         </fieldset>
                     </td>
@@ -141,7 +150,7 @@ class BackWPup_Page_Settings {
                             </legend>
                             <label for="showfoldersize">
                                 <input name="showfoldersize" type="checkbox" id="showfoldersize"
-                                       value="1" <?php checked( BackWPup_Option::get( 'cfg', 'showfoldersize' ), TRUE ); ?> />
+                                       value="1" <?php checked( get_site_option( 'backwpup_cfg_showfoldersize' ), TRUE ); ?> />
 								<?php _e( 'Display folder sizes on Files tab if job edited. (Might increase loading time of Files tab.)', 'backwpup' ); ?></label>
                         </fieldset>
                     </td>
@@ -158,7 +167,7 @@ class BackWPup_Page_Settings {
                             </legend>
                             <label for="protectfolders">
                                 <input name="protectfolders" type="checkbox" id="protectfolders"
-                                       value="1" <?php checked( BackWPup_Option::get( 'cfg', 'protectfolders' ), TRUE ); ?> />
+                                       value="1" <?php checked( get_site_option( 'backwpup_cfg_protectfolders' ), TRUE ); ?> />
 								<?php _e( 'Protect BackWPup folders ( Temp, Log and Backups ) with <code>.htaccess</code> and <code>index.php</code>', 'backwpup' ); ?>
                             </label>
                         </fieldset>
@@ -178,7 +187,7 @@ class BackWPup_Page_Settings {
                     <th scope="row"><label for="logfolder"><?php _e( 'Log file folder', 'backwpup' ); ?></label></th>
                     <td>
                         <input name="logfolder" type="text" id="logfolder"
-                               value="<?php echo BackWPup_Option::get( 'cfg', 'logfolder' );?>"
+                               value="<?php echo get_site_option( 'backwpup_cfg_logfolder' );?>"
                                class="regular-text code"/>
                     </td>
                 </tr>
@@ -187,7 +196,7 @@ class BackWPup_Page_Settings {
                     </th>
                     <td>
                         <input name="maxlogs" type="text" id="maxlogs"
-                               value="<?php echo BackWPup_Option::get( 'cfg', 'maxlogs' );?>" class="small-text code"/>
+                               value="<?php echo get_site_option( 'backwpup_cfg_maxlogs' );?>" class="small-text code"/>
 						<?php BackWPup_Help::tip( __( 'Oldest files will be deleted first.', 'backwpup' ) ); ?>
                     </td>
                 </tr>
@@ -199,7 +208,7 @@ class BackWPup_Page_Settings {
                             </legend>
                             <label for="gzlogs">
                                 <input name="gzlogs" type="checkbox" id="gzlogs"
-                                       value="1" <?php checked( BackWPup_Option::get( 'cfg', 'gzlogs' ), TRUE ); ?><?php if ( ! function_exists( 'gzopen' ) ) echo " disabled=\"disabled\""; ?> />
+                                       value="1" <?php checked( get_site_option( 'backwpup_cfg_gzlogs' ), TRUE ); ?><?php if ( ! function_exists( 'gzopen' ) ) echo " disabled=\"disabled\""; ?> />
 								<?php _e( 'Compress log files with GZip.', 'backwpup' ); ?></label>
                         </fieldset>
                     </td>
@@ -216,7 +225,7 @@ class BackWPup_Page_Settings {
                         <label for="jobstepretry"><?php _e( "Maximum number of retries for job steps", 'backwpup' ); ?></label></th>
                     <td>
                         <input name="jobstepretry" type="text" id="jobstepretry"
-                               value="<?php echo BackWPup_Option::get( 'cfg', 'jobstepretry' );?>"
+                               value="<?php echo get_site_option( 'backwpup_cfg_jobstepretry' );?>"
                                class="small-text code" />
                     </td>
                 </tr>
@@ -228,7 +237,7 @@ class BackWPup_Page_Settings {
                             </legend>
                             <label for="jobsteprestart">
                                 <input name="jobsteprestart" type="checkbox" id="jobsteprestart"
-                                       value="1" <?php checked( BackWPup_Option::get( 'cfg', 'jobsteprestart' ), TRUE ); ?> />
+                                       value="1" <?php checked( get_site_option( 'backwpup_cfg_jobsteprestart' ), TRUE ); ?> />
 								<?php _e( 'Restart the job on every main step on a running job', 'backwpup' ); ?>
 								<?php BackWPup_Help::tip( __( 'The job will be restarted on every main step, if last restart longer ago as 3 secounds. This is to prevent running in an execution time out. This will not work on cli run. If <code>ALTERNATE_WP_CRON</code> has been defined, WordPress Cron will be used.', 'backwpup' ) ); ?>
 							</label>
@@ -243,7 +252,7 @@ class BackWPup_Page_Settings {
                             </legend>
                             <label for="jobmaxexecutiontime">
                                 <input name="jobmaxexecutiontime" type="text" id="jobmaxexecutiontime" size="3"
-                                       value="<?php echo BackWPup_Option::get( 'cfg', 'jobmaxexecutiontime' ); ?>"  />
+                                       value="<?php echo get_site_option( 'backwpup_cfg_jobmaxexecutiontime' ); ?>"  />
 								<?php _e( 'seconds. 0 = disabled.', 'backwpup' ); ?>
 								<?php BackWPup_Help::tip( __( 'The job will be restarted bevor hitting maximum execution time. This will not work on cli run and not on all job steps. If <code>ALTERNATE_WP_CRON</code> has been defined, WordPress Cron will be used.', 'backwpup' ) ); ?>
 							</label>
@@ -258,9 +267,9 @@ class BackWPup_Page_Settings {
                             </legend>
                             <label for="jobziparchivemethod">
 								<select name="jobziparchivemethod" size="1">
-									<option value="" <?php selected( BackWPup_Option::get( 'cfg', 'jobziparchivemethod' ), '' ); ?>><?php _e( 'Auto', 'backwpup' ); ?></option>
-                                    <option value="ZipArchive" <?php selected( BackWPup_Option::get( 'cfg', 'jobziparchivemethod' ), 'ZipArchive' ); ?><?php disabled( function_exists( 'ZipArchive' ), TRUE ); ?>><?php _e( 'ZipArchive', 'backwpup' ); ?></option>
-                                    <option value="PclZip" <?php selected( BackWPup_Option::get( 'cfg', 'jobziparchivemethod' ), 'PclZip' ); ?>><?php _e( 'PclZip', 'backwpup' ); ?></option>
+									<option value="" <?php selected( get_site_option( 'backwpup_cfg_jobziparchivemethod' ), '' ); ?>><?php _e( 'Auto', 'backwpup' ); ?></option>
+                                    <option value="ZipArchive" <?php selected( get_site_option( 'backwpup_cfg_jobziparchivemethod' ), 'ZipArchive' ); ?><?php disabled( function_exists( 'ZipArchive' ), TRUE ); ?>><?php _e( 'ZipArchive', 'backwpup' ); ?></option>
+                                    <option value="PclZip" <?php selected( get_site_option( 'backwpup_cfg_jobziparchivemethod' ), 'PclZip' ); ?>><?php _e( 'PclZip', 'backwpup' ); ?></option>
                                 </select>
                             </label>
 							<?php BackWPup_Help::tip( __( 'Auto = Uses PHP class ZipArchive if available; otherwise uses PclZip.<br />ZipArchive = Uses less memory, but many open files at a time.<br />PclZip = Uses more memory, but only 2 open files at a time.', 'backwpup' ) ); ?>
@@ -273,7 +282,7 @@ class BackWPup_Page_Settings {
                     </th>
                     <td>
                         <input name="jobrunauthkey" type="text" id="jobrunauthkey"
-                               value="<?php echo BackWPup_Option::get( 'cfg', 'jobrunauthkey' );?>" class="text code"/>
+                               value="<?php echo get_site_option( 'backwpup_cfg_jobrunauthkey' );?>" class="text code"/>
 						<?php BackWPup_Help::tip( __( 'empty = deactivated. Will be used to protect job starts from unauthorized persons.', 'backwpup' ) ); ?>
                     </td>
                 </tr>
@@ -285,7 +294,7 @@ class BackWPup_Page_Settings {
                             </legend>
                             <label for="jobnotranslate">
                                 <input name="jobnotranslate" type="checkbox" id="jobnotranslate"
-                                       value="1" <?php checked( BackWPup_Option::get( 'cfg', 'jobnotranslate' ), TRUE ); ?> />
+                                       value="1" <?php checked( get_site_option( 'backwpup_cfg_jobnotranslate' ), TRUE ); ?> />
 								<?php _e( 'No translation for the job, the log will be written in English', 'backwpup' ); ?>
                             </label>
                         </fieldset>
@@ -299,10 +308,10 @@ class BackWPup_Page_Settings {
                             </legend>
                             <label for="jobwaittimems">
 								<select name="jobwaittimems" size="1">
-									<option value="0" <?php selected( BackWPup_Option::get( 'cfg', 'jobwaittimems' ), 0 ); ?>><?php _e( 'disabled', 'backwpup' ); ?></option>
-                                    <option value="10000" <?php selected( BackWPup_Option::get( 'cfg', 'jobwaittimems' ), 10000 ); ?>><?php _e( 'minimum', 'backwpup' ); ?></option>
-                                    <option value="30000" <?php selected( BackWPup_Option::get( 'cfg', 'jobwaittimems' ), 30000 ); ?>><?php _e( 'medium', 'backwpup' ); ?></option>
-                                    <option value="90000" <?php selected( BackWPup_Option::get( 'cfg', 'jobwaittimems' ), 90000 ); ?>><?php _e( 'maximum', 'backwpup' ); ?></option>
+									<option value="0" <?php selected( get_site_option( 'backwpup_cfg_jobwaittimems' ), 0 ); ?>><?php _e( 'disabled', 'backwpup' ); ?></option>
+                                    <option value="10000" <?php selected( get_site_option( 'backwpup_cfg_jobwaittimems' ), 10000 ); ?>><?php _e( 'minimum', 'backwpup' ); ?></option>
+                                    <option value="30000" <?php selected( get_site_option( 'backwpup_cfg_jobwaittimems' ), 30000 ); ?>><?php _e( 'medium', 'backwpup' ); ?></option>
+                                    <option value="90000" <?php selected( get_site_option( 'backwpup_cfg_jobwaittimems' ), 90000 ); ?>><?php _e( 'maximum', 'backwpup' ); ?></option>
                                 </select>
                             </label>
 							<?php BackWPup_Help::tip( __( 'This adds short pauses to the process. Can be used to reduce the CPU load. Disabled = off, minimum = shortest sleep, maximum = longest sleep', 'backwpup' ) ); ?>
@@ -322,7 +331,7 @@ class BackWPup_Page_Settings {
                     <th scope="row"><label for="httpauthuser"><?php _e( 'Username:', 'backwpup' ); ?></label></th>
                     <td>
                         <input name="httpauthuser" type="text" id="httpauthuser"
-                               value="<?php echo BackWPup_Option::get( 'cfg', 'httpauthuser' );?>"
+                               value="<?php echo get_site_option( 'backwpup_cfg_httpauthuser' );?>"
                                class="regular-text" autocomplete="off" />
                     </td>
                 </tr>
@@ -330,7 +339,7 @@ class BackWPup_Page_Settings {
                     <th scope="row"><label for="httpauthpassword"><?php _e( 'Password:', 'backwpup' ); ?></label></th>
                     <td>
                         <input name="httpauthpassword" type="password" id="httpauthpassword"
-                               value="<?php echo BackWPup_Encryption::decrypt( BackWPup_Option::get( 'cfg', 'httpauthpassword' ) );?>"
+                               value="<?php echo BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_httpauthpassword' ) );?>"
                                class="regular-text" autocomplete="off" />
                 </tr>
             </table>
@@ -367,17 +376,18 @@ class BackWPup_Page_Settings {
 			echo '<tr title=""><td>' . __( 'WP-Cron url:', 'backwpup' ) . '</td><td>' . site_url( 'wp-cron.php' ) . '</td></tr>';
 			//response test
 			$wp_admin_user = get_users( array( 'role' => 'administrator', 'number' => 1 ) );
-			$raw_response = wp_remote_get( site_url( 'wp-cron.php?backwpup_run=test' ), array(
-																							   'blocking'   => TRUE,
-																							   'sslverify'  => FALSE,
-																							   'timeout' 	=> 15,
-																							   'redirection' => 0,
-																							   'headers'    => array( 'Authorization' => 'Basic ' . base64_encode( BackWPup_Option::get( 'cfg', 'httpauthuser' ) . ':' . BackWPup_Encryption::decrypt( BackWPup_Option::get( 'cfg', 'httpauthpassword' ) ) ) ),
-																							   'cookies'    => array(
-																								   new WP_Http_Cookie( array( 'name' => AUTH_COOKIE, 'value' => wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, time() + 300, 'auth' ) ) ),
-																								   new WP_Http_Cookie( array( 'name' => LOGGED_IN_COOKIE, 'value' => wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, time() + 300, 'logged_in' ) ) )
-																							   ),
-																							   'user-agent' =>  BackWPup::get_plugin_data( 'user-agent' ) ) );
+			$args = array( 'blocking'   => TRUE,
+						   'sslverify'  => FALSE,
+						   'timeout' 	=> 15,
+						   'redirection' => 3,
+						   'cookies'    => array(
+							   new WP_Http_Cookie( array( 'name' => AUTH_COOKIE, 'value' => wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, time() + 300, 'auth' ) ) ),
+							   new WP_Http_Cookie( array( 'name' => LOGGED_IN_COOKIE, 'value' => wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, time() + 300, 'logged_in' ) ) )
+						   ),
+						   'user-agent' => BackWPup::get_plugin_data( 'user-agent' ) );
+			if ( get_site_option( 'backwpup_cfg_httpauthuser' ) && get_site_option( 'backwpup_cfg_httpauthpassword' )  )
+				$args[ 'headers' ][ 'Authorization' ] = 'Basic ' . base64_encode( get_site_option( 'backwpup_cfg_httpauthuser' ) . ':' . BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_httpauthpassword' ) ) );
+			$raw_response = wp_remote_get( site_url( 'wp-cron.php?backwpup_run=test' ), $args );
 			echo '<tr><td>' . __( 'Server self connect:', 'backwpup' ) . '</td><td>';
 			$test_result = '';
 			if ( is_wp_error( $raw_response ) )
@@ -404,14 +414,14 @@ class BackWPup_Page_Settings {
 				echo BackWPup::get_plugin_data( 'TEMP' );
 			echo '</td></tr>';
 
-			BackWPup_Job::check_folder(  BackWPup_Option::get( 'cfg', 'logfolder' ) );
+			BackWPup_Job::check_folder(  get_site_option( 'backwpup_cfg_logfolder' ) );
 			echo '<tr><td>' . __( 'Logs folder:', 'backwpup' ) . '</td><td>';
-			if ( ! is_dir(  BackWPup_Option::get( 'cfg', 'logfolder' ) ) )
-				echo sprintf( __( 'Logs folder %s not exist and can\'t created.','backwpup' ),  BackWPup_Option::get( 'cfg', 'logfolder' ) );
-			elseif ( ! is_writable(  BackWPup_Option::get( 'cfg', 'logfolder' ) ) )
-				echo sprintf( __( 'Logs folder %s not writable.','backwpup' ),  BackWPup_Option::get( 'cfg', 'logfolder' ) );
+			if ( ! is_dir(  get_site_option( 'backwpup_cfg_logfolder' ) ) )
+				echo sprintf( __( 'Logs folder %s not exist and can\'t created.','backwpup' ),  get_site_option( 'backwpup_cfg_logfolder' ) );
+			elseif ( ! is_writable(  get_site_option( 'backwpup_cfg_logfolder' ) ) )
+				echo sprintf( __( 'Logs folder %s not writable.','backwpup' ),  get_site_option( 'backwpup_cfg_logfolder' ) );
 			else
-				echo  BackWPup_Option::get( 'cfg', 'logfolder' );
+				echo  get_site_option( 'backwpup_cfg_logfolder' );
 			echo '</td></tr>';
 			echo '<tr title=""><td>' . __( 'Server', 'backwpup' ) . '</td><td>' . $_SERVER[ 'SERVER_SOFTWARE' ] . '</td></tr>';
 			echo '<tr title=""><td>' . __( 'Operating System', 'backwpup' ) . '</td><td>' . PHP_OS . '</td></tr>';

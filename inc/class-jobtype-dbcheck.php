@@ -72,7 +72,7 @@ class BackWPup_JobType_DBCheck extends BackWPup_JobTypes {
 	 * @param $job_object
 	 * @return bool
 	 */
-	public function job_run( $job_object ) {
+	public function job_run( &$job_object ) {
 		global $wpdb;
 		/* @var wpdb $wpdb */
 
@@ -85,8 +85,8 @@ class BackWPup_JobType_DBCheck extends BackWPup_JobTypes {
 		$tablestype = array();
 		$restables = $wpdb->get_results( 'SHOW FULL TABLES FROM `' . DB_NAME . '`', ARRAY_N );
 		foreach ( $restables as $table ) {
-			if ( $job_object->job[ 'dbcheckwponly' ] && substr( $table[ 0 ], 0, strlen( $wpdb->prefix ) ) != $wpdb->prefix ) 
-				continue;	
+			if ( $job_object->job[ 'dbcheckwponly' ] && substr( $table[ 0 ], 0, strlen( $wpdb->prefix ) ) != $wpdb->prefix )
+				continue;
 			$tables[ ]                 = $table[ 0 ];
 			$tablestype[ $table[ 0 ] ] = $table[ 1 ];
 		}

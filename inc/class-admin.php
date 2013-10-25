@@ -311,7 +311,7 @@ final class BackWPup_Admin {
 			$_POST[ 'tab' ] = '';
 		}
 
-		call_user_func( array( $page_class, 'save_post_form' ), $_POST[ 'tab' ], $jobid );
+		$page_class::save_post_form( $_POST[ 'tab' ], $jobid );
 
 		//Back to topic
 		wp_safe_redirect(  add_query_arg( $query_args, network_admin_url( 'admin.php' ) ) . $_POST[ 'anchor' ] );

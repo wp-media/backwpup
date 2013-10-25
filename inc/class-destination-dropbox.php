@@ -222,7 +222,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 	 * @param $job_object
 	 * @return bool
 	 */
-	public function job_run_archive( $job_object ) {
+	public function job_run_archive( &$job_object ) {
 
 		$job_object->substeps_todo = 2 + $job_object->backup_filesize;
 		if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] != $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] )
@@ -253,7 +253,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 				$job_object->log( __( 'Uploading to Dropbox&#160;&hellip;', 'backwpup' ), E_USER_NOTICE );
 			}
 
-			self::$backwpup_job_object = $job_object;
+			self::$backwpup_job_object = &$job_object;
 
 			if ( $job_object->substeps_done < $job_object->backup_filesize ) { //only if upload not complete
 				$response = $dropbox->upload( $job_object->backup_folder . $job_object->backup_file, $job_object->job[ 'dropboxdir' ] . $job_object->backup_file );
@@ -407,13 +407,13 @@ final class BackWPup_Destination_Dropbox_API {
 	public function __construct( $boxtype = 'dropbox' ) {
 
 		if ( $boxtype == 'dropbox' ) {
-			$this->oauth_app_key 	= BackWPup_Option::get( 'cfg', 'dropboxappkey' );
-			$this->oauth_app_secret = BackWPup_Encryption::decrypt( BackWPup_Option::get( 'cfg', 'dropboxappsecret' ) );
+			$this->oauth_app_key 	= get_site_option( 'backwpup_cfg_dropboxappkey' );
+			$this->oauth_app_secret = BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_dropboxappsecret' ) );
 			$this->root             = 'dropbox';
 		}
 		else {
-			$this->oauth_app_key 	= BackWPup_Option::get( 'cfg', 'dropboxsandboxappkey' );
-			$this->oauth_app_secret = BackWPup_Encryption::decrypt( BackWPup_Option::get( 'cfg', 'dropboxsandboxappsecret' ) );
+			$this->oauth_app_key 	= get_site_option( 'backwpup_cfg_dropboxsandboxappkey' );
+			$this->oauth_app_secret = BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_dropboxsandboxappsecret' ) );
 			$this->root             = 'sandbox';
 		}
 
