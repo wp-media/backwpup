@@ -154,15 +154,17 @@ if ( ! class_exists( 'BackWPup' ) ) {
 				self::$plugin_data[ 'mainfile' ] = __FILE__ ;
 				self::$plugin_data[ 'plugindir' ] = untrailingslashit( dirname( __FILE__ ) ) ;
 				self::$plugin_data[ 'hash' ] = get_site_option( 'backwpup_cfg_hash' );
-				if ( strlen( self::$plugin_data[ 'hash' ] ) != 32 )
-					delete_site_option( 'backwpup_cfg_hash' );
+				if ( empty( self::$plugin_data[ 'hash' ] ) || strlen( self::$plugin_data[ 'hash' ] ) < 6 || strlen( self::$plugin_data[ 'hash' ] ) > 12 ) {
+					update_site_option( 'backwpup_cfg_hash', substr( md5( md5( BackWPup::get_plugin_data( "mainfile" ) ) ), 14, 6 ) );
+					self::$plugin_data[ 'hash' ] = get_site_option( 'backwpup_cfg_hash' );
+				}
 				if ( defined( 'WP_TEMP_DIR' ) && is_dir( WP_TEMP_DIR ) ) {
-					self::$plugin_data[ 'temp' ] = trailingslashit( str_replace( '\\', '/', realpath( WP_TEMP_DIR ) ) . '/backwpup-' . substr( self::$plugin_data[ 'hash' ], - 5 ) );
+					self::$plugin_data[ 'temp' ] = trailingslashit( str_replace( '\\', '/', realpath( WP_TEMP_DIR ) ) . '/backwpup-' . self::$plugin_data[ 'hash' ] );
 				} else {
 					$upload_dir = wp_upload_dir();
-					self::$plugin_data[ 'temp' ] = trailingslashit( str_replace( '\\', '/', realpath( $upload_dir[ 'basedir' ] ) ) . '/backwpup-' . substr( self::$plugin_data[ 'hash' ], - 5 ) . '-temp' );
+					self::$plugin_data[ 'temp' ] = trailingslashit( str_replace( '\\', '/', realpath( $upload_dir[ 'basedir' ] ) ) . '/backwpup-' . self::$plugin_data[ 'hash' ] . '-temp' );
 				}
-				self::$plugin_data[ 'running_file' ] = self::$plugin_data[ 'temp' ] . 'backwpup-' . substr( self::$plugin_data[ 'hash' ], 13, 6 ) . '-working.php';
+				self::$plugin_data[ 'running_file' ] = self::$plugin_data[ 'temp' ] . 'backwpup-working.php';
 				self::$plugin_data[ 'url' ] = plugins_url( '', __FILE__ );
 				//get unmodified WP Versions
 				include ABSPATH . WPINC . '/version.php';

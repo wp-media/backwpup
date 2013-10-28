@@ -178,7 +178,7 @@ final class BackWPup_Job {
 		$this->start_time   =  current_time( 'timestamp' );
 		$this->lastmsg		= '<samp>' . __( 'Starting job', 'backwpup' ) . '</samp>';
 		//set Logfile
-		$this->logfile = get_site_option( 'backwpup_cfg_logfolder' ) . 'backwpup_log_' . substr( BackWPup::get_plugin_data( 'hash' ), 10, 6 ). '_' . date_i18n( 'Y-m-d_H-i-s' ) . '.html';
+		$this->logfile = get_site_option( 'backwpup_cfg_logfolder' ) . 'backwpup_log_' . BackWPup::get_plugin_data( 'hash' ) . '_' . date_i18n( 'Y-m-d_H-i-s' ) . '.html';
 		update_site_option( 'backwpup_job_logfile', $this->logfile );
 		//write settings to job
 		if ( ! empty( $this->job[ 'jobid' ] ) ) {
@@ -220,13 +220,14 @@ final class BackWPup_Job {
 			//Add archive creation and backup filename on backup type archive
 			if ( $this->job[ 'backuptype' ] == 'archive' ) {
 				//set Backup folder to temp folder if not set
-				if ( in_array( 'FOLDER', $this->job[ 'destinations' ] ) )
+				if ( in_array( 'FOLDER', $this->job[ 'destinations' ] ) ) {
 					$this->backup_folder = $this->job[ 'backupdir' ];
-				//check backups folder
-				if ( ! empty( $this->backup_folder ) )
-					self::check_folder( $this->backup_folder );
+					//check backup folder
+					if ( ! empty( $this->backup_folder ) )
+						self::check_folder( $this->backup_folder );
+				}
 				//set temp folder to backup folder if not set
-				if ( ! $this->backup_folder or $this->backup_folder == '/' )
+				if ( ! $this->backup_folder || $this->backup_folder == '/' )
 					$this->backup_folder = BackWPup::get_plugin_data( 'TEMP' );
 				//Create backup archive full file name
 				$this->backup_file = $this->generate_filename( $this->job[ 'archivename' ], $this->job[ 'archiveformat' ] );
@@ -1282,8 +1283,18 @@ final class BackWPup_Job {
 
 	public static function user_abort() {
 
-		wp_clear_scheduled_hook( 'backwpup_cron', array( 'id' => 'restart' ) );
+		/* @var $job_object BackWPup_Job */
+		$job_object = BackWPup_Job::get_working_data();
+
 		unlink( BackWPup::get_plugin_data( 'running_file' ) );
+
+		//if job not working currently abort it this way for message
+		$not_worked_time = microtime( TRUE ) - $job_object->timestamp_last_update;
+		$restart_time = get_site_option( 'backwpup_cfg_jobmaxexecutiontime' );
+		if ( empty( $restart_time ) )
+			$restart_time = 60;
+		if ( empty( $job_object->pid ) || $not_worked_time > $restart_time )
+			$job_object->update_working_data();
 
 	}
 
@@ -1859,7 +1870,7 @@ final class BackWPup_Job {
 
 		$storage = strtolower( $storage );
 
-		$file = BackWPup::get_plugin_data( 'temp' ) . 'backwpup-' . substr( BackWPup::get_plugin_data( 'hash' ), 19, 6 ) . '-'.$storage.'.json';
+		$file = BackWPup::get_plugin_data( 'temp' ) . 'backwpup-' . BackWPup::get_plugin_data( 'hash' ) . '-'.$storage.'.json';
 
 		if ( ! empty( $data ) ) {
 			file_put_contents( $file, json_encode( $data ) );

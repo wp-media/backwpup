@@ -22,28 +22,27 @@ final class BackWPup_Option {
 		//job default
 		add_filter( 'default_site_option_backwpup_jobs', create_function( '', 'return array();') );
 		//general
-		add_filter( 'default_site_option_backwpup_cfg_showadminbar', create_function( '', 'return 0;') );
-		add_filter( 'default_site_option_backwpup_cfg_showfoldersize', create_function( '', 'return 0;') );
+		add_filter( 'default_site_option_backwpup_cfg_showadminbar', '__return_zero' );
+		add_filter( 'default_site_option_backwpup_cfg_showfoldersize', '__return_zero' );
 		add_filter( 'default_site_option_backwpup_cfg_protectfolders', create_function( '', 'return 1;') );
 		//job
-		add_filter( 'default_site_option_backwpup_cfg_jobmaxexecutiontime', create_function( '', 'return 0;') );
+		add_filter( 'default_site_option_backwpup_cfg_jobmaxexecutiontime', '__return_zero' );
 		add_filter( 'default_site_option_backwpup_cfg_jobziparchivemethod', create_function( '', 'return "";') );
 		add_filter( 'default_site_option_backwpup_cfg_jobstepretry', create_function( '', 'return 3;') );
-		add_filter( 'default_site_option_backwpup_cfg_jobsteprestart', create_function( '', 'return 0;') );
+		add_filter( 'default_site_option_backwpup_cfg_jobsteprestart', '__return_zero' );
 		add_filter( 'default_site_option_backwpup_cfg_jobrunauthkey', create_function( '', 'return substr( BackWPup::get_plugin_data( "hash" ), 11, 8 );') );
-		add_filter( 'default_site_option_backwpup_cfg_jobnotranslate', create_function( '', 'return 0;') );
-		add_filter( 'default_site_option_backwpup_cfg_jobwaittimems', create_function( '', 'return 0;') );
+		add_filter( 'default_site_option_backwpup_cfg_jobnotranslate', '__return_zero' );
+		add_filter( 'default_site_option_backwpup_cfg_jobwaittimems', '__return_zero' );
 		//Logs
 		add_filter( 'default_site_option_backwpup_cfg_maxlogs', create_function( '', 'return 30;') );
-		add_filter( 'default_site_option_backwpup_cfg_gzlogs', create_function( '', 'return 0;') );
+		add_filter( 'default_site_option_backwpup_cfg_gzlogs', '__return_zero' );
 		$upload_dir = wp_upload_dir();
-		$upload_dir = trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . substr( BackWPup::get_plugin_data( 'hash' ), 9, 5 ) . '-logs/';
+		$upload_dir = trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . BackWPup::get_plugin_data( 'hash' ) . '-logs/';
 		add_filter( 'default_site_option_backwpup_cfg_logfolder', create_function( '', 'return "' . $upload_dir . '";' ) );
 		//Network Auth
 		add_filter( 'default_site_option_backwpup_cfg_httpauthuser', create_function( '', 'return "";') );
 		add_filter( 'default_site_option_backwpup_cfg_httpauthpassword', create_function( '', 'return "";') );
 		//API Keys
-		add_filter( 'default_site_option_backwpup_cfg_hash', create_function( '', 'return md5( md5( BackWPup::get_plugin_data( "mainfile" ) ) );') );
 		add_filter( 'default_site_option_backwpup_cfg_dropboxappkey', create_function( '', 'return base64_decode( "dHZkcjk1MnRhZnM1NmZ2" );') );
 		add_filter( 'default_site_option_backwpup_cfg_dropboxappsecret', create_function( '', 'return base64_decode( "OWV2bDR5MHJvZ2RlYmx1" );') );
 		add_filter( 'default_site_option_backwpup_cfg_dropboxsandboxappkey', create_function( '', 'return base64_decode( "cHVrZmp1a3JoZHR5OTFk" );') );
@@ -118,7 +117,7 @@ final class BackWPup_Option {
 		$default[ 'mailerroronly' ]  = TRUE;
 		$default[ 'backuptype' ]     = 'archive';
 		$default[ 'archiveformat' ] = '.tar.gz';
-		$default[ 'archivename' ]    = 'backwpup_' . substr( BackWPup::get_plugin_data( 'hash' ), 15, 6 ). '_%Y-%m-%d_%H-%i-%s';
+		$default[ 'archivename' ]    = 'backwpup_' . BackWPup::get_plugin_data( 'hash' ) . '_%Y-%m-%d_%H-%i-%s';
 		//defaults vor destinations
 		foreach ( BackWPup::get_registered_destinations() as $dest_key => $dest ) {
 			if ( ! empty( $dest[ 'class' ] ) ) {

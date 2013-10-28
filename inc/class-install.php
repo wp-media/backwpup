@@ -9,6 +9,19 @@ class BackWPup_Install {
 	 */
 	public static function activate() {
 
+		//changes for 3.0.14
+		if ( version_compare( '3.0.14', get_site_option( 'backwpup_version' ), '>' ) && version_compare( '3.0', get_site_option( 'backwpup_version' ), '<' ) ) {
+			$upload_dir = wp_upload_dir();
+			$new_logfolder = trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . BackWPup::get_plugin_data( 'hash' ) . '-logs/';
+			if ( $new_logfolder == get_site_option( 'backwpup_cfg_logfolder' ) ) {
+				$old_log_folder = trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . substr( md5( md5( SECURE_AUTH_KEY ) ), 9, 5 ) . '-logs/';
+				update_site_option( 'backwpup_cfg_logfolder', $old_log_folder );
+			}
+		}
+
+		//add filter so that options must saved
+		add_filter( 'default_site_option_backwpup_cfg_logfolder', '__return_zero' );
+
 		//do upgrade from version 2.x
 		if ( ! get_site_option( 'backwpup_version' ) && get_option( 'backwpup' ) && get_option( 'backwpup_jobs' ) )
 			self::upgrade_from_version_two();
@@ -97,6 +110,9 @@ class BackWPup_Install {
 
 		//update version
 		update_site_option( 'backwpup_version', BackWPup::get_plugin_data( 'Version' ) );
+
+		//remove filter from options must saved
+		remove_filter( 'default_site_option_backwpup_cfg_logfolder', '__return_zero' );
 
 	}
 

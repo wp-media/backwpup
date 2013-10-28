@@ -12,7 +12,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 
 		$upload_dir = wp_upload_dir();
 
-		return array( 'maxbackups' => 15, 'backupdir' => trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . substr( BackWPup::get_plugin_data( 'hash' ),12 ,5 ) . '-backups/', 'backupsyncnodelete' => TRUE );
+		return array( 'maxbackups' => 15, 'backupdir' => trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . BackWPup::get_plugin_data( 'hash' ) . '-backups/', 'backupsyncnodelete' => TRUE );
 	}
 
 
