@@ -84,10 +84,7 @@ class BackWPup_Create_Archive {
 			if ( ! function_exists( 'gzencode' ) )
 				throw new BackWPup_Create_Archive_Exception( __( 'Functions for gz compression not available', 'backwpup' ) );
 			$this->method = 'TarGz';
-			if ( stristr( PHP_SAPI, 'fcgi' ) )
-				$this->filehandel = fopen( substr( $this->file, 0, -3 ), 'ab' );
-			else
-				$this->filehandel = fopen( 'compress.zlib://' . $this->file, 'ab' );
+			$this->filehandel = fopen( substr( $this->file, 0, -3 ), 'ab' );
 		}
 		elseif ( strtolower( substr( $this->file, -8 ) ) == '.tar.bz2' ) {
 			if ( ! function_exists( 'bzcompress' ) )
@@ -191,7 +188,7 @@ class BackWPup_Create_Archive {
 		if ( in_array( $this->get_method(), array( 'Tar', 'TarGz', 'TarBz2' ) ) )
 			fwrite( $this->filehandel, pack( "a1024", "" ) );
 
-		if ( stristr( PHP_SAPI, 'fcgi' ) && $this->get_method() == 'TarGz' ) {
+		if ( $this->get_method() == 'TarGz' ) {
 			fclose( $this->filehandel );
 			$this->filehandel = fopen( 'compress.zlib://' . $this->file, 'wb' );
 			$fd = fopen( substr( $this->file, 0, -3 ), 'rb' );

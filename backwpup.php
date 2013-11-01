@@ -435,7 +435,6 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			self::$job_types[ 'FILE' ] 		= new BackWPup_JobType_File;
 			self::$job_types[ 'WPEXP' ] 	= new BackWPup_JobType_WPEXP;
 			self::$job_types[ 'WPPLUGIN' ]  = new BackWPup_JobType_WPPlugin;
-			self::$job_types[ 'DBOPTIMIZE' ]= new BackWPup_JobType_DBOptimize;
 			self::$job_types[ 'DBCHECK' ]   = new BackWPup_JobType_DBCheck;
 
 			self::$job_types = apply_filters( 'backwpup_job_types', self::$job_types );

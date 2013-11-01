@@ -185,7 +185,7 @@ class BackWPup_Install {
 				if ( $type == 'DB' )
 					$jobvalue[ 'type' ][ $key ] = 'DBDUMP';
 				if ( $type == 'OPTIMIZE' )
-					$jobvalue[ 'type' ][ $key ] = 'DBOPTIMIZE';
+					unset( $jobvalue[ 'type' ][ $key ] );
 				if ( $type == 'CHECK' )
 					$jobvalue[ 'type' ][ $key ] = 'DBCHECK';
 				if ( $type == 'MAIL' )
@@ -264,7 +264,7 @@ class BackWPup_Install {
 			//convert jobtype DB Dump
 			$jobvalue[ 'dbdumpexclude' ] = $jobvalue[ 'dbexclude' ];
 			unset( $jobvalue[ 'dbexclude' ], $jobvalue['dbshortinsert'] );
-			//convert jobtype DBDUMP, DBCHECK, DBOPTIMIZE
+			//convert jobtype DBDUMP, DBCHECK
 			$jobvalue[ 'dbcheckrepair' ] = TRUE;
 			unset( $jobvalue[ 'maintenance' ] );
 			//convert jobtype wpexport

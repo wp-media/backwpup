@@ -190,8 +190,10 @@ final class BackWPup_Job {
 		$this->timestamp_last_update = microtime( TRUE );
 		$this->exclude_from_backup 	= explode( ',', trim( $this->job[ 'fileexclude' ] ) );
 		$this->exclude_from_backup 	= array_unique( $this->exclude_from_backup );
-		if ( trailingslashit( str_replace( '\\', '/', ABSPATH ) ) != '/' and trailingslashit( str_replace( '\\', '/', ABSPATH ) ) != '' ) //create path to remove
-			$this->remove_path 		= trailingslashit( str_replace( '\\', '/', ABSPATH ) );
+		//create path to remove
+		$this->remove_path 		= trailingslashit( str_replace( '\\', '/', realpath( ABSPATH ) ) );
+		if ( $this->remove_path == '/' )
+			$this->remove_path = '';
 		//setup job steps
 		$this->steps_data[ 'CREATE' ][ 'CALLBACK' ] = '';
 		$this->steps_data[ 'CREATE' ][ 'NAME' ]     = __( 'Job Start', 'backwpup' );
@@ -1728,7 +1730,7 @@ final class BackWPup_Job {
 
 			//show method for creation
 			if ( $this->substeps_done == 0 )
-				$this->log( sprintf( _x( 'Compression method is %s', 'Archive compression method', 'backwpup'), $backup_archive->get_method() ) );
+				$this->log( sprintf( _x( 'Compressing files with is %s, please be patient this may take a while', 'Archive compression method', 'backwpup'), $backup_archive->get_method() ) );
 
 			//add extra files
 			if ( $this->substeps_done == 0 ) {

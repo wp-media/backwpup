@@ -50,6 +50,8 @@ final class BackWPup_Admin {
 			add_action( 'edit_user_profile',  array( $this, 'user_profile_fields' ) );
 			add_action( 'profile_update',  array( $this, 'save_profile_update' ) );
 		}
+		//Change Backup message on core updates
+		add_filter( 'gettext', array( $this, 'gettext' ), 10, 3 );
 	}
 
 	/**
@@ -440,11 +442,11 @@ final class BackWPup_Admin {
 		    <table class="form-table">
 		        <tr>
 		            <th>
-		                <label for="backwpup_role"><?php _e('BackWPup Role', 'backwpup'); ?>
+		                <label for="backwpup_role"><?php _e( 'BackWPup Role', 'backwpup' ); ?>
 		            </label></th>
 		            <td>
 		                <select name="backwpup_role" id="backwpup_role" style="display:inline-block; float:none;">
-							<option value=""><?php _e('&mdash; No role for BackWPup &mdash;', 'backwpup'); ?></option>
+							<option value=""><?php _e( '&mdash; No role for BackWPup &mdash;', 'backwpup' ); ?></option>
 							<?php
 							foreach ( $wp_roles->roles as $role => $rolevalue ) {
 								if ( ! strstr( $role, 'backwpup_' ) )
@@ -454,7 +456,7 @@ final class BackWPup_Admin {
 							?>
 		                </select>
 						<br />
-		                <span class="description"><?php _e('Role that the user have on BackWPup', 'backwpup'); ?></span>
+		                <span class="description"><?php _e( 'Role that the user have on BackWPup', 'backwpup' ); ?></span>
 		            </td>
 		        </tr>
 		    </table>
@@ -497,5 +499,21 @@ final class BackWPup_Admin {
 
 		return;
 	}
+
+	public function gettext( $translations, $text, $domain ) {
+
+		if ( strstr( $text, '<a href="http://codex.wordpress.org/WordPress_Backups">back up your database and files</a>' ) )
+			return sprintf( __( '<strong>Important:</strong> before updating, please <a href="%1$s">back up your database and files</a> with <a href="http://marketpress.de/product/backwpup-pro/">%2$s</a>. For help with updates, visit the <a href="http://codex.wordpress.org/Updating_WordPress">Updating WordPress</a> Codex page.', 'backwpup' ), network_admin_url( 'admin.php?page=backwpupjobs' ), BackWPup::get_plugin_data( 'name' ) );
+
+		if ( strstr( $text, 'This plugin has <strong>not been tested</strong> with your current version of WordPress.' ) )
+			return $translations . '</p></div><div class="updated"><p>' .sprintf( __( '<strong>Important:</strong> before installing this plugin, please <a href="%1$s">back up your database and files</a> with <a href="http://marketpress.de/product/backwpup-pro/">%2$s</a>.', 'backwpup' ), network_admin_url( 'admin.php?page=backwpupjobs' ), BackWPup::get_plugin_data( 'name' ) );
+
+		if ( strstr( $text, 'This plugin has <strong>not been marked as compatible</strong> with your version of WordPress.' ) )
+			return $translations . '</p></div><div class="updated"><p>' .sprintf( __( '<strong>Important:</strong> before installing this plugin, please <a href="%1$s">back up your database and files</a> with <a href="http://marketpress.de/product/backwpup-pro/">%2$s</a>.', 'backwpup' ), network_admin_url( 'admin.php?page=backwpupjobs' ), BackWPup::get_plugin_data( 'name' ) );
+
+
+		return $translations;
+	}
+
 
 }
