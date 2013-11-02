@@ -45,11 +45,9 @@ final class BackWPup_Admin {
 		add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 100 );
 		add_filter( 'update_footer', array( $this, 'update_footer' ), 100 );
 		//User Profile fields
-		if ( current_user_can( 'edit_users' ) || current_user_can( 'backwpup_admin' ) ) {
-			add_action( 'show_user_profile', array( $this, 'user_profile_fields' ) );
-			add_action( 'edit_user_profile',  array( $this, 'user_profile_fields' ) );
-			add_action( 'profile_update',  array( $this, 'save_profile_update' ) );
-		}
+		add_action( 'show_user_profile', array( $this, 'user_profile_fields' ) );
+		add_action( 'edit_user_profile',  array( $this, 'user_profile_fields' ) );
+		add_action( 'profile_update',  array( $this, 'save_profile_update' ) );
 		//Change Backup message on core updates
 		add_filter( 'gettext', array( $this, 'gettext' ), 10, 3 );
 	}
@@ -303,17 +301,12 @@ final class BackWPup_Admin {
 		}
 
 		//Call method to save data
-		$page_class = NULL;
 		if ( $_POST[ 'page' ] == 'backwpupeditjob' )
-			$page_class = 'BackWPup_Page_Editjob';
-		elseif ( $_POST[ 'page' ] == 'backwpupinformation' )
-			$page_class = 'BackWPup_Page_Information';
+			BackWPup_Page_Editjob::save_post_form( $_POST[ 'tab' ], $jobid  );
 		elseif (  $_POST[ 'page' ] == 'backwpupsettings' ) {
-			$page_class = 'BackWPup_Page_Settings';
+			BackWPup_Page_Settings::save_post_form( $_POST[ 'tab' ], $jobid  );
 			$_POST[ 'tab' ] = '';
 		}
-
-		$page_class::save_post_form( $_POST[ 'tab' ], $jobid );
 
 		//Back to topic
 		wp_safe_redirect(  add_query_arg( $query_args, network_admin_url( 'admin.php' ) ) . $_POST[ 'anchor' ] );
@@ -437,6 +430,8 @@ final class BackWPup_Admin {
 	public function user_profile_fields( $user ) {
 		global $wp_roles;
 
+		if ( ! current_user_can( 'edit_users' ) && ! current_user_can( 'backwpup_admin' ) )
+			return;
 		?>
 		    <h3><?php echo BackWPup::get_plugin_data( 'name' ); ?></h3>
 		    <table class="form-table">
@@ -470,6 +465,9 @@ final class BackWPup_Admin {
 	 */
 	public function save_profile_update( $user_id ) {
 		global $wp_roles;
+
+		if ( ! current_user_can( 'edit_users' ) && ! current_user_can( 'backwpup_admin' ) )
+			return;
 
 		if ( empty( $user_id ) )
 			return;

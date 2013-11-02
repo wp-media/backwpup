@@ -71,7 +71,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			//Options
 			new BackWPup_Option();
 			//start upgrade if needed
-			if ( get_site_option( 'backwpup_version' ) != self::get_plugin_data( 'Version' ) && class_exists( 'BackWPup_Install' ) )
+			if ( get_site_option( 'backwpup_version' ) != self::get_plugin_data( 'Version' ) )
 				BackWPup_Install::activate();
 			//load pro features
 			if ( file_exists( dirname( __FILE__ ) . '/inc/pro/class-pro.php' ) )
