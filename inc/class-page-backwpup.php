@@ -44,17 +44,6 @@ class BackWPup_Page_BackWPup {
 	}
 
 	/**
-	 * Enqueue style.
-	 *
-	 * @return void
-	 */
-	public static function admin_print_styles() {
-
-		wp_enqueue_style('backwpupgeneral');
-
-	}
-
-	/**
 	 * Enqueue script.
 	 *
 	 * @return void
@@ -74,10 +63,10 @@ class BackWPup_Page_BackWPup {
 		// get wizards
 		$wizards = BackWPup::get_wizards();
 		?>
-        <div class="wrap">
+        <div class="wrap" id="backwpup-page">
 			<?php screen_icon(); ?>
             <h2><?php echo sprintf( __( '%s Dashboard', 'backwpup' ), BackWPup::get_plugin_data( 'name') ); ?></h2>
-
+			<?php BackWPup_Admin::display_messages(); ?>
             <div style="float:left;width:63%;margin-right:10px;min-width:500px">
 			<?php
 				if ( class_exists( 'BackWPup_Pro', FALSE ) ) { ?>
@@ -134,7 +123,7 @@ class BackWPup_Page_BackWPup {
 					<div class="metabox-holder postbox" style="padding-top:0;margin:10px;cursor:auto;width:30%;float:left;min-width:320px">
 						<h3 class="hndle" style="cursor: auto;"><span><?php  _e( 'Thank you for using BackWPup!', 'backwpup' ); ?></span></h3>
 						<div class="inside backwpuppro">
-							<img src="<?php echo BackWPup::get_plugin_data( 'URL' ) . '/images/backwpupbanner-pro.png'; ?>" alt="BackWPup Banner" />
+							<img src="<?php echo BackWPup::get_plugin_data( 'URL' ) . '/assets/images/backwpupbanner-pro.png'; ?>" alt="BackWPup Banner" />
 							<?php _e( 'BackWPup Pro offers you first-class premium support and more features like a wizard for scheduled backup jobs, differential backup of changed directories in the cloud and much more!', 'backwpup' ); ?>.
 							<div style="text-align: center;margin-top:10px;">
 								<a href="<?php _e( 'http://marketpress.com/product/backwpup-pro/', 'backwpup' ); ?>" class="button-primary" title="<?php _e( 'Get BackWPup Pro now', 'backwpup' ); ?>"><?php _e( 'Get BackWPup Pro now', 'backwpup' ); ?></a><br />

@@ -198,18 +198,33 @@ class BackWPup_Page_Editjob {
 	 */
 	public static function admin_print_styles() {
 
-		wp_enqueue_style('backwpupgeneral');
-
-		//add css for the first tabs
-		if ( $_GET[ 'tab' ] == 'cron' ) {
-			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-				wp_enqueue_style( 'backwpuptabcron', BackWPup::get_plugin_data( 'URL' ) . '/css/page_edit_tab_cron.css', '', time(), 'screen' );
-			} else {
-				wp_enqueue_style( 'backwpuptabcron', BackWPup::get_plugin_data( 'URL' ) . '/css/page_edit_tab_cron.min.css', '', BackWPup::get_plugin_data( 'Version' ), 'screen' );
+		?>
+		<style type="text/css" media="screen">
+			#cron-min, #cron-hour, #cron-day, #cron-month, #cron-weekday {
+				overflow: auto;
+				white-space: nowrap;
+				height: 7em;
 			}
-		}
+			#cron-min-box, #cron-hour-box, #cron-day-box, #cron-month-box, #cron-weekday-box {
+				border-color: gray;
+				border-style: solid;
+				border-width: 1px;
+				margin: 10px 0px 10px 10px;
+				padding: 2px 2px;
+				width: 100px;
+				float: left;
+			}
+			#wpcronbasic {
+				border-collapse: collapse;
+			}
+			#wpcronbasic th, #wpcronbasic td {
+				width:80px;
+				border-bottom: 1px solid gray;
+			}
+		</style>
+		<?php
 		//add css for all other tabs
-		elseif ( substr( $_GET[ 'tab' ], 0, 5 ) == 'dest-' ) {
+		if ( substr( $_GET[ 'tab' ], 0, 5 ) == 'dest-' ) {
 			$dest_object = BackWPup::get_destination( str_replace( 'dest-', '', $_GET[ 'tab' ] ) );
 			$dest_object->admin_print_styles();
 		}
@@ -233,18 +248,16 @@ class BackWPup_Page_Editjob {
 		//add js for the first tabs
 		if ( $_GET[ 'tab' ] == 'job' ) {
 			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-				wp_enqueue_script( 'backwpuptabjob', BackWPup::get_plugin_data( 'URL' ) . '/js/page_edit_tab_job.js', array('jquery'), time(), TRUE );
+				wp_enqueue_script( 'backwpuptabjob', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/page_edit_tab_job.js', array('jquery'), time(), TRUE );
 			} else {
-				wp_enqueue_script( 'backwpuptabjob', BackWPup::get_plugin_data( 'URL' ) . '/js/page_edit_tab_job.min.js', array('jquery'), BackWPup::get_plugin_data( 'Version' ), TRUE );
+				wp_enqueue_script( 'backwpuptabjob', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/page_edit_tab_job.min.js', array('jquery'), BackWPup::get_plugin_data( 'Version' ), TRUE );
 			}
 		}
  		elseif ( $_GET[ 'tab' ] == 'cron' ) {
 			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-				wp_enqueue_script( 'backwpuptabcron', BackWPup::get_plugin_data( 'URL' ) . '/js/page_edit_tab_cron.js', array('jquery'), time(), TRUE );
-				wp_enqueue_style( 'backwpuptabcron', BackWPup::get_plugin_data( 'URL' ) . '/css/page_edit_tab_cron.css', '', time(), 'screen' );
+				wp_enqueue_script( 'backwpuptabcron', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/page_edit_tab_cron.js', array('jquery'), time(), TRUE );
 			} else {
-				wp_enqueue_script( 'backwpuptabcron', BackWPup::get_plugin_data( 'URL' ) . '/js/page_edit_tab_cron.min.js', array('jquery'), BackWPup::get_plugin_data( 'Version' ), TRUE );
-				wp_enqueue_style( 'backwpuptabcron', BackWPup::get_plugin_data( 'URL' ) . '/css/page_edit_tab_cron.min.css', '', BackWPup::get_plugin_data( 'Version' ), 'screen' );
+				wp_enqueue_script( 'backwpuptabcron', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/page_edit_tab_cron.min.js', array('jquery'), BackWPup::get_plugin_data( 'Version' ), TRUE );
 			}
 		}
 		//add js for all other tabs
@@ -364,7 +377,7 @@ class BackWPup_Page_Editjob {
 		$job_types    = BackWPup::get_job_types();
 
 		?>
-    <div class="wrap">
+    <div class="wrap" id="backwpup-page">
 		<?php
 		screen_icon();
 
@@ -619,7 +632,7 @@ class BackWPup_Page_Editjob {
                                 <label for="idactivetype-link"><input class="radio"
 									   type="radio"<?php checked( 'link', BackWPup_Option::get( $jobid, 'activetype' ), TRUE ); ?>
 									   name="activetype" id="idactivetype-link"
-									   value="link" /> <?php _e( 'with a link', 'backwpup' ); ?> <code><?php echo $url[ 'url' ];?></code></label>
+									   value="link" /> <?php _e( 'with a link', 'backwpup' ); ?> <code><a href="<?php echo $url[ 'url' ];?>" target="_blank"><?php echo $url[ 'url' ];?></a></code></label>
 								<?php
 									BackWPup_Help::tip( __( 'Copy the link for an external start. This option has to be activated to make the link work.', 'backwpup' ) );
 								?>

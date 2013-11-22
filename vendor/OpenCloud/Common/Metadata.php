@@ -1,13 +1,11 @@
 <?php
 /**
- * A metadata object, used by other components in Compute and Object Storage
- *
- * @copyright 2012-2013 Rackspace Hosting, Inc.
- * See COPYING for licensing information
- *
- * @package phpOpenCloud
- * @version 1.0
- * @author Glen Campbell <glen.campbell@rackspace.com>
+ * PHP OpenCloud library.
+ * 
+ * @copyright 2013 Rackspace Hosting, Inc. See LICENSE for information.
+ * @license   https://www.apache.org/licenses/LICENSE-2.0
+ * @author    Glen Campbell <glen.campbell@rackspace.com>
+ * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
  */
 
 namespace OpenCloud\Common;
@@ -22,7 +20,7 @@ class Metadata extends Base
 {
 
     // array holding the names of keys that were set
-    private $_keylist = array();    
+    protected $metadata = array();    
 
     /**
      * This setter overrides the base one, since the metadata key can be
@@ -32,24 +30,45 @@ class Metadata extends Base
      * @param string $value
      * @return void
      */
-    public function __set($key, $value) 
+    public function __set($property, $value) 
     {
-        // set the value and track the keys
-        if (!in_array($key, $this->_keylist)) {
-            $this->_keylist[] = $key;
-        }
-
-        $this->$key = $value;
+        return $this->setProperty($property, $value);
     }
 
+    public function __get($key)
+    {
+        return $this->getProperty($key);
+    }
+    
+    public function propertyExists($property, $allowRetry = true)
+    {
+        return isset($this->metadata[strtolower($property)]) 
+            || parent::propertyExists($property, $allowRetry);
+    }
+    
+    public function getProperty($property)
+    {
+        return $this->propertyExists($property) ? $this->metadata[strtolower($property)] : null;
+    }
+    
+    public function setProperty($property, $value)
+    {
+        $this->metadata[strtolower($property)] = $value;
+    }
+    
+    public function __isset($property)
+    {
+        return $this->propertyExists($property);
+    }
+    
     /**
      * Returns the list of keys defined
      *
      * @return array
      */
-    public function Keylist() 
+    public function keylist() 
     {
-        return $this->_keylist;
+        return $this->metadata;
     }
 
     /**
@@ -64,23 +83,28 @@ class Metadata extends Base
      *      for a Container by using $prefix='X-Container-Meta-'.
      * @return void
      */
-    public function SetArray($values, $prefix = null) 
+    public function setArray($values, $prefix = null) 
     {
         if (empty($values)) {
             return false;
         }
+        
         foreach ($values as $key => $value) {
-            if ($prefix) {
-                if (strpos($key, $prefix) === 0) {
-                    $name = substr($key, strlen($prefix));
-                    $this->debug(Lang::translate('Setting [%s] to [%s]'), 
-                    	$name, $value);
-                    $this->$name = $value;
-                }
-            } else {
-                $this->$key = $value;
-            }
+            if ($prefix && strpos($key, $prefix) === 0) {
+                $key = substr($key, strlen($prefix));
+            } 
+            $this->setProperty($key, $value);
         }
+    }
+    
+    public function toArray()
+    {
+        return $this->metadata;
+    }
+
+    public function count()
+    {
+        return count($this->metadata);
     }
 
 }

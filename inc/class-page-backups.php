@@ -391,8 +391,6 @@ class BackWPup_Page_Backups extends WP_List_Table {
 	 */
 	public static function admin_print_styles() {
 
-		wp_enqueue_style('backwpupgeneral');
-
 		?>
 		<style type="text/css" media="screen">
 			.column-size, .column-time {
@@ -419,7 +417,7 @@ class BackWPup_Page_Backups extends WP_List_Table {
 	public static function page() {
 
 		?>
-		<div class="wrap">
+		<div class="wrap" id="backwpup-page">
 			<?php screen_icon(); ?>
 			<h2><?php echo esc_html( sprintf( __( '%s Manage Backup Archives', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ) ); ?></h2>
 			<?php BackWPup_Admin::display_messages(); ?>

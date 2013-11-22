@@ -176,7 +176,7 @@ Please check all settings after the update:
 
 
 == Changelog ==
-= Version 3.0.14-beta2 =
+= Version 3.0.14-beta3 =
 * Fixed: Message about aborted step did not display correctly
 * Fixed: Incorrect rescheduling of jobs
 * Improved: Overall performance while generating backup archives
@@ -189,8 +189,9 @@ Please check all settings after the update:
 * Improved: Reduced size of vendor/SDK directory by 50%
 * Improved: Regex for BackWPup archive file detection
 * Improved: Symlink handling for file backup on WordPress folders
+* Improved: Use icon font for menu and adminbar
 * Updated: AWS SDK to Version 2.4.7 (PHP 5.3.3+)
-* Updated: RSC SDK to Version 1.5.10
+* Updated: RSC SDK to Version 1.7.2
 * Updated: SwiftMailer to Version 5.0.1
 * Removed: DB Optimization, because locking of tables that can make the site nit accessible
 * PRO: Wizards using a separate session handling now

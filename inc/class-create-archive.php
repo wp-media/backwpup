@@ -240,7 +240,7 @@ class BackWPup_Create_Archive {
 		}
 
 		if ( ! is_readable( $file_name ) ) {
-			trigger_error( sprintf( _x( 'File %s does not exist or is not readable', 'File path to add to archive', 'backwpup' ), $file_name ), E_USER_WARNING );
+			trigger_error( sprintf( _x( 'File %s does not exist or is not readable', 'File to add to archive', 'backwpup' ), $file_name ), E_USER_WARNING );
 			return FALSE;
 		}
 

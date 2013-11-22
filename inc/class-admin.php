@@ -50,6 +50,9 @@ final class BackWPup_Admin {
 		add_action( 'profile_update',  array( $this, 'save_profile_update' ) );
 		//Change Backup message on core updates
 		add_filter( 'gettext', array( $this, 'gettext' ), 10, 3 );
+		//Plugin banner free
+		if ( ! class_exists( 'BackWPup_Pro', FALSE ) )
+			add_action( 'admin_notices', array( $this, 'get_pro_banner' ) );
 	}
 
 	/**
@@ -104,13 +107,17 @@ final class BackWPup_Admin {
 	/**
 	 * Admin init function
 	 */
-	public function admin_head() {
+	public static function admin_head() {
 
 		//register js and css for BackWPup
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-			wp_enqueue_style( 'backwpupadmin', BackWPup::get_plugin_data( 'URL' ) . '/css/admin.css', array(), time(), 'screen' );
+			wp_enqueue_style( 'backwpup', BackWPup::get_plugin_data( 'URL' ) . '/assets/css/backwpup.css', array(), time(), 'screen' );
+			if ( version_compare( BackWPup::get_plugin_data( 'wp_version' ), '3.8-beta-1', '<' ) )
+				wp_enqueue_style( 'backwpup-wplt38', BackWPup::get_plugin_data( 'URL' ) . '/assets/css/lower_wp38.css', array( 'backwpup' ), time(), 'screen' );
 		} else {
-			wp_enqueue_style( 'backwpupadmin', BackWPup::get_plugin_data( 'URL' ) . '/css/admin.min.css', array( ), BackWPup::get_plugin_data( 'Version' ), 'screen' );
+			wp_enqueue_style( 'backwpup', BackWPup::get_plugin_data( 'URL' ) . '/assets/css/backwpup.min.css', array(), BackWPup::get_plugin_data( 'Version' ), 'screen' );
+			if ( version_compare( BackWPup::get_plugin_data( 'wp_version' ), '3.8-beta-1', '<' ) )
+				wp_enqueue_style( 'backwpup-wplt38', BackWPup::get_plugin_data( 'URL' ) . '/assets/css/lower_wp38.min.css', array( 'backwpup' ),  BackWPup::get_plugin_data( 'Version' ), 'screen' );
 		}
 	}
 
@@ -141,11 +148,10 @@ final class BackWPup_Admin {
 	 */
 	public function admin_menu() {
 
-		add_menu_page( BackWPup::get_plugin_data( 'name' ), BackWPup::get_plugin_data( 'name' ), 'backwpup', 'backwpup', array( 'BackWPup_Page_Backwpup', 'page' ), BackWPup::get_plugin_data( 'URL' ) . '/images/BackWPup16.png' );
+		add_menu_page( BackWPup::get_plugin_data( 'name' ), BackWPup::get_plugin_data( 'name' ), 'backwpup', 'backwpup', array( 'BackWPup_Page_Backwpup', 'page' ), 'div' );
 		$this->page_hooks[ 'backwpup' ] = add_submenu_page( 'backwpup', __( 'BackWPup Dashboard', 'backwpup' ), __( 'Dashboard', 'backwpup' ), 'backwpup', 'backwpup', array( 'BackWPup_Page_Backwpup', 'page' ) );
 		add_action( 'load-' . $this->page_hooks[ 'backwpup' ], array( 'BackWPup_Admin', 'init_generel' ) );
 		add_action( 'load-' . $this->page_hooks[ 'backwpup' ], array( 'BackWPup_Page_Backwpup', 'load' ) );
-		add_action( 'admin_print_styles-' . $this->page_hooks[ 'backwpup' ], array( 'BackWPup_Page_Backwpup', 'admin_print_styles' ) );
 		add_action( 'admin_print_scripts-' . $this->page_hooks[ 'backwpup' ], array( 'BackWPup_Page_Backwpup', 'admin_print_scripts' ) );
 
 		//Add pages form plugins
@@ -223,7 +229,6 @@ final class BackWPup_Admin {
 
 		$this->page_hooks[ 'backwpupsettings' ] = add_submenu_page( 'backwpup', __( 'Settings', 'backwpup' ), __( 'Settings', 'backwpup' ), 'backwpup_settings', 'backwpupsettings', array( 'BackWPup_Page_Settings', 'page' ) );
 		add_action( 'load-' . $this->page_hooks[ 'backwpupsettings' ], array( 'BackWPup_Admin', 'init_generel' ) );
-		add_action( 'admin_print_styles-' . $this->page_hooks[ 'backwpupsettings' ], array( 'BackWPup_Page_Settings', 'admin_print_styles' ) );
 		add_action( 'admin_print_scripts-' . $this->page_hooks[ 'backwpupsettings' ], array( 'BackWPup_Page_Settings', 'admin_print_scripts' ) );
 
 		return $page_hooks;
@@ -235,7 +240,7 @@ final class BackWPup_Admin {
 	 */
 	public function admin_page_about( $page_hooks ) {
 
-		$this->page_hooks[ 'backwpupabout' ] = add_submenu_page( 'backwpup', __( 'About', 'backwpup' ), __( 'About', 'backwpup' ), 'install_plugins', 'backwpupabout', array( 'BackWPup_Page_About', 'page' ) );
+		$this->page_hooks[ 'backwpupabout' ] = add_submenu_page( 'backwpup', __( 'About', 'backwpup' ), __( 'About', 'backwpup' ), 'backwpup', 'backwpupabout', array( 'BackWPup_Page_About', 'page' ) );
 		add_action( 'load-' . $this->page_hooks[ 'backwpupabout' ], array( 'BackWPup_Admin', 'init_generel' ) );
 		add_action( 'admin_print_styles-' . $this->page_hooks[ 'backwpupabout' ], array( 'BackWPup_Page_About', 'admin_print_styles' ) );
 		add_action( 'admin_print_scripts-' . $this->page_hooks[ 'backwpupabout' ], array( 'BackWPup_Page_About', 'admin_print_scripts' ) );
@@ -252,15 +257,13 @@ final class BackWPup_Admin {
 		add_thickbox();
 
 		//register js from tipTip
-		wp_register_script( 'tiptip', BackWPup::get_plugin_data( 'URL' ) . '/js/jquery.tipTip.minified.js', array( 'jquery' ), '1.3', TRUE );
+		wp_register_script( 'tiptip', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/jquery.tipTip.minified.js', array( 'jquery' ), '1.3', TRUE );
 
 		//register js and css for BackWPup
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-			wp_register_script( 'backwpupgeneral', BackWPup::get_plugin_data( 'URL' ) . '/js/general.js', array( 'jquery', 'tiptip' ), time(), TRUE );
-			wp_register_style( 'backwpupgeneral', BackWPup::get_plugin_data( 'URL' ) . '/css/general.css', array( ), time(), 'screen' );
+			wp_register_script( 'backwpupgeneral', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/general.js', array( 'jquery', 'tiptip' ), time(), TRUE );
 		} else {
-			wp_register_script( 'backwpupgeneral', BackWPup::get_plugin_data( 'URL' ) . '/js/general.min.js', array( 'jquery', 'tiptip' ), BackWPup::get_plugin_data( 'Version' ), TRUE );
-			wp_register_style( 'backwpupgeneral', BackWPup::get_plugin_data( 'URL' ) . '/css/general.min.css', array( ), BackWPup::get_plugin_data( 'Version' ), 'screen' );
+			wp_register_script( 'backwpupgeneral', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/general.min.js', array( 'jquery', 'tiptip' ), BackWPup::get_plugin_data( 'Version' ), TRUE );
 		}
 
 		//add Help
@@ -513,5 +516,34 @@ final class BackWPup_Admin {
 		return $translations;
 	}
 
+	public function get_pro_banner() {
+		global $hook_suffix;
+
+		if ( $hook_suffix != 'plugins.php' )
+			return;
+
+		$show = get_user_meta( get_current_user_id(), 'backwpup_show_pro_panel', TRUE );
+		if ( $show !== 0 )
+			$show = TRUE;
+		if ( isset( $_GET[ 'dis_pro' ] ) && $_GET[ 'dis_pro' ] == 0 ) {
+			update_user_meta( get_current_user_id(), 'backwpup_show_pro_panel', 0 );
+			$show = FALSE;
+		}
+
+		if ( ! $show  )
+			return;
+		?>
+		<div class="updated" style="padding: 0; margin: 0; border: none; background: none;">
+			<div class="welcome-panel" style="padding: 0;">
+				<a class="welcome-panel-close" href="<?php echo esc_url( admin_url( 'plugins.php?dis_pro=0' ) ); ?>"><?php _e( 'Dismiss', 'backwpup' ); ?></a>
+
+				<a class="button button-primary button-hero" href="<?php _e( 'http://marketpress.com/product/backwpup-pro/', 'backwpup' ) ?>" style="margin: 15px;float: left;"><?php _e( 'Learn More', 'backwpup' ); ?></a>
+				<div style="font-size: 1.2em; margin-top: 15px;"><?php _e( 'It’s time to upgrade your <strong>BackWPup</strong> to <strong>PRO</strong> version!', 'backwpup' ); ?></div>
+				<span><?php _e( 'Extend standard plugin functionality with new great options.', 'backwpup' ); ?></span>
+
+			</div>
+		</div>
+		<?php
+	}
 
 }

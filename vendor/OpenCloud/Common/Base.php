@@ -1,271 +1,178 @@
 <?php
 /**
- * The root class for all other classes in this library
- *
- * @copyright 2012-2013 Rackspace Hosting, Inc.
- * See COPYING for licensing information
- *
- * @package phpOpenCloud
- * @version 1.0
- * @author Glen Campbell <glen.campbell@rackspace.com>
+ * PHP OpenCloud library
+ * 
+ * @copyright 2013 Rackspace Hosting, Inc. See LICENSE for information.
+ * @license   https://www.apache.org/licenses/LICENSE-2.0
+ * @author    Glen Campbell <glen.campbell@rackspace.com>
+ * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
  */
 
 namespace OpenCloud\Common;
 
-use OpenCloud\Common\Lang;
-use OpenCloud\Common\Exceptions\AttributeError;
 use OpenCloud\Common\Exceptions\JsonError;
 use OpenCloud\Common\Exceptions\UrlError;
 
 /**
- * The Base class is the root class for all other objects used or defined by
- * this SDK.
+ * The root class for all other objects used or defined by this SDK.
  *
  * It contains common code for error handling as well as service functions that
  * are useful. Because it is an abstract class, it cannot be called directly,
  * and it has no publicly-visible properties.
- *
- * @since 1.0
- * @author Glen Campbell <glen.campbell@rackspace.com>
  */
 abstract class Base
 {
-
-    private $http_headers = array();
-    private $_errors = array();
+    /**
+     * @var array Holds all the properties added by overloading.
+     */
+    private $properties = array();
 
     /**
      * Debug status.
      *
-     * @var bool
+     * @var    LoggerInterface
      * @access private
      */
-    private $debugStatus = false;
+    private $logger;
 
     /**
-     * Sets the style for outputting debug messages.
+     * Intercept non-existent method calls for dynamic getter/setter functionality.
      *
-     * Echoing messages   == true
-     * Returning messages == false
-     *
-     * (default value: true)
-     *
-     * @var bool
-     * @access private
+     * @param $method
+     * @param $args
+     * @throws Exceptions\RuntimeException
      */
-    private $debugOutputStyle = true;
-
-    /**
-     * setDebug function.
-     *
-     * @access public
-     * @return void
-     */
-    public function setDebug($status)
+    public function __call($method, $args)
     {
-        $this->debugStatus = $status;
-    }
+        $prefix = substr($method, 0, 3);
 
-    /**
-     * getDebug function.
-     *
-     * @access public
-     * @return void
-     */
-    public function getDebug()
-    {
-        return $this->debugStatus;
-    }
+        // Get property - convert from camel case to underscore
+        $property = lcfirst(substr($method, 3));
 
-    /**
-     * Sets the debug output style.
-     *
-     * @access public
-     * @param mixed $state
-     * @return void
-     */
-    public function setDebugOutputStyle($state)
-    {
-        $this->debugOutputStyle = $state;
-    }
-
-    /**
-     * Gets the debug output style.
-     *
-     * @access public
-     * @return void
-     */
-    public function getDebugOutputStyle()
-    {
-        return $this->debugOutputStyle;
-    }
-
-    /**
-     * Displays a debug message if $RAXSDK_DEBUG is TRUE
-     *
-     * The primary parameter is a string in sprintf() format, and it can accept
-     * up to five optional parameters. It prints the debug message, prefixed
-     * with "Debug:" and the class name, to the standard output device.
-     *
-     * Example:
-     *   `$this->debug('Starting execution of %s', get_class($this))`
-     *
-     * @param string $msg The message string (required); can be in
-     *      sprintf() format.
-     * @param mixed $p1 Optional argument to be passed to sprintf()
-     * @param mixed $p2 Optional argument to be passed to sprintf()
-     * @param mixed $p3 Optional argument to be passed to sprintf()
-     * @param mixed $p4 Optional argument to be passed to sprintf()
-     * @param mixed $p5 Optional argument to be passed to sprintf()
-     * @return void
-     *
-     * @TODO - change this method name to something more descriptive/accurate
-     */
-    public function debug()
-    {
-        if ($this->getDebug() === true || RAXSDK_DEBUG === true) {
-            return Debug::logMessage($this, func_get_args());
+        // Only do these methods on properties which exist
+        if ($this->propertyExists($property) && $prefix == 'get') {
+            return $this->getProperty($property);
         }
-    }
 
-    /**
-     * Returns the URL of the service/object
-     *
-     * The assumption is that nearly all objects will have a URL; at this
-     * base level, it simply throws an exception to enforce the idea that
-     * subclasses need to define this method.
-     *
-     * @throws UrlError
-     */
-    public function Url($subresource = '')
-    {
-        throw new UrlError(Lang::translate('URL method must be overridden in class definition'));
-    }
-
-    /**
-     * Sets extended attributes on an object and validates them
-     *
-     * This function is provided to ensure that attributes cannot
-     * arbitrarily added to an object. If this function is called, it
-     * means that the attribute is not defined on the object, and thus
-     * an exception is thrown.
-     *
-     * @param string $property the name of the attribute
-     * @param mixed $value the value of the attribute
-     * @return void
-     */
-    public function __set($property, $value)
-    {
-        $this->SetProperty($property, $value);
-    }
-
-    /**
-     * Sets an extended (unrecognized) property on the current object
-     *
-     * If RAXSDK_STRICT_PROPERTY_CHECKS is TRUE, then the prefix of the
-     * property name must appear in the $prefixes array, or else an
-     * exception is thrown.
-     *
-     * @param string $property the property name
-     * @param mixed $value the value of the property
-     * @param array $prefixes optional list of supported prefixes
-     * @throws \OpenCloud\AttributeError if strict checks are on and
-     *      the property prefix is not in the list of prefixes.
-     */
-    public function SetProperty($property, $value, array $prefixes = array())
-    {
-        // if strict checks are off, go ahead and set it
-        if (!RAXSDK_STRICT_PROPERTY_CHECKS) {
-            $this->$property = $value;
-        } elseif ($this->CheckAttributePrefix($property, $prefixes)) {
-            // otherwise, check the prefix
-            $this->$property = $value;
-        } else {
-            // if that fails, then throw the exception
-            throw new AttributeError(sprintf(
-                Lang::translate('Unrecognized attribute [%s] for [%s]'),
-                $property,
-                get_class($this)
-            ));
+        // Do setter
+        if ($this->propertyExists($property) && $prefix == 'set') {
+            return $this->setProperty($property, $args[0]);
         }
+        
+        throw new Exceptions\RuntimeException(sprintf(
+        	'No method %s::%s()', 
+        	get_class($this), 
+        	$method
+		));
     }
-
+        
     /**
-     * Converts an array of key/value pairs into a single query string
+     * We can set a property under three conditions:
      *
-     * For example, array('A'=>1,'B'=>2) would become 'A=1&B=2'.
+     * 1. If it has a concrete setter: setProperty()
+     * 2. If the property exists
+     * 3. If the property name's prefix is in an approved list
      *
-     * @param array $arr array of key/value pairs
-     * @return string
+     * @param  mixed $property
+     * @param  mixed $value
+     * @return mixed
      */
-    public function MakeQueryString($array)
+    protected function setProperty($property, $value)
     {
-        $queryString = '';
+        $setter = 'set' . $this->toCamel($property);
 
-        foreach($array as $key => $value) {
-            if ($queryString) {
-                $queryString .= '&';
+        if (method_exists($this, $setter)) {
+            
+            return call_user_func(array($this, $setter), $value);
+            
+        } elseif (false !== ($propertyVal = $this->propertyExists($property))) { 
+            
+            // Are we setting a public or private property?
+            if ($this->isAccessible($propertyVal)) {
+                $this->$propertyVal = $value;
+            } else {
+                $this->properties[$propertyVal] = $value;
             }
-            $queryString .= urlencode($key) . '=' .
-            	urlencode($this->to_string($value));
-        }
 
-        return $queryString;
+            return $this;
+
+        } else {
+
+            $this->getLogger()->warning(
+                'Attempted to set {property} with value {value}, but the'
+                . ' property has not been defined. Please define first.',
+                array(
+                    'property' => $property,
+                    'value'    => print_r($value, true)
+                )
+            );
+        }
     }
 
     /**
-     * Checks the most recent JSON operation for errors
+     * Basic check to see whether property exists.
      *
-     * This function should be called after any `json_*()` function call.
-     * This ensures that nasty JSON errors are detected and the proper
-     * exception thrown.
-     *
-     * Example:
-     *   `$obj = json_decode($string);`
-     *   `if (check_json_error()) do something ...`
-     *
-     * @return boolean TRUE if an error occurred, FALSE if none
-     * @throws JsonError
+     * @param string $property   The property name being investigated.
+     * @param bool   $allowRetry If set to TRUE, the check will try to format the name in underscores because
+     *                           there are sometimes discrepancies between camelCaseNames and underscore_names.
+     * @return bool
      */
-    public function CheckJsonError()
+    protected function propertyExists($property, $allowRetry = true)
     {
-        switch(json_last_error()) {
-            case JSON_ERROR_NONE:
-                return false;
-                break;
-            case JSON_ERROR_DEPTH:
-                throw new JsonError(Lang::translate('JSON error: The maximum stack depth has been exceeded'));
-                break;
-            case JSON_ERROR_STATE_MISMATCH:
-                throw new JsonError(Lang::translate('JSON error: Invalid or malformed JSON'));
-                break;
-            case JSON_ERROR_CTRL_CHAR:
-                throw new JsonError(Lang::translate('JSON error: Control character error, possibly incorrectly encoded'));
-                break;
-            case JSON_ERROR_SYNTAX:
-                throw new JsonError(Lang::translate('JSON error: Syntax error'));
-                break;
-            case JSON_ERROR_UTF8:
-                throw new JsonError(Lang::translate('JSON error: Malformed UTF-8 characters, possibly incorrectly encoded'));
-                break;
-            default:
-                throw new JsonError(Lang::translate('Unexpected JSON error'));
-                break;
+        if (!property_exists($this, $property) && !$this->checkAttributePrefix($property)) {
+            // Convert to under_score and retry
+            if ($allowRetry) {
+                return $this->propertyExists($this->toUnderscores($property), false);
+            } else {
+                $property = false;
+            }
         }
 
-        return true;
+        return $property;
     }
 
     /**
-     * Returns a class that implements the HttpRequest interface.
+     * Convert a string to camelCase format.
      *
-     * This can be stubbed out for unit testing and avoid making live calls.
+     * @param       $string
+     * @param  bool $capitalise Optional flag which allows for word capitalization.
+     * @return mixed
      */
-    public function GetHttpRequestObject($url, $method = 'GET', array $options = array())
+    function toCamel($string, $capitalise = true) 
     {
-        return new Request\Curl($url, $method, $options);
+        if ($capitalise) {
+            $string = ucfirst($string);
+        }
+        return preg_replace_callback('/_([a-z])/', function($char) {
+            return strtoupper($char[1]);
+        }, $string);
     }
 
+    /**
+     * Convert string to underscore format.
+     *
+     * @param $string
+     * @return mixed
+     */
+    function toUnderscores($string) 
+    {
+        $string = lcfirst($string);
+        return preg_replace_callback('/([A-Z])/', function($char) {
+            return "_" . strtolower($char[1]);
+        }, $string);
+    }
+
+    /**
+     * Does the property exist in the object variable list (i.e. does it have public or protected visibility?)
+     *
+     * @param $property
+     * @return bool
+     */
+    private function isAccessible($property)
+    {
+        return array_key_exists($property, get_object_vars($this));
+    }
+    
     /**
      * Checks the attribute $property and only permits it if the prefix is
      * in the specified $prefixes array
@@ -273,35 +180,224 @@ abstract class Base
      * This is to support extension namespaces in some services.
      *
      * @param string $property the name of the attribute
-     * @param array $prefixes a list of prefixes
-     * @return boolean TRUE if valid; FALSE if not
+     * @return boolean
      */
-    private function CheckAttributePrefix($property, array $prefixes = array())
+    private function checkAttributePrefix($property)
     {
-        $prefix = strstr($property, ':', true);
-
-        if (in_array($prefix, $prefixes)) {
-            return true;
-        } else {
+        if (!method_exists($this, 'getService')) {
             return false;
+        }
+        $prefix = strstr($property, ':', true);
+        return in_array($prefix, $this->getService()->namespaces());
+    }
+    
+    /**
+     * Grab value out of the data array.
+     *
+     * @param string $property
+     * @return mixed
+     */
+    protected function getProperty($property)
+    {
+        if (array_key_exists($property, $this->properties)) {
+            return $this->properties[$property];
+        } elseif (array_key_exists($this->toUnderscores($property), $this->properties)) {
+            return $this->properties[$this->toUnderscores($property)];
+        } elseif (method_exists($this, 'get' . ucfirst($property))) {
+            return call_user_func(array($this, 'get' . ucfirst($property)));
+        } elseif (false !== ($propertyVal = $this->propertyExists($property)) && $this->isAccessible($propertyVal)) {
+            return $this->$propertyVal;
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Sets the logger.
+     *
+     * @param Log\LoggerInterface $logger
+     * @return $this
+     */
+    public function setLogger(Log\LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+        return $this;
+    }
+
+    /**
+     * Returns the Logger object.
+     * 
+     * @return \OpenCloud\Common\Log\AbstractLogger
+     */
+    public function getLogger()
+    {
+        if (null === $this->logger) {
+            $this->setLogger(new Log\Logger);
+        }
+        return $this->logger;
+    }
+
+    /**
+     * Returns the individual URL of the service/object.
+     *
+     * @throws UrlError
+     */
+    public function getUrl($path = null, array $query = array())
+    {
+        throw new UrlError(Lang::translate(
+            'URL method must be overridden in class definition'
+        ));
+    }
+
+    /**
+     * @deprecated
+     */
+    public function url($path = null, array $query = array())
+    {
+        return $this->getUrl($path, $query);
+    }
+
+    /**
+     * Populates the current object based on an unknown data type.
+     * 
+     * @param  mixed $info
+     * @param  bool
+     * @throws Exceptions\InvalidArgumentError
+     */
+    /**
+     * @param  mixed $info       The data structure that is populating the object.
+     * @param  bool  $setObjects If set to TRUE, then this method will try to populate associated resources as objects
+     *                           rather than anonymous data types. So, a Server being populated might stock a Network
+     *                           object instead of a stdClass object.
+     * @throws Exceptions\InvalidArgumentError
+     */
+    public function populate($info, $setObjects = true)
+    {
+
+        if (is_string($info) || is_integer($info)) {
+            
+            $this->setProperty($this->primaryKeyField(), $info);
+            $this->refresh($info);
+            
+        } elseif (is_object($info) || is_array($info)) {
+
+            foreach ($info as $key => $value) {
+                
+                if ($key == 'metadata' || $key == 'meta') {
+                    
+                    // Try retrieving existing value
+                    if (null === ($metadata = $this->getProperty($key))) {
+                        // If none exists, create new object
+                        $metadata = new Metadata;
+                    }
+                    
+                    // Set values for metadata
+                    $metadata->setArray($value);
+                    
+                    // Set object property
+                    $this->setProperty($key, $metadata);
+                    
+                } elseif (!empty($this->associatedResources[$key]) && $setObjects === true) {
+
+                    // Associated resource
+                    try {
+                        $resource = $this->getService()->resource($this->associatedResources[$key], $value);
+                        $resource->setParent($this);
+                        $this->setProperty($key, $resource);
+                    } catch (Exception\ServiceException $e) {}
+   
+                } elseif (!empty($this->associatedCollections[$key]) && $setObjects === true) {
+
+                    // Associated collection
+                    try {
+                        //$collection = $this->getService()->resourceList(
+                        //    $this->associatedCollections[$key], null, $this
+                        //);
+                        $collection = new Collection(
+                            $this->getService(), 
+                            $this->associatedCollections[$key], 
+                            $value
+                        );
+                        $this->setProperty($key, $collection); 
+                    } catch (Exception\ServiceException $e) {}
+                    
+                } elseif (!empty($this->aliases[$key])) {
+
+                    // Sometimes we might want to preserve camelCase
+                    // or covert `rax-bandwidth:bandwidth` to `raxBandwidth`
+                    $this->setProperty($this->aliases[$key], $value);
+                    
+                } else {
+                    // Normal key/value pair
+                    $this->setProperty($key, $value);
+                }
+
+            }
+        } elseif (null !== $info) {
+            throw new Exceptions\InvalidArgumentError(sprintf(
+                Lang::translate('Argument for [%s] must be string or object'), 
+                get_class()
+            ));
         }
     }
 
     /**
-     * Converts a value to an HTTP-displayable string form
+     * Checks the most recent JSON operation for errors.
      *
-     * @param mixed $x a value to convert
-     * @return string
+     * @throws Exceptions\JsonError
+     * @codeCoverageIgnore
      */
-    private function to_string($x)
+    public static function checkJsonError()
     {
-        if (is_bool($x) && $x) {
-            return 'True';
-        } elseif (is_bool($x)) {
-            return 'False';
-        } else {
-            return (string) $x;
+        switch (json_last_error()) {
+            case JSON_ERROR_NONE:
+                return;
+            case JSON_ERROR_DEPTH:
+                $jsonError = 'JSON error: The maximum stack depth has been exceeded';
+                break;
+            case JSON_ERROR_STATE_MISMATCH:
+                $jsonError = 'JSON error: Invalid or malformed JSON';
+                break;
+            case JSON_ERROR_CTRL_CHAR:
+                $jsonError = 'JSON error: Control character error, possibly incorrectly encoded';
+                break;
+            case JSON_ERROR_SYNTAX:
+                $jsonError = 'JSON error: Syntax error';
+                break;
+            case JSON_ERROR_UTF8:
+                $jsonError = 'JSON error: Malformed UTF-8 characters, possibly incorrectly encoded';
+                break;
+            default:
+                $jsonError = 'Unexpected JSON error';
+                break;
+        }
+        
+        if (isset($jsonError)) {
+            throw new JsonError(Lang::translate($jsonError));
         }
     }
 
+    public static function generateUuid()
+    {
+        return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            // 32 bits for "time_low"
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+
+            // 16 bits for "time_mid"
+            mt_rand(0, 0xffff),
+
+            // 16 bits for "time_hi_and_version",
+            // four most significant bits holds version number 4
+            mt_rand(0, 0x0fff) | 0x4000,
+
+            // 16 bits, 8 bits for "clk_seq_hi_res",
+            // 8 bits for "clk_seq_low",
+            // two most significant bits holds zero and one for variant DCE1.1
+            mt_rand(0, 0x3fff) | 0x8000,
+
+            // 48 bits for "node"
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+        );
+    }
+    
 }

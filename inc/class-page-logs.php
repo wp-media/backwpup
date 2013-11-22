@@ -309,24 +309,22 @@ class BackWPup_Page_Logs extends WP_List_Table {
 	 */
 	public static function admin_print_styles() {
 
-		wp_enqueue_style('backwpupgeneral');
-
 		?>
-    <style type="text/css" media="screen">
-        .column-id {
-            width: 5%;
-            text-align: center;
-        }
+		<style type="text/css" media="screen">
+			.column-id {
+				width: 5%;
+				text-align: center;
+			}
 
-        .column-runtime, .column-status, .column-size {
-            width: 8%;
-        }
+			.column-runtime, .column-status, .column-size {
+				width: 8%;
+			}
 
-        .column-type {
-            width: 15%;
-        }
-    </style>
-	<?php
+			.column-type {
+				width: 15%;
+			}
+		</style>
+		<?php
 	}
 
 	/**
@@ -346,7 +344,7 @@ class BackWPup_Page_Logs extends WP_List_Table {
 	public static function page() {
 
 		?>
-		<div class="wrap">
+		<div class="wrap" id="backwpup-page">
 			<?php screen_icon(); ?>
 			<h2><?php echo esc_html( sprintf( __( '%s Logs', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ) ); ?></h2>
 			<?php BackWPup_Admin::display_messages(); ?>

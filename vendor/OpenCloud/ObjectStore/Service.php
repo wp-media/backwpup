@@ -1,117 +1,187 @@
 <?php
+/**
+ * PHP OpenCloud library.
+ * 
+ * @copyright 2013 Rackspace Hosting, Inc. See LICENSE for information.
+ * @license   https://www.apache.org/licenses/LICENSE-2.0
+ * @author    Glen Campbell <glen.campbell@rackspace.com>
+ * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
+ */
 
 namespace OpenCloud\ObjectStore;
 
-use OpenCloud\OpenStack;
+use Guzzle\Http\EntityBody;
+use OpenCloud\Common\Http\Client;
 use OpenCloud\Common\Exceptions;
-use OpenCloud\Common\Lang;
+use OpenCloud\Common\Exceptions\InvalidArgumentError;
+use OpenCloud\Common\Service\ServiceBuilder;
+use OpenCloud\ObjectStore\Resource\Container;
+use OpenCloud\ObjectStore\Constants\UrlType;
 
 /**
- * ObjectStore - this defines the object-store (Cloud Files) service.
- *
- * Usage:
- * <code>
- *      $conn = new OpenStack('{URL}', '{SECRET}');
- *      $ostore = new OpenCloud\ObjectStore(
- *          $conn,
- *          'service name',
- *          'service region',
- *          'URL type'
- *      );
- * </code>
- *
- * Default values for service name, service region, and urltype can be
- * provided via the global constants RAXSDK_OBJSTORE_NAME,
- * RAXSDK_OBJSTORE_REGION, and RAXSDK_OBJSTORE_URLTYPE.
- *
- * @author Glen Campbell <glen.campbell@rackspace.com>
+ * The ObjectStore (Cloud Files) service.
  */
-
-class Service extends ObjectStoreBase 
+class Service extends AbstractService 
 {
-    
+    const DEFAULT_NAME = 'cloudFiles';
+    const DEFAULT_TYPE = 'object-store';
+
     /**
-     * This holds the associated CDN object (for Rackspace public cloud)
+     * This holds the associated CDN service (for Rackspace public cloud)
      * or is NULL otherwise. The existence of an object here is
      * indicative that the CDN service is available.
      */
-    private $cdn;
+    private $cdnService;
 
-    /**
-     * creates a new ObjectStore object
-     *
-     * @param OpenCloud\OpenStack $conn a connection object
-     * @param string $serviceName the name of the service to use
-     * @param string $serviceRegion the name of the service region to use
-     * @param string $urltype the type of URL to use (usually "publicURL")
-     */
-    public function __construct(
-        OpenStack $connection,
-        $serviceName = RAXSDK_OBJSTORE_NAME,
-        $serviceRegion = RAXSDK_OBJSTORE_REGION,
-        $urltype = RAXSDK_OBJSTORE_URLTYPE
-    ) {
-        $this->debug(Lang::translate('initializing ObjectStore...'));
+    public function __construct(Client $client, $type = null, $name = null, $region = null, $urlType = null)
+    {
+        parent::__construct($client, $type, $name, $region, $urlType);
 
-        // call the parent contructor
-        parent::__construct(
-            $connection,
-            'object-store',
-            $serviceName,
-            $serviceRegion,
-            $urltype
-        );
-
-        // establish the CDN container, if available
         try {
-            $this->cdn = new ObjectStoreCDN(
-                $connection,
-                $serviceName . 'CDN', // will work for Rackspace
-                $serviceRegion,
-                $urltype
-            );
-        } catch (Exceptions\EndpointError $e) {
-            /**
-             * if we have an endpoint error, then
-             * the CDN functionality is not available
-             * In this case, we silently ignore  it.
-             */
-            $this->cdn = null;
-        }
+            $this->cdnService = ServiceBuilder::factory($client, 'OpenCloud\ObjectStore\CDNService', array(
+                'region' => $region
+            ));
+        } catch (Exceptions\EndpointError $e) {}
     }
 
     /**
-     * sets the shared secret value for the TEMP_URL
-     *
-     * @param string $secret the shared secret
-     * @return HttpResponse
+     * @return CDNService
      */
-    public function SetTempUrlSecret($secret) 
+    public function getCdnService() 
     {
-        $response = $this->Request(
-            $this->Url(), 
-            'POST',
-            array('X-Account-Meta-Temp-Url-Key' => $secret)
-        );
+        return $this->cdnService;
+    }
 
-        if ($response->HttpStatus() > 204) {
-            throw new Exceptions\HttpError(sprintf(
-                Lang::translate('Error in request, status [%d] for URL [%s] [%s]'),
-                $response->HttpStatus(),
-                $this->Url(),
-                $response->HttpBody()
-            ));
+    /**
+     * @param $data
+     * @return Container
+     */
+    public function getContainer($data = null)
+    {
+        return new Container($this, $data);
+    }
+
+    /**
+     * Create a container for this service.
+     *
+     * @param       $name     The name of the container
+     * @param array $metadata Additional (optional) metadata to associate with the container
+     * @return bool|static
+     */
+    public function createContainer($name, array $metadata = array())
+    {
+        $this->checkContainerName($name);
+        
+        $containerHeaders = Container::stockHeaders($metadata);
+            
+        $response = $this->getClient()
+            ->put($this->getUrl($name), $containerHeaders)
+            ->send();
+        
+        if ($response->getStatusCode() == 201) {
+            return Container::fromResponse($response, $this);
+        }
+        
+        return false;
+    }
+
+    /**
+     * Check the validity of a potential container name.
+     *
+     * @param $name
+     * @return bool
+     * @throws \OpenCloud\Common\Exceptions\InvalidArgumentError
+     */
+    public function checkContainerName($name)
+    {
+        if (strlen($name) == 0) {
+            $error = 'Container name cannot be blank';
         }
 
+        if (strpos($name, '/') !== false) {
+            $error = 'Container name cannot contain "/"';
+        }
+
+        if (strlen($name) > self::MAX_CONTAINER_NAME_LENGTH) {
+            $error = 'Container name is too long';
+        }
+        
+        if (isset($error)) {
+            throw new InvalidArgumentError($error);
+        }
+
+        return true;
+    }
+
+    /**
+     * Perform a bulk extraction, expanding an archive file. If the $path is an empty string, containers will be
+     * auto-created accordingly, and files in the archive that do not map to any container (files in the base directory)
+     * will be ignored. You can create up to 1,000 new containers per extraction request. Also note that only regular
+     * files will be uploaded. Empty directories, symlinks, and so on, will not be uploaded.
+     *
+     * @param        $path        The path to the archive being extracted
+     * @param        $archive     The contents of the archive (either string or stream)
+     * @param string $archiveType The type of archive you're using {@see \OpenCloud\ObjectStore\Constants\UrlType}
+     * @return \Guzzle\Http\Message\Response
+     * @throws Exception\BulkOperationException
+     * @throws \OpenCloud\Common\Exceptions\InvalidArgumentError
+     */
+    public function bulkExtract($path = '', $archive, $archiveType = UrlType::TAR_GZ)
+    {
+        $entity = EntityBody::factory($archive);
+        
+        $acceptableTypes = array(
+            UrlType::TAR,
+            UrlType::TAR_GZ,
+            UrlType::TAR_BZ2
+        );
+        
+        if (!in_array($archiveType, $acceptableTypes)) {
+            throw new Exceptions\InvalidArgumentError(sprintf(
+                'The archive type must be one of the following: [%s]. You provided [%s].',
+                implode($acceptableTypes, ','),
+                print_r($archiveType, true)
+            ));
+        }
+        
+        $url = $this->getUrl()->addPath($path)->setQuery(array('extract-archive' => $archiveType));
+        $response = $this->getClient()->put($url, array(), $entity)->send();
+        
+        $message = $response->getDecodedBody();
+
+        if (!empty($message->Errors)) {
+            throw new Exception\BulkOperationException((array) $message->Errors);
+        }
+        
         return $response;
     }
 
     /**
-     * returns the CDN object
+     * This method will delete multiple objects or containers from their account with a single request.
+     *
+     * @param array $paths A two-dimensional array of paths:
+     *                      array('container_a/file_1', 'container_b/file_78', 'container_c/file_40582')
+     * @return \Guzzle\Http\Message\Response
+     * @throws Exception\BulkOperationException
      */
-    public function CDN() 
+    public function bulkDelete(array $paths)
     {
-        return $this->cdn;
-    }
+        $entity = EntityBody::factory(implode(PHP_EOL, $paths));
+        
+        $url = $this->getUrl()->setQuery(array('bulk-delete' => true));
+        
+        $response = $this->getClient()
+            ->delete($url, array('Content-Type' => 'text/plain'), $entity)
+            ->send();
 
+        try {
+            $message = $response->getDecodedBody();
+            if (!empty($message->Errors)) {
+                throw new Exception\BulkOperationException((array) $message->Errors);
+            }
+        } catch (Exceptions\JsonError $e) {}
+        
+        return $response;
+    }
+    
 }

@@ -55,9 +55,9 @@ class BackWPup_Help {
 	public static function tip( $text, $echo = TRUE ) {
 
 		if ( ! $echo )
-			return '<img class="help_tip" title="' . esc_attr( $text ) . '" src="' . BackWPup::get_plugin_data( 'URL' ) . '/images/help.png" />';
+			return '<img class="help_tip" title="' . esc_attr( $text ) . '" src="' . BackWPup::get_plugin_data( 'URL' ) . '/assets/images/help.png" />';
 
-		echo '<img class="help_tip" title="' . esc_attr( $text ) . '" src="' . BackWPup::get_plugin_data( 'URL' ) . '/images/help.png" />';
+		echo '<img class="help_tip" title="' . esc_attr( $text ) . '" src="' . BackWPup::get_plugin_data( 'URL' ) . '/assets/images/help.png" />';
 		return '';
 	}
 }

@@ -18,9 +18,8 @@ class BackWPup_Adminbar {
 		load_plugin_textdomain( 'backwpupadminbar', FALSE, BackWPup::get_plugin_data( 'BaseName' ) . '/languages' );
 		//add admin bar. Works only in init
 		add_action( 'admin_bar_menu', array( $this, 'adminbar' ), 100 );
-		//admin bar css
-		add_action( 'wp_enqueue_scripts', array( $this, 'print_styles' ) );
-		add_action( 'admin_print_scripts', array( $this, 'print_styles' ) );
+		//admin css
+		add_action( 'wp_head', array( 'BackWPup_Admin', 'admin_head' ) );
 	}
 
 	/**
@@ -58,7 +57,7 @@ class BackWPup_Adminbar {
 										  'id'    => 'backwpup',
 										  'title' => $menu_title,
 										  'href'  => $menu_herf,
-										  'meta'  => array( 'title' => __( 'BackWPup', 'backwpupadminbar' ) )
+										  'meta'  => array( 'title' => BackWPup::get_plugin_data( 'name' ) )
 									 ) );
 
 		if ( file_exists( BackWPup::get_plugin_data( 'running_file' ) ) && current_user_can( 'backwpup_jobs_start' ) ) {
@@ -89,7 +88,7 @@ class BackWPup_Adminbar {
 									  'id'     => 'backwpup_jobs_new',
 									  'parent' => 'backwpup_jobs',
 									  'title'  => __( 'Add New', 'backwpupadminbar' ),
-									  'href'   => network_admin_url( 'admin.php' ) . '?page=backwpupeditjob'
+									  'href'   => network_admin_url( 'admin.php' ) . '?page=backwpupeditjob&tab=job'
 								 ) );
 
 		if ( current_user_can( 'backwpup_logs' ) )
@@ -118,7 +117,7 @@ class BackWPup_Adminbar {
 											  'id'     => 'backwpup_jobs_' . $jobid,
 											  'parent' => 'backwpup_jobs',
 											  'title'  => $name,
-											  'href'   => wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupeditjob&jobid=' . $jobid, 'edit-job' )
+											  'href'   => wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupeditjob&tab=job&jobid=' . $jobid, 'edit-job' )
 										 ) );
 			}
 			if ( current_user_can( 'backwpup_jobs_start' ) ) {
@@ -131,16 +130,5 @@ class BackWPup_Adminbar {
 										 ) );
 			}
 		}
-	}
-
-	/**
-	 *
-	 */
-	public function print_styles() {
-
-		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG )
-			wp_enqueue_style( 'backwpupadminbar', BackWPup::get_plugin_data( 'URL' ) . '/css/adminbar.css', '', time(), 'screen' );
-		else
-			wp_enqueue_style( 'backwpupadminbar', BackWPup::get_plugin_data( 'URL' ) . '/css/adminbar.min.css', '', BackWPup::get_plugin_data( 'Version' ), 'screen' );
 	}
 }

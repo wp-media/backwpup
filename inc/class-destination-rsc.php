@@ -1,26 +1,14 @@
 <?php
-// Rackspace OpenCloud SDK v1.5.10
+// Rackspace OpenCloud SDK v1.7.2
 // http://www.rackspace.com/cloud/files/
 // https://github.com/rackspace/php-opencloud
 include_once BackWPup::get_plugin_data( 'PluginDir' ) . '/vendor/autoloader.php';
-
-//Globals for OpenCloud
-if ( ! defined( 'RAXSDK_CACERTPEM' ) )
-	define( 'RAXSDK_CACERTPEM', BackWPup::get_plugin_data( 'PluginDir' ) . '/vendor/cacert.pem' );
-if ( ! defined( 'RAXSDK_TIMEOUT' ) )
-	define( 'RAXSDK_TIMEOUT', 0 );
-if ( ! defined( 'RAXSDK_TIMEZONE' ) )
-	define('RAXSDK_TIMEZONE', 'UTC');
 
 /**
  *
  */
 class BackWPup_Destination_RSC extends BackWPup_Destinations {
 
-	/**
-	 * @var $backwpup_job_object BackWPup_Job
-	 */
-	private static $backwpup_job_object = NULL;
 
 	/**
 	 * @return array
@@ -161,10 +149,8 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 						 'username' => $_POST[ 'rscusername' ],
 						 'apiKey' => $_POST[ 'rscapikey' ]
 					));
-				$ostore = $conn->ObjectStore( RAXSDK_OBJSTORE_NAME , $_POST[ 'rscregion' ], RAXSDK_OBJSTORE_URLTYPE);
-				$container = $ostore->Container();
-				$container->Create( array( 'name' =>  $_POST[ 'newrsccontainer' ] ));
-				//$container->DisableCDN();
+				$ostore = $conn->objectStoreService( 'cloudFiles' , $_POST[ 'rscregion' ], 'publicURL');
+				$ostore->createContainer( $_POST[ 'newrsccontainer' ] );
 				BackWPup_Option::update( $id, 'rsccontainer', $_POST[ 'newrsccontainer' ] );
 				BackWPup_Admin::message( sprintf( __( 'Rackspace Cloud container "%s" created.', 'backwpup' ), $_POST[ 'newrsccontainer' ] ) );
 
@@ -192,10 +178,10 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 						 'username' =>  BackWPup_Option::get( $jobid, 'rscusername' ),
 						 'apiKey' => BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 'rscapikey' ) )
 					));
-				$ostore = $conn->ObjectStore( RAXSDK_OBJSTORE_NAME , BackWPup_Option::get( $jobid, 'rscregion' ), RAXSDK_OBJSTORE_URLTYPE);
-				$container = $ostore->Container( BackWPup_Option::get( $jobid, 'rsccontainer' ) );
-				$fileobject = $container->DataObject();
-				$fileobject->Delete( array( 'name' => $backupfile ) );
+				$ostore = $conn->objectStoreService( 'cloudFiles' , BackWPup_Option::get( $jobid, 'rscregion' ), 'publicURL');
+				$container = $ostore->getContainer( BackWPup_Option::get( $jobid, 'rsccontainer' ) );
+				$fileobject = $container->getObject( $backupfile );
+				$fileobject->delete();
 				//update file list
 				foreach ( $files as $key => $file ) {
 					if ( is_array( $file ) && $file[ 'file' ] == $backupfile )
@@ -224,18 +210,18 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 					 'username' =>  BackWPup_Option::get( $jobid, 'rscusername' ),
 					 'apiKey' => BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 'rscapikey' ) )
 				));
-			$ostore = $conn->ObjectStore( RAXSDK_OBJSTORE_NAME , BackWPup_Option::get( $jobid, 'rscregion' ), RAXSDK_OBJSTORE_URLTYPE);
-			$container = $ostore->Container( BackWPup_Option::get( $jobid, 'rsccontainer' ) );
-			$backupfile = $container->DataObject( $get_file );
+			$ostore = $conn->objectStoreService( 'cloudFiles' , BackWPup_Option::get( $jobid, 'rscregion' ), 'publicURL');
+			$container = $ostore->getContainer( BackWPup_Option::get( $jobid, 'rsccontainer' ) );
+			$backupfile = $container->getObject( $get_file );
 			header( "Pragma: public" );
 			header( "Expires: 0" );
 			header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
 			header( "Content-Type: application/octet-stream" );
 			header( "Content-Disposition: attachment; filename=" . basename( $get_file ) . ";" );
 			header( "Content-Transfer-Encoding: binary" );
-			header( "Content-Length: " . $backupfile->bytes );
+			header( "Content-Length: " . $backupfile->getContentLength() );
 			@set_time_limit( 0 );
-			echo $backupfile->SaveToString();
+			echo $backupfile->getContent();
 			die();
 		}
 		catch ( Exception $e ) {
@@ -270,13 +256,11 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 					 'username' => $job_object->job[ 'rscusername' ],
 					 'apiKey' => BackWPup_Encryption::decrypt( $job_object->job[ 'rscapikey' ] )
 				));
-			//set upload callback
-			$conn->SetUploadProgressCallback( array( $this,'UploadProgressCallback') );
 			//connect to cloud files
-			$ostore = $conn->ObjectStore( RAXSDK_OBJSTORE_NAME , $job_object->job[ 'rscregion' ], RAXSDK_OBJSTORE_URLTYPE);
+			$ostore = $conn->objectStoreService( 'cloudFiles' , $job_object->job[ 'rscregion' ], 'publicURL' );
 
-			$container = $ostore->Container( $job_object->job[ 'rsccontainer' ] );
-			$job_object->log( sprintf(__( 'Connected to Rackspace cloud files container %s', 'backwpup' ), $container->name ) );
+			$container = $ostore->getContainer( $job_object->job[ 'rsccontainer' ] );
+			$job_object->log( sprintf(__( 'Connected to Rackspace cloud files container %s', 'backwpup' ), $job_object->job[ 'rsccontainer' ] ) );
 		}
 		catch ( Exception $e ) {
 			$job_object->log( E_USER_ERROR, sprintf( __( 'Rackspace Cloud API: %s', 'backwpup' ), htmlentities( $e->getMessage() ) ), $e->getFile(), $e->getLine() );
@@ -289,14 +273,20 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			//Transfer Backup to Rackspace Cloud
 			$job_object->substeps_done    = 0;
 			$job_object->log( __( 'Upload to Rackspace cloud started &hellip;', 'backwpup' ), E_USER_NOTICE );
+			@set_time_limit( 0 );
 
-			self::$backwpup_job_object = &$job_object;
+			$handle = fopen( $job_object->backup_folder . $job_object->backup_file, 'rb' );
+			$uploded = $container->uploadObject( $job_object->job[ 'rscdir' ] . $job_object->backup_file, $handle );
+			fclose( $handle );
 
-			$backupfile = $container->DataObject();
-			$uploded = $backupfile->Create( array(
-									  'name'=> $job_object->job[ 'rscdir' ] . $job_object->backup_file,
-									  'content_type'=> $job_object->get_mime_type( $job_object->backup_folder . $job_object->backup_file )
-								 ), $job_object->backup_folder . $job_object->backup_file );
+//			$transfer = $container->setupObjectTransfer( array(
+//															 'name' => $job_object->job[ 'rscdir' ] . $job_object->backup_file,
+//															 'path' => $job_object->backup_folder . $job_object->backup_file,
+//															 'concurrency' => 1,
+//															 'partSize'    => 4 * 1024 * 1024
+//														) );
+//			$uploded = $transfer->upload();
+
 			if ( $uploded ) {
 				$job_object->substeps_todo = 1 + $job_object->backup_filesize;
 				$job_object->log( __( 'Backup File transferred to RSC://', 'backwpup' ) . $job_object->job[ 'rsccontainer' ] . '/' . $job_object->job[ 'rscdir' ] . $job_object->backup_file, E_USER_NOTICE );
@@ -318,20 +308,20 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			$backupfilelist = array();
 			$filecounter    = 0;
 			$files          = array();
-			$objlist        = $container->ObjectList( array( 'prefix' => $job_object->job[ 'rscdir' ] ) );
-			if ($objlist->Size() > 0 ) {
-				while ( $object = $objlist->Next() ) {
-					$file = basename( $object->name );
-					if ( $job_object->job[ 'rscdir' ] . $file == $object->name ) { //only in the folder and not in complete bucket
+			$objlist        = $container->objectList( array( 'prefix' => $job_object->job[ 'rscdir' ] ) );
+			if ( $objlist->size() > 0 ) {
+				while ( $object = $objlist->next() ) {
+					$file = basename( $object->getName() );
+					if ( $job_object->job[ 'rscdir' ] . $file == $object->getName() ) { //only in the folder and not in complete bucket
 						if ( $job_object->is_backup_archive( $file ) )
-							$backupfilelist[ strtotime( $object->last_modified ) ] = $file;
+							$backupfilelist[ strtotime( $object->getLastModified() ) ] = $object;
 					}
-					$files[ $filecounter ][ 'folder' ]      = "RSC://" . $job_object->job[ 'rsccontainer' ] . "/" . dirname( $object->name ) . "/";
-					$files[ $filecounter ][ 'file' ]        = $object->name;
-					$files[ $filecounter ][ 'filename' ]    = basename( $object->name );
-					$files[ $filecounter ][ 'downloadurl' ] = network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=downloadrsc&file=' . $object->name . '&jobid=' . $job_object->job[ 'jobid' ];
-					$files[ $filecounter ][ 'filesize' ]    = $object->bytes;
-					$files[ $filecounter ][ 'time' ]        = strtotime( $object->last_modified ) + ( get_option( 'gmt_offset' ) * 3600 );
+					$files[ $filecounter ][ 'folder' ]      = "RSC://" . $job_object->job[ 'rsccontainer' ] . "/" . dirname( $object->getName() ) . "/";
+					$files[ $filecounter ][ 'file' ]        = $object->getName();
+					$files[ $filecounter ][ 'filename' ]    = basename( $object->getName() );
+					$files[ $filecounter ][ 'downloadurl' ] = network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=downloadrsc&file=' . $object->getName() . '&jobid=' . $job_object->job[ 'jobid' ];
+					$files[ $filecounter ][ 'filesize' ]    = $object->getContentLength();
+					$files[ $filecounter ][ 'time' ]        = strtotime( $object->getLastModified() ) + ( get_option( 'gmt_offset' ) * 3600 );
 					$filecounter ++;
 				}
 			}
@@ -342,12 +332,11 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 					while ( $file = array_shift( $backupfilelist ) ) {
 						if ( count( $backupfilelist ) < $job_object->job[ 'rscmaxbackups' ] )
 							break;
-						$fileobject = $container->DataObject();
-						$fileobject->Delete( array( 'name' => $job_object->job[ 'rscdir' ] . $file ) );
 						foreach ( $files as $key => $filedata ) {
-							if ( $filedata[ 'file' ] == $job_object->job[ 'rscdir' ] . $file )
+							if ( $filedata[ 'file' ] == $job_object->job[ 'rscdir' ] . $file->getName() )
 								unset( $files[ $key ] );
 						}
+						$file->delete();
 						$numdeltefiles ++;
 					}
 					if ( $numdeltefiles > 0 )
@@ -364,15 +353,6 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 		$job_object->substeps_done ++;
 
 		return TRUE;
-	}
-
-	/**
-	 * Callback to get transferd bytes on upload
-	 */
-	public function UploadProgressCallback( $bytes_transferred ) {
-
-		self::$backwpup_job_object->substeps_done = self::$backwpup_job_object->substeps_done + $bytes_transferred;
-		self::$backwpup_job_object->update_working_data();
 	}
 
 	/**
@@ -450,8 +430,8 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 						 'apiKey' => BackWPup_Encryption::decrypt( $args[ 'rscapikey' ] )
 					));
 
-				$ostore = $conn->ObjectStore( RAXSDK_OBJSTORE_NAME , $args[ 'rscregion' ], RAXSDK_OBJSTORE_URLTYPE);
-				$containerlist = $ostore->ContainerList();
+				$ostore = $conn->objectStoreService( 'cloudFiles' , $args[ 'rscregion' ], 'publicURL' );
+				$containerlist = $ostore->listContainers();
 			}
 			catch ( Exception $e ) {
 				$error = $e->getMessage();

@@ -4,19 +4,6 @@
  */
 class BackWPup_Page_Settings {
 
-
-	/**
-	 *
-	 * Output css
-	 *
-	 * @return void
-	 */
-	public static function admin_print_styles() {
-
-		wp_enqueue_style('backwpupgeneral');
-
-	}
-
 	/**
 	 *
 	 * Output js
@@ -28,9 +15,9 @@ class BackWPup_Page_Settings {
 		wp_enqueue_script( 'backwpupgeneral' );
 
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-			wp_enqueue_script( 'backwpuppagesettings', BackWPup::get_plugin_data( 'URL' ) . '/js/page_settings.js', array( 'jquery' ), time(), TRUE );
+			wp_enqueue_script( 'backwpuppagesettings', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/page_settings.js', array( 'jquery' ), time(), TRUE );
 		} else {
-			wp_enqueue_script( 'backwpuppagesettings', BackWPup::get_plugin_data( 'URL' ) . '/js/page_settings.min.js', array( 'jquery' ), BackWPup::get_plugin_data( 'Version' ), TRUE );
+			wp_enqueue_script( 'backwpuppagesettings', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/page_settings.min.js', array( 'jquery' ), BackWPup::get_plugin_data( 'Version' ), TRUE );
 		}
 	}
 
@@ -69,11 +56,11 @@ class BackWPup_Page_Settings {
 		update_site_option( 'backwpup_cfg_showfoldersize', isset( $_POST[ 'showfoldersize' ] ) ? 1 : 0 );
 		update_site_option( 'backwpup_cfg_jobsteprestart', isset( $_POST[ 'jobsteprestart' ] ) ? 1 : 0 );
 		if ( 100 > $_POST[ 'jobstepretry' ] && 0 < $_POST[ 'jobstepretry' ] )
-			$_POST[ 'jobstepretry' ] = (int)$_POST[ 'jobstepretry' ];
+			$_POST[ 'jobstepretry' ] = abs( (int)$_POST[ 'jobstepretry' ] );
 		if ( empty( $_POST[ 'jobstepretry' ] ) or ! is_int( $_POST[ 'jobstepretry' ] ) )
 			$_POST[ 'jobstepretry' ] = 3;
 		update_site_option( 'backwpup_cfg_jobstepretry', $_POST[ 'jobstepretry' ] );
-		update_site_option( 'backwpup_cfg_jobmaxexecutiontime', abs( (int) $_POST[ 'jobmaxexecutiontime' ] ) );
+		update_site_option( 'backwpup_cfg_jobmaxexecutiontime', abs( (int)$_POST[ 'jobmaxexecutiontime' ] ) );
 		update_site_option( 'backwpup_cfg_jobziparchivemethod', ( $_POST[ 'jobziparchivemethod' ] == '' || $_POST[ 'jobziparchivemethod' ] == 'PclZip' || $_POST[ 'jobziparchivemethod' ] == 'ZipArchive' ) ? $_POST[ 'jobziparchivemethod' ] : '' );
 		update_site_option( 'backwpup_cfg_jobnotranslate', isset( $_POST[ 'jobnotranslate' ] ) ? 1 : 0 );
 		update_site_option( 'backwpup_cfg_jobwaittimems', $_POST[ 'jobwaittimems' ] );
@@ -105,7 +92,7 @@ class BackWPup_Page_Settings {
 		global $wpdb;
 
 		?>
-    <div class="wrap">
+    <div class="wrap" id="backwpup-page">
 		<?php
 		screen_icon(); ?><h2><?php echo sprintf( __( '%s Settings', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ); ?></h2>
 		<?php
@@ -375,24 +362,12 @@ class BackWPup_Page_Settings {
 			}
 			echo '<tr title=""><td>' . __( 'WP-Cron url:', 'backwpup' ) . '</td><td>' . site_url( 'wp-cron.php' ) . '</td></tr>';
 			//response test
-			$wp_admin_user = get_users( array( 'role' => 'administrator', 'number' => 1 ) );
-			$args = array( 'blocking'   => TRUE,
-						   'sslverify'  => FALSE,
-						   'timeout' 	=> 15,
-						   'redirection' => 3,
-						   'cookies'    => array(
-							   new WP_Http_Cookie( array( 'name' => AUTH_COOKIE, 'value' => wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, time() + 300, 'auth' ) ) ),
-							   new WP_Http_Cookie( array( 'name' => LOGGED_IN_COOKIE, 'value' => wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, time() + 300, 'logged_in' ) ) )
-						   ),
-						   'user-agent' => BackWPup::get_plugin_data( 'user-agent' ) );
-			if ( get_site_option( 'backwpup_cfg_httpauthuser' ) && get_site_option( 'backwpup_cfg_httpauthpassword' )  )
-				$args[ 'headers' ][ 'Authorization' ] = 'Basic ' . base64_encode( get_site_option( 'backwpup_cfg_httpauthuser' ) . ':' . BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_httpauthpassword' ) ) );
-			$raw_response = wp_remote_get( site_url( 'wp-cron.php?backwpup_run=test' ), $args );
 			echo '<tr><td>' . __( 'Server self connect:', 'backwpup' ) . '</td><td>';
+			$raw_response = BackWPup_Job::get_jobrun_url( 'test' );
 			$test_result = '';
 			if ( is_wp_error( $raw_response ) )
 				$test_result .= sprintf( __( 'The HTTP response test get a error "%s"','backwpup' ), $raw_response->get_error_message() );
-			if ( 200 != wp_remote_retrieve_response_code( $raw_response ) )
+			elseif ( 200 != wp_remote_retrieve_response_code( $raw_response ) && 204 != wp_remote_retrieve_response_code( $raw_response ) )
 				$test_result .= sprintf( __( 'The HTTP response test get a false http status (%s)','backwpup' ), wp_remote_retrieve_response_code( $raw_response ) );
 			$headers = wp_remote_retrieve_headers( $raw_response );
 			if ( isset( $headers['x-backwpup-ver'] ) && $headers['x-backwpup-ver'] != BackWPup::get_plugin_data( 'version' ) )

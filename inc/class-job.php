@@ -333,7 +333,12 @@ final class BackWPup_Job {
 		elseif ( $start_type == 'runcli' )
 			$head .= __( '[INFO] BackWPup job started form commandline interface', 'backwpup' ) . PHP_EOL;
 		$head .= __( '[INFO] PHP ver.:', 'backwpup' ) . ' ' . PHP_VERSION . '; ' . PHP_SAPI . '; ' . PHP_OS . PHP_EOL;
-		$head .= sprintf( __( '[INFO] Maximum script execution time is %1$d seconds', 'backwpup' ), ini_get( 'max_execution_time' ) ) . PHP_EOL;
+		$head .= sprintf( __( '[INFO] Maximum PHP script execution time is configured to %1$d seconds', 'backwpup' ), ini_get( 'max_execution_time' ) ) . PHP_EOL;
+		$job_max_execution_time = get_site_option( 'backwpup_cfg_jobmaxexecutiontime' );
+		if ( ! empty( $job_max_execution_time ) )
+				$head .= sprintf( __( '[INFO] Script restart time is configured to %1$d seconds', 'backwpup' ), $job_max_execution_time ) . PHP_EOL;
+		if ( get_site_option( 'backwpup_cfg_jobsteprestart' ) )
+			$head .= __( '[INFO] Script restart on every man step is activated', 'backwpup' ) . PHP_EOL;
 		$head .= sprintf( __( '[INFO] MySQL ver.: %s', 'backwpup' ), $wpdb->get_var( "SELECT VERSION() AS version" ) ) . PHP_EOL;
 		if ( function_exists( 'curl_init' ) ) {
 			$curlversion = curl_version();
@@ -382,9 +387,9 @@ final class BackWPup_Job {
 		$url        		= site_url( 'wp-cron.php' );
 		$header				= array();
 		$authurl    		= '';
-		$query_args 		= array( '_nonce' => substr( wp_hash( wp_nonce_tick() . 'backwup_job_run-' . $starttype, 'nonce' ), - 12, 10 ) );
+		$query_args 		= array( '_nonce' => substr( wp_hash( wp_nonce_tick() . 'backwup_job_run-' . $starttype, 'nonce' ), - 12, 10 ), 'doing_wp_cron' => sprintf( '%.22F', microtime( true ) ) );
 
-		if ( in_array( $starttype, array( 'restart', 'runnow', 'cronrun', 'runext' ) ) )
+		if ( in_array( $starttype, array( 'restart', 'runnow', 'cronrun', 'runext', 'test' ) ) )
 			$query_args[ 'backwpup_run' ] = $starttype;
 
 		if ( in_array( $starttype, array( 'runnowlink', 'runnow', 'cronrun', 'runext' ) ) && ! empty( $jobid ) )
@@ -397,6 +402,7 @@ final class BackWPup_Job {
 
 		if ( $starttype == 'runext' ) {
 			$query_args[ '_nonce' ] = get_site_option( 'backwpup_cfg_jobrunauthkey' );
+			$query_args[ 'doing_wp_cron' ] = NULL;
 			if ( ! empty( $authurl ) ) {
 				$url = str_replace( 'https://', 'https://' . $authurl, $url );
 				$url = str_replace( 'http://', 'http://' . $authurl, $url );
@@ -404,38 +410,46 @@ final class BackWPup_Job {
 		}
 
 		if ( $starttype == 'runnowlink' && ( ! defined( 'ALTERNATE_WP_CRON' ) || ! ALTERNATE_WP_CRON ) ) {
-			$url                       	= wp_nonce_url( network_admin_url( 'admin.php' ), 'backwup_job_run-' . $starttype );
-			$query_args[ 'page' ]      	= 'backwpupjobs';
-			$query_args[ 'action' ] 	= 'runnow';
+			$url                       		= wp_nonce_url( network_admin_url( 'admin.php' ), 'backwup_job_run-' . $starttype );
+			$query_args[ 'page' ]      		= 'backwpupjobs';
+			$query_args[ 'action' ] 		= 'runnow';
+			$query_args[ 'doing_wp_cron' ]  = NULL;
 			unset(  $query_args[ '_nonce' ] );
 		}
 
 		if ( $starttype == 'runnowlink' && defined( 'ALTERNATE_WP_CRON' ) && ALTERNATE_WP_CRON ) {
 			$query_args[ 'backwpup_run' ] = 'runnowalt';
 			$query_args[ '_nonce' ]    = substr( wp_hash( wp_nonce_tick() . 'backwup_job_run-runnowalt', 'nonce' ), - 12, 10 );
+			$query_args[ 'doing_wp_cron' ] = NULL;
 		}
 
-		$url = array(
-			'url'    => add_query_arg( $query_args, $url ),
-			'header' => $header
-		);
+		$cron_request = apply_filters( 'cron_request', array(
+															'url' => add_query_arg( $query_args, $url ),
+															'key' => $query_args[ 'doing_wp_cron' ],
+															'args' => array(
+																'blocking'   	=> FALSE,
+																'sslverify'		=> apply_filters( 'https_local_ssl_verify', true ),
+																'timeout' 		=> 0.01,
+																'headers'    	=> $header,
+															    'cookies'    	=> array(
+																	new WP_Http_Cookie( array( 'name' => AUTH_COOKIE, 'value' => wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, time() + 300, 'auth' ) ) ),
+																    new WP_Http_Cookie( array( 'name' => LOGGED_IN_COOKIE, 'value' => wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, time() + 300, 'logged_in' ) ) )
+															    ),
+															   	'user-agent' 	=> BackWpup::get_plugin_data( 'User-Agent' )
+															  )
+													   ) );
+
+		if(  $starttype == 'test' ) {
+			$cron_request[ 'args' ][ 'timeout' ] = 15;
+			$cron_request[ 'args' ][ 'blocking' ] = TRUE;
+		}
 
 		if ( ! in_array( $starttype, array( 'runnowlink', 'runext' ) ) ) {
-			return @wp_remote_get( $url[ 'url' ], array(
-													   'blocking'   => FALSE,
-													   'sslverify' 	=> FALSE,
-													   'timeout' 	=> 0.01,
-													   'headers'    => $url[ 'header' ],
-													   'redirection' => 3,
-													   'cookies'    => array(
-														   new WP_Http_Cookie( array( 'name' => AUTH_COOKIE, 'value' => wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, time() + 300, 'auth' ) ) ),
-														   new WP_Http_Cookie( array( 'name' => LOGGED_IN_COOKIE, 'value' => wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, time() + 300, 'logged_in' ) ) )
-													   ),
-													   'user-agent' => BackWpup::get_plugin_data( 'User-Agent' )
-												  ) );
+			set_transient( 'doing_cron', $query_args[ 'doing_wp_cron' ] );
+			return wp_remote_post( $cron_request['url'], $cron_request['args'] );
 		}
 
-		return $url;
+		return $cron_request;
 	}
 
 
@@ -724,9 +738,10 @@ final class BackWPup_Job {
 	/**
 	 * Do a job restart
 	 *
+	 * @param bool $must Restart must done
 	 * @param bool $msg Log restart message
 	 */
-	public function do_restart( $msg = TRUE ) {
+	public function do_restart( $must = FALSE, $msg = TRUE ) {
 
 		//no restart if in end step
 		if ( $this->step_working == 'END' || ( count( $this->steps_done ) + 1 ) >= count( $this->steps_todo ) )
@@ -738,7 +753,7 @@ final class BackWPup_Job {
 
 		//no restart when restart was 3 Seconds before
 		$execution_time = microtime( TRUE ) - $this->timestamp_script_start;
-		if ( $execution_time < 3 )
+		if ( ! $must  && $execution_time < 3 )
 			return;
 
 		//no restart if no working job
@@ -781,7 +796,7 @@ final class BackWPup_Job {
 			$this->steps_data[ $this->step_working ][ 'SAVE_STEP_TRY' ] = $this->steps_data[ $this->step_working ][ 'STEP_TRY' ];
 			$this->steps_data[ $this->step_working ][ 'STEP_TRY' ] -= 1;
 			$this->log( sprintf( __( 'Restart after %1$d seconds. Maximum execution time is set to %2$d seconds.', 'backwpup' ), $execution_time, $job_max_execution_time ) );
-			$this->do_restart( FALSE );
+			$this->do_restart( TRUE, FALSE );
 		}
 
 		return $job_max_execution_time - $execution_time;
@@ -899,11 +914,7 @@ final class BackWPup_Job {
 		if ( ! empty( $args[ 0 ] ) )
 			$this->log( sprintf( __( 'Signal %d is sent to script!', 'backwpup' ), $args[ 0 ] ), E_USER_ERROR );
 
-		//Restart on http job
-		if ( ! defined( 'STDIN' ) )
-			$this->log( __( 'Script stopped! Will start again.', 'backwpup' ) );
-
-		$this->do_restart();
+		$this->do_restart( TRUE, TRUE );
 	}
 
 

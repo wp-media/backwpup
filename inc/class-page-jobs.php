@@ -349,24 +349,12 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 					$backups_folder = BackWPup_Option::get( $_GET[ 'jobid' ], 'backupdir' );
 					if ( ! empty( $backups_folder ) )
 						BackWPup_Job::check_folder( $backups_folder );
-					//check sever callback
-					$wp_admin_user = get_users( array( 'role' => 'administrator', 'number' => 1 ) );
-					$args = array( 'blocking'   => TRUE,
-								   'sslverify'  => FALSE,
-								   'timeout' 	=> 15,
-								   'redirection' => 3,
-								   'cookies'    => array(
-									   new WP_Http_Cookie( array( 'name' => AUTH_COOKIE, 'value' => wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, time() + 300, 'auth' ) ) ),
-									   new WP_Http_Cookie( array( 'name' => LOGGED_IN_COOKIE, 'value' => wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, time() + 300, 'logged_in' ) ) )
-								   ),
-								   'user-agent' => BackWPup::get_plugin_data( 'user-agent' ) );
-					if ( get_site_option( 'backwpup_cfg_httpauthuser' ) && get_site_option( 'backwpup_cfg_httpauthpassword' )  )
-						$args[ 'headers' ][ 'Authorization' ] = 'Basic ' . base64_encode( get_site_option( 'backwpup_cfg_httpauthuser' ) . ':' . BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_httpauthpassword' ) ) );
-					$raw_response = wp_remote_get( site_url( 'wp-cron.php?backwpup_run=test' ), $args );
+					//check server callback
+					$raw_response = BackWPup_Job::get_jobrun_url( 'test' );
 					$test_result = '';
 					if ( is_wp_error( $raw_response ) )
 						$test_result .= sprintf( __( 'The HTTP response test get a error "%s"','backwpup' ), $raw_response->get_error_message() );
-					if ( 200 != wp_remote_retrieve_response_code( $raw_response ) )
+					elseif ( 200 != wp_remote_retrieve_response_code( $raw_response ) && 204 != wp_remote_retrieve_response_code( $raw_response ) )
 						$test_result .= sprintf( __( 'The HTTP response test get a false http status (%s)','backwpup' ), wp_remote_retrieve_response_code( $raw_response ) );
 					if ( ! empty( $test_result ) )
 						BackWPup_Admin::message( $test_result, TRUE );
@@ -419,14 +407,106 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	 */
 	public static function admin_print_styles() {
 
-		wp_enqueue_style('backwpupgeneral');
+		?>
+		<style type="text/css" media="screen">
+			.column-id {
+				width: 3%;
+				text-align: center;
+			}
 
-		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-			wp_enqueue_style( 'backwpuppageworking', BackWPup::get_plugin_data( 'URL' ) . '/css/page_jobs.css', '', time(), 'screen' );
-		} else {
-			wp_enqueue_style( 'backwpuppageworking', BackWPup::get_plugin_data( 'URL' ) . '/css/page_jobs.min.css', '', BackWPup::get_plugin_data( 'Version' ), 'screen' );
-		}
+			.column-last, .column-next, .column-type, .column-dest {
+				width: 15%;
+			}
 
+			#TB_ajaxContent {
+				background-color: black;
+				color: white;
+			}
+
+			#showworking {
+				font-family: Fixedsys, Courier, monospace;
+				line-height: 15px;
+				font-size: 12px;
+				white-space: pre;
+				display: block;
+				width: 100%;
+			}
+			#runningjob {
+				padding:10px;
+				background-image:url(<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/progresshg.jpg);
+				position:relative;
+				margin: 15px 0 25px 0;
+				padding-bottom:25px;
+			}
+			#runniginfos {
+				font-size: 14px;
+				font-family: sans-serif,"Arial";
+			}
+			h2#runnigtitle {
+				font-size: 18px;
+				margin-bottom: 15px;
+				padding: 0;
+			}
+			#warningsid, #errorid {
+				margin-right: 10px;
+			}
+
+			.infobuttons {
+				position: absolute;
+				right: 10px;
+				bottom: 10px;
+			}
+			a#showworkingbutton {
+				float: left;
+				padding: 10px;
+				font-size: 12px;
+				font-family: sans-serif,"Arial";
+				text-decoration :none;
+				background-color: #93b509;
+				color: #fff;
+				border: none;
+			}
+			a#abortbutton, a#showworkingclose {
+				float: left;
+				margin-left: 10px;
+				padding: 10px;
+				font-size: 12px;
+				font-family: sans-serif,"Arial";
+				text-decoration: none;
+				background-color: #cd1212;
+				color: #fff;
+				border: none;
+			}
+			.progressbar {
+				margin-top: 20px;
+				height: auto;
+				background: #f6f6f6 url(<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/progressbarhg.jpg);
+			}
+
+			#lastmsg, #onstep, #lasterrormsg {
+				text-align: center;
+				margin-bottom: 20px;
+			}
+
+			#progressstep {
+				background-color: #1d94cf;
+				color: #fff;
+				padding: 5px 0;
+				text-align: center;
+				font-size: 14px;
+				font-family: sans-serif,"Arial";
+			}
+
+			#progresssteps {
+				background-color: #007fb6;
+				color: #fff;
+				padding: 5px 0;
+				text-align: center;
+				font-size: 14px;
+				font-family: sans-serif,"Arial";
+			}
+		</style>
+		<?php
 	}
 
 	/**
@@ -442,7 +522,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	 */
 	public static function page() {
 
-		echo '<div class="wrap">';
+		echo '<div class="wrap" id="backwpup-page">';
 		screen_icon();
 		echo '<h2>' . esc_html( sprintf( __( '%s Jobs', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ) ) . '&nbsp;<a href="' . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupeditjob', 'edit-job' ) . '" class="button add-new-h2">' . esc_html__( 'Add New', 'backwpup' ) . '</a></h2>';
 		BackWPup_Admin::display_messages();

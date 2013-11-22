@@ -263,9 +263,9 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 	public function admin_print_scripts() {
 
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-			wp_enqueue_script( 'backwpupjobtypedbdump', BackWPup::get_plugin_data( 'URL' ) . '/js/page_edit_jobtype_dbdump.js', array('jquery'), time(), TRUE );
+			wp_enqueue_script( 'backwpupjobtypedbdump', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/page_edit_jobtype_dbdump.js', array('jquery'), time(), TRUE );
 		} else {
-			wp_enqueue_script( 'backwpupjobtypedbdump', BackWPup::get_plugin_data( 'URL' ) . '/js/page_edit_jobtype_dbdump.min.js', array('jquery'), BackWPup::get_plugin_data( 'Version' ), TRUE );
+			wp_enqueue_script( 'backwpupjobtypedbdump', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/page_edit_jobtype_dbdump.min.js', array('jquery'), BackWPup::get_plugin_data( 'Version' ), TRUE );
 		}
 	}
 

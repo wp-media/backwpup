@@ -1,17 +1,16 @@
 <?php
 /**
- * The Rackspace cloud/connection class (which uses different authentication
- * than the pure OpenStack class)
- *
- * @copyright 2012-2013 Rackspace Hosting, Inc.
- * See COPYING for licensing information
- *
- * @package phpOpenCloud
- * @version 1.0
- * @author Glen Campbell <glen.campbell@rackspace.com>
+ * PHP OpenCloud library.
+ * 
+ * @copyright 2013 Rackspace Hosting, Inc. See LICENSE for information.
+ * @license   https://www.apache.org/licenses/LICENSE-2.0
+ * @author    Glen Campbell <glen.campbell@rackspace.com>
+ * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
  */
 
 namespace OpenCloud;
+
+use OpenCloud\Common\Service\ServiceBuilder;
 
 /**
  * Rackspace extends the OpenStack class with support for Rackspace's
@@ -23,110 +22,141 @@ namespace OpenCloud;
  * service.
  *
  * Example:
- * <code>
- * $username = 'FRED';
- * $apiKey = '0900af093093788912388fc09dde090ffee09';
- * $conn = new Rackspace(
+ * <pre><code>
+ * $client = new Rackspace(
  *      'https://identity.api.rackspacecloud.com/v2.0/',
  *      array(
- *          'username' => $username,
- *          'apiKey' => $apiKey
- *      ));
- * </code>
+ *          'username' => 'FRED',
+ *          'apiKey'   => '0900af093093788912388fc09dde090ffee09'
+ *      )
+ * );
+ * </code></pre>
  */
 class Rackspace extends OpenStack
 {
-
-    //this is the JSON string for our new credentials
-const APIKEYTEMPLATE = <<<ENDCRED
-{ "auth": { "RAX-KSKEY:apiKeyCredentials": { "username": "%s",
-          "apiKey": "%s"
-        }
-    }
-}
-ENDCRED;
+	const US_IDENTITY_ENDPOINT = 'https://identity.api.rackspacecloud.com/v2.0/';
+	const UK_IDENTITY_ENDPOINT = 'https://lon.identity.api.rackspacecloud.com/v2.0/';
+	
+    /**
+     * JSON template for Rackspace credentials
+     */
+    const CREDS_TEMPLATE = <<<EOF
+{"auth":{"RAX-KSKEY:apiKeyCredentials":{"username":"%s","apiKey":"%s"}}}
+EOF;
 
     /**
      * Generates Rackspace API key credentials
-     *
-     * @return string
+     * {@inheritDoc}
      */
-    public function Credentials()
+    public function getCredentials()
     {
-        $sec = $this->Secret();
-        if (isset($sec['username'])
-            && isset($sec['apiKey'])
-        ) {
-            return sprintf(
-                self::APIKEYTEMPLATE,
-                $sec['username'],
-                $sec['apiKey']
-           );
-        } else {
-            return parent::Credentials();
-        }
+        $secret = $this->getSecret();
+        
+        return (!empty($secret['username']) && !empty($secret['apiKey']))
+            ? sprintf(self::CREDS_TEMPLATE, $secret['username'], $secret['apiKey'])
+            : parent::getCredentials();
     }
 
     /**
-     * Creates a new DbService (Database as a Service) object
+     * Creates a new Database service. Note: this is a Rackspace-only feature.
      *
-     * This is a factory method that is Rackspace-only (NOT part of OpenStack).
-     *
-     * @param string $name the name of the service (e.g., 'Cloud Databases')
-     * @param string $region the region (e.g., 'DFW')
-     * @param string $urltype the type of URL (e.g., 'publicURL');
+     * @param string $name    The name of the service as it appears in the Catalog
+     * @param string $region  The region (DFW, IAD, ORD, LON, SYD)
+     * @param string $urltype The URL type ("publicURL" or "internalURL")
+     * @return \OpenCloud\Database\Service
      */
-    public function DbService($name = null, $region = null, $urltype = null)
+    public function databaseService($name = null, $region = null, $urltype = null)
     {
-        return $this->Service('Database', $name, $region, $urltype);
+        return ServiceBuilder::factory($this, 'OpenCloud\Database\Service', array(
+            'name'    => $name, 
+            'region'  => $region, 
+            'urlType' => $urltype
+        ));
     }
 
     /**
-     * Creates a new LoadBalancerService object
+     * Creates a new Load Balancer service. Note: this is a Rackspace-only feature.
      *
-     * This is a factory method that is Rackspace-only (NOT part of OpenStack).
-     *
-     * @param string $name the name of the service
-     *      (e.g., 'Cloud Load Balancers')
-     * @param string $region the region (e.g., 'DFW')
-     * @param string $urltype the type of URL (e.g., 'publicURL');
+     * @param string $name    The name of the service as it appears in the Catalog
+     * @param string $region  The region (DFW, IAD, ORD, LON, SYD)
+     * @param string $urltype The URL type ("publicURL" or "internalURL")
+     * @return \OpenCloud\LoadBalancer\Service
      */
-    public function LoadBalancerService($name = null, $region = null, $urltype = null)
+    public function loadBalancerService($name = null, $region = null, $urltype = null)
     {
-        return $this->Service('LoadBalancer', $name, $region, $urltype);
+        return ServiceBuilder::factory($this, 'OpenCloud\LoadBalancer\Service', array(
+            'name'    => $name, 
+            'region'  => $region, 
+            'urlType' => $urltype
+        ));
     }
 
     /**
-     * creates a new DNS service object
+     * Creates a new DNS service. Note: this is a Rackspace-only feature.
      *
-     * This is a factory method that is currently Rackspace-only
-     * (not available via the OpenStack class)
+     * @param string $name    The name of the service as it appears in the Catalog
+     * @param string $region  The region (DFW, IAD, ORD, LON, SYD)
+     * @param string $urltype The URL type ("publicURL" or "internalURL")
+     * @return OpenCloud\DNS\Service
      */
-    public function DNS($name = null, $region = null, $urltype = null)
+    public function dnsService($name = null, $region = null, $urltype = null)
     {
-        return $this->Service('DNS', $name, $region, $urltype);
+        return ServiceBuilder::factory($this, 'OpenCloud\DNS\Service', array(
+            'name'    => $name, 
+            'region'  => $region, 
+            'urlType' => $urltype
+        ));
     }
 
     /**
-     * creates a new CloudMonitoring service object
+     * Creates a new CloudMonitoring service. Note: this is a Rackspace-only feature.
      *
-     * This is a factory method that is currently Rackspace-only
-     * (not available via the OpenStack class)
+     * @param string $name    The name of the service as it appears in the Catalog
+     * @param string $region  The region (DFW, IAD, ORD, LON, SYD)
+     * @param string $urltype The URL type ("publicURL" or "internalURL")
+     * @return \OpenCloud\CloudMonitoring\Service
      */
-    public function CloudMonitoring($name=null, $region=null, $urltype=null)
+    public function cloudMonitoringService($name = null, $region = null, $urltype = null)
     {
-        return $this->Service('CloudMonitoring', $name, $region, $urltype);
+        return ServiceBuilder::factory($this, 'OpenCloud\CloudMonitoring\Service', array(
+            'name'    => $name, 
+            'region'  => $region, 
+            'urlType' => $urltype
+        ));
     }
 
     /**
-     * creates a new Autoscale service object
+     * Creates a new CloudQueues service. Note: this is a Rackspace-only feature.
      *
-     * This is a factory method that is currently Rackspace-only
-     * (not available via the OpenStack class)
+     * @param string $name    The name of the service as it appears in the Catalog
+     * @param string $region  The region (DFW, IAD, ORD, LON, SYD)
+     * @param string $urltype The URL type ("publicURL" or "internalURL")
+     * @return \OpenCloud\Autoscale\Service
      */
-    public function Autoscale($name=null, $region=null, $urltype=null)
+    public function autoscaleService($name = null, $region = null, $urltype = null)
     {
-        return $this->Service('Autoscale', $name, $region, $urltype);
+        return ServiceBuilder::factory($this, 'OpenCloud\Autoscale\Service', array(
+            'name'    => $name, 
+            'region'  => $region, 
+            'urlType' => $urltype
+        ));
     }
-
+    
+    /**
+     * Creates a new CloudQueues service. Note: this is a Rackspace-only feature.
+     *
+     * @param string $name    The name of the service as it appears in the Catalog
+     * @param string $region  The region (DFW, IAD, ORD, LON, SYD)
+     * @param string $urltype The URL type ("publicURL" or "internalURL")
+     * @return \OpenCloud\Queues\Service
+     */
+    public function queuesService($name = null, $region = null, $urltype = null)
+    {
+        return ServiceBuilder::factory($this, 'OpenCloud\Queues\Service', array(
+            'name'    => $name, 
+            'region'  => $region, 
+            'urlType' => $urltype
+        ));
+    }
+    
 }
