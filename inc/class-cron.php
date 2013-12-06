@@ -54,8 +54,6 @@ class BackWPup_Cron {
 	public static function check_cleanup() {
 
 		$job_object = BackWPup_Job::get_working_data();
-		$jobids = BackWPup_Option::get_job_ids();
-
 
 		// check aborted jobs for longer than a tow hours, abort them courtly and send mail
 		if ( is_object( $job_object ) && ! empty( $job_object->logfile ) ) {
@@ -68,21 +66,6 @@ class BackWPup_Cron {
 
 		//Compress not compressed logs
 		if ( function_exists( 'gzopen' ) && ! is_object( $job_object ) && get_site_option( 'backwpup_cfg_gzlogs' ) ) {
-			//Compress logs from last Jobs
-			foreach ( $jobids as $jobid ) {
-				$log_file = get_site_option( 'backwpup_job_logfile' );
-				//compress uncompressed
-				if ( file_exists( $log_file ) && '.html' == substr( $log_file, -5 ) ) {
-					$compress = new BackWPup_Create_Archive( $log_file . '.gz' );
-					if ( $compress->add_file( $log_file ) ) {
-						BackWPup_Option::update( $jobid, 'logfile', $log_file. '.gz' );
-						update_site_option( 'backwpup_job_logfile', $log_file. '.gz' );
-						unlink( $log_file );
-					}
-					unset( $compress );
-				}
-
-			}
 			//Compress old not compressed logs
 			if ( $dir = opendir( get_site_option( 'backwpup_cfg_logfolder' ) ) ) {
 				while ( FALSE !== ( $file = readdir( $dir ) ) ) {
@@ -105,6 +88,20 @@ class BackWPup_Cron {
 			//temp cleanup
 			BackWPup_Job::clean_temp_folder();
 		}
+
+		//check scheduling jobs that not found will removed because there are single scheduled
+		$activejobs = BackWPup_Option::get_job_ids( 'activetype', 'wpcron' );
+		if ( ! empty( $activejobs ) ) {
+			foreach ( $activejobs as $jobid ) {
+				$cron_next = wp_next_scheduled( 'backwpup_cron', array( 'id' => $jobid ) );
+				if ( ! $cron_next || $cron_next < time() ) {
+					wp_unschedule_event( $cron_next, 'backwpup_cron', array( 'id' => $jobid ) );
+					$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $jobid, 'cron') );
+					wp_schedule_single_event( $cron_next, 'backwpup_cron', array( 'id' => $jobid ) );
+				}
+			}
+		}
+
 	}
 
 

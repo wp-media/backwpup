@@ -172,9 +172,6 @@ class BackWPup_Page_Backups extends WP_List_Table {
 	 */
 	function extra_tablenav( $which ) {
 
-		if ( 'top' != $which )
-			return;
-
 		$destinations_list = $this->get_destinations_list();
 
 		if (  count( $destinations_list ) < 1)
@@ -185,16 +182,19 @@ class BackWPup_Page_Backups extends WP_List_Table {
 			return;
 		}
 
-		echo '<div class="alignleft actions">';
-		echo "<select name=\"jobdest\" id=\"jobdest\" class=\"postform\">" . PHP_EOL;
-		foreach ( $destinations_list as $jobdest ) {
-			list( $jobid, $dest ) = explode( '_', $jobdest );
-			echo "\t<option value=\"" . $jobdest . "\" " . selected( $this->jobid . '_' . $this->dest, $jobdest ) . ">" . $dest . ": " . esc_html( BackWPup_Option::get( $jobid, 'name' ) ) . "</option>" . PHP_EOL;
-		}
-
-		echo "</select>" . PHP_EOL;
-		submit_button( __( 'Change destination', 'backwpup' ), 'secondary', '', FALSE, array( 'id' => 'post-query-submit' ) );
-		echo '</div>';
+		?>
+		<div class="alignleft actions">
+			<label for="jobdest"><select name="jobdest" class="postform">
+			<?php
+			foreach ( $destinations_list as $jobdest ) {
+				list( $jobid, $dest ) = explode( '_', $jobdest );
+				echo "\t<option value=\"" . $jobdest . "\" " . selected( $this->jobid . '_' . $this->dest, $jobdest ) . ">" . $dest . ": " . esc_html( BackWPup_Option::get( $jobid, 'name' ) ) . "</option>" . PHP_EOL;
+			}
+			?>
+			</select></label>
+			<?php submit_button( __( 'Change destination', 'backwpup' ), 'secondary', '', FALSE, array( 'id' => 'post-query-submit' ) ); ?>
+		</div>
+		<?php
 	}
 
 	/**
@@ -418,8 +418,7 @@ class BackWPup_Page_Backups extends WP_List_Table {
 
 		?>
 		<div class="wrap" id="backwpup-page">
-			<?php screen_icon(); ?>
-			<h2><?php echo esc_html( sprintf( __( '%s Manage Backup Archives', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ) ); ?></h2>
+			<h2><span id="backwpup-page-icon">&nbsp;</span><?php echo esc_html( sprintf( __( '%s Manage Backup Archives', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ) ); ?></h2>
 			<?php BackWPup_Admin::display_messages(); ?>
             <form id="posts-filter" action="" method="get">
             	<input type="hidden" name="page" value="backwpupbackups" />

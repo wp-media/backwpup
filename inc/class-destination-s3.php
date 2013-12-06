@@ -1,5 +1,5 @@
 <?php
-// Amazon S3 SDK v2.4.7
+// Amazon S3 SDK v2.4.11
 // http://aws.amazon.com/de/sdkforphp2/
 // https://github.com/aws/aws-sdk-php
 include_once BackWPup::get_plugin_data( 'PluginDir' ) . '/vendor/autoloader.php';
@@ -151,8 +151,8 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 					<?php
 					if ( BackWPup_Option::get( $jobid, 'backuptype' ) == 'archive' ) {
 						?>
-						<label for="ids3maxbackups"><input id="ids3maxbackups" name="s3maxbackups" type="text" size="3" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 's3maxbackups' ) ); ?>" class="small-text" />&nbsp;
-						<?php  _e( 'Number of files to keep in folder.', 'backwpup' ); BackWPup_Help::tip( __( 'Oldest files will be deleted first. 0 = no deletion', 'backwpup' ) ); ?></label>
+						<label for="ids3maxbackups"><input id="ids3maxbackups" name="s3maxbackups" type="text" size="3" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 's3maxbackups' ) ); ?>" class="small-text help-tip" title="<?php esc_attr_e( 'Oldest files will be deleted first. 0 = no deletion', 'backwpup' ); ?>" />&nbsp;
+						<?php  _e( 'Number of files to keep in folder.', 'backwpup' ); ?></label>
 						<?php } else { ?>
                         <label for="ids3syncnodelete"><input class="checkbox" value="1"
 							   type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 's3syncnodelete' ), TRUE ); ?>
@@ -164,10 +164,9 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			<tr>
 				<th scope="row"><?php _e( 'Multipart Upload', 'backwpup' ); ?></th>
 				<td>
-				   <label for="ids3multipart"><input class="checkbox" value="1"
+				   <label for="ids3multipart"><input class="checkbox help-tip" value="1" title="<?php esc_attr_e( 'Multipart splits file into multiple chunks while uploading. This is necessary for displaying the upload process and to transfer bigger files. Beware: There is a known issue at Google storage with this option!', 'backwpup'); ?>"
 						type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 's3multipart' ), TRUE ); ?>
 						name="s3multipart" id="ids3multipart" /> <?php _e( 'Use multipart upload for uploading a file', 'backwpup' ); ?></label>
-					<?php BackWPup_Help::tip( __( 'Multipart splits file into multiple chunks while uploading. This is necessary for displaying the upload process and to transfer bigger files. Beware: There is a known issue at Google storage with this option!', 'backwpup') ); ?>
 				</td>
 			</tr>
 			<?php }  ?>

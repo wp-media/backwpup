@@ -180,9 +180,9 @@ class BackWPup_Page_Logs extends WP_List_Table {
 	 */
 	function column_log( $item ) {
 
-		$r = "<strong><a class=\"thickbox\" href=\"" . admin_url( 'admin-ajax.php' ) . '?&action=backwpup_view_log&logfile=' . $item['file'] .'&_ajax_nonce=' . wp_create_nonce( 'view-logs' ) . "&height=440&width=630&TB_iframe=true\" title=\"" . $item['file'] . "\">" . sprintf( __( '%1$s at %2$s', 'backwpup' ), date_i18n( get_option( 'date_format' ) , $item[ 'logtime' ], TRUE ), date_i18n( get_option( 'time_format' ), $item[ 'logtime' ], TRUE ) ) . ": <i>" . $item[ 'name' ] . "</i></a></strong>";
+		$r = "<strong><a class=\"thickbox\" href=\"" . admin_url( 'admin-ajax.php' ) . '?&action=backwpup_view_log&logfile=' . $item['file'] .'&_ajax_nonce=' . wp_create_nonce( 'view-logs' ) . "&amp;TB_iframe=true&amp;width=640&amp;height=440\" title=\"" . $item['file'] . "\">" . sprintf( __( '%1$s at %2$s', 'backwpup' ), date_i18n( get_option( 'date_format' ) , $item[ 'logtime' ], TRUE ), date_i18n( get_option( 'time_format' ), $item[ 'logtime' ], TRUE ) ) . ": <i>" . $item[ 'name' ] . "</i></a></strong>";
 		$actions               = array();
-		$actions[ 'view' ]     = '<a class="thickbox" href="' . admin_url( 'admin-ajax.php' ) . '?&action=backwpup_view_log&logfile=' . $item['file'] .'&_ajax_nonce=' . wp_create_nonce( 'view-logs' ) . '&height=440&width=630&TB_iframe=true" title="' . $item['file'] . '">' . __( 'View', 'backwpup' ) . '</a>';
+		$actions[ 'view' ]     = '<a class="thickbox" href="' . admin_url( 'admin-ajax.php' ) . '?&action=backwpup_view_log&logfile=' . $item['file'] .'&_ajax_nonce=' . wp_create_nonce( 'view-logs' ) . '&amp;TB_iframe=true&amp;width=640&amp;height=440" title="' . $item['file'] . '">' . __( 'View', 'backwpup' ) . '</a>';
 		if ( current_user_can( 'backwpup_logs_delete' ) )
 			$actions[ 'delete' ]   = "<a class=\"submitdelete\" href=\"" . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpuplogs&action=delete&paged=' . $this->get_pagenum() . '&logfiles[]=' . $item['file'], 'bulk-logs' ) . "\" onclick=\"return showNotice.warn();\">" . __( 'Delete', 'backwpup' ) . "</a>";
 		$actions[ 'download' ] = "<a href=\"" . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpuplogs&action=download&file=' . $item['file'], 'download-backup_' . $item['file'] ) . "\">" . __( 'Download', 'backwpup' ) . "</a>";
@@ -345,8 +345,7 @@ class BackWPup_Page_Logs extends WP_List_Table {
 
 		?>
 		<div class="wrap" id="backwpup-page">
-			<?php screen_icon(); ?>
-			<h2><?php echo esc_html( sprintf( __( '%s Logs', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ) ); ?></h2>
+			<h2><span id="backwpup-page-icon">&nbsp;</span><?php echo esc_html( sprintf( __( '%s Logs', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ) ); ?></h2>
 			<?php BackWPup_Admin::display_messages(); ?>
 			<form id="posts-filter" action="" method="get">
 				<input type="hidden" name="page" value="backwpuplogs" />

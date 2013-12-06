@@ -93,8 +93,7 @@ class BackWPup_Page_Settings {
 
 		?>
     <div class="wrap" id="backwpup-page">
-		<?php
-		screen_icon(); ?><h2><?php echo sprintf( __( '%s Settings', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ); ?></h2>
+		<h2><span id="backwpup-page-icon">&nbsp;</span><?php echo sprintf( __( '%s Settings', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ); ?></h2>
 		<?php
 		$tabs = array( 'general' => __( 'General', 'backwpup' ), 'job' => __( 'Jobs', 'backwpup' ), 'log' => __( 'Logs', 'backwpup' ), 'net' => __( 'Network', 'backwpup' ), 'apikey' => __( 'API Keys', 'backwpup' ), 'information' => __( 'Information', 'backwpup' ) );
 		$tabs = apply_filters( 'backwpup_page_settings_tab', $tabs );
@@ -182,9 +181,8 @@ class BackWPup_Page_Settings {
                     <th scope="row"><label for="maxlogs"><?php _e( 'Maximum number of log files in folder', 'backwpup' ); ?></label>
                     </th>
                     <td>
-                        <input name="maxlogs" type="text" id="maxlogs"
-                               value="<?php echo get_site_option( 'backwpup_cfg_maxlogs' );?>" class="small-text code"/>
-						<?php BackWPup_Help::tip( __( 'Oldest files will be deleted first.', 'backwpup' ) ); ?>
+                        <input name="maxlogs" type="text" id="maxlogs" title="<?php esc_attr_e( 'Oldest files will be deleted first.', 'backwpup' ); ?>"
+                               value="<?php echo get_site_option( 'backwpup_cfg_maxlogs' );?>" class="small-text code help-tip"/>
                     </td>
                 </tr>
                 <tr>
@@ -223,10 +221,9 @@ class BackWPup_Page_Settings {
                             <legend class="screen-reader-text"><span><?php _e( 'Restart on every main step', 'backwpup' ); ?></span>
                             </legend>
                             <label for="jobsteprestart">
-                                <input name="jobsteprestart" type="checkbox" id="jobsteprestart"
-                                       value="1" <?php checked( get_site_option( 'backwpup_cfg_jobsteprestart' ), TRUE ); ?> />
+                                <input name="jobsteprestart" type="checkbox" id="jobsteprestart" title="<?php esc_attr_e( 'The job will be restarted on every main step, if last restart longer ago as 3 secounds. This is to prevent running in an execution time out. This will not work on cli run. If <code>ALTERNATE_WP_CRON</code> has been defined, WordPress Cron will be used.', 'backwpup' ); ?>"
+                                       value="1" class="help-tip" <?php checked( get_site_option( 'backwpup_cfg_jobsteprestart' ), TRUE ); ?> />
 								<?php _e( 'Restart the job on every main step on a running job', 'backwpup' ); ?>
-								<?php BackWPup_Help::tip( __( 'The job will be restarted on every main step, if last restart longer ago as 3 secounds. This is to prevent running in an execution time out. This will not work on cli run. If <code>ALTERNATE_WP_CRON</code> has been defined, WordPress Cron will be used.', 'backwpup' ) ); ?>
 							</label>
                         </fieldset>
                     </td>
@@ -238,10 +235,9 @@ class BackWPup_Page_Settings {
                             <legend class="screen-reader-text"><span><?php _e( 'Maximum PHP Script execution time', 'backwpup' ); ?></span>
                             </legend>
                             <label for="jobmaxexecutiontime">
-                                <input name="jobmaxexecutiontime" type="text" id="jobmaxexecutiontime" size="3"
-                                       value="<?php echo get_site_option( 'backwpup_cfg_jobmaxexecutiontime' ); ?>"  />
+                                <input name="jobmaxexecutiontime" type="text" id="jobmaxexecutiontime" size="3" title="<?php esc_attr_e( 'The job will be restarted bevor hitting maximum execution time. This will not work on cli run and not on all job steps. If <code>ALTERNATE_WP_CRON</code> has been defined, WordPress Cron will be used.', 'backwpup' ); ?>"
+                                       value="<?php echo get_site_option( 'backwpup_cfg_jobmaxexecutiontime' ); ?>" class="help-tip" />
 								<?php _e( 'seconds. 0 = disabled.', 'backwpup' ); ?>
-								<?php BackWPup_Help::tip( __( 'The job will be restarted bevor hitting maximum execution time. This will not work on cli run and not on all job steps. If <code>ALTERNATE_WP_CRON</code> has been defined, WordPress Cron will be used.', 'backwpup' ) ); ?>
 							</label>
                         </fieldset>
                     </td>
@@ -253,13 +249,12 @@ class BackWPup_Page_Settings {
                             <legend class="screen-reader-text"><span><?php _e( 'Method for creating ZIP archive', 'backwpup' ); ?></span>
                             </legend>
                             <label for="jobziparchivemethod">
-								<select name="jobziparchivemethod" size="1">
+								<select name="jobziparchivemethod" size="1" class="help-tip" title="<?php esc_attr_e( 'Auto = Uses PHP class ZipArchive if available; otherwise uses PclZip.<br />ZipArchive = Uses less memory, but many open files at a time.<br />PclZip = Uses more memory, but only 2 open files at a time.', 'backwpup' ); ?>">
 									<option value="" <?php selected( get_site_option( 'backwpup_cfg_jobziparchivemethod' ), '' ); ?>><?php _e( 'Auto', 'backwpup' ); ?></option>
                                     <option value="ZipArchive" <?php selected( get_site_option( 'backwpup_cfg_jobziparchivemethod' ), 'ZipArchive' ); ?><?php disabled( function_exists( 'ZipArchive' ), TRUE ); ?>><?php _e( 'ZipArchive', 'backwpup' ); ?></option>
                                     <option value="PclZip" <?php selected( get_site_option( 'backwpup_cfg_jobziparchivemethod' ), 'PclZip' ); ?>><?php _e( 'PclZip', 'backwpup' ); ?></option>
                                 </select>
                             </label>
-							<?php BackWPup_Help::tip( __( 'Auto = Uses PHP class ZipArchive if available; otherwise uses PclZip.<br />ZipArchive = Uses less memory, but many open files at a time.<br />PclZip = Uses more memory, but only 2 open files at a time.', 'backwpup' ) ); ?>
                         </fieldset>
                     </td>
                 </tr>
@@ -268,9 +263,8 @@ class BackWPup_Page_Settings {
                         <label for="jobrunauthkey"><?php _e( 'Key to start jobs externally with an URL', 'backwpup' ); ?></label>
                     </th>
                     <td>
-                        <input name="jobrunauthkey" type="text" id="jobrunauthkey"
-                               value="<?php echo get_site_option( 'backwpup_cfg_jobrunauthkey' );?>" class="text code"/>
-						<?php BackWPup_Help::tip( __( 'empty = deactivated. Will be used to protect job starts from unauthorized persons.', 'backwpup' ) ); ?>
+                        <input name="jobrunauthkey" type="text" id="jobrunauthkey" title="<?php esc_attr_e( 'empty = deactivated. Will be used to protect job starts from unauthorized persons.', 'backwpup' ); ?>"
+                               value="<?php echo get_site_option( 'backwpup_cfg_jobrunauthkey' );?>" class="text code help-tip"/>
                     </td>
                 </tr>
                 <tr>
@@ -294,14 +288,13 @@ class BackWPup_Page_Settings {
                             <legend class="screen-reader-text"><span><?php _e( 'Reduce server load', 'backwpup' ); ?></span>
                             </legend>
                             <label for="jobwaittimems">
-								<select name="jobwaittimems" size="1">
+								<select name="jobwaittimems" size="1" class="help-tip" title="<?php esc_attr_e( 'This adds short pauses to the process. Can be used to reduce the CPU load. Disabled = off, minimum = shortest sleep, maximum = longest sleep', 'backwpup' ); ?>">
 									<option value="0" <?php selected( get_site_option( 'backwpup_cfg_jobwaittimems' ), 0 ); ?>><?php _e( 'disabled', 'backwpup' ); ?></option>
                                     <option value="10000" <?php selected( get_site_option( 'backwpup_cfg_jobwaittimems' ), 10000 ); ?>><?php _e( 'minimum', 'backwpup' ); ?></option>
                                     <option value="30000" <?php selected( get_site_option( 'backwpup_cfg_jobwaittimems' ), 30000 ); ?>><?php _e( 'medium', 'backwpup' ); ?></option>
                                     <option value="90000" <?php selected( get_site_option( 'backwpup_cfg_jobwaittimems' ), 90000 ); ?>><?php _e( 'maximum', 'backwpup' ); ?></option>
                                 </select>
                             </label>
-							<?php BackWPup_Help::tip( __( 'This adds short pauses to the process. Can be used to reduce the CPU load. Disabled = off, minimum = shortest sleep, maximum = longest sleep', 'backwpup' ) ); ?>
                         </fieldset>
                     </td>
                 </tr>

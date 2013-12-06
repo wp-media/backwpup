@@ -48,6 +48,9 @@ final class BackWPup_Admin {
 		add_action( 'show_user_profile', array( $this, 'user_profile_fields' ) );
 		add_action( 'edit_user_profile',  array( $this, 'user_profile_fields' ) );
 		add_action( 'profile_update',  array( $this, 'save_profile_update' ) );
+		add_filter( 'editable_roles', array( $this, 'editable_roles' ) );
+		add_filter( 'manage_users_columns', array( $this, 'manage_users_columns' ) );
+		add_filter( 'manage_users_custom_column', array( $this, 'manage_users_custom_column' ), 10, 3 );
 		//Change Backup message on core updates
 		add_filter( 'gettext', array( $this, 'gettext' ), 10, 3 );
 		//Plugin banner free
@@ -256,14 +259,13 @@ final class BackWPup_Admin {
 
 		add_thickbox();
 
-		//register js from tipTip
-		wp_register_script( 'tiptip', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/jquery.tipTip.minified.js', array( 'jquery' ), '1.3', TRUE );
-
 		//register js and css for BackWPup
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-			wp_register_script( 'backwpupgeneral', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/general.js', array( 'jquery', 'tiptip' ), time(), TRUE );
+			wp_register_script( 'backwpuptiptip', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/jquery.tipTip.js', array( 'jquery' ), '1.3.1', TRUE );
+			wp_register_script( 'backwpupgeneral', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/general.js', array( 'jquery', 'backwpuptiptip' ), time(), TRUE );
 		} else {
-			wp_register_script( 'backwpupgeneral', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/general.min.js', array( 'jquery', 'tiptip' ), BackWPup::get_plugin_data( 'Version' ), TRUE );
+			wp_register_script( 'backwpuptiptip', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/jquery.tipTip.min.js', array( 'jquery' ), '1.3.1', TRUE );
+			wp_register_script( 'backwpupgeneral', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/general.min.js', array( 'jquery', 'backwpuptiptip' ), BackWPup::get_plugin_data( 'Version' ), TRUE );
 		}
 
 		//add Help
@@ -433,7 +435,7 @@ final class BackWPup_Admin {
 	public function user_profile_fields( $user ) {
 		global $wp_roles;
 
-		if ( ! current_user_can( 'edit_users' ) && ! current_user_can( 'backwpup_admin' ) )
+		if ( ! is_super_admin() && ! current_user_can( 'backwpup_admin' ) )
 			return;
 		?>
 		    <h3><?php echo BackWPup::get_plugin_data( 'name' ); ?></h3>
@@ -447,7 +449,7 @@ final class BackWPup_Admin {
 							<option value=""><?php _e( '&mdash; No role for BackWPup &mdash;', 'backwpup' ); ?></option>
 							<?php
 							foreach ( $wp_roles->roles as $role => $rolevalue ) {
-								if ( ! strstr( $role, 'backwpup_' ) )
+								if ( substr( $role, 0, 8 ) != 'backwpup' )
 									continue;
 								echo '<option value="'.$role.'" '. selected( in_array( $role, $user->roles ), TRUE, FALSE ) .'>'. $rolevalue[ 'name' ] . '</option>';
 							}
@@ -469,7 +471,7 @@ final class BackWPup_Admin {
 	public function save_profile_update( $user_id ) {
 		global $wp_roles;
 
-		if ( ! current_user_can( 'edit_users' ) && ! current_user_can( 'backwpup_admin' ) )
+		if ( ! is_super_admin() && ! current_user_can( 'backwpup_admin' ) )
 			return;
 
 		if ( empty( $user_id ) )
@@ -544,6 +546,59 @@ final class BackWPup_Admin {
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Filter BackWPup roles from displaying in normal WP roles selection
+	 *
+	 * @param $all_roles
+	 * @return mixed
+	 */
+	public function editable_roles( $all_roles ) {
+
+		foreach( $all_roles AS $key => $role ) {
+			if ( substr( $key, 0, 8 ) == 'backwpup' )
+				unset( $all_roles[$key] );
+		}
+
+		return $all_roles;
+	}
+
+	/**
+	 * Add column for displaying BAckWPup user role
+	 *
+	 * @param $columns
+	 * @return mixed
+	 */
+	public function manage_users_columns( $columns ) {
+
+		$columns[ 'backwpup_role' ] = __( 'BackWPup Role', 'backwpup' );
+		return $columns;
+	}
+
+	/**
+	 * Display BackWPup user role in column
+	 *
+	 * @param $value
+	 * @param $column_name
+	 * @param $user_id
+	 * @return string
+	 */
+	public function manage_users_custom_column( $value, $column_name, $user_id ) {
+		global $wp_roles;
+
+		if ( 'backwpup_role' != $column_name )
+			return $value;
+
+		$user = get_userdata( $user_id );
+
+		foreach ( $user->roles as $role ) {
+			if ( substr( $role, 0, 8 ) == 'backwpup' ) {
+				$value .= $wp_roles->roles[ $role ][ 'name' ]. '<br />';
+			}
+		}
+
+		return $value;
 	}
 
 }

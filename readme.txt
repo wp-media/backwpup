@@ -1,8 +1,8 @@
 === BackWPup Free - WordPress Backup Plugin ===
 Contributors: inpsyde, danielhuesken, Bueltge, nullbyte
 Tags: Amazon, Amazon S3, back up, backup, chinese, cloud, cloud files, database, db backup, dropbox, dump, file, french, ftp, ftps, german, migrate, multisite, russian, schedule, sftp, storage, S3, time, upload, xml
-Requires at least: 3.2
-Tested up to: 3.7
+Requires at least: 3.4
+Tested up to: 3.8
 Stable tag: 3.0.13
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -41,7 +41,7 @@ BackWPup Free is the number 1 backup-plugin for WordPress with nearly 1.000.000 
 * simplified chinese (zh_CN)
 
 = Requirements =
-* WordPress 3.2 and PHP 5.2.6 required!
+* WordPress 3.4 and PHP 5.2.6 required!
 * To use the Plugin with full functionality PHP 5.3.3 with mysqli, FTP,gz, bz2,  ZipArchive and curl is needed.
 * Plugin functions that don't work because of your server settings, will not be displayed in admin area.
 
@@ -98,11 +98,6 @@ BackWPup performs a simple HTTP request to the server itself every time you clic
 = I get a fatal error: `Can not create folder: […]/wp-content/backwpup-[…]-logs in […]/wp-content/plugins/backwpup/inc/class-job.php …` =
 Please set CHMOD 775 on the /wp-content/ directory and refresh the BackWPup dashboard. If that doesn’t help, try CHMOD 777. You can revert it to 755 once BackWPup has created its folder.
 
-= Backup jobs are running forever! =
-Almost all web hosts have limited allowed script execution time on their servers. As a consequence, BackWPup might be “interrupted” in its job execution when executing the job takes longer than script execution is allowed for by the server (i.e. when the job requires to add a lot of files to a ZIP archive). Whenever BackWPup’s execution is stopped by the server, it waits 5 minutes before it tries to restart the job. If it is stopped again, it waits another five minutes. Those interruptions can then add up to what looks like 20-40 minutes of execution while really most of it is waiting time for a job to be restarted.
-
-A remedy in this case can be splitting a large file backup into smaller chunks. For example, create one backup job for your WordPress installation, but exclude /wp-content/. Create another job for /wp-content/. If your site has a lot of uploaded photos, maybe even go further, exclude /uploads/ from your /wp-content/ backup and create a third job for /uploads/.
-
 
 = How do I restore a backup? =
 Up to now, there is no feature in BackWPup to restore a backup. You can follow [these instructions from the WordPress Codex](http://codex.wordpress.org/Restoring_Your_Database_From_Backup) or [this tutorial (also Codex)](http://codex.wordpress.org/WordPress_Backups) for more detailed information on cPanel, Plesk, vDeck and others.
@@ -117,10 +112,8 @@ Try opening the text file in an editor software like Notepad++ (Windows) or Text
 = My web host notified me BackWPup was causing an inacceptable server load! =
 Go to Settings->Jobs and try a different option for “Reduce server load”.
 
-
 = Can I cancel a running backup job via FTP? =
-Yes. Go to your BackWPup temp directory and find a file named `backwpup-xyz-working.php` where “xyz” is a random string of numbers and characters. Delete that file to cancel the currently running backup job.
-
+Yes. Go to your BackWPup temp directory and find a file named `backwpup-xyz-working.json` where “xyz” is a random string of numbers and characters. Delete that file to cancel the currently running backup job.
 
 = Can I move the temp directory to a different location? =
 Yes. You need to have writing access to the wp-config.php file (usually residing in the root directory of your WordPress installation).
@@ -176,7 +169,7 @@ Please check all settings after the update:
 
 
 == Changelog ==
-= Version 3.0.14-beta3 =
+= Version 3.1-rc-1 =
 * Fixed: Message about aborted step did not display correctly
 * Fixed: Incorrect rescheduling of jobs
 * Improved: Overall performance while generating backup archives
@@ -189,13 +182,16 @@ Please check all settings after the update:
 * Improved: Reduced size of vendor/SDK directory by 50%
 * Improved: Regex for BackWPup archive file detection
 * Improved: Symlink handling for file backup on WordPress folders
-* Improved: Use icon font for menu and adminbar
-* Updated: AWS SDK to Version 2.4.7 (PHP 5.3.3+)
-* Updated: RSC SDK to Version 1.7.2
+* Improved: Use icon font for menu, adminbar and on other places
+* Improved: Responsive for WordPress 3.8
+* Updated: AWS SDK to Version 2.4.11 (PHP 5.3.3+)
+* Updated: RSC SDK to Version 1.7.3
 * Updated: SwiftMailer to Version 5.0.1
-* Removed: DB Optimization, because locking of tables that can make the site nit accessible
+* Removed: DB Optimization, because locking of tables that can make the site not accessible
 * PRO: Wizards using a separate session handling now
 * PRO: Hash that BackWPup uses is changeable
+* PRO: Added Google Drive Support
+* PRO: Added Amazon Glacier Support
 
 = Version 3.0.13 =
 * Improved: Redirect when accessing the WordPress backend

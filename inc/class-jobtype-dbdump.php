@@ -69,9 +69,8 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
                     <input type="button" class="button-secondary" id="dbwp" value="<?php echo $wpdb->prefix; ?>">
 					<?php
 					$tables = $wpdb->get_results( 'SHOW FULL TABLES FROM `' . DB_NAME . '`', ARRAY_N );
-					$num_rows = count( $tables );
-					echo '<table id="dbtables"><tr><td valign="top">';
-					$next_row = round( $num_rows / 3, 0 );
+					echo '<fieldset id="dbtables"><div style="width: 30%; float:left; min-width: 250px; margin-right: 10px;">';
+					$next_row = ceil( count( $tables ) / 3 );
 					$counter = 0;
 					foreach ( $tables as $table ) {
 						$tabletype = '';
@@ -80,11 +79,11 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 						echo '<label for="idtabledb-' . rawurlencode( $table[ 0 ] ) . '""><input class="checkbox" type="checkbox"' . checked( ! in_array( $table[ 0 ], BackWPup_Option::get( $jobid, 'dbdumpexclude' ) ), TRUE, FALSE ) . ' name="tabledb[]" id="idtabledb-' . rawurlencode( $table[ 0 ] ) . '" value="' . rawurlencode( $table[ 0 ] ) . '"/> ' . $table[ 0 ] . $tabletype . '</label><br />';
 						$counter++;
 						if ($next_row <= $counter) {
-							echo '</td><td valign="top">';
+							echo '</div><div style="width: 30%; float:left; min-width: 250px; margin-right: 10px;">';
 							$counter = 0;
 						}
 					}
-					echo '</td></tr></table>';
+					echo '</div></fieldset>';
 					?>
                 </td>
             </tr>
@@ -99,13 +98,15 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 			<tr>
 				<th scope="row"><?php _e( 'Dumpfile compression', 'backwpup' ) ?></th>
 				<td>
-					<?php
-					echo '<label for="iddbdumpfilecompression"><input class="radio" type="radio"' . checked( '', BackWPup_Option::get( $jobid, 'dbdumpfilecompression' ), FALSE ) . ' name="dbdumpfilecompression"  id="iddbdumpfilecompression" value="" /> ' . __( 'none', 'backwpup' ). '</label><br />';
-					if ( function_exists( 'gzopen' ) )
-						echo '<label for="iddbdumpfilecompression-gz"><input class="radio" type="radio"' . checked( '.gz', BackWPup_Option::get( $jobid, 'dbdumpfilecompression' ), FALSE ) . ' name="dbdumpfilecompression" id="iddbdumpfilecompression-gz" value=".gz" /> ' . __( 'GZip', 'backwpup' ). '</label><br />';
-					else
-						echo '<label for="iddbdumpfilecompression-gz"><input class="radio" type="radio"' . checked( '.gz', BackWPup_Option::get( $jobid, 'dbdumpfilecompression' ), FALSE ) . ' name="dbdumpfilecompression" id="iddbdumpfilecompression-gz" value=".gz" disabled="disabled" /> ' . __( 'GZip', 'backwpup' ). '</label><br />';
-					?>
+					<fieldset>
+						<?php
+						echo '<label for="iddbdumpfilecompression"><input class="radio" type="radio"' . checked( '', BackWPup_Option::get( $jobid, 'dbdumpfilecompression' ), FALSE ) . ' name="dbdumpfilecompression"  id="iddbdumpfilecompression" value="" /> ' . __( 'none', 'backwpup' ). '</label><br />';
+						if ( function_exists( 'gzopen' ) )
+							echo '<label for="iddbdumpfilecompression-gz"><input class="radio" type="radio"' . checked( '.gz', BackWPup_Option::get( $jobid, 'dbdumpfilecompression' ), FALSE ) . ' name="dbdumpfilecompression" id="iddbdumpfilecompression-gz" value=".gz" /> ' . __( 'GZip', 'backwpup' ). '</label><br />';
+						else
+							echo '<label for="iddbdumpfilecompression-gz"><input class="radio" type="radio"' . checked( '.gz', BackWPup_Option::get( $jobid, 'dbdumpfilecompression' ), FALSE ) . ' name="dbdumpfilecompression" id="iddbdumpfilecompression-gz" value=".gz" disabled="disabled" /> ' . __( 'GZip', 'backwpup' ). '</label><br />';
+						?>
+					</fieldset>
 				</td>
 			</tr>
         </table>
@@ -214,7 +215,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 				while ( $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'start' ] < $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'records' ] ) {
 					$dump_start_time = microtime( TRUE );
 					$sql_dump->dump_table( $table ,$job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'start' ], $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'length' ] );
-					$dump_time = microtime( TRUE ) - $dump_start_time;
+					$dump_time = microtime( TRUE ) - $dump_start_time + 0.00000001;
 					$job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'start' ] = $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'start' ] + $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'length' ];
 					// dump time per record and set next length
 					$length = ceil( ( $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'length' ] / $dump_time ) * $job_object->get_restart_time() );

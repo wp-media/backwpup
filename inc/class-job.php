@@ -128,6 +128,12 @@ final class BackWPup_Job {
 	public $remove_path = '';
 
 	/**
+	 * If job aborted from user
+	 * @var bool
+	 */
+	public $user_abort = FALSE;
+
+	/**
 	 * Setting Working data
 	 * @param $working_data array
 	 */
@@ -179,7 +185,6 @@ final class BackWPup_Job {
 		$this->lastmsg		= '<samp>' . __( 'Starting job', 'backwpup' ) . '</samp>';
 		//set Logfile
 		$this->logfile = get_site_option( 'backwpup_cfg_logfolder' ) . 'backwpup_log_' . BackWPup::get_plugin_data( 'hash' ) . '_' . date_i18n( 'Y-m-d_H-i-s' ) . '.html';
-		update_site_option( 'backwpup_job_logfile', $this->logfile );
 		//write settings to job
 		if ( ! empty( $this->job[ 'jobid' ] ) ) {
 			BackWPup_Option::update( $this->job[ 'jobid' ], 'lastrun', $this->start_time );
@@ -221,14 +226,14 @@ final class BackWPup_Job {
 			$this->steps_data[ 'CREATE_MANIFEST' ][ 'SAVE_STEP_TRY' ] = 0;
 			//Add archive creation and backup filename on backup type archive
 			if ( $this->job[ 'backuptype' ] == 'archive' ) {
-				//set Backup folder to temp folder if not set
+				//get Backup folder if destination folder set
 				if ( in_array( 'FOLDER', $this->job[ 'destinations' ] ) ) {
 					$this->backup_folder = $this->job[ 'backupdir' ];
 					//check backup folder
 					if ( ! empty( $this->backup_folder ) )
 						self::check_folder( $this->backup_folder );
 				}
-				//set temp folder to backup folder if not set
+				//set temp folder to backup folder if not set because we need one
 				if ( ! $this->backup_folder || $this->backup_folder == '/' )
 					$this->backup_folder = BackWPup::get_plugin_data( 'TEMP' );
 				//Create backup archive full file name
@@ -414,7 +419,7 @@ final class BackWPup_Job {
 			$query_args[ 'page' ]      		= 'backwpupjobs';
 			$query_args[ 'action' ] 		= 'runnow';
 			$query_args[ 'doing_wp_cron' ]  = NULL;
-			unset(  $query_args[ '_nonce' ] );
+			unset( $query_args[ '_nonce' ] );
 		}
 
 		if ( $starttype == 'runnowlink' && defined( 'ALTERNATE_WP_CRON' ) && ALTERNATE_WP_CRON ) {
@@ -475,8 +480,7 @@ final class BackWPup_Job {
 				die( '-1' );
 
 			//check folders
-			$backups_folder = BackWPup_Option::get( $jobid, 'backupdir' );
-			if ( ! self::check_folder( get_site_option( 'backwpup_cfg_logfolder' ) )  || ! self::check_folder( BackWPup::get_plugin_data( 'TEMP' ) ) || ! empty( $backups_folder ) && ! self::check_folder( $backups_folder ) )
+			if ( ! self::check_folder( get_site_option( 'backwpup_cfg_logfolder' ) )  || ! self::check_folder( BackWPup::get_plugin_data( 'TEMP' ) ) )
 				die( '-2' );
 		}
 
@@ -554,8 +558,7 @@ final class BackWPup_Job {
 
 		if ( ! empty( $jobid ) ) {
 			//check folders
-			$backups_folder = BackWPup_Option::get( $jobid, 'backupdir' );
-			if ( ! self::check_folder( get_site_option( 'backwpup_cfg_logfolder' ) ) ||  ! self::check_folder( BackWPup::get_plugin_data( 'TEMP' ) ) || ! empty( $backups_folder ) && ! self::check_folder( $backups_folder ) )
+			if ( ! self::check_folder( get_site_option( 'backwpup_cfg_logfolder' ) ) ||  ! self::check_folder( BackWPup::get_plugin_data( 'TEMP' ) ) )
 				return;
 		}
 
@@ -1083,7 +1086,7 @@ final class BackWPup_Job {
 					fwrite( $fd, str_pad( '<meta name="backwpup_errors" content="' . $this->errors . '" />', 100 ) . PHP_EOL );
 					$found ++;
 				}
-				if ( stripos( $line, '<meta name="backwpup_warnings" content=\"' ) !== FALSE ) {
+				if ( stripos( $line, '<meta name="backwpup_warnings" content="' ) !== FALSE ) {
 					fseek( $fd, $file_pos );
 					fwrite( $fd, str_pad( '<meta name="backwpup_warnings" content="' . $this->warnings . '" />', 100 ) . PHP_EOL );
 					$found ++;
@@ -1167,7 +1170,8 @@ final class BackWPup_Job {
 		$abort = FALSE;
 
 		if ( ! file_exists( BackWPup::get_plugin_data( 'running_file' ) ) ) {
-			$abort = TRUE;
+			if ( ! $this->user_abort )
+				$abort = TRUE;
 			$this->log( __( 'Aborted by user!', 'backwpup' ), E_USER_ERROR );
 		}
 
@@ -1306,8 +1310,10 @@ final class BackWPup_Job {
 		$restart_time = get_site_option( 'backwpup_cfg_jobmaxexecutiontime' );
 		if ( empty( $restart_time ) )
 			$restart_time = 60;
-		if ( empty( $job_object->pid ) || $not_worked_time > $restart_time )
+		if ( empty( $job_object->pid ) || $not_worked_time > $restart_time ) {
+			$job_object->user_abort = TRUE;
 			$job_object->update_working_data();
+		}
 
 	}
 

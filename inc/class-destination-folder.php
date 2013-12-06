@@ -38,8 +38,8 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 				<?php
 				if ( BackWPup_Option::get( $jobid, 'backuptype' ) == 'archive' ) {
 					?>
-                    <label for="idmaxbackups"><input name="maxbackups" id="idmaxbackups" type="text" size="3" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'maxbackups' ) ) ;?>" class="small-text" />&nbsp;
-					<?php  _e( 'Number of files to keep in folder.', 'backwpup' ); BackWPup_Help::tip( __( 'Oldest files will be deleted first. 0 = no deletion', 'backwpup' ) ); ?></label>
+                    <label for="idmaxbackups"><input name="maxbackups" id="idmaxbackups" type="text" size="3" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'maxbackups' ) ) ;?>" class="small-text help-tip" title="<?php esc_attr_e( 'Oldest files will be deleted first. 0 = no deletion', 'backwpup' ); ?>" />&nbsp;
+					<?php  _e( 'Number of files to keep in folder.', 'backwpup' ); ?></label>
 					<?php } else { ?>
                     <label for="idbackupsyncnodelete"><input class="checkbox" value="1"
                            type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'backupsyncnodelete' ), TRUE ); ?>
@@ -124,7 +124,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 		$filecounter    = 0;
 		$files          = array();
 		$backup_folder  = BackWPup_Option::get( $jobid, 'backupdir' );
-		if ( $dir = opendir( $backup_folder ) ) { //make file list
+		if ( is_dir( $backup_folder ) && $dir = opendir( $backup_folder ) ) { //make file list
 			while ( FALSE !== ( $file = readdir( $dir ) ) ) {
 				if ( in_array( $file, array( '.', '..', 'index.php', '.htaccess' ) ) || is_dir( $backup_folder . $file ) || is_link( $backup_folder . $file ) )
 					continue;

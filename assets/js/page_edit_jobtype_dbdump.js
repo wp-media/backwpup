@@ -41,11 +41,8 @@ jQuery(document).ready(function ($) {
         db_tables();
     });
     $('#dbdumpwpdbsettings').change(function () {
-        if ($('#dbdumpwpdbsettings:checked').val()) {
             db_tables();
-        } else {
             db_databases();
-        }
     });
 
     function db_databases() {
@@ -56,6 +53,7 @@ jQuery(document).ready(function ($) {
             dbuser:$('#dbdumpdbuser').val(),
             dbpassword:$('#dbdumpdbpassword').val(),
             dbname:$('input[name="dbselected"]').val(),
+			wpdbsettings:$('#dbdumpwpdbsettings:checked').val(),
             _ajax_nonce:$('#backwpupajaxnonce').val()
 
         };

@@ -42,7 +42,7 @@ Have a look at our other premium plugins at [MarketPress.com](http://marketpress
 * simplified chinese (zh_CN)
 
 ## Requirements
-* WordPress 3.2 and PHP 5.2.6 required!
+* WordPress 3.4 and PHP 5.2.6 required!
 * To use the Plugin with full functionality PHP 5.3.3 with mysqli, FTP,gz, bz2,  ZipArchive and curl is needed.
 * Plugin functions that don't work because of your server settings, will not be displayed in admin area.
 

@@ -64,8 +64,8 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 					<?php
 					if ( BackWPup_Option::get( $jobid, 'backuptype' ) == 'archive' ) {
 						?>
-						<label for="idftpmaxbackups"><input id="idftpmaxbackups" name="ftpmaxbackups" type="text" size="3" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'ftpmaxbackups' ) ); ?>" class="small-text" />&nbsp;
-						<?php  _e( 'Maximum number of files to keep in folder.', 'backwpup' ); BackWPup_Help::tip( __( 'Oldest files will be deleted first. 0 = no deletion', 'backwpup' ) ); ?></label>
+						<label for="idftpmaxbackups"><input id="idftpmaxbackups" name="ftpmaxbackups" type="text" size="3" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'ftpmaxbackups' ) ); ?>" class="small-text help-tip" title="<?php esc_attr_e( 'Oldest files will be deleted first. 0 = no deletion', 'backwpup' ); ?>" />&nbsp;
+						<?php  _e( 'Maximum number of files to keep in folder.', 'backwpup' ); ?></label>
 						<?php } else { ?>
 						<label for="idftpsyncnodelete"><input class="checkbox" value="1"
 							   type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'ftpsyncnodelete' ), TRUE ); ?>

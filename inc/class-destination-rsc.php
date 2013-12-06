@@ -1,5 +1,5 @@
 <?php
-// Rackspace OpenCloud SDK v1.7.2
+// Rackspace OpenCloud SDK v1.7.3
 // http://www.rackspace.com/cloud/files/
 // https://github.com/rackspace/php-opencloud
 include_once BackWPup::get_plugin_data( 'PluginDir' ) . '/vendor/autoloader.php';
@@ -108,8 +108,8 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 					<?php
 					if ( BackWPup_Option::get( $jobid, 'backuptype' ) == 'archive' ) {
 						?>
-                        <label for="idrscmaxbackups"><input id="idrscmaxbackups" name="rscmaxbackups" type="text" size="3" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'rscmaxbackups' ) ); ?>" class="small-text" />&nbsp;
-						<?php  _e( 'Number of files to keep in folder.', 'backwpup' ); BackWPup_Help::tip( __( 'Oldest files will be deleted first. 0 = no deletion', 'backwpup' ) ); ?></label>
+                        <label for="idrscmaxbackups"><input id="idrscmaxbackups" name="rscmaxbackups" type="text" size="3" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'rscmaxbackups' ) ); ?>" class="small-text help-tip" title="<?php esc_attr_e( 'Oldest files will be deleted first. 0 = no deletion', 'backwpup' ); ?>" />&nbsp;
+						<?php  _e( 'Number of files to keep in folder.', 'backwpup' ); ?></label>
 						<?php } else { ?>
 						<label for="idrscsyncnodelete"><input class="checkbox" value="1"
 							   type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'rscsyncnodelete' ), TRUE ); ?>

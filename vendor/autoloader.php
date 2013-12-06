@@ -9,7 +9,6 @@ $classLoader = new Symfony\Component\ClassLoader\UniversalClassLoader();
 $classLoader->registerNamespaces( array(
 									   	'Aws\\Common'  				=> __DIR__,
 									   	'Aws\\S3'  					=> __DIR__,
-									   	'Aws\\Glacier'  			=> __DIR__,
 									   	'Guzzle'   					=> __DIR__,
 									   	'Symfony\\Component\\EventDispatcher' => __DIR__,
 									   	'WindowsAzure' 				=> __DIR__,

@@ -52,17 +52,19 @@ class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes {
 			<tr>
 				<th scope="row"><?php _e( 'File compression', 'backwpup' ) ?></th>
 				<td>
-					<?php
-					echo '<label for="idpluginlistfilecompression"><input class="radio" type="radio"' . checked( '', BackWPup_Option::get( $jobid, 'pluginlistfilecompression' ), FALSE ) . ' name="pluginlistfilecompression"  id="idpluginlistfilecompression" value="" /> ' . __( 'none', 'backwpup' ). '</label><br />';
-					if ( function_exists( 'gzopen' ) )
-						echo '<label for="idpluginlistfilecompression-gz"><input class="radio" type="radio"' . checked( '.gz', BackWPup_Option::get( $jobid, 'pluginlistfilecompression' ), FALSE ) . ' name="pluginlistfilecompression" id="idpluginlistfilecompression-gz" value=".gz" /> ' . __( 'GZip', 'backwpup' ). '</label><br />';
-					else
-						echo '<label for="idpluginlistfilecompression-gz"><input class="radio" type="radio"' . checked( '.gz', BackWPup_Option::get( $jobid, 'pluginlistfilecompression' ), FALSE ) . ' name="pluginlistfilecompression" id="idpluginlistfilecompression-gz" value=".gz" disabled="disabled" /> ' . __( 'GZip', 'backwpup' ). '</label><br />';
-					if ( function_exists( 'bzopen' ) )
-						echo '<label for="idpluginlistfilecompression-bz2"><input class="radio" type="radio"' . checked( '.bz2', BackWPup_Option::get( $jobid, 'pluginlistfilecompression' ), FALSE ) . ' name="pluginlistfilecompression" id="idpluginlistfilecompression-bz2" value=".bz2" /> ' . __( 'BZip2', 'backwpup' ). '</label><br />';
-					else
-						echo '<label for="idpluginlistfilecompression-bz2"><input class="radio" type="radio"' . checked( '.bz2', BackWPup_Option::get( $jobid, 'pluginlistfilecompression' ), FALSE ) . ' name="pluginlistfilecompression" id="idpluginlistfilecompression-bz2" value=".bz2" disabled="disabled" /> ' . __( 'BZip2', 'backwpup' ). '</label><br />';
-					?>
+					<fieldset>
+						<?php
+						echo '<label for="idpluginlistfilecompression"><input class="radio" type="radio"' . checked( '', BackWPup_Option::get( $jobid, 'pluginlistfilecompression' ), FALSE ) . ' name="pluginlistfilecompression"  id="idpluginlistfilecompression" value="" /> ' . __( 'none', 'backwpup' ). '</label><br />';
+						if ( function_exists( 'gzopen' ) )
+							echo '<label for="idpluginlistfilecompression-gz"><input class="radio" type="radio"' . checked( '.gz', BackWPup_Option::get( $jobid, 'pluginlistfilecompression' ), FALSE ) . ' name="pluginlistfilecompression" id="idpluginlistfilecompression-gz" value=".gz" /> ' . __( 'GZip', 'backwpup' ). '</label><br />';
+						else
+							echo '<label for="idpluginlistfilecompression-gz"><input class="radio" type="radio"' . checked( '.gz', BackWPup_Option::get( $jobid, 'pluginlistfilecompression' ), FALSE ) . ' name="pluginlistfilecompression" id="idpluginlistfilecompression-gz" value=".gz" disabled="disabled" /> ' . __( 'GZip', 'backwpup' ). '</label><br />';
+						if ( function_exists( 'bzopen' ) )
+							echo '<label for="idpluginlistfilecompression-bz2"><input class="radio" type="radio"' . checked( '.bz2', BackWPup_Option::get( $jobid, 'pluginlistfilecompression' ), FALSE ) . ' name="pluginlistfilecompression" id="idpluginlistfilecompression-bz2" value=".bz2" /> ' . __( 'BZip2', 'backwpup' ). '</label><br />';
+						else
+							echo '<label for="idpluginlistfilecompression-bz2"><input class="radio" type="radio"' . checked( '.bz2', BackWPup_Option::get( $jobid, 'pluginlistfilecompression' ), FALSE ) . ' name="pluginlistfilecompression" id="idpluginlistfilecompression-bz2" value=".bz2" disabled="disabled" /> ' . __( 'BZip2', 'backwpup' ). '</label><br />';
+						?>
+					</fieldset>
 				</td>
 			</tr>
 		</table>

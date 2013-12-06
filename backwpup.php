@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.0.14-beta3
+ * Version: 3.1-rc-1
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -127,7 +127,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 		public static function get_plugin_data( $name = NULL ) {
 
 			if ( $name )
-				$name = strtolower( $name );
+				$name = strtolower( trim( $name ) );
 
 			if ( empty( self::$plugin_data ) ) {
 				self::$plugin_data = get_file_data( __FILE__, array(

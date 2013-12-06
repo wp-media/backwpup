@@ -27,28 +27,21 @@ class BackWPup_Page_About {
 				font-size:42px;
 			}
 			.welcome .welcome_inner .welcometxt {
-				float:left;
-				width:100%;
-				margin-bottom:25px;
-				border-bottom:1px #ccc dotted;
-				text-align:center;
+				width: 100%;
+				margin-bottom: 25px;
+				border-bottom: 1px #ccc dotted;
+				text-align: center;
+				position: relative;
 			}
 			.welcome .welcome_inner .welcometxt p{
 				line-height:20px;
 				font-size:18px;
 			}
-			.welcome .welcome_inner .welcometxt .backwpup-welcome .banner{
-				margin:0 auto;
-				background: url(<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/backwpupbanner-free.png) no-repeat top center;
-				width:637px;
-				height:294px;
-			}
 
-			.welcome .welcome_inner .welcometxt .backwpup-welcome .banner-pro {
+			.welcome .welcome_inner .welcometxt img {
 				margin:0 auto;
-				background: url(<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/backwpupbanner-pro.png) no-repeat top center;
-				width:637px;
-				height:294px;
+				max-width:100% !important;
+				height:auto;
 			}
 
 			.welcome .welcome_inner .feature_box{
@@ -346,13 +339,6 @@ class BackWPup_Page_About {
 			}
 		</style>
 		<?php
-
-		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-			wp_enqueue_style( 'backwpuppageabout', BackWPup::get_plugin_data( 'URL' ) . '/css/page_about.css', '', time(), 'screen' );
-		} else {
-			wp_enqueue_style( 'backwpuppageabout', BackWPup::get_plugin_data( 'URL' ) . '/css/page_about.min.css', '', BackWPup::get_plugin_data( 'Version' ), 'screen' );
-		}
-
 	}
 
 	/**
@@ -379,8 +365,7 @@ class BackWPup_Page_About {
         	<div class="inpsyde">
             	<a href="http://inpsyde.com/" title="Inpsyde GmbH">Inpsyde</a>
             </div>
-			<?php screen_icon(); ?>
-            <h2><?php echo sprintf( __( '%s Welcome', 'backwpup' ), BackWPup::get_plugin_data( 'name') ); ?></h2>
+            <h2><span id="backwpup-page-icon">&nbsp;</span><?php echo sprintf( __( '%s Welcome', 'backwpup' ), BackWPup::get_plugin_data( 'name') ); ?></h2>
 			<?php BackWPup_Admin::display_messages(); ?>
             <div class="welcome">
             	<div class="welcome_inner">
@@ -401,7 +386,7 @@ class BackWPup_Page_About {
                     <?php if ( class_exists( 'BackWPup_Pro', FALSE ) ) { ?>
                     <div class="welcometxt">
                         <div class="backwpup-welcome">
-                        	<div class="banner-pro"></div>
+							<img src="<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/backwpupbanner-pro.png" />
                             <h3><?php _e( 'Welcome to BackWPup Pro', 'backwpup' ); ?></h3>
                             <p><?php _e( 'Here you can schedule backup plans with a wizard.', 'backwpup' );
 _e( 'The backup files can be used to save your whole installation including <code>/wp-content/</code> and push them to an external Backup Service, if you don’t want to save the backups on the same server. With a single backup file you are able to restore an installation.', 'backwpup' ); ?></p>
@@ -411,7 +396,7 @@ _e( 'The backup files can be used to save your whole installation including <cod
                     <?php } else {?>
                     <div class="welcometxt">
                         <div class="backwpup-welcome">
-                        	<div class="banner"></div>
+							<img src="<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/backwpupbanner-free.png" />
                             <h3><?php _e( 'Welcome to BackWPup', 'backwpup' ); ?></h3>
                             <p><?php
 _e( 'The backup files can be used to save your whole installation including <code>/wp-content/</code> and push them to an external Backup Service, if you don’t want to save the backups on the same server. With a single backup file you are able to restore an installation.', 'backwpup' ); ?></p>
@@ -585,6 +570,16 @@ _e( 'The backup files can be used to save your whole installation including <cod
 							<tr class="even">
 								<td><?php _e( 'Backup to SugarSync', 'backwpup' ); ?></td>
 								<td class="tick"></td>
+								<td class="tick"></td>
+							</tr>
+							<tr class="even">
+								<td><?php _e( 'Backup to Google Drive', 'backwpup' ); ?></td>
+								<td class="error"></td>
+								<td class="tick"></td>
+							</tr>
+							<tr class="even">
+								<td><?php _e( 'Backup to Amazon Glacier', 'backwpup' ); ?></td>
+								<td class="error"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="odd">

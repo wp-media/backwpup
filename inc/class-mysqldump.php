@@ -69,18 +69,23 @@ class BackWPup_MySQLDump {
 
 		//set empty host to localhost
 		if ( empty( $args[ 'dbhost' ] ) )
-			$args[ 'dbhost' ] = '127.0.0.1';
+			$args[ 'dbhost' ] = NULL;
 
 		//check if port or socket in hostname and set port and socket
 		$args[ 'dbport' ]   = NULL;
 		$args[ 'dbsocket' ] = NULL;
 		if ( strstr( $args[ 'dbhost' ], ':' ) ) {
 			$hostparts = explode( ':', $args[ 'dbhost' ], 2 );
-			$args[ 'dbhost' ] = $hostparts[ 0 ];
+			$hostparts[ 0 ] = trim( $hostparts[ 0 ] );
+			$hostparts[ 1 ] = trim( $hostparts[ 1 ] );
+			if ( empty( $hostparts[ 0 ] ) )
+				$args[ 'dbhost' ] = NULL;
+			else
+				$args[ 'dbhost' ] = $hostparts[ 0 ];
 			if ( is_numeric( $hostparts[ 1 ] ) )
 				$args[ 'dbport' ] = (int) $hostparts[ 1 ];
 			else
-				$args[ 'dbsocket' ] = $hostparts[ 1 ] ;
+				$args[ 'dbsocket' ] = $hostparts[ 1 ];
 		}
 
 		$this->mysqli = mysqli_init();
