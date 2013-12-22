@@ -68,7 +68,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="s3region"><?php _e( 'Select an S3 service', 'backwpup' ) ?></label></th>
+				<th scope="row"><label for="s3region"><?php _e( 'Select a S3 service', 'backwpup' ) ?></label></th>
 				<td>
 					<select name="s3region" id="s3region" title="<?php _e( 'Amazon S3 Region', 'backwpup' ); ?>">
 						<option value="us-east-1" <?php selected( 'us-east-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: US Standard', 'backwpup' ); ?></option>
@@ -86,7 +86,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="s3base_url"><?php _e( 'Or an S3 Server URL', 'backwpup' ) ?></label></th>
+				<th scope="row"><label for="s3base_url"><?php _e( 'Or a S3 Server URL', 'backwpup' ) ?></label></th>
 				<td>
 					<input id="s3base_url" name="s3base_url" type="text"  value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 's3base_url' ) );?>" class="regular-text" autocomplete="off" />
 				</td>
@@ -164,7 +164,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			<tr>
 				<th scope="row"><?php _e( 'Multipart Upload', 'backwpup' ); ?></th>
 				<td>
-				   <label for="ids3multipart"><input class="checkbox help-tip" value="1" title="<?php esc_attr_e( 'Multipart splits file into multiple chunks while uploading. This is necessary for displaying the upload process and to transfer bigger files. Beware: There is a known issue at Google storage with this option!', 'backwpup'); ?>"
+				   <label for="ids3multipart"><input class="checkbox help-tip" value="1" title="<?php esc_attr_e( 'Multipart splits file into multiple chunks while uploading. This is necessary for displaying the upload process and to transfer bigger files. Works without a problem on Amazon. Other services might have issues.', 'backwpup'); ?>"
 						type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 's3multipart' ), TRUE ); ?>
 						name="s3multipart" id="ids3multipart" /> <?php _e( 'Use multipart upload for uploading a file', 'backwpup' ); ?></label>
 				</td>

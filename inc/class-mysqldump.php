@@ -135,7 +135,7 @@ class BackWPup_MySQLDump {
 
 		//check file handle
 		if ( ! is_resource( $this->handle ) )
-			throw new BackWPup_MySQLDump_Exception( __( 'Cannot open dump file', 'backwpup' ) );
+			throw new BackWPup_MySQLDump_Exception( __( 'Cannot open SQL backup file', 'backwpup' ) );
 
 		//get table names and types from Database
 		$res = $this->mysqli->query( 'SHOW FULL TABLES FROM `' . $this->dbname . '`' );
@@ -198,7 +198,7 @@ class BackWPup_MySQLDump {
 
 		//For SQL always use \n as MySQL wants this on all platforms.
 		$dbdumpheader  = "-- ---------------------------------------------------------\n";
-		$dbdumpheader .= "-- Dumped with BackWPup ver.: " . BackWPup::get_plugin_data( 'Version' ) . "\n";
+		$dbdumpheader .= "-- Backup with BackWPup ver.: " . BackWPup::get_plugin_data( 'Version' ) . "\n";
 		$dbdumpheader .= "-- https://marketpress.de/product/backwpup-pro/\n";
 		if ( $wp_info ) {
 			$dbdumpheader .= "-- Blog Name: " . get_bloginfo( 'name' ) . "\n";
@@ -208,7 +208,7 @@ class BackWPup_MySQLDump {
 			$dbdumpheader .= "-- Table Prefix: " . $GLOBALS[ 'wpdb' ]->prefix . "\n";
 		}
 		$dbdumpheader .= "-- Database Name: " . $this->dbname . "\n";
-		$dbdumpheader .= "-- Dumped on: " . date_i18n( 'Y-m-d H:i.s' ) . "\n";
+		$dbdumpheader .= "-- Backup on: " . date_i18n( 'Y-m-d H:i.s' ) . "\n";
 		$dbdumpheader .= "-- ---------------------------------------------------------\n\n";
 		//for better import with mysql client
 		$dbdumpheader .= "/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;\n";
@@ -230,7 +230,7 @@ class BackWPup_MySQLDump {
 	public function dump_footer() {
 
 		//dump procedures and functions
-		$this->write( "\n--\n-- Dumping routines for database '" . $this->dbname . "'\n--\n" );
+		$this->write( "\n--\n-- Backup routines for database '" . $this->dbname . "'\n--\n" );
 
 		//dump Functions
 		$res = $this->mysqli->query( "SHOW FUNCTION STATUS" );
@@ -295,7 +295,7 @@ class BackWPup_MySQLDump {
 		$dbdumpfooter .= "/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;\n";
 		$dbdumpfooter .= "/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;\n";
 		$dbdumpfooter .= "/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;\n";
-		$dbdumpfooter .= "\n-- Dump completed on " . date_i18n( 'Y-m-d H:i:s' ). "\n";
+		$dbdumpfooter .= "\n-- Backup completed on " . date_i18n( 'Y-m-d H:i:s' ). "\n";
 		$this->write( $dbdumpfooter );
 	}
 
@@ -372,7 +372,7 @@ class BackWPup_MySQLDump {
 
 		if ( $records > 0 ) {
 			//Dump Table data
-			$this->write( "\n--\n-- Dumping data for table `" . $table . "`\n--\n\nLOCK TABLES `" . $table . "` WRITE;\n/*!40000 ALTER TABLE `" . $table . "` DISABLE KEYS */;\n" );
+			$this->write( "\n--\n-- Backup data for table `" . $table . "`\n--\n\nLOCK TABLES `" . $table . "` WRITE;\n/*!40000 ALTER TABLE `" . $table . "` DISABLE KEYS */;\n" );
 		}
 
 		return $records;
@@ -401,10 +401,10 @@ class BackWPup_MySQLDump {
 	public function dump_table( $table, $start, $length = 100 ) {
 
 		if ( ! is_numeric( $start ) )
-			throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Start for table dump is not correctly set: %1$s ', 'backwpup' ), $start ) );
+			throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Start for table backup is not correctly set: %1$s ', 'backwpup' ), $start ) );
 
 		if ( ! is_numeric( $length ) )
-			throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Length for table dump is not correctly set: %1$s ', 'backwpup' ), $length ) );
+			throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Length for table backup is not correctly set: %1$s ', 'backwpup' ), $length ) );
 
 		if ( $length == 0 )
 			return;

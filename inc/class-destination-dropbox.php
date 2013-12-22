@@ -37,7 +37,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 				$dropbox    = new BackWPup_Destination_Dropbox_API( $auth_data[ 'type' ] );
 				$oAuthStuff = $dropbox->oAuthAccessToken( $auth_data[ 'oauth_token' ], $auth_data[ 'oauth_token_secret' ] );
 				if ( ! empty( $oAuthStuff ) ) {
-					echo '<div id="message" class="updated"><p>' .  __( 'Dropbox authentication complete!', 'backwpup' ) . '</p></div>';
+					echo '<div id="message" class="updated below-h2"><p>' .  __( 'Dropbox authentication complete!', 'backwpup' ) . '</p></div>';
 					BackWPup_Option::update( $jobid, 'dropboxtoken', $oAuthStuff[ 'oauth_token' ] );
 					BackWPup_Option::update( $jobid, 'dropboxsecret', BackWPup_Encryption::encrypt( $oAuthStuff[ 'oauth_token_secret' ] ) );
 					BackWPup_Option::update( $jobid, 'dropboxroot', $auth_data[ 'type' ] );
@@ -120,7 +120,8 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 
 			}
 			catch ( Exception $e ) {
-				echo '<div  id="message" class="error"><p>' . sprintf( __( 'Dropbox API: %s', 'backwpup' ), $e->getMessage() ) . '</p></div>';
+				BackWPup_Admin::message( sprintf( __( 'Dropbox API: %s', 'backwpup' ), $e->getMessage() ), true );
+				wp_redirect( network_admin_url( 'admin.php' ) . '?page=backwpupeditjob&jobid=' .$_GET[ 'jobid' ] .'&tab=dest-dropbox&_wpnonce=' . wp_create_nonce( 'edit-job' ) );
 			}
 		}
 		// sandbox auth
@@ -139,7 +140,8 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 				wp_redirect( $response[ 'authurl' ] );
 			}
 			catch ( Exception $e ) {
-				echo '<div  id="message" class="error"><p>' . sprintf( __( 'Dropbox API: %s', 'backwpup' ), $e->getMessage() ) . '</p></div>';
+				BackWPup_Admin::message( sprintf( __( 'Dropbox API: %s', 'backwpup' ), $e->getMessage() ), true );
+				wp_redirect( network_admin_url( 'admin.php' ) . '?page=backwpupeditjob&jobid=' .$_GET[ 'jobid' ] .'&tab=dest-dropbox&_wpnonce=' . wp_create_nonce( 'edit-job' ) );
 			}
 		}
 	}
@@ -267,7 +269,13 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 					if ( $response[ 'bytes' ] != $job_object->backup_filesize )
 						$job_object->log( __( 'Uploaded file size and local file size don\'t match.', 'backwpup' ), E_USER_ERROR );
 					else
-						$job_object->log( sprintf( __( 'Error on transfer backup to Dropbox: %s', 'backwpup' ), $response[ 'error' ] ), E_USER_ERROR );
+						$job_object->log(
+										sprintf(
+											__( 'Error transfering backup to %$1s.', 'backwpup' ) . ' ' . $response[ 'error' ],
+											__( 'Dropbox', 'backwpup' )
+										),
+										E_USER_ERROR
+										);
 
 					return FALSE;
 				}

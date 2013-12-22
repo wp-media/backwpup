@@ -73,7 +73,6 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 
 		$jobs_columns              = array();
 		$jobs_columns[ 'cb' ]      = '<input type="checkbox" />';
-		$jobs_columns[ 'id' ]      = __( 'ID', 'backwpup' );
 		$jobs_columns[ 'jobname' ] = __( 'Job Name', 'backwpup' );
 		$jobs_columns[ 'type' ]    = __( 'Type', 'backwpup' );
 		$jobs_columns[ 'dest' ]    = __( 'Destinations', 'backwpup' );
@@ -95,17 +94,6 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	}
 
 	/**
-	 * The id Column
-	 *
-	 * @param $item
-	 * @return string
-	 */
-	function column_id( $item ) {
-
-		return esc_attr( $item );
-	}
-
-	/**
 	 * The jobname Column
 	 *
 	 * @param $item
@@ -117,7 +105,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 		if ( is_object( $this->job_object ) )
 			$job_normal_hide = ' style="display:none;"';
 
-		$r = "<strong>" . esc_html( BackWPup_Option::get( $item, 'name' ) ) . "</strong>";
+		$r = '<strong title="' . sprintf( __( 'Job ID: %d', 'backwpup' ), $item ) . '">' . esc_html( BackWPup_Option::get( $item, 'name' ) ) . '</strong>';
 		$actions = array();
 		if ( current_user_can( 'backwpup_jobs_edit' ) ) {
 			$actions[ 'edit' ]     = "<a href=\"" . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupeditjob&jobid=' . $item, 'edit-job' ) . "\">" . __( 'Edit', 'backwpup' ) . "</a>";
@@ -346,7 +334,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 				if ( ! empty( $_GET[ 'jobid' ] ) ) {
 					if ( ! current_user_can( 'backwpup_jobs_start' ) )
 						wp_die( __( 'Sorry, you don\'t have permissions to do that.', 'backwpup') );
-					check_admin_referer( 'backwup_job_run-runnowlink' );
+					check_admin_referer( 'backwpup_job_run-runnowlink' );
 
 					//check temp folder
 					BackWPup_Job::check_folder( BackWPup::get_plugin_data( 'TEMP' ) );
@@ -356,7 +344,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 					$raw_response = BackWPup_Job::get_jobrun_url( 'test' );
 					$test_result = '';
 					if ( is_wp_error( $raw_response ) )
-						$test_result .= sprintf( __( 'The HTTP response test get a error "%s"','backwpup' ), $raw_response->get_error_message() );
+						$test_result .= sprintf( __( 'The HTTP response test get an error "%s"','backwpup' ), $raw_response->get_error_message() );
 					elseif ( 200 != wp_remote_retrieve_response_code( $raw_response ) && 204 != wp_remote_retrieve_response_code( $raw_response ) )
 						$test_result .= sprintf( __( 'The HTTP response test get a false http status (%s)','backwpup' ), wp_remote_retrieve_response_code( $raw_response ) );
 					if ( ! empty( $test_result ) )
@@ -408,10 +396,6 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 
 		?>
 		<style type="text/css" media="screen">
-			.column-id {
-				width: 15px;
-				text-align: right;
-			}
 
 			.column-last, .column-next, .column-type, .column-dest {
 				width: 15%;
@@ -423,26 +407,17 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 			}
 
 			#showworking {
-				font-family: Fixedsys, Courier, monospace;
-				line-height: 15px;
-				font-size: 12px;
 				white-space: pre;
 				display: block;
 				width: 100%;
 			}
 			#runningjob {
 				padding:10px;
-				background-image:url(<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/progresshg.jpg);
 				position:relative;
 				margin: 15px 0 25px 0;
 				padding-bottom:25px;
 			}
-			#runniginfos {
-				font-size: 14px;
-				font-family: sans-serif,"Arial";
-			}
 			h2#runnigtitle {
-				font-size: 18px;
 				margin-bottom: 15px;
 				padding: 0;
 			}
@@ -453,8 +428,9 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 			.infobuttons {
 				position: absolute;
 				right: 10px;
-				bottom: 10px;
+				bottom: 0;
 			}
+/*
 			a#showworkingbutton {
 				float: left;
 				padding: 10px;
@@ -476,33 +452,33 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 				color: #fff;
 				border: none;
 			}
+*/
+			#backwpup-page samp {
+				font-family: Consolas, Monaco, monospace;
+			}
 			.progressbar {
 				margin-top: 20px;
 				height: auto;
-				background: #f6f6f6 url(<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/progressbarhg.jpg);
+				background: #f6f6f6 url('<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/progressbarhg.jpg');
 			}
 
 			#lastmsg, #onstep, #lasterrormsg {
 				text-align: center;
 				margin-bottom: 20px;
 			}
-
-			#progressstep {
+			#backwpup-page #lastmsg samp,
+			#backwpup-page #onstep samp,
+			#backwpup-page #lasterrormsg samp {
+				font-family: "Open Sans", sans-serif;
+			}
+			.bwpu-progress {
 				background-color: #1d94cf;
 				color: #fff;
 				padding: 5px 0;
 				text-align: center;
-				font-size: 14px;
-				font-family: sans-serif,"Arial";
 			}
-
 			#progresssteps {
 				background-color: #007fb6;
-				color: #fff;
-				padding: 5px 0;
-				text-align: center;
-				font-size: 14px;
-				font-family: sans-serif,"Arial";
 			}
 
 			.row-actions .lastlog {
@@ -510,7 +486,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 			}
 
 			@media screen and (max-width: 782px) {
-				.column-id, .column-type, .column-dest {
+				.column-type, .column-dest {
 					display: none;
 				}
 				.row-actions .lastlog {
@@ -538,11 +514,11 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	public static function page() {
 
 		echo '<div class="wrap" id="backwpup-page">';
-		echo '<h2><span id="backwpup-page-icon">&nbsp;</span>' . esc_html( sprintf( __( '%s Jobs', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ) ) . '&nbsp;<a href="' . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupeditjob', 'edit-job' ) . '" class="button add-new-h2">' . esc_html__( 'Add New', 'backwpup' ) . '</a></h2>';
+		echo '<h2><span id="backwpup-page-icon">&nbsp;</span>' . esc_html( sprintf( __( '%s Jobs', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ) ) . '&nbsp;<a href="' . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupeditjob', 'edit-job' ) . '" class="add-new-h2">' . esc_html__( 'Add new', 'backwpup' ) . '</a></h2>';
 		BackWPup_Admin::display_messages();
 		$job_object = BackWPup_Job::get_working_data();
 		if ( current_user_can( 'backwpup_jobs_start' ) && is_object( $job_object )  ) {
-			echo '<div id="runningjob">';
+
 				//read existing logfile
 				$logfiledata = file_get_contents( $job_object->logfile );
 				preg_match( '/<body[^>]*>/si', $logfiledata, $match );
@@ -555,33 +531,40 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 					$endpos = strlen( $logfiledata );
 				$length = strlen( $logfiledata ) - ( strlen( $logfiledata ) - $endpos ) - $startpos;
 
-				echo '<div id="runniginfos">';
-					echo '<h2 id="runningtitle">' . sprintf( __('Job currently running: %s','backwpup'), $job_object->job[ 'name' ] ) . '</h2>';
-					echo '<span id="warningsid">' . __( 'Warnings:', 'backwpup' ) . ' <span id="warnings">' . $job_object->warnings . '</span></span>';
-					echo '<span id="errorid">' . __( 'Errors:', 'backwpup' ) . ' <span id="errors">' . $job_object->errors . '</span></span>';
-					echo '<div class="infobuttons"><a href="#TB_inline?height=440&width=630&inlineId=tb-showworking" id="showworkingbutton" class="thickbox" title="' . __( 'Working job log', 'backwpup') . '">' . __( 'Display working log', 'backwpup' ) . '</a>';
-					echo '<a href="' . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupjobs&action=abort', 'abort-job' ) . '" id="abortbutton" class="backwpup-fancybox">' . __( 'Abort', 'backwpup' ) . '</a>';
-					echo '<a href="#" id="showworkingclose" title="' . __( 'Close working screen', 'backwpup') .'" style="display:none" >' . __( 'close', 'backwpup' ) . '</a></div>';
-				echo '</div>';
-				echo '<input type="hidden" name="logpos" id="logpos" value="' . strlen( $logfiledata ) . '">';
-				echo '<div id="lasterrormsg"></div>';
-				echo '<div class="progressbar"><div id="progressstep" style="width:' . $job_object->step_percent . '%;">' . $job_object->step_percent . '%</div></div>';
-				echo '<div id="onstep"><samp>' . $job_object->steps_data[ $job_object->step_working ][ 'NAME' ] . '</samp></div>';
-				echo '<div class="progressbar"><div id="progresssteps" style="width:' . $job_object->substep_percent . '%;">' . $job_object->substep_percent . '%</div></div>';
-				echo '<div id="lastmsg">' . $job_object->lastmsg . '</div>';
-				echo '<div id="tb-showworking" style="display:none;"><div id="showworking">';
-				echo  substr( $logfiledata, $startpos, $length );
-				echo '</div></div>';
-			echo '</div>';
-		}
+				?>
+			<div id="runningjob">
+				<div id="runniginfos">
+					<h2 id="runningtitle"><?php sprintf( __('Job currently running: %s','backwpup'), $job_object->job[ 'name' ] ); ?></h2>
+					<span id="warningsid"><?php _e( 'Warnings:', 'backwpup' ); ?> <span id="warnings"><?php echo $job_object->warnings; ?></span></span>
+					<span id="errorid"><?php _e( 'Errors:', 'backwpup' ); ?> <span id="errors"><?php echo $job_object->errors; ?></span></span>
+					<div class="infobuttons"><a href="#TB_inline?height=440&width=630&inlineId=tb-showworking" id="showworkingbutton" class="thickbox button button-primary button-primary-bwp" title="<?php _e( 'Log of running job', 'backwpup'); ?>"><?php _e( 'Display working log', 'backwpup' ); ?></a>
+					<a href="<?php echo wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupjobs&action=abort', 'abort-job' ); ?>" id="abortbutton" class="backwpup-fancybox button button-bwp"><?php _e( 'Abort', 'backwpup' ); ?></a>
+					<a href="#" id="showworkingclose" title="<?php _e( 'Close working screen', 'backwpup'); ?>" class="button button-bwp" style="display:none" ><?php _e( 'close', 'backwpup' ); ?></a></div>
+				</div>
+				<input type="hidden" name="logpos" id="logpos" value="<?php echo strlen( $logfiledata ); ?>">
+				<div id="lasterrormsg"></div>
+				<div class="progressbar"><div id="progressstep" class="bwpu-progress" style="width:<?php echo $job_object->step_percent; ?>%;"><?php echo  $job_object->step_percent; ?>%</div></div>
+				<div id="onstep"><samp><?php echo $job_object->steps_data[ $job_object->step_working ][ 'NAME' ]; ?></samp></div>
+				<div class="progressbar"><div id="progresssteps" class="bwpu-progress" style="width:<?php echo $job_object->substep_percent; ?>%;"><?php echo $job_object->substep_percent; ?>%</div></div>
+				<div id="lastmsg"><?php echo $job_object->lastmsg; ?></div>
+				<div id="tb-showworking" style="display:none;">
+					<div id="showworking"><?php echo substr( $logfiledata, $startpos, $length ); ?></div>
+				</div>
+			</div>
+		<?php }
+
 		//display jos Table
-		echo '<form id="posts-filter" action="" method="get">';
-		echo '<input type="hidden" name="page" value="backwpupjobs" />';
-		wp_nonce_field( 'backwpup_ajax_nonce', 'backwpupajaxnonce', FALSE );
+		?>
+		<form id="posts-filter" action="" method="get">
+		<input type="hidden" name="page" value="backwpupjobs" />
+		<?php
+		echo wp_nonce_field( 'backwpup_ajax_nonce', 'backwpupajaxnonce', FALSE );
 		self::$listtable->display();
-		echo '<div id="ajax-response"></div>';
-		echo '</form>';
-		echo '</div>';
+		?>
+		<div id="ajax-response"></div>
+		</form>
+		</div>
+		<?php
 
 		if ( ! empty( $job_object->logfile ) ) { ?>
         <script type="text/javascript">
@@ -622,11 +605,11 @@ class BackWPup_Page_Jobs extends WP_List_Table {
                                 $('#warnings').replaceWith('<span id="warnings">' + rundata.warning_count + '</span>');
                             }
                             if (0 < rundata.step_percent) {
-                                $('#progressstep').replaceWith('<div id="progressstep">' + rundata.step_percent + '%</div>');
+                                $('#progressstep').replaceWith('<div id="progressstep" class="bwpu-progress">' + rundata.step_percent + '%</div>');
                                 $('#progressstep').css('width', parseFloat(rundata.step_percent) + '%');
                             }
                             if (0 < rundata.sub_step_percent) {
-                                $('#progresssteps').replaceWith('<div id="progresssteps">' + rundata.sub_step_percent + '%</div>');
+                                $('#progresssteps').replaceWith('<div id="progresssteps" class="bwpu-progress">' + rundata.sub_step_percent + '%</div>');
                                 $('#progresssteps').css('width', parseFloat(rundata.sub_step_percent) + '%');
                             }
                             if (0 < rundata.running_time) {
@@ -706,13 +689,13 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 			$errors          = $logheader[ 'errors' ];
 			$step_percent    = 100;
 			$substep_percent = 100;
-			$onstep			 = __( 'Job end' , 'backwpup' );
+			$onstep			 = '<div class="backwpup-message backwpup-info"><p>' . __( 'Job completed' , 'backwpup' ) . '</p></div>';
 			if ( $errors > 0 )
-				$lastmsg		 = '<samp style="background-color:red;color:#fff">' . __( 'ERROR:', 'backwpup' ) . ' ' .  sprintf( __( 'Job has ended with errors in %s seconds. You must resolve the errors for correct execution.', 'backwpup' ), $logheader[ 'runtime' ] ) . '</samp>';
+				$lastmsg		 = '<div class="error"><p>' . __( 'ERROR:', 'backwpup' ) . ' ' .  sprintf( __( 'Job has ended with errors in %s seconds. You must resolve the errors for correct execution.', 'backwpup' ), $logheader[ 'runtime' ] ) . '</p></div>';
 			elseif ( $warnings > 0 )
-				$lastmsg		 = '<samp style="background-color:#ffc000;color:#fff">' . __( 'WARNING:', 'backwpup' ) . ' ' .  sprintf( __( 'Job has done with warnings in %s seconds. Please resolve them for correct execution.', 'backwpup' ), $logheader[ 'runtime' ] ) . '</samp>';
+				$lastmsg		 = '<div class="backwpup-message backwpup-warning"><p>' . __( 'WARNING:', 'backwpup' ) . ' ' .  sprintf( __( 'Job has done with warnings in %s seconds. Please resolve them for correct execution.', 'backwpup' ), $logheader[ 'runtime' ] ) . '</p></div>';
 			else
-				$lastmsg		 = '<samp>' .  sprintf( __( 'Job done in %s seconds.', 'backwpup' ), $logheader[ 'runtime' ] ) . '</samp>';
+				$lastmsg		 = '<div class="updated"><p>' .  sprintf( __( 'Job done in %s seconds.', 'backwpup' ), $logheader[ 'runtime' ] ) . '</p></div>';
 			$lasterrormsg    = '';
 			$done            = 1;
 		}

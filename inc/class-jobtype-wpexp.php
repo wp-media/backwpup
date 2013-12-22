@@ -5,11 +5,6 @@
 class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 
 	/**
-	 * @var $export_file string Export File
-	 */
-	private static $export_file = '';
-
-	/**
 	 *
 	 */
 	public function __construct() {
@@ -110,111 +105,95 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 	public function job_run( &$job_object ) {
 
 		$job_object->substeps_todo = 2;
+		// not allowed UTF-8 chars in XML
+		$not_allowed_xml_pattern = '/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u';
 
 		$job_object->log( sprintf( __( '%d. Trying to create a WordPress export to XML file&#160;&hellip;', 'backwpup' ), $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] ) );
 		//build filename
 		$job_object->temp[ 'wpexportfile' ] = $job_object->generate_filename( $job_object->job[ 'wpexportfile' ], 'xml' );
 
 		//include WP export function
-		self::$export_file = $job_object->temp[ 'wpexportfile' ];
+		$xml_file_data = '';
 		require_once ABSPATH . 'wp-admin/includes/export.php';
-		ob_start( array( $this, 'wp_export_ob_bufferwrite' ), 1048576 ); //start output buffering
+		ob_start(); //start output buffering
 		$args = array(
 			'content' =>  $job_object->job[ 'wpexportcontent' ]
 		);
 		@export_wp( $args ); //WP export
-		ob_end_flush(); //End output buffering
+		$xml_file_data = preg_replace( $not_allowed_xml_pattern, '', ob_get_contents() );
+		ob_end_clean(); //End output buffering
 		$job_object->update_working_data();
 
-		if ( ! is_readable( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'wpexportfile' ] ) || filesize( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'wpexportfile' ] ) < 250 ) {
-			$job_object->log( __( 'WP Export file could not generated.', 'backwpup' ), E_USER_ERROR );
+		//remove not needed
+		$xml_file_data = trim( $xml_file_data );
+		$start_pos = strpos( $xml_file_data, '<?xml', 0 );
+		$end_pos   = strpos( $xml_file_data, '</rss>', $start_pos + 5 );
+		if ( $start_pos && $end_pos )
+			$xml_file_data = substr( self::$xml_file_data, $start_pos, $end_pos + 6 - $start_pos );
+
+		if ( empty( $xml_file_data ) || FALSE === $start_pos || FALSE === $end_pos || strlen( $xml_file_data ) < 1500 ) {
+			$job_object->log( __( 'Could not generate a WordPress export file.', 'backwpup' ), E_USER_ERROR );
 
 			return FALSE;
 		}
 
 
-		if ( extension_loaded( 'simplexml' ) || extension_loaded( 'xml' ) ) {
+		if ( extension_loaded( 'simplexml' ) ) {
 			$job_object->log( __( 'Check WP Export file&#160;&hellip;', 'backwpup' ) );
 			$valid = TRUE;
-			if ( extension_loaded( 'simplexml' ) ) {
-				$internal_errors = libxml_use_internal_errors( TRUE );
-				$dom = new DOMDocument;
-				$old_value = NULL;
-				if ( function_exists( 'libxml_disable_entity_loader' ) )
-					$old_value = libxml_disable_entity_loader( TRUE );
-				$success = $dom->loadXML( file_get_contents( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'wpexportfile' ] ) );
-				if ( ! is_null( $old_value ) )
-					libxml_disable_entity_loader( $old_value );
 
-				if ( ! $success || isset( $dom->doctype ) ) {
-					$errors = libxml_get_errors();
-					$valid = FALSE;
+			$internal_errors = libxml_use_internal_errors( TRUE );
+			$dom = new DOMDocument;
+			$old_value = NULL;
+			if ( function_exists( 'libxml_disable_entity_loader' ) )
+				$old_value = libxml_disable_entity_loader( TRUE );
+			$success = $dom->loadXML( $xml_file_data );
+			if ( ! is_null( $old_value ) )
+				libxml_disable_entity_loader( $old_value );
 
-					foreach ( $errors as $error ) {
-						switch ( $error->level ) {
-							case LIBXML_ERR_WARNING:
-								$job_object->log( E_USER_WARNING, sprintf( __( 'XML WARNING (%s): %s', 'backwpup' ), $error->code, trim( $error->message ) ), BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'wpexportfile' ], $error->line );
-								break;
-							case LIBXML_ERR_ERROR:
-								$job_object->log( E_USER_WARNING, sprintf( __( 'XML RECOVERABLE (%s): %s', 'backwpup' ), $error->code,  trim( $error->message ) ), BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'wpexportfile' ], $error->line  );
-								break;
-							case LIBXML_ERR_FATAL:
-								$job_object->log( E_USER_WARNING, sprintf( __( 'XML ERROR (%s): %s', 'backwpup' ),$error->code,  trim( $error->message ) ), BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'wpexportfile' ], $error->line );
-								break;
-						}
+			if ( ! $success || isset( $dom->doctype ) ) {
+				$errors = libxml_get_errors();
+				$valid = FALSE;
+
+				foreach ( $errors as $error ) {
+					switch ( $error->level ) {
+						case LIBXML_ERR_WARNING:
+							$job_object->log( E_USER_WARNING, sprintf( __( 'XML WARNING (%s): %s', 'backwpup' ), $error->code, trim( $error->message ) ), BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'wpexportfile' ], $error->line );
+							break;
+						case LIBXML_ERR_ERROR:
+							$job_object->log( E_USER_WARNING, sprintf( __( 'XML RECOVERABLE (%s): %s', 'backwpup' ), $error->code,  trim( $error->message ) ), BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'wpexportfile' ], $error->line  );
+							break;
+						case LIBXML_ERR_FATAL:
+							$job_object->log( E_USER_WARNING, sprintf( __( 'XML ERROR (%s): %s', 'backwpup' ),$error->code,  trim( $error->message ) ), BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'wpexportfile' ], $error->line );
+							break;
 					}
+				}
+			} else {
+				$xml = simplexml_import_dom( $dom );
+				unset( $dom );
+
+				// halt if loading produces an error
+				if ( ! $xml ) {
+					$job_object->log( __( 'There was an error when reading this WXR file', 'backwpup' ), E_USER_ERROR );
+					$valid = FALSE;
 				} else {
-					$xml = simplexml_import_dom( $dom );
-					unset( $dom );
 
-					// halt if loading produces an error
-					if ( ! $xml ) {
-						$job_object->log( __( 'There was an error when reading this WXR file', 'backwpup' ), E_USER_ERROR );
+					$wxr_version = $xml->xpath('/rss/channel/wp:wxr_version');
+					if ( ! $wxr_version ) {
+						$job_object->log( __( 'This does not appear to be a WXR file, missing/invalid WXR version number', 'backwpup' ), E_USER_ERROR );
 						$valid = FALSE;
-					} else {
+					}
 
-						$wxr_version = $xml->xpath('/rss/channel/wp:wxr_version');
-						if ( ! $wxr_version ) {
-							$job_object->log( __( 'This does not appear to be a WXR file, missing/invalid WXR version number', 'backwpup' ), E_USER_ERROR );
-							$valid = FALSE;
-						}
-
-						$wxr_version = (string) trim( $wxr_version[0] );
-						// confirm that we are dealing with the correct file format
-						if ( ! preg_match( '/^\d+\.\d+$/', $wxr_version ) ) {
-							$job_object->log( __( 'This does not appear to be a WXR file, missing/invalid WXR version number', 'backwpup' ), E_USER_ERROR );
-							$valid = FALSE;
-						}
+					$wxr_version = (string) trim( $wxr_version[0] );
+					// confirm that we are dealing with the correct file format
+					if ( ! preg_match( '/^\d+\.\d+$/', $wxr_version ) ) {
+						$job_object->log( __( 'This does not appear to be a WXR file, missing/invalid WXR version number', 'backwpup' ), E_USER_ERROR );
+						$valid = FALSE;
 					}
 				}
-
-				libxml_use_internal_errors( $internal_errors );
-
-			} else if ( extension_loaded( 'xml' ) ) {
-
-				$xml = xml_parser_create( 'UTF-8' );
-				xml_parser_set_option( $xml, XML_OPTION_SKIP_WHITE, 1 );
-				xml_parser_set_option( $xml, XML_OPTION_CASE_FOLDING, 0 );
-				xml_set_object( $xml, $this );
-				xml_set_character_data_handler( $xml, 'cdata' );
-				xml_set_element_handler( $xml, 'tag_open', 'tag_close' );
-
-				if ( ! xml_parse( $xml, file_get_contents( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'wpexportfile' ] ), true ) ) {
-					$current_line = xml_get_current_line_number( $xml );
-					$current_column = xml_get_current_column_number( $xml );
-					$error_code = xml_get_error_code( $xml );
-					$error_string = xml_error_string( $error_code );
-					$job_object->log( sprintf( __( 'There was an error (%s) when reading this WXR file on %d:%d. Message: %s', 'backwpup' ), $error_code, $current_line, $current_column, $error_string ), E_USER_ERROR );
-					$valid = FALSE;
-				}
-				xml_parser_free( $xml );
-
-				if ( ! preg_match( '/^\d+\.\d+$/', $this->wxr_version ) ) {
-					$job_object->log( __( 'This does not appear to be a WXR file, missing/invalid WXR version number', 'backwpup' ), E_USER_ERROR );
-					$valid = FALSE;
-				}
-
 			}
+
+			libxml_use_internal_errors( $internal_errors );
 
 			if ( $valid )
 				$job_object->log( __( 'WP Export file is a valid WXR file.', 'backwpup' ) );
@@ -223,6 +202,12 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 		}
 
 		$job_object->substeps_done ++;
+
+		if ( ! file_put_contents( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'wpexportfile' ], $xml_file_data ) ) {
+			$job_object->log( __( 'WP Export file could not generated.', 'backwpup' ), E_USER_ERROR );
+
+			return FALSE;
+		}
 
 
 		//Compress file
@@ -254,19 +239,6 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 		$job_object->substeps_done = 1;
 
 		return TRUE;
-	}
-
-	/**
-	 *
-	 * Callback for wp-export()
-	 *
-	 * @param $output
-	 */
-	public function wp_export_ob_bufferwrite( $output ) {
-		// not allowed UTF-8 chars in XML
-		$pattern = '/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u';
-
-		file_put_contents( BackWPup::get_plugin_data( 'TEMP' ) . self::$export_file, preg_replace( $pattern, '', $output ), FILE_APPEND );
 	}
 
 }

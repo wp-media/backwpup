@@ -3,7 +3,7 @@ Contributors: inpsyde, danielhuesken, Bueltge, nullbyte
 Tags: Amazon, Amazon S3, back up, backup, chinese, cloud, cloud files, database, db backup, dropbox, dump, file, french, ftp, ftps, german, migrate, multisite, russian, schedule, sftp, storage, S3, time, upload, xml
 Requires at least: 3.4
 Tested up to: 3.8
-Stable tag: 3.0.13
+Stable tag: 3.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -169,11 +169,11 @@ Please check all settings after the update:
 
 
 == Changelog ==
-= Version 3.1-rc-1 =
+= Version 3.1 =
 * Fixed: Message about aborted step did not display correctly
 * Fixed: Incorrect rescheduling of jobs
 * Improved: Overall performance while generating backup archives
-* Improved: Uploads of backup archives to FTP/S3/Dropbox/Azure can be continued
+* Improved: Uploads of backup archives to FTP/S3/Dropbox/Azure/GDrive can be continued
 * Improved: Script re-starts based upon time while generating archives and uploading
 * Improved: Reduced risk of running scripts being stopped via external processes in fcgi mode
 * Improved: Backup destinations and their dependencies only being loaded when needed

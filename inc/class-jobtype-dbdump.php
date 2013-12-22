@@ -12,7 +12,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 		$this->info[ 'ID' ]          = 'DBDUMP';
 		$this->info[ 'name' ]        = __( 'DB Backup', 'backwpup' );
 		$this->info[ 'description' ] = __( 'Database backup', 'backwpup' );
-		$this->info[ 'help' ]        = __( 'Creates an .sql database dump file', 'backwpup' );
+		$this->info[ 'help' ]        = __( 'Creates an .sql database backup file', 'backwpup' );
 		$this->info[ 'URI' ]         = translate( BackWPup::get_plugin_data( 'PluginURI' ), 'backwpup' );
 		$this->info[ 'author' ]      = BackWPup::get_plugin_data( 'Author' );
 		$this->info[ 'authorURI' ]   = translate( BackWPup::get_plugin_data( 'AuthorURI' ), 'backwpup' );
@@ -88,7 +88,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
                 </td>
             </tr>
             <tr>
-                <th scope="row"><label for="iddbdumpfile"><?php _e( 'Dumpfile name', 'backwpup' ) ?></label></th>
+                <th scope="row"><label for="iddbdumpfile"><?php _e( 'Backup file name', 'backwpup' ) ?></label></th>
                 <td>
                     <input id="iddbdumpfile" name="dbdumpfile" type="text"
                            value="<?php echo BackWPup_Option::get( $jobid, 'dbdumpfile' );?>"
@@ -96,7 +96,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
                 </td>
             </tr>
 			<tr>
-				<th scope="row"><?php _e( 'Dumpfile compression', 'backwpup' ) ?></th>
+				<th scope="row"><?php _e( 'Backup file compression', 'backwpup' ) ?></th>
 				<td>
 					<fieldset>
 						<?php
@@ -152,7 +152,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 		$job_object->substeps_todo = 1;
 
 		if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] != $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] )
-			$job_object->log( sprintf( __( '%d. Try to dump database&#160;&hellip;', 'backwpup' ), $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] ) );
+			$job_object->log( sprintf( __( '%d. Try to backup database&#160;&hellip;', 'backwpup' ), $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] ) );
 
 		//build filename
 		if ( empty( $job_object->steps_data[ $job_object->step_working ][ 'dbdumpfile' ] ) )
@@ -166,7 +166,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 												) );
 
 			if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] != $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] )
-				$job_object->log( sprintf( __( 'Connected to database %1$s on %2$s', 'backwpup' ), $job_object->job[ 'dbdumpdbname' ], $job_object->job[ 'dbdumpdbhost' ] ) );
+				$job_object->log( sprintf( __( 'Connected to database %1$s on %2$s', 'backwpup' ), DB_NAME, DB_HOST ) );
 
 
 			//Exclude Tables
@@ -179,7 +179,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 			$job_object->substeps_todo = count( $sql_dump->tables_to_dump );
 
 			if ( $job_object->substeps_todo == 0 ) {
-				$job_object->log( __( 'No tables to dump.', 'backwpup' ), E_USER_WARNING );
+				$job_object->log( __( 'No tables to backup.', 'backwpup' ), E_USER_WARNING );
 				unset( $sql_dump );
 
 				return TRUE;
@@ -187,10 +187,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 
 			//dump head
 			if ( ! isset( $job_object->steps_data[ $job_object->step_working ][ 'is_head' ] ) ) {
-				if ( $job_object->job[ 'dbdumpdbhost' ] == $GLOBALS[ 'wpdb' ]->dbhost && $job_object->job[ 'dbdumpdbname' ] == $GLOBALS[ 'wpdb' ]->dbname )
-					$sql_dump->dump_head( TRUE );
-				else
-					$sql_dump->dump_head();
+				$sql_dump->dump_head( TRUE );
 				$job_object->steps_data[ $job_object->step_working ][ 'is_head' ] = TRUE;
 			}
 			//dump tables
@@ -205,7 +202,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 					$job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ] = array( 'records' => $num_records,
 																										'start'   => 0,
 																										'length'   => 100 );
-					$job_object->log( sprintf( __( 'Dump database table "%s" with "%d" records', 'backwpup' ), $table, $num_records ) );
+					$job_object->log( sprintf( __( 'Backup database table "%s" with "%d" records', 'backwpup' ), $table, $num_records ) );
 					if ( empty( $num_records ) ) {
 						$job_object->substeps_done++;
 						$i++;
@@ -253,7 +250,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 		//cleanups
 		unset( $job_object->steps_data[ $job_object->step_working ][ 'tables' ] );
 
-		$job_object->log( __( 'Database dump done!', 'backwpup' ) );
+		$job_object->log( __( 'Database backup done!', 'backwpup' ) );
 
 		return TRUE;
 	}

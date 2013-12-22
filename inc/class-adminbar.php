@@ -6,16 +6,14 @@ class BackWPup_Adminbar {
 
 	private static $instance = NULL;
 
-	/**
-	 *
-	 */
 	private function __construct() {
 
 		if ( defined( 'DOING_CRON' )  || ! current_user_can( 'backwpup' ) || ! is_admin_bar_showing() || ! get_site_option( 'backwpup_cfg_showadminbar' ) )
 			return;
 
 		//load text domain
-		load_plugin_textdomain( 'backwpupadminbar', FALSE, BackWPup::get_plugin_data( 'BaseName' ) . '/languages' );
+		if ( ! is_textdomain_loaded( 'backwpup' ) )
+			load_plugin_textdomain( 'backwpup', FALSE, BackWPup::get_plugin_data( 'BaseName' ) . '/languages' );
 		//add admin bar. Works only in init
 		add_action( 'admin_bar_menu', array( $this, 'adminbar' ), 100 );
 		//admin css
@@ -48,7 +46,7 @@ class BackWPup_Adminbar {
 		$menu_title = '<span class="ab-icon"></span><span class="ab-label">' . BackWPup::get_plugin_data( 'name' ) . '</span>';
 		$menu_herf  = network_admin_url( 'admin.php' ) . '?page=backwpup';
 		if ( file_exists( BackWPup::get_plugin_data( 'running_file' ) ) && current_user_can( 'backwpup_jobs_start' ) ) {
-			$menu_title = '<span class="ab-icon"></span><span class="ab-label">' . BackWPup::get_plugin_data( 'name' )  . ' <span id="backwpup-adminbar-running">' .__( 'running', 'backwpupadminbar') . '</span></span>';
+			$menu_title = '<span class="ab-icon"></span><span class="ab-label">' . BackWPup::get_plugin_data( 'name' )  . ' <span id="backwpup-adminbar-running">' . __( 'running', 'backwpup' ) . '</span></span>';
 			$menu_herf  = network_admin_url( 'admin.php' ) . '?page=backwpupjobs';
 		}
 
@@ -64,13 +62,13 @@ class BackWPup_Adminbar {
 			$wp_admin_bar->add_menu( array(
 										  'id'     => 'backwpup_working',
 										  'parent' => 'backwpup_jobs',
-										  'title'  => __( 'Now Running', 'backwpupadminbar' ),
+										  'title'  => __( 'Now Running', 'backwpup' ),
 										  'href'   => network_admin_url( 'admin.php' ) . '?page=backwpupjobs'
 									 ) );
 			$wp_admin_bar->add_menu( array(
 										  'id'     => 'backwpup_working_abort',
 										  'parent' => 'backwpup_working',
-										  'title'  => __( 'Abort!', 'backwpupadminbar' ),
+										  'title'  => __( 'Abort!', 'backwpup' ),
 										  'href'   => wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpup&action=abort', 'abort-job' )
 									 ) );
 		}
@@ -79,7 +77,7 @@ class BackWPup_Adminbar {
 			$wp_admin_bar->add_menu( array(
 									  'id'     => 'backwpup_jobs',
 									  'parent' => 'backwpup',
-									  'title'  => __( 'Jobs', 'backwpupadminbar' ),
+									  'title'  => __( 'Jobs', 'backwpup' ),
 									  'href'   => network_admin_url( 'admin.php' ) . '?page=backwpupjobs'
 								 ) );
 
@@ -87,7 +85,7 @@ class BackWPup_Adminbar {
 			$wp_admin_bar->add_menu( array(
 									  'id'     => 'backwpup_jobs_new',
 									  'parent' => 'backwpup_jobs',
-									  'title'  => __( 'Add New', 'backwpupadminbar' ),
+									  'title'  => __( 'Add new', 'backwpup' ),
 									  'href'   => network_admin_url( 'admin.php' ) . '?page=backwpupeditjob&tab=job'
 								 ) );
 
@@ -95,7 +93,7 @@ class BackWPup_Adminbar {
 			$wp_admin_bar->add_menu( array(
 									  'id'     => 'backwpup_logs',
 									  'parent' => 'backwpup',
-									  'title'  => __( 'Logs', 'backwpupadminbar' ),
+									  'title'  => __( 'Logs', 'backwpup' ),
 									  'href'   => network_admin_url( 'admin.php' ) . '?page=backwpuplogs'
 								 ) );
 
@@ -103,7 +101,7 @@ class BackWPup_Adminbar {
 			$wp_admin_bar->add_menu( array(
 									  'id'     => 'backwpup_backups',
 									  'parent' => 'backwpup',
-									  'title'  => __( 'Backups', 'backwpupadminbar' ),
+									  'title'  => __( 'Backups', 'backwpup' ),
 									  'href'   => network_admin_url( 'admin.php' ) . '?page=backwpupbackups'
 								 ) );
 
@@ -125,7 +123,7 @@ class BackWPup_Adminbar {
 				$wp_admin_bar->add_menu( array(
 											  'id'     => 'backwpup_jobs_runnow_' . $jobid,
 											  'parent' => 'backwpup_jobs_' . $jobid,
-											  'title'  => __( 'Run Now', 'backwpupadminbar' ),
+											  'title'  => __( 'Run Now', 'backwpup' ),
 											  'href'   => $url[ 'url' ]
 										 ) );
 			}

@@ -432,9 +432,9 @@ class BackWPup_Create_Archive {
 			$filename        = substr( $name_in_archive, $split_pos + 1 );
 			$filename_prefix = substr( $name_in_archive, 0, $split_pos );
 			if ( strlen( $filename ) > 100 )
-				trigger_error( sprintf( __( 'File name "%1$s" too long to be saved correctly in %2$s archive!', 'backwpup' ), $name_in_archive, $this->get_method() ), E_USER_WARNING );
+				trigger_error( sprintf( __( 'File name "%1$s" is too long to be saved correctly in %2$s archive!', 'backwpup' ), $name_in_archive, $this->get_method() ), E_USER_WARNING );
 			if ( strlen( $filename_prefix ) > 155 )
-				trigger_error( sprintf( __( 'File path "%1$s" too long to be saved correctly in %2$s archive!', 'backwpup' ), $name_in_archive, $this->get_method() ), E_USER_WARNING );
+				trigger_error( sprintf( __( 'File path "%1$s" is too long to be saved correctly in %2$s archive!', 'backwpup' ), $name_in_archive, $this->get_method() ), E_USER_WARNING );
 		}
 		//get file stat
 		$file_stat = @stat( $file_name );
@@ -512,9 +512,9 @@ class BackWPup_Create_Archive {
 			$tar_filename        = substr( $name_in_archive, $split_pos + 1 );
 			$tar_filename_prefix = substr( $name_in_archive, 0, $split_pos );
 			if ( strlen( $tar_filename ) > 100 )
-				trigger_error( sprintf( __( 'Folder name "%1$s" too long to be saved correctly in %2$s archive!', 'backwpup' ), $name_in_archive, $this->get_method() ), E_USER_WARNING );
+				trigger_error( sprintf( __( 'Folder name "%1$s" is too long to be saved correctly in %2$s archive!', 'backwpup' ), $name_in_archive, $this->get_method() ), E_USER_WARNING );
 			if ( strlen( $tar_filename_prefix ) > 155 )
-				trigger_error( sprintf( __( 'Folder path "%1$s" too long to be saved correctly in %2$s archive!', 'backwpup' ), $name_in_archive, $this->get_method() ), E_USER_WARNING );
+				trigger_error( sprintf( __( 'Folder path "%1$s" is too long to be saved correctly in %2$s archive!', 'backwpup' ), $name_in_archive, $this->get_method() ), E_USER_WARNING );
 		}
 		//get file stat
 		$file_stat = @stat( $folder_name );

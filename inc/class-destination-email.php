@@ -37,40 +37,40 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 	 */
 	public function edit_tab( $jobid ) {
 		?>
-		<h3 class="title"><?php _e( 'E-Mail Address', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php _e( 'Email address', 'backwpup' ); ?></h3>
 		<table class="form-table">
             <tr>
-                <th scope="row"><label for="emailaddress"><?php _e( 'E-Mail address', 'backwpup' ); ?></label></th>
+                <th scope="row"><label for="emailaddress"><?php _e( 'Email address', 'backwpup' ); ?></label></th>
                 <td>
-                    <input name="emailaddress" id="emailaddress" type="text" title="<?php esc_attr_e('E-Mail address to which Backups are sent.','backwpup'); ?>"
+                    <input name="emailaddress" id="emailaddress" type="text" title="<?php esc_attr_e('Email address to which Backups are sent.','backwpup'); ?>"
                            value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailaddress' ) );?>" class="regular-text help-tip" />
                 </td>
             </tr>
             <tr>
-                <th scope="row"><label for="sendemailtest"><?php _e( 'Send test e-mail', 'backwpup' ); ?></label></th>
+                <th scope="row"><label for="sendemailtest"><?php _e( 'Send test email', 'backwpup' ); ?></label></th>
                 <td>
-                    <button id="sendemailtest" class="button secondary"><?php _e( 'Send test e-mail', 'backwpup' ); ?></button>
+                    <button id="sendemailtest" class="button secondary"><?php _e( 'Send test email', 'backwpup' ); ?></button>
                 </td>
             </tr>
 		</table>
 
-		<h3 class="title"><?php _e( 'Send e-mail settings', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php _e( 'Send email settings', 'backwpup' ); ?></h3>
 		<table class="form-table">
 			<tr>
 				<th scope="row"><label for="idemailefilesize"><?php _e( 'Maximum file size', 'backwpup' ); ?></label></th>
-				<td><input id="idemailefilesize" name="emailefilesize" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailefilesize' ) ); ?>" class="small-text help-tip" title="<?php esc_attr_e('Maximum file size to be included in an e-mail. 0 = unlimited','backwpup'); ?>" /><?php _e('MB','backwpup'); ?>
+				<td><input id="idemailefilesize" name="emailefilesize" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailefilesize' ) ); ?>" class="small-text help-tip" title="<?php esc_attr_e('Maximum file size to be included in an email. 0 = unlimited','backwpup'); ?>" /><?php _e('MB','backwpup'); ?>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="emailsndemail"><?php _e( 'Sender e-mail address', 'backwpup' ); ?></label></th>
-				<td><input name="emailsndemail" type="text" id="emailsndemail" title="<?php esc_attr_e( 'Sender e-mail address', 'backwpup' ); ?>"
+				<th scope="row"><label for="emailsndemail"><?php _e( 'Sender email address', 'backwpup' ); ?></label></th>
+				<td><input name="emailsndemail" type="text" id="emailsndemail" title="<?php esc_attr_e( 'Sender email address', 'backwpup' ); ?>"
 						   value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailsndemail' ) );?>"
 						   class="regular-text help-tip" />
 				</td>
 			</tr>
 			<tr>
 				<th scope="row"><label for="emailsndemailname"><?php _e( 'Sender name', 'backwpup' ); ?></label></th>
-				<td><input name="emailsndemailname" type="text" id="emailsndemailname" title="<?php esc_attr_e( 'Name of e-mail sender', 'backwpup' ); ?>"
+				<td><input name="emailsndemailname" type="text" id="emailsndemailname" title="<?php esc_attr_e( 'Name of email sender', 'backwpup' ); ?>"
 						   value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailsndemailname' ) );?>"
 						   class="regular-text help-tip" />
 				</td>
@@ -78,7 +78,7 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 			<tr>
 				<th scope="row"><label for="emailmethod"><?php _e( 'Sending method', 'backwpup' ); ?></label></th>
 				<td>
-					<select id="emailmethod" name="emailmethod" class="help-tip" title="<?php esc_attr_e('- Use site settings: retrieves the e-mail settings of your site.<br />-PHP mail(): needs more PHP memory','backwpup'); ?>">
+					<select id="emailmethod" name="emailmethod" class="help-tip" title="<?php esc_attr_e('- Use site settings: retrieve the email settings of your site.<br />-PHP mail(): needs more PHP memory','backwpup'); ?>">
 						<?php
 						echo '<option value=""' . selected( '', BackWPup_Option::get( $jobid, 'emailmethod' ), FALSE ) . '>' . __( 'Use site settings', 'backwpup' ) . '</option>';
 						echo '<option value="mail"' . selected( 'mail', BackWPup_Option::get( $jobid, 'emailmethod' ), FALSE ) . '>' . __( 'PHP: mail()', 'backwpup' ) . '</option>';
@@ -203,19 +203,19 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 	public function job_run_archive( &$job_object ) {
 
 		$job_object->substeps_todo = 1;
-		$job_object->log( sprintf( __( '%d. Trying to send backup with e-mail&hellip;', 'backwpup' ), $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] ), E_USER_NOTICE );
+		$job_object->log( sprintf( __( '%d. Try to send backup with email&#160;&hellip;', 'backwpup' ), $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] ), E_USER_NOTICE );
 
 		//check file Size
 		if ( !empty( $job_object->job[ 'emailefilesize' ] ) ) {
 			if ( $job_object->backup_filesize > $job_object->job[ 'emailefilesize' ] * 1024 * 1024 ) {
-				$job_object->log( __( 'Backup archive too big to be sent by e-mail!', 'backwpup' ), E_USER_ERROR );
+				$job_object->log( __( 'Backup archive too big to be sent by email!', 'backwpup' ), E_USER_ERROR );
 				$job_object->substeps_done = 1;
 
 				return TRUE;
 			}
 		}
 
-		$job_object->log( sprintf( __( 'Sending e-mail to %s&hellip;', 'backwpup' ), $job_object->job[ 'emailaddress' ] ), E_USER_NOTICE );
+		$job_object->log( sprintf( __( 'Sending email to %s&hellip;', 'backwpup' ), $job_object->job[ 'emailaddress' ] ), E_USER_NOTICE );
 
 		//get mail settings
 		$emailmethod='mail';
@@ -304,13 +304,13 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 		}
 
 		if ( isset( $result ) && ! $result ) {
-			$job_object->log( __( 'Error while sending e-mail!', 'backwpup' ), E_USER_ERROR );
+			$job_object->log( __( 'Error while sending email!', 'backwpup' ), E_USER_ERROR );
 
 			return FALSE;
 		}
 		else {
 			$job_object->substeps_done = 1;
-			$job_object->log( __( 'E-Mail sent.', 'backwpup' ), E_USER_NOTICE );
+			$job_object->log( __( 'Email sent.', 'backwpup' ), E_USER_NOTICE );
 
 			return TRUE;
 		}
@@ -412,7 +412,7 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 			$message = Swift_Message::newInstance( __( 'BackWPup archive sending TEST Message', 'backwpup' ) );
 			$message->setFrom( array( $_POST[ 'emailsndemail' ] => isset( $_POST[ 'emailsndemailname' ]) ? $_POST[ 'emailsndemailname' ] : '' ) );
 			$message->setTo( array( $_POST[ 'emailaddress' ] ) );
-			$message->setBody( __( 'If this message reaches your inbox, sending backup archives via e-mail should work for you.', 'backwpup' ) );
+			$message->setBody( __( 'If this message reaches your inbox, sending backup archives via email should work for you.', 'backwpup' ) );
 			// Send the message
 			$result = $emailer->send( $message );
 		}
@@ -425,9 +425,9 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 		}
 
 		if ( ! isset( $result ) || ! $result )
-			echo '<span id="emailsendtext" style="color:red;">' . __( 'Error while sending e-mail!', 'backwpup' ) . '</span>';
+			echo '<span id="emailsendtext" style="color:red;">' . __( 'Error while sending email!', 'backwpup' ) . '</span>';
 		else
-			echo '<span id="emailsendtext" style="color:green;">' . __( 'E-Mail sent.', 'backwpup' ) . '</span>';
+			echo '<span id="emailsendtext" style="color:green;">' . __( 'Email sent.', 'backwpup' ) . '</span>';
 		die();
 	}
 }

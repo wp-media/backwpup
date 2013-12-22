@@ -65,14 +65,21 @@ class BackWPup_Cron {
 		}
 
 		//Compress not compressed logs
-		if ( function_exists( 'gzopen' ) && ! is_object( $job_object ) && get_site_option( 'backwpup_cfg_gzlogs' ) ) {
+		if ( function_exists( 'gzopen' ) && get_site_option( 'backwpup_cfg_gzlogs' ) &&! is_object( $job_object ) ) {
 			//Compress old not compressed logs
 			if ( $dir = opendir( get_site_option( 'backwpup_cfg_logfolder' ) ) ) {
+				$jobids = BackWPup_Option::get_job_ids();
 				while ( FALSE !== ( $file = readdir( $dir ) ) ) {
 					if ( is_writeable( get_site_option( 'backwpup_cfg_logfolder' ) . $file ) && '.html' == substr( $file, -5 ) ) {
-						$compress = new BackWPup_Create_Archive(  get_site_option( 'backwpup_cfg_logfolder' ) . $file . '.gz' );
+						$compress = new BackWPup_Create_Archive( get_site_option( 'backwpup_cfg_logfolder' ) . $file . '.gz' );
 						if ( $compress->add_file( get_site_option( 'backwpup_cfg_logfolder' ) . $file ) ) {
 							unlink( get_site_option( 'backwpup_cfg_logfolder' ) . $file );
+							//change last logfile in jobs
+							foreach( $jobids as $jobid ) {
+								$job_logfile = BackWPup_Option::get( $jobid, 'logfile' );
+								if ( ! empty( $job_logfile ) && $job_logfile == get_site_option( 'backwpup_cfg_logfolder' ) . $file )
+									BackWPup_Option::update( $jobid, 'logfile', get_site_option( 'backwpup_cfg_logfolder' ) . $file . '.gz' );
+							}
 						}
 						unset( $compress );
 					}
@@ -130,7 +137,7 @@ class BackWPup_Cron {
 			die( 'BackWPup Test' );
 
 		// generate normal nonce
-		$nonce = substr( wp_hash( wp_nonce_tick() . 'backwup_job_run-' . $_GET[ 'backwpup_run' ], 'nonce' ), - 12, 10 );
+		$nonce = substr( wp_hash( wp_nonce_tick() . 'backwpup_job_run-' . $_GET[ 'backwpup_run' ], 'nonce' ), - 12, 10 );
 		//special nonce on external start
 		if ( $_GET[ 'backwpup_run' ] == 'runext' )
 			$nonce = get_site_option( 'backwpup_cfg_jobrunauthkey' );

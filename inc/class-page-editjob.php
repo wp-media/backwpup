@@ -452,11 +452,11 @@ class BackWPup_Page_Editjob {
 								foreach ( $job_types as $id => $typeclass ) {
 									$addclass = '';
 									if ( $typeclass->creates_file() )
-										$addclass = ' filetype';
+										$addclass .= ' filetype';
 									$title = '';
 									if ( ! empty( $typeclass->info[ 'help' ] ) ) {
 										$title = ' title="' . esc_attr( $typeclass->info[ 'help' ] ) . '"';
-										$addclass = ' help-tip';
+										$addclass .= ' help-tip';
 									}
 									echo '<label for="jobtype-select-' . strtolower( $id ) . '"><input class="jobtype-select checkbox' . $addclass . '"' . $title . '  id="jobtype-select-' . strtolower( $id ) . '" type="checkbox" ' . checked( TRUE, in_array( $id, BackWPup_Option::get( $jobid, 'type' ) ), FALSE ) . ' name="type[]" value="' . $id . '" /> ' . $typeclass->info[ 'description' ] . '</label><br />';
 								}
@@ -574,7 +574,7 @@ class BackWPup_Page_Editjob {
 				<p></p>
 				<table class="form-table">
 					<tr>
-						<th scope="row"><label for="mailaddresslog"><?php _e( 'Send log to e-mail address', 'backwpup' ) ?></label></th>
+						<th scope="row"><label for="mailaddresslog"><?php _e( 'Send log to email address', 'backwpup' ) ?></label></th>
 						<td>
 							<input name="mailaddresslog" type="text" id="mailaddresslog"
 								   value="<?php echo BackWPup_Option::get( $jobid, 'mailaddresslog' );?>"
@@ -582,11 +582,11 @@ class BackWPup_Page_Editjob {
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="mailaddresssenderlog"><?php _e( 'E-Mail FROM field', 'backwpup' ) ?></label></th>
+						<th scope="row"><label for="mailaddresssenderlog"><?php _e( 'Email FROM field', 'backwpup' ) ?></label></th>
 						<td>
 							<input name="mailaddresssenderlog" type="text" id="mailaddresssenderlog"
 								   value="<?php echo BackWPup_Option::get( $jobid, 'mailaddresssenderlog' );?>"
-								   class="regular-text help-tip" title="<?php esc_attr_e( 'E-Mail "From" field (Name &lt;&#160;you@your-email-address.tld&#160;&gt;)', 'backwpup' ); ?>" />
+								   class="regular-text help-tip" title="<?php esc_attr_e( 'Email "From" field (Name &lt;&#160;you@your-email-address.tld&#160;&gt;)', 'backwpup' ); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -595,7 +595,7 @@ class BackWPup_Page_Editjob {
                             <label for="idmailerroronly">
 							<input class="checkbox" value="1" id="idmailerroronly"
 								   type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'mailerroronly' ), TRUE ); ?>
-								   name="mailerroronly" /> <?php _e( 'Send e-mail with log only when errors occur during job execution.', 'backwpup' ); ?>
+								   name="mailerroronly" /> <?php _e( 'Send email with log only when errors occur during job execution.', 'backwpup' ); ?>
 							</label>
 						</td>
 					</tr>

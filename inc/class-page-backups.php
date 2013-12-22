@@ -48,15 +48,19 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		if ( empty( $per_page ) || $per_page < 1 )
 			$per_page = 20;
 
-		if ( isset( $_GET[ 'jobdest' ] ) ) {
-			$jobdest = $_GET[ 'jobdest' ];
-		}
-		else {
+		$jobdest = '';
+		if ( ! empty( $_GET[ 'jobdets-button-top' ] ) )
+			$jobdest = $_GET[ 'jobdest-top' ];
+		if( ! empty( $_GET[ 'jobdets-button-bottom' ] ) )
+			$jobdest =  $_GET[ 'jobdest-bottom' ];
+
+		if ( empty( $jobdest ) ) {
 			$jobdests = $this->get_destinations_list();
 			if ( empty( $jobdests ) )
 				$jobdests = array( '_' );
-			$jobdest           = $jobdests[ 0 ];
-			$_GET[ 'jobdest' ] = $jobdests[ 0 ];
+			$jobdest           	 	= $jobdests[ 0 ];
+			$_GET[ 'jobdest-top' ] 	= $jobdests[ 0 ];
+			$_GET[ 'jobdets-button-top' ]  = 'empty';
 		}
 
 		list( $this->jobid, $this->dest ) = explode( '_', $jobdest );
@@ -178,21 +182,23 @@ class BackWPup_Page_Backups extends WP_List_Table {
 			return;
 
 		if ( count( $destinations_list ) == 1 ) {
-			echo '<input type="hidden" name="jobdest" value="' . $destinations_list[0] . '">';
+			echo '<input type="hidden" name="jobdest-' . $which . '" value="' . $destinations_list[0] . '">';
 			return;
 		}
 
 		?>
 		<div class="alignleft actions">
-			<label for="jobdest"><select name="jobdest" class="postform">
-			<?php
-			foreach ( $destinations_list as $jobdest ) {
-				list( $jobid, $dest ) = explode( '_', $jobdest );
-				echo "\t<option value=\"" . $jobdest . "\" " . selected( $this->jobid . '_' . $this->dest, $jobdest ) . ">" . $dest . ": " . esc_html( BackWPup_Option::get( $jobid, 'name' ) ) . "</option>" . PHP_EOL;
-			}
-			?>
-			</select></label>
-			<?php submit_button( __( 'Change destination', 'backwpup' ), 'secondary', '', FALSE, array( 'id' => 'post-query-submit' ) ); ?>
+			<label for="jobdest-<?php echo $which;?>">
+				<select name="jobdest-<?php echo $which;?>" class="postform" id="jobdest-<?php echo $which;?>">
+					<?php
+					foreach ( $destinations_list as $jobdest ) {
+						list( $jobid, $dest ) = explode( '_', $jobdest );
+						echo "\t<option value=\"" . $jobdest . "\" " . selected( $this->jobid . '_' . $this->dest, $jobdest, false ) . ">" . $dest . ": " . esc_html( BackWPup_Option::get( $jobid, 'name' ) ) . "</option>" . PHP_EOL;
+					}
+					?>
+				</select>
+			</label>
+			<?php submit_button( __( 'Change destination', 'backwpup' ), 'secondary', 'jobdets-button-' . $which, FALSE, array( 'id' => 'query-submit-'.$which ) ); ?>
 		</div>
 		<?php
 	}
@@ -231,10 +237,10 @@ class BackWPup_Page_Backups extends WP_List_Table {
 
 		$posts_columns             = array();
 		$posts_columns[ 'cb' ]     = '<input type="checkbox" />';
+		$posts_columns[ 'time' ]   = __( 'Time', 'backwpup' );
 		$posts_columns[ 'file' ]   = __( 'File', 'backwpup' );
 		$posts_columns[ 'folder' ] = __( 'Folder', 'backwpup' );
 		$posts_columns[ 'size' ]   = __( 'Size', 'backwpup' );
-		$posts_columns[ 'time' ]   = __( 'Time', 'backwpup' );
 
 		return $posts_columns;
 	}
@@ -340,13 +346,24 @@ class BackWPup_Page_Backups extends WP_List_Table {
 				if ( ! current_user_can( 'backwpup_backups_delete' ) )
 					wp_die( __( 'Sorry, you don\'t have permissions to do that.', 'backwpup') );
 
-				list( $jobid, $dest ) = explode( '_', strtoupper( $_GET[ 'jobdest' ] ) );
+				$jobdest = '_';
+				if ( ! empty( $_GET[ 'jobdest' ] ) )
+					$jobdest = $_GET[ 'jobdest' ];
+				if ( ! empty( $_GET[ 'jobdest-top' ] ) )
+					$jobdest = $_GET[ 'jobdest-top' ];
+
+				$_GET[ 'jobdest' ] = $jobdest;
+
+				if ( $jobdest == '_' )
+					return;
+
+				list( $jobid, $dest ) = explode( '_', $jobdest );
 				$dest_class = BackWPup::get_destination( $dest );
-				$files = $dest_class->file_get_list( $_GET[ 'jobdest' ] );
+				$files = $dest_class->file_get_list( $jobdest );
 				foreach ( $_GET[ 'backupfiles' ] as $backupfile ) {
 					foreach ( $files as $file ) {
 						if ( is_array( $file ) && $file[ 'file' ] == $backupfile )
-							$dest_class->file_delete( $_GET[ 'jobdest' ], $backupfile );
+							$dest_class->file_delete( $jobdest, $backupfile );
 					}
 				}
 				break;
@@ -375,7 +392,7 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		}
 
 		add_screen_option( 'per_page', array(
-											'label'   => __( 'Logs', 'backwpup' ),
+											'label'   => __( 'Backup Files', 'backwpup' ),
 											'default' => 20,
 											'option'  => 'backwpupbackups_per_page'
 									   ) );
@@ -384,10 +401,7 @@ class BackWPup_Page_Backups extends WP_List_Table {
 	}
 
 	/**
-	 *
 	 * Output css
-	 *
-	 * @return nothing
 	 */
 	public static function admin_print_styles() {
 
@@ -395,6 +409,14 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		<style type="text/css" media="screen">
 			.column-size, .column-time {
 				width: 10%;
+			}
+			@media screen and (max-width: 782px) {
+				.column-size, .column-runtime, .column-size, .column-folder {
+					display: none;
+				}
+				.column-time {
+					width: 18%;
+				}
 			}
 		</style>
 		<?php

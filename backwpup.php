@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.1-rc-1
+ * Version: 3.1
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -74,8 +74,8 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			if ( get_site_option( 'backwpup_version' ) != self::get_plugin_data( 'Version' ) )
 				BackWPup_Install::activate();
 			//load pro features
-			if ( file_exists( dirname( __FILE__ ) . '/inc/pro/class-pro.php' ) )
-				require dirname( __FILE__ ) . '/inc/pro/class-pro.php';
+			if ( class_exists( 'BackWPup_Pro' ) )
+				BackWPup_Pro::get_instance();
 			//WP-Cron
 			if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 				//early disable caches
@@ -192,9 +192,9 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			if ( strstr( $class_name, 'backwpup_' ) ) {
 				$dir = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'inc' . DIRECTORY_SEPARATOR;
 				$class_file_name = 'class-' . str_replace( array( 'backwpup_', '_' ), array( '', '-' ), $class_name ) . '.php';
-				if ( strstr( $class_name, 'backwpup_pro_' ) ) {
+				if ( strstr( $class_name, 'backwpup_pro' ) ) {
 					$dir .=  'pro' . DIRECTORY_SEPARATOR;
-					$class_file_name = str_replace( '-pro','', $class_file_name );
+					$class_file_name = str_replace( 'pro-','', $class_file_name );
 				}
 				if ( file_exists( $dir . $class_file_name ) )
 					require $dir . $class_file_name;
@@ -268,8 +268,8 @@ if ( ! class_exists( 'BackWPup' ) ) {
 								'class' => 'BackWPup_Destination_Email',
 								'info'	=> array(
 									'ID'        	=> 'EMAIL',
-									'name'       	=> __( 'E-Mail', 'backwpup' ),
-									'description' 	=> __( 'Backup sent by e-mail', 'backwpup' ),
+									'name'       	=> __( 'Email', 'backwpup' ),
+									'description' 	=> __( 'Backup sent via email', 'backwpup' ),
 								),
 								'can_sync' => FALSE,
 								'needed' => array(
@@ -394,7 +394,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 				self::$registered_destinations[ $dest_key ][ 'error'] = '';
 				// check PHP Version
 				if ( ! empty( $dest[ 'needed' ][ 'php_version' ] ) && version_compare( PHP_VERSION, $dest[ 'needed' ][ 'php_version' ], '<' ) ) {
-					self::$registered_destinations[ $dest_key ][ 'error' ] .= sprintf( __( 'PHP Version %1$s is to low you need Version %2$s or above.', 'backwpup' ), PHP_VERSION, $dest[ 'needed' ][ 'php_version' ] ) . ' ';
+					self::$registered_destinations[ $dest_key ][ 'error' ] .= sprintf( __( 'PHP Version %1$s is to low, you need Version %2$s or above.', 'backwpup' ), PHP_VERSION, $dest[ 'needed' ][ 'php_version' ] ) . ' ';
 					self::$registered_destinations[ $dest_key ][ 'class' ] = NULL;
 				}
 				//check functions exists

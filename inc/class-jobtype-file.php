@@ -48,8 +48,8 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 
 		return array(
 			'backupexcludethumbs'   => FALSE, 'backupspecialfiles' => TRUE,
-			'backuproot'            => TRUE, 'backupcontent' => TRUE, 'backupplugins' => FALSE, 'backupthemes' => TRUE, 'backupuploads' => TRUE,
-			'backuprootexcludedirs' => array(), 'backupcontentexcludedirs' => array(), 'backuppluginsexcludedirs' => array(), 'backupthemesexcludedirs' => array(), 'backupuploadsexcludedirs' => array(),
+			'backuproot'            => TRUE, 'backupcontent' => TRUE, 'backupplugins' => TRUE, 'backupthemes' => TRUE, 'backupuploads' => TRUE,
+			'backuprootexcludedirs' => array(), 'backupcontentexcludedirs' => array( 'cache', 'upgrade', 'w3tc' ), 'backuppluginsexcludedirs' => array( 'backwpup', 'backwpup-pro' ), 'backupthemesexcludedirs' => array(), 'backupuploadsexcludedirs' => array(),
 			'fileexclude'           => '.tmp,.svn,.git,desktop.ini,.DS_Store', 'dirinclude' => ''
 		);
 	}

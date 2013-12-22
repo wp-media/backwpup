@@ -42,19 +42,19 @@ class BackWPup_Page_Logs extends WP_List_Table {
 		$logfiles = array();
 		if ( $dir = @opendir( get_site_option( 'backwpup_cfg_logfolder' ) ) ) {
 			while ( ( $file = readdir( $dir ) ) !== FALSE ) {
-				if ( is_readable( get_site_option( 'backwpup_cfg_logfolder' ) . '/' . $file ) && ! is_link( get_site_option( 'backwpup_cfg_logfolder' ) . '/' . $file ) && ! is_dir( get_site_option( 'backwpup_cfg_logfolder' ) . '/' . $file ) && strstr( $file, 'backwpup_log_' ) && ( strstr( $file, '.html' ) || strstr( $file, '.html.gz' ) ) )
-					$logfiles[ ] = $file;
+				if ( is_readable( get_site_option( 'backwpup_cfg_logfolder' ) . '/' . $file ) && is_file( get_site_option( 'backwpup_cfg_logfolder' ) . '/' . $file ) && FALSE !== strpos( $file, 'backwpup_log_' ) && FALSE !== strpos( $file, '.html' ) )
+					$logfiles[ filemtime( get_site_option( 'backwpup_cfg_logfolder' ) . '/' . $file ) ] = $file;
 			}
 			closedir( $dir );
 		}
 		//ordering
 		$order   = isset( $_GET[ 'order' ] ) ? $_GET[ 'order' ] : 'desc';
-		$orderby = isset( $_GET[ 'orderby' ] ) ? $_GET[ 'orderby' ] : 'log';
-		if ( $orderby == 'log' ) {
+		$orderby = isset( $_GET[ 'orderby' ] ) ? $_GET[ 'orderby' ] : 'time';
+		if ( $orderby == 'time' ) {
 			if ( $order == 'asc' )
-				sort( $logfiles );
+				ksort( $logfiles, SORT_NUMERIC );
 			else
-				rsort( $logfiles );
+				krsort ( $logfiles, SORT_NUMERIC );
 		}
 		//by page
 		$start = intval( ( $this->get_pagenum() - 1 ) * $per_page );
@@ -63,11 +63,16 @@ class BackWPup_Page_Logs extends WP_List_Table {
 			$end = count( $logfiles );
 
 		$this->items = array();
-		$j = 0;
-		for ( $i = $start; $i < $end; $i ++ ) {
-			$this->items[$j] = BackWPup_Job::read_logheader( get_site_option( 'backwpup_cfg_logfolder' ) . '/' . $logfiles[ $i ] );
-			$this->items[$j]['file'] = $logfiles[ $i ];
-			$j++;
+		$i = -1;
+		foreach ( $logfiles as $mtime => $logfile ) {
+			$i++;
+			if ( $i < $start )
+				continue;
+			if ( $i > $end )
+				break;
+			$this->items[$mtime] = BackWPup_Job::read_logheader( get_site_option( 'backwpup_cfg_logfolder' ) . '/' . $logfile );
+			$this->items[$mtime]['file'] = $logfile;
+
 		}
 
 		$this->set_pagination_args( array(
@@ -85,7 +90,7 @@ class BackWPup_Page_Logs extends WP_List_Table {
 	function get_sortable_columns() {
 
 		return array(
-			'log' => array( 'log', FALSE ),
+			'time' => array( 'time', FALSE ),
 		);
 	}
 
@@ -117,10 +122,10 @@ class BackWPup_Page_Logs extends WP_List_Table {
 	function get_columns() {
 		$posts_columns              = array();
 		$posts_columns[ 'cb' ]      = '<input type="checkbox" />';
-		$posts_columns[ 'id' ]      = __( 'Job', 'backwpup' );
-		$posts_columns[ 'type' ]    = __( 'Type', 'backwpup' );
-		$posts_columns[ 'log' ]     = __( 'Backup/Log Date/Time', 'backwpup' );
+		$posts_columns[ 'time' ]    = __( 'Time', 'backwpup' );
+		$posts_columns[ 'job' ]     = __( 'Job', 'backwpup' );
 		$posts_columns[ 'status' ]  = __( 'Status', 'backwpup' );
+		$posts_columns[ 'type' ]    = __( 'Type', 'backwpup' );
 		$posts_columns[ 'size' ]    = __( 'Size', 'backwpup' );
 		$posts_columns[ 'runtime' ] = __( 'Runtime', 'backwpup' );
 
@@ -144,9 +149,9 @@ class BackWPup_Page_Logs extends WP_List_Table {
 	 * @param $item
 	 * @return string
 	 */
-	function column_id( $item ) {
-
-		return  esc_attr( $item[ 'jobid' ] );
+	function column_time( $item ) {
+		$r = sprintf( __( '%1$s at %2$s', 'backwpup' ), date_i18n( get_option( 'date_format' ) , $item[ 'logtime' ], TRUE ), date_i18n( get_option( 'time_format' ), $item[ 'logtime' ], TRUE ) );
+		return $r;
 	}
 
 	/**
@@ -178,9 +183,9 @@ class BackWPup_Page_Logs extends WP_List_Table {
 	 * @param $item
 	 * @return string
 	 */
-	function column_log( $item ) {
+	function column_job( $item ) {
 
-		$r = "<strong><a class=\"thickbox\" href=\"" . admin_url( 'admin-ajax.php' ) . '?&action=backwpup_view_log&logfile=' . $item['file'] .'&_ajax_nonce=' . wp_create_nonce( 'view-logs' ) . "&amp;TB_iframe=true&amp;width=640&amp;height=440\" title=\"" . $item['file'] . "\">" . sprintf( __( '%1$s at %2$s', 'backwpup' ), date_i18n( get_option( 'date_format' ) , $item[ 'logtime' ], TRUE ), date_i18n( get_option( 'time_format' ), $item[ 'logtime' ], TRUE ) ) . ": <i>" . $item[ 'name' ] . "</i></a></strong>";
+		$r = "<strong><a class=\"thickbox\" href=\"" . admin_url( 'admin-ajax.php' ) . '?&action=backwpup_view_log&logfile=' . $item['file'] .'&_ajax_nonce=' . wp_create_nonce( 'view-logs' ) . "&amp;TB_iframe=true&amp;width=640&amp;height=440\" title=\"" . esc_attr( $item['file'] ) . "\n" . sprintf( __( 'Job ID: %d', 'backwpup' ), $item[ 'jobid' ] ) . "\">" .  esc_attr( ! empty( $item[ 'name' ] ) ? $item[ 'name' ] : $item['file'] ) . "</a></strong>";
 		$actions               = array();
 		$actions[ 'view' ]     = '<a class="thickbox" href="' . admin_url( 'admin-ajax.php' ) . '?&action=backwpup_view_log&logfile=' . $item['file'] .'&_ajax_nonce=' . wp_create_nonce( 'view-logs' ) . '&amp;TB_iframe=true&amp;width=640&amp;height=440" title="' . $item['file'] . '">' . __( 'View', 'backwpup' ) . '</a>';
 		if ( current_user_can( 'backwpup_logs_delete' ) )
@@ -311,17 +316,28 @@ class BackWPup_Page_Logs extends WP_List_Table {
 
 		?>
 		<style type="text/css" media="screen">
-			.column-id {
-				width: 5%;
+			.column-time {
 				text-align: center;
 			}
 
-			.column-runtime, .column-status, .column-size {
+			.column-runtime, .column-time, .column-size {
 				width: 8%;
+			}
+
+			.column-status {
+				width: 10%;
 			}
 
 			.column-type {
 				width: 15%;
+			}
+			@media screen and (max-width: 782px) {
+				.column-type, .column-runtime, .column-size {
+					display: none;
+				}
+				.column-time, .column-status {
+					width: 18%;
+				}
 			}
 		</style>
 		<?php

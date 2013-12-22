@@ -16,7 +16,8 @@ final class BackWPup_Admin {
 	public function __construct() {
 
 		//Load text domain
-		load_plugin_textdomain( 'backwpup', FALSE, BackWPup::get_plugin_data( 'BaseName' ) . '/languages' );
+		if ( ! is_textdomain_loaded( 'backwpup' ) )
+			load_plugin_textdomain( 'backwpup', FALSE, BackWPup::get_plugin_data( 'BaseName' ) . '/languages' );
 
 		//Add menu pages
 		add_filter( 'backwpup_admin_pages', array( $this, 'admin_page_jobs' ), 2 );
@@ -184,7 +185,7 @@ final class BackWPup_Admin {
 	 */
 	public function admin_page_editjob( $page_hooks ) {
 
-		$this->page_hooks[ 'backwpupeditjob' ] = add_submenu_page( 'backwpup', __( 'Add New Job', 'backwpup' ), __( 'Add New Job', 'backwpup' ), 'backwpup_jobs_edit', 'backwpupeditjob', array( 'BackWPup_Page_Editjob', 'page' ) );
+		$this->page_hooks[ 'backwpupeditjob' ] = add_submenu_page( 'backwpup', __( 'Add new job', 'backwpup' ), __( 'Add new job', 'backwpup' ), 'backwpup_jobs_edit', 'backwpupeditjob', array( 'BackWPup_Page_Editjob', 'page' ) );
 		add_action( 'load-' . $this->page_hooks[ 'backwpupeditjob' ], array( 'BackWPup_Admin', 'init_generel' ) );
 		add_action( 'load-' . $this->page_hooks[ 'backwpupeditjob' ], array( 'BackWPup_Page_Editjob', 'auth' ) );
 		add_action( 'load-' . $this->page_hooks[ 'backwpupeditjob' ], array( 'BackWPup_Page_Editjob', 'load' ) );
@@ -288,7 +289,7 @@ final class BackWPup_Admin {
 		if ( ! current_user_can( 'backwpup' ) )
 			wp_die( __( 'Cheating, huh?', 'backwpup' ) );
 
-		//build query for rederict
+		//build query for redirect
 		if ( ! isset( $_POST[ 'anchor' ] ) )
 			$_POST[ 'anchor' ] = NULL;
 		$query_args=array();
@@ -307,14 +308,13 @@ final class BackWPup_Admin {
 
 		//Call method to save data
 		if ( $_POST[ 'page' ] == 'backwpupeditjob' )
-			BackWPup_Page_Editjob::save_post_form( $_POST[ 'tab' ], $jobid  );
-		elseif (  $_POST[ 'page' ] == 'backwpupsettings' ) {
-			BackWPup_Page_Settings::save_post_form( $_POST[ 'tab' ], $jobid  );
-			$_POST[ 'tab' ] = '';
+			BackWPup_Page_Editjob::save_post_form( $_POST[ 'tab' ], $jobid );
+		elseif ( $_POST[ 'page' ] == 'backwpupsettings' ) {
+			BackWPup_Page_Settings::save_post_form();
 		}
 
 		//Back to topic
-		wp_safe_redirect(  add_query_arg( $query_args, network_admin_url( 'admin.php' ) ) . $_POST[ 'anchor' ] );
+		wp_safe_redirect( add_query_arg( $query_args, network_admin_url( 'admin.php' ) ) . $_POST[ 'anchor' ] );
 		exit;
 	}
 
@@ -398,12 +398,14 @@ final class BackWPup_Admin {
 	 */
 	public function admin_footer_text( $admin_footer_text ) {
 
+		$default_text = $admin_footer_text;
+
 		if ( isset( $_REQUEST[ 'page' ] ) && strstr( $_REQUEST[ 'page' ], 'backwpup' ) ) {
 			$admin_footer_text = '<a href="' . __( 'http://marketpress.com', 'backwpup' ) . '" class="mp_logo" title="' . __( 'MarketPress', 'backwpup' ) . '">' . __( 'MarketPress', 'backwpup' ) . '</a>';
 			if ( ! class_exists( 'BackWPup_Pro', FALSE ) )
-				$admin_footer_text .= '<span>'.sprintf( __( '<a href="%s">Get BackWPup Pro now.</a>', 'backwpup' ), __( 'http://marketpress.com/product/backwpup-pro/', 'backwpup' ) ). '</span>';
+				$admin_footer_text .= sprintf( __( '<a class="backwpup-get-pro" href="%s">Get BackWPup Pro now.</a>', 'backwpup' ), __( 'http://marketpress.com/product/backwpup-pro/', 'backwpup' ) );
 
-			return $admin_footer_text;
+			return $admin_footer_text . $default_text;
 		}
 
 		return $admin_footer_text;
@@ -417,10 +419,12 @@ final class BackWPup_Admin {
 	 */
 	public function update_footer( $update_footer_text ) {
 
-		if ( isset( $_REQUEST[ 'page' ] ) && strstr( $_REQUEST[ 'page' ], 'backwpup') ) {
-			$update_footer_text  = '<a href="' . translate( BackWPup::get_plugin_data( 'PluginURI' ), 'backwpup' ) . '">' . BackWPup::get_plugin_data( 'Name' ) . '</a> '. sprintf( __( 'version %s' ,'backwpup'), BackWPup::get_plugin_data( 'Version' ) );
+		$default_text = $update_footer_text;
 
-			return $update_footer_text;
+		if ( isset( $_REQUEST[ 'page' ] ) && strstr( $_REQUEST[ 'page' ], 'backwpup') ) {
+			$update_footer_text  = '<span class="backwpup-update-footer"><a href="' . translate( BackWPup::get_plugin_data( 'PluginURI' ), 'backwpup' ) . '">' . BackWPup::get_plugin_data( 'Name' ) . '</a> '. sprintf( __( 'version %s' ,'backwpup'), BackWPup::get_plugin_data( 'Version' ) ) . '</span>';
+
+			return $update_footer_text . $default_text;
 		}
 
 		return $update_footer_text;

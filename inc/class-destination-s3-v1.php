@@ -70,7 +70,7 @@ class BackWPup_Destination_S3_V1 extends BackWPup_Destinations {
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="s3region"><?php _e( 'Select an S3 service', 'backwpup' ) ?></label></th>
+				<th scope="row"><label for="s3region"><?php _e( 'Select a S3 service', 'backwpup' ) ?></label></th>
 				<td>
 					<select name="s3region" id="s3region" title="<?php _e( 'Amazon S3 Region', 'backwpup' ); ?>">
 						<option value="us-east-1" <?php selected( 'us-east-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: US Standard', 'backwpup' ); ?></option>
@@ -88,7 +88,7 @@ class BackWPup_Destination_S3_V1 extends BackWPup_Destinations {
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="s3base_url"><?php _e( 'Or an S3 Server URL', 'backwpup' ) ?></label></th>
+				<th scope="row"><label for="s3base_url"><?php _e( 'Or a S3 Server URL', 'backwpup' ) ?></label></th>
 				<td>
 					<input id="s3base_url" name="s3base_url" type="text"  value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 's3base_url' ) );?>" class="regular-text" autocomplete="off" />
 				</td>

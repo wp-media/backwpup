@@ -14,75 +14,104 @@ class BackWPup_Page_About {
 
 		?>
 		<style type="text/css" media="screen">
-			.welcome {
+			.inpsyde {
+				width:79px;
+				height:119px;
+				background: url( '<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/inpsyde.png' ) no-repeat;
+				position: absolute;
+				top:0;
+				right: 100px;
+				z-index: 1;
+			}
+			.inpsyde a, .inpsyde a:link{
 				float:left;
-				font-family: sans-serif,"Arial",sans-serif;
-				max-width:1050px;
+				font-size:14px;
+				color:#fff;
+				text-decoration:none;
+				padding:65px 15px 15px 15px;
+				text-align:center;
+			}
+			@media screen and (max-width: 782px) {
+				.inpsyde {
+					right:10px;
+				}
+			}
+			@media screen and (max-width: 600px) {
+				.inpsyde {
+					display: none;
+				}
+			}
+			#backwpup-page {
+				background: #fff;
+				margin-top: 22px;
+				padding: 0 20px;
+			}
+			#backwpup-page .inpsyde + h2 {
+				visibility: hidden;
+			}
+			.welcome {
+/* 				max-width: 960px; */
 			}
 			.welcome .welcome_inner {
 				margin:0 auto;
-				width:100%;
+				max-width: 960px;
+			}
+			.backwpup-welcome {
+/*
+				margin: 0 auto;
+				max-width: 960px;
+*/
 			}
 			.welcome .welcome_inner h3{
 				font-size:42px;
 			}
 			.welcome .welcome_inner .welcometxt {
-				width: 100%;
-				margin-bottom: 25px;
+/* 				width: 100%; */
+				margin-bottom: 40px;
+				overflow: hidden;
 				border-bottom: 1px #ccc dotted;
 				text-align: center;
+				padding-bottom: 25px;
 				position: relative;
 			}
 			.welcome .welcome_inner .welcometxt p{
 				line-height:20px;
 				font-size:18px;
 			}
-
-			.welcome .welcome_inner .welcometxt img {
-				margin:0 auto;
-				max-width:100% !important;
-				height:auto;
+			.welcome .welcome_inner .feature-box{
+				clear: both;
+				margin-bottom: 40px;
+				overflow: hidden;
 			}
-
-			.welcome .welcome_inner .feature_box{
-				float:left;
-				width:100%;
-				margin-bottom:15px;
-			}
-			.welcome .welcome_inner .feature_box .feature_image.alignleft{
+			.welcome .welcome_inner .feature-box .feature-image{
+				float: left;
 				width:18%;
 				height:auto;
-				margin-right:1%;
-				margin-left:2%;
 			}
-			.welcome .welcome_inner .feature_box .feature_image.alignright{
-				width:18%;
-				height:auto;
-				margin-right:2%;
-				margin-left:1%;
-			}
-			.welcome .welcome_inner .feature_box .feature_image img{
+			.welcome .welcome_inner .feature-box .feature-image img{
 				width:100%;
 				height:auto;
 				max-width:350px;
 			}
-			.welcome .welcome_inner .feature_box .feature_text{
+			.welcome .welcome_inner .feature-box .feature-text{
+				float: left;
 				width:72%;
-				font-size:18px;
-				line-height:32px;
-				margin:0 0 20px 0;
+				padding: 0 0 20px 20px;
 			}
-			.welcome .welcome_inner .feature_box .feature_text h3{
+			.welcome .welcome_inner .feature-box-right .feature-text {
+				padding: 0 20px 20px 0;
+			}
+			.welcome .welcome_inner .feature-box .feature-text h3{
 				color:rgb(0, 155, 204);
 				font-weight:normal;
 				font-size:24px;
 				margin:0 0 10px 0;
 				text-align:left;
 			}
-			.welcome .welcome_inner .feature_box .left {
+			.welcome .welcome_inner .feature-box .left {
 				float:left;
 			}
-			.welcome .welcome_inner .feature_box .right {
+			.welcome .welcome_inner .feature-box .right {
 				float:right;
 			}
 			.welcome .welcome_inner .featuretitle h3 {
@@ -95,7 +124,6 @@ class BackWPup_Page_About {
 				float:left;
 				padding:15px;
 				font-size:18px;
-				font-family: sans-serif,"Arial",sans-serif;
 				text-decoration:none;
 				background-color:#38b0eb;
 				color:#fff;
@@ -121,13 +149,13 @@ class BackWPup_Page_About {
 					line-height:20px;
 					font-size:14px;
 				}
-				.welcome .welcome_inner .feature_box .feature_text h3{
+				.welcome .welcome_inner .feature-box .feature-text h3{
 					font-weight:normal;
 					font-size:20px;
 					margin:0 0 10px 0;
 					text-align:left;
 				}
-				.welcome .welcome_inner .feature_box .feature_text{
+				.welcome .welcome_inner .feature-box .feature-text{
 					width:72%;
 					font-size:14px;
 					line-height:20px;
@@ -136,7 +164,6 @@ class BackWPup_Page_About {
 					float:left;
 					padding:10px;
 					font-size:16px;
-					font-family: "Arial", sans-serif;
 					text-decoration:none;
 					background-color:#38b0eb;
 					color:#fff;
@@ -158,12 +185,12 @@ class BackWPup_Page_About {
 					line-height:20px;
 					font-size:14px;
 				}
-				.welcome .welcome_inner .feature_box .feature_text h3{
+				.welcome .welcome_inner .feature-box .feature-text h3{
 					font-weight:normal;
 					font-size:16px;
 					margin:0 0 10px 0;
 				}
-				.welcome .welcome_inner .feature_box .feature_text{
+				.welcome .welcome_inner .feature-box .feature-text{
 					width:72%;
 					font-size:12px;
 					line-height:16px;
@@ -173,7 +200,6 @@ class BackWPup_Page_About {
 					float:left;
 					padding:10px;
 					font-size:16px;
-					font-family: "Arial", sans-serif;
 					text-decoration:none;
 					background-color:#38b0eb;
 					color:#fff;
@@ -319,23 +345,23 @@ class BackWPup_Page_About {
 			}
 
 			.backwpup_comp table tbody tr.odd:hover td.tick {
-				background: url(<?php echo BackWPup::get_plugin_data( 'URL' );?>/images/tickhover.png) center;
+				background: url(<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/tickhover.png) center;
 			}
 
 			.backwpup_comp table tbody tr.even:hover td.error {
-				background: url(<?php echo BackWPup::get_plugin_data( 'URL' );?>/images/errorhover.png) center;
+				background: url(<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/errorhover.png) center;
 			}
 
 			.backwpup_comp table tbody tr.odd:hover td.error {
-				background: url(<?php echo BackWPup::get_plugin_data( 'URL' );?>/images/errorhover.png) center;
+				background: url(<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/errorhover.png) center;
 			}
 
 			.backwpup_comp table tbody tr.ubdown:hover td.pro:hover {
-				background: url(<?php echo BackWPup::get_plugin_data( 'URL' );?>/images/hgbtgreenhover.png) no-repeat top center;
+				background: url(<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/hgbtgreenhover.png) no-repeat top center;
 			}
 
 			.backwpup_comp table tbody tr.ubdown:hover td.free:hover {
-				background: url(<?php echo BackWPup::get_plugin_data( 'URL' );?>/images/hgbtredhover.png) no-repeat top center;
+				background: url(<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/hgbtredhover.png) no-repeat top center;
 			}
 		</style>
 		<?php
@@ -386,21 +412,21 @@ class BackWPup_Page_About {
                     <?php if ( class_exists( 'BackWPup_Pro', FALSE ) ) { ?>
                     <div class="welcometxt">
                         <div class="backwpup-welcome">
-							<img src="<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/backwpupbanner-pro.png" />
+							<img class="backwpup-banner-img" src="<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/backwpupbanner-pro.png" />
                             <h3><?php _e( 'Welcome to BackWPup Pro', 'backwpup' ); ?></h3>
-                            <p><?php _e( 'Here you can schedule backup plans with a wizard.', 'backwpup' );
-_e( 'The backup files can be used to save your whole installation including <code>/wp-content/</code> and push them to an external Backup Service, if you don’t want to save the backups on the same server. With a single backup file you are able to restore an installation.', 'backwpup' ); ?></p>
-                            <p><?php echo str_replace( '\"','"', sprintf( __( 'First <a href="%1$s">set up a job</a>, and plan what you want to save. You can <a href="%2$s">use the wizards</a> or the expert mode.', 'backwpup' ), network_admin_url( 'admin.php').'?page=backwpupeditjob' , network_admin_url( 'admin.php').'?page=backwpupwizard' ) ); ?></p>
+                            <p><?php _e( 'BackWPup’s job wizards make planning and scheduling your backup jobs a breeze.', 'backwpup' ); echo ' ';
+_e( 'Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server. With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin or a plugin like <a href="http://wordpress.org/plugins/adminer/" target="_blank">Adminer</a> to restore your database backup files.', 'backwpup' ); ?></p>
+                            <p><?php echo str_replace( '\"','"', sprintf( __( 'Ready to <a href="%1$s">set up a backup job</a>? You can <a href="%2$s">use the wizards</a> or plan your backup in expert mode.', 'backwpup' ), network_admin_url( 'admin.php').'?page=backwpupeditjob' , network_admin_url( 'admin.php').'?page=backwpupwizard' ) ); ?></p>
                         </div>
                     </div>
                     <?php } else {?>
                     <div class="welcometxt">
                         <div class="backwpup-welcome">
-							<img src="<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/backwpupbanner-free.png" />
+							<img class="backwpup-banner-img" src="<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/backwpupbanner-free.png" />
                             <h3><?php _e( 'Welcome to BackWPup', 'backwpup' ); ?></h3>
                             <p><?php
-_e( 'The backup files can be used to save your whole installation including <code>/wp-content/</code> and push them to an external Backup Service, if you don’t want to save the backups on the same server. With a single backup file you are able to restore an installation.', 'backwpup' ); ?></p>
-                            <p><?php _e( 'First set up a job, and plan what you want to save.', 'backwpup' ); ?></p>
+_e( 'Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server. With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin or a plugin like <a href="http://wordpress.org/plugins/adminer/" target="_blank">Adminer</a> to restore your database backup files.', 'backwpup' ); ?></p>
+                            <p><?php _e( 'Ready to set up a backup job? Use one of the wizards to plan what you want to save.', 'backwpup' ); ?></p>
                         </div>
                     </div>
                     <?php } ?>
@@ -425,55 +451,55 @@ _e( 'The backup files can be used to save your whole installation including <cod
 					<?php endif; ?>
             		<div class="features">
 
-                    	<div class="feature_box">
-                        	<div class="feature_image <?php self::feature_class(); ?>">
+                    	<div class="feature-box <?php self::feature_class(); ?>">
+                        	<div class="feature-image">
                                 <img title="<?php _e( 'Save your database', 'backwpup' ); ?>" src="<?php echo BackWPup::get_plugin_data( 'URL' ); ?>/assets/images/imagesave.png" />
                             </div>
-                            <div class="feature_text <?php self::feature_class(); ?>">
+                            <div class="feature-text">
                             	<h3><?php _e( 'Save your database regularly', 'backwpup' ); ?></h3>
                                 <p><?php echo str_replace( '\"','"', sprintf( __( 'With BackWPup you can schedule the database backup to run automatically. With a single backup file you can restore your database. You should <a href="%s">set up a backup job</a>, so you will never forget it. There is also an option to repair and optimize the database after each backup.', 'backwpup' ), network_admin_url( 'admin.php').'?page=backwpupeditjob' ) ); ?></p>
                             </div>
                         </div>
-                        <div class="feature_box">
-                            <div class="feature_text <?php self::feature_class(); ?>">
+                        <div class="feature-box <?php self::feature_class(); ?>">
+                            <div class="feature-text">
                             	<h3><?php _e('WordPress XML Export', 'backwpup' ); ?></h3>
                                 <p><?php _e('You can choose the built-in WordPress export format in addition or exclusive to save your data. This works in automated backups too of course. The advantage is: you can import these files into a blog with the regular WordPress importer.', 'backwpup'); ?></p>
                             </div>
-                            <div class="feature_image <?php self::feature_class(); ?>">
+                            <div class="feature-image">
                             	<img title="<?php _e( 'WordPress XML Export', 'backwpup' ); ?>" src="<?php echo BackWPup::get_plugin_data( 'URL' ); ?>/assets/images/imagexml.png" />
                             </div>
                         </div>
-                        <div class="feature_box">
-                            <div class="feature_image <?php self::feature_class(); ?>">
+                        <div class="feature-box <?php self::feature_class(); ?>">
+                            <div class="feature-image">
                             	<img title="<?php _e( 'Save all data from the webserver', 'backwpup' ); ?>" src="<?php echo BackWPup::get_plugin_data( 'URL' ); ?>/assets/images/imagedata.png" />
                             </div>
-                            <div class="feature_text <?php self::feature_class(); ?>">
+                            <div class="feature-text">
                             	<h3><?php _e('Save all files', 'backwpup'); ?></h3>
-                                <p><?php echo str_replace( '\"','"', sprintf( __('You can back up all your attachments, also all system files, plugins and themes in a single file. You can <a href="%s">create a job</a> to update a backup copy of your file system only when files are changed.', 'backwpup'), network_admin_url( 'admin.php' ) . '?page=backwpupeditjob' ) ); ?></p>
+                                <p><?php echo str_replace( '\"','"', sprintf( __('You can backup all your attachments, also all system files, plugins and themes in a single file. You can <a href="%s">create a job</a> to update a backup copy of your file system only when files are changed.', 'backwpup'), network_admin_url( 'admin.php' ) . '?page=backwpupeditjob' ) ); ?></p>
                             </div>
                         </div>
-                        <div class="feature_box">
-                            <div class="feature_text <?php self::feature_class(); ?>">
+                        <div class="feature-box <?php self::feature_class(); ?>">
+                            <div class="feature-text">
                             	<h3><?php _e( 'Security!', 'backwpup' ); ?></h3>
                                 <p><?php _e('By default everything is encrypted: connections to external services, local files and access to directories.', 'backwpup'); ?></p>
                             </div>
-                        	<div class="feature_image <?php self::feature_class(); ?>">
+                        	<div class="feature-image">
                             	<img title="<?php _e( 'Security!', 'backwpup' ); ?>" src="<?php echo BackWPup::get_plugin_data( 'URL' ); ?>/assets/images/imagesec.png" />
                             </div>
                         </div>
-                        <div class="feature_box">
-                            <div class="feature_image <?php self::feature_class(); ?>">
+                        <div class="feature-box <?php self::feature_class(); ?>">
+                            <div class="feature-image">
                             	<img title="<?php _e( 'Cloud Support', 'backwpup' ); ?>" src="<?php echo BackWPup::get_plugin_data( 'URL' ); ?>/assets/images/imagecloud.png" />
                             </div>
-                            <div class="feature_text <?php self::feature_class(); ?>">
+                            <div class="feature-text">
                             	<h3><?php _e( 'Cloud Support', 'backwpup' ); ?></h3>
-                                <p><?php _e('BackWPup supports multiple cloud services in parallel. This ensures the backups are redundant.', 'backwpup'); ?></p>
+                                <p><?php _e( 'BackWPup supports multiple cloud services in parallel. This ensures backups are redundant.', 'backwpup' ); ?></p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-				<?php if ( ! class_exists( 'BackWPup_Pro' ) ) : ?>
+				<?php if ( ! class_exists( 'BackWPup_Pro', FALSE ) ) : ?>
 					<div class="backwpup_comp">
 						<h3><?php _e( 'Features / differences between Free and Pro', 'backwpup' ); ?></h3>
 						<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -572,7 +598,7 @@ _e( 'The backup files can be used to save your whole installation including <cod
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
-							<tr class="even">
+							<tr class="odd">
 								<td><?php _e( 'Backup to Google Drive', 'backwpup' ); ?></td>
 								<td class="error"></td>
 								<td class="tick"></td>
@@ -680,10 +706,10 @@ _e( 'The backup files can be used to save your whole installation including <cod
 	 */
 	protected static function feature_class() {
 
-		static $class = 'alignleft';
+		static $class = 'feature-box-left';
 
 		print $class;
 
-		$class = 'alignleft' === $class ? 'alignright' : 'alignleft';
+		$class = 'feature-box-left' === $class ? 'feature-box-right' : 'feature-box-left';
 	}
 }

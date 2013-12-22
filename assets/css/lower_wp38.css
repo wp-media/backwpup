@@ -36,12 +36,25 @@
 }
 
 @media screen and (max-width: 782px) {
-    #wp-admin-bar-backwpup .ab-icon {
-        position: relative;
-        float: left;
-        width: 16px;
-        height: 16px;
-        font-size: 16px !important;
-        top: 4px;
-    }
+	#wp-admin-bar-backwpup .ab-icon {
+		position: relative;
+		float: left;
+		width: 16px;
+		height: 16px;
+		font-size: 16px !important;
+		top: 4px;
+	}
+}
+
+#backwpup-page-icon:before {
+	font-family: 'backwpup' !important;
+	content: "\e600";
+}
+
+#backwpup-page .backwpup-floated-postbox {
+	padding: 0;
+}
+#backwpup-page .backwpup-floated-postbox > .inside,
+#backwpup-page .wizardbox > form {
+	margin: 15px;
 }

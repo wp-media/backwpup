@@ -65,100 +65,115 @@ class BackWPup_Page_BackWPup {
 		?>
         <div class="wrap" id="backwpup-page">
             <h2><span id="backwpup-page-icon">&nbsp;</span><?php echo sprintf( __( '%s Dashboard', 'backwpup' ), BackWPup::get_plugin_data( 'name') ); ?></h2>
-			<?php BackWPup_Admin::display_messages(); ?>
-            <div style="float:left;width:63%;margin-right:10px;min-width:500px">
 			<?php
-				if ( class_exists( 'BackWPup_Pro', FALSE ) ) { ?>
-					<div class="backwpup-welcome">
-						<p><?php _e('Here you can schedule backup plans with a wizard.','backwpup' ) ?><br />
-							<?php _e('The backup files can be used to save your whole installation including <code>/wp-content/</code> and push them to an external Backup Service, if you don’t want to save the backups on the same server. With a single backup file you are able to restore an installation.','backwpup'); ?></p>
-						<p><?php _e('First set up a job, and plan what you want to save. You can use the wizards or the normal mode. Please note: the plugin author gives no warranty for your data.','backwpup'); ?></p>
-					</div>
-				<?php } else {?>
-					<div class="backwpup-welcome">
-						<p><?php _e('Use the short links in the <b>First steps</b> box to schedule backup plans.','backwpup' ) ?><br />
-							<?php _e('The backup files can be used to save your whole installation including <code>/wp-content/</code> and push them to an external Backup Service, if you don’t want to save the backups on the same server. With a single backup file you are able to restore an installation.','backwpup'); ?></p>
-						<p><?php _e('First set up a job, and plan what you want to save. Please note: the plugin author gives no warranty for your data.','backwpup'); ?></p>
-					</div>
-				<?php }
 
-				if ( class_exists( 'BackWPup_Pro', FALSE ) ) {
-					/* @var BackWPup_Pro_Wizards $wizard_class */
+			BackWPup_Admin::display_messages();
 
-					foreach ( $wizards as $wizard_class ) {
-						//check permissions
-						if ( ! current_user_can( $wizard_class->info[ 'cap' ] ) )
-							continue;
-						//get info of wizard
-						echo '<div class="wizardbox" id="wizard-' . strtolower( $wizard_class->info[ 'ID' ] ) . '"><form method="get" action="' . network_admin_url( 'admin.php' ) . '">';
-						echo '<div class="wizardbox_name">' . $wizard_class->info[ 'name' ] . '</div>';
-						echo '<div class="wizardbox_description">' . $wizard_class->info[ 'description' ] . '</div>';
-						$conf_names = $wizard_class->get_pre_configurations();
-						if ( ! empty ( $conf_names ) ) {
-							echo '<select id="wizardbox_pre_conf" name="pre_conf" size="1">';
-							foreach( $conf_names as $conf_key => $conf_name) {
-								echo '<option value="' . esc_attr( $conf_key ) . '">' . esc_attr( $conf_name ) . '</option>';
-							}
-							echo '</select>';
-						} else {
-							echo '<input type="hidden" name="pre_conf" value="" />';
+			if ( class_exists( 'BackWPup_Pro', FALSE ) ) { ?>
+				<div class="backwpup-welcome backwpup-max-width">
+					<h3><?php _ex( 'Planning backups', 'Dashboard heading', 'backwpup' ); ?></h3>
+					<p><?php _e('BackWPup’s job wizards make planning and scheduling your backup jobs a breeze.','backwpup' ); echo ' '; _e('Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server.','backwpup'); ?></p>
+					<h3><?php _ex( 'Restoring backups', 'Dashboard heading', 'backwpup' ); ?></h3>
+					<p><?php _e( 'With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin or a plugin like <a href="http://wordpress.org/plugins/adminer/" target="_blank">Adminer</a> to restore your database backup files.', 'backwpup' ) ?></p>
+					<h3><?php _ex( 'Ready to set up a backup job?', 'Dashboard heading','backwpup' ); ?></h3>
+					<p><?php printf( __('Use one of the wizards to plan a backup, or use <a href="%s">expert mode</a> for full control over all options.','backwpup'), network_admin_url( 'admin.php') . '?page=backwpupeditjob' ); echo ' '; _e( '<strong>Please note: You are solely responsible for the security of your data; the authors of this plugin are not.</strong>', 'backwpup' ); ?></p>
+				</div>
+			<?php } else {?>
+				<div class="backwpup-welcome backwpup-max-width">
+					<h3><?php _ex( 'Planning backups', 'Dashboard heading', 'backwpup' ); ?></h3>
+					<p><?php _e('Use the short links in the <strong>First steps</strong> box to plan and schedule backup jobs.','backwpup' ); echo ' '; _e('Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server.','backwpup'); ?></p>
+					<h3><?php _ex( 'Restoring backups', 'Dashboard heading', 'backwpup' ); ?></h3>
+					<p><?php _e( 'With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin or a plugin like <a href="http://wordpress.org/plugins/adminer/" target="_blank">Adminer</a> to restore your database backup files.', 'backwpup' ) ?></p>
+					<h3><?php _ex( 'Ready to set up a backup job?', 'Dashboard heading','backwpup' ); ?></h3>
+					<p><?php printf( __('<a href="%s">Add a new backup job</a> and plan what you want to save.','backwpup'), network_admin_url( 'admin.php') . '?page=backwpupeditjob' ); ?>
+					<br /><?php _e( '<strong>Please note: You are solely responsible for the security of your data; the authors of this plugin are not.</strong>', 'backwpup' ); ?></p>
+				</div>
+			<?php }
+
+			if ( current_user_can( 'backwpup_jobs_edit' ) && current_user_can( 'backwpup_logs' ) && current_user_can( 'backwpup_jobs_start' ) ) {
+			?>
+				<div  id="backwpup-first-steps" class="metabox-holder postbox backwpup-floated-postbox">
+					<h3 class="hndle"><span><?php  _e( 'First Steps', 'backwpup' ); ?></span></h3>
+					<div class="inside">
+						<ul>
+							<?php if ( class_exists( 'BackWPup_Pro', FALSE ) ) { ?>
+								<li type="1"><a href="<?php echo wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupwizard&wizard_start=SYSTEMTEST', 'wizard' ); ?>"><?php  _e( 'Test the installation', 'backwpup' ); ?></a></li>
+								<li type="1"><a href="<?php echo wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupwizard&wizard_start=JOB', 'wizard' ); ?>"><?php  _e( 'Create a Job', 'backwpup' ); ?></a></li>
+							<?php } else { ?>
+                           		<li type="1"><a href="<?php echo network_admin_url( 'admin.php' ) . '?page=backwpupsettings#backwpup-tab-information'; ?>"><?php  _e( 'Check the installation', 'backwpup' ); ?></a></li>
+                            	<li type="1"><a href="<?php echo network_admin_url( 'admin.php' ) . '?page=backwpupeditjob'; ?>"><?php  _e( 'Create a Job', 'backwpup' ); ?></a></li>
+							<?php } ?>
+							<li type="1"><a href="<?php echo network_admin_url( 'admin.php' ) . '?page=backwpupjobs'; ?>"><?php  _e( 'Run the created job', 'backwpup' ); ?></a></li>
+							<li type="1"><a href="<?php echo network_admin_url( 'admin.php' ) . '?page=backwpuplogs'; ?>"><?php  _e( 'Check the job log', 'backwpup' ); ?></a></li>
+						</ul>
+					</div>
+				</div>
+			<?php }
+
+			if ( current_user_can( 'backwpup_jobs_start' ) ) {?>
+				<div id="backwpup-one-click-backup" class="metabox-holder postbox backwpup-floated-postbox">
+					<h3 class="hndle"><span><?php  _e( 'One click backup', 'backwpup' ); ?></span></h3>
+					<div class="inside">
+						<a href="<?php echo wp_nonce_url( network_admin_url( 'admin.php' ). '?page=backwpup&action=dbdumpdl', 'backwpupdbdumpdl' ); ?>" class="button button-primary button-primary-bwp" title="<?php _e( 'Generate a database backup of WordPress tables and download it right away!', 'backwpup' ); ?>"><?php _e( 'Download database backup', 'backwpup' ); ?></a><br />
+					</div>
+				</div>
+			<?php }
+
+			if ( class_exists( 'BackWPup_Pro', FALSE ) ) {
+				/* @var BackWPup_Pro_Wizards $wizard_class */
+
+				foreach ( $wizards as $wizard_class ) {
+					//check permissions
+					if ( ! current_user_can( $wizard_class->info[ 'cap' ] ) )
+						continue;
+					//get info of wizard
+					echo '<div id="wizard-' . strtolower( $wizard_class->info[ 'ID' ] ) . '" class="wizardbox post-box backwpup-floated-postbox"><form method="get" action="' . network_admin_url( 'admin.php' ) . '">';
+					echo '<h3 class="wizardbox_name">' . $wizard_class->info[ 'name' ] . '</h3>';
+					echo '<p class="wizardbox_description">' . $wizard_class->info[ 'description' ] . '</p>';
+					$conf_names = $wizard_class->get_pre_configurations();
+					if ( ! empty ( $conf_names ) ) {
+						echo '<select id="wizardbox_pre_conf" name="pre_conf" size="1">';
+						foreach( $conf_names as $conf_key => $conf_name) {
+							echo '<option value="' . esc_attr( $conf_key ) . '">' . esc_attr( $conf_name ) . '</option>';
 						}
-						wp_nonce_field( 'wizard' );
-						echo '<input type="hidden" name="page" value="backwpupwizard" />';
-						echo '<input type="hidden" name="wizard_start" value="' . esc_attr( $wizard_class->info[ 'ID' ] ) . '" />';
-						echo '<div class="wizardbox_start"><input type="submit" name="submit" class="button-primary-bwp" value="' . esc_attr( __( 'Start wizard', 'backwpup' ) ) . '" /></div>';
-						echo '</form></div>';
+						echo '</select>';
+					} else {
+						echo '<input type="hidden" name="pre_conf" value="" />';
 					}
+					wp_nonce_field( 'wizard' );
+					echo '<input type="hidden" name="page" value="backwpupwizard" />';
+					echo '<input type="hidden" name="wizard_start" value="' . esc_attr( $wizard_class->info[ 'ID' ] ) . '" />';
+					echo '<div class="wizardbox_start"><input type="submit" name="submit" class="button button-primary button-primary-bwp" value="' . esc_attr( __( 'Start wizard', 'backwpup' ) ) . '" /></div>';
+					echo '</form></div>';
 				}
-				?><div style="clear:both"><?php
+			} ?>
+
+			<div id="backwpup-stats" class="metabox-holder postbox backwpup-cleared-postbox backwpup-max-width">
+				<div class="backwpup-table-wrap">
+				<?php
 					self::mb_next_jobs();
 					self::mb_last_logs();
 				?>
 				</div>
 			</div>
 
-			<div style="width:35%;float:left;">
-				<?php if ( ! class_exists( 'BackWPup_Pro', FALSE ) ) { ?>
-					<div class="metabox-holder postbox" style="padding-top:0;margin:10px;cursor:auto;width:30%;float:left;min-width:320px">
-						<h3 class="hndle" style="cursor: auto;"><span><?php  _e( 'Thank you for using BackWPup!', 'backwpup' ); ?></span></h3>
-						<div class="inside backwpuppro">
-							<img src="<?php echo BackWPup::get_plugin_data( 'URL' ) . '/assets/images/backwpupbanner-pro.png'; ?>" alt="BackWPup Banner" />
-							<?php _e( 'BackWPup Pro offers you first-class premium support and more features like a wizard for scheduled backup jobs, differential backup of changed directories in the cloud and much more!', 'backwpup' ); ?>.
-							<div style="text-align: center;margin-top:10px;">
-								<a href="<?php _e( 'http://marketpress.com/product/backwpup-pro/', 'backwpup' ); ?>" class="button-primary" title="<?php _e( 'Get BackWPup Pro now', 'backwpup' ); ?>"><?php _e( 'Get BackWPup Pro now', 'backwpup' ); ?></a><br />
-							</div>
-						</div>
-					</div>
-				<?php } ?>
-
-				<?php if ( current_user_can( 'backwpup_jobs_edit' ) && current_user_can( 'backwpup_logs' ) && current_user_can( 'backwpup_jobs_start' ) ) {?>
-					<div class="metabox-holder postbox" style="padding-top:0;margin:10px;cursor:auto;width:30%;float:left;min-width:320px">
-						<h3 class="hndle" style="cursor: auto;"><span><?php  _e( 'First Steps', 'backwpup' ); ?></span></h3>
-						<div class="inside">
-							<ul style="margin-left: 30px;">
-								<?php if ( class_exists( 'BackWPup_Pro', FALSE ) ) { ?>
-									<li type="1"><a href="<?php echo wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupwizard&wizard_start=SYSTEMTEST', 'wizard' ); ?>"><?php  _e( 'Test the installation', 'backwpup' ); ?></a></li>
-									<li type="1"><a href="<?php echo wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupwizard&wizard_start=JOB', 'wizard' ); ?>"><?php  _e( 'Create a Job', 'backwpup' ); ?></a></li>
-								<?php } else { ?>
-                               		<li type="1"><a href="<?php echo network_admin_url( 'admin.php' ) . '?page=backwpupsettings#backwpup-tab-information'; ?>"><?php  _e( 'Check the installation', 'backwpup' ); ?></a></li>
-                                	<li type="1"><a href="<?php echo network_admin_url( 'admin.php' ) . '?page=backwpupeditjob'; ?>"><?php  _e( 'Create a Job', 'backwpup' ); ?></a></li>
-								<?php } ?>
-								<li type="1"><a href="<?php echo network_admin_url( 'admin.php' ) . '?page=backwpupjobs'; ?>"><?php  _e( 'Run the created job', 'backwpup' ); ?></a></li>
-								<li type="1"><a href="<?php echo network_admin_url( 'admin.php' ) . '?page=backwpuplogs'; ?>"><?php  _e( 'Check the job log', 'backwpup' ); ?></a></li>
-							</ul>
-						</div>
-					</div>
-				<?php }
-
-				if ( current_user_can( 'backwpup_jobs_start' ) ) {?>
-					<div class="metabox-holder postbox" style="padding-top:0;margin:10px;cursor:auto;width:30%;float:left;min-width:320px">
-						<h3 class="hndle" style="cursor: auto;"><span><?php  _e( 'One click backup', 'backwpup' ); ?></span></h3>
-						<div class="inside" style="text-align: center;">
-							<a href="<?php echo wp_nonce_url( network_admin_url( 'admin.php' ). '?page=backwpup&action=dbdumpdl', 'backwpupdbdumpdl' ); ?>" class="button-primary" title="<?php _e( 'Generate a database backup of WordPress tables and download it right away!', 'backwpup' ); ?>"><?php _e( 'Download database backup', 'backwpup' ); ?></a><br />
-						</div>
-					</div>
-				<?php }	?>
+			<?php if ( ! class_exists( 'BackWPup_Pro', FALSE ) ) { ?>
+			<div id="backwpup-thank-you" class="metabox-holder postbox backwpup-cleared-postbox backwpup-max-width">
+				<h3 class="hndle"><span><?php  _ex( 'Thank you for using BackWPup!', 'Pro teaser box', 'backwpup' ); ?></span></h3>
+				<div class="inside">
+					<p><img class="backwpup-banner-img" src="<?php echo BackWPup::get_plugin_data( 'URL' ) . '/assets/images/backwpupbanner-pro.png'; ?>" alt="BackWPup Banner" /></p>
+					<h3 class="backwpup-text-center"><?php _ex( 'Get access to:', 'Pro teaser box', 'backwpup' ); ?></h3>
+					<ul class="backwpup-text-center">
+						<li><?php _ex( 'First-class <strong>dedicated support</strong> at MarketPress Helpdesk.', 'Pro teaser box', 'backwpup' ); ?></li>
+						<li><?php _ex( 'Differential backups to Google Drive and other cloud storage service.', 'Pro teaser box', 'backwpup' ); ?></li>
+						<li><?php _ex( 'Easy-peasy wizards to create and schedule backup jobs.', 'Pro teaser box', 'backwpup' ); ?></li>
+						<li><?php printf( '<a href="http://marketpress.com/product/backwpup-pro/">%s</a>', _x( 'And more…', 'Pro teaser box, link text', 'backwpup' ) ); ?></li>
+					</ul>
+					<p class="backwpup-text-center"><a href="http://marketpress.com/product/backwpup-pro/" class="button button-primary button-primary-bwp" title="<?php _ex( 'Get BackWPup Pro now', 'Pro teaser box, link title', 'backwpup' ); ?>"><?php _ex( 'Get BackWPup Pro now', 'Pro teaser box, link text', 'backwpup' ); ?></a></p>
+				</div>
 			</div>
+			<?php } ?>
+
         </div>
 	<?php
 	}
@@ -171,9 +186,9 @@ class BackWPup_Page_BackWPup {
 		if ( ! current_user_can( 'backwpup_logs' ) )
 			return;
 		?>
-		<table class="wp-list-table widefat" cellspacing="0" style="margin:10px;width:47%;float:left;clear:none;min-width:300px">
+		<table class="wp-list-table widefat" cellspacing="0">
+			<caption><?php _e( 'Last logs', 'backwpup' ); ?></caption>
 			<thead>
-			<tr><th colspan="3" style="font-size:15px"><?php _e( 'Last logs', 'backwpup' ); ?></tr>
 			<tr><th style="width:30%"><?php _e( 'Time', 'backwpup' ); ?></th><th style="width:55%"><?php  _e( 'Job', 'backwpup' ); ?></th><th style="width:20%"><?php  _e( 'Result', 'backwpup' ); ?></th></tr>
 			</thead>
 			<?php
@@ -181,11 +196,11 @@ class BackWPup_Page_BackWPup {
 			$logfiles = array();
 			if ( is_writeable( get_site_option( 'backwpup_cfg_logfolder' ) ) && $dir = @opendir( get_site_option( 'backwpup_cfg_logfolder' ) ) ) {
 				while ( ( $file = readdir( $dir ) ) !== FALSE ) {
-					if ( is_readable( get_site_option( 'backwpup_cfg_logfolder' ) . $file ) && ! is_link( get_site_option( 'backwpup_cfg_logfolder' ) . $file ) && ! is_dir( get_site_option( 'backwpup_cfg_logfolder' ) . $file ) && strstr( $file, 'backwpup_log_' ) && ( strstr( $file, '.html' ) ||  strstr( $file, '.html.gz' ) ) )
-						$logfiles[ ] = $file;
+					if ( is_readable( get_site_option( 'backwpup_cfg_logfolder' ) . $file ) && is_file( get_site_option( 'backwpup_cfg_logfolder' ) . $file ) && FALSE !== strpos( $file, 'backwpup_log_' ) && FALSE !== strpos( $file, '.html' ) )
+						$logfiles[ filemtime( get_site_option( 'backwpup_cfg_logfolder' ) . '/' . $file ) ] = $file;
 				}
 				closedir( $dir );
-				rsort( $logfiles );
+				krsort( $logfiles, SORT_NUMERIC );
 			}
 
 			if ( count( $logfiles ) > 0 ) {
@@ -200,7 +215,7 @@ class BackWPup_Page_BackWPup {
 						echo '<tr class="alternate">';
 						$alternate = FALSE;
 					}
-					echo '<td>' . date_i18n( get_option( 'date_format' ) , $logdata[ 'logtime' ] ). '<br />' . date_i18n( get_option( 'time_format' ), $logdata[ 'logtime' ] ) . '</td>';
+					echo '<td>' . sprintf( __( '%1$s at %2$s', 'backwpup' ), date_i18n( get_option( 'date_format' ) , $logdata[ 'logtime' ] ), date_i18n( get_option( 'time_format' ), $logdata[ 'logtime' ] ) ) . '</td>';
 					echo '<td><a class="thickbox" href="' . admin_url( 'admin-ajax.php' ) . '?&action=backwpup_view_log&logfile=' . basename( $logfile ) .'&_ajax_nonce=' . wp_create_nonce( 'view-logs' ) . '&amp;TB_iframe=true&amp;width=640&amp;height=440" title="' . esc_attr( basename( $logfile ) ) . '">' . $logdata[ 'name' ] . '</i></a></td>';
 					echo '<td>';
 					if ( $logdata[ 'errors' ] > 0 )
@@ -231,9 +246,9 @@ class BackWPup_Page_BackWPup {
 		if ( ! current_user_can( 'backwpup_jobs' ) )
 			return;
 		?>
-		<table class="wp-list-table widefat" cellspacing="0" style="margin:10px;width:47%;float:left;clear:none;min-width:300px">
+		<table class="wp-list-table widefat" cellspacing="0">
+			<caption><?php _e( 'Next scheduled jobs', 'backwpup' ); ?></caption>
 			<thead>
-			<tr><th colspan="2" style="font-size:15px"><?php _e( 'Next scheduled jobs', 'backwpup' ); ?></th></tr>
 			<tr>
 				<th style="width: 30%"><?php  _e( 'Time', 'backwpup' ); ?></th>
 				<th style="width: 70%"><?php  _e( 'Job', 'backwpup' ); ?></th>
@@ -273,7 +288,7 @@ class BackWPup_Page_BackWPup {
 						$alternate = FALSE;
 					}
 					if ( $nextrun = wp_next_scheduled( 'backwpup_cron', array( 'id' => $jobid ) ) + ( get_option( 'gmt_offset' ) * 3600 ) )
-						echo '<td>' . date_i18n( get_option( 'date_format' ), $nextrun, TRUE ) . '<br />' . date_i18n( get_option( 'time_format' ), $nextrun, TRUE ) . '</td>';
+						echo '<td>' . sprintf( __( '%1$s at %2$s', 'backwpup' ), date_i18n( get_option( 'date_format' ), $nextrun, TRUE ), date_i18n( get_option( 'time_format' ), $nextrun, TRUE ) ) . '</td>';
 					else
 						echo '<td><em>' . __( 'Not scheduled!', 'backwpup' ) . '</em></td>';
 

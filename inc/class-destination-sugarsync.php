@@ -27,7 +27,7 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 			<tr>
 				<th scope="row"><?php _e( 'Authentication', 'backwpup' ); ?></th>
                 <td>
-                    <label for="sugaremail"><?php _e( 'E-Mail address:', 'backwpup' ); ?><br/>
+                    <label for="sugaremail"><?php _e( 'Email address:', 'backwpup' ); ?><br/>
                     <input id="sugaremail" name="sugaremail" type="text"
 						   value="<?php if ( isset( $_POST[ 'sugaremail' ] ) ) echo $_POST[ 'sugaremail' ];?>" class="large-text" autocomplete="off" /></label>
 					<br/>
@@ -37,7 +37,7 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 					<br/>
 					<br/>
 					<input type="submit" id="idauthbutton" name="authbutton" class="button-primary" accesskey="d"
-						   value="<?php _e( 'Sugarsync authenticate!', 'backwpup' ); ?>"/>
+						   value="<?php _e( 'Authenticate with Sugarsync!', 'backwpup' ); ?>"/>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="authbutton" class="button"
 														 value="<?php _e( 'Create Sugarsync account', 'backwpup' ); ?>"/>
                 </td>
@@ -118,7 +118,7 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 	public function edit_form_post_save( $jobid ) {
 
 
-		if ( ! empty( $_POST[ 'sugaremail' ] ) && ! empty( $_POST[ 'sugarpass' ] ) && $_POST[ 'authbutton' ] == __( 'Sugarsync authenticate!', 'backwpup' ) ) {
+		if ( ! empty( $_POST[ 'sugaremail' ] ) && ! empty( $_POST[ 'sugarpass' ] ) && $_POST[ 'authbutton' ] == __( 'Authenticate with Sugarsync!', 'backwpup' ) ) {
 			try {
 				$sugarsync     = new BackWPup_Destination_SugarSync_API();
 				$refresh_token = $sugarsync->get_Refresh_Token( $_POST[ 'sugaremail' ], $_POST[ 'sugarpass' ] );

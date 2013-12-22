@@ -25,7 +25,7 @@ class BackWPup_Page_Settings {
 	/**
 	 * Save settings form data
 	 */
-	public static function save_post_form( $tab, $jobid ) {
+	public static function save_post_form() {
 
 		if ( ! current_user_can( 'backwpup_settings' ) )
 			return;
@@ -137,7 +137,7 @@ class BackWPup_Page_Settings {
                             <label for="showfoldersize">
                                 <input name="showfoldersize" type="checkbox" id="showfoldersize"
                                        value="1" <?php checked( get_site_option( 'backwpup_cfg_showfoldersize' ), TRUE ); ?> />
-								<?php _e( 'Display folder sizes on Files tab if job edited. (Might increase loading time of Files tab.)', 'backwpup' ); ?></label>
+								<?php _e( 'Display folder sizes in the files tab when editing a job. (Might increase loading time of files tab.)', 'backwpup' ); ?></label>
                         </fieldset>
                     </td>
                 </tr>
@@ -167,7 +167,7 @@ class BackWPup_Page_Settings {
 
         <div class="table ui-tabs-hide" id="backwpup-tab-log">
 
-            <p><?php _e( 'Every time BackWPup runs a backup job a log file is being generated. Choose where to store your log files and how many of them.', 'backwpup' ); ?></p>
+            <p><?php _e( 'Every time BackWPup runs a backup job, a log file is being generated. Choose where to store your log files and how many of them.', 'backwpup' ); ?></p>
             <table class="form-table">
                 <tr>
                     <th scope="row"><label for="logfolder"><?php _e( 'Log file folder', 'backwpup' ); ?></label></th>
@@ -221,7 +221,7 @@ class BackWPup_Page_Settings {
                             <legend class="screen-reader-text"><span><?php _e( 'Restart on every main step', 'backwpup' ); ?></span>
                             </legend>
                             <label for="jobsteprestart">
-                                <input name="jobsteprestart" type="checkbox" id="jobsteprestart" title="<?php esc_attr_e( 'The job will be restarted on every main step, if last restart longer ago as 3 secounds. This is to prevent running in an execution time out. This will not work on cli run. If <code>ALTERNATE_WP_CRON</code> has been defined, WordPress Cron will be used.', 'backwpup' ); ?>"
+                                <input name="jobsteprestart" type="checkbox" id="jobsteprestart" title="<?php esc_attr_e( 'Job will restart on every main step if the last restart has been longer than 3 seconds ago. This is to prevent running in an execution timeout. It will not work with CLI. If <code>ALTERNATE_WP_CRON</code> has been defined, WordPress Cron will be used.', 'backwpup' ); ?>"
                                        value="1" class="help-tip" <?php checked( get_site_option( 'backwpup_cfg_jobsteprestart' ), TRUE ); ?> />
 								<?php _e( 'Restart the job on every main step on a running job', 'backwpup' ); ?>
 							</label>
@@ -235,7 +235,7 @@ class BackWPup_Page_Settings {
                             <legend class="screen-reader-text"><span><?php _e( 'Maximum PHP Script execution time', 'backwpup' ); ?></span>
                             </legend>
                             <label for="jobmaxexecutiontime">
-                                <input name="jobmaxexecutiontime" type="text" id="jobmaxexecutiontime" size="3" title="<?php esc_attr_e( 'The job will be restarted bevor hitting maximum execution time. This will not work on cli run and not on all job steps. If <code>ALTERNATE_WP_CRON</code> has been defined, WordPress Cron will be used.', 'backwpup' ); ?>"
+                                <input name="jobmaxexecutiontime" type="text" id="jobmaxexecutiontime" size="3" title="<?php esc_attr_e( 'Job will restart before hitting maximum execution time. It will not work with CLI and not on every step during execution. If <code>ALTERNATE_WP_CRON</code> has been defined, WordPress Cron will be used.', 'backwpup' ); ?>"
                                        value="<?php echo get_site_option( 'backwpup_cfg_jobmaxexecutiontime' ); ?>" class="help-tip" />
 								<?php _e( 'seconds. 0 = disabled.', 'backwpup' ); ?>
 							</label>
@@ -263,7 +263,7 @@ class BackWPup_Page_Settings {
                         <label for="jobrunauthkey"><?php _e( 'Key to start jobs externally with an URL', 'backwpup' ); ?></label>
                     </th>
                     <td>
-                        <input name="jobrunauthkey" type="text" id="jobrunauthkey" title="<?php esc_attr_e( 'empty = deactivated. Will be used to protect job starts from unauthorized persons.', 'backwpup' ); ?>"
+                        <input name="jobrunauthkey" type="text" id="jobrunauthkey" title="<?php esc_attr_e( 'empty = deactivated. Will be used to protect job starts from unauthorized person.', 'backwpup' ); ?>"
                                value="<?php echo get_site_option( 'backwpup_cfg_jobrunauthkey' );?>" class="text code help-tip"/>
                     </td>
                 </tr>
@@ -305,7 +305,7 @@ class BackWPup_Page_Settings {
         <div class="table ui-tabs-hide" id="backwpup-tab-net">
 
 			<h3 class="title"><?php _e( 'Authentication', 'backwpup' ); ?></h3>
-            <p><?php _e( 'Is your blog protected with HTTP basic authentication (.htaccess)? Then please set the username and password for authentication here.', 'backwpup' ); ?></p>
+            <p><?php _e( 'Is your blog protected with HTTP basic authentication (.htaccess)? If yes, please set the username and password for authentication here.', 'backwpup' ); ?></p>
             <table class="form-table">
                 <tr>
                     <th scope="row"><label for="httpauthuser"><?php _e( 'Username:', 'backwpup' ); ?></label></th>
@@ -359,12 +359,12 @@ class BackWPup_Page_Settings {
 			$raw_response = BackWPup_Job::get_jobrun_url( 'test' );
 			$test_result = '';
 			if ( is_wp_error( $raw_response ) )
-				$test_result .= sprintf( __( 'The HTTP response test get a error "%s"','backwpup' ), $raw_response->get_error_message() );
+				$test_result .= sprintf( __( 'The HTTP response test get an error "%s"','backwpup' ), $raw_response->get_error_message() );
 			elseif ( 200 != wp_remote_retrieve_response_code( $raw_response ) && 204 != wp_remote_retrieve_response_code( $raw_response ) )
 				$test_result .= sprintf( __( 'The HTTP response test get a false http status (%s)','backwpup' ), wp_remote_retrieve_response_code( $raw_response ) );
 			$headers = wp_remote_retrieve_headers( $raw_response );
 			if ( isset( $headers['x-backwpup-ver'] ) && $headers['x-backwpup-ver'] != BackWPup::get_plugin_data( 'version' ) )
-				$test_result .= sprintf( __( 'The BackWPup HTTP response header gives back the false value "%s"','backwpup' ), $headers['x-backwpup-ver'] );
+				$test_result .= sprintf( __( 'The BackWPup HTTP response header returns a false value: "%s"','backwpup' ), $headers['x-backwpup-ver'] );
 
 			if ( empty( $test_result ) )
 				_e( 'Response Test O.K.', 'backwpup' );
@@ -375,19 +375,19 @@ class BackWPup_Page_Settings {
 			BackWPup_Job::check_folder( BackWPup::get_plugin_data( 'TEMP' ) );
 			echo '<tr><td>' . __( 'Temp folder:', 'backwpup' ) . '</td><td>';
 			if ( ! is_dir( BackWPup::get_plugin_data( 'TEMP' ) ) )
-				echo sprintf( __( 'Temp folder %s not exist and can\'t created.','backwpup' ), BackWPup::get_plugin_data( 'TEMP' ) );
+				echo sprintf( __( 'Temp folder %s doesn\'t exist and can\'t be created.','backwpup' ), BackWPup::get_plugin_data( 'TEMP' ) );
 			elseif ( ! is_writable( BackWPup::get_plugin_data( 'TEMP' ) ) )
-				echo sprintf( __( 'Temp folder %s not writable.','backwpup' ), BackWPup::get_plugin_data( 'TEMP' ) );
+				echo sprintf( __( 'Temporary folder %s is not writable.','backwpup' ), BackWPup::get_plugin_data( 'TEMP' ) );
 			else
 				echo BackWPup::get_plugin_data( 'TEMP' );
 			echo '</td></tr>';
 
 			BackWPup_Job::check_folder(  get_site_option( 'backwpup_cfg_logfolder' ) );
-			echo '<tr><td>' . __( 'Logs folder:', 'backwpup' ) . '</td><td>';
+			echo '<tr><td>' . __( 'Log folder:', 'backwpup' ) . '</td><td>';
 			if ( ! is_dir(  get_site_option( 'backwpup_cfg_logfolder' ) ) )
 				echo sprintf( __( 'Logs folder %s not exist and can\'t created.','backwpup' ),  get_site_option( 'backwpup_cfg_logfolder' ) );
 			elseif ( ! is_writable(  get_site_option( 'backwpup_cfg_logfolder' ) ) )
-				echo sprintf( __( 'Logs folder %s not writable.','backwpup' ),  get_site_option( 'backwpup_cfg_logfolder' ) );
+				echo sprintf( __( 'Log folder %s is not writable.','backwpup' ),  get_site_option( 'backwpup_cfg_logfolder' ) );
 			else
 				echo  get_site_option( 'backwpup_cfg_logfolder' );
 			echo '</td></tr>';
@@ -422,7 +422,7 @@ class BackWPup_Page_Settings {
 			echo '<tr title="URF-8"><td>' . __( 'Blog charset', 'backwpup' ) . '</td><td>' . get_bloginfo( 'charset' ) . '</td></tr>';
 			echo '<tr title="&gt;=128M"><td>' . __( 'PHP Memory limit', 'backwpup' ) . '</td><td>' . ini_get( 'memory_limit' ) . '</td></tr>';
 			echo '<tr title="WP_MEMORY_LIMIT"><td>' . __( 'WP memory limit', 'backwpup' ) . '</td><td>' . WP_MEMORY_LIMIT . '</td></tr>';
-			echo '<tr title="WP_MAX_MEMORY_LIMIT"><td>' . __( 'WP Maximum memory limit', 'backwpup' ) . '</td><td>' . WP_MAX_MEMORY_LIMIT . '</td></tr>';
+			echo '<tr title="WP_MAX_MEMORY_LIMIT"><td>' . __( 'WP maximum memory limit', 'backwpup' ) . '</td><td>' . WP_MAX_MEMORY_LIMIT . '</td></tr>';
 			echo '<tr title=""><td>' . __( 'Memory in use', 'backwpup' ) . '</td><td>' . size_format( @memory_get_usage( TRUE ), 2 ) . '</td></tr>';
 			//disabled PHP functions
 			$disabled = ini_get( 'disable_functions' );
