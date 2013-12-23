@@ -240,17 +240,6 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 				if ( ! empty( $info[ 'uid' ] ) ) {
 					$job_object->log( sprintf( __( 'Authenticated with Dropbox of user %s', 'backwpup' ), $info[ 'display_name' ] . ' (' . $info[ 'email' ] . ')' ), E_USER_NOTICE );
 				}
-				//Check Quota
-				$dropboxfreespase = $info[ 'quota_info' ][ 'quota' ] - $info[ 'quota_info' ][ 'shared' ] - $info[ 'quota_info' ][ 'normal' ];
-				if ( $job_object->backup_filesize > $dropboxfreespase ) {
-					$job_object->log( __( 'Your Dropbox appears to be full.', 'backwpup' ), E_USER_ERROR );
-
-					return TRUE;
-				}
-				else {
-					$job_object->log( sprintf( __( '%s available on your Dropbox', 'backwpup' ), size_format( $dropboxfreespase, 2 ) ), E_USER_NOTICE );
-				}
-
 				// put the file
 				$job_object->log( __( 'Uploading to Dropbox&#160;&hellip;', 'backwpup' ), E_USER_NOTICE );
 			}
@@ -273,9 +262,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 										sprintf(
 											__( 'Error transfering backup to %$1s.', 'backwpup' ) . ' ' . $response[ 'error' ],
 											__( 'Dropbox', 'backwpup' )
-										),
-										E_USER_ERROR
-										);
+										), E_USER_ERROR	);
 
 					return FALSE;
 				}

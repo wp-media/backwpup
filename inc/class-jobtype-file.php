@@ -340,8 +340,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 				$excludes[] = trailingslashit(  $abs_path . $folder );
 			$this->get_folder_list( $job_object, $abs_path, $excludes );
 		}
-		if ( $job_object->substeps_done == 0 )
-			$job_object->substeps_done = 1;
+		$job_object->substeps_done = 1;
 		$job_object->update_working_data();
 
 		$wp_content_dir = realpath( WP_CONTENT_DIR );
@@ -352,11 +351,10 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 				$excludes[] = trailingslashit( $wp_content_dir . $folder );
 			$this->get_folder_list( $job_object, $wp_content_dir, $excludes );
 		}
-		if ( $job_object->substeps_done == 1 )
-			$job_object->substeps_done = 2;
+		$job_object->substeps_done = 2;
 		$job_object->update_working_data();
 
-		$wp_plugin_dir = realpath( WP_CONTENT_DIR );
+		$wp_plugin_dir = realpath( WP_PLUGIN_DIR );
 		if ( $wp_plugin_dir && ! empty( $job_object->job[ 'backupplugins'] ) && $job_object->substeps_done == 2 ) {
 			$wp_plugin_dir = trailingslashit( str_replace( '\\', '/', $wp_plugin_dir ) );
 			$excludes = $this->get_exclude_dirs( $wp_plugin_dir );
@@ -364,32 +362,29 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 				$excludes[] = trailingslashit( $wp_plugin_dir . $folder );
 			$this->get_folder_list( $job_object, $wp_plugin_dir, $excludes );
 		}
-		if ( $job_object->substeps_done == 2 )
-			$job_object->substeps_done = 3;
+		$job_object->substeps_done = 3;
 		$job_object->update_working_data();
 
 		$theme_root = realpath( get_theme_root() );
-		if ( ! empty( $job_object->job[ 'backupthemes'] ) && $job_object->substeps_done == 3 ) {
+		if ( $theme_root && ! empty( $job_object->job[ 'backupthemes'] ) && $job_object->substeps_done == 3 ) {
 			$theme_root = trailingslashit( str_replace( '\\', '/', $theme_root ) );
 			$excludes = $this->get_exclude_dirs( $theme_root );
 			foreach( $job_object->job[ 'backupthemesexcludedirs' ] as $folder )
 				$excludes[] = trailingslashit( $theme_root . $folder );
 			$this->get_folder_list( $job_object, $theme_root, $excludes );
 		}
-		if ( $job_object->substeps_done == 3 )
-			$job_object->substeps_done = 4;
+		$job_object->substeps_done = 4;
 		$job_object->update_working_data();
 
 		$upload_dir = realpath( BackWPup_File::get_upload_dir() );
-		if ( ! empty( $job_object->job[ 'backupuploads'] ) && $job_object->substeps_done == 4 ) {
+		if ( $upload_dir && ! empty( $job_object->job[ 'backupuploads'] ) && $job_object->substeps_done == 4 ) {
 			$upload_dir = trailingslashit( str_replace( '\\', '/', $upload_dir ) );
 			$excludes = $this->get_exclude_dirs( $upload_dir );
 			foreach( $job_object->job[ 'backupuploadsexcludedirs' ] as $folder )
 				$excludes[] = trailingslashit( $upload_dir . $folder );
 			$this->get_folder_list( $job_object, $upload_dir, $excludes );
 		}
-		if ( $job_object->substeps_done == 4 )
-			$job_object->substeps_done = 5;
+		$job_object->substeps_done = 5;
 		$job_object->update_working_data();
 
 		//include dirs
@@ -402,8 +397,8 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 					$this->get_folder_list( $job_object, $dirincludevalue );
 			}
 		}
-		if ( $job_object->substeps_done == 5 )
-			$job_object->substeps_done = 6;
+		$job_object->substeps_done = 6;
+		$job_object->update_working_data();
 
 		//save folder list
 		$this->folers_to_backup = array_unique( $this->folers_to_backup );
@@ -411,7 +406,6 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 		$job_object->data_storage( 'folder', $this->folers_to_backup );
 		$job_object->count_folder = count( $this->folers_to_backup );
 		$job_object->update_working_data();
-
 
 		//add extra files if selected
 		if ( ! empty( $job_object->job[ 'backupspecialfiles'] ) ) {

@@ -1800,8 +1800,12 @@ final class BackWPup_Job {
 					if ( in_array( $this->steps_data[ $this->step_working ]['on_file'], $files_in_folder ) )
 						continue;
 					$this->steps_data[ $this->step_working ]['on_file'] = $file;
-					//restart if needed
-					$this->do_restart_time();
+					//close archive before restart
+					$restart_time = $this->get_restart_time();
+					if ( $restart_time < 0 ) {
+						unset( $backup_archive );
+						$this->do_restart_time( TRUE );
+					}
 					//generate filename in archive
 					$in_archive_filename = ltrim( str_replace( $this->remove_path, '', $file ), '/' );
 					//add file to archive
@@ -1812,7 +1816,11 @@ final class BackWPup_Job {
 				$this->substeps_done ++;
 			}
 			//restart if needed
-			$this->do_restart_time();
+			$restart_time = $this->get_restart_time();
+			if ( $restart_time < 5 ) {
+				unset( $backup_archive );
+				$this->do_restart_time( TRUE );
+			}
 			$backup_archive->close();
 			unset( $backup_archive );
 			$this->log( __( 'Backup archive created.', 'backwpup' ), E_USER_NOTICE );

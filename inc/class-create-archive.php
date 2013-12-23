@@ -167,7 +167,7 @@ class BackWPup_Create_Archive {
 			unset( $this->pclzip );
 		}
 
-		//close PclZip Class
+		//close ZipArchive Class
 		if ( is_object( $this->ziparchive ) ) {
 			$this->ziparchive_status( $this->ziparchive->status );
 			$this->ziparchive->close();
@@ -246,6 +246,9 @@ class BackWPup_Create_Archive {
 
 		if ( empty( $name_in_archive ) )
 			$name_in_archive = $file_name;
+
+		//remove reserved chars
+		$name_in_archive = str_replace( array("?", "[", "]", "\\", "=", "<", ">", ":", ";", ",", "'", "\"", "&", "$", "#", "*", "(", ")", "|", "~", "`", "!", "{", "}", chr(0)) , '', $name_in_archive );
 
 		switch ( $this->get_method() ) {
 			case 'gz':
@@ -341,6 +344,9 @@ class BackWPup_Create_Archive {
 
 		if ( empty( $name_in_archive ) )
 			return FALSE;
+
+		//remove reserved chars
+		$name_in_archive = str_replace( array("?", "[", "]", "\\", "=", "<", ">", ":", ";", ",", "'", "\"", "&", "$", "#", "*", "(", ")", "|", "~", "`", "!", "{", "}", chr(0)) , '', $name_in_archive );
 
 		switch ( $this->get_method() ) {
 			case 'gz':

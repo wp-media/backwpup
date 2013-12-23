@@ -20,6 +20,8 @@ BackWPup Free is the number 1 backup-plugin for WordPress with nearly 1.000.000 
 * Store backup to Microsoft Azure (Blob) *(needs PHP 5.3.2, curl)*
 * Store backup to RackSpaceCloud *(needs PHP 5.3.2, curl)*
 * Store backup to SugarSync *(needs curl)*
+* PRO: Store backup to Amazon Glacier *(needs PHP 5.3.3, curl)*
+* PRO: Store backup to Google Drive *(needs PHP 5.3.3, curl)*
 * Send logs and backups by email
 * Multi-site support only as network admin
 * Pro version and support available - [BackWPup Pro](http://marketpress.com/product/backwpup-pro/)
