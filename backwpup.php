@@ -99,7 +99,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 				BackWPup_Admin::get_instance();
 			//work with wp-cli
 			if ( defined( 'WP_CLI' ) && WP_CLI && class_exists( 'WP_CLI' ) && class_exists( 'BackWPup_WP_CLI' ) )
-				WP_CLI::addCommand( 'backwpup', 'BackWPup_WP_CLI' );
+				WP_CLI::add_command( 'backwpup', 'BackWPup_WP_CLI' );
 		}
 
 		/**
