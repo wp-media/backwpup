@@ -9,7 +9,7 @@ class BackWPup_WP_CLI extends WP_CLI_Command {
 	 *
 	 * @param $args
 	 * @param $assoc_args
-	 * @synopsis start  --jobid=<ID of job to start>
+	 * @synopsis start  --jobid=<ID>
 	 */
 	public function start( $args, $assoc_args ) {
 

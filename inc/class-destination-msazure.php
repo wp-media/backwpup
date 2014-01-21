@@ -2,7 +2,8 @@
 // Windows Azure SDK v0.3.1_2011-08
 // http://www.windowsazure.com/en-us/develop/php/
 // https://github.com/WindowsAzure/azure-sdk-for-php
-include_once BackWPup::get_plugin_data( 'PluginDir' ) . '/vendor/autoloader.php';
+if ( ! class_exists( 'HTTP_Request2' ) )
+	set_include_path( get_include_path() . PATH_SEPARATOR . BackWPup::get_plugin_data( 'plugindir' ) .'/vendor/PEAR/');
 
 /**
  * Documentation: http://www.windowsazure.com/en-us/develop/php/how-to-guides/blob-service/

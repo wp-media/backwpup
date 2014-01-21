@@ -1,17 +1,19 @@
 <?php
-
 /**
  * PHP OpenCloud library.
  * 
- * @copyright 2013 Rackspace Hosting, Inc. See LICENSE for information.
+ * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
  * @license   https://www.apache.org/licenses/LICENSE-2.0
  * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
  * @author    Glen Campbell <glen.campbell@rackspace.com>
  */
+
 namespace OpenCloud\ObjectStore\Upload;
 
-use OpenCloud\Common\Http\Message\Response;
+use Guzzle\Http\Message\Response;
 use Guzzle\Http\Url;
+use OpenCloud\Common\Constants\Header;
+use OpenCloud\Common\Constants\Mime;
 
 /**
  * Represents an individual part of the EntityBody being uploaded.
@@ -128,8 +130,8 @@ class TransferPart
         $url->addPath($name);
 
         $headers = array(
-            'Content-Length' => $part->getContentLength(),
-            'Content-Type'   => $part->getContentType()
+            Header::CONTENT_LENGTH => $part->getContentLength(),
+            Header::CONTENT_TYPE   => $part->getContentType()
 		);
         
         if ($options['doPartChecksum'] === true) {
@@ -162,8 +164,8 @@ class TransferPart
         $object = new self();
         
         $object->setPartNumber($partNumber)
-            ->setContentLength($response->getHeader('Content-Length'))
-            ->setETag($response->getHeader('ETag'))
+            ->setContentLength($response->getHeader(Header::CONTENT_LENGTH))
+            ->setETag($response->getHeader(Header::ETAG))
             ->setPath($responseUri->getPath());
         
         return $object;

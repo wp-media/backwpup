@@ -2,8 +2,6 @@
 // Swift Mailer v5.0.1
 // http://swiftmailer.org/
 // https://github.com/swiftmailer/swiftmailer
-if ( ! class_exists( 'Swift' ) )
-	require BackWPup::get_plugin_data( 'PluginDir' ) . '/vendor/SwiftMailer/swift_required.php';
 
 /**
  *

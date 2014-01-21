@@ -5,6 +5,11 @@
 class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 
 	/**
+	 * @var $job_object BackWPup_Job
+	 */
+	private $job_object = null;
+
+	/**
 	 *
 	 */
 	public function __construct() {
@@ -105,41 +110,38 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 	public function job_run( &$job_object ) {
 
 		$job_object->substeps_todo = 2;
-		// not allowed UTF-8 chars in XML
-		$not_allowed_xml_pattern = '/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u';
 
 		$job_object->log( sprintf( __( '%d. Trying to create a WordPress export to XML file&#160;&hellip;', 'backwpup' ), $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] ) );
 		//build filename
 		$job_object->temp[ 'wpexportfile' ] = $job_object->generate_filename( $job_object->job[ 'wpexportfile' ], 'xml' );
 
+		//check export file for writing
+		if ( ! touch( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'wpexportfile' ] ) ) {
+			$job_object->log( __( 'WP Export file could not generated.', 'backwpup' ), E_USER_ERROR );
+
+			return FALSE;
+		}
 		//include WP export function
-		$xml_file_data = '';
+		$this->job_object = &$job_object;
+		$this->job_object->temp[ 'wp_export_part' ] = 0;
 		require_once ABSPATH . 'wp-admin/includes/export.php';
-		ob_start(); //start output buffering
+		ob_start( array( $this, 'ob_callback' ), 1024 * 1024 ); //start output buffering
 		$args = array(
 			'content' =>  $job_object->job[ 'wpexportcontent' ]
 		);
 		@export_wp( $args ); //WP export
-		$xml_file_data = preg_replace( $not_allowed_xml_pattern, '', ob_get_contents() );
 		ob_end_clean(); //End output buffering
-		$job_object->update_working_data();
 
-		//remove not needed
-		$xml_file_data = trim( $xml_file_data );
-		$start_pos = strpos( $xml_file_data, '<?xml', 0 );
-		$end_pos   = strpos( $xml_file_data, '</rss>', $start_pos + 5 );
-		if ( $start_pos && $end_pos )
-			$xml_file_data = substr( self::$xml_file_data, $start_pos, $end_pos + 6 - $start_pos );
 
-		if ( empty( $xml_file_data ) || FALSE === $start_pos || FALSE === $end_pos || strlen( $xml_file_data ) < 1500 ) {
+		if ( filesize( BackWPup::get_plugin_data( 'TEMP' ) . $this->job_object->temp[ 'wpexportfile' ] ) < 1500 ) {
 			$job_object->log( __( 'Could not generate a WordPress export file.', 'backwpup' ), E_USER_ERROR );
 
 			return FALSE;
 		}
 
-
-		if ( extension_loaded( 'simplexml' ) ) {
+		if ( extension_loaded( 'simplexml' ) && class_exists( 'DOMDocument' ) ) {
 			$job_object->log( __( 'Check WP Export file&#160;&hellip;', 'backwpup' ) );
+			$job_object->need_free_memory( filesize( BackWPup::get_plugin_data( 'TEMP' ) . $this->job_object->temp[ 'wpexportfile' ] ) * 2 );
 			$valid = TRUE;
 
 			$internal_errors = libxml_use_internal_errors( TRUE );
@@ -147,7 +149,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 			$old_value = NULL;
 			if ( function_exists( 'libxml_disable_entity_loader' ) )
 				$old_value = libxml_disable_entity_loader( TRUE );
-			$success = $dom->loadXML( $xml_file_data );
+			$success = $dom->loadXML( file_get_contents( BackWPup::get_plugin_data( 'TEMP' ) . $this->job_object->temp[ 'wpexportfile' ] ) );
 			if ( ! is_null( $old_value ) )
 				libxml_disable_entity_loader( $old_value );
 
@@ -203,13 +205,6 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 
 		$job_object->substeps_done ++;
 
-		if ( ! file_put_contents( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'wpexportfile' ], $xml_file_data ) ) {
-			$job_object->log( __( 'WP Export file could not generated.', 'backwpup' ), E_USER_ERROR );
-
-			return FALSE;
-		}
-
-
 		//Compress file
 		if ( ! empty( $job_object->job[ 'wpexportfilecompression' ] ) ) {
 			$job_object->log( __( 'Compressing file&#160;&hellip;', 'backwpup' ) );
@@ -239,6 +234,39 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 		$job_object->substeps_done = 1;
 
 		return TRUE;
+	}
+
+	/**
+	 * Callback for ob buffer of xml file
+	 *
+	 * @param $buffer string the buffer
+	 */
+	public function ob_callback( $buffer ) {
+
+		// not allowed UTF-8 chars in XML
+		$buffer = preg_replace( '/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', '', $buffer );
+
+		// chop not needed from first part
+		if ( empty( $this->job_object->temp[ 'wp_export_part' ] ) ) {
+			$start_pos = strpos( $buffer, '<?xml' );
+			if ( ! empty( $start_pos ) )
+				$buffer = substr( $buffer, $start_pos );
+		}
+
+		// chop not needed from last part
+		if ( strlen( $buffer ) < 1024 * 1024 ) {
+			$end_pos = strpos( $buffer, '</rss>' );
+			if ( !empty( $end_pos ) )
+				$buffer = substr( $buffer, 0, $end_pos + 6 );
+		}
+
+		// write buffer to export file
+		if ( ! file_put_contents( BackWPup::get_plugin_data( 'TEMP' ) . $this->job_object->temp[ 'wpexportfile' ], $buffer, FILE_APPEND ) ) {
+			$this->job_object->log( __( 'WP Export file could not be written.', 'backwpup' ), E_USER_ERROR );
+		}
+
+		$this->job_object->temp[ 'wp_export_part' ] ++;
+		$this->job_object->update_working_data();
 	}
 
 }

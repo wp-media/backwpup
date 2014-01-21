@@ -2,21 +2,18 @@
 /**
  * PHP OpenCloud library.
  * 
- * @copyright 2013 Rackspace Hosting, Inc. See LICENSE for information.
+ * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
  * @license   https://www.apache.org/licenses/LICENSE-2.0
- * @author    Glen Campbell <glen.campbell@rackspace.com>
  * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
  */
 
 namespace OpenCloud\Common;
 
 /**
- * Provides an abstraction for working with ordered sets of objects
- *
- * Collection objects are used whenever there are multiples; for example,
- * multiple objects in a container, or multiple servers in a service.
+ * @deprecated
+ * @codeCoverageIgnore
  */
-class Collection extends Base 
+class Collection extends Base
 {
 
     private $service;
@@ -44,35 +41,28 @@ class Collection extends Base
      *      (assumed to be the name of the factory method)
      * @param array $arr - the input array
      */
-    public function __construct($service, $class, array $array = array()) 
+    public function __construct($service, $class, array $array = array())
     {
+        $service->getLogger()->deprecated(__METHOD__, 'OpenCloud\Common\Collection\CollectionBuilder');
+
         $this->setService($service);
 
-        $this->getLogger()->info(
-            'Collection:service={class}, class={itemClass}, array={array}', 
-            array(
-                'class'     => get_class($service), 
-                'itemClass' => $class, 
-                'array'     => print_r($array, true)
-            )
-        );
-        
         $this->setNextPageClass($class);
-        
+
         // If they've supplied a FQCN, only get the last part
         $class = (false !== ($classNamePos = strrpos($class, '\\')))
             ? substr($class, $classNamePos + 1)
             : $class;
-        
+
         $this->setItemClass($class);
-        
+
         // Set data
         $this->setItemList($array);
     }
-    
+
     /**
      * Set the entire data array.
-     * 
+     *
      * @param array $array
      */
     private function setItemList(array $array)
@@ -80,20 +70,20 @@ class Collection extends Base
         $this->itemList = $array;
         return $this;
     }
-    
+
     /**
      * Retrieve the entire data array.
-     * 
+     *
      * @return array
      */
     public function getItemList()
     {
         return $this->itemList;
     }
-    
+
     /**
      * Set the service.
-     * 
+     *
      * @param Service|PersistentObject $service
      */
     public function setService($service)
@@ -101,17 +91,17 @@ class Collection extends Base
         $this->service = $service;
         return $this;
     }
-    
+
     /**
      * Retrieves the service associated with the Collection
      *
      * @return Service
      */
-    public function getService() 
+    public function getService()
     {
         return $this->service;
     }
-    
+
     /**
      * Set the resource class name.
      */
@@ -120,7 +110,7 @@ class Collection extends Base
         $this->itemClass = $itemClass;
         return $this;
     }
-    
+
     /**
      * Get item class.
      */
@@ -128,7 +118,7 @@ class Collection extends Base
     {
         return $this->itemClass;
     }
-        
+
     /**
      * Set the key that will be used for sorting.
      */
@@ -137,7 +127,7 @@ class Collection extends Base
         $this->sortKey = $sortKey;
         return $this;
     }
-    
+
     /**
      * Get the key that will be used for sorting.
      */
@@ -145,7 +135,7 @@ class Collection extends Base
     {
         return $this->sortKey;
     }
-    
+
     /**
      * Set next page class.
      */
@@ -154,7 +144,7 @@ class Collection extends Base
         $this->nextPageClass = $nextPageClass;
         return $this;
     }
-    
+
     /**
      * Get next page class.
      */
@@ -162,7 +152,7 @@ class Collection extends Base
     {
         return $this->nextPageClass;
     }
-    
+
     /**
      * for paginated collection, sets the callback function and URL for
      * the next page
@@ -178,13 +168,13 @@ class Collection extends Base
      * @param string $url the URL of the next page of results
      * @return void
      */
-    public function setNextPageCallback($callback, $url) 
+    public function setNextPageCallback($callback, $url)
     {
         $this->nextPageCallback = $callback;
         $this->nextPageUrl = $url;
         return $this;
     }
-    
+
     /**
      * Get next page callback.
      */
@@ -192,7 +182,7 @@ class Collection extends Base
     {
         return $this->nextPageCallback;
     }
-    
+
     /**
      * Get next page URL.
      */
@@ -207,31 +197,31 @@ class Collection extends Base
      * For most services, this is the total number of items. If the Collection
      * is paginated, however, this only returns the count of items in the
      * current page of data.
-     * 
+     *
      * @return int
      */
     public function count()
     {
         return count($this->getItemList());
     }
-    
+
     /**
      * Pseudonym for count()
-     * 
+     *
      * @codeCoverageIgnore
      */
-    public function size() 
+    public function size()
     {
         return $this->count();
     }
-    
+
     /**
      * Resets the pointer to the beginning, but does NOT return the first item
      *
      * @api
      * @return void
      */
-    public function reset() 
+    public function reset()
     {
         $this->pointer = 0;
     }
@@ -245,15 +235,15 @@ class Collection extends Base
      * @api
      * @return Base the first item in the set
      */
-    public function first() 
+    public function first()
     {
         $this->reset();
         return $this->next();
     }
-    
+
     /**
      * Return the item at a particular point of the array.
-     * 
+     *
      * @param  mixed $offset
      * @return mixed
      */
@@ -271,30 +261,30 @@ class Collection extends Base
     {
         $this->itemList[] = $item;
     }
-    
+
     /**
      * Returns the next item in the page
      *
      * @api
      * @return Base the next item or FALSE if at the end of the page
      */
-    public function next() 
+    public function next()
     {
         if ($this->pointer >= $this->count()) {
             return false;
         }
-        
+
         $data  = $this->getItem($this->pointer++);
         $class = $this->getItemClass();
 
-        // Are there specific methods in the parent/service that can be used to 
+        // Are there specific methods in the parent/service that can be used to
         // instantiate the resource? Currently supported: getResource(), resource()
         foreach (array($class, 'get' . ucfirst($class)) as $method) {
             if (method_exists($this->service, $method)) {
                 return call_user_func(array($this->service, $method), $data);
             }
         }
-        
+
         // Backup method
         if (method_exists($this->service, 'resource')) {
             return $this->service->resource($class, $data);
@@ -314,7 +304,7 @@ class Collection extends Base
      * @param string $keyname the name of the field to use as the sort key
      * @return void
      */
-    public function sort($keyname = 'id') 
+    public function sort($keyname = 'id')
     {
         $this->setSortKey($keyname);
         usort($this->itemList, array($this, 'sortCompare'));
@@ -354,7 +344,7 @@ class Collection extends Base
      * @returns void
      * @throws DomainError if callback doesn't return a boolean value
      */
-    public function select($testfunc) 
+    public function select($testfunc)
     {
         foreach ($this->getItemList() as $index => $item) {
             $test = call_user_func($testfunc, $item);
@@ -386,9 +376,9 @@ class Collection extends Base
      * @api
      * @return Collection if there are more pages of results, otherwise FALSE
      */
-    public function nextPage() 
+    public function nextPage()
     {
-        return ($this->getNextPageUrl() !== null) 
+        return ($this->getNextPageUrl() !== null)
             ? call_user_func($this->getNextPageCallback(), $this->getNextPageClass(), $this->getNextPageUrl())
             : false;
     }
@@ -396,7 +386,7 @@ class Collection extends Base
     /**
      * Compares two values of sort keys
      */
-    private function sortCompare($a, $b) 
+    private function sortCompare($a, $b)
     {
         $key = $this->getSortKey();
 

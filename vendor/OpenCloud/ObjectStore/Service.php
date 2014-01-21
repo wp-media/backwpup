@@ -2,7 +2,7 @@
 /**
  * PHP OpenCloud library.
  * 
- * @copyright 2013 Rackspace Hosting, Inc. See LICENSE for information.
+ * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
  * @license   https://www.apache.org/licenses/LICENSE-2.0
  * @author    Glen Campbell <glen.campbell@rackspace.com>
  * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
@@ -11,9 +11,12 @@
 namespace OpenCloud\ObjectStore;
 
 use Guzzle\Http\EntityBody;
-use OpenCloud\Common\Http\Client;
+use OpenCloud\Common\Constants\Header;
+use OpenCloud\Common\Constants\Mime;
 use OpenCloud\Common\Exceptions;
 use OpenCloud\Common\Exceptions\InvalidArgumentError;
+use OpenCloud\Common\Http\Client;
+use OpenCloud\Common\Http\Message\Formatter;
 use OpenCloud\Common\Service\ServiceBuilder;
 use OpenCloud\ObjectStore\Resource\Container;
 use OpenCloud\ObjectStore\Constants\UrlType;
@@ -137,7 +140,7 @@ class Service extends AbstractService
         );
         
         if (!in_array($archiveType, $acceptableTypes)) {
-            throw new Exceptions\InvalidArgumentError(sprintf(
+            throw new InvalidArgumentError(sprintf(
                 'The archive type must be one of the following: [%s]. You provided [%s].',
                 implode($acceptableTypes, ','),
                 print_r($archiveType, true)
@@ -145,12 +148,12 @@ class Service extends AbstractService
         }
         
         $url = $this->getUrl()->addPath($path)->setQuery(array('extract-archive' => $archiveType));
-        $response = $this->getClient()->put($url, array(), $entity)->send();
+        $response = $this->getClient()->put($url, array(Header::CONTENT_TYPE => ''), $entity)->send();
         
-        $message = $response->getDecodedBody();
+        $body = Formatter::decode($response);
 
-        if (!empty($message->Errors)) {
-            throw new Exception\BulkOperationException((array) $message->Errors);
+        if (!empty($body->Errors)) {
+            throw new Exception\BulkOperationException((array) $body->Errors);
         }
         
         return $response;
@@ -171,13 +174,13 @@ class Service extends AbstractService
         $url = $this->getUrl()->setQuery(array('bulk-delete' => true));
         
         $response = $this->getClient()
-            ->delete($url, array('Content-Type' => 'text/plain'), $entity)
+            ->delete($url, array(Header::CONTENT_TYPE => Mime::TEXT), $entity)
             ->send();
 
         try {
-            $message = $response->getDecodedBody();
-            if (!empty($message->Errors)) {
-                throw new Exception\BulkOperationException((array) $message->Errors);
+            $body = Formatter::decode($response);
+            if (!empty($body->Errors)) {
+                throw new Exception\BulkOperationException((array) $body->Errors);
             }
         } catch (Exceptions\JsonError $e) {}
         

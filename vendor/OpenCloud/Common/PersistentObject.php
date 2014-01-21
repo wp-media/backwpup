@@ -2,7 +2,7 @@
 /**
  * PHP OpenCloud library
  * 
- * @copyright 2013 Rackspace Hosting, Inc. See LICENSE for information.
+ * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
  * @license   https://www.apache.org/licenses/LICENSE-2.0
  * @author    Glen Campbell <glen.campbell@rackspace.com>
  * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
@@ -11,11 +11,12 @@
 namespace OpenCloud\Common;
 
 use Guzzle\Http\Exception\BadResponseException;
+use Guzzle\Http\Message\Response;
 use Guzzle\Http\Url;
 use OpenCloud\Common\Constants\State as StateConst;
-use OpenCloud\Common\Http\Message\Response;
-use OpenCloud\Common\Service\AbstractService;
+use OpenCloud\Common\Service\ServiceInterface;
 use OpenCloud\Common\Exceptions\RuntimeException;
+use OpenCloud\Common\Http\Message\Formatter;
 
 /**
  * Represents an object that can be retrieved, created, updated and deleted.
@@ -71,7 +72,6 @@ use OpenCloud\Common\Exceptions\RuntimeException;
  */
 abstract class PersistentObject extends Base
 {
-      
     private $service;
     private $parent;
     protected $metadata;
@@ -84,7 +84,7 @@ abstract class PersistentObject extends Base
      */
     public function __construct($service = null, $info = null)
     {
-        if ($service instanceof AbstractService) {
+        if ($service instanceof ServiceInterface) {
             $this->setService($service);
         }
         
@@ -96,9 +96,9 @@ abstract class PersistentObject extends Base
     /**
      * Sets the service associated with this resource object.
      * 
-     * @param OpenCloud\Common\Service\AbstractService $service
+     * @param \OpenCloud\Common\Service\ServiceInterface $service
      */
-    public function setService(AbstractService $service)
+    public function setService(ServiceInterface $service)
     {
         $this->service = $service;
         return $this;
@@ -108,7 +108,7 @@ abstract class PersistentObject extends Base
      * Returns the service object for this resource; required for making
      * requests, etc. because it has direct access to the Connection.
      * 
-     * @return OpenCloud\Common\Service\AbstractService
+     * @return \OpenCloud\Common\Service\ServiceInterface
      */
     public function getService()
     {
@@ -181,28 +181,7 @@ abstract class PersistentObject extends Base
 
         $createUrl = $this->createUrl();
 
-        $response = $this->getClient()->post($createUrl, array(), $json)
-            ->setExceptionHandler(array(
-                201 => array(
-                    'allow'    => true,
-                    // @codeCoverageIgnoreStart
-                    'callback' => function($response) use ($createUrl) {
-                            if ($location = $response->getHeader('Location')) {
-                                $parts = array_merge($createUrl->getParts(), parse_url($location));var_dump(Url::buildUrl($parts));die;
-                                $this->refresh(null, Url::buildUrl($parts));
-                            }
-                        }
-                    // @codeCoverageIgnoreEnd
-                ),
-                204 => array(
-                    'message' => sprintf(
-                        'Error creating [%s] [%s]',
-                        get_class($this),
-                        $this->getProperty($this->primaryKeyField())
-                    )
-                )
-            ))
-            ->send();
+        $response = $this->getClient()->post($createUrl, self::getJsonHeader(), $json)->send();
 
         // We have to try to parse the response body first because it should have precedence over a Location refresh.
         // I'd like to reverse the order, but Nova instances return ephemeral properties on creation which are not
@@ -253,7 +232,7 @@ abstract class PersistentObject extends Base
         $this->checkJsonError();
 
         // send the request
-        return $this->getClient()->put($this->getUrl(), array(), $json)->send();
+        return $this->getClient()->put($this->getUrl(), self::getJsonHeader(), $json)->send();
     }
 
     /**
@@ -290,7 +269,6 @@ abstract class PersistentObject extends Base
             $this->setProperty('status', null);
         }
 
-        // perform a GET on the URL
         $response = $this->getClient()->get($url)->send();
   
         if (null !== ($decoded = $this->parseResponse($response))) {
@@ -314,7 +292,15 @@ abstract class PersistentObject extends Base
         // send the request
         return $this->getClient()->delete($this->getUrl())->send();
     }
-    
+
+    /**
+     * @deprecated
+     */
+    public function url($path = null, array $query = array())
+    {
+        return $this->getUrl($path, $query);
+    }
+
     /**
      * Returns the default URL of the object
      *
@@ -324,19 +310,14 @@ abstract class PersistentObject extends Base
      * @param array $qstr optional k/v pairs for query strings
      * @return string
      */
-    public function url($path = null, array $query = array())
-    {
-        return $this->getUrl($path, $query);
-    }
-    
     public function getUrl($path = null, array $query = array())
     {
         if (!$url = $this->findLink('self')) {
-            
+
             // ...otherwise construct a URL from parent and this resource's
             // "URL name". If no name is set, resourceName() throws an error.
             $url = $this->getParent()->getUrl($this->resourceName());
-            
+
             // Does it have a primary key?
             if (null !== ($primaryKey = $this->getProperty($this->primaryKeyField()))) {
                 $url->addPath($primaryKey);
@@ -346,7 +327,7 @@ abstract class PersistentObject extends Base
         if (!$url instanceof Url) {
             $url = Url::factory($url);
         }
-        
+
         return $url->addPath($path)->setQuery($query);
     }
 
@@ -438,7 +419,7 @@ abstract class PersistentObject extends Base
         $url = $this->url('action');
 
         // POST the message
-        return $this->getClient()->post($url, array(), $json)->send();
+        return $this->getClient()->post($url, self::getJsonHeader(), $json)->send();
     }
 
      /**
@@ -464,7 +445,7 @@ abstract class PersistentObject extends Base
             }
         }
 
-        if (!empty($this->metadata)) {
+        if (isset($this->metadata) && count($this->metadata)) {
             $element->metadata = (object) $this->metadata->toArray();
         }
 
@@ -731,7 +712,7 @@ abstract class PersistentObject extends Base
     
     public function parseResponse(Response $response)
     {
-        $body = $response->getDecodedBody();
+        $body = Formatter::decode($response);
         
         $top = $this->jsonName();
             

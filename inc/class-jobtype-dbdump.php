@@ -199,9 +199,8 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 				}
 				if ( empty( $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ] ) ) {
 					$num_records = $sql_dump->dump_table_head( $table );
-					$job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ] = array( 'records' => $num_records,
-																										'start'   => 0,
-																										'length'   => 100 );
+					$job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ] = array( 'start'   => 0,
+																										'length'   => 1000 );
 					$job_object->log( sprintf( __( 'Backup database table "%s" with "%d" records', 'backwpup' ), $table, $num_records ) );
 					if ( empty( $num_records ) ) {
 						$job_object->substeps_done++;
@@ -209,21 +208,24 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 						continue;
 					}
 				}
-				while ( $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'start' ] < $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'records' ] ) {
+				$while = true;
+				while ( $while ) {
 					$dump_start_time = microtime( TRUE );
-					$sql_dump->dump_table( $table ,$job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'start' ], $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'length' ] );
-					$dump_time = microtime( TRUE ) - $dump_start_time + 0.00000001;
-					$job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'start' ] = $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'start' ] + $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'length' ];
+					$done_records = $sql_dump->dump_table( $table ,$job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'start' ], $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'length' ] );
+					$dump_time = microtime( TRUE ) - $dump_start_time;
+					if ( $done_records < $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'length' ] ) //that is the last chunk
+						$while = FALSE;
+					$job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'start' ] = $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'start' ] + $done_records;
 					// dump time per record and set next length
-					$length = ceil( ( $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'length' ] / $dump_time ) * $job_object->get_restart_time() );
-					if ( $length > 25000 ||  0 >= $job_object->get_restart_time() )
+					$length = ceil( ( $done_records / $dump_time ) * $job_object->get_restart_time() );
+					if ( $length > 25000 || 0 >= $job_object->get_restart_time() )
 						$length = 25000;
 					if ( $length < 1000 )
 						$length = 1000;
 					$job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'length' ] =  $length;
 					$job_object->do_restart_time();
 				}
-				if ( $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'records' ] > 0)
+				if ( $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'start' ] > 0 )
 					$sql_dump->dump_table_footer( $table );
 				$job_object->substeps_done++;
 				$i++;

@@ -1412,20 +1412,14 @@ final class BackWPup_Job {
 	 */
 	public function get_mime_type( $file ) {
 
-		if ( ! is_readable( $file ) || is_dir( $file ) )
-			return FALSE;
-
-		if ( function_exists( 'fileinfo' ) ) {
-			$finfo = finfo_open( FILEINFO_MIME_TYPE );
-
-			return finfo_file( $finfo, $file );
-		}
-
-		if ( function_exists( 'mime_content_type' ) ) {
-			return mime_content_type( $file );
-		}
+		if ( is_dir( $file ) || is_link( $file ) )
+			return 'application/octet-stream';
 
 		$mime_types = array(
+			'zip'     => 'application/zip',
+			'gz'      => 'application/gzip',
+			'bz2'     => 'application/x-bzip',
+			'tar'     => 'application/x-tar',
 			'3gp'     => 'video/3gpp',
 			'ai'      => 'application/postscript',
 			'aif'     => 'audio/x-aiff',
@@ -1467,7 +1461,6 @@ final class BackWPup_Job {
 			'gram'    => 'application/srgs',
 			'grxml'   => 'application/srgs+xml',
 			'gtar'    => 'application/x-gtar',
-			'gz'      => 'application/x-gzip',
 			'hdf'     => 'application/x-hdf',
 			'hqx'     => 'application/mac-binhex40',
 			'htm'     => 'text/html',
@@ -1566,7 +1559,6 @@ final class BackWPup_Job {
 			'svg'     => 'image/svg+xml',
 			'swf'     => 'application/x-shockwave-flash',
 			't'       => 'application/x-troff',
-			'tar'     => 'application/x-tar',
 			'tcl'     => 'application/x-tcl',
 			'tex'     => 'application/x-tex',
 			'texi'    => 'application/x-texinfo',
@@ -1601,15 +1593,28 @@ final class BackWPup_Job {
 			'xul'     => 'application/vnd.mozilla.xul+xml',
 			'xwd'     => 'image/x-xwindowdump',
 			'xyz'     => 'chemical/x-xyz',
-			'zip'     => 'application/zip'
 		);
 
-		$filesuffix = pathinfo($file, PATHINFO_EXTENSION);
+		$filesuffix = pathinfo( $file, PATHINFO_EXTENSION );
 		$suffix = strtolower( $filesuffix );
 		if ( isset( $mime_types[ $suffix ] ) )
 			return $mime_types[ $suffix ];
 
-		return 'application/octet-stream';
+		if ( ! is_readable( $file ) )
+			return 'application/octet-stream';
+
+		if ( function_exists( 'fileinfo' ) ) {
+			$finfo = finfo_open( FILEINFO_MIME_TYPE );
+			$mime = finfo_file( $finfo, $file );
+		}
+
+		if ( empty( $mime ) && function_exists( 'mime_content_type' ) )
+			$mime = mime_content_type( $file );
+
+		if ( empty( $mime ) )
+			return 'application/octet-stream';
+		else
+			return $mime;
 	}
 
 
@@ -1624,11 +1629,13 @@ final class BackWPup_Job {
 	public function get_files_in_folder( $folder ) {
 
 		$files = array();
+		$folder = trailingslashit( $folder );
 
 		if ( ! is_dir( $folder ) ) {
 			$this->log( sprintf( _x( 'Folder %s not exists', 'Folder name', 'backwpup' ), $folder ), E_USER_WARNING );
 			return $files;
 		}
+
 		if ( ! is_readable( $folder ) ) {
 			$this->log( sprintf( _x( 'Folder %s not readable', 'Folder name', 'backwpup' ), $folder ), E_USER_WARNING );
 			return $files;
@@ -1636,7 +1643,7 @@ final class BackWPup_Job {
 
 		if ( $dir = opendir( $folder ) ) {
 			while ( FALSE !== ( $file = readdir( $dir ) ) ) {
-				if ( in_array( $file, array( '.', '..' ) ) )
+				if ( in_array( $file, array( '.', '..' ) ) || is_dir( $folder . $file ) )
 					continue;
 				foreach ( $this->exclude_from_backup as $exclusion ) { //exclude files
 					$exclusion = trim( $exclusion );
@@ -1645,11 +1652,11 @@ final class BackWPup_Job {
 				}
 				if ( $this->job[ 'backupexcludethumbs' ] && strpos( $folder, BackWPup_File::get_upload_dir() ) !== FALSE && preg_match( "/\-[0-9]{2,4}x[0-9]{2,4}\.(jpg|png|gif)$/i", $file ) )
 					continue;
-				if ( ! is_readable( $folder . $file ) )
-					$this->log( sprintf( __( 'File "%s" is not readable!', 'backwpup' ), $folder . $file ), E_USER_WARNING );
-				elseif ( is_link( $folder . $file ) )
+				if ( is_link( $folder . $file ) )
 					$this->log( sprintf( __( 'Link "%s" not following.', 'backwpup' ), $folder . $file ), E_USER_WARNING );
-				elseif ( ! is_dir( $folder . $file ) ) {
+				elseif ( ! is_readable( $folder . $file ) )
+					$this->log( sprintf( __( 'File "%s" is not readable!', 'backwpup' ), $folder . $file ), E_USER_WARNING );
+				else {
 					$files[ ] = $folder . $file;
 					$this->count_files_in_folder ++;
 					$this->count_filesize_in_folder = $this->count_filesize_in_folder + @filesize( $folder . $file );

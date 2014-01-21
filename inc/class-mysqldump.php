@@ -348,34 +348,12 @@ class BackWPup_MySQLDump {
 		$tablecreate .= "/*!40101 SET character_set_client = @saved_cs_client */;\n";
 		$this->write( $tablecreate );
 
-		//get table size
-		$records = 0;
-		// MyISAM has exact size in status
-		if ( $this->table_status[ $table ][ 'Engine' ] == 'MyISAM' ) {
-			$records = $this->table_status[ $table ][ 'Rows' ];
-		} else {
-			// for other count size
-			$res = $this->mysqli->query( "SELECT SQL_CALC_FOUND_ROWS * FROM `" . $table . "`  LIMIT 1");
-			$GLOBALS[ 'wpdb' ]->num_queries ++;
-			if ( $this->mysqli->error )
-				throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SELECT SQL_CALC_FOUND_ROWS * FROM `" . $table . "`  LIMIT 1" ) );
-			$GLOBALS[ 'wpdb' ]->num_queries ++;
-			$res->close();
-			$res = $this->mysqli->query( "SELECT FOUND_ROWS() AS count_records");
-			$GLOBALS[ 'wpdb' ]->num_queries ++;
-			if ( $this->mysqli->error )
-				throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SELECT FOUND_ROWS() AS count_records" ) );
-			$count_records =  $res->fetch_assoc();
-			$res->close();
-			$records = $count_records[ 'count_records' ];
-		}
-
-		if ( $records > 0 ) {
+		if ( $this->table_status[ $table ][ 'Rows' ] > 0 ) {
 			//Dump Table data
 			$this->write( "\n--\n-- Backup data for table `" . $table . "`\n--\n\nLOCK TABLES `" . $table . "` WRITE;\n/*!40000 ALTER TABLE `" . $table . "` DISABLE KEYS */;\n" );
 		}
 
-		return $records;
+		return $this->table_status[ $table ][ 'Rows' ];
 
 	}
 
@@ -393,9 +371,10 @@ class BackWPup_MySQLDump {
 	/**
 	 * Dump table  Data
 	 *
-	 * @param string $table   name of Table to dump
-	 * @param int    $start   Start of lengh paramter
+	 * @param string $table  name of Table to dump
+	 * @param int    $start  Start of lengh paramter
 	 * @param int    $length how many
+	 * @return int	 done records in this backup
 	 * @throws BackWPup_MySQLDump_Exception
 	 */
 	public function dump_table( $table, $start, $length = 100 ) {
@@ -409,6 +388,7 @@ class BackWPup_MySQLDump {
 		if ( $length == 0 )
 			return;
 
+		$done_records = 0;
 		//get data from table
 		$res = $this->mysqli->query( "SELECT * FROM `" . $table . "` LIMIT " . $start . ", " . $length, MYSQLI_USE_RESULT );
 		$GLOBALS[ 'wpdb' ]->num_queries ++;
@@ -447,12 +427,15 @@ class BackWPup_MySQLDump {
 				$this->write( $dump );
 				$dump = '';
 			}
+			$done_records ++;
 		}
 		if ( ! empty( $dump ) ) {
 			$dump = substr( $dump, 0, -2 ) . ";\n" ;
 			$this->write( $dump );
 		}
 		$res->close();
+
+		return $done_records;
 	}
 
 	/**

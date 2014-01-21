@@ -2,7 +2,6 @@
 // Rackspace OpenCloud SDK v1.7.3
 // http://www.rackspace.com/cloud/files/
 // https://github.com/rackspace/php-opencloud
-include_once BackWPup::get_plugin_data( 'PluginDir' ) . '/vendor/autoloader.php';
 
 /**
  *
@@ -70,6 +69,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 						<option value="SYD" <?php selected( 'SYD', BackWPup_Option::get( $jobid, 'rscregion' ), TRUE ) ?>><?php _e( 'Sydney (SYD)', 'backwpup' ); ?></option>
 						<option value="LON" <?php selected( 'LON', BackWPup_Option::get( $jobid, 'rscregion' ), TRUE ) ?>><?php _e( 'London (LON)', 'backwpup' ); ?></option>
 						<option value="IAD" <?php selected( 'IAD', BackWPup_Option::get( $jobid, 'rscregion' ), TRUE ) ?>><?php _e( 'Northern Virginia (IAD)', 'backwpup' ); ?></option>
+						<option value="HKG" <?php selected( 'HKG', BackWPup_Option::get( $jobid, 'rscregion' ), TRUE ) ?>><?php _e( 'Hong Kong (HKG)', 'backwpup' ); ?></option>
 					</select><br/>
 				</td>
 			</tr>
@@ -309,21 +309,19 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			$filecounter    = 0;
 			$files          = array();
 			$objlist        = $container->objectList( array( 'prefix' => $job_object->job[ 'rscdir' ] ) );
-			if ( $objlist->size() > 0 ) {
-				while ( $object = $objlist->next() ) {
-					$file = basename( $object->getName() );
-					if ( $job_object->job[ 'rscdir' ] . $file == $object->getName() ) { //only in the folder and not in complete bucket
-						if ( $job_object->is_backup_archive( $file ) )
-							$backupfilelist[ strtotime( $object->getLastModified() ) ] = $object;
-					}
-					$files[ $filecounter ][ 'folder' ]      = "RSC://" . $job_object->job[ 'rsccontainer' ] . "/" . dirname( $object->getName() ) . "/";
-					$files[ $filecounter ][ 'file' ]        = $object->getName();
-					$files[ $filecounter ][ 'filename' ]    = basename( $object->getName() );
-					$files[ $filecounter ][ 'downloadurl' ] = network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=downloadrsc&file=' . $object->getName() . '&jobid=' . $job_object->job[ 'jobid' ];
-					$files[ $filecounter ][ 'filesize' ]    = $object->getContentLength();
-					$files[ $filecounter ][ 'time' ]        = strtotime( $object->getLastModified() ) + ( get_option( 'gmt_offset' ) * 3600 );
-					$filecounter ++;
+			while ( $object = $objlist->next() ) {
+				$file = basename( $object->getName() );
+				if ( $job_object->job[ 'rscdir' ] . $file == $object->getName() ) { //only in the folder and not in complete bucket
+					if ( $job_object->is_backup_archive( $file ) )
+						$backupfilelist[ strtotime( $object->getLastModified() ) ] = $object;
 				}
+				$files[ $filecounter ][ 'folder' ]      = "RSC://" . $job_object->job[ 'rsccontainer' ] . "/" . dirname( $object->getName() ) . "/";
+				$files[ $filecounter ][ 'file' ]        = $object->getName();
+				$files[ $filecounter ][ 'filename' ]    = basename( $object->getName() );
+				$files[ $filecounter ][ 'downloadurl' ] = network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=downloadrsc&file=' . $object->getName() . '&jobid=' . $job_object->job[ 'jobid' ];
+				$files[ $filecounter ][ 'filesize' ]    = $object->getContentLength();
+				$files[ $filecounter ][ 'time' ]        = strtotime( $object->getLastModified() );
+				$filecounter ++;
 			}
 			if ( ! empty( $job_object->job[ 'rscmaxbackups' ] ) && $job_object->job[ 'rscmaxbackups' ] > 0 ) { //Delete old backups
 				if ( count( $backupfilelist ) > $job_object->job[ 'rscmaxbackups' ] ) {
@@ -333,7 +331,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 						if ( count( $backupfilelist ) < $job_object->job[ 'rscmaxbackups' ] )
 							break;
 						foreach ( $files as $key => $filedata ) {
-							if ( $filedata[ 'file' ] == $job_object->job[ 'rscdir' ] . $file->getName() )
+							if ( $filedata[ 'file' ] == $file->getName() )
 								unset( $files[ $key ] );
 						}
 						$file->delete();
@@ -421,6 +419,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 		}
 		echo '<span id="rsccontainererror" style="color:red;">';
 
+		$container_list = array();
 		if ( ! empty( $args[ 'rscusername' ] ) && ! empty( $args[ 'rscapikey' ]  )  && ! empty( $args[ 'rscregion' ]  ) ) {
 			try {
 				$conn = new OpenCloud\Rackspace(
@@ -432,10 +431,12 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 
 				$ostore = $conn->objectStoreService( 'cloudFiles' , $args[ 'rscregion' ], 'publicURL' );
 				$containerlist = $ostore->listContainers();
+				while( $container = $containerlist->next() ) {
+					$container_list[] = $container->name;
+				}
 			}
 			catch ( Exception $e ) {
 				$error = $e->getMessage();
-				$containerlist = NULL;
 			}
 		}
 
@@ -445,15 +446,14 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			_e( 'Missing API Key!', 'backwpup' );
 		elseif ( ! empty( $error ) )
 			echo esc_html( $error );
-		elseif ( ! is_object( $containerlist ) || $containerlist->Size() == 0 )
+		elseif ( empty( $container_list ) )
 			_e( "A container could not be found!", 'backwpup' );
 		echo '</span>';
 
-		if ( isset( $containerlist )  && $containerlist->Size() > 0 ) {
+		if ( ! empty( $container_list ) ) {
 			echo '<select name="rsccontainer" id="rsccontainer">';
-			while( $container = $containerlist->Next() ) {
-				echo "<option " . selected( strtolower( $args[ 'rscselected' ] ), strtolower( $container->name ), FALSE ) . ">" . $container->name . "</option>";
-			}
+			foreach( $container_list as $container_name )
+				echo "<option " . selected( strtolower( $args[ 'rscselected' ] ), strtolower( $container_name ), FALSE ) . ">" . $container_name . "</option>";
 			echo '</select>';
 		}
 

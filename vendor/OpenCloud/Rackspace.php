@@ -2,7 +2,7 @@
 /**
  * PHP OpenCloud library.
  * 
- * @copyright 2013 Rackspace Hosting, Inc. See LICENSE for information.
+ * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
  * @license   https://www.apache.org/licenses/LICENSE-2.0
  * @author    Glen Campbell <glen.campbell@rackspace.com>
  * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
@@ -10,7 +10,9 @@
 
 namespace OpenCloud;
 
+use OpenCloud\Common\Exceptions\CredentialError;
 use OpenCloud\Common\Service\ServiceBuilder;
+use OpenCloud\Identity\Service as IdentityService;
 
 /**
  * Rackspace extends the OpenStack class with support for Rackspace's
@@ -34,15 +36,8 @@ use OpenCloud\Common\Service\ServiceBuilder;
  */
 class Rackspace extends OpenStack
 {
-	const US_IDENTITY_ENDPOINT = 'https://identity.api.rackspacecloud.com/v2.0/';
-	const UK_IDENTITY_ENDPOINT = 'https://lon.identity.api.rackspacecloud.com/v2.0/';
-	
-    /**
-     * JSON template for Rackspace credentials
-     */
-    const CREDS_TEMPLATE = <<<EOF
-{"auth":{"RAX-KSKEY:apiKeyCredentials":{"username":"%s","apiKey":"%s"}}}
-EOF;
+    const US_IDENTITY_ENDPOINT = 'https://identity.api.rackspacecloud.com/v2.0/';
+    const UK_IDENTITY_ENDPOINT = 'https://lon.identity.api.rackspacecloud.com/v2.0/';
 
     /**
      * Generates Rackspace API key credentials
@@ -51,10 +46,27 @@ EOF;
     public function getCredentials()
     {
         $secret = $this->getSecret();
-        
-        return (!empty($secret['username']) && !empty($secret['apiKey']))
-            ? sprintf(self::CREDS_TEMPLATE, $secret['username'], $secret['apiKey'])
-            : parent::getCredentials();
+
+        if (!empty($secret['username']) && !empty($secret['apiKey'])) {
+
+            $credentials = array('auth' => array(
+                'RAX-KSKEY:apiKeyCredentials' => array(
+                    'username' => $secret['username'],
+                    'apiKey'   => $secret['apiKey']
+                )
+            ));
+
+            if (!empty($secret['tenantName'])) {
+                $credentials['auth']['tenantName'] = $secret['tenantName'];
+            } elseif (!empty($secret['tenantId'])) {
+                $credentials['auth']['tenantId'] = $secret['tenantId'];
+            }
+
+            return json_encode($credentials);
+
+        } else {
+            throw new CredentialError('Unrecognized credential secret');
+        }
     }
 
     /**

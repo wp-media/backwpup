@@ -525,14 +525,14 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 			$excludedir[ ] = trailingslashit( str_replace( '\\', '/', realpath( WP_PLUGIN_DIR ) ) );
 		if ( FALSE !== strpos( trailingslashit( str_replace( '\\', '/', realpath( get_theme_root() ) ) ), $folder ) && trailingslashit( str_replace( '\\', '/', realpath( get_theme_root() ) ) ) != $folder )
 			$excludedir[ ] = trailingslashit( str_replace( '\\', '/', realpath( get_theme_root() ) ) );
-		if ( FALSE !== strpos( trailingslashit( realpath( BackWPup_File::get_upload_dir() ) ), $folder ) && trailingslashit( realpath( BackWPup_File::get_upload_dir() ) ) != $folder )
-			$excludedir[ ] = trailingslashit( realpath( BackWPup_File::get_upload_dir() ) );
+		if ( FALSE !== strpos( trailingslashit( str_replace( '\\', '/', realpath( BackWPup_File::get_upload_dir() ) ) ), $folder ) && trailingslashit( str_replace( '\\', '/', realpath( BackWPup_File::get_upload_dir() ) ) ) != $folder )
+			$excludedir[ ] = trailingslashit( str_replace( '\\', '/', realpath( BackWPup_File::get_upload_dir() ) ) );
 
 		//Exclude Backup dirs
 		$jobids = BackWPup_Option::get_job_ids();
 		foreach ( $jobids as $id ) {
-			$backupdir = realpath( BackWPup_Option::get( $id, 'backupdir' ) );
-			if ( ! empty( $backupdir ) && $backupdir != '/' )
+			$backupdir = BackWPup_Option::get( $id, 'backupdir' );
+			if ( ! empty( $backupdir ) && $backupdir != '/' && is_dir( $backupdir ) )
 				$excludedir[ ] = trailingslashit( str_replace( '\\', '/', $backupdir ) );
 		}
 

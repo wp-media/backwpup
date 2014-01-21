@@ -2,7 +2,7 @@
 /**
  * PHP OpenCloud library.
  *
- * @copyright 2013 Rackspace Hosting, Inc. See LICENSE for information.
+ * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
  * @license   https://www.apache.org/licenses/LICENSE-2.0
  * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
  * @author    Glen Campbell <glen.campbell@rackspace.com>
@@ -11,10 +11,11 @@
 namespace OpenCloud\ObjectStore\Resource;
 
 use Guzzle\Http\EntityBody;
+use Guzzle\Http\Message\Response;
 use Guzzle\Http\Url;
+use OpenCloud\Common\Constants\Header as HeaderConst;
 use OpenCloud\Common\Lang;
 use OpenCloud\Common\Exceptions;
-use OpenCloud\Common\Http\Message\Response;
 use OpenCloud\ObjectStore\Constants\UrlType;
 
 /**
@@ -127,10 +128,10 @@ class DataObject extends AbstractResource
         $headers = $response->getHeaders();
 
         return $this->setMetadata($headers, true)
-            ->setContentType((string) $headers['Content-type'])
-            ->setLastModified((string) $headers['Last-Modified'])
-            ->setContentLength((string) $headers['Content-Length'])
-            ->setEtag((string) $headers['ETag']);
+            ->setContentType((string) $headers[HeaderConst::CONTENT_TYPE])
+            ->setLastModified((string) $headers[HeaderConst::LAST_MODIFIED])
+            ->setContentLength((string) $headers[HeaderConst::CONTENT_LENGTH])
+            ->setEtag((string) $headers[HeaderConst::ETAG]);
     }
 
     public function refresh()
@@ -255,7 +256,7 @@ class DataObject extends AbstractResource
      */
     public function getContentLength()
     {
-        return $this->contentLength ?: $this->content->getContentLength();
+        return $this->contentLength !== null ? $this->contentLength : $this->content->getContentLength();
     }
 
     /**
@@ -303,7 +304,17 @@ class DataObject extends AbstractResource
 
     public function update($params = array())
     {
-        return $this->container->uploadObject($this->name, $this->content, $this->metadata->toArray());
+        $metadata = self::stockHeaders($this->metadata->toArray());
+
+        // merge specific properties with metadata
+        $metadata += array(
+            HeaderConst::CONTENT_TYPE => $this->contentType,
+            HeaderConst::LAST_MODIFIED => $this->lastModified,
+            HeaderConst::CONTENT_LENGTH => $this->contentLength,
+            HeaderConst::ETAG => $this->etag
+        );
+
+        return $this->container->uploadObject($this->name, $this->content, $metadata);
     }
 
     /**
@@ -412,4 +423,5 @@ class DataObject extends AbstractResource
         
         return (isset($uri)) ? Url::factory($uri)->addPath($this->name) : false;
     }
+
 }

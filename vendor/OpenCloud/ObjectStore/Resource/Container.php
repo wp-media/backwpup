@@ -2,7 +2,7 @@
 /**
  * PHP OpenCloud library.
  *
- * @copyright 2013 Rackspace Hosting, Inc. See LICENSE for information.
+ * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
  * @license   https://www.apache.org/licenses/LICENSE-2.0
  * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
  * @author    Glen Campbell <glen.campbell@rackspace.com>
@@ -12,13 +12,13 @@ namespace OpenCloud\ObjectStore\Resource;
 
 use Guzzle\Http\EntityBody;
 use Guzzle\Http\Exception\ClientErrorResponseException;
+use Guzzle\Http\Message\Response;
 use Guzzle\Http\Url;
-use OpenCloud\Common\Collection;
 use OpenCloud\Common\Constants\Size;
 use OpenCloud\Common\Exceptions;
-use OpenCloud\Common\Http\Message\Response;
-use OpenCloud\Common\Service\AbstractService;
+use OpenCloud\Common\Service\ServiceInterface;
 use OpenCloud\ObjectStore\Constants\Header as HeaderConst;
+use OpenCloud\ObjectStore\Upload\DirectorySync;
 use OpenCloud\ObjectStore\Upload\TransferBuilder;
 
 /**
@@ -42,7 +42,7 @@ class Container extends AbstractContainer
      */
     private $cdn;
 
-    public function __construct(AbstractService $service, $data = null)
+    public function __construct(ServiceInterface $service, $data = null)
     {
         parent::__construct($service, $data);
 
@@ -59,10 +59,10 @@ class Container extends AbstractContainer
      * Factory method that instantiates an object from a Response object.
      *
      * @param Response        $response
-     * @param AbstractService $service
+     * @param ServiceInterface $service
      * @return static
      */
-    public static function fromResponse(Response $response, AbstractService $service)
+    public static function fromResponse(Response $response, ServiceInterface $service)
     {
         $self = parent::fromResponse($response, $service);
         
@@ -150,13 +150,18 @@ class Container extends AbstractContainer
             $this->deleteAllObjects();
         }
 
-        return $this->getClient()->delete($this->getUrl())
-            ->setExceptionHandler(array(
-                404 => 'Container not found',
-                409 => 'Container must be empty before deleting. Please set the $deleteObjects argument to TRUE.',
-                300 => 'Unknown error'
-            ))
-            ->send();
+        try {
+            $response = $this->getClient()->delete($this->getUrl())->send();
+        } catch (ClientErrorResponseException $e) {
+            if ($e->getResponse()->getStatusCode() == 409) {
+                throw new ContainerException(sprintf(
+                    'The API returned this error: %s. You might have to delete all existing objects before continuing.',
+                    (string) $e->getResponse()->getBody()
+                ));
+            } else {
+                throw $e;
+            }
+        }
     }
 
     /**
@@ -171,7 +176,7 @@ class Container extends AbstractContainer
         
         $list = $this->objectList();
         
-        while ($object = $list->next()) {
+        foreach ($list as $object) {
             $requests[] = $this->getClient()->delete($object->getUrl());
         }
 
@@ -203,13 +208,7 @@ class Container extends AbstractContainer
     public function objectList(array $params = array())
     {
         $params['format'] = 'json';
-
-        $objects = $this->getClient()
-            ->get($this->getUrl(null, $params))
-            ->send()
-            ->getDecodedBody();
-
-        return new Collection($this, 'OpenCloud\ObjectStore\Resource\DataObject', $objects);
+        return $this->getService()->resourceList('DataObject', $this->getUrl(null, $params), $this);
     }
 
     /**
@@ -260,8 +259,10 @@ class Container extends AbstractContainer
      */
     public function disableCdn()
     {
+        $headers = array('X-CDN-Enabled' => 'False');
+
         return $this->getClient()
-            ->put($this->getCdnService()->getUrl($this->name), array('X-CDN-Enabled' => 'False'))
+            ->put($this->getCdnService()->getUrl($this->name), $headers)
             ->send();
     }
 
@@ -271,17 +272,19 @@ class Container extends AbstractContainer
         $this->setMetadata($headers, true);
         
         try {
-            
-            $cdn = new CDNContainer($this->getService()->getCDNService());
-            $cdn->setName($this->name);
-            
-            $response = $cdn->createRefreshRequest()->send();
-            
-            if ($response->isSuccessful()) {
-                $this->cdn = $cdn;
-                $this->cdn->setMetadata($response->getHeaders(), true);
+            if (null !== ($cdnService = $this->getService()->getCDNService())) {
+                $cdn = new CDNContainer($cdnService);
+                $cdn->setName($this->name);
+
+                $response = $cdn->createRefreshRequest()->send();
+
+                if ($response->isSuccessful()) {
+                    $this->cdn = $cdn;
+                    $this->cdn->setMetadata($response->getHeaders(), true);
+                }
+            } else {
+                $this->cdn = null;
             }
-            
         } catch (ClientErrorResponseException $e) {}   
     }
 
@@ -328,6 +331,26 @@ class Container extends AbstractContainer
     }
 
     /**
+     * Essentially the same as {@see getObject()}, except only the metadata is fetched from the API.
+     * This is useful for cases when the user does not want to fetch the full entity body of the
+     * object, only its metadata.
+     *
+     * @param       $name
+     * @param array $headers
+     * @return $this
+     */
+    public function getPartialObject($name, array $headers = array())
+    {
+        $response = $this->getClient()
+            ->head($this->getUrl($name), $headers)
+            ->send();
+
+        return $this->dataObject()
+            ->populateFromResponse($response)
+            ->setName($name);
+    }
+
+    /**
      * Upload a single file to the API.
      *
      * @param       $name    Name that the file will be saved as in your container.
@@ -342,9 +365,14 @@ class Container extends AbstractContainer
         $url = clone $this->getUrl();
         $url->addPath($name);
 
-        $this->getClient()->put($url, $headers, $entityBody)->send();
+        // @todo for new major release: Return response rather than populated DataObject
 
-        return $this->getObject($name);
+        $response = $this->getClient()->put($url, $headers, $entityBody)->send();
+
+        return $this->dataObject()
+            ->populateFromResponse($response)
+            ->setName($name)
+            ->setContent($entityBody);
     }
 
     /**
@@ -455,6 +483,17 @@ class Container extends AbstractContainer
         }
 
         return $transfer->build();
+    }
+
+    /**
+     * Upload the contents of a local directory to a remote container, effectively syncing them.
+     *
+     * @param $path The local path to the directory.
+     */
+    public function uploadDirectory($path)
+    {
+        $sync = DirectorySync::factory($path, $this);
+        $sync->execute();
     }
 
 }

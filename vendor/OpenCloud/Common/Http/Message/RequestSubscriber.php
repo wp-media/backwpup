@@ -2,7 +2,7 @@
 /**
  * PHP OpenCloud library.
  * 
- * @copyright 2013 Rackspace Hosting, Inc. See LICENSE for information.
+ * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
  * @license   https://www.apache.org/licenses/LICENSE-2.0
  * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
  * @author    Glen Campbell <glen.campbell@rackspace.com>
@@ -12,12 +12,11 @@ namespace OpenCloud\Common\Http\Message;
 
 use Guzzle\Common\Event;
 use Guzzle\Http\Message\EntityEnclosingRequest;
+use OpenCloud\Common\Constants\Header;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Description of RequestSubscriber
- * 
- * @link 
  */
 class RequestSubscriber implements EventSubscriberInterface
 {
@@ -30,20 +29,8 @@ class RequestSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            'request.before_send'    => 'ensureContentType',
             'curl.callback.progress' => 'doCurlProgress'
         );
-    }
-
-    public function ensureContentType(Event $event)
-    {
-        if ($event['request'] instanceof EntityEnclosingRequest
-            && $event['request']->getBody()
-            && $event['request']->getBody()->getContentLength()
-            && !$event['request']->hasHeader('Content-Type')
-        ) {
-            $event['request']->setHeader('Content-Type', 'application/json');
-        }
     }
 
     /**

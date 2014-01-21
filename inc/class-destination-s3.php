@@ -1,8 +1,7 @@
 <?php
-// Amazon S3 SDK v2.4.11
+// Amazon S3 SDK v2.5.1
 // http://aws.amazon.com/de/sdkforphp2/
 // https://github.com/aws/aws-sdk-php
-include_once BackWPup::get_plugin_data( 'PluginDir' ) . '/vendor/autoloader.php';
 
 /**
  * Documentation: http://docs.amazonwebservices.com/aws-sdk-php-2/latest/class-Aws.S3.S3Client.html
@@ -37,6 +36,8 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				return 'https://s3-ap-southeast-2.amazonaws.com';
 			case 'sa-east-1':
 				return 'https://s3-sa-east-1.amazonaws.com';
+			case 'cn-north-1':
+				return 'https:/cn-north-1.amazonaws.com';
 			case 'google-storage':
 				return 'https://storage.googleapis.com';
 			case 'hosteurope':
@@ -79,6 +80,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 						<option value="ap-southeast-1" <?php selected( 'ap-southeast-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: Asia Pacific (Singapore)', 'backwpup' ); ?></option>
 						<option value="ap-southeast-2" <?php selected( 'ap-southeast-2', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: Asia Pacific (Sydney)', 'backwpup' ); ?></option>
 						<option value="sa-east-1" <?php selected( 'sa-east-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: South America (Sao Paulo)', 'backwpup' ); ?></option>
+						<option value="cn-north-1" <?php selected( 'cn-north-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: China (Beijing)', 'backwpup' ); ?></option>
 						<option value="google-storage" <?php selected( 'google-storage', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Google Storage (Interoperable Access)', 'backwpup' ); ?></option>
 						<option value="hosteurope" <?php selected( 'hosteurope', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Hosteurope Cloud Storage', 'backwpup' ); ?></option>
                         <option value="dreamhost" <?php selected( 'dreamhost', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Dream Host Cloud Storage', 'backwpup' ); ?></option>

@@ -40,6 +40,8 @@ final class BackWPup_Admin {
 		add_action( 'admin_head', array( $this, 'admin_head' ) );
 		//Save Form posts general
 		add_action( 'admin_post_backwpup', array( $this, 'save_post_form' ) );
+		//Save Form posts wizard
+		add_action( 'admin_post_backwpup_wizard', array( 'BackWPup_Pro_Page_Wizard', 'save_post_form' ) );
 		//Admin Footer Text replacement
 		add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 100 );
 		add_filter( 'update_footer', array( $this, 'update_footer' ), 100 );
@@ -52,9 +54,6 @@ final class BackWPup_Admin {
 		add_filter( 'manage_users_custom_column', array( $this, 'manage_users_custom_column' ), 10, 3 );
 		//Change Backup message on core updates
 		add_filter( 'gettext', array( $this, 'gettext' ), 10, 3 );
-		//Plugin banner free
-		if ( ! class_exists( 'BackWPup_Pro', FALSE ) )
-			add_action( 'admin_notices', array( $this, 'get_pro_banner' ) );
 	}
 
 	/**
@@ -518,36 +517,6 @@ final class BackWPup_Admin {
 
 
 		return $translations;
-	}
-
-	public function get_pro_banner() {
-		global $hook_suffix;
-
-		if ( $hook_suffix != 'plugins.php' )
-			return;
-
-		$show = get_user_meta( get_current_user_id(), 'backwpup_show_pro_panel', TRUE );
-		if ( $show !== 0 )
-			$show = TRUE;
-		if ( isset( $_GET[ 'dis_pro' ] ) && $_GET[ 'dis_pro' ] == 0 ) {
-			update_user_meta( get_current_user_id(), 'backwpup_show_pro_panel', 0 );
-			$show = FALSE;
-		}
-
-		if ( ! $show  )
-			return;
-		?>
-		<div class="updated" style="padding: 0; margin: 0; border: none; background: none;">
-			<div class="welcome-panel" style="padding: 0;">
-				<a class="welcome-panel-close" href="<?php echo esc_url( admin_url( 'plugins.php?dis_pro=0' ) ); ?>"><?php _e( 'Dismiss', 'backwpup' ); ?></a>
-
-				<a class="button button-primary button-hero" href="<?php _e( 'http://marketpress.com/product/backwpup-pro/', 'backwpup' ) ?>" style="margin: 15px;float: left;"><?php _e( 'Learn More', 'backwpup' ); ?></a>
-				<div style="font-size: 1.2em; margin-top: 15px;"><?php _e( 'It’s time to upgrade your <strong>BackWPup</strong> to <strong>PRO</strong> version!', 'backwpup' ); ?></div>
-				<span><?php _e( 'Extend standard plugin functionality with new great options.', 'backwpup' ); ?></span>
-
-			</div>
-		</div>
-		<?php
 	}
 
 	/**

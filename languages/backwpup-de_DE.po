@@ -3681,7 +3681,7 @@ msgid "Added \"%s\" to backup file list"
 msgstr "\"%s\" zur Backup-Datei-Liste hinzugefügt."
 
 msgid "Folder \"%s\" is not readable!"
-msgstr "Ordner \"%s\" ist nicht beschreibbar!"
+msgstr "Ordner \"%s\" ist nicht lesbar!"
 
 msgid "from %s"
 msgstr "von %s"

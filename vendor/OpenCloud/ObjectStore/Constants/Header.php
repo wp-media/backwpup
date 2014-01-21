@@ -2,7 +2,7 @@
 /**
  * PHP OpenCloud library.
  *
- * @copyright 2013 Rackspace Hosting, Inc. See LICENSE for information.
+ * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
  * @license   https://www.apache.org/licenses/LICENSE-2.0
  * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
  */
@@ -21,5 +21,4 @@ class Header
     const TRANS_ID = 'Trans-Id';
     const ENABLED  = 'Enabled';
     const LOG_RETENTION = 'Log-Retention';
-
 } 

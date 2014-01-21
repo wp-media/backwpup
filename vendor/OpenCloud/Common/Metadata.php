@@ -2,7 +2,7 @@
 /**
  * PHP OpenCloud library.
  * 
- * @copyright 2013 Rackspace Hosting, Inc. See LICENSE for information.
+ * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
  * @license   https://www.apache.org/licenses/LICENSE-2.0
  * @author    Glen Campbell <glen.campbell@rackspace.com>
  * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
@@ -12,14 +12,12 @@ namespace OpenCloud\Common;
 
 /**
  * The Metadata class represents either Server or Image metadata
- *
- * @api
- * @author Glen Campbell <glen.campbell@rackspace.com>
  */
-class Metadata extends Base 
+class Metadata extends Base implements \Countable
 {
-
-    // array holding the names of keys that were set
+    /**
+     * @var array Internal data store.
+     */
     protected $metadata = array();    
 
     /**

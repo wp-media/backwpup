@@ -372,20 +372,18 @@ class BackWPup_Page_Settings {
 				echo $test_result;
 			echo '</td></tr>';
 			//folder test
-			BackWPup_Job::check_folder( BackWPup::get_plugin_data( 'TEMP' ) );
 			echo '<tr><td>' . __( 'Temp folder:', 'backwpup' ) . '</td><td>';
 			if ( ! is_dir( BackWPup::get_plugin_data( 'TEMP' ) ) )
-				echo sprintf( __( 'Temp folder %s doesn\'t exist and can\'t be created.','backwpup' ), BackWPup::get_plugin_data( 'TEMP' ) );
+				echo sprintf( __( 'Temp folder %s doesn\'t exist.','backwpup' ), BackWPup::get_plugin_data( 'TEMP' ) );
 			elseif ( ! is_writable( BackWPup::get_plugin_data( 'TEMP' ) ) )
 				echo sprintf( __( 'Temporary folder %s is not writable.','backwpup' ), BackWPup::get_plugin_data( 'TEMP' ) );
 			else
 				echo BackWPup::get_plugin_data( 'TEMP' );
 			echo '</td></tr>';
 
-			BackWPup_Job::check_folder(  get_site_option( 'backwpup_cfg_logfolder' ) );
 			echo '<tr><td>' . __( 'Log folder:', 'backwpup' ) . '</td><td>';
 			if ( ! is_dir(  get_site_option( 'backwpup_cfg_logfolder' ) ) )
-				echo sprintf( __( 'Logs folder %s not exist and can\'t created.','backwpup' ),  get_site_option( 'backwpup_cfg_logfolder' ) );
+				echo sprintf( __( 'Logs folder %s not exist.','backwpup' ),  get_site_option( 'backwpup_cfg_logfolder' ) );
 			elseif ( ! is_writable(  get_site_option( 'backwpup_cfg_logfolder' ) ) )
 				echo sprintf( __( 'Log folder %s is not writable.','backwpup' ),  get_site_option( 'backwpup_cfg_logfolder' ) );
 			else

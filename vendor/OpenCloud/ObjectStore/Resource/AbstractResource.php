@@ -2,16 +2,16 @@
 /**
  * PHP OpenCloud library.
  * 
- * @copyright 2013 Rackspace Hosting, Inc. See LICENSE for information.
+ * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
  * @license   https://www.apache.org/licenses/LICENSE-2.0
  * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
  */
 
 namespace OpenCloud\ObjectStore\Resource;
 
+use Guzzle\Http\Message\Response;
 use OpenCloud\Common\Base;
-use OpenCloud\Common\Http\Message\Response;
-use OpenCloud\Common\Service\AbstractService;
+use OpenCloud\Common\Service\ServiceInterface;
 
 /**
  * Abstract base class which implements shared functionality of ObjectStore 
@@ -22,22 +22,16 @@ abstract class AbstractResource extends Base
 {
     const GLOBAL_METADATA_PREFIX = 'X';
 
-    /**
-     * @var \OpenCloud\Common\Metadata
-     */
+    /** @var \OpenCloud\Common\Metadata*/
     protected $metadata;
 
-    /**
-     * @var string The FQCN of the metadata object used for the container.
-     */
+    /** @var string The FQCN of the metadata object used for the container. */
     protected $metadataClass = 'OpenCloud\\Common\\Metadata';
     
-    /**
-     * @var AbstractService The service object.
-     */
+    /** @var \OpenCloud\Common\Service\ServiceInterface The service object. */
     protected $service;
     
-    public function  __construct(AbstractService $service)
+    public function  __construct(ServiceInterface $service)
     {
         $this->service  = $service;
         $this->metadata = new $this->metadataClass;
@@ -62,10 +56,10 @@ abstract class AbstractResource extends Base
      * Factory method that allows for easy instantiation from a Response object.
      *
      * @param Response        $response
-     * @param AbstractService $service
+     * @param ServiceInterface $service
      * @return static
      */
-    public static function fromResponse(Response $response, AbstractService $service)
+    public static function fromResponse(Response $response, ServiceInterface $service)
     {
         $object = new static($service);
         
@@ -87,10 +81,9 @@ abstract class AbstractResource extends Base
         $output = array();
         
         foreach ($headers as $header => $value) {
-            // Only allow allow X-* headers to pass through after stripping them
-            if (preg_match('#^' . self::GLOBAL_METADATA_PREFIX . '\-#i', $header)
-                && ($key = self::stripPrefix($header))
-            ) {
+            // Only allow allow X-<keyword>-* headers to pass through after stripping them
+            $pattern = sprintf('#^%s\-#i', self::GLOBAL_METADATA_PREFIX);
+            if (preg_match($pattern, $header) && ($key = self::stripPrefix($header))) {
                 $output[$key] = (string) $value;
             }
         }
@@ -156,12 +149,14 @@ abstract class AbstractResource extends Base
     /**
      * Push local metadata to the API, thereby executing a permanent save.
      *
-     * @param array $metadata
+     * @param array $metadata    The array of values you want to set as metadata
+     * @param bool  $stockPrefix Whether to prepend each array key with the metadata-specific prefix. For objects, this
+     *                           would be X-Object-Meta-Foo => Bar
      * @return mixed
      */
-    public function saveMetadata(array $metadata)
+    public function saveMetadata(array $metadata, $stockPrefix = true)
     {
-        $headers = self::stockHeaders($metadata);
+        $headers = ($stockPrefix === true) ? self::stockHeaders($metadata) : $metadata;
         return $this->getClient()->post($this->getUrl(), $headers)->send();
     }
 
@@ -190,9 +185,11 @@ abstract class AbstractResource extends Base
     {
         $header = sprintf('%s-Remove-%s-Meta-%s', self::GLOBAL_METADATA_PREFIX, 
             static::METADATA_LABEL, $key);
-        
+
+        $headers = array($header => 'True');
+
         return $this->getClient()
-            ->post($this->getUrl(), array($header => 'True'))
+            ->post($this->getUrl(), $headers)
             ->send();
     }
 

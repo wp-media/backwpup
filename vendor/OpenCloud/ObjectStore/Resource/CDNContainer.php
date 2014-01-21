@@ -2,7 +2,7 @@
 /**
  * PHP OpenCloud library.
  * 
- * @copyright 2013 Rackspace Hosting, Inc. See LICENSE for information.
+ * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
  * @license   https://www.apache.org/licenses/LICENSE-2.0
  * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
  * @author    Glen Campbell <glen.campbell@rackspace.com>
@@ -67,30 +67,6 @@ class CDNContainer extends AbstractContainer
         $this->setMetadata($headers, true);
 
         return $headers;  
-    }
-
-    /**
-     * This method will enable your CDN-enabled container to serve out HTML content like a website.
-     *
-     * @param $indexPage The data object name (i.e. a .html file) that will serve as the main index page.
-     * @return \Guzzle\Http\Message\Response
-     */
-    public function setStaticIndexPage($page)
-    {
-        $headers = array('X-Container-Meta-Web-Index' => $page);
-        return $this->getClient()->post($this->getUrl(), $headers)->send();
-    }
-
-    /**
-     * Set the default error page for your static site.
-     *
-     * @param $name The data object name (i.e. a .html file) that will serve as the main error page.
-     * @return \Guzzle\Http\Message\Response
-     */
-    public function setStaticErrorPage($page)
-    {
-        $headers = array('X-Container-Meta-Web-Error' => $page);
-        return $this->getClient()->post($this->getUrl(), $headers)->send();
     }
 
     /**

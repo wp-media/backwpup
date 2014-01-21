@@ -60,7 +60,8 @@ class BackWPup_Cron {
 			$not_worked_time = microtime( TRUE ) - $job_object->timestamp_last_update;
 			if ( $not_worked_time > 3600 ) {
 				$job_object->log( E_USER_ERROR, __( 'Aborted, because no progress for one hour!', 'backwpup' ), __FILE__, __LINE__ );
-				$job_object->end();
+				unlink( BackWPup::get_plugin_data( 'running_file' ) );
+				$job_object->update_working_data();
 			}
 		}
 

@@ -2,8 +2,6 @@
 // Amazon S3 SDK v1.6.2
 // http://aws.amazon.com/de/sdkforphp/
 // https://github.com/amazonwebservices/aws-sdk-for-php
-if ( ! class_exists( 'AmazonS3' ) )
-	include dirname( __FILE__ ) . '/../vendor/Aws_v1/sdk.class.php';
 if ( ! defined( 'E_USER_DEPRECATED') )
 	define( 'E_USER_DEPRECATED', 16384 );
 
@@ -39,6 +37,8 @@ class BackWPup_Destination_S3_V1 extends BackWPup_Destinations {
 				return 'https://s3-ap-southeast-2.amazonaws.com';
 			case 'sa-east-1':
 				return 'https://s3-sa-east-1.amazonaws.com';
+			case 'cn-north-1':
+				return 'https://cn-north-1.amazonaws.com';
 			case 'google-storage':
 				return 'https://storage.googleapis.com';
 			case 'hosteurope':
@@ -81,6 +81,7 @@ class BackWPup_Destination_S3_V1 extends BackWPup_Destinations {
 						<option value="ap-southeast-1" <?php selected( 'ap-southeast-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: Asia Pacific (Singapore)', 'backwpup' ); ?></option>
 						<option value="ap-southeast-2" <?php selected( 'ap-southeast-2', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: Asia Pacific (Sydney)', 'backwpup' ); ?></option>
 						<option value="sa-east-1" <?php selected( 'sa-east-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: South America (Sao Paulo)', 'backwpup' ); ?></option>
+						<option value="cn-north-1" <?php selected( 'cn-north-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: China (Beijing)', 'backwpup' ); ?></option>
 						<option value="google-storage" <?php selected( 'google-storage', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Google Storage (Interoperable Access)', 'backwpup' ); ?></option>
 						<option value="hosteurope" <?php selected( 'hosteurope', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Hosteurope Cloud Storage', 'backwpup' ); ?></option>
                         <option value="dreamhost" <?php selected( 'dreamhost', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Dream Host Cloud Storage', 'backwpup' ); ?></option>

@@ -171,6 +171,27 @@ Please check all settings after the update:
 
 
 == Changelog ==
+= Version 3.1.2 =
+* Fixed: New multisite installs will not save jobs
+* Fixed: New multisite installs will not save installed version
+* Fixed: Fatal error on cleanup inactive jobs from cron
+* Fixed: Excluded uploads not working
+* Fixed: Message of not readable file of an excluded folder
+* Fixed: WP-CLI deprecated and unknown parameter message
+* Removed: Banner from plugins page
+* Improved: Memory usage on XML export
+* Improved: File Mime type detection
+* Improved: Dropbox SSL handling
+* Improved: Autoloading vendor classes
+* Improved: Preformance on backing up other databases tables than MyISAM
+* Updated: cacert bundle file
+* Updated: AWS SDK to Version 2.5.1 (PHP 5.3.3+)
+* Updated: RSC SDK to Version 1.9.1
+* Added: S3 Service: Amazon China (Beijing) region
+* Added: Rackspace: Hong Kong (HKG) region
+* PRO: Update: Google SDK to 0.6.7
+* PRO: Added: Amazon Glacier China (Beijing) region
+
 = Version 3.1.1 =
 * Fixed: Plugins will not backup
 * Improved: Dropped quota check for Dropbox. Will cancel upload only when Dropbox API sends error 507.

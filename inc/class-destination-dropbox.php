@@ -239,6 +239,9 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 				$info = $dropbox->accountInfo();
 				if ( ! empty( $info[ 'uid' ] ) ) {
 					$job_object->log( sprintf( __( 'Authenticated with Dropbox of user %s', 'backwpup' ), $info[ 'display_name' ] . ' (' . $info[ 'email' ] . ')' ), E_USER_NOTICE );
+				} else {
+					$job_object->log( __( 'Not Authenticated with Dropbox!', 'backwpup' ), E_USER_ERROR );
+					return FALSE;
 				}
 				// put the file
 				$job_object->log( __( 'Uploading to Dropbox&#160;&hellip;', 'backwpup' ), E_USER_NOTICE );
@@ -454,13 +457,9 @@ final class BackWPup_Destination_Dropbox_API {
 		if ( ! is_readable( $file ) )
 			throw new BackWPup_Destination_Dropbox_API_Exception( "Error: File \"$file\" is not readable or doesn't exist." );
 
-		$filesize = filesize( $file );
-
-		if ( $filesize < 8388608 ) { //chunk transfer on bigger uploads
-			$filehandel = fopen( $file, 'r' );
+		if ( filesize( $file ) < 5242880 ) { //chunk transfer on bigger uploads
 			$url        = self::API_CONTENT_URL . self::API_VERSION_URL . 'files_put/' . $this->root . '/' . $this->encode_path( $path );
-			$output     = $this->request( $url, array( 'overwrite' => ( $overwrite ) ? 'true' : 'false' ), 'PUT', $filehandel, $filesize );
-			fclose( $filehandel );
+			$output     = $this->request( $url, array( 'overwrite' => ( $overwrite ) ? 'true' : 'false' ), 'PUT', file_get_contents( $file ) );
 		}
 		else {
 			$output = $this->chunked_upload( $file, $path, $overwrite );
@@ -501,19 +500,9 @@ final class BackWPup_Destination_Dropbox_API {
 			fseek( $file_handel, $backwpup_job_object->steps_data[ $backwpup_job_object->step_working ][ 'offset' ] );
 
 		while ( $data = fread( $file_handel, $chunk_size ) ) {
-			$chunk_handle = fopen( 'php://temp/maxmemory:' . $chunk_size, 'r+' );
-			if ( ! is_resource( $chunk_handle )  ) {
-				//fallback if php://temp not working
-				$chunk_handle = tmpfile();
-				if ( ! is_resource( $chunk_handle ) )
-					throw new BackWPup_Destination_Dropbox_API_Exception( "Can not open temp file for chunked transfer." );
-			}
-			fwrite( $chunk_handle, $data );
-			rewind( $chunk_handle );
 			$chunk_upload_start = microtime( TRUE );
 			$url    = self::API_CONTENT_URL . self::API_VERSION_URL . 'chunked_upload';
-			$output = $this->request( $url, array( 'upload_id' => $backwpup_job_object->steps_data[ $backwpup_job_object->step_working ][ 'uploadid' ], 'offset' => $backwpup_job_object->steps_data[ $backwpup_job_object->step_working ][ 'offset' ] ), 'PUT', $chunk_handle, strlen( $data ) );
-			fclose( $chunk_handle );
+			$output = $this->request( $url, array( 'upload_id' => $backwpup_job_object->steps_data[ $backwpup_job_object->step_working ][ 'uploadid' ], 'offset' => $backwpup_job_object->steps_data[ $backwpup_job_object->step_working ][ 'offset' ] ), 'PUT', $data );
 			$chunk_upload_time = microtime( TRUE ) - $chunk_upload_start;
 			//args for next chunk
 			$backwpup_job_object->steps_data[ $backwpup_job_object->step_working ][ 'offset' ]   = $output[ 'offset' ];
@@ -555,7 +544,7 @@ final class BackWPup_Destination_Dropbox_API {
 		if ( ! $echo )
 			return $this->request( $url );
 		else {
-			$this->request( $url, NULL, 'GET', NULL, 0, TRUE );
+			$this->request( $url, NULL, 'GET', '', TRUE );
 			return '';
 		}
 	}
@@ -614,10 +603,36 @@ final class BackWPup_Destination_Dropbox_API {
 		$ch         = curl_init();
 		curl_setopt( $ch, CURLOPT_URL, self::API_URL . self::API_VERSION_URL . 'oauth/request_token' );
 		curl_setopt( $ch, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' ) );
-		curl_setopt( $ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1 );
 		curl_setopt( $ch, CURLOPT_SSLVERSION, 3 );
 		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, TRUE );
 		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 2 );
+		// Only allow ciphersuites supported by Dropbox
+		curl_setopt( $ch, CURLOPT_SSL_CIPHER_LIST,
+				   'ECDHE-RSA-AES256-GCM-SHA384:'.
+				   'ECDHE-RSA-AES128-GCM-SHA256:'.
+				   'ECDHE-RSA-AES256-SHA384:'.
+				   'ECDHE-RSA-AES128-SHA256:'.
+				   'ECDHE-RSA-AES256-SHA:'.
+				   'ECDHE-RSA-AES128-SHA:'.
+				   'ECDHE-RSA-RC4-SHA:'.
+				   'DHE-RSA-AES256-GCM-SHA384:'.
+				   'DHE-RSA-AES128-GCM-SHA256:'.
+				   'DHE-RSA-AES256-SHA256:'.
+				   'DHE-RSA-AES128-SHA256:'.
+				   'DHE-RSA-AES256-SHA:'.
+				   'DHE-RSA-AES128-SHA:'.
+				   'AES256-GCM-SHA384:'.
+				   'AES128-GCM-SHA256:'.
+				   'AES256-SHA256:'.
+				   'AES128-SHA256:'.
+				   'AES256-SHA:'.
+				   'AES128-SHA'
+		);
+		// Limit vulnerability surface area.  Supported in cURL 7.19.4+
+		if ( defined('CURLOPT_PROTOCOLS') )
+			curl_setopt( $ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
+		if ( defined( 'CURLOPT_REDIR_PROTOCOLS' ) )
+			curl_setopt( $ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS);
 		if ( file_exists( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
 			curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' );
 		curl_setopt( $ch, CURLOPT_AUTOREFERER, TRUE );
@@ -658,10 +673,36 @@ final class BackWPup_Destination_Dropbox_API {
 		$ch         = curl_init();
 		curl_setopt( $ch, CURLOPT_URL, self::API_URL . self::API_VERSION_URL . 'oauth/access_token' );
 		curl_setopt( $ch, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' ) );
-		curl_setopt( $ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1 );
 		curl_setopt( $ch, CURLOPT_SSLVERSION, 3 );
 		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, TRUE );
 		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 2 );
+		// Only allow ciphersuites supported by Dropbox
+		curl_setopt( $ch, CURLOPT_SSL_CIPHER_LIST,
+					 'ECDHE-RSA-AES256-GCM-SHA384:'.
+					 'ECDHE-RSA-AES128-GCM-SHA256:'.
+					 'ECDHE-RSA-AES256-SHA384:'.
+					 'ECDHE-RSA-AES128-SHA256:'.
+					 'ECDHE-RSA-AES256-SHA:'.
+					 'ECDHE-RSA-AES128-SHA:'.
+					 'ECDHE-RSA-RC4-SHA:'.
+					 'DHE-RSA-AES256-GCM-SHA384:'.
+					 'DHE-RSA-AES128-GCM-SHA256:'.
+					 'DHE-RSA-AES256-SHA256:'.
+					 'DHE-RSA-AES128-SHA256:'.
+					 'DHE-RSA-AES256-SHA:'.
+					 'DHE-RSA-AES128-SHA:'.
+					 'AES256-GCM-SHA384:'.
+					 'AES128-GCM-SHA256:'.
+					 'AES256-SHA256:'.
+					 'AES128-SHA256:'.
+					 'AES256-SHA:'.
+					 'AES128-SHA'
+		);
+		// Limit vulnerability surface area.  Supported in cURL 7.19.4+
+		if ( defined('CURLOPT_PROTOCOLS') )
+			curl_setopt( $ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
+		if ( defined( 'CURLOPT_REDIR_PROTOCOLS' ) )
+			curl_setopt( $ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS);
 		if ( file_exists( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
 			curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' );
 		curl_setopt( $ch, CURLOPT_AUTOREFERER, TRUE );
@@ -689,15 +730,14 @@ final class BackWPup_Destination_Dropbox_API {
 	 * @param        $url
 	 * @param array  $args
 	 * @param string $method
-	 * @param null   $filehandel
-	 * @param int    $filesize
+	 * @param string $data
 	 * @param bool   $echo
 	 *
 	 * @throws BackWPup_Destination_Dropbox_API_Exception
 	 * @internal param null $file
 	 * @return array|mixed|string
 	 */
-	private function request( $url, $args = array(), $method = 'GET', $filehandel = NULL, $filesize = 0, $echo = FALSE ) {
+	private function request( $url, $args = array(), $method = 'GET', $data = '', $echo = FALSE ) {
 
 		/* Header*/
 		$headers[ ] = 'Authorization: OAuth oauth_version="1.0", oauth_signature_method="PLAINTEXT", oauth_consumer_key="' . $this->oauth_app_key . '", oauth_token="' . $this->oauth_token . '", oauth_signature="' . $this->oauth_app_secret . '&' . $this->oauth_token_secret . '"';
@@ -711,9 +751,9 @@ final class BackWPup_Destination_Dropbox_API {
 			curl_setopt( $ch, CURLOPT_URL, $url );
 		}
 		elseif ( $method == 'PUT' ) {
-			curl_setopt( $ch, CURLOPT_PUT, TRUE );
-			curl_setopt( $ch, CURLOPT_INFILE, $filehandel );
-			curl_setopt( $ch, CURLOPT_INFILESIZE, $filesize );
+			curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, 'PUT' );
+			curl_setopt( $ch, CURLOPT_POSTFIELDS, $data );
+			$headers[ ] = 'Content-Type: application/octet-stream';
 			$args = ( is_array( $args ) ) ? '?' . http_build_query( $args, '', '&' ) : $args;
 			curl_setopt( $ch, CURLOPT_URL, $url . $args );
 		}
@@ -723,11 +763,37 @@ final class BackWPup_Destination_Dropbox_API {
 			curl_setopt( $ch, CURLOPT_URL, $url . $args );
 		}
 		curl_setopt( $ch, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' ) );
-		curl_setopt( $ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1 );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
 		curl_setopt( $ch, CURLOPT_SSLVERSION, 3 );
 		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, TRUE );
 		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 2 );
+		// Only allow ciphersuites supported by Dropbox
+		curl_setopt( $ch, CURLOPT_SSL_CIPHER_LIST,
+					 'ECDHE-RSA-AES256-GCM-SHA384:'.
+					 'ECDHE-RSA-AES128-GCM-SHA256:'.
+					 'ECDHE-RSA-AES256-SHA384:'.
+					 'ECDHE-RSA-AES128-SHA256:'.
+					 'ECDHE-RSA-AES256-SHA:'.
+					 'ECDHE-RSA-AES128-SHA:'.
+					 'ECDHE-RSA-RC4-SHA:'.
+					 'DHE-RSA-AES256-GCM-SHA384:'.
+					 'DHE-RSA-AES128-GCM-SHA256:'.
+					 'DHE-RSA-AES256-SHA256:'.
+					 'DHE-RSA-AES128-SHA256:'.
+					 'DHE-RSA-AES256-SHA:'.
+					 'DHE-RSA-AES128-SHA:'.
+					 'AES256-GCM-SHA384:'.
+					 'AES128-GCM-SHA256:'.
+					 'AES256-SHA256:'.
+					 'AES128-SHA256:'.
+					 'AES256-SHA:'.
+					 'AES128-SHA'
+		);
+		// Limit vulnerability surface area.  Supported in cURL 7.19.4+
+		if ( defined('CURLOPT_PROTOCOLS') )
+			curl_setopt( $ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
+		if ( defined( 'CURLOPT_REDIR_PROTOCOLS' ) )
+			curl_setopt( $ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS);
 		if ( file_exists( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
 			curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' );
 		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
@@ -741,8 +807,6 @@ final class BackWPup_Destination_Dropbox_API {
 				$responce = explode( "\r\n\r\n", curl_exec( $ch ), 2 );
 				if ( ! empty( $responce[ 1 ] ) )
 					$output = json_decode( $responce[ 1 ], TRUE );
-				else
-					$output = '';
 			}
 		}
 		$status = curl_getinfo( $ch );
@@ -761,7 +825,7 @@ final class BackWPup_Destination_Dropbox_API {
 				trigger_error( '(503) Service unavailable. Retrying.', E_USER_WARNING );
 			}
 			//redo request
-			return $this->request( $url, $args, $method, $filehandel, $filesize, $echo );
+			return $this->request( $url, $args, $method, $data, $echo );
 		}
 		elseif ( $status[ 'http_code' ] == 400 && $method == 'PUT' ) {	//correct offset on chunk uploads
 			trigger_error( '(' . $status[ 'http_code' ] . ') False offset will corrected', E_USER_NOTICE );

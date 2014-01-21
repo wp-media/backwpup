@@ -25,8 +25,8 @@ class BackWPup_Install {
 		}
 
 		//create new option on not ms blogs
-		if ( ! is_multisite() && ! get_option( 'backwpup_jobs', FALSE ) )
-			add_option( 'backwpup_jobs', array(), NULL, 'no' );
+		if ( ! get_site_option( 'backwpup_jobs', FALSE ) )
+			add_site_option( 'backwpup_jobs', array(), NULL, 'no' );
 
 		//remove old schedule
 		wp_clear_scheduled_hook( 'backwpup_cron' );
@@ -107,8 +107,10 @@ class BackWPup_Install {
 		}
 
 		//update version
-		update_site_option( 'backwpup_version', BackWPup::get_plugin_data( 'Version' ) );
-
+		if ( get_site_option( 'backwpup_version', FALSE ) == apply_filters( 'default_site_option_backwpup_version', FALSE ) )
+			add_site_option( 'backwpup_version', BackWPup::get_plugin_data( 'Version' ) ); 
+		else
+			update_site_option( 'backwpup_version', BackWPup::get_plugin_data( 'Version' ) );
 	}
 
 	/**

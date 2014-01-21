@@ -2,7 +2,7 @@
 /**
  * PHP OpenCloud library.
  * 
- * @copyright 2013 Rackspace Hosting, Inc. See LICENSE for information.
+ * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
  * @license   https://www.apache.org/licenses/LICENSE-2.0
  * @author    Glen Campbell <glen.campbell@rackspace.com>
  * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
@@ -10,14 +10,13 @@
 
 namespace OpenCloud\ObjectStore;
 
-use OpenCloud\Common\Collection;
-use OpenCloud\Common\Service\AbstractService as CommonAbstractService;
+use OpenCloud\Common\Service\CatalogService;
 
 /**
  * An abstract base class for common code shared between ObjectStore\Service
  * (container) and ObjectStore\CDNService (CDN containers).
  */
-abstract class AbstractService extends CommonAbstractService
+abstract class AbstractService extends CatalogService
 {
     const MAX_CONTAINER_NAME_LENGTH = 256;
     const MAX_OBJECT_NAME_LEN       = 1024;
@@ -34,14 +33,9 @@ abstract class AbstractService extends CommonAbstractService
     {
         $filter['format'] = 'json';
 
-        $containers = $this->getClient()
-            ->get($this->getUrl(null, $filter))
-            ->send()
-            ->getDecodedBody();
-        
         $class = ($this instanceof Service) ? 'Container' : 'CDNContainer';
 
-        return new Collection($this, __NAMESPACE__ . '\\Resource\\' . $class, $containers);
+        return $this->resourceList($class, $this->getUrl(null, $filter), $this);
     }
 
     /**

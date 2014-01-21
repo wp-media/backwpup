@@ -2,15 +2,15 @@
 /**
  * PHP OpenCloud library.
  *
- * @copyright 2013 Rackspace Hosting, Inc. See LICENSE for information.
+ * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
  * @license   https://www.apache.org/licenses/LICENSE-2.0
  * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
  */
 
 namespace OpenCloud\ObjectStore\Resource;
 
-use OpenCloud\Common\Service\AbstractService;
 use OpenCloud\Common\Exceptions;
+use OpenCloud\Common\Service\ServiceInterface;
 use OpenCloud\ObjectStore\Constants\Header as HeaderConst;
 
 /**
@@ -34,7 +34,7 @@ abstract class AbstractContainer extends AbstractResource
      */
     public $name;
     
-    public function __construct(AbstractService $service, $data = null)
+    public function __construct(ServiceInterface $service, $data = null)
     {
         $this->service  = $service;
         $this->metadata = new $this->metadataClass;
@@ -83,11 +83,43 @@ abstract class AbstractContainer extends AbstractResource
     
     protected function createRefreshRequest()
     {
-        return $this->getClient()
-            ->head($this->getUrl(), array('Accept' => '*/*'))
-            ->setExceptionHandler(array(
-                404 => 'Container not found'
-            ));
+        return $this->getClient()->head($this->getUrl(), array('Accept' => '*/*'));
+    }
+
+    /**
+     * This method will enable your CDN-enabled container to serve out HTML content like a website.
+     *
+     * @param $indexPage The data object name (i.e. a .html file) that will serve as the main index page.
+     * @return \Guzzle\Http\Message\Response
+     */
+    public function setStaticIndexPage($page)
+    {
+        if ($this instanceof CDNContainer) {
+            $this->getLogger()->warning(
+                'This method cannot be called on the CDN object - please execute it on the normal Container'
+            );
+        }
+
+        $headers = array('X-Container-Meta-Web-Index' => $page);
+        return $this->getClient()->post($this->getUrl(), $headers)->send();
+    }
+
+    /**
+     * Set the default error page for your static site.
+     *
+     * @param $name The data object name (i.e. a .html file) that will serve as the main error page.
+     * @return \Guzzle\Http\Message\Response
+     */
+    public function setStaticErrorPage($page)
+    {
+        if ($this instanceof CDNContainer) {
+            $this->getLogger()->warning(
+                'This method cannot be called on the CDN object - please execute it on the normal Container'
+            );
+        }
+
+        $headers = array('X-Container-Meta-Web-Error' => $page);
+        return $this->getClient()->post($this->getUrl(), $headers)->send();
     }
 
 }
