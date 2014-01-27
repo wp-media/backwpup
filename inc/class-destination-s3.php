@@ -233,7 +233,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 														 'region'	=> $_POST[ 's3region' ],
 														 'base_url'	=> $this->get_s3_base_url( $_POST[ 's3region' ], $_POST[ 's3base_url' ]),
 														 'scheme'	=> 'https',
-														 'ssl.certificate_authority' => BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem') );
+														 'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ) ) );
 				// set bucket creation region
 				if ( $_POST[ 's3region' ] == 'google-storage' || $_POST[ 's3region' ] == 'hosteurope' )
 					$region = 'EU';
@@ -277,7 +277,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 														 'region'	=> BackWPup_Option::get( $jobid, 's3region' ),
 														 'base_url'	=> $this->get_s3_base_url( BackWPup_Option::get( $jobid, 's3region' ), BackWPup_Option::get( $jobid, 's3base_url' ) ),
 														 'scheme'	=> 'https',
-														 'ssl.certificate_authority' => BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem') );
+														 'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ) ) );
 
 				$s3->deleteObject( array(
 										'Bucket' => BackWPup_Option::get( $jobid, 's3bucket' ),
@@ -310,7 +310,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 													 'region'	=> BackWPup_Option::get( $jobid, 's3region' ),
 													 'base_url'	=> $this->get_s3_base_url( BackWPup_Option::get( $jobid, 's3region' ), BackWPup_Option::get( $jobid, 's3base_url' ) ),
 													 'scheme'	=> 'https',
-													 'ssl.certificate_authority' => BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem') );
+													 'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ) ) );
 
 			$s3file = $s3->getObject( array(
 										   'Bucket' => BackWPup_Option::get( $jobid, 's3bucket' ),
@@ -363,7 +363,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 													'region'	=> $job_object->job[ 's3region' ],
 													'base_url'	=> $this->get_s3_base_url( $job_object->job[ 's3region' ], $job_object->job[ 's3base_url' ] ),
 													'scheme'	=> 'https',
-													'ssl.certificate_authority' => BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem') );
+													'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ) ) );
 
 			if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] != $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] && $job_object->substeps_done < $job_object->backup_filesize ) {
 				if ( $s3->doesBucketExist( $job_object->job[ 's3bucket' ] ) ) {
@@ -644,7 +644,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 														'region'	=> $args[ 's3region' ],
 														'base_url'	=> $this->get_s3_base_url( $args[ 's3region' ], $args[ 's3base_url' ]),
 														'scheme'	=> 'https',
-														'ssl.certificate_authority' => BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem') );
+														'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ) ) );
 
 				$buckets = $s3->listBuckets();
 			}

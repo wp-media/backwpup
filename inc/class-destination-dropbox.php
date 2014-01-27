@@ -405,13 +405,13 @@ final class BackWPup_Destination_Dropbox_API {
 	public function __construct( $boxtype = 'dropbox' ) {
 
 		if ( $boxtype == 'dropbox' ) {
-			$this->oauth_app_key 	= get_site_option( 'backwpup_cfg_dropboxappkey' );
-			$this->oauth_app_secret = BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_dropboxappsecret' ) );
+			$this->oauth_app_key 	= get_site_option( 'backwpup_cfg_dropboxappkey', base64_decode( "dHZkcjk1MnRhZnM1NmZ2" ) );
+			$this->oauth_app_secret = BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_dropboxappsecret', base64_decode( "OWV2bDR5MHJvZ2RlYmx1" ) ) );
 			$this->root             = 'dropbox';
 		}
 		else {
-			$this->oauth_app_key 	= get_site_option( 'backwpup_cfg_dropboxsandboxappkey' );
-			$this->oauth_app_secret = BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_dropboxsandboxappsecret' ) );
+			$this->oauth_app_key 	= get_site_option( 'backwpup_cfg_dropboxsandboxappkey', base64_decode( "cHVrZmp1a3JoZHR5OTFk" ) );
+			$this->oauth_app_secret = BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_dropboxsandboxappsecret', base64_decode( "eGNoYzhxdTk5eHE0eWdq" ) ) );
 			$this->root             = 'sandbox';
 		}
 
@@ -633,8 +633,8 @@ final class BackWPup_Destination_Dropbox_API {
 			curl_setopt( $ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
 		if ( defined( 'CURLOPT_REDIR_PROTOCOLS' ) )
 			curl_setopt( $ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS);
-		if ( file_exists( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
-			curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' );
+		curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/dropbox-trusted-cert.crt' );
+		curl_setopt( $ch, CURLOPT_CAPATH, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/' );
 		curl_setopt( $ch, CURLOPT_AUTOREFERER, TRUE );
 		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
@@ -703,8 +703,8 @@ final class BackWPup_Destination_Dropbox_API {
 			curl_setopt( $ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
 		if ( defined( 'CURLOPT_REDIR_PROTOCOLS' ) )
 			curl_setopt( $ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS);
-		if ( file_exists( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
-			curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' );
+		curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/dropbox-trusted-cert.crt' );
+		curl_setopt( $ch, CURLOPT_CAPATH, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/' );
 		curl_setopt( $ch, CURLOPT_AUTOREFERER, TRUE );
 		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
@@ -794,8 +794,8 @@ final class BackWPup_Destination_Dropbox_API {
 			curl_setopt( $ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
 		if ( defined( 'CURLOPT_REDIR_PROTOCOLS' ) )
 			curl_setopt( $ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS);
-		if ( file_exists( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
-			curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' );
+		curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/dropbox-trusted-cert.crt' );
+		curl_setopt( $ch, CURLOPT_CAPATH, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/' );
 		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
 		$output = '';
 		if ( $echo ) {

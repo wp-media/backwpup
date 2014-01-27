@@ -178,6 +178,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 						 'username' =>  BackWPup_Option::get( $jobid, 'rscusername' ),
 						 'apiKey' => BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 'rscapikey' ) )
 					));
+				$conn->
 				$ostore = $conn->objectStoreService( 'cloudFiles' , BackWPup_Option::get( $jobid, 'rscregion' ), 'publicURL');
 				$container = $ostore->getContainer( BackWPup_Option::get( $jobid, 'rsccontainer' ) );
 				$fileobject = $container->getObject( $backupfile );

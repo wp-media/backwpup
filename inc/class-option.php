@@ -4,12 +4,6 @@
  */
 final class BackWPup_Option {
 
-	public function __construct() {
-
-		//add filter for site Option defaults
-		$this->default_site_options();
-	}
-
 	/**
 	 *
 	 * add filter for Site option defaults
@@ -18,38 +12,31 @@ final class BackWPup_Option {
 	public static function default_site_options() {
 
 		//global
-		add_filter( 'default_site_option_backwpup_version', create_function( '', 'return "0.0.0";') );
+		add_site_option( 'backwpup_version', '0.0.0' );
 		//job default
-		add_filter( 'default_site_option_backwpup_jobs', create_function( '', 'return array();') );
+		add_site_option( 'backwpup_jobs', array() );
 		//general
-		add_filter( 'default_site_option_backwpup_cfg_showadminbar', '__return_zero' );
-		add_filter( 'default_site_option_backwpup_cfg_showfoldersize', '__return_zero' );
-		add_filter( 'default_site_option_backwpup_cfg_protectfolders', create_function( '', 'return 1;') );
+		add_site_option( 'backwpup_cfg_showadminbar', 1 );
+		add_site_option( 'backwpup_cfg_showfoldersize', 0 );
+		add_site_option( 'backwpup_cfg_protectfolders', 1 );
 		//job
-		add_filter( 'default_site_option_backwpup_cfg_jobmaxexecutiontime', '__return_zero' );
-		add_filter( 'default_site_option_backwpup_cfg_jobziparchivemethod', create_function( '', 'return "";') );
-		add_filter( 'default_site_option_backwpup_cfg_jobstepretry', create_function( '', 'return 3;') );
-		add_filter( 'default_site_option_backwpup_cfg_jobsteprestart', '__return_zero' );
-		add_filter( 'default_site_option_backwpup_cfg_jobrunauthkey', create_function( '', 'return substr( BackWPup::get_plugin_data( "hash" ), 11, 8 );') );
-		add_filter( 'default_site_option_backwpup_cfg_jobnotranslate', '__return_zero' );
-		add_filter( 'default_site_option_backwpup_cfg_jobwaittimems', '__return_zero' );
+		add_site_option( 'backwpup_cfg_jobmaxexecutiontime', 0 );
+		add_site_option( 'backwpup_cfg_jobziparchivemethod','' );
+		add_site_option( 'backwpup_cfg_jobstepretry', 3 );
+		add_site_option( 'backwpup_cfg_jobsteprestart', 0 );
+		add_site_option( 'backwpup_cfg_jobrunauthkey', substr( md5( BackWPup::get_plugin_data( 'hash' ) ), 11, 8 ) );
+		add_site_option( 'backwpup_cfg_jobnotranslate', 0 );
+		add_site_option( 'backwpup_cfg_jobwaittimems', 0 );
 		//Logs
-		add_filter( 'default_site_option_backwpup_cfg_maxlogs', create_function( '', 'return 30;') );
-		add_filter( 'default_site_option_backwpup_cfg_gzlogs', '__return_zero' );
+		add_site_option( 'backwpup_cfg_maxlogs', 30  );
+		add_site_option( 'backwpup_cfg_gzlogs', 0 );
 		$upload_dir = wp_upload_dir();
-		$upload_dir = trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . BackWPup::get_plugin_data( 'hash' ) . '-logs/';
-		add_filter( 'default_site_option_backwpup_cfg_logfolder', create_function( '', 'return "' . $upload_dir . '";' ) );
+		$logs_dir = trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . BackWPup::get_plugin_data( 'hash' ) . '-logs/';
+		add_site_option( 'backwpup_cfg_logfolder', $logs_dir );
 		//Network Auth
-		add_filter( 'default_site_option_backwpup_cfg_httpauthuser', create_function( '', 'return "";') );
-		add_filter( 'default_site_option_backwpup_cfg_httpauthpassword', create_function( '', 'return "";') );
-		//API Keys
-		add_filter( 'default_site_option_backwpup_cfg_dropboxappkey', create_function( '', 'return base64_decode( "dHZkcjk1MnRhZnM1NmZ2" );') );
-		add_filter( 'default_site_option_backwpup_cfg_dropboxappsecret', create_function( '', 'return base64_decode( "OWV2bDR5MHJvZ2RlYmx1" );') );
-		add_filter( 'default_site_option_backwpup_cfg_dropboxsandboxappkey', create_function( '', 'return base64_decode( "cHVrZmp1a3JoZHR5OTFk" );') );
-		add_filter( 'default_site_option_backwpup_cfg_dropboxsandboxappsecret', create_function( '', 'return base64_decode( "eGNoYzhxdTk5eHE0eWdq" );') );
-		add_filter( 'default_site_option_backwpup_cfg_sugarsynckey', create_function( '', 'return base64_decode( "TlRBek1EY3lOakV6TkRrMk1URXhNemM0TWpJ" );') );
-		add_filter( 'default_site_option_backwpup_cfg_sugarsyncsecret', create_function( '', 'return base64_decode( "TkRFd01UazRNVEpqTW1Ga05EaG1NR0k1TVRFNFpqa3lPR1V6WlRVMk1tTQ==" );') );
-		add_filter( 'default_site_option_backwpup_cfg_sugarsyncappid', create_function( '', 'return "/sc/5030726/449_18207099";') );
+		add_site_option( 'backwpup_cfg_httpauthuser','' );
+		add_site_option( 'backwpup_cfg_httpauthpassword', '' );
+
 	}
 
 

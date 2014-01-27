@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.1.2-beta
+ * Version: 3.1.2-beta2
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -53,7 +53,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 
 		private static $instance = NULL;
 		private static $plugin_data = array();
-		private static $autoload_classes = array();
+		private static $autoload = array();
 		private static $destinations = array();
 		private static $registered_destinations = array();
 		private static $job_types = array();
@@ -69,8 +69,6 @@ if ( ! class_exists( 'BackWPup' ) ) {
 				return;
 			//auto loader
 			spl_autoload_register( array( $this, 'autoloader' ) );
-			//Options
-			new BackWPup_Option();
 			//start upgrade if needed
 			if ( get_site_option( 'backwpup_version' ) != self::get_plugin_data( 'Version' ) )
 				BackWPup_Install::activate();
@@ -167,6 +165,12 @@ if ( ! class_exists( 'BackWPup' ) ) {
 				}
 				self::$plugin_data[ 'running_file' ] = self::$plugin_data[ 'temp' ] . 'backwpup-working.php';
 				self::$plugin_data[ 'url' ] = plugins_url( '', __FILE__ );
+				self::$plugin_data[ 'cacert' ] = FALSE;
+				if ( file_exists( ABSPATH . WPINC . '/certificates/ca-bundle.crt' ) )
+					self::$plugin_data[ 'cacert' ] = ABSPATH . WPINC . '/certificates/ca-bundle.crt';
+				elseif ( file_exists( self::$plugin_data[ 'plugindir' ] . '/vendor/Guzzle/Http/Resources/cacert.pem' ) )
+					self::$plugin_data[ 'cacert' ] = self::$plugin_data[ 'plugindir' ] . '/vendor/Guzzle/Http/Resources/cacert.pem';
+				self::$plugin_data[ 'cacert' ] = apply_filters( 'backwpup_cacert_bundle', self::$plugin_data[ 'cacert' ] );
 				//get unmodified WP Versions
 				include ABSPATH . WPINC . '/version.php';
 				/** @var $wp_version string */
@@ -189,11 +193,11 @@ if ( ! class_exists( 'BackWPup' ) ) {
 		 */
 		private function autoloader( $class ) {
 
-			$class_name = strtolower( $class );
-			if ( strstr( $class_name, 'backwpup_' ) ) {
+			//BackWPup classes auto load
+			if ( strstr( strtolower( $class ), 'backwpup_' ) ) {
 				$dir = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'inc' . DIRECTORY_SEPARATOR;
-				$class_file_name = 'class-' . str_replace( array( 'backwpup_', '_' ), array( '', '-' ), $class_name ) . '.php';
-				if ( strstr( $class_name, 'backwpup_pro' ) ) {
+				$class_file_name = 'class-' . str_replace( array( 'backwpup_', '_' ), array( '', '-' ), strtolower( $class ) ) . '.php';
+				if ( strstr( strtolower( $class ), 'backwpup_pro' ) ) {
 					$dir .=  'pro' . DIRECTORY_SEPARATOR;
 					$class_file_name = str_replace( 'pro-','', $class_file_name );
 				}
@@ -201,8 +205,22 @@ if ( ! class_exists( 'BackWPup' ) ) {
 					require $dir . $class_file_name;
 			}
 
-			if ( ! empty( self::$autoload_classes[ $class ] ) )
-				require self::$autoload_classes[ $class ];
+			// namespaced PSR-0
+			if ( ! empty( self::$autoload ) ) {
+				$pos = strrpos( $class, '\\' );
+				if ( $pos !== FALSE ) {
+					$class_path = str_replace( '\\', DIRECTORY_SEPARATOR, substr( $class, 0, $pos ) ) . DIRECTORY_SEPARATOR . str_replace( '_', DIRECTORY_SEPARATOR, substr( $class, $pos + 1 ) ) . '.php';
+					foreach ( self::$autoload as $prefix => $dir ) {
+						if ( $class === strstr( $class, $prefix ) ) {
+							if ( file_exists( $dir . DIRECTORY_SEPARATOR . $class_path ) )
+								require $dir . DIRECTORY_SEPARATOR . $class_path;
+						}
+					}
+				} // Single class file
+				elseif ( ! empty( self::$autoload[ $class ] ) && is_file( self::$autoload[ $class ] ) ) {
+					require self::$autoload[ $class ];
+				}
+			}
 
 		}
 
@@ -267,9 +285,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 									'functions'	=> array(),
 									'classes'	=> array()
 								),
-								'autoload'	=> array ( 'class' => array(),
-													   'namespace' => array()
-								)
+								'autoload'	=> array()
 							);
 			// backup with mail
 			self::$registered_destinations[ 'EMAIL' ] 	= array(
@@ -285,9 +301,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 									'functions'	=> array(),
 									'classes'	=> array()
 								),
-								'autoload'	=> array( 'class' => array( 'Swift_Preferences' => dirname( __FILE__ ) . '/vendor/SwiftMailer/swift_required.php' ),
-													  'namespace' => array()
-								)
+								'autoload'	=> array( 'Swift_Preferences' => dirname( __FILE__ ) . '/vendor/SwiftMailer/swift_required.php' )
 							);
 			// backup to ftp
 			self::$registered_destinations[ 'FTP' ] 	= array(
@@ -303,9 +317,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 									'functions'	=> array( 'ftp_nb_fput' ),
 									'classes'	=> array()
 								),
-								'autoload'	=> array( 'class' => array(),
-														'namespace' => array()
-								)
+								'autoload'	=> array()
 							);
 			// backup to dropbox
 			self::$registered_destinations[ 'DROPBOX' ] 	= array(
@@ -321,9 +333,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 									'functions'	=> array( 'curl_exec' ),
 									'classes'	=> array()
 								),
-								'autoload'	=> array( 'class' => array(),
-													  'namespace' => array()
-								)
+								'autoload'	=> array()
 							);
 			// Backup to S3
 			if ( version_compare( PHP_VERSION, '5.3.3', '>=' ) )
@@ -340,14 +350,10 @@ if ( ! class_exists( 'BackWPup' ) ) {
 										'functions'	=> array( 'curl_exec' ),
 										'classes'	=> array()
 									),
-									'autoload'	=> array( 'class' => array(),
-															'namespace' => array(
-																'Aws\\Common' => dirname( __FILE__ ) .'/vendor',
-																'Aws\\S3' => dirname( __FILE__ ) .'/vendor',
-																'Symfony\\Component\\EventDispatcher'  => BackWPup::get_plugin_data( 'plugindir' ) . '/vendor',
-																'Guzzle' => dirname( __FILE__ ) . '/vendor'
-															)
-									)
+									'autoload'	=> array( 	'Aws\\Common' => dirname( __FILE__ ) .'/vendor',
+															'Aws\\S3' => dirname( __FILE__ ) .'/vendor',
+															'Symfony\\Component\\EventDispatcher'  => BackWPup::get_plugin_data( 'plugindir' ) . '/vendor',
+															'Guzzle' => dirname( __FILE__ ) . '/vendor'	)
 								);
 			else
 				self::$registered_destinations[ 'S3' ] 	= array(
@@ -363,11 +369,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 										'functions'	=> array( 'curl_exec' ),
 										'classes'	=> array()
 									),
-									'autoload'	=> array( 'class' => array(
-										 					'AmazonS3' => dirname( __FILE__ ) . '/vendor/Aws_v1/sdk.class.php'
-														  ),
-														  'namespace' => array()
-									)
+									'autoload'	=> array( 'AmazonS3' => dirname( __FILE__ ) . '/vendor/Aws_v1/sdk.class.php' )
 								);
 
 			// backup to MS Azure
@@ -384,9 +386,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 									'functions'	=> array(),
 									'classes'	=> array()
 								),
-								'autoload'	=> array( 'class' => array(),
-													  'namespace' => array( 'WindowsAzure' => dirname( __FILE__ ) . '/vendor' )
-								)
+								'autoload'	=> array( 'WindowsAzure' => dirname( __FILE__ ) . '/vendor' )
 							);
 			// backup to Rackspace Cloud
 			self::$registered_destinations[ 'RSC' ] 	= array(
@@ -402,10 +402,8 @@ if ( ! class_exists( 'BackWPup' ) ) {
 									'functions'	=> array( 'curl_exec' ),
 									'classes'	=> array()
 								),
-								'autoload'	=> array( 'class' => array(),
-													  'namespace' => array( 'OpenCloud' => dirname( __FILE__ ) . '/vendor' ),
-													  'Guzzle' => dirname( __FILE__ ) . '/vendor'
-								)
+								'autoload'	=> array( 'OpenCloud' => dirname( __FILE__ ) . '/vendor',
+													  'Guzzle' => dirname( __FILE__ ) . '/vendor' )
 							);
 			// backup to Sugarsync
 			self::$registered_destinations[ 'SUGARSYNC' ] 	= array(
@@ -421,15 +419,12 @@ if ( ! class_exists( 'BackWPup' ) ) {
 									'functions'	=> array( 'curl_exec' ),
 									'classes'	=> array()
 								),
-								'autoload'	=> array( 'class' => array(),
-													  'namespace' => array()
-								)
+								'autoload'	=> array()
 							);
 
 			//Hook for adding Destinations like above
 			self::$registered_destinations = apply_filters( 'backwpup_register_destination', self::$registered_destinations );
 
-			$namespaced = array();
 			//check BackWPup Destinations
 			foreach ( self::$registered_destinations as $dest_key => $dest ) {
 				self::$registered_destinations[ $dest_key ][ 'error'] = '';
@@ -456,19 +451,10 @@ if ( ! class_exists( 'BackWPup' ) ) {
 						}
 					}
 				}
-				//add namespace to auto load
-				if ( ! empty( self::$registered_destinations[ $dest_key ][ 'class' ] ) && ! empty( self::$registered_destinations[ $dest_key ][ 'autoload' ][ 'namespace' ] ) )
-					$namespaced = array_merge( $namespaced, self::$registered_destinations[ $dest_key ][ 'autoload' ][ 'namespace' ] );
-				// add classes to auto load
-				if ( ! empty( self::$registered_destinations[ $dest_key ][ 'class' ] ) && ! empty( self::$registered_destinations[ $dest_key ][ 'autoload' ][ 'class' ] ) )
-					self::$autoload_classes = array_merge( self::$autoload_classes, self::$registered_destinations[ $dest_key ][ 'autoload' ][ 'class' ] );
-			}
+				//add class/namespace to auto load
+				if ( ! empty( self::$registered_destinations[ $dest_key ][ 'class' ] ) && ! empty( self::$registered_destinations[ $dest_key ][ 'autoload' ] ) )
+					self::$autoload = array_merge( self::$autoload, self::$registered_destinations[ $dest_key ][ 'autoload' ] );
 
-			//Namespaced Symfony Class Loader
-			if ( ! empty( $namespaced ) ) {
-				$classLoader = new BackWPup_Symfony_ClassLoader();
-				$classLoader->addPrefixes( $namespaced );
-				$classLoader->register();
 			}
 
 			return self::$registered_destinations;

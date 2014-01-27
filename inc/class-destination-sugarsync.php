@@ -419,8 +419,10 @@ class BackWPup_Destination_SugarSync_API {
 		curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, TRUE );
 		curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, 2 );
 		curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
-		if ( file_exists( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
-			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' );
+		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
+			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
+			curl_setopt( $curl, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
+		}
 
 		if ( $method == 'POST' ) {
 			$headers[ ] = 'Content-Type: application/xml; charset=UTF-8';
@@ -489,8 +491,8 @@ class BackWPup_Destination_SugarSync_API {
 
 		$auth = '<?xml version="1.0" encoding="UTF-8" ?>';
 		$auth .= '<tokenAuthRequest>';
-		$auth .= '<accessKeyId>' . get_site_option( 'backwpup_cfg_sugarsynckey' ) . '</accessKeyId>';
-		$auth .= '<privateAccessKey>' . BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_sugarsyncsecret' ) ) . '</privateAccessKey>';
+		$auth .= '<accessKeyId>' . get_site_option( 'backwpup_cfg_sugarsynckey', base64_decode( "TlRBek1EY3lOakV6TkRrMk1URXhNemM0TWpJ" ) ) . '</accessKeyId>';
+		$auth .= '<privateAccessKey>' . BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_sugarsyncsecret', base64_decode( "TkRFd01UazRNVEpqTW1Ga05EaG1NR0k1TVRFNFpqa3lPR1V6WlRVMk1tTQ==" ) ) ) . '</privateAccessKey>';
 		$auth .= '<refreshToken>' . trim( $this->refresh_token ) . '</refreshToken>';
 		$auth .= '</tokenAuthRequest>';
 		// init
@@ -504,8 +506,10 @@ class BackWPup_Destination_SugarSync_API {
 		curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, TRUE );
 		curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, 2 );
 		curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
-		if ( file_exists( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
-			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' );
+		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
+			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
+			curl_setopt( $curl, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
+		}
 		curl_setopt( $curl, CURLOPT_HEADER, TRUE );
 		curl_setopt( $curl, CURLOPT_HTTPHEADER, array( 'Content-Type: application/xml; charset=UTF-8', 'Content-Length: ' . strlen( $auth ) ) );
 		curl_setopt( $curl, CURLOPT_POSTFIELDS, $auth );
@@ -549,9 +553,9 @@ class BackWPup_Destination_SugarSync_API {
 		$auth .= '<appAuthorization>';
 		$auth .= '<username>' . mb_convert_encoding( $email, 'UTF-8', $this->encoding ) . '</username>';
 		$auth .= '<password>' . mb_convert_encoding( $password, 'UTF-8', $this->encoding ) . '</password>';
-		$auth .= '<application>' . get_site_option( 'backwpup_cfg_sugarsyncappid' ) . '</application>';
-		$auth .= '<accessKeyId>' . get_site_option( 'backwpup_cfg_sugarsynckey' ) . '</accessKeyId>';
-		$auth .= '<privateAccessKey>' . BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_sugarsyncsecret' ) ) . '</privateAccessKey>';
+		$auth .= '<application>' . get_site_option( 'backwpup_cfg_sugarsyncappid', "/sc/5030726/449_18207099" ) . '</application>';
+		$auth .= '<accessKeyId>' . get_site_option( 'backwpup_cfg_sugarsynckey',base64_decode( "TlRBek1EY3lOakV6TkRrMk1URXhNemM0TWpJ" ) ) . '</accessKeyId>';
+		$auth .= '<privateAccessKey>' . BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_sugarsyncsecret', base64_decode( "TkRFd01UazRNVEpqTW1Ga05EaG1NR0k1TVRFNFpqa3lPR1V6WlRVMk1tTQ==" ) ) ) . '</privateAccessKey>';
 		$auth .= '</appAuthorization>';
 		// init
 		$curl = curl_init();
@@ -564,8 +568,10 @@ class BackWPup_Destination_SugarSync_API {
 		curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, TRUE );
 		curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, 2 );
 		curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
-		if ( file_exists( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
-			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' );
+		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
+			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
+			curl_setopt( $curl, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
+		}
 		curl_setopt( $curl, CURLOPT_HEADER, TRUE );
 		curl_setopt( $curl, CURLOPT_POSTFIELDS, $auth );
 		curl_setopt( $curl, CURLOPT_POST, TRUE );
@@ -608,8 +614,8 @@ class BackWPup_Destination_SugarSync_API {
 		$auth .= '<user>';
 		$auth .= '<email>' . mb_convert_encoding( $email, 'UTF-8', $this->encoding ) . '</email>';
 		$auth .= '<password>' . mb_convert_encoding( $password, 'UTF-8', $this->encoding ) . '</password>';
-		$auth .= '<accessKeyId>' . get_site_option( 'backwpup_cfg_sugarsynckey' ) . '</accessKeyId>';
-		$auth .= '<privateAccessKey>' . BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_sugarsyncsecret' ) ) . '</privateAccessKey>';
+		$auth .= '<accessKeyId>' . get_site_option( 'backwpup_cfg_sugarsynckey', base64_decode( "TlRBek1EY3lOakV6TkRrMk1URXhNemM0TWpJ" ) ) . '</accessKeyId>';
+		$auth .= '<privateAccessKey>' . BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_sugarsyncsecret', base64_decode( "TkRFd01UazRNVEpqTW1Ga05EaG1NR0k1TVRFNFpqa3lPR1V6WlRVMk1tTQ==" ) ) ) . '</privateAccessKey>';
 		$auth .= '</user>';
 		// init
 		$curl = curl_init();
@@ -622,8 +628,10 @@ class BackWPup_Destination_SugarSync_API {
 		curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, TRUE );
 		curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, 2 );
 		curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
-		if ( file_exists( BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' ) )
-			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' );
+		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
+			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
+			curl_setopt( $curl, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
+		}
 		curl_setopt( $curl, CURLOPT_HEADER, TRUE );
 		curl_setopt( $curl, CURLOPT_HTTPHEADER, array( 'Content-Type: application/xml; charset=UTF-8', 'Content-Length: ' . strlen( $auth ) ) );
 		curl_setopt( $curl, CURLOPT_POSTFIELDS, $auth );

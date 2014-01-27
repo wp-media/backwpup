@@ -181,7 +181,8 @@ Please check all settings after the update:
 * Removed: Banner from plugins page
 * Improved: Memory usage on XML export
 * Improved: File Mime type detection
-* Improved: Dropbox SSL handling
+* Improved: Dropbox SSL handling use extra certificate file
+* Improved: Certificate bundle file can be filtered
 * Improved: Autoloading vendor classes
 * Improved: Preformance on backing up other databases tables than MyISAM
 * Updated: cacert bundle file
@@ -189,6 +190,7 @@ Please check all settings after the update:
 * Updated: RSC SDK to Version 1.9.1
 * Added: S3 Service: Amazon China (Beijing) region
 * Added: Rackspace: Hong Kong (HKG) region
+* PRO: Fixed: Double synced files on S3
 * PRO: Update: Google SDK to 0.6.7
 * PRO: Added: Amazon Glacier China (Beijing) region
 

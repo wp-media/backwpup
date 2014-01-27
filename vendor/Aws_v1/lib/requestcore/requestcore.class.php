@@ -649,7 +649,7 @@ class RequestCore
 		// chmod the file as 0755
 		if ($this->cacert_location === true)
 		{
-			curl_setopt($curl_handle, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/cacert.pem' );
+			curl_setopt($curl_handle, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
 		}
 		elseif (is_string($this->cacert_location))
 		{

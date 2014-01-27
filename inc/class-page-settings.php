@@ -41,12 +41,22 @@ class BackWPup_Page_Settings {
 			delete_site_option( 'backwpup_cfg_jobziparchivemethod' );
 			delete_site_option( 'backwpup_cfg_jobnotranslate' );
 			delete_site_option( 'backwpup_cfg_jobwaittimems' );
+			delete_site_option( 'backwpup_cfg_jobrunauthkey' );
 			delete_site_option( 'backwpup_cfg_maxlogs' );
 			delete_site_option( 'backwpup_cfg_gzlogs' );
 			delete_site_option( 'backwpup_cfg_protectfolders' );
 			delete_site_option( 'backwpup_cfg_httpauthuser' );
 			delete_site_option( 'backwpup_cfg_httpauthpassword' );
 			delete_site_option( 'backwpup_cfg_logfolder' );
+			delete_site_option( 'backwpup_cfg_dropboxappkey' );
+			delete_site_option( 'backwpup_cfg_dropboxappsecret' );
+			delete_site_option( 'backwpup_cfg_dropboxsandboxappkey' );
+			delete_site_option( 'backwpup_cfg_dropboxsandboxappsecret' );
+			delete_site_option( 'backwpup_cfg_sugarsynckey' );
+			delete_site_option( 'backwpup_cfg_sugarsyncsecret' );
+			delete_site_option( 'backwpup_cfg_sugarsyncappid' );
+
+			BackWPup_Option::default_site_options();
 
 			BackWPup_Admin::message( __( 'Settings reset to default', 'backwpup' ) );
 			return;
@@ -243,10 +253,10 @@ class BackWPup_Page_Settings {
                     </td>
                 </tr>
 				<tr>
-                    <th scope="row"><?php _e( 'Method for creating ZIP archive', 'backwpup' ); ?></th>
+                    <th scope="row"><?php _e( 'Method for creating ZIP-file archives', 'backwpup' ); ?></th>
                     <td>
                         <fieldset>
-                            <legend class="screen-reader-text"><span><?php _e( 'Method for creating ZIP archive', 'backwpup' ); ?></span>
+                            <legend class="screen-reader-text"><span><?php _e( 'Method for creating ZIP-file archives', 'backwpup' ); ?></span>
                             </legend>
                             <label for="jobziparchivemethod">
 								<select name="jobziparchivemethod" size="1" class="help-tip" title="<?php esc_attr_e( 'Auto = Uses PHP class ZipArchive if available; otherwise uses PclZip.<br />ZipArchive = Uses less memory, but many open files at a time.<br />PclZip = Uses more memory, but only 2 open files at a time.', 'backwpup' ); ?>">
@@ -288,7 +298,7 @@ class BackWPup_Page_Settings {
                             <legend class="screen-reader-text"><span><?php _e( 'Reduce server load', 'backwpup' ); ?></span>
                             </legend>
                             <label for="jobwaittimems">
-								<select name="jobwaittimems" size="1" class="help-tip" title="<?php esc_attr_e( 'This adds short pauses to the process. Can be used to reduce the CPU load. Disabled = off, minimum = shortest sleep, maximum = longest sleep', 'backwpup' ); ?>">
+								<select name="jobwaittimems" size="1" class="help-tip" title="<?php esc_attr_e( 'This adds short pauses to the process. Can be used to reduce the CPU load.<br /> Disabled = off<br /> minimum = shortest sleep<br /> medium = middle between minimum and maximum<br /> maximum = longest sleep<br />', 'backwpup' ); ?>">
 									<option value="0" <?php selected( get_site_option( 'backwpup_cfg_jobwaittimems' ), 0 ); ?>><?php _e( 'disabled', 'backwpup' ); ?></option>
                                     <option value="10000" <?php selected( get_site_option( 'backwpup_cfg_jobwaittimems' ), 10000 ); ?>><?php _e( 'minimum', 'backwpup' ); ?></option>
                                     <option value="30000" <?php selected( get_site_option( 'backwpup_cfg_jobwaittimems' ), 30000 ); ?>><?php _e( 'medium', 'backwpup' ); ?></option>

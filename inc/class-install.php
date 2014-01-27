@@ -14,7 +14,6 @@ class BackWPup_Install {
 			self::upgrade_from_version_two();
 
 		//changes for 3.0.14
-		remove_all_filters( 'default_site_option_backwpup_cfg_logfolder', 10 );
 		if ( get_site_option( 'backwpup_version' ) != BackWPup::get_plugin_data( 'version' ) && version_compare( '3.0.13', get_site_option( 'backwpup_version' ), '>' ) && version_compare( '3.0', get_site_option( 'backwpup_version' ), '<' ) ) {
 			$upload_dir = wp_upload_dir();
 			$logfolder = get_site_option( 'backwpup_cfg_logfolder' );
@@ -25,8 +24,11 @@ class BackWPup_Install {
 		}
 
 		//create new option on not ms blogs
-		if ( ! get_site_option( 'backwpup_jobs', FALSE ) )
-			add_site_option( 'backwpup_jobs', array(), NULL, 'no' );
+		$jobs = get_site_option( 'backwpup_jobs', FALSE );
+		if ( is_multisite() && ! is_array( $jobs ) )
+			add_site_option( 'backwpup_jobs', array() );
+		elseif ( ! is_array( $jobs ) )
+			add_option( 'backwpup_jobs', array(), NULL, 'no' );
 
 		//remove old schedule
 		wp_clear_scheduled_hook( 'backwpup_cron' );
@@ -106,11 +108,11 @@ class BackWPup_Install {
 			}
 		}
 
+		//add default options
+		BackWPup_Option::default_site_options();
+
 		//update version
-		if ( get_site_option( 'backwpup_version', FALSE ) == apply_filters( 'default_site_option_backwpup_version', FALSE ) )
-			add_site_option( 'backwpup_version', BackWPup::get_plugin_data( 'Version' ) ); 
-		else
-			update_site_option( 'backwpup_version', BackWPup::get_plugin_data( 'Version' ) );
+		update_site_option( 'backwpup_version', BackWPup::get_plugin_data( 'Version' ) );
 	}
 
 	/**
