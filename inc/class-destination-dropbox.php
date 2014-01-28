@@ -604,37 +604,39 @@ final class BackWPup_Destination_Dropbox_API {
 		curl_setopt( $ch, CURLOPT_URL, self::API_URL . self::API_VERSION_URL . 'oauth/request_token' );
 		curl_setopt( $ch, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' ) );
 		curl_setopt( $ch, CURLOPT_SSLVERSION, 3 );
-		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, TRUE );
 		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 2 );
-		// Only allow ciphersuites supported by Dropbox
-		curl_setopt( $ch, CURLOPT_SSL_CIPHER_LIST,
-				   'ECDHE-RSA-AES256-GCM-SHA384:'.
-				   'ECDHE-RSA-AES128-GCM-SHA256:'.
-				   'ECDHE-RSA-AES256-SHA384:'.
-				   'ECDHE-RSA-AES128-SHA256:'.
-				   'ECDHE-RSA-AES256-SHA:'.
-				   'ECDHE-RSA-AES128-SHA:'.
-				   'ECDHE-RSA-RC4-SHA:'.
-				   'DHE-RSA-AES256-GCM-SHA384:'.
-				   'DHE-RSA-AES128-GCM-SHA256:'.
-				   'DHE-RSA-AES256-SHA256:'.
-				   'DHE-RSA-AES128-SHA256:'.
-				   'DHE-RSA-AES256-SHA:'.
-				   'DHE-RSA-AES128-SHA:'.
-				   'AES256-GCM-SHA384:'.
-				   'AES128-GCM-SHA256:'.
-				   'AES256-SHA256:'.
-				   'AES128-SHA256:'.
-				   'AES256-SHA:'.
-				   'AES128-SHA'
-		);
-		// Limit vulnerability surface area.  Supported in cURL 7.19.4+
-		if ( defined('CURLOPT_PROTOCOLS') )
-			curl_setopt( $ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
-		if ( defined( 'CURLOPT_REDIR_PROTOCOLS' ) )
-			curl_setopt( $ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS);
-		curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/dropbox-trusted-cert.crt' );
-		curl_setopt( $ch, CURLOPT_CAPATH, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/' );
+		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
+			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, TRUE );
+			curl_setopt( $ch, CURLOPT_SSL_CIPHER_LIST,
+						 'ECDHE-RSA-AES256-GCM-SHA384:'.
+						 'ECDHE-RSA-AES128-GCM-SHA256:'.
+						 'ECDHE-RSA-AES256-SHA384:'.
+						 'ECDHE-RSA-AES128-SHA256:'.
+						 'ECDHE-RSA-AES256-SHA:'.
+						 'ECDHE-RSA-AES128-SHA:'.
+						 'ECDHE-RSA-RC4-SHA:'.
+						 'DHE-RSA-AES256-GCM-SHA384:'.
+						 'DHE-RSA-AES128-GCM-SHA256:'.
+						 'DHE-RSA-AES256-SHA256:'.
+						 'DHE-RSA-AES128-SHA256:'.
+						 'DHE-RSA-AES256-SHA:'.
+						 'DHE-RSA-AES128-SHA:'.
+						 'AES256-GCM-SHA384:'.
+						 'AES128-GCM-SHA256:'.
+						 'AES256-SHA256:'.
+						 'AES128-SHA256:'.
+						 'AES256-SHA:'.
+						 'AES128-SHA'
+			);
+			if ( defined( 'CURLOPT_PROTOCOLS' ) )
+				curl_setopt( $ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS );
+			if ( defined( 'CURLOPT_REDIR_PROTOCOLS' ) )
+				curl_setopt( $ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS );
+			curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
+			curl_setopt( $ch, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
+		} else {
+			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, FALSE );
+		}
 		curl_setopt( $ch, CURLOPT_AUTOREFERER, TRUE );
 		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
@@ -674,35 +676,39 @@ final class BackWPup_Destination_Dropbox_API {
 		curl_setopt( $ch, CURLOPT_URL, self::API_URL . self::API_VERSION_URL . 'oauth/access_token' );
 		curl_setopt( $ch, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' ) );
 		curl_setopt( $ch, CURLOPT_SSLVERSION, 3 );
-		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, TRUE );
 		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 2 );
-		// Only allow ciphersuites supported by Dropbox
-		curl_setopt( $ch, CURLOPT_SSL_CIPHER_LIST,
-					 'ECDHE-RSA-AES256-GCM-SHA384:'.
-					 'ECDHE-RSA-AES128-GCM-SHA256:'.
-					 'ECDHE-RSA-AES256-SHA384:'.
-					 'ECDHE-RSA-AES128-SHA256:'.
-					 'ECDHE-RSA-AES256-SHA:'.
-					 'ECDHE-RSA-AES128-SHA:'.
-					 'ECDHE-RSA-RC4-SHA:'.
-					 'DHE-RSA-AES256-GCM-SHA384:'.
-					 'DHE-RSA-AES128-GCM-SHA256:'.
-					 'DHE-RSA-AES256-SHA256:'.
-					 'DHE-RSA-AES128-SHA256:'.
-					 'DHE-RSA-AES256-SHA:'.
-					 'DHE-RSA-AES128-SHA:'.
-					 'AES256-GCM-SHA384:'.
-					 'AES128-GCM-SHA256:'.
-					 'AES256-SHA256:'.
-					 'AES128-SHA256:'.
-					 'AES256-SHA:'.
-					 'AES128-SHA'
-		);
-		// Limit vulnerability surface area.  Supported in cURL 7.19.4+
-		if ( defined('CURLOPT_PROTOCOLS') )
-			curl_setopt( $ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
-		if ( defined( 'CURLOPT_REDIR_PROTOCOLS' ) )
-			curl_setopt( $ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS);
+		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
+			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, TRUE );
+			curl_setopt( $ch, CURLOPT_SSL_CIPHER_LIST,
+						 'ECDHE-RSA-AES256-GCM-SHA384:'.
+						 'ECDHE-RSA-AES128-GCM-SHA256:'.
+						 'ECDHE-RSA-AES256-SHA384:'.
+						 'ECDHE-RSA-AES128-SHA256:'.
+						 'ECDHE-RSA-AES256-SHA:'.
+						 'ECDHE-RSA-AES128-SHA:'.
+						 'ECDHE-RSA-RC4-SHA:'.
+						 'DHE-RSA-AES256-GCM-SHA384:'.
+						 'DHE-RSA-AES128-GCM-SHA256:'.
+						 'DHE-RSA-AES256-SHA256:'.
+						 'DHE-RSA-AES128-SHA256:'.
+						 'DHE-RSA-AES256-SHA:'.
+						 'DHE-RSA-AES128-SHA:'.
+						 'AES256-GCM-SHA384:'.
+						 'AES128-GCM-SHA256:'.
+						 'AES256-SHA256:'.
+						 'AES128-SHA256:'.
+						 'AES256-SHA:'.
+						 'AES128-SHA'
+			);
+			if ( defined( 'CURLOPT_PROTOCOLS' ) )
+				curl_setopt( $ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS );
+			if ( defined( 'CURLOPT_REDIR_PROTOCOLS' ) )
+				curl_setopt( $ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS );
+			curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
+			curl_setopt( $ch, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
+		} else {
+			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, FALSE );
+		}
 		curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/dropbox-trusted-cert.crt' );
 		curl_setopt( $ch, CURLOPT_CAPATH, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/' );
 		curl_setopt( $ch, CURLOPT_AUTOREFERER, TRUE );
@@ -765,37 +771,39 @@ final class BackWPup_Destination_Dropbox_API {
 		curl_setopt( $ch, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' ) );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
 		curl_setopt( $ch, CURLOPT_SSLVERSION, 3 );
-		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, TRUE );
 		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 2 );
-		// Only allow ciphersuites supported by Dropbox
-		curl_setopt( $ch, CURLOPT_SSL_CIPHER_LIST,
-					 'ECDHE-RSA-AES256-GCM-SHA384:'.
-					 'ECDHE-RSA-AES128-GCM-SHA256:'.
-					 'ECDHE-RSA-AES256-SHA384:'.
-					 'ECDHE-RSA-AES128-SHA256:'.
-					 'ECDHE-RSA-AES256-SHA:'.
-					 'ECDHE-RSA-AES128-SHA:'.
-					 'ECDHE-RSA-RC4-SHA:'.
-					 'DHE-RSA-AES256-GCM-SHA384:'.
-					 'DHE-RSA-AES128-GCM-SHA256:'.
-					 'DHE-RSA-AES256-SHA256:'.
-					 'DHE-RSA-AES128-SHA256:'.
-					 'DHE-RSA-AES256-SHA:'.
-					 'DHE-RSA-AES128-SHA:'.
-					 'AES256-GCM-SHA384:'.
-					 'AES128-GCM-SHA256:'.
-					 'AES256-SHA256:'.
-					 'AES128-SHA256:'.
-					 'AES256-SHA:'.
-					 'AES128-SHA'
-		);
-		// Limit vulnerability surface area.  Supported in cURL 7.19.4+
-		if ( defined('CURLOPT_PROTOCOLS') )
-			curl_setopt( $ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
-		if ( defined( 'CURLOPT_REDIR_PROTOCOLS' ) )
-			curl_setopt( $ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS);
-		curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/dropbox-trusted-cert.crt' );
-		curl_setopt( $ch, CURLOPT_CAPATH, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/' );
+		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
+			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, TRUE );
+			curl_setopt( $ch, CURLOPT_SSL_CIPHER_LIST,
+						 'ECDHE-RSA-AES256-GCM-SHA384:'.
+						 'ECDHE-RSA-AES128-GCM-SHA256:'.
+						 'ECDHE-RSA-AES256-SHA384:'.
+						 'ECDHE-RSA-AES128-SHA256:'.
+						 'ECDHE-RSA-AES256-SHA:'.
+						 'ECDHE-RSA-AES128-SHA:'.
+						 'ECDHE-RSA-RC4-SHA:'.
+						 'DHE-RSA-AES256-GCM-SHA384:'.
+						 'DHE-RSA-AES128-GCM-SHA256:'.
+						 'DHE-RSA-AES256-SHA256:'.
+						 'DHE-RSA-AES128-SHA256:'.
+						 'DHE-RSA-AES256-SHA:'.
+						 'DHE-RSA-AES128-SHA:'.
+						 'AES256-GCM-SHA384:'.
+						 'AES128-GCM-SHA256:'.
+						 'AES256-SHA256:'.
+						 'AES128-SHA256:'.
+						 'AES256-SHA:'.
+						 'AES128-SHA'
+			);
+			if ( defined( 'CURLOPT_PROTOCOLS' ) )
+				curl_setopt( $ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS );
+			if ( defined( 'CURLOPT_REDIR_PROTOCOLS' ) )
+				curl_setopt( $ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS );
+			curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
+			curl_setopt( $ch, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
+		} else {
+			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, FALSE );
+		}
 		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
 		$output = '';
 		if ( $echo ) {
