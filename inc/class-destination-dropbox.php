@@ -603,9 +603,8 @@ final class BackWPup_Destination_Dropbox_API {
 		$ch         = curl_init();
 		curl_setopt( $ch, CURLOPT_URL, self::API_URL . self::API_VERSION_URL . 'oauth/request_token' );
 		curl_setopt( $ch, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' ) );
-		curl_setopt( $ch, CURLOPT_SSLVERSION, 3 );
-		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 2 );
 		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
+			curl_setopt( $ch, CURLOPT_SSLVERSION, 3 );
 			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, TRUE );
 			curl_setopt( $ch, CURLOPT_SSL_CIPHER_LIST,
 						 'ECDHE-RSA-AES256-GCM-SHA384:'.
@@ -675,9 +674,8 @@ final class BackWPup_Destination_Dropbox_API {
 		$ch         = curl_init();
 		curl_setopt( $ch, CURLOPT_URL, self::API_URL . self::API_VERSION_URL . 'oauth/access_token' );
 		curl_setopt( $ch, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' ) );
-		curl_setopt( $ch, CURLOPT_SSLVERSION, 3 );
-		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 2 );
 		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
+			curl_setopt( $ch, CURLOPT_SSLVERSION, 3 );
 			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, TRUE );
 			curl_setopt( $ch, CURLOPT_SSL_CIPHER_LIST,
 						 'ECDHE-RSA-AES256-GCM-SHA384:'.
@@ -770,9 +768,8 @@ final class BackWPup_Destination_Dropbox_API {
 		}
 		curl_setopt( $ch, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' ) );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
-		curl_setopt( $ch, CURLOPT_SSLVERSION, 3 );
-		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 2 );
 		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
+			curl_setopt( $ch, CURLOPT_SSLVERSION, 3 );
 			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, TRUE );
 			curl_setopt( $ch, CURLOPT_SSL_CIPHER_LIST,
 						 'ECDHE-RSA-AES256-GCM-SHA384:'.

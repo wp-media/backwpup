@@ -415,10 +415,8 @@ class BackWPup_Destination_SugarSync_API {
 		curl_setopt( $curl, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' )  );
 		if ( ini_get( 'open_basedir' ) == '' ) curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, TRUE );
 		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, TRUE );
-		curl_setopt( $curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1 );
-		curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, 2 );
-		curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
 		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
+			curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
 			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, TRUE );
 			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
 			curl_setopt( $curl, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
@@ -503,11 +501,9 @@ class BackWPup_Destination_SugarSync_API {
 		curl_setopt( $curl, CURLOPT_URL, self::API_URL . '/authorization' );
 		curl_setopt( $curl, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' )  );
 		if ( ini_get( 'open_basedir' ) == ''  ) curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, TRUE );
-		curl_setopt( $curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1 );
 		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, TRUE );
-		curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, 2 );
-		curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
 		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
+			curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
 			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, TRUE );
 			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
 			curl_setopt( $curl, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
@@ -567,11 +563,9 @@ class BackWPup_Destination_SugarSync_API {
 		curl_setopt( $curl, CURLOPT_URL, self::API_URL . '/app-authorization' );
 		curl_setopt( $curl, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' )  );
 		if ( ini_get( 'open_basedir' ) == '' ) curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, TRUE );
-		curl_setopt( $curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1 );
 		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, TRUE );
-		curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, 2 );
-		curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
 		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
+			curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
 			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, TRUE );
 			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
 			curl_setopt( $curl, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
@@ -629,17 +623,15 @@ class BackWPup_Destination_SugarSync_API {
 		curl_setopt( $curl, CURLOPT_URL, 'https://provisioning-api.sugarsync.com/users' );
 		curl_setopt( $curl, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' )  );
 		if ( ini_get( 'open_basedir' ) == '' ) curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, TRUE );
-		curl_setopt( $curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1 );
 		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, TRUE );
-		curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, 2 );
-		curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
 		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
+			curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
 			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, TRUE );
 			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
 			curl_setopt( $curl, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
 		} else {
 			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, FALSE );
-		}
+		}	curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, FALSE );
 		curl_setopt( $curl, CURLOPT_HEADER, TRUE );
 		curl_setopt( $curl, CURLOPT_HTTPHEADER, array( 'Content-Type: application/xml; charset=UTF-8', 'Content-Length: ' . strlen( $auth ) ) );
 		curl_setopt( $curl, CURLOPT_POSTFIELDS, $auth );
