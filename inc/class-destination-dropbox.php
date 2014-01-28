@@ -707,8 +707,7 @@ final class BackWPup_Destination_Dropbox_API {
 		} else {
 			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, FALSE );
 		}
-		curl_setopt( $ch, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/dropbox-trusted-cert.crt' );
-		curl_setopt( $ch, CURLOPT_CAPATH, BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/' );
+
 		curl_setopt( $ch, CURLOPT_AUTOREFERER, TRUE );
 		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
