@@ -707,7 +707,6 @@ final class BackWPup_Destination_Dropbox_API {
 		} else {
 			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, FALSE );
 		}
-
 		curl_setopt( $ch, CURLOPT_AUTOREFERER, TRUE );
 		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );

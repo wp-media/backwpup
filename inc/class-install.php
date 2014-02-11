@@ -9,18 +9,28 @@ class BackWPup_Install {
 	 */
 	public static function activate() {
 
-		//do upgrade from version 2.x
+		//convert inactive version to active
+		if ( $incative_version = get_site_option( 'backwpup_version' ) ) {
+			update_site_option( 'backwpup_version', str_replace( '-inactive', '', $incative_version ) );
+		}
+
+		//changes for version before 3.0.0
 		if ( ! get_site_option( 'backwpup_version' ) && get_option( 'backwpup' ) && get_option( 'backwpup_jobs' ) )
 			self::upgrade_from_version_two();
 
-		//changes for 3.0.14
-		if ( get_site_option( 'backwpup_version' ) != BackWPup::get_plugin_data( 'version' ) && version_compare( '3.0.13', get_site_option( 'backwpup_version' ), '>' ) && version_compare( '3.0', get_site_option( 'backwpup_version' ), '<' ) ) {
+		//changes for version before 3.0.14
+		if ( version_compare( '3.0.13', get_site_option( 'backwpup_version' ), '>' ) && version_compare( '3.0', get_site_option( 'backwpup_version' ), '<' ) ) {
 			$upload_dir = wp_upload_dir();
 			$logfolder = get_site_option( 'backwpup_cfg_logfolder' );
 			if ( empty( $logfolder ) ) {
 				$old_log_folder = trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . substr( md5( md5( SECURE_AUTH_KEY ) ), 9, 5 ) . '-logs/';
 				update_site_option( 'backwpup_cfg_logfolder', $old_log_folder );
 			}
+		}
+
+		//changes for version before 3.1.2
+		if ( version_compare( '3.1.2', get_site_option( 'backwpup_version' ), '>' ) ) {
+			BackWPup_Job::check_folder( get_site_option( 'backwpup_cfg_logfolder' ), TRUE );
 		}
 
 		//create new option on not ms blogs
@@ -132,7 +142,7 @@ class BackWPup_Install {
 		}
 		wp_clear_scheduled_hook( 'backwpup_check_cleanup' );
 		//to reschedule on activation and so on
-		update_site_option( 'backwpup_version', BackWPup::get_plugin_data( 'version' ) .'-inactive' );
+		update_site_option( 'backwpup_version', get_site_option( 'backwpup_version' ) .'-inactive' );
 	}
 
 

@@ -172,6 +172,7 @@ Please check all settings after the update:
 
 == Changelog ==
 = Version 3.1.2 =
+* Added: .donotbackup file checking. Folders and sub folders with this file in will not included in backups
 * Fixed: New multisite installs will not save jobs
 * Fixed: New multisite installs will not save installed version
 * Fixed: Fatal error on cleanup inactive jobs from cron
@@ -181,13 +182,13 @@ Please check all settings after the update:
 * Removed: Banner from plugins page
 * Improved: Memory usage on XML export
 * Improved: File Mime type detection
-* Improved: Dropbox SSL handling use extra certificate file
+* Improved: Dropbox SSL handling
 * Improved: Certificate bundle file can be filtered
-* Improved: Autoloading vendor classes
-* Improved: Preformance on backing up other databases tables than MyISAM
-* Updated: cacert bundle file
+* Improved: Auto loading vendor classes
+* Improved: Performance on backing up other databases tables than MyISAM
 * Updated: AWS SDK to Version 2.5.1 (PHP 5.3.3+)
 * Updated: RSC SDK to Version 1.9.1
+* Updated: Guzzle SDK to Version 3.8.1
 * Added: S3 Service: Amazon China (Beijing) region
 * Added: Rackspace: Hong Kong (HKG) region
 * PRO: Fixed: Double synced files on S3

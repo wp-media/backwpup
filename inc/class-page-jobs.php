@@ -337,7 +337,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 					check_admin_referer( 'backwpup_job_run-runnowlink' );
 
 					//check temp folder
-					BackWPup_Job::check_folder( BackWPup::get_plugin_data( 'TEMP' ) );
+					BackWPup_Job::check_folder( BackWPup::get_plugin_data( 'TEMP' ), TRUE );
 					//check log folder
 					BackWPup_Job::check_folder( get_site_option( 'backwpup_cfg_logfolder' ) );
 					//check server callback

@@ -231,7 +231,7 @@ final class BackWPup_Job {
 					$this->backup_folder = $this->job[ 'backupdir' ];
 					//check backup folder
 					if ( ! empty( $this->backup_folder ) )
-						self::check_folder( $this->backup_folder );
+						self::check_folder( $this->backup_folder, TRUE );
 				}
 				//set temp folder to backup folder if not set because we need one
 				if ( ! $this->backup_folder || $this->backup_folder == '/' )
@@ -480,7 +480,7 @@ final class BackWPup_Job {
 				die( '-1' );
 
 			//check folders
-			if ( ! self::check_folder( get_site_option( 'backwpup_cfg_logfolder' ) )  || ! self::check_folder( BackWPup::get_plugin_data( 'TEMP' ) ) )
+			if ( ! self::check_folder( get_site_option( 'backwpup_cfg_logfolder' ) )  || ! self::check_folder( BackWPup::get_plugin_data( 'TEMP' ), TRUE ) )
 				die( '-2' );
 		}
 
@@ -530,7 +530,7 @@ final class BackWPup_Job {
 		//check folders
 		if ( ! self::check_folder( get_site_option( 'backwpup_cfg_logfolder' ) ) )
 			die( __( 'Log folder does not exist or is not writable for BackWPup', 'backwpup' ) );
-		if ( ! self::check_folder( BackWPup::get_plugin_data( 'TEMP' ) ) )
+		if ( ! self::check_folder( BackWPup::get_plugin_data( 'TEMP' ), TRUE ) )
 			die( __( 'Temp folder does not exist or is not writable for BackWPup', 'backwpup' ) );
 		//check running job
 		if ( file_exists( BackWPup::get_plugin_data( 'running_file' ) ) )
@@ -558,7 +558,7 @@ final class BackWPup_Job {
 
 		if ( ! empty( $jobid ) ) {
 			//check folders
-			if ( ! self::check_folder( get_site_option( 'backwpup_cfg_logfolder' ) ) ||  ! self::check_folder( BackWPup::get_plugin_data( 'TEMP' ) ) )
+			if ( ! self::check_folder( get_site_option( 'backwpup_cfg_logfolder' ) ) ||  ! self::check_folder( BackWPup::get_plugin_data( 'TEMP' ), TRUE ) )
 				return;
 		}
 
@@ -930,10 +930,10 @@ final class BackWPup_Job {
 	 * add .htaccess or index.html file in folder to prevent directory listing
 	 *
 	 * @param string $folder the folder to check
-	 *
+	 * @param bool   $donotbackup Create a file that the folder will not backuped
 	 * @return bool ok or not
 	 */
-	public static function check_folder( $folder ) {
+	public static function check_folder( $folder, $donotbackup = FALSE ) {
 
 		$folder = untrailingslashit( str_replace( '\\', '/', $folder ) );
 		if ( empty( $folder ) )
@@ -965,6 +965,10 @@ final class BackWPup_Job {
 			file_put_contents( $folder . '/.htaccess', "<Files \"*\">" . PHP_EOL . "<IfModule mod_access.c>" . PHP_EOL . "Deny from all" . PHP_EOL . "</IfModule>" . PHP_EOL . "<IfModule !mod_access_compat>" . PHP_EOL . "<IfModule mod_authz_host.c>" . PHP_EOL . "Deny from all" . PHP_EOL . "</IfModule>" . PHP_EOL . "</IfModule>" . PHP_EOL . "<IfModule mod_access_compat>" . PHP_EOL . "Deny from all" . PHP_EOL . "</IfModule>" . PHP_EOL . "</Files>" );
 		if ( get_site_option( 'backwpup_cfg_protectfolders') && ! file_exists( $folder . '/index.php' ) )
 			file_put_contents( $folder . '/index.php', "<?php" . PHP_EOL . "header( \$_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found' );" . PHP_EOL . "header( 'Status: 404 Not Found' );" . PHP_EOL );
+
+		//Create do not backup file for this folder
+		if ( $donotbackup && ! file_exists( $folder . '/.donotbackup' ) )
+			file_put_contents( $folder . '/.donotbackup', __( 'BackWPup will not backup this folder and subfolders, if this file is in!' ) );
 
 		return TRUE;
 	}
@@ -1123,6 +1127,9 @@ final class BackWPup_Job {
 		if ( get_site_option( 'backwpup_cfg_jobwaittimems' ) > 0 && get_site_option( 'backwpup_cfg_jobwaittimems') <= 500000 )
 			usleep( get_site_option( 'backwpup_cfg_jobwaittimems' ) );
 
+		//check free memory
+		$this->need_free_memory( '10M' );
+
 		//only run every 1 sec.
 		$time_to_update = microtime( TRUE ) - $this->timestamp_last_update;
 		if ( ! $must_write && $time_to_update < 1 )
@@ -1139,9 +1146,6 @@ final class BackWPup_Job {
 
 		//set execution time again for 5 min
 		@set_time_limit( 300 );
-
-		//check free memory
-		$this->need_free_memory( '10M' );
 
 		//check MySQL connection to WordPress Database and reconnect if needed
 		$res = $wpdb->query( 'SELECT 1' );
@@ -1942,10 +1946,51 @@ final class BackWPup_Job {
 	 */
 	public function get_folders_to_backup( ) {
 
-		if ( empty( $this->count_folder ) )
+		$file = BackWPup::get_plugin_data( 'temp' ) . 'backwpup-' . BackWPup::get_plugin_data( 'hash' ) . '-folder.php';
+
+		if ( ! file_exists( $file ) )
 			return array();
 
-		return $this->data_storage( 'folder' );
+		$folders = array();
+
+		$file_data = file( $file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES );
+
+		foreach( $file_data as $folder ) {
+			$folder = trim( str_replace( array( '<?php', '//' ), '', $folder ) );
+			if ( ! empty( $folder ) && is_dir( $folder ) )
+				$folders[] = $folder;
+		}
+		$folders = array_unique( $folders );
+		sort( $folders );
+		$this->count_folder = count( $folders );
+
+		return $folders;
+	}
+
+
+	/**
+	 * Add a Folders to Folder list that should be backup
+	 *
+	 * @param array $folders folder to add
+	 * @param bool  $new overwrite existing file
+	 */
+	public function add_folders_to_backup( $folders = array(), $new = FALSE ) {
+
+		if ( ! is_array( $folders ) )
+			$folders = (array) $folders;
+
+		$file = BackWPup::get_plugin_data( 'temp' ) . 'backwpup-' . BackWPup::get_plugin_data( 'hash' ) . '-folder.php';
+
+		if ( ! file_exists( $file ) || $new )
+			file_put_contents( $file, '<?php' . PHP_EOL );
+
+		$content = '';
+		foreach ( $folders AS $folder ) {
+			$content .= '//' . $folder . PHP_EOL;
+		}
+
+		if ( ! empty( $content ) )
+			file_put_contents( $file, $content, FILE_APPEND );
 	}
 
 	/**
@@ -1979,7 +2024,7 @@ final class BackWPup_Job {
 	public static function clean_temp_folder() {
 
 		$temp_dir = BackWPup::get_plugin_data( 'TEMP' );
-		$do_not_delete_files = array( '.htaccess', 'index.php', '.', '..' );
+		$do_not_delete_files = array( '.htaccess', 'index.php', '.', '..', '.donotbackup' );
 
 		if ( $dir = opendir( $temp_dir ) ) {
 			while ( FALSE !== ( $file = readdir( $dir ) ) ) {

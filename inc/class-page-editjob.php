@@ -97,7 +97,10 @@ class BackWPup_Page_Editjob {
 				}
 				BackWPup_Option::update( $jobid, 'destinations', $_POST[ 'destinations' ] );
 
-				BackWPup_Option::update( $jobid, 'name', esc_html( $_POST[ 'name' ] ) );
+				$name = esc_html( trim( $_POST[ 'name' ] ) );
+				if ( empty( $name ) || $_POST[ 'name' ] == __( 'New Job', 'backwpup' ) )
+					$name = sprintf( __( 'Job with ID %d', 'backwpup' ), $jobid );
+				BackWPup_Option::update( $jobid, 'name', $name );
 				BackWPup_Option::update( $jobid, 'mailaddresslog', sanitize_email( $_POST[ 'mailaddresslog' ] ) );
 
 				$_POST[ 'mailaddresssenderlog' ] = trim( $_POST[ 'mailaddresssenderlog' ] );
@@ -434,8 +437,8 @@ class BackWPup_Page_Editjob {
 					<tr>
 						<th scope="row"><label for="name"><?php _e( 'Please name this job.', 'backwpup' ) ?></label></th>
 						<td>
-							<input name="name" type="text" id="name"
-								   value="<?php echo BackWPup_Option::get( $jobid, 'name' );?>" class="regular-text" />
+							<input name="name" type="text" id="name" data-empty="<?php _e( 'New Job', 'backwpup' ); ?>"
+								   value="<?php echo BackWPup_Option::get( $jobid, 'name' ); ?>" class="regular-text" />
 						</td>
 					</tr>
 				</table>
