@@ -213,6 +213,8 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 					$dump_start_time = microtime( TRUE );
 					$done_records = $sql_dump->dump_table( $table ,$job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'start' ], $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'length' ] );
 					$dump_time = microtime( TRUE ) - $dump_start_time;
+					if ( empty( $dump_time ) )
+						$dump_time = 0.01;
 					if ( $done_records < $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'length' ] ) //that is the last chunk
 						$while = FALSE;
 					$job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'start' ] = $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'start' ] + $done_records;

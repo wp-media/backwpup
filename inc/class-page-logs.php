@@ -68,7 +68,7 @@ class BackWPup_Page_Logs extends WP_List_Table {
 			$i++;
 			if ( $i < $start )
 				continue;
-			if ( $i > $end )
+			if ( $i >= $end )
 				break;
 			$this->items[$mtime] = BackWPup_Job::read_logheader( get_site_option( 'backwpup_cfg_logfolder' ) . '/' . $logfile );
 			$this->items[$mtime]['file'] = $logfile;

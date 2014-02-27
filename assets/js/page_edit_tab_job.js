@@ -290,6 +290,18 @@ jQuery(document).ready(function ($) {
         $('#h2jobtitle').replaceWith('<span id="h2jobtitle">' + backwpup_htmlspecialchars( $(this).val() ) + '</span>');
     });
 
+	$('input[name="name"]').focus( function () {
+		if ( $(this).val() == $(this).data( 'empty' ) ) {
+			$(this).val( '' );
+		}
+	});
+
+	$('input[name="name"]').blur( function () {
+		if ( $(this).val() == '' ) {
+			$(this).val( $(this).data( 'empty' ) );
+		}
+	});
+
     $('input[name="backuptype"]').change(function () {
         if ($(this).val() == 'sync') {
             $('.nosync').hide();

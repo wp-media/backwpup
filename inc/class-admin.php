@@ -331,8 +331,7 @@ final class BackWPup_Admin {
 		else
 			$saved_message[ 'updated' ][] = $message;
 
-		update_site_option( 'backwpup_messages', $saved_message);
-
+		update_site_option( 'backwpup_messages', $saved_message );
 	}
 
 	/**
@@ -342,7 +341,7 @@ final class BackWPup_Admin {
 	 */
 	public static function get_messages() {
 
-		return get_site_option( 'backwpup_messages', array(), FALSE );
+		return get_site_option( 'backwpup_messages', array() );
 	}
 
 	/**
@@ -369,9 +368,8 @@ final class BackWPup_Admin {
 			foreach( $saved_message[ 'error' ] as $msg )
 				$message_error .= '<p>' .  $msg  . '</p>';
 		}
-		//clean messages
-		if ( ! empty( $saved_message ) )
-			delete_site_option( 'backwpup_messages' );
+
+		update_site_option( 'backwpup_messages', array() );
 
 		if ( ! empty( $message_updated ) ) {
 			$message_updated = '<div' . $message_id . ' class="updated">' . $message_updated . '</div>';

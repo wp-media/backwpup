@@ -33,11 +33,10 @@ class BackWPup_Install {
 			BackWPup_Job::check_folder( get_site_option( 'backwpup_cfg_logfolder' ), TRUE );
 		}
 
-		//create new option on not ms blogs
-		$jobs = get_site_option( 'backwpup_jobs', FALSE );
-		if ( is_multisite() && ! is_array( $jobs ) )
+		//create new options
+		if ( is_multisite() )
 			add_site_option( 'backwpup_jobs', array() );
-		elseif ( ! is_array( $jobs ) )
+		else
 			add_option( 'backwpup_jobs', array(), NULL, 'no' );
 
 		//remove old schedule

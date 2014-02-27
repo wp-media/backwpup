@@ -49,19 +49,22 @@ final class BackWPup_Option {
 	 */
 	private static function jobs_options( $use_cache = TRUE ) {
 
-		//disable cache for non multisite
-		if ( ! is_multisite() && ! $use_cache ) {
-			//remove from options cache
-			wp_cache_delete( 'backwpup_jobs' , 'options' );
-			//remove from all options
-			$alloptions = wp_cache_get( 'alloptions', 'options' );
-			if ( isset( $alloptions[ 'backwpup_jobs' ] )) {
-				unset( $alloptions[ 'backwpup_jobs' ] );
-				wp_cache_set('alloptions', $alloptions, 'options');
-			}
+		if ( $use_cache )
+			return get_site_option( 'backwpup_jobs' );
+
+		if ( is_multisite() )
+			return get_site_option( 'backwpup_jobs', array(), FALSE );
+
+		//remove from options cache
+		wp_cache_delete( 'backwpup_jobs', 'options' );
+		//remove from all options
+		$alloptions = wp_cache_get( 'alloptions', 'options' );
+		if ( isset( $alloptions[ 'backwpup_jobs' ] ) ) {
+			unset( $alloptions[ 'backwpup_jobs' ] );
+			wp_cache_set( 'alloptions', $alloptions, 'options' );
 		}
 
-		return get_site_option( 'backwpup_jobs', NULL, $use_cache );
+		return get_option( 'backwpup_jobs', array() );
 	}
 
 	/**

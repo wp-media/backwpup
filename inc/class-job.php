@@ -537,7 +537,7 @@ final class BackWPup_Job {
 			die( __( 'A BackWPup job is already running', 'backwpup' ) );
 
 		//start/restart class
-		fwrite( STDOUT, __( 'Job Started' ) . PHP_EOL );
+		fwrite( STDOUT, __( 'Job started', 'backwpup' ) . PHP_EOL );
 		fwrite( STDOUT, '----------------------------------------------------------------------' . PHP_EOL );
 		$backwpup_job_object = new self();
 		$backwpup_job_object->create( 'runcli', (int)$jobid );
@@ -659,18 +659,6 @@ final class BackWPup_Job {
 		if ( get_site_option( 'backwpup_cfg_jobnotranslate' ) ) {
 			add_filter( 'override_load_textdomain', create_function( '','return TRUE;') );
 			$GLOBALS[ 'l10n' ] = array();
-		}
-		//clear caches then the backups smaller and lesser problems
-		if ( function_exists( 'apc_clear_cache' ) ) { //clear APC
-			apc_clear_cache();
-		}
-		if ( class_exists('W3_Plugin_TotalCacheAdmin')  ) { //W3TC
-			$totalcacheadmin = & w3_instance('W3_Plugin_TotalCacheAdmin');
-			$totalcacheadmin->flush_all();
-		} elseif ( function_exists('wp_cache_clear_cache') ) { //WP Super Cache
-			wp_cache_clear_cache();
-		} elseif ( has_action('cachify_flush_cache') ) { //Cachify
-			do_action('cachify_flush_cache');
 		}
 		// execute function on job shutdown  register_shutdown_function( array( $this, 'shutdown' ) );
 		add_action( 'shutdown', array( $this, 'shutdown' ) );
@@ -968,7 +956,7 @@ final class BackWPup_Job {
 
 		//Create do not backup file for this folder
 		if ( $donotbackup && ! file_exists( $folder . '/.donotbackup' ) )
-			file_put_contents( $folder . '/.donotbackup', __( 'BackWPup will not backup this folder and subfolders, if this file is in!' ) );
+			file_put_contents( $folder . '/.donotbackup', __( 'BackWPup will not backup folders and subfolders when this file is inside.', 'backwpup' ) );
 
 		return TRUE;
 	}

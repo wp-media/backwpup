@@ -126,7 +126,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 		$backup_folder  = BackWPup_Option::get( $jobid, 'backupdir' );
 		if ( is_dir( $backup_folder ) && $dir = opendir( $backup_folder ) ) { //make file list
 			while ( FALSE !== ( $file = readdir( $dir ) ) ) {
-				if ( in_array( $file, array( '.', '..', 'index.php', '.htaccess' ) ) || is_dir( $backup_folder . $file ) || is_link( $backup_folder . $file ) )
+				if ( in_array( $file, array( '.', '..', 'index.php', '.htaccess', '.donotbackup' ) ) || is_dir( $backup_folder . $file ) || is_link( $backup_folder . $file ) )
 					continue;
 				if ( is_readable( $backup_folder . $file ) ) {
 					//file list for backups

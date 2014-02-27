@@ -2,8 +2,8 @@
 Contributors: inpsyde, danielhuesken, Bueltge, nullbyte
 Tags: Amazon, Amazon S3, back up, backup, chinese, cloud, cloud files, database, db backup, dropbox, dump, file, french, ftp, ftps, german, migrate, multisite, russian, schedule, sftp, storage, S3, time, upload, xml
 Requires at least: 3.4
-Tested up to: 3.8
-Stable tag: 3.1.1
+Tested up to: 3.8.1
+Stable tag: 3.1.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -172,26 +172,27 @@ Please check all settings after the update:
 
 == Changelog ==
 = Version 3.1.2 =
-* Added: .donotbackup file checking. Folders and sub folders with this file in will not included in backups
-* Fixed: New multisite installs will not save jobs
-* Fixed: New multisite installs will not save installed version
-* Fixed: Fatal error on cleanup inactive jobs from cron
-* Fixed: Excluded uploads not working
-* Fixed: Message of not readable file of an excluded folder
+* Added: .donotbackup file. Folders and sub folders containing this file in will not be included in backups.
+* Fixed: New multisite installs did not save jobs.
+* Fixed: New multisite installs did not save installed version.
+* Fixed: Fatal error when attempting to clean up inactive jobs from cron
+* Fixed: Exclude uploads not working
+* Fixed: Message "file not readable" of an excluded folder
 * Fixed: WP-CLI deprecated and unknown parameter message
+* Fixed: Bugs in pagination on logs and backups page
 * Removed: Banner from plugins page
-* Improved: Memory usage on XML export
-* Improved: File Mime type detection
+* Improved: Memory usage during XML export
+* Improved: Mime type detection
 * Improved: Dropbox SSL handling
-* Improved: Certificate bundle file can be filtered
-* Improved: Auto loading vendor classes
-* Improved: Performance on backing up other databases tables than MyISAM
-* Updated: AWS SDK to Version 2.5.1 (PHP 5.3.3+)
+* Improved: Certificate bundle file can now be filtered
+* Improved: Auto-loading vendor classes
+* Improved: Performance when saving other database tables than MyISAM
+* Updated: AWS SDK to Version 2.5.2 (PHP 5.3.3+)
 * Updated: RSC SDK to Version 1.9.1
 * Updated: Guzzle SDK to Version 3.8.1
 * Added: S3 Service: Amazon China (Beijing) region
 * Added: Rackspace: Hong Kong (HKG) region
-* PRO: Fixed: Double synced files on S3
+* PRO: Fixed: Duplicating synced files on S3
 * PRO: Update: Google SDK to 0.6.7
 * PRO: Added: Amazon Glacier China (Beijing) region
 

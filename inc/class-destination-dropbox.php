@@ -263,7 +263,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 					else
 						$job_object->log(
 										sprintf(
-											__( 'Error transfering backup to %$1s.', 'backwpup' ) . ' ' . $response[ 'error' ],
+											__( 'Error transfering backup to %s.', 'backwpup' ) . ' ' . $response[ 'error' ],
 											__( 'Dropbox', 'backwpup' )
 										), E_USER_ERROR	);
 

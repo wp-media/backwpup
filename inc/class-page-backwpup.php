@@ -117,8 +117,78 @@ class BackWPup_Page_BackWPup {
 						<a href="<?php echo wp_nonce_url( network_admin_url( 'admin.php' ). '?page=backwpup&action=dbdumpdl', 'backwpupdbdumpdl' ); ?>" class="button button-primary button-primary-bwp" title="<?php _e( 'Generate a database backup of WordPress tables and download it right away!', 'backwpup' ); ?>"><?php _e( 'Download database backup', 'backwpup' ); ?></a><br />
 					</div>
 				</div>
-			<?php }
+			<?php } ?>
 
+			<div id="backwpup-rss-feed" class="metabox-holder postbox backwpup-cleared-postbox backwpup-max-width">
+				<h3 class="hndle"><span><?php  _e( 'BackWPup News', 'backwpup' ); ?></span></h3>
+				<div class="inside">
+					<?php
+						add_action( 'wp_feed_options', array( __CLASS__, 'wp_feed_options' ) );
+
+						$rss = fetch_feed( _x( 'http://marketpress.com/news/plugins/backwpup/feed/', 'BackWPup News RSS Feed URL', 'backwpup' ) );
+
+						remove_action( 'wp_feed_options', array( __CLASS__, 'wp_feed_options' ) );
+
+						if ( is_wp_error($rss) ) {
+							echo '<p>' . sprintf( __('<strong>RSS Error</strong>: %s', 'backwpup' ), $rss->get_error_message() ) . '</p>';
+							return;
+						}
+
+						if ( !$rss->get_item_quantity() ) {
+							echo '<ul><li>' . __( 'An error has occurred, which probably means the feed is down. Try again later.', 'backwpup' ) . '</li></ul>';
+							$rss->__destruct();
+							unset($rss);
+							return;
+						}
+
+						echo '<ul>';
+						$first = TRUE;
+						foreach ( $rss->get_items( 0, 4 ) as $item ) {
+							$link = $item->get_link();
+							while ( stristr($link, 'http') != $link )
+								$link = substr($link, 1);
+							$link = esc_url(strip_tags($link));
+							$title = esc_attr(strip_tags($item->get_title()));
+							if ( empty($title) )
+								$title = __( 'Untitled', 'backwpup' );
+
+							$desc = str_replace( array("\n", "\r"), ' ', esc_attr( strip_tags( @html_entity_decode( $item->get_description(), ENT_QUOTES, get_option( 'blog_charset' ) ) ) ) );
+							$excerpt = wp_html_excerpt( $desc, 360 );
+
+							// Append ellipsis. Change existing [...] to [&hellip;].
+							if ( '[...]' == substr( $excerpt, -5 ) )
+								$excerpt = substr( $excerpt, 0, -5 ) . '[&hellip;]';
+							elseif ( '[&hellip;]' != substr( $excerpt, -10 ) && $desc != $excerpt )
+								$excerpt .= ' [&hellip;]';
+
+							$excerpt = esc_html( $excerpt );
+
+							if ( $first ) {
+								$summary = "<div class='rssSummary'>$excerpt</div>";
+							} else {
+								$summary = '';
+							}
+
+							$date = '';
+							if ( $first ) {
+								$date = $item->get_date( 'U' );
+
+								if ( $date ) {
+									$date = ' <span class="rss-date">' . date_i18n( get_option( 'date_format' ), $date ) . '</span>';
+								}
+							}
+
+							echo "<li><a href=\"$link\" title=\"$desc\">$title</a>{$date}{$summary}</li>";
+							$first = FALSE;
+						}
+						echo '</ul>';
+						$rss->__destruct();
+						unset($rss);
+					?>
+				</div>
+			</div>
+
+			<?php
 			if ( class_exists( 'BackWPup_Pro', FALSE ) ) {
 				/* @var BackWPup_Pro_Wizards $wizard_class */
 
@@ -303,5 +373,15 @@ class BackWPup_Page_BackWPup {
 		<?php
 	}
 
+	/**
+	 * Set Feed Options
+	 *
+	 * @param $feed
+	 */
+	public static function wp_feed_options( $feed ) {
+
+		if ( is_object( $feed ) )
+			$feed->set_useragent( BackWPup::get_plugin_data( 'user-agent' ) );
+	}
 
 }

@@ -261,8 +261,10 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 		}
 
 		// write buffer to export file
-		if ( ! file_put_contents( BackWPup::get_plugin_data( 'TEMP' ) . $this->job_object->temp[ 'wpexportfile' ], $buffer, FILE_APPEND ) ) {
-			$this->job_object->log( __( 'WP Export file could not be written.', 'backwpup' ), E_USER_ERROR );
+		if ( ! empty( $buffer ) ) {
+			if ( FALSE === file_put_contents( BackWPup::get_plugin_data( 'TEMP' ) . $this->job_object->temp[ 'wpexportfile' ], $buffer, FILE_APPEND ) ) {
+				$this->job_object->log( __( 'WP Export file could not be written.', 'backwpup' ), E_USER_ERROR );
+			}
 		}
 
 		$this->job_object->temp[ 'wp_export_part' ] ++;

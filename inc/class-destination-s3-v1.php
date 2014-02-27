@@ -328,7 +328,7 @@ class BackWPup_Destination_S3_V1 extends BackWPup_Destinations {
 		if ( $s3file->status==200 ) {
 			header( "Pragma: public" );
 			header( "Expires: 0" );
-			header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );;
+			header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
 			header( "Content-Type: application/octet-stream" );
 			header( "Content-Disposition: attachment; filename=" . basename( $get_file ) . ";" );
 			header( "Content-Transfer-Encoding: binary" );

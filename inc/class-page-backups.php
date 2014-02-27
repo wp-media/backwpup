@@ -146,6 +146,24 @@ class BackWPup_Page_Backups extends WP_List_Table {
 										 'order'       => $order
 									) );
 
+		//only display items on page
+		$start = intval( ( $this->get_pagenum() - 1 ) * $per_page );
+		$end   = $start + $per_page;
+		if ( $end > count( $this->items ) )
+			$end = count( $this->items );
+
+		$i = -1;
+		foreach ( $this->items as $item ) {
+			$i++;
+			if ( $i < $start )
+				continue;
+			if ( $i >= $end )
+				break;
+			$paged_items[] = $item;
+		}
+
+		$this->items = $paged_items;
+
 	}
 
 	/**
@@ -283,7 +301,7 @@ class BackWPup_Page_Backups extends WP_List_Table {
 			$r .= esc_attr( $item[ 'info' ] ) . '<br />';
 		$actions               = array();
 		if ( current_user_can( 'backwpup_backups_delete' ) )
-			$actions[ 'delete' ]   = "<a class=\"submitdelete\" href=\"" . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=delete&jobdest=' . $this->jobid . '_' . $this->dest . '&paged=' . $this->get_pagenum() . '&backupfiles[]=' . esc_attr( $item[ 'file' ] ), 'bulk-backups' ) . "\" onclick=\"if ( confirm('" . esc_js( __( "You are about to delete this backup archive. \n  'Cancel' to stop, 'OK' to delete.", "backwpup" ) ) . "') ) { return true;}return false;\">" . __( 'Delete', 'backwpup' ) . "</a>";
+			$actions[ 'delete' ]   = "<a class=\"submitdelete\" href=\"" . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=delete&jobdest-top=' . $this->jobid . '_' . $this->dest . '&paged=' . $this->get_pagenum() . '&backupfiles[]=' . esc_attr( $item[ 'file' ] ), 'bulk-backups' ) . "\" onclick=\"if ( confirm('" . esc_js( __( "You are about to delete this backup archive. \n  'Cancel' to stop, 'OK' to delete.", "backwpup" ) ) . "') ) { return true;}return false;\">" . __( 'Delete', 'backwpup' ) . "</a>";
 		if ( current_user_can( 'backwpup_backups_download' ) && ! empty( $item[ 'downloadurl' ] ) )
 			$actions[ 'download' ] = "<a href=\"" . wp_nonce_url( $item[ 'downloadurl' ], 'download-backup' ) . "\">" . __( 'Download', 'backwpup' ) . "</a>";
 		$r .= $this->row_actions( $actions );
