@@ -70,7 +70,13 @@ class BackWPup_Page_Settings {
 		if ( empty( $_POST[ 'jobstepretry' ] ) or ! is_int( $_POST[ 'jobstepretry' ] ) )
 			$_POST[ 'jobstepretry' ] = 3;
 		update_site_option( 'backwpup_cfg_jobstepretry', $_POST[ 'jobstepretry' ] );
-		update_site_option( 'backwpup_cfg_jobmaxexecutiontime', abs( (int)$_POST[ 'jobmaxexecutiontime' ] ) );
+		$max_exe_time = abs( (int)$_POST[ 'jobmaxexecutiontime' ] );
+		if ( ! is_int( $max_exe_time ) || $max_exe_time < 0 ) {
+			$max_exe_time = 0;
+		} elseif ( $max_exe_time > 300 ) {
+			$max_exe_time = 300;
+		}
+		update_site_option( 'backwpup_cfg_jobmaxexecutiontime', $max_exe_time );
 		update_site_option( 'backwpup_cfg_jobziparchivemethod', ( $_POST[ 'jobziparchivemethod' ] == '' || $_POST[ 'jobziparchivemethod' ] == 'PclZip' || $_POST[ 'jobziparchivemethod' ] == 'ZipArchive' ) ? $_POST[ 'jobziparchivemethod' ] : '' );
 		update_site_option( 'backwpup_cfg_jobnotranslate', isset( $_POST[ 'jobnotranslate' ] ) ? 1 : 0 );
 		update_site_option( 'backwpup_cfg_jobwaittimems', $_POST[ 'jobwaittimems' ] );

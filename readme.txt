@@ -171,6 +171,16 @@ Please check all settings after the update:
 
 
 == Changelog ==
+= Version 3.1.3 =
+* Fixed: var_export not working if output buffering active
+* Fixed: bug in sending test emails on Backup with email
+* Changed: WordPress Export will now done by a own class
+* Changed: Dropbox now uses oAuth 2 Protocol
+* Changed: Logs have now a br tag on line end for better reading in emails
+* Improved: Dropbox chipper list only on OpenSSL cUrl backend
+* Improved: Increased performance on Zip File generation massively
+* Updated: SwiftMailer to Version 5.0.3
+
 = Version 3.1.2 =
 * Added: .donotbackup file. Folders and sub folders containing this file in will not be included in backups.
 * Fixed: New multisite installs did not save jobs.

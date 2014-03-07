@@ -181,7 +181,7 @@ class BackWPup_Create_Archive {
 		if ( is_object( $this->ziparchive ) ) {
 			$this->ziparchive_status( $this->ziparchive->status );
 			$this->ziparchive->close();
-			unset( $this->ziparchive );
+			$this->ziparchive = NULL;
 			$this->ziparchive_delete_temp_files();
 		}
 
@@ -280,6 +280,7 @@ class BackWPup_Create_Archive {
 					fwrite( $this->filehandel, fread( $fd, 8192 ) );
 				}
 				fclose( $fd );
+				$this->file_count++;
 				break;
 			case 'bz':
 				if ( $this->file_count > 0 ) {
@@ -295,6 +296,7 @@ class BackWPup_Create_Archive {
 					fwrite( $this->filehandel, bzcompress( fread( $fd, 8192 ) ) );
 				}
 				fclose( $fd );
+				$this->file_count++;
 				break;
 			case 'Tar':
 			case 'TarGz':
@@ -305,10 +307,10 @@ class BackWPup_Create_Archive {
 				break;
 			case 'ZipArchive':
 				//close and reopen, all added files are open on fs
-				if ( $this->file_count >= 20 ) { //35 works with PHP 5.2.4 on win
+				if ( $this->file_count > 20 ) { //35 works with PHP 5.2.4 on win
 					$this->ziparchive_status( $this->ziparchive->status );
 					$this->ziparchive->close();
-					$this->ziparchive_delete_temp_files();
+					$this->ziparchive = new ZipArchive();
 					$ziparchive_open = $this->ziparchive->open( $this->file, ZipArchive::CREATE );
 					if ( $ziparchive_open !== TRUE ) {
 						$this->ziparchive_status( $ziparchive_open );
@@ -316,9 +318,22 @@ class BackWPup_Create_Archive {
 					}
 					$this->file_count = 0;
 				}
-				if ( ! $this->ziparchive->addFile( $file_name, $name_in_archive ) ) {
-					trigger_error( sprintf( __( 'Cannot add "%s" to zip archive!', 'backwpup' ), $name_in_archive ), E_USER_ERROR );
-					return FALSE;
+				$file_size = filesize( $file_name );
+				if ( $file_size < ( 1024 * 1024 * 2 ) ) {
+					if ( ! $this->ziparchive->addFromString( $name_in_archive, file_get_contents( $file_name ) ) ) {
+						trigger_error( sprintf( __( 'Cannot add "%s" to zip archive!', 'backwpup' ), $name_in_archive ), E_USER_ERROR );
+						return FALSE;
+					} else {
+						$file_factor = round( $file_size / ( 1024 * 1024 ), 4 ) * 2;
+						$this->file_count = $this->file_count + $file_factor;
+					}
+				} else {
+					if ( ! $this->ziparchive->addFile( $file_name, $name_in_archive ) ) {
+						trigger_error( sprintf( __( 'Cannot add "%s" to zip archive!', 'backwpup' ), $name_in_archive ), E_USER_ERROR );
+						return FALSE;
+					} else {
+						$this->file_count++;
+					}
 				}
 				break;
 			case 'PclZip':
@@ -332,8 +347,6 @@ class BackWPup_Create_Archive {
 				}
 				break;
 		}
-
-		$this->file_count++;
 
 		return TRUE;
 	}
@@ -598,7 +611,7 @@ class BackWPup_Create_Archive {
 			return;
 		}
 
-		usleep( 250000 );
+		usleep( 300000 );
 
 		$temp_files = glob( $this->file . '.*' );
 

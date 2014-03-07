@@ -9,8 +9,6 @@
  */
 abstract class BackWPup_Destinations {
 
-	public $info = array();
-
 	/**
 	 * @return array
 	 */

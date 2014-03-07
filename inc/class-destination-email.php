@@ -1,5 +1,5 @@
 <?php
-// Swift Mailer v5.0.1
+// Swift Mailer v5.0.3
 // http://swiftmailer.org/
 // https://github.com/swiftmailer/swiftmailer
 

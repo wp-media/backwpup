@@ -133,32 +133,8 @@ final class BackWPup_Job {
 	 */
 	public $user_abort = FALSE;
 
-	/**
-	 * Setting Working data
-	 * @param $working_data array
-	 */
-	private function __construct( $working_data = array() ) {
 
-		if ( is_array( $working_data ) && ! empty( $working_data ) ) {
-			//restore object properties from working data
-			foreach ( $working_data as $var => $value )
-				$this->{$var} = $value;
-			//delete Temp
-			$this->temp = array();
-		}
-
-	}
-
-	/**
-	 * Create Job object from state
-	 *
-	 * @param array $working_data
-	 * @return \BackWPup_Job
-	 */
-	private static function __set_state( $working_data = array() ) {
-
-		return new self( $working_data );
-	}
+	private function __construct( ) {}
 
 	/**
 	 *
@@ -182,7 +158,7 @@ final class BackWPup_Job {
 		else
 			return;
 		$this->start_time   =  current_time( 'timestamp' );
-		$this->lastmsg		= '<samp>' . __( 'Starting job', 'backwpup' ) . '</samp>';
+		$this->lastmsg		= __( 'Starting job', 'backwpup' );
 		//set Logfile
 		$this->logfile = get_site_option( 'backwpup_cfg_logfolder' ) . 'backwpup_log_' . BackWPup::get_plugin_data( 'hash' ) . '_' . date_i18n( 'Y-m-d_H-i-s' ) . '.html';
 		//write settings to job
@@ -304,11 +280,11 @@ final class BackWPup_Job {
 		$head .= str_pad( '<meta name="backwpup_backupfilesize" content="0" />', 100 ) . PHP_EOL;
 		$head .= str_pad( '<meta name="backwpup_jobruntime" content="0" />', 100 ) . PHP_EOL;
 		$head .= "</head>" . PHP_EOL;
-		$head .= "<body style=\"margin:0;padding:3px;font-family:Fixedsys,Courier,monospace;font-size:12px;line-height:15px;background-color:#000;color:#fff;white-space:pre;\">" . PHP_EOL;
-		$head .= sprintf( _x( '[INFO] %1$s version %2$s; A project of Inpsyde GmbH', 'Plugin name; Plugin Version','backwpup' ), BackWPup::get_plugin_data( 'name' ) , BackWPup::get_plugin_data( 'Version' ) ) . PHP_EOL;
-		$head .= sprintf( _x( '[INFO] WordPress version %s', 'WordPress Version', 'backwpup' ), BackWPup::get_plugin_data( 'wp_version' ) ) . PHP_EOL;
-		$head .= sprintf( __( '[INFO] Blog url: %s', 'backwpup' ), esc_attr( site_url( '/' ) ) ). PHP_EOL;
-		$head .= sprintf( __( '[INFO] BackWPup job: %1$s; %2$s', 'backwpup' ), esc_attr( $this->job[ 'name' ] ) , implode( '+', $this->job[ 'type' ] ) ) . PHP_EOL;
+		$head .= "<body style=\"margin:0;padding:3px;font-family:monospace;font-size:12px;line-height:15px;background-color:#000;color:#fff;white-space:nowrap;\">" . PHP_EOL;
+		$head .= sprintf( _x( '[INFO] %1$s version %2$s; A project of Inpsyde GmbH', 'Plugin name; Plugin Version','backwpup' ), BackWPup::get_plugin_data( 'name' ) , BackWPup::get_plugin_data( 'Version' ) ) . '<br />' . PHP_EOL;
+		$head .= sprintf( _x( '[INFO] WordPress version %s', 'WordPress Version', 'backwpup' ), BackWPup::get_plugin_data( 'wp_version' ) ). '<br />' . PHP_EOL;
+		$head .= sprintf( __( '[INFO] Blog url: %s', 'backwpup' ), esc_attr( site_url( '/' ) ) ). '<br />' . PHP_EOL;
+		$head .= sprintf( __( '[INFO] BackWPup job: %1$s; %2$s', 'backwpup' ), esc_attr( $this->job[ 'name' ] ) , implode( '+', $this->job[ 'type' ] ) ) . '<br />' . PHP_EOL;
 		if ( $this->job[ 'activetype' ] == 'wpcron' ) {
 			//check next run
 			$cron_next = wp_next_scheduled( 'backwpup_cron', array( 'id' => $this->job[ 'jobid' ] ) );
@@ -323,37 +299,37 @@ final class BackWPup_Job {
 				$cron_next = __( 'Not scheduled!', 'backwpup' );
 			else
 				$cron_next = date_i18n( 'D, j M Y @ H:i', $cron_next + ( get_option( 'gmt_offset' ) * 3600 ) , TRUE ) ;
-			$head .= sprintf( __( '[INFO] BackWPup cron: %s; Next: %s ', 'backwpup' ), $this->job[ 'cron' ] , $cron_next ) . PHP_EOL;
+			$head .= sprintf( __( '[INFO] BackWPup cron: %s; Next: %s ', 'backwpup' ), $this->job[ 'cron' ] , $cron_next ) . '<br />' . PHP_EOL;
 		}
 		elseif ( $this->job[ 'activetype' ] == 'link' )
-			$head .= __( '[INFO] BackWPup job start with link is active', 'backwpup' ) . PHP_EOL;
+			$head .= __( '[INFO] BackWPup job start with link is active', 'backwpup' ) . '<br />' . PHP_EOL;
 		else
-			$head .= __( '[INFO] BackWPup no automatic job start configured', 'backwpup' ) . PHP_EOL;
+			$head .= __( '[INFO] BackWPup no automatic job start configured', 'backwpup' ) . '<br />' . PHP_EOL;
 		if ( $start_type == 'cronrun' )
-			$head .= __( '[INFO] BackWPup job started from wp-cron', 'backwpup' ) . PHP_EOL;
+			$head .= __( '[INFO] BackWPup job started from wp-cron', 'backwpup' ) . '<br />' . PHP_EOL;
 		elseif ( $start_type == 'runnow' or $start_type == 'runnowalt' )
-			$head .= __( '[INFO] BackWPup job started manually', 'backwpup' ) . PHP_EOL;
+			$head .= __( '[INFO] BackWPup job started manually', 'backwpup' ) . '<br />' . PHP_EOL;
 		elseif ( $start_type == 'runext' )
-			$head .= __( '[INFO] BackWPup job started from external url', 'backwpup' ) . PHP_EOL;
+			$head .= __( '[INFO] BackWPup job started from external url', 'backwpup' ) . '<br />' . PHP_EOL;
 		elseif ( $start_type == 'runcli' )
-			$head .= __( '[INFO] BackWPup job started form commandline interface', 'backwpup' ) . PHP_EOL;
-		$head .= __( '[INFO] PHP ver.:', 'backwpup' ) . ' ' . PHP_VERSION . '; ' . PHP_SAPI . '; ' . PHP_OS . PHP_EOL;
-		$head .= sprintf( __( '[INFO] Maximum PHP script execution time is %1$d seconds', 'backwpup' ), ini_get( 'max_execution_time' ) ) . PHP_EOL;
+			$head .= __( '[INFO] BackWPup job started form commandline interface', 'backwpup' ) . '<br />' . PHP_EOL;
+		$head .= __( '[INFO] PHP ver.:', 'backwpup' ) . ' ' . PHP_VERSION . '; ' . PHP_SAPI . '; ' . PHP_OS . '<br />' . PHP_EOL;
+		$head .= sprintf( __( '[INFO] Maximum PHP script execution time is %1$d seconds', 'backwpup' ), ini_get( 'max_execution_time' ) ) . '<br />' . PHP_EOL;
 		$job_max_execution_time = get_site_option( 'backwpup_cfg_jobmaxexecutiontime' );
 		if ( ! empty( $job_max_execution_time ) )
-				$head .= sprintf( __( '[INFO] Script restart time is configured to %1$d seconds', 'backwpup' ), $job_max_execution_time ) . PHP_EOL;
+				$head .= sprintf( __( '[INFO] Script restart time is configured to %1$d seconds', 'backwpup' ), $job_max_execution_time ) . '<br />' . PHP_EOL;
 		if ( get_site_option( 'backwpup_cfg_jobsteprestart' ) )
-			$head .= __( '[INFO] Script restarts on every main step is activated', 'backwpup' ) . PHP_EOL;
-		$head .= sprintf( __( '[INFO] MySQL ver.: %s', 'backwpup' ), $wpdb->get_var( "SELECT VERSION() AS version" ) ) . PHP_EOL;
+			$head .= __( '[INFO] Script restarts on every main step is activated', 'backwpup' ) . '<br />' . PHP_EOL;
+		$head .= sprintf( __( '[INFO] MySQL ver.: %s', 'backwpup' ), $wpdb->get_var( "SELECT VERSION() AS version" ) ) . '<br />' . PHP_EOL;
 		if ( function_exists( 'curl_init' ) ) {
 			$curlversion = curl_version();
-			$head .= sprintf( __( '[INFO] curl ver.: %1$s; %2$s', 'backwpup' ), $curlversion[ 'version' ], $curlversion[ 'ssl_version' ] ) . PHP_EOL;
+			$head .= sprintf( __( '[INFO] curl ver.: %1$s; %2$s', 'backwpup' ), $curlversion[ 'version' ], $curlversion[ 'ssl_version' ] ) . '<br />' . PHP_EOL;
 		}
-		$head .= sprintf( __( '[INFO] Temp folder is: %s', 'backwpup' ), BackWPup::get_plugin_data( 'TEMP' ) ) . PHP_EOL;
-		$head .= sprintf( __( '[INFO] Logfile is: %s', 'backwpup' ), $this->logfile ) . PHP_EOL;
-		$head .= sprintf( __( '[INFO] Backup type is: %s', 'backwpup' ), $this->job[ 'backuptype' ] ) . PHP_EOL;
+		$head .= sprintf( __( '[INFO] Temp folder is: %s', 'backwpup' ), BackWPup::get_plugin_data( 'TEMP' ) ) . '<br />' . PHP_EOL;
+		$head .= sprintf( __( '[INFO] Logfile is: %s', 'backwpup' ), $this->logfile ) . '<br />' . PHP_EOL;
+		$head .= sprintf( __( '[INFO] Backup type is: %s', 'backwpup' ), $this->job[ 'backuptype' ] ) . '<br />' . PHP_EOL;
 		if ( ! empty( $this->backup_file ) && $this->job[ 'backuptype' ] == 'archive' )
-			$head .= sprintf( __( '[INFO] Backup file is: %s', 'backwpup' ), $this->backup_folder . $this->backup_file ) . PHP_EOL;
+			$head .= sprintf( __( '[INFO] Backup file is: %s', 'backwpup' ), $this->backup_folder . $this->backup_file ) . '<br />' . PHP_EOL;
 		file_put_contents( $this->logfile, $head, FILE_APPEND );
 		//output info on cli
 		if ( defined( 'STDIN' ) && defined( 'STDOUT' ) )
@@ -373,7 +349,7 @@ final class BackWPup_Job {
 		//Set start as done
 		$this->steps_done[] = 'CREATE';
 		//must write working data
-		file_put_contents( BackWPup::get_plugin_data( 'running_file' ),'<?php return '. var_export( $this, true ) . ';' );
+		$this->write_tor_running_file();
 	}
 
 
@@ -818,29 +794,33 @@ final class BackWPup_Job {
 	 *
 	 * @return bool|object BackWPup_Job Object or Bool if file not exits
 	 */
-		public static function get_working_data() {
+	public static function get_working_data() {
 
-			if ( ! file_exists( BackWPup::get_plugin_data( 'running_file' ) ) )
-				return FALSE;
-
-			if ( $job_object = include BackWPup::get_plugin_data( 'running_file' ) ) {
-				if ( $job_object instanceof BackWPup_Job )
-					return $job_object;
-			}
-
+		if ( ! file_exists( BackWPup::get_plugin_data( 'running_file' ) ) )
 			return FALSE;
 
+		$file_data = file_get_contents( BackWPup::get_plugin_data( 'running_file' ), FALSE, NULL, 8 );
+		if ( $file_data === FALSE )
+			return FALSE;
+
+		if ( $job_object = unserialize( $file_data ) ) {
+			if ( $job_object instanceof BackWPup_Job )
+				return $job_object;
 		}
 
-		/**
-		 *
-		 * Reads a BackWPup logfile header and gives back a array of information
-		 *
-		 * @param string $logfile full logfile path
-		 *
-		 * @return array|bool
-		 */
-		public static function read_logheader( $logfile ) {
+		return FALSE;
+
+	}
+
+	/**
+	 *
+	 * Reads a BackWPup logfile header and gives back a array of information
+	 *
+	 * @param string $logfile full logfile path
+	 *
+	 * @return array|bool
+	 */
+	public static function read_logheader( $logfile ) {
 
 		$usedmetas = array(
 			"date"                    => "logtime",
@@ -1017,7 +997,7 @@ final class BackWPup_Job {
 		switch ( $args[ 0 ] ) {
 			case E_NOTICE:
 			case E_USER_NOTICE:
-				$messagetype = '<samp>';
+				$messagetype = '';
 				break;
 			case E_WARNING:
 			case E_CORE_WARNING:
@@ -1025,7 +1005,7 @@ final class BackWPup_Job {
 			case E_USER_WARNING:
 				$this->warnings ++;
 				$error_or_warning = TRUE;
-				$messagetype     = '<samp style="background-color:#ffc000;color:#fff">' . __( 'WARNING:', 'backwpup' ) . ' ';
+				$messagetype = '<span style="background-color:#ffc000;color:#fff">' . __( 'WARNING:', 'backwpup' ) . ' ';
 				break;
 			case E_ERROR:
 			case E_PARSE:
@@ -1034,22 +1014,22 @@ final class BackWPup_Job {
 			case E_USER_ERROR:
 				$this->errors ++;
 				$error_or_warning = TRUE;
-				$messagetype     = '<samp style="background-color:red;color:#fff">' . __( 'ERROR:', 'backwpup' ) . ' ';
+				$messagetype = '<span style="background-color:red;color:#fff">' . __( 'ERROR:', 'backwpup' ) . ' ';
 				break;
 			case 8192: //E_DEPRECATED      comes with php 5.3
 			case 16384: //E_USER_DEPRECATED comes with php 5.3
-				$messagetype = '<samp>' . __( 'DEPRECATED:', 'backwpup' ) . ' ';
+				$messagetype = __( 'DEPRECATED:', 'backwpup' ) . ' ';
 				break;
 			case E_STRICT:
-				$messagetype = '<samp>' . __( 'STRICT NOTICE:', 'backwpup' ) . ' ';
+				$messagetype = __( 'STRICT NOTICE:', 'backwpup' ) . ' ';
 				break;
 			case E_RECOVERABLE_ERROR:
 				$this->errors ++;
 				$error_or_warning = TRUE;
-				$messagetype = '<samp style="background-color:red;color:#fff">' . __( 'RECOVERABLE ERROR:', 'backwpup' ) . ' ';
+				$messagetype = '<span style="background-color:red;color:#fff">' . __( 'RECOVERABLE ERROR:', 'backwpup' ) . ' ';
 				break;
 			default:
-				$messagetype = '<samp>' . $args[ 0 ] . ": ";
+				$messagetype = $args[ 0 ] . ": ";
 				break;
 		}
 
@@ -1060,14 +1040,16 @@ final class BackWPup_Job {
 			fwrite( STDOUT, '[' . date_i18n( 'd-M-Y H:i:s' ) . '] ' . strip_tags( $messagetype ) . str_replace( '&hellip;', '...', strip_tags( $args[ 1 ] ) ) . PHP_EOL ) ;
 		//log line
 		$timestamp = '<span datetime="' . date_i18n( 'c' ) . '" title="[Type: ' . $args[ 0 ] . '|Line: ' . $args[ 3 ] . '|File: ' . $in_file . '|Mem: ' . size_format( @memory_get_usage( TRUE ), 2 ) . '|Mem Max: ' . size_format( @memory_get_peak_usage( TRUE ), 2 ) . '|Mem Limit: ' . ini_get( 'memory_limit' ) . '|PID: ' . self::get_pid() . '|Query\'s: ' . get_num_queries() . ']">[' . date_i18n( 'd-M-Y H:i:s' ) . ']</span> ';
-		//ste last Message
-		$message = htmlentities( $args[ 1 ], ENT_COMPAT , get_bloginfo( 'charset' ), FALSE );
+		//set last Message
+		$message = $messagetype . htmlentities( $args[ 1 ], ENT_COMPAT , get_bloginfo( 'charset' ), FALSE );
+		if ( strstr( $message, '<span' ) )
+			$message .= '</span>';
 		if ( $args[ 0 ] == E_NOTICE || $args[ 0 ] == E_USER_NOTICE )
-			$this->lastmsg = $messagetype . $message . '</samp>';
+			$this->lastmsg = $message;
 		if ( $error_or_warning )
-			$this->lasterrormsg = $messagetype . $message . '</samp>';
+			$this->lasterrormsg = $message;
 		//write log file
-		file_put_contents( $this->logfile, $timestamp . $messagetype . $message . '</samp>' . PHP_EOL, FILE_APPEND  );
+		file_put_contents( $this->logfile, $timestamp . $message . '<br />' . PHP_EOL, FILE_APPEND  );
 
 		//write new log header
 		if ( $error_or_warning ) {
@@ -1152,7 +1134,20 @@ final class BackWPup_Job {
 				$this->end();
 		} else {
 			$this->timestamp_last_update = microtime( TRUE ); //last update of working file
-			file_put_contents( BackWPup::get_plugin_data( 'running_file' ),'<?php return '. var_export( $this, true ) . ';' );
+			$this->write_tor_running_file();
+		}
+	}
+
+	private function write_tor_running_file() {
+
+		$clone = clone $this;
+		$clone->temp = array();
+		$data = '<?php //' . serialize( $clone );
+
+		$write = file_put_contents( BackWPup::get_plugin_data( 'running_file' ), $data );
+		if ( !$write || $write < strlen( $data ) ) {
+			unlink( BackWPup::get_plugin_data( 'running_file' ) );
+			$this->log( __( 'Can not writing working file correctly. Job well be aborted.', 'backwpup' ), E_USER_ERROR );
 		}
 	}
 
@@ -1262,7 +1257,7 @@ final class BackWPup_Job {
 			$subject = sprintf( __( '[%3$s] BackWPup log %1$s: %2$s', 'backwpup' ), date_i18n( 'd-M-Y H:i', $this->start_time, TRUE ), esc_attr( $this->job[ 'name' ] ), $status );
 			$headers = array();
 			$headers[] = 'Content-Type: text/html; charset='. get_bloginfo( 'charset' );
-			$headers[] = 'X-Priority: '.$priority;
+			/* $headers[] = 'X-Priority: ' . $priority; */ // Priority not working with header setting
 			if ( ! empty( $this->job[ 'mailaddresssenderlog' ] ) ) {
 				if ( FALSE === $start_mail = strpos( $this->job[ 'mailaddresssenderlog' ], '<' ) ) {
 					if ( FALSE === strpos( $this->job[ 'mailaddresssenderlog' ], '@' ) ) {
