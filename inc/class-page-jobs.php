@@ -353,21 +353,23 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 					//only start job if messages empty
 					$log_messages = BackWPup_Admin::get_messages();
 					if ( empty ( $log_messages ) )  {
-						BackWPup_Admin::message( sprintf( __( 'Job "%s" started.', 'backwpup' ), esc_attr( BackWPup_Option::get( $_GET[ 'jobid' ], 'name' ) ) ) );
+						$old_log_file = BackWPup_Option::get( $_GET[ 'jobid' ], 'logfile' );
 						BackWPup_Job::get_jobrun_url( 'runnow', $_GET[ 'jobid' ] );
 						usleep( 250000 ); //wait a quarter second
+						$new_log_file = BackWPup_Option::get( $_GET[ 'jobid' ], 'logfile', NULL, FALSE );
 						//sleep as long as job not started
 						$i=0;
-						$job_object = BackWPup_Job::get_working_data();
-						while ( ! is_object( $job_object ) && empty( $job_object->logfile ) ) {
+						while ( $old_log_file == $new_log_file ) {
 							usleep( 250000 ); //wait a quarter second for next try
-							clearstatcache();
-							$job_object = BackWPup_Job::get_working_data();
+							$new_log_file = BackWPup_Option::get( $_GET[ 'jobid' ], 'logfile', NULL, FALSE );
 							//wait maximal 10 sec.
-							if ( $i >= 40 )
-								break;
+							if ( $i >= 40 ) {
+								BackWPup_Admin::message( sprintf( __( 'Job start for "%s" not answered after 10 seconds.', 'backwpup' ), esc_attr( BackWPup_Option::get( $_GET[ 'jobid' ], 'name' ) ) ), TRUE );
+								break 2;
+							}
 							$i++;
 						}
+						BackWPup_Admin::message( sprintf( __( 'Job "%s" started.', 'backwpup' ), esc_attr( BackWPup_Option::get( $_GET[ 'jobid' ], 'name' ) ) ) );
 					}
 				}
 				break;

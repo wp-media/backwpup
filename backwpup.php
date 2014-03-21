@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.1.3-beta1
+ * Version: 3.1.3-beta2
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -84,8 +84,8 @@ if ( ! class_exists( 'BackWPup' ) ) {
 				add_action( 'backwpup_cron', array( 'BackWPup_Cron', 'run' ) );
 				add_action( 'backwpup_check_cleanup', array( 'BackWPup_Cron', 'check_cleanup' ) );
 				// add action for doing thinks if cron active
-				// must done in int before wp-cron control
-				add_action( 'init', array( 'BackWPup_Cron', 'cron_active' ), 1 );
+				// must done in wp_loaded so that all is really loaded and initiated
+				add_action( 'wp_loaded', array( 'BackWPup_Cron', 'cron_active' ), 999 );
 				// if in cron the rest must not needed
 				return;
 			}

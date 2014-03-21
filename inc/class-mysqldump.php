@@ -165,7 +165,7 @@ class BackWPup_MySQLDump {
 	public function execute() {
 
 		//increase time limit
-		@set_time_limit( 0 );
+		@set_time_limit( 300 );
 		//write dump head
 		$this->dump_head();
 		//write tables

@@ -133,6 +133,12 @@ final class BackWPup_Job {
 	 */
 	public $user_abort = FALSE;
 
+	/**
+	 * Stores data that will only used in a single run
+	 * @var array
+	 */
+	private $run = array();
+
 
 	private function __construct( ) {}
 
@@ -357,7 +363,7 @@ final class BackWPup_Job {
 	 *
 	 * Get a url to run a job of BackWPup
 	 *
-	 * @param string     $starttype Start types are 'runnow', 'runnowlink', 'cronrun', 'runext', 'runcmd', 'restart'
+	 * @param string     $starttype Start types are 'runnow', 'runnowlink', 'cronrun', 'runext', 'restart', 'test'
 	 * @param int        $jobid     The id of job to start else 0
 	 * @return array|object [url] is the job url [header] for auth header or object form wp_remote_get()
 	 */
@@ -404,6 +410,22 @@ final class BackWPup_Job {
 			$query_args[ 'doing_wp_cron' ] = NULL;
 		}
 
+		//Extra for WP-Cron control
+		if ( class_exists( 'WP_Cron_Control' ) ) {
+			$wp_cron_control_settings = get_option( 'wpcroncontrol_settings', array() );
+			if ( empty( $wp_cron_control_settings[ 'secret_string' ] ) && file_exists( WP_PLUGIN_DIR . '/wp-cron-control/wp-cron-control.php' ) ) {
+				$wp_cron_control_settings[ 'secret_string' ] = md5( realpath( WP_PLUGIN_DIR . '/wp-cron-control/wp-cron-control.php' ) . get_current_blog_id() );
+				$wp_cron_control_settings[ 'enable' ] = 1;
+			}
+			if ( isset( $wp_cron_control_settings[ 'enable' ] ) && $wp_cron_control_settings[ 'enable' ] == 1 ) {
+				if ( defined( 'WP_CRON_CONTROL_SECRET' ) ) {
+					$wp_cron_control_settings[ 'secret_string' ] = WP_CRON_CONTROL_SECRET;
+				}
+				$query_args[ $wp_cron_control_settings[ 'secret_string' ] ] = '';
+				$query_args[ 'doing_wp_cron' ] = NULL;
+			}
+		}
+
 		$cron_request = apply_filters( 'cron_request', array(
 															'url' => add_query_arg( $query_args, $url ),
 															'key' => $query_args[ 'doing_wp_cron' ],
@@ -420,7 +442,7 @@ final class BackWPup_Job {
 															  )
 													   ) );
 
-		if(  $starttype == 'test' ) {
+		if( $starttype == 'test' ) {
 			$cron_request[ 'args' ][ 'timeout' ] = 15;
 			$cron_request[ 'args' ][ 'blocking' ] = TRUE;
 		}
@@ -593,14 +615,14 @@ final class BackWPup_Job {
 		//set Pid
 		$this->pid = self::get_pid();
 		//set function for PHP user defined error handling
-		$this->temp[ 'PHP' ][ 'INI' ][ 'ERROR_LOG' ]      = ini_get( 'error_log' );
-		$this->temp[ 'PHP' ][ 'INI' ][ 'ERROR_REPORTING' ]= ini_get( 'error_reporting' );
-		$this->temp[ 'PHP' ][ 'INI' ][ 'LOG_ERRORS' ]     = ini_get( 'log_errors' );
-		$this->temp[ 'PHP' ][ 'INI' ][ 'DISPLAY_ERRORS' ] = ini_get( 'display_errors' );
-		$this->temp[ 'PHP' ][ 'INI' ][ 'HTML_ERRORS' ] 	  = ini_get( 'html_errors' );
-		$this->temp[ 'PHP' ][ 'INI' ][ 'REPORT_MEMLEAKS' ]= ini_get( 'report_memleaks' );
-		$this->temp[ 'PHP' ][ 'INI' ][ 'ZLIB_OUTPUT_COMPRESSION' ] 	  = ini_get( 'zlib.output_compression' );
-		$this->temp[ 'PHP' ][ 'INI' ][ 'IMPLICIT_FLUSH' ] = ini_get( 'implicit_flush' );
+		$this->run[ 'PHP' ][ 'INI' ][ 'ERROR_LOG' ]      = ini_get( 'error_log' );
+		$this->run[ 'PHP' ][ 'INI' ][ 'ERROR_REPORTING' ]= ini_get( 'error_reporting' );
+		$this->run[ 'PHP' ][ 'INI' ][ 'LOG_ERRORS' ]     = ini_get( 'log_errors' );
+		$this->run[ 'PHP' ][ 'INI' ][ 'DISPLAY_ERRORS' ] = ini_get( 'display_errors' );
+		$this->run[ 'PHP' ][ 'INI' ][ 'HTML_ERRORS' ] 	  = ini_get( 'html_errors' );
+		$this->run[ 'PHP' ][ 'INI' ][ 'REPORT_MEMLEAKS' ]= ini_get( 'report_memleaks' );
+		$this->run[ 'PHP' ][ 'INI' ][ 'ZLIB_OUTPUT_COMPRESSION' ] 	  = ini_get( 'zlib.output_compression' );
+		$this->run[ 'PHP' ][ 'INI' ][ 'IMPLICIT_FLUSH' ] = ini_get( 'implicit_flush' );
 		@ini_set( 'error_log', $this->logfile );
 		error_reporting( E_ALL ^ E_STRICT );
 		@ini_set( 'display_errors', 'Off' );
@@ -620,7 +642,7 @@ final class BackWPup_Job {
 				$can_set_temp_env = FALSE;
 		}
 		if ( $can_set_temp_env ) {
-			$this->temp[ 'PHP' ][ 'ENV' ][ 'TEMPDIR' ] = getenv( 'TMPDIR' );
+			$this->run[ 'PHP' ][ 'ENV' ][ 'TEMPDIR' ] = getenv( 'TMPDIR' );
 			@putenv( 'TMPDIR='.BackWPup::get_plugin_data( 'TEMP') );
 		}
 		//Write Wordpress DB errors to log
@@ -1285,16 +1307,19 @@ final class BackWPup_Job {
 		remove_action( 'shutdown', array( $this, 'shutdown' ) );
 		restore_exception_handler();
 		restore_error_handler();
-		@ini_set( 'log_errors', $this->temp[ 'PHP' ][ 'INI' ][ 'LOG_ERRORS' ] );
-		@ini_set( 'error_log', $this->temp[ 'PHP' ][ 'INI' ][ 'ERROR_LOG' ] );
-		@ini_set( 'display_errors', $this->temp[ 'PHP' ][ 'INI' ][ 'DISPLAY_ERRORS' ] );
-		@ini_set( 'html_errors', $this->temp[ 'PHP' ][ 'INI' ][ 'HTML_ERRORS' ] );
-		@ini_set( 'zlib.output_compression', $this->temp[ 'PHP' ][ 'INI' ][ 'ZLIB_OUTPUT_COMPRESSION' ] );
-		@ini_set( 'implicit_flush', $this->temp[ 'PHP' ][ 'INI' ][ 'IMPLICIT_FLUSH' ] );
-		@ini_set( 'error_reporting', $this->temp[ 'PHP' ][ 'INI' ][ 'ERROR_REPORTING' ] );
-		@ini_set( 'report_memleaks', $this->temp[ 'PHP' ][ 'INI' ][ 'REPORT_MEMLEAKS' ] );
-		if ( $this->temp[ 'PHP' ][ 'ENV' ][ 'TEMPDIR' ] )
-			@putenv('TMPDIR=' . $this->temp[ 'PHP' ][ 'ENV' ][ 'TEMPDIR' ] );
+		if ( ! empty( $this->run[ 'PHP' ] ) ) {
+			@ini_set( 'log_errors', $this->run[ 'PHP' ][ 'INI' ][ 'LOG_ERRORS' ] );
+			@ini_set( 'error_log', $this->run[ 'PHP' ][ 'INI' ][ 'ERROR_LOG' ] );
+			@ini_set( 'display_errors', $this->run[ 'PHP' ][ 'INI' ][ 'DISPLAY_ERRORS' ] );
+			@ini_set( 'html_errors', $this->run[ 'PHP' ][ 'INI' ][ 'HTML_ERRORS' ] );
+			@ini_set( 'zlib.output_compression', $this->run[ 'PHP' ][ 'INI' ][ 'ZLIB_OUTPUT_COMPRESSION' ] );
+			@ini_set( 'implicit_flush', $this->run[ 'PHP' ][ 'INI' ][ 'IMPLICIT_FLUSH' ] );
+			@ini_set( 'error_reporting', $this->run[ 'PHP' ][ 'INI' ][ 'ERROR_REPORTING' ] );
+			@ini_set( 'report_memleaks', $this->run[ 'PHP' ][ 'INI' ][ 'REPORT_MEMLEAKS' ] );
+			if ( !empty( $this->run[ 'PHP' ][ 'ENV' ][ 'TEMPDIR' ] ) ) {
+				@putenv('TMPDIR=' . $this->run[ 'PHP' ][ 'ENV' ][ 'TEMPDIR' ] );
+			}
+		}
 
 		BackWPup_Cron::check_cleanup();
 

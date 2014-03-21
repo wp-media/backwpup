@@ -1,5 +1,5 @@
 <?php
-// Amazon S3 SDK v2.5.1
+// Amazon S3 SDK v2.5.3
 // http://aws.amazon.com/de/sdkforphp2/
 // https://github.com/aws/aws-sdk-php
 
@@ -328,7 +328,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			header( "Content-Disposition: attachment; filename=" . basename( $get_file ) . ";" );
 			header( "Content-Transfer-Encoding: binary" );
 			header( "Content-Length: " . $s3file[ 'ContentLength' ] );
-			@set_time_limit( 0 );
+			@set_time_limit( 300 );
 			$body = $s3file->get( 'Body' );
 			$body->rewind();
 			while ( $filedata = $body->read( 1024 ) ) {

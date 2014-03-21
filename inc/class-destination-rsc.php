@@ -221,7 +221,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			header( "Content-Disposition: attachment; filename=" . basename( $get_file ) . ";" );
 			header( "Content-Transfer-Encoding: binary" );
 			header( "Content-Length: " . $backupfile->getContentLength() );
-			@set_time_limit( 0 );
+			@set_time_limit( 300 );
 			echo $backupfile->getContent();
 			die();
 		}
@@ -274,7 +274,6 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			//Transfer Backup to Rackspace Cloud
 			$job_object->substeps_done    = 0;
 			$job_object->log( __( 'Upload to Rackspace cloud started &hellip;', 'backwpup' ), E_USER_NOTICE );
-			@set_time_limit( 0 );
 
 			$handle = fopen( $job_object->backup_folder . $job_object->backup_file, 'rb' );
 			$uploded = $container->uploadObject( $job_object->job[ 'rscdir' ] . $job_object->backup_file, $handle );

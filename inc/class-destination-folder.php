@@ -93,7 +93,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 			header( "Content-Disposition: attachment; filename=" . basename( $get_file ) . ";" );
 			header( "Content-Transfer-Encoding: binary" );
 			header( "Content-Length: " . filesize( $get_file ) );
-			@set_time_limit( 0 );
+			@set_time_limit( 300 );
 			//chunked readfile
 			@ob_end_clean();
 			$handle = fopen( $get_file, 'rb' );

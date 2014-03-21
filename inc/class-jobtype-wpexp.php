@@ -47,8 +47,8 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 				<td>
 					<fieldset>
 						<label for="idwpexportcontent-all"><input type="radio" name="wpexportcontent" id="idwpexportcontent-all" value="all" <?php checked( BackWPup_Option::get( $jobid, 'wpexportcontent' ), 'all' ); ?> /> <?php _e( 'All content', 'backwpup' ); ?></label><br />
-						<label for="idwpexportcontent-posts"><input type="radio" name="wpexportcontent" id="idwpexportcontent-posts" value="posts" <?php checked( BackWPup_Option::get( $jobid, 'wpexportcontent' ), 'posts' ); ?> /> <?php _e( 'Posts', 'backwpup' ); ?></label><br />
-						<label for="idwpexportcontent-pages"><input type="radio" name="wpexportcontent" id="idwpexportcontent-pages" value="pages" <?php checked( BackWPup_Option::get( $jobid, 'wpexportcontent' ), 'pages' ); ?> /> <?php _e( 'Pages', 'backwpup' ); ?></label><br />
+						<label for="idwpexportcontent-post"><input type="radio" name="wpexportcontent" id="idwpexportcontent-post" value="post" <?php checked( BackWPup_Option::get( $jobid, 'wpexportcontent' ), 'post' ); ?> /> <?php _e( 'Posts', 'backwpup' ); ?></label><br />
+						<label for="idwpexportcontent-page"><input type="radio" name="wpexportcontent" id="idwpexportcontent-page" value="page" <?php checked( BackWPup_Option::get( $jobid, 'wpexportcontent' ), 'page' ); ?> /> <?php _e( 'Pages', 'backwpup' ); ?></label><br />
 						<?php
 						foreach ( get_post_types( array( '_builtin' => FALSE, 'can_export' => TRUE ), 'objects' ) as $post_type ) {
 							?>
@@ -128,8 +128,10 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 
 			if ( 'all' != $job_object->job[ 'wpexportcontent' ] && post_type_exists( $job_object->job[ 'wpexportcontent' ] ) ) {
 				$ptype = get_post_type_object( $job_object->job[ 'wpexportcontent' ] );
-				if ( ! $ptype->can_export )
-					$job_object->job[ 'wpexportcontent' ] = 'post';
+				if ( ! $ptype->can_export ) {
+					$job_object->log( sprintf( __( 'WP Export: Post Type "%s" not allows export.', 'backwpup' ), $job_object->job[ 'wpexportcontent' ] ), E_USER_ERROR );
+					return FALSE;
+				}
 				$where = $wpdb->prepare( "{$wpdb->posts}.post_type = %s", $job_object->job[ 'wpexportcontent' ] );
 			} else {
 				$post_types = get_post_types( array( 'can_export' => true ) );
@@ -138,7 +140,6 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 				$job_object->job[ 'wpexportcontent' ] = 'all';
 			}
 			$where .= " AND {$wpdb->posts}.post_status != 'auto-draft'";
-
 
 			// grab a snapshot of post IDs, just in case it changes during the export
 			$job_object->steps_data[ $job_object->step_working ]['post_ids'] = $wpdb->get_col( "SELECT ID FROM {$wpdb->posts} WHERE $where" );
@@ -188,7 +189,6 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 
 		if ( $job_object->steps_data[ $job_object->step_working ]['substep'] == 'cats' ) {
 			if ( 'all' == $job_object->job[ 'wpexportcontent' ] ) {
-
 				$cats = array();
 				$categories = (array) get_categories( array( 'get' => 'all' ) );
 				// put categories in order with no child going before its parent
@@ -203,27 +203,24 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 					$parent_slug = $c->parent ? $cats[$c->parent]->slug : '';
 					fwrite( $handle, "\t<wp:category><wp:term_id>" . $c->term_id ."</wp:term_id><wp:category_nicename>" . $c->slug . "</wp:category_nicename><wp:category_parent>" . $parent_slug . "</wp:category_parent>" . $this->wxr_cat_name( $c ) . $this->wxr_category_description( $c ) ."</wp:category>\n" );
 				}
-
-				$job_object->steps_data[ $job_object->step_working ]['substep'] = 'tags';
-				$job_object->substeps_done ++;
-				$job_object->update_working_data();
-				$job_object->do_restart_time();
 			}
+			$job_object->steps_data[ $job_object->step_working ]['substep'] = 'tags';
+			$job_object->substeps_done ++;
+			$job_object->update_working_data();
+			$job_object->do_restart_time();
 		}
 
 		if ( $job_object->steps_data[ $job_object->step_working ]['substep'] == 'tags' ) {
 			if ( 'all' == $job_object->job[ 'wpexportcontent' ] ) {
-
 				$tags = (array) get_tags( array( 'get' => 'all' ) );
 				foreach ( $tags as $t ) {
 					fwrite( $handle, "\t<wp:tag><wp:term_id>" . $t->term_id ."</wp:term_id><wp:tag_slug>" . $t->slug ."</wp:tag_slug>" . $this->wxr_tag_name( $t ) . $this->wxr_tag_description( $t ) ."</wp:tag>\n" );
 				}
-
-				$job_object->steps_data[ $job_object->step_working ]['substep'] = 'terms';
-				$job_object->substeps_done ++;
-				$job_object->update_working_data();
-				$job_object->do_restart_time();
 			}
+			$job_object->steps_data[ $job_object->step_working ]['substep'] = 'terms';
+			$job_object->substeps_done ++;
+			$job_object->update_working_data();
+			$job_object->do_restart_time();
 		}
 
 		if ( $job_object->steps_data[ $job_object->step_working ]['substep'] == 'terms' ) {
@@ -245,11 +242,11 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 					$parent_slug =  $t->parent ? $terms[$t->parent]->slug : '';
 					fwrite( $handle, "\t<wp:term><wp:term_id>" . $t->term_id ."</wp:term_id><wp:term_taxonomy>" . $t->taxonomy . "</wp:term_taxonomy><wp:term_slug>" . $t->slug ."</wp:term_slug><wp:term_parent>" . $parent_slug ."</wp:term_parent>" . $this->wxr_term_name( $t ) . $this->wxr_term_description( $t ) ."</wp:term>\n" );
 				}
-				$job_object->steps_data[ $job_object->step_working ]['substep'] = 'menus';
-				$job_object->substeps_done ++;
-				$job_object->update_working_data();
-				$job_object->do_restart_time();
 			}
+			$job_object->steps_data[ $job_object->step_working ]['substep'] = 'menus';
+			$job_object->substeps_done ++;
+			$job_object->update_working_data();
+			$job_object->do_restart_time();
 		}
 
 		if ( $job_object->steps_data[ $job_object->step_working ]['substep'] == 'menus' ) {
@@ -276,16 +273,16 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 
 					// Begin Loop
 					foreach ( $posts as $post ) {
+						/* @var WP_Post $post */
 						$wxr_post = '';
-						setup_postdata( $post );
 						$is_sticky = is_sticky( $post->ID ) ? 1 : 0;
 
 						$wxr_post .= "\t<item>\n";
 						$wxr_post .= "\t\t<title>" . apply_filters( 'the_title_rss', $post->post_title ) ."</title>\n";
-						$wxr_post .= "\t\t<link>" . esc_url( apply_filters( 'the_permalink_rss', get_permalink() ) ) ."</link>\n";
-						$wxr_post .= "\t\t<pubDate>" . mysql2date( 'D, d M Y H:i:s +0000', get_post_time( 'Y-m-d H:i:s', true ), false ) ."</pubDate>\n";
-						$wxr_post .= "\t\t<dc:creator>" . $this->wxr_cdata( get_the_author_meta( 'login' ) ) ."</dc:creator>\n";
-						$wxr_post .= "\t\t<guid isPermaLink=\"false\">" . esc_url( get_the_guid() ) ."</guid>\n";
+						$wxr_post .= "\t\t<link>" . esc_url( apply_filters( 'the_permalink_rss', get_permalink( $post ) ) ) ."</link>\n";
+						$wxr_post .= "\t\t<pubDate>" . mysql2date( 'D, d M Y H:i:s +0000', get_post_time( 'Y-m-d H:i:s', true, $post ), false ) ."</pubDate>\n";
+						$wxr_post .= "\t\t<dc:creator>" . $this->wxr_cdata( get_the_author_meta( 'login', $post->post_author ) ) ."</dc:creator>\n";
+						$wxr_post .= "\t\t<guid isPermaLink=\"false\">" . esc_url( get_the_guid( $post->ID ) ) ."</guid>\n";
 						$wxr_post .= "\t\t<description></description>\n";
 						$wxr_post .= "\t\t<content:encoded>" . $this->wxr_cdata( apply_filters( 'the_content_export', $post->post_content ) ) . "</content:encoded>\n";
 						$wxr_post .= "\t\t<excerpt:encoded>" . $this->wxr_cdata( apply_filters( 'the_excerpt_export', $post->post_excerpt ) ) . "</excerpt:encoded>\n";
@@ -348,6 +345,8 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 			$job_object->update_working_data();
 			$job_object->do_restart_time();
 		}
+
+		remove_filter( 'wxr_export_skip_postmeta', array( $this, 'wxr_filter_postmeta' ), 10, 2 );
 
 		fclose( $handle );
 

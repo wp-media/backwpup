@@ -180,6 +180,7 @@ Please check all settings after the update:
 * Improved: Dropbox chipper list only on OpenSSL cUrl backend
 * Improved: Increased performance on Zip File generation massively
 * Updated: SwiftMailer to Version 5.0.3
+* Updated: AWS SDK to Version 2.5.3 (PHP 5.3.3+)
 
 = Version 3.1.2 =
 * Added: .donotbackup file. Folders and sub folders containing this file in will not be included in backups.

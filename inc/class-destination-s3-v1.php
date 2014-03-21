@@ -243,7 +243,7 @@ class BackWPup_Destination_S3_V1 extends BackWPup_Destinations {
 				$bucket = $s3->create_bucket(  $_POST[ 's3newbucket' ], $region, 'private' );
 
 				if ( $bucket->status == 200 )
-					BackWPup_Admin::message( sprintf( __( 'Bucket %1$s created in %2$s.','backwpup'), $_POST[ 's3newbucket' ], $bucket[ 'Location' ] ) );
+					BackWPup_Admin::message( sprintf( __( 'Bucket %1$s created.','backwpup'), $_POST[ 's3newbucket' ] ) );
 				else
 					BackWPup_Admin::message( sprintf( __( 'Bucket %s could not be created.','backwpup'), $_POST[ 's3newbucket' ] ), TRUE );
 
@@ -333,7 +333,7 @@ class BackWPup_Destination_S3_V1 extends BackWPup_Destinations {
 			header( "Content-Disposition: attachment; filename=" . basename( $get_file ) . ";" );
 			header( "Content-Transfer-Encoding: binary" );
 			header( "Content-Length: " . $s3file->header->_info->size_download );
-			@set_time_limit( 0 );
+			@set_time_limit( 300 );
 			echo $s3file->body;
 			die();
 		}

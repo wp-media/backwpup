@@ -199,7 +199,7 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 			header( "Content-Disposition: attachment; filename=" . (string)$response->displayName . ";" );
 			header( "Content-Transfer-Encoding: binary" );
 			header( "Content-Length: " . (int)$response->size );
-			@set_time_limit( 0 );
+			@set_time_limit( 300 );
 			echo $sugarsync->download( urldecode( $get_file ) );
 			die();
 		}

@@ -174,7 +174,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 			header( "Content-Disposition: attachment; filename=" . basename( $get_file ) . ";" );
 			header( "Content-Transfer-Encoding: binary" );
 			header( "Content-Length: " . $blob->getProperties()->getContentLength() );
-			@set_time_limit( 0 );
+			@set_time_limit( 300 );
 			fpassthru( $blob->getContentStream() );
 			die();
 		}
