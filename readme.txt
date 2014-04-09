@@ -43,7 +43,7 @@ BackWPup Free is the number 1 backup-plugin for WordPress with nearly 1.000.000 
 * simplified chinese (zh_CN)
 
 = Requirements =
-* WordPress 3.4 and PHP 5.2.6 required!
+* WordPress 3.4 and PHP 5.2.7 required!
 * To use the Plugin with full functionality PHP 5.3.3 with mysqli, FTP,gz, bz2,  ZipArchive and curl is needed.
 * Plugin functions that don't work because of your server settings, will not be displayed in admin area.
 
@@ -174,11 +174,13 @@ Please check all settings after the update:
 = Version 3.1.3 =
 * Fixed: var_export not working if output buffering active
 * Fixed: bug in sending test emails on Backup with email
+* Fixed: backup archives not deleted if archive name has spaces
 * Changed: WordPress Export will now done by a own class
 * Changed: Dropbox now uses oAuth 2 Protocol
 * Changed: Logs have now a br tag on line end for better reading in emails
 * Improved: Dropbox chipper list only on OpenSSL cUrl backend
 * Improved: Increased performance on Zip File generation massively
+* Improved: Backup archives now deleted to if the archive format changed
 * Updated: SwiftMailer to Version 5.0.3
 * Updated: AWS SDK to Version 2.5.3 (PHP 5.3.3+)
 

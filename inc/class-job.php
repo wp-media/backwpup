@@ -139,8 +139,21 @@ final class BackWPup_Job {
 	 */
 	private $run = array();
 
+	/**
+	 * A uniqid ID uniqid('', true); to identify process
+	 * @var string
+	 */
+	private $uniqid = '';
 
-	private function __construct( ) {}
+
+	/**
+	 * Delete some data on cloned objects
+	 */
+	public function __clone( ) {
+
+		$this->temp = array();
+		$this->run = array();
+	}
 
 	/**
 	 *
@@ -263,6 +276,8 @@ final class BackWPup_Job {
 		$this->steps_todo[]                      = 'END';
 		$this->steps_data[ 'END' ][ 'NAME' ]     = __( 'End of Job', 'backwpup' );
 		$this->steps_data[ 'END' ][ 'STEP_TRY' ] = 0;
+		//must write working data
+		$this->write_running_file();
 		//create log file
 		$head = '';
 		$head .= "<!DOCTYPE html>" . PHP_EOL;
@@ -319,14 +334,19 @@ final class BackWPup_Job {
 			$head .= __( '[INFO] BackWPup job started from external url', 'backwpup' ) . '<br />' . PHP_EOL;
 		elseif ( $start_type == 'runcli' )
 			$head .= __( '[INFO] BackWPup job started form commandline interface', 'backwpup' ) . '<br />' . PHP_EOL;
-		$head .= __( '[INFO] PHP ver.:', 'backwpup' ) . ' ' . PHP_VERSION . '; ' . PHP_SAPI . '; ' . PHP_OS . '<br />' . PHP_EOL;
+		$bit = '';
+		if ( PHP_INT_SIZE === 4 )
+			$bit = ' (32bit)';
+		if ( PHP_INT_SIZE === 8 )
+			$bit = ' (64bit)';
+		$head .= __( '[INFO] PHP ver.:', 'backwpup' ) . ' ' . PHP_VERSION . $bit .'; ' . PHP_SAPI . '; ' . PHP_OS . '<br />' . PHP_EOL;
 		$head .= sprintf( __( '[INFO] Maximum PHP script execution time is %1$d seconds', 'backwpup' ), ini_get( 'max_execution_time' ) ) . '<br />' . PHP_EOL;
 		$job_max_execution_time = get_site_option( 'backwpup_cfg_jobmaxexecutiontime' );
 		if ( ! empty( $job_max_execution_time ) )
 				$head .= sprintf( __( '[INFO] Script restart time is configured to %1$d seconds', 'backwpup' ), $job_max_execution_time ) . '<br />' . PHP_EOL;
-		if ( get_site_option( 'backwpup_cfg_jobsteprestart' ) )
-			$head .= __( '[INFO] Script restarts on every main step is activated', 'backwpup' ) . '<br />' . PHP_EOL;
 		$head .= sprintf( __( '[INFO] MySQL ver.: %s', 'backwpup' ), $wpdb->get_var( "SELECT VERSION() AS version" ) ) . '<br />' . PHP_EOL;
+		if ( isset( $_SERVER[ 'SERVER_SOFTWARE' ] ) )
+			$head .= sprintf( __( '[INFO] Web Server: %s', 'backwpup' ), $_SERVER[ 'SERVER_SOFTWARE' ] ) . '<br />' . PHP_EOL;
 		if ( function_exists( 'curl_init' ) ) {
 			$curlversion = curl_version();
 			$head .= sprintf( __( '[INFO] curl ver.: %1$s; %2$s', 'backwpup' ), $curlversion[ 'version' ], $curlversion[ 'ssl_version' ] ) . '<br />' . PHP_EOL;
@@ -354,8 +374,6 @@ final class BackWPup_Job {
 		}
 		//Set start as done
 		$this->steps_done[] = 'CREATE';
-		//must write working data
-		$this->write_tor_running_file();
 	}
 
 
@@ -491,6 +509,10 @@ final class BackWPup_Job {
 			flush();
 		}
 
+		// Should be preventing doubled running job's on http requests
+		$random = rand( 1, 9 ) * 100000;
+		usleep( $random );
+
 		//check running job
 		$backwpup_job_object = self::get_working_data();
 		//start class
@@ -560,6 +582,10 @@ final class BackWPup_Job {
 				return;
 		}
 
+		// Should be preventing doubled running job's on http requests
+		$random = rand( 1, 9 ) * 100000;
+		usleep( $random );
+
 		//get running job
 		$backwpup_job_object = self::get_working_data();
 		//start/restart class
@@ -614,17 +640,24 @@ final class BackWPup_Job {
 		$this->timestamp_script_start = microtime( TRUE );
 		//set Pid
 		$this->pid = self::get_pid();
+		$this->uniqid = uniqid( '', TRUE );
+		//Early write new working file
+		$this->write_running_file();
 		//set function for PHP user defined error handling
 		$this->run[ 'PHP' ][ 'INI' ][ 'ERROR_LOG' ]      = ini_get( 'error_log' );
 		$this->run[ 'PHP' ][ 'INI' ][ 'ERROR_REPORTING' ]= ini_get( 'error_reporting' );
 		$this->run[ 'PHP' ][ 'INI' ][ 'LOG_ERRORS' ]     = ini_get( 'log_errors' );
 		$this->run[ 'PHP' ][ 'INI' ][ 'DISPLAY_ERRORS' ] = ini_get( 'display_errors' );
-		$this->run[ 'PHP' ][ 'INI' ][ 'HTML_ERRORS' ] 	  = ini_get( 'html_errors' );
+		$this->run[ 'PHP' ][ 'INI' ][ 'HTML_ERRORS' ] 	 = ini_get( 'html_errors' );
 		$this->run[ 'PHP' ][ 'INI' ][ 'REPORT_MEMLEAKS' ]= ini_get( 'report_memleaks' );
 		$this->run[ 'PHP' ][ 'INI' ][ 'ZLIB_OUTPUT_COMPRESSION' ] 	  = ini_get( 'zlib.output_compression' );
 		$this->run[ 'PHP' ][ 'INI' ][ 'IMPLICIT_FLUSH' ] = ini_get( 'implicit_flush' );
 		@ini_set( 'error_log', $this->logfile );
-		error_reporting( E_ALL ^ E_STRICT );
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_reporting( -1 );
+		} else {
+			error_reporting( E_ALL ^ E_NOTICE );
+		}
 		@ini_set( 'display_errors', 'Off' );
 		@ini_set( 'log_errors', 'On' );
 		@ini_set( 'html_errors', 'Off' );
@@ -651,7 +684,11 @@ final class BackWPup_Job {
 		//set wp max memory limit
 		@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) );
 		//set error handler
-		set_error_handler( array( $this, 'log' ), E_ALL ^ E_STRICT );
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			set_error_handler( array( $this, 'log' ), -1 );
+		} else {
+			set_error_handler( array( $this, 'log' ), E_ALL ^ E_NOTICE );
+		}
 		set_exception_handler( array( $this, 'exception_handler' ) );
 		//not loading Textdomains and unload loaded
 		if ( get_site_option( 'backwpup_cfg_jobnotranslate' ) ) {
@@ -687,7 +724,6 @@ final class BackWPup_Job {
 				if ( in_array( $this->step_working, $this->steps_done ) )
 					break;
 				$this->steps_data[ $this->step_working ][ 'STEP_TRY' ] ++;
-				$this->update_working_data( TRUE );
 				$done = FALSE;
 				//executes the methods of job process
 				if ( $this->step_working == 'CREATE_ARCHIVE')
@@ -708,21 +744,23 @@ final class BackWPup_Job {
 					$done = $this->steps_data[ $this->step_working ][ 'CALLBACK' ]( $this );
 				// set step as done or  if step has too many tries
 				if ( $done === TRUE ) {
-					$this->temp 		 = array(); //Clean temp
+					$this->temp 		 = array();
 					$this->steps_done[]  = $this->step_working;
 					$this->substeps_done = 0;
 					$this->substeps_todo = 0;
+					$this->write_running_file();
 				}
 				if ( ! $done && $this->steps_data[ $this->step_working ][ 'STEP_TRY' ] >= get_site_option( 'backwpup_cfg_jobstepretry' ) ) {
 					$this->log( __( 'Step aborted: too many attempts!', 'backwpup' ), E_USER_ERROR );
-					$this->temp 		 = array(); //Clean temp
+					$this->temp 		 = array();
 					$this->steps_done[]  = $this->step_working;
 					$this->substeps_done = 0;
 					$this->substeps_todo = 0;
+					$this->write_running_file();
 				}
-				//restart on every job step expect end and only on http connection
-				if ( get_site_option( 'backwpup_cfg_jobsteprestart' ) )
+				if ( count( $this->steps_done ) < count( $this->steps_todo ) -1 ) {
 					$this->do_restart();
+				}
 			}
 		}
 	}
@@ -758,7 +796,8 @@ final class BackWPup_Job {
 
 		//do things for a clean restart
 		$this->pid = 0;
-		$this->update_working_data( TRUE );
+		$this->uniqid = '';
+		$this->write_running_file();
 		remove_action( 'shutdown', array( $this, 'shutdown' ) );
 		//do restart
 		wp_clear_scheduled_hook( 'backwpup_cron', array( 'id' => 'restart' ) );
@@ -817,6 +856,12 @@ final class BackWPup_Job {
 	 * @return bool|object BackWPup_Job Object or Bool if file not exits
 	 */
 	public static function get_working_data() {
+
+		if ( version_compare( PHP_VERSION, '5.3', '>=' ) ) {
+			clearstatcache( TRUE, BackWPup::get_plugin_data( 'running_file' ) );
+		} else {
+			clearstatcache();
+		}
 
 		if ( ! file_exists( BackWPup::get_plugin_data( 'running_file' ) ) )
 			return FALSE;
@@ -1061,7 +1106,7 @@ final class BackWPup_Job {
 		if ( defined( 'STDIN' ) && defined( 'STDOUT' ) )
 			fwrite( STDOUT, '[' . date_i18n( 'd-M-Y H:i:s' ) . '] ' . strip_tags( $messagetype ) . str_replace( '&hellip;', '...', strip_tags( $args[ 1 ] ) ) . PHP_EOL ) ;
 		//log line
-		$timestamp = '<span datetime="' . date_i18n( 'c' ) . '" title="[Type: ' . $args[ 0 ] . '|Line: ' . $args[ 3 ] . '|File: ' . $in_file . '|Mem: ' . size_format( @memory_get_usage( TRUE ), 2 ) . '|Mem Max: ' . size_format( @memory_get_peak_usage( TRUE ), 2 ) . '|Mem Limit: ' . ini_get( 'memory_limit' ) . '|PID: ' . self::get_pid() . '|Query\'s: ' . get_num_queries() . ']">[' . date_i18n( 'd-M-Y H:i:s' ) . ']</span> ';
+		$timestamp = '<span datetime="' . date_i18n( 'c' ) . '" title="[Type: ' . $args[ 0 ] . '|Line: ' . $args[ 3 ] . '|File: ' . $in_file . '|Mem: ' . size_format( @memory_get_usage( TRUE ), 2 ) . '|Mem Max: ' . size_format( @memory_get_peak_usage( TRUE ), 2 ) . '|Mem Limit: ' . ini_get( 'memory_limit' ) . '|PID: ' . self::get_pid() . ' | UniqID: ' . $this->uniqid . '|Query\'s: ' . get_num_queries() . ']">[' . date_i18n( 'd-M-Y H:i:s' ) . ']</span> ';
 		//set last Message
 		$message = $messagetype . htmlentities( $args[ 1 ], ENT_COMPAT , get_bloginfo( 'charset' ), FALSE );
 		if ( strstr( $message, '<span' ) )
@@ -1107,11 +1152,11 @@ final class BackWPup_Job {
 	/**
 	 *
 	 * Write the Working data to display the process or that i can executes again
+	 * The write will only done every second
 	 *
 	 * @global wpdb $wpdb
-	 * @param bool $must_write overwrite the only ever 1 sec writing
 	 */
-	public function update_working_data( $must_write = FALSE ) {
+	public function update_working_data() {
 		global $wpdb;
 		/* @var wpdb $wpdb */
 
@@ -1124,7 +1169,7 @@ final class BackWPup_Job {
 
 		//only run every 1 sec.
 		$time_to_update = microtime( TRUE ) - $this->timestamp_last_update;
-		if ( ! $must_write && $time_to_update < 1 )
+		if ( $time_to_update < 1 )
 			return;
 
 		//FCGI must have a permanent output so that it not broke
@@ -1156,14 +1201,13 @@ final class BackWPup_Job {
 				$this->end();
 		} else {
 			$this->timestamp_last_update = microtime( TRUE ); //last update of working file
-			$this->write_tor_running_file();
+			$this->write_running_file();
 		}
 	}
 
-	private function write_tor_running_file() {
+	public function write_running_file() {
 
 		$clone = clone $this;
-		$clone->temp = array();
 		$data = '<?php //' . serialize( $clone );
 
 		$write = file_put_contents( BackWPup::get_plugin_data( 'running_file' ), $data );
@@ -1871,8 +1915,8 @@ final class BackWPup_Job {
 		if ( ! empty( $suffix ) && substr( $suffix, 0, 1 ) != '.' )
 			$suffix = '.' . $suffix;
 
-		$name = str_replace( $datevars, $datevalues, $name );
-		$name = sanitize_file_name( $name ) . $suffix; //prevent _ in extension name that sanitize_file_name add.
+		$name = str_replace( $datevars, $datevalues, sanitize_file_name( $name ) );
+		$name .= $suffix; //prevent _ in extension name that sanitize_file_name add.
 		if ( $delete_temp_file && is_writeable( BackWPup::get_plugin_data( 'TEMP' ) . $name ) && !is_dir( BackWPup::get_plugin_data( 'TEMP' ) . $name ) && !is_link( BackWPup::get_plugin_data( 'TEMP' ) . $name ) )
 			unlink( BackWPup::get_plugin_data( 'TEMP' ) . $name );
 
@@ -1890,12 +1934,14 @@ final class BackWPup_Job {
 		if ( ! substr( $filename, -3 ) == '.gz' ||  ! substr( $filename, -4 ) == '.bz2' ||  ! substr( $filename, -4 ) == '.tar' ||  ! substr( $filename, -4 ) == '.zip' )
 			return FALSE;
 
+		$filename = str_replace( array( '.gz', '.bz2', '.tar', '.zip' ), '', $filename );
+
 		$datevars  = array( '%d', '%j', '%m', '%n', '%Y', '%y', '%a', '%A', '%B', '%g', '%G', '%h', '%H', '%i', '%s' );
 		$dateregex = array( '(0[1-9]|[12][0-9]|3[01])', '([1-9]|[12][0-9]|3[01])', '(0[1-9]|1[012])', '([1-9]|1[012])', '((19|20|21)[0-9]{2})', '([0-9]{2})', '(am|pm)', '(AM|PM)', '([0-9]{3})', '([1-9]|1[012])', '([0-9]|1[0-9]|2[0-3])', '(0[1-9]|1[012])', '(0[0-9]|1[0-9]|2[0-3])', '([0-5][0-9])', '([0-5][0-9])' );
 
-		$regex = "/^" . str_replace( $datevars, $dateregex, str_replace( "\/", "/", $this->job[ 'archivename' ] ) . $this->job[ 'archiveformat' ] ) . "$/";
+		$regex = "/^" . str_replace( $datevars, $dateregex, str_replace( "\/", "/", sanitize_file_name( $this->job[ 'archivename' ] ) ) ) . "$/";
 
-		preg_match( $regex, basename( $filename ), $matches );
+		preg_match( $regex, $filename, $matches );
 		if ( ! empty( $matches[ 0 ] ) && $matches[ 0 ] == $filename )
 			return TRUE;
 

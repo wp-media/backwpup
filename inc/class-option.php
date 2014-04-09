@@ -20,10 +20,13 @@ final class BackWPup_Option {
 		add_site_option( 'backwpup_cfg_showfoldersize', 0 );
 		add_site_option( 'backwpup_cfg_protectfolders', 1 );
 		//job
-		add_site_option( 'backwpup_cfg_jobmaxexecutiontime', 0 );
+		$max_execution_time = 0;
+		if ( strstr( PHP_SAPI, 'cgi' ) ) {
+			$max_execution_time = (int) ini_get( 'max_execution_time' );
+		}
+		add_site_option( 'backwpup_cfg_jobmaxexecutiontime', $max_execution_time );
 		add_site_option( 'backwpup_cfg_jobziparchivemethod','' );
 		add_site_option( 'backwpup_cfg_jobstepretry', 3 );
-		add_site_option( 'backwpup_cfg_jobsteprestart', 0 );
 		add_site_option( 'backwpup_cfg_jobrunauthkey', substr( md5( BackWPup::get_plugin_data( 'hash' ) ), 11, 8 ) );
 		add_site_option( 'backwpup_cfg_jobnotranslate', 0 );
 		add_site_option( 'backwpup_cfg_jobwaittimems', 0 );

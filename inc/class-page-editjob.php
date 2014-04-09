@@ -115,7 +115,7 @@ class BackWPup_Page_Editjob {
 				else
 					BackWPup_Option::update( $jobid, 'backuptype', 'archive' );
 				BackWPup_Option::update( $jobid, 'archiveformat', $_POST[ 'archiveformat' ] );
-				BackWPup_Option::update( $jobid, 'archivename', esc_html( $_POST[ 'archivename' ] ) );
+				BackWPup_Option::update( $jobid, 'archivename', sanitize_file_name( esc_html( $_POST[ 'archivename' ] ) ) );
 				break;
 			case 'cron':
 				if ( $_POST[ 'activetype' ] == '' || $_POST[ 'activetype' ] == 'wpcron' || $_POST[ 'activetype' ] == 'link' )

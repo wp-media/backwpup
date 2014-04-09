@@ -77,7 +77,7 @@ class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes {
 	 */
 	public function edit_form_post_save( $id ) {
 
-		BackWPup_Option::update( $id, 'pluginlistfile', $_POST[ 'pluginlistfile' ] );
+		BackWPup_Option::update( $id, 'pluginlistfile', sanitize_file_name( $_POST[ 'pluginlistfile' ] ) );
 		if ( $_POST[ 'pluginlistfilecompression' ] == '' || $_POST[ 'pluginlistfilecompression' ] == '.gz' || $_POST[ 'pluginlistfilecompression' ] == '.bz2' )
 			BackWPup_Option::update( $id, 'pluginlistfilecompression', $_POST[ 'pluginlistfilecompression' ] );
 	}

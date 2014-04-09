@@ -112,7 +112,7 @@ class BackWPup_Create_Archive {
 				$this->ziparchive = new ZipArchive();
 				$ziparchive_open = $this->ziparchive->open( $this->file, ZipArchive::CREATE );
 				if ( $ziparchive_open !== TRUE ) {
-					$this->ziparchive_status( $ziparchive_open );
+					$this->ziparchive_status();
 					throw new BackWPup_Create_Archive_Exception( sprintf( _x( 'Cannot create zip archive: %d','ZipArchive open() result', 'backwpup' ), $ziparchive_open ) );
 				}
 			}
@@ -179,10 +179,18 @@ class BackWPup_Create_Archive {
 
 		//close ZipArchive Class
 		if ( is_object( $this->ziparchive ) ) {
-			$this->ziparchive_status( $this->ziparchive->status );
-			$this->ziparchive->close();
+			$this->ziparchive_status();
+			if ( ! $this->ziparchive->close() ) {
+				sleep( 1 );
+				if ( ! $this->ziparchive->close() ) {
+					sleep( 1 );
+					if ( ! $this->ziparchive->close() ) {
+						$this->ziparchive_status();
+						trigger_error( __( 'ZipArchive can not closed correctly', 'backwpup' ), E_USER_ERROR );
+					}
+				}
+			}
 			$this->ziparchive = NULL;
-			$this->ziparchive_delete_temp_files();
 		}
 
 		//close file if open
@@ -308,12 +316,22 @@ class BackWPup_Create_Archive {
 			case 'ZipArchive':
 				//close and reopen, all added files are open on fs
 				if ( $this->file_count > 20 ) { //35 works with PHP 5.2.4 on win
-					$this->ziparchive_status( $this->ziparchive->status );
-					$this->ziparchive->close();
+					$this->ziparchive_status();
+					if ( ! $this->ziparchive->close() ) {
+						sleep( 1 );
+						if ( ! $this->ziparchive->close() ) {
+							sleep( 1 );
+							if ( ! $this->ziparchive->close() ) {
+								$this->ziparchive_status();
+								trigger_error(__( 'ZipArchive can not closed correctly', 'backwpup'	), E_USER_ERROR	);
+							}
+						}
+					}
+					$this->ziparchive = NULL;
 					$this->ziparchive = new ZipArchive();
 					$ziparchive_open = $this->ziparchive->open( $this->file, ZipArchive::CREATE );
 					if ( $ziparchive_open !== TRUE ) {
-						$this->ziparchive_status( $ziparchive_open );
+						$this->ziparchive_status();
 						return FALSE;
 					}
 					$this->file_count = 0;
@@ -413,46 +431,14 @@ class BackWPup_Create_Archive {
 	/**
 	 * Output status of ZipArchive
 	 *
-	 * @param $code int ZipArchive Error code
 	 * @return bool
 	 */
-	private function ziparchive_status( $code ) {
+	private function ziparchive_status() {
 
-		if ( $code == 0 )
+		if ( $this->ziparchive->status == 0 )
 			return TRUE;
 
-		//define error messages
-		$zip_errors[ ZipArchive::ER_MULTIDISK ] =  __( '(ER_MULTIDISK) Multi-disk zip archives not supported', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_RENAME ] =  __( '(ER_RENAME) Renaming temporary file failed', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_CLOSE ] =  __( '(ER_CLOSE) Closing zip archive failed', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_SEEK ] =  __( '(ER_SEEK) Seek error', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_READ ] = __( '(ER_READ) Read error', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_WRITE ] = __( '(ER_WRITE) Write error', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_CRC ] = __( '(ER_CRC) CRC error', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_ZIPCLOSED ] = __( '(ER_ZIPCLOSED) Containing zip archive was closed', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_NOENT ] = __( '(ER_NOENT) No such file', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_EXISTS ] = __( '(ER_EXISTS) File already exists', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_OPEN ] = __( '(ER_OPEN) Can\'t open file', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_TMPOPEN ] = __( '(ER_TMPOPEN) Failure to create temporary file', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_ZLIB ] = __( '(ER_ZLIB) Zlib error', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_MEMORY ] = __( '(ER_MEMORY) Malloc failure', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_MULTIDISK ] = __( '(ER_CHANGED) Entry has been changed', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_CHANGED ] = __( '(ER_COMPNOTSUPP) Compression method not supported', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_EOF ] = __( '(ER_EOF) Premature EOF', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_INVAL ] = __( '(ER_INVAL) Invalid argument', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_NOZIP ] = __( '(ER_NOZIP) Not a zip archive', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_INTERNAL ] = __( '(ER_INTERNAL) Internal error', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_INCONS ] = __( '(ER_INCONS) Zip archive inconsistent', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_REMOVE ] = __( '(ER_REMOVE) Can\'t remove file', 'backwpup' );
-		$zip_errors[ ZipArchive::ER_DELETED ] = __( '(ER_DELETED) Entry has been deleted', 'backwpup' );
-
-		//ste error message
-		$zip_error = $code;
-		if ( isset( $zip_errors[ $zip_error ] ) ) {
-			$zip_error = $zip_errors[ $zip_error ];
-		}
-
-		trigger_error( sprintf( _x( 'ZipArchive returns status: %s','Text of ZipArchive status Message', 'backwpup' ), $zip_error ), E_USER_ERROR );
+		trigger_error( sprintf( _x( 'ZipArchive returns status: %s','Text of ZipArchive status Message', 'backwpup' ), $this->ziparchive->getStatusString() ), E_USER_ERROR );
 		return FALSE;
 	}
 
@@ -602,27 +588,6 @@ class BackWPup_Create_Archive {
 		return TRUE;
 	}
 
-	/**
-	 * Deleting Temporary files after Zip file generation with zipArchive
-	 */
-	private function ziparchive_delete_temp_files() {
-
-		if ( $this->get_method() != 'ZipArchive' ) {
-			return;
-		}
-
-		usleep( 300000 );
-
-		$temp_files = glob( $this->file . '.*' );
-
-		if ( empty( $temp_files ) ) {
-			return;
-		}
-
-		foreach( $temp_files AS $temp_file ) {
-			@unlink( $temp_file );
-		}
-	}
 }
 
 /**
