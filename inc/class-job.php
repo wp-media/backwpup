@@ -275,7 +275,7 @@ final class BackWPup_Job {
 		}
 		$this->steps_todo[]                      = 'END';
 		$this->steps_data[ 'END' ][ 'NAME' ]     = __( 'End of Job', 'backwpup' );
-		$this->steps_data[ 'END' ][ 'STEP_TRY' ] = 0;
+		$this->steps_data[ 'END' ][ 'STEP_TRY' ] = 1;
 		//must write working data
 		$this->write_running_file();
 		//create log file
@@ -719,39 +719,46 @@ final class BackWPup_Job {
 			else
 				$this->step_percent = 1;
 			// do step tries
-			while ( $this->steps_data[ $this->step_working ][ 'STEP_TRY' ] < get_site_option( 'backwpup_cfg_jobstepretry' ) ) {
-				// break if try has marked as done for no more tries
-				if ( in_array( $this->step_working, $this->steps_done ) )
+			while ( TRUE ) {
+				if ( $this->steps_data[ $this->step_working ][ 'STEP_TRY' ] >= get_site_option( 'backwpup_cfg_jobstepretry' ) ) {
+					$this->log( __( 'Step aborted: too many attempts!', 'backwpup' ), E_USER_ERROR );
+					$this->temp = array();
+					$this->steps_done[ ] = $this->step_working;
+					$this->substeps_done = 0;
+					$this->substeps_todo = 0;
+					$this->do_restart();
 					break;
+				}
+
 				$this->steps_data[ $this->step_working ][ 'STEP_TRY' ] ++;
 				$done = FALSE;
+
 				//executes the methods of job process
-				if ( $this->step_working == 'CREATE_ARCHIVE')
+				if ( $this->step_working == 'CREATE_ARCHIVE' ) {
 					$done = $this->create_archive();
-				elseif ( $this->step_working == 'CREATE_MANIFEST')
+				}
+				elseif ( $this->step_working == 'CREATE_MANIFEST' ) {
 					$done = $this->create_manifest();
+				}
 				elseif ( $this->step_working == 'END' ) {
 					$this->end();
 					break 2;
 				}
-				elseif ( strstr( $this->step_working, 'JOB_' ) )
+				elseif ( strstr( $this->step_working, 'JOB_' ) ) {
 					$done = $job_types[ str_replace( 'JOB_', '', $this->step_working ) ]->job_run( $this );
-				elseif ( strstr( $this->step_working, 'DEST_SYNC_' ) )
-					$done = BackWPup::get_destination( str_replace( 'DEST_SYNC_', '', $this->step_working ) )->job_run_sync( $this );
-				elseif ( strstr( $this->step_working, 'DEST_' ) )
-					$done = BackWPup::get_destination( str_replace( 'DEST_', '', $this->step_working ) )->job_run_archive( $this );
-				elseif ( ! empty( $this->steps_data[ $this->step_working ][ 'CALLBACK' ] ) )
-					$done = $this->steps_data[ $this->step_working ][ 'CALLBACK' ]( $this );
-				// set step as done or  if step has too many tries
-				if ( $done === TRUE ) {
-					$this->temp 		 = array();
-					$this->steps_done[]  = $this->step_working;
-					$this->substeps_done = 0;
-					$this->substeps_todo = 0;
-					$this->write_running_file();
 				}
-				if ( ! $done && $this->steps_data[ $this->step_working ][ 'STEP_TRY' ] >= get_site_option( 'backwpup_cfg_jobstepretry' ) ) {
-					$this->log( __( 'Step aborted: too many attempts!', 'backwpup' ), E_USER_ERROR );
+				elseif ( strstr( $this->step_working, 'DEST_SYNC_' ) ) {
+					$done = BackWPup::get_destination( str_replace( 'DEST_SYNC_', '', $this->step_working ) )->job_run_sync( $this );
+				}
+				elseif ( strstr( $this->step_working, 'DEST_' ) ) {
+					$done = BackWPup::get_destination( str_replace( 'DEST_', '', $this->step_working ) )->job_run_archive( $this );
+				}
+				elseif ( ! empty( $this->steps_data[ $this->step_working ][ 'CALLBACK' ] ) ) {
+					$done = $this->steps_data[ $this->step_working ][ 'CALLBACK' ]( $this );
+				}
+
+				// set step as done
+				if ( $done === TRUE ) {
 					$this->temp 		 = array();
 					$this->steps_done[]  = $this->step_working;
 					$this->substeps_done = 0;
@@ -760,6 +767,9 @@ final class BackWPup_Job {
 				}
 				if ( count( $this->steps_done ) < count( $this->steps_todo ) -1 ) {
 					$this->do_restart();
+				}
+				if ( $done === TRUE ) {
+					break;
 				}
 			}
 		}
@@ -1706,16 +1716,22 @@ final class BackWPup_Job {
 					if ( FALSE !== stripos( $folder . $file, trim( $exclusion ) ) && ! empty( $exclusion ) )
 						continue 2;
 				}
-				if ( $this->job[ 'backupexcludethumbs' ] && strpos( $folder, BackWPup_File::get_upload_dir() ) !== FALSE && preg_match( "/\-[0-9]{2,4}x[0-9]{2,4}\.(jpg|png|gif)$/i", $file ) )
+				if ( $this->job[ 'backupexcludethumbs' ] && strpos( $folder, BackWPup_File::get_upload_dir() ) !== FALSE && preg_match( "/\-[0-9]{2,4}x[0-9]{2,4}\.(jpg|png|gif)$/i", $file ) ) {
 					continue;
-				if ( is_link( $folder . $file ) )
+				}
+				if ( is_link( $folder . $file ) ) {
 					$this->log( sprintf( __( 'Link "%s" not following.', 'backwpup' ), $folder . $file ), E_USER_WARNING );
-				elseif ( ! is_readable( $folder . $file ) )
+				} elseif ( ! is_readable( $folder . $file ) ) {
 					$this->log( sprintf( __( 'File "%s" is not readable!', 'backwpup' ), $folder . $file ), E_USER_WARNING );
-				else {
+				} else {
+					$file_size = filesize( $folder . $file );
+					if ( ! is_int( $file_size ) || $file_size < 0 || $file_size > 2147483647 ) {
+						$this->log( sprintf( __( 'File size from "%s" can not taken correctly or file is to large! File will be ignored.', 'backwpup' ), $folder . $file . ' ' . $file_size ), E_USER_WARNING );
+						continue;
+					}
 					$files[ ] = $folder . $file;
 					$this->count_files_in_folder ++;
-					$this->count_filesize_in_folder = $this->count_filesize_in_folder + @filesize( $folder . $file );
+					$this->count_filesize_in_folder = $this->count_filesize_in_folder + $file_size;
 				}
 			}
 			closedir( $dir );
@@ -1795,8 +1811,8 @@ final class BackWPup_Job {
 			$this->count_files ++;
 			$this->additional_files_to_backup[ ] = BackWPup::get_plugin_data( 'TEMP' ) . 'backwpup_readme.txt';
 			$this->count_files ++;
-			$this->count_filesize = $this->count_filesize + @filesize( BackWPup::get_plugin_data( 'TEMP' ) . 'manifest.json' );
-			$this->count_filesize = $this->count_filesize + @filesize( BackWPup::get_plugin_data( 'TEMP' ) . 'backwpup_readme.txt' );
+			$this->count_filesize = $this->count_filesize + filesize( BackWPup::get_plugin_data( 'TEMP' ) . 'manifest.json' );
+			$this->count_filesize = $this->count_filesize + filesize( BackWPup::get_plugin_data( 'TEMP' ) . 'backwpup_readme.txt' );
 			$this->log( sprintf( __( 'Added manifest.json file with %1$s to backup file list.', 'backwpup' ), size_format( filesize( BackWPup::get_plugin_data( 'TEMP' ) . 'manifest.json' ), 2 ) ) );
 		}
 		$this->substeps_done = 3;
@@ -1815,10 +1831,16 @@ final class BackWPup_Job {
 		$this->substeps_todo = $this->count_folder  + 1;
 
 		//initial settings for restarts in archiving
-		if ( ! isset( $this->steps_data[ $this->step_working ]['on_file'] ) )
+		if ( ! isset( $this->steps_data[ $this->step_working ]['on_file'] ) ) {
 			$this->steps_data[ $this->step_working ]['on_file'] = '';
-		if ( ! isset( $this->steps_data[ $this->step_working ]['on_folder'] ) )
+		}
+		if ( ! isset( $this->steps_data[ $this->step_working ]['on_folder'] ) ) {
 			$this->steps_data[ $this->step_working ]['on_folder'] = '';
+		}
+
+		if ( $this->steps_data[ $this->step_working ][ 'on_folder' ] == '' && $this->steps_data[ $this->step_working ][ 'on_file' ] == '' && is_file( $this->backup_folder . $this->backup_file ) ) {
+			unlink( $this->backup_folder . $this->backup_file );
+		}
 
 		if ( $this->steps_data[ $this->step_working ]['SAVE_STEP_TRY'] != $this->steps_data[ $this->step_working ][ 'STEP_TRY' ] )
 			$this->log( sprintf( __( '%d. Trying to create backup archive &hellip;', 'backwpup' ), $this->steps_data[ $this->step_working ][ 'STEP_TRY' ] ), E_USER_NOTICE );
@@ -1834,10 +1856,17 @@ final class BackWPup_Job {
 			if ( $this->substeps_done == 0 ) {
 				if ( ! empty( $this->additional_files_to_backup ) && $this->substeps_done == 0 ) {
 					foreach ( $this->additional_files_to_backup as $file ) {
-						$backup_archive->add_file( $file, basename( $file ) );
-						$this->count_files ++;
-						$this->count_filesize = filesize( $file );
-						$this->update_working_data();
+						if ( $backup_archive->add_file( $file, basename( $file ) ) ) {;
+							$this->count_files ++;
+							$this->count_filesize = filesize( $file );
+							$this->update_working_data();
+						} else {
+							$backup_archive->close();
+							$this->steps_data[ $this->step_working ][ 'on_file' ] = '';
+							$this->steps_data[ $this->step_working ][ 'on_folder' ] = '';
+							$this->log( __( 'Can not create archive correctly. Aborting creation.', 'backwpup' ), E_USER_ERROR );
+							return FALSE;
+						}
 					}
 				}
 				$this->substeps_done ++;
@@ -1872,8 +1901,21 @@ final class BackWPup_Job {
 					//generate filename in archive
 					$in_archive_filename = ltrim( str_replace( $this->remove_path, '', $file ), '/' );
 					//add file to archive
-					$backup_archive->add_file( $file, $in_archive_filename );
-					$this->update_working_data();
+					if ( $backup_archive->add_file( $file, $in_archive_filename ) ) {
+						$this->update_working_data();
+					} else {
+						$backup_archive->close();
+						$this->steps_data[ $this->step_working ][ 'on_file' ] = '';
+						$this->steps_data[ $this->step_working ][ 'on_folder' ] = '';
+						$this->substeps_done   = 0;
+						$this->backup_filesize = filesize( $this->backup_folder . $this->backup_file );
+						if ( ( $this->backup_filesize + filesize( $file ) ) >= 2147483647 ) {
+							$this->log( __( 'Aborting creation.', 'backwpup' ), E_USER_ERROR );
+							return TRUE;
+						}
+						$this->log( __( 'Can not create archive correctly. Aborting creation.', 'backwpup' ), E_USER_ERROR );
+						return FALSE;
+					}
 				}
 				$this->steps_data[ $this->step_working ]['on_file'] = '';
 				$this->substeps_done ++;

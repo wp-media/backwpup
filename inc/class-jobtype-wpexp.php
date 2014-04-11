@@ -451,7 +451,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 			if ( is_readable( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] ) ) {
 				$job_object->additional_files_to_backup[ ] = BackWPup::get_plugin_data( 'TEMP' ) . $job_object->steps_data[ $job_object->step_working ]['wpexportfile'];
 				$job_object->count_files ++;
-				$job_object->count_filesize = $job_object->count_filesize + @filesize( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] );
+				$job_object->count_filesize = $job_object->count_filesize + filesize( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] );
 				$job_object->log( sprintf( __( 'Added XML export "%1$s" with %2$s to backup file list.', 'backwpup' ), $job_object->steps_data[ $job_object->step_working ]['wpexportfile'], size_format( filesize( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] ), 2 ) ) );
 			}
 			$job_object->substeps_done ++;

@@ -697,8 +697,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 
 		$length = strlen( $logfiledata ) - ( strlen( $logfiledata ) - $endpos ) - $startpos;
 
-		@header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ), TRUE );
-		$json = json_encode( array(
+		wp_send_json( array(
 							   'log_pos'         => strlen( $logfiledata ) + $logpos,
 							   'log_text'        => substr( $logfiledata, $startpos, $length ),
 							   'warning_count'   => $warnings,
@@ -711,7 +710,6 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 							   'sub_step_percent'=> $substep_percent,
 							   'job_done'		 => $done
 						  ) );
-		die( $json );
 	}
 
 }

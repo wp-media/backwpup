@@ -175,12 +175,16 @@ Please check all settings after the update:
 * Fixed: var_export not working if output buffering active
 * Fixed: bug in sending test emails on Backup with email
 * Fixed: backup archives not deleted if archive name has spaces
+* Fixed: bug in tar file name length detecting
+* Fixed: bug in not displaying abort message
+* Changed: Maximum backup archive size is now 2GB (some filesystems do not support larger files, split the job if you need more)
 * Changed: WordPress Export will now done by a own class
 * Changed: Dropbox now uses oAuth 2 Protocol
 * Changed: Logs have now a br tag on line end for better reading in emails
 * Improved: Dropbox chipper list only on OpenSSL cUrl backend
 * Improved: Increased performance on Zip File generation massively
 * Improved: Backup archives now deleted to if the archive format changed
+* Improved: Archive tarring and its compression
 * Updated: SwiftMailer to Version 5.0.3
 * Updated: AWS SDK to Version 2.5.3 (PHP 5.3.3+)
 

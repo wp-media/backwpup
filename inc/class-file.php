@@ -71,13 +71,22 @@ class BackWPup_File {
 
 		if ( $dir = opendir( $folder ) ) {
 			while ( FALSE !== ( $file = readdir( $dir ) ) ) {
-				if ( in_array( $file, array( '.', '..' ) ) || is_link( $folder . '/' . $file ) )
+				if ( in_array( $file, array( '.', '..' ) ) || is_link( $folder . '/' . $file ) ) {
 					continue;
-				if ( $deep && is_dir( $folder . '/' . $file ) )
+				}
+				if ( $deep && is_dir( $folder . '/' . $file ) ) {
 					$files_size = $files_size + self::get_folder_size( $folder . '/' . $file, TRUE );
-				elseif ( is_readable( $folder . '/' . $file ) )
-					$files_size = $files_size + @filesize( $folder . '/' . $file );
-
+				}
+				elseif ( is_link( $folder . '/' . $file ) ) {
+					continue;
+				}
+				elseif ( is_readable( $folder . '/' . $file ) ) {
+					$file_size = filesize( $folder . '/' . $file );
+					if ( empty( $file_size ) || ! is_int( $file_size ) ) {
+						continue;
+					}
+					$files_size = $files_size + $file_size;
+				}
 			}
 			closedir( $dir );
 		}
