@@ -211,6 +211,8 @@ class DataObject extends AbstractResource
      */
     public function setContent($content)
     {
+        $this->etag = null;
+        $this->contentType = null;
         $this->content = EntityBody::factory($content);
         return $this;
     }
@@ -304,7 +306,8 @@ class DataObject extends AbstractResource
 
     public function update($params = array())
     {
-        $metadata = self::stockHeaders($this->metadata->toArray());
+        $metadata = is_array($this->metadata) ? $this->metadata : $this->metadata->toArray();
+        $metadata = self::stockHeaders($metadata);
 
         // merge specific properties with metadata
         $metadata += array(
@@ -424,4 +427,9 @@ class DataObject extends AbstractResource
         return (isset($uri)) ? Url::factory($uri)->addPath($this->name) : false;
     }
 
+    protected static function headerIsValidMetadata($header)
+    {
+        $pattern = sprintf('#^%s-%s-Meta-#i', self::GLOBAL_METADATA_PREFIX, self::METADATA_LABEL);
+        return preg_match($pattern, $header);
+    }
 }

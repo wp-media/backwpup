@@ -157,7 +157,7 @@ class PaginatedIterator extends ResourceIterator implements Iterator
 
     public function valid()
     {
-        if ($this->position >= $this->getOption('limit.total')) {
+        if ($this->getOption('limit.total') !== false && $this->position >= $this->getOption('limit.total')) {
             return false;
         } elseif (isset($this->elements[$this->position])) {
             return true;
@@ -260,7 +260,7 @@ class PaginatedIterator extends ResourceIterator implements Iterator
                 $query[static::MARKER] = $this->currentMarker;
             }
 
-            if ($limit = $this->getOption('limit.page')) {
+            if (($limit = $this->getOption('limit.page')) && !$query->hasKey(static::LIMIT)) {
                 $query[static::LIMIT] = $limit;
             }
 

@@ -1,5 +1,5 @@
 <?php
-// Rackspace OpenCloud SDK v1.7.3
+// Rackspace OpenCloud SDK v1.9.2
 // http://www.rackspace.com/cloud/files/
 // https://github.com/rackspace/php-opencloud
 
@@ -20,7 +20,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 	/**
 	 * Get Auht url by region code
 	 *
-	 * @param $region region code
+	 * @param $region string region code
 	 * @return string
 	 */
 	public static function get_auth_url_by_region( $region ) {

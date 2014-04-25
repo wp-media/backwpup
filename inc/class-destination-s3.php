@@ -1,5 +1,5 @@
 <?php
-// Amazon S3 SDK v2.5.3
+// Amazon S3 SDK v2.6.1
 // http://aws.amazon.com/de/sdkforphp2/
 // https://github.com/aws/aws-sdk-php
 

@@ -2090,25 +2090,29 @@ final class BackWPup_Job {
 	}
 
 	/**
-	 * Check whether shell_exec has been disabled.
+	 * Check whether exec has been disabled.
 	 *
 	 * @access public
 	 * @static
 	 * @return bool
 	 */
-	public static function is_shell_exec() {
+	public static function is_exec() {
 
 		// Is function avail
-		if ( ! function_exists( 'shell_exec' ) )
+		if ( ! function_exists( 'exec' ) ) {
 			return FALSE;
+		}
 
 		// Is shell_exec disabled?
-		if ( in_array( 'shell_exec', array_map( 'trim', explode( ',', @ini_get( 'disable_functions' ) ) ) ) )
+		if ( in_array( 'exec', array_map( 'trim', explode( ',', @ini_get( 'disable_functions' ) ) ) ) ) {
 			return FALSE;
+		}
 
 		// Can we issue a simple echo command?
-		if ( ! @shell_exec( 'echo backwpup' ) )
+		$output = exec( 'echo backwpupechotest' );
+		if ( $output != 'backwpupechotest' ) {
 			return FALSE;
+		}
 
 		return TRUE;
 
