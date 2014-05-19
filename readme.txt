@@ -2,7 +2,7 @@
 Contributors: inpsyde, danielhuesken, Bueltge, nullbyte
 Tags: Amazon, Amazon S3, back up, backup, chinese, cloud, cloud files, database, db backup, dropbox, dump, file, french, ftp, ftps, german, migrate, multisite, russian, schedule, sftp, storage, S3, time, upload, xml
 Requires at least: 3.4
-Tested up to: 3.8.1
+Tested up to: 3.9.1
 Stable tag: 3.1.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -177,6 +177,7 @@ Please check all settings after the update:
 * Fixed: backup archives not deleted if archive name has spaces
 * Fixed: bug in tar file name length detecting
 * Fixed: bug in not displaying abort message
+* Fixed: abort of S3 uploads from other running backups
 * Changed: Maximum backup archive size is now 2GB (some filesystems do not support larger files, split the job if you need more)
 * Changed: WordPress Export will now done by a own class
 * Changed: Dropbox now uses oAuth 2 Protocol
@@ -185,8 +186,11 @@ Please check all settings after the update:
 * Improved: Increased performance on Zip File generation massively
 * Improved: Backup archives now deleted to if the archive format changed
 * Improved: Archive tarring and its compression
-* Updated: SwiftMailer to Version 5.0.3
-* Updated: AWS SDK to Version 2.5.3 (PHP 5.3.3+)
+* Improved: Loading of Swift Mailer
+* Added: GreenQloud to S3 Services
+* Updated: SwiftMailer to Version 5.2.0
+* Updated: AWS SDK to Version 2.6.1 (PHP 5.3.3+)
+* Updated: RSC SDK to Version 1.9.2
 
 = Version 3.1.2 =
 * Added: .donotbackup file. Folders and sub folders containing this file in will not be included in backups.

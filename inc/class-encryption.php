@@ -14,14 +14,28 @@ class BackWPup_Encryption {
 	 */
 	public static function encrypt( $string ) {
 
-		if ( empty( $string ) )
+		if ( empty( $string ) ) {
 			return $string;
+		}
 
 		//only encrypt if needed
-		if ( strpos( $string, '$BackWPup$ENC1$' ) !== FALSE or strpos( $string, '$BackWPup$RIJNDAEL$' ) !== FALSE )
-			return $string;
+		if ( strpos( $string, '$BackWPup$ENC1$' ) !== FALSE || strpos( $string, '$BackWPup$RIJNDAEL$' ) !== FALSE ) {
+			if ( strpos( $string, '$BackWPup$ENC1$O$' ) !== FALSE && strpos( $string, '$BackWPup$RIJNDAEL$O$' ) !== FALSE && defined( 'BACKWPUP_ENC_KEY' ) && BACKWPUP_ENC_KEY )  {
+				$string = self::decrypt( $string );
+			} else {
+				return $string;
+			}
+		}
 
-		$key = md5( DB_NAME . DB_USER . DB_PASSWORD );
+		if ( defined( 'BACKWPUP_ENC_KEY' ) && BACKWPUP_ENC_KEY  ) {
+			$key = BACKWPUP_ENC_KEY;
+			$key_type = 'O$';
+		} else {
+			$key = DB_NAME . DB_USER . DB_PASSWORD;
+			$key_type = '';
+		}
+
+		$key = md5( $key );
 
 		if ( ! function_exists( 'mcrypt_encrypt' ) ) {
 			$result = '';
@@ -32,10 +46,10 @@ class BackWPup_Encryption {
 				$result .= $char;
 			}
 
-			return '$BackWPup$ENC1$' . base64_encode( $result );
+			return '$BackWPup$ENC1$' . $key_type . base64_encode( $result );
 		}
 
-		return '$BackWPup$RIJNDAEL$' . base64_encode( mcrypt_encrypt( MCRYPT_RIJNDAEL_256, md5( $key ), $string, MCRYPT_MODE_CBC, md5( md5( $key ) ) ) );
+		return '$BackWPup$RIJNDAEL$' . $key_type . base64_encode( mcrypt_encrypt( MCRYPT_RIJNDAEL_256, md5( $key ), trim( $string ), MCRYPT_MODE_CBC, md5( md5( $key ) ) ) );
 	}
 
 	/**
@@ -48,13 +62,23 @@ class BackWPup_Encryption {
 	 */
 	public static function decrypt( $string ) {
 
-		if ( empty( $string ) )
+		if ( empty( $string ) ) {
 			return $string;
+		}
 
-		$key = md5( DB_NAME . DB_USER . DB_PASSWORD );
 
-		if ( strpos( $string, '$BackWPup$ENC1$' ) !== FALSE ) {
-			$string = str_replace( '$BackWPup$ENC1$', '', $string );
+		if ( strpos( $string, '$BackWPup$ENC1$O$' ) !== FALSE || strpos( $string, '$BackWPup$RIJNDAEL$O$' ) !== FALSE ) {
+			$key_type = 'O$';
+			$key = BACKWPUP_ENC_KEY;
+		} else {
+			$key_type = '';
+			$key = DB_NAME . DB_USER . DB_PASSWORD;
+		}
+
+		$key = md5( $key );
+
+		if ( strpos( $string, '$BackWPup$ENC1$' . $key_type ) !== FALSE ) {
+			$string = str_replace( '$BackWPup$ENC1$' . $key_type, '', $string );
 			$result = '';
 			$string = base64_decode( $string );
 			for ( $i = 0; $i < strlen( $string ); $i ++ ) {
@@ -67,10 +91,10 @@ class BackWPup_Encryption {
 			return $result;
 		}
 
-		if ( function_exists( 'mcrypt_encrypt' ) && strpos( $string, '$BackWPup$RIJNDAEL$' ) !== FALSE) {
-			$string = str_replace( '$BackWPup$RIJNDAEL$', '', $string );
+		if ( function_exists( 'mcrypt_encrypt' ) && strpos( $string, '$BackWPup$RIJNDAEL$' . $key_type ) !== FALSE ) {
+			$string = str_replace( '$BackWPup$RIJNDAEL$' . $key_type, '', $string );
 
-			return rtrim( mcrypt_decrypt( MCRYPT_RIJNDAEL_256, md5( $key ), base64_decode( $string ), MCRYPT_MODE_CBC, md5( md5( $key ) ) ), "\0" );
+			return trim( mcrypt_decrypt( MCRYPT_RIJNDAEL_256, md5( $key ), base64_decode( $string ), MCRYPT_MODE_CBC, md5( md5( $key ) ) ), "\0" );
 		}
 
 		return $string;

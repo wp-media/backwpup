@@ -21,7 +21,7 @@ abstract class Swift
     public static $inits = array();
 
     /** Swift Mailer Version number generated during dist release process */
-    const VERSION = '5.0.3';
+    const VERSION = '@SWIFT_VERSION_NUMBER@';
 
     /**
      * Registers an initializer callable that will be called the first time

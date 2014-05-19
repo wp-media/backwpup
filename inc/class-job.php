@@ -341,9 +341,12 @@ final class BackWPup_Job {
 			$bit = ' (64bit)';
 		$head .= __( '[INFO] PHP ver.:', 'backwpup' ) . ' ' . PHP_VERSION . $bit .'; ' . PHP_SAPI . '; ' . PHP_OS . '<br />' . PHP_EOL;
 		$head .= sprintf( __( '[INFO] Maximum PHP script execution time is %1$d seconds', 'backwpup' ), ini_get( 'max_execution_time' ) ) . '<br />' . PHP_EOL;
-		$job_max_execution_time = get_site_option( 'backwpup_cfg_jobmaxexecutiontime' );
-		if ( ! empty( $job_max_execution_time ) )
+		if ( php_sapi_name() != 'cli' ) {
+			$job_max_execution_time = get_site_option( 'backwpup_cfg_jobmaxexecutiontime' );
+			if ( ! empty( $job_max_execution_time ) ) {
 				$head .= sprintf( __( '[INFO] Script restart time is configured to %1$d seconds', 'backwpup' ), $job_max_execution_time ) . '<br />' . PHP_EOL;
+			}
+		}
 		$head .= sprintf( __( '[INFO] MySQL ver.: %s', 'backwpup' ), $wpdb->get_var( "SELECT VERSION() AS version" ) ) . '<br />' . PHP_EOL;
 		if ( isset( $_SERVER[ 'SERVER_SOFTWARE' ] ) )
 			$head .= sprintf( __( '[INFO] Web Server: %s', 'backwpup' ), $_SERVER[ 'SERVER_SOFTWARE' ] ) . '<br />' . PHP_EOL;
@@ -358,7 +361,7 @@ final class BackWPup_Job {
 			$head .= sprintf( __( '[INFO] Backup file is: %s', 'backwpup' ), $this->backup_folder . $this->backup_file ) . '<br />' . PHP_EOL;
 		file_put_contents( $this->logfile, $head, FILE_APPEND );
 		//output info on cli
-		if ( defined( 'STDIN' ) && defined( 'STDOUT' ) )
+		if ( php_sapi_name() == 'cli' && defined( 'STDOUT' ) )
 			fwrite( STDOUT, strip_tags( $head ) ) ;
 		//test for destinations
 		if ( $job_need_dest ) {
@@ -532,7 +535,7 @@ final class BackWPup_Job {
 	 */
 	public static function start_cli( $jobid ) {
 
-		if ( ! defined( 'STDIN' ) )
+		if ( php_sapi_name() != 'cli' )
 			return;
 
 		//define DOING_CRON to prevent caching
@@ -788,7 +791,7 @@ final class BackWPup_Job {
 			return;
 
 		//no restart on cli usage
-		if ( defined( 'STDIN' ) )
+		if ( php_sapi_name() == 'cli' )
 			return;
 
 		//no restart when restart was 3 Seconds before
@@ -1113,7 +1116,7 @@ final class BackWPup_Job {
 		$in_file = str_replace( str_replace( '\\', '/', ABSPATH ), '', str_replace( '\\', '/', $args[ 2 ] ) );
 
 		//print message to cli
-		if ( defined( 'STDIN' ) && defined( 'STDOUT' ) )
+		if ( php_sapi_name() == 'cli' && defined( 'STDOUT' ) )
 			fwrite( STDOUT, '[' . date_i18n( 'd-M-Y H:i:s' ) . '] ' . strip_tags( $messagetype ) . str_replace( '&hellip;', '...', strip_tags( $args[ 1 ] ) ) . PHP_EOL ) ;
 		//log line
 		$timestamp = '<span datetime="' . date_i18n( 'c' ) . '" title="[Type: ' . $args[ 0 ] . '|Line: ' . $args[ 3 ] . '|File: ' . $in_file . '|Mem: ' . size_format( @memory_get_usage( TRUE ), 2 ) . '|Mem Max: ' . size_format( @memory_get_peak_usage( TRUE ), 2 ) . '|Mem Limit: ' . ini_get( 'memory_limit' ) . '|PID: ' . self::get_pid() . ' | UniqID: ' . $this->uniqid . '|Query\'s: ' . get_num_queries() . ']">[' . date_i18n( 'd-M-Y H:i:s' ) . ']</span> ';

@@ -44,6 +44,8 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				return 'https://cs.hosteurope.de';
 			case 'dreamhost':
 				return 'https://objects.dreamhost.com';
+			case 'greenqloud':
+				return 'http://s.greenqloud.com';
 			default:
 				return '';
 		}
@@ -84,6 +86,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 						<option value="google-storage" <?php selected( 'google-storage', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Google Storage (Interoperable Access)', 'backwpup' ); ?></option>
 						<option value="hosteurope" <?php selected( 'hosteurope', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Hosteurope Cloud Storage', 'backwpup' ); ?></option>
                         <option value="dreamhost" <?php selected( 'dreamhost', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Dream Host Cloud Storage', 'backwpup' ); ?></option>
+						<option value="greenqloud" <?php selected( 'greenqloud', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'GreenQloud Storage Qloud', 'backwpup' ); ?></option>
 					</select>
 				</td>
 			</tr>
@@ -376,17 +379,15 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 					return TRUE;
 				}
 
-				if ( $job_object->job[ 's3multipart' ] ) {
+				if ( $job_object->job[ 's3multipart' ] && empty( $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ] ) ) {
 					//Check for aboded Multipart Uploads
 					$job_object->log( __( 'Checking for not aborted multipart Uploads&#160;&hellip;', 'backwpup' ) );
-					$multipart_uploads = $s3->listMultipartUploads( array( 	'Bucket' => $job_object->job[ 's3bucket' ] ) );
+					$multipart_uploads = $s3->listMultipartUploads( array( 	'Bucket' => $job_object->job[ 's3bucket' ], 'Prefix' => $job_object->job[ 's3dir' ] ) );
 					$uploads = $multipart_uploads->get( 'Uploads' );
 					if ( ! empty( $uploads ) ) {
 						foreach( $uploads as $upload ) {
-							if ( empty( $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ] ) || $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ] != $upload[ 'UploadId' ] ) {
-								$s3->abortMultipartUpload( array( 'Bucket' => $job_object->job[ 's3bucket' ], 'Key' => $upload[ 'Key' ], 'UploadId' => $upload[ 'UploadId' ] ) );
-								$job_object->log( sprintf( __( 'Upload for %s aborted.', 'backwpup' ), $upload[ 'Key' ] ) );
-							}
+							$s3->abortMultipartUpload( array( 'Bucket' => $job_object->job[ 's3bucket' ], 'Key' => $upload[ 'Key' ], 'UploadId' => $upload[ 'UploadId' ] ) );
+							$job_object->log( sprintf( __( 'Upload for %s aborted.', 'backwpup' ), $upload[ 'Key' ] ) );
 						}
 					}
 				}

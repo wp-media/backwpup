@@ -1,5 +1,5 @@
 <?php
-// Swift Mailer v5.0.3
+// Swift Mailer v5.2.0
 // http://swiftmailer.org/
 // https://github.com/swiftmailer/swiftmailer
 
@@ -256,6 +256,10 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 		}
 
 		//Generate mail with Swift Mailer
+		if ( ! class_exists( 'Swift', FALSE ) ) {
+			require BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/SwiftMailer/swift_required.php';
+		}
+
 		if ( function_exists( 'mb_internal_encoding' ) && ( (int)ini_get( 'mbstring.func_overload' ) ) & 2 ) {
 			$mbEncoding = mb_internal_encoding();
 			mb_internal_encoding( 'ASCII' );
@@ -378,6 +382,9 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 		}
 
 		//Generate mail with Swift Mailer
+		if ( ! class_exists( 'Swift', FALSE ) ) {
+			require BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/SwiftMailer/swift_required.php';
+		}
 
 		if ( function_exists( 'mb_internal_encoding' ) && ( (int)ini_get( 'mbstring.func_overload' ) ) & 2 ) {
 			$mbEncoding = mb_internal_encoding();

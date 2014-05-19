@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.1.3-beta5
+ * Version: 3.1.3-beta6
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -297,17 +297,11 @@ if ( ! class_exists( 'BackWPup' ) ) {
 								),
 								'can_sync' => FALSE,
 								'needed' => array(
-									'php_version'	=> '',
+									'php_version'	=> '5.2.4',
 									'functions'	=> array(),
 									'classes'	=> array()
 								),
-								'autoload'	=> array(
-									'Swift_Preferences' => dirname( __FILE__ ) . '/vendor/SwiftMailer/swift_required.php',
-									'Swift_SmtpTransport' => dirname( __FILE__ ) . '/vendor/SwiftMailer/swift_required.php',
-									'Swift_SendmailTransport' => dirname( __FILE__ ) . '/vendor/SwiftMailer/swift_required.php',
-									'Swift_MailTransport' => dirname( __FILE__ ) . '/vendor/SwiftMailer/swift_required.php',
-									'Swift_Mailer' => dirname( __FILE__ ) . '/vendor/SwiftMailer/swift_required.php'
-								)
+								'autoload'	=> array()
 							);
 			// backup to ftp
 			self::$registered_destinations[ 'FTP' ] 	= array(

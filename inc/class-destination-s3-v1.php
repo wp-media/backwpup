@@ -45,6 +45,8 @@ class BackWPup_Destination_S3_V1 extends BackWPup_Destinations {
 				return 'https://cs.hosteurope.de';
 			case 'dreamhost':
 				return 'https://objects.dreamhost.com';
+			case 'greenqloud':
+				return 'http://s.greenqloud.com';
 			default:
 				return '';
 		}
@@ -85,6 +87,7 @@ class BackWPup_Destination_S3_V1 extends BackWPup_Destinations {
 						<option value="google-storage" <?php selected( 'google-storage', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Google Storage (Interoperable Access)', 'backwpup' ); ?></option>
 						<option value="hosteurope" <?php selected( 'hosteurope', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Hosteurope Cloud Storage', 'backwpup' ); ?></option>
                         <option value="dreamhost" <?php selected( 'dreamhost', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Dream Host Cloud Storage', 'backwpup' ); ?></option>
+						<option value="greenqloud" <?php selected( 'greenqloud', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'GreenQloud Storage Qloud', 'backwpup' ); ?></option>
 					</select>
 				</td>
 			</tr>
