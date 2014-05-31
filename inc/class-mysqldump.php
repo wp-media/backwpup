@@ -157,6 +157,25 @@ class BackWPup_MySQLDump {
 			$this->table_status[ $tablestatus[ 'Name' ] ] = $tablestatus;
 		}
 		$res->close();
+
+		// Non-MyISAM has not exact size in status
+		// http://dev.mysql.com/doc/refman/5.6/en/show-table-status.html
+		if ( $this->table_status[ $table ][ 'Engine' ] !== 'MyISAM' ) {
+			$res = $this->mysqli->query( "SELECT SQL_CALC_FOUND_ROWS * FROM `" . $table . "`  LIMIT 1");
+			$GLOBALS[ 'wpdb' ]->num_queries ++;
+			if ( $this->mysqli->error )
+				throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SELECT SQL_CALC_FOUND_ROWS * FROM `" . $table . "`  LIMIT 1" ) );
+			$GLOBALS[ 'wpdb' ]->num_queries ++;
+			$res->close();
+
+			$res = $this->mysqli->query( "SELECT FOUND_ROWS() AS count_records");
+			$GLOBALS[ 'wpdb' ]->num_queries ++;
+			if ( $this->mysqli->error )
+				throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SELECT FOUND_ROWS() AS count_records" ) );
+			$count_records =  $res->fetch_assoc();
+			$res->close();
+			$this->table_status[ $table ][ 'Rows' ] = $count_records[ 'count_records' ];
+		}
 	}
 
 	/**
