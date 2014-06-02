@@ -201,12 +201,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 					$num_records = $sql_dump->dump_table_head( $table );
 					$job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ] = array( 'start'   => 0,
 																										'length'   => 1000 );
-					$job_object->log( sprintf( __( 'Backup database table "%s" with "%d" records', 'backwpup' ), $table, $num_records ) );
-					if ( empty( $num_records ) ) {
-						$job_object->substeps_done++;
-						$i++;
-						continue;
-					}
+					$job_object->log( sprintf( __( 'Backup database table "%s" with "%s" records', 'backwpup' ), $table, $num_records ) );
 				}
 				$while = true;
 				while ( $while ) {
@@ -227,8 +222,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 					$job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'length' ] =  $length;
 					$job_object->do_restart_time();
 				}
-				if ( $job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ][ 'start' ] > 0 )
-					$sql_dump->dump_table_footer( $table );
+				$sql_dump->dump_table_footer( $table );
 				$job_object->substeps_done++;
 				$i++;
 				$job_object->update_working_data();

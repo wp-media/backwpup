@@ -178,6 +178,7 @@ Please check all settings after the update:
 * Fixed: bug in tar file name length detecting
 * Fixed: bug in not displaying abort message
 * Fixed: abort of S3 uploads from other running backups
+* Fixed: Fix bug in backup non MyISAM tables with ~0 rows
 * Changed: Maximum backup archive size is now 2GB (some filesystems do not support larger files, split the job if you need more)
 * Changed: WordPress Export will now done by a own class
 * Changed: Dropbox now uses oAuth 2 Protocol

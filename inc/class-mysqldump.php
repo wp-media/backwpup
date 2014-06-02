@@ -170,11 +170,9 @@ class BackWPup_MySQLDump {
 		$this->dump_head();
 		//write tables
 		foreach( $this->tables_to_dump as $table ) {
-			$records = $this->dump_table_head( $table );
-			if ( $records > 0 ) {
-				$this->dump_table( $table, 0 , $records );
-				$this->dump_table_footer( $table );
-			}
+			$this->dump_table_head( $table );
+			$this->dump_table( $table );
+			$this->dump_table_footer( $table );
 		}
 		//write footer
 		$this->dump_footer();
@@ -348,7 +346,11 @@ class BackWPup_MySQLDump {
 		$tablecreate .= "/*!40101 SET character_set_client = @saved_cs_client */;\n";
 		$this->write( $tablecreate );
 
-		if ( $this->table_status[ $table ][ 'Rows' ] > 0 ) {
+		if ( $this->table_status[ $table ][ 'Engine' ] !== 'MyISAM' ) {
+			$this->table_status[ $table ][ 'Rows' ] = '~' . $this->table_status[ $table ][ 'Rows' ];
+		}
+
+		if ( $this->table_status[ $table ][ 'Rows' ] !== 0 ) {
 			//Dump Table data
 			$this->write( "\n--\n-- Backup data for table `" . $table . "`\n--\n\nLOCK TABLES `" . $table . "` WRITE;\n/*!40000 ALTER TABLE `" . $table . "` DISABLE KEYS */;\n" );
 		}
@@ -365,8 +367,11 @@ class BackWPup_MySQLDump {
 	 */
 	public function dump_table_footer( $table ) {
 
-		$this->write( "/*!40000 ALTER TABLE `" . $table . "` ENABLE KEYS */;\nUNLOCK TABLES;\n" );
+		if ( $this->table_status[ $table ][ 'Rows' ] !== 0 ) {
+			$this->write( "/*!40000 ALTER TABLE `" . $table . "` ENABLE KEYS */;\nUNLOCK TABLES;\n" );
+		}
 	}
+
 
 	/**
 	 * Dump table  Data
@@ -377,20 +382,23 @@ class BackWPup_MySQLDump {
 	 * @return int	 done records in this backup
 	 * @throws BackWPup_MySQLDump_Exception
 	 */
-	public function dump_table( $table, $start, $length = 100 ) {
+	public function dump_table( $table, $start = 0, $length = 0 ) {
 
-		if ( ! is_numeric( $start ) )
+		if ( ! is_numeric( $start ) ) {
 			throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Start for table backup is not correctly set: %1$s ', 'backwpup' ), $start ) );
+		}
 
-		if ( ! is_numeric( $length ) )
+		if ( ! is_numeric( $length ) ) {
 			throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Length for table backup is not correctly set: %1$s ', 'backwpup' ), $length ) );
-
-		if ( $length == 0 )
-			return;
+		}
 
 		$done_records = 0;
 		//get data from table
-		$res = $this->mysqli->query( "SELECT * FROM `" . $table . "` LIMIT " . $start . ", " . $length, MYSQLI_USE_RESULT );
+		if ( $length == 0 && $start == 0 ) {
+			$res = $this->mysqli->query( "SELECT * FROM `" . $table . "` ", MYSQLI_USE_RESULT );
+		} else {
+			$res = $this->mysqli->query( "SELECT * FROM `" . $table . "` LIMIT " . $start . ", " . $length, MYSQLI_USE_RESULT );
+		}
 		$GLOBALS[ 'wpdb' ]->num_queries ++;
 		if ( $this->mysqli->error )
 			trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SELECT * FROM `" . $table . "`" ), E_USER_WARNING );
