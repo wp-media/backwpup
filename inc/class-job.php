@@ -432,7 +432,7 @@ final class BackWPup_Job {
 		}
 
 		//Extra for WP-Cron control
-		if ( class_exists( 'WP_Cron_Control' ) ) {
+		if ( class_exists( 'WP_Cron_Control' ) && ( $starttype == 'runext' || $starttype == 'runnow' || $starttype == 'restart'  ) ) {
 			$wp_cron_control_settings = get_option( 'wpcroncontrol_settings', array() );
 			if ( empty( $wp_cron_control_settings[ 'secret_string' ] ) && file_exists( WP_PLUGIN_DIR . '/wp-cron-control/wp-cron-control.php' ) ) {
 				$wp_cron_control_settings[ 'secret_string' ] = md5( realpath( WP_PLUGIN_DIR . '/wp-cron-control/wp-cron-control.php' ) . get_current_blog_id() );
@@ -1187,7 +1187,7 @@ final class BackWPup_Job {
 
 		//FCGI must have a permanent output so that it not broke
 		if ( stristr( PHP_SAPI, 'fcgi' ) || stristr( PHP_SAPI, 'litespeed' ) ) {
-			//inly if no output buffering is active
+			//only if no output buffering is active
 			if ( ob_get_level() == 0 ) {
 				echo '          ';
 				flush();

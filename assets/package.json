@@ -1,0 +1,17 @@
+{
+	"name": "BackWPup_Assets",
+	"version": "1.0.0",
+	"description": "BackWPup css/js minifiy",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/inpsyde/backwpup"
+	},
+	"author": "Inpsyde GmbH",
+	"license": "GPLv3 or later",
+	"devDependencies": {
+		"grunt": "*",
+		"grunt-contrib-cssmin": "*",
+		"grunt-contrib-uglify": "*",
+		"grunt-contrib-jshint": "*"
+	}
+}

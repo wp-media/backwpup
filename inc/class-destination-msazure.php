@@ -1,5 +1,5 @@
 <?php
-// Windows Azure SDK v0.3.1_2011-08
+// Windows Azure SDK v0.4.0_2014-01
 // http://www.windowsazure.com/en-us/develop/php/
 // https://github.com/WindowsAzure/azure-sdk-for-php
 
@@ -273,7 +273,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 			$job_object->log( E_USER_ERROR, sprintf( __( 'Microsoft Azure API: %s', 'backwpup' ), htmlentities( $e->getMessage() ) ), $e->getFile(), $e->getLine() );
 			$job_object->substeps_done = 0;
 			unset( $job_object->steps_data[ $job_object->step_working ][ 'BlockList' ] );
-			if ( is_resource( $file_handel ) )
+			if ( isset( $file_handel ) && is_resource( $file_handel ) )
 				fclose( $file_handel );
 
 			return FALSE;

@@ -8,16 +8,20 @@ class BackWPup_Adminbar {
 
 	private function __construct() {
 
-		if ( defined( 'DOING_CRON' )  || ! current_user_can( 'backwpup' ) || ! is_admin_bar_showing() || ! get_site_option( 'backwpup_cfg_showadminbar' ) )
+		if ( ! is_admin_bar_showing() || ! current_user_can( 'backwpup' ) || ! get_site_option( 'backwpup_cfg_showadminbar' ) ) {
 			return;
+		}
 
 		//load text domain
-		if ( ! is_textdomain_loaded( 'backwpup' ) )
+		if ( ! is_textdomain_loaded( 'backwpup' ) ) {
 			load_plugin_textdomain( 'backwpup', FALSE, BackWPup::get_plugin_data( 'BaseName' ) . '/languages' );
+		}
+
 		//add admin bar. Works only in init
 		add_action( 'admin_bar_menu', array( $this, 'adminbar' ), 100 );
+
 		//admin css
-		add_action( 'wp_head', array( 'BackWPup_Admin', 'admin_head' ) );
+		add_action( 'wp_head', array( 'BackWPup_Admin', 'admin_css' ) );
 	}
 
 	/**

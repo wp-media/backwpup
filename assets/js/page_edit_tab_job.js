@@ -90,7 +90,7 @@ function date(format, timestamp) {
 			return f.w() || 7;
 		},
 		S: function(){ // Ordinal suffix for day of month; st, nd, rd, th
-			var j = f.j()
+			var j = f.j(),
 			i = j%10;
 			if (i <= 3 && parseInt((j%100)/10) == 1) i = 0;
 			return ['st', 'nd', 'rd'][i - 1] || 'th';
@@ -212,32 +212,7 @@ function date(format, timestamp) {
 			var O = f.O();
 			return (O.substr(0, 3) + ":" + O.substr(3, 2));
 		},
-		T: function () { // Timezone abbreviation; e.g. EST, MDT, ...
-			// The following works, but requires inclusion of the very
-			// large timezone_abbreviations_list() function.
-			/*              var abbr = '', i = 0, os = 0, default = 0;
-			 if (!tal.length) {
-			 tal = that.timezone_abbreviations_list();
-			 }
-			 if (that.php_js && that.php_js.default_timezone) {
-			 default = that.php_js.default_timezone;
-			 for (abbr in tal) {
-			 for (i=0; i < tal[abbr].length; i++) {
-			 if (tal[abbr][i].timezone_id === default) {
-			 return abbr.toUpperCase();
-			 }
-			 }
-			 }
-			 }
-			 for (abbr in tal) {
-			 for (i = 0; i < tal[abbr].length; i++) {
-			 os = -jsdate.getTimezoneOffset() * 60;
-			 if (tal[abbr][i].offset === os) {
-			 return abbr.toUpperCase();
-			 }
-			 }
-			 }
-			 */
+		T: function () {
 			return 'UTC';
 		},
 		Z: function () { // Timezone offset in seconds (-43200...50400)
@@ -297,7 +272,7 @@ jQuery(document).ready(function ($) {
 	});
 
 	$('input[name="name"]').blur( function () {
-		if ( $(this).val() == '' ) {
+		if ( $(this).val() === '' ) {
 			$(this).val( $(this).data( 'empty' ) );
 		}
 	});

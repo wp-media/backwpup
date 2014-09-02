@@ -36,8 +36,7 @@ final class BackWPup_Admin {
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_links' ), 10, 2 );
 		//add more actions
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
-		//add more actions
-		add_action( 'admin_head', array( $this, 'admin_head' ) );
+		add_action( 'admin_init', array( __CLASS__, 'admin_css' ) );
 		//Save Form posts general
 		add_action( 'admin_post_backwpup', array( $this, 'save_post_form' ) );
 		//Save Form posts wizard
@@ -108,17 +107,19 @@ final class BackWPup_Admin {
 	/**
 	 * Admin init function
 	 */
-	public static function admin_head() {
+	public static function admin_css() {
 
 		//register js and css for BackWPup
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 			wp_enqueue_style( 'backwpup', BackWPup::get_plugin_data( 'URL' ) . '/assets/css/backwpup.css', array(), time(), 'screen' );
-			if ( version_compare( BackWPup::get_plugin_data( 'wp_version' ), '3.8-beta-1', '<' ) )
+			if ( version_compare( BackWPup::get_plugin_data( 'wp_version' ), '3.8-beta-1', '<' ) ) {
 				wp_enqueue_style( 'backwpup-wplt38', BackWPup::get_plugin_data( 'URL' ) . '/assets/css/lower_wp38.css', array( 'backwpup' ), time(), 'screen' );
+			}
 		} else {
 			wp_enqueue_style( 'backwpup', BackWPup::get_plugin_data( 'URL' ) . '/assets/css/backwpup.min.css', array(), BackWPup::get_plugin_data( 'Version' ), 'screen' );
-			if ( version_compare( BackWPup::get_plugin_data( 'wp_version' ), '3.8-beta-1', '<' ) )
+			if ( version_compare( BackWPup::get_plugin_data( 'wp_version' ), '3.8-beta-1', '<' ) ) {
 				wp_enqueue_style( 'backwpup-wplt38', BackWPup::get_plugin_data( 'URL' ) . '/assets/css/lower_wp38.min.css', array( 'backwpup' ),  BackWPup::get_plugin_data( 'Version' ), 'screen' );
+			}
 		}
 	}
 

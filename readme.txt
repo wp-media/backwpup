@@ -2,7 +2,7 @@
 Contributors: inpsyde, danielhuesken, Bueltge, nullbyte
 Tags: Amazon, Amazon S3, back up, backup, chinese, cloud, cloud files, database, db backup, dropbox, dump, file, french, ftp, ftps, german, migrate, multisite, russian, schedule, sftp, storage, S3, time, upload, xml
 Requires at least: 3.4
-Tested up to: 3.9.1
+Tested up to: 4.0
 Stable tag: 3.1.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -178,7 +178,6 @@ Please check all settings after the update:
 * Fixed: bug in tar file name length detecting
 * Fixed: bug in not displaying abort message
 * Fixed: abort of S3 uploads from other running backups
-* Fixed: Fix bug in backup non MyISAM tables with ~0 rows
 * Changed: Maximum backup archive size is now 2GB (some filesystems do not support larger files, split the job if you need more)
 * Changed: WordPress Export will now done by a own class
 * Changed: Dropbox now uses oAuth 2 Protocol
@@ -192,6 +191,11 @@ Please check all settings after the update:
 * Updated: SwiftMailer to Version 5.2.0
 * Updated: AWS SDK to Version 2.6.1 (PHP 5.3.3+)
 * Updated: RSC SDK to Version 1.9.2
+* Updated: MSAZURE SDK to Version 0.4.0
+* Updated: PEAR packeges for MSAZURE
+* PRO: Added: Option to use database backup with mysqli/mysqldump (not longer automatic)
+* PRO: Added: Option in GDrive destination to delete files permanently
+* PRO: Updated: Google SDK to 1.0.x
 
 = Version 3.1.2 =
 * Added: .donotbackup file. Folders and sub folders containing this file in will not be included in backups.

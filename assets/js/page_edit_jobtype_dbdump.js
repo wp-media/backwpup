@@ -1,25 +1,45 @@
 jQuery(document).ready(function ($) {
 
     $('#dball').click(function () {
-        $('input[name="tabledb[]"]').prop("checked", true).change();;
+        $('input[name="tabledb[]"]').prop("checked", true).change();
     });
 
     $('#dbnone').click(function () {
-        $('input[name="tabledb[]"]').prop("checked", false).change();;
+        $('input[name="tabledb[]"]').prop("checked", false).change();
     });
 
     $('#dbwp').click(function () {
-        $('input[name="tabledb[]"]').prop("checked", false).change();;
-        $('input[name="tabledb[]"][value^="' + $('#dbwp').val() + '"]').prop("checked", true).change();;
+        $('input[name="tabledb[]"]').prop("checked", false).change();
+        $('input[name="tabledb[]"][value^="' + $('#dbwp').val() + '"]').prop("checked", true).change();
     });
 
-    $('input[name="dbdumpwpdbsettings"]').change(function () {
-        if ( $('input[name="dbdumpwpdbsettings"]').prop("checked") ) {
-            $('#dbconnection').hide();
-        } else {
-            $('#dbconnection').show();
-        }
-    });
+	var dbdumpwpdbsettings = $('input[name="dbdumpwpdbsettings"]');
+	if ( dbdumpwpdbsettings.length > 0 ) {
+		dbdumpwpdbsettings.change(function () {
+			if ( dbdumpwpdbsettings.prop("checked") ) {
+				$('#dbconnection').hide();
+			} else {
+				$('#dbconnection').show();
+			}
+		});
+	}
+
+	var trdbdumpmysqlfolder = $('#trdbdumpmysqlfolder');
+	if ( trdbdumpmysqlfolder.length > 0 ) {
+		$('input[name="dbdumptype"]').change(function () {
+			if ( $('#iddbdumptype-syssql').prop("checked") ) {
+				trdbdumpmysqlfolder.show();
+			} else {
+				trdbdumpmysqlfolder.hide();
+			}
+		});
+
+		if ( $('#iddbdumptype-syssql').prop("checked") ) {
+			trdbdumpmysqlfolder.show();
+		} else {
+			trdbdumpmysqlfolder.hide();
+		}
+	}
 
     function db_tables() {
         var data = {
@@ -41,8 +61,8 @@ jQuery(document).ready(function ($) {
         db_tables();
     });
     $('#dbdumpwpdbsettings').change(function () {
-            db_tables();
-            db_databases();
+		db_tables();
+		db_databases();
     });
 
     function db_databases() {

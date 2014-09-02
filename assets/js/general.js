@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
 
     backwpup_htmlspecialchars = function( string ) {
-        return jQuery('<span>').text( string ).html()
+        return jQuery('<span>').text( string ).html();
     };
 
     $('.help-tip').backwpup_tipTip({
