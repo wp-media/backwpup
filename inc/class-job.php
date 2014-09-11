@@ -1719,7 +1719,7 @@ final class BackWPup_Job {
 					if ( FALSE !== stripos( $folder . $file, trim( $exclusion ) ) && ! empty( $exclusion ) )
 						continue 2;
 				}
-				if ( $this->job[ 'backupexcludethumbs' ] && strpos( $folder, BackWPup_File::get_upload_dir() ) !== FALSE && preg_match( "/\-[0-9]{2,4}x[0-9]{2,4}\.(jpg|png|gif)$/i", $file ) ) {
+				if ( $this->job[ 'backupexcludethumbs' ] && strpos( $folder, BackWPup_File::get_upload_dir() ) !== FALSE && preg_match( "/\-[0-9]{1,4}x[0-9]{1,4}.+\.(jpg|png|gif)$/i", $file ) ) {
 					continue;
 				}
 				if ( is_link( $folder . $file ) ) {
