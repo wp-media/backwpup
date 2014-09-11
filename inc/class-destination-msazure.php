@@ -144,28 +144,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 			try {
 				set_include_path( get_include_path() . PATH_SEPARATOR . BackWPup::get_plugin_data( 'plugindir' ) .'/vendor/PEAR/');
 				$blobRestProxy = WindowsAzure\Common\ServicesBuilder::getInstance()->createBlobService( 'DefaultEndpointsProtocol=https;AccountName=' . BackWPup_Option::get( $jobid, 'msazureaccname' ) . ';AccountKey=' . BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 'msazurekey' ) ) );
-
-				try {
-					$blobRestProxy->deleteBlob( BackWPup_Option::get( $jobid, 'msazurecontainer' ), $backupfile );
-				}
-				catch ( WindowsAzure\Common\ServiceException $e) {
-					/*
-						Error format:
-						<?xml version="1.0" encoding="utf-8"?>
-						<Error>
-							<Code>string-value</Code>
-							<Message>string-value</Message>
-						</Error>
-					*/
-					$error = $e->getErrorReason();
-					$errorXml = new SimpleXMLElement($error);
-					$errorCode = $errorXml->Code;
-
-					// Ignore BlobNotFound errors, but throw other errors.
-					if ($errorCode != "BlobNotFound")
-						throw $e;
-				}
-
+				$blobRestProxy->deleteBlob( BackWPup_Option::get( $jobid, 'msazurecontainer' ), $backupfile );
 				//update file list
 				foreach ( $files as $key => $file ) {
 					if ( is_array( $file ) && $file[ 'file' ] == $backupfile )
