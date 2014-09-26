@@ -17,7 +17,13 @@ final class BackWPup_Admin {
 
 		//Load text domain
 		if ( ! is_textdomain_loaded( 'backwpup' ) )
-			load_plugin_textdomain( 'backwpup', FALSE, BackWPup::get_plugin_data( 'BaseName' ) . '/languages' );
+				$domain = 'backwpup';
+		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
+
+		// wp-content/languages/plugin-name/plugin-name-de_DE.mo
+		load_textdomain( $domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo' );
+		// wp-content/plugins/plugin-name/languages/plugin-name-de_DE.mo
+		load_plugin_textdomain( $domain, FALSE, BackWPup::get_plugin_data( 'BaseName' ) . '/languages' );
 
 		//Add menu pages
 		add_filter( 'backwpup_admin_pages', array( $this, 'admin_page_jobs' ), 2 );
