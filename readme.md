@@ -40,7 +40,7 @@ Have a look at our other premium plugins at [MarketPress.com](http://marketpress
 * english (standard)
 * french / français (fr_FR)
 * german / deutsch (de_DE)
-* russian / pоссия (ru_RU)
+* russian / русский (ru_RU)
 * simplified chinese (zh_CN)
 
 ## Requirements
