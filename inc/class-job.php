@@ -1226,7 +1226,7 @@ final class BackWPup_Job {
 		$write = file_put_contents( BackWPup::get_plugin_data( 'running_file' ), $data );
 		if ( !$write || $write < strlen( $data ) ) {
 			unlink( BackWPup::get_plugin_data( 'running_file' ) );
-			$this->log( __( 'Can not writing working file correctly. Job well be aborted.', 'backwpup' ), E_USER_ERROR );
+			$this->log( __( 'Cannot write progress to working file. Job will be aborted.', 'backwpup' ), E_USER_ERROR );
 		}
 	}
 
@@ -1729,7 +1729,7 @@ final class BackWPup_Job {
 				} else {
 					$file_size = filesize( $folder . $file );
 					if ( ! is_int( $file_size ) || $file_size < 0 || $file_size > 2147483647 ) {
-						$this->log( sprintf( __( 'File size from "%s" can not taken correctly or file is to large! File will be ignored.', 'backwpup' ), $folder . $file . ' ' . $file_size ), E_USER_WARNING );
+						$this->log( sprintf( __( 'File size of “%s” cannot be retrieved. File might be too large and will not be added to queue.', 'backwpup' ), $folder . $file . ' ' . $file_size ), E_USER_WARNING );
 						continue;
 					}
 					$files[ ] = $folder . $file;
@@ -1867,7 +1867,7 @@ final class BackWPup_Job {
 							$backup_archive->close();
 							$this->steps_data[ $this->step_working ][ 'on_file' ] = '';
 							$this->steps_data[ $this->step_working ][ 'on_folder' ] = '';
-							$this->log( __( 'Can not create archive correctly. Aborting creation.', 'backwpup' ), E_USER_ERROR );
+							$this->log( __( 'Cannot create backup archive correctly. Aborting creation.', 'backwpup' ), E_USER_ERROR );
 							return FALSE;
 						}
 					}
@@ -1916,7 +1916,7 @@ final class BackWPup_Job {
 							$this->log( __( 'Aborting creation.', 'backwpup' ), E_USER_ERROR );
 							return TRUE;
 						}
-						$this->log( __( 'Can not create archive correctly. Aborting creation.', 'backwpup' ), E_USER_ERROR );
+						$this->log( __( 'Cannot create backup archive correctly. Aborting creation.', 'backwpup' ), E_USER_ERROR );
 						return FALSE;
 					}
 				}

@@ -65,10 +65,11 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 
 		<?php if ( empty( $dropboxtoken[ 'access_token' ] ) ) { ?>
 		<tr>
-			<th scope="row"><label for="id_sandbox_code"><?php _e( 'Dropbox App auth code', 'backwpup' ); ?></label></th>
+			<th scope="row"><label for="id_sandbox_code"><?php _e( 'App Access to Dropbox', 'backwpup' ); ?></label></th>
 			<td>
-				<input id="id_sandbox_code" name="sandbox_code" type="text" value="" class="regular-text code help-tip" title="<?php _e( 'A dedicated folder named after your app is created within the Apps folder of a user\'s Dropbox. Your app gets read and write access to this folder only and users can provide content to your app by moving files into this folder.', 'backwpup' ); ?>" />&nbsp;
+				<input id="id_sandbox_code" name="sandbox_code" type="text" value="" class="regular-text code help-tip" title="<?php esc_attr_e( 'A dedicated folder named BackWPup will be created inside of the Apps folder in your Dropbox. BackWPup will get read and write access to that folder only. You can specify a subfolder as your backup destination for this job in the destination field below.', 'backwpup' ); ?>" />&nbsp;
 				<a class="button secondary" href="<?php echo $sandbox_auth_url;?>" target="_blank"><?php _e( 'Get Dropbox App auth code', 'backwpup' ); ?></a>
+				<p><em><?php _e( 'Allows restricted access to Apps/BackWPup folder only.', 'backwpup' ); ?></em></p>
 			</td>
 		</tr>
 		<tr>
@@ -76,10 +77,11 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 			<td><?php _e( '— OR —', 'backwpup' ); ?></td>
 		</tr>
 		<tr>
-			<th scope="row"><label for="id_dropbbox_code"><?php _e( 'Full Dropbox auth code', 'backwpup' ); ?></label></th>
+			<th scope="row"><label for="id_dropbbox_code"><?php _e( 'Full Access to Dropbox', 'backwpup' ); ?></label></th>
 			<td>
-				<input id="id_dropbbox_code" name="dropbbox_code" type="text" value="" class="regular-text code help-tip"  title="<?php _e( 'You get full access to all the files and folders in a user\'s Dropbox.', 'backwpup' ); ?>" />&nbsp;
+				<input id="id_dropbbox_code" name="dropbbox_code" type="text" value="" class="regular-text code help-tip"  title="<?php _e( 'BackWPup will have full read and write access to your entire Dropbox. You can specify your backup destination wherever you want, just be aware that ANY files or folders inside of your Dropbox can be overridden or deleted by BackWPup.', 'backwpup' ); ?>" />&nbsp;
 				<a class="button secondary" href="<?php echo $dropbox_auth_url;?>" target="_blank"><?php _e( 'Get full Dropbox auth code ', 'backwpup' ); ?></a>
+				<p><em><?php _e( 'Allows full access to your entire Dropbox.', 'backwpup' ); ?></em></p>
 			</td>
 		</tr>
 		<?php } ?>
@@ -90,9 +92,10 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
     <p></p>
     <table class="form-table">
         <tr>
-            <th scope="row"><label for="iddropboxdir"><?php _e( 'Folder in Dropbox', 'backwpup' ); ?></label></th>
+            <th scope="row"><label for="iddropboxdir"><?php _e( 'Destination Folder', 'backwpup' ); ?></label></th>
             <td>
-                <input id="iddropboxdir" name="dropboxdir" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'dropboxdir' ) ); ?>" class="regular-text" />
+                <input id="iddropboxdir" name="dropboxdir" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'dropboxdir' ) ); ?>" class="regular-text help-tip" title="<?php esc_attr_e( 'Specify a subfolder where your backup archives will be stored. If you use the App option from above, this folder will be created inside of Apps/BackWPup. Otherwise it will be created at the root of your Dropbox. Already exisiting folders with the same name will not be overriden.', 'backwpup' ); ?>" />
+                <p><em><?php _e( 'Folder inside your Dropbox where your backup archives will be stored.', 'theme_hamburg_textdomain' );?></em></p>
             </td>
         </tr>
         <tr>
@@ -101,8 +104,8 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 				<?php
 				if ( BackWPup_Option::get( $jobid, 'backuptype' ) == 'archive' ) {
 					?>
-                    <label for="iddropboxmaxbackups"><input id="iddropboxmaxbackups" name="dropboxmaxbackups" title="<?php esc_attr_e( 'Oldest files will be deleted first. 0 = no deletion', 'backwpup' ); ?>" type="text" size="3" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'dropboxmaxbackups' ) );?>" class="small-text help-tip" />&nbsp;
-					<?php  _e( 'Number of files to keep in folder.', 'backwpup' ); ?></label>
+                    <label for="iddropboxmaxbackups"><input id="iddropboxmaxbackups" name="dropboxmaxbackups" title="<?php esc_attr_e( 'Older files will be deleted first. 0 = no files will be deleted.', 'backwpup' ); ?>" type="text" size="3" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'dropboxmaxbackups' ) );?>" class="small-text help-tip" />&nbsp;
+					<em><?php  _e( 'Number of files to keep in folder.', 'backwpup' ); ?></em></label>
 					<?php } else { ?>
                     <label for="iddropboxsyncnodelete" ><input class="checkbox" value="1"
                            type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'dropboxsyncnodelete' ), TRUE ); ?>
@@ -664,30 +667,30 @@ final class BackWPup_Destination_Dropbox_API {
 		curl_setopt( $ch, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' ) );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
 		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
-			curl_setopt( $ch, CURLOPT_SSLVERSION, 3 );
+			curl_setopt( $ch, CURLOPT_SSLVERSION, 1 );
 			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, TRUE );
 			$curl_version = curl_version();
-			if ( strstr( $curl_version[ 'ssl_version' ], 'OpenSSL/' ) ==! FALSE ) {
+			if ( strstr( $curl_version[ 'ssl_version' ], 'NSS/' ) === FALSE ) {
 				curl_setopt( $ch, CURLOPT_SSL_CIPHER_LIST,
-							 'ECDHE-RSA-AES256-GCM-SHA384:'.
-							 'ECDHE-RSA-AES128-GCM-SHA256:'.
-							 'ECDHE-RSA-AES256-SHA384:'.
-							 'ECDHE-RSA-AES128-SHA256:'.
-							 'ECDHE-RSA-AES256-SHA:'.
-							 'ECDHE-RSA-AES128-SHA:'.
-							 'ECDHE-RSA-RC4-SHA:'.
-							 'DHE-RSA-AES256-GCM-SHA384:'.
-							 'DHE-RSA-AES128-GCM-SHA256:'.
-							 'DHE-RSA-AES256-SHA256:'.
-							 'DHE-RSA-AES128-SHA256:'.
-							 'DHE-RSA-AES256-SHA:'.
-							 'DHE-RSA-AES128-SHA:'.
-							 'AES256-GCM-SHA384:'.
-							 'AES128-GCM-SHA256:'.
-							 'AES256-SHA256:'.
-							 'AES128-SHA256:'.
-							 'AES256-SHA:'.
-							 'AES128-SHA'
+		             'ECDHE-RSA-AES256-GCM-SHA384:'.
+		             'ECDHE-RSA-AES128-GCM-SHA256:'.
+		             'ECDHE-RSA-AES256-SHA384:'.
+		             'ECDHE-RSA-AES128-SHA256:'.
+		             'ECDHE-RSA-AES256-SHA:'.
+		             'ECDHE-RSA-AES128-SHA:'.
+		             'ECDHE-RSA-RC4-SHA:'.
+		             'DHE-RSA-AES256-GCM-SHA384:'.
+		             'DHE-RSA-AES128-GCM-SHA256:'.
+		             'DHE-RSA-AES256-SHA256:'.
+		             'DHE-RSA-AES128-SHA256:'.
+		             'DHE-RSA-AES256-SHA:'.
+		             'DHE-RSA-AES128-SHA:'.
+		             'AES256-GCM-SHA384:'.
+		             'AES128-GCM-SHA256:'.
+		             'AES256-SHA256:'.
+		             'AES128-SHA256:'.
+		             'AES256-SHA:'.
+		             'AES128-SHA'
 				);
 			}
 			if ( defined( 'CURLOPT_PROTOCOLS' ) )

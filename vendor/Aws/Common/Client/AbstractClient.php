@@ -17,8 +17,8 @@
 namespace Aws\Common\Client;
 
 use Aws\Common\Aws;
-use Aws\Common\Credentials\Credentials;
 use Aws\Common\Credentials\CredentialsInterface;
+use Aws\Common\Credentials\NullCredentials;
 use Aws\Common\Enum\ClientOptions as Options;
 use Aws\Common\Exception\InvalidArgumentException;
 use Aws\Common\Exception\TransferException;
@@ -84,7 +84,9 @@ abstract class AbstractClient extends Client implements AwsClientInterface
 
         // Add the event listener so that requests are signed before they are sent
         $dispatcher = $this->getEventDispatcher();
-        $dispatcher->addSubscriber(new SignatureListener($credentials, $signature));
+        if (!$credentials instanceof NullCredentials) {
+            $dispatcher->addSubscriber(new SignatureListener($credentials, $signature));
+        }
 
         if ($backoff = $config->get(Options::BACKOFF)) {
             $dispatcher->addSubscriber($backoff, -255);
@@ -108,13 +110,7 @@ abstract class AbstractClient extends Client implements AwsClientInterface
 
     /**
      * Get an endpoint for a specific region from a service description
-     *
-     * @param ServiceDescriptionInterface $description Service description
-     * @param string                      $region      Region of the endpoint
-     * @param string                      $scheme      URL scheme
-     *
-     * @return string
-     * @throws InvalidArgumentException
+     * @deprecated This function will no longer be updated to work with new regions.
      */
     public static function getEndpoint(ServiceDescriptionInterface $description, $region, $scheme)
     {
@@ -135,17 +131,11 @@ abstract class AbstractClient extends Client implements AwsClientInterface
         return $scheme . '://' . $regions[$region]['hostname'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCredentials()
     {
         return $this->credentials;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCredentials(CredentialsInterface $credentials)
     {
         $formerCredentials = $this->credentials;
@@ -160,44 +150,47 @@ abstract class AbstractClient extends Client implements AwsClientInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSignature()
     {
         return $this->signature;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRegions()
     {
         return $this->serviceDescription->getData('regions');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRegion()
     {
         return $this->getConfig(Options::REGION);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setRegion($region)
     {
         $config = $this->getConfig();
         $formerRegion = $config->get(Options::REGION);
         $global = $this->serviceDescription->getData('globalEndpoint');
+        $provider = $config->get('endpoint_provider');
+
+        if (!$provider) {
+            throw new \RuntimeException('No endpoint provider configured');
+        }
 
         // Only change the region if the service does not have a global endpoint
         if (!$global || $this->serviceDescription->getData('namespace') === 'S3') {
-            $baseUrl = self::getEndpoint($this->serviceDescription, $region, $config->get(Options::SCHEME));
-            $this->setBaseUrl($baseUrl);
-            $config->set(Options::BASE_URL, $baseUrl)->set(Options::REGION, $region);
+
+            $endpoint = call_user_func(
+                $provider,
+                array(
+                    'scheme'  => $config->get(Options::SCHEME),
+                    'region'  => $region,
+                    'service' => $config->get(Options::SERVICE)
+                )
+            );
+
+            $this->setBaseUrl($endpoint['endpoint']);
+            $config->set(Options::BASE_URL, $endpoint['endpoint']);
+            $config->set(Options::REGION, $region);
 
             // Update the signature if necessary
             $signature = $this->getSignature();
@@ -216,9 +209,6 @@ abstract class AbstractClient extends Client implements AwsClientInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function waitUntil($waiter, array $input = array())
     {
         $this->getWaiter($waiter, $input)->wait();
@@ -226,9 +216,6 @@ abstract class AbstractClient extends Client implements AwsClientInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getWaiter($waiter, array $input = array())
     {
         return $this->getWaiterFactory()->build($waiter)
@@ -236,9 +223,6 @@ abstract class AbstractClient extends Client implements AwsClientInterface
             ->setConfig($input);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setWaiterFactory(WaiterFactoryInterface $waiterFactory)
     {
         $this->waiterFactory = $waiterFactory;
@@ -246,9 +230,6 @@ abstract class AbstractClient extends Client implements AwsClientInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getWaiterFactory()
     {
         if (!$this->waiterFactory) {
@@ -266,9 +247,6 @@ abstract class AbstractClient extends Client implements AwsClientInterface
         return $this->waiterFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getApiVersion()
     {
         return $this->serviceDescription->getApiVersion();

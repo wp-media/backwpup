@@ -123,7 +123,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 			if ( 'all' != $job_object->job[ 'wpexportcontent' ] && post_type_exists( $job_object->job[ 'wpexportcontent' ] ) ) {
 				$ptype = get_post_type_object( $job_object->job[ 'wpexportcontent' ] );
 				if ( ! $ptype->can_export ) {
-					$job_object->log( sprintf( __( 'WP Export: Post Type "%s" not allows export.', 'backwpup' ), $job_object->job[ 'wpexportcontent' ] ), E_USER_ERROR );
+					$job_object->log( sprintf( __( 'WP Export: Post type “%s” does not allow export.', 'backwpup' ), $job_object->job[ 'wpexportcontent' ] ), E_USER_ERROR );
 					return FALSE;
 				}
 				$where = $wpdb->prepare( "{$wpdb->posts}.post_type = %s", $job_object->job[ 'wpexportcontent' ] );

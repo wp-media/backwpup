@@ -89,10 +89,12 @@ class BackWPup_Page_Settings {
 		if ( $_POST[ 'logfolder' ][ 0 ] == '.' || ( $_POST[ 'logfolder' ][ 0 ] != '/' && ! preg_match( '#^[a-zA-Z]:/#', $_POST[ 'logfolder' ] ) ) )
 			$_POST[ 'logfolder' ] = trailingslashit( str_replace( '\\', '/', ABSPATH ) ) . $_POST[ 'logfolder' ];
 		//set def. folders
-		if ( empty( $_POST[ 'logfolder' ] ) || $_POST[ 'logfolder' ] == '/' )
+		if ( empty( $_POST[ 'logfolder' ] ) || $_POST[ 'logfolder' ] == '/' ) {
 			delete_site_option( 'backwpup_cfg_logfolder' );
-		else
+			BackWPup_Option::default_site_options();
+		} else {
 			update_site_option( 'backwpup_cfg_logfolder', $_POST[ 'logfolder' ] );
+		}
 
 		do_action( 'backwpup_page_settings_save' );
 

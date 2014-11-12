@@ -186,7 +186,7 @@ class BackWPup_Create_Archive {
 					sleep( 1 );
 					if ( ! $this->ziparchive->close() ) {
 						$this->ziparchive_status();
-						trigger_error( __( 'ZipArchive can not closed correctly', 'backwpup' ), E_USER_ERROR );
+						trigger_error( __( 'ZIP archive cannot be closed correctly.', 'backwpup' ), E_USER_ERROR );
 					}
 				}
 			}
@@ -648,7 +648,7 @@ class BackWPup_Create_Archive {
 
 		$archive_size = $archive_size + $file_to_add_size;
 		if ( $archive_size > $two_gb_in_bytes ) {
-			trigger_error(	sprintf( __( 'Archive file will be to large for many file systems (over 2GB) if %s added. Please split the backup job.', 'backwpup' ), $file_to_add ), E_USER_ERROR );
+			trigger_error(	sprintf( __( 'If %s will be added to your backup archive, the archive will be too large for many file systems (over 2GB). You might want to consider splitting the backup job in multiple jobs with less files each.', 'backwpup' ), $file_to_add ), E_USER_ERROR );
 
 			return FALSE;
 		}

@@ -364,7 +364,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 							$new_log_file = BackWPup_Option::get( $_GET[ 'jobid' ], 'logfile', NULL, FALSE );
 							//wait maximal 10 sec.
 							if ( $i >= 40 ) {
-								BackWPup_Admin::message( sprintf( __( 'Job start for "%s" not answered after 10 seconds.', 'backwpup' ), esc_attr( BackWPup_Option::get( $_GET[ 'jobid' ], 'name' ) ) ), TRUE );
+								BackWPup_Admin::message( sprintf( __( 'Job “%s” has started, but not responded for 10 seconds.', 'backwpup' ), esc_attr( BackWPup_Option::get( $_GET[ 'jobid' ], 'name' ) ) ), TRUE );
 								break 2;
 							}
 							$i++;
