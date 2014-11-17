@@ -1960,8 +1960,8 @@ final class BackWPup_Job {
 		if ( ! empty( $suffix ) && substr( $suffix, 0, 1 ) != '.' )
 			$suffix = '.' . $suffix;
 
-		$name = str_replace( $datevars, $datevalues, sanitize_file_name( $name ) );
-		$name .= $suffix; //prevent _ in extension name that sanitize_file_name add.
+		$name = str_replace( $datevars, $datevalues, $name );
+		$name = sanitize_file_name( $name ) . $suffix; //prevent _ in extension name that sanitize_file_name add.
 		if ( $delete_temp_file && is_writeable( BackWPup::get_plugin_data( 'TEMP' ) . $name ) && !is_dir( BackWPup::get_plugin_data( 'TEMP' ) . $name ) && !is_link( BackWPup::get_plugin_data( 'TEMP' ) . $name ) )
 			unlink( BackWPup::get_plugin_data( 'TEMP' ) . $name );
 
