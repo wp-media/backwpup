@@ -382,7 +382,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				if ( $job_object->job[ 's3multipart' ] && empty( $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ] ) ) {
 					//Check for aboded Multipart Uploads
 					$job_object->log( __( 'Checking for not aborted multipart Uploads&#160;&hellip;', 'backwpup' ) );
-					$multipart_uploads = $s3->listMultipartUploads( array( 	'Bucket' => $job_object->job[ 's3bucket' ], 'Prefix' => $job_object->job[ 's3dir' ] ) );
+					$multipart_uploads = $s3->listMultipartUploads( array( 	'Bucket' => $job_object->job[ 's3bucket' ], 'Prefix' => (string) $job_object->job[ 's3dir' ] ) );
 					$uploads = $multipart_uploads->get( 'Uploads' );
 					if ( ! empty( $uploads ) ) {
 						foreach( $uploads as $upload ) {

@@ -9,7 +9,7 @@ class BackWPup_WP_CLI extends WP_CLI_Command {
 	 *
 	 * @param $args
 	 * @param $assoc_args
-	 * @synopsis start  --jobid=<ID>
+	 * @synopsis --jobid=<ID>
 	 */
 	public function start( $args, $assoc_args ) {
 
@@ -30,7 +30,6 @@ class BackWPup_WP_CLI extends WP_CLI_Command {
 	/**
 	 *  Abort a working BackWPup Job
 	 *
-	 *  @synopsis abort
 	 */
 	public function abort( $args, $assoc_args ) {
 
@@ -45,7 +44,6 @@ class BackWPup_WP_CLI extends WP_CLI_Command {
 	/**
 	 * Display a List of Jobs
 	 *
-	 * @synopsis jobs
 	 */
 	public function jobs( $args, $assoc_args ) {
 
@@ -64,7 +62,6 @@ class BackWPup_WP_CLI extends WP_CLI_Command {
 	 *
 	 * @param $args
 	 * @param $assoc_args
-	 * @synopsis working
 	 */
 	public function working( $args, $assoc_args ) {
 

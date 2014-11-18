@@ -77,8 +77,9 @@ class BackWPup_Page_Editjob {
 						}
 					}
 				}
-				if ( ! $makes_file )
+				if ( ! $makes_file ) {
 					$_POST[ 'destinations' ] = array();
+				}
 				BackWPup_Option::update( $jobid, 'type', $_POST[ 'type' ] );
 
 				if ( isset( $_POST[ 'destinations' ] ) && is_array( $_POST[ 'destinations' ] ) ) {
@@ -98,8 +99,9 @@ class BackWPup_Page_Editjob {
 				BackWPup_Option::update( $jobid, 'destinations', $_POST[ 'destinations' ] );
 
 				$name = esc_html( trim( $_POST[ 'name' ] ) );
-				if ( empty( $name ) || $_POST[ 'name' ] == __( 'New Job', 'backwpup' ) )
+				if ( empty( $name ) || $_POST[ 'name' ] == __( 'New Job', 'backwpup' ) ) {
 					$name = sprintf( __( 'Job with ID %d', 'backwpup' ), $jobid );
+				}
 				BackWPup_Option::update( $jobid, 'name', $name );
 				BackWPup_Option::update( $jobid, 'mailaddresslog', sanitize_email( $_POST[ 'mailaddresslog' ] ) );
 
@@ -111,11 +113,11 @@ class BackWPup_Page_Editjob {
 
 				BackWPup_Option::update( $jobid, 'mailerroronly', ( isset( $_POST[ 'mailerroronly' ] ) && $_POST[ 'mailerroronly' ] == 1 ) ? TRUE : FALSE );
 				if ( class_exists( 'BackWPup_Pro', FALSE ) )
-					BackWPup_Option::update( $jobid, 'backuptype', $_POST[ 'backuptype' ] );
+					BackWPup_Option::update( $jobid, 'backuptype', esc_html( $_POST[ 'backuptype' ] ) );
 				else
 					BackWPup_Option::update( $jobid, 'backuptype', 'archive' );
-				BackWPup_Option::update( $jobid, 'archiveformat', $_POST[ 'archiveformat' ] );
-				BackWPup_Option::update( $jobid, 'archivename', sanitize_file_name( esc_html( $_POST[ 'archivename' ] ) ) );
+				BackWPup_Option::update( $jobid, 'archiveformat', esc_html( $_POST[ 'archiveformat' ] ) );
+				BackWPup_Option::update( $jobid, 'archivename', BackWPup_Job::sanitize_file_name( $_POST[ 'archivename' ] ) );
 				break;
 			case 'cron':
 				if ( $_POST[ 'activetype' ] == '' || $_POST[ 'activetype' ] == 'wpcron' || $_POST[ 'activetype' ] == 'link' )
@@ -515,8 +517,7 @@ class BackWPup_Page_Editjob {
 							<?php
 							$datevars    = array( '%d', '%j', '%m', '%n', '%Y', '%y', '%a', '%A', '%B', '%g', '%G', '%h', '%H', '%i', '%s' );
 							$datevalues  = array( date_i18n( 'd' ), date_i18n( 'j' ), date_i18n( 'm' ), date_i18n( 'n' ), date_i18n( 'Y' ), date_i18n( 'y' ), date_i18n( 'a' ), date_i18n( 'A' ), date_i18n( 'B' ), date_i18n( 'g' ), date_i18n( 'G' ), date_i18n( 'h' ), date_i18n( 'H' ), date_i18n( 'i' ), date_i18n( 's' ) );
-							$archivename = str_replace( $datevars, $datevalues, BackWPup_Option::get( $jobid, 'archivename' ) );
-							$archivename = sanitize_file_name( $archivename );
+							$archivename = str_replace( $datevars, $datevalues, BackWPup_Job::sanitize_file_name( BackWPup_Option::get( $jobid, 'archivename' ) ) );
 							echo '<p>Preview: <code><span id="archivefilename">' . $archivename . '</span><span id="archiveformat">' . BackWPup_Option::get( $jobid, 'archiveformat' ) . '</span></code></p>';
 							?>
 						</td>

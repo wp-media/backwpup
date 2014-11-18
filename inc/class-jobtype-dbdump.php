@@ -123,7 +123,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 
 		if ( $_POST[ 'dbdumpfilecompression' ] == '' || $_POST[ 'dbdumpfilecompression' ] == '.gz' )
 			BackWPup_Option::update( $id, 'dbdumpfilecompression', $_POST[ 'dbdumpfilecompression' ] );
-		BackWPup_Option::update( $id, 'dbdumpfile',  sanitize_file_name( $_POST[ 'dbdumpfile' ]) );
+		BackWPup_Option::update( $id, 'dbdumpfile', BackWPup_Job::sanitize_file_name( $_POST[ 'dbdumpfile' ] ) );
 		//selected tables
 		$dbdumpexclude = array();
 		$checked_db_tables = array();

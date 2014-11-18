@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.1.3
+ * Version: 3.1.4
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -98,7 +98,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			//deactivation hook
 			register_deactivation_hook( __FILE__, array( 'BackWPup_Install', 'deactivate' ) );
 			//Admin bar
-			if ( is_admin_bar_showing() && current_user_can( 'backwpup' ) && get_site_option( 'backwpup_cfg_showadminbar' ) ) {
+			if ( is_admin_bar_showing() ) {
 				add_action( 'init', array( 'BackWPup_Adminbar', 'get_instance' ) );
 			}
 			//only in backend

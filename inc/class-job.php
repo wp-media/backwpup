@@ -391,7 +391,7 @@ final class BackWPup_Job {
 	public static function get_jobrun_url( $starttype, $jobid = 0 ) {
 
 
-		$wp_admin_user 		= get_users( array( 'role' => 'administrator', 'number' => 1 ) );	//get a user for cookie auth
+		$wp_admin_user 		= get_users( array( 'role' => 'backwpup_admin', 'number' => 1 ) );	//get a user for cookie auth
 		$url        		= site_url( 'wp-cron.php' );
 		$header				= array();
 		$authurl    		= '';
@@ -1116,8 +1116,15 @@ final class BackWPup_Job {
 		$in_file = str_replace( str_replace( '\\', '/', ABSPATH ), '', str_replace( '\\', '/', $args[ 2 ] ) );
 
 		//print message to cli
-		if ( php_sapi_name() == 'cli' && defined( 'STDOUT' ) )
-			fwrite( STDOUT, '[' . date_i18n( 'd-M-Y H:i:s' ) . '] ' . strip_tags( $messagetype ) . str_replace( '&hellip;', '...', strip_tags( $args[ 1 ] ) ) . PHP_EOL ) ;
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			if ( $error_or_warning ) {
+				WP_CLI::warning( '[' . date_i18n( 'd-M-Y H:i:s' ) . '] ' . strip_tags( $messagetype ) . str_replace( array( '&hellip;', '&#160;' ), array( '...', ' ' ), strip_tags( $args[ 1 ] ) ) );
+			} else {
+				WP_CLI::log( '[' . date_i18n( 'd-M-Y H:i:s' ) . '] ' . strip_tags( $messagetype ) . str_replace( array( '&hellip;', '&#160;' ), array( '...', ' ' ), strip_tags( $args[ 1 ] ) ) );
+			}
+		} elseif ( php_sapi_name() == 'cli' && defined( 'STDOUT' ) ) {
+			fwrite( STDOUT, '[' . date_i18n( 'd-M-Y H:i:s' ) . '] ' . strip_tags( $messagetype ) . str_replace( array( '&hellip;', '&#160;' ), array( '...', ' ' ), strip_tags( $args[ 1 ] ) ) . PHP_EOL ) ;
+		}
 		//log line
 		$timestamp = '<span datetime="' . date_i18n( 'c' ) . '" title="[Type: ' . $args[ 0 ] . '|Line: ' . $args[ 3 ] . '|File: ' . $in_file . '|Mem: ' . size_format( @memory_get_usage( TRUE ), 2 ) . '|Mem Max: ' . size_format( @memory_get_peak_usage( TRUE ), 2 ) . '|Mem Limit: ' . ini_get( 'memory_limit' ) . '|PID: ' . self::get_pid() . ' | UniqID: ' . $this->uniqid . '|Query\'s: ' . get_num_queries() . ']">[' . date_i18n( 'd-M-Y H:i:s' ) . ']</span> ';
 		//set last Message
@@ -1960,10 +1967,11 @@ final class BackWPup_Job {
 		if ( ! empty( $suffix ) && substr( $suffix, 0, 1 ) != '.' )
 			$suffix = '.' . $suffix;
 
-		$name = str_replace( $datevars, $datevalues, sanitize_file_name( $name ) );
-		$name .= $suffix; //prevent _ in extension name that sanitize_file_name add.
-		if ( $delete_temp_file && is_writeable( BackWPup::get_plugin_data( 'TEMP' ) . $name ) && !is_dir( BackWPup::get_plugin_data( 'TEMP' ) . $name ) && !is_link( BackWPup::get_plugin_data( 'TEMP' ) . $name ) )
+		$name = str_replace( $datevars, $datevalues, self::sanitize_file_name( $name ) );
+		$name .= $suffix;
+		if ( $delete_temp_file && is_writeable( BackWPup::get_plugin_data( 'TEMP' ) . $name ) && !is_dir( BackWPup::get_plugin_data( 'TEMP' ) . $name ) && !is_link( BackWPup::get_plugin_data( 'TEMP' ) . $name ) ) {
 			unlink( BackWPup::get_plugin_data( 'TEMP' ) . $name );
+		}
 
 		return $name;
 	}
@@ -1974,7 +1982,7 @@ final class BackWPup_Job {
 	 */
 	public function is_backup_archive( $filename ) {
 
-		$filename  = basename( $filename );
+		$filename = basename( $filename );
 
 		if ( ! substr( $filename, -3 ) == '.gz' ||  ! substr( $filename, -4 ) == '.bz2' ||  ! substr( $filename, -4 ) == '.tar' ||  ! substr( $filename, -4 ) == '.zip' )
 			return FALSE;
@@ -1984,13 +1992,35 @@ final class BackWPup_Job {
 		$datevars  = array( '%d', '%j', '%m', '%n', '%Y', '%y', '%a', '%A', '%B', '%g', '%G', '%h', '%H', '%i', '%s' );
 		$dateregex = array( '(0[1-9]|[12][0-9]|3[01])', '([1-9]|[12][0-9]|3[01])', '(0[1-9]|1[012])', '([1-9]|1[012])', '((19|20|21)[0-9]{2})', '([0-9]{2})', '(am|pm)', '(AM|PM)', '([0-9]{3})', '([1-9]|1[012])', '([0-9]|1[0-9]|2[0-3])', '(0[1-9]|1[012])', '(0[0-9]|1[0-9]|2[0-3])', '([0-5][0-9])', '([0-5][0-9])' );
 
-		$regex = "/^" . str_replace( $datevars, $dateregex, str_replace( "\/", "/", sanitize_file_name( $this->job[ 'archivename' ] ) ) ) . "$/";
+		$regex = "/^" . str_replace( $datevars, $dateregex, self::sanitize_file_name( $this->job[ 'archivename' ] ) ) . "$/";
 
 		preg_match( $regex, $filename, $matches );
 		if ( ! empty( $matches[ 0 ] ) && $matches[ 0 ] == $filename )
 			return TRUE;
 
 		return FALSE;
+	}
+
+	/**
+	 * Sanitizes a filename, replacing whitespace with underscores.
+	 *
+	 * @param $filename
+	 *
+	 * @return mixed
+	 */
+	public static function sanitize_file_name( $filename ) {
+
+		$filename = trim( $filename );
+
+		$special_chars = array( "?", "[", "]", "/", "\\", "=", "<", ">", ":", ";", ",", "'", "\"", "&", "$", "#", "*", "(", ")", "|", "~", "`", "!", "{", "}", chr(0) );
+
+		$filename = str_replace( $special_chars, '', $filename );
+
+		$filename = str_replace( array( ' ', '%20', '+' ), '_', $filename );
+		$filename = str_replace( array( "\n", "\t", "\r" ), '-', $filename );
+		$filename = trim( $filename, '.-_' );
+
+		return $filename;
 	}
 
 	/**

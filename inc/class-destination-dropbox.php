@@ -285,8 +285,9 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 				foreach ( $metadata[ 'contents' ] as $data ) {
 					if ( $data[ 'is_dir' ] != TRUE ) {
 						$file = basename( $data[ 'path' ] );
-						if ( $job_object->is_backup_archive( $file ) )
+						if ( $job_object->is_backup_archive( $file ) ) {
 							$backupfilelist[ strtotime( $data[ 'modified' ] ) ] = $file;
+						}
 						$files[ $filecounter ][ 'folder' ]      = "https://api-content.dropbox.com/1/files/" . $job_object->job[ 'dropboxroot' ]  . dirname( $data[ 'path' ] ) . "/";
 						$files[ $filecounter ][ 'file' ]        = $data[ 'path' ];
 						$files[ $filecounter ][ 'filename' ]    = basename( $data[ 'path' ] );

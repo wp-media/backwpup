@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: BackWPup v3.1.2\n"
+"Project-Id-Version: BackWPup v3.1.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2014-04-23 12:38+0900\n"
+"PO-Revision-Date: 2014-11-14 22:54+0900\n"
 "Last-Translator: stranger-jp <wordpress.stranger.jp@gmail.com>\n"
 "Language-Team: stranger-jp <wordpress.stranger.jp@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -145,9 +145,6 @@ msgstr "Dropbox"
 msgid "Backup to Dropbox"
 msgstr "Dropboxにバックアップ"
 
-msgid "Dropbox authentication complete!"
-msgstr "Dropboxの認証が完了!"
-
 msgid "Dropbox API: %s"
 msgstr "Dropbox API: %s"
 
@@ -161,13 +158,10 @@ msgid "Create Account"
 msgstr "アカウントを作成"
 
 msgid "Authenticated!"
-msgstr "認証されました。"
+msgstr "認証済み!"
 
 msgid "Backup settings"
 msgstr "バックアップ設定"
-
-msgid "Folder in Dropbox"
-msgstr "Dropbox内のフォルダ"
 
 msgid "File Deletion"
 msgstr "ファイルを削除"
@@ -530,10 +524,7 @@ msgid "Amazon S3: South America (Sao Paulo)"
 msgstr "Amazon S3: 南米(サンパウロ)"
 
 msgid "Google Storage (Interoperable Access)"
-msgstr "Googleストレージ(相互運用アクセス)"
-
-msgid "Hosteurope Cloud Storage"
-msgstr "Hosteuropeクラウドストレージ"
+msgstr "Googleストレージ(相互運用可能なアクセス)"
 
 msgid "Dream Host Cloud Storage"
 msgstr "Dream Hostクラウドストレージ"
@@ -566,13 +557,13 @@ msgid "Amazon: Storage Class"
 msgstr "Amazon: ストレージクラス"
 
 msgid "Reduced Redundancy"
-msgstr "減少冗長"
+msgstr "減少冗長性"
 
 msgid "Server side encryption"
-msgstr "サーバー側暗号化"
+msgstr "サーバー側の暗号化"
 
 msgid "Save files encrypted (AES256) on server."
-msgstr "サーバー上で暗号化してファイル(AES256)を保存"
+msgstr "サーバー上でファイルを暗号化(AES256)して保存"
 
 msgid "Bucket %1$s created in %2$s."
 msgstr "バケット%1$sは%2$sで作成しました。"
@@ -587,7 +578,7 @@ msgid "%d. Trying to send backup file to S3 Service&#160;&hellip;"
 msgstr "%d. S3サービスにバックアップファイルを送信..."
 
 msgid "Connected to S3 Bucket \"%1$s\" in %2$s"
-msgstr "S3バケットに接続されている\"%1$s \"%2$s"
+msgstr "S3バケットに接続済 \"%1$s \"%2$s"
 
 msgid "S3 Bucket \"%s\" does not exist!"
 msgstr "S3バケット\"%s\"は存在しません!"
@@ -599,10 +590,10 @@ msgid "Backup transferred to %s."
 msgstr "バックアップは%sに転送されます。"
 
 msgid "Cannot transfer backup to S3! (%1$d) %2$s"
-msgstr "S3にバックアップを転送することはできません! (%1$d) %2$s"
+msgstr "S3にバックアップを転送できません! (%1$d) %2$s"
 
 msgid "Cannot delete backup from %s."
-msgstr "%sからバックアップを削除することはできません。"
+msgstr "%sからバックアップを削除できません。"
 
 msgid "Missing secret access key!"
 msgstr "シークレットアクセスキーが見つかりません!"
@@ -763,9 +754,6 @@ msgstr "ログフォルダが存在しないかBackWPupへの書き込み権限�
 msgid "A BackWPup job is already running"
 msgstr "バックアップジョブがすでに実行されています"
 
-msgid "Temp folder does not exist or is not writable"
-msgstr "Tempフォルダが存在しないか、書き込み可能ではありません。"
-
 msgid "Step aborted: too many attempts!"
 msgstr "ステップを中止: 回数が多すぎます！"
 
@@ -893,7 +881,7 @@ msgid "Connected to database %1$s on %2$s"
 msgstr "%2$sのデータベース%1$sに接続"
 
 msgid "Added database dump \"%1$s\" with %2$s to backup file list"
-msgstr "バックアップファイルの一覧に追加されたデータベースダンプ %2$s \"%1$s\""
+msgstr "データベースダンプをバックアップファイルの一覧に追加しました。\"%1$s\" %2$s"
 
 msgid "Files"
 msgstr "ファイル"
@@ -955,17 +943,11 @@ msgstr "特殊ファイルを含める"
 msgid "Backup wp-config.php, robots.txt, .htaccess, .htpasswd and favicon.ico from root."
 msgstr "wp-config.php, robots.txt, .htaccess, .htpasswdやfaviconをバックアップする。"
 
-msgid "If the WordPress root folder is not included in this backup job, check this option to additionally include wp-config.php, robots.txt, .htaccess, .WordPresshtpasswd and favicon.ico into the backup. Your wp-config.php will be WordPressincluded even if you placed it in the parent directory of your root folder."
-msgstr " のルートフォルダは、このバックアップジョブに含まれていない場合は、さらにバックアップにWP-config.php、robots.txt、.htaccess、.htpasswdとfaviconWordPressを含めるには、このオプションをチェックします。ルートフォルダの親ディレクトリWordPressに置かれている場合もwp-config.phpファイルが含まれます。"
-
 msgid "%d. Trying to make a list of folders to back up&#160;&hellip;"
 msgstr "%d. バックアップするフォルダのリストを作成中..."
 
 msgid "Added \"%s\" to backup file list"
 msgstr "\"%s\"をリストに追加しました。"
-
-msgid "%1$d folders to back up."
-msgstr "%1$dフォルダをバックアップする。"
 
 msgid "Folder \"%s\" is not readable!"
 msgstr "フォルダ\"%s\"を読めません!"
@@ -1075,23 +1057,14 @@ msgstr "BackWPupへようこそ"
 msgid "Please activate your license"
 msgstr "ライセンスを有効にしてください。"
 
-msgid "Please go to your plugin page and active the license to have the autoupdates nabled."
-msgstr "プラグインのページと自動更新が有効になっているため有効なライセンスをご覧ください。"
-
 msgid "Save your database"
 msgstr "データベースを保存します。"
 
 msgid "Save your database regularly"
 msgstr "定期的にデータベースを保存します。"
 
-msgid "With BackWPup you can schedule the database backup to run automatically. With a single backup file you can restore your database. You should <a href=WordPress\"%s\">set up a backup job</a>, so you will never forget it. There is also WordPressan option to repair and optimize the database after each backup."
-msgstr "BackWPupを使用するとデータベースのバックアップを自動的に実行するようにスケジュールすることができます。単一のバックアップ・ファイルを使用してデータベーWordPressスを復元することもできます。各バックアップ後にデータベースを修復し最適化するWordPressためのオプションもあります。これらは<a href=\"%s\">バックアップジョブの設定</WordPressa>をする必要があります。"
-
 msgid "WordPress XML Export"
 msgstr "WordPressのXMLエクスポート"
-
-msgid "You can choose the built-in WordPress export format in addition or exclusive to save your data. This works in automated backups too of course. The WordPressadvantage is: you can import these files into a blog with the regular WordPressWordPress importer."
-msgstr "追加またはデータを保存するために排他的に内蔵のワードプレスのエクスポート形式を選択できます。これも当然、自動バックアップで動作します。利点: 定期的にWordPressWordPressのブログにこれらのファイルをインポートすることができます。"
 
 msgid "Save all data from the webserver"
 msgstr "ウェブサーバーからすべてのデータを保存"
@@ -1249,12 +1222,6 @@ msgstr "%s ダッシュボード"
 msgid "Start wizard"
 msgstr "ウィザードを開始"
 
-msgid "Thank you for using BackWPup!"
-msgstr "BackWPupを利用いただきありがとう!"
-
-msgid "Get BackWPup Pro now"
-msgstr "BackWPup Proをゲット"
-
 msgid "First Steps"
 msgstr "最初のステップ"
 
@@ -1265,7 +1232,7 @@ msgid "Check the installation"
 msgstr "インストール確認"
 
 msgid "Run the created job"
-msgstr "作成されたジョブを実行"
+msgstr "作成したジョブを実行"
 
 msgid "Check the job log"
 msgstr "ジョブ・ログをチェック"
@@ -1760,7 +1727,7 @@ msgid "Compress log files with GZip."
 msgstr "gzipでログファイルを圧縮"
 
 msgid "Maximum number of retries for job steps"
-msgstr "ジョブステップの最大再試行回数"
+msgstr "ジョブの最大再試行回数"
 
 msgid "Auto"
 msgstr "自動"
@@ -1770,9 +1737,6 @@ msgstr "Zipアーカイブ"
 
 msgid "PclZip"
 msgstr "PclZip"
-
-msgid "Auto = Uses PHP class ZipArchive if available; otherwise uses PclZip.<br />ZipArchive = Uses less memory, but many open files at a time.<br />PclZip = WordPressUses more memory, but only 2 open files at a time."
-msgstr "自動 = 利用可能ならばPHPクラスZipArchiveを使います。でなければPclZipを使います。<br />ZipArchive = メモリ使用量が少ないですが多くのファイルを使います。WordPress<br /> PclZip = メモリ使用量が多いですが2つのファイルだけを使います。"
 
 msgid "Key to start jobs externally with an URL"
 msgstr "URLで外部からジョブを開始するキー"
@@ -1987,20 +1951,8 @@ msgstr "Amazon Glacierにバックアップ"
 msgid "BackWPup supports multiple cloud services in parallel. This ensures backups are redundant."
 msgstr "BackWPupは、並行して複数のクラウドサービスをサポートします。これはバックアップが冗長であるようにします。"
 
-msgid "Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server. With a WordPresssingle backup archive you are able to restore an installation. Use a tool WordPresslike phpMyAdmin or a plugin like <a href=\"http://wordpress.org/plugins/WordPressadminer/\" target=\"_blank\">Adminer</a> to restore your database backup WordPressfiles."
-msgstr "/wp-content/など全体のWordPressを保存するには、バックアップアーカイブを使用してください。同じサーバーにバックアップを保存したくない場合は、外部ストレージWordPressサービスにそれらを送信してください。単一のバックアップアーカイブを使用するWordPressと、インストールを復元することができます。データベースのバックアップファイルWordPressを復元するためにphpMyAdminのようなツールや<a href=\"http://wordpress.org/WordPressplugins/adminer/\" target=\"_blank\">Adminer</a>ようなプラグインを使用してくWordPressださい。"
-
 msgid "Ready to set up a backup job? Use one of the wizards to plan what you want to save."
 msgstr "バックアップジョブの準備はできましたか？ウィザードを使用して保存を計画します。"
-
-msgid "Planning backups"
-msgstr "バックアップ計画"
-
-msgid "Restoring backups"
-msgstr "バックアップの復元"
-
-msgid "Ready to set up a backup job?"
-msgstr "バックアップジョブの準備はできましたか？"
 
 msgid "Use the short links in the <strong>First steps</strong> box to plan and schedule backup jobs."
 msgstr "バックアップジョブを計画し、スケジュールするために、<strong>ファーストステップ</strong>ボックスでリンクをクリックしてください。"
@@ -2039,7 +1991,7 @@ msgid "[INFO] BackWPup job start with link is active"
 msgstr "[情報]リンクをBackWPupジョブスタートが有効になっています。"
 
 msgid "[INFO] BackWPup no automatic job start configured"
-msgstr "[情報] BackWPup自動ジョブ開始しないように構成"
+msgstr "[情報] BackWPupの自動開始ジョブが設定されていません"
 
 msgid "[INFO] Blog url: %s"
 msgstr "[情報] サイトURL: %s"
@@ -2047,17 +1999,8 @@ msgstr "[情報] サイトURL: %s"
 msgid "[INFO] Script restart time is configured to %1$d seconds"
 msgstr "[情報]スクリプト再起動時間は、%1$d秒に設定されています。"
 
-msgid "<strong>Important:</strong> before installing this plugin, please <a href=WordPress\"%1$s\">back up your database and files</a> with <a href=\"http://WordPressmarketpress.de/product/backwpup-pro/\">%2$s</a>."
-msgstr "重要: このプラグインをインストールする前に、<a href=\"http://marketpress.de/product/backwpup-pro/\">%2$s</a>を使用して<a href=\"%1$s\">データベースとファWordPressイル</a>をバックアップしてください。"
-
-msgid "<strong>Important:</strong> before updating, please <a href=\"%1$s\">back up your database and files</a> with <a href=\"http://marketpress.de/product/WordPressbackwpup-pro/\">%2$s</a>. For help with updates, visit the <a href=\"http://WordPresscodex.wordpress.org/Updating_WordPress\">Updating </a> Codex page."
-msgstr "重要: 更新する前に%2$sを使用してデータベースとファイルをバックアップしてください。アップデートのヘルプについては、アップデートWordPressのコーデックスのWordPressページをご覧ください。"
-
 msgid "<strong>Please note: You are solely responsible for the security of your data; the authors of this plugin are not.</strong>"
 msgstr "<strong>注意: データのセキュリティの確保は自己責任です。プラグイン作者は責任を負いません。</strong>"
-
-msgid "And more…"
-msgstr "そして…"
 
 msgid "Authenticate with Sugarsync!"
 msgstr "SugarSyncのを使用して認証！"
@@ -2095,15 +2038,6 @@ msgstr "マニフェストファイルを作成します。"
 msgid "Database backup done!"
 msgstr "データベースのバックアップが完了！"
 
-msgid "Differential backups to Google Drive and other cloud storage service."
-msgstr "Googleドライブやその他のクラウドストレージサービスに差分バックアップ。"
-
-msgid "First-class <strong>dedicated support</strong> at MarketPress Helpdesk."
-msgstr "MarketPressヘルプデスクでのファーストクラス <strong>専用のサポート</strong>。"
-
-msgid "Get access to:"
-msgstr "アクセスを取得:"
-
 msgid "http://marketpress.com"
 msgstr "http://marketpress.com"
 
@@ -2113,9 +2047,6 @@ msgstr "ジョブ完了"
 msgid "Job ID: %d"
 msgstr "ジョブID: %d"
 
-msgid "Job will restart before hitting maximum execution time. It will not work with CLI and not on every step during execution. If <code>ALTERNATE_WP_CRON</WordPresscode> has been defined, WordPress Cron will be used."
-msgstr "ジョブの最大実行時間前に再起動します。これは実行時のステップごとにCLIしないと動作しません。<code>ALTERNATE_WP_CRON</code>が定義されている場合は、WordPressのcronは使用されます。"
-
 msgid "Last log"
 msgstr "最後のログ"
 
@@ -2123,7 +2054,7 @@ msgid "Log folder:"
 msgstr "ログ用フォルダ:"
 
 msgid "Log of running job"
-msgstr "ジョブを実行するログ"
+msgstr "ジョブのログ"
 
 msgid "Maximum PHP Script execution time"
 msgstr "最大のPHPスクリプトの実行時間"
@@ -2140,17 +2071,14 @@ msgstr "バージニア州北部(IAD)"
 msgid "Please leave manifest.json untouched and in place. Otherwise it is safe to be ignored."
 msgstr "manifest.jsonは手つかずの所定の位置に残してください。それ以外の場合は無視されても安全です。"
 
-msgid "Ready to <a href=\"%1$s\">set up a backup job</a>? You can <a href=\"%2$sWordPress\">use the wizards</a> or plan your backup in expert mode."
-msgstr "<a href=\"%1$s\">ジョブの準備</a>はできましたか? <a href=\"%2$s\">ウィザードを使用</a>するか、エキスパートモードでのバックアップを計画することができまWordPressす。"
-
 msgid "Restart will be executed now."
-msgstr "再起動が今実行されます。"
+msgstr "再起動を実行します。"
 
 msgid "Setting of MySQLi connection timeout failed"
 msgstr "MySQLiの接続タイムアウトの設定に失敗しました"
 
 msgid "Setting of MySQLi init command \"%s\" failed"
-msgstr "MySQLiのINITコマンドの設定が\"%s\"は失敗しました。"
+msgstr "MySQLiのinitコマンド\"%s\"の設定に失敗しました。"
 
 msgid "Start for table backup is not correctly set: %1$s "
 msgstr "テーブルのバックアップの開始が正しく設定されていません: %1$s"
@@ -2160,12 +2088,6 @@ msgstr "ストレージクラス: %s"
 
 msgid "Use one of the wizards to plan a backup, or use <a href=\"%s\">expert mode</a> for full control over all options."
 msgstr "バックアップを計画するか、すべてのオプションを完全に制御するためには、<a href=\"%s\">のエキスパートモード</a>を使用するためのウィザードのいずれかを使WordPress用します。"
-
-msgid "With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin or a plugin like <a href=\"http://wordpress.org/plugins/WordPressadminer/\" target=\"_blank\">Adminer</a> to restore your database backup WordPressfiles."
-msgstr "単一のバックアップアーカイブを使用すると、インストールを復元することができます。データベースのバックアップファイルを復元するためにphpMyAdminのようなツーWordPressルまたは<a href=\"http://wordpress.org/plugins/adminer/\" target=\"_blankWordPress\">dminer</a>のようなプラグインを使用してください。"
-
-msgid "WP Export file could not generated."
-msgstr "WPのエクスポートファイルが生成できませんでした。"
 
 msgid "WP Export file is a valid WXR file."
 msgstr "WPのエクスポートファイルは、正しい形式のファイルです。"
@@ -2177,7 +2099,7 @@ msgid "XML ERROR (%s): %s"
 msgstr "XMLエラー(%s): %s"
 
 msgid "<a href=\"%s\">Add a new backup job</a> and plan what you want to save."
-msgstr "<a href=\"%s\">新しいバックアップジョブを追加</a> して保存したいものを計画します。"
+msgstr "<a href=\"%s\">新しいバックアップジョブを追加</a>して保存したいものを計画します。"
 
 msgid "Add new job"
 msgstr "新規ジョブを追加"
@@ -2221,8 +2143,8 @@ msgstr "このジョブは&#160;&hellip;"
 msgid "You are about to delete this backup archive. \n  'Cancel' to stop, 'OK' to delete."
 msgstr "このバックアップアーカイブを削除しようとしています。\n'キャンセル'で中止 'OK'で削除します。"
 
-msgid "3.1.2"
-msgstr "3.1.2"
+msgid "3.1.3"
+msgstr "3.1.3"
 
 msgid "Amazon S3: China (Beijing)"
 msgstr "Amazon S3: 中国 (北京)"
@@ -2262,12 +2184,6 @@ msgstr "エラーはおそらく供給が停止していることを意味しま
 
 msgid "Backup archive too big to be sent by email!"
 msgstr "メールで送信するには大きすぎるバックアップアーカイブ！"
-
-msgid "Backup database table \"%s\" with \"%d\" records"
-msgstr "\"%d\"個のレコードを持つバックアップデータベーステーブル \"%s\""
-
-msgid "BackWPup requires PHP version 5.2.6 with spl extension or greater and WordPress 3.4 or greater."
-msgstr "BackWPupはSPL拡張以上、WordPress3.4以上、PHP5.2.6以上が必要です。"
 
 msgid "BackWPup will not backup folders and subfolders when this file is inside."
 msgstr "このファイルが中にあるとき、BackWPupはフォルダとサブフォルダのバックアップを取りません。"
@@ -2333,7 +2249,7 @@ msgid "London (LON)"
 msgstr "ロンドン (LON)"
 
 msgid "manifest.json might be needed for later restoring a backup from this archive."
-msgstr "manifest.jsonについては、このアーカイブからバックアップを復元するために必要とされる場合があります。"
+msgstr "manifest.jsonは、このアーカイブからバックアップを復元するために必要とする場合があります。"
 
 msgid "MarketPress"
 msgstr "MarketPress"
@@ -2342,7 +2258,7 @@ msgid "Maximum file size to be included in an email. 0 = unlimited"
 msgstr "最大ファイルサイズはメールに含まれる。 0 =無制限"
 
 msgid "Method for creating ZIP-file archives"
-msgstr "ZIPファイルのアーカイブ作成方法"
+msgstr "ZIPファイルアーカイブの作成方法"
 
 msgid "Multipart splits file into multiple chunks while uploading. This is necessary for displaying the upload process and to transfer bigger files. Works without a problem on Amazon. Other services might have issues."
 msgstr "アップロード中にマルチパートの分割は、複数のチャンクにファイルを。これは、アップロードプロセスを表示するために必要であり、大きなファイルを転送する。 WordPressAmazonで問題なく動作します。他のサービスは問題があるかもしれません。"
@@ -2426,7 +2342,7 @@ msgid "XML WARNING (%s): %s"
 msgstr "XMLの警告 (%s): %s"
 
 msgid "You may have noticed the manifest.json file in this archive."
-msgstr "このアーカイブにmanifest.jsonファイルを気づいているかもしれません。"
+msgstr "このアーカイブ内のmanifest.jsonファイルに気づいているかもしれません。"
 
 msgctxt "%s = Folder name"
 msgid "Folder %s for archive not found"
@@ -2440,10 +2356,6 @@ msgctxt "%s = file name"
 msgid "Method to archive file %s not detected"
 msgstr "アーカイブファイル%sの方法が見つかりません"
 
-msgctxt "File path to add to archive"
-msgid "File %s does not exist or is not readable"
-msgstr "ファイル%sは存在しないか読み取れません。"
-
 msgctxt "Folder path to add to archive"
 msgid "Folder %s does not exist or is not readable"
 msgstr "フォルダ%sは存在しないか読み取れません。"
@@ -2455,10 +2367,6 @@ msgstr "Zipアーカイブが返すステータス: %s"
 msgctxt "Available space on SugarSync"
 msgid "Not enough disk space available on SugarSync. Available: %s."
 msgstr "SugarSyncの上では利用できません十分なディスクスペース。利用可能: %s"
-
-msgctxt "Plugin name and link; Plugin Version"
-msgid "%1$s version %2$s. A project by <a href=\"http://inpsyde.com\">Inpsyde GmbH</a>. Developed by <a href=\"http://danielhuesken.de\">Daniel Husken</a>."
-msgstr "%1$s バージョン %2$s。 <a href=\"http://inpsyde.com\">Inpsyde GmbH社</a>のプロジェクト。<a href=\"http://danielhuesken.de\">Daniel Husken.</a>によって開WordPress発されました。"
 
 msgctxt "Plugin name; Plugin Version"
 msgid "[INFO] %1$s version %2$s; A project of Inpsyde GmbH"
@@ -2479,10 +2387,6 @@ msgstr "フォルダ%sが読めません。"
 msgctxt "Database Charset"
 msgid "Cannot set DB charset to %s"
 msgstr "%sにDBの文字セットを設定することはできません。"
-
-msgctxt "%s = Remote Code"
-msgid "Could not connect to remote host, code %d. Please try again later."
-msgstr "リモートホスト、コード%dに接続できませんでした。後ほど再試行してください。"
 
 msgctxt "Archive compression method"
 msgid "Compressing files as %s. Please be patient, this may take a moment."
@@ -2592,65 +2496,11 @@ msgid "1 WARNING"
 msgid_plural "%d WARNINGS"
 msgstr[0] "1件の警告"
 
-msgid "%1$s version %2$s. A project by <a href=\"http://inpsyde.com\">Inpsyde GmbH</a>."
-msgstr "%1$s バージョン %2$s。<a href=\"http://inpsyde.com\">Inpsyde社</a>によるプロジェクト。"
-
-msgid "[INFO] %1$s version %2$s; A project of Inpsyde GmbH"
-msgstr "[情報] %1$s バージョン %2$s; Inpsyde GmbH社のプロジェクト"
-
-msgid "Cannot create zip archive: %d"
-msgstr "zipアーカイブを作成できません。%d"
-
-msgid "Cannot set DB charset to %s"
-msgstr "DB文字セット%sを設定できません。"
-
-msgid "Compressing files as %s. Please be patient, this may take a moment."
-msgstr "%sに応じてファイルを圧縮します。しばらくお待ちください。これは時間がかかる場合があります。"
-
-msgid "File %s does not exist or is not readable"
-msgstr "ファイル%sは存在しないか、読み取れません"
-
-msgid "Folder %s for archive not found"
-msgstr "アーカイブ用のフォルダ%sが見つかりません"
-
-msgid "Folder %s not exists"
-msgstr "フォルダ%sは存在しません"
-
-msgid "Folder %s not readable"
-msgstr "フォルダ%sの読み込み不可"
-
-msgid "http://marketpress.com/news/plugins/backwpup/feed/"
-msgstr "http://marketpress.com/news/plugins/backwpup/feed/"
-
-msgid "Method to archive file %s not detected"
-msgstr "検出されないファイル %s をアーカイブする方法"
-
-msgid "Not enough disk space available on SugarSync. Available: %s."
-msgstr "SugarSyncに空きディスク領域が足りません。利用可能: %s."
-
-msgid "ZipArchive returns status: %s"
-msgstr "ZipArchiveはステータスを返しました: %s"
-
-msgid "[INFO] WordPress version %s"
-msgstr "[情報] WordPressのバージョン %s"
-
-msgid "Easy-peasy wizards to create and schedule backup jobs."
-msgstr "バックアップジョブを作成し、スケジュールするための非常に単純なウィザード。"
-
-msgid "Folder %s does not exist or is not readable"
-msgstr "フォルダ%sは存在しないか読み取れません。"
-
 msgid "If this message reaches your inbox, sending backup archives via email should work for you."
 msgstr "このメッセージが受信トレイに達するとメールを介してバックアップ アーカイブを送信するはずです。"
 
 msgid "Job restarts due to inactivity for more than 5 minutes."
 msgstr "ジョブが5分以上無動作により再起動します。"
-
-msgid "This adds short pauses to the process. Can be used to reduce the CPU load.<br /> Disabled = off<br /> minimum = shortest sleep<br /> medium = middle WordPressbetween minimum and maximum<br /> maximum = longest sleep<br />"
-msgstr "これはプロセスに短いポーズを追加してCPU の負荷を減らすために使用できます。<br /> Disabled = オフ<br /> minimum = 最短スリープ<br /> medium = 最小値と最WordPress大値の間の中間<br /> maximum = 最長スリープ<br />"
-
-msgid "You can backup all your attachments, also all system files, plugins and themes in a single file. You can <a href=\"%s\">create a job</a> to update a WordPressbackup copy of your file system only when files are changed."
-msgstr "すべての添付ファイル、またすべてのシステムファイル、プラグインとテーマを単一のファイルをバックアップすることができます。ファイルが変更されたときにのみ、WordPressファイルシステムのバックアップコピーを更新する<a href=\"%s\">ジョブを作成</a>WordPressすることができます。"
 
 msgid "%s available on your Dropbox"
 msgstr "Dropboxに%sが利用可能"
@@ -2662,28 +2512,16 @@ msgid "Temp folder does not exist or is not writable for BackWPup"
 msgstr "Tempフォルダが存在しないか、BackWPupへの書き込み権限がありません"
 
 msgid "? OR ?"
-msgstr "?または?"
+msgstr "? または ?"
 
 msgid "[INFO] Web Server: %s"
 msgstr "[情報] Webサーバー: %s"
 
-msgid "A dedicated folder named after your app is created within the Apps folder of a user's Dropbox. Your app gets read and write access to this folder only WordPressand users can provide content to your app by moving files into this folder."
-msgstr "アプリがユーザーのDropboxのフォルダ内に作成する専用のフォルダーです。あなたのアプリは、読み取りのみ、ユーザーは、このフォルダにファイルを移動することで、WordPressアプリにコンテンツを提供することができ、このフォルダへの書き込み権限を取得しWordPressます。"
-
 msgid "Aborting creation."
 msgstr "作成を中止しています。"
 
-msgid "Archive file will be to large for many file systems (over 2GB) if %s added. Please split the backup job."
-msgstr "アーカイブファイル%sを追加すると、大規模なファイルシステム (2GB以上) になるため、バックアップジョブを分割してください。"
-
 msgid "Bucket %1$s created."
 msgstr "バケット%1$sを作成しました。"
-
-msgid "Can not create archive correctly. Aborting creation."
-msgstr "正しくアーカイブを作成できません。作成を中止します。"
-
-msgid "Can not writing working file correctly. Job well be aborted."
-msgstr "正常にファイルを書込みできません。ジョブを中止します。"
 
 msgid "Cannot open source file %s for archiving"
 msgstr "アーカイブのソースファイルを%sを開くことができません。"
@@ -2691,26 +2529,11 @@ msgstr "アーカイブのソースファイルを%sを開くことができま�
 msgid "Delete Dropbox Authentication"
 msgstr "Dropboxの認証を削除"
 
-msgid "File size from \"%s\" can not taken correctly or file is to large! File will be ignored."
-msgstr "\"%s\"のファイルサイズが正しく取得できないか、またはファイルが大きすぎます！ファイルは無視されます。"
-
-msgid "Full Dropbox auth code"
-msgstr "フルDropbox認証コード"
-
 msgid "Get Dropbox App auth code"
 msgstr "Dropboxのアプリ認証コードを取得"
 
 msgid "Get full Dropbox auth code "
-msgstr "フルDropbox認証コードを取得"
-
-msgid "Job start for \"%s\" not answered after 10 seconds."
-msgstr "10秒後に応答のない\"%s\"のジョブを開始。"
-
-msgid "WP Export: Post Type \"%s\" not allows export."
-msgstr "WPエクスポート: 投稿タイプ\"%s\"はエクスポートを許可していません。"
-
-msgid "You get full access to all the files and folders in a user's Dropbox."
-msgstr "あなたはユーザーのDropboxの中のすべてのファイルとフォルダへのフルアクセスを取得します。"
+msgstr "Dropboxフル認証コードを取得"
 
 msgid "ZipArchive can not closed correctly"
 msgstr "ZipArchiveが正しく閉じられていません"
@@ -2718,431 +2541,107 @@ msgstr "ZipArchiveが正しく閉じられていません"
 msgid "BackWPup requires PHP version 5.2.7 with spl extension or greater and WordPress 3.4 or greater."
 msgstr "BackWPup は、PHP バージョン5.2.7 spl拡張モジュールまたはそれ以上と3.4以降が必要です。"
 
-msgid "Dropbox App auth code"
-msgstr "Dropboxのアプリ認証コード"
+msgid "Allows full access to your entire Dropbox."
+msgstr "Dropboxへのフルアクセスを許可します。"
 
-#~ msgid "(ER_MULTIDISK) Multi-disk zip archives not supported"
-#~ msgstr ""
-#~ "(ER_MULTIDISK) マルチディスクのzipアーカイブはサポートされていません。"
+msgid "Allows restricted access to Apps/BackWPup folder only."
+msgstr "アプリ/BackWPupフォルダのみに制限したアクセスを許可します。"
 
-#~ msgid "(ER_RENAME) Renaming temporary file failed"
-#~ msgstr "(ER_RENAME) 一時ファイルの名前の変更に失敗しました。"
+msgid "Amazon S3: EU (Germany)"
+msgstr "Amazon S3: EU (ドイツ)"
 
-#~ msgid "(ER_CLOSE) Closing zip archive failed"
-#~ msgstr "(ER_CLOSE) zipアーカイブの生成に失敗しました。"
+msgid "App Access to Dropbox"
+msgstr "Dropboxのアプリへのアクセス"
 
-#~ msgid "(ER_SEEK) Seek error"
-#~ msgstr "(ER_SEEK) シークエラー"
+msgid "BackWPup will have full read and write access to your entire Dropbox. You can specify your backup destination wherever you want, just be aware that ANY files or folders inside of your Dropbox can be overridden or deleted by BackWPup."
+msgstr "BackWPupは完全な読み取り権限を持っており、全体をDropboxへアクセスを書き込みます。好きな場所をショッピングのDropboxの内側の任意のファイルやフォルダを上書きまたはBackWPupによって削除されることに注意して、バックアップ先を指定することができます。"
 
-#~ msgid "(ER_READ) Read error"
-#~ msgstr "(ER_READ) 読込みエラー"
+msgid "Cannot create backup archive correctly. Aborting creation."
+msgstr "バックアップアーカイブを正しく作成できません。作成を中止します。"
 
-#~ msgid "(ER_WRITE) Write error"
-#~ msgstr "(ER_WRITE) 書込みエラー"
+msgid "Cannot write progress to working file. Job will be aborted."
+msgstr "進行作業をファイルに書き込みできません。ジョブを中止します。"
 
-#~ msgid "(ER_CRC) CRC error"
-#~ msgstr "(ER_CRC) CRCエラー"
+msgid "Destination Folder"
+msgstr "コピー先フォルダー"
 
-#~ msgid "(ER_ZIPCLOSED) Containing zip archive was closed"
-#~ msgstr "(ER_ZIPCLOSED) zipアーカイブを閉じました"
+msgid "Folder inside your Dropbox where your backup archives will be stored."
+msgstr "バックアップアーカイブを保存するDropboxの内部フォルダ。"
 
-#~ msgid "(ER_NOENT) No such file"
-#~ msgstr "(ER_NOENT) このようなファイルはありません。"
+msgid "GreenQloud Storage Qloud"
+msgstr "GreenQloudストレージQloud"
 
-#~ msgid "(ER_EXISTS) File already exists"
-#~ msgstr "(ER_EXISTS) ファイルはすでに存在しています"
+msgid "If the WordPress root folder is not included in this backup job, check this option to additionally include wp-config.php, robots.txt, .htaccess, .htpasswd and favicon.ico into the backup. Your wp-config.php will be included even if you placed it in the parent directory of your root folder."
+msgstr "WordPressのルートフォルダーが、このバックアップ ジョブに含まれていない場合はこのオプションをチェックすることでfavicon.ico、.htpasswd htaccess、robots.txt、wp-config.php をバックアップに含めます。ルートフォルダーの親ディレクトリに配置した場合もwp-config.phpが含まれます"
 
-#~ msgid "(ER_OPEN) Can't open file"
-#~ msgstr "(ER_OPEN) ファイルを開くことができません。"
+msgid "Job “%s” has started, but not responded for 10 seconds."
+msgstr "ジョブ“%s”を開始しましたが、10秒間応答しませんでした。"
 
-#~ msgid "(ER_TMPOPEN) Failure to create temporary file"
-#~ msgstr "(ER_TMPOPEN) 一時ファイルの作成に失敗しました"
+msgid "MySQL backup file not created"
+msgstr "MySQLのバックアップファイルが作成されていません"
 
-#~ msgid "(ER_ZLIB) Zlib error"
-#~ msgstr "(ER_ZLIB) Zlibのエラー"
+msgid "Older files will be deleted first. 0 = no files will be deleted."
+msgstr "古いファイルから順に削除されます。 0 = ファイルを削除しない。"
 
-#~ msgid "(ER_MEMORY) Malloc failure"
-#~ msgstr "(ER_MEMORY) Mallocの失敗"
+msgid "Specify a subfolder where your backup archives will be stored. If you use the App option from above, this folder will be created inside of Apps/BackWPup. Otherwise it will be created at the root of your Dropbox. Already exisiting folders with the same name will not be overriden."
+msgstr "バックアップアーカイブを保存するサブフォルダを指定してください。アプリケーションオプションを使用する場合は、このフォルダはアプリ/BackWPupの内部に作成されます。それ以外の場合は、Dropboxのルートに作成されます。すでに同じ名前の既存のフォルダは上書きされることはありません。"
 
-#~ msgid "(ER_CHANGED) Entry has been changed"
-#~ msgstr "(ER_CHANGED) エントリーが変更されました"
+msgid "ZIP archive cannot be closed correctly."
+msgstr "ZIPアーカイブを正常に生成できません。"
 
-#~ msgid "(ER_COMPNOTSUPP) Compression method not supported"
-#~ msgstr "(ER_COMPNOTSUPP) 圧縮方式がサポートされていません。"
+msgid "<strong>Important:</strong> before installing this plugin, please <a href=\"%1$s\">back up your database and files</a> with <a href=\"http://marketpress.de/product/backwpup-pro/\">%2$s</a>."
+msgstr "<strong>重要:</strong> このプラグインをインストールする前に<a href=\"http://marketpress.de/product/backwpup-pro/\">%2$s</a>で<a href=\"%1$s\">データベースとファイルをバックアップ</a>してください。"
 
-#~ msgid "(ER_EOF) Premature EOF"
-#~ msgstr "(ER_EOF) 未熟 EOF"
+msgid "<strong>Important:</strong> before updating, please <a href=\"%1$s\">back up your database and files</a> with <a href=\"http://marketpress.de/product/backwpup-pro/\">%2$s</a>. For help with updates, visit the <a href=\"http://codex.wordpress.org/Updating_WordPress\">Updating WordPress</a> Codex page."
+msgstr "更新する前に<a href=\"http://marketpress.de/product/backwpup-pro/\">%2$s</a>で<a href=\"%1$s\">データベースやファイルをバックアップ</a>してください。更新プログラムのヘルプは、WordPressコーデックスの<a href=\"http://codex.wordpress.org/Updating_WordPress\">アップデートページ</a>を参照してください。"
 
-#~ msgid "(ER_INVAL) Invalid argument"
-#~ msgstr "(ER_INVAL) 無効な引数"
+msgid "A dedicated folder named BackWPup will be created inside of the Apps folder in your Dropbox. BackWPup will get read and write access to that folder only. You can specify a subfolder as your backup destination for this job in the destination field below."
+msgstr "BackWPupという名前の専用のフォルダがDropboxの中でアプリフォルダ内に作成されます。BackWPupがそのフォルダのみへの読み取り及び書き込み権を取得します。以下の宛先フィールドで、このジョブのバックアップ先としてサブフォルダを指定することができます。"
 
-#~ msgid "(ER_NOZIP) Not a zip archive"
-#~ msgstr "(ER_NOZIP) zipアーカイブではありません。"
+msgid "Auto = Uses PHP class ZipArchive if available; otherwise uses PclZip.<br />ZipArchive = Uses less memory, but many open files at a time.<br />PclZip = Uses more memory, but only 2 open files at a time."
+msgstr "自動 = PHPクラスのZipArchiveを可能な場合に使用します。それ以外の場合PclZipを使用します。<br />ZipArchive = 低メモリですが、多くのファイルを同時に開きます。<br />PclZip = 多くのメモリを使用しますが、一度に2つ同時にファイルを開きます。"
 
-#~ msgid "(ER_INTERNAL) Internal error"
-#~ msgstr "(ER_INTERNAL) 内部エラー"
+msgid "Backup database table \"%s\" with \"%s\" records"
+msgstr "データベーステーブルのバックアップ \"%s\"と\"%s\"レコード"
 
-#~ msgid "(ER_INCONS) Zip archive inconsistent"
-#~ msgstr "(ER_INCONS) 矛盾したzipアーカイブ"
+msgid "File size of “%s” cannot be retrieved. File might be too large and will not be added to queue."
+msgstr "“%s”のファイルサイズを取得できません。ファイルが大きすぎる可能性があり、キューに追加されません。"
 
-#~ msgid "(ER_REMOVE) Can't remove file"
-#~ msgstr "(ER_REMOVE)　ファイルを削除できません。"
+msgid "Full Access to Dropbox"
+msgstr "Dropboxへのフルアクセス"
 
-#~ msgid "(ER_DELETED) Entry has been deleted"
-#~ msgstr "(ER_DELETED)　エントリーを削除しました"
+msgid "If %s will be added to your backup archive, the archive will be too large for many file systems (over 2GB). You might want to consider splitting the backup job in multiple jobs with less files each."
+msgstr "%sをバックアップアーカイブに追加した場合、アーカイブのファイルサイズが大きくなります(2GB以上)。バックアップジョブを複数に分割する検討をお勧めします。"
 
-#~ msgid "Dropbox authentication not approved"
-#~ msgstr "Dropboxの認証が承認されていません。"
+msgid "Job will restart before hitting maximum execution time. It will not work with CLI and not on every step during execution. If <code>ALTERNATE_WP_CRON</code> has been defined, WordPress Cron will be used."
+msgstr "ジョブを最大実行時間を実行前に再起動します。これはCLIを使用せず実行中のすべての段階で動作しません。<code>ALTERNATE_WP_CRON</code>を定義している場合は、WordPressのcronを使用します。"
 
-#~ msgid "Authenticate"
-#~ msgstr "認証"
+msgid "Please go to your plugin page and active the license to have the autoupdates enabled."
+msgstr "プラグインのページに移動し、自動更新のライセンスを有効にしてください。"
 
-#~ msgid "Reauthenticate (full Dropbox)"
-#~ msgstr "再認証 (フルDropbox)"
+msgid "Ready to <a href=\"%1$s\">set up a backup job</a>? You can <a href=\"%2$s\">use the wizards</a> or plan your backup in expert mode."
+msgstr "<a href=\"%1$s\">バックアップジョブの設定</a>準備ができましたか？ <a href=\"%2$s\">ウィザードを使用</a>するかエキスパートモードでバックアップを計画することができます。"
 
-#~ msgid ""
-#~ "You can back up all your attachments, also all system files, plugins and "
-#~ "themes in a single file. You can <a href=\"%s\">create a job</a> to "
-#~ "update a backup copy of your file system only when files are changed."
-#~ msgstr ""
-#~ "単一のファイル内のすべてのシステムファイル、プラグインやテーマも、すべての"
-#~ "添付ファイルをバックアップすることができます。<a href=\"%s\">ジョブを作成"
-#~ "</a>すればファイルが変更されただけで、ファイルシステムのバックアップ・コ"
-#~ "ピーも更新します。"
+msgid "This adds short pauses to the process. Can be used to reduce the CPU load.<br /> Disabled = off<br /> minimum = shortest sleep<br /> medium = middle between minimum and maximum<br /> maximum = longest sleep<br />"
+msgstr "これはプロセスに短い休止を追加します。CPU負荷を軽減するために使用することができます。<br />無効 = オフ<br />最小 = 最短スリープ<br />中 = 最小値と最大値の間の中間<br />最大 = 最長スリープ<br />"
 
-#~ msgid "Restart on every main step"
-#~ msgstr "全ての主要なステップで再起動"
+msgid "Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server. With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin or a plugin like <a href=\"http://wordpress.org/plugins/adminer/\" target=\"_blank\">Adminer</a> to restore your database backup files."
+msgstr "バックアップ アーカイブを使用して<code>/wp-content/</code>を含むあなたのWordPress全体を保存します。同じサーバー上にバックアップを保存したくない場合は、外部ストレージサービスを使用してください。単一のバックアップアーカイブを使用すると、データーを復元することができます。データベースのバックアップファイルを復元するには<a href=\"http://wordpress.org/plugins/adminer/\" target=\"_blank\">Adminer</a>やphpMyAdminのようなツールやプラグインを使用してください。"
 
-#~ msgid "Restart the job on every main step on a running job"
-#~ msgstr "実行中のジョブのすべての主要なステップでジョブを再起動する。"
+msgid "With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin or a plugin like <a href=\"http://wordpress.org/plugins/adminer/\" target=\"_blank\">Adminer</a> to restore your database backup files."
+msgstr "単一のバックアップアーカイブを使用して復元することができます。データベースのバックアップファイルを復元するには<a href=\"http://wordpress.org/plugins/adminer/\" target=\"_blank\">Adminer</a>やphpMyAdminのようなツールやプラグインを使用してください。"
 
-#~ msgid "Reauthenticate"
-#~ msgstr "再認証"
+msgid "With BackWPup you can schedule the database backup to run automatically. With a single backup file you can restore your database. You should <a href=\"%s\">set up a backup job</a>, so you will never forget it. There is also an option to repair and optimize the database after each backup."
+msgstr "BackWPupを使用すると、データベースのバックアップを自動実行してスケジュールすることができます。単一のバックアップファイルを使用すると、データベースを復元することができます。バックアップジョブを設定する必要がありますので、それを決して忘れてはいけません。各バックアップ後にデータベースを修復、最適化するオプションもあります。"
 
-#~ msgid "[INFO] Script restarts on every main step is activated"
-#~ msgstr "[情報] スクリプトは、すべての主要な段階で再起動が有効になります。"
+msgid "WP Export file could not written."
+msgstr "WPエクスポートファイルは書き込まれません。"
 
-#~ msgid ""
-#~ "Job will restart on every main step if the last restart has been longer "
-#~ "than 3 seconds ago. This is to prevent running in an execution timeout. "
-#~ "It will not work with CLI. If <code>ALTERNATE_WP_CRON</code> has been "
-#~ "defined, WordPress Cron will be used."
-#~ msgstr ""
-#~ "ジョブが最後に再起動した前の3秒よりも長くなっている場合すべての主要なス"
-#~ "テップで再起動します。これが実行のタイムアウトで実行するようにします。これ"
-#~ "はCLIを使用して動作しません。<code>ALTERNATE_WP_CRON</code>が定義されてい"
-#~ "る場合、WordPressのcronを使用します。"
+msgid "WP Export: Post type “%s” does not allow export."
+msgstr "WPエクスポート: 投稿タイプ“%s”はエクスポートを許可していません"
 
-#~ msgid "Could not generate a WordPress export file."
-#~ msgstr "WordPressのエクスポートファイルを生成できませんでした。"
+msgid "You can choose the built-in WordPress export format in addition or exclusive to save your data. This works in automated backups too of course. The advantage is: you can import these files into a blog with the regular WordPress importer."
+msgstr "あなたのデータを保存するために追加または排他的にWordPressに組み込まれたエクスポート形式を選択することができます。もちろん、これは自動バックアップで動作します。利点: 定期的にWordPress importerとブログにこれらのファイルをインポートすることができます。"
 
-#~ msgid "WP Export file could not be written."
-#~ msgstr "WP エクスポートファイルを書き込むことができませんでした。"
-
-#~ msgid ""
-#~ "BackWPup requires PHP version 5.2.6 or greater and WordPress 3.2 or "
-#~ "greater."
-#~ msgstr "BackWPupはPHPのバージョン5.2.6以上、WordPress 3.2以上が必要です。"
-
-#~ msgid "<img src=\"%s\"/> <a href=\"%s\">Get BackWPup Pro now.</a>"
-#~ msgstr "<img src=\"%s\"/> <a href=\"%s\">BackWPup Proをゲット</a>"
-
-#~ msgid "File path \"%1$s\" too long to be saved correctly in %2$s archive!"
-#~ msgstr "ファイルパス\"%1$s\"は%2$sのアーカイブを保存するには長すぎます。"
-
-#~ msgid "Folder name \"%1$s\" too long to be saved correctly in %2$s archive!"
-#~ msgstr "フォルダ名\"%1$s\"は%2$sのアーカイブを保存するには長すぎます。"
-
-#~ msgid "Aborted, because no progress for 2 hours!"
-#~ msgstr "2時間進展がないので中止しました。"
-
-#~ msgid "Your Dropbox appears to be full."
-#~ msgstr "Dropboxがいっぱいのように見えます。"
-
-#~ msgid "Error on transfer backup to Dropbox: %s"
-#~ msgstr "Dropboxにバックアップ転送エラー: %s"
-
-#~ msgid "E-Mail"
-#~ msgstr "メール"
-
-#~ msgid "E-Mail Address"
-#~ msgstr "メールアドレス"
-
-#~ msgid "E-Mail address"
-#~ msgstr "メールアドレス"
-
-#~ msgid "Send test e-mail"
-#~ msgstr "テストメールを送信"
-
-#~ msgid "Maximum file size to be included in an e-mail. 0 = unlimited"
-#~ msgstr "メールに含まれるファイルの最大サイズ。 0 = 無制限"
-
-#~ msgid "Name of e-mail sender"
-#~ msgstr "メール送信者の名前"
-
-#~ msgid "Backup archive too big to be sent by e-mail!"
-#~ msgstr "メールで送信するにはファイルサイズが大きすぎます。"
-
-#~ msgid "Sending e-mail to %s&hellip;"
-#~ msgstr "%sへメールを送信..."
-
-#~ msgid "Error while sending e-mail!"
-#~ msgstr "メール送信エラー!"
-
-#~ msgid "E-Mail sent."
-#~ msgstr "メールを送信しました。"
-
-#~ msgid ""
-#~ "If this message reaches your inbox, sending backup archives via e-mail "
-#~ "should work for you."
-#~ msgstr ""
-#~ "このメッセージが受信トレイに達した場合メールでバックアップアーカイブの送信"
-#~ "が可能です。"
-
-#~ msgid ""
-#~ "Multipart splits file into multiple chunks while uploading. This is "
-#~ "necessary for displaying the upload process and to transfer bigger files. "
-#~ "Beware: There is a known issue at Google storage with this option!"
-#~ msgstr ""
-#~ "マルチパートアップロードしながら、複数のチャンクにファイルを分割します。こ"
-#~ "れはアップロード処理を表示し大きなファイルを転送するために必要です。注意:"
-#~ "このオプションを使用した場合Googleストレージでは既知の問題があります。"
-
-#~ msgid ""
-#~ "[INFO] This program comes with ABSOLUTELY NO WARRANTY. This is free "
-#~ "software, and you are welcome to redistribute it under certain conditions."
-#~ msgstr ""
-#~ "[情報] このプログラムは完全に無保証です。これはフリーソフトウェアであり一"
-#~ "定の条件の下でそれを再頒布することができます。"
-
-#~ msgid "[INFO] BackWPup cron:"
-#~ msgstr "[情報] BackWPup cron:"
-
-#~ msgid "[INFO] Maximum script execution time is %1$d seconds"
-#~ msgstr "[情報] スクリプトの最大実行時間は%1$d秒です。"
-
-#~ msgid "[INFO] Logfile folder is: %s"
-#~ msgstr "[情報] ログファイルのフォルダ: %s"
-
-#~ msgid "Log folder does not exist or is not writable"
-#~ msgstr "ログフォルダが存在しないか、書き込み可能ではありません。"
-
-#~ msgid "Job Started"
-#~ msgstr "ジョブを開始"
-
-#~ msgid "Job restart due to inactivity for more than 5 minutes."
-#~ msgstr "ジョブは5分以上無効のため再起動します。"
-
-#~ msgid "Link \"%s\" not followed."
-#~ msgstr "リンク\"%s\"は続いていません。"
-
-#~ msgid "Creates an .sql database dump file"
-#~ msgstr "データベースのダンプファイルを作成します。"
-
-#~ msgid "Optimize database tables"
-#~ msgstr "データベーステーブルを最適化"
-
-#~ msgid "No folder to back up."
-#~ msgstr "バックアップするフォルダがありません。"
-
-#~ msgid ""
-#~ "The backup files can be used to save your whole installation including "
-#~ "<code>/wp-content/</code> and push them to an external Backup Service, if "
-#~ "you don’t want to save the backups on the same server. With a single "
-#~ "backup file you are able to restore an installation."
-#~ msgstr ""
-#~ "バックアップファイルは<code>/wp-content/</code>を含む全体を保存し、同じ"
-#~ "サーバー内にバックアップを保存したくない場合は外部のバックアップサービスを"
-#~ "使用することができ、単一のバックアップファイルを使用して状態を復元すること"
-#~ "ができます。"
-
-#~ msgid "%i = Hour in 24-hour format, with leading zeros"
-#~ msgstr "%i = 先行ゼロを24時間形式"
-
-#~ msgid "Send log to e-mail address"
-#~ msgstr "メールアドレスにログを送信"
-
-#~ msgid "E-Mail FROM field"
-#~ msgstr "フィールドからのメール"
-
-#~ msgid ""
-#~ "Temp folder %s does not exist and cannot be created. Please create it and "
-#~ "set proper write permissions."
-#~ msgstr ""
-#~ "Tempフォルダ%sは存在せず、作成することはできません。それを作成し適切な書き"
-#~ "込み権限を設定してください。"
-
-#~ msgid "Job end"
-#~ msgstr "ジョブ終了"
-
-#~ msgid "Restart on archive creation"
-#~ msgstr "アーカイブ作成時に再起動します。"
-
-#~ msgid "Method for creating ZIP archive"
-#~ msgstr "ZIPアーカイブの作成方法"
-
-#~ msgid ""
-#~ "This adds short pauses to the process. Can be used to reduce the CPU "
-#~ "load. Disabled = off, minimum = shortest sleep, maximum = longest sleep"
-#~ msgstr ""
-#~ "これはプロセスに短いポーズが追加されます。 CPUの負荷を低減することができま"
-#~ "す。 無効 = オフ、最小 = 最短スリープ、最大 = 最長スリープ"
-
-#~ msgid "Logs folder:"
-#~ msgstr "Logsフォルダ:"
-
-#~ msgid "Logs folder %s not exist and can't created."
-#~ msgstr "Logsフォルダー%sは存在しません、作成できません。"
-
-#~ msgid "Logs folder %s not writable."
-#~ msgstr "ログフォルダー%sは書き込み禁止です。"
-
-#~ msgid ""
-#~ "Your license for the plugin %s is not valid. The auto-update has been "
-#~ "deactivated."
-#~ msgstr ""
-#~ "プラグイン%sのライセンスが有効ではありません。自動更新は無効にされていま"
-#~ "す。"
-
-#~ msgid "License Key"
-#~ msgstr "ライセンスキー"
-
-#~ msgid ""
-#~ "You have reached the limit of urls. Please update your license at <a href="
-#~ "\"http://marketpress.com\">marketpress.com</a>."
-#~ msgstr ""
-#~ "URLの上限に達しました。<a href=\"http://marketpress.com\">marketpress."
-#~ "com</a>でライセンスを更新してください。"
-
-#~ msgid "Dropbox authentication not approved!"
-#~ msgstr "Dropboxの認証が承認されていません!"
-
-#~ msgid "%d. Try to sync files to Dropbox&#160;&hellip;"
-#~ msgstr "%d. Dropboxにファイルを同期中&#160;&hellip;"
-
-#~ msgid "Upload changed files to Dropbox"
-#~ msgstr "変更されたファイルをDropboxへアップロード"
-
-#~ msgid "Folder %s deleted from Dropbox"
-#~ msgstr "Dropboxのフォルダ%sを削除"
-
-#~ msgid "E-mail Address"
-#~ msgstr "メールアドレス"
-
-#~ msgid "E-Mail settings"
-#~ msgstr "メール設定"
-
-#~ msgid "Max. file size"
-#~ msgstr "最大ファイルサイズ"
-
-#~ msgid "Folder on server:"
-#~ msgstr "サーバー上のフォルダ:"
-
-#~ msgid "Select region:"
-#~ msgstr "領域を選択:"
-
-#~ msgid "XML File (phpMyAdmin schema)"
-#~ msgstr "XMLファイル(phpMyAdminスキーマ)"
-
-#~ msgid "Path to <em>mysqldump</em> file"
-#~ msgstr "<em>mysqldump</em>のファイルパス"
-
-#~ msgid "%d. Try to dump database XML&#160;&hellip;"
-#~ msgstr "%d. データベースXMLをダンプしてみてください&#160;&hellip;"
-
-#~ msgid "No tables for XML dump"
-#~ msgstr "テーブルはXMLダンプされません。"
-
-#~ msgid "Added database XML dump \"%1$s\" with %2$s to backup file list"
-#~ msgstr ""
-#~ "データベースのXMLダンプが\"%1$s \"は%2$sのファイルリストをバックアップする"
-#~ "ために追加しました。"
-
-#~ msgid "< Previous"
-#~ msgstr "< 前へ"
-
-#~ msgid "Sync file by file to destination"
-#~ msgstr "宛先ファイルにファイルを同期"
-
-#~ msgid "Select a compression type for the backup archive"
-#~ msgstr "バックアップアーカイブの圧縮タイプを選択"
-
-#~ msgid ""
-#~ "PHP Zip functions will be used if available (memory lees). Else PCLZip "
-#~ "Class will used."
-#~ msgstr ""
-#~ "可能であればPHP Zip機能が使用されます(少ないメモリ)。他PCLZipクラスが使用"
-#~ "されます。"
-
-#~ msgid ""
-#~ "Backup essential files and folders, plus a list of installed plugins."
-#~ msgstr ""
-#~ "重要なファイルやフォルダに加え、インストールされたプラグインのリストをバッ"
-#~ "クアップします。"
-
-#~ msgid "XML job import"
-#~ msgstr "XMLジョブのインポート"
-
-#~ msgid ""
-#~ "File is empty. Please upload something more substantial. This error could "
-#~ "also be caused by uploads being disabled in your php.ini or by "
-#~ "post_max_size being defined as smaller than upload_max_filesize in php."
-#~ "ini."
-#~ msgstr ""
-#~ "ファイルは空です。より実質的な何かをアップロードしてください。このエラー"
-#~ "は、php.iniのupload_max_filesizeがpost_max_sizeより小さく定義されているこ"
-#~ "とにより、または無効になってアップロードすることによって発生する可能性があ"
-#~ "ります。"
-
-#~ msgid ""
-#~ "This Export file (version %s) may not be supported by this version of the "
-#~ "importer."
-#~ msgstr ""
-#~ "このエクスポートファイル(バージョン%s)はこのバージョンではサポートされない"
-#~ "場合があります。"
-
-#~ msgid "This is not a BackWPup XML file"
-#~ msgstr "これはBackWPup XMLファイルではありません。"
-
-#~ msgid "Wizard to test if BackWPup can work properly"
-#~ msgstr "BackWPupが正常に動作するかどうかをテストするためのウィザード"
-
-#~ msgid "Test if BackWPup can work without problems."
-#~ msgstr "BackWPupが問題なく動作するかどうかをテストできます。"
-
-#~ msgid "The HTTP response test result is an error: \"%s\"."
-#~ msgstr "HTTP応答テストのエラー結果: \"%s\""
-
-#~ msgid ""
-#~ "The HTTP response test result is a wrong HTTP status: %s. It should be "
-#~ "the staus 200."
-#~ msgstr ""
-#~ "HTTP応答試験結果が間違ったHTTPステータスです。%s: ステータスは200でなけれ"
-#~ "ばなりません。"
-
-#~ msgid "WP-Cron seems to be broken. But it is needed to run scheduled jobs."
-#~ msgstr ""
-#~ "WP-cronは壊れているように見えます。これはスケジュールされたジョブを実行す"
-#~ "るために必要です。"
-
-#~ msgid "3.1"
-#~ msgstr "3.1"
-
-#~ msgid "Dismiss"
-#~ msgstr "却下"
-
-#~ msgid "Learn More"
-#~ msgstr "詳細はこちら"
-
-#~ msgid ""
-#~ "It’s time to upgrade your <strong>BackWPup</strong> to <strong>PRO</"
-#~ "strong> version!"
-#~ msgstr ""
-#~ "<strong>BackWPup</strong>を<strong>PRO</strong>(有料)バージョンにアップグ"
-#~ "レードする時が来ました！"
-
-#~ msgid "Extend standard plugin functionality with new great options."
-#~ msgstr "新しい偉大なオプションでプラグインの標準的な機能を拡張します。"
-
-#~ msgid "Reauthenticate (Sandbox)"
-#~ msgstr "再認証 (サンドボックス)"
+msgid "You can backup all your attachments, also all system files, plugins and themes in a single file. You can <a href=\"%s\">create a job</a> to update a backup copy of your file system only when files are changed."
+msgstr "すべての添付ファイル、またすべてのシステムファイル、プラグインとテーマを単一のファイルをバックアップすることができます。ファイルが変更されたときにのみ、ファイルシステムのバックアップコピーを更新する<a href=\"%s\">ジョブを作成</a>することができます。"

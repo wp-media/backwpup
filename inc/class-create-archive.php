@@ -179,13 +179,11 @@ class BackWPup_Create_Archive {
 
 		//close ZipArchive Class
 		if ( is_object( $this->ziparchive ) ) {
-			$this->ziparchive_status();
 			if ( ! $this->ziparchive->close() ) {
 				sleep( 1 );
 				if ( ! $this->ziparchive->close() ) {
 					sleep( 1 );
 					if ( ! $this->ziparchive->close() ) {
-						$this->ziparchive_status();
 						trigger_error( __( 'ZIP archive cannot be closed correctly.', 'backwpup' ), E_USER_ERROR );
 					}
 				}
@@ -299,15 +297,25 @@ class BackWPup_Create_Archive {
 				return $this->tar_file( $file_name, $name_in_archive );
 				break;
 			case 'ZipArchive':
+				$file_size = abs( (int) filesize( $file_name ) );
+				//check if entry already in archive and delete it if it not in full size
+				if ( $zip_file_stat = $this->ziparchive->statName( $name_in_archive ) ) {
+					if ( $zip_file_stat[ 'size' ] != $file_size ) {
+						$this->ziparchive->deleteName( $name_in_archive );
+						//reopen on deletion
+						$this->file_count = 21;
+					} else {
+						//file already complete in archive
+						return TRUE;
+					}
+				}
 				//close and reopen, all added files are open on fs
 				if ( $this->file_count > 20 ) { //35 works with PHP 5.2.4 on win
-					$this->ziparchive_status();
 					if ( ! $this->ziparchive->close() ) {
 						sleep( 1 );
 						if ( ! $this->ziparchive->close() ) {
 							sleep( 1 );
 							if ( ! $this->ziparchive->close() ) {
-								$this->ziparchive_status();
 								trigger_error(__( 'ZipArchive can not closed correctly', 'backwpup'	), E_USER_ERROR	);
 							}
 						}
@@ -324,9 +332,9 @@ class BackWPup_Create_Archive {
 					}
 					$this->file_count = 0;
 				}
-				$file_size = abs( (int) filesize( $file_name ) );
 				if ( $file_size < ( 1024 * 1024 * 2 ) ) {
 					if ( ! $this->ziparchive->addFromString( $name_in_archive, file_get_contents( $file_name ) ) ) {
+						$this->ziparchive_status();
 						trigger_error( sprintf( __( 'Cannot add "%s" to zip archive!', 'backwpup' ), $name_in_archive ), E_USER_ERROR );
 						return FALSE;
 					} else {
@@ -335,6 +343,7 @@ class BackWPup_Create_Archive {
 					}
 				} else {
 					if ( ! $this->ziparchive->addFile( $file_name, $name_in_archive ) ) {
+						$this->ziparchive_status();
 						trigger_error( sprintf( __( 'Cannot add "%s" to zip archive!', 'backwpup' ), $name_in_archive ), E_USER_ERROR );
 						return FALSE;
 					} else {
