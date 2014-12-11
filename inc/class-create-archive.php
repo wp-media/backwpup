@@ -180,14 +180,9 @@ class BackWPup_Create_Archive {
 		//close ZipArchive Class
 		if ( is_object( $this->ziparchive ) ) {
 			if ( ! $this->ziparchive->close() ) {
+				$this->ziparchive_status();
+				trigger_error( __( 'ZIP archive cannot be closed correctly.', 'backwpup' ), E_USER_ERROR );
 				sleep( 1 );
-				if ( ! $this->ziparchive->close() ) {
-					sleep( 1 );
-					if ( ! $this->ziparchive->close() ) {
-						$this->ziparchive_status();
-						trigger_error( __( 'ZIP archive cannot be closed correctly.', 'backwpup' ), E_USER_ERROR );
-					}
-				}
 			}
 			$this->ziparchive = NULL;
 		}
@@ -313,14 +308,9 @@ class BackWPup_Create_Archive {
 				//close and reopen, all added files are open on fs
 				if ( $this->file_count > 20 ) { //35 works with PHP 5.2.4 on win
 					if ( ! $this->ziparchive->close() ) {
+						$this->ziparchive_status();
+						trigger_error(__( 'ZIP archive cannot be closed correctly', 'backwpup'	), E_USER_ERROR	);
 						sleep( 1 );
-						if ( ! $this->ziparchive->close() ) {
-							sleep( 1 );
-							if ( ! $this->ziparchive->close() ) {
-								$this->ziparchive_status();
-								trigger_error(__( 'ZIP archive cannot be closed correctly', 'backwpup'	), E_USER_ERROR	);
-							}
-						}
 					}
 					$this->ziparchive = NULL;
 					if ( ! $this->check_archive_filesize() ) {
