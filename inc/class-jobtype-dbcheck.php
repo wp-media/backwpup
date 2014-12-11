@@ -119,7 +119,7 @@ class BackWPup_JobType_DBCheck extends BackWPup_JobTypes {
 
 				//CHECK TABLE funktioniert bei MyISAM- und InnoDB-Tabellen (http://dev.mysql.com/doc/refman/5.1/de/check-table.html)
 				$check = $wpdb->get_row( "CHECK TABLE `" . $table . "` MEDIUM", OBJECT );
-				if ( $check->Msg_text == 'OK' )
+				if ( strtolower( $check->Msg_text ) == 'ok' )
 					$job_object->log( sprintf( __( 'Result of table check for %1$s is: %2$s', 'backwpup' ), $table, $check->Msg_text ) );
 				elseif ( strtolower( $check->Msg_type ) == 'warning' )
 					$job_object->log( sprintf( __( 'Result of table check for %1$s is: %2$s', 'backwpup' ), $table, $check->Msg_text ), E_USER_WARNING );
@@ -127,9 +127,9 @@ class BackWPup_JobType_DBCheck extends BackWPup_JobTypes {
 					$job_object->log( sprintf( __( 'Result of table check for %1$s is: %2$s', 'backwpup' ), $table, $check->Msg_text ), E_USER_ERROR );
 
 				//Try to Repair table
-				if ( ! empty( $job_object->job[ 'dbcheckrepair' ] ) && $check->Msg_text != 'OK' && $status[ $table ][ 'Engine' ] == 'MyISAM' ) {
+				if ( ! empty( $job_object->job[ 'dbcheckrepair' ] ) && strtolower( $check->Msg_text ) != 'ok' && $status[ $table ][ 'Engine' ] == 'MyISAM' ) {
 					$repair = $wpdb->get_row( 'REPAIR TABLE `' . $table . '` EXTENDED', OBJECT );
-					if ( $repair->Msg_type == 'OK' )
+					if ( strtolower( $repair->Msg_text ) == 'ok' )
 						$job_object->log( sprintf( __( 'Result of table repair for %1$s is: %2$s', 'backwpup' ), $table, $repair->Msg_text ) );
 					elseif ( strtolower( $repair->Msg_type ) == 'warning' )
 						$job_object->log( sprintf( __( 'Result of table repair for %1$s is: %2$s', 'backwpup' ), $table, $repair->Msg_text ), E_USER_WARNING );

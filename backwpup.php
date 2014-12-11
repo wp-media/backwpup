@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.1.4
+ * Version: 3.1.5-beat1
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -92,7 +92,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 				// add action for doing thinks if cron active
 				// must done in wp_loaded so that all is really loaded and initiated
 				add_action( 'wp_loaded', array( 'BackWPup_Cron', 'cron_active' ), 999 );
-				// if in cron the rest must not needed
+				// if in cron the rest is not needed
 				return;
 			}
 			//deactivation hook
@@ -176,9 +176,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 				self::$plugin_data[ 'running_file' ] = self::$plugin_data[ 'temp' ] . 'backwpup-working.php';
 				self::$plugin_data[ 'url' ] = plugins_url( '', __FILE__ );
 				self::$plugin_data[ 'cacert' ] = FALSE;
-				if ( file_exists( ABSPATH . WPINC . '/certificates/ca-bundle.crt' ) )
-					self::$plugin_data[ 'cacert' ] = ABSPATH . WPINC . '/certificates/ca-bundle.crt';
-				elseif ( file_exists( self::$plugin_data[ 'plugindir' ] . '/vendor/Guzzle/Http/Resources/cacert.pem' ) )
+				if ( file_exists( self::$plugin_data[ 'plugindir' ] . '/vendor/Guzzle/Http/Resources/cacert.pem' ) )
 					self::$plugin_data[ 'cacert' ] = self::$plugin_data[ 'plugindir' ] . '/vendor/Guzzle/Http/Resources/cacert.pem';
 				self::$plugin_data[ 'cacert' ] = apply_filters( 'backwpup_cacert_bundle', self::$plugin_data[ 'cacert' ] );
 				//get unmodified WP Versions

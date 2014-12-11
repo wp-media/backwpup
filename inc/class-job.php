@@ -390,8 +390,11 @@ final class BackWPup_Job {
 	 */
 	public static function get_jobrun_url( $starttype, $jobid = 0 ) {
 
-
-		$wp_admin_user 		= get_users( array( 'role' => 'backwpup_admin', 'number' => 1 ) );	//get a user for cookie auth
+		//get a user for cookie auth
+		$wp_admin_user 		= get_users( array( 'role' => 'administrator', 'number' => 1 ) );
+		if ( empty( $wp_admin_user ) ) {
+			$wp_admin_user 	= get_users( array( 'role' => 'backwpup_admin', 'number' => 1 ) );
+		}
 		$url        		= site_url( 'wp-cron.php' );
 		$header				= array();
 		$authurl    		= '';
@@ -463,14 +466,14 @@ final class BackWPup_Job {
 															  )
 													   ) );
 
-		if( $starttype == 'test' ) {
+		if ( $starttype == 'test' ) {
 			$cron_request[ 'args' ][ 'timeout' ] = 15;
 			$cron_request[ 'args' ][ 'blocking' ] = TRUE;
 		}
 
 		if ( ! in_array( $starttype, array( 'runnowlink', 'runext' ) ) ) {
 			set_transient( 'doing_cron', $query_args[ 'doing_wp_cron' ] );
-			return wp_remote_post( $cron_request['url'], $cron_request['args'] );
+			return wp_remote_post( $cron_request[ 'url' ], $cron_request[ 'args' ] );
 		}
 
 		return $cron_request;
@@ -794,6 +797,11 @@ final class BackWPup_Job {
 		if ( php_sapi_name() == 'cli' )
 			return;
 
+		//no restart if no restart time configured
+		$job_max_execution_time = get_site_option( 'backwpup_cfg_jobmaxexecutiontime' );
+		if ( empty( $job_max_execution_time ) )
+			return;
+
 		//no restart when restart was 3 Seconds before
 		$execution_time = microtime( TRUE ) - $this->timestamp_script_start;
 		if ( ! $must  && $execution_time < 3 )
@@ -1009,10 +1017,12 @@ final class BackWPup_Job {
 		}
 
 		//create .htaccess for apache and index.php for folder security
-		if ( get_site_option( 'backwpup_cfg_protectfolders') && ! file_exists( $folder . '/.htaccess' ) )
-			file_put_contents( $folder . '/.htaccess', "<Files \"*\">" . PHP_EOL . "<IfModule mod_access.c>" . PHP_EOL . "Deny from all" . PHP_EOL . "</IfModule>" . PHP_EOL . "<IfModule !mod_access_compat>" . PHP_EOL . "<IfModule mod_authz_host.c>" . PHP_EOL . "Deny from all" . PHP_EOL . "</IfModule>" . PHP_EOL . "</IfModule>" . PHP_EOL . "<IfModule mod_access_compat>" . PHP_EOL . "Deny from all" . PHP_EOL . "</IfModule>" . PHP_EOL . "</Files>" );
-		if ( get_site_option( 'backwpup_cfg_protectfolders') && ! file_exists( $folder . '/index.php' ) )
-			file_put_contents( $folder . '/index.php', "<?php" . PHP_EOL . "header( \$_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found' );" . PHP_EOL . "header( 'Status: 404 Not Found' );" . PHP_EOL );
+		if ( get_site_option( 'backwpup_cfg_protectfolders') && ! file_exists( $folder . '/.htaccess' ) ) {
+			file_put_contents( $folder . '/.htaccess', "<Files \"*\">" . PHP_EOL . "<IfModule mod_access.c>" . PHP_EOL . "Deny from all" . PHP_EOL . "</IfModule>" . PHP_EOL . "<IfModule !mod_access_compat>" . PHP_EOL . "<IfModule mod_authz_host.c>" . PHP_EOL . "Deny from all" . PHP_EOL . "</IfModule>" . PHP_EOL . "</IfModule>" . PHP_EOL . "<IfModule mod_access_compat>" . PHP_EOL . "Deny from all" . PHP_EOL . "</IfModule>" . PHP_EOL . "</Files>", FILE_APPEND );
+		}
+		if ( get_site_option( 'backwpup_cfg_protectfolders') && ! file_exists( $folder . '/index.php' ) ) {
+			file_put_contents( $folder . '/index.php', "<?php" . PHP_EOL . "header( \$_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found' );" . PHP_EOL . "header( 'Status: 404 Not Found' );" . PHP_EOL, FILE_APPEND );
+		}
 
 		//Create do not backup file for this folder
 		if ( $donotbackup && ! file_exists( $folder . '/.donotbackup' ) )
@@ -1140,26 +1150,29 @@ final class BackWPup_Job {
 
 		//write new log header
 		if ( $error_or_warning ) {
-			$found   = 0;
-			$fd      = fopen( $this->logfile, 'r+' );
-			$file_pos = ftell( $fd );
-			while ( ! feof( $fd ) ) {
-				$line = fgets( $fd );
-				if ( stripos( $line, '<meta name="backwpup_errors" content="' ) !== FALSE ) {
-					fseek( $fd, $file_pos );
-					fwrite( $fd, str_pad( '<meta name="backwpup_errors" content="' . $this->errors . '" />', 100 ) . PHP_EOL );
-					$found ++;
-				}
-				if ( stripos( $line, '<meta name="backwpup_warnings" content="' ) !== FALSE ) {
-					fseek( $fd, $file_pos );
-					fwrite( $fd, str_pad( '<meta name="backwpup_warnings" content="' . $this->warnings . '" />', 100 ) . PHP_EOL );
-					$found ++;
-				}
-				if ( $found >= 2 )
-					break;
+			$fd = fopen( $this->logfile, 'r+' );
+			if ( is_resource( $fd ) ) {
+				$found = 0;
 				$file_pos = ftell( $fd );
+				while ( ! feof( $fd ) ) {
+					$line = fgets( $fd );
+					if ( stripos( $line, '<meta name="backwpup_errors" content="' ) !== FALSE ) {
+						fseek( $fd, $file_pos );
+						fwrite( $fd, str_pad( '<meta name="backwpup_errors" content="' . $this->errors . '" />', 100 ) . PHP_EOL );
+						$found ++;
+					}
+					if ( stripos( $line, '<meta name="backwpup_warnings" content="' ) !== FALSE ) {
+						fseek( $fd, $file_pos );
+						fwrite( $fd, str_pad( '<meta name="backwpup_warnings" content="' . $this->warnings . '" />', 100 ) . PHP_EOL );
+						$found ++;
+					}
+					if ( $found >= 2 ) {
+						break;
+					}
+					$file_pos = ftell( $fd );
+				}
+				fclose( $fd );
 			}
-			fclose( $fd );
 		}
 
 		//write working data
@@ -1296,26 +1309,29 @@ final class BackWPup_Job {
 
 		//write header info
 		if ( is_writable( $this->logfile ) ) {
-			$fd      = fopen( $this->logfile, 'r+' );
-			$filepos = ftell( $fd );
-			$found   = 0;
-			while ( ! feof( $fd ) ) {
-				$line = fgets( $fd );
-				if ( stripos( $line, '<meta name="backwpup_jobruntime"' ) !== FALSE ) {
-					fseek( $fd, $filepos );
-					fwrite( $fd, str_pad( '<meta name="backwpup_jobruntime" content="' . $this->job[ 'lastruntime' ] . '" />', 100 ) . PHP_EOL );
-					$found ++;
-				}
-				if ( stripos( $line, '<meta name="backwpup_backupfilesize"' ) !== FALSE ) {
-					fseek( $fd, $filepos );
-					fwrite( $fd, str_pad( '<meta name="backwpup_backupfilesize" content="' . $this->backup_filesize . '" />', 100 ) . PHP_EOL );
-					$found ++;
-				}
-				if ( $found >= 2 )
-					break;
+			$fd = fopen( $this->logfile, 'r+' );
+			if ( is_resource( $fd ) ) {
 				$filepos = ftell( $fd );
+				$found = 0;
+				while ( ! feof( $fd ) ) {
+					$line = fgets( $fd );
+					if ( stripos( $line, '<meta name="backwpup_jobruntime"' ) !== FALSE ) {
+						fseek( $fd, $filepos );
+						fwrite( $fd, str_pad( '<meta name="backwpup_jobruntime" content="' . $this->job[ 'lastruntime' ] . '" />', 100 ) . PHP_EOL );
+						$found ++;
+					}
+					if ( stripos( $line, '<meta name="backwpup_backupfilesize"' ) !== FALSE ) {
+						fseek( $fd, $filepos );
+						fwrite( $fd, str_pad( '<meta name="backwpup_backupfilesize" content="' . $this->backup_filesize . '" />', 100 ) . PHP_EOL );
+						$found ++;
+					}
+					if ( $found >= 2 ) {
+						break;
+					}
+					$filepos = ftell( $fd );
+				}
+				fclose( $fd );
 			}
-			fclose( $fd );
 		}
 
 		//logfile end
@@ -1837,6 +1853,7 @@ final class BackWPup_Job {
 
 		//load folders to backup
 		$folders_to_backup = $this->get_folders_to_backup();
+		$disabled_archive_limit = get_site_option( 'backwpup_cfg_disablearchivesizelimit' );
 
 		$this->substeps_todo = $this->count_folder  + 1;
 
@@ -1919,7 +1936,7 @@ final class BackWPup_Job {
 						$this->steps_data[ $this->step_working ][ 'on_folder' ] = '';
 						$this->substeps_done   = 0;
 						$this->backup_filesize = filesize( $this->backup_folder . $this->backup_file );
-						if ( ( $this->backup_filesize + filesize( $file ) ) >= 2147483647 ) {
+						if ( empty( $disabled_archive_limit ) && ( $this->backup_filesize + filesize( $file ) ) >= 2147483647 ) {
 							$this->log( __( 'Aborting creation.', 'backwpup' ), E_USER_ERROR );
 							return TRUE;
 						}

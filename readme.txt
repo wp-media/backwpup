@@ -171,6 +171,13 @@ Please check all settings after the update:
 
 
 == Changelog ==
+= Version 3.1.5 =
+* Fixed: Sugarsync SSL Message
+* Added: Message if job has not configured destinations
+* Added: Option to disable 2GB Archive size check
+* Updated: AWS SDK to Version 2.7.7 (PHP 5.3.3+)
+* Updated: MSAZURE SDK to Version 0.4.0-dev
+
 = Version 3.1.4 =
 * Fixed: removing of % from filename
 * Fixed: Notice in combination with bbPress

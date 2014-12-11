@@ -168,23 +168,22 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 		$files = get_site_transient( 'backwpup_' . strtolower( $jobdest ) );
 		list( $jobid, $dest ) = explode( '_', $jobdest );
 
-		if ( BackWPup_Option::get( $jobid, 'dropboxtoken' ) && BackWPup_Option::get( $jobid, 'dropboxsecret' ) ) {
-			try {
-				$dropbox = new BackWPup_Destination_Dropbox_API( BackWPup_Option::get( $jobid, 'dropboxroot' ) );
-				$dropbox->setOAuthTokens( BackWPup_Option::get( $jobid, 'dropboxtoken' ) );
-				$dropbox->fileopsDelete( $backupfile );
-				//update file list
-				foreach ( $files as $key => $file ) {
-					if ( is_array( $file ) && $file[ 'file' ] == $backupfile )
-						unset( $files[ $key ] );
-				}
-				unset( $dropbox );
+		try {
+			$dropbox = new BackWPup_Destination_Dropbox_API( BackWPup_Option::get( $jobid, 'dropboxroot' ) );
+			$dropbox->setOAuthTokens( BackWPup_Option::get( $jobid, 'dropboxtoken' ) );
+			$dropbox->fileopsDelete( $backupfile );
+			//update file list
+			foreach ( $files as $key => $file ) {
+				if ( is_array( $file ) && $file[ 'file' ] == $backupfile )
+					unset( $files[ $key ] );
 			}
-			catch ( Exception $e ) {
-				BackWPup_Admin::message( 'DROPBOX: ' . $e->getMessage(), TRUE );
-			}
+			unset( $dropbox );
 		}
-		set_site_transient( 'backwpup_' . strtolower( $jobdest ), $files, 60 * 60 * 24 * 7 );
+		catch ( Exception $e ) {
+			BackWPup_Admin::message( 'DROPBOX: ' . $e->getMessage(), TRUE );
+		}
+
+		set_site_transient( 'backwpup_' . strtolower( $jobdest ), $files, 3600 * 24 * 7 );
 	}
 
 	/**

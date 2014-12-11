@@ -331,6 +331,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 				}
 				break;
 			case 'runnow':
+				$_GET[ 'jobid' ] = (int) $_GET[ 'jobid' ];
 				if ( ! empty( $_GET[ 'jobid' ] ) ) {
 					if ( ! current_user_can( 'backwpup_jobs_start' ) )
 						wp_die( __( 'Sorry, you don\'t have permissions to do that.', 'backwpup') );
@@ -340,15 +341,48 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 					BackWPup_Job::check_folder( BackWPup::get_plugin_data( 'TEMP' ), TRUE );
 					//check log folder
 					BackWPup_Job::check_folder( get_site_option( 'backwpup_cfg_logfolder' ) );
+					//check backup destinations
+					$job_types = BackWPup::get_job_types();
+					$job_conf_types = BackWPup_Option::get( $_GET[ 'jobid' ], 'type' );
+					$creates_file = FALSE;
+					foreach ( $job_types as $id => $job_type_class ) {
+						if ( in_array( $id, $job_conf_types ) && $job_type_class->creates_file( ) ) {
+							$creates_file = TRUE;
+							break;
+						}
+					}
+					if ( $creates_file ) {
+						$job_conf_dests = BackWPup_Option::get( $_GET[ 'jobid' ], 'destinations' );
+						$destinations = 0;
+						/* @var BackWPup_Destinations $dest_class */
+						foreach ( BackWPup::get_registered_destinations() as $id => $dest ) {
+							if ( ! in_array( $id, $job_conf_dests ) || empty( $dest[ 'class' ] ) ) {
+								continue;
+							}
+							$dest_class = BackWPup::get_destination( $id );
+							$config = new stdClass();
+							$config->job = BackWPup_Option::get_job( $_GET[ 'jobid' ] );
+							if ( ! $dest_class->can_run( $config ) ) {
+								BackWPup_Admin::message( sprintf( __( 'The job "%s" destination "%s" is not configured properly','backwpup' ), esc_attr( BackWPup_Option::get( $_GET[ 'jobid' ], 'name' ) ), $id ), TRUE );
+							}
+							$destinations++;
+						}
+						if ( $destinations < 1 ) {
+							BackWPup_Admin::message( sprintf( __( 'The job "%s" needs properly configured destinations to run!','backwpup' ), esc_attr( BackWPup_Option::get( $_GET[ 'jobid' ], 'name' ) ) ), TRUE );
+						}
+					}
+
 					//check server callback
 					$raw_response = BackWPup_Job::get_jobrun_url( 'test' );
 					$test_result = '';
-					if ( is_wp_error( $raw_response ) )
+					if ( is_wp_error( $raw_response ) ) {
 						$test_result .= sprintf( __( 'The HTTP response test get an error "%s"','backwpup' ), $raw_response->get_error_message() );
-					elseif ( 200 != wp_remote_retrieve_response_code( $raw_response ) && 204 != wp_remote_retrieve_response_code( $raw_response ) )
+					} elseif ( 200 != wp_remote_retrieve_response_code( $raw_response ) && 204 != wp_remote_retrieve_response_code( $raw_response ) ) {
 						$test_result .= sprintf( __( 'The HTTP response test get a false http status (%s)','backwpup' ), wp_remote_retrieve_response_code( $raw_response ) );
-					if ( ! empty( $test_result ) )
+					}
+					if ( ! empty( $test_result ) ) {
 						BackWPup_Admin::message( $test_result, TRUE );
+					}
 
 					//only start job if messages empty
 					$log_messages = BackWPup_Admin::get_messages();

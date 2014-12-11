@@ -119,12 +119,14 @@ class BackWPup_Cron {
 	public static function cron_active() {
 
 		//only if cron active
-		if ( ! defined( 'DOING_CRON' ) || ! DOING_CRON )
+		if ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) {
 			return;
+		}
 
 		//only work if backwpup_run as query var ist set and nothing else and the value ist right
-		if ( empty( $_GET[ 'backwpup_run' ] ) || ! in_array( $_GET[ 'backwpup_run' ], array( 'test','restart', 'runnow', 'runnowalt', 'runext', 'cronrun' ) ) )
+		if ( empty( $_GET[ 'backwpup_run' ] ) || ! in_array( $_GET[ 'backwpup_run' ], array( 'test','restart', 'runnow', 'runnowalt', 'runext', 'cronrun' ) ) ) {
 			return;
+		}
 
 		//special header
 		@session_write_close();
@@ -134,28 +136,32 @@ class BackWPup_Cron {
 		nocache_headers();
 
 		//on test die for fast feedback
-		if ( $_GET[ 'backwpup_run' ] == 'test' )
+		if ( $_GET[ 'backwpup_run' ] == 'test' ) {
 			die( 'BackWPup Test' );
+		}
 
 		// generate normal nonce
 		$nonce = substr( wp_hash( wp_nonce_tick() . 'backwpup_job_run-' . $_GET[ 'backwpup_run' ], 'nonce' ), - 12, 10 );
 		//special nonce on external start
-		if ( $_GET[ 'backwpup_run' ] == 'runext' )
+		if ( $_GET[ 'backwpup_run' ] == 'runext' ) {
 			$nonce = get_site_option( 'backwpup_cfg_jobrunauthkey' );
+		}
 		// check nonce
-		if ( empty( $_GET['_nonce'] ) || $nonce != $_GET['_nonce'] )
+		if ( empty( $_GET['_nonce'] ) || $nonce != $_GET['_nonce'] ) {
 			return;
+		}
 
 		//check runext is allowed for job
 		if ( $_GET[ 'backwpup_run' ] == 'runext' ) {
 			$jobids_external = BackWPup_Option::get_job_ids( 'activetype', 'link' );
-			if ( !isset( $_GET[ 'jobid' ] ) || ! in_array( $_GET[ 'jobid' ], $jobids_external ) )
+			if ( ! isset( $_GET[ 'jobid' ] ) || ! in_array( $_GET[ 'jobid' ], $jobids_external ) ) {
 				return;
+			}
 		}
 
 		//run BackWPup job
 		BackWPup_Job::start_http( $_GET[ 'backwpup_run' ] );
-		die();
+		die( '' );
 	}
 
 

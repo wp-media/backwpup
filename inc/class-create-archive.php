@@ -184,6 +184,7 @@ class BackWPup_Create_Archive {
 				if ( ! $this->ziparchive->close() ) {
 					sleep( 1 );
 					if ( ! $this->ziparchive->close() ) {
+						$this->ziparchive_status();
 						trigger_error( __( 'ZIP archive cannot be closed correctly.', 'backwpup' ), E_USER_ERROR );
 					}
 				}
@@ -316,7 +317,8 @@ class BackWPup_Create_Archive {
 						if ( ! $this->ziparchive->close() ) {
 							sleep( 1 );
 							if ( ! $this->ziparchive->close() ) {
-								trigger_error(__( 'ZipArchive can not closed correctly', 'backwpup'	), E_USER_ERROR	);
+								$this->ziparchive_status();
+								trigger_error(__( 'ZIP archive cannot be closed correctly', 'backwpup'	), E_USER_ERROR	);
 							}
 						}
 					}
@@ -639,6 +641,12 @@ class BackWPup_Create_Archive {
 	 * @return bool
 	 */
 	private function check_archive_filesize( $file_to_add = '' ) {
+
+		$disabled = get_site_option( 'backwpup_cfg_disablearchivesizelimit' );
+
+		if ( ! empty( $disabled ) ) {
+			return TRUE;
+		}
 
 		$two_gb_in_bytes = 2147483647;
 

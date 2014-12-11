@@ -1,5 +1,5 @@
 <?php
-// Amazon S3 SDK v2.6.1
+// Amazon S3 SDK v2.7.7
 // http://aws.amazon.com/de/sdkforphp2/
 // https://github.com/aws/aws-sdk-php
 
@@ -397,7 +397,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			}
 
 
-			if ( ! $job_object->job[ 's3multipart' ] ) {
+			if ( ! $job_object->job[ 's3multipart' ] || $job_object->backup_filesize < 1048576 * 6 ) {
 				//Prepare Upload
 				$create_args                 	= array();
 				$create_args[ 'Bucket' ] 	 	= $job_object->job[ 's3bucket' ];
@@ -421,8 +421,8 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				}
 			} else {
 				//Prepare Upload
-				$job_object->steps_data[ $job_object->step_working ][ 'file_handel' ] = fopen( $job_object->backup_folder . $job_object->backup_file, 'rb' );
-				fseek( $job_object->steps_data[ $job_object->step_working ][ 'file_handel' ], $job_object->substeps_done );
+				$file_handle = fopen( $job_object->backup_folder . $job_object->backup_file, 'rb' );
+				fseek( $file_handle, $job_object->substeps_done );
 
 				try {
 
@@ -443,9 +443,9 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 						$job_object->steps_data[ $job_object->step_working ][ 'Part' ] = 1;
 					}
 
-					while ( ! feof( $job_object->steps_data[ $job_object->step_working ][ 'file_handel' ] ) ) {
+					while ( ! feof( $file_handle ) ) {
 						$chunk_upload_start = microtime( TRUE );
-						$part_data = fread( $job_object->steps_data[ $job_object->step_working ][ 'file_handel' ], 1048576 * 5 ); //5MB Minimum part size
+						$part_data = fread( $file_handle, 1048576 * 5 ); //5MB Minimum part size
 						$part = $s3->uploadPart( array(	'Bucket'	=> $job_object->job[ 's3bucket' ],
 														'UploadId'  => $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ],
 														'Key'		=> $job_object->job[ 's3dir' ] . $job_object->backup_file,
@@ -477,11 +477,11 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 					unset( $job_object->steps_data[ $job_object->step_working ][ 'Parts' ] );
 					unset( $job_object->steps_data[ $job_object->step_working ][ 'Part' ] );
 					$job_object->substeps_done = 0;
-					if ( is_resource( $job_object->steps_data[ $job_object->step_working ][ 'file_handel' ] ) )
-						fclose( $job_object->steps_data[ $job_object->step_working ][ 'file_handel' ] );
+					if ( is_resource( $file_handle ) )
+						fclose( $file_handle );
 					return FALSE;
 				}
-				fclose( $job_object->steps_data[ $job_object->step_working ][ 'file_handel' ] );
+				fclose( $file_handle );
 			}
 
 			$result = $s3->headObject( array( 	'Bucket' => $job_object->job[ 's3bucket' ],
@@ -645,7 +645,8 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 														'region'	=> $args[ 's3region' ],
 														'base_url'	=> $this->get_s3_base_url( $args[ 's3region' ], $args[ 's3base_url' ]),
 														'scheme'	=> 'https',
-														'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ) ) );
+														'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' )
+				                                ) );
 
 				$buckets = $s3->listBuckets();
 			}

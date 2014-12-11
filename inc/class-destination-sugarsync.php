@@ -416,7 +416,7 @@ class BackWPup_Destination_SugarSync_API {
 		if ( ini_get( 'open_basedir' ) == '' ) curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, TRUE );
 		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, TRUE );
 		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
-			curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
+			curl_setopt( $curl, CURLOPT_SSLVERSION, 1 );
 			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, TRUE );
 			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
 			curl_setopt( $curl, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
@@ -503,7 +503,7 @@ class BackWPup_Destination_SugarSync_API {
 		if ( ini_get( 'open_basedir' ) == ''  ) curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, TRUE );
 		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, TRUE );
 		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
-			curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
+			curl_setopt( $curl, CURLOPT_SSLVERSION, 1 );
 			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, TRUE );
 			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
 			curl_setopt( $curl, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
@@ -565,7 +565,7 @@ class BackWPup_Destination_SugarSync_API {
 		if ( ini_get( 'open_basedir' ) == '' ) curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, TRUE );
 		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, TRUE );
 		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
-			curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
+			curl_setopt( $curl, CURLOPT_SSLVERSION, 1 );
 			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, TRUE );
 			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
 			curl_setopt( $curl, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
@@ -625,7 +625,7 @@ class BackWPup_Destination_SugarSync_API {
 		if ( ini_get( 'open_basedir' ) == '' ) curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, TRUE );
 		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, TRUE );
 		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
-			curl_setopt( $curl, CURLOPT_SSLVERSION, 3 );
+			curl_setopt( $curl, CURLOPT_SSLVERSION, 1 );
 			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, TRUE );
 			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
 			curl_setopt( $curl, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
