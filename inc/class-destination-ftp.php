@@ -196,7 +196,7 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 	 * @param $job_object
 	 * @return bool
 	 */
-	public function job_run_archive( &$job_object ) {
+	public function job_run_archive( BackWPup_Job $job_object ) {
 
 		$job_object->substeps_todo = 2 + $job_object->backup_filesize;
 		if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] != $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] )
@@ -241,13 +241,18 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 			if ( substr( trim( $return[ 0 ] ), 0, 3 ) <= 400 ) {
 				$job_object->log( sprintf( __( 'FTP client command: %s', 'backwpup' ), 'PASS *******' ), E_USER_NOTICE );
 				$return = ftp_raw( $ftp_conn_id, 'PASS ' . BackWPup_Encryption::decrypt( $job_object->job[ 'ftppass' ] ) );
-				$job_object->log( sprintf( __( 'FTP server reply: %s', 'backwpup' ), $return[ 0 ] ), E_USER_NOTICE );
-				if ( substr( trim( $return[ 0 ] ), 0, 3 ) <= 400 )
+				if ( substr( trim( $return[ 0 ] ), 0, 3 ) <= 400 ) {
+					$job_object->log( sprintf( __( 'FTP server reply: %s', 'backwpup' ), $return[ 0 ] ), E_USER_NOTICE );
 					$loginok = TRUE;
+				} else {
+					$job_object->log( sprintf( __( 'FTP server reply: %s', 'backwpup' ), $return[ 0 ] ), E_USER_ERROR );
+				}
 			}
 		}
-		if ( ! $loginok )
+
+		if ( ! $loginok ) {
 			return FALSE;
+		}
 
 		//SYSTYPE
 		$job_object->log( sprintf( __( 'FTP client command: %s', 'backwpup' ), 'SYST' ), E_USER_NOTICE );
@@ -313,28 +318,31 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 
 		if ( $job_object->substeps_done < $job_object->backup_filesize ) {
 			$job_object->log( __( 'Starting upload to FTP &#160;&hellip;', 'backwpup' ), E_USER_NOTICE );
-			$fp  = fopen( $job_object->backup_folder . $job_object->backup_file, 'r' );
-			//go to actual file pos
-			fseek( $fp, $job_object->substeps_done );
-			$ret = ftp_nb_fput( $ftp_conn_id, $current_ftp_dir . $job_object->backup_file, $fp, FTP_BINARY, $job_object->substeps_done );
-			while ( $ret == FTP_MOREDATA ) {
-				$job_object->substeps_done = ftell( $fp );
-				$job_object->update_working_data();
-				$job_object->do_restart_time();
-				$ret = ftp_nb_continue( $ftp_conn_id );
-			}
-			if ( $ret != FTP_FINISHED ) {
-				$job_object->log( __( 'Cannot transfer backup to FTP server!', 'backwpup' ), E_USER_ERROR );
-
+			if ( $fp = fopen( $job_object->backup_folder . $job_object->backup_file, 'rb' ) ) {
+				//go to actual file pos
+				fseek( $fp, $job_object->substeps_done );
+				$ret = ftp_nb_fput( $ftp_conn_id, $current_ftp_dir . $job_object->backup_file, $fp, FTP_BINARY, $job_object->substeps_done );
+				while ( $ret == FTP_MOREDATA ) {
+					$job_object->substeps_done = ftell( $fp );
+					$job_object->update_working_data();
+					$job_object->do_restart_time();
+					$ret = ftp_nb_continue( $ftp_conn_id );
+				}
+				if ( $ret != FTP_FINISHED ) {
+					$job_object->log( __( 'Cannot transfer backup to FTP server!', 'backwpup' ), E_USER_ERROR );
+					return FALSE;
+				}
+				else {
+					$job_object->substeps_done = $job_object->backup_filesize + 1;
+					$job_object->log( sprintf( __( 'Backup transferred to FTP server: %s', 'backwpup' ), $current_ftp_dir . $job_object->backup_file ), E_USER_NOTICE );
+					if ( ! empty( $job_object->job[ 'jobid' ] ) )
+					BackWPup_Option::update( $job_object->job[ 'jobid' ], 'lastbackupdownloadurl', "ftp://" . $job_object->job[ 'ftpuser' ] . ":" . BackWPup_Encryption::decrypt( $job_object->job[ 'ftppass' ] ) . "@" . $job_object->job[ 'ftphost' ] . ':' . $job_object->job[ 'ftphostport' ] . $current_ftp_dir . $job_object->backup_file );
+				}
+				fclose( $fp );
+			} else {
+				$job_object->log( __( 'Can not open source file for transfer.', 'backwpup' ), E_USER_ERROR );
 				return FALSE;
 			}
-			else {
-				$job_object->substeps_done = $job_object->backup_filesize + 1;
-				$job_object->log( sprintf( __( 'Backup transferred to FTP server: %s', 'backwpup' ), $current_ftp_dir . $job_object->backup_file ), E_USER_NOTICE );
-				if ( ! empty( $job_object->job[ 'jobid' ] ) )
-				BackWPup_Option::update( $job_object->job[ 'jobid' ], 'lastbackupdownloadurl', "ftp://" . $job_object->job[ 'ftpuser' ] . ":" . BackWPup_Encryption::decrypt( $job_object->job[ 'ftppass' ] ) . "@" . $job_object->job[ 'ftphost' ] . ':' . $job_object->job[ 'ftphostport' ] . $current_ftp_dir . $job_object->backup_file );
-			}
-			fclose( $fp );
 		}
 
 		$backupfilelist = array();
@@ -390,18 +398,18 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $job_object
+	 * @param $job_settings
 	 * @return bool
 	 */
-	public function can_run( $job_object ) {
+	public function can_run( array $job_settings ) {
 
-		if ( empty( $job_object->job[ 'ftphost' ] ) )
+		if ( empty( $job_settings[ 'ftphost' ] ) )
 			return FALSE;
 
-		if ( empty( $job_object->job[ 'ftpuser' ] ) )
+		if ( empty( $job_settings[ 'ftpuser' ] ) )
 			return FALSE;
 
-		if ( empty( $job_object->job[ 'ftppass' ] ) )
+		if ( empty( $job_settings[ 'ftppass' ] ) )
 			return FALSE;
 
 		return TRUE;

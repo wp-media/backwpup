@@ -86,7 +86,7 @@ class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes {
 	 * @param $job_object
 	 * @return bool
 	 */
-	public function job_run( &$job_object ) {
+	public function job_run( BackWPup_Job $job_object ) {
 
 		$job_object->substeps_todo = 1;
 
@@ -102,37 +102,42 @@ class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes {
 		else
 			$handle = fopen( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'pluginlistfile' ], 'w' );
 
-		//open file
-		$header = "------------------------------------------------------------" . PHP_EOL;
-		$header .= "  Plugin list generated with BackWPup version: " . BackWPup::get_plugin_data( 'Version' ) . PHP_EOL;
-		$header .= "  " . translate( BackWPup::get_plugin_data( 'pluginuri' ), 'backwpup' ) . PHP_EOL;
-		$header .= "  Blog Name: " . get_bloginfo( 'name' ) . PHP_EOL;
-		$header .= "  Blog URL: " . get_bloginfo( 'url' ) . PHP_EOL;
-		$header .= "  Generated on: " . date_i18n( 'Y-m-d H:i.s' ) . PHP_EOL;
-		$header .= "------------------------------------------------------------" . PHP_EOL . PHP_EOL;
-		fwrite( $handle, $header );
-		//get Plugins
-		if ( ! function_exists( 'get_plugins' ) )
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
-		$plugins        = get_plugins();
-		$plugins_active = get_option( 'active_plugins' );
-		//write it to file
-		fwrite( $handle, PHP_EOL . __( 'All plugin information:', 'backwpup' ) . PHP_EOL . '------------------------------' . PHP_EOL );
-		foreach ( $plugins as $plugin ) {
-			fwrite( $handle, $plugin[ 'Name' ] . ' (v.' . $plugin[ 'Version' ] . ') ' . html_entity_decode( sprintf( __( 'from %s', 'backwpup' ), $plugin[ 'Author' ] ), ENT_QUOTES ) . PHP_EOL . "\t" . $plugin[ 'PluginURI' ] . PHP_EOL );
-		}
-		fwrite( $handle, PHP_EOL . __( 'Active plugins:', 'backwpup' ) . PHP_EOL . '------------------------------' . PHP_EOL );
+		if ( $handle ) {
+			//open file
+			$header = "------------------------------------------------------------" . PHP_EOL;
+			$header .= "  Plugin list generated with BackWPup version: " . BackWPup::get_plugin_data( 'Version' ) . PHP_EOL;
+			$header .= "  " . translate( BackWPup::get_plugin_data( 'pluginuri' ), 'backwpup' ) . PHP_EOL;
+			$header .= "  Blog Name: " . get_bloginfo( 'name' ) . PHP_EOL;
+			$header .= "  Blog URL: " . get_bloginfo( 'url' ) . PHP_EOL;
+			$header .= "  Generated on: " . date_i18n( 'Y-m-d H:i.s' ) . PHP_EOL;
+			$header .= "------------------------------------------------------------" . PHP_EOL . PHP_EOL;
+			fwrite( $handle, $header );
+			//get Plugins
+			if ( ! function_exists( 'get_plugins' ) )
+				require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			$plugins        = get_plugins();
+			$plugins_active = get_option( 'active_plugins' );
+			//write it to file
+			fwrite( $handle, PHP_EOL . __( 'All plugin information:', 'backwpup' ) . PHP_EOL . '------------------------------' . PHP_EOL );
+			foreach ( $plugins as $plugin ) {
+				fwrite( $handle, $plugin[ 'Name' ] . ' (v.' . $plugin[ 'Version' ] . ') ' . html_entity_decode( sprintf( __( 'from %s', 'backwpup' ), $plugin[ 'Author' ] ), ENT_QUOTES ) . PHP_EOL . "\t" . $plugin[ 'PluginURI' ] . PHP_EOL );
+			}
+			fwrite( $handle, PHP_EOL . __( 'Active plugins:', 'backwpup' ) . PHP_EOL . '------------------------------' . PHP_EOL );
 
-		foreach ( $plugins as $key => $plugin ) {
-			if ( in_array( $key, $plugins_active ) )
-				fwrite( $handle, $plugin[ 'Name' ] . PHP_EOL );
+			foreach ( $plugins as $key => $plugin ) {
+				if ( in_array( $key, $plugins_active ) )
+					fwrite( $handle, $plugin[ 'Name' ] . PHP_EOL );
+			}
+			fwrite( $handle, PHP_EOL . __( 'Inactive plugins:', 'backwpup' ) . PHP_EOL . '------------------------------' . PHP_EOL );
+			foreach ( $plugins as $key => $plugin ) {
+				if ( ! in_array( $key, $plugins_active ) )
+					fwrite( $handle, $plugin[ 'Name' ] . PHP_EOL );
+			}
+			fclose( $handle );
+		} else {
+			$job_object->log( __( 'Can not open target file for writing.', 'backwpup' ), E_USER_ERROR );
+			return FALSE;
 		}
-		fwrite( $handle, PHP_EOL . __( 'Inactive plugins:', 'backwpup' ) . PHP_EOL . '------------------------------' . PHP_EOL );
-		foreach ( $plugins as $key => $plugin ) {
-			if ( ! in_array( $key, $plugins_active ) )
-				fwrite( $handle, $plugin[ 'Name' ] . PHP_EOL );
-		}
-		fclose( $handle );
 
 		//add file to backup files
 		if ( is_readable( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'pluginlistfile' ] ) ) {

@@ -359,7 +359,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 	 * @param $job_object
 	 * @return bool
 	 */
-	public function job_run( &$job_object ) {
+	public function job_run( BackWPup_Job $job_object ) {
 
 		$job_object->log( sprintf( __( '%d. Trying to make a list of folders to back up&#160;&hellip;', 'backwpup' ), $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] ) );
 		$job_object->substeps_todo = 8;

@@ -15,19 +15,19 @@ abstract class BackWPup_Destinations {
 	abstract public function option_defaults();
 
 	/**
-	 * @param $jobid
+	 * @param $jobid int
 	 */
 	abstract public function edit_tab( $jobid );
 
 	/**
-	 * @param $jobid
+	 * @param $jobid int
 	 */
 	public function edit_auth( $jobid ) {
 
 	}
 
 	/**
-	 * @param $jobid
+	 * @param $jobid int
 	 */
 	abstract public function edit_form_post_save( $jobid );
 
@@ -74,9 +74,9 @@ abstract class BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $job_settings
+	 * @param $job_settings array
 	 */
-	public function wizard_page( $job_settings ) {
+	public function wizard_page( array $job_settings ) {
 
 		echo '<br /><pre>';
 		print_r( $job_settings );
@@ -84,9 +84,11 @@ abstract class BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $job_settings
+	 * @param $job_settings array
+	 *
+	 * @return array
 	 */
-	public function wizard_save( $job_settings ) {
+	public function wizard_save( array $job_settings ) {
 
 		return $job_settings;
 	}
@@ -99,7 +101,7 @@ abstract class BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $jobdest
+	 * @param $jobdest string
 	 * @param $backupfile
 	 */
 	public function file_delete( $jobdest, $backupfile ) {
@@ -107,7 +109,7 @@ abstract class BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $jobid
+	 * @param $jobid int
 	 * @param $get_file
 	 */
 	public function file_download( $jobid, $get_file ) {
@@ -115,7 +117,7 @@ abstract class BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $jobdest
+	 * @param $jobdest string
 	 * @return bool
 	 */
 	public function file_get_list( $jobdest ) {
@@ -124,20 +126,20 @@ abstract class BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $job_object BackWPup_Job Object
+	 * @param $job_object BackWPup_Job
 	 */
-	abstract public function job_run_archive( &$job_object );
+	abstract public function job_run_archive( BackWPup_Job $job_object );
 
 	/**
-	 * @param $job_object BackWPup_Job Object
+	 * @param $job_object BackWPup_Job
 	 */
-	public function job_run_sync( &$job_object ) {
+	public function job_run_sync( BackWPup_Job $job_object ) {
 
 	}
 
 	/**
-	 * @param $job_object BackWPup_Job Object
+	 * @param $job_settings array
 	 * @return bool
 	 */
-	abstract public function can_run( $job_object );
+	abstract public function can_run( array $job_settings );
 }

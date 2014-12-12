@@ -21,7 +21,7 @@ class BackWPup_Create_Archive {
 	/**
 	 * Open handel for files.
 	 */
-	private $filehandel = '';
+	private $filehandel = NULL;
 
 	/**
 	 * class handel for ZipArchive.
@@ -150,7 +150,7 @@ class BackWPup_Create_Archive {
 		}
 
 		//check file handle
-		if ( ! empty( $this->filehandel ) && ! is_resource( $this->filehandel ) ) {
+		if ( isset( $this->filehandel ) && ! $this->filehandel ) {
 			throw new BackWPup_Create_Archive_Exception( __( 'Cannot open archive file', 'backwpup' ) );
 		}
 

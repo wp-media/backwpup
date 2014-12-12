@@ -360,9 +360,8 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 								continue;
 							}
 							$dest_class = BackWPup::get_destination( $id );
-							$config = new stdClass();
-							$config->job = BackWPup_Option::get_job( $_GET[ 'jobid' ] );
-							if ( ! $dest_class->can_run( $config ) ) {
+							$job_settings = BackWPup_Option::get_job( $_GET[ 'jobid' ] );
+							if ( ! $dest_class->can_run( $job_settings ) ) {
 								BackWPup_Admin::message( sprintf( __( 'The job "%s" destination "%s" is not configured properly','backwpup' ), esc_attr( BackWPup_Option::get( $_GET[ 'jobid' ], 'name' ) ), $id ), TRUE );
 							}
 							$destinations++;

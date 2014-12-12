@@ -134,8 +134,9 @@ class BackWPup_MySQLDump {
 		}
 
 		//check file handle
-		if ( ! is_resource( $this->handle ) )
+		if ( ! $this->handle ) {
 			throw new BackWPup_MySQLDump_Exception( __( 'Cannot open SQL backup file', 'backwpup' ) );
+		}
 
 		//get table names and types from Database
 		$res = $this->mysqli->query( 'SHOW FULL TABLES FROM `' . $this->dbname . '`' );

@@ -147,7 +147,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 	 *
 	 * @return bool
 	 */
-	public function job_run( &$job_object ) {
+	public function job_run( BackWPup_Job $job_object ) {
 
 		$job_object->substeps_todo = 1;
 

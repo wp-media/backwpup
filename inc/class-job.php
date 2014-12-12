@@ -245,7 +245,7 @@ final class BackWPup_Job {
 				if ( ! in_array( $id, $this->job[ 'destinations' ] ) || empty( $dest[ 'class' ] ) )
 					continue;
 				$dest_class = BackWPup::get_destination( $id );
-				if ( $dest_class->can_run( $this ) ) {
+				if ( $dest_class->can_run( $this->job ) ) {
 					if ( $this->job[ 'backuptype' ] == 'sync' ) {
 						if ( $dest[ 'can_sync' ] ) {
 							$this->steps_todo[]                                   = 'DEST_SYNC_' . $id;
@@ -359,10 +359,14 @@ final class BackWPup_Job {
 		$head .= sprintf( __( '[INFO] Backup type is: %s', 'backwpup' ), $this->job[ 'backuptype' ] ) . '<br />' . PHP_EOL;
 		if ( ! empty( $this->backup_file ) && $this->job[ 'backuptype' ] == 'archive' )
 			$head .= sprintf( __( '[INFO] Backup file is: %s', 'backwpup' ), $this->backup_folder . $this->backup_file ) . '<br />' . PHP_EOL;
-		file_put_contents( $this->logfile, $head, FILE_APPEND );
+		if ( ! file_put_contents( $this->logfile, $head, FILE_APPEND ) ) {
+			$this->logfile = '';
+			$this->log( __( 'Could not write log file', 'backwpup' ), E_USER_ERROR );
+		}
 		//output info on cli
-		if ( php_sapi_name() == 'cli' && defined( 'STDOUT' ) )
+		if ( php_sapi_name() == 'cli' && defined( 'STDOUT' ) ) {
 			fwrite( STDOUT, strip_tags( $head ) ) ;
+		}
 		//test for destinations
 		if ( $job_need_dest ) {
 			$desttest = FALSE;
@@ -656,9 +660,11 @@ final class BackWPup_Job {
 		$this->run[ 'PHP' ][ 'INI' ][ 'DISPLAY_ERRORS' ] = ini_get( 'display_errors' );
 		$this->run[ 'PHP' ][ 'INI' ][ 'HTML_ERRORS' ] 	 = ini_get( 'html_errors' );
 		$this->run[ 'PHP' ][ 'INI' ][ 'REPORT_MEMLEAKS' ]= ini_get( 'report_memleaks' );
-		$this->run[ 'PHP' ][ 'INI' ][ 'ZLIB_OUTPUT_COMPRESSION' ] 	  = ini_get( 'zlib.output_compression' );
+		$this->run[ 'PHP' ][ 'INI' ][ 'ZLIB_OUTPUT_COMPRESSION' ] = ini_get( 'zlib.output_compression' );
 		$this->run[ 'PHP' ][ 'INI' ][ 'IMPLICIT_FLUSH' ] = ini_get( 'implicit_flush' );
-		@ini_set( 'error_log', $this->logfile );
+		if ( ! empty( $this->logfile ) ) {
+			@ini_set( 'error_log', $this->logfile );
+		}
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			error_reporting( -1 );
 		} else {
@@ -675,7 +681,7 @@ final class BackWPup_Job {
 		$wpdb->query( "SET session wait_timeout = 300" );
 		//set temp folder
 		$can_set_temp_env = TRUE;
-		$protected_env_vars = explode( ',', ini_get( 'safe_mode_protected_env_vars') );
+		$protected_env_vars = explode( ',', ini_get( 'safe_mode_protected_env_vars' ) );
 		foreach( $protected_env_vars as $protected_env ) {
 			if ( strtoupper( trim( $protected_env ) ) == 'TMPDIR' )
 				$can_set_temp_env = FALSE;
@@ -690,15 +696,17 @@ final class BackWPup_Job {
 		//set wp max memory limit
 		@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) );
 		//set error handler
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			set_error_handler( array( $this, 'log' ), -1 );
-		} else {
-			set_error_handler( array( $this, 'log' ), E_ALL ^ E_NOTICE );
+		if ( ! empty( $this->logfile ) ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				set_error_handler( array( $this, 'log' ), -1 );
+			} else {
+				set_error_handler( array( $this, 'log' ), E_ALL ^ E_NOTICE );
+			}
 		}
 		set_exception_handler( array( $this, 'exception_handler' ) );
 		//not loading Textdomains and unload loaded
 		if ( get_site_option( 'backwpup_cfg_jobnotranslate' ) ) {
-			add_filter( 'override_load_textdomain', create_function( '','return TRUE;') );
+			add_filter( 'override_load_textdomain', create_function( '','return TRUE;' ) );
 			$GLOBALS[ 'l10n' ] = array();
 		}
 		// execute function on job shutdown  register_shutdown_function( array( $this, 'shutdown' ) );
@@ -965,16 +973,16 @@ final class BackWPup_Job {
 
 		$args = func_get_args();
 
-		//nothing on empty
-		if ( empty( $this->logfile ) )
-			return;
 		//Put last error to log if one
 		$lasterror = error_get_last();
-		if ( $lasterror[ 'type' ] == E_ERROR or $lasterror[ 'type' ] == E_PARSE or $lasterror[ 'type' ] == E_CORE_ERROR or $lasterror[ 'type' ] == E_CORE_WARNING or $lasterror[ 'type' ] == E_COMPILE_ERROR or $lasterror[ 'type' ] == E_COMPILE_WARNING )
+		if ( $lasterror[ 'type' ] == E_ERROR or $lasterror[ 'type' ] == E_PARSE or $lasterror[ 'type' ] == E_CORE_ERROR or $lasterror[ 'type' ] == E_CORE_WARNING or $lasterror[ 'type' ] == E_COMPILE_ERROR or $lasterror[ 'type' ] == E_COMPILE_WARNING ) {
 			$this->log( $lasterror[ 'type' ], $lasterror[ 'message' ], $lasterror[ 'file' ], $lasterror[ 'line' ] );
+		}
+
 		//Put sigterm to log
-		if ( ! empty( $args[ 0 ] ) )
+		if ( ! empty( $args[ 0 ] ) ) {
 			$this->log( sprintf( __( 'Signal %d is sent to script!', 'backwpup' ), $args[ 0 ] ), E_USER_ERROR );
+		}
 
 		$this->do_restart( TRUE, TRUE );
 	}
@@ -1044,47 +1052,41 @@ final class BackWPup_Job {
 	/**
 	 * Write messages to log file
 	 *
-	 * @internal param int     the error number (E_USER_ERROR,E_USER_WARNING,E_USER_NOTICE, ...)
-	 * @internal param string  the error message
-	 * @internal param string  the full path of file with error (__FILE__)
-	 * @internal param int     the line in that is the error (__LINE__)
+	 * @param string  $message  the error message
+	 * @param int     $type the error number (E_USER_ERROR,E_USER_WARNING,E_USER_NOTICE, ...)
+	 * @param string  $file the full path of file with error (__FILE__)
+	 * @param int     $line the line in that is the error (__LINE__)
 	 *
 	 * @return bool true
 	 */
-	public function log() {
+	public function log( $message = '', $type = E_USER_NOTICE, $file = '', $line = 0 ) {
 
-		$args = func_get_args();
 		// if error has been suppressed with an @
-		if ( error_reporting() == 0 )
+		if ( error_reporting() == 0 ) {
 			return TRUE;
-
-		//if first the message an second the type switch it on user errors
-		if ( isset( $args[ 1 ] ) && in_array( $args[ 1 ], array( E_USER_NOTICE, E_USER_WARNING, E_USER_ERROR, 16384 ) ) ) {
-			$temp 		= $args[ 0 ];
-			$args[ 0 ] 	= $args[ 1 ];
-			$args[ 1 ] 	= $temp;
 		}
 
-		//if first the message and nothing else set
-		if ( ! isset( $args[ 1 ] ) ) {
-			$args[ 1 ] = $args[ 0 ];
-			$args[ 0 ] = E_USER_NOTICE;
+		//if first the type an second the message switch it on user errors
+		if ( ! is_int( $type ) && is_int( $message ) && in_array( $message, array( 1, 2, 4, 8, 16, 32, 64, 128, 512, 1024, 2048, 4096, 8192, 16384 ) ) ) {
+			$temp 		= $message;
+			$message 	= $type;
+			$type 	    = $temp;
 		}
 
 		//json message if array or object
-		if ( is_array( $args[ 1 ] ) || is_object( $args[ 1 ] ) )
-			$args[ 1 ] = json_encode( $args[ 1 ] );
+		if ( is_array( $message ) || is_object( $message ) )
+			$args[ 1 ] = json_encode( $message );
 
 		//if not set line and file get it
-		if ( empty( $args[ 2 ] ) || empty( $args[ 3 ] ) ) {
+		if ( empty( $file ) || empty( $line ) ) {
 			$debug_info = debug_backtrace();
-			$args[ 2 ] = $debug_info[ 0 ][ 'file' ];
-			$args[ 3 ] = $debug_info[ 0 ][ 'line' ];
+			$file = $debug_info[ 0 ][ 'file' ];
+			$line = $debug_info[ 0 ][ 'line' ];
 		}
 
 		$error_or_warning = FALSE;
 
-		switch ( $args[ 0 ] ) {
+		switch ( $type ) {
 			case E_NOTICE:
 			case E_USER_NOTICE:
 				$messagetype = '';
@@ -1119,60 +1121,68 @@ final class BackWPup_Job {
 				$messagetype = '<span style="background-color:red;color:#fff">' . __( 'RECOVERABLE ERROR:', 'backwpup' ) . ' ';
 				break;
 			default:
-				$messagetype = $args[ 0 ] . ": ";
+				$messagetype = $type . ": ";
 				break;
 		}
 
-		$in_file = str_replace( str_replace( '\\', '/', ABSPATH ), '', str_replace( '\\', '/', $args[ 2 ] ) );
+		$in_file = str_replace( str_replace( '\\', '/', ABSPATH ), '', str_replace( '\\', '/', $file ) );
 
 		//print message to cli
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			if ( $error_or_warning ) {
-				WP_CLI::warning( '[' . date_i18n( 'd-M-Y H:i:s' ) . '] ' . strip_tags( $messagetype ) . str_replace( array( '&hellip;', '&#160;' ), array( '...', ' ' ), strip_tags( $args[ 1 ] ) ) );
+				WP_CLI::warning( '[' . date_i18n( 'd-M-Y H:i:s' ) . '] ' . strip_tags( $messagetype ) . str_replace( array( '&hellip;', '&#160;' ), array( '...', ' ' ), strip_tags( $message ) ) );
 			} else {
-				WP_CLI::log( '[' . date_i18n( 'd-M-Y H:i:s' ) . '] ' . strip_tags( $messagetype ) . str_replace( array( '&hellip;', '&#160;' ), array( '...', ' ' ), strip_tags( $args[ 1 ] ) ) );
+				WP_CLI::log( '[' . date_i18n( 'd-M-Y H:i:s' ) . '] ' . strip_tags( $messagetype ) . str_replace( array( '&hellip;', '&#160;' ), array( '...', ' ' ), strip_tags( $message ) ) );
 			}
 		} elseif ( php_sapi_name() == 'cli' && defined( 'STDOUT' ) ) {
-			fwrite( STDOUT, '[' . date_i18n( 'd-M-Y H:i:s' ) . '] ' . strip_tags( $messagetype ) . str_replace( array( '&hellip;', '&#160;' ), array( '...', ' ' ), strip_tags( $args[ 1 ] ) ) . PHP_EOL ) ;
+			fwrite( STDOUT, '[' . date_i18n( 'd-M-Y H:i:s' ) . '] ' . strip_tags( $messagetype ) . str_replace( array( '&hellip;', '&#160;' ), array( '...', ' ' ), strip_tags( $message ) ) . PHP_EOL ) ;
 		}
 		//log line
-		$timestamp = '<span datetime="' . date_i18n( 'c' ) . '" title="[Type: ' . $args[ 0 ] . '|Line: ' . $args[ 3 ] . '|File: ' . $in_file . '|Mem: ' . size_format( @memory_get_usage( TRUE ), 2 ) . '|Mem Max: ' . size_format( @memory_get_peak_usage( TRUE ), 2 ) . '|Mem Limit: ' . ini_get( 'memory_limit' ) . '|PID: ' . self::get_pid() . ' | UniqID: ' . $this->uniqid . '|Query\'s: ' . get_num_queries() . ']">[' . date_i18n( 'd-M-Y H:i:s' ) . ']</span> ';
+		$timestamp = '<span datetime="' . date_i18n( 'c' ) . '" title="[Type: ' . $type . '|Line: ' . $line . '|File: ' . $in_file . '|Mem: ' . size_format( @memory_get_usage( TRUE ), 2 ) . '|Mem Max: ' . size_format( @memory_get_peak_usage( TRUE ), 2 ) . '|Mem Limit: ' . ini_get( 'memory_limit' ) . '|PID: ' . self::get_pid() . ' | UniqID: ' . $this->uniqid . '|Query\'s: ' . get_num_queries() . ']">[' . date_i18n( 'd-M-Y H:i:s' ) . ']</span> ';
 		//set last Message
-		$message = $messagetype . htmlentities( $args[ 1 ], ENT_COMPAT , get_bloginfo( 'charset' ), FALSE );
-		if ( strstr( $message, '<span' ) )
-			$message .= '</span>';
-		if ( $args[ 0 ] == E_NOTICE || $args[ 0 ] == E_USER_NOTICE )
-			$this->lastmsg = $message;
+		$message_last = $messagetype . htmlentities( $message, ENT_COMPAT , get_bloginfo( 'charset' ), FALSE );
+		if ( strstr( $message_last, '<span' ) )
+			$message_last .= '</span>';
+		if ( $type == E_NOTICE || $type == E_USER_NOTICE )
+			$this->lastmsg = $message_last;
 		if ( $error_or_warning )
-			$this->lasterrormsg = $message;
+			$this->lasterrormsg = $message_last;
 		//write log file
-		file_put_contents( $this->logfile, $timestamp . $message . '<br />' . PHP_EOL, FILE_APPEND  );
-
-		//write new log header
-		if ( $error_or_warning ) {
-			$fd = fopen( $this->logfile, 'r+' );
-			if ( is_resource( $fd ) ) {
-				$found = 0;
-				$file_pos = ftell( $fd );
-				while ( ! feof( $fd ) ) {
-					$line = fgets( $fd );
-					if ( stripos( $line, '<meta name="backwpup_errors" content="' ) !== FALSE ) {
-						fseek( $fd, $file_pos );
-						fwrite( $fd, str_pad( '<meta name="backwpup_errors" content="' . $this->errors . '" />', 100 ) . PHP_EOL );
-						$found ++;
-					}
-					if ( stripos( $line, '<meta name="backwpup_warnings" content="' ) !== FALSE ) {
-						fseek( $fd, $file_pos );
-						fwrite( $fd, str_pad( '<meta name="backwpup_warnings" content="' . $this->warnings . '" />', 100 ) . PHP_EOL );
-						$found ++;
-					}
-					if ( $found >= 2 ) {
-						break;
-					}
-					$file_pos = ftell( $fd );
-				}
-				fclose( $fd );
+		if ( ! empty( $this->logfile ) ) {
+			if ( ! file_put_contents( $this->logfile, $timestamp . $message_last . '<br />' . PHP_EOL, FILE_APPEND ) ) {
+				$this->logfile = '';
+				restore_error_handler();
+				trigger_error( $message, $type );
 			}
+
+			//write new log header
+			if ( $error_or_warning && ! empty( $this->logfile ) ) {
+				if ( $fd = fopen( $this->logfile, 'r+' ) ) {
+					$found = 0;
+					$file_pos = ftell( $fd );
+					while ( ! feof( $fd ) ) {
+						$line = fgets( $fd );
+						if ( stripos( $line, '<meta name="backwpup_errors" content="' ) !== FALSE ) {
+							fseek( $fd, $file_pos );
+							fwrite( $fd, str_pad( '<meta name="backwpup_errors" content="' . $this->errors . '" />', 100 ) . PHP_EOL );
+							$found ++;
+						}
+						if ( stripos( $line, '<meta name="backwpup_warnings" content="' ) !== FALSE ) {
+							fseek( $fd, $file_pos );
+							fwrite( $fd, str_pad( '<meta name="backwpup_warnings" content="' . $this->warnings . '" />', 100 ) . PHP_EOL );
+							$found ++;
+						}
+						if ( $found >= 2 ) {
+							break;
+						}
+						$file_pos = ftell( $fd );
+					}
+					fclose( $fd );
+				}
+			}
+
+		} else {
+			trigger_error( $message, $type );
 		}
 
 		//write working data
@@ -1194,16 +1204,18 @@ final class BackWPup_Job {
 		/* @var wpdb $wpdb */
 
 		//to reduce server load
-		if ( get_site_option( 'backwpup_cfg_jobwaittimems' ) > 0 && get_site_option( 'backwpup_cfg_jobwaittimems') <= 500000 )
+		if ( get_site_option( 'backwpup_cfg_jobwaittimems' ) > 0 && get_site_option( 'backwpup_cfg_jobwaittimems') <= 500000 ) {
 			usleep( get_site_option( 'backwpup_cfg_jobwaittimems' ) );
+		}
 
 		//check free memory
 		$this->need_free_memory( '10M' );
 
 		//only run every 1 sec.
 		$time_to_update = microtime( TRUE ) - $this->timestamp_last_update;
-		if ( $time_to_update < 1 )
+		if ( $time_to_update < 1 ) {
 			return;
+		}
 
 		//FCGI must have a permanent output so that it not broke
 		if ( stristr( PHP_SAPI, 'fcgi' ) || stristr( PHP_SAPI, 'litespeed' ) ) {
@@ -1219,19 +1231,22 @@ final class BackWPup_Job {
 
 		//check MySQL connection to WordPress Database and reconnect if needed
 		$res = $wpdb->query( 'SELECT 1' );
-		if ( $res === FALSE )
+		if ( $res === FALSE ) {
 			$wpdb->db_connect();
+		}
 
 		//calc sub step percent
-		if ( $this->substeps_todo > 0 && $this->substeps_done > 0 )
+		if ( $this->substeps_todo > 0 && $this->substeps_done > 0 ) {
 			$this->substep_percent = round( $this->substeps_done / $this->substeps_todo * 100 );
-		else
+		} else {
 			$this->substep_percent = 1;
+		}
 
 		//check if job aborted
 		if ( ! file_exists( BackWPup::get_plugin_data( 'running_file' ) ) ) {
-			if ( $this->step_working != 'END' )
+			if ( $this->step_working != 'END' ) {
 				$this->end();
+			}
 		} else {
 			$this->timestamp_last_update = microtime( TRUE ); //last update of working file
 			$this->write_running_file();
@@ -1308,9 +1323,9 @@ final class BackWPup_Job {
 		}
 
 		//write header info
-		if ( is_writable( $this->logfile ) ) {
-			$fd = fopen( $this->logfile, 'r+' );
-			if ( is_resource( $fd ) ) {
+		if ( ! empty( $this->logfile ) ) {
+
+			if ( $fd = fopen( $this->logfile, 'r+' ) ) {
 				$filepos = ftell( $fd );
 				$found = 0;
 				while ( ! feof( $fd ) ) {
@@ -1332,48 +1347,48 @@ final class BackWPup_Job {
 				}
 				fclose( $fd );
 			}
-		}
 
-		//logfile end
-		file_put_contents( $this->logfile, "</body>" . PHP_EOL . "</html>", FILE_APPEND );
+			//logfile end
+			file_put_contents( $this->logfile, "</body>" . PHP_EOL . "</html>", FILE_APPEND );
 
-		//Send mail with log
-		$sendmail = FALSE;
-		if ( $this->errors > 0 && ! empty( $this->job[ 'mailerroronly' ] ) && ! empty( $this->job[ 'mailaddresslog' ] ) )
-			$sendmail = TRUE;
-		if ( empty( $this->job[ 'mailerroronly' ] ) && ! empty( $this->job[ 'mailaddresslog' ] ) )
-			$sendmail = TRUE;
-		if ( $sendmail ) {
-			//special subject
-			$status   = __( 'SUCCESSFUL', 'backwpup' );
-			$priority = 3; //Normal
-			if ( $this->warnings > 0 ) {
-				$status   = __( 'WARNING', 'backwpup' );
-				$priority = 2; //High
-			}
-			if ( $this->errors > 0 ) {
-				$status   = __( 'ERROR', 'backwpup' );
-				$priority = 1; //Highest
-			}
+			//Send mail with log
+			$sendmail = FALSE;
+			if ( $this->errors > 0 && ! empty( $this->job[ 'mailerroronly' ] ) && ! empty( $this->job[ 'mailaddresslog' ] ) )
+				$sendmail = TRUE;
+			if ( empty( $this->job[ 'mailerroronly' ] ) && ! empty( $this->job[ 'mailaddresslog' ] ) )
+				$sendmail = TRUE;
+			if ( $sendmail ) {
+				//special subject
+				$status   = __( 'SUCCESSFUL', 'backwpup' );
+				$priority = 3; //Normal
+				if ( $this->warnings > 0 ) {
+					$status   = __( 'WARNING', 'backwpup' );
+					$priority = 2; //High
+				}
+				if ( $this->errors > 0 ) {
+					$status   = __( 'ERROR', 'backwpup' );
+					$priority = 1; //Highest
+				}
 
-			$subject = sprintf( __( '[%3$s] BackWPup log %1$s: %2$s', 'backwpup' ), date_i18n( 'd-M-Y H:i', $this->start_time, TRUE ), esc_attr( $this->job[ 'name' ] ), $status );
-			$headers = array();
-			$headers[] = 'Content-Type: text/html; charset='. get_bloginfo( 'charset' );
-			/* $headers[] = 'X-Priority: ' . $priority; */ // Priority not working with header setting
-			if ( ! empty( $this->job[ 'mailaddresssenderlog' ] ) ) {
-				if ( FALSE === $start_mail = strpos( $this->job[ 'mailaddresssenderlog' ], '<' ) ) {
-					if ( FALSE === strpos( $this->job[ 'mailaddresssenderlog' ], '@' ) ) {
-						$this->job[ 'mailaddresssenderlog' ] = '"' . str_replace( array( '<','>','@' ), '', $this->job[ 'mailaddresssenderlog' ] ) . '" <' . get_bloginfo( 'admin_email' ). '>';
+				$subject = sprintf( __( '[%3$s] BackWPup log %1$s: %2$s', 'backwpup' ), date_i18n( 'd-M-Y H:i', $this->start_time, TRUE ), esc_attr( $this->job[ 'name' ] ), $status );
+				$headers = array();
+				$headers[] = 'Content-Type: text/html; charset='. get_bloginfo( 'charset' );
+				/* $headers[] = 'X-Priority: ' . $priority; */ // Priority not working with header setting
+				if ( ! empty( $this->job[ 'mailaddresssenderlog' ] ) ) {
+					if ( FALSE === $start_mail = strpos( $this->job[ 'mailaddresssenderlog' ], '<' ) ) {
+						if ( FALSE === strpos( $this->job[ 'mailaddresssenderlog' ], '@' ) ) {
+							$this->job[ 'mailaddresssenderlog' ] = '"' . str_replace( array( '<','>','@' ), '', $this->job[ 'mailaddresssenderlog' ] ) . '" <' . get_bloginfo( 'admin_email' ). '>';
+						}
 					}
-				}
-				elseif ( FALSE === strpos( $this->job[ 'mailaddresssenderlog' ], '>', $start_mail ) ) {
-					$this->job[ 'mailaddresssenderlog' ] = '"' . str_replace( array( '<','>','@' ), '', substr( $this->job[ 'mailaddresssenderlog' ], 0, $start_mail ) ) . '" <' . get_bloginfo( 'admin_email' ). '>';
+					elseif ( FALSE === strpos( $this->job[ 'mailaddresssenderlog' ], '>', $start_mail ) ) {
+						$this->job[ 'mailaddresssenderlog' ] = '"' . str_replace( array( '<','>','@' ), '', substr( $this->job[ 'mailaddresssenderlog' ], 0, $start_mail ) ) . '" <' . get_bloginfo( 'admin_email' ). '>';
+					}
+
+					$headers[] = 'From: ' . $this->job[ 'mailaddresssenderlog' ];
 				}
 
-				$headers[] = 'From: ' . $this->job[ 'mailaddresssenderlog' ];
+				wp_mail( $this->job[ 'mailaddresslog' ], $subject, file_get_contents( $this->logfile ), $headers );
 			}
-
-			wp_mail( $this->job[ 'mailaddresslog' ], $subject, file_get_contents( $this->logfile ), $headers );
 		}
 
 		//set done
@@ -1502,10 +1517,11 @@ final class BackWPup_Job {
 	 *
 	 * @return bool|string the mime type or false
 	 */
-	public function get_mime_type( $file ) {
+	public static function get_mime_type( $file ) {
 
-		if ( is_dir( $file ) || is_link( $file ) )
+		if ( is_dir( $file ) || is_link( $file ) ) {
 			return 'application/octet-stream';
+		}
 
 		$mime_types = array(
 			'zip'     => 'application/zip',
@@ -1689,24 +1705,28 @@ final class BackWPup_Job {
 
 		$filesuffix = pathinfo( $file, PATHINFO_EXTENSION );
 		$suffix = strtolower( $filesuffix );
-		if ( isset( $mime_types[ $suffix ] ) )
+		if ( isset( $mime_types[ $suffix ] ) ) {
 			return $mime_types[ $suffix ];
+		}
 
-		if ( ! is_readable( $file ) )
+		if ( ! is_readable( $file ) ) {
 			return 'application/octet-stream';
+		}
 
 		if ( function_exists( 'fileinfo' ) ) {
 			$finfo = finfo_open( FILEINFO_MIME_TYPE );
 			$mime = finfo_file( $finfo, $file );
 		}
 
-		if ( empty( $mime ) && function_exists( 'mime_content_type' ) )
+		if ( empty( $mime ) && function_exists( 'mime_content_type' ) ) {
 			$mime = mime_content_type( $file );
+		}
 
-		if ( empty( $mime ) )
-			return 'application/octet-stream';
-		else
+		if ( ! empty( $mime ) ) {
 			return $mime;
+		}
+
+		return 'application/octet-stream';
 	}
 
 

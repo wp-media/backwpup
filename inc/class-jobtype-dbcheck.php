@@ -72,7 +72,7 @@ class BackWPup_JobType_DBCheck extends BackWPup_JobTypes {
 	 * @param $job_object
 	 * @return bool
 	 */
-	public function job_run( &$job_object ) {
+	public function job_run( BackWPup_Job $job_object ) {
 		global $wpdb;
 		/* @var wpdb $wpdb */
 

@@ -351,10 +351,10 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $job_object
+	 * @param $job_object BAckWPup_Job
 	 * @return bool
 	 */
-	public function job_run_archive( &$job_object ) {
+	public function job_run_archive( BackWPup_Job $job_object ) {
 
 		$job_object->substeps_todo = 2 + $job_object->backup_filesize;
 		if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] != $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] )
@@ -399,6 +399,10 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 
 			if ( ! $job_object->job[ 's3multipart' ] || $job_object->backup_filesize < 1048576 * 6 ) {
 				//Prepare Upload
+				if ( ! $up_file_handle = fopen( $job_object->backup_folder . $job_object->backup_file, 'rb' ) ) {
+					$job_object->log( __( 'Can not open source file for transfer.', 'backwpup' ), E_USER_ERROR );
+					return FALSE;
+				}
 				$create_args                 	= array();
 				$create_args[ 'Bucket' ] 	 	= $job_object->job[ 's3bucket' ];
 				$create_args[ 'ACL' ]        	= 'private';
@@ -408,7 +412,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 					$create_args[ 'StorageClass' ] = $job_object->job[ 's3storageclass' ];
 				$create_args[ 'Metadata' ]   	= array( 'BackupTime' => date_i18n( 'Y-m-d H:i:s', $job_object->start_time ) );
 
-				$create_args[ 'Body' ] 	  		= fopen( $job_object->backup_folder . $job_object->backup_file, 'r' );
+				$create_args[ 'Body' ] 	  		= $up_file_handle;
 				$create_args[ 'Key' ] 		 	= $job_object->job[ 's3dir' ] . $job_object->backup_file;
 				$create_args[ 'ContentType' ]	= $job_object->get_mime_type( $job_object->backup_folder . $job_object->backup_file );
 
@@ -416,72 +420,75 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 					$s3->putObject( $create_args );
 				} catch ( Aws\Common\Exception\MultipartUploadException $e ) {
 					$job_object->log( E_USER_ERROR, sprintf( __( 'S3 Service API: %s', 'backwpup' ), htmlentities( $e->getMessage() ) ), $e->getFile(), $e->getLine() );
-
 					return FALSE;
 				}
 			} else {
 				//Prepare Upload
-				$file_handle = fopen( $job_object->backup_folder . $job_object->backup_file, 'rb' );
-				fseek( $file_handle, $job_object->substeps_done );
+				if ( $file_handle = fopen( $job_object->backup_folder . $job_object->backup_file, 'rb' ) ) {
+					fseek( $file_handle, $job_object->substeps_done );
 
-				try {
+					try {
 
-					if ( empty ( $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ] ) ) {
-						$args = array(	'ACL' 			=> 'private',
-										'Bucket' 		=> $job_object->job[ 's3bucket' ],
-										'ContentType' 	=> $job_object->get_mime_type( $job_object->backup_folder . $job_object->backup_file ),
-										'Key'			=> $job_object->job[ 's3dir' ] . $job_object->backup_file );
-						if ( !empty( $job_object->job[ 's3ssencrypt' ] ) )
-							$args[ 'ServerSideEncryption' ] = $job_object->job[ 's3ssencrypt' ];
-						if ( !empty( $job_object->job[ 's3storageclass' ] ) )
-							$args[ 'StorageClass' ] = empty( $job_object->job[ 's3storageclass' ] ) ? 'STANDARD' : 'REDUCED_REDUNDANCY';
+						if ( empty ( $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ] ) ) {
+							$args = array(	'ACL' 			=> 'private',
+											'Bucket' 		=> $job_object->job[ 's3bucket' ],
+											'ContentType' 	=> $job_object->get_mime_type( $job_object->backup_folder . $job_object->backup_file ),
+											'Key'			=> $job_object->job[ 's3dir' ] . $job_object->backup_file );
+							if ( !empty( $job_object->job[ 's3ssencrypt' ] ) )
+								$args[ 'ServerSideEncryption' ] = $job_object->job[ 's3ssencrypt' ];
+							if ( !empty( $job_object->job[ 's3storageclass' ] ) )
+								$args[ 'StorageClass' ] = empty( $job_object->job[ 's3storageclass' ] ) ? 'STANDARD' : 'REDUCED_REDUNDANCY';
 
-						$upload = $s3->createMultipartUpload( $args );
+							$upload = $s3->createMultipartUpload( $args );
 
-						$job_object->steps_data[ $job_object->step_working ][ 'UploadId' ] = $upload->get( 'UploadId' );
-						$job_object->steps_data[ $job_object->step_working ][ 'Parts' ] = array();
-						$job_object->steps_data[ $job_object->step_working ][ 'Part' ] = 1;
-					}
+							$job_object->steps_data[ $job_object->step_working ][ 'UploadId' ] = $upload->get( 'UploadId' );
+							$job_object->steps_data[ $job_object->step_working ][ 'Parts' ] = array();
+							$job_object->steps_data[ $job_object->step_working ][ 'Part' ] = 1;
+						}
 
-					while ( ! feof( $file_handle ) ) {
-						$chunk_upload_start = microtime( TRUE );
-						$part_data = fread( $file_handle, 1048576 * 5 ); //5MB Minimum part size
-						$part = $s3->uploadPart( array(	'Bucket'	=> $job_object->job[ 's3bucket' ],
-														'UploadId'  => $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ],
-														'Key'		=> $job_object->job[ 's3dir' ] . $job_object->backup_file,
-														'PartNumber' => $job_object->steps_data[ $job_object->step_working ][ 'Part' ],
-														'Body' 		=> $part_data ) );
-						$chunk_upload_time = microtime( TRUE ) - $chunk_upload_start;
-						$job_object->substeps_done = $job_object->substeps_done + strlen( $part_data );
-						$job_object->steps_data[ $job_object->step_working ][ 'Parts' ][] = array( 	'ETag' 		 => $part->get( 'ETag' ),
-																								   	'PartNumber' => $job_object->steps_data[ $job_object->step_working ][ 'Part' ] );
-						$job_object->steps_data[ $job_object->step_working ][ 'Part' ]++;
-						$time_remaining = $job_object->do_restart_time();
-						if ( $time_remaining < $chunk_upload_time )
-							$job_object->do_restart_time( TRUE );
-						$job_object->update_working_data();
-					}
-
-					$s3->completeMultipartUpload( array(	'Bucket'	=> $job_object->job[ 's3bucket' ],
+						while ( ! feof( $file_handle ) ) {
+							$chunk_upload_start = microtime( TRUE );
+							$part_data = fread( $file_handle, 1048576 * 5 ); //5MB Minimum part size
+							$part = $s3->uploadPart( array(	'Bucket'	=> $job_object->job[ 's3bucket' ],
 															'UploadId'  => $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ],
 															'Key'		=> $job_object->job[ 's3dir' ] . $job_object->backup_file,
-															'Parts'		=> $job_object->steps_data[ $job_object->step_working ][ 'Parts' ] ) );
+															'PartNumber' => $job_object->steps_data[ $job_object->step_working ][ 'Part' ],
+															'Body' 		=> $part_data ) );
+							$chunk_upload_time = microtime( TRUE ) - $chunk_upload_start;
+							$job_object->substeps_done = $job_object->substeps_done + strlen( $part_data );
+							$job_object->steps_data[ $job_object->step_working ][ 'Parts' ][] = array( 	'ETag' 		 => $part->get( 'ETag' ),
+																									    'PartNumber' => $job_object->steps_data[ $job_object->step_working ][ 'Part' ] );
+							$job_object->steps_data[ $job_object->step_working ][ 'Part' ]++;
+							$time_remaining = $job_object->do_restart_time();
+							if ( $time_remaining < $chunk_upload_time )
+								$job_object->do_restart_time( TRUE );
+							$job_object->update_working_data();
+						}
 
-				} catch ( Exception $e ) {
-					$job_object->log( E_USER_ERROR, sprintf( __( 'S3 Service API: %s', 'backwpup' ), htmlentities( $e->getMessage() ) ), $e->getFile(), $e->getLine() );
-					if ( ! empty( $job_object->steps_data[ $job_object->step_working ][ 'uploadId' ] ) )
-						$s3->abortMultipartUpload( array(	'Bucket'	=> $job_object->job[ 's3bucket' ],
-															'UploadId'  => $job_object->steps_data[ $job_object->step_working ][ 'uploadId' ],
-															'Key'		=> $job_object->job[ 's3dir' ] . $job_object->backup_file ) );
-					unset( $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ] );
-					unset( $job_object->steps_data[ $job_object->step_working ][ 'Parts' ] );
-					unset( $job_object->steps_data[ $job_object->step_working ][ 'Part' ] );
-					$job_object->substeps_done = 0;
-					if ( is_resource( $file_handle ) )
-						fclose( $file_handle );
+						$s3->completeMultipartUpload( array(	'Bucket'	=> $job_object->job[ 's3bucket' ],
+																'UploadId'  => $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ],
+																'Key'		=> $job_object->job[ 's3dir' ] . $job_object->backup_file,
+																'Parts'		=> $job_object->steps_data[ $job_object->step_working ][ 'Parts' ] ) );
+
+					} catch ( Exception $e ) {
+						$job_object->log( E_USER_ERROR, sprintf( __( 'S3 Service API: %s', 'backwpup' ), htmlentities( $e->getMessage() ) ), $e->getFile(), $e->getLine() );
+						if ( ! empty( $job_object->steps_data[ $job_object->step_working ][ 'uploadId' ] ) )
+							$s3->abortMultipartUpload( array(	'Bucket'	=> $job_object->job[ 's3bucket' ],
+																'UploadId'  => $job_object->steps_data[ $job_object->step_working ][ 'uploadId' ],
+																'Key'		=> $job_object->job[ 's3dir' ] . $job_object->backup_file ) );
+						unset( $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ] );
+						unset( $job_object->steps_data[ $job_object->step_working ][ 'Parts' ] );
+						unset( $job_object->steps_data[ $job_object->step_working ][ 'Part' ] );
+						$job_object->substeps_done = 0;
+						if ( is_resource( $file_handle ) )
+							fclose( $file_handle );
+						return FALSE;
+					}
+					fclose( $file_handle );
+				} else {
+					$job_object->log( __( 'Can not open source file for transfer.', 'backwpup' ), E_USER_ERROR );
 					return FALSE;
 				}
-				fclose( $file_handle );
 			}
 
 			$result = $s3->headObject( array( 	'Bucket' => $job_object->job[ 's3bucket' ],
@@ -569,18 +576,18 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 
 
 	/**
-	 * @param $job_object
+	 * @param $job_settings array
 	 * @return bool
 	 */
-	public function can_run( $job_object ) {
+	public function can_run( array $job_settings ) {
 
-		if ( empty( $job_object->job[ 's3accesskey' ] ) )
+		if ( empty( $job_settings[ 's3accesskey' ] ) )
 			return FALSE;
 
-		if ( empty( $job_object->job[ 's3secretkey' ] ) )
+		if ( empty( $job_settings[ 's3secretkey' ] ) )
 			return FALSE;
 
-		if ( empty( $job_object->job[ 's3bucket' ] ) )
+		if ( empty( $job_settings[ 's3bucket' ] ) )
 			return FALSE;
 
 		return TRUE;

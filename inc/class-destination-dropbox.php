@@ -217,7 +217,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 	 * @param $job_object
 	 * @return bool
 	 */
-	public function job_run_archive( &$job_object ) {
+	public function job_run_archive( BackWPup_Job $job_object ) {
 
 		$job_object->substeps_todo = 2 + $job_object->backup_filesize;
 		if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] != $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] )
@@ -332,12 +332,12 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $job_object
+	 * @param $job_settings
 	 * @return bool
 	 */
-	public function can_run( $job_object ) {
+	public function can_run( array $job_settings ) {
 
-		if ( empty( $job_object->job[ 'dropboxtoken' ] ) )
+		if ( empty( $job_settings[ 'dropboxtoken' ] ) )
 			return FALSE;
 
 		return TRUE;
@@ -497,7 +497,7 @@ final class BackWPup_Destination_Dropbox_API {
 		$chunk_size = 4194304; //4194304 = 4MB
 
 		$file_handel = fopen( $file, 'rb' );
-		if ( ! is_resource( $file_handel ) )
+		if ( ! $file_handel )
 			throw new BackWPup_Destination_Dropbox_API_Exception( "Can not open source file for transfer." );
 
 		if ( ! isset( $backwpup_job_object->steps_data[ $backwpup_job_object->step_working ][ 'uploadid' ] ) )

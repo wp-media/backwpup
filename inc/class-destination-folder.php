@@ -154,7 +154,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	 * @param $job_object
 	 * @return bool
 	 */
-	public function job_run_archive( &$job_object ) {
+	public function job_run_archive( BackWPup_Job$job_object ) {
 
 		$job_object->substeps_todo = 1;
 		if ( ! empty( $job_object->job[ 'jobid' ] ) )
@@ -201,12 +201,12 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $job_object
+	 * @param $job_settings array
 	 * @return bool
 	 */
-	public function can_run( $job_object ) {
+	public function can_run( array $job_settings ) {
 
-		if ( empty( $job_object->job[ 'backupdir' ] ) || $job_object->job[ 'backupdir' ] == '/' )
+		if ( empty( $job_settings[ 'backupdir' ] ) || $job_settings[ 'backupdir' ] == '/' )
 			return FALSE;
 
 		return TRUE;

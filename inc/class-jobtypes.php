@@ -73,7 +73,7 @@ abstract class BackWPup_JobTypes {
 	/**
 	 * @param $job_settings
 	 */
-	public function wizard_page( $job_settings ) {
+	public function wizard_page( array $job_settings ) {
 
 		echo '<br /><pre>';
 		print_r( $job_settings );
@@ -82,8 +82,10 @@ abstract class BackWPup_JobTypes {
 
 	/**
 	 * @param $job_settings
+	 *
+	 * @return array
 	 */
-	public function wizard_save( $job_settings ) {
+	public function wizard_save( array $job_settings ) {
 
 		return $job_settings;
 	}
@@ -107,5 +109,5 @@ abstract class BackWPup_JobTypes {
 	 * @param $job_object BackWPup_Job Object
 	 * @return bool
 	 */
-	abstract public function job_run( &$job_object );
+	abstract public function job_run( BackWPup_Job $job_object );
 }

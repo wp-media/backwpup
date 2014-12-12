@@ -240,10 +240,10 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $job_object
+	 * @param $job_object BAckWPup_Job
 	 * @return bool
 	 */
-	public function job_run_archive( &$job_object ) {
+	public function job_run_archive( BackWPup_Job $job_object ) {
 
 		$job_object->substeps_todo = 2 + $job_object->backup_filesize;
 		$job_object->substeps_done = 0;
@@ -275,9 +275,13 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			$job_object->substeps_done    = 0;
 			$job_object->log( __( 'Upload to Rackspace cloud started &hellip;', 'backwpup' ), E_USER_NOTICE );
 
-			$handle = fopen( $job_object->backup_folder . $job_object->backup_file, 'rb' );
-			$uploded = $container->uploadObject( $job_object->job[ 'rscdir' ] . $job_object->backup_file, $handle );
-			fclose( $handle );
+			if ( $handle = fopen( $job_object->backup_folder . $job_object->backup_file, 'rb' ) ) {
+				$uploded = $container->uploadObject( $job_object->job[ 'rscdir' ] . $job_object->backup_file, $handle );
+				fclose( $handle );
+			} else {
+				$job_object->log( __( 'Can not open source file for transfer.', 'backwpup' ), E_USER_ERROR );
+				return FALSE;
+			}
 
 //			$transfer = $container->setupObjectTransfer( array(
 //															 'name' => $job_object->job[ 'rscdir' ] . $job_object->backup_file,
@@ -354,18 +358,18 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $job_object
+	 * @param $job_settings array
 	 * @return bool
 	 */
-	public function can_run( $job_object ) {
+	public function can_run( array $job_settings ) {
 
-		if ( empty( $job_object->job[ 'rscusername'] ) )
+		if ( empty( $job_settings[ 'rscusername'] ) )
 			return FALSE;
 
-		if ( empty( $job_object->job[ 'rscapikey'] ) )
+		if ( empty( $job_settings[ 'rscapikey'] ) )
 			return FALSE;
 
-		if ( empty( $job_object->job[ 'rsccontainer'] ) )
+		if ( empty( $job_settings[ 'rsccontainer'] ) )
 			return FALSE;
 
 		return TRUE;
