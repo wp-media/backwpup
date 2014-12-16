@@ -145,6 +145,11 @@ final class BackWPup_Job {
 	 */
 	private $uniqid = '';
 
+	/**
+	 * @var string logging level (normal|normal_untranslated|debug|debug_untranslated)
+	 */
+	private $log_level = 'normal';
+
 
 	/**
 	 * Delete some data on cloned objects
@@ -167,17 +172,20 @@ final class BackWPup_Job {
 		/* @var wpdb $wpdb */
 
 		//check startype
-		if ( ! in_array( $start_type, array( 'runnow', 'runnowalt', 'cronrun', 'runext', 'runcli' ) ) )
+		if ( ! in_array( $start_type, array( 'runnow', 'runnowalt', 'cronrun', 'runext', 'runcli' ) ) ) {
 			return;
+		}
 
-		if ( is_int( $job_settings ) )
-			$this->job      = BackWPup_Option::get_job( $job_settings );
-		elseif( is_array( $job_settings ) )
-			$this->job		= $job_settings;
-		else
+		if ( is_int( $job_settings ) ) {
+			$this->job = BackWPup_Option::get_job( $job_settings );
+		} elseif( is_array( $job_settings ) ) {
+				$this->job = $job_settings;
+		} else {
 			return;
-		$this->start_time   =  current_time( 'timestamp' );
-		$this->lastmsg		= __( 'Starting job', 'backwpup' );
+		}
+
+		$this->start_time  =  current_time( 'timestamp' );
+		$this->lastmsg = __( 'Starting job', 'backwpup' );
 		//set Logfile
 		$this->logfile = get_site_option( 'backwpup_cfg_logfolder' ) . 'backwpup_log_' . BackWPup::get_plugin_data( 'hash' ) . '_' . date_i18n( 'Y-m-d_H-i-s' ) . '.html';
 		//write settings to job
@@ -278,6 +286,12 @@ final class BackWPup_Job {
 		$this->steps_data[ 'END' ][ 'STEP_TRY' ] = 1;
 		//must write working data
 		$this->write_running_file();
+
+		//load text domain if needed
+		$this->log_level = get_site_option( 'backwpup_cfg_loglevel' );
+		if ( ! in_array( $this->log_level, array( 'normal_translated', 'normal', 'debug_translated', 'debug' ) ) ) {
+			$this->log_level = 'normal_translated';
+		}
 		//create log file
 		$head = '';
 		$head .= "<!DOCTYPE html>" . PHP_EOL;
@@ -294,18 +308,28 @@ final class BackWPup_Job {
 		$head .= "<meta name=\"date\" content=\"" . date( 'c' ) . "\" />" . PHP_EOL;
 		$head .= str_pad( '<meta name="backwpup_errors" content="0" />', 100 ) . PHP_EOL;
 		$head .= str_pad( '<meta name="backwpup_warnings" content="0" />', 100 ) . PHP_EOL;
-		if ( ! empty( $this->job[ 'jobid' ] ) )
+		if ( ! empty( $this->job[ 'jobid' ] ) ) {
 			$head .= "<meta name=\"backwpup_jobid\" content=\"" . $this->job[ 'jobid' ] . "\" />" . PHP_EOL;
+		}
 		$head .= "<meta name=\"backwpup_jobname\" content=\"" . esc_attr( $this->job[ 'name' ] ) . "\" />" . PHP_EOL;
 		$head .= "<meta name=\"backwpup_jobtype\" content=\"" . implode( '+', $this->job[ 'type' ] ) . "\" />" . PHP_EOL;
 		$head .= str_pad( '<meta name="backwpup_backupfilesize" content="0" />', 100 ) . PHP_EOL;
 		$head .= str_pad( '<meta name="backwpup_jobruntime" content="0" />', 100 ) . PHP_EOL;
 		$head .= "</head>" . PHP_EOL;
 		$head .= "<body style=\"margin:0;padding:3px;font-family:monospace;font-size:12px;line-height:15px;background-color:#000;color:#fff;white-space:nowrap;\">" . PHP_EOL;
-		$head .= sprintf( _x( '[INFO] %1$s version %2$s; A project of Inpsyde GmbH', 'Plugin name; Plugin Version','backwpup' ), BackWPup::get_plugin_data( 'name' ) , BackWPup::get_plugin_data( 'Version' ) ) . '<br />' . PHP_EOL;
-		$head .= sprintf( _x( '[INFO] WordPress version %s', 'WordPress Version', 'backwpup' ), BackWPup::get_plugin_data( 'wp_version' ) ). '<br />' . PHP_EOL;
-		$head .= sprintf( __( '[INFO] Blog url: %s', 'backwpup' ), esc_attr( site_url( '/' ) ) ). '<br />' . PHP_EOL;
-		$head .= sprintf( __( '[INFO] BackWPup job: %1$s; %2$s', 'backwpup' ), esc_attr( $this->job[ 'name' ] ) , implode( '+', $this->job[ 'type' ] ) ) . '<br />' . PHP_EOL;
+		$head .= sprintf( _x( '[INFO] %1$s %2$s; A project of Inpsyde GmbH', 'Plugin name; Plugin Version; plugin url','backwpup' ), BackWPup::get_plugin_data( 'name' ), BackWPup::get_plugin_data( 'Version' ), BackWPup::get_plugin_data( 'pluginuri' ) ) . '<br />' . PHP_EOL;
+		if ( $this->is_debug() ) {
+			$head .= sprintf( _x( '[INFO] WordPress %1$s on %2$s', 'WordPress Version; Blog url', 'backwpup' ), BackWPup::get_plugin_data( 'wp_version' ), esc_attr( site_url( '/' ) ) ). '<br />' . PHP_EOL;
+		}
+		$job_name = esc_attr( $this->job[ 'name' ] );
+		if ( $this->is_debug() ) {
+			$job_name .= '; ' . implode( '+', $this->job[ 'type' ] );
+		}
+		$head .= sprintf( __( '[INFO] BackWPup job: %1$s', 'backwpup' ), $job_name ) . '<br />' . PHP_EOL;
+		if ( $this->is_debug() ) {
+			$current_user = wp_get_current_user();
+			$head .= sprintf( __( '[INFO] Runs with user: %1$d (%2$s) ', 'backwpup' ), $current_user->user_login, $current_user->ID ) . '<br />' . PHP_EOL;
+		}
 		if ( $this->job[ 'activetype' ] == 'wpcron' ) {
 			//check next run
 			$cron_next = wp_next_scheduled( 'backwpup_cron', array( 'id' => $this->job[ 'jobid' ] ) );
@@ -316,49 +340,70 @@ final class BackWPup_Job {
 				$cron_next = wp_next_scheduled( 'backwpup_cron', array( 'id' => $this->job[ 'jobid' ] ) );
 			}
 			//output scheduling
-			if ( ! $cron_next )
+			if ( ! $cron_next ) {
 				$cron_next = __( 'Not scheduled!', 'backwpup' );
-			else
-				$cron_next = date_i18n( 'D, j M Y @ H:i', $cron_next + ( get_option( 'gmt_offset' ) * 3600 ) , TRUE ) ;
-			$head .= sprintf( __( '[INFO] BackWPup cron: %s; Next: %s ', 'backwpup' ), $this->job[ 'cron' ] , $cron_next ) . '<br />' . PHP_EOL;
-		}
-		elseif ( $this->job[ 'activetype' ] == 'link' )
-			$head .= __( '[INFO] BackWPup job start with link is active', 'backwpup' ) . '<br />' . PHP_EOL;
-		else
-			$head .= __( '[INFO] BackWPup no automatic job start configured', 'backwpup' ) . '<br />' . PHP_EOL;
-		if ( $start_type == 'cronrun' )
-			$head .= __( '[INFO] BackWPup job started from wp-cron', 'backwpup' ) . '<br />' . PHP_EOL;
-		elseif ( $start_type == 'runnow' or $start_type == 'runnowalt' )
-			$head .= __( '[INFO] BackWPup job started manually', 'backwpup' ) . '<br />' . PHP_EOL;
-		elseif ( $start_type == 'runext' )
-			$head .= __( '[INFO] BackWPup job started from external url', 'backwpup' ) . '<br />' . PHP_EOL;
-		elseif ( $start_type == 'runcli' )
-			$head .= __( '[INFO] BackWPup job started form commandline interface', 'backwpup' ) . '<br />' . PHP_EOL;
-		$bit = '';
-		if ( PHP_INT_SIZE === 4 )
-			$bit = ' (32bit)';
-		if ( PHP_INT_SIZE === 8 )
-			$bit = ' (64bit)';
-		$head .= __( '[INFO] PHP ver.:', 'backwpup' ) . ' ' . PHP_VERSION . $bit .'; ' . PHP_SAPI . '; ' . PHP_OS . '<br />' . PHP_EOL;
-		$head .= sprintf( __( '[INFO] Maximum PHP script execution time is %1$d seconds', 'backwpup' ), ini_get( 'max_execution_time' ) ) . '<br />' . PHP_EOL;
-		if ( php_sapi_name() != 'cli' ) {
-			$job_max_execution_time = get_site_option( 'backwpup_cfg_jobmaxexecutiontime' );
-			if ( ! empty( $job_max_execution_time ) ) {
-				$head .= sprintf( __( '[INFO] Script restart time is configured to %1$d seconds', 'backwpup' ), $job_max_execution_time ) . '<br />' . PHP_EOL;
+			} else {
+				$cron_next = date_i18n( 'D, j M Y @ H:i', $cron_next + ( get_option( 'gmt_offset' ) * 3600 ), TRUE );
 			}
+			$head .= sprintf( __( '[INFO] Cron: %s; Next: %s ', 'backwpup' ), $this->job[ 'cron' ] , $cron_next ) . '<br />' . PHP_EOL;
 		}
-		$head .= sprintf( __( '[INFO] MySQL ver.: %s', 'backwpup' ), $wpdb->get_var( "SELECT VERSION() AS version" ) ) . '<br />' . PHP_EOL;
-		if ( isset( $_SERVER[ 'SERVER_SOFTWARE' ] ) )
-			$head .= sprintf( __( '[INFO] Web Server: %s', 'backwpup' ), $_SERVER[ 'SERVER_SOFTWARE' ] ) . '<br />' . PHP_EOL;
-		if ( function_exists( 'curl_init' ) ) {
-			$curlversion = curl_version();
-			$head .= sprintf( __( '[INFO] curl ver.: %1$s; %2$s', 'backwpup' ), $curlversion[ 'version' ], $curlversion[ 'ssl_version' ] ) . '<br />' . PHP_EOL;
+		elseif( $this->job[ 'activetype' ] == 'link' && $this->is_debug() ) {
+			$head .= __( '[INFO] BackWPup job start with link is active', 'backwpup' ) . '<br />' . PHP_EOL;
 		}
-		$head .= sprintf( __( '[INFO] Temp folder is: %s', 'backwpup' ), BackWPup::get_plugin_data( 'TEMP' ) ) . '<br />' . PHP_EOL;
-		$head .= sprintf( __( '[INFO] Logfile is: %s', 'backwpup' ), $this->logfile ) . '<br />' . PHP_EOL;
-		$head .= sprintf( __( '[INFO] Backup type is: %s', 'backwpup' ), $this->job[ 'backuptype' ] ) . '<br />' . PHP_EOL;
-		if ( ! empty( $this->backup_file ) && $this->job[ 'backuptype' ] == 'archive' )
-			$head .= sprintf( __( '[INFO] Backup file is: %s', 'backwpup' ), $this->backup_folder . $this->backup_file ) . '<br />' . PHP_EOL;
+		elseif( $this->is_debug() ) {
+			$head .= __( '[INFO] BackWPup no automatic job start configured', 'backwpup' ) . '<br />' . PHP_EOL;
+		}
+		if ( $this->is_debug() ) {
+			if ( $start_type == 'cronrun' ) {
+				$head .= __( '[INFO] BackWPup job started from wp-cron', 'backwpup' ) . '<br />' . PHP_EOL;
+			} elseif ( $start_type == 'runnow' || $start_type == 'runnowalt' ) {
+				$head .= __( '[INFO] BackWPup job started manually', 'backwpup' ) . '<br />' . PHP_EOL;
+			} elseif ( $start_type == 'runext' ) {
+				$head .= __( '[INFO] BackWPup job started from external url', 'backwpup' ) . '<br />' . PHP_EOL;
+			} elseif ( $start_type == 'runcli' ) {
+				$head .= __( '[INFO] BackWPup job started form commandline interface', 'backwpup' ) . '<br />' . PHP_EOL;
+			}
+			$bit = '';
+			if ( PHP_INT_SIZE === 4 ) {
+				$bit = ' (32bit)';
+			}
+			if ( PHP_INT_SIZE === 8 ) {
+				$bit = ' (64bit)';
+			}
+			$head .= __( '[INFO] PHP ver.:', 'backwpup' ) . ' ' . PHP_VERSION . $bit .'; ' . PHP_SAPI . '; ' . PHP_OS . '<br />' . PHP_EOL;
+			$head .= sprintf( __( '[INFO] Maximum PHP script execution time is %1$d seconds', 'backwpup' ), ini_get( 'max_execution_time' ) ) . '<br />' . PHP_EOL;
+			if ( php_sapi_name() != 'cli' ) {
+				$job_max_execution_time = get_site_option( 'backwpup_cfg_jobmaxexecutiontime' );
+				if ( ! empty( $job_max_execution_time ) ) {
+					$head .= sprintf( __( '[INFO] Script restart time is configured to %1$d seconds', 'backwpup' ), $job_max_execution_time ) . '<br />' . PHP_EOL;
+				}
+			}
+			$head .= sprintf( __( '[INFO] MySQL ver.: %s', 'backwpup' ), $wpdb->get_var( "SELECT VERSION() AS version" ) ) . '<br />' . PHP_EOL;
+			if ( isset( $_SERVER[ 'SERVER_SOFTWARE' ] ) )
+				$head .= sprintf( __( '[INFO] Web Server: %s', 'backwpup' ), $_SERVER[ 'SERVER_SOFTWARE' ] ) . '<br />' . PHP_EOL;
+			if ( function_exists( 'curl_init' ) ) {
+				$curlversion = curl_version();
+				$head .= sprintf( __( '[INFO] curl ver.: %1$s; %2$s', 'backwpup' ), $curlversion[ 'version' ], $curlversion[ 'ssl_version' ] ) . '<br />' . PHP_EOL;
+			}
+			$head .= sprintf( __( '[INFO] Temp folder is: %s', 'backwpup' ), BackWPup::get_plugin_data( 'TEMP' ) ) . '<br />' . PHP_EOL;
+		}
+
+		if ( $this->is_debug() ) {
+			$logfile = $this->logfile;
+		} else {
+			$logfile = basename( $this->logfile );
+		}
+		$head .= sprintf( __( '[INFO] Logfile is: %s', 'backwpup' ), $logfile ) . '<br />' . PHP_EOL;
+		if ( ! empty( $this->backup_file ) && $this->job[ 'backuptype' ] == 'archive' ) {
+			if ( $this->is_debug() ) {
+				$backupfile = $this->backup_folder . $this->backup_file;
+			} else {
+				$backupfile = $this->backup_file;
+			}
+			$head .= sprintf( __( '[INFO] Backup file is: %s', 'backwpup' ), $backupfile ) . '<br />' . PHP_EOL;
+		} else {
+			$head .= sprintf( __( '[INFO] Backup type is: %s', 'backwpup' ), $this->job[ 'backuptype' ] ) . '<br />' . PHP_EOL;
+		}
 		if ( ! file_put_contents( $this->logfile, $head, FILE_APPEND ) ) {
 			$this->logfile = '';
 			$this->log( __( 'Could not write log file', 'backwpup' ), E_USER_ERROR );
@@ -394,11 +439,6 @@ final class BackWPup_Job {
 	 */
 	public static function get_jobrun_url( $starttype, $jobid = 0 ) {
 
-		//get a user for cookie auth
-		$wp_admin_user 		= get_users( array( 'role' => 'administrator', 'number' => 1 ) );
-		if ( empty( $wp_admin_user ) ) {
-			$wp_admin_user 	= get_users( array( 'role' => 'backwpup_admin', 'number' => 1 ) );
-		}
 		$url        		= site_url( 'wp-cron.php' );
 		$header				= array();
 		$authurl    		= '';
@@ -412,7 +452,7 @@ final class BackWPup_Job {
 
 		if ( get_site_option( 'backwpup_cfg_httpauthuser' ) && get_site_option( 'backwpup_cfg_httpauthpassword' ) ) {
 			$header[ 'Authorization' ] = 'Basic ' . base64_encode( get_site_option( 'backwpup_cfg_httpauthuser' ) . ':' . BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_httpauthpassword' ) ) );
-			$authurl = get_site_option( 'backwpup_cfg_httpauthuser' ) . ':' . BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_httpauthpassword' ) ) . '@';
+			$authurl = urlencode( get_site_option( 'backwpup_cfg_httpauthuser' ) ) . ':' . urlencode( BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_httpauthpassword' ) ) ) . '@';
 		}
 
 		if ( $starttype == 'runext' ) {
@@ -454,6 +494,20 @@ final class BackWPup_Job {
 			}
 		}
 
+		//cache cookies for auth some
+		$cookies = get_site_transient( 'backwpup_cookies' );
+		if ( empty( $cookies ) ) {
+			$wp_admin_user = get_users( array( 'role' => 'administrator', 'number' => 1 ) );
+			if ( empty( $wp_admin_user ) ) {
+				$wp_admin_user 	= get_users( array( 'role' => 'backwpup_admin', 'number' => 1 ) );
+			}
+			if ( ! empty( $wp_admin_user[ 0 ]->ID ) ) {
+				$cookies[ AUTH_COOKIE ] =  wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, time() + 3600, 'auth' );
+				$cookies[ LOGGED_IN_COOKIE ] =  wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, time() + 3600, 'logged_in' );
+			}
+			set_site_transient( 'backwpup_cookies', $cookies, 3600 - 30 );
+		}
+
 		$cron_request = apply_filters( 'cron_request', array(
 															'url' => add_query_arg( $query_args, $url ),
 															'key' => $query_args[ 'doing_wp_cron' ],
@@ -462,10 +516,6 @@ final class BackWPup_Job {
 																'sslverify'		=> apply_filters( 'https_local_ssl_verify', true ),
 																'timeout' 		=> 0.01,
 																'headers'    	=> $header,
-															    'cookies'    	=> array(
-																	new WP_Http_Cookie( array( 'name' => AUTH_COOKIE, 'value' => wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, time() + 300, 'auth' ) ) ),
-																    new WP_Http_Cookie( array( 'name' => LOGGED_IN_COOKIE, 'value' => wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, time() + 300, 'logged_in' ) ) )
-															    ),
 															   	'user-agent' 	=> BackWpup::get_plugin_data( 'User-Agent' )
 															  )
 													   ) );
@@ -473,6 +523,12 @@ final class BackWPup_Job {
 		if ( $starttype == 'test' ) {
 			$cron_request[ 'args' ][ 'timeout' ] = 15;
 			$cron_request[ 'args' ][ 'blocking' ] = TRUE;
+		}
+
+		if ( ! empty( $cookies ) ) {
+			foreach ( $cookies as $name => $value ) {
+				$cron_request[ 'args' ][ 'cookies' ][] = new WP_Http_Cookie( array( 'name' => $name, 'value' => $value ) );
+			}
 		}
 
 		if ( ! in_array( $starttype, array( 'runnowlink', 'runext' ) ) ) {
@@ -489,9 +545,11 @@ final class BackWPup_Job {
 	 */
 	public static function start_http( $starttype ) {
 
-		//load text domain if needed
-		if ( ! is_textdomain_loaded( 'backwpup' ) && ! get_site_option( 'backwpup_cfg_jobnotranslate') )
+		//load text domain
+		$log_level = get_site_option( 'backwpup_cfg_loglevel' );
+		if ( ! is_textdomain_loaded( 'backwpup' ) && strstr( $log_level, 'translated' ) ) {
 			load_plugin_textdomain( 'backwpup', FALSE, BackWPup::get_plugin_data( 'BaseName' ) . '/languages' );
+		}
 
 		if ( $starttype != 'restart' ) {
 
@@ -542,16 +600,20 @@ final class BackWPup_Job {
 	 */
 	public static function start_cli( $jobid ) {
 
-		if ( php_sapi_name() != 'cli' )
+		if ( php_sapi_name() != 'cli' ) {
 			return;
+		}
 
 		//define DOING_CRON to prevent caching
-		if( ! defined( 'DOING_CRON' ) )
+		if( ! defined( 'DOING_CRON' ) ) {
 			define( 'DOING_CRON', TRUE );
+		}
 
 		//load text domain if needed
-		if ( ! is_textdomain_loaded( 'backwpup' ) && ! get_site_option( 'backwpup_cfg_jobnotranslate') )
+		$log_level = get_site_option( 'backwpup_cfg_loglevel' );
+		if ( ! is_textdomain_loaded( 'backwpup' ) && strstr( $log_level, 'translated' ) ) {
 			load_plugin_textdomain( 'backwpup', FALSE, BackWPup::get_plugin_data( 'BaseName' ) . '/languages' );
+		}
 
 		//check job id exists
 		$jobids = BackWPup_Option::get_job_ids();
@@ -579,12 +641,15 @@ final class BackWPup_Job {
 	 */
 	public static function start_wp_cron( $jobid = 0 ) {
 
-		if ( ! defined( 'DOING_CRON' ) || ! DOING_CRON )
+		if ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) {
 			return;
+		}
 
 		//load text domain if needed
-		if ( ! is_textdomain_loaded( 'backwpup' ) && ! get_site_option( 'backwpup_cfg_jobnotranslate') )
+		$log_level = get_site_option( 'backwpup_cfg_loglevel' );
+		if ( ! is_textdomain_loaded( 'backwpup' ) && strstr( $log_level, 'translated' ) ) {
 			load_plugin_textdomain( 'backwpup', FALSE, BackWPup::get_plugin_data( 'BaseName' ) . '/languages' );
+		}
 
 		if ( ! empty( $jobid ) ) {
 			//check folders
@@ -635,8 +700,13 @@ final class BackWPup_Job {
 		/* @var wpdb $wpdb */
 
 		// Job can't run it is not created
-		if ( empty( $this->steps_todo ) )
+		if ( empty( $this->steps_todo ) || empty( $this->logfile ) ) {
+			$running_file = BackWPup::get_plugin_data( 'running_file' );
+			if ( file_exists( $running_file ) ) {
+				unlink( $running_file );
+			}
 			return;
+		}
 
 		//Check double running and inactivity
 		$last_update = microtime( TRUE ) - $this->timestamp_last_update;
@@ -662,29 +732,25 @@ final class BackWPup_Job {
 		$this->run[ 'PHP' ][ 'INI' ][ 'REPORT_MEMLEAKS' ]= ini_get( 'report_memleaks' );
 		$this->run[ 'PHP' ][ 'INI' ][ 'ZLIB_OUTPUT_COMPRESSION' ] = ini_get( 'zlib.output_compression' );
 		$this->run[ 'PHP' ][ 'INI' ][ 'IMPLICIT_FLUSH' ] = ini_get( 'implicit_flush' );
-		if ( ! empty( $this->logfile ) ) {
+		if ( $this->is_debug() ) {
 			@ini_set( 'error_log', $this->logfile );
-		}
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			error_reporting( -1 );
-		} else {
-			error_reporting( E_ALL ^ E_NOTICE );
 		}
-		@ini_set( 'display_errors', 'Off' );
-		@ini_set( 'log_errors', 'On' );
-		@ini_set( 'html_errors', 'Off' );
-		@ini_set( 'report_memleaks', 'On' );
-		@ini_set( 'zlib.output_compression', 'Off' );
-		@ini_set( 'implicit_flush', 'Off' );
+		@ini_set( 'display_errors', '0' );
+		@ini_set( 'log_errors', '1' );
+		@ini_set( 'html_errors', '0' );
+		@ini_set( 'report_memleaks', '1' );
+		@ini_set( 'zlib.output_compression', '0' );
+		@ini_set( 'implicit_flush', '0' );
 		//increase MySQL timeout
-		@ini_set( 'mysql.connect_timeout', '300' );
-		$wpdb->query( "SET session wait_timeout = 300" );
+		@ini_set( 'mysql.connect_timeout', '360' );
 		//set temp folder
 		$can_set_temp_env = TRUE;
 		$protected_env_vars = explode( ',', ini_get( 'safe_mode_protected_env_vars' ) );
 		foreach( $protected_env_vars as $protected_env ) {
-			if ( strtoupper( trim( $protected_env ) ) == 'TMPDIR' )
+			if ( strtoupper( trim( $protected_env ) ) == 'TMPDIR' ) {
 				$can_set_temp_env = FALSE;
+			}
 		}
 		if ( $can_set_temp_env ) {
 			$this->run[ 'PHP' ][ 'ENV' ][ 'TEMPDIR' ] = getenv( 'TMPDIR' );
@@ -697,15 +763,15 @@ final class BackWPup_Job {
 		@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) );
 		//set error handler
 		if ( ! empty( $this->logfile ) ) {
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				set_error_handler( array( $this, 'log' ), -1 );
+			if ( $this->is_debug() ) {
+				set_error_handler( array( $this, 'log' ) );
 			} else {
 				set_error_handler( array( $this, 'log' ), E_ALL ^ E_NOTICE );
 			}
 		}
 		set_exception_handler( array( $this, 'exception_handler' ) );
 		//not loading Textdomains and unload loaded
-		if ( get_site_option( 'backwpup_cfg_jobnotranslate' ) ) {
+		if ( ! strstr( $this->log_level, 'translated' ) ) {
 			add_filter( 'override_load_textdomain', create_function( '','return TRUE;' ) );
 			$GLOBALS[ 'l10n' ] = array();
 		}
@@ -798,30 +864,36 @@ final class BackWPup_Job {
 	public function do_restart( $must = FALSE, $msg = TRUE ) {
 
 		//no restart if in end step
-		if ( $this->step_working == 'END' || ( count( $this->steps_done ) + 1 ) >= count( $this->steps_todo ) )
+		if ( $this->step_working == 'END' || ( count( $this->steps_done ) + 1 ) >= count( $this->steps_todo ) ) {
 			return;
+		}
 
 		//no restart on cli usage
-		if ( php_sapi_name() == 'cli' )
+		if ( php_sapi_name() == 'cli' ) {
 			return;
+		}
 
 		//no restart if no restart time configured
 		$job_max_execution_time = get_site_option( 'backwpup_cfg_jobmaxexecutiontime' );
-		if ( empty( $job_max_execution_time ) )
+		if ( empty( $job_max_execution_time ) ) {
 			return;
+		}
 
 		//no restart when restart was 3 Seconds before
 		$execution_time = microtime( TRUE ) - $this->timestamp_script_start;
-		if ( ! $must  && $execution_time < 3 )
+		if ( ! $must  && $execution_time < 3 ) {
 			return;
+		}
 
 		//no restart if no working job
-		if ( ! file_exists( BackWPup::get_plugin_data( 'running_file' ) ) )
+		if ( ! file_exists( BackWPup::get_plugin_data( 'running_file' ) ) ) {
 			return;
+		}
 
 		//print message
-		if ( $msg )
+		if ( $msg && $this->is_debug() ) {
 			$this->log( __( 'Restart will be executed now.', 'backwpup' ) );
+		}
 
 		//do things for a clean restart
 		$this->pid = 0;
@@ -830,7 +902,7 @@ final class BackWPup_Job {
 		remove_action( 'shutdown', array( $this, 'shutdown' ) );
 		//do restart
 		wp_clear_scheduled_hook( 'backwpup_cron', array( 'id' => 'restart' ) );
-		wp_schedule_single_event( time() + 10, 'backwpup_cron', array( 'id' => 'restart' ) );
+		wp_schedule_single_event( time() + 5, 'backwpup_cron', array( 'id' => 'restart' ) );
 		self::get_jobrun_url( 'restart' );
 
 		exit();
@@ -846,8 +918,9 @@ final class BackWPup_Job {
 
 		$job_max_execution_time = get_site_option( 'backwpup_cfg_jobmaxexecutiontime' );
 
-		if ( empty( $job_max_execution_time ) )
+		if ( empty( $job_max_execution_time ) ) {
 			return 300;
+		}
 
 		$execution_time = microtime( TRUE ) - $this->timestamp_script_start;
 
@@ -855,7 +928,9 @@ final class BackWPup_Job {
 		if ( $do_restart_now || $execution_time >= ( $job_max_execution_time - 3 ) ) {
 			$this->steps_data[ $this->step_working ][ 'SAVE_STEP_TRY' ] = $this->steps_data[ $this->step_working ][ 'STEP_TRY' ];
 			$this->steps_data[ $this->step_working ][ 'STEP_TRY' ] -= 1;
-			$this->log( sprintf( __( 'Restart after %1$d seconds.', 'backwpup' ), ceil( $execution_time ), $job_max_execution_time ) );
+			if ( $this->is_debug() ) {
+				$this->log( sprintf( __( 'Restart after %1$d seconds.', 'backwpup' ), ceil( $execution_time ), $job_max_execution_time ) );
+			}
 			$this->do_restart( TRUE, FALSE );
 		}
 
@@ -892,12 +967,14 @@ final class BackWPup_Job {
 			clearstatcache();
 		}
 
-		if ( ! file_exists( BackWPup::get_plugin_data( 'running_file' ) ) )
+		if ( ! file_exists( BackWPup::get_plugin_data( 'running_file' ) ) ) {
 			return FALSE;
+		}
 
 		$file_data = file_get_contents( BackWPup::get_plugin_data( 'running_file' ), FALSE, NULL, 8 );
-		if ( $file_data === FALSE )
+		if ( empty( $file_data ) ) {
 			return FALSE;
+		}
 
 		if ( $job_object = unserialize( $file_data ) ) {
 			if ( $job_object instanceof BackWPup_Job )
@@ -1138,7 +1215,12 @@ final class BackWPup_Job {
 			fwrite( STDOUT, '[' . date_i18n( 'd-M-Y H:i:s' ) . '] ' . strip_tags( $messagetype ) . str_replace( array( '&hellip;', '&#160;' ), array( '...', ' ' ), strip_tags( $message ) ) . PHP_EOL ) ;
 		}
 		//log line
-		$timestamp = '<span datetime="' . date_i18n( 'c' ) . '" title="[Type: ' . $type . '|Line: ' . $line . '|File: ' . $in_file . '|Mem: ' . size_format( @memory_get_usage( TRUE ), 2 ) . '|Mem Max: ' . size_format( @memory_get_peak_usage( TRUE ), 2 ) . '|Mem Limit: ' . ini_get( 'memory_limit' ) . '|PID: ' . self::get_pid() . ' | UniqID: ' . $this->uniqid . '|Query\'s: ' . get_num_queries() . ']">[' . date_i18n( 'd-M-Y H:i:s' ) . ']</span> ';
+		$debug_info = '';
+		if ( $this->is_debug() ) {
+			$debug_info = ' title="[Type: ' . $type . '|Line: ' . $line . '|File: ' . $in_file . '|Mem: ' . size_format( @memory_get_usage( TRUE ), 2 ) . '|Mem Max: ' . size_format( @memory_get_peak_usage( TRUE ), 2 ) . '|Mem Limit: ' . ini_get( 'memory_limit' ) . '|PID: ' . self::get_pid() . ' | UniqID: ' . $this->uniqid . '|Query\'s: ' . get_num_queries() . ']"';
+		}
+
+		$timestamp = '<span datetime="' . date_i18n( 'c' ) . '" ' . $debug_info . '>[' . date_i18n( 'd-M-Y H:i:s' ) . ']</span> ';
 		//set last Message
 		$message_last = $messagetype . htmlentities( $message, ENT_COMPAT , get_bloginfo( 'charset' ), FALSE );
 		if ( strstr( $message_last, '<span' ) )
@@ -1230,7 +1312,7 @@ final class BackWPup_Job {
 		@set_time_limit( 300 );
 
 		//check MySQL connection to WordPress Database and reconnect if needed
-		$res = $wpdb->query( 'SELECT 1' );
+		$res = $wpdb->query( 'SELECT ' . time() );
 		if ( $res === FALSE ) {
 			$wpdb->db_connect();
 		}
@@ -1787,7 +1869,7 @@ final class BackWPup_Job {
 	}
 
 	/**
-	 * @param create manifest file
+	 * create manifest file
 	 * @return bool
 	 */
 	public function create_manifest( ) {
@@ -2206,4 +2288,15 @@ final class BackWPup_Job {
 			closedir( $dir );
 		}
 	}
+
+	/**
+	 * Is debug log active
+	 *
+	 * @return bool
+	 */
+	public function is_debug() {
+
+		return strstr( $this->log_level, 'debug' ) ? TRUE : FALSE;
+	}
+
 }

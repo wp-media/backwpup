@@ -38,7 +38,7 @@ class BackWPup_Page_Settings {
 			delete_site_option( 'backwpup_cfg_jobstepretry' );
 			delete_site_option( 'backwpup_cfg_jobmaxexecutiontime' );
 			delete_site_option( 'backwpup_cfg_jobziparchivemethod' );
-			delete_site_option( 'backwpup_cfg_jobnotranslate' );
+			delete_site_option( 'backwpup_cfg_loglevel' );
 			delete_site_option( 'backwpup_cfg_jobwaittimems' );
 			delete_site_option( 'backwpup_cfg_jobrunauthkey' );
 			delete_site_option( 'backwpup_cfg_disablearchivesizelimit' );
@@ -77,7 +77,7 @@ class BackWPup_Page_Settings {
 		}
 		update_site_option( 'backwpup_cfg_jobmaxexecutiontime', $max_exe_time );
 		update_site_option( 'backwpup_cfg_jobziparchivemethod', ( $_POST[ 'jobziparchivemethod' ] == '' || $_POST[ 'jobziparchivemethod' ] == 'PclZip' || $_POST[ 'jobziparchivemethod' ] == 'ZipArchive' ) ? $_POST[ 'jobziparchivemethod' ] : '' );
-		update_site_option( 'backwpup_cfg_jobnotranslate', isset( $_POST[ 'jobnotranslate' ] ) ? 1 : 0 );
+		update_site_option( 'backwpup_cfg_loglevel', in_array( $_POST[ 'loglevel' ], array( 'normal_translated', 'normal', 'debug_translated', 'debug' ) ) ? $_POST[ 'loglevel' ] : 'normal_translated' );
 		update_site_option( 'backwpup_cfg_jobwaittimems', $_POST[ 'jobwaittimems' ] );
 		update_site_option( 'backwpup_cfg_disablearchivesizelimit', isset( $_POST[ 'disablearchivesizelimit' ] ) ? 1 : 0 );
 		update_site_option( 'backwpup_cfg_maxlogs', abs( (int)$_POST[ 'maxlogs' ] ) );
@@ -216,6 +216,23 @@ class BackWPup_Page_Settings {
                         </fieldset>
                     </td>
                 </tr>
+	            <tr>
+		            <th scope="row"><?php _e( 'Logging Level', 'backwpup' ); ?></th>
+		            <td>
+			            <fieldset>
+				            <legend class="screen-reader-text"><span><?php _e( 'Logging Level', 'backwpup' ); ?></span>
+				            </legend>
+				            <label for="loglevel">
+					            <select name="loglevel" size="1" class="help-tip" title="<?php esc_attr_e( 'Debug lag has much more informations than normal logs. It is for support and should be handled carefully. For support is the best to use a not translated log file. Usage of not translated logs can reduce the PHP memory usage.', 'backwpup' ); ?>">
+						            <option value="normal_translated" <?php selected( get_site_option( 'backwpup_cfg_loglevel' ), 'normal_translated' ); ?>><?php _e( 'Normal (translated)', 'backwpup' ); ?></option>
+						            <option value="normal" <?php selected( get_site_option( 'backwpup_cfg_loglevel' ), 'normal' ); ?>><?php _e( 'Normal (not translated)', 'backwpup' ); ?></option>
+						            <option value="debug_translated" <?php selected( get_site_option( 'backwpup_cfg_loglevel' ), 'debug_translated' ); ?>><?php _e( 'Debug (translated)', 'backwpup' ); ?></option>
+						            <option value="debug" <?php selected( get_site_option( 'backwpup_cfg_loglevel' ), 'debug' ); ?>><?php _e( 'Debug (not translated)', 'backwpup' ); ?></option>
+					            </select>
+				            </label>
+			            </fieldset>
+		            </td>
+	            </tr>
             </table>
 
         </div>
@@ -269,20 +286,6 @@ class BackWPup_Page_Settings {
                     <td>
                         <input name="jobrunauthkey" type="text" id="jobrunauthkey" title="<?php esc_attr_e( 'empty = deactivated. Will be used to protect job starts from unauthorized person.', 'backwpup' ); ?>"
                                value="<?php echo get_site_option( 'backwpup_cfg_jobrunauthkey' );?>" class="text code help-tip"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><?php _e( 'No translation', 'backwpup' ); ?></th>
-                    <td>
-                        <fieldset>
-                            <legend class="screen-reader-text"><span><?php _e( 'No Translation', 'backwpup' ); ?></span>
-                            </legend>
-                            <label for="jobnotranslate">
-                                <input name="jobnotranslate" type="checkbox" id="jobnotranslate"
-                                       value="1" <?php checked( get_site_option( 'backwpup_cfg_jobnotranslate' ), TRUE ); ?> />
-								<?php _e( 'No translation for the job, the log will be written in English', 'backwpup' ); ?>
-                            </label>
-                        </fieldset>
                     </td>
                 </tr>
                 <tr>

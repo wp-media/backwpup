@@ -28,7 +28,7 @@ final class BackWPup_Option {
 		add_site_option( 'backwpup_cfg_jobziparchivemethod','' );
 		add_site_option( 'backwpup_cfg_jobstepretry', 3 );
 		add_site_option( 'backwpup_cfg_jobrunauthkey', substr( md5( BackWPup::get_plugin_data( 'hash' ) ), 11, 8 ) );
-		add_site_option( 'backwpup_cfg_jobnotranslate', 0 );
+		add_site_option( 'backwpup_cfg_loglevel', 'normal_translated' );
 		add_site_option( 'backwpup_cfg_jobwaittimems', 0 );
 		add_site_option( 'backwpup_cfg_disablearchivesizelimit', 0 );
 		//Logs

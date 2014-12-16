@@ -33,6 +33,13 @@ class BackWPup_Install {
 			BackWPup_Job::check_folder( get_site_option( 'backwpup_cfg_logfolder' ), TRUE );
 		}
 
+		//changes for 3.1.15
+		$no_transation = get_site_option( 'backwpup_cfg_jobnotranslate' );
+		if ( $no_transation ) {
+			update_site_option( 'backwpup_cfg_loglevel', 'normal' );
+			delete_site_option( 'backwpup_cfg_jobnotranslate' );
+		}
+
 		//create new options
 		if ( is_multisite() )
 			add_site_option( 'backwpup_jobs', array() );

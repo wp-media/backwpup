@@ -172,9 +172,12 @@ Please check all settings after the update:
 
 == Changelog ==
 = Version 3.1.5 =
-* Fixed: Sugarsync SSL Message
+* Fixed: Sugarsync SSL message
+* Fixed: Job hang in some configurations
 * Added: Message if job has not configured destinations
 * Added: Option to disable 2GB Archive size check
+* Added: Setting for log level and minimize log for normal output
+* Improved: Excessive transient writes with job start urls
 * Updated: AWS SDK to Version 2.7.7 (PHP 5.3.3+)
 * Updated: MSAZURE SDK to Version 0.4.0-dev
 
