@@ -13,8 +13,6 @@ Schedule complete automatic backups of your WordPress installation. Decide which
 
 The **backup plugin** **[BackWPup Free](http://marketpress.com/product/backwpup-pro/)** can be used to save your complete installation including /wp-content/ and push them to an external Backup Service, like **Dropbox**, **S3**, **FTP** and many more, see list below. With a single backup .zip file you are able to easily restore an installation. Please understand: this free version will not be supported as good as the [BackWPup Pro version](http://marketpress.com/product/backwpup-pro/).
 
-BackWPup Free is the number 1 backup-plugin for WordPress with nearly 1.000.000 downloads and in the top 20 of all WordPress Plugins (checked on rankwp.com)
-
 * Database Backup  *(needs mysqli)*
 * WordPress XML Export
 * Generate a file with installed plugins
