@@ -32,10 +32,12 @@ final class BackWPup_Option {
 		add_site_option( 'backwpup_cfg_jobwaittimems', 0 );
 		add_site_option( 'backwpup_cfg_disablearchivesizelimit', 0 );
 		//Logs
-		add_site_option( 'backwpup_cfg_maxlogs', 30  );
+		add_site_option( 'backwpup_cfg_maxlogs', 30 );
 		add_site_option( 'backwpup_cfg_gzlogs', 0 );
 		$upload_dir = wp_upload_dir();
 		$logs_dir = trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . BackWPup::get_plugin_data( 'hash' ) . '-logs/';
+		$content_path = trailingslashit( str_replace( '\\', '/', WP_CONTENT_DIR ) );
+		$logs_dir = str_replace( $content_path, '', $logs_dir );
 		add_site_option( 'backwpup_cfg_logfolder', $logs_dir );
 		//Network Auth
 		add_site_option( 'backwpup_cfg_httpauthuser','' );

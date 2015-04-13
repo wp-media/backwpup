@@ -36,7 +36,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 		/* @var wpdb $wpdb */
 
 		$defaults = array(
-			'dbdumpexclude'    => array(), 'dbdumpfile' => sanitize_file_name( DB_NAME ), 'dbdumptype' => 'sql', 'dbdumpfilecompression' => ''
+			'dbdumpexclude' => array(), 'dbdumpfile' => sanitize_file_name( DB_NAME ), 'dbdumptype' => 'sql', 'dbdumpfilecompression' => ''
 		);
 		//set only wordpress tables as default
 		$dbtables = $wpdb->get_results( 'SHOW TABLES FROM `' . DB_NAME . '`', ARRAY_N );
@@ -165,8 +165,9 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 													 'dumpfile'	  => BackWPup::get_plugin_data( 'TEMP' ) . $job_object->steps_data[ $job_object->step_working ][ 'dbdumpfile' ],
 												) );
 
-			if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] != $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] )
+			if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] != $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] ) {
 				$job_object->log( sprintf( __( 'Connected to database %1$s on %2$s', 'backwpup' ), DB_NAME, DB_HOST ) );
+			}
 
 
 			//Exclude Tables
@@ -201,7 +202,9 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 					$num_records = $sql_dump->dump_table_head( $table );
 					$job_object->steps_data[ $job_object->step_working ][ 'tables' ][ $table ] = array( 'start'   => 0,
 																										'length'   => 1000 );
-					$job_object->log( sprintf( __( 'Backup database table "%s" with "%s" records', 'backwpup' ), $table, $num_records ) );
+					if ( $job_object->is_debug() ) {
+						$job_object->log( sprintf( __( 'Backup database table "%s" with "%s" records', 'backwpup' ), $table, $num_records ) );
+					}
 				}
 				$while = true;
 				while ( $while ) {

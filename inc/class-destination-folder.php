@@ -11,8 +11,11 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	public function option_defaults() {
 
 		$upload_dir = wp_upload_dir();
+		$backups_dir = trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . BackWPup::get_plugin_data( 'hash' ) . '-backups/';
+		$content_path = trailingslashit( str_replace( '\\', '/', WP_CONTENT_DIR ) );
+		$backups_dir = str_replace( $content_path, '', $backups_dir );
 
-		return array( 'maxbackups' => 15, 'backupdir' => trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . BackWPup::get_plugin_data( 'hash' ) . '-backups/', 'backupsyncnodelete' => TRUE );
+		return array( 'maxbackups' => 15, 'backupdir' => $backups_dir, 'backupsyncnodelete' => TRUE );
 	}
 
 
@@ -57,11 +60,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	 */
 	public function edit_form_post_save( $jobid ) {
 
-		$_POST[ 'backupdir' ] = trailingslashit( str_replace( '//', '/', str_replace( '\\', '/', trim( stripslashes( $_POST[ 'backupdir' ] ) ) ) ) );
-		if ( $_POST[ 'backupdir' ][ 0 ] == '.' || ( $_POST[ 'backupdir' ][ 0 ] != '/' && ! preg_match( '#^[a-zA-Z]:/#', $_POST[ 'backupdir' ] ) ) )
-			$_POST[ 'backupdir' ] = trailingslashit( str_replace( '\\', '/', ABSPATH ) ) . $_POST[ 'backupdir' ];
-		if ( $_POST[ 'backupdir' ] == '/' )
-			$_POST[ 'backupdir' ] = '';
+		$_POST[ 'backupdir' ] = trailingslashit( str_replace( array( '//', '\\' ), '/', trim( stripslashes( $_POST[ 'backupdir' ] ) ) ) );
 		BackWPup_Option::update( $jobid, 'backupdir', $_POST[ 'backupdir' ] );
 
 		BackWPup_Option::update( $jobid, 'maxbackups', isset( $_POST[ 'maxbackups' ] ) ? (int)$_POST[ 'maxbackups' ] : 0 );
@@ -124,6 +123,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 		$filecounter    = 0;
 		$files          = array();
 		$backup_folder  = BackWPup_Option::get( $jobid, 'backupdir' );
+		$backup_folder  = BackWPup_File::get_absolute_path( $backup_folder );
 		if ( is_dir( $backup_folder ) && $dir = opendir( $backup_folder ) ) { //make file list
 			while ( FALSE !== ( $file = readdir( $dir ) ) ) {
 				if ( in_array( $file, array( '.', '..', 'index.php', '.htaccess', '.donotbackup' ) ) || is_dir( $backup_folder . $file ) || is_link( $backup_folder . $file ) )
@@ -144,7 +144,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 					$filecounter ++;
 				}
 			}
-			@closedir( $dir );
+			closedir( $dir );
 		}
 
 		return $files;
@@ -166,7 +166,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 		//Delete old Backupfiles
 		$backupfilelist = array();
 		$files          = array();
-		if ( $dir = opendir( $job_object->backup_folder ) ) { //make file list
+		if ( is_writable( $job_object->backup_folder ) && $dir = opendir( $job_object->backup_folder ) ) { //make file list
 			while ( FALSE !== ( $file = readdir( $dir ) ) ) {
 				if ( is_writeable( $job_object->backup_folder . $file ) && ! is_dir( $job_object->backup_folder . $file ) && ! is_link( $job_object->backup_folder . $file ) ) {
 					//list for deletion
@@ -174,7 +174,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 						$backupfilelist[ filemtime( $job_object->backup_folder . $file ) ] = $file;
 				}
 			}
-			@closedir( $dir );
+			closedir( $dir );
 		}
 		if ( $job_object->job[ 'maxbackups' ] > 0 ) {
 			if ( count( $backupfilelist ) > $job_object->job[ 'maxbackups' ] ) {
@@ -185,8 +185,9 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 						break;
 					unlink( $job_object->backup_folder . $file );
 					foreach ( $files as $key => $filedata ) {
-						if ( $filedata[ 'file' ] == $job_object->backup_folder . $file )
+						if ( $filedata[ 'file' ] == $job_object->backup_folder . $file ) {
 							unset( $files[ $key ] );
+						}
 					}
 					$numdeltefiles ++;
 				}

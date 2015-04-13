@@ -302,7 +302,7 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 			set_site_transient( 'BackWPup_' .  $job_object->job[ 'jobid' ] . '_SUGARSYNC', $files, 60 * 60 * 24 * 7 );
 		}
 		catch ( Exception $e ) {
-			$job_object->log( E_USER_ERROR, sprintf( __( 'SugarSync API: %s', 'backwpup' ), htmlentities( $e->getMessage() ) ), $e->getFile(), $e->getLine() );
+			$job_object->log( E_USER_ERROR, sprintf( __( 'SugarSync API: %s', 'backwpup' ), $e->getMessage() ), $e->getFile(), $e->getLine() );
 
 			return FALSE;
 		}

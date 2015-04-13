@@ -303,33 +303,6 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 					BackWPup_Option::update( $newjobid, $key, $option );
 				}
 				break;
-			case 'start_cli': //Get cmd start file
-				if ( ! current_user_can( 'backwpup_jobs_start' ) )
-					break;
-				check_admin_referer( 'start_cli' );
-				if ( empty( $_GET[ 'jobid' ] ) )
-					break;
-				if ( FALSE === strpos( PHP_OS, "WIN" ) ) {
-					header( "Pragma: public" );
-					header( "Expires: 0" );
-					header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
-					header( "Content-Type: application/octet-stream" );
-					header( "Content-Disposition: attachment; filename=BackWPup_cmd_start_job_" . $_GET[ 'jobid' ] . ".sh;" );
-					if ( defined( 'PHP_BINDIR' ) )
-						echo "#!/bin/sh" . PHP_EOL;
-					echo "@\$1php -c \"" . php_ini_loaded_file() . "\" -r \"\$_SERVER[ 'SERVER_ADDR' ] = '". $_SERVER[ 'SERVER_ADDR' ] ."'; \$_SERVER[ 'REMOTE_ADDR' ] = '". $_SERVER[ 'REMOTE_ADDR' ] ."'; \$_SERVER[ 'HTTP_HOST' ] = '". $_SERVER[ 'HTTP_HOST' ] ."'; \$_SERVER[ 'HTTP_USER_AGENT' ] = '". BackWPup::get_plugin_data( 'name' ) ."'; define( 'DOING_CRON', TRUE ); require '" . ABSPATH . "wp-load.php'; if( class_exists( 'BackWPup_Job' ) ) BackWPup_Job::start_cli( " . $_GET[ 'jobid' ] . " );\"";
-					die();
-				}
-				else {
-					header( "Pragma: public" );
-					header( "Expires: 0" );
-					header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
-					header( "Content-Type: application/octet-stream" );
-					header( "Content-Disposition: attachment; filename=BackWPup_cmd_start_job_" . $_GET[ 'jobid' ] . ".cmd;" );
-					echo "@%1php.exe -c \"" . php_ini_loaded_file() . "\" -r \"\$_SERVER[ 'SERVER_ADDR' ] = '". $_SERVER[ 'SERVER_ADDR' ] ."'; \$_SERVER[ 'REMOTE_ADDR' ] = '". $_SERVER[ 'REMOTE_ADDR' ] ."'; \$_SERVER[ 'HTTP_HOST' ] = '". $_SERVER[ 'HTTP_HOST' ] ."'; \$_SERVER[ 'HTTP_USER_AGENT' ] = '". BackWPup::get_plugin_data( 'name' ) ."'; define( 'DOING_CRON', TRUE ); require '" . ABSPATH . "wp-load.php'; if( class_exists( 'BackWPup_Job' ) ) BackWPup_Job::start_cli( " . $_GET[ 'jobid' ] . " );\"";
-					die();
-				}
-				break;
 			case 'runnow':
 				$_GET[ 'jobid' ] = (int) $_GET[ 'jobid' ];
 				if ( ! empty( $_GET[ 'jobid' ] ) ) {
@@ -340,7 +313,9 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 					//check temp folder
 					BackWPup_Job::check_folder( BackWPup::get_plugin_data( 'TEMP' ), TRUE );
 					//check log folder
-					BackWPup_Job::check_folder( get_site_option( 'backwpup_cfg_logfolder' ) );
+					$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
+					$log_folder = BackWPup_File::get_absolute_path( $log_folder );
+					BackWPup_Job::check_folder( $log_folder );
 					//check backup destinations
 					$job_types = BackWPup::get_job_types();
 					$job_conf_types = BackWPup_Option::get( $_GET[ 'jobid' ], 'type' );
@@ -376,8 +351,15 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 					$test_result = '';
 					if ( is_wp_error( $raw_response ) ) {
 						$test_result .= sprintf( __( 'The HTTP response test get an error "%s"','backwpup' ), $raw_response->get_error_message() );
-					} elseif ( 200 != wp_remote_retrieve_response_code( $raw_response ) && 204 != wp_remote_retrieve_response_code( $raw_response ) ) {
+					}
+					$response_code = wp_remote_retrieve_response_code( $raw_response );
+					if ( $response_code < 200  && $response_code > 204 ) {
 						$test_result .= sprintf( __( 'The HTTP response test get a false http status (%s)','backwpup' ), wp_remote_retrieve_response_code( $raw_response ) );
+					} else {
+						$response_body = wp_remote_retrieve_body( $raw_response );
+						if ( FALSE === strstr( $response_body, 'BackWPup Test' ) ) {
+							$test_result .= sprintf( __( 'Not expected HTTP response body: %s','backwpup' ), esc_attr( strip_tags( $response_body ) ) );
+						}
 					}
 					if ( ! empty( $test_result ) ) {
 						BackWPup_Admin::message( $test_result, TRUE );
@@ -584,6 +566,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
             //<![CDATA[
             jQuery(document).ready(function ($) {
                 backwpup_show_working = function () {
+	                var save_log_pos = 0;
                     $.ajax({
                         type: 'GET',
                         url: ajaxurl,
@@ -645,14 +628,27 @@ class BackWPup_Page_Jobs extends WP_List_Table {
                                 $(".job-normal").show();
                                 $('#showworkingclose').show();
                             } else {
+								if ( rundata.restart_url !== '' ) {
+	                                backwpup_trigger_cron( rundata.restart_url );
+								}
                             	setTimeout('backwpup_show_working()', 750);
                             }
                         },
-						error:function ( ) {
+						error:function( ) {
 							setTimeout('backwpup_show_working()', 750);
 						}
                     });
                 };
+	            backwpup_trigger_cron = function ( cron_url ) {
+		            $.ajax({
+			            type: 'POST',
+			            url: cron_url,
+			            dataType: 'text',
+			            cache: false,
+			            processData: false,
+			            timeout: 1
+		            });
+	            };
                 backwpup_show_working();
                 $('#showworkingclose').click( function() {
                     $("#runningjob").hide( 'slow' );
@@ -674,8 +670,11 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 
 		check_ajax_referer( 'backwpupworking_ajax_nonce' );
 
-		$logfile = isset( $_GET[ 'logfile' ] ) ? get_site_option( 'backwpup_cfg_logfolder' ) . trim( $_GET[ 'logfile' ] ) : NULL;
+		$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
+		$log_folder = BackWPup_File::get_absolute_path( $log_folder );
+		$logfile = isset( $_GET[ 'logfile' ] ) ? $log_folder . trim( $_GET[ 'logfile' ] ) : NULL;
 		$logpos  = isset( $_GET[ 'logpos' ] ) ? (int)$_GET[ 'logpos' ] : 0;
+		$restart_url = '';
 
 		//check if logfile renamed
 		if ( file_exists( $logfile . '.gz' ) )
@@ -730,6 +729,18 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 
 		$length = strlen( $logfiledata ) - ( strlen( $logfiledata ) - $endpos ) - $startpos;
 
+		//check if restart must done on ALTERNATE_WP_CRON
+		if ( is_object( $job_object ) && defined( 'ALTERNATE_WP_CRON' ) && ALTERNATE_WP_CRON ) {
+			$restart = BackWPup_Job::get_jobrun_url( 'restartalt' );
+			if ( $job_object->pid === 0 && $job_object->uniqid === '' ) {
+				$restart_url = $restart[ 'url' ];
+			}
+			$last_update = microtime( TRUE ) - $job_object->timestamp_last_update;
+			if ( empty( $job_object->pid ) && $last_update > 10 ) {
+				$restart_url = $restart[ 'url' ];
+			}
+		}
+
 		wp_send_json( array(
 							   'log_pos'         => strlen( $logfiledata ) + $logpos,
 							   'log_text'        => substr( $logfiledata, $startpos, $length ),
@@ -741,6 +752,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 							   'last_msg'		 => $lastmsg,
 							   'last_error_msg'	 => $lasterrormsg,
 							   'sub_step_percent'=> $substep_percent,
+			                   'restart_url'     => $restart_url,
 							   'job_done'		 => $done
 						  ) );
 	}

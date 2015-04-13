@@ -54,6 +54,8 @@ class BackWPup_Cron {
 	public static function check_cleanup() {
 
 		$job_object = BackWPup_Job::get_working_data();
+		$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
+		$log_folder = BackWPup_File::get_absolute_path( $log_folder );
 
 		// check aborted jobs for longer than a tow hours, abort them courtly and send mail
 		if ( is_object( $job_object ) && ! empty( $job_object->logfile ) ) {
@@ -66,20 +68,20 @@ class BackWPup_Cron {
 		}
 
 		//Compress not compressed logs
-		if ( function_exists( 'gzopen' ) && get_site_option( 'backwpup_cfg_gzlogs' ) &&! is_object( $job_object ) ) {
+		if ( is_readable( $log_folder ) && function_exists( 'gzopen' ) && get_site_option( 'backwpup_cfg_gzlogs' ) && ! is_object( $job_object ) ) {
 			//Compress old not compressed logs
-			if ( $dir = opendir( get_site_option( 'backwpup_cfg_logfolder' ) ) ) {
+			if ( $dir = opendir( $log_folder ) ) {
 				$jobids = BackWPup_Option::get_job_ids();
 				while ( FALSE !== ( $file = readdir( $dir ) ) ) {
-					if ( is_writeable( get_site_option( 'backwpup_cfg_logfolder' ) . $file ) && '.html' == substr( $file, -5 ) ) {
-						$compress = new BackWPup_Create_Archive( get_site_option( 'backwpup_cfg_logfolder' ) . $file . '.gz' );
-						if ( $compress->add_file( get_site_option( 'backwpup_cfg_logfolder' ) . $file ) ) {
-							unlink( get_site_option( 'backwpup_cfg_logfolder' ) . $file );
+					if ( is_writeable( $log_folder . $file ) && '.html' == substr( $file, -5 ) ) {
+						$compress = new BackWPup_Create_Archive( $log_folder . $file . '.gz' );
+						if ( $compress->add_file( $log_folder . $file ) ) {
+							unlink( $log_folder . $file );
 							//change last logfile in jobs
 							foreach( $jobids as $jobid ) {
 								$job_logfile = BackWPup_Option::get( $jobid, 'logfile' );
-								if ( ! empty( $job_logfile ) && $job_logfile == get_site_option( 'backwpup_cfg_logfolder' ) . $file )
-									BackWPup_Option::update( $jobid, 'logfile', get_site_option( 'backwpup_cfg_logfolder' ) . $file . '.gz' );
+								if ( ! empty( $job_logfile ) && $job_logfile === $log_folder . $file )
+									BackWPup_Option::update( $jobid, 'logfile', $log_folder . $file . '.gz' );
 							}
 						}
 						unset( $compress );

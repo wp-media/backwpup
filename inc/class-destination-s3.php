@@ -419,7 +419,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				try {
 					$s3->putObject( $create_args );
 				} catch ( Aws\Common\Exception\MultipartUploadException $e ) {
-					$job_object->log( E_USER_ERROR, sprintf( __( 'S3 Service API: %s', 'backwpup' ), htmlentities( $e->getMessage() ) ), $e->getFile(), $e->getLine() );
+					$job_object->log( E_USER_ERROR, sprintf( __( 'S3 Service API: %s', 'backwpup' ), $e->getMessage() ), $e->getFile(), $e->getLine() );
 					return FALSE;
 				}
 			} else {
@@ -471,7 +471,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 																'Parts'		=> $job_object->steps_data[ $job_object->step_working ][ 'Parts' ] ) );
 
 					} catch ( Exception $e ) {
-						$job_object->log( E_USER_ERROR, sprintf( __( 'S3 Service API: %s', 'backwpup' ), htmlentities( $e->getMessage() ) ), $e->getFile(), $e->getLine() );
+						$job_object->log( E_USER_ERROR, sprintf( __( 'S3 Service API: %s', 'backwpup' ), $e->getMessage() ), $e->getFile(), $e->getLine() );
 						if ( ! empty( $job_object->steps_data[ $job_object->step_working ][ 'uploadId' ] ) )
 							$s3->abortMultipartUpload( array(	'Bucket'	=> $job_object->job[ 's3bucket' ],
 																'UploadId'  => $job_object->steps_data[ $job_object->step_working ][ 'uploadId' ],
@@ -505,7 +505,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			}
 		}
 		catch ( Exception $e ) {
-			$job_object->log( E_USER_ERROR, sprintf( __( 'S3 Service API: %s', 'backwpup' ), htmlentities( $e->getMessage() ) ), $e->getFile(), $e->getLine() );
+			$job_object->log( E_USER_ERROR, sprintf( __( 'S3 Service API: %s', 'backwpup' ), $e->getMessage() ), $e->getFile(), $e->getLine() );
 
 			return FALSE;
 		}
@@ -565,7 +565,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			set_site_transient( 'backwpup_' . $job_object->job[ 'jobid' ] . '_s3', $files, 60 * 60 * 24 * 7 );
 		}
 		catch ( Exception $e ) {
-			$job_object->log( E_USER_ERROR, sprintf( __( 'S3 Service API: %s', 'backwpup' ), htmlentities( $e->getMessage() ) ), $e->getFile(), $e->getLine() );
+			$job_object->log( E_USER_ERROR, sprintf( __( 'S3 Service API: %s', 'backwpup' ), $e->getMessage() ), $e->getFile(), $e->getLine() );
 
 			return FALSE;
 		}

@@ -103,7 +103,16 @@ class BackWPup_Page_Editjob {
 					$name = sprintf( __( 'Job with ID %d', 'backwpup' ), $jobid );
 				}
 				BackWPup_Option::update( $jobid, 'name', $name );
-				BackWPup_Option::update( $jobid, 'mailaddresslog', sanitize_email( $_POST[ 'mailaddresslog' ] ) );
+
+				$emails = explode( ',', $_POST[ 'mailaddresslog' ] );
+				foreach( $emails as $key => $email ) {
+					$emails[ $key ] = sanitize_email( trim( $email ) );
+					if ( ! is_email( $emails[ $key ] ) ) {
+						unset( $emails[ $key ] );
+					}
+				}
+				$mailaddresslog = implode( ', ', $emails );
+				BackWPup_Option::update( $jobid, 'mailaddresslog', $mailaddresslog );
 
 				$_POST[ 'mailaddresssenderlog' ] = trim( $_POST[ 'mailaddresssenderlog' ] );
 				if ( empty($_POST[ 'mailaddresssenderlog' ] ) )
@@ -582,7 +591,7 @@ class BackWPup_Page_Editjob {
 						<td>
 							<input name="mailaddresslog" type="text" id="mailaddresslog"
 								   value="<?php echo BackWPup_Option::get( $jobid, 'mailaddresslog' );?>"
-								   class="regular-text help-tip" title="<?php esc_attr_e( 'Leave empty to not have log sent.', 'backwpup' ); ?>" />
+								   class="regular-text help-tip" title="<?php esc_attr_e( 'Leave empty to not have log sent. Or separate with , for more than one receiver.', 'backwpup' ); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -639,9 +648,9 @@ class BackWPup_Page_Editjob {
                     </tr>
                     <tr>
 						<th scope="row"><?php _e( 'Start job with CLI', 'backwpup' ); ?></th>
-						<td class="help-tip" title="<?php esc_attr_e( 'Generate a server script file to let the job start with the server’s cron on command line interface. Alternatively use WP-CLI commands.', 'backwpup' ); ?>">
+						<td class="help-tip" title="<?php esc_attr_e( 'Use WP-CLI commands to let the job start with the server’s cron on command line interface.', 'backwpup' ); ?>">
 							<?php
-								echo str_replace( '\"','"', sprintf ( __( 'Use <a href="http://wp-cli.org/">WP-CLI</a> to run jobs from commandline or <a href="%s">get the start script</a>.', 'backwpup' ),  wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupjobs&action=start_cli&jobid=' . $jobid, 'start_cli' ) ) );
+								 _e( 'Use <a href="http://wp-cli.org/">WP-CLI</a> to run jobs from commandline.</a>.', 'backwpup' );
 							?>
 						</td>
                     </tr>

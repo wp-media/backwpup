@@ -28,23 +28,20 @@ class BackWPup_Install {
 			}
 		}
 
-		//changes for version before 3.1.2
-		if ( version_compare( '3.1.2', get_site_option( 'backwpup_version' ), '>' ) ) {
-			BackWPup_Job::check_folder( get_site_option( 'backwpup_cfg_logfolder' ), TRUE );
-		}
 
 		//changes for 3.1.15
-		$no_transation = get_site_option( 'backwpup_cfg_jobnotranslate' );
-		if ( $no_transation ) {
+		$no_translation = get_site_option( 'backwpup_cfg_jobnotranslate' );
+		if ( $no_translation ) {
 			update_site_option( 'backwpup_cfg_loglevel', 'normal' );
 			delete_site_option( 'backwpup_cfg_jobnotranslate' );
 		}
 
 		//create new options
-		if ( is_multisite() )
+		if ( is_multisite() ) {
 			add_site_option( 'backwpup_jobs', array() );
-		else
+		} else {
 			add_option( 'backwpup_jobs', array(), NULL, 'no' );
+		}
 
 		//remove old schedule
 		wp_clear_scheduled_hook( 'backwpup_cron' );
@@ -61,68 +58,63 @@ class BackWPup_Install {
 		wp_clear_scheduled_hook( 'backwpup_check_cleanup' );
 		wp_schedule_event( time(), 'twicedaily', 'backwpup_check_cleanup' );
 
-		//remove old roles pre v.3.0.9
+		//add capabilities to administrator role
 		$role = get_role( 'administrator' );
-		$role->remove_cap( 'backwpup' );
-		$role->remove_cap( 'backwpup_jobs' );
-		$role->remove_cap( 'backwpup_jobs_edit' );
-		$role->remove_cap( 'backwpup_jobs_start' );
-		$role->remove_cap( 'backwpup_backups' );
-		$role->remove_cap( 'backwpup_backups_download' );
-		$role->remove_cap( 'backwpup_backups_delete' );
-		$role->remove_cap( 'backwpup_logs' );
-		$role->remove_cap( 'backwpup_logs_delete' );
-		$role->remove_cap( 'backwpup_settings' );
+		if ( is_object( $role ) && method_exists( $role, 'add_cap' ) ) {
+			$role->add_cap( 'backwpup' );
+			$role->add_cap( 'backwpup_jobs' );
+			$role->add_cap( 'backwpup_jobs_edit' );
+			$role->add_cap( 'backwpup_jobs_start' );
+			$role->add_cap( 'backwpup_backups' );
+			$role->add_cap( 'backwpup_backups_download' );
+			$role->add_cap( 'backwpup_backups_delete' );
+			$role->add_cap( 'backwpup_logs' );
+			$role->add_cap( 'backwpup_logs_delete' );
+			$role->add_cap( 'backwpup_settings' );
+		}
 
 		//add/overwrite roles
 		add_role( 'backwpup_admin', __( 'BackWPup Admin', 'backwpup' ), array(
-												  'backwpup' => TRUE, 					// BackWPup general accesses (like Dashboard)
-												  'backwpup_jobs' => TRUE,				// accesses for job page
-												  'backwpup_jobs_edit' => TRUE,			// user can edit/delete/copy/export jobs
-												  'backwpup_jobs_start' => TRUE,		// user can start jobs
-												  'backwpup_backups' => TRUE,			// accesses for backups page
-												  'backwpup_backups_download' => TRUE,	// user can download backup files
-												  'backwpup_backups_delete' => TRUE,	// user can delete backup files
-												  'backwpup_logs' => TRUE,				// accesses for logs page
-												  'backwpup_logs_delete' => TRUE,		// user can delete log files
-												  'backwpup_settings' => TRUE,			// accesses for settings page
-											 ) );
+			'read' => TRUE,                         // make it usable for single user
+		    'backwpup' => TRUE, 					// BackWPup general accesses (like Dashboard)
+		    'backwpup_jobs' => TRUE,				// accesses for job page
+		    'backwpup_jobs_edit' => TRUE,			// user can edit/delete/copy/export jobs
+		    'backwpup_jobs_start' => TRUE,		    // user can start jobs
+		    'backwpup_backups' => TRUE,			    // accesses for backups page
+		    'backwpup_backups_download' => TRUE,	// user can download backup files
+		    'backwpup_backups_delete' => TRUE,	    // user can delete backup files
+		    'backwpup_logs' => TRUE,				// accesses for logs page
+		    'backwpup_logs_delete' => TRUE,		    // user can delete log files
+		    'backwpup_settings' => TRUE,			// accesses for settings page
+		) );
 
 		add_role( 'backwpup_check', __( 'BackWPup jobs checker', 'backwpup' ), array(
-																'backwpup' => TRUE,
-																'backwpup_jobs' => TRUE,
-																'backwpup_jobs_edit' => FALSE,
-																'backwpup_jobs_start' => FALSE,
-																'backwpup_backups' => TRUE,
-																'backwpup_backups_download' => FALSE,
-																'backwpup_backups_delete' => FALSE,
-																'backwpup_logs' => TRUE,
-																'backwpup_logs_delete' => FALSE,
-																'backwpup_settings' => FALSE,
-														   ) );
+			'read' => TRUE,
+			'backwpup' => TRUE,
+			'backwpup_jobs' => TRUE,
+			'backwpup_jobs_edit' => FALSE,
+			'backwpup_jobs_start' => FALSE,
+			'backwpup_backups' => TRUE,
+			'backwpup_backups_download' => FALSE,
+			'backwpup_backups_delete' => FALSE,
+			'backwpup_logs' => TRUE,
+			'backwpup_logs_delete' => FALSE,
+			'backwpup_settings' => FALSE,
+	    ) );
 
 		add_role( 'backwpup_helper', __( 'BackWPup jobs helper', 'backwpup' ), array(
-																		 'backwpup' => TRUE,
-																		 'backwpup_jobs' => TRUE,
-																		 'backwpup_jobs_edit' => FALSE,
-																		 'backwpup_jobs_start' => TRUE,
-																		 'backwpup_backups' => TRUE,
-																		 'backwpup_backups_download' => TRUE,
-																		 'backwpup_backups_delete' => TRUE,
-																		 'backwpup_logs' => TRUE,
-																		 'backwpup_logs_delete' => TRUE,
-																		 'backwpup_settings' => FALSE,
-																	) );
-
-		//add role to admin user if no one
-		$users_backwpup = get_users( array( 'blog_id' => 1, 'role' => 'backwpup_admin' ) );
-		if ( empty( $users_backwpup ) ) {
-			/* @var WP_User $user */
-			$users = get_users( array( 'blog_id' => 1, 'role' => 'administrator', 'fields' => 'all_with_meta' ) );
-			foreach ( $users as $user ) {
-				$user->add_role( 'backwpup_admin' );
-			}
-		}
+			'read' => TRUE,
+			'backwpup' => TRUE,
+		    'backwpup_jobs' => TRUE,
+		    'backwpup_jobs_edit' => FALSE,
+		    'backwpup_jobs_start' => TRUE,
+		    'backwpup_backups' => TRUE,
+		    'backwpup_backups_download' => TRUE,
+		    'backwpup_backups_delete' => TRUE,
+		    'backwpup_logs' => TRUE,
+		    'backwpup_logs_delete' => TRUE,
+		    'backwpup_settings' => FALSE,
+		) );
 
 		//add default options
 		BackWPup_Option::default_site_options();
@@ -147,6 +139,7 @@ class BackWPup_Install {
 			}
 		}
 		wp_clear_scheduled_hook( 'backwpup_check_cleanup' );
+
 		//to reschedule on activation and so on
 		update_site_option( 'backwpup_version', get_site_option( 'backwpup_version' ) .'-inactive' );
 	}
@@ -210,23 +203,23 @@ class BackWPup_Install {
 			$jobvalue[ 'archiveformat' ] = $jobvalue[ 'fileformart' ];
 			//convert active destinations
 			$jobvalue[ 'destinations' ] = array();
-			if ( ! empty( $jobvalue[ 'backupdir' ] ) and $jobvalue[ 'backupdir' ] != '/' )
+			if ( ! empty( $jobvalue[ 'backupdir' ] ) && $jobvalue[ 'backupdir' ] != '/' )
 				$jobvalue[ 'destinations' ][ ] = 'FOLDER';
 			if ( ! empty( $jobvalue[ 'mailaddress' ] ) )
 				$jobvalue[ 'destinations' ][ ] = 'MAIL';
-			if ( ! empty( $jobvalue[ 'ftphost' ] ) and ! empty( $jobvalue[ 'ftpuser' ] ) and ! empty( $jobvalue[ 'ftppass' ] ) )
+			if ( ! empty( $jobvalue[ 'ftphost' ] ) && ! empty( $jobvalue[ 'ftpuser' ] ) && ! empty( $jobvalue[ 'ftppass' ] ) )
 				$jobvalue[ 'destinations' ][ ] = 'FTP';
-			if ( ! empty( $jobvalue[ 'dropetoken' ] ) and ! empty( $jobvalue[ 'dropesecret' ] ) )
+			if ( ! empty( $jobvalue[ 'dropetoken' ] ) && ! empty( $jobvalue[ 'dropesecret' ] ) )
 				$jobvalue[ 'destinations' ][ ] = 'DROPBOX';
-			if ( ! empty( $jobvalue[ 'sugarrefreshtoken' ] ) and ! empty( $jobvalue[ 'sugarroot' ] ) )
+			if ( ! empty( $jobvalue[ 'sugarrefreshtoken' ] ) && ! empty( $jobvalue[ 'sugarroot' ] ) )
 				$jobvalue[ 'destinations' ][ ] = 'SUGARSYNC';
-			if ( ! empty( $jobvalue[ 'awsAccessKey' ] ) and ! empty( $jobvalue[ 'awsSecretKey' ] ) and ! empty( $jobvalue[ 'awsBucket' ] ) )
+			if ( ! empty( $jobvalue[ 'awsAccessKey' ] ) && ! empty( $jobvalue[ 'awsSecretKey' ] ) && ! empty( $jobvalue[ 'awsBucket' ] ) )
 				$jobvalue[ 'destinations' ][ ] = 'S3';
-			if ( ! empty( $jobvalue[ 'GStorageAccessKey' ] ) and ! empty( $jobvalue[ 'GStorageSecret' ] ) and ! empty( $jobvalue[ 'GStorageBucket' ] ) and !in_array( 'S3', $jobvalue[ 'destinations' ] ) )
+			if ( ! empty( $jobvalue[ 'GStorageAccessKey' ] ) and ! empty( $jobvalue[ 'GStorageSecret' ] ) && ! empty( $jobvalue[ 'GStorageBucket' ] ) && !in_array( 'S3', $jobvalue[ 'destinations' ] ) )
 				$jobvalue[ 'destinations' ][ ] = 'S3';
-			if ( ! empty( $jobvalue[ 'rscUsername' ] ) and ! empty( $jobvalue[ 'rscAPIKey' ] ) and ! empty( $jobvalue[ 'rscContainer' ] ) )
+			if ( ! empty( $jobvalue[ 'rscUsername' ] ) && ! empty( $jobvalue[ 'rscAPIKey' ] ) && ! empty( $jobvalue[ 'rscContainer' ] ) )
 				$jobvalue[ 'destinations' ][ ] = 'RSC';
-			if ( ! empty( $jobvalue[ 'msazureHost' ] ) and ! empty( $jobvalue[ 'msazureAccName' ] ) and ! empty( $jobvalue[ 'msazureKey' ] ) and ! empty( $jobvalue[ 'msazureContainer' ] ) )
+			if ( ! empty( $jobvalue[ 'msazureHost' ] ) && ! empty( $jobvalue[ 'msazureAccName' ] ) && ! empty( $jobvalue[ 'msazureKey' ] ) && ! empty( $jobvalue[ 'msazureContainer' ] ) )
 				$jobvalue[ 'destinations' ][ ] = 'MSAZURE';
 			//convert dropbox
 			$jobvalue[ 'dropboxtoken' ] = ''; //new app key are set must reauth

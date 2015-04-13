@@ -93,4 +93,29 @@ class BackWPup_File {
 
 		return $files_size;
 	}
+
+	/**
+	 * Get an absolute path if it is relative
+	 *
+	 * @param string $path
+	 *
+	 * @return string
+	 */
+	public static function get_absolute_path( $path = '/' ) {
+
+		$path = str_replace( '\\', '/', $path );
+		$content_path = trailingslashit( str_replace( '\\', '/', WP_CONTENT_DIR ) );
+
+		//use ABSPATH as root folder
+		if ( empty( $path ) || $path === '/' ) {
+			$path = $content_path;
+		}
+
+		//make relative path to absolute
+		if ( substr( $path, 0, 1 ) !== '/' && ! preg_match( '#^[a-zA-Z]:/#', $path ) ) {
+			$path =  $content_path . $path;
+		}
+
+		return $path;
+	}
 }

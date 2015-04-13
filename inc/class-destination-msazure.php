@@ -275,7 +275,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 				BackWPup_Option::update( $job_object->job[ 'jobid' ] , 'lastbackupdownloadurl', network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=downloadmsazure&file=' . $job_object->job[ 'msazuredir'  ] . $job_object->backup_file . '&jobid=' . $job_object->job[ 'jobid' ] );
 		}
 		catch ( Exception $e ) {
-			$job_object->log( E_USER_ERROR, sprintf( __( 'Microsoft Azure API: %s', 'backwpup' ), htmlentities( $e->getMessage() ) ), $e->getFile(), $e->getLine() );
+			$job_object->log( E_USER_ERROR, sprintf( __( 'Microsoft Azure API: %s', 'backwpup' ), $e->getMessage() ), $e->getFile(), $e->getLine() );
 			$job_object->substeps_done = 0;
 			unset( $job_object->steps_data[ $job_object->step_working ][ 'BlockList' ] );
 			if ( isset( $file_handel ) && is_resource( $file_handel ) )
@@ -331,7 +331,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 			set_site_transient( 'backwpup_' . $job_object->job[ 'jobid' ] . '_msazure', $files, 60 * 60 * 24 * 7 );
 		}
 		catch ( Exception $e ) {
-			$job_object->log( E_USER_ERROR, sprintf( __( 'Microsoft Azure API: %s', 'backwpup' ), htmlentities( $e->getMessage() ) ), $e->getFile(), $e->getLine() );
+			$job_object->log( E_USER_ERROR, sprintf( __( 'Microsoft Azure API: %s', 'backwpup' ), $e->getMessage() ), $e->getFile(), $e->getLine() );
 
 			return FALSE;
 		}

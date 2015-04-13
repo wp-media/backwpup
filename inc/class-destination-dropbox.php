@@ -95,7 +95,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
             <th scope="row"><label for="iddropboxdir"><?php _e( 'Destination Folder', 'backwpup' ); ?></label></th>
             <td>
                 <input id="iddropboxdir" name="dropboxdir" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'dropboxdir' ) ); ?>" class="regular-text help-tip" title="<?php esc_attr_e( 'Specify a subfolder where your backup archives will be stored. If you use the App option from above, this folder will be created inside of Apps/BackWPup. Otherwise it will be created at the root of your Dropbox. Already exisiting folders with the same name will not be overriden.', 'backwpup' ); ?>" />
-                <p><em><?php _e( 'Folder inside your Dropbox where your backup archives will be stored.', 'theme_hamburg_textdomain' );?></em></p>
+                <p><em><?php _e( 'Folder inside your Dropbox where your backup archives will be stored.', 'backwpup' );?></em></p>
             </td>
         </tr>
         <tr>
@@ -221,7 +221,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 
 		$job_object->substeps_todo = 2 + $job_object->backup_filesize;
 		if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] != $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] )
-			$job_object->log( sprintf( __( '%d. Try to send backup file to Dropbox&#160;&hellip;', 'backwpup' ), $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] ), E_USER_NOTICE );
+			$job_object->log( sprintf( __( '%d. Try to send backup file to Dropbox&#160;&hellip;', 'backwpup' ), $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] ) );
 
 		try {
 			$dropbox = new BackWPup_Destination_Dropbox_API( $job_object->job[ 'dropboxroot' ] );
@@ -239,15 +239,22 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 			if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] != $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] ) {
 				$info = $dropbox->accountInfo();
 				if ( ! empty( $info[ 'uid' ] ) ) {
-					$job_object->log( sprintf( __( 'Authenticated with Dropbox of user %s', 'backwpup' ), $info[ 'display_name' ] . ' (' . $info[ 'email' ] . ')' ), E_USER_NOTICE );
+					if ( $job_object->is_debug() ) {
+						$user = $info[ 'display_name' ] . ' (' . $info[ 'email' ] . ')';
+					} else {
+						$user = $info[ 'display_name' ];
+					}
+					$job_object->log( sprintf( __( 'Authenticated with Dropbox of user: %s', 'backwpup' ), $user ) );
 					//Quota
-					$dropboxfreespase = $info[ 'quota_info' ][ 'quota' ] - $info[ 'quota_info' ][ 'shared' ] - $info[ 'quota_info' ][ 'normal' ];
-					$job_object->log( sprintf( __( '%s available on your Dropbox', 'backwpup' ), size_format( $dropboxfreespase, 2 ) ), E_USER_NOTICE );
+					if ( $job_object->is_debug() ) {
+						$dropboxfreespase = $info[ 'quota_info' ][ 'quota' ] - $info[ 'quota_info' ][ 'shared' ] - $info[ 'quota_info' ][ 'normal' ];
+						$job_object->log( sprintf( __( '%s available on your Dropbox', 'backwpup' ), size_format( $dropboxfreespase, 2 ) ) );
+					}
 				} else {
 					$job_object->log( __( 'Not Authenticated with Dropbox!', 'backwpup' ), E_USER_ERROR );
 					return FALSE;
 				}
-				$job_object->log( __( 'Uploading to Dropbox&#160;&hellip;', 'backwpup' ), E_USER_NOTICE );
+				$job_object->log( __( 'Uploading to Dropbox&#160;&hellip;', 'backwpup' ) );
 			}
 
 			// put the file
@@ -322,7 +329,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 			set_site_transient( 'backwpup_' . $job_object->job[ 'jobid' ] . '_dropbox', $files, 60 * 60 * 24 * 7 );
 		}
 		catch ( Exception $e ) {
-			$job_object->log( E_USER_ERROR, sprintf( __( 'Dropbox API: %s', 'backwpup' ), htmlentities( $e->getMessage() ) ), $e->getFile(), $e->getLine() );
+			$job_object->log( E_USER_ERROR, sprintf( __( 'Dropbox API: %s', 'backwpup' ), $e->getMessage() ), $e->getFile(), $e->getLine() );
 
 			return FALSE;
 		}

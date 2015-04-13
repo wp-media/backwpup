@@ -2,8 +2,8 @@
 Contributors: inpsyde, danielhuesken, Bueltge, nullbyte
 Tags: Amazon, Amazon S3, back up, backup, chinese, cloud, cloud files, database, db backup, dropbox, dump, file, french, ftp, ftps, german, migrate, multisite, russian, schedule, sftp, storage, S3, time, upload, xml
 Requires at least: 3.4
-Tested up to: 4.0
-Stable tag: 3.1.4
+Tested up to: 4.2
+Stable tag: 3.1.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -42,7 +42,7 @@ The **backup plugin** **[BackWPup Free](http://marketpress.com/product/backwpup-
 
 = Requirements =
 * WordPress 3.4 and PHP 5.2.7 required!
-* To use the Plugin with full functionality PHP 5.3.3 with mysqli, FTP,gz, bz2,  ZipArchive and curl is needed.
+* To use the Plugin with full functionality PHP 5.3.3 with mysqli, FTP,gz, bz2, ZipArchive and curl is needed.
 * Plugin functions that don't work because of your server settings, will not be displayed in admin area.
 
 **Remember: The most expensive backup is the one you never did! And please test your backups!**
@@ -169,15 +169,30 @@ Please check all settings after the update:
 
 
 == Changelog ==
-= Version 3.1.5 =
+= Version 3.2.0 =
 * Fixed: Sugarsync SSL message
 * Fixed: Job hang in some configurations
+* Fixed: RSS Feed in Dashboard
 * Added: Message if job has not configured destinations
 * Added: Option to disable 2GB Archive size check
 * Added: Setting for log level and minimize log for normal output
+* Added: Email logfile to more than one receiver
+* Added: Creation of web.config for IIS Webserver
+* Added: Allow relative path to WP_CONTENT_DIR for logs and backups
+* Added: Prefer plugin translation loading from WP_LAND_DIR
 * Improved: Excessive transient writes with job start urls
+* Improved: Authorisation settings for wp-cron.php
+* Improved: Folder checking with open basedir check
+* Improved: WP-CLI outputs
+* Improved: WP_*_DIR will be set to default WordPress path if changed
+* Improved: Role management. Administrators always have BackWPup capabilities
+* Improved: Unix Signals handling to caching more
 * Updated: AWS SDK to Version 2.7.7 (PHP 5.3.3+)
 * Updated: MSAZURE SDK to Version 0.4.0-dev
+* Removed: Server script file generation, please use WP-CLI
+* Fixed: Notice if BuddyPress is active
+* PRO Fixed: Authentication for GDrive
+* PRO Fixed: Synchronisation with GDrive
 
 = Version 3.1.4 =
 * Fixed: removing of % from filename

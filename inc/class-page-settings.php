@@ -45,8 +45,7 @@ class BackWPup_Page_Settings {
 			delete_site_option( 'backwpup_cfg_maxlogs' );
 			delete_site_option( 'backwpup_cfg_gzlogs' );
 			delete_site_option( 'backwpup_cfg_protectfolders' );
-			delete_site_option( 'backwpup_cfg_httpauthuser' );
-			delete_site_option( 'backwpup_cfg_httpauthpassword' );
+			delete_site_option( 'backwpup_cfg_authentication' );
 			delete_site_option( 'backwpup_cfg_logfolder' );
 			delete_site_option( 'backwpup_cfg_dropboxappkey' );
 			delete_site_option( 'backwpup_cfg_dropboxappsecret' );
@@ -83,20 +82,24 @@ class BackWPup_Page_Settings {
 		update_site_option( 'backwpup_cfg_maxlogs', abs( (int)$_POST[ 'maxlogs' ] ) );
 		update_site_option( 'backwpup_cfg_gzlogs', isset( $_POST[ 'gzlogs' ] ) ? 1 : 0 );
 		update_site_option( 'backwpup_cfg_protectfolders', isset( $_POST[ 'protectfolders' ] ) ? 1 : 0 );
-		update_site_option( 'backwpup_cfg_httpauthuser', $_POST[ 'httpauthuser' ] );
-		update_site_option( 'backwpup_cfg_httpauthpassword', BackWPup_Encryption::encrypt( $_POST[ 'httpauthpassword' ] ) );
 		$_POST[ 'jobrunauthkey' ] = preg_replace( '/[^a-zA-Z0-9]/', '', trim( $_POST[ 'jobrunauthkey' ] ) );
 		update_site_option( 'backwpup_cfg_jobrunauthkey', $_POST[ 'jobrunauthkey' ] );
 		$_POST[ 'logfolder' ] = trailingslashit( str_replace( '\\', '/', trim( stripslashes( $_POST[ 'logfolder' ] ) ) ) );
-		if ( $_POST[ 'logfolder' ][ 0 ] == '.' || ( $_POST[ 'logfolder' ][ 0 ] != '/' && ! preg_match( '#^[a-zA-Z]:/#', $_POST[ 'logfolder' ] ) ) )
-			$_POST[ 'logfolder' ] = trailingslashit( str_replace( '\\', '/', ABSPATH ) ) . $_POST[ 'logfolder' ];
 		//set def. folders
-		if ( empty( $_POST[ 'logfolder' ] ) || $_POST[ 'logfolder' ] == '/' ) {
+		if ( empty( $_POST[ 'logfolder' ] ) || $_POST[ 'logfolder' ] === '/' ) {
 			delete_site_option( 'backwpup_cfg_logfolder' );
 			BackWPup_Option::default_site_options();
 		} else {
 			update_site_option( 'backwpup_cfg_logfolder', $_POST[ 'logfolder' ] );
 		}
+
+		$authentication = get_site_option( 'backwpup_cfg_authentication', array( 'method' => '', 'basic_user' => '', 'basic_password' => '', 'user_id' => 0, 'query_arg' => '' ) );
+		$authentication[ 'method' ] = ( in_array( $_POST[ 'authentication_method' ], array( 'user', 'basic', 'query_arg' ) ) ) ? $_POST[ 'authentication_method' ] : '';
+		$authentication[ 'basic_user' ] = $_POST[ 'authentication_basic_user' ];
+		$authentication[ 'basic_password' ] = BackWPup_Encryption::encrypt( $_POST[ 'authentication_basic_password' ] );
+		$authentication[ 'query_arg' ] = $_POST[ 'authentication_query_arg' ];
+		$authentication[ 'user_id' ] = (int) $_POST[ 'authentication_user_id' ];
+		update_site_option( 'backwpup_cfg_authentication', $authentication );
 
 		do_action( 'backwpup_page_settings_save' );
 
@@ -190,9 +193,9 @@ class BackWPup_Page_Settings {
                 <tr>
                     <th scope="row"><label for="logfolder"><?php _e( 'Log file folder', 'backwpup' ); ?></label></th>
                     <td>
-                        <input name="logfolder" type="text" id="logfolder"
+                        <input name="logfolder" type="text" id="logfolder" title="<?php esc_attr_e( 'You can use absolute or relative path! Relative path is relative to WP_CONTENT_DIR.', 'backwpup' ); ?>"
                                value="<?php echo get_site_option( 'backwpup_cfg_logfolder' );?>"
-                               class="regular-text code"/>
+                               class="regular-text code help-tip"/>
                     </td>
                 </tr>
                 <tr>
@@ -325,24 +328,69 @@ class BackWPup_Page_Settings {
 
         <div class="table ui-tabs-hide" id="backwpup-tab-net">
 
-			<h3 class="title"><?php _e( 'Authentication', 'backwpup' ); ?></h3>
-            <p><?php _e( 'Is your blog protected with HTTP basic authentication (.htaccess)? If yes, please set the username and password for authentication here.', 'backwpup' ); ?></p>
-            <table class="form-table">
-                <tr>
-                    <th scope="row"><label for="httpauthuser"><?php _e( 'Username:', 'backwpup' ); ?></label></th>
+			<h3 class="title"><?php echo sprintf( __( 'Authentication for <code>%s</code>', 'backwpup' ), site_url( 'wp-cron.php' ) ); ?></h3>
+            <p><?php _e( 'Is your blog protected with HTTP basic authentication (.htaccess)? Or did you use a Plugin to secure wp-cron.php than use the authentication methods below', 'backwpup' ); ?></p>
+            <?php
+                $authentication = get_site_option( 'backwpup_cfg_authentication', array( 'method' => '', 'basic_user' => '', 'basic_password' => '', 'user_id' => 0, 'query_arg' => '' ) );
+            ?>
+	        <table class="form-table">
+	            <tr>
+		            <th scope="row"><?php _e( 'Authentication method', 'backwpup' ); ?></th>
+		            <td>
+			            <fieldset>
+				            <legend class="screen-reader-text"><span><?php _e( 'Authentication method', 'backwpup' ); ?></span></legend>
+				            <label for="authentication_method">
+					            <select name="authentication_method" id="authentication_method" size="1" >
+						            <option value="" <?php selected( $authentication[ 'method' ], '' ); ?>><?php _e( 'none', 'backwpup' ); ?></option>
+						            <option value="basic" <?php selected( $authentication[ 'method' ], 'basic' ); ?>><?php _e( 'Basic auth', 'backwpup' ); ?></option>
+						            <option value="user" <?php selected( $authentication[ 'method' ], 'user' ); ?>><?php _e( 'WordPress User', 'backwpup' ); ?></option>
+						            <option value="query_arg" <?php selected( $authentication[ 'method' ], 'query_arg' ); ?>><?php _e( 'Query argument', 'backwpup' ); ?></option>
+					            </select>
+				            </label>
+			            </fieldset>
+		            </td>
+	            </tr>
+                <tr class="authentication_basic" <?php if ( $authentication[ 'method' ] != 'basic' ) echo 'style="display:none"'; ?>>
+                    <th scope="row"><label for="authentication_basic_user"><?php _e( 'Basic Auth Username:', 'backwpup' ); ?></label></th>
                     <td>
-                        <input name="httpauthuser" type="text" id="httpauthuser"
-                               value="<?php echo get_site_option( 'backwpup_cfg_httpauthuser' );?>"
+                        <input name="authentication_basic_user" type="text" id="authentication_basic_user"
+                               value="<?php echo $authentication[ 'basic_user' ];?>"
                                class="regular-text" autocomplete="off" />
                     </td>
                 </tr>
-                <tr>
-                    <th scope="row"><label for="httpauthpassword"><?php _e( 'Password:', 'backwpup' ); ?></label></th>
-                    <td>
-                        <input name="httpauthpassword" type="password" id="httpauthpassword"
-                               value="<?php echo BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_httpauthpassword' ) );?>"
-                               class="regular-text" autocomplete="off" />
-                </tr>
+                <tr class="authentication_basic" <?php if ( $authentication[ 'method' ] != 'basic' ) echo 'style="display:none"'; ?>>
+			        <th scope="row"><label for="authentication_basic_password"><?php _e( 'Basic Auth Password:', 'backwpup' ); ?></label></th>
+			        <td>
+				        <input name="authentication_basic_password" type="password" id="authentication_basic_password"
+					        value="<?php echo BackWPup_Encryption::decrypt( $authentication[ 'basic_password' ] );?>"
+					        class="regular-text" autocomplete="off" />
+		        </tr>
+		        <tr class="authentication_user" <?php if ( $authentication[ 'method' ] != 'user' ) echo 'style="display:none"'; ?>>
+			        <th scope="row"><?php _e( 'Select WordPress User', 'backwpup' ); ?></th>
+			        <td>
+				        <fieldset>
+					        <legend class="screen-reader-text"><span><?php _e( 'Select WordPress User', 'backwpup' ); ?></span>
+					        </legend>
+					        <label for="authentication_user_id">
+						        <select name="authentication_user_id" size="1" >
+							        <?php
+							        $users = get_users( array( 'who' => 'administrators', 'number' => 99, 'orderby' => 'display_name' ) );
+							        foreach ( $users as $user ) {
+								        echo '<option value="" '. selected( $authentication[ 'user_id' ], $user->ID, FALSE ) .'>'. esc_attr( $user->display_name ) .'</option>';
+							        }
+							        ?>
+						        </select>
+					        </label>
+				        </fieldset>
+			        </td>
+		        </tr>
+		        <tr class="authentication_query_arg" <?php if ( $authentication[ 'method' ] != 'query_arg' ) echo 'style="display:none"'; ?>>
+			        <th scope="row"><label for="authentication_query_arg"><?php _e( 'Query arg key=value:', 'backwpup' ); ?></label></th>
+			        <td>
+				        ?<input name="authentication_query_arg" type="text" id="authentication_query_arg"
+					        value="<?php echo $authentication[ 'query_arg' ];?>"
+					        class="regular-text" />
+		        </tr>
             </table>
 
         </div>
@@ -401,14 +449,16 @@ class BackWPup_Page_Settings {
 			else
 				echo BackWPup::get_plugin_data( 'TEMP' );
 			echo '</td></tr>';
-
+			$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
+			$log_folder = BackWPup_File::get_absolute_path( $log_folder );
 			echo '<tr><td>' . __( 'Log folder:', 'backwpup' ) . '</td><td>';
-			if ( ! is_dir(  get_site_option( 'backwpup_cfg_logfolder' ) ) )
-				echo sprintf( __( 'Logs folder %s not exist.','backwpup' ),  get_site_option( 'backwpup_cfg_logfolder' ) );
-			elseif ( ! is_writable(  get_site_option( 'backwpup_cfg_logfolder' ) ) )
-				echo sprintf( __( 'Log folder %s is not writable.','backwpup' ),  get_site_option( 'backwpup_cfg_logfolder' ) );
-			else
-				echo  get_site_option( 'backwpup_cfg_logfolder' );
+			if ( ! is_dir( $log_folder ) ) {
+				echo sprintf( __( 'Logs folder %s not exist.','backwpup' ), $log_folder );
+			} elseif ( ! is_writable( $log_folder ) ) {
+				echo sprintf( __( 'Log folder %s is not writable.','backwpup' ), $log_folder );
+			} else {
+				echo $log_folder;
+			}
 			echo '</td></tr>';
 			echo '<tr title=""><td>' . __( 'Server', 'backwpup' ) . '</td><td>' . $_SERVER[ 'SERVER_SOFTWARE' ] . '</td></tr>';
 			echo '<tr title=""><td>' . __( 'Operating System', 'backwpup' ) . '</td><td>' . PHP_OS . '</td></tr>';

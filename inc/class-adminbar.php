@@ -6,16 +6,13 @@ class BackWPup_Adminbar {
 
 	private static $instance = NULL;
 
+	/**
+	 *
+	 */
 	private function __construct() {
 
-		if ( ! is_admin_bar_showing() || ! current_user_can( 'backwpup' ) || ! get_site_option( 'backwpup_cfg_showadminbar' ) ) {
-			return;
-		}
-
-		//load text domain
-		if ( ! is_textdomain_loaded( 'backwpup' ) ) {
-			load_plugin_textdomain( 'backwpup', FALSE, BackWPup::get_plugin_data( 'BaseName' ) . '/languages' );
-		}
+		//Load text domain
+		BackWPup::load_text_domain();
 
 		//add admin bar. Works only in init
 		add_action( 'admin_bar_menu', array( $this, 'adminbar' ), 100 );
@@ -30,9 +27,14 @@ class BackWPup_Adminbar {
 	 */
 	public static function get_instance() {
 
-		if (NULL === self::$instance) {
+		if ( NULL === self::$instance && ! is_admin_bar_showing() || ! current_user_can( 'backwpup' ) || ! get_site_option( 'backwpup_cfg_showadminbar' ) ) {
+			return NULL;
+		}
+
+		if ( NULL === self::$instance ) {
 			self::$instance = new self;
 		}
+
 		return self::$instance;
 	}
 

@@ -248,11 +248,29 @@ class BackWPup_Create_Archive {
 			return TRUE;
 		}
 
-		if ( empty( $name_in_archive ) )
+		if ( empty( $name_in_archive ) ) {
 			$name_in_archive = $file_name;
+		}
 
 		//remove reserved chars
-		$name_in_archive = str_replace( array("?", "[", "]", "\\", "=", "<", ">", ":", ";", ",", "'", "\"", "&", "$", "#", "*", "(", ")", "|", "~", "`", "!", "{", "}", chr(0)) , '', $name_in_archive );
+		$name_in_archive = str_replace( array( "?", "<", ">", ":", "%","\"", "*", "|", chr(0) ) , '', $name_in_archive );
+
+		//convert chars in archives
+		if ( function_exists( 'iconv' ) ) {
+			$charsets = array( 'UTF-8', 'ASCII',
+				'ISO-8859-1', 'ISO-8859-2', 'ISO-8859-3', 'ISO-8859-4', 'ISO-8859-5',
+				'ISO-8859-6', 'ISO-8859-7', 'ISO-8859-8', 'ISO-8859-9', 'ISO-8859-10',
+				'ISO-8859-13', 'ISO-8859-14', 'ISO-8859-15', 'ISO-8859-16',
+				'Windows-1251', 'Windows-1252', 'Windows-1254'
+			);
+			foreach ( $charsets as $charset ) {
+				$test = @iconv( $charset, 'UTF-8', $name_in_archive );
+				if ( $test ) {
+					$name_in_archive = $test;
+					break;
+				}
+			}
+		}
 
 		switch ( $this->get_method() ) {
 			case 'gz':
