@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: BackWPup v3.0.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-06 17:42+0100\n"
-"PO-Revision-Date: 2015-05-26 12:22-0300\n"
+"PO-Revision-Date: 2015-05-26 12:37-0300\n"
 "Last-Translator: amieva <amieva@gmail.com>\n"
 "Language-Team: Luc Capronnier <lcapronnier@yahoo.com>\n"
 "MIME-Version: 1.0\n"
@@ -470,17 +470,17 @@ msgstr "Backup para Microsoft Azure (Blob)"
 # @ backwpup
 #: inc/class-destination-msazure.php:26
 msgid "MS Azure access keys"
-msgstr ""
+msgstr "Chave de acesso do MS Azure"
 
 # @ backwpup
 #: inc/class-destination-msazure.php:30
 msgid "Account name"
-msgstr ""
+msgstr "Nome da conta"
 
 # @ backwpup
 #: inc/class-destination-msazure.php:37
 msgid "Access key"
-msgstr ""
+msgstr "Chave de acesso"
 
 # @ backwpup
 #: inc/class-destination-msazure.php:45
