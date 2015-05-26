@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: BackWPup v3.0.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-06 17:42+0100\n"
-"PO-Revision-Date: 2015-05-26 12:37-0300\n"
+"PO-Revision-Date: 2015-05-26 15:52-0300\n"
 "Last-Translator: amieva <amieva@gmail.com>\n"
 "Language-Team: Luc Capronnier <lcapronnier@yahoo.com>\n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,7 @@ msgstr ""
 "X-Poedit-Basepath: ../\n"
 "X-Textdomain-Support: yes\n"
 "X-Generator: Poedit 1.7.1\n"
+"X-Poedit-Bookmarks: 176,-1,-1,-1,-1,-1,-1,-1,-1,-1\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: inc/class-admin.php:131 inc/pro/class-marketpress-documentation.php:150
@@ -485,124 +486,124 @@ msgstr "Chave de acesso"
 # @ backwpup
 #: inc/class-destination-msazure.php:45
 msgid "Blob container"
-msgstr ""
+msgstr "Repositório Blob"
 
 # @ backwpup
 #: inc/class-destination-msazure.php:49 inc/class-destination-rsc.php:89
 msgid "Container selection"
-msgstr ""
+msgstr "Seleção de Repositório"
 
 # @ backwpup
 #: inc/class-destination-msazure.php:61 inc/class-destination-rsc.php:101
 msgid "Create a new container"
-msgstr ""
+msgstr "Criar novo repositório"
 
 # @ backwpup
 #: inc/class-destination-msazure.php:72
 msgid "Folder in container"
-msgstr ""
+msgstr "Pasta no repositório"
 
 #: inc/class-destination-msazure.php:78 inc/class-destination-rsc.php:118
 #: inc/class-destination-s3-v1.php:151 inc/class-destination-s3.php:149
 msgid "File deletion"
-msgstr ""
+msgstr "Exclusão de arquivo"
 
 # @ backwpup
 #: inc/class-destination-msazure.php:125
 #: inc/pro/class-destination-msazure.php:70
 #, php-format
 msgid "MS Azure container \"%s\" created."
-msgstr ""
+msgstr "Repositório \"%s\" da MS Azure criado."
 
 #: inc/class-destination-msazure.php:128
 #: inc/pro/class-destination-msazure.php:73
 #, php-format
 msgid "MS Azure container create: %s"
-msgstr ""
+msgstr "Criar repositório MS Azure: %s"
 
 # @ backwpup
 #: inc/class-destination-msazure.php:224
 #: inc/pro/class-destination-msazure.php:111
 #, php-format
 msgid "MS Azure container \"%s\" does not exist!"
-msgstr ""
+msgstr "Repositório \"%s\" da MS Azure não existe!"
 
 # @ backwpup
 #: inc/class-destination-msazure.php:228
 #: inc/pro/class-destination-msazure.php:115
 #, php-format
 msgid "Connected to MS Azure container \"%s\"."
-msgstr ""
+msgstr "Conectado ao repositório \"%s\" da MS Azure."
 
 # @ backwpup
 #: inc/class-destination-msazure.php:320
 #, php-format
 msgid "One file deleted on Microsoft Azure container."
 msgid_plural "%d files deleted on Microsoft Azure container."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Um arquivo foi excluído do repositório da Microsoft Azure."
+msgstr[1] "%d arquivos foram excluídos do repositório da Microsoft Azure."
 
 # @ backwpup
 #: inc/class-destination-msazure.php:271 inc/class-destination-msazure.php:327
 #: inc/pro/class-destination-msazure.php:196
 #, php-format
 msgid "Microsoft Azure API: %s"
-msgstr ""
+msgstr "API Microsoft Azure: %s"
 
 #: backwpup.php:363
 msgid "RSC"
-msgstr ""
+msgstr "US$"
 
 # @ backwpup
 #: backwpup.php:364 inc/class-page-about.php:238
 msgid "Backup to Rackspace Cloud Files"
-msgstr ""
+msgstr "Backup para arquivos em nuvem da Rackspace"
 
 # @ backwpup
 #: inc/class-destination-rsc.php:54
 msgid "Rack Space Cloud Keys"
-msgstr ""
+msgstr "Chaves do Rack Space Cloud"
 
 # @ backwpup
 #: inc/class-destination-rsc.php:65
 msgid "API Key"
-msgstr ""
+msgstr "Chave API"
 
 # @ backwpup
 #: inc/class-destination-rsc.php:73
 msgid "Select region"
-msgstr ""
+msgstr "Selecione a região"
 
 # @ backwpup
 #: inc/class-destination-rsc.php:77 inc/class-destination-rsc.php:79
 #: inc/pro/class-destination-rsc.php:26
 msgid "Rackspace Cloud Files Region"
-msgstr ""
+msgstr "Região do Rackspace Cloud Files"
 
 #: inc/class-destination-rsc.php:80 inc/pro/class-destination-rsc.php:27
 msgid "Dallas (DFW)"
-msgstr ""
+msgstr "Dallas (DFW)"
 
 #: inc/class-destination-rsc.php:81 inc/pro/class-destination-rsc.php:28
 msgid "Chicago (ORD)"
-msgstr ""
+msgstr "Chicago (ORD)"
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:141 inc/class-destination-s3.php:139
 msgid "S3 Backup settings"
-msgstr ""
+msgstr "Configurações do S3 Backup"
 
 # @ backwpup
 #: inc/class-destination-rsc.php:112 inc/class-destination-s3-v1.php:145
 #: inc/class-destination-s3.php:143
 msgid "Folder in bucket"
-msgstr ""
+msgstr "Pasta no Repositório"
 
 # @ backwpup
 #: inc/class-destination-rsc.php:169 inc/pro/class-destination-rsc.php:96
 #, php-format
 msgid "Rackspace Cloud container \"%s\" created."
-msgstr ""
+msgstr "Repositório \"%s\" da Rackspace Cloud criado"
 
 # @ backwpup
 #: inc/class-destination-rsc.php:173 inc/class-destination-rsc.php:282
@@ -611,184 +612,184 @@ msgstr ""
 #: inc/pro/class-destination-rsc.php:243
 #, php-format
 msgid "Rackspace Cloud API: %s"
-msgstr ""
+msgstr "API Rackspace Cloud: %s"
 
 # @ backwpup
 #: inc/class-destination-rsc.php:263
 #, php-format
 msgid "%d. Trying to send backup file to Rackspace cloud &#8230;"
-msgstr ""
+msgstr "%d. Tentando enviar arquivo de backup para nuvem Rackspace"
 
 # @ backwpup
 #: inc/class-destination-rsc.php:279
 #, php-format
 msgid "Connected to Rackspace cloud files container %s"
-msgstr ""
+msgstr "Conectado ao repositório \"%s\" em nuvem da Rackspace"
 
 # @ backwpup
 #: inc/class-destination-rsc.php:291
 msgid "Upload to Rackspace cloud started &#8230;"
-msgstr ""
+msgstr "Carregamento para nuvem da Rackspace começou $#8230;"
 
 # @ backwpup
 #: inc/class-destination-rsc.php:302
 msgid "Backup File transferred to RSC://"
-msgstr ""
+msgstr "Arquivo de backup transferido para RSC: / /"
 
 # @ backwpup
 #: inc/class-destination-rsc.php:306
 msgid "Cannot transfer backup to Rackspace cloud."
-msgstr ""
+msgstr "Não foi possível transferir o backup para o nuvem da Rackspace."
 
 # @ backwpup
 #: inc/class-destination-rsc.php:354
 #, php-format
 msgid "One file deleted on Rackspace cloud container."
 msgid_plural "%d files deleted on Rackspace cloud container."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Um arquivo foi excluído do repositório em nuvem da Rackspace"
+msgstr[1] "%d arquivos foram excluídos da nuvem da Rackspace"
 
 # @ backwpup
 #: inc/class-destination-rsc.php:465
 msgid "Missing API Key!"
-msgstr ""
+msgstr "Faltando chave API!"
 
 #: backwpup.php:317 backwpup.php:332 inc/class-destination-s3-v1.php:69
 #: inc/class-destination-s3.php:67
 msgid "S3 Service"
-msgstr ""
+msgstr "Serviço S3"
 
 #: inc/class-destination-s3-v1.php:73 inc/class-destination-s3.php:71
 msgid "Select an S3 service"
-msgstr ""
+msgstr "Selecione um serviço S3"
 
 #: inc/class-destination-s3-v1.php:75 inc/class-destination-s3.php:73
 #: inc/pro/class-destination-s3-v1.php:13 inc/pro/class-destination-s3.php:14
 msgid "Amazon S3 Region"
-msgstr ""
+msgstr "Região de Amazon S3"
 
 #: inc/class-destination-s3-v1.php:76 inc/class-destination-s3.php:74
 #: inc/pro/class-destination-s3-v1.php:14 inc/pro/class-destination-s3.php:15
 msgid "Amazon S3: US Standard"
-msgstr ""
+msgstr "Amazon S3: EUA padrão"
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:77 inc/class-destination-s3.php:75
 #: inc/pro/class-destination-s3-v1.php:15 inc/pro/class-destination-s3.php:16
 msgid "Amazon S3: US West (Northern California)"
-msgstr ""
+msgstr "Amazon S3: Oeste dos EUA (Norte da Califórnia)"
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:78 inc/class-destination-s3.php:76
 #: inc/pro/class-destination-s3-v1.php:16 inc/pro/class-destination-s3.php:17
 msgid "Amazon S3: US West (Oregon)"
-msgstr ""
+msgstr "Amazon S3: Oeste dos EUA (Oregon)"
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:79 inc/class-destination-s3.php:77
 #: inc/pro/class-destination-s3-v1.php:17 inc/pro/class-destination-s3.php:18
 msgid "Amazon S3: EU (Ireland)"
-msgstr ""
+msgstr "Amazon S3: Europa (Irlanda)"
 
 #: inc/class-destination-s3-v1.php:80 inc/class-destination-s3.php:78
 #: inc/pro/class-destination-s3-v1.php:18 inc/pro/class-destination-s3.php:19
 msgid "Amazon S3: Asia Pacific (Tokyo)"
-msgstr ""
+msgstr "Amazon S3: Ásia-Pacífico (Tóquio)"
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:81 inc/class-destination-s3.php:79
 #: inc/pro/class-destination-s3-v1.php:19 inc/pro/class-destination-s3.php:20
 msgid "Amazon S3: Asia Pacific (Singapore)"
-msgstr ""
+msgstr "Amazon S3: Ásia-Pacífico (Singapura)"
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:82 inc/class-destination-s3.php:80
 #: inc/pro/class-destination-s3-v1.php:20 inc/pro/class-destination-s3.php:21
 msgid "Amazon S3: Asia Pacific (Sydney)"
-msgstr ""
+msgstr "Amazon S3: Ásia-Pacífico (Sidnei)"
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:83 inc/class-destination-s3.php:81
 #: inc/pro/class-destination-s3-v1.php:21 inc/pro/class-destination-s3.php:22
 msgid "Amazon S3: South America (Sao Paulo)"
-msgstr ""
+msgstr "Amazon S3: Ámérica do Sul (São Paulo)"
 
 #: inc/class-destination-s3-v1.php:84 inc/class-destination-s3.php:82
 #: inc/pro/class-destination-s3-v1.php:22 inc/pro/class-destination-s3.php:23
 msgid "Google Storage (Interoperable Access)"
-msgstr ""
+msgstr "Armazenamento Google (acesso interoperável)"
 
 #: inc/class-destination-s3-v1.php:85 inc/class-destination-s3.php:83
 #: inc/pro/class-destination-s3-v1.php:23 inc/pro/class-destination-s3.php:24
 msgid "Hosteurope Cloud Storage"
-msgstr ""
+msgstr "Armazenamento em nuvem Hosteurope"
 
 #: inc/class-destination-s3-v1.php:86 inc/class-destination-s3.php:84
 #: inc/pro/class-destination-s3-v1.php:24 inc/pro/class-destination-s3.php:25
 msgid "Dream Host Cloud Storage"
-msgstr ""
+msgstr "Armazenamento em nuvem da Dream Host"
 
 #: inc/class-destination-s3-v1.php:91 inc/class-destination-s3.php:89
 msgid "Or an S3 Server URL"
-msgstr ""
+msgstr "Ou uma URL de servidor S3"
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:98 inc/class-destination-s3.php:96
 msgid "S3 Access Keys"
-msgstr ""
+msgstr "Chaves de Acesso S3"
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:102 inc/class-destination-s3.php:100
 msgid "Access Key"
-msgstr ""
+msgstr "Chave de acesso"
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:109 inc/class-destination-s3.php:107
 msgid "Secret Key"
-msgstr ""
+msgstr "Chave Secreta"
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:117 inc/class-destination-s3.php:115
 msgid "S3 Bucket"
-msgstr ""
+msgstr "Repositório S3"
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:121 inc/class-destination-s3.php:119
 msgid "Bucket selection"
-msgstr ""
+msgstr "Seleção de Repositório"
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:134 inc/class-destination-s3.php:132
 msgid "Create a new bucket"
-msgstr ""
+msgstr "Criar novo repositório"
 
 #: inc/class-destination-s3-v1.php:167 inc/class-destination-s3.php:176
 msgid "Amazon specific settings"
-msgstr ""
+msgstr "Configurações específicas de Amazon"
 
 #: inc/class-destination-s3-v1.php:171 inc/class-destination-s3-v1.php:173
 #: inc/class-destination-s3.php:180 inc/class-destination-s3.php:182
 msgid "Amazon: Storage Class"
-msgstr ""
+msgstr "Amazon: Classe de Armazenamento"
 
 #: inc/class-destination-s3-v1.php:175 inc/class-destination-s3.php:184
 msgid "Reduced Redundancy"
-msgstr ""
+msgstr "Redundância reduzida"
 
 #: inc/class-destination-s3-v1.php:180 inc/class-destination-s3.php:189
 msgid "Server side encryption"
-msgstr ""
+msgstr "Criptografia do lado do servidor (Server side)"
 
 #: inc/class-destination-s3-v1.php:184 inc/class-destination-s3.php:193
 msgid "Save files encrypted (AES256) on server."
-msgstr ""
+msgstr "Salve arquivos criptografados (AES256) no servidor."
 
 #: inc/class-destination-s3-v1.php:245 inc/class-destination-s3.php:249
 #: inc/pro/class-destination-s3-v1.php:121
 #: inc/pro/class-destination-s3.php:117
 #, php-format
 msgid "Bucket %1$s created in %2$s."
-msgstr ""
+msgstr "Repositório %1$s criado em %2$s."
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:247 inc/class-destination-s3.php:251
@@ -796,12 +797,12 @@ msgstr ""
 #: inc/pro/class-destination-s3.php:119
 #, php-format
 msgid "Bucket %s could not be created."
-msgstr ""
+msgstr "Repositório %s não pode ser criado."
 
 #: inc/class-destination-s3.php:253 inc/pro/class-destination-s3.php:121
 #, php-format
 msgid " %s is not a valid bucket name."
-msgstr ""
+msgstr "%s não é um nome válido para repositório."
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:292 inc/class-destination-s3-v1.php:414
@@ -812,7 +813,7 @@ msgstr ""
 #: inc/pro/class-destination-s3.php:315
 #, php-format
 msgid "S3 Service API: %s"
-msgstr ""
+msgstr "API de Serviço S3: %s"
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:381 inc/class-destination-s3.php:373
@@ -820,70 +821,70 @@ msgstr ""
 #: inc/pro/class-destination-s3.php:161
 #, php-format
 msgid "S3 Bucket \"%s\" does not exist!"
-msgstr ""
+msgstr "Repositório \"%s\" da S3 não existe!"
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:405 inc/class-destination-s3.php:490
 #, php-format
 msgid "Backup transferred to %s."
-msgstr ""
+msgstr "Backup transferido para %s."
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:410 inc/class-destination-s3.php:495
 #, php-format
 msgid "Cannot transfer backup to S3! (%1$d) %2$s"
-msgstr ""
+msgstr "Não é possível transferir o backup para a S3! (%1$d) %2$s"
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:455 inc/class-destination-s3.php:549
 #, php-format
 msgid "Cannot delete backup from %s."
-msgstr ""
+msgstr "Não é possível excluir backup de %s."
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:459 inc/class-destination-s3.php:553
 #, php-format
 msgid "One file deleted on S3 Bucket."
 msgid_plural "%d files deleted on S3 Bucket"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Um arquivo excluído no repositório da S3."
+msgstr[1] "%d arquivos excluídos do repositório da S3."
 
 # @ backwpup
 #: inc/class-destination-msazure.php:414 inc/class-destination-s3-v1.php:570
 #: inc/class-destination-s3.php:656
 msgid "Missing access key!"
-msgstr ""
+msgstr "Falta a chave de acesso!"
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:572 inc/class-destination-s3.php:658
 msgid "Missing secret access key!"
-msgstr ""
+msgstr "Falta a chave de acesso secreto!"
 
 # @ backwpup
 #: inc/class-destination-s3-v1.php:578 inc/class-destination-s3.php:664
 msgid "No bucket found!"
-msgstr ""
+msgstr "Nenhum repositório encontrado!"
 
 # @ backwpup
 #: backwpup.php:378
 msgid "SugarSync"
-msgstr ""
+msgstr "SugarSync"
 
 # @ backwpup
 #: backwpup.php:379 inc/class-page-about.php:253
 msgid "Backup to SugarSync"
-msgstr ""
+msgstr "Backup para SugarSync"
 
 # @ backwpup
 #: inc/class-destination-sugarsync.php:22
 msgid "Sugarsync Login"
-msgstr ""
+msgstr "Login de SugarSync"
 
 # @ backwpup
 #: inc/class-destination-sugarsync.php:28
 #: inc/class-destination-sugarsync.php:47 inc/class-page-settings.php:327
 msgid "Authentication"
-msgstr ""
+msgstr "Autenticação"
 
 # @ backwpup
 #: inc/class-destination-sugarsync.php:34 inc/class-page-settings.php:339
@@ -891,7 +892,7 @@ msgstr ""
 #: inc/pro/class-destination-sugarsync.php:17
 #: inc/pro/class-jobtype-dbdump.php:122
 msgid "Password:"
-msgstr ""
+msgstr "Senha:"
 
 # @ backwpup
 #: inc/class-destination-sugarsync.php:40
@@ -899,7 +900,7 @@ msgstr ""
 #: inc/pro/class-destination-sugarsync.php:22
 #: inc/pro/class-destination-sugarsync.php:77
 msgid "Sugarsync authenticate!"
-msgstr ""
+msgstr "Autenticar SugarSync!"
 
 # @ backwpup
 #: inc/class-destination-sugarsync.php:51
@@ -907,366 +908,366 @@ msgstr ""
 #: inc/pro/class-destination-sugarsync.php:31
 #: inc/pro/class-destination-sugarsync.php:89
 msgid "Delete Sugarsync authentication!"
-msgstr ""
+msgstr "Excluir autenticação com SugarSync!"
 
 # @ backwpup
 #: inc/class-destination-sugarsync.php:61
 msgid "Sync folder selection"
-msgstr ""
+msgstr "Seleção de pasta da Sync"
 
 # @ backwpup
 #: inc/class-destination-sugarsync.php:69
 #: inc/pro/class-destination-sugarsync.php:40
 msgid "No Syncfolders found!"
-msgstr ""
+msgstr "Não foram encontradas Syncfolder!"
 
 # @ backwpup
 #: inc/class-destination-sugarsync.php:90
 msgid "Folder in root"
-msgstr ""
+msgstr "Pasta na raiz"
 
 # @ backwpup
 #: inc/class-destination-sugarsync.php:260
 msgid "Cannot transfer backup to SugarSync!"
-msgstr ""
+msgstr "Não foi possível transferir backup para SugarSync!"
 
 # @ backwpup
 #: inc/class-destination-sugarsync.php:299
 #, php-format
 msgid "One file deleted on SugarSync folder"
 msgid_plural "%d files deleted on SugarSync folder"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Um arquivo excluído na pasta SugarSync"
+msgstr[1] "%d arquivos excluídos na pasta da SugarSync"
 
 # @ backwpup
 #: inc/class-destination-sugarsync.php:305
 #, php-format
 msgid "SugarSync API: %s"
-msgstr ""
+msgstr "API da SugarSync: %s"
 
 #: inc/class-page-settings.php:402
 msgid "Response Test O.K."
-msgstr ""
+msgstr "Teste de Resposta: OK"
 
 # @ backwpup
 #: inc/class-help.php:15
 msgid "Plugin Info"
-msgstr ""
+msgstr "Informação do plugin"
 
 # @ backwpup
 #: inc/class-help.php:18
 msgid "BackWPup comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions."
-msgstr ""
+msgstr "BackWPup não vem com, absolutamente, NENHUMA GARANTIA. Este é um software livre, e você está convidado a redistribuí-lo sob certas condições."
 
 # @ backwpup
 #: inc/class-help.php:21
 msgid "For more information:"
-msgstr ""
+msgstr "Para mais informações:"
 
 #: inc/class-help.php:24
 msgid "News"
-msgstr ""
+msgstr "Novidades"
 
 # @ backwpup
 #: inc/class-install.php:62
 msgid "BackWPup Admin"
-msgstr ""
+msgstr "BackWPup Admin"
 
 # @ backwpup
 #: inc/class-install.php:75
 msgid "BackWPup jobs checker"
-msgstr ""
+msgstr "Verificador de tarefas do BackWPup"
 
 # @ backwpup
 #: inc/class-install.php:88
 msgid "BackWPup jobs helper"
-msgstr ""
+msgstr "Auxiliador de tarefas do BackWPup"
 
 # @ backwpup
 #: inc/class-job.php:179
 msgid "Starting job"
-msgstr ""
+msgstr "Iniciando tarefa"
 
 # @ backwpup
 #: inc/class-job.php:238
 msgid "Creates archive"
-msgstr ""
+msgstr "Cria o arquivo"
 
 #: inc/class-job.php:277
 msgid "Job End"
-msgstr ""
+msgstr "Final de tarefa"
 
 # @ backwpup
 #: inc/class-job.php:285
 #, php-format
 msgid "BackWPup log for %1$s from %2$s at %3$s"
-msgstr ""
+msgstr "Log do BackWPup para %1$s de %2$s em %3$s"
 
 # @ backwpup
 #: inc/class-job.php:304
 msgid "[INFO] This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions."
-msgstr ""
+msgstr "[INFO]BackWPup não vem com, absolutamente, NENHUMA GARANTIA. Este é um software livre, e você está convidado a redistribuí-lo sob certas condições."
 
 # @ backwpup
 #: inc/class-job.php:306
 #, php-format
 msgid "[INFO] BackWPup job: %1$s; %2$s"
-msgstr ""
+msgstr "[INFO] Tarefa do BackWPup: %1$s; %2$s"
 
 # @ backwpup
 #: inc/class-job.php:328
 msgid "[INFO] BackWPup job started from wp-cron"
-msgstr ""
+msgstr "[INFO] Tarefa do BackWPup começou do wp-cron"
 
 # @ backwpup
 #: inc/class-job.php:330
 msgid "[INFO] BackWPup job started manually"
-msgstr ""
+msgstr "[INFO] Tarefa do BackWPup começou manualmente"
 
 # @ backwpup
 #: inc/class-job.php:332
 msgid "[INFO] BackWPup job started from external url"
-msgstr ""
+msgstr "[INFO] Tarefa do BackWPup começou de uma URL externa"
 
 # @ backwpup
 #: inc/class-job.php:335
 msgid "[INFO] PHP ver.:"
-msgstr ""
+msgstr "[INFO] Versão do PHP:"
 
 # @ backwpup
 #: inc/class-job.php:337
 #, php-format
 msgid "[INFO] MySQL ver.: %s"
-msgstr ""
+msgstr "[INFO] Versão do MySQL: %s"
 
 # @ backwpup
 #: inc/class-job.php:340
 #, php-format
 msgid "[INFO] curl ver.: %1$s; %2$s"
-msgstr ""
+msgstr "[INFO] Versão do curl: %1$s; %2$s"
 
 # @ backwpup
 #: inc/class-job.php:342
 #, php-format
 msgid "[INFO] Temp folder is: %s"
-msgstr ""
+msgstr "[INFO] Pasta temporária é: %s"
 
 # @ backwpup
 #: inc/class-job.php:344
 #, php-format
 msgid "[INFO] Backup type is: %s"
-msgstr ""
+msgstr "[INFO] Tipo de backup é: %s"
 
 # @ backwpup
 #: inc/class-job.php:346
 #, php-format
 msgid "[INFO] Backup file is: %s"
-msgstr ""
+msgstr "[INFO] Arquivo de backup é: %s"
 
 # @ backwpup
 #: inc/class-job.php:511
 msgid "Wrong BackWPup JobID"
-msgstr ""
+msgstr "ID de tarefa (JobID) do BackWPup errado. "
 
 # @ backwpup
 #: inc/class-job.php:514
 msgid "Log folder does not exist or is not writable for BackWPup"
-msgstr ""
+msgstr "Pasta de log não existe ou não é gravável para BackWPup"
 
 # @ backwpup
 #: inc/class-job.php:516
 msgid "Temp folder does not exist or is not writable for BackWPup"
-msgstr ""
+msgstr "Pasta temporária não existe ou não é gravável para BackWPup"
 
 # @ backwpup
 #: inc/class-job.php:519
 msgid "A BackWPup job is already running"
-msgstr ""
+msgstr "Uma tarefa do BackWPup já está em execução"
 
 #: inc/class-job.php:593
 msgid "Job restart due to inactivity for more than 5 minutes."
-msgstr ""
+msgstr "Reinício de tarefa devido à inatividade por mais de 5 minutos."
 
 # @ backwpup
 #: inc/class-job.php:711
 msgid "Step aborted: too many attempts!"
-msgstr ""
+msgstr "Etapa anulada: muitas tentativas!"
 
 # @ backwpup
 #: inc/class-job.php:935
 #, php-format
 msgid "Cannot create folder: %1$s"
-msgstr ""
+msgstr "Não é possível criar a pasta: %1$s"
 
 # @ backwpup
 #: inc/class-job.php:942
 #, php-format
 msgid "Folder \"%1$s\" is not writable"
-msgstr ""
+msgstr "Pasta \"%1$s\" não é gravável"
 
 #: inc/class-job.php:962
 #, php-format
 msgid "Exception caught in %1$s: %2$s"
-msgstr ""
+msgstr "Exceção detectada em %1$s: %2$s"
 
 # @ backwpup
 #: inc/class-job.php:1019 inc/class-page-jobs.php:618
 msgid "WARNING:"
-msgstr ""
+msgstr "AVISO:"
 
 # @ backwpup
 #: inc/class-job.php:1032
 msgid "DEPRECATED:"
-msgstr ""
+msgstr "DESCONTINUADO:"
 
 # @ backwpup
 #: inc/class-job.php:1035
 msgid "STRICT NOTICE:"
-msgstr ""
+msgstr "AVISO ESTRITO:"
 
 # @ backwpup
 #: inc/class-job.php:1040
 msgid "RECOVERABLE ERROR:"
-msgstr ""
+msgstr "ERRO REPARÁVEL:"
 
 # @ backwpup
 #: inc/class-job.php:1181
 #, php-format
 msgid "One old log deleted"
 msgid_plural "%d old logs deleted"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Um antigo log foi excluídos"
+msgstr[1] "%d antigos logs foram excluídos"
 
 # @ backwpup
 #: inc/class-job.php:1191 inc/class-page-jobs.php:620
 #, php-format
 msgid "Job done in %s seconds."
-msgstr ""
+msgstr "Tarefa feita em %s segundos."
 
 #: inc/class-job.php:1237
 msgid "SUCCESSFUL"
-msgstr ""
+msgstr "SUCESSO"
 
 # @ backwpup
 #: inc/class-job.php:1240
 msgid "WARNING"
-msgstr ""
+msgstr "AVISO"
 
 # @ backwpup
 #: inc/class-job.php:1614
 #, php-format
 msgid "File \"%s\" is not readable!"
-msgstr ""
+msgstr "Arquivo \"%s\" não é legível!"
 
 # @ backwpup
 #: inc/class-job.php:1616
 #, php-format
 msgid "Link \"%s\" not followed."
-msgstr ""
+msgstr "Link \"%s\" não seguido."
 
 # @ backwpup
 #: inc/class-create-archive.php:298 inc/class-create-archive.php:362
 #, php-format
 msgid "Cannot add \"%s\" to zip archive!"
-msgstr ""
+msgstr "Não é possível adicionar \"%s\" ao arquivo zip!"
 
 #: inc/class-create-archive.php:386
 msgid "(ER_MULTIDISK) Multi-disk zip archives not supported"
-msgstr ""
+msgstr "(ER_MULTIDISK) Arquivos ZIP Multi-disk não são suportados"
 
 #: inc/class-create-archive.php:387
 msgid "(ER_RENAME) Renaming temporary file failed"
-msgstr ""
+msgstr "(ER_RENAME) Renomear o arquivo temporário fracassado"
 
 #: inc/class-create-archive.php:388
 msgid "(ER_CLOSE) Closing zip archive failed"
-msgstr ""
+msgstr "(ER_CLOSE) Falha ao completar arquivo ZIP"
 
 #: inc/class-create-archive.php:389
 msgid "(ER_SEEK) Seek error"
-msgstr ""
+msgstr "(ER_SEEK) Erro de busca"
 
 #: inc/class-create-archive.php:390
 msgid "(ER_READ) Read error"
-msgstr ""
+msgstr "(ER_READ) Erro de leitura"
 
 #: inc/class-create-archive.php:391
 msgid "(ER_WRITE) Write error"
-msgstr ""
+msgstr "(ER_WRITE) Erro de escrita"
 
 #: inc/class-create-archive.php:392
 msgid "(ER_CRC) CRC error"
-msgstr ""
+msgstr "(ER_CRC) Erro de CRC"
 
 #: inc/class-create-archive.php:393
 msgid "(ER_ZIPCLOSED) Containing zip archive was closed"
-msgstr ""
+msgstr "(ER_ZIPCLOSED) Contendo o arquivo zip foi fechado"
 
 #: inc/class-create-archive.php:394
 msgid "(ER_NOENT) No such file"
-msgstr ""
+msgstr "(ER_NOENT) Arquivo inexistente"
 
 #: inc/class-create-archive.php:395
 msgid "(ER_EXISTS) File already exists"
-msgstr ""
+msgstr "(ER_EXISTS) Arquivo já existe"
 
 #: inc/class-create-archive.php:396
 msgid "(ER_OPEN) Can't open file"
-msgstr ""
+msgstr "(ER_OPEN) Não é possível abrir o arquivo."
 
 #: inc/class-create-archive.php:397
 msgid "(ER_TMPOPEN) Failure to create temporary file"
-msgstr ""
+msgstr "(ER_TMPOPEN) Falha ao criar arquivo temporário"
 
 #: inc/class-create-archive.php:398
 msgid "(ER_ZLIB) Zlib error"
-msgstr ""
+msgstr "(ER_ZLIB) Erro de Zlib"
 
 #: inc/class-create-archive.php:399
 msgid "(ER_MEMORY) Malloc failure"
-msgstr ""
+msgstr "(ER_MEMORY) Falha em Malloc"
 
 #: inc/class-create-archive.php:400
 msgid "(ER_CHANGED) Entry has been changed"
-msgstr ""
+msgstr "(ER_CHANGED) Entrada foi alterada"
 
 #: inc/class-create-archive.php:401
 msgid "(ER_COMPNOTSUPP) Compression method not supported"
-msgstr ""
+msgstr "(ER_COMPNOTSUPP) Método de compressão não suportado"
 
 #: inc/class-create-archive.php:402
 msgid "(ER_EOF) Premature EOF"
-msgstr ""
+msgstr "(ER_EOF) EOF prematuro"
 
 #: inc/class-create-archive.php:403
 msgid "(ER_INVAL) Invalid argument"
-msgstr ""
+msgstr "(ER_INVAL) Argumento inválido"
 
 #: inc/class-create-archive.php:404
 msgid "(ER_NOZIP) Not a zip archive"
-msgstr ""
+msgstr "(ER_NOZIP) Não é um arquivo zip"
 
 #: inc/class-create-archive.php:405
 msgid "(ER_INTERNAL) Internal error"
-msgstr ""
+msgstr "(ER_INTERNAL) Erro interno"
 
 #: inc/class-create-archive.php:406
 msgid "(ER_INCONS) Zip archive inconsistent"
-msgstr ""
+msgstr "(ER_INCONS) Arquivo zip inconsistente"
 
 #: inc/class-create-archive.php:407
 msgid "(ER_REMOVE) Can't remove file"
-msgstr ""
+msgstr "(ER_REMOVE) Não é possível remover o arquivo"
 
 #: inc/class-create-archive.php:408
 msgid "(ER_DELETED) Entry has been deleted"
-msgstr ""
+msgstr "(ER_DELETED) Entrada doi excluída"
 
 # @ backwpup
 #: inc/class-job.php:1792
 #, php-format
 msgid "Archive size is %s."
-msgstr ""
+msgstr "Tamanho do arquivo é %s."
 
 # @ backwpup
 #: inc/class-job.php:1793
