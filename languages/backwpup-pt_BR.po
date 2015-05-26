@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: BackWPup v3.0.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-06 17:42+0100\n"
-"PO-Revision-Date: 2015-05-04 20:32-0300\n"
+"PO-Revision-Date: 2015-05-25 19:05-0300\n"
 "Last-Translator: amieva <amieva@gmail.com>\n"
 "Language-Team: Luc Capronnier <lcapronnier@yahoo.com>\n"
 "MIME-Version: 1.0\n"
@@ -319,99 +319,99 @@ msgstr "Não é possível conectar ao servidor FTP: %s"
 # @ backwpup
 #: inc/class-destination-ftp.php:258
 msgid "Error getting SYSTYPE"
-msgstr ""
+msgstr "Erro ao obter SYSTYPE"
 
 # @ backwpup
 #: inc/class-destination-ftp.php:276
 #, php-format
 msgid "FTP Folder \"%s\" created!"
-msgstr ""
+msgstr "Pasta FTP \"%s\" criada!"
 
 # @ backwpup
 #: inc/class-destination-ftp.php:280
 #, php-format
 msgid "FTP Folder \"%s\" cannot be created!"
-msgstr ""
+msgstr "Pasta FTP \"%s\" não pode ser criada!"
 
 #: inc/class-destination-ftp.php:291
 #, php-format
 msgid "FTP current folder is: %s"
-msgstr ""
+msgstr "Pasta FTP atual é: %s"
 
 # @ backwpup
 #: inc/class-destination-ftp.php:303
 msgid "Entering passive mode"
-msgstr ""
+msgstr "Entrando no modo passivo"
 
 # @ backwpup
 #: inc/class-destination-ftp.php:305
 msgid "Cannot enter passive mode"
-msgstr ""
+msgstr "Não foi possível entrar no modo passivo"
 
 # @ backwpup
 #: inc/class-destination-ftp.php:309
 msgid "Entering normal mode"
-msgstr ""
+msgstr "Entrando no modo normal"
 
 # @ backwpup
 #: inc/class-destination-ftp.php:311
 msgid "Cannot enter normal mode"
-msgstr ""
+msgstr "Não foi possível entrar no modo passível"
 
 # @ backwpup
 #: inc/class-destination-ftp.php:327
 msgid "Cannot transfer backup to FTP server!"
-msgstr ""
+msgstr "Não foi possível transferir o backup para o servidor FTP!"
 
 # @ backwpup
 #: inc/class-destination-ftp.php:333
 #, php-format
 msgid "Backup transferred to FTP server: %s"
-msgstr ""
+msgstr "Backup transferidos para o servidor FTP: %s"
 
 # @ backwpup
 #: inc/class-destination-ftp.php:379
 #, php-format
 msgid "Cannot delete \"%s\" on FTP server!"
-msgstr ""
+msgstr "Não foi possível excluir \"%s\" no servidor FTP!"
 
 #: inc/class-destination-email.php:61
 msgid "Maximum file size"
-msgstr ""
+msgstr "Tamanho máximo do arquivo"
 
 #: inc/class-destination-email.php:62 inc/pro/class-destination-email.php:35
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 # @ backwpup
 #: inc/class-destination-email.php:88
 msgid "PHP: mail()"
-msgstr ""
+msgstr "PHP: mail()"
 
 # @ backwpup
 #: inc/class-destination-email.php:89
 msgid "Sendmail"
-msgstr ""
+msgstr "Sendmail"
 
 # @ backwpup
 #: inc/class-destination-email.php:90
 msgid "SMTP"
-msgstr ""
+msgstr "SMTP"
 
 # @ backwpup
 #: inc/class-destination-email.php:97
 msgid "Sendmail path"
-msgstr ""
+msgstr "Caminho do sendmail"
 
 # @ backwpup
 #: inc/class-destination-email.php:105
 msgid "SMTP host name"
-msgstr ""
+msgstr "Nome do host de SMTP"
 
 # @ backwpup
 #: inc/class-destination-email.php:116
 msgid "SMTP secure connection"
-msgstr ""
+msgstr "Conexão segura de SMTP"
 
 # @ backwpup
 #: inc/class-destination-email.php:120 inc/class-destination-s3-v1.php:174
@@ -421,25 +421,25 @@ msgstr ""
 #: inc/class-page-backwpup.php:296 inc/pro/class-jobtype-dbdump.php:153
 #: inc/pro/class-jobtype-dbdump.php:203
 msgid "none"
-msgstr ""
+msgstr "nenhum"
 
 #: inc/class-destination-email.php:121
 msgid "SSL"
-msgstr ""
+msgstr "SSL"
 
 #: inc/class-destination-email.php:122
 msgid "TLS"
-msgstr ""
+msgstr "TLS"
 
 # @ backwpup
 #: inc/class-destination-email.php:127
 msgid "SMTP username"
-msgstr ""
+msgstr "Usuário SMTP"
 
 # @ backwpup
 #: inc/class-destination-email.php:134
 msgid "SMTP password"
-msgstr ""
+msgstr "Senha SMTP"
 
 # @ backwpup
 #: inc/class-destination-email.php:294
@@ -5469,22 +5469,22 @@ msgstr ""
 # @ backwpup
 #: inc/class-admin.php:538
 msgid "Dismiss"
-msgstr ""
+msgstr "﻿Dispensar"
 
 # @ backwpup
 #: inc/class-admin.php:540
 msgid "Learn More"
-msgstr ""
+msgstr "Saber Mais"
 
 # @ backwpup
 #: inc/class-admin.php:541
 msgid "It’s time to upgrade your <strong>BackWPup</strong> to <strong>PRO</strong> version!"
-msgstr ""
+msgstr "Está na hora de atualizar seu <strong>BackWPup</strong> para versão <strong>PRO</strong> !"
 
 # @ backwpup
 #: inc/class-admin.php:542
 msgid "Extend standard plugin functionality with new great options."
-msgstr ""
+msgstr "Estender a funcionalidade padrão com melhores opções."
 
 # @ backwpup
 #: inc/class-job.php:1733
