@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: BackWPup v3.0.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-06 17:42+0100\n"
-"PO-Revision-Date: 2015-05-25 19:05-0300\n"
+"PO-Revision-Date: 2015-05-26 12:22-0300\n"
 "Last-Translator: amieva <amieva@gmail.com>\n"
 "Language-Team: Luc Capronnier <lcapronnier@yahoo.com>\n"
 "MIME-Version: 1.0\n"
@@ -445,27 +445,27 @@ msgstr "Senha SMTP"
 #: inc/class-destination-email.php:294
 #, php-format
 msgid "BackWPup archive from %1$s: %2$s"
-msgstr ""
+msgstr "Aquivo de BackWPup de %1$s: %2$s"
 
 # @ backwpup
 #: inc/class-destination-email.php:297
 #, php-format
 msgid "Backup archive: %s"
-msgstr ""
+msgstr "Arquivo de backup: %s"
 
 # @ backwpup
 #: inc/class-destination-email.php:416
 msgid "BackWPup archive sending TEST Message"
-msgstr ""
+msgstr "Enviando Mensagem de Teste de Arquivo do BackWPup"
 
 #: backwpup.php:348
 msgid "MS Azure"
-msgstr ""
+msgstr "MS Azure"
 
 # @ backwpup
 #: backwpup.php:349
 msgid "Backup to Microsoft Azure (Blob)"
-msgstr ""
+msgstr "Backup para Microsoft Azure (Blob)"
 
 # @ backwpup
 #: inc/class-destination-msazure.php:26
