@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: BackWPup v3.0.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-06 17:42+0100\n"
-"PO-Revision-Date: 2015-05-26 19:26-0300\n"
+"PO-Revision-Date: 2015-05-27 15:14-0300\n"
 "Last-Translator: Matheus de Almeida Martins <matheus@matheuswd.com>\n"
 "Language-Team: Luc Capronnier <lcapronnier@yahoo.com>\n"
 "MIME-Version: 1.0\n"
@@ -1363,12 +1363,12 @@ msgstr "todos"
 
 #: inc/class-jobtype-dbdump.php:92 inc/pro/class-jobtype-dbdump.php:192
 msgid "Dumpfile name"
-msgstr ""
+msgstr "Nome do arquivo de erro"
 
 # @ backwpup
 #: inc/class-jobtype-dbdump.php:100 inc/pro/class-jobtype-dbdump.php:200
 msgid "Dumpfile compression"
-msgstr ""
+msgstr "Compressão do arquivo de erro"
 
 # @ backwpup
 #: inc/class-jobtype-dbdump.php:105 inc/class-jobtype-dbdump.php:107
@@ -1402,12 +1402,12 @@ msgstr "Conectado ao banco de dados %1$s em %2$s"
 #: inc/pro/class-jobtype-dbdump.php:792 inc/pro/class-jobtype-dbdump.php:833
 #, php-format
 msgid "Database error %1$s for query %2$s"
-msgstr ""
+msgstr "Erro %1$s no banco de dados para pesquisa como %2$s"
 
 # @ backwpup
 #: inc/class-jobtype-dbdump.php:181 inc/pro/class-jobtype-dbdump.php:479
 msgid "No tables to dump."
-msgstr ""
+msgstr "Não há tabelas para esvaziar."
 
 # @ backwpup
 #: inc/class-jobtype-dbdump.php:255 inc/pro/class-jobtype-dbdump.php:553
