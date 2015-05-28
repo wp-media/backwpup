@@ -29,7 +29,7 @@ class BackWPup_Install {
 		}
 
 
-		//changes for 3.1.15
+		//changes for 3.2
 		$no_translation = get_site_option( 'backwpup_cfg_jobnotranslate' );
 		if ( $no_translation ) {
 			update_site_option( 'backwpup_cfg_loglevel', 'normal' );

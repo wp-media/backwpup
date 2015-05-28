@@ -184,7 +184,6 @@ final class BackWPup_Admin {
 		$this->page_hooks[ 'backwpupeditjob' ] = add_submenu_page( 'backwpup', __( 'Add new job', 'backwpup' ), __( 'Add new job', 'backwpup' ), 'backwpup_jobs_edit', 'backwpupeditjob', array( 'BackWPup_Page_Editjob', 'page' ) );
 		add_action( 'load-' . $this->page_hooks[ 'backwpupeditjob' ], array( 'BackWPup_Admin', 'init_general' ) );
 		add_action( 'load-' . $this->page_hooks[ 'backwpupeditjob' ], array( 'BackWPup_Page_Editjob', 'auth' ) );
-		add_action( 'load-' . $this->page_hooks[ 'backwpupeditjob' ], array( 'BackWPup_Page_Editjob', 'load' ) );
 		add_action( 'admin_print_styles-' . $this->page_hooks[ 'backwpupeditjob' ], array( 'BackWPup_Page_Editjob', 'admin_print_styles' ) );
 		add_action( 'admin_print_scripts-' . $this->page_hooks[ 'backwpupeditjob' ], array( 'BackWPup_Page_Editjob', 'admin_print_scripts' ) );
 
@@ -322,6 +321,9 @@ final class BackWPup_Admin {
 	 */
 	public static function message( $message, $error = FALSE ) {
 
+		if ( empty( $message ) ) {
+			return;
+		}
 
 		$saved_message = self::get_messages();
 

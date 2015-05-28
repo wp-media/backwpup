@@ -41,6 +41,7 @@ class BackWPup_Page_Settings {
 			delete_site_option( 'backwpup_cfg_loglevel' );
 			delete_site_option( 'backwpup_cfg_jobwaittimems' );
 			delete_site_option( 'backwpup_cfg_jobrunauthkey' );
+			delete_site_option( 'backwpup_cfg_jobdooutput' );
 			delete_site_option( 'backwpup_cfg_disablearchivesizelimit' );
 			delete_site_option( 'backwpup_cfg_maxlogs' );
 			delete_site_option( 'backwpup_cfg_gzlogs' );
@@ -79,6 +80,7 @@ class BackWPup_Page_Settings {
 		update_site_option( 'backwpup_cfg_loglevel', in_array( $_POST[ 'loglevel' ], array( 'normal_translated', 'normal', 'debug_translated', 'debug' ) ) ? $_POST[ 'loglevel' ] : 'normal_translated' );
 		update_site_option( 'backwpup_cfg_jobwaittimems', $_POST[ 'jobwaittimems' ] );
 		update_site_option( 'backwpup_cfg_disablearchivesizelimit', isset( $_POST[ 'disablearchivesizelimit' ] ) ? 1 : 0 );
+		update_site_option( 'backwpup_cfg_jobdooutput', isset( $_POST[ 'jobdooutput' ] ) ? 1 : 0 );
 		update_site_option( 'backwpup_cfg_maxlogs', abs( (int)$_POST[ 'maxlogs' ] ) );
 		update_site_option( 'backwpup_cfg_gzlogs', isset( $_POST[ 'gzlogs' ] ) ? 1 : 0 );
 		update_site_option( 'backwpup_cfg_protectfolders', isset( $_POST[ 'protectfolders' ] ) ? 1 : 0 );
@@ -322,6 +324,20 @@ class BackWPup_Page_Settings {
 			            </fieldset>
 		            </td>
 	            </tr>
+	            <tr>
+		            <th scope="row"><?php _e( 'Empty output on working', 'backwpup' ); ?></th>
+		            <td>
+			            <fieldset>
+				            <legend class="screen-reader-text"><span><?php _e( 'Enable an empty Output on backup working.', 'backwpup' ); ?></span>
+				            </legend>
+				            <label for="jobdooutput">
+					            <input name="jobdooutput" type="checkbox" id="jobdooutput" class="help-tip" title="<?php esc_attr_e( 'This do an empty output on job working. This kan help in some situations or can brake the working. You must test it.', 'backwpup' ); ?>"
+						            value="1" <?php checked( get_site_option( 'backwpup_cfg_jobdooutput' ), TRUE ); ?> />
+					            <?php _e( 'Enable an empty Output on backup working.', 'backwpup' ); ?>
+				            </label>
+			            </fieldset>
+		            </td>
+	            </tr>
             </table>
 
         </div>
@@ -481,7 +497,7 @@ class BackWPup_Page_Settings {
 				echo '<tr title="FS_CHMOD_DIR"><td>' . __( 'CHMOD Dir', 'backwpup' ) . '</td><td>0755</td></tr>';
 			$now = localtime( time(), TRUE );
 			echo '<tr title=""><td>' . __( 'Server Time', 'backwpup' ) . '</td><td>' . $now[ 'tm_hour' ] . ':' . $now[ 'tm_min' ] . '</td></tr>';
-			echo '<tr title=""><td>' . __( 'Blog Time', 'backwpup' ) . '</td><td>' . date_i18n( 'H:i' ) . '</td></tr>';
+			echo '<tr title=""><td>' . __( 'Blog Time', 'backwpup' ) . '</td><td>' . date( 'H:i', current_time( 'timestamp' ) ) . '</td></tr>';
 			echo '<tr title=""><td>' . __( 'Blog Timezone', 'backwpup' ) . '</td><td>' . get_option( 'timezone_string' ) . '</td></tr>';
 			echo '<tr title=""><td>' . __( 'Blog Time offset', 'backwpup' ) . '</td><td>' . sprintf( __( '%s hours', 'backwpup' ), get_option( 'gmt_offset' ) ) . '</td></tr>';
 			echo '<tr title="WPLANG"><td>' . __( 'Blog language', 'backwpup' ) . '</td><td>' . get_bloginfo( 'language' ) . '</td></tr>';

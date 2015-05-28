@@ -38,17 +38,24 @@ class BackWPup_File {
 	 */
 	public static function is_in_open_basedir( $dir ) {
 
-		$ini_open_basedir = str_replace( '\\', '/',ini_get( 'open_basedir' ) );
+		$ini_open_basedir = str_replace( '\\', '/', ini_get( 'open_basedir' ) );
 
-		if ( empty( $ini_open_basedir ) )
+		if ( empty( $ini_open_basedir ) ) {
 			return TRUE;
+		}
+
+		$dir = realpath( $dir );
+		if ( $dir === FALSE ) {
+			return FALSE;
+		}
 
 		$open_base_dirs = explode( PATH_SEPARATOR, $ini_open_basedir );
 		$dir            = trailingslashit( str_replace( '\\', '/', $dir ) );
 
 		foreach ( $open_base_dirs as $open_base_dir ) {
-			if ( stripos( $dir, trailingslashit( $open_base_dir ) <= 1 ) )
+			if ( stripos( $dir, trailingslashit( $open_base_dir ) ) <= 1 ) {
 				return TRUE;
+			}
 		}
 
 		return FALSE;
@@ -106,7 +113,7 @@ class BackWPup_File {
 		$path = str_replace( '\\', '/', $path );
 		$content_path = trailingslashit( str_replace( '\\', '/', WP_CONTENT_DIR ) );
 
-		//use ABSPATH as root folder
+		//use WP_CONTENT_DIR as root folder
 		if ( empty( $path ) || $path === '/' ) {
 			$path = $content_path;
 		}
@@ -117,5 +124,81 @@ class BackWPup_File {
 		}
 
 		return $path;
+	}
+
+	/**
+	 *
+	 * Check is folder readable and exists create it if not
+	 * add .htaccess or index.html file in folder to prevent directory listing
+	 *
+	 * @param string $folder the folder to check
+	 * @param bool   $donotbackup Create a file that the folder will not backuped
+	 *
+     * @return string with error message if one
+	 */
+	public static function check_folder( $folder, $donotbackup = FALSE ) {
+
+		$folder = BackWPup_File::get_absolute_path( $folder );
+		$folder = untrailingslashit( $folder );
+
+		//check that is not home of WP
+		$uploads = BackWPup_File::get_upload_dir();
+		if ( $folder === untrailingslashit( str_replace( '\\', '/', ABSPATH ) )
+		     || $folder === untrailingslashit( str_replace( '\\', '/', dirname( ABSPATH ) ) )
+		     || $folder === untrailingslashit( str_replace( '\\', '/', WP_PLUGIN_DIR ) )
+		     || $folder === untrailingslashit( str_replace( '\\', '/', WP_CONTENT_DIR ) )
+		     || $folder === untrailingslashit( $uploads )
+		     || $folder === '/'
+		) {
+			return sprintf( __( 'Folder %1$s not allowed, please use another folder.', 'backwpup' ), $folder );
+		}
+
+		//open base dir check
+		if ( ! BackWPup_File::is_in_open_basedir( $folder ) ) {
+			return sprintf( __( 'Folder %1$s is not in open basedir, please use another folder.', 'backwpup' ), $folder );
+		}
+
+		//create folder if it not exists
+		if ( ! is_dir( $folder ) ) {
+			if ( ! wp_mkdir_p( $folder ) ) {
+				return sprintf( __( 'Cannot create folder: %1$s', 'backwpup' ), $folder );
+			}
+		}
+
+		//check is writable dir
+		if ( ! is_writable( $folder ) ) {
+			return sprintf( __( 'Folder "%1$s" is not writable', 'backwpup' ), $folder );
+		}
+
+		//create files for securing folder
+		if ( get_site_option( 'backwpup_cfg_protectfolders' ) ) {
+			$server_software = strtolower( $_SERVER[ 'SERVER_SOFTWARE' ] );
+			//IIS
+			if ( strstr( $server_software, 'microsoft-iis' ) ) {
+				if ( ! file_exists( $folder . '/web.config' ) ) {
+					file_put_contents( $folder . '/web.config', "<configuration>" . PHP_EOL . "\t<system.webServer>" . PHP_EOL . "\t\t<authorization>" . PHP_EOL . "\t\t\t<deny users=" * " />" . PHP_EOL . "\t\t</authorization>" . PHP_EOL . "\t</system.webServer>" . PHP_EOL . "</configuration>" );
+				}
+			} //Nginx
+			elseif ( strstr( $server_software, 'nginx' ) ) {
+				if ( ! file_exists( $folder . '/index.php' ) ) {
+					file_put_contents( $folder . '/index.php', "<?php" . PHP_EOL . "header( \$_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found' );" . PHP_EOL . "header( 'Status: 404 Not Found' );" . PHP_EOL );
+				}
+			} //Aapche and other
+			else {
+				if ( ! file_exists( $folder . '/.htaccess' ) ) {
+					file_put_contents( $folder . '/.htaccess', "<Files \"*\">" . PHP_EOL . "<IfModule mod_access.c>" . PHP_EOL . "Deny from all" . PHP_EOL . "</IfModule>" . PHP_EOL . "<IfModule !mod_access_compat>" . PHP_EOL . "<IfModule mod_authz_host.c>" . PHP_EOL . "Deny from all" . PHP_EOL . "</IfModule>" . PHP_EOL . "</IfModule>" . PHP_EOL . "<IfModule mod_access_compat>" . PHP_EOL . "Deny from all" . PHP_EOL . "</IfModule>" . PHP_EOL . "</Files>" );
+				}
+				if ( ! file_exists( $folder . '/index.php' ) ) {
+					file_put_contents( $folder . '/index.php', "<?php" . PHP_EOL . "header( \$_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found' );" . PHP_EOL . "header( 'Status: 404 Not Found' );" . PHP_EOL );
+				}
+			}
+		}
+
+		//Create do not backup file for this folder
+		if ( $donotbackup && ! file_exists( $folder . '/.donotbackup' ) ) {
+			file_put_contents( $folder . '/.donotbackup', __( 'BackWPup will not backup folders and its sub folders when this file is inside.', 'backwpup' ) );
+		}
+
+		return '';
 	}
 }

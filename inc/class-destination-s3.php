@@ -410,7 +410,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 					$create_args[ 'ServerSideEncryption' ] = $job_object->job[ 's3ssencrypt' ]; //AES256
 				if ( ! empty( $job_object->job[ 's3storageclass' ] ) ) //REDUCED_REDUNDANCY
 					$create_args[ 'StorageClass' ] = $job_object->job[ 's3storageclass' ];
-				$create_args[ 'Metadata' ]   	= array( 'BackupTime' => date_i18n( 'Y-m-d H:i:s', $job_object->start_time ) );
+				$create_args[ 'Metadata' ]   	= array( 'BackupTime' => date( 'Y-m-d H:i:s', $job_object->start_time ) );
 
 				$create_args[ 'Body' ] 	  		= $up_file_handle;
 				$create_args[ 'Key' ] 		 	= $job_object->job[ 's3dir' ] . $job_object->backup_file;

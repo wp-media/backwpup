@@ -185,7 +185,7 @@ final class BackWPup_Job {
 		//set Logfile
 		$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
 		$log_folder = BackWPup_File::get_absolute_path( $log_folder );
-		$this->logfile = $log_folder . 'backwpup_log_' . BackWPup::get_plugin_data( 'hash' ) . '_' . date_i18n( 'Y-m-d_H-i-s' ) . '.html';
+		$this->logfile = $log_folder . 'backwpup_log_' . BackWPup::get_plugin_data( 'hash' ) . '_' . date( 'Y-m-d_H-i-s', current_time( 'timestamp' ) ) . '.html';
 		//write settings to job
 		if ( ! empty( $this->job[ 'jobid' ] ) ) {
 			BackWPup_Option::update( $this->job[ 'jobid' ], 'lastrun', $this->start_time );
@@ -230,7 +230,6 @@ final class BackWPup_Job {
 					if ( ! empty( $this->backup_folder ) ) {
 						$this->backup_folder = BackWPup_File::get_absolute_path( $this->backup_folder );
 						$this->job[ 'backupdir' ] = $this->backup_folder;
-						self::check_folder( $this->backup_folder, TRUE );
 					}
 				}
 				//set temp folder to backup folder if not set because we need one
@@ -299,7 +298,7 @@ final class BackWPup_Job {
 		$head .= "<meta charset=\"" . get_bloginfo( 'charset' ) . "\" />" . PHP_EOL;
 		$head .= "<title>" . sprintf( __( 'BackWPup log for %1$s from %2$s at %3$s', 'backwpup' ), $this->job[ 'name' ], date_i18n( get_option( 'date_format' ) ), date_i18n( get_option( 'time_format' ) ) ) . "</title>" . PHP_EOL;
 		$head .= "<meta name=\"robots\" content=\"noindex, nofollow\" />" . PHP_EOL;
-		$head .= "<meta name=\"copyright\" content=\"Copyright &copy; 2012 - " . date_i18n( 'Y' ) . " Inpsyde GmbH\" />" . PHP_EOL;
+		$head .= "<meta name=\"copyright\" content=\"Copyright &copy; 2012 - " . date( 'Y' ) . " Inpsyde GmbH\" />" . PHP_EOL;
 		$head .= "<meta name=\"author\" content=\"Inpsyde GmbH\" />" . PHP_EOL;
 		$head .= "<meta name=\"generator\" content=\"BackWPup " . BackWPup::get_plugin_data( 'Version' ) . "\" />" . PHP_EOL;
 		$head .= "<meta http-equiv=\"cache-control\" content=\"no-cache\" />" . PHP_EOL;
@@ -419,9 +418,20 @@ final class BackWPup_Job {
 					break;
 				}
 			}
-			if ( ! $desttest )
+			if ( ! $desttest ) {
 				$this->log( __( 'No destination correctly defined for backup! Please correct job settings.', 'backwpup' ), E_USER_ERROR );
+				$this->steps_todo = array( 'END' );
+			}
 		}
+		//test backup folder
+		if ( ! empty( $this->backup_folder ) ) {
+			$folder_message = BackWPup_File::check_folder( $this->backup_folder, TRUE );
+			if ( ! empty( $folder_message ) ) {
+				$this->log( $folder_message, E_USER_ERROR );
+				$this->steps_todo = array( 'END' );
+			}
+		}
+
 		//Set start as done
 		$this->steps_done[] = 'CREATE';
 	}
@@ -566,8 +576,11 @@ final class BackWPup_Job {
 
 			//check folders
 			$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
-			$log_folder = BackWPup_File::get_absolute_path( $log_folder );
-			if ( ! self::check_folder( $log_folder ) || ! self::check_folder( BackWPup::get_plugin_data( 'TEMP' ), TRUE ) ) {
+			$folder_message_log = BackWPup_File::check_folder( BackWPup_File::get_absolute_path( $log_folder ) );
+			$folder_message_temp = BackWPup_File::check_folder( BackWPup::get_plugin_data( 'TEMP' ), TRUE );
+			if ( ! empty( $folder_message_log ) || ! empty( $folder_message_temp ) ) {
+				BackWPup_Admin::message( $folder_message_log, TRUE );
+				BackWPup_Admin::message( $folder_message_temp, TRUE );
 				die( '-2' );
 			}
 		}
@@ -629,11 +642,13 @@ final class BackWPup_Job {
 			die( __( 'Wrong BackWPup JobID', 'backwpup' ) );
 		}
 		//check folders
-		if ( ! self::check_folder( $log_folder ) ) {
-			die( __( 'Log folder does not exist or is not writable for BackWPup', 'backwpup' ) );
+		$log_folder_message = BackWPup_File::check_folder( $log_folder );
+		if ( ! empty( $log_folder_message ) ) {
+			die( $log_folder_message );
 		}
-		if ( ! self::check_folder( BackWPup::get_plugin_data( 'TEMP' ), TRUE ) ) {
-			die( __( 'Temp folder does not exist or is not writable for BackWPup', 'backwpup' ) );
+		$log_folder_message = BackWPup_File::check_folder( BackWPup::get_plugin_data( 'TEMP' ), TRUE );
+		if ( ! empty( $log_folder_message ) ) {
+			die( $log_folder_message );
 		}
 		//check running job
 		if ( file_exists( BackWPup::get_plugin_data( 'running_file' ) ) ) {
@@ -663,10 +678,12 @@ final class BackWPup_Job {
 
 		if ( ! empty( $jobid ) ) {
 			//check folders
-			//Logs Folder
 			$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
-			$log_folder = BackWPup_File::get_absolute_path( $log_folder );
-			if ( ! self::check_folder( $log_folder ) ||  ! self::check_folder( BackWPup::get_plugin_data( 'TEMP' ), TRUE ) ) {
+			$folder_message_log = BackWPup_File::check_folder( BackWPup_File::get_absolute_path( $log_folder ) );
+			$folder_message_temp = BackWPup_File::check_folder( BackWPup::get_plugin_data( 'TEMP' ), TRUE );
+			if ( ! empty( $folder_message_log ) || ! empty( $folder_message_temp ) ) {
+				BackWPup_Admin::message( $folder_message_log, TRUE );
+				BackWPup_Admin::message( $folder_message_temp, TRUE );
 				return;
 			}
 		}
@@ -699,10 +716,12 @@ final class BackWPup_Job {
 		@ini_set( 'zlib.output_compression', 'Off' );
 
 		// deactivate caches
-		if ( ! defined( 'DONOTCACHEOBJECT' ) )
-			define( 'DONOTCACHEOBJECT', TRUE );
-		if ( ! defined( 'DONOTCACHEPAGE' ) )
+		if ( ! defined( 'DONOTCACHEDB' ) ) {
+			define( 'DONOTCACHEDB', TRUE );
+		}
+		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
 			define( 'DONOTCACHEPAGE', TRUE );
+		}
 	}
 
 
@@ -1174,85 +1193,6 @@ final class BackWPup_Job {
 		$this->do_restart( TRUE );
 	}
 
-
-	/**
-	 *
-	 * Check is folder readable and exists create it if not
-	 * add .htaccess or index.html file in folder to prevent directory listing
-	 *
-	 * @param string $folder the folder to check
-	 * @param bool   $donotbackup Create a file that the folder will not backuped
-	 * @return bool ok or not
-	 */
-	public static function check_folder( $folder, $donotbackup = FALSE ) {
-
-		$folder = BackWPup_File::get_absolute_path( $folder );
-		$folder = untrailingslashit( $folder );
-
-		//check that is not home of WP
-		if ( $folder === untrailingslashit( str_replace( '\\', '/', ABSPATH ) ) ||
-			$folder === untrailingslashit( str_replace( '\\', '/', WP_PLUGIN_DIR ) ) ||
-			$folder === untrailingslashit( str_replace( '\\', '/', WP_CONTENT_DIR ) ) ||
-			$folder === '/'
-		) {
-			BackWPup_Admin::message( sprintf( __( 'Folder %1$s not allowed, please use another folder.', 'backwpup' ), $folder ), TRUE );
-			return FALSE;
-		}
-
-		//open base dir check
-		if ( ! BackWPup_File::is_in_open_basedir( $folder ) ) {
-			BackWPup_Admin::message( sprintf( __( 'Folder %1$s is not in open basedir, please use another folder.', 'backwpup' ), $folder ), TRUE );
-			return FALSE;
-		}
-
-		//create folder if it not exists
-		if ( ! is_dir( $folder ) ) {
-			if ( ! wp_mkdir_p( $folder ) ) {
-				BackWPup_Admin::message( sprintf( __( 'Cannot create folder: %1$s', 'backwpup' ), $folder ), TRUE );
-				return FALSE;
-			}
-		}
-
-		//check is writable dir
-		if ( ! is_writable( $folder ) ) {
-			BackWPup_Admin::message( sprintf( __( 'Folder "%1$s" is not writable', 'backwpup' ), $folder ), TRUE );
-			return FALSE;
-		}
-
-		//create files for securing folder
-		if ( get_site_option( 'backwpup_cfg_protectfolders') ) {
-			$server_software = strtolower( $_SERVER[ 'SERVER_SOFTWARE' ] );
-			//IIS
-			if ( strstr( $server_software, 'microsoft-iis' ) ) {
-				if ( ! file_exists( $folder . '/web.config' ) ) {
-					file_put_contents( $folder . '/web.config', "<configuration>" . PHP_EOL . "\t<system.webServer>" . PHP_EOL . "\t\t<authorization>" . PHP_EOL . "\t\t\t<deny users="*" />" . PHP_EOL . "\t\t</authorization>" . PHP_EOL . "\t</system.webServer>" . PHP_EOL . "</configuration>", FILE_APPEND );
-				}
-			}
-			//Nginx
-			elseif ( strstr( $server_software, 'nginx' ) ) {
-				if ( ! file_exists( $folder . '/index.php' ) ) {
-					file_put_contents( $folder . '/index.php', "<?php" . PHP_EOL . "header( \$_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found' );" . PHP_EOL . "header( 'Status: 404 Not Found' );" . PHP_EOL, FILE_APPEND );
-				}
-			}
-			//Aapche and other
-			else {
-				if ( ! file_exists( $folder . '/.htaccess' ) ) {
-					file_put_contents( $folder . '/.htaccess', "<Files \"*\">" . PHP_EOL . "<IfModule mod_access.c>" . PHP_EOL . "Deny from all" . PHP_EOL . "</IfModule>" . PHP_EOL . "<IfModule !mod_access_compat>" . PHP_EOL . "<IfModule mod_authz_host.c>" . PHP_EOL . "Deny from all" . PHP_EOL . "</IfModule>" . PHP_EOL . "</IfModule>" . PHP_EOL . "<IfModule mod_access_compat>" . PHP_EOL . "Deny from all" . PHP_EOL . "</IfModule>" . PHP_EOL . "</Files>", FILE_APPEND );
-				}
-				if ( ! file_exists( $folder . '/index.php' ) ) {
-					file_put_contents( $folder . '/index.php', "<?php" . PHP_EOL . "header( \$_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found' );" . PHP_EOL . "header( 'Status: 404 Not Found' );" . PHP_EOL, FILE_APPEND );
-				}
-			}
-		}
-
-		//Create do not backup file for this folder
-		if ( $donotbackup && ! file_exists( $folder . '/.donotbackup' ) ) {
-			file_put_contents( $folder . '/.donotbackup', __( 'BackWPup will not backup folders and subfolders when this file is inside.', 'backwpup' ) );
-		}
-
-		return TRUE;
-	}
-
 	/**
 	 *
 	 * The uncouth exception handler
@@ -1261,7 +1201,7 @@ final class BackWPup_Job {
 	 */
 	public function exception_handler( $exception ) {
 
-		$this->log( E_USER_ERROR, sprintf( __( 'Exception caught in %1$s: %2$s', 'backwpup' ), get_class( $exception ), $exception->getMessage() ), $exception->getFile(), $exception->getLine() );
+		$this->log( sprintf( __( 'Exception caught in %1$s: %2$s', 'backwpup' ), get_class( $exception ), $exception->getMessage() ), E_USER_ERROR,  $exception->getFile(), $exception->getLine() );
 	}
 
 	/**
@@ -1342,7 +1282,7 @@ final class BackWPup_Job {
 				break;
 		}
 
-		$in_file = str_replace( str_replace( '\\', '/', ABSPATH ), '', str_replace( '\\', '/', $file ) );
+		$in_file = $this->get_destination_path_replacement( $file );
 
 		//print message to cli
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
@@ -1364,7 +1304,7 @@ final class BackWPup_Job {
 		if ( $this->is_debug() ) {
 			$debug_info = ' title="[Type: ' . $type . '|Line: ' . $line . '|File: ' . $in_file . '|Mem: ' . size_format( @memory_get_usage( TRUE ), 2 ) . '|Mem Max: ' . size_format( @memory_get_peak_usage( TRUE ), 2 ) . '|Mem Limit: ' . ini_get( 'memory_limit' ) . '|PID: ' . self::get_pid() . ' | UniqID: ' . $this->uniqid . '|Query\'s: ' . get_num_queries() . ']"';
 		}
-		$timestamp = '<span datetime="' . date_i18n( 'c' ) . '" ' . $debug_info . '>[' . date_i18n( 'd-M-Y H:i:s' ) . ']</span> ';
+		$timestamp = '<span datetime="' . date( 'c' ) . '" ' . $debug_info . '>[' . date( 'd-M-Y H:i:s', current_time( 'timestamp' ) ) . ']</span> ';
 
 		//set last Message
 		$output_message = esc_attr( $message );
@@ -1445,12 +1385,9 @@ final class BackWPup_Job {
 		}
 
 		//FCGI must have a permanent output so that it not broke
-		if ( stristr( PHP_SAPI, 'fcgi' ) || stristr( PHP_SAPI, 'litespeed' ) ) {
-			//only if no output buffering is active
-			if ( ob_get_level() == 0 ) {
-				echo '          ';
-				flush();
-			}
+		if ( get_site_option( 'backwpup_cfg_jobdooutput' ) && ! defined( 'STDOUT' ) ) {
+			echo '          ';
+			flush();
 		}
 
 		//set execution time again for 5 min
@@ -2059,15 +1996,15 @@ final class BackWPup_Job {
 		}
 		if ( isset( $this->steps_data[ 'JOB_FILE' ] ) ) {
 			if ( $this->job[ 'backuproot'] )
-				$manifest[ 'archive' ][ 'abspath' ] = trailingslashit( $this->get_default_wp_path( ABSPATH ) );
+				$manifest[ 'archive' ][ 'abspath' ] = trailingslashit( $this->get_destination_path_replacement( ABSPATH ) );
 			if ( $this->job[ 'backupuploads'] )
-				$manifest[ 'archive' ][ 'uploads' ] = trailingslashit( $this->get_default_wp_path( BackWPup_File::get_upload_dir() ) );
+				$manifest[ 'archive' ][ 'uploads' ] = trailingslashit( $this->get_destination_path_replacement( BackWPup_File::get_upload_dir() ) );
 			if ( $this->job[ 'backupcontent'] )
-				$manifest[ 'archive' ][ 'contents' ] = trailingslashit( $this->get_default_wp_path( WP_CONTENT_DIR ) );
+				$manifest[ 'archive' ][ 'contents' ] = trailingslashit( $this->get_destination_path_replacement( WP_CONTENT_DIR ) );
 			if ( $this->job[ 'backupplugins'])
-				$manifest[ 'archive' ][ 'plugins' ] = trailingslashit( $this->get_default_wp_path( WP_PLUGIN_DIR ) );
+				$manifest[ 'archive' ][ 'plugins' ] = trailingslashit( $this->get_destination_path_replacement( WP_PLUGIN_DIR ) );
 			if ( $this->job[ 'backupthemes'] )
-				$manifest[ 'archive' ][ 'themes' ] = trailingslashit( $this->get_default_wp_path( get_theme_root() ) );
+				$manifest[ 'archive' ][ 'themes' ] = trailingslashit( $this->get_destination_path_replacement( get_theme_root() ) );
 		}
 
 		if ( ! file_put_contents( BackWPup::get_plugin_data( 'TEMP' ) . 'manifest.json', json_encode( $manifest ) ) )
@@ -2167,7 +2104,7 @@ final class BackWPup_Job {
 				$files_in_folder = $this->get_files_in_folder( $folder );
 				//add empty folders
 				if ( empty( $files_in_folder ) ) {
-					$folder_name_in_archive = trim( ltrim( $this->get_default_wp_path( $folder ), '/' ) );
+					$folder_name_in_archive = trim( ltrim( $this->get_destination_path_replacement( $folder ), '/' ) );
 					if ( ! empty ( $folder_name_in_archive ) )
 						$backup_archive->add_empty_folder( $folder, $folder_name_in_archive );
 					continue;
@@ -2185,7 +2122,7 @@ final class BackWPup_Job {
 						$this->do_restart_time( TRUE );
 					}
 					//generate filename in archive
-					$in_archive_filename = ltrim( $this->get_default_wp_path( $file ), '/' );
+					$in_archive_filename = ltrim( $this->get_destination_path_replacement( $file ), '/' );
 					//add file to archive
 					if ( $backup_archive->add_file( $file, $in_archive_filename ) ) {
 						$this->update_working_data();
@@ -2238,8 +2175,10 @@ final class BackWPup_Job {
 	 */
 	public function generate_filename( $name, $suffix = '', $delete_temp_file = TRUE ) {
 
+		$local_time = current_time( 'timestamp' );
+
 		$datevars   = array( '%d', '%j', '%m', '%n', '%Y', '%y', '%a', '%A', '%B', '%g', '%G', '%h', '%H', '%i', '%s' );
-		$datevalues = array( date_i18n( 'd' ), date_i18n( 'j' ), date_i18n( 'm' ), date_i18n( 'n' ), date_i18n( 'Y' ), date_i18n( 'y' ), date_i18n( 'a' ), date_i18n( 'A' ), date_i18n( 'B' ), date_i18n( 'g' ), date_i18n( 'G' ), date_i18n( 'h' ), date_i18n( 'H' ), date_i18n( 'i' ), date_i18n( 's' ) );
+		$datevalues = array( date( 'd', $local_time ), date( 'j', $local_time ), date( 'm', $local_time ), date( 'n', $local_time ), date( 'Y', $local_time ), date( 'y', $local_time ), date( 'a', $local_time ), date( 'A', $local_time ), date( 'B', $local_time ), date( 'g', $local_time ), date( 'G', $local_time ), date( 'h', $local_time ), date( 'H', $local_time ), date( 'i', $local_time ), date( 's', $local_time ) );
 
 		if ( ! empty( $suffix ) && substr( $suffix, 0, 1 ) != '.' ) {
 			$suffix = '.' . $suffix;
@@ -2464,32 +2403,25 @@ final class BackWPup_Job {
 	}
 
 	/**
-	 * Change path of a given path to a wp default install path
+	 * Change path of a given path
 	 * for better storing in archives or on sync destinations
 	 *
 	 * @param $path string path to change to wp default path
 	 *
 	 * @return string
 	 */
-	public function get_default_wp_path( $path ) {
+	public function get_destination_path_replacement( $path ) {
 
-		$path = str_replace(  '\\', '/', $path );
+		$path = str_replace( '\\', '/', $path );
 
-		$search = array(
-			trailingslashit( str_replace( '\\', '/', WP_PLUGIN_DIR ) ),
-			trailingslashit( str_replace( '\\', '/', WPMU_PLUGIN_DIR ) ),
-			trailingslashit( str_replace( '\\', '/', WP_CONTENT_DIR ) ),
-			trailingslashit( str_replace( '\\', '/', ABSPATH ) ),
-		);
+		$abs_path = realpath( ABSPATH );
+		if ( $this->job[ 'backupabsfolderup' ] ) {
+			$abs_path = dirname( $abs_path );
+		}
 
-		$replace = array(
-			'/wp-content/plugins/',
-			'/wp-content/mu-plugins/',
-			'/wp-content/',
-			'/',
-		);
+		$abs_path = trailingslashit( str_replace( '\\', '/', $abs_path ) );
 
-		$path = str_replace( $search, $replace, $path );
+		$path = str_replace( $abs_path, '/', $path );
 
 		return $path;
 	}

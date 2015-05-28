@@ -27,21 +27,6 @@ class BackWPup_Page_Editjob {
 	}
 
 	/**
-	 *
-	 */
-	public static function load() {
-
-		//add Help tab
-		BackWPup_Help::add_tab( array(
-									 'id'      => 'overview',
-									 'title'   => __( 'Overview','backwpup' ),
-									 'content' =>
-									 '<p>' . '</p>'
-								) );
-
-	}
-
-	/**
 	 * Save Form data
 	 */
 	public static function save_post_form($tab, $jobid) {
@@ -220,10 +205,8 @@ class BackWPup_Page_Editjob {
 				height: 7em;
 			}
 			#cron-min-box, #cron-hour-box, #cron-day-box, #cron-month-box, #cron-weekday-box {
-				border-color: gray;
-				border-style: solid;
-				border-width: 1px;
-				margin: 10px 0px 10px 10px;
+				border: 1px solid gray;
+				margin: 10px 0 10px 10px;
 				padding: 2px 2px;
 				width: 100px;
 				float: left;
@@ -524,8 +507,9 @@ class BackWPup_Page_Editjob {
 									echo esc_attr__( '%s = Two digit representation of the second', 'backwpup' ) . '<br />';
 								?>" />
 							<?php
+							$current_time = current_time( 'timestamp' );
 							$datevars    = array( '%d', '%j', '%m', '%n', '%Y', '%y', '%a', '%A', '%B', '%g', '%G', '%h', '%H', '%i', '%s' );
-							$datevalues  = array( date_i18n( 'd' ), date_i18n( 'j' ), date_i18n( 'm' ), date_i18n( 'n' ), date_i18n( 'Y' ), date_i18n( 'y' ), date_i18n( 'a' ), date_i18n( 'A' ), date_i18n( 'B' ), date_i18n( 'g' ), date_i18n( 'G' ), date_i18n( 'h' ), date_i18n( 'H' ), date_i18n( 'i' ), date_i18n( 's' ) );
+							$datevalues  = array( date( 'd', $current_time ), date( 'j', $current_time ), date( 'm', $current_time ), date( 'n', $current_time ), date( 'Y', $current_time ), date( 'y', $current_time ), date( 'a', $current_time ), date( 'A', $current_time ), date( 'B', $current_time ), date( 'g', $current_time ), date( 'G', $current_time ), date( 'h', $current_time ), date( 'H', $current_time ), date( 'i', $current_time ), date( 's', $current_time ) );
 							$archivename = str_replace( $datevars, $datevalues, BackWPup_Job::sanitize_file_name( BackWPup_Option::get( $jobid, 'archivename' ) ) );
 							echo '<p>Preview: <code><span id="archivefilename">' . $archivename . '</span><span id="archiveformat">' . BackWPup_Option::get( $jobid, 'archiveformat' ) . '</span></code></p>';
 							?>

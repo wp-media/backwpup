@@ -385,14 +385,16 @@ class BackWPup_Page_Backups extends WP_List_Table {
 				}
 				break;
 			default:
-				$dest = strtoupper( str_replace( 'download', '', self::$listtable->current_action() ) );
-				if ( !empty( $dest ) && strstr( self::$listtable->current_action(), 'download') ) {
-					if ( ! current_user_can( 'backwpup_backups_download' ) )
-						wp_die( __( 'Sorry, you don\'t have permissions to do that.', 'backwpup') );
-					check_admin_referer( 'download-backup' );
-					$dest_class = BackWPup::get_destination( $dest );
-					$dest_class->file_download( (int)$_GET[ 'jobid' ], $_GET[ 'file' ] );
-					die();
+				if ( isset( $_GET[ 'jobid' ] ) ) {
+					$dest = strtoupper( str_replace( 'download', '', self::$listtable->current_action() ) );
+					if ( ! empty( $dest ) && strstr( self::$listtable->current_action(), 'download' ) ) {
+						if ( ! current_user_can( 'backwpup_backups_download' ) )
+							wp_die( __( 'Sorry, you don\'t have permissions to do that.', 'backwpup') );
+						check_admin_referer( 'download-backup' );
+						$dest_class = BackWPup::get_destination( $dest );
+						$dest_class->file_download( (int)$_GET[ 'jobid' ], $_GET[ 'file' ] );
+						die();
+					}
 				}
 				break;
 		}

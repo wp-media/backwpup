@@ -311,11 +311,13 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 					check_admin_referer( 'backwpup_job_run-runnowlink' );
 
 					//check temp folder
-					BackWPup_Job::check_folder( BackWPup::get_plugin_data( 'TEMP' ), TRUE );
+					$temp_folder_message = BackWPup_File::check_folder( BackWPup::get_plugin_data( 'TEMP' ), TRUE );
+					BackWPup_Admin::message( $temp_folder_message, TRUE );
 					//check log folder
 					$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
 					$log_folder = BackWPup_File::get_absolute_path( $log_folder );
-					BackWPup_Job::check_folder( $log_folder );
+					$log_folder_message = BackWPup_File::check_folder( $log_folder );
+					BackWPup_Admin::message( $log_folder_message, TRUE );
 					//check backup destinations
 					$job_types = BackWPup::get_job_types();
 					$job_conf_types = BackWPup_Option::get( $_GET[ 'jobid' ], 'type' );

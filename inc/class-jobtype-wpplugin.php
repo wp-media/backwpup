@@ -109,7 +109,7 @@ class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes {
 			$header .= "  " . translate( BackWPup::get_plugin_data( 'pluginuri' ), 'backwpup' ) . PHP_EOL;
 			$header .= "  Blog Name: " . get_bloginfo( 'name' ) . PHP_EOL;
 			$header .= "  Blog URL: " . get_bloginfo( 'url' ) . PHP_EOL;
-			$header .= "  Generated on: " . date_i18n( 'Y-m-d H:i.s' ) . PHP_EOL;
+			$header .= "  Generated on: " . date( 'Y-m-d H:i.s', current_time( 'timestamp' ) ) . PHP_EOL;
 			$header .= "------------------------------------------------------------" . PHP_EOL . PHP_EOL;
 			fwrite( $handle, $header );
 			//get Plugins

@@ -180,17 +180,19 @@ Please check all settings after the update:
 * Added: Creation of web.config for IIS Webserver
 * Added: Allow relative path to WP_CONTENT_DIR for logs and backups
 * Added: Prefer plugin translation loading from WP_LAND_DIR
+* Added: Option to move WordPress installation folder one folder up
 * Improved: Excessive transient writes with job start urls
 * Improved: Authorisation settings for wp-cron.php
 * Improved: Folder checking with open basedir check
 * Improved: WP-CLI outputs
-* Improved: WP_*_DIR will be set to default WordPress path if changed
 * Improved: Role management. Administrators always have BackWPup capabilities
 * Improved: Unix Signals handling to caching more
+* Improved: fcgi handling to prevent signal 15 errors (thanks to siteground.com)
 * Updated: AWS SDK to Version 2.7.7 (PHP 5.3.3+)
 * Updated: MSAZURE SDK to Version 0.4.0-dev
 * Removed: Server script file generation, please use WP-CLI
 * Fixed: Notice if BuddyPress is active
+* Fixed: VIEW generation on Database backups
 * PRO Fixed: Authentication for GDrive
 * PRO Fixed: Synchronisation with GDrive
 

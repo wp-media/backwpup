@@ -20,6 +20,11 @@ class BackWPup_MySQLDump {
 	public $tables_to_dump = array();
 
 	/**
+	 * View names of Views in Database
+	 */
+	public $views_to_dump = array();
+
+	/**
 	 * Table names of Tables in Database
 	 */
 	private $table_types = array();
@@ -138,26 +143,33 @@ class BackWPup_MySQLDump {
 			throw new BackWPup_MySQLDump_Exception( __( 'Cannot open SQL backup file', 'backwpup' ) );
 		}
 
-		//get table names and types from Database
-		$res = $this->mysqli->query( 'SHOW FULL TABLES FROM `' . $this->dbname . '`' );
-		$GLOBALS[ 'wpdb' ]->num_queries ++;
-		if ( $this->mysqli->error )
-			throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, 'SHOW FULL TABLES FROM `' . $this->dbname . '`' ) );
-		while ( $table = $res->fetch_array( MYSQLI_NUM ) ) {
-			$this->tables_to_dump[] = $table[ 0 ];
-			$this->table_types[ $table[ 0 ] ] = $table[ 1 ];
-		}
-		$res->close();
-
 		//get table info
 		$res = $this->mysqli->query( "SHOW TABLE STATUS FROM `" . $this->dbname . "`" );
 		$GLOBALS[ 'wpdb' ]->num_queries ++;
-		if ( $this->mysqli->error )
+		if ( $this->mysqli->error ) {
 			throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SHOW TABLE STATUS FROM `" .$this->dbname . "`" ) );
+		}
 		while ( $tablestatus = $res->fetch_assoc() ) {
 			$this->table_status[ $tablestatus[ 'Name' ] ] = $tablestatus;
 		}
 		$res->close();
+
+		//get table names and types from Database
+		$res = $this->mysqli->query( 'SHOW FULL TABLES FROM `' . $this->dbname . '`' );
+		$GLOBALS[ 'wpdb' ]->num_queries ++;
+		if ( $this->mysqli->error ) {
+			throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, 'SHOW FULL TABLES FROM `' . $this->dbname . '`' ) );
+		}
+		while ( $table = $res->fetch_array( MYSQLI_NUM ) ) {
+			$this->table_types[ $table[ 0 ] ] = $table[ 1 ];
+			$this->tables_to_dump[] = $table[ 0 ];
+			if ( $table[ 1 ] == 'VIEW' ) {
+				$this->views_to_dump[] = $table[ 0 ];
+				$this->table_status[ $table[ 0 ] ][ 'Rows' ] = 0;
+			}
+		}
+		$res->close();
+
 	}
 
 	/**
@@ -194,7 +206,6 @@ class BackWPup_MySQLDump {
 		$mysqltimezone = $mysqltimezone[0];
 		$res->close();
 
-
 		//For SQL always use \n as MySQL wants this on all platforms.
 		$dbdumpheader  = "-- ---------------------------------------------------------\n";
 		$dbdumpheader .= "-- Backup with BackWPup ver.: " . BackWPup::get_plugin_data( 'Version' ) . "\n";
@@ -207,7 +218,7 @@ class BackWPup_MySQLDump {
 			$dbdumpheader .= "-- Table Prefix: " . $GLOBALS[ 'wpdb' ]->prefix . "\n";
 		}
 		$dbdumpheader .= "-- Database Name: " . $this->dbname . "\n";
-		$dbdumpheader .= "-- Backup on: " . date_i18n( 'Y-m-d H:i.s' ) . "\n";
+		$dbdumpheader .= "-- Backup on: " . date( 'Y-m-d H:i.s', current_time( 'timestamp' ) ) . "\n";
 		$dbdumpheader .= "-- ---------------------------------------------------------\n\n";
 		//for better import with mysql client
 		$dbdumpheader .= "/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;\n";
@@ -228,6 +239,11 @@ class BackWPup_MySQLDump {
 	 */
 	public function dump_footer() {
 
+		//dump Views
+		foreach( $this->views_to_dump as $view ) {
+			$this->dump_view_table_head( $view );
+		}
+
 		//dump procedures and functions
 		$this->write( "\n--\n-- Backup routines for database '" . $this->dbname . "'\n--\n" );
 
@@ -238,17 +254,18 @@ class BackWPup_MySQLDump {
 			trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SHOW FUNCTION STATUS" ), E_USER_WARNING );
 		} else {
 			while ( $function_status = $res->fetch_assoc() ) {
-				if ( $this->dbname != $function_status[ 'Db' ] )
+				if ( $this->dbname != $function_status[ 'Db' ] ) {
 					continue;
+				}
 				$create = "\n--\n-- Function structure for " . $function_status[ 'Name' ] . "\n--\n\n";
 				$create .= "DROP FUNCTION IF EXISTS `" . $function_status[ 'Name' ] . "`;\n";
 				$create .= "/*!40101 SET @saved_cs_client     = @@character_set_client */;\n";
 				$create .= "/*!40101 SET character_set_client = '" . $this->mysqli->character_set_name() . "' */;\n";
-				//Dump the view structure
 				$res2 = $this->mysqli->query( "SHOW CREATE FUNCTION `" .  $function_status[ 'Db' ] . "`.`" . $function_status[ 'Name' ] . "`" );
 				$GLOBALS[ 'wpdb' ]->num_queries ++;
-				if ( $this->mysqli->error )
+				if ( $this->mysqli->error ) {
 					trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SHOW CREATE FUNCTION `" .  $function_status[ 'Db' ] . "`.`" . $function_status[ 'Name' ] . "`" ), E_USER_WARNING );
+				}
 				$create_function = $res2->fetch_assoc();
 				$res2->close();
 				$create .= $create_function[ 'Create Function' ] . ";\n";
@@ -265,17 +282,18 @@ class BackWPup_MySQLDump {
 			trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SHOW PROCEDURE STATUS" ), E_USER_WARNING );
 		} else {
 			while ( $procedure_status = $res->fetch_assoc() ) {
-				if ( $this->dbname != $procedure_status[ 'Db' ] )
+				if ( $this->dbname != $procedure_status[ 'Db' ] ) {
 					continue;
+				}
 				$create = "\n--\n-- Procedure structure for " . $procedure_status[ 'Name' ] . "\n--\n\n";
 				$create .= "DROP PROCEDURE IF EXISTS `" . $procedure_status[ 'Name' ] . "`;\n";
 				$create .= "/*!40101 SET @saved_cs_client     = @@character_set_client */;\n";
 				$create .= "/*!40101 SET character_set_client = '" . $this->mysqli->character_set_name() . "' */;\n";
-				//Dump the view structure
 				$res2 = $this->mysqli->query( "SHOW CREATE PROCEDURE `" . $procedure_status[ 'Db' ] . "`.`" . $procedure_status[ 'Name' ] . "`" );
 				$GLOBALS[ 'wpdb' ]->num_queries ++;
-				if ( $this->mysqli->error )
+				if ( $this->mysqli->error ) {
 					trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SHOW CREATE PROCEDURE `" . $procedure_status[ 'Db' ] . "`.`" . $procedure_status[ 'Name' ] . "`" ), E_USER_WARNING );
+				}
 				$create_procedure = $res2->fetch_assoc();
 				$res2->close();
 				$create .= $create_procedure[ 'Create Procedure' ] . ";\n";
@@ -294,7 +312,7 @@ class BackWPup_MySQLDump {
 		$dbdumpfooter .= "/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;\n";
 		$dbdumpfooter .= "/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;\n";
 		$dbdumpfooter .= "/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;\n";
-		$dbdumpfooter .= "\n-- Backup completed on " . date_i18n( 'Y-m-d H:i:s' ). "\n";
+		$dbdumpfooter .= "\n-- Backup completed on " . date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ). "\n";
 		$this->write( $dbdumpfooter );
 	}
 
@@ -310,26 +328,30 @@ class BackWPup_MySQLDump {
 
 		//dump View
 		if ( $this->table_types[ $table ] == 'VIEW' ) {
-			$tablecreate = "\n--\n-- View structure for `" . $table . "`\n--\n\n";
-			$tablecreate .= "DROP VIEW IF EXISTS `" . $table . "`;\n";
+			$tablecreate = "\n--\n-- Temporary table structure for view `" . $table . "`\n--\n\n";
+			$tablecreate .= "DROP TABLE IF EXISTS `" . $table . "`;\n";
+			$tablecreate .= "/*!50001 DROP VIEW IF EXISTS `" . $table . "`*/;\n";
 			$tablecreate .= "/*!40101 SET @saved_cs_client     = @@character_set_client */;\n";
 			$tablecreate .= "/*!40101 SET character_set_client = '" . $this->mysqli->character_set_name() . "' */;\n";
-			//Dump the view structure
-			$res = $this->mysqli->query( "SHOW CREATE VIEW `" . $table . "`" );
+			$tablecreate .= "CREATE TABLE `" . $table . "` (\n";
+			//Dump the view table structure
+			$res = $this->mysqli->query( "SELECT * FROM `" . $table . "` LIMIT 1" );
 			$GLOBALS[ 'wpdb' ]->num_queries ++;
-			if ( $this->mysqli->error )
-				trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SHOW CREATE VIEW `" . $table . "`" ), E_USER_WARNING );
-			$createview = $res->fetch_assoc();
+			if ( $this->mysqli->error ) {
+				trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SELECT * FROM `" . $table . "` LIMIT 1" ), E_USER_WARNING );
+			}
+			$fields = $res->fetch_fields();
 			$res->close();
-			$tablecreate .= $createview[ 'Create View' ] . ";\n";
+			foreach( $fields as $field ) {
+				$tablecreate .= "  `". $field->orgname . "` tinyint NOT NULL,\n";
+			}
+			$tablecreate = substr( $tablecreate, 0, -2 ) ."\n";
+			$tablecreate .= ");\n";
 			$tablecreate .= "/*!40101 SET character_set_client = @saved_cs_client */;\n";
 			$this->write( $tablecreate );
 
 			return 0;
 		}
-
-		if ( $this->table_types[ $table ] != 'BASE TABLE' )
-			return 0;
 
 		//dump normal Table
 		$tablecreate = "\n--\n-- Table structure for `" . $table . "`\n--\n\n";
@@ -357,6 +379,34 @@ class BackWPup_MySQLDump {
 		}
 
 		return $this->table_status[ $table ][ 'Rows' ];
+	}
+
+
+	/**
+	 * Dump view structure
+	 *
+	 * @param string $view name of Table to dump
+	 * @throws BackWPup_MySQLDump_Exception
+	 * @return int Size of table
+	 */
+	public function dump_view_table_head( $view ) {
+
+		$tablecreate = "\n--\n-- View structure for `" . $view . "`\n--\n\n";
+		$tablecreate .= "DROP TABLE IF EXISTS `" . $view . "`;\n";
+		$tablecreate .= "DROP VIEW IF EXISTS `" . $view . "`;\n";
+		$tablecreate .= "/*!40101 SET @saved_cs_client     = @@character_set_client */;\n";
+		$tablecreate .= "/*!40101 SET character_set_client = '" . $this->mysqli->character_set_name() . "' */;\n";
+		//Dump the view structure
+		$res = $this->mysqli->query( "SHOW CREATE VIEW `" . $view . "`" );
+		$GLOBALS[ 'wpdb' ]->num_queries ++;
+		if ( $this->mysqli->error ) {
+			trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SHOW CREATE VIEW `" . $view . "`" ), E_USER_WARNING );
+		}
+		$createview = $res->fetch_assoc();
+		$res->close();
+		$tablecreate .= $createview[ 'Create View' ] . ";\n";
+		$tablecreate .= "/*!40101 SET character_set_client = @saved_cs_client */;\n";
+		$this->write( $tablecreate );
 
 	}
 
@@ -394,6 +444,11 @@ class BackWPup_MySQLDump {
 		}
 
 		$done_records = 0;
+
+		if ( $this->table_types[ $table ] == 'VIEW' ) {
+			return $done_records;
+		}
+
 		//get data from table
 		if ( $length == 0 && $start == 0 ) {
 			$res = $this->mysqli->query( "SELECT * FROM `" . $table . "` ", MYSQLI_USE_RESULT );
@@ -401,8 +456,9 @@ class BackWPup_MySQLDump {
 			$res = $this->mysqli->query( "SELECT * FROM `" . $table . "` LIMIT " . $start . ", " . $length, MYSQLI_USE_RESULT );
 		}
 		$GLOBALS[ 'wpdb' ]->num_queries ++;
-		if ( $this->mysqli->error )
+		if ( $this->mysqli->error ) {
 			trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SELECT * FROM `" . $table . "`" ), E_USER_WARNING );
+		}
 
 		$fieldsarray = array();
 		$fieldinfo   = array();
@@ -418,12 +474,13 @@ class BackWPup_MySQLDump {
 		while ( $data = $res->fetch_assoc() ) {
 			$values = array();
 			foreach ( $data as $key => $value ) {
-				if ( is_null( $value ) || ! isset( $value ) ) // Make Value NULL to string NULL
+				if ( is_null( $value ) || ! isset( $value ) ) { // Make Value NULL to string NULL
 					$value = "NULL";
-				elseif ( in_array($fieldinfo[ $key ]->type, array( MYSQLI_TYPE_DECIMAL, MYSQLI_TYPE_TINY, MYSQLI_TYPE_SHORT, MYSQLI_TYPE_LONG,  MYSQLI_TYPE_FLOAT, MYSQLI_TYPE_DOUBLE, MYSQLI_TYPE_LONGLONG, MYSQLI_TYPE_INT24 ) ) ) //is value numeric no esc
+				} elseif ( in_array($fieldinfo[ $key ]->type, array( MYSQLI_TYPE_DECIMAL, MYSQLI_TYPE_TINY, MYSQLI_TYPE_SHORT, MYSQLI_TYPE_LONG,  MYSQLI_TYPE_FLOAT, MYSQLI_TYPE_DOUBLE, MYSQLI_TYPE_LONGLONG, MYSQLI_TYPE_INT24 ) ) ) {//is value numeric no esc
 					$value = empty( $value ) ? 0 : $value;
-				else
+				} else {
 					$value = "'" . $this->mysqli->real_escape_string( $value ) . "'";
+				}
 				$values[ ] = $value;
 			}
 			//new query in dump on more than 50000 chars.
