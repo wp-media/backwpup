@@ -161,7 +161,8 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 			BackWPup_Option::update( $job_object->job[ 'jobid' ], 'lastbackupdownloadurl', add_query_arg( array(
 																								  'page'   => 'backwpupbackups',
 																								  'action' => 'downloadfolder',
-																								  'file'   => $job_object->backup_folder . $job_object->backup_file
+																								  'file'   => $job_object->backup_folder . $job_object->backup_file,
+																								  'jobid'  => $job_object->job[ 'jobid' ]
 																							 ), network_admin_url( 'admin.php' ) ) );
 		//Delete old Backupfiles
 		$backupfilelist = array();

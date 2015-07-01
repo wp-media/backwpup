@@ -500,40 +500,28 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 		if ( ! empty( $job_object->job[ 'backupspecialfiles'] ) ) {
 			if ( is_readable( ABSPATH . 'wp-config.php' ) && empty( $job_object->job[ 'backuproot' ] ) ) {
 				$job_object->additional_files_to_backup[ ] = str_replace( '\\', '/', ABSPATH . 'wp-config.php' );
-				$job_object->count_files ++;
-				$job_object->count_filesize = $job_object->count_filesize + filesize( ABSPATH . 'wp-config.php' );
 				$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), 'wp-config.php' ) );
 			}
 			elseif ( BackWPup_File::is_in_open_basedir( dirname( ABSPATH ) . '/wp-config.php' ) ) {
 				if ( is_readable( dirname( ABSPATH ) . '/wp-config.php' ) && ! is_readable( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
 					$job_object->additional_files_to_backup[ ] = str_replace( '\\', '/', dirname( ABSPATH ) . '/wp-config.php' );
-					$job_object->count_files ++;
-					$job_object->count_filesize = $job_object->count_filesize + filesize( dirname( ABSPATH ) . '/wp-config.php' );
 					$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), 'wp-config.php' ) );
 				}
 			}
 			if ( is_readable( $abs_path . '.htaccess' ) && empty( $job_object->job[ 'backuproot' ] ) ) {
 				$job_object->additional_files_to_backup[ ] = $abs_path . '.htaccess';
-				$job_object->count_files ++;
-				$job_object->count_filesize = $job_object->count_filesize + filesize( $abs_path . '.htaccess' );
 				$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), '.htaccess' ) );
 			}
 			if ( is_readable( $abs_path . '.htpasswd' ) && empty( $job_object->job[ 'backuproot' ] ) ) {
 				$job_object->additional_files_to_backup[ ] = $abs_path . '.htpasswd';
-				$job_object->count_files ++;
-				$job_object->count_filesize = $job_object->count_filesize + filesize( $abs_path . '.htpasswd' );
 				$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), '.htpasswd' ) );
 			}
 			if ( is_readable( $abs_path . 'robots.txt' ) && empty( $job_object->job[ 'backuproot' ] ) ) {
 				$job_object->additional_files_to_backup[ ] = $abs_path . 'robots.txt';
-				$job_object->count_files ++;
-				$job_object->count_filesize = $job_object->count_filesize + filesize( $abs_path . 'robots.txt' );
 				$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), 'robots.txt' ) );
 			}
 			if ( is_readable( $abs_path . 'favicon.ico' ) && empty( $job_object->job[ 'backuproot' ] ) ) {
 				$job_object->additional_files_to_backup[ ] = $abs_path . 'favicon.ico';
-				$job_object->count_files ++;
-				$job_object->count_filesize = $job_object->count_filesize + filesize( $abs_path . 'favicon.ico' );
 				$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), 'favicon.ico' ) );
 			}
 		}

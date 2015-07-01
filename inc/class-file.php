@@ -44,11 +44,6 @@ class BackWPup_File {
 			return TRUE;
 		}
 
-		$dir = realpath( $dir );
-		if ( $dir === FALSE ) {
-			return FALSE;
-		}
-
 		$open_base_dirs = explode( PATH_SEPARATOR, $ini_open_basedir );
 		$dir            = trailingslashit( str_replace( '\\', '/', $dir ) );
 

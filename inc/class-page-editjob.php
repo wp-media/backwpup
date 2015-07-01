@@ -376,6 +376,8 @@ class BackWPup_Page_Editjob {
 		?>
     <div class="wrap" id="backwpup-page">
 		<?php
+		echo '<h2><span id="backwpup-page-icon">&nbsp;</span>' . sprintf( __( '%1$s Job: %2$s', 'backwpup' ), BackWPup::get_plugin_data( 'name' ), '<span id="h2jobtitle">' . esc_html( BackWPup_Option::get( $jobid, 'name' ) ) . '</span>' ). '</h2>';
+
 		//default tabs
 		$tabs = array( 'job' => array( 'name' => __( 'General', 'backwpup' ), 'display' => TRUE ), 'cron' => array( 'name' => __( 'Schedule', 'backwpup' ), 'display' => TRUE ) );
 		//add jobtypes to tabs
@@ -398,15 +400,16 @@ class BackWPup_Page_Editjob {
 				$tabs[ $tabid ][ 'display' ] = FALSE;
 		}
 		//display tabs
-		echo '<h2 class="nav-tab-wrapper"><span id="backwpup-page-icon">&nbsp;</span>' . sprintf( __( '%s Job:', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ). '&nbsp;';
-		echo '<span id="h2jobtitle">' . esc_html( BackWPup_Option::get( $jobid, 'name' ) ) . '</span><br /><br />';
+		echo '<h2 class="nav-tab-wrapper">';
 		foreach ( $tabs as $id => $tab ) {
 			$addclass = '';
-			if ( $id == $_GET[ 'tab' ] )
+			if ( $id == $_GET[ 'tab' ] ) {
 				$addclass = ' nav-tab-active';
+			}
 			$display = '';
-			if ( ! $tab[ 'display' ] )
+			if ( ! $tab[ 'display' ] ) {
 				$display = ' style="display:none;"';
+			}
 			echo '<a href="' . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupeditjob&tab=' . $id . '&jobid=' . $jobid, 'edit-job' ) . '" class="nav-tab' . $addclass . '" id="tab-' . $id . '" data-nexttab="' . $id . '" ' . $display . '>' . $tab[ 'name' ] . '</a>';
 		}
 		echo '</h2>';
@@ -850,9 +853,9 @@ class BackWPup_Page_Editjob {
 				}
 				echo '</div>';
 		}
-		echo '<br />';
+		echo '<p class="submit">';
 		submit_button( __( 'Save changes', 'backwpup' ), 'primary', 'save', FALSE, array( 'tabindex' => '2', 'accesskey' => 'p' ) );
-		echo '</form>';
+		echo '</p></form>';
 		?>
     </div>
 

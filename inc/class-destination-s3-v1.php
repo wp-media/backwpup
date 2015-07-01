@@ -264,7 +264,7 @@ class BackWPup_Destination_S3_V1 extends BackWPup_Destinations {
 	 */
 	public function file_delete( $jobdest, $backupfile ) {
 
-		$files = get_site_transient( 'backwpup_'. strtolower( $jobdest ), array() );
+		$files = get_site_transient( 'backwpup_'. strtolower( $jobdest ) );
 		list( $jobid, $dest ) = explode( '_', $jobdest );
 
 		if ( BackWPup_Option::get( $jobid, 's3accesskey' ) && BackWPup_Option::get( $jobid, 's3secretkey' ) && BackWPup_Option::get( $jobid, 's3bucket' ) ) {
@@ -286,9 +286,10 @@ class BackWPup_Destination_S3_V1 extends BackWPup_Destinations {
 
 				$s3->delete_object( BackWPup_Option::get( $jobid, 's3bucket' ), $backupfile );
 				//update file list
-				foreach ( $files as $key => $file ) {
-					if ( is_array( $file ) && $file[ 'file' ] == $backupfile )
+				foreach ( (array) $files as $key => $file ) {
+					if ( is_array( $file ) && $file[ 'file' ] == $backupfile ) {
 						unset( $files[ $key ] );
+					}
 				}
 				unset( $s3 );
 			}

@@ -49,7 +49,6 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 				<td>
 					<input id="msazurecontainerselected" name="msazurecontainerselected" type="hidden" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'msazurecontainer' ) );?>" />
 					<?php if ( BackWPup_Option::get( $jobid, 'msazureaccname' ) && BackWPup_Option::get( $jobid, 'msazurekey' ) ) $this->edit_ajax( array(
-																																						 'msazurehost'     => BackWPup_Option::get( $jobid, 'msazurehost' ),
 																																						 'msazureaccname'  => BackWPup_Option::get( $jobid, 'msazureaccname' ),
 																																						 'msazurekey'      => BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 'msazurekey' ) ),
 																																						 'msazureselected' => BackWPup_Option::get( $jobid, 'msazurecontainer' )
@@ -137,7 +136,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 	 */
 	public function file_delete( $jobdest, $backupfile ) {
 
-		$files = get_site_transient( 'backwpup_'. strtolower( $jobdest ), FALSE );
+		$files = get_site_transient( 'backwpup_'. strtolower( $jobdest ) );
 		list( $jobid, $dest ) = explode( '_', $jobdest );
 
 		if ( BackWPup_Option::get( $jobid, 'msazureaccname' ) && BackWPup_Option::get( $jobid, 'msazurekey' ) && BackWPup_Option::get( $jobid, 'msazurecontainer' ) ) {

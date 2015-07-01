@@ -305,7 +305,7 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 			mb_internal_encoding( $mbEncoding );
 		}
 
-		if ( isset( $result ) && ! $result ) {
+		if ( ! isset( $result ) || ! $result ) {
 			$job_object->log( __( 'Error while sending email!', 'backwpup' ), E_USER_ERROR );
 
 			return FALSE;
@@ -427,10 +427,11 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 			mb_internal_encoding( $mbEncoding );
 		}
 
-		if ( ! isset( $result ) || ! $result )
+		if ( ! isset( $result ) || ! $result ) {
 			echo '<span id="emailsendtext" style="color:red;">' . __( 'Error while sending email!', 'backwpup' ) . '</span>';
-		else
+		} else {
 			echo '<span id="emailsendtext" style="color:green;">' . __( 'Email sent.', 'backwpup' ) . '</span>';
+		}
 		die();
 	}
 }

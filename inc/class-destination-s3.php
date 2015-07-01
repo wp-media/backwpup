@@ -42,6 +42,10 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				return 'https:/cn-north-1.amazonaws.com';
 			case 'google-storage':
 				return 'https://storage.googleapis.com';
+			case 'google-storage-us':
+				return 'https://storage.googleapis.com';
+			case 'google-storage-asia':
+				return 'https://storage.googleapis.com';
 			case 'dreamhost':
 				return 'https://objects.dreamhost.com';
 			case 'greenqloud':
@@ -84,8 +88,10 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 						<option value="ap-southeast-2" <?php selected( 'ap-southeast-2', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: Asia Pacific (Sydney)', 'backwpup' ); ?></option>
 						<option value="sa-east-1" <?php selected( 'sa-east-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: South America (Sao Paulo)', 'backwpup' ); ?></option>
 						<option value="cn-north-1" <?php selected( 'cn-north-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: China (Beijing)', 'backwpup' ); ?></option>
-						<option value="google-storage" <?php selected( 'google-storage', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Google Storage (Interoperable Access)', 'backwpup' ); ?></option>
-                        <option value="dreamhost" <?php selected( 'dreamhost', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Dream Host Cloud Storage', 'backwpup' ); ?></option>
+						<option value="google-storage" <?php selected( 'google-storage', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Google Storage: EU', 'backwpup' ); ?></option>
+						<option value="google-storage-us" <?php selected( 'google-storage-us', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Google Storage: USA', 'backwpup' ); ?></option>
+						<option value="google-storage-asia" <?php selected( 'google-storage-asia', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Google Storage: Asia', 'backwpup' ); ?></option>
+						<option value="dreamhost" <?php selected( 'dreamhost', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Dream Host Cloud Storage', 'backwpup' ); ?></option>
 						<option value="greenqloud" <?php selected( 'greenqloud', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'GreenQloud Storage Qloud', 'backwpup' ); ?></option>
 					</select>
 				</td>
@@ -238,21 +244,23 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 														 'scheme'	=> 'https',
 														 'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ) ) );
 				// set bucket creation region
-				if ( $_POST[ 's3region' ] == 'google-storage' || $_POST[ 's3region' ] == 'hosteurope' )
+				if ( $_POST[ 's3region' ] === 'google-storage' ) {
 					$region = 'EU';
-				else
+				} elseif ( $_POST[ 's3region' ] === 'google-storage-us' ) {
+					$region = 'US';
+				} elseif ( $_POST[ 's3region' ] === 'google-storage-asia' ) {
+					$region = 'ASIA';
+				} else {
 					$region = $_POST[ 's3region' ];
+				}
 
 				if ($s3->isValidBucketName( $_POST[ 's3newbucket' ] ) ) {
-					$bucket = $s3->createBucket( array(
-													  'Bucket' => $_POST[ 's3newbucket' ] ,
-													  'LocationConstraint' => $region
-												 ) );
-					$s3->waitUntil('bucket_exists', $_POST[ 's3newbucket' ]);
-					if ( $bucket->get( 'Location' ) )
-						BackWPup_Admin::message( sprintf( __( 'Bucket %1$s created in %2$s.','backwpup'), $_POST[ 's3newbucket' ], $bucket->get( 'Location' ) ) );
-					else
-						BackWPup_Admin::message( sprintf( __( 'Bucket %s could not be created.','backwpup'), $_POST[ 's3newbucket' ] ), TRUE );
+					$s3->createBucket( array(
+											  'Bucket' => $_POST[ 's3newbucket' ] ,
+											  'LocationConstraint' => $region
+										 ) );
+					$s3->waitUntil( 'bucket_exists', array( 'Bucket' => $_POST[ 's3newbucket' ] ) );
+					BackWPup_Admin::message( sprintf( __( 'Bucket %1$s created.','backwpup'), $_POST[ 's3newbucket' ] ) );
 				} else {
 					BackWPup_Admin::message( sprintf( __( ' %s is not a valid bucket name.','backwpup'), $_POST[ 's3newbucket' ] ), TRUE );
 				}
@@ -270,7 +278,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 	 */
 	public function file_delete( $jobdest, $backupfile ) {
 
-		$files = get_site_transient( 'backwpup_'. strtolower( $jobdest ), array() );
+		$files = get_site_transient( 'backwpup_'. strtolower( $jobdest ) );
 		list( $jobid, $dest ) = explode( '_', $jobdest );
 
 		if ( BackWPup_Option::get( $jobid, 's3accesskey' ) && BackWPup_Option::get( $jobid, 's3secretkey' ) && BackWPup_Option::get( $jobid, 's3bucket' ) ) {
@@ -287,9 +295,10 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 										'Key' => $backupfile
 								   ) );
 				//update file list
-				foreach ( $files as $key => $file ) {
-					if ( is_array( $file ) && $file[ 'file' ] == $backupfile )
+				foreach ( (array)$files as $key => $file ) {
+					if ( is_array( $file ) && $file[ 'file' ] == $backupfile ) {
 						unset( $files[ $key ] );
+					}
 				}
 				unset( $s3 );
 			}

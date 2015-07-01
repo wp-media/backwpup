@@ -631,7 +631,7 @@ class BackWPup_Destination_SugarSync_API {
 			curl_setopt( $curl, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
 		} else {
 			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, FALSE );
-		}	curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, FALSE );
+		}
 		curl_setopt( $curl, CURLOPT_HEADER, TRUE );
 		curl_setopt( $curl, CURLOPT_HTTPHEADER, array( 'Content-Type: application/xml; charset=UTF-8', 'Content-Length: ' . strlen( $auth ) ) );
 		curl_setopt( $curl, CURLOPT_POSTFIELDS, $auth );

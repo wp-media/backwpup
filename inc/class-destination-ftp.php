@@ -142,7 +142,7 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 	 */
 	public function file_delete( $jobdest, $backupfile ) {
 
-		$files = get_site_transient( 'backwpup_'. strtolower( $jobdest ), FALSE );
+		$files = get_site_transient( 'backwpup_'. strtolower( $jobdest ) );
 		list( $jobid, $dest ) = explode( '_', $jobdest );
 
 		if ( BackWPup_Option::get( $jobid, 'ftphost' ) && BackWPup_Option::get( $jobid, 'ftpuser' ) && BackWPup_Option::get( $jobid, 'ftppass' ) && function_exists( 'ftp_connect' ) ) {
@@ -335,8 +335,9 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 				else {
 					$job_object->substeps_done = $job_object->backup_filesize + 1;
 					$job_object->log( sprintf( __( 'Backup transferred to FTP server: %s', 'backwpup' ), $current_ftp_dir . $job_object->backup_file ), E_USER_NOTICE );
-					if ( ! empty( $job_object->job[ 'jobid' ] ) )
-					BackWPup_Option::update( $job_object->job[ 'jobid' ], 'lastbackupdownloadurl', "ftp://" . $job_object->job[ 'ftpuser' ] . ":" . BackWPup_Encryption::decrypt( $job_object->job[ 'ftppass' ] ) . "@" . $job_object->job[ 'ftphost' ] . ':' . $job_object->job[ 'ftphostport' ] . $current_ftp_dir . $job_object->backup_file );
+					if ( ! empty( $job_object->job[ 'jobid' ] ) ) {
+						BackWPup_Option::update( $job_object->job[ 'jobid' ], 'lastbackupdownloadurl', "ftp://" . $job_object->job[ 'ftpuser' ] . ":" . BackWPup_Encryption::decrypt( $job_object->job[ 'ftppass' ] ) . "@" . $job_object->job[ 'ftphost' ] . ':' . $job_object->job[ 'ftphostport' ] . $current_ftp_dir . $job_object->backup_file );
+					}
 				}
 				fclose( $fp );
 			} else {
@@ -391,6 +392,7 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 			}
 		}
 		set_site_transient( 'backwpup_' . $job_object->job[ 'jobid' ] . '_ftp', $files, 60 * 60 * 24 * 7 );
+		$job_object->substeps_done++;
 
 		ftp_close( $ftp_conn_id );
 

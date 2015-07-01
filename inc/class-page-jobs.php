@@ -36,12 +36,60 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	 */
 	function prepare_items() {
 
-		$this->items = BackWPup_Option::get_job_ids();
-
-		$this->job_object = BackWPup_Job::get_working_data();
-
+		$this->items        = BackWPup_Option::get_job_ids();
+		$this->job_object   = BackWPup_Job::get_working_data();
 		$this->job_types    = BackWPup::get_job_types();
 		$this->destinations = BackWPup::get_registered_destinations();
+
+		if ( ! isset( $_GET[ 'order' ] ) || ! isset( $_GET[ 'orderby' ] ) ) {
+			return;
+		}
+
+		if ( strtolower( $_GET[ 'order' ] ) === 'asc' ) {
+			$order = SORT_ASC;
+		} else {
+			$order = SORT_DESC;
+		}
+
+		if ( empty( $_GET[ 'orderby' ] ) || ! in_array( strtolower( $_GET[ 'orderby' ] ), array( 'jobname', 'type', 'dest', 'next', 'last' ) ) ) {
+			$orderby = 'jobname';
+		} else {
+			$orderby = strtolower( $_GET[ 'orderby' ] );
+		}
+
+		//sorting
+		$job_configs = array();
+		$i = 0;
+		foreach( $this->items as $item ) {
+			$job_configs[ $i ][ 'jobid' ]   = $item;
+			$job_configs[ $i ][ 'jobname' ] = BackWPup_Option::get( $item, 'name' );
+			$job_configs[ $i ][ 'type' ]    = BackWPup_Option::get( $item, 'type' );
+			$job_configs[ $i ][ 'dest' ]    = BackWPup_Option::get( $item, 'destinations' );
+			if ( $order === SORT_ASC ) {
+				sort( $job_configs[ $i ][ 'type' ] );
+				sort( $job_configs[ $i ][ 'dest' ] );
+			} else {
+				rsort( $job_configs[ $i ][ 'type' ] );
+				rsort( $job_configs[ $i ][ 'dest' ] );
+			}
+			$job_configs[ $i ][ 'type' ]    = array_shift( $job_configs[ $i ][ 'type' ] );
+			$job_configs[ $i ][ 'dest' ]    = array_shift( $job_configs[ $i ][ 'dest' ] );
+			$job_configs[ $i ][ 'next' ]    = (int) wp_next_scheduled( 'backwpup_cron', array( 'id' => $item ) );
+			$job_configs[ $i ][ 'last' ]    = BackWPup_Option::get( $item, 'lastrun' );
+			$i++;
+		}
+
+		$tmp     = array();
+		foreach ( $job_configs as &$ma ) {
+			$tmp[] = &$ma[ $orderby ];
+		}
+		array_multisort( $tmp, $order, $job_configs );
+
+		$this->items = array();
+		foreach( $job_configs as $item ) {
+			$this->items[] = $item[ 'jobid' ];
+		}
+
 	}
 
 	/**
@@ -57,8 +105,9 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	 */
 	function get_bulk_actions() {
 
-		if ( ! $this->has_items() )
-			return array ();
+		if ( ! $this->has_items() ) {
+			return array();
+		}
 
 		$actions             = array();
 		$actions[ 'delete' ] = __( 'Delete', 'backwpup' );
@@ -83,6 +132,20 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	}
 
 	/**
+	 * @return array
+	 */
+	function get_sortable_columns() {
+
+		return array(
+			'jobname'   => 'jobname',
+			'type'      => 'type',
+			'dest'      => 'dest',
+			'next'      => 'next',
+			'last'      => 'last',
+		);
+	}
+
+	/**
 	 * The cb Column
 	 *
 	 * @param $item
@@ -102,8 +165,9 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	function column_jobname( $item ) {
 
 		$job_normal_hide ='';
-		if ( is_object( $this->job_object ) )
+		if ( is_object( $this->job_object ) ) {
 			$job_normal_hide = ' style="display:none;"';
+		}
 
 		$r = '<strong title="' . sprintf( __( 'Job ID: %d', 'backwpup' ), $item ) . '">' . esc_html( BackWPup_Option::get( $item, 'name' ) ) . '</strong>';
 		$actions = array();
@@ -236,19 +300,22 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 		if ( BackWPup_Option::get( $item, 'lastrun' ) ) {
 			$lastrun = BackWPup_Option::get( $item, 'lastrun' );
 			$r .= sprintf( __( '%1$s at %2$s', 'backwpup' ), date_i18n( get_option( 'date_format' ), $lastrun, TRUE ), date_i18n( get_option( 'time_format' ), $lastrun, TRUE ) );
-			if ( BackWPup_Option::get( $item, 'lastruntime' ) )
+			if ( BackWPup_Option::get( $item, 'lastruntime' ) ) {
 				$r .= '<br />' . sprintf( __( 'Runtime: %d seconds', 'backwpup' ), BackWPup_Option::get( $item, 'lastruntime' ) );
+			}
 		}
 		else {
 			$r .= __( 'not yet', 'backwpup' );
 		}
 		$r .= "<br /><span class=\"last-action-links\">";
-		if ( current_user_can( 'backwpup_backups_download' ) && BackWPup_Option::get( $item, 'lastbackupdownloadurl' ) )
+		if ( current_user_can( 'backwpup_backups_download' ) && BackWPup_Option::get( $item, 'lastbackupdownloadurl' ) ) {
 			$r .= "<a  href=\"" . wp_nonce_url( BackWPup_Option::get( $item, 'lastbackupdownloadurl' ), 'download-backup' ) . "\" title=\"" . esc_attr( __( 'Download last backup', 'backwpup' ) ) . "\">" . __( 'Download', 'backwpup' ) . "</a> | ";
+		}
 		if ( current_user_can( 'backwpup_logs' ) && BackWPup_Option::get( $item, 'logfile' ) ) {
 			$logfile = basename( BackWPup_Option::get( $item, 'logfile' ) );
-			if ( is_object( $this->job_object ) && $this->job_object->job[ 'jobid' ] == $item )
+			if ( is_object( $this->job_object ) && $this->job_object->job[ 'jobid' ] == $item ) {
 				$logfile = basename( $this->job_object->logfile );
+			}
 			$r .= '<a class="thickbox" href="' . admin_url( 'admin-ajax.php' ) . '?&action=backwpup_view_log&logfile=' . $logfile .'&_ajax_nonce=' . wp_create_nonce( 'view-logs' ) . '&amp;TB_iframe=true&amp;width=640&amp;height=440" title="' . esc_attr( $logfile ) . '">' . __( 'Log', 'backwpup' ) . '</a>';
 
 		}

@@ -174,13 +174,15 @@ Please check all settings after the update:
 * Fixed: Job hang in some configurations
 * Fixed: RSS Feed in Dashboard
 * Added: Message if job has not configured destinations
-* Added: Option to disable 2GB Archive size check
 * Added: Setting for log level and minimize log for normal output
 * Added: Email logfile to more than one receiver
 * Added: Creation of web.config for IIS Webserver
 * Added: Allow relative path to WP_CONTENT_DIR for logs and backups
 * Added: Prefer plugin translation loading from WP_LAND_DIR
 * Added: Option to move WordPress installation folder one folder up
+* Added: Ordering options for jobs page
+* Added: Added Google storage Bucket regions
+* Improved: Archive size check depends on PHP_INT_MAX
 * Improved: Excessive transient writes with job start urls
 * Improved: Authorisation settings for wp-cron.php
 * Improved: Folder checking with open basedir check

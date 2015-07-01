@@ -107,21 +107,13 @@ final class BackWPup_Job {
 	 */
 	public $count_files = 0;
 	/**
-	 * @var int count of affected file size
+	 * @var int count of affected file sizes
 	 */
-	public $count_filesize = 0;
+	public $count_files_size = 0;
 	/**
 	 * @var int count of affected folders
 	 */
 	public $count_folder = 0;
-	/**
-	 * @var int count of files in a folder
-	 */
-	public $count_files_in_folder = 0;
-	/**
-	 * @var int count of files size in a folder
-	 */
-	public $count_filesize_in_folder = 0;
 
 	/**
 	 * If job aborted from user
@@ -779,7 +771,7 @@ final class BackWPup_Job {
 		@ini_set( 'mysql.connect_timeout', '360' );
 		//set temp folder
 		$can_set_temp_env = TRUE;
-		$protected_env_vars = explode( ',', ini_get( 'safe_mode_protected_env_vars' ) );
+		$protected_env_vars = explode( ',', ini_get( 'safe_mode_protected_env_vars' ) ); //removed in php 5.4.0
 		foreach( $protected_env_vars as $protected_env ) {
 			if ( strtoupper( trim( $protected_env ) ) == 'TMPDIR' ) {
 				$can_set_temp_env = FALSE;
@@ -960,7 +952,7 @@ final class BackWPup_Job {
 
 		//print message
 		if ( $this->is_debug() ) {
-			$this->log( sprintf( __( 'Restart after %1$d seconds.', 'backwpup' ), ceil( $execution_time ), $job_max_execution_time ) );
+			$this->log( sprintf( __( 'Restart after %1$d seconds.', 'backwpup' ), ceil( $execution_time ) ) );
 		}
 
 		//do things for a clean restart
@@ -1009,10 +1001,12 @@ final class BackWPup_Job {
 	 * @return int remaining time
 	 */
 	public function get_restart_time() {
+
 		$job_max_execution_time = get_site_option( 'backwpup_cfg_jobmaxexecutiontime' );
 
-		if ( empty( $job_max_execution_time ) )
+		if ( empty( $job_max_execution_time ) ) {
 			return 300;
+		}
 
 		$execution_time = microtime( TRUE ) - $this->timestamp_script_start;
 		return $job_max_execution_time - $execution_time - 3;
@@ -1386,7 +1380,7 @@ final class BackWPup_Job {
 
 		//FCGI must have a permanent output so that it not broke
 		if ( get_site_option( 'backwpup_cfg_jobdooutput' ) && ! defined( 'STDOUT' ) ) {
-			echo '          ';
+			echo str_repeat( ' ', 12 );
 			flush();
 		}
 
@@ -1943,9 +1937,7 @@ final class BackWPup_Job {
 						$this->log( sprintf( __( 'File size of “%s” cannot be retrieved. File might be too large and will not be added to queue.', 'backwpup' ), $folder . $file . ' ' . $file_size ), E_USER_WARNING );
 						continue;
 					}
-					$files[ ] = $folder . $file;
-					$this->count_files_in_folder ++;
-					$this->count_filesize_in_folder = $this->count_filesize_in_folder + $file_size;
+					$files[] = $folder . $file;
 				}
 			}
 			closedir( $dir );
@@ -2023,11 +2015,7 @@ final class BackWPup_Job {
 		//add file to backup files
 		if ( is_readable( BackWPup::get_plugin_data( 'TEMP' ) . 'manifest.json' ) ) {
 			$this->additional_files_to_backup[ ] = BackWPup::get_plugin_data( 'TEMP' ) . 'manifest.json';
-			$this->count_files ++;
 			$this->additional_files_to_backup[ ] = BackWPup::get_plugin_data( 'TEMP' ) . 'backwpup_readme.txt';
-			$this->count_files ++;
-			$this->count_filesize = $this->count_filesize + filesize( BackWPup::get_plugin_data( 'TEMP' ) . 'manifest.json' );
-			$this->count_filesize = $this->count_filesize + filesize( BackWPup::get_plugin_data( 'TEMP' ) . 'backwpup_readme.txt' );
 			$this->log( sprintf( __( 'Added manifest.json file with %1$s to backup file list.', 'backwpup' ), size_format( filesize( BackWPup::get_plugin_data( 'TEMP' ) . 'manifest.json' ), 2 ) ) );
 		}
 		$this->substeps_done = 3;
@@ -2042,7 +2030,6 @@ final class BackWPup_Job {
 
 		//load folders to backup
 		$folders_to_backup = $this->get_folders_to_backup();
-		$disabled_archive_limit = get_site_option( 'backwpup_cfg_disablearchivesizelimit' );
 
 		$this->substeps_todo = $this->count_folder  + 1;
 
@@ -2065,8 +2052,9 @@ final class BackWPup_Job {
 			$backup_archive = new BackWPup_Create_Archive( $this->backup_folder . $this->backup_file );
 
 			//show method for creation
-			if ( $this->substeps_done == 0 )
+			if ( $this->substeps_done == 0 ) {
 				$this->log( sprintf( _x( 'Compressing files as %s. Please be patient, this may take a moment.', 'Archive compression method', 'backwpup'), $backup_archive->get_method() ) );
+			}
 
 			//add extra files
 			if ( $this->substeps_done == 0 ) {
@@ -2077,7 +2065,7 @@ final class BackWPup_Job {
 					foreach ( $this->additional_files_to_backup as $file ) {
 						if ( $backup_archive->add_file( $file, basename( $file ) ) ) {;
 							$this->count_files ++;
-							$this->count_filesize = filesize( $file );
+							$this->count_files_size = $this->count_files_size + filesize( $file );
 							$this->update_working_data();
 						} else {
 							$backup_archive->close();
@@ -2105,36 +2093,41 @@ final class BackWPup_Job {
 				//add empty folders
 				if ( empty( $files_in_folder ) ) {
 					$folder_name_in_archive = trim( ltrim( $this->get_destination_path_replacement( $folder ), '/' ) );
-					if ( ! empty ( $folder_name_in_archive ) )
+					if ( ! empty ( $folder_name_in_archive ) ) {
 						$backup_archive->add_empty_folder( $folder, $folder_name_in_archive );
+					}
 					continue;
 				}
 				//add files
 				while ( $file = array_shift( $files_in_folder ) ) {
 					//jump over already done files
-					if ( in_array( $this->steps_data[ $this->step_working ]['on_file'], $files_in_folder ) )
+					if ( in_array( $this->steps_data[ $this->step_working ]['on_file'], $files_in_folder ) ) {
 						continue;
+					}
 					$this->steps_data[ $this->step_working ]['on_file'] = $file;
-					//close archive before restart
+					//restart if needed
 					$restart_time = $this->get_restart_time();
-					if ( $restart_time < 0 ) {
+					if ( $restart_time <= 0 ) {
 						unset( $backup_archive );
 						$this->do_restart_time( TRUE );
+						return FALSE;
 					}
 					//generate filename in archive
 					$in_archive_filename = ltrim( $this->get_destination_path_replacement( $file ), '/' );
 					//add file to archive
 					if ( $backup_archive->add_file( $file, $in_archive_filename ) ) {
+						$this->count_files ++;
+						$this->count_files_size = $this->count_files_size + filesize( $file );
 						$this->update_working_data();
 					} else {
 						$backup_archive->close();
+						unset( $backup_archive );
 						$this->steps_data[ $this->step_working ][ 'on_file' ] = '';
 						$this->steps_data[ $this->step_working ][ 'on_folder' ] = '';
-						$this->substeps_done   = 0;
+						$this->substeps_done = 0;
 						$this->backup_filesize = filesize( $this->backup_folder . $this->backup_file );
-						if ( empty( $disabled_archive_limit ) && ( $this->backup_filesize + filesize( $file ) ) >= 2147483647 ) {
-							$this->log( __( 'Aborting creation.', 'backwpup' ), E_USER_ERROR );
-							return TRUE;
+						if ( $this->backup_filesize === FALSE ) {
+							$this->backup_filesize = PHP_INT_MAX;
 						}
 						$this->log( __( 'Cannot create backup archive correctly. Aborting creation.', 'backwpup' ), E_USER_ERROR );
 						return FALSE;
@@ -2142,12 +2135,6 @@ final class BackWPup_Job {
 				}
 				$this->steps_data[ $this->step_working ]['on_file'] = '';
 				$this->substeps_done ++;
-			}
-			//restart if needed
-			$restart_time = $this->get_restart_time();
-			if ( $restart_time < 5 ) {
-				unset( $backup_archive );
-				$this->do_restart_time( TRUE );
 			}
 			$backup_archive->close();
 			unset( $backup_archive );
@@ -2159,10 +2146,19 @@ final class BackWPup_Job {
 		}
 
 		$this->backup_filesize = filesize( $this->backup_folder . $this->backup_file );
-		if ( $this->backup_filesize ) {
+		if ( $this->backup_filesize === FALSE ) {
+			$this->backup_filesize = PHP_INT_MAX;
+		}
+
+		if ( $this->backup_filesize >= PHP_INT_MAX ) {
+			$this->log( __( 'The Backup archive will be too large for for file operations with this PHP Version. You might want to consider splitting the backup job in multiple jobs with less files each.', 'backwpup' ), E_USER_ERROR );
+			$this->end();
+		}
+		else {
 			$this->log( sprintf( __( 'Archive size is %s.', 'backwpup' ), size_format( $this->backup_filesize, 2 ) ), E_USER_NOTICE );
 		}
-		$this->log( sprintf( __( '%1$d Files with %2$s in Archive.', 'backwpup' ), $this->count_files + $this->count_files_in_folder, size_format( $this->count_filesize + $this->count_filesize_in_folder, 2 ) ), E_USER_NOTICE );
+
+		$this->log( sprintf( __( '%1$d Files with %2$s in Archive.', 'backwpup' ), $this->count_files, size_format( $this->count_files_size, 2 ) ), E_USER_NOTICE );
 
 		return TRUE;
 	}

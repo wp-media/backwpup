@@ -261,12 +261,10 @@ class BackWPup_Page_Logs extends WP_List_Table {
 					break;
 				if ( is_array( $_GET[ 'logfiles' ] ) ) {
 					check_admin_referer( 'bulk-logs' );
-					$num = 0;
 					foreach ( $_GET[ 'logfiles' ] as $logfile ) {
 						if ( is_writeable( self::$listtable->log_folder . '/' . $logfile ) && ! is_dir( self::$listtable->log_folder . '/' . $logfile ) && ! is_link( self::$listtable->log_folder . '/' . $logfile ) ) {
 							unlink( self::$listtable->log_folder . '/' . $logfile );
 						}
-						$num ++;
 					}
 				}
 				break;

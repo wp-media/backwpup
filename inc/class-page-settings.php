@@ -42,7 +42,6 @@ class BackWPup_Page_Settings {
 			delete_site_option( 'backwpup_cfg_jobwaittimems' );
 			delete_site_option( 'backwpup_cfg_jobrunauthkey' );
 			delete_site_option( 'backwpup_cfg_jobdooutput' );
-			delete_site_option( 'backwpup_cfg_disablearchivesizelimit' );
 			delete_site_option( 'backwpup_cfg_maxlogs' );
 			delete_site_option( 'backwpup_cfg_gzlogs' );
 			delete_site_option( 'backwpup_cfg_protectfolders' );
@@ -79,7 +78,6 @@ class BackWPup_Page_Settings {
 		update_site_option( 'backwpup_cfg_jobziparchivemethod', ( $_POST[ 'jobziparchivemethod' ] == '' || $_POST[ 'jobziparchivemethod' ] == 'PclZip' || $_POST[ 'jobziparchivemethod' ] == 'ZipArchive' ) ? $_POST[ 'jobziparchivemethod' ] : '' );
 		update_site_option( 'backwpup_cfg_loglevel', in_array( $_POST[ 'loglevel' ], array( 'normal_translated', 'normal', 'debug_translated', 'debug' ) ) ? $_POST[ 'loglevel' ] : 'normal_translated' );
 		update_site_option( 'backwpup_cfg_jobwaittimems', $_POST[ 'jobwaittimems' ] );
-		update_site_option( 'backwpup_cfg_disablearchivesizelimit', isset( $_POST[ 'disablearchivesizelimit' ] ) ? 1 : 0 );
 		update_site_option( 'backwpup_cfg_jobdooutput', isset( $_POST[ 'jobdooutput' ] ) ? 1 : 0 );
 		update_site_option( 'backwpup_cfg_maxlogs', abs( (int)$_POST[ 'maxlogs' ] ) );
 		update_site_option( 'backwpup_cfg_gzlogs', isset( $_POST[ 'gzlogs' ] ) ? 1 : 0 );
@@ -310,20 +308,6 @@ class BackWPup_Page_Settings {
                         </fieldset>
                     </td>
                 </tr>
-	            <tr>
-		            <th scope="row"><?php _e( 'No archive size limit', 'backwpup' ); ?></th>
-		            <td>
-			            <fieldset>
-				            <legend class="screen-reader-text"><span><?php _e( 'Disable 2GB archive size limitation', 'backwpup' ); ?></span>
-				            </legend>
-				            <label for="disablearchivesizelimit">
-					            <input name="disablearchivesizelimit" type="checkbox" id="disablearchivesizelimit"
-						            value="1" <?php checked( get_site_option( 'backwpup_cfg_disablearchivesizelimit' ), TRUE ); ?> />
-					            <?php _e( 'Disable limitation of 2GB for archive sizes.', 'backwpup' ); ?>
-				            </label>
-			            </fieldset>
-		            </td>
-	            </tr>
 	            <tr>
 		            <th scope="row"><?php _e( 'Empty output on working', 'backwpup' ); ?></th>
 		            <td>

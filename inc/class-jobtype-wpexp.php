@@ -496,9 +496,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 			//add XML file to backup files
 			if ( is_readable( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] ) ) {
 				$job_object->additional_files_to_backup[ ] = $job_object->steps_data[ $job_object->step_working ]['wpexportfile'];
-				$job_object->count_files ++;
 				$filesize = filesize( $job_object->steps_data[ $job_object->step_working ][ 'wpexportfile' ] );
-				$job_object->count_filesize = $job_object->count_filesize + $filesize;
 				$job_object->log( sprintf( __( 'Added XML export "%1$s" with %2$s to backup file list.', 'backwpup' ), basename( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] ), size_format( $filesize, 2 ) ) );
 			}
 			$job_object->substeps_done ++;

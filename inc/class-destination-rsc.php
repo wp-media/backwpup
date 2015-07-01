@@ -167,7 +167,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 	 */
 	public function file_delete( $jobdest, $backupfile ) {
 
-		$files = get_site_transient( 'backwpup_'. strtolower( $jobdest ), FALSE );
+		$files = get_site_transient( 'backwpup_'. strtolower( $jobdest ) );
 		list( $jobid, $dest ) = explode( '_', $jobdest );
 
 		if ( BackWPup_Option::get( $jobid, 'rscusername' ) && BackWPup_Option::get( $jobid, 'rscapikey' ) && BackWPup_Option::get( $jobid, 'rsccontainer' ) ) {
@@ -292,10 +292,11 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 //			$uploded = $transfer->upload();
 
 			if ( $uploded ) {
-				$job_object->substeps_todo = 1 + $job_object->backup_filesize;
 				$job_object->log( __( 'Backup File transferred to RSC://', 'backwpup' ) . $job_object->job[ 'rsccontainer' ] . '/' . $job_object->job[ 'rscdir' ] . $job_object->backup_file, E_USER_NOTICE );
-				if ( !empty( $job_object->job[ 'jobid' ] ) )
+				$job_object->substeps_done = 1 + $job_object->backup_filesize;
+				if ( ! empty( $job_object->job[ 'jobid' ] ) ) {
 					BackWPup_Option::update( $job_object->job[ 'jobid' ], 'lastbackupdownloadurl', network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=downloadrsc&file=' . $job_object->job[ 'rscdir' ] . $job_object->backup_file . '&jobid=' . $job_object->job[ 'jobid' ] );
+				}
 			} else {
 				$job_object->log( __( 'Cannot transfer backup to Rackspace cloud.', 'backwpup' ), E_USER_ERROR );
 

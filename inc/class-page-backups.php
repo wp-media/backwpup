@@ -149,16 +149,20 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		//only display items on page
 		$start = intval( ( $this->get_pagenum() - 1 ) * $per_page );
 		$end   = $start + $per_page;
-		if ( $end > count( $this->items ) )
+		if ( $end > count( $this->items ) ) {
 			$end = count( $this->items );
+		}
 
 		$i = -1;
+		$paged_items = array();
 		foreach ( $this->items as $item ) {
 			$i++;
-			if ( $i < $start )
+			if ( $i < $start ) {
 				continue;
-			if ( $i >= $end )
+			}
+			if ( $i >= $end ) {
 				break;
+			}
 			$paged_items[] = $item;
 		}
 

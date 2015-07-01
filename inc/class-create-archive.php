@@ -311,7 +311,10 @@ class BackWPup_Create_Archive {
 				return $this->tar_file( $file_name, $name_in_archive );
 				break;
 			case 'ZipArchive':
-				$file_size = abs( (int) filesize( $file_name ) );
+				$file_size = filesize( $file_name );
+				if ( $file_size === FALSE ) {
+					$file_size = PHP_INT_MAX;
+				}
 				//check if entry already in archive and delete it if it not in full size
 				if ( $zip_file_stat = $this->ziparchive->statName( $name_in_archive ) ) {
 					if ( $zip_file_stat[ 'size' ] != $file_size ) {
@@ -650,16 +653,11 @@ class BackWPup_Create_Archive {
 	 */
 	private function check_archive_filesize( $file_to_add = '' ) {
 
-		$disabled = get_site_option( 'backwpup_cfg_disablearchivesizelimit' );
-
-		if ( ! empty( $disabled ) ) {
-			return TRUE;
-		}
-
-		$two_gb_in_bytes = 2147483647;
-
 		if ( ! empty( $file_to_add ) ) {
-			$file_to_add_size = abs( (int) filesize( $file_to_add ) );
+			$file_to_add_size = filesize( $file_to_add );
+			if ( $file_to_add_size === FALSE ) {
+				$file_to_add_size = PHP_INT_MAX;
+			}
 		} else {
 			$file_to_add_size = 0;
 		}
@@ -669,11 +667,14 @@ class BackWPup_Create_Archive {
 			$archive_size = $stats[ 'size' ];
 		} else {
 			$archive_size = filesize( $this->file );
+			if ( $archive_size === FALSE ) {
+				$archive_size = PHP_INT_MAX;
+			}
 		}
 
 		$archive_size = $archive_size + $file_to_add_size;
-		if ( $archive_size > $two_gb_in_bytes ) {
-			trigger_error(	sprintf( __( 'If %s will be added to your backup archive, the archive will be too large for many file systems (over 2GB). You might want to consider splitting the backup job in multiple jobs with less files each.', 'backwpup' ), $file_to_add ), E_USER_ERROR );
+		if ( $archive_size >= PHP_INT_MAX ) {
+			trigger_error( sprintf( __( 'If %s will be added to your backup archive, the archive will be too large for for operations with this PHP Version. You might want to consider splitting the backup job in multiple jobs with less files each.', 'backwpup' ), $file_to_add ), E_USER_ERROR );
 
 			return FALSE;
 		}

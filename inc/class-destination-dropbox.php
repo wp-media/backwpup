@@ -471,8 +471,9 @@ final class BackWPup_Destination_Dropbox_API {
 
 		$file = str_replace( "\\", "/", $file );
 
-		if ( ! is_readable( $file ) )
+		if ( ! is_readable( $file ) ) {
 			throw new BackWPup_Destination_Dropbox_API_Exception( "Error: File \"$file\" is not readable or doesn't exist." );
+		}
 
 		if ( filesize( $file ) < 5242880 ) { //chunk transfer on bigger uploads
 			$url        = self::API_CONTENT_URL . self::API_VERSION_URL . 'files_put/' . $this->root . '/' . $this->encode_path( $path );
@@ -498,23 +499,28 @@ final class BackWPup_Destination_Dropbox_API {
 
 		$file = str_replace( "\\", "/", $file );
 
-		if ( ! is_readable( $file ) )
+		if ( ! is_readable( $file ) ) {
 			throw new BackWPup_Destination_Dropbox_API_Exception( "Error: File \"$file\" is not readable or doesn't exist." );
+		}
 
 		$chunk_size = 4194304; //4194304 = 4MB
 
 		$file_handel = fopen( $file, 'rb' );
-		if ( ! $file_handel )
+		if ( ! $file_handel ) {
 			throw new BackWPup_Destination_Dropbox_API_Exception( "Can not open source file for transfer." );
+		}
 
-		if ( ! isset( $backwpup_job_object->steps_data[ $backwpup_job_object->step_working ][ 'uploadid' ] ) )
+		if ( ! isset( $backwpup_job_object->steps_data[ $backwpup_job_object->step_working ][ 'uploadid' ] ) ) {
 			$backwpup_job_object->steps_data[ $backwpup_job_object->step_working ][ 'uploadid' ] = NULL;
-		if ( ! isset( $backwpup_job_object->steps_data[ $backwpup_job_object->step_working ][ 'offset' ] ) )
+		}
+		if ( ! isset( $backwpup_job_object->steps_data[ $backwpup_job_object->step_working ][ 'offset' ] ) ) {
 			$backwpup_job_object->steps_data[ $backwpup_job_object->step_working ][ 'offset' ] = 0;
+		}
 
 		//seek to current position
-		if ( $backwpup_job_object->steps_data[ $backwpup_job_object->step_working ][ 'offset' ] > 0 )
+		if ( $backwpup_job_object->steps_data[ $backwpup_job_object->step_working ][ 'offset' ] > 0 ) {
 			fseek( $file_handel, $backwpup_job_object->steps_data[ $backwpup_job_object->step_working ][ 'offset' ] );
+		}
 
 		while ( $data = fread( $file_handel, $chunk_size ) ) {
 			$chunk_upload_start = microtime( TRUE );
@@ -531,10 +537,12 @@ final class BackWPup_Destination_Dropbox_API {
 					//calc next chunk
 					if ( $time_remaining < $chunk_upload_time ) {
 						$chunk_size = floor ( $chunk_size / $chunk_upload_time * ( $time_remaining - 3 ) );
-						if ( $chunk_size < 0 )
+						if ( $chunk_size < 0 ) {
 							$chunk_size = 1024;
-						if ( $chunk_size > 4194304 )
+						}
+						if ( $chunk_size > 4194304 ) {
 							$chunk_size = 4194304;
+						}
 					}
 				}
 			}
@@ -723,9 +731,6 @@ final class BackWPup_Destination_Dropbox_API {
 			}
 		}
 		$status = curl_getinfo( $ch );
-		if ( isset( $datafilefd ) && is_resource( $datafilefd ) )
-			fclose( $datafilefd );
-
 		if ( $status[ 'http_code' ] == 503 ) {
 			$wait = 0;
 			if ( preg_match( "/retry-after:(.*?)\r/i", $responce[ 0 ], $matches ) )

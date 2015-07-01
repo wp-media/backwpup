@@ -50,7 +50,7 @@ class BackWPup_WP_CLI extends WP_CLI_Command {
 	 */
 	public function abort( $args, $assoc_args ) {
 
-		if ( file_exists( BackWPup::get_plugin_data( 'running_file' ) ) ) {
+		if ( ! file_exists( BackWPup::get_plugin_data( 'running_file' ) ) ) {
 			WP_CLI::error( __( 'Nothing to abort!', 'backwpup' ) );
 		}
 

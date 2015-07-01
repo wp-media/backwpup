@@ -31,7 +31,6 @@ final class BackWPup_Option {
 		add_site_option( 'backwpup_cfg_loglevel', 'normal_translated' );
 		add_site_option( 'backwpup_cfg_jobwaittimems', 0 );
 		add_site_option( 'backwpup_cfg_jobdooutput', 0 );
-		add_site_option( 'backwpup_cfg_disablearchivesizelimit', 0 );
 		//Logs
 		add_site_option( 'backwpup_cfg_maxlogs', 30 );
 		add_site_option( 'backwpup_cfg_gzlogs', 0 );
@@ -56,11 +55,13 @@ final class BackWPup_Option {
 	 */
 	private static function jobs_options( $use_cache = TRUE ) {
 
-		if ( $use_cache )
+		if ( $use_cache ) {
 			return get_site_option( 'backwpup_jobs' );
+		}
 
-		if ( is_multisite() )
+		if ( is_multisite() ) {
 			return get_site_option( 'backwpup_jobs', array(), FALSE );
+		}
 
 		//remove from options cache
 		wp_cache_delete( 'backwpup_jobs', 'options' );
@@ -128,13 +129,15 @@ final class BackWPup_Option {
 		}
 
 		//return all
-		if ( empty( $key ) )
+		if ( empty( $key ) ) {
 			return $default;
+		}
 		//return one default setting
-		if ( isset( $default[ $key ] ) )
+		if ( isset( $default[ $key ] ) ) {
 			return $default[ $key ];
-		else
+		} else {
 			return FALSE;
+		}
 	}
 
 	/**
@@ -152,8 +155,9 @@ final class BackWPup_Option {
 		$jobid  = (int) $jobid;
 		$option = sanitize_key( trim( $option ) );
 
-		if ( empty( $jobid ) || empty( $option ) )
+		if ( empty( $jobid ) || empty( $option ) ) {
 			return FALSE;
+		}
 
 		//Update option
 		$jobs_options = self::jobs_options( FALSE );
@@ -177,16 +181,18 @@ final class BackWPup_Option {
 		$jobid  = (int) $jobid;
 		$option = sanitize_key( trim( $option ) );
 
-		if ( empty( $jobid ) || empty( $option ) )
+		if ( empty( $jobid ) || empty( $option ) ) {
 			return FALSE;
+		}
 
 		$jobs_options = self::jobs_options( $use_cache );
-		if ( ! isset( $jobs_options[ $jobid ][ $option ] ) && isset( $default ) )
+		if ( ! isset( $jobs_options[ $jobid ][ $option ] ) && isset( $default ) ) {
 			return $default;
-		elseif ( ! isset( $jobs_options[ $jobid ][ $option ] ) )
+		} elseif ( ! isset( $jobs_options[ $jobid ][ $option ] ) ) {
 			return self::defaults_job( $option );
-		else
+		} else {
 			return $jobs_options[ $jobid ][ $option ];
+		}
 	}
 
 	/**
@@ -200,8 +206,9 @@ final class BackWPup_Option {
 	 */
 	public static function get_job( $id, $use_cache = TRUE ) {
 
-		if ( ! is_numeric( $id ) )
+		if ( ! is_numeric( $id ) ) {
 			return FALSE;
+		}
 
 		$id      	  = intval( $id );
 		$jobs_options = self::jobs_options( $use_cache );
@@ -224,15 +231,15 @@ final class BackWPup_Option {
 		$jobid  = (int) $jobid;
 		$option = sanitize_key( trim( $option ) );
 
-		if ( empty( $jobid ) || empty( $option ) )
+		if ( empty( $jobid ) || empty( $option ) ) {
 			return FALSE;
+		}
 
 		//delete option
 		$jobs_options = self::jobs_options( FALSE );
 		unset( $jobs_options[ $jobid ][ $option ] );
+
 		return self::update_jobs_options( $jobs_options );
-
-
 	}
 
 	/**
@@ -245,8 +252,9 @@ final class BackWPup_Option {
 	 */
 	public static function delete_job( $id ) {
 
-		if ( ! is_numeric( $id ) )
+		if ( ! is_numeric( $id ) ) {
 			return FALSE;
+		}
 
 		$id      	  = intval( $id );
 		$jobs_options = self::jobs_options( FALSE );
@@ -269,18 +277,21 @@ final class BackWPup_Option {
 		$key     	  = sanitize_key( trim( $key ) );
 		$jobs_options = self::jobs_options( FALSE );
 
-		if ( empty( $jobs_options ) )
+		if ( empty( $jobs_options ) ) {
 			return array();
+		}
 
 		//get option job ids
-		if ( empty( $key ) )
+		if ( empty( $key ) ) {
 			return array_keys( $jobs_options );
+		}
 
 		//get option ids for option with the defined value
 		$new_option_job_ids = array();
 		foreach ( $jobs_options as $id => $option ) {
-			if ( isset( $option[ $key ] ) && $value == $option[ $key ] )
+			if ( isset( $option[ $key ] ) && $value == $option[ $key ] ) {
 				$new_option_job_ids[ ] = $id;
+			}
 		}
 		sort( $new_option_job_ids );
 

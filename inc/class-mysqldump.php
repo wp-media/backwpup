@@ -94,26 +94,31 @@ class BackWPup_MySQLDump {
 		}
 
 		$this->mysqli = mysqli_init();
-		if ( ! $this->mysqli )
+		if ( ! $this->mysqli ) {
 			throw new BackWPup_MySQLDump_Exception( __( 'Cannot init MySQLi database connection', 'backwpup' ) );
-
-		if ( ! empty( $args[ 'dbcharset' ] ) ) {
-			if ( ! $this->mysqli->options( MYSQLI_INIT_COMMAND, 'SET NAMES ' . $args[ 'dbcharset' ] . ';' ) )
-				throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Setting of MySQLi init command "%s" failed', 'backwpup' ), 'SET NAMES ' . $args[ 'dbcharset' ] . ';' ) );
 		}
 
-		if ( ! $this->mysqli->options( MYSQLI_OPT_CONNECT_TIMEOUT, 5 ) )
+		if ( ! empty( $args[ 'dbcharset' ] ) ) {
+			if ( ! $this->mysqli->options( MYSQLI_INIT_COMMAND, 'SET NAMES ' . $args[ 'dbcharset' ] . ';' ) ) {
+				throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Setting of MySQLi init command "%s" failed', 'backwpup' ), 'SET NAMES ' . $args[ 'dbcharset' ] . ';' ) );
+			}
+		}
+
+		if ( ! $this->mysqli->options( MYSQLI_OPT_CONNECT_TIMEOUT, 5 ) ) {
 			throw new BackWPup_MySQLDump_Exception( __( 'Setting of MySQLi connection timeout failed', 'backwpup' ) );
+		}
 
 		//connect to Database
-		if ( ! $this->mysqli->real_connect( $args[ 'dbhost' ], $args[ 'dbuser' ], $args[ 'dbpassword' ], $args[ 'dbname' ], $args[ 'dbport' ], $args[ 'dbsocket' ] ) )
+		if ( ! $this->mysqli->real_connect( $args[ 'dbhost' ], $args[ 'dbuser' ], $args[ 'dbpassword' ], $args[ 'dbname' ], $args[ 'dbport' ], $args[ 'dbsocket' ] ) ) {
 			throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Cannot connect to MySQL database %1$d: %2$s', 'backwpup' ), mysqli_connect_errno(), mysqli_connect_error() ) );
+		}
 
 		//set charset
 		if ( ! empty( $args[ 'dbcharset' ] ) && method_exists( $this->mysqli, 'set_charset' ) ) {
 			$res = $this->mysqli->set_charset( $args[ 'dbcharset' ] );
-			if ( ! $res )
+			if ( ! $res ) {
 				throw new BackWPup_MySQLDump_Exception( sprintf( _x( 'Cannot set DB charset to %s','Database Charset', 'backwpup' ), $args[ 'dbcharset' ] ) );
+			}
 		}
 
 		//set db name
