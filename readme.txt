@@ -173,6 +173,7 @@ Please check all settings after the update:
 * Fixed: Sugarsync SSL message
 * Fixed: Job hang in some configurations
 * Fixed: RSS Feed in Dashboard
+* Added: EasyCron API to schedule job starts
 * Added: Message if job has not configured destinations
 * Added: Setting for log level and minimize log for normal output
 * Added: Email logfile to more than one receiver
