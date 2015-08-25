@@ -155,7 +155,9 @@ class BackWPup_Cron {
 
 		//check runext is allowed for job
 		if ( $_GET[ 'backwpup_run' ] == 'runext' ) {
-			$jobids_external = BackWPup_Option::get_job_ids( 'activetype', 'link' );
+			$jobids_link = BackWPup_Option::get_job_ids( 'activetype', 'link' );
+			$jobids_easycron = BackWPup_Option::get_job_ids( 'activetype', 'easycron' );
+			$jobids_external = array_merge( $jobids_link, $jobids_easycron );
 			if ( ! isset( $_GET[ 'jobid' ] ) || ! in_array( $_GET[ 'jobid' ], $jobids_external ) ) {
 				return;
 			}

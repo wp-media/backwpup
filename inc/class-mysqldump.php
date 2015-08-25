@@ -98,11 +98,6 @@ class BackWPup_MySQLDump {
 			throw new BackWPup_MySQLDump_Exception( __( 'Cannot init MySQLi database connection', 'backwpup' ) );
 		}
 
-		if ( ! empty( $args[ 'dbcharset' ] ) ) {
-			if ( ! $this->mysqli->options( MYSQLI_INIT_COMMAND, 'SET NAMES ' . $args[ 'dbcharset' ] . ';' ) ) {
-				throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Setting of MySQLi init command "%s" failed', 'backwpup' ), 'SET NAMES ' . $args[ 'dbcharset' ] . ';' ) );
-			}
-		}
 
 		if ( ! $this->mysqli->options( MYSQLI_OPT_CONNECT_TIMEOUT, 5 ) ) {
 			throw new BackWPup_MySQLDump_Exception( __( 'Setting of MySQLi connection timeout failed', 'backwpup' ) );

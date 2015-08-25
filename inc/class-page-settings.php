@@ -100,6 +100,7 @@ class BackWPup_Page_Settings {
 		$authentication[ 'query_arg' ] = $_POST[ 'authentication_query_arg' ];
 		$authentication[ 'user_id' ] = (int) $_POST[ 'authentication_user_id' ];
 		update_site_option( 'backwpup_cfg_authentication', $authentication );
+		delete_site_transient( 'backwpup_cookies' );
 
 		do_action( 'backwpup_page_settings_save' );
 
@@ -376,7 +377,7 @@ class BackWPup_Page_Settings {
 							        <?php
 							        $users = get_users( array( 'who' => 'administrators', 'number' => 99, 'orderby' => 'display_name' ) );
 							        foreach ( $users as $user ) {
-								        echo '<option value="" '. selected( $authentication[ 'user_id' ], $user->ID, FALSE ) .'>'. esc_attr( $user->display_name ) .'</option>';
+								        echo '<option value="' . $user->ID . '" '. selected( $authentication[ 'user_id' ], $user->ID, FALSE ) .'>'. esc_attr( $user->display_name ) .'</option>';
 							        }
 							        ?>
 						        </select>

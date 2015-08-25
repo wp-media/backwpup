@@ -7,7 +7,7 @@
 		"url": "https://github.com/inpsyde/backwpup"
 	},
 	"author": "Inpsyde GmbH",
-	"license": "GPLv3 or later",
+	"license": "GPL-3.0",
 	"devDependencies": {
 		"grunt": "*",
 		"grunt-contrib-cssmin": "*",

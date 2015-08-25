@@ -318,7 +318,7 @@ final class BackWPup_Job {
 		$info .= sprintf( __( '[INFO] BackWPup job: %1$s', 'backwpup' ), $job_name ) . '<br />' . PHP_EOL;
 		if ( $this->is_debug() ) {
 			$current_user = wp_get_current_user();
-			$info .= sprintf( __( '[INFO] Runs with user: %1$d (%2$s) ', 'backwpup' ), $current_user->user_login, $current_user->ID ) . '<br />' . PHP_EOL;
+			$info .= sprintf( __( '[INFO] Runs with user: %1$s (%2$d) ', 'backwpup' ), $current_user->user_login, $current_user->ID ) . '<br />' . PHP_EOL;
 		}
 		if ( $this->job[ 'activetype' ] == 'wpcron' ) {
 			//check next run
@@ -330,15 +330,26 @@ final class BackWPup_Job {
 				$cron_next = wp_next_scheduled( 'backwpup_cron', array( 'id' => $this->job[ 'jobid' ] ) );
 			}
 			//output scheduling
-			if ( ! $cron_next ) {
-				$cron_next = __( 'Not scheduled!', 'backwpup' );
-			} else {
-				$cron_next = date_i18n( 'D, j M Y @ H:i', $cron_next + ( get_option( 'gmt_offset' ) * 3600 ), TRUE );
+			if ( $this->is_debug() ) {
+				if ( ! $cron_next ) {
+					$cron_next = __( 'Not scheduled!', 'backwpup' );
+				} else {
+					$cron_next = date_i18n( 'D, j M Y @ H:i', $cron_next + ( get_option( 'gmt_offset' ) * 3600 ), TRUE );
+				}
+				$info .= sprintf( __( '[INFO] Cron: %s; Next: %s ', 'backwpup' ), $this->job[ 'cron' ] , $cron_next ) . '<br />' . PHP_EOL;
 			}
-			$info .= sprintf( __( '[INFO] Cron: %s; Next: %s ', 'backwpup' ), $this->job[ 'cron' ] , $cron_next ) . '<br />' . PHP_EOL;
 		}
 		elseif( $this->job[ 'activetype' ] == 'link' && $this->is_debug() ) {
 			$info .= __( '[INFO] BackWPup job start with link is active', 'backwpup' ) . '<br />' . PHP_EOL;
+		}
+		elseif( $this->job[ 'activetype' ] == 'easycron' && $this->is_debug() ) {
+			$info .= __( '[INFO] BackWPup job start with EasyCron.com', 'backwpup' ) . '<br />' . PHP_EOL;
+			//output scheduling
+			if ( $this->is_debug() ) {
+				$cron_next = BackWPup_Cron::cron_next( $this->job[ 'cron' ] );
+				$cron_next = date_i18n( 'D, j M Y @ H:i', $cron_next + ( get_option( 'gmt_offset' ) * 3600 ), TRUE );
+				$info .= sprintf( __( '[INFO] Cron: %s; Next: %s ', 'backwpup' ), $this->job[ 'cron' ] , $cron_next ) . '<br />' . PHP_EOL;
+			}
 		}
 		elseif( $this->is_debug() ) {
 			$info .= __( '[INFO] BackWPup no automatic job start configured', 'backwpup' ) . '<br />' . PHP_EOL;
@@ -499,8 +510,10 @@ final class BackWPup_Job {
 					$wp_admin_user 	= get_users( array( 'role' => 'backwpup_admin', 'number' => 1 ) );
 				}
 				if ( ! empty( $wp_admin_user[ 0 ]->ID ) ) {
-					$cookies[ AUTH_COOKIE ] =  wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, time() + 3600, 'auth' );
-					$cookies[ LOGGED_IN_COOKIE ] =  wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, time() + 3600, 'logged_in' );
+					$expiration = time() + ( 356 * DAY_IN_SECONDS );
+					$manager = WP_Session_Tokens::get_instance( $wp_admin_user[ 0 ]->ID );
+					$token   = $manager->create( $expiration );
+					$cookies[ LOGGED_IN_COOKIE ] =  wp_generate_auth_cookie( $wp_admin_user[ 0 ]->ID, $expiration, 'logged_in', $token );
 				}
 				set_site_transient( 'backwpup_cookies', $cookies, 3600 - 30 );
 			}
@@ -1281,8 +1294,8 @@ final class BackWPup_Job {
 		//print message to cli
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			$output_message = str_replace( array( '&hellip;', '&#160;' ), array( '...', ' ' ), strip_tags( $message ) );
-			if ( !\cli\Shell::isPiped() ) {
-				$output_message = \cli\Colors::colorize( $output_message, true );
+			if ( !call_user_func( array( '\cli\Shell', 'isPiped' ) ) ) {
+				$output_message = call_user_func( array( '\cli\Colors', 'colorize' ), $output_message, true );
 			} else {
 				$output_message = str_replace( array( '%y', '%r', '%n' ), '', $output_message );
 			}

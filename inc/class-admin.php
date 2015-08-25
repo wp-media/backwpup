@@ -51,6 +51,8 @@ final class BackWPup_Admin {
 		add_filter( 'manage_users_custom_column', array( $this, 'manage_users_custom_column' ), 10, 3 );
 		//Change Backup message on core updates
 		add_filter( 'gettext', array( $this, 'gettext' ), 10, 3 );
+
+		new BackWPup_EasyCron();
 	}
 
 	/**

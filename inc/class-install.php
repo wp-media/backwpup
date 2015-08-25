@@ -53,6 +53,12 @@ class BackWPup_Install {
 				wp_schedule_single_event( $cron_next, 'backwpup_cron', array( 'id' => $id ) );
 			}
 		}
+		$activejobs = BackWPup_Option::get_job_ids( 'activetype', 'easycron' );
+		if ( ! empty( $activejobs ) ) {
+			foreach ( $activejobs as $id ) {
+				BackWPup_EasyCron::update( $id );
+			}
+		}
 
 		//add check Cleanup schedule
 		wp_clear_scheduled_hook( 'backwpup_check_cleanup' );
@@ -139,6 +145,13 @@ class BackWPup_Install {
 			}
 		}
 		wp_clear_scheduled_hook( 'backwpup_check_cleanup' );
+
+		$activejobs = BackWPup_Option::get_job_ids( 'activetype', 'easycron' );
+		if ( ! empty( $activejobs ) ) {
+			foreach ( $activejobs as $id ) {
+				BackWPup_EasyCron::delete( $id );
+			}
+		}
 
 		//to reschedule on activation and so on
 		update_site_option( 'backwpup_version', get_site_option( 'backwpup_version' ) .'-inactive' );

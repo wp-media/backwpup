@@ -114,8 +114,9 @@ class BackWPup_Page_Editjob {
 				BackWPup_Option::update( $jobid, 'archivename', BackWPup_Job::sanitize_file_name( $_POST[ 'archivename' ] ) );
 				break;
 			case 'cron':
-				if ( $_POST[ 'activetype' ] == '' || $_POST[ 'activetype' ] == 'wpcron' || $_POST[ 'activetype' ] == 'link' )
+				if ( $_POST[ 'activetype' ] == '' || $_POST[ 'activetype' ] == 'wpcron' || $_POST[ 'activetype' ] == 'easycron' || $_POST[ 'activetype' ] == 'link' ) {
 					BackWPup_Option::update( $jobid, 'activetype', $_POST[ 'activetype' ] );
+				}
 
 				BackWPup_Option::update( $jobid, 'cronselect', $_POST[ 'cronselect' ] == 'advanced' ? 'advanced' : 'basic' );
 
@@ -167,6 +168,12 @@ class BackWPup_Page_Editjob {
 				if ( BackWPup_Option::get( $jobid, 'activetype' ) == 'wpcron' ) {
 					$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $jobid, 'cron' ) );
 					wp_schedule_single_event( $cron_next, 'backwpup_cron', array( 'id' => $jobid ) );
+				}
+				$easy_cron_job_id = BackWPup_Option::get( $jobid, 'easycronjobid' );
+				if ( BackWPup_Option::get( $jobid, 'activetype' ) == 'easycron' ) {
+					BackWPup_EasyCron::update( $jobid );
+				} elseif ( ! empty( $easy_cron_job_id )  ) {
+					BackWPup_EasyCron::delete( $jobid );
 				}
 				break;
 			default:
@@ -622,13 +629,30 @@ class BackWPup_Page_Editjob {
                                        type="radio"<?php checked( 'wpcron', BackWPup_Option::get( $jobid, 'activetype' ), TRUE ); ?>
                                        name="activetype" id="idactivetype-wpcron"
                                        value="wpcron" /> <?php _e( 'with WordPress cron', 'backwpup' ); ?></label><br/>
-								<?php
+	                            <?php
+	                            $disabled = '';
+	                            $easycron_api = get_site_option( 'backwpup_cfg_easycronapikey' );
+	                            if ( empty( $easycron_api ) ) {
+		                            $disabled = ' disabled="disabled"';
+	                            }
+	                            ?>
+	                            <label for="idactivetype-easycron"><input class="radio help-tip"
+			                            type="radio"<?php checked( 'easycron', BackWPup_Option::get( $jobid, 'activetype' ), TRUE ); ?>
+			                            name="activetype" id="idactivetype-easycron"<?php echo $disabled; ?>
+			                            value="easycron" title="<?php _e( 'Use EasyCron.com Cron jobs.' ); ?>" /> <?php _e( 'with <a href="https://www.easycron.com?ref=36673" class="help-tip" title="Affiliate Link!">EasyCron.com</a>', 'backwpup' ); ?>
+	                            <?php
+	                            if ( empty( $easycron_api ) ) {
+		                            echo ' <strong>' . sprintf( __( 'Setup <a href="https://www.easycron.com?ref=36673" class="help-tip" title="Affiliate Link!">Account</a> / <a href="%s">API Key</a> first.', 'bbackwpup' ), network_admin_url( 'admin.php' ) . '?page=backwpupsettings#backwpup-tab-apikey' ) . '</strong>';
+	                            }
+	                            ?>
+	                            </label><br/>
+	                            <?php
 								$url = BackWPup_Job::get_jobrun_url( 'runext', BackWPup_Option::get( $jobid, 'jobid' ) );
 								?>
                                 <label for="idactivetype-link"><input class="radio help-tip"
 									   type="radio"<?php checked( 'link', BackWPup_Option::get( $jobid, 'activetype' ), TRUE ); ?>
 									   name="activetype" id="idactivetype-link"
-									   value="link" title="<?php esc_attr_e( 'Copy the link for an external start. This option has to be activated to make the link work.', 'backwpup' )?>" /> <?php _e( 'with a link', 'backwpup' ); ?> <code><a href="<?php echo $url[ 'url' ];?>" target="_blank"><?php echo $url[ 'url' ];?></a></code></label>
+									   value="link" title="<?php esc_attr_e( 'Copy the link for an external start. This option has to be activated to make the link work.', 'backwpup' ); ?>" /> <?php _e( 'with a link', 'backwpup' ); ?> <code><a href="<?php echo $url[ 'url' ];?>" target="_blank"><?php echo $url[ 'url' ];?></a></code></label>
 								<br />
                             </fieldset>
                         </td>
