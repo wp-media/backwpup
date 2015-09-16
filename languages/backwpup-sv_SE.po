@@ -1,0 +1,5983 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BackWPup Pro v3.1.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-11-12 13:25+0100\n"
+"PO-Revision-Date: 2015-08-31 18:13+0200\n"
+"Last-Translator: P. E.\n"
+"Language-Team: P. E.\n"
+"Language: sv_SE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.8.4\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-Basepath: .\n"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: ..\n"
+
+# @ backwpup
+#: ../backwpup.php:42
+msgid "BackWPup requires PHP version 5.2.7 with spl extension or greater and WordPress 3.4 or greater."
+msgstr "BackWPup kräver PHP version 5.2.7 med spl-utökning eller senare samt WordPress 3.4 eller senare."
+
+# @ backwpup
+#: ../backwpup.php:289
+msgid "Folder"
+msgstr "Mapp"
+
+# @ backwpup
+#: ../backwpup.php:290
+msgid "Backup to Folder"
+msgstr "Backup till mapp"
+
+# @ backwpup
+#: ../backwpup.php:305
+msgid "Email"
+msgstr "E-post"
+
+# @ backwpup
+#: ../backwpup.php:306
+msgid "Backup sent via email"
+msgstr "Backup skickas via e-post"
+
+# @ backwpup
+#: ../backwpup.php:321
+msgid "FTP"
+msgstr "FTP"
+
+# @ backwpup
+#: ../backwpup.php:322
+msgid "Backup to FTP"
+msgstr "Backup till FTP"
+
+# @ backwpup
+#: ../backwpup.php:337
+msgid "Dropbox"
+msgstr "Dropbox"
+
+# @ backwpup
+#: ../backwpup.php:338
+msgid "Backup to Dropbox"
+msgstr "Backup till Dropbox"
+
+# @ backwpup
+#: ../backwpup.php:354 ../backwpup.php:373
+msgid "S3 Service"
+msgstr "S3-tjänst"
+
+# @ backwpup
+#: ../backwpup.php:355
+msgid "Backup to an S3 Service"
+msgstr "Backup till en S3-tjänst"
+
+# @ backwpup
+#: ../backwpup.php:374
+msgid "Backup to an S3 Service v1"
+msgstr "Backup till en S3-tjänst v1"
+
+# @ backwpup
+#: ../backwpup.php:390
+msgid "MS Azure"
+msgstr "MS Azure"
+
+# @ backwpup
+#: ../backwpup.php:391
+msgid "Backup to Microsoft Azure (Blob)"
+msgstr "Backup till Microsoft Azure (Blob)"
+
+# @ backwpup
+#: ../backwpup.php:406
+msgid "RSC"
+msgstr "RSC"
+
+# @ backwpup
+#: ../backwpup.php:407
+msgid "Backup to Rackspace Cloud Files"
+msgstr "Backup till Rackspace Cloud Files"
+
+# @ backwpup
+#: ../backwpup.php:423
+msgid "SugarSync"
+msgstr "SugarSync"
+
+# @ backwpup
+#: ../backwpup.php:424
+msgid "Backup to SugarSync"
+msgstr "Backup till SugarSync"
+
+# @ backwpup
+#: ../backwpup.php:443
+#, php-format
+msgid "PHP Version %1$s is to low, you need Version %2$s or above."
+msgstr "PHP-version %1$s är för gammal, du behöver Version %2$s eller senare."
+
+# @ backwpup
+#: ../backwpup.php:450
+#, php-format
+msgid "Missing function \"%s\"."
+msgstr "Saknad funktion \"%s\"."
+
+# @ backwpup
+#: ../backwpup.php:459
+#, php-format
+msgid "Missing class \"%s\"."
+msgstr "Saknad klass \"%s\"."
+
+# @ backwpup
+#: ../inc/class-destination-folder.php:26 ../inc/class-destination-ftp.php:52
+msgid "Backup settings"
+msgstr "Backup-inställningar"
+
+# @ backwpup
+#: ../inc/class-destination-folder.php:30
+msgid "Folder to store backups in"
+msgstr "Mapp att spara backup-filer i"
+
+# @ backwpup
+#: ../inc/class-destination-folder.php:36 ../inc/class-destination-ftp.php:62
+msgid "File Deletion"
+msgstr "Filborttagning"
+
+# @ backwpup
+#: ../inc/class-destination-folder.php:42 ../inc/class-destination-s3.php:160
+msgid "Number of files to keep in folder."
+msgstr "Antal filer att lagra i mapp."
+
+# @ backwpup
+#: ../inc/class-destination-folder.php:46 ../inc/class-destination-s3.php:164
+#: ../inc/class-destination-ftp.php:72
+msgid "Do not delete files while syncing to destination!"
+msgstr "Ta ej bort filer medans synkning mot målmapp sker!"
+
+# @ backwpup
+#: ../inc/class-destination-folder.php:194
+#, php-format
+msgid "One backup file deleted"
+msgid_plural "%d backup files deleted"
+msgstr[0] "En backup-fil togs bort"
+msgstr[1] "%d backup-filer togs bort"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:74
+msgid "Select a S3 service"
+msgstr "Välj en S3-tjänst"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:76
+msgid "Amazon S3 Region"
+msgstr "Amazon S3-region"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:77
+msgid "Amazon S3: US Standard"
+msgstr "Amazon S3: US Standard"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:78
+msgid "Amazon S3: US West (Northern California)"
+msgstr "Amazon S3: US Väst (Norra Kalifornien)"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:79
+msgid "Amazon S3: US West (Oregon)"
+msgstr "Amazon S3: US Väst (Oregon)"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:80
+msgid "Amazon S3: EU (Ireland)"
+msgstr "Amazon S3: EU (Irland)"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:81
+msgid "Amazon S3: EU (Germany)"
+msgstr "Amazon S3: EU (Tyskland)"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:82
+msgid "Amazon S3: Asia Pacific (Tokyo)"
+msgstr "Amazon S3: Asien Stilla Havet (Tokyo)"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:83
+msgid "Amazon S3: Asia Pacific (Singapore)"
+msgstr "Amazon S3: Asien Stilla Havet (Singapore)"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:84
+msgid "Amazon S3: Asia Pacific (Sydney)"
+msgstr "Amazon S3: Asien Stilla Havet (Sydney)"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:85
+msgid "Amazon S3: South America (Sao Paulo)"
+msgstr "Amazon S3: Sydamerika (Sao Paulo)"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:86
+msgid "Amazon S3: China (Beijing)"
+msgstr "Amazon S3: Kina (Beijing)"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:87
+msgid "Google Storage (Interoperable Access)"
+msgstr "Google Storage (Interoperabel Åtkomst)"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:88
+msgid "Dream Host Cloud Storage"
+msgstr "Dream Host Molnlagring"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:89
+msgid "GreenQloud Storage Qloud"
+msgstr "GreenQloud Storage Qloud"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:94
+msgid "Or a S3 Server URL"
+msgstr "Eller en S3-server URL"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:101
+msgid "S3 Access Keys"
+msgstr "S3 Åtkomstnycklar"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:105
+msgid "Access Key"
+msgstr "Åtkomstnyckel"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:112
+msgid "Secret Key"
+msgstr "Hemlig Nyckel"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:120
+msgid "S3 Bucket"
+msgstr "S3-hink"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:124
+msgid "Bucket selection"
+msgstr "Hinkval"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:137
+msgid "Create a new bucket"
+msgstr "Skapa en ny hink"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:144
+msgid "S3 Backup settings"
+msgstr "S3 Backup-inställningar"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:148
+msgid "Folder in bucket"
+msgstr "Mapp i hink"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:154
+msgid "File deletion"
+msgstr "Filborttagning"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:170
+msgid "Multipart Upload"
+msgstr "Flerdelsuppladdning (multipart)"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:174
+msgid "Use multipart upload for uploading a file"
+msgstr "Använd flerdelsuppladdning (multipart) för att ladda upp en fil"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:180
+msgid "Amazon specific settings"
+msgstr "Inställningar specifika för Amazon"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:184 ../inc/class-destination-s3.php:186
+msgid "Amazon: Storage Class"
+msgstr "Amazon: Lagringsklass"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:187
+msgid "none"
+msgstr "inget"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:188
+msgid "Reduced Redundancy"
+msgstr "Reducerad Redundans"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:193
+msgid "Server side encryption"
+msgstr "Kryptering på servern"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:197
+msgid "Save files encrypted (AES256) on server."
+msgstr "Spara filer krypterade (AES256) på servern."
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:253
+#, php-format
+msgid "Bucket %1$s created in %2$s."
+msgstr "Hink %1$s skapad i %2$s."
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:255
+#, php-format
+msgid "Bucket %s could not be created."
+msgstr "Hink %s kunde ej skapas."
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:257
+#, php-format
+msgid " %s is not a valid bucket name."
+msgstr "%s är ej ett giltigt hinknamn."
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:297 ../inc/class-destination-s3.php:418
+#: ../inc/class-destination-s3.php:471 ../inc/class-destination-s3.php:501
+#: ../inc/class-destination-s3.php:561
+#, php-format
+msgid "S3 Service API: %s"
+msgstr "API för S3-tjänst: %s"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:361
+#, php-format
+msgid "%d. Trying to send backup file to S3 Service&#160;&hellip;"
+msgstr "%d. Försöker skicka backup-fil till S3-tjänst&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:374
+#, php-format
+msgid "Connected to S3 Bucket \"%1$s\" in %2$s"
+msgstr "Ansluten till S3-hink \"%1$s\" i %2$s"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:377
+#, php-format
+msgid "S3 Bucket \"%s\" does not exist!"
+msgstr "Amazon S3-hink \"%s\" existerar ej!"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:384
+msgid "Checking for not aborted multipart Uploads&#160;&hellip;"
+msgstr "Söker efter ej avbrutna flerdelsuppladdningar (multipart)&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:390
+#, php-format
+msgid "Upload for %s aborted."
+msgstr "Uppladdning för %s avbruten."
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:396
+msgid "Starting upload to S3 Service&#160;&hellip;"
+msgstr "Påbörjar uppladdning till S3-tjänst&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:492
+#, php-format
+msgid "Backup transferred to %s."
+msgstr "Backup-fil överförd till %s."
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:497
+#, php-format
+msgid "Cannot transfer backup to S3! (%1$d) %2$s"
+msgstr "Kan ej överföra backup-fil till S3! (%1$d) %2$s"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:525
+#, php-format
+msgid "Storage Class: %s"
+msgstr "Lagringsklass: %s"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:551
+#, php-format
+msgid "Cannot delete backup from %s."
+msgstr "Kan ej ta bort backup-fil från %s."
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:555
+#, php-format
+msgid "One file deleted on S3 Bucket."
+msgid_plural "%d files deleted on S3 Bucket"
+msgstr[0] "En fil borttagen från S3-hink."
+msgstr[1] "%d filer borttagna från S3-hink."
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:658
+msgid "Missing access key!"
+msgstr "Saknad åtkomstnyckel!"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:660
+msgid "Missing secret access key!"
+msgstr "Saknad hemlig åtkomstnyckel!"
+
+# @ backwpup
+#: ../inc/class-destination-s3.php:666
+msgid "No bucket found!"
+msgstr "Ingen hink hittades!"
+
+# @ backwpup
+#: ../inc/class-page-about.php:394
+#, php-format
+msgid "%s Welcome"
+msgstr "%s Välkommen"
+
+# @ backwpup
+#: ../inc/class-page-about.php:401
+msgid "Heads up! You have updated from version 2.x"
+msgstr "Observera! Du har uppdaterat från version 2.x"
+
+# @ backwpup
+#: ../inc/class-page-about.php:402
+#, php-format
+msgid "Please <a href=\"%s\">check your settings</a> after updating from version 2.x:"
+msgstr "Vänligen <a href=\"%s\">kontrollera dina inställningar</a> efter uppdatering från version 2.x:"
+
+# @ backwpup
+#: ../inc/class-page-about.php:403
+msgid "Dropbox authentication must be re-entered"
+msgstr "Dropbox-autentisering måste anges igen"
+
+# @ backwpup
+#: ../inc/class-page-about.php:404
+msgid "SugarSync authentication must be re-entered"
+msgstr "SugarSync-autentisering måste anges igen"
+
+# @ backwpup
+#: ../inc/class-page-about.php:405
+msgid "S3 Settings"
+msgstr "S3-inställningar"
+
+# @ backwpup
+#: ../inc/class-page-about.php:406
+msgid "Google Storage is now a part of S3 service settings"
+msgstr "Google Storage är nu en del av inställningarna för S3"
+
+# @ backwpup
+#: ../inc/class-page-about.php:407
+msgid "All your passwords"
+msgstr "Alla dina lösenord"
+
+# @ backwpup
+#: ../inc/class-page-about.php:416
+msgid "Welcome to BackWPup Pro"
+msgstr "Välkommen till BackWPup Pro"
+
+# @ backwpup
+#: ../inc/class-page-about.php:417
+msgid "BackWPup’s job wizards make planning and scheduling your backup jobs a breeze."
+msgstr "BackWPup:s jobbguider gör planering och schemaläggning av dina backup-jobb till en lätt match."
+
+# @ backwpup
+#: ../inc/class-page-about.php:418 ../inc/class-page-about.php:428
+msgid "Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server. With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin or a plugin like <a href=\"http://wordpress.org/plugins/adminer/\" target=\"_blank\">Adminer</a> to restore your database backup files."
+msgstr "Använd dina backup-arkiv för att spara hela din WordPress-installation inklusive <code>/wp-content/</code>. Spara dem till en extern lagringstjänst om du inte vill lagra backup-filerna på samma server. Du kan återskapa en installation från ett enskilt backup-arkiv. Använd ett verktyg som phpMyAdmin eller ett tillägg som <a href=\"http://wordpress.org/plugins/adminer/\" target=\"_blank\">Adminer</a> för att återställa dina databas-backup-filer."
+
+# @ backwpup
+#: ../inc/class-page-about.php:419
+#, php-format
+msgid "Ready to <a href=\"%1$s\">set up a backup job</a>? You can <a href=\"%2$s\">use the wizards</a> or plan your backup in expert mode."
+msgstr "Redo att <a href=\"%1$s\">konfigurera ett backup-jobb</a>? Du kan <a href=\"%2$s\">använda guiderna</a> eller planera din backup i expertläget."
+
+# @ backwpup
+#: ../inc/class-page-about.php:426
+msgid "Welcome to BackWPup"
+msgstr "Välkommen till BackWPup"
+
+# @ backwpup
+#: ../inc/class-page-about.php:429
+msgid "Ready to set up a backup job? Use one of the wizards to plan what you want to save."
+msgstr "Redo att konfigurera ett backup-jobb? Använd en av guiderna för att planera vad du vill spara."
+
+# @ backwpup
+#: ../inc/class-page-about.php:446
+msgid "Please activate your license"
+msgstr "Vänligen aktivera din licens"
+
+# @ backwpup
+#: ../inc/class-page-about.php:447
+msgid "Please go to your plugin page and active the license to have the autoupdates enabled."
+msgstr "Vänligen gå till sidan för tillägg och aktivera licensen för att möjliggöra auto-uppdateringar."
+
+# @ backwpup
+#: ../inc/class-page-about.php:456
+msgid "Save your database"
+msgstr "Spara din databas"
+
+# @ backwpup
+#: ../inc/class-page-about.php:459
+msgid "Save your database regularly"
+msgstr "Spara din databas regelbundet"
+
+# @ backwpup
+#: ../inc/class-page-about.php:460
+#, php-format
+msgid "With BackWPup you can schedule the database backup to run automatically. With a single backup file you can restore your database. You should <a href=\"%s\">set up a backup job</a>, so you will never forget it. There is also an option to repair and optimize the database after each backup."
+msgstr "Med BackWPup kan du schemalägga databas-backupen för automatisk körning. Du kan återställa din databas från en enskild backup-fil. Du bör <a href=\"%s\">konfigurera ett backup-jobb</a>, så att du inte glömmer det. Det finns också möjlighet att reparera och optimera databasen efter varje backup."
+
+# @ backwpup
+#: ../inc/class-page-about.php:465 ../inc/class-page-about.php:469
+msgid "WordPress XML Export"
+msgstr "WordPress XML-export"
+
+# @ backwpup
+#: ../inc/class-page-about.php:466
+msgid "You can choose the built-in WordPress export format in addition or exclusive to save your data. This works in automated backups too of course. The advantage is: you can import these files into a blog with the regular WordPress importer."
+msgstr "Du kan välja det inbyggda WordPress-exportformatet, utöver eller uteslutande, för att spara din data. Detta fungerar naturligtvis även för automatiska backuper. Fördelen är att du kan importera dessa filer till en blogg med WordPress vanliga importverktyg. "
+
+# @ backwpup
+#: ../inc/class-page-about.php:474
+msgid "Save all data from the webserver"
+msgstr "Spara all data från webbservern"
+
+# @ backwpup
+#: ../inc/class-page-about.php:477
+msgid "Save all files"
+msgstr "Spara alla filer"
+
+# @ backwpup
+#: ../inc/class-page-about.php:478
+#, php-format
+msgid "You can backup all your attachments, also all system files, plugins and themes in a single file. You can <a href=\"%s\">create a job</a> to update a backup copy of your file system only when files are changed."
+msgstr "Du kan ta backup på alla dina bilagor, samt alla systemfiler, tillägg och teman i en enda fil. Du kan <a href=\"%s\">skapa ett jobb</a> som uppdaterar en backup av ditt filsystem endast när filer ändras."
+
+# @ backwpup
+#: ../inc/class-page-about.php:483 ../inc/class-page-about.php:487
+msgid "Security!"
+msgstr "Säkerhet!"
+
+# @ backwpup
+#: ../inc/class-page-about.php:484
+msgid "By default everything is encrypted: connections to external services, local files and access to directories."
+msgstr "Allting krypteras som standard: anslutningar till externa tjänster, lokala filer samt tillgång till kataloger."
+
+# @ backwpup
+#: ../inc/class-page-about.php:492 ../inc/class-page-about.php:495
+msgid "Cloud Support"
+msgstr "Moln-stöd"
+
+# @ backwpup
+#: ../inc/class-page-about.php:496
+msgid "BackWPup supports multiple cloud services in parallel. This ensures backups are redundant."
+msgstr "BackWPup stöder flera molntjänster parallellt. Detta säkerställer redundanta backuper."
+
+# @ backwpup
+#: ../inc/class-page-about.php:504
+msgid "Features / differences between Free and Pro"
+msgstr "Funktioner / Skillnader mellan Gratis och Pro"
+
+# @ backwpup
+#: ../inc/class-page-about.php:507
+msgid "Features"
+msgstr "Funktioner"
+
+# @ backwpup
+#: ../inc/class-page-about.php:508
+msgid "FREE"
+msgstr "GRATIS"
+
+# @ backwpup
+#: ../inc/class-page-about.php:509
+msgid "PRO"
+msgstr "PRO"
+
+# @ backwpup
+#: ../inc/class-page-about.php:512
+msgid "Complete database backup"
+msgstr "Fullständig databas-backup"
+
+# @ backwpup
+#: ../inc/class-page-about.php:517
+msgid "Complete file backup"
+msgstr "Fullständig fil-backup"
+
+# @ backwpup
+#: ../inc/class-page-about.php:522
+msgid "Database check"
+msgstr "Databaskontroll"
+
+# @ backwpup
+#: ../inc/class-page-about.php:527
+msgid "Data compression"
+msgstr "Datakomprimering"
+
+# @ backwpup
+#: ../inc/class-page-about.php:532
+msgid "WordPress XML export"
+msgstr "WordPress XML-export"
+
+# @ backwpup
+#: ../inc/class-page-about.php:537
+msgid "List of installed plugins"
+msgstr "Lista över installerade tillägg"
+
+# @ backwpup
+#: ../inc/class-page-about.php:542
+msgid "Backup archives management"
+msgstr "Hantering av backup-arkiv"
+
+# @ backwpup
+#: ../inc/class-page-about.php:547
+msgid "Log file management"
+msgstr "Hantering av loggfil"
+
+# @ backwpup
+#: ../inc/class-page-about.php:552
+msgid "Start jobs per WP-Cron, URL, system, backend or WP-CLI"
+msgstr "Starta jobb via WP-Cron, URL, System, Backend eller WP-CLI"
+
+# @ backwpup
+#: ../inc/class-page-about.php:557
+msgid "Log report via email"
+msgstr "Loggrapport via e-post"
+
+# @ backwpup
+#: ../inc/class-page-about.php:562
+msgid "Backup to Microsoft Azure"
+msgstr "Backup till Microsoft Azure"
+
+# @ backwpup
+#: ../inc/class-page-about.php:567
+msgid "Backup as email"
+msgstr "Backup som e-post"
+
+# @ backwpup
+#: ../inc/class-page-about.php:572
+msgid "Backup to S3 services <small>(Amazon, Google Storage, Hosteurope and more)</small>"
+msgstr "Backup till S3-tjänster <small>(Amazon, Google Storage, Hosteurope och fler)</small>"
+
+# @ backwpup
+#: ../inc/class-page-about.php:587
+msgid "Backup to FTP server"
+msgstr "Backup till FTP-server"
+
+# @ backwpup
+#: ../inc/class-page-about.php:592
+msgid "Backup to your web space"
+msgstr "Backup till ditt webbutrymme"
+
+# @ backwpup
+#: ../inc/class-page-about.php:602
+msgid "Backup to Google Drive"
+msgstr "Backup till Google Drive"
+
+# @ backwpup
+#: ../inc/class-page-about.php:607
+msgid "Backup to Amazon Glacier"
+msgstr "Backup till Amazon Glacier"
+
+# @ backwpup
+#: ../inc/class-page-about.php:612
+msgid "Custom API keys for DropBox and SugarSync"
+msgstr "Anpassade API-nycklar för DropBox och SugarSync"
+
+# @ backwpup
+#: ../inc/class-page-about.php:617
+msgid "XML database backup as PHPMyAdmin schema"
+msgstr "XML databas-backup som PHPMyAdmin schema"
+
+# @ backwpup
+#: ../inc/class-page-about.php:622
+msgid "Database backup as mysqldump per command line"
+msgstr "Databas-backup som mysqldump per kommandorad"
+
+# @ backwpup
+#: ../inc/class-page-about.php:627
+msgid "Database backup for additional MySQL databases"
+msgstr "Databas-backup för ytterligare MySQL-databaser"
+
+# @ backwpup
+#: ../inc/class-page-about.php:632
+msgid "Import and export job settings as XML"
+msgstr "Importera och exportera jobbinställningar som XML"
+
+# @ backwpup
+#: ../inc/class-page-about.php:637
+msgid "Wizard for system tests"
+msgstr "Guide för systemtest"
+
+# @ backwpup
+#: ../inc/class-page-about.php:642
+msgid "Wizard for scheduled backup jobs"
+msgstr "Guide för schemalagda backup-jobb"
+
+# @ backwpup
+#: ../inc/class-page-about.php:647
+msgid "Wizard to import settings and backup jobs"
+msgstr "Guide för import av inställningar och backup-jobb"
+
+# @ backwpup
+#: ../inc/class-page-about.php:652
+msgid "Differential backup of changed directories to Dropbox"
+msgstr "Differentiell backup av ändrade kataloger till Dropbox"
+
+# @ backwpup
+#: ../inc/class-page-about.php:657
+msgid "Differential backup of changed directories to Rackspace Cloud Files"
+msgstr "Differentiell backup av ändrade kataloger till Rackspace Cloud Files"
+
+# @ backwpup
+#: ../inc/class-page-about.php:662
+msgid "Differential backup of changed directories to S3"
+msgstr "Differentiell backup av ändrade kataloger till S3"
+
+# @ backwpup
+#: ../inc/class-page-about.php:667
+msgid "Differential backup of changed directories to MS Azure"
+msgstr "Differentiell backup av ändrade kataloger till MS Azure"
+
+# @ backwpup
+#: ../inc/class-page-about.php:672
+msgid "<strong>Premium support</strong>"
+msgstr "<strong>Premium support</strong>"
+
+# @ backwpup
+#: ../inc/class-page-about.php:677
+msgid "<strong>Dynamically loaded documentation</strong>"
+msgstr "<strong>Dynamiskt laddad dokumentation</strong>"
+
+# @ backwpup
+#: ../inc/class-page-about.php:682
+msgid "<strong>Automatic update from MarketPress</strong>"
+msgstr "<strong>Automatisk uppdatering från MarketPress</strong>"
+
+# @ backwpup
+#: ../inc/class-page-about.php:689
+msgid "http://marketpress.com/product/backwpup-pro/"
+msgstr "http://marketpress.com/product/backwpup-pro/"
+
+# @ backwpup
+#: ../inc/class-page-about.php:689
+msgid "GET PRO"
+msgstr "SKAFFA PRO"
+
+# @ backwpup
+#: ../inc/class-install.php:71
+msgid "BackWPup Admin"
+msgstr "BackWPup Admin"
+
+# @ backwpup
+#: ../inc/class-install.php:84
+msgid "BackWPup jobs checker"
+msgstr "BackWPup jobbkontrollant"
+
+# @ backwpup
+#: ../inc/class-install.php:97
+msgid "BackWPup jobs helper"
+msgstr "BackWPup jobbassistent"
+
+# @ backwpup
+#: ../inc/class-help.php:15
+msgid "Plugin Info"
+msgstr "Tilläggsinfo"
+
+# @ backwpup
+#: ../inc/class-help.php:17
+#, php-format
+msgctxt "Plugin name and link; Plugin Version"
+msgid "%1$s version %2$s. A project by <a href=\"http://inpsyde.com\">Inpsyde GmbH</a>."
+msgstr "%1$s version %2$s. Ett projekt från <a href=\"http://inpsyde.com\">Inpsyde GmbH</a>."
+
+# @ backwpup
+#: ../inc/class-help.php:18
+msgid "BackWPup comes with ABSOLUTELY NO WARRANTY. This is a free software, and you are welcome to redistribute it under certain conditions."
+msgstr "BackWPup kommer HELT UTAN GARANTIER. Detta är en gratis mjukvara, och du är välkommen att distribuera den vidare med vissa förbehåll."
+
+# @ backwpup
+#: ../inc/class-help.php:21
+msgid "For more information:"
+msgstr "För ytterligare information:"
+
+# @ backwpup
+#: ../inc/class-help.php:23
+msgid "Plugin on wordpress.org"
+msgstr "Tillägg på wordpress.org"
+
+# @ backwpup
+#: ../inc/class-help.php:24
+msgid "https://marketpress.com/news/"
+msgstr "https://marketpress.com/news/"
+
+# @ backwpup
+#: ../inc/class-help.php:24
+msgid "News"
+msgstr "Nyheter"
+
+# @ backwpup
+#: ../inc/class-help.php:26
+msgid "https://marketpress.com/support/forum/plugins/backwpup-pro/"
+msgstr "https://marketpress.com/support/forum/plugins/backwpup-pro/"
+
+# @ backwpup
+#: ../inc/class-help.php:26
+msgid "Pro Support"
+msgstr "Pro Support"
+
+# @ backwpup
+#: ../inc/class-help.php:28
+msgid "http://wordpress.org/support/plugin/backwpup/"
+msgstr "http://wordpress.org/support/plugin/backwpup/"
+
+# @ backwpup
+#: ../inc/class-help.php:28
+msgid "Support"
+msgstr "Support"
+
+# @ backwpup
+#: ../inc/class-help.php:29
+msgid "https://marketpress.com/documentation/backwpup-pro/"
+msgstr "https://marketpress.com/documentation/backwpup-pro/"
+
+# @ backwpup
+#: ../inc/class-help.php:29
+msgid "Manual"
+msgstr "Manual"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:23
+msgid "FTP server and login"
+msgstr "FTP-server och inloggning"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:27
+msgid "FTP server"
+msgstr "FTP-server"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:31
+msgid "Port:"
+msgstr "Port:"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:37
+msgid "Username"
+msgstr "Användarnamn"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:44
+msgid "Password"
+msgstr "Lösenord"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:56
+msgid "Folder to store files in"
+msgstr "Mapp att lagra filer i"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:68
+msgid "Maximum number of files to keep in folder."
+msgstr "Maximalt antal filer att lagra i mapp."
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:78
+msgid "FTP specific settings"
+msgstr "FTP-specifika inställningar"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:82
+msgid "Timeout for FTP connection"
+msgstr "Tidsgräns för FTP-anslutning"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:86
+msgid "seconds"
+msgstr "sekunder"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:90
+msgid "SSL-FTP connection"
+msgstr "SSL-FTP-anslutning"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:94
+msgid "Use explicit SSL-FTP connection."
+msgstr "Använd explicit SSL-FTP-anslutning"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:99
+msgid "FTP Passive Mode"
+msgstr "Passivt Läge för FTP"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:103
+msgid "Use FTP Passive Mode."
+msgstr "Använd Passivt Läge för FTP."
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:179
+msgid "FTP: Login failure!"
+msgstr "FTP: Inloggning misslyckades!"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:203
+#, php-format
+msgid "%d. Try to send backup file to an FTP server&#160;&hellip;"
+msgstr "%d. Försök skicka backup-filen till en FTP-server&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:209
+#, php-format
+msgid "Connected via explicit SSL-FTP to server: %s"
+msgstr "Ansluten via explicit SSL-FTP till server: %s"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:211
+#, php-format
+msgid "Cannot connect via explicit SSL-FTP to server: %s"
+msgstr "Kan ej ansluta via explicit SSL-FTP till server: %s"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:217
+msgid "PHP function to connect with explicit SSL-FTP to server does not exist!"
+msgstr "PHP-funktion för att ansluta med explicit SSL-FTP till servern finns ej!"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:225
+#, php-format
+msgid "Connected to FTP server: %s"
+msgstr "Ansluten till FTP-server: %s"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:227
+#, php-format
+msgid "Cannot connect to FTP server: %s"
+msgstr "Kan ej ansluta till FTP-server: %s"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:234 ../inc/class-destination-ftp.php:242
+#: ../inc/class-destination-ftp.php:253 ../inc/class-destination-ftp.php:300
+#, php-format
+msgid "FTP client command: %s"
+msgstr "FTP-klient kommando: %s"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:236
+#, php-format
+msgid "FTP server response: %s"
+msgstr "FTP-server svar: %s"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:240 ../inc/class-destination-ftp.php:244
+#: ../inc/class-destination-ftp.php:256 ../inc/class-destination-ftp.php:258
+#: ../inc/class-destination-ftp.php:303 ../inc/class-destination-ftp.php:305
+#: ../inc/class-destination-ftp.php:309 ../inc/class-destination-ftp.php:311
+#, php-format
+msgid "FTP server reply: %s"
+msgstr "FTP-server svar: %s"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:258
+msgid "Error getting SYSTYPE"
+msgstr "Fel vid förfrågan om SYSTYPE"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:276
+#, php-format
+msgid "FTP Folder \"%s\" created!"
+msgstr "FTP-mapp \"%s\" skapad!"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:280
+#, php-format
+msgid "FTP Folder \"%s\" cannot be created!"
+msgstr "FTP-mapp \"%s\" kan ej skapas!"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:291
+#, php-format
+msgid "FTP current folder is: %s"
+msgstr "Aktuell FTP-mapp är: %s"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:303
+msgid "Entering passive mode"
+msgstr "Övergår till passivt läge"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:305
+msgid "Cannot enter passive mode"
+msgstr "Kan ej övergå till passivt läge"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:309
+msgid "Entering normal mode"
+msgstr "Övergår till normalt läge"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:311
+msgid "Cannot enter normal mode"
+msgstr "Kan ej övergå till normalt läge"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:315
+msgid "Starting upload to FTP &#160;&hellip;"
+msgstr "Påbörjar uppladdning till FTP &#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:327
+msgid "Cannot transfer backup to FTP server!"
+msgstr "Kan ej överföra backup-fil till FTP-server!"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:333
+#, php-format
+msgid "Backup transferred to FTP server: %s"
+msgstr "Backup-fil överförd till FTP-server: %s"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:379
+#, php-format
+msgid "Cannot delete \"%s\" on FTP server!"
+msgstr "Kan ej ta bort \"%s\" från FTP-server!"
+
+# @ backwpup
+#: ../inc/class-destination-ftp.php:382
+#, php-format
+msgid "One file deleted on FTP server"
+msgid_plural "%d files deleted on FTP server"
+msgstr[0] "En fil borttagen från FTP-server"
+msgstr[1] "%d filer borttagna från FTP-server"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:15
+msgid "Files"
+msgstr "Filer"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:16
+msgid "File backup"
+msgstr "Filbackup"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:64
+msgid "Folders to backup"
+msgstr "Mappar att ta backup på"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:68
+msgid "Backup root folder"
+msgstr "Ta backup på rotmapp"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:79 ../inc/class-jobtype-file.php:116
+#: ../inc/class-jobtype-file.php:153 ../inc/class-jobtype-file.php:190
+#: ../inc/class-jobtype-file.php:227
+#, php-format
+msgid "Path as set by user (symlink?): %s"
+msgstr "Sökväg som den satts av användaren (symlink?): %s"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:82 ../inc/class-jobtype-file.php:119
+#: ../inc/class-jobtype-file.php:156 ../inc/class-jobtype-file.php:193
+#: ../inc/class-jobtype-file.php:230
+msgid "Exclude:"
+msgstr "Exkludera:"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:93 ../inc/class-jobtype-file.php:130
+#: ../inc/class-jobtype-file.php:167 ../inc/class-jobtype-file.php:204
+#: ../inc/class-jobtype-file.php:241
+msgid "Excluded by .donotbackup file!"
+msgstr "Exkluderas av filen .donotbackup!"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:105
+msgid "Backup content folder"
+msgstr "Ta backup på innehållsmapp"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:142
+msgid "Backup plugins"
+msgstr "Ta backup på tillägg"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:179
+msgid "Backup themes"
+msgstr "Ta backup på teman"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:216
+msgid "Backup uploads folder"
+msgstr "Ta backup på mapp för uppladdning"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:253
+msgid "Extra folders to backup"
+msgstr "Ytterligare mappar att ta backup på"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:260
+msgid "Exclude from backup"
+msgstr "Exkludera från backup"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:264
+msgid "Thumbnails in uploads"
+msgstr "Miniatyrer i uppladdningar"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:268
+msgid "Don't backup thumbnails from the site's uploads folder."
+msgstr "Ta ej backup på miniatyrer i webbplatsens mapp för uppladdning."
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:268
+msgid "All images with -???x???. will be excluded. Use a plugin like Regenerate Thumbnails to rebuild them after a restore."
+msgstr "Alla bilder med -???x???. kommer att exkluderas. Använd ett tillägg som Regenerate Thumbnails för att återskapa dem efter en återställning."
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:272
+msgid "Exclude files/folders from backup"
+msgstr "Exkludera filer/mappar från backup"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:279
+msgid "Special option"
+msgstr "Specialalternativ"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:283
+msgid "Include special files"
+msgstr "Inkludera speciella filer"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:287
+msgid "Backup wp-config.php, robots.txt, .htaccess, .htpasswd and favicon.ico from root."
+msgstr "Ta backup på wp-config.php, robots.txt, .htaccess, .htpasswd samt favicon.ico från roten."
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:287
+msgid "If the WordPress root folder is not included in this backup job, check this option to additionally include wp-config.php, robots.txt, .htaccess, .htpasswd and favicon.ico into the backup. Your wp-config.php will be included even if you placed it in the parent directory of your root folder."
+msgstr "Om WordPress rotmapp ej inkluderas i detta backup-jobb, markera detta alternativ för att också inkludera wp-config.php, robots.txt, .htaccess, .htpasswd samt favicon.ico i backupen. Din wp-config.php kommer att inkluderas även om du placerat den ett steg upp från rotmappen."
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:364
+#, php-format
+msgid "%d. Trying to make a list of folders to back up&#160;&hellip;"
+msgstr "%d. Försöker skapa en lista över mappar att ta backup på&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:483 ../inc/class-jobtype-file.php:490
+#: ../inc/class-jobtype-file.php:497 ../inc/class-jobtype-file.php:503
+#: ../inc/class-jobtype-file.php:509 ../inc/class-jobtype-file.php:515
+#, php-format
+msgid "Added \"%s\" to backup file list"
+msgstr "Lade till \"%s\" till listan över filer att ta backup på"
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:520
+msgid "No files/folder for the backup."
+msgstr "Inga filer/mappar att ta backup på."
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:522
+#, php-format
+msgid "%1$d folders to backup."
+msgstr "%1$d mappar att ta backup på."
+
+# @ backwpup
+#: ../inc/class-jobtype-file.php:561
+#, php-format
+msgid "Folder \"%s\" is not readable!"
+msgstr "Mappen \"%s\" är ej läsbar!"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:71
+msgid "The file name of an archive cannot be empty."
+msgstr "Ett arkivs filnamn får inte vara blankt."
+
+# @ backwpup
+#: ../inc/class-create-archive.php:79
+#, php-format
+msgctxt "%s = Folder name"
+msgid "Folder %s for archive not found"
+msgstr "Mapp %s för arkiv ej funnen"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:85 ../inc/class-create-archive.php:120
+#: ../inc/class-create-archive.php:137 ../inc/class-mysqldump.php:125
+msgid "Functions for gz compression not available"
+msgstr "Funktioner för gz-kompression ej tillgängliga"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:92 ../inc/class-create-archive.php:143
+msgid "Functions for bz2 compression not available"
+msgstr "Funktioner för bz2-kompression ej tillgängliga"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:116
+#, php-format
+msgctxt "ZipArchive open() result"
+msgid "Cannot create zip archive: %d"
+msgstr "Kan ej skapa ZIP-arkiv: %d"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:149
+#, php-format
+msgctxt "%s = file name"
+msgid "Method to archive file %s not detected"
+msgstr "Arkiveringsmetod för fil %s ej funnen"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:154
+msgid "Cannot open archive file"
+msgstr "Kan ej öppna arkivfil"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:174 ../inc/class-create-archive.php:349
+#, php-format
+msgid "PclZip archive add error: %s"
+msgstr "Fel vid lägg till i PclZip-arkiv: %s"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:189
+msgid "ZIP archive cannot be closed correctly."
+msgstr "ZIP-arkivet kan inte stängas korrekt."
+
+# @ backwpup
+#: ../inc/class-create-archive.php:244
+msgid "File name cannot be empty"
+msgstr "Filnamn får inte vara blankt."
+
+# @ backwpup
+#: ../inc/class-create-archive.php:253
+#, php-format
+msgctxt "File to add to archive"
+msgid "File %s does not exist or is not readable"
+msgstr "Fil %s existerar ej eller är ej läsbar"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:266 ../inc/class-create-archive.php:282
+#: ../inc/class-create-archive.php:392 ../inc/class-create-archive.php:396
+msgid "This archive method can only add one file"
+msgstr "Denna arkiveringsmetod kan endast lägga till en fil"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:271 ../inc/class-create-archive.php:287
+#, php-format
+msgid "Cannot open source file %s to archive"
+msgstr "Kan ej öppna källfil %s till arkiv"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:311
+msgid "ZipArchive can not closed correctly"
+msgstr "ZIP-arkivet kan inte stängas korrekt"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:330 ../inc/class-create-archive.php:338
+#: ../inc/class-create-archive.php:407
+#, php-format
+msgid "Cannot add \"%s\" to zip archive!"
+msgstr "Kan ej lägga till \"%s\" till ZIP-arkiv!"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:374
+msgid "Folder name cannot be empty"
+msgstr "Mappnamn får ej vara blankt"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:379
+#, php-format
+msgctxt "Folder path to add to archive"
+msgid "Folder %s does not exist or is not readable"
+msgstr "Mapp %s existerar ej eller är ej läsbar"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:429
+#, php-format
+msgctxt "Text of ZipArchive status Message"
+msgid "ZipArchive returns status: %s"
+msgstr "ZipArchive returnerar status: %s"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:459
+#, php-format
+msgid "File name \"%1$s\" is too long to be saved correctly in %2$s archive!"
+msgstr "Filnamn \"%1$s\" är för långt för att sparas korrekt i arkiv %2$s!"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:462
+#, php-format
+msgid "File path \"%1$s\" is too long to be saved correctly in %2$s archive!"
+msgstr "Filsökväg \"%1$s\" är för lång för att sparas korrekt i arkiv %2$s!"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:474
+#, php-format
+msgid "Cannot open source file %s for archiving"
+msgstr "Kan ej öppna källfil %s för arkivering"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:479 ../inc/class-create-archive.php:480
+#: ../inc/class-create-archive.php:579 ../inc/class-create-archive.php:580
+msgid "Unknown"
+msgstr "Okänt"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:570
+#, php-format
+msgid "Folder name \"%1$s\" is too long to be saved correctly in %2$s archive!"
+msgstr "Mappnamn \"%1$s\" är för långt för att sparas korrekt i arkiv %2$s!"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:573
+#, php-format
+msgid "Folder path \"%1$s\" is too long to be saved correctly in %2$s archive!"
+msgstr "Mappsökväg \"%1$s\" är för lång för att sparas korrekt i arkiv %2$s!"
+
+# @ backwpup
+#: ../inc/class-create-archive.php:651
+#, php-format
+msgid "If %s will be added to your backup archive, the archive will be too large for many file systems (over 2GB). You might want to consider splitting the backup job in multiple jobs with less files each."
+msgstr "Om %s skall läggas till ditt backup-arkiv så blir arkivet för stort för många filsystem (större än 2GB). Du bör kanske överväga att dela upp backup-jobbet i flera jobb med färre filer i varje."
+
+# @ backwpup
+#: ../inc/class-cron.php:62
+msgid "Aborted, because no progress for one hour!"
+msgstr "Avbröts, p.g.a. inga framsteg på en timme!"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:173
+msgid "No files could be found. (List will be generated during next backup.)"
+msgstr "Inga filer kunde hittas. (Lista kommer att genereras vid nästa backup.)"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:185 ../inc/class-page-backups.php:304
+#: ../inc/class-page-logs.php:114 ../inc/class-page-logs.php:192
+msgid "Delete"
+msgstr "Ta Bort"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:219
+msgid "Change destination"
+msgstr "Ändra mål"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:258 ../inc/class-page-logs.php:125
+msgid "Time"
+msgstr "Tid"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:259
+msgid "File"
+msgstr "Fil"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:261 ../inc/class-page-logs.php:129
+msgid "Size"
+msgstr "Storlek"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:304
+msgid ""
+"You are about to delete this backup archive. \n"
+"  'Cancel' to stop, 'OK' to delete."
+msgstr ""
+"Du håller på att ta bort detta backup-arkiv. \n"
+"  'Avbryt' för att avbryta, 'OK' för att ta bort."
+
+# @ backwpup
+#: ../inc/class-page-backups.php:306 ../inc/class-page-logs.php:193
+msgid "Download"
+msgstr "Ladda Ned"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:335
+msgid "?"
+msgstr "?"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:348 ../inc/class-page-logs.php:153
+#, php-format
+msgid "%1$s at %2$s"
+msgstr "%1$s vid %2$s"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:365 ../inc/class-page-backups.php:392
+msgid "Sorry, you don't have permissions to do that."
+msgstr "Ledsen, du har ej tillstånd att göra det där."
+
+# @ backwpup
+#: ../inc/class-page-backups.php:413
+msgid "Backup Files"
+msgstr "Backup-filer"
+
+# @ backwpup
+#: ../inc/class-page-backups.php:461
+#, php-format
+msgid "%s Manage Backup Archives"
+msgstr "%s Hantera Backup-arkiv"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:17
+msgid "A job is already running."
+msgstr "Ett jobb körs redan."
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:20
+msgid "No job ID specified!"
+msgstr "Inget jobb-ID har angetts!"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:24
+msgid "Job ID does not exist!"
+msgstr "Jobb-ID existerar ej!"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:38
+msgid "Nothing to abort!"
+msgstr "Ingenting att avbryta!"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:42
+msgid "Job will be terminated."
+msgstr "Jobbet kommer att avbrytas."
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:54
+msgid "List of jobs"
+msgstr "Jobblista"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:57 ../inc/class-wp-cli.php:76
+#, php-format
+msgid "ID: %1$d Name: %2$s"
+msgstr "ID: %1$d Namn: %2$s"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:73
+msgid "No job running"
+msgstr "Inget jobb körs"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:74
+msgid "Running job"
+msgstr "Jobb körs"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:77
+#, php-format
+msgid "Warnings: %1$d Errors: %2$d"
+msgstr "Varningar: %1$d Fel: %2$d"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:78
+#, php-format
+msgid "Steps in percent: %1$d percent of step: %2$d"
+msgstr "Steg i procent: %1$d procent av steg: %2$d"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:79
+#, php-format
+msgid "On step: %s"
+msgstr "På steg: %s"
+
+# @ backwpup
+#: ../inc/class-wp-cli.php:80
+#, php-format
+msgid "Last message: %s"
+msgstr "Senaste meddelandet: %s"
+
+# @ backwpup
+#: ../inc/class-option.php:102
+msgid "New Job"
+msgstr "Nytt Jobb"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:102
+msgid "No Logs."
+msgstr "Inga Loggar."
+
+# @ backwpup
+#: ../inc/class-page-logs.php:126
+msgid "Job"
+msgstr "Jobb"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:127
+msgid "Status"
+msgstr "Status"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:128
+msgid "Type"
+msgstr "Typ"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:130
+msgid "Runtime"
+msgstr "Körtid"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:188
+#, php-format
+msgid "Job ID: %d"
+msgstr "Jobb-ID: %d"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:190
+msgid "View"
+msgstr "Visa"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:209
+#, php-format
+msgid "1 ERROR"
+msgid_plural "%d ERRORS"
+msgstr[0] "1 FEL"
+msgstr[1] "%d FEL"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:211
+#, php-format
+msgid "1 WARNING"
+msgid_plural "%d WARNINGS"
+msgstr[0] "1 VARNING"
+msgstr[1] "%d VARNINGAR"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:213
+msgid "O.K."
+msgstr "O.K."
+
+# @ backwpup
+#: ../inc/class-page-logs.php:230
+msgid "Log only"
+msgstr "Endast logg"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:301 ../inc/class-admin.php:202
+msgid "Logs"
+msgstr "Loggar"
+
+# @ backwpup
+#: ../inc/class-page-logs.php:364
+#, php-format
+msgid "%s Logs"
+msgstr "%s Loggar"
+
+# @ backwpup
+#: ../inc/class-mysqldump.php:55
+msgid "No MySQLi extension found. Please install it."
+msgstr "Ingen MySQLi-utökning funnen. Vänligen installera denna."
+
+# @ backwpup
+#: ../inc/class-mysqldump.php:93
+msgid "Cannot init MySQLi database connection"
+msgstr "Kan ej initiera MySQLi databasanslutning"
+
+# @ backwpup
+#: ../inc/class-mysqldump.php:97
+#, php-format
+msgid "Setting of MySQLi init command \"%s\" failed"
+msgstr "MySQLi init kommando \"%s\" kunde inte sättas"
+
+# @ backwpup
+#: ../inc/class-mysqldump.php:101
+msgid "Setting of MySQLi connection timeout failed"
+msgstr "MySQLi-anslutningens tidsgräns kunde inte sättas"
+
+# @ backwpup
+#: ../inc/class-mysqldump.php:105
+#, php-format
+msgid "Cannot connect to MySQL database %1$d: %2$s"
+msgstr "Kan ej ansluta till MySQL-databas %1$d: %2$s"
+
+# @ backwpup
+#: ../inc/class-mysqldump.php:111
+#, php-format
+msgctxt "Database Charset"
+msgid "Cannot set DB charset to %s"
+msgstr "Kan ej sätta DB teckenuppsättning till %s"
+
+# @ backwpup
+#: ../inc/class-mysqldump.php:138
+msgid "Cannot open SQL backup file"
+msgstr "Kan ej öppna SQL backup-fil"
+
+# @ backwpup
+#: ../inc/class-mysqldump.php:144 ../inc/class-mysqldump.php:155
+#: ../inc/class-mysqldump.php:237 ../inc/class-mysqldump.php:250
+#: ../inc/class-mysqldump.php:264 ../inc/class-mysqldump.php:277
+#: ../inc/class-mysqldump.php:320 ../inc/class-mysqldump.php:342
+#: ../inc/class-mysqldump.php:404
+#, php-format
+msgid "Database error %1$s for query %2$s"
+msgstr "Databasfel %1$s för fråga %2$s"
+
+# @ backwpup
+#: ../inc/class-mysqldump.php:388
+#, php-format
+msgid "Start for table backup is not correctly set: %1$s "
+msgstr "Start för tabellbackup är ej korrekt satt: %1$s "
+
+# @ backwpup
+#: ../inc/class-mysqldump.php:392
+#, php-format
+msgid "Length for table backup is not correctly set: %1$s "
+msgstr "Längd för tabellbackup är ej korrekt satt: %1$s "
+
+# @ backwpup
+#: ../inc/class-mysqldump.php:460
+msgid "Error while writing file!"
+msgstr "Fel när fil skrevs!"
+
+# @ backwpup
+#: ../inc/class-admin.php:137
+msgid "Documentation"
+msgstr "Dokumentation"
+
+# @ backwpup
+#: ../inc/class-admin.php:154
+msgid "BackWPup Dashboard"
+msgstr "BackWPup Panel"
+
+# @ backwpup
+#: ../inc/class-admin.php:154
+msgid "Dashboard"
+msgstr "Panel"
+
+# @ backwpup
+#: ../inc/class-admin.php:171
+msgid "Jobs"
+msgstr "Jobb"
+
+# @ backwpup
+#: ../inc/class-admin.php:186
+msgid "Add new job"
+msgstr "Skapa nytt jobb"
+
+# @ backwpup
+#: ../inc/class-admin.php:217
+msgid "Backups"
+msgstr "Backuper"
+
+# @ backwpup
+#: ../inc/class-admin.php:232
+msgid "Settings"
+msgstr "Inställningar"
+
+# @ backwpup
+#: ../inc/class-admin.php:245
+msgid "About"
+msgstr "Om"
+
+# @ backwpup
+#: ../inc/class-admin.php:282 ../inc/class-admin.php:288
+msgid "Cheating, huh?"
+msgstr "Fuskar du, va?"
+
+# @ backwpup
+#: ../inc/class-admin.php:400
+msgid "http://marketpress.com"
+msgstr "http://marketpress.com"
+
+# @ backwpup
+#: ../inc/class-admin.php:400
+msgid "MarketPress"
+msgstr "MarketPress"
+
+# @ backwpup
+#: ../inc/class-admin.php:402
+#, php-format
+msgid "<a class=\"backwpup-get-pro\" href=\"%s\">Get BackWPup Pro now.</a>"
+msgstr "<a class=\"backwpup-get-pro\" href=\"%s\">Skaffa BackWPup Pro nu.</a>"
+
+# @ backwpup
+#: ../inc/class-admin.php:421
+#, php-format
+msgid "version %s"
+msgstr "version %s"
+
+# @ backwpup
+#: ../inc/class-admin.php:445 ../inc/class-admin.php:545
+msgid "BackWPup Role"
+msgstr "BackWPup Roll"
+
+# @ backwpup
+#: ../inc/class-admin.php:449
+msgid "&mdash; No role for BackWPup &mdash;"
+msgstr "&mdash; Ingen roll för BackWPup &mdash;"
+
+# @ backwpup
+#: ../inc/class-admin.php:459
+msgid "Role that the user have on BackWPup"
+msgstr "Roll användaren har för BackWPup"
+
+# @ backwpup
+#: ../inc/class-admin.php:509
+#, php-format
+msgid "<strong>Important:</strong> before updating, please <a href=\"%1$s\">back up your database and files</a> with <a href=\"http://marketpress.de/product/backwpup-pro/\">%2$s</a>. For help with updates, visit the <a href=\"http://codex.wordpress.org/Updating_WordPress\">Updating WordPress</a> Codex page."
+msgstr "<strong>Viktigt:</strong> innan du uppdaterar, vänligen <a href=\"%1$s\">ta backup på din databas och dina filer</a> med <a href=\"http://marketpress.de/product/backwpup-pro/\">%2$s</a>. För hjälp med uppdateringar, besök Codex-sidan <a href=\"http://codex.wordpress.org/Updating_WordPress\">Updating WordPress</a>."
+
+# @ backwpup
+#: ../inc/class-admin.php:512 ../inc/class-admin.php:515
+#, php-format
+msgid "<strong>Important:</strong> before installing this plugin, please <a href=\"%1$s\">back up your database and files</a> with <a href=\"http://marketpress.de/product/backwpup-pro/\">%2$s</a>."
+msgstr "<strong>Viktigt:</strong> innan du installerar detta tillägg, vänligen <a href=\"%1$s\">ta backup på din databas och dina filer</a> med <a href=\"http://marketpress.de/product/backwpup-pro/\">%2$s</a>."
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:13
+msgid "XML export"
+msgstr "XML-export"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:46
+msgid "Items to export"
+msgstr "Objekt att exportera"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:49
+msgid "All content"
+msgstr "Allt innehåll"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:50
+msgid "Posts"
+msgstr "Inlägg"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:51
+msgid "Pages"
+msgstr "Sidor"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:61
+msgid "XML Export file name"
+msgstr "Filnamn för XML-export"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:69
+msgid "File compression"
+msgstr "Filkomprimering"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:75 ../inc/class-jobtype-wpexp.php:77
+#: ../inc/class-jobtype-dbdump.php:105 ../inc/class-jobtype-dbdump.php:107
+msgid "GZip"
+msgstr "GZip"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:79 ../inc/class-jobtype-wpexp.php:81
+msgid "BZip2"
+msgstr "BZip2"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:111
+#, php-format
+msgid "%d. Trying to create a WordPress export to XML file&#160;&hellip;"
+msgstr "%d. Försöker skapa en WordPress XML-export-fil&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:126
+#, php-format
+msgid "WP Export: Post type “%s” does not allow export."
+msgstr "WP-export: Inläggstyp “%s” tillåter ej export."
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:171 ../inc/class-jobtype-wpexp.php:185
+#: ../inc/class-jobtype-wpexp.php:214 ../inc/class-jobtype-wpexp.php:235
+#: ../inc/class-jobtype-wpexp.php:268 ../inc/class-jobtype-wpexp.php:288
+#: ../inc/class-jobtype-wpexp.php:377 ../inc/class-jobtype-wpexp.php:386
+msgid "WP Export file could not written."
+msgstr "WP-exportfil kunde ej skrivas."
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:401
+msgid "Check WP Export file&#160;&hellip;"
+msgstr "Kontrollera WP-exportfil&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:421
+#, php-format
+msgid "XML WARNING (%s): %s"
+msgstr "XML VARNING (%s): %s"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:424
+#, php-format
+msgid "XML RECOVERABLE (%s): %s"
+msgstr "XML ÅTERHÄMTNINGSBART (%s): %s"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:427
+#, php-format
+msgid "XML ERROR (%s): %s"
+msgstr "XML FEL (%s): %s"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:437
+msgid "There was an error when reading this WXR file"
+msgstr "Ett fel uppstod vid läsning av denna WXR-fil"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:443 ../inc/class-jobtype-wpexp.php:450
+msgid "This does not appear to be a WXR file, missing/invalid WXR version number"
+msgstr "Detta verkar ej vara en WXR-fil, saknar/ogiltigt WXR versionsnummer"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:459
+msgid "WP Export file is a valid WXR file."
+msgstr "WP-exportfil är en giltig WXR-fil."
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:461
+msgid "WP Export file can not checked, because no XML extension loaded with the file can checked."
+msgstr "WP-exportfil kan ej kontrolleras, p.g.a. att inget XML-filltillägg laddat med filen kan kontrolleras."
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:473
+msgid "Compressing file&#160;&hellip;"
+msgstr "Komprimerar fil&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:480
+msgid "Compressing done."
+msgstr "Komprimering klar."
+
+# @ backwpup
+#: ../inc/class-jobtype-wpexp.php:501
+#, php-format
+msgid "Added XML export \"%1$s\" with %2$s to backup file list."
+msgstr "Lade till XML-export \"%1$s\" med %2$s till backup-fillista."
+
+# @ backwpup
+#: ../inc/class-job.php:180
+msgid "Starting job"
+msgstr "Påbörjar jobb"
+
+# @ backwpup
+#: ../inc/class-job.php:199
+msgid "Job Start"
+msgstr "Jobbstart"
+
+# @ backwpup
+#: ../inc/class-job.php:219
+msgid "Creates manifest file"
+msgstr "Skapar manifest-fil"
+
+# @ backwpup
+#: ../inc/class-job.php:238
+msgid "Creates archive"
+msgstr "Skapar arkiv"
+
+# @ backwpup
+#: ../inc/class-job.php:277
+msgid "End of Job"
+msgstr "Jobb Slut"
+
+# @ backwpup
+#: ../inc/class-job.php:287
+#, php-format
+msgid "BackWPup log for %1$s from %2$s at %3$s"
+msgstr "BackWPup-lobb för %1$s från %2$s vid %3$s"
+
+# @ backwpup
+#: ../inc/class-job.php:305
+#, php-format
+msgctxt "Plugin name; Plugin Version"
+msgid "[INFO] %1$s version %2$s; A project of Inpsyde GmbH"
+msgstr "[INFO] %1$s version %2$s; Ett projekt från Inpsyde GmbH"
+
+# @ backwpup
+#: ../inc/class-job.php:306
+#, php-format
+msgctxt "WordPress Version"
+msgid "[INFO] WordPress version %s"
+msgstr "[INFO] WordPress-version %s"
+
+# @ backwpup
+#: ../inc/class-job.php:307
+#, php-format
+msgid "[INFO] Blog url: %s"
+msgstr "[INFO] Blogg-url: %s"
+
+# @ backwpup
+#: ../inc/class-job.php:308
+#, php-format
+msgid "[INFO] BackWPup job: %1$s; %2$s"
+msgstr "[INFO] BackWPup-jobb: %1$s; %2$s"
+
+# @ backwpup
+#: ../inc/class-job.php:320
+msgid "Not scheduled!"
+msgstr "Ej schemalagt!"
+
+# @ backwpup
+#: ../inc/class-job.php:323
+#, php-format
+msgid "[INFO] BackWPup cron: %s; Next: %s "
+msgstr "[INFO] BackWPup cron: %s; Nästa: %s "
+
+# @ backwpup
+#: ../inc/class-job.php:326
+msgid "[INFO] BackWPup job start with link is active"
+msgstr "[INFO] BackWPup jobbstart via länk är aktivt"
+
+# @ backwpup
+#: ../inc/class-job.php:328
+msgid "[INFO] BackWPup no automatic job start configured"
+msgstr "[INFO] BackWPup ingen automatisk jobbstart är konfigurerad"
+
+# @ backwpup
+#: ../inc/class-job.php:330
+msgid "[INFO] BackWPup job started from wp-cron"
+msgstr "[INFO] BackWPup jobb startat från wp-cron"
+
+# @ backwpup
+#: ../inc/class-job.php:332
+msgid "[INFO] BackWPup job started manually"
+msgstr "[INFO] BackWPup jobb startat manuellt"
+
+# @ backwpup
+#: ../inc/class-job.php:334
+msgid "[INFO] BackWPup job started from external url"
+msgstr "[INFO] BackWPup jobb startat från extern url"
+
+# @ backwpup
+#: ../inc/class-job.php:336
+msgid "[INFO] BackWPup job started form commandline interface"
+msgstr "[INFO] BackWPup jobb startat från kommandorad"
+
+# @ backwpup
+#: ../inc/class-job.php:342
+msgid "[INFO] PHP ver.:"
+msgstr "[INFO] PHP-ver.:"
+
+# @ backwpup
+#: ../inc/class-job.php:343
+#, php-format
+msgid "[INFO] Maximum PHP script execution time is %1$d seconds"
+msgstr "[INFO] Maximal körtid för PHP-skript är %1$d sekunder"
+
+# @ backwpup
+#: ../inc/class-job.php:347
+#, php-format
+msgid "[INFO] Script restart time is configured to %1$d seconds"
+msgstr "[INFO] Tid för omstart av skript är konfigurerad till %1$d sekunder"
+
+# @ backwpup
+#: ../inc/class-job.php:350
+#, php-format
+msgid "[INFO] MySQL ver.: %s"
+msgstr "[INFO] MySQL-ver.: %s"
+
+# @ backwpup
+#: ../inc/class-job.php:352
+#, php-format
+msgid "[INFO] Web Server: %s"
+msgstr "[INFO] Webbserver: %s"
+
+# @ backwpup
+#: ../inc/class-job.php:355
+#, php-format
+msgid "[INFO] curl ver.: %1$s; %2$s"
+msgstr "[INFO] curl-ver.: %1$s; %2$s"
+
+# @ backwpup
+#: ../inc/class-job.php:357
+#, php-format
+msgid "[INFO] Temp folder is: %s"
+msgstr "[INFO] Temp-mapp är: %s"
+
+# @ backwpup
+#: ../inc/class-job.php:358
+#, php-format
+msgid "[INFO] Logfile is: %s"
+msgstr "[INFO] Loggfil är: %s"
+
+# @ backwpup
+#: ../inc/class-job.php:359
+#, php-format
+msgid "[INFO] Backup type is: %s"
+msgstr "[INFO] Backup-typ är: %s"
+
+# @ backwpup
+#: ../inc/class-job.php:361
+#, php-format
+msgid "[INFO] Backup file is: %s"
+msgstr "[INFO] Backup-fil är: %s"
+
+# @ backwpup
+#: ../inc/class-job.php:376
+msgid "No destination correctly defined for backup! Please correct job settings."
+msgstr "Inget mål har definierats korrekt för backupen! Vänligen åtgärda jobbinställningarna."
+
+# @ backwpup
+#: ../inc/class-job.php:552
+msgid "Wrong BackWPup JobID"
+msgstr "Fel BackWPup Jobb-ID"
+
+# @ backwpup
+#: ../inc/class-job.php:555
+msgid "Log folder does not exist or is not writable for BackWPup"
+msgstr "Logg-mappen existerar ej eller är ej skrivbar för BackWPup"
+
+# @ backwpup
+#: ../inc/class-job.php:557
+msgid "Temp folder does not exist or is not writable for BackWPup"
+msgstr "Temp-mappen existerar ej eller är ej skrivbar för BackWPup"
+
+# @ backwpup
+#: ../inc/class-job.php:560
+msgid "A BackWPup job is already running"
+msgstr "Ett BackWPup-jobb körs redan"
+
+# @ backwpup
+#: ../inc/class-job.php:563
+msgid "Job started"
+msgstr "Jobb påbörjat"
+
+# @ backwpup
+#: ../inc/class-job.php:637
+msgid "Job restarts due to inactivity for more than 5 minutes."
+msgstr "Jobb startas om p.g.a. längre än 5 minuters inaktivitet."
+
+# @ backwpup
+#: ../inc/class-job.php:727
+msgid "Step aborted: too many attempts!"
+msgstr "Steg skippas: för många försök!"
+
+# @ backwpup
+#: ../inc/class-job.php:808
+msgid "Restart will be executed now."
+msgstr "Omstart kommer att göras nu."
+
+# @ backwpup
+#: ../inc/class-job.php:842
+#, php-format
+msgid "Restart after %1$d seconds."
+msgstr "Starta om efter %1$d sekunder."
+
+# @ backwpup
+#: ../inc/class-job.php:969
+#, php-format
+msgid "Signal %d is sent to script!"
+msgstr "Signal %d skickas till skript!"
+
+# @ backwpup
+#: ../inc/class-job.php:994
+#, php-format
+msgid "Folder %1$s not allowed, please use another folder."
+msgstr "Mapp %1$s tillåts ej, vänligen använd en annan mapp."
+
+# @ backwpup
+#: ../inc/class-job.php:1000
+#, php-format
+msgid "Cannot create folder: %1$s"
+msgstr "Kan ej skapa mapp: %1$s"
+
+# @ backwpup
+#: ../inc/class-job.php:1007
+#, php-format
+msgid "Folder \"%1$s\" is not writable"
+msgstr "Mapp \"%1$s\" är ej skrivbar"
+
+# @ backwpup
+#: ../inc/class-job.php:1019
+msgid "BackWPup will not backup folders and subfolders when this file is inside."
+msgstr "BackWPup kommer ej att ta backup på mappar och undermappar när denna fil finns inuti."
+
+# @ backwpup
+#: ../inc/class-job.php:1031
+#, php-format
+msgid "Exception caught in %1$s: %2$s"
+msgstr "Undantag uppfångat i %1$s: %2$s"
+
+# @ backwpup
+#: ../inc/class-job.php:1088
+msgid "WARNING:"
+msgstr "VARNING:"
+
+# @ backwpup
+#: ../inc/class-job.php:1097
+msgid "ERROR:"
+msgstr "FEL:"
+
+# @ backwpup
+#: ../inc/class-job.php:1101
+msgid "DEPRECATED:"
+msgstr "TAGET UR BRUK:"
+
+# @ backwpup
+#: ../inc/class-job.php:1104
+msgid "STRICT NOTICE:"
+msgstr "STRIKT NOTIS:"
+
+# @ backwpup
+#: ../inc/class-job.php:1109
+msgid "RECOVERABLE ERROR:"
+msgstr "ÅTERHÄMTNINGSBART FEL:"
+
+# @ backwpup
+#: ../inc/class-job.php:1229
+msgid "Cannot write progress to working file. Job will be aborted."
+msgstr "Kan ej skriva förlopp till arbetsfil. Jobbet kommer att avbrytas."
+
+# @ backwpup
+#: ../inc/class-job.php:1247
+msgid "Aborted by user!"
+msgstr "Avbröts av användare!"
+
+# @ backwpup
+#: ../inc/class-job.php:1272
+#, php-format
+msgid "One old log deleted"
+msgid_plural "%d old logs deleted"
+msgstr[0] "En gammal loggfil borttagen"
+msgstr[1] "%d gamla loggfiler borttagna"
+
+# @ backwpup
+#: ../inc/class-job.php:1278
+#, php-format
+msgid "Job has ended with errors in %s seconds. You must resolve the errors for correct execution."
+msgstr "Jobb har avslutats med fel på %s sekunder. Du måste åtgärda felen för korrekt exekvering."
+
+# @ backwpup
+#: ../inc/class-job.php:1280
+#, php-format
+msgid "Job finished with warnings in %s seconds. Please resolve them for correct execution."
+msgstr "Jobb har slutförts med varningar på %s sekunder. Vänligen åtgärda varningarna för korrekt exekvering."
+
+# @ backwpup
+#: ../inc/class-job.php:1282
+#, php-format
+msgid "Job done in %s seconds."
+msgstr "Jobb slutfört på %s sekunder."
+
+# @ backwpup
+#: ../inc/class-job.php:1325
+msgid "SUCCESSFUL"
+msgstr "LYCKADES"
+
+# @ backwpup
+#: ../inc/class-job.php:1328
+msgid "WARNING"
+msgstr "VARNING"
+
+# @ backwpup
+#: ../inc/class-job.php:1332
+msgid "ERROR"
+msgstr "FEL"
+
+# @ backwpup
+#: ../inc/class-job.php:1336
+#, php-format
+msgid "[%3$s] BackWPup log %1$s: %2$s"
+msgstr "[%3$s] BackWPup logg %1$s: %2$s"
+
+# @ backwpup
+#: ../inc/class-job.php:1704
+#, php-format
+msgctxt "Folder name"
+msgid "Folder %s not exists"
+msgstr "Mapp %s existerar ej"
+
+# @ backwpup
+#: ../inc/class-job.php:1709
+#, php-format
+msgctxt "Folder name"
+msgid "Folder %s not readable"
+msgstr "Mapp %s är ej läsbar"
+
+# @ backwpup
+#: ../inc/class-job.php:1726
+#, php-format
+msgid "Link \"%s\" not following."
+msgstr "Länk \"%s\" är bruten."
+
+# @ backwpup
+#: ../inc/class-job.php:1728
+#, php-format
+msgid "File \"%s\" is not readable!"
+msgstr "Fil \"%s\" är ej läsbar!"
+
+# @ backwpup
+#: ../inc/class-job.php:1732
+#, php-format
+msgid "File size of “%s” cannot be retrieved. File might be too large and will not be added to queue."
+msgstr "Filstorlek på “%s” kan ej hämtas. Filen kan vara för stor och läggs därför ej till kön."
+
+# @ backwpup
+#: ../inc/class-job.php:1754
+#, php-format
+msgid "%d. Trying to generate a manifest file&#160;&hellip;"
+msgstr "%d. Försöker skapa en manifest-fil&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-job.php:1804
+msgid "You may have noticed the manifest.json file in this archive."
+msgstr "Du har kanske noterat filen manifest.json i detta arkiv."
+
+# @ backwpup
+#: ../inc/class-job.php:1805
+msgid "manifest.json might be needed for later restoring a backup from this archive."
+msgstr "manifest.json kan behövas senare för återställning av backup från detta arkiv."
+
+# @ backwpup
+#: ../inc/class-job.php:1806
+msgid "Please leave manifest.json untouched and in place. Otherwise it is safe to be ignored."
+msgstr "Vänligen lämna manifest.json på sin plats och orörd. I annat fall kan den säkert ignoreras."
+
+# @ backwpup
+#: ../inc/class-job.php:1819
+#, php-format
+msgid "Added manifest.json file with %1$s to backup file list."
+msgstr "Lade med %1$s filen manifest.json till backup-fillistan."
+
+# @ backwpup
+#: ../inc/class-job.php:1849
+#, php-format
+msgid "%d. Trying to create backup archive &hellip;"
+msgstr "%d. Försöker skapa backup-arkiv &hellip;"
+
+# @ backwpup
+#: ../inc/class-job.php:1856
+#, php-format
+msgctxt "Archive compression method"
+msgid "Compressing files as %s. Please be patient, this may take a moment."
+msgstr "Komprimerar filer som %s. Ha tålamod, detta kan ta en stund.."
+
+# @ backwpup
+#: ../inc/class-job.php:1870 ../inc/class-job.php:1919
+msgid "Cannot create backup archive correctly. Aborting creation."
+msgstr "Kan ej skapa backup-arkiv korrekt. Avbryter skapande."
+
+# @ backwpup
+#: ../inc/class-job.php:1916
+msgid "Aborting creation."
+msgstr "Avbryter skapande."
+
+# @ backwpup
+#: ../inc/class-job.php:1934
+msgid "Backup archive created."
+msgstr "Backup-arkiv skapat."
+
+# @ backwpup
+#: ../inc/class-job.php:1943
+#, php-format
+msgid "Archive size is %s."
+msgstr "Arkivstorlek är %s."
+
+# @ backwpup
+#: ../inc/class-job.php:1944
+#, php-format
+msgid "%1$d Files with %2$s in Archive."
+msgstr "%1$d Filer med %2$s i Arkiv."
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:25
+msgid "MS Azure access keys"
+msgstr "MS Azure åtkomstnycklar"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:29
+msgid "Account name"
+msgstr "Kontonamn"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:36
+msgid "Access key"
+msgstr "Åtkomstnyckel"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:44
+msgid "Blob container"
+msgstr "Blob-behållare"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:48
+msgid "Container selection"
+msgstr "Behållarval"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:60
+msgid "Create a new container"
+msgstr "Skapa en ny behållare"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:71
+msgid "Folder in container"
+msgstr "Mapp i behållare"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:125
+#, php-format
+msgid "MS Azure container \"%s\" created."
+msgstr "MS Azure-behållare \"%s\" skapad."
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:128
+#, php-format
+msgid "MS Azure container create: %s"
+msgstr "MS Azure-behållare skapad: %s"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:204
+#, php-format
+msgid "%d. Try sending backup to a Microsoft Azure (Blob)&#160;&hellip;"
+msgstr "%d. Försök skicka backupen till en Microsoft Azure (Blob)&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:226
+#, php-format
+msgid "MS Azure container \"%s\" does not exist!"
+msgstr "MS Azure-behållare \"%s\" existerar ej!"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:230
+#, php-format
+msgid "Connected to MS Azure container \"%s\"."
+msgstr "Ansluten till MS Azure-behållare \"%s\"."
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:233
+msgid "Starting upload to MS Azure&#160;&hellip;"
+msgstr "Påbörjar uppladdning till MS Azure&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:268
+#: ../inc/class-destination-dropbox.php:263
+#, php-format
+msgid "Backup transferred to %s"
+msgstr "Backup överförd till %s"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:273
+#: ../inc/class-destination-msazure.php:329
+#, php-format
+msgid "Microsoft Azure API: %s"
+msgstr "API för Microsoft Azure: %s"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:322
+#, php-format
+msgid "One file deleted on Microsoft Azure container."
+msgid_plural "%d files deleted on Microsoft Azure container."
+msgstr[0] "En fil borttagen från Microsoft Azure-behållare."
+msgstr[1] "%d filer borttagna från Microsoft Azure-behållare."
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:415
+msgid "Missing account name!"
+msgstr "Kontonamn saknas!"
+
+# @ backwpup
+#: ../inc/class-destination-msazure.php:421
+msgid "No container found!"
+msgstr "Ingen behållare hittades!"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:36
+#: ../inc/class-destination-dropbox.php:325
+#, php-format
+msgid "Dropbox API: %s"
+msgstr "API för Dropbox: %s"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:51
+msgid "Login"
+msgstr "Logga in"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:55
+msgid "Authentication"
+msgstr "Autentisering"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:57
+msgid "Not authenticated!"
+msgstr "Ej autentiserad!"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:58
+msgid "Create Account"
+msgstr "Skapa Konto"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:60
+msgid "Authenticated!"
+msgstr "Autentiserad!"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:61
+msgid "Delete Dropbox Authentication"
+msgstr "Ta bort Dropbox-autentisering"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:68
+msgid "App Access to Dropbox"
+msgstr "App-åtkomst till Dropbox"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:71
+msgid "Get Dropbox App auth code"
+msgstr "Skaffa Dropbox App-autentiseringskod"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:72
+msgid "Allows restricted access to Apps/BackWPup folder only."
+msgstr "Tillåter begränsad åtkomst till mappen Apps/BackWPup endast."
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:77
+msgid "— OR —"
+msgstr "— ELLER —"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:80
+msgid "Full Access to Dropbox"
+msgstr "Fullständig Åtkomst till Dropbox"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:82
+msgid "BackWPup will have full read and write access to your entire Dropbox. You can specify your backup destination wherever you want, just be aware that ANY files or folders inside of your Dropbox can be overridden or deleted by BackWPup."
+msgstr "BackWPup kommer att ha fullständiga läs- och skrivrättigheter till hela din Dropbox. Du kan specificera ditt backup-mål var du vill, var bara medveten om att ALLA filer och mappar i din Dropbox kan skrivas över eller tas bort av BackWPup."
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:83
+msgid "Get full Dropbox auth code "
+msgstr "Skaffa en fullständig autentiseringskod för Dropbox"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:84
+msgid "Allows full access to your entire Dropbox."
+msgstr "Tillåter full åtkomst till hela din Dropbox."
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:95
+msgid "Destination Folder"
+msgstr "Målmapp"
+
+# @ theme_hamburg_textdomain
+#: ../inc/class-destination-dropbox.php:98
+msgid "Folder inside your Dropbox where your backup archives will be stored."
+msgstr "Mapp i din Dropbox där dina backup-arkiv skall lagras."
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:225
+#, php-format
+msgid "%d. Try to send backup file to Dropbox&#160;&hellip;"
+msgstr "%d. Försök skicka backup-fil till Dropbox&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:243
+#, php-format
+msgid "Authenticated with Dropbox of user %s"
+msgstr "Autentiserad hos Dropbox som användare %s"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:246
+#, php-format
+msgid "%s available on your Dropbox"
+msgstr "%s tillgängligt i din Dropbox"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:248
+msgid "Not Authenticated with Dropbox!"
+msgstr "Ej Autentiserad hos Dropbox!"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:251
+msgid "Uploading to Dropbox&#160;&hellip;"
+msgstr "Laddar upp till Dropbox&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:267
+msgid "Uploaded file size and local file size don't match."
+msgstr "Uppladdad filstorlek och lokal filstorlek matchar ej."
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:271
+#, php-format
+msgid "Error transfering backup to %s."
+msgstr "Fel vid överföring av backup-fil %s."
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:316
+#, php-format
+msgid "Error while deleting file from Dropbox: %s"
+msgstr "Fel vid borttagning av fil från Dropbox: %s"
+
+# @ backwpup
+#: ../inc/class-destination-dropbox.php:319
+#, php-format
+msgid "One file deleted from Dropbox"
+msgid_plural "%d files deleted on Dropbox"
+msgstr[0] "En fil borttagen från Dropbox"
+msgstr[1] "%d filer borttagna från Dropbox"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:13
+msgid "DB Backup"
+msgstr "DB-backup"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:14
+msgid "Database backup"
+msgstr "Databas-backup"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:15
+msgid "Creates an .sql database backup file"
+msgstr "Skapar en .sql databas-backupfil"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:61
+msgid "Settings for database backup"
+msgstr "Inställningar för databas-backup"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:65
+msgid "Tables to backup"
+msgstr "Tabeller att ta backup på"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:67
+msgid "all"
+msgstr "alla"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:91
+msgid "Backup file name"
+msgstr "Filnamn för backup"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:99
+msgid "Backup file compression"
+msgstr "Komprimeringsmetod för backupfil"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:155
+#, php-format
+msgid "%d. Try to backup database&#160;&hellip;"
+msgstr "%d. Försök ta backup på databas&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:169
+#, php-format
+msgid "Connected to database %1$s on %2$s"
+msgstr "Ansluten till databas %1$s på %2$s"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:182
+msgid "No tables to backup."
+msgstr "Inga tabeller att ta backup på"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:204
+#, php-format
+msgid "Backup database table \"%s\" with \"%s\" records"
+msgstr "Ta backup på databastabell \"%s\" med \"%s\" poster"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:243
+msgid "MySQL backup file not created"
+msgstr "MySQL-backupfil skapades ej"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:249
+#, php-format
+msgid "Added database dump \"%1$s\" with %2$s to backup file list"
+msgstr "Lade till databasdumpning \"%1$s\" med %2$s till backup-fillista"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbdump.php:255
+msgid "Database backup done!"
+msgstr "Databas-backup klar!"
+
+# @ backwpup
+#: ../inc/class-adminbar.php:53
+msgid "running"
+msgstr "körs"
+
+# @ backwpup
+#: ../inc/class-adminbar.php:69
+msgid "Now Running"
+msgstr "Körs Nu"
+
+# @ backwpup
+#: ../inc/class-adminbar.php:75
+msgid "Abort!"
+msgstr "Avbryt!"
+
+# @ backwpup
+#: ../inc/class-adminbar.php:92
+msgid "Add new"
+msgstr "Lägg till nytt"
+
+# @ backwpup
+#: ../inc/class-adminbar.php:130
+msgid "Run Now"
+msgstr "Kör Nu"
+
+# @ backwpup
+#: ../inc/class-destination-s3-v1.php:249
+#, php-format
+msgid "Bucket %1$s created."
+msgstr "Hink %1$s skapad."
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:41
+msgid "Rack Space Cloud Keys"
+msgstr "Nycklar för Rack Space Cloud"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:52
+msgid "API Key"
+msgstr "API-nyckel"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:60
+msgid "Select region"
+msgstr "Välj region"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:64 ../inc/class-destination-rsc.php:66
+msgid "Rackspace Cloud Files Region"
+msgstr "Filregion för Rackspace Cloud Files"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:67
+msgid "Dallas (DFW)"
+msgstr "Dallas (DFW)"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:68
+msgid "Chicago (ORD)"
+msgstr "Chicago (ORD)"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:69
+msgid "Sydney (SYD)"
+msgstr "Sydney (SYD)"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:70
+msgid "London (LON)"
+msgstr "London (LON)"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:71
+msgid "Northern Virginia (IAD)"
+msgstr "Northern Virginia (IAD)"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:72
+msgid "Hong Kong (HKG)"
+msgstr "Hong Kong (HKG)"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:155
+#, php-format
+msgid "Rackspace Cloud container \"%s\" created."
+msgstr "Rackspace Cloud-behållare \"%s\" skapad."
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:159 ../inc/class-destination-rsc.php:267
+#: ../inc/class-destination-rsc.php:302 ../inc/class-destination-rsc.php:347
+#, php-format
+msgid "Rackspace Cloud API: %s"
+msgstr "API för Rackspace Cloud: %s"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:250
+#, php-format
+msgid "%d. Trying to send backup file to Rackspace cloud &hellip;"
+msgstr "%d. Försöker skicka backup-fil till Rackspace Cloud &hellip;"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:264
+#, php-format
+msgid "Connected to Rackspace cloud files container %s"
+msgstr "Ansluten till Rackspace Cloud Files behållare %s"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:276
+msgid "Upload to Rackspace cloud started &hellip;"
+msgstr "Uppladdning till Rackspace Cloud påbörjad &hellip;"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:292
+msgid "Backup File transferred to RSC://"
+msgstr "Backup-arkiv överfört till RSC://"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:296
+msgid "Cannot transfer backup to Rackspace cloud."
+msgstr "Kan ej överföra backup-fil till Rackspace Cloud."
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:341
+#, php-format
+msgid "One file deleted on Rackspace cloud container."
+msgid_plural "%d files deleted on Rackspace cloud container."
+msgstr[0] "En fil borttagen från Rackspace Cloud-behållare."
+msgstr[1] "%d filer borttagna från Rackspace Cloud-behållare."
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:444
+msgid "Missing username!"
+msgstr "Användarnamn saknas!"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:446
+msgid "Missing API Key!"
+msgstr "API-nyckel saknas!"
+
+# @ backwpup
+#: ../inc/class-destination-rsc.php:450
+msgid "A container could not be found!"
+msgstr "Ingen behållare kunde hittas!"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:13
+msgid "DB Check"
+msgstr "DB-kontroll"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:14
+msgid "Check database tables"
+msgstr "Kontroll av databastabeller"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:35
+msgid "Settings for database check"
+msgstr "Inställningar för databaskontroll"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:39
+msgid "WordPress tables only"
+msgstr "Endast WordPress-tabeller"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:44
+msgid "Check WordPress database tables only"
+msgstr "Kontrollera endast WordPress databastabeller"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:49
+msgid "Repair"
+msgstr "Reparera"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:54
+msgid "Try to repair defect table"
+msgstr "Försök reparera skadad tabell"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:79
+#, php-format
+msgid "%d. Trying to check database&#160;&hellip;"
+msgstr "%d. Försöker kontrollera databas&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:111
+#, php-format
+msgid "Table %1$s is a view. Not checked."
+msgstr "Tabell %1$s är en vy. Ej kontrollerad."
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:116
+#, php-format
+msgid "Table %1$s is not a MyISAM/InnoDB table. Not checked."
+msgstr "Tabell %1$s är ingen MyISAM/InnoDB-tabell. Ej kontrollerad."
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:123 ../inc/class-jobtype-dbcheck.php:125
+#: ../inc/class-jobtype-dbcheck.php:127
+#, php-format
+msgid "Result of table check for %1$s is: %2$s"
+msgstr "Resultat av tabellkontroll för %1$s är: %2$s"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:133 ../inc/class-jobtype-dbcheck.php:135
+#: ../inc/class-jobtype-dbcheck.php:137
+#, php-format
+msgid "Result of table repair for %1$s is: %2$s"
+msgstr "Resultat av tabellreparation för %1$s är: %2$s"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:142
+msgid "Database check done!"
+msgstr "Databaskontroll klar!"
+
+# @ backwpup
+#: ../inc/class-jobtype-dbcheck.php:145
+msgid "No tables to check."
+msgstr "Inga tabeller att kontrollera."
+
+# @ backwpup
+#: ../inc/class-page-settings.php:60
+msgid "Settings reset to default"
+msgstr "Inställningar återställda till förvalda."
+
+# @ backwpup
+#: ../inc/class-page-settings.php:101
+msgid "Settings saved"
+msgstr "Inställningar sparade"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:112
+#, php-format
+msgid "%s Settings"
+msgstr "%s Inställningar"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:114 ../inc/class-page-editjob.php:386
+msgid "General"
+msgstr "Generellt"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:114
+msgid "Network"
+msgstr "Nätverk"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:114
+msgid "API Keys"
+msgstr "API-nycklar"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:114
+msgid "Information"
+msgstr "Information"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:131
+msgid "Display Settings"
+msgstr "Visningsinställningar"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:132
+msgid "Do you want to see BackWPup in the WordPress admin bar?"
+msgstr "Vill du se BackWPup i WordPress verktygsrad?"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:135
+msgid "Admin bar"
+msgstr "Verktygsrad"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:138
+msgid "Admin Bar"
+msgstr "Verktygsrad"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:143
+msgid "Show BackWPup links in admin bar."
+msgstr "Visa BackWPup-länkar i verktygsraden."
+
+# @ backwpup
+#: ../inc/class-page-settings.php:148 ../inc/class-page-settings.php:151
+msgid "Folder sizes"
+msgstr "Mappstorlekar"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:156
+msgid "Display folder sizes in the files tab when editing a job. (Might increase loading time of files tab.)"
+msgstr "Visa mappstorlekar i filtabben när ett jobb redigeras (kan öka laddningstiden för filtabben). "
+
+# @ backwpup
+#: ../inc/class-page-settings.php:161
+msgid "Security"
+msgstr "Säkerhet"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:162
+msgid "Security option for BackWPup"
+msgstr "Säkerhetsalternativ för BackWPup"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:165 ../inc/class-page-settings.php:168
+msgid "Protect folders"
+msgstr "Projektmappar"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:173
+msgid "Protect BackWPup folders ( Temp, Log and Backups ) with <code>.htaccess</code> and <code>index.php</code>"
+msgstr "Skydda BackWPup-mappar (Temp, Log och Backups) med <code>.htaccess</code> och <code>index.php</code>"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:186
+msgid "Every time BackWPup runs a backup job, a log file is being generated. Choose where to store your log files and how many of them."
+msgstr "Varje gång BackWPup kör ett backup-jobb så genereras en loggfil. Välj var dina loggfiler skall lagras, samt hur många."
+
+# @ backwpup
+#: ../inc/class-page-settings.php:189
+msgid "Log file folder"
+msgstr "Loggfilsmapp"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:197
+msgid "Maximum number of log files in folder"
+msgstr "Maximalt antal loggfiler i mapp"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:205 ../inc/class-page-settings.php:208
+msgid "Compression"
+msgstr "Komprimering"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:213
+msgid "Compress log files with GZip."
+msgstr "Komprimera loggfiler med Gzip."
+
+# @ backwpup
+#: ../inc/class-page-settings.php:222
+msgid "There are a couple of general options for backup jobs. Set them here."
+msgstr "Det finns några generella alternativ för backup-jobb. Gör dessa val här."
+
+# @ backwpup
+#: ../inc/class-page-settings.php:226
+msgid "Maximum number of retries for job steps"
+msgstr "Maximalt antal försök för jobbsteg"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:234
+msgid "Maximum script execution time"
+msgstr "Maximal skriptkörningstid"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:237
+msgid "Maximum PHP Script execution time"
+msgstr "Maximal körningstid för PHP-skript"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:242
+msgid "seconds. 0 = disabled."
+msgstr "sekunder. 0 = deaktiverat."
+
+# @ backwpup
+#: ../inc/class-page-settings.php:248 ../inc/class-page-settings.php:251
+msgid "Method for creating ZIP-file archives"
+msgstr "Metod för att skapa ZIP-arkivfiler"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:255
+msgid "Auto"
+msgstr "Auto"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:256
+msgid "ZipArchive"
+msgstr "ZipArchive"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:257
+msgid "PclZip"
+msgstr "PclZip"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:265
+msgid "Key to start jobs externally with an URL"
+msgstr "Nyckel för att starta jobb externt via en URL"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:273
+msgid "No translation"
+msgstr "Ingen översättning"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:276
+msgid "No Translation"
+msgstr "Ingen Översättning"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:281
+msgid "No translation for the job, the log will be written in English"
+msgstr "Ingen översättning av jobbet. Loggen kommer att skrivas på Engelska"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:287 ../inc/class-page-settings.php:290
+msgid "Reduce server load"
+msgstr "Reducera serverbelastning"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:294
+msgid "disabled"
+msgstr "deaktiverat"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:295
+msgid "minimum"
+msgstr "minimum"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:296
+msgid "medium"
+msgstr "medium"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:297
+msgid "maximum"
+msgstr "maximum"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:310
+msgid "Is your blog protected with HTTP basic authentication (.htaccess)? If yes, please set the username and password for authentication here."
+msgstr "Är din blogg skyddad med standard HTTP-autentisering (.htaccess)? Om ja, vänligen ange användarnamn och lösenord för autentisering här."
+
+# @ backwpup
+#: ../inc/class-page-settings.php:313
+msgid "Username:"
+msgstr "Användarnamn:"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:321 ../inc/class-destination-sugarsync.php:34
+msgid "Password:"
+msgstr "Lösenord:"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:341 ../inc/class-page-settings.php:342
+msgid "Setting"
+msgstr "Inställning"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:341 ../inc/class-page-settings.php:342
+msgid "Value"
+msgstr "Värde"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:343
+msgid "WordPress version"
+msgstr "WordPress-version"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:345
+msgid "BackWPup version"
+msgstr "BackWPup-version"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:345
+msgid "Get pro."
+msgstr "Skaffa pro."
+
+# @ backwpup
+#: ../inc/class-page-settings.php:347
+msgid "BackWPup Pro version"
+msgstr "BackWPup Pro-version"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:348
+msgid "PHP version"
+msgstr "PHP-version"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:349
+msgid "MySQL version"
+msgstr "MySQL-version"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:352 ../inc/class-page-settings.php:356
+msgid "cURL version"
+msgstr "cURL-version"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:353
+msgid "cURL SSL version"
+msgstr "cURL SSL-version"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:356
+msgid "unavailable"
+msgstr "ej tillgänglig"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:358
+msgid "WP-Cron url:"
+msgstr "WP-Cron url:"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:360
+msgid "Server self connect:"
+msgstr "Server självanslutning:"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:364 ../inc/class-page-jobs.php:347
+#, php-format
+msgid "The HTTP response test get an error \"%s\""
+msgstr "HTTP-svarstestet resulterade i följande fel \"%s\""
+
+# @ backwpup
+#: ../inc/class-page-settings.php:366 ../inc/class-page-jobs.php:349
+#, php-format
+msgid "The HTTP response test get a false http status (%s)"
+msgstr "En falsk http-status mottogs vid HTTP-svarstestet (%s)"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:369
+#: ../inc/pro/class-wizard-systemtest.php:180
+#, php-format
+msgid "The BackWPup HTTP response header returns a false value: \"%s\""
+msgstr "BackWPup:s HTTP-svarshuvud returnerar ett falskt värde: \"%s\""
+
+# @ backwpup
+#: ../inc/class-page-settings.php:372
+msgid "Response Test O.K."
+msgstr "Svarstest O.K."
+
+# @ backwpup
+#: ../inc/class-page-settings.php:377
+msgid "Temp folder:"
+msgstr "Temp-mapp:"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:379
+#, php-format
+msgid "Temp folder %s doesn't exist."
+msgstr "Temp-mapp %s existerar ej."
+
+# @ backwpup
+#: ../inc/class-page-settings.php:381
+#, php-format
+msgid "Temporary folder %s is not writable."
+msgstr "Temporär mapp %s är ej skrivbar."
+
+# @ backwpup
+#: ../inc/class-page-settings.php:386
+msgid "Log folder:"
+msgstr "Logg-mapp:"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:388
+#, php-format
+msgid "Logs folder %s not exist."
+msgstr "Logg-mapp %s existerar ej."
+
+# @ backwpup
+#: ../inc/class-page-settings.php:390
+#, php-format
+msgid "Log folder %s is not writable."
+msgstr "Logg-mapp %s är ej skrivbar."
+
+# @ backwpup
+#: ../inc/class-page-settings.php:394
+msgid "Server"
+msgstr "Server"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:395
+msgid "Operating System"
+msgstr "Operativsystem"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:396
+msgid "PHP SAPI"
+msgstr "PHP SAPI"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:397
+msgid "Current PHP user"
+msgstr "Nuvarande PHP-användare"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:398 ../inc/class-page-settings.php:402
+#: ../inc/class-page-settings.php:406
+msgid "On"
+msgstr "På"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:398 ../inc/class-page-settings.php:404
+#: ../inc/class-page-settings.php:408
+msgid "Off"
+msgstr "Av"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:399
+msgid "Safe Mode"
+msgstr "Felsäkert läge"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:400
+msgid "Maximum execution time"
+msgstr "Maximal exekveringstid"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:402 ../inc/class-page-settings.php:404
+msgid "Alternative WP Cron"
+msgstr "Alternativ WP Cron"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:406 ../inc/class-page-settings.php:408
+msgid "Disabled WP Cron"
+msgstr "Deaktiverad WP Cron"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:410 ../inc/class-page-settings.php:412
+msgid "CHMOD Dir"
+msgstr "CHMOD Katalog"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:414
+msgid "Server Time"
+msgstr "Servertid"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:415
+msgid "Blog Time"
+msgstr "Bloggtid"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:416
+msgid "Blog Timezone"
+msgstr "Bloggens Tidszon"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:417
+msgid "Blog Time offset"
+msgstr "Bloggens Tidsutjämning"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:417
+#, php-format
+msgid "%s hours"
+msgstr "%s timmar"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:418
+msgid "Blog language"
+msgstr "Bloggspråk"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:419
+msgid "MySQL Client encoding"
+msgstr "MySQL Klientkodning"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:422
+msgid "Blog charset"
+msgstr "Bloggens teckenuppsättning"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:423
+msgid "PHP Memory limit"
+msgstr "PHP Minnesgräns"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:424
+msgid "WP memory limit"
+msgstr "WP minnesgräns"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:425
+msgid "WP maximum memory limit"
+msgstr "WP maximal minnesanvändning"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:426
+msgid "Memory in use"
+msgstr "Minne som används"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:431
+msgid "Disabled PHP Functions:"
+msgstr "Deaktiverade PHP-funktioner:"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:436
+msgid "Loaded PHP Extensions:"
+msgstr "Laddade PHP-utökningar:"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:448
+msgid "Save Changes"
+msgstr "Spara Ändringar"
+
+# @ backwpup
+#: ../inc/class-page-settings.php:450
+msgid "Reset all settings to default"
+msgstr "Återställ alla inställningar till förvalda"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:37
+msgid "Overview"
+msgstr "Översikt"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:102
+#, php-format
+msgid "Job with ID %d"
+msgstr "Jobb med ID %d"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:191
+#, php-format
+msgid "Changes for job <i>%s</i> saved."
+msgstr "Ändringar i jobb <i>%s</i> sparade."
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:192
+msgid "Jobs overview"
+msgstr "Jobböversikt"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:192 ../inc/class-page-jobs.php:117
+msgid "Run now"
+msgstr "Kör nu"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:331
+msgid "Working as <a href=\"http://wikipedia.org/wiki/Cron\">Cron</a> schedule:"
+msgstr "Arbetar som <a href=\"http://wikipedia.org/wiki/Cron\">Cron</a> tidsplan:"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:340
+#, php-format
+msgid "ATTENTION: Job runs every %d minutes!"
+msgstr "OBSERVERA: Jobb körs med %d minuters intervall!"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:346
+#, php-format
+msgid "ATTENTION: Job runs every %d hours!"
+msgstr "OBSERVERA: Jobb körs med %d timmars intervall!"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:350
+msgid "ATTENTION: Can't calculate cron!"
+msgstr "OBSERVERA: Kan ej beräkna cron!"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:353
+msgid "Next runtime:"
+msgstr "Nästa körtid:"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:386
+msgid "Schedule"
+msgstr "Tidsplan"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:401
+#, php-format
+msgid "To: %s"
+msgstr "Till: %s"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:407
+#, php-format
+msgid "%s Job:"
+msgstr "%s Jobb: "
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:434 ../inc/class-page-jobs.php:76
+msgid "Job Name"
+msgstr "Jobbnamn"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:438
+msgid "Please name this job."
+msgstr "Vänligen namnge detta jobb."
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:446
+msgid "Job Tasks"
+msgstr "Jobbets Arbetsuppgifter"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:450
+msgid "This job is a&#160;&hellip;"
+msgstr "Detta jobb är en&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:453
+msgid "Job tasks"
+msgstr "Jobbets arbetsuppgifter"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:471
+msgid "Backup File Creation"
+msgstr "Skapande Av Backup-fil"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:476 ../inc/class-page-editjob.php:479
+msgid "Backup type"
+msgstr "Backup-typ"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:483
+msgid "Synchronize file by file to destination"
+msgstr "Synkronisera fil för fil med mål"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:487
+msgid "Create a backup archive"
+msgstr "Skapa backup-arkiv"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:493
+msgid "Archive name"
+msgstr "Arkivnamn"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:525 ../inc/class-page-editjob.php:528
+msgid "Archive Format"
+msgstr "Arkivformat"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:531
+msgid "PHP Zip functions will be used if available (needs less memory). Otherwise the PCLZip class will be used."
+msgstr "PHP Zip-funktioner kommer att användas om tillgängliga (kräver mindre minne). I annat fall kommer PCLZip-klassen att användas."
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:531 ../inc/class-page-editjob.php:533
+msgid "Zip"
+msgstr "Zip"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:533 ../inc/class-page-editjob.php:538
+#: ../inc/class-page-editjob.php:542
+msgid "Disabled due to missing PHP function."
+msgstr "Deaktiverat p.g.a. saknad PHP-funktion."
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:534
+msgid "A tarballed, not compressed archive (fast and less memory)"
+msgstr "Ett Tar-arkiv, ej komprimerat (snabbt och mindre minneskrävande)"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:534
+msgid "Tar"
+msgstr "Tar"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:536
+msgid "A tarballed, GZipped archive (fast and less memory)"
+msgstr "Ett Tar Gz-arkiv (snabbt och mindre minneskrävande)"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:536 ../inc/class-page-editjob.php:538
+msgid "Tar GZip"
+msgstr "Tar GZip"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:540
+msgid "A tarballed, BZipped archive (fast and less memory)"
+msgstr "Ett Tar Bz-arkiv (snabbt och mindre minneskrävande)"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:540 ../inc/class-page-editjob.php:542
+msgid "Tar BZip2"
+msgstr "Tar BZip2"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:548
+msgid "Job Destination"
+msgstr "Jobbmål"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:552 ../inc/class-page-editjob.php:555
+msgid "Where should your backup file be stored?"
+msgstr "Var skall dina backup-filer lagras?"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:576
+msgid "Log Files"
+msgstr "Loggfiler"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:580
+msgid "Send log to email address"
+msgstr "Skicka logg till e-postadress"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:588
+msgid "Email FROM field"
+msgstr "E-postmeddelandets FRÅN-fält"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:596
+msgid "Errors only"
+msgstr "Endast fel"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:601
+msgid "Send email with log only when errors occur during job execution."
+msgstr "Skicka e-post med logg endast om fel uppstår under jobbkörning."
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:612
+msgid "Job Schedule"
+msgstr "Jobbtidsplan"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:616 ../inc/class-page-editjob.php:619
+msgid "Start job"
+msgstr "Starta jobb"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:623
+msgid "manually only"
+msgstr "endast manuellt"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:627
+msgid "with WordPress cron"
+msgstr "med WordPress cron"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:634
+msgid "with a link"
+msgstr "via en länk"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:640
+msgid "Start job with CLI"
+msgstr "Starta jobb med CLI"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:643
+#, php-format
+msgid "Use <a href=\"http://wp-cli.org/\">WP-CLI</a> to run jobs from commandline or <a href=\"%s\">get the start script</a>."
+msgstr "Använd <a href=\"http://wp-cli.org/\">WP-CLI</a> för att köra jobb från kommandoraden eller <a href=\"%s\">hämta detta start-skript</a>."
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:648
+msgid "Schedule execution time"
+msgstr "Schemalägg körtid"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:652 ../inc/class-page-editjob.php:655
+msgid "Scheduler type"
+msgstr "Typ av schemaläggare"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:659
+msgid "basic"
+msgstr "enkel"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:663
+msgid "advanced"
+msgstr "avancerad"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:692 ../inc/class-page-editjob.php:760
+msgid "Scheduler"
+msgstr "Schemaläggare"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:702
+msgid "Hour"
+msgstr "Timme"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:705
+msgid "Minute"
+msgstr "Minut"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:709
+msgid "monthly"
+msgstr "månatlig"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:711
+msgid "on"
+msgstr "på"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:721
+msgid "weekly"
+msgstr "veckolig"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:723 ../inc/class-page-editjob.php:830
+msgid "Sunday"
+msgstr "Söndag"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:724 ../inc/class-page-editjob.php:831
+msgid "Monday"
+msgstr "Måndag"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:725 ../inc/class-page-editjob.php:832
+msgid "Tuesday"
+msgstr "Tisdag"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:726 ../inc/class-page-editjob.php:833
+msgid "Wednesday"
+msgstr "Onsdag"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:727 ../inc/class-page-editjob.php:834
+msgid "Thursday"
+msgstr "Torsdag"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:728 ../inc/class-page-editjob.php:835
+msgid "Friday"
+msgstr "Fredag"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:729 ../inc/class-page-editjob.php:836
+msgid "Saturday"
+msgstr "Lördag"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:739
+msgid "daily"
+msgstr "dagligen"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:749
+msgid "hourly"
+msgstr "timvis"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:763
+msgid "Minutes:"
+msgstr "Minuter:"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:765 ../inc/class-page-editjob.php:778
+#: ../inc/class-page-editjob.php:790 ../inc/class-page-editjob.php:804
+#: ../inc/class-page-editjob.php:826
+msgid "Any (*)"
+msgstr "Alla (*)"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:775
+msgid "Hours:"
+msgstr "Timmar:"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:788
+msgid "Day of Month:"
+msgstr "Dag i Månad:"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:802
+msgid "Month:"
+msgstr "Månad:"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:808
+msgid "January"
+msgstr "Januari"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:809
+msgid "February"
+msgstr "Februari"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:810
+msgid "March"
+msgstr "Mars"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:811
+msgid "April"
+msgstr "April"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:812
+msgid "May"
+msgstr "Maj"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:813
+msgid "June"
+msgstr "Juni"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:814
+msgid "July"
+msgstr "Juli"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:815
+msgid "August"
+msgstr "Augusti"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:816
+msgid "September"
+msgstr "September"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:817
+msgid "October"
+msgstr "Oktober"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:818
+msgid "November"
+msgstr "November"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:819
+msgid "December"
+msgstr "December"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:824
+msgid "Day of Week:"
+msgstr "Veckodag:"
+
+# @ backwpup
+#: ../inc/class-page-editjob.php:860
+msgid "Save changes"
+msgstr "Spara ändringar"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpplugin.php:13
+msgid "Plugins"
+msgstr "Tillägg"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpplugin.php:14
+msgid "Installed plugins list"
+msgstr "Lista över installerade tillägg"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpplugin.php:45
+msgid "Plugin list file name"
+msgstr "Tilläggslistans filnamn"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpplugin.php:93
+#, php-format
+msgid "%d. Trying to generate a file with installed plugin names&#160;&hellip;"
+msgstr "%d. Föröker generera en fil med namn på installerade tillägg&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpplugin.php:120
+msgid "All plugin information:"
+msgstr "Information om alla tillägg:"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpplugin.php:122
+#, php-format
+msgid "from %s"
+msgstr "från %s"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpplugin.php:124
+msgid "Active plugins:"
+msgstr "Aktiva tillägg:"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpplugin.php:130
+msgid "Inactive plugins:"
+msgstr "Inaktiva tillägg:"
+
+# @ backwpup
+#: ../inc/class-jobtype-wpplugin.php:142
+#, php-format
+msgid "Added plugin list file \"%1$s\" with %2$s to backup file list."
+msgstr "Lade till lista över tillägg \"%1$s\" med %2$s till fillista för backup."
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:22
+msgid "Sugarsync Login"
+msgstr "SugarSync Inloggning"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:30
+msgid "Email address:"
+msgstr "E-postadress:"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:40
+#: ../inc/class-destination-sugarsync.php:121
+msgid "Authenticate with Sugarsync!"
+msgstr "Autentisera med SugarSync!"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:42
+#: ../inc/class-destination-sugarsync.php:137
+msgid "Create Sugarsync account"
+msgstr "Skapa SugarSync-konto"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:51
+#: ../inc/class-destination-sugarsync.php:133
+msgid "Delete Sugarsync authentication!"
+msgstr "Ta bort SugarSync autentisering!"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:57
+msgid "SugarSync Root"
+msgstr "SugarSync-rot"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:61
+msgid "Sync folder selection"
+msgstr "Synka mappval"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:69
+msgid "No Syncfolders found!"
+msgstr "Inga Synkmappar hittades!"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:90
+msgid "Folder in root"
+msgstr "Mapp i rot"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:227
+#, php-format
+msgid "%d. Try to send backup to SugarSync&#160;&hellip;"
+msgstr "%d. Försök skicka backup-fil till SugarSync&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:234
+#, php-format
+msgid "Authenticated to SugarSync with nickname %s"
+msgstr "Autentiserad hos SugarSync med smeknamn %s"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:237
+#, php-format
+msgctxt "Available space on SugarSync"
+msgid "Not enough disk space available on SugarSync. Available: %s."
+msgstr "Ej tillräckligt med diskutrymme tillgängligt hos SugarSync. Tillgängligt: %s."
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:243
+#, php-format
+msgid "%s available at SugarSync"
+msgstr "%s tillgängligt hos SugarSync"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:250
+msgid "Starting upload to SugarSync&#160;&hellip;"
+msgstr "Påbörjar uppladdning till SugarSync&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:260
+msgid "Cannot transfer backup to SugarSync!"
+msgstr "Kan ej överföra backkup-filen till SugarSync!"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:299
+#, php-format
+msgid "One file deleted on SugarSync folder"
+msgid_plural "%d files deleted on SugarSync folder"
+msgstr[0] "En fil borttagen från SugarSync-mapp"
+msgstr[1] "%d filer borttagna från SugarSync-mapp"
+
+# @ backwpup
+#: ../inc/class-destination-sugarsync.php:305
+#, php-format
+msgid "SugarSync API: %s"
+msgstr "API för SugarSync: %s"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:52
+msgid "No Jobs."
+msgstr "Inga Jobb."
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:78
+msgid "Destinations"
+msgstr "Målmappar"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:79
+msgid "Next Run"
+msgstr "Nästa Körning"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:80
+msgid "Last Run"
+msgstr "Senaste Körning"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:111
+msgid "Edit"
+msgstr "Redigera"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:112
+msgid "Copy"
+msgstr "Kopiera"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:123
+msgid "Last log"
+msgstr "Senaste logg"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:185
+msgid "Not needed or set"
+msgstr "Ej behövd eller satt"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:207
+#, php-format
+msgid "Running for: %s seconds"
+msgstr "Körtid hittils: %s sekunder"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:213
+#, php-format
+msgid "Cron: %s"
+msgstr "Cron: %s"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:213
+#, php-format
+msgid "%1$s at %2$s by WP-Cron"
+msgstr "%1$s vid %2$s med WP-Cron"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:218
+msgid "Inactive"
+msgstr "Inaktiv"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:240
+#, php-format
+msgid "Runtime: %d seconds"
+msgstr "Körtid: %d sekunder"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:243
+msgid "not yet"
+msgstr "inte än"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:247
+msgid "Download last backup"
+msgstr "Ladda ned den senaste backupen"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:252
+msgid "Log"
+msgstr "Logg"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:295
+msgid "Copy of"
+msgstr "Kopia av"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:367
+#, php-format
+msgid "Job “%s” has started, but not responded for 10 seconds."
+msgstr "Jobb “%s” har påbörjats, men har ej svarat på 10 sekunder."
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:372
+#, php-format
+msgid "Job \"%s\" started."
+msgstr "Jobb \"%s\" har påbörjats."
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:497
+#, php-format
+msgid "%s Jobs"
+msgstr "%s Jobb"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:517
+#, php-format
+msgid "Job currently running: %s"
+msgstr "Jobb som körs just nu: %s"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:518
+msgid "Warnings:"
+msgstr "Varningar:"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:519
+msgid "Errors:"
+msgstr "Fel:"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:520
+msgid "Log of running job"
+msgstr "Logg för jobb som körs just nu"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:520
+msgid "Display working log"
+msgstr "Visa arbetslogg"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:521 ../inc/class-page-backwpup.php:349
+msgid "Abort"
+msgstr "Avbryt"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:522
+msgid "Close working screen"
+msgstr "Stäng arbetsskärm"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:522
+msgid "close"
+msgstr "stäng"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:672
+msgid "Job completed"
+msgstr "Jobb slutfört"
+
+# @ backwpup
+#: ../inc/class-page-jobs.php:676
+#, php-format
+msgid "Job has done with warnings in %s seconds. Please resolve them for correct execution."
+msgstr "Jobb slutfört med varningar på %s sekunder. Vänligen åtgärda varningarna för korrekt exekvering."
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:67
+#, php-format
+msgid "%s Dashboard"
+msgstr "%s Panel"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:74 ../inc/class-page-backwpup.php:83
+msgctxt "Dashboard heading"
+msgid "Planning backups"
+msgstr "Planering av backuper"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:75 ../inc/class-page-backwpup.php:84
+msgid "Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server."
+msgstr "Använd dina backup-arkiv för att spara hela din WordPress-installation inklusive <code>/wp-content/</code>. Spara dem till en extern lagringstjänst om du inte vill lagra backuperna på samma server."
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:76 ../inc/class-page-backwpup.php:85
+msgctxt "Dashboard heading"
+msgid "Restoring backups"
+msgstr "Återställning av backuper"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:77 ../inc/class-page-backwpup.php:86
+msgid "With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin or a plugin like <a href=\"http://wordpress.org/plugins/adminer/\" target=\"_blank\">Adminer</a> to restore your database backup files."
+msgstr "Du kan återställa en installation från ett enskilt backup-arkiv. Använd et verktyg som phpMyAdmin eller ett tillägg som <a href=\"http://wordpress.org/plugins/adminer/\" target=\"_blank\">Adminer</a> för att återställa dina databas-backupfiler."
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:78 ../inc/class-page-backwpup.php:87
+msgctxt "Dashboard heading"
+msgid "Ready to set up a backup job?"
+msgstr "Redo att konfigurera ett backup-jobb?"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:79
+#, php-format
+msgid "Use one of the wizards to plan a backup, or use <a href=\"%s\">expert mode</a> for full control over all options."
+msgstr "Använd en av guiderna för att planera en backup, eller använd <a href=\"%s\">expertläget</a> för full kontroll över alla alternativ."
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:79 ../inc/class-page-backwpup.php:89
+msgid "<strong>Please note: You are solely responsible for the security of your data; the authors of this plugin are not.</strong>"
+msgstr "<strong>Observera: Du är själv ansvarig för din datas säkerhet; skaparna av detta tillägg är det ej.</strong>"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:84
+msgid "Use the short links in the <strong>First steps</strong> box to plan and schedule backup jobs."
+msgstr "Använd de korta länkarna i rutan <strong>Börja här</strong> för att planera och schemalägga backup-jobb."
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:88
+#, php-format
+msgid "<a href=\"%s\">Add a new backup job</a> and plan what you want to save."
+msgstr "<a href=\"%s\">Lägg till ett nytt backup-jobb</a> och planera vad du vill spara."
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:96
+msgid "First Steps"
+msgstr "Börja Här"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:100
+msgid "Test the installation"
+msgstr "Testa installationen"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:101 ../inc/class-page-backwpup.php:104
+msgid "Create a Job"
+msgstr "Skapa ett Jobb"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:103
+msgid "Check the installation"
+msgstr "Kontrollera installationen"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:106
+msgid "Run the created job"
+msgstr "Kör det skapade jobbet"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:107
+msgid "Check the job log"
+msgstr "Kontrollera jobb-loggen"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:115
+msgid "One click backup"
+msgstr "Backup på ett klick"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:117
+msgid "Generate a database backup of WordPress tables and download it right away!"
+msgstr "Generera en databas-backup av WordPress tabeller och ladda ned den direkt!"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:117
+msgid "Download database backup"
+msgstr "Ladda ned databas-backup"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:123
+msgid "BackWPup News"
+msgstr "BackWPup Nyheter"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:128
+msgctxt "BackWPup News RSS Feed URL"
+msgid "http://marketpress.com/news/plugins/backwpup/feed/"
+msgstr "http://marketpress.com/news/plugins/backwpup/feed/"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:133
+#, php-format
+msgid "<strong>RSS Error</strong>: %s"
+msgstr "<strong>RSS-fel</strong>: %s"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:138
+msgid "An error has occurred, which probably means the feed is down. Try again later."
+msgstr "Ett fel har uppstått, vilket antagligen betyder att nyhetsflödet är nere. Försök igen senare."
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:153
+msgid "Untitled"
+msgstr "Utan titel"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:216
+msgid "Start wizard"
+msgstr "Kör guide"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:232
+msgctxt "Pro teaser box"
+msgid "Thank you for using BackWPup!"
+msgstr "Tack för att du använder BackWPup!"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:235
+msgctxt "Pro teaser box"
+msgid "Get access to:"
+msgstr "Få tillgång till:"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:237
+msgctxt "Pro teaser box"
+msgid "First-class <strong>dedicated support</strong> at MarketPress Helpdesk."
+msgstr "Förstklassig <strong>dedikerad support</strong> från MarketPress Supportavdelning."
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:238
+msgctxt "Pro teaser box"
+msgid "Differential backups to Google Drive and other cloud storage service."
+msgstr "Differentiell backup till Google Drive och andra molnlagringstjänster."
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:239
+msgctxt "Pro teaser box"
+msgid "Easy-peasy wizards to create and schedule backup jobs."
+msgstr "Superenkla guider för att skapa och schemalägga backup-jobb."
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:240
+msgctxt "Pro teaser box, link text"
+msgid "And more…"
+msgstr "Och mer…"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:242
+msgctxt "Pro teaser box, link title"
+msgid "Get BackWPup Pro now"
+msgstr "Skaffa BackWPup Pro nu"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:242
+msgctxt "Pro teaser box, link text"
+msgid "Get BackWPup Pro now"
+msgstr "Skaffa BackWPup Pro nu"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:260
+msgid "Last logs"
+msgstr "Senaste loggar"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:262
+msgid "Result"
+msgstr "Resultat"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:292
+#, php-format
+msgid "%d ERROR"
+msgid_plural "%d ERRORS"
+msgstr[0] "%d FEL"
+msgstr[1] "%d FEL"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:294
+#, php-format
+msgid "%d WARNING"
+msgid_plural "%d WARNINGS"
+msgstr[0] "%d VARNING"
+msgstr[1] "%d VARNINGAR"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:296
+msgid "OK"
+msgstr "OK"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:320
+msgid "Next scheduled jobs"
+msgstr "Nästkommande schemalagda jobb"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:347
+#, php-format
+msgid "working since %d seconds"
+msgstr "arbetar sedan %d sekunder"
+
+# @ backwpup
+#: ../inc/class-page-backwpup.php:365
+msgid "Edit Job"
+msgstr "Redigera Jobb"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:38 ../inc/class-destination-email.php:41
+msgid "Email address"
+msgstr "E-postadress"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:48 ../inc/class-destination-email.php:50
+msgid "Send test email"
+msgstr "Skicka e-posttest"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:55
+msgid "Send email settings"
+msgstr "Inställningar för att skicka e-post"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:58
+msgid "Maximum file size"
+msgstr "Maximal filstorlek"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:59
+msgid "MB"
+msgstr "MB"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:63
+msgid "Sender email address"
+msgstr "Avsändares e-postadress"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:70
+msgid "Sender name"
+msgstr "Avsändares namn"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:77
+msgid "Sending method"
+msgstr "Metod för att skicka e-post"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:81
+msgid "Use site settings"
+msgstr "Använd webbplatsens inställningar"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:82
+msgid "PHP: mail()"
+msgstr "PHP: mail()"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:83
+msgid "Sendmail"
+msgstr "Sendmail"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:84
+msgid "SMTP"
+msgstr "SMTP"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:91
+msgid "Sendmail path"
+msgstr "Sendmail sökväg"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:99
+msgid "SMTP host name"
+msgstr "SMTP värdnamn"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:110
+msgid "SMTP secure connection"
+msgstr "SMTP säker anslutning"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:115
+msgid "SSL"
+msgstr "SSL"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:116
+msgid "TLS"
+msgstr "TLS"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:121
+msgid "SMTP username"
+msgstr "SMTP användarnamn"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:128
+msgid "SMTP password"
+msgstr "SMTP lösenord"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:204
+#, php-format
+msgid "%d. Try to send backup with email&#160;&hellip;"
+msgstr "%d. Försök att skicka backup via e-post&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:209
+msgid "Backup archive too big to be sent by email!"
+msgstr "Backup-arkiv för stort för att skickas med e-post!"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:216
+#, php-format
+msgid "Sending email to %s&hellip;"
+msgstr "Skickar e-post till %s&hellip;"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:292
+#, php-format
+msgid "BackWPup archive from %1$s: %2$s"
+msgstr "BackWPup-arkiv från %1$s: %2$s"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:295
+#, php-format
+msgid "Backup archive: %s"
+msgstr "Backup-arkiv: %s"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:309
+#: ../inc/class-destination-email.php:431
+msgid "Error while sending email!"
+msgstr "Fel när e-post skulle skickas!"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:315
+#: ../inc/class-destination-email.php:433
+msgid "Email sent."
+msgstr "E-post skickad."
+
+# @ backwpup
+#: ../inc/class-destination-email.php:415
+msgid "BackWPup archive sending TEST Message"
+msgstr "BackWPup-arkiv skickar TEST-meddelande"
+
+# @ backwpup
+#: ../inc/class-destination-email.php:418
+msgid "If this message reaches your inbox, sending backup archives via email should work for you."
+msgstr "Om detta meddelande når din inkorg så borde det fungera för dig att skicka backup-arkiv också."
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:42
+msgid "Hash key"
+msgstr "Hash-nyckel"
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:43
+msgid "Hash Key for BackWPup. It will be used to have hashes in folder and file names. It must at least 6 chars long."
+msgstr "Hash-nyckel för BackWPup. Den kommer att användas för att hasha mapp- och filnamn. Nyckeln måste vara minst 6 tecken lång."
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:46
+msgid "Hash key:"
+msgstr "Hash-nyckel:"
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:59
+msgid "Dropbox API Keys"
+msgstr "Dropbox API-nycklar"
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:60
+msgid "If you want to set your own Dropbox API Keys, you can do it here. Leave empty for default."
+msgstr "Om du vill sätta dina egna Dropbox API-nycklar så kan du göra det här. Lämna tomt för standard."
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:63
+msgid "Full Dropbox App key:"
+msgstr "Fullständig Dropbox App-nyckel:"
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:71
+msgid "Full Dropbox App secret:"
+msgstr "Fullständig Dropbox App-hemlighet:"
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:79
+msgid "Sandbox App key:"
+msgstr "Sandbox App-nyckel:"
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:87
+msgid "Sandbox App secret:"
+msgstr "Sandbox App-hemlighet:"
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:100
+msgid "SugarSync API Keys"
+msgstr "SugarSync API-nycklar"
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:101
+msgid "If you want to set your own SugarSync API keys you can do that here. Leave empty for default."
+msgstr "Om du vill sätta dina egna SugarSync API-nycklar så kan du göra det här. Lämna tomt för standard."
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:104
+msgid "Access Key ID:"
+msgstr "Åtkomstnyckel-ID:"
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:112
+msgid "Private Access Key:"
+msgstr "Privat Åtkomstnyckel:"
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:119
+msgid "App ID:"
+msgstr "App-ID:"
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:132
+msgid "Google API Keys"
+msgstr "Google API-nycklar"
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:136
+msgid "Client ID:"
+msgstr "Klient-ID:"
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:144
+msgid "Client secret:"
+msgstr "Klienthemlighet:"
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:151
+msgid "Redirect URIs:"
+msgstr "Omdirigera URI:er:"
+
+# @ backwpup
+#: ../inc/pro/class-settings-apikeys.php:155
+msgid "Add this URI in a new line to the field."
+msgstr "Lägg denna URI på en ny rad i fältet."
+
+# @ backwpup
+#: ../inc/pro/class-destination-folder.php:18
+msgid "Absolute path to folder for backup files:"
+msgstr "Absolut sökväg till mapp för backup-filer:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-folder.php:72
+#, php-format
+msgid "%d. Try to sync files to folder&#160;&hellip;"
+msgstr "%d. Försök att synka filer till mapp&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/pro/class-destination-folder.php:76
+msgid "Retrieving file list from folder"
+msgstr "Hämtar fillista från mapp"
+
+# @ backwpup
+#: ../inc/pro/class-destination-folder.php:82
+msgid "Copy changed files to folder"
+msgstr "Kopiera ändrade filer till mapp"
+
+# @ backwpup
+#: ../inc/pro/class-destination-folder.php:95
+#, php-format
+msgid "File %s copied"
+msgstr "Fil %s kopierad"
+
+# @ backwpup
+#: ../inc/pro/class-destination-folder.php:108
+msgid "Delete not existing files from folder"
+msgstr "Ta bort icke-existerande filer från mapp"
+
+# @ backwpup
+#: ../inc/pro/class-destination-folder.php:116
+#, php-format
+msgid "Extra file %s copied"
+msgstr "Extrafil %s kopierad"
+
+# @ backwpup
+#: ../inc/pro/class-destination-folder.php:129
+#, php-format
+msgid "File %s deleted from folder"
+msgstr "Fil %s borttagen från mapp"
+
+# @ backwpup
+#: ../inc/pro/class-destination-folder.php:186
+#, php-format
+msgid "Empty folder %s deleted"
+msgstr "Tom mapp %s borttagen"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:14
+msgid "XML job import"
+msgstr "Import av XML-jobb"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:15
+msgid "Wizard for importing BackWPup jobs from an XML file"
+msgstr "Guide för import av BackWPup-jobb från en XML-fil"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:32
+#: ../inc/pro/class-wizard-jobimport.php:93
+msgid "Import"
+msgstr "Import"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:41
+msgid "Import File"
+msgstr "Importfil"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:41
+msgid "Upload XML job file for import"
+msgstr "Ladda upp XML-jobbfil för import"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:42
+msgid "Select items to import"
+msgstr "Välj objekt att importera"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:42
+msgid "Select which job should be imported or overwritten."
+msgstr "Välj vilket jobb som skall importeras eller skrivas över."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:62
+msgid "Please upload your BackWPup job XML export file and we&#8217;ll import the jobs into BackWPup."
+msgstr "Vänligen ladda upp din XML-exportfil för BackWPup-jobb så importerar vi jobben till BackWPup ."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:64
+msgid "Choose a file from your computer:"
+msgstr "Välj en fil från din dator:"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:64
+#, php-format
+msgid "Maximum size: %s"
+msgstr "Maximal storlek: %s"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:86
+msgid "Import Jobs"
+msgstr "Importera Jobb"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:89
+msgid "Import Type"
+msgstr "Importtyp"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:89
+msgid "No Import"
+msgstr "Ingen Import"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:91
+msgid "Overwrite"
+msgstr "Skriv över"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:91
+msgid "Append"
+msgstr "Tillfoga"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:105
+msgid "Import Config"
+msgstr "Importkonfiguration"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:108
+msgid "Import BackWPup configuration"
+msgstr "Importera BackWPup-konfiguration"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:129
+msgid "File is empty. Please upload something more substantial. This error could also caused by uploads being disabled in your php.ini or by post_max_size being defined as smaller than upload_max_filesize in php.ini."
+msgstr "Filen är tom. Vänligen ladda upp något mer substantiellt. Detta fel kan också uppstå om uppladdning är deaktiverat i din php.ini eller om post_max_size är mindre än upload_max_filesize i php.ini."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:144
+#, php-format
+msgid "The export file could not be found at <code>%s</code>. This is likely due to an issue with permissions."
+msgstr "Exportfilen kunde inte hittas i <code>%s</code>. Detta beror troligen på ett problem med tillstånd."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:151
+msgid "Sorry, there has been a phrase error."
+msgstr "Ursäkta, ett begreppsfel uppstod."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:158
+#, php-format
+msgid "This Export file (version %s) may not be supported by this version of the importer."
+msgstr "Denna exportfil (version %s) kanske inte stöds i denna version av importverktyget."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:164
+msgid "This is not a BackWPup XML file"
+msgstr "Detta är ej en BackWPup XML-fil"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:225
+#, php-format
+msgid "Job %1$s with id %2$d imported"
+msgstr "Jobb %1$s med ID %2$d importerad"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-jobimport.php:233
+msgid "BackWPup config imported"
+msgstr "BackWPup-konfiguration importerad"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:14
+msgid "System Test"
+msgstr "Systemtest"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:15
+msgid "Wizard to test if BackWPup can work properly"
+msgstr "Guide för att testa om BackWPup kan köras korrekt."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:32
+msgid "Run tests"
+msgstr "Kör testen"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:41
+msgid "Environment"
+msgstr "Miljö"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:41
+msgid "System Environment"
+msgstr "Systemmiljö"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:54
+msgid "Test if BackWPup can work without problems."
+msgstr "Testa om BackWPup kan köras utan problem."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:86
+#, php-format
+msgid "You must run WordPress version 3.4 or higher to use this plugin. You are using version %s now."
+msgstr "Du måste köra WordPress version 3.4 eller senare för att använda detta tillägg. Du använder version %s just nu."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:91
+#, php-format
+msgid "You must run PHP version 5.2.6 or higher to use this plugin. You are using version %s now."
+msgstr "Du måste köra PHP version 5.2.6 eller senare för att använda detta tillägg. Du använder version %s just nu."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:95
+#, php-format
+msgid "We recommend to run a PHP version above 5.3.2 to get the full plugin functionality. You are using version %s now."
+msgstr "Vi rekommenderar att du kör en PHP-version senare än 5.3.2 för att få tillgång till tilläggets hela funktionalitet. Du använder version %s just nu."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:100
+#, php-format
+msgid "You must have the MySQLi extension installed and a MySQL server version of 5.0.7 or higher to use this plugin. You are using version %s now."
+msgstr "Du måste ha MySQLi-utökningen installerad, samt version 5.0.7 av MySQL-server eller senare för att kunna använda detta tillägg. Du använder version %s just nu."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:105
+msgid "PHP cURL extension must be installed to use the full plugin functionality."
+msgstr "PHP cURL-utökningen måste finnas installerad för att du skall kunna använda tilläggets fulla funktionalitet."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:110
+#, php-format
+msgctxt "%1 = extension name, %2 = file suffix"
+msgid "We recommend to install the %1$s extension to generate %2$s archives."
+msgstr "Vi rekemmederar att du installerar utökningen %1$s för generering av %2$s-arkiv."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:133
+#, php-format
+msgctxt "Link to PHP manual"
+msgid "Please disable the deprecated <a href=\"%s\">PHP safe mode</a>."
+msgstr "Vänligen deaktivera <a href=\"%s\">PHP Safe-Mode</a> som är taget ur bruk."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:141
+msgid "We recommend to install the PHP FTP extension to use the FTP backup destination."
+msgstr "Vi rekommenderar att du installerar FTP-utökningen för PHP om du vill använda FTP som mål för backupen."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:149
+#, php-format
+msgid "Temp folder %s is not read or writable. Please set proper writing permissions."
+msgstr "Temp-mapp %s är ej läs- eller skrivbar. Vänligen sätt korrekta skrivtillstånd."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:154
+#, php-format
+msgid "Temp folder %s does not exist and cannot be created. Please create it and set proper writing permissions."
+msgstr "Temp-mapp %s existerar ej och kan ej skapas. Vänligen skapa den och tilldela den korrekta skrivtillstånd."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:161
+#, php-format
+msgid "Log folder %s is not readable or writable. Please set proper writing permissions."
+msgstr "Loggmapp %s är ej läsbar eller skrivbar. Vänligen sätt korrekta skrivtillstånd."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:165
+#, php-format
+msgid "Log folder %s does not exist and cannot be created. Please create it and set proper writing permissions."
+msgstr "Loggmapp %s existerar ej och kan ej skapas. Vänligen skapa den och tilldela den korrekta skrivtillstånd."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:171
+#, php-format
+msgid "The HTTP response test result is an error: \"%s\"."
+msgstr "HTTP-svarstestet resulterade i ett fel: \"%s\"."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:175
+#, php-format
+msgid "The HTTP response test result is a wrong HTTP status: %s. It should be status 200."
+msgstr "HTTP-svarstestet resulterade i en felaktig HTTP-status: %s. Det skall vara status 200."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:193
+msgid "WP-Cron seems to be broken. But it is needed to run scheduled jobs."
+msgstr "WP-Cron verkar ej fungera. Men det behövs för körning av schemalagda jobb."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:198
+msgid "All tests passed without errors."
+msgstr "Alla test passerade utan fel."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:201
+msgid "There is no error, but some warnings. BackWPup will work, but with limitations."
+msgstr "Inget fel, men några varningar. BackWPup kommer att fungera, men med begränsningar."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-systemtest.php:204
+msgid "There are errors. Please correct them, or BackWPup cannot work."
+msgstr "Det finns fel. Vänligen åtgärda dem, annars kommer BackWPup ej att fungera."
+
+# @ backwpup
+#: ../inc/pro/class-destination-s3.php:17
+#: ../inc/pro/class-destination-s3-v1.php:17
+msgid "Select a S3 service:"
+msgstr "Välj en S3-tjänst:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-s3.php:33
+#: ../inc/pro/class-destination-s3-v1.php:33
+msgid "or set an S3 Server URL:"
+msgstr "eller ange en URL till en S3-server:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-s3.php:36
+#: ../inc/pro/class-destination-msazure.php:19
+#: ../inc/pro/class-destination-s3-v1.php:36
+msgid "Access Key:"
+msgstr "Åtkomstnyckel:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-s3.php:39
+#: ../inc/pro/class-destination-s3-v1.php:39
+msgid "Secret Key:"
+msgstr "Hemlig Nyckel:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-s3.php:42
+#: ../inc/pro/class-destination-s3-v1.php:42
+msgid "Bucket:"
+msgstr "Hink:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-s3.php:52
+#: ../inc/pro/class-destination-s3-v1.php:52
+msgid "New Bucket:"
+msgstr "Ny Hink: "
+
+# @ backwpup
+#: ../inc/pro/class-destination-s3.php:54
+#: ../inc/pro/class-destination-s3-v1.php:54
+msgid "Folder in bucket:"
+msgstr "Mapp i hink:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-s3.php:154
+#: ../inc/pro/class-destination-s3-v1.php:156
+#, php-format
+msgid "%d. Trying to sync files to S3 Service&#160;&hellip;"
+msgstr "%d. Försöker synka filer mot S3-tjänst&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/pro/class-destination-s3.php:188
+#: ../inc/pro/class-destination-s3-v1.php:195
+msgid "Retrieving file list from S3."
+msgstr "Hämtar fillista från S3."
+
+# @ backwpup
+#: ../inc/pro/class-destination-s3.php:246
+#: ../inc/pro/class-destination-s3-v1.php:251
+msgid "Upload changed files to S3."
+msgstr "Ladda upp ändrade filer till S3."
+
+# @ backwpup
+#: ../inc/pro/class-destination-s3.php:261
+#: ../inc/pro/class-destination-s3-v1.php:263
+#, php-format
+msgid "File %s uploaded to S3."
+msgstr "Fil %s uppladdad till S3."
+
+# @ backwpup
+#: ../inc/pro/class-destination-s3.php:289
+#: ../inc/pro/class-destination-s3-v1.php:288
+#, php-format
+msgid "Extra file %s uploaded to S3."
+msgstr "Extrafil %s uppladdad till S3."
+
+# @ backwpup
+#: ../inc/pro/class-destination-s3.php:302
+#: ../inc/pro/class-destination-s3-v1.php:301
+msgid "Delete nonexistent files on S3"
+msgstr "Ta bort icke-existerande filer från S3"
+
+# @ backwpup
+#: ../inc/pro/class-destination-s3.php:309
+#: ../inc/pro/class-destination-s3-v1.php:304
+#, php-format
+msgid "File %s deleted from S3."
+msgstr "Fil %s borttagen från S3."
+
+# @ backwpup
+#: ../inc/pro/class-destination-ftp.php:17
+msgid "Hostname:"
+msgstr "Värdnamn:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-ftp.php:33
+msgid "Folder on server:"
+msgstr "Mapp på server:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-ftp.php:39
+msgid "Maximum number of backup files to keep in folder:"
+msgstr "Maximalt antal backup-filer att lagra i mapp:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-ftp.php:42
+msgid "(Oldest files will be deleted first.)"
+msgstr "(Äldsta filerna tas bort först.)"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-file.php:19
+msgid "Backup WordPress main files"
+msgstr "Ta backup på WordPress huvudfiler"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-file.php:23
+msgid "Backup blog content folder"
+msgstr "Ta backup på bloggens innehållsmapp"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-file.php:27
+msgid "Backup blog plugins"
+msgstr "Ta backup på bloggens tillägg"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-file.php:31
+msgid "Backup blog themes"
+msgstr "Ta backup på bloggens teman"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-file.php:35
+msgid "Backup blog uploads folder"
+msgstr "Ta backup på bloggens uppladdningsmapp"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:15
+msgid "Create a job"
+msgstr "Skapa ett jobb"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:16
+msgid "Choose a job"
+msgstr "Välj ett jobb"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:37
+msgid "Job Types"
+msgstr "Jobbtyper"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:37
+msgid "Select a task for your job."
+msgstr "Välj en arbetsuppgift åt ditt jobb."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:51
+msgid "Archive Settings"
+msgstr "Arkivinställningar"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:51
+msgid "Settings for the Backup Archive"
+msgstr "Inställningar för Backup-arkivet"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:53
+msgid "Where would you like to store the backup file?"
+msgstr "Var vill du lagra backup-filen?"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:63 ../inc/pro/class-wizard-job.php:272
+msgid "Scheduling"
+msgstr "Schemaläggning"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:63
+msgid "When would you like to start the job?"
+msgstr "När vill du köra jobbet?"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:218
+msgid "Select one or more tasks for your backup job."
+msgstr "Välj en eller fler arbetsuppgifter åt ditt backup-jobb."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:273
+msgid "Activate scheduling"
+msgstr "Aktivera schemaläggning"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:365
+msgid "Sync file by file to destination"
+msgstr "Synka fil för fil mot mål"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:376
+msgid "Select a compression type for the backup archive"
+msgstr "Välj en komprimeringstyp för backup-arkivet"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:379
+msgid "Archive compression type"
+msgstr "Komprimeringstyp för arkiv"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:411
+msgid "Where to store the files"
+msgstr "Var filerna skall lagras"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:586
+#, php-format
+msgid "Wizard: %1$s"
+msgstr "Guide: %1$s"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:605
+#, php-format
+msgid "New job %s generated."
+msgstr "Nytt jobb %s genererat."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:617
+msgid "Create Job"
+msgstr "Skapa Jobb"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:642 ../inc/pro/class-wizard-job.php:643
+msgid "Database Backup and XML Export (Daily)"
+msgstr "Databas-backup samt XML-export (Dagligen)"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:660 ../inc/pro/class-wizard-job.php:661
+msgid "Database Check (Weekly)"
+msgstr "Databaskontroll (Veckolig)"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:685 ../inc/pro/class-wizard-job.php:686
+msgid "Backup all files"
+msgstr "Ta backup på alla filer"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:700
+msgid "Essential files + list of plugins"
+msgstr "Nödvändiga filer + lista över tillägg"
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:701
+msgid "Backup essential files and folders, plus a list of installed plugins."
+msgstr "Ta backup på nödvändiga filer och mappar, plus en lista över installerade tillägg."
+
+# @ backwpup
+#: ../inc/pro/class-wizard-job.php:716 ../inc/pro/class-wizard-job.php:717
+msgid "Custom configuration"
+msgstr "Anpassad konfiguration"
+
+# @ backwpup
+#: ../inc/pro/class-pro.php:102
+msgid "Glacier"
+msgstr "Glacier"
+
+# @ backwpup
+#: ../inc/pro/class-pro.php:121
+msgid "GDrive"
+msgstr "GDrive"
+
+# @ backwpup
+#: ../inc/pro/class-pro.php:174 ../inc/pro/class-pro.php:210
+msgid "Wizards"
+msgstr "Guider"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-wpexp.php:17
+msgid "Items to export:"
+msgstr "Objekt att exportera:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-msazure.php:17
+msgid "Account Name:"
+msgstr "Kontonamn:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-msazure.php:21
+#: ../inc/pro/class-destination-rsc.php:38
+msgid "Container:"
+msgstr "Behållare:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-msazure.php:28
+#: ../inc/pro/class-destination-rsc.php:47
+msgid "Create container:"
+msgstr "Skapa behållare:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-msazure.php:30
+#: ../inc/pro/class-destination-rsc.php:49
+msgid "Folder in container:"
+msgstr "Mapp i behållare:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-msazure.php:100
+#, php-format
+msgid "%d. Trying to sync files with Microsoft Azure (Blob) &hellip;"
+msgstr "%d. Försöker synka filer mot Microsoft Azure (Blob) &hellip;"
+
+# @ backwpup
+#: ../inc/pro/class-destination-msazure.php:135
+msgid "Retrieving file list from MS Azure."
+msgstr "Hämtar fillista från MS Azure."
+
+# @ backwpup
+#: ../inc/pro/class-destination-msazure.php:151
+msgid "Upload changed files to MS Azure."
+msgstr "Ladda upp ändrade filer till MS Azure."
+
+# @ backwpup
+#: ../inc/pro/class-destination-msazure.php:163
+#, php-format
+msgid "File %s uploaded to MS Azure."
+msgstr "Fil %s uppladdad till MS Azure."
+
+# @ backwpup
+#: ../inc/pro/class-destination-msazure.php:189
+#, php-format
+msgid "Extra file %s uploaded to MS Azure."
+msgstr "Extrafil %s uppladdad till MS Azure."
+
+# @ backwpup
+#: ../inc/pro/class-destination-msazure.php:202
+msgid "Delete nonexistent files on MS Azure."
+msgstr "Ta bort icke-existerande filer från MS Azure."
+
+# @ backwpup
+#: ../inc/pro/class-destination-msazure.php:205
+#, php-format
+msgid "File %s deleted from MS Azure."
+msgstr "Fil %s borttagen från MS Azure."
+
+# @ backwpup
+#: ../inc/pro/class-destination-dropbox.php:24
+msgid "Auth Code:"
+msgstr "Autentiseringskod:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-dropbox.php:27
+msgid "Get auth code"
+msgstr "Skaffa autentiseringskod"
+
+# @ backwpup
+#: ../inc/pro/class-destination-dropbox.php:34
+#: ../inc/pro/class-destination-gdrive.php:249
+#: ../inc/pro/class-destination-gdrive.php:255
+msgid "Login:"
+msgstr "Inloggning:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-dropbox.php:38
+#: ../inc/pro/class-destination-gdrive.php:260
+msgid "Folder:"
+msgstr "Mapp:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-dropbox.php:105
+#, php-format
+msgid "%d. Try to sync files to Dropbox&#160;&hellip;"
+msgstr "%d. Försök synka filer mot Dropbox&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/pro/class-destination-dropbox.php:138
+msgid "Retrieving file list from Dropbox"
+msgstr "Hämtar fillista från Dropbox"
+
+# @ backwpup
+#: ../inc/pro/class-destination-dropbox.php:152
+msgid "Upload changed files to Dropbox"
+msgstr "Ladda upp ändrade filer till Dropbox"
+
+# @ backwpup
+#: ../inc/pro/class-destination-dropbox.php:174
+#, php-format
+msgid "File %s uploaded to Dropbox"
+msgstr "Fil %s uppladdad till Dropbox"
+
+# @ backwpup
+#: ../inc/pro/class-destination-dropbox.php:201
+#, php-format
+msgid "Extra file %s uploaded to Dropbox"
+msgstr "Extrafil %s uppladdad till Dropbox"
+
+# @ backwpup
+#: ../inc/pro/class-destination-dropbox.php:210
+msgid "Delete not existing files from Dropbox"
+msgstr "Ta bort icke-existerande filer från Dropbox"
+
+# @ backwpup
+#: ../inc/pro/class-destination-dropbox.php:217
+#, php-format
+msgid "Folder %s deleted from Dropbox"
+msgstr "Mapp %s borttagen från Dropbox"
+
+# @ backwpup
+#: ../inc/pro/class-destination-dropbox.php:235
+#, php-format
+msgid "File %s deleted from Dropbox"
+msgstr "Fil %s borttagen från Dropbox"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:89
+msgid "Backup only WordPress Database tables"
+msgstr "Ta endast backup på WordPress databastabeller"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:109
+msgid "Database connection"
+msgstr "Databaskoppling"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:113
+msgid "Use WordPress database connection."
+msgstr "Använd WordPress databaskoppling."
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:117
+msgid "Host:"
+msgstr "Värd:"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:120
+msgid "User:"
+msgstr "Användare: "
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:127
+msgid "Charset:"
+msgstr "Teckenuppsättning: "
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:138
+msgid "Database:"
+msgstr "Databas:"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:166
+msgid "Database Backup type"
+msgstr "Typ av Databas-backup"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:170
+msgid "SQL File (with mysqli)"
+msgstr "SQL-fil (med mysqli)"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:171
+msgid "SQL File (with mysqldump)"
+msgstr "SQL-fil (med mysqldump)"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:172
+msgid "XML File (phpMyAdmin schema)"
+msgstr "XML-fil (phpMyAdmin schema)"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:178
+msgid "Path to <em>mysqldump</em> file"
+msgstr "Sökväg till <em>mysqldump</em>-fil"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:555
+#, php-format
+msgid "Added database backup \"%1$s\" with %2$s to backup file list"
+msgstr "Lade till databas-backup \"%1$s\" med %2$s till fillista för backup"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:576
+#, php-format
+msgid "%d. Try to backup MySQL system&#160;&hellip;"
+msgstr "%d. Försök ta backup på MySQL-system&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:583
+msgid "Executing of system commands not allowed. Please use backup with mysqli."
+msgstr "Exekvering av systemkommandon är ej tillåtet. Vänligen använd mysqli för backup."
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:588
+#, php-format
+msgid "%s file not in open basedir of PHP."
+msgstr "Fil %s ej i PHP:s open basedir."
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:593
+#, php-format
+msgid "%s file not found. Please correct the path for the mysqldump file."
+msgstr "Fil %s hittades ej. Vänligen korrigera sökvägen för mysqldump-filen."
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:670
+#, php-format
+msgctxt "Executed exec() command"
+msgid "CLI Exec: %s"
+msgstr "CLI Exec: %s"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:676
+msgid "Usage error."
+msgstr "Användningsfel."
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:677
+msgid "MySQL Server Error. This could be an issue with permissions. Try using database backup with mysqli."
+msgstr "MySQL-serverfel. Detta kan vara ett problem med tillstånd. Försök använda mysqli för databas-backup."
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:678
+msgid "Error during consistency checks."
+msgstr "Fel vid konsistenskontroller."
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:679
+msgid "Not enough memory."
+msgstr "Ej tillräckligt med minne."
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:680
+msgid "Error during writing of SQL backup file."
+msgstr "Fel vid skrivning av SQL-backup-fil."
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:681
+msgid "Illegal table"
+msgstr "Ogiltig tabell"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:686
+#, php-format
+msgid "mysqldump returned: (%d) %s"
+msgstr "mysqldump returnerade: (%d) %s"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:699
+msgid "Can not create mysql backup with mysqldump command"
+msgstr "Kan ej skapa mysql-backup med kommandot mysqldump"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:747
+#, php-format
+msgid "%d. Try to backup database as XML&#160;&hellip;"
+msgstr "%d. Försök ta backup på databas som XML&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:800
+msgid "No tables for XML backup"
+msgstr "Inga tabeller för XML-backup"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:837
+#, php-format
+msgid "Dump database create view \"%s\""
+msgstr "Dump av databas till CREATE VIEW \"%s\""
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:854
+#, php-format
+msgid "Dump database structure \"%s\""
+msgstr "Dump av databasstruktur \"%s\""
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:894
+#, php-format
+msgid "Dump table \"%s\" data"
+msgstr "Dump av data från tabell \"%s\""
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:963
+#, php-format
+msgid "Added database XML dump \"%1$s\" with %2$s to backup file list"
+msgstr "Lade till databas XML-dump \"%1$s\" med %2$s till fillista för backup"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbdump.php:966
+msgid "Database XML backup done!"
+msgstr "Databas XML-backup klar!"
+
+# @ backwpup
+#: ../inc/pro/class-destination-s3-v1.php:29
+msgid "Hosteurope Cloud Storage"
+msgstr "Hosteurope Molnlagring"
+
+# @ backwpup
+#: ../inc/pro/class-marketpress-documentation.php:175
+msgid "Loading Menu ..."
+msgstr "Laddar Meny ..."
+
+# @ backwpup
+#: ../inc/pro/class-marketpress-documentation.php:219
+#: ../inc/pro/class-marketpress-documentation.php:335
+#, php-format
+msgctxt "%s = Remote Code"
+msgid "Could not connect to remote host, code %d. Please try again later."
+msgstr "Kunde ej ansluta till fjärrvärd %d. Vänligen försök igen senare."
+
+# @ backwpup
+#: ../inc/pro/class-marketpress-documentation.php:230
+#: ../inc/pro/class-marketpress-documentation.php:346
+msgid "Could not find content for this page. Please try again later."
+msgstr "Kunde ej hitta sidans innehåll. Vänligen försök igen senare."
+
+# @ backwpup
+#: ../inc/pro/class-marketpress-documentation.php:236
+#: ../inc/pro/class-marketpress-documentation.php:351
+msgid "Could not connect to remote host. Please try again later."
+msgstr "Kunde ej ansluta till fjärrvärd. Vänligen försök igen senare."
+
+# @ backwpup
+#: ../inc/pro/class-marketpress-documentation.php:282
+#: ../inc/pro/class-marketpress-documentation.php:290
+msgid "Loading Content ..."
+msgstr "Laddar Innehåll ..."
+
+# @ backwpup
+#: ../inc/pro/class-page-wizard.php:122
+msgid "No BackWPup Wizard Session found!"
+msgstr "Ingen Session funnen för BackWPup-guiden!"
+
+# @ backwpup
+#: ../inc/pro/class-page-wizard.php:134 ../inc/pro/class-page-wizard.php:442
+msgid "Cancel"
+msgstr "Avbryt"
+
+# @ backwpup
+#: ../inc/pro/class-page-wizard.php:169 ../inc/pro/class-page-wizard.php:437
+#: ../inc/pro/class-page-wizard.php:470
+msgid "Next ›"
+msgstr "Nästa ›"
+
+# @ backwpup
+#: ../inc/pro/class-page-wizard.php:186 ../inc/pro/class-page-wizard.php:433
+msgid "‹ Previous"
+msgstr "‹ Föregående"
+
+# @ backwpup
+#: ../inc/pro/class-page-wizard.php:335
+#, php-format
+msgctxt "Plugin Name"
+msgid "%s Wizards"
+msgstr "%s Guider"
+
+# @ backwpup
+#: ../inc/pro/class-page-wizard.php:373
+#, php-format
+msgctxt "Plugin Name"
+msgid "%s Wizard:"
+msgstr "%s Guide:"
+
+# @ backwpup
+#: ../inc/pro/class-page-wizard.php:445
+msgid "Back to overview"
+msgstr "Tillbaks till översikt"
+
+# @ backwpup
+#: ../inc/pro/class-destination-rsc.php:26
+msgid "API Key:"
+msgstr "API-nyckel"
+
+# @ backwpup
+#: ../inc/pro/class-destination-rsc.php:29
+msgid "Select region:"
+msgstr "Väj region:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-rsc.php:134
+#, php-format
+msgid "%d. Trying to sync files to Rackspace cloud&#160;&hellip;"
+msgstr "%d. Försöker synka filer mot Rackspace Cloud&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/pro/class-destination-rsc.php:154
+#, php-format
+msgid "Connected to Rackspace cloud files container %s."
+msgstr "Ansluten till Rackspace Cloud Files behållare %s."
+
+# @ backwpup
+#: ../inc/pro/class-destination-rsc.php:168
+msgid "Retrieving files list from Rackspace Cloud."
+msgstr "Hämtar fillista från Rackspace Cloud."
+
+# @ backwpup
+#: ../inc/pro/class-destination-rsc.php:199
+msgid "Upload changed files to Rackspace Cloud."
+msgstr "Ladda upp ändrade filer till Rackspace Cloud."
+
+# @ backwpup
+#: ../inc/pro/class-destination-rsc.php:213
+#, php-format
+msgid "File %s uploaded to Rackspace Cloud."
+msgstr "Fil %s uppladdad till Rackspace Cloud."
+
+# @ backwpup
+#: ../inc/pro/class-destination-rsc.php:241
+#, php-format
+msgid "Extra file %s uploaded to Rackspace Cloud."
+msgstr "Extrafil %s uppladdad till Rackspace Cloud."
+
+# @ backwpup
+#: ../inc/pro/class-destination-rsc.php:254
+msgid "Delete nonexistent files on Rackspace Cloud."
+msgstr "Ta bort icke-existerande filer från Rackspace Cloud."
+
+# @ backwpup
+#: ../inc/pro/class-destination-rsc.php:258
+#, php-format
+msgid "File %s deleted from Rackspace Cloud."
+msgstr "Fil %s borttagen från Rackspace Cloud."
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-dbcheck.php:21
+msgid "Check only WordPress Database tables"
+msgstr "Kontrollera endast WordPress databastabeller"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:33
+#: ../inc/pro/class-destination-gdrive.php:219
+#, php-format
+msgid "Looks like you haven’t set up any API keys yet. Head over to <a href=\"%s\">Settings | API-Keys</a> and get Google Drive all set up, then come back here."
+msgstr "Det verkar inte som att du har skapat några API-nycklar ännu. Gör ett besök på <a href=\"%s\">Inställningar | API-nycklar</a> och konfigurera Google Drive ordentligt. Kom sen tillbaks hit."
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:47
+#: ../inc/pro/class-destination-gdrive.php:251
+msgid "Authenticate"
+msgstr "Autentisera"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:53
+#: ../inc/pro/class-destination-gdrive.php:257
+msgid "Reauthenticate"
+msgstr "Återautentisera"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:63
+msgid "Folder in Google Drive"
+msgstr "Mapp på Google Drive"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:83
+msgid "Consider using trash to delete files. If trash is not enabled, files will be deleted permanently."
+msgstr "Överväg att använda papperskorgen vid borttagning av filer. Om papperskorgen ej är aktiverad så tas filerna bort permanent."
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:132
+#: ../inc/pro/class-destination-gdrive.php:156
+msgid "GDrive: Authenticated."
+msgstr "GDrive: Autentiserad."
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:134
+#: ../inc/pro/class-destination-gdrive.php:158
+msgid "GDrive: No refresh token received."
+msgstr "GDrive: Ingen uppdateringspollett mottagen."
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:140
+#: ../inc/pro/class-destination-gdrive.php:163
+#: ../inc/pro/class-destination-gdrive.php:184
+#: ../inc/pro/class-destination-gdrive.php:237
+#, php-format
+msgid "GDrive API: %s"
+msgstr "GDrive API: %s"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:362
+#, php-format
+msgid "%d. Try to send backup file to Google Drive&#160;&hellip;"
+msgstr "%d. Försök skicka backup-fil till Google Drive&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:395
+msgid "Uploading to Google Drive&#160;&hellip;"
+msgstr "Laddar upp till Google Drive&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:439
+msgid "Google Drive API: could not create resumable file"
+msgstr "Google Drive API: kunde ej skapa återupptagningsbar fil"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:473
+msgid "Can not resume transfer backup to Google Drive!"
+msgstr "Kan ej återuppta överföring av backup till Google Drive!"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:530
+#, php-format
+msgid "Error transfering file chunks to %s."
+msgstr "Fel vid överföring av fildelar till %s."
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:530
+#: ../inc/pro/class-destination-gdrive.php:548
+msgid "Google Drive"
+msgstr "Google Drive"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:592
+#, php-format
+msgid "One file deleted from Google Drive"
+msgid_plural "%d files deleted on Google Drive"
+msgstr[0] "En fil borttagen från Google Drive"
+msgstr[1] "%d filer borttagna från Google Drive"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:598
+#: ../inc/pro/class-destination-gdrive.php:836
+#, php-format
+msgid "Google Drive API: %s"
+msgstr "Google Drive API: %s"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:633
+#, php-format
+msgid "%d. Try to sync files to Google Drive&#160;&hellip;"
+msgstr "%d. Försök synka filer mot Google Drive&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:662
+msgid "Retrieving folder list from Google Drive"
+msgstr "Hämtar mapplista från Google Drive"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:679
+msgid "Syncing changed files to Google Drive"
+msgstr "Synkar ändrade filer mot Google Drive"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:717
+#, php-format
+msgid "File %s updated on Google Drive"
+msgstr "Fil %s uppdaterad på Google Drive"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:737
+#, php-format
+msgid "File %s uploaded to Google Drive"
+msgstr "Fil %s uppladdad till Google Drive"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:758
+#, php-format
+msgid "File %s moved to trash in Google Drive"
+msgstr "Fil %s flyttad till papperskorgen i Google Drive"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:761
+#, php-format
+msgid "File %s deleted permanently in Google Drive"
+msgstr "Fil %s permanent borttagen från Google Drive"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:777
+#, php-format
+msgid "Folder %s moved to trash in Google Drive"
+msgstr "Mapp %s flyttad till papperskorgen i Google Drive"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:780
+#, php-format
+msgid "Folder %s deleted permanently in Google Drive"
+msgstr "Mapp %s permanent borttagen från Google Drive"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:807
+#, php-format
+msgid "Extra file %s updated on Google Drive"
+msgstr "Extrafil %s uppdaterad på Google Drive"
+
+# @ backwpup
+#: ../inc/pro/class-destination-gdrive.php:826
+#, php-format
+msgid "Extra file %s uploaded to Google Drive"
+msgstr "Extrafil %s uppladdad till Google Drive"
+
+# @ backwpup
+#: ../inc/pro/class-jobtype-wpplugin.php:13
+msgid "Nothing to configure"
+msgstr "Inget att konfigurera"
+
+# @ backwpup
+#: ../inc/pro/class-export-jobs.php:12 ../inc/pro/class-export-jobs.php:23
+msgid "Export"
+msgstr "Exportera"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:26
+msgid "Amazon Glacier"
+msgstr "Amazon Glacier"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:30
+msgid "Select a region:"
+msgstr "Välj en region:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:32
+#: ../inc/pro/class-destination-glacier.php:154
+msgid "Amazon Glacier Region"
+msgstr "Amazon Glacier-region"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:33
+#: ../inc/pro/class-destination-glacier.php:155
+msgid "US Standard"
+msgstr "US Standard"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:34
+#: ../inc/pro/class-destination-glacier.php:156
+msgid "US West (Northern California)"
+msgstr "US Väst (Norra Kalifornien)"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:35
+#: ../inc/pro/class-destination-glacier.php:157
+msgid "US West (Oregon)"
+msgstr "US Väst (Oregon)"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:36
+#: ../inc/pro/class-destination-glacier.php:158
+msgid "EU (Ireland)"
+msgstr "EU (Irland)"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:37
+#: ../inc/pro/class-destination-glacier.php:159
+msgid "EU (Germany)"
+msgstr "EU (Tyskland)"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:38
+#: ../inc/pro/class-destination-glacier.php:160
+msgid "Asia Pacific (Tokyo)"
+msgstr "Asien Stilla Havet (Tokyo)"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:39
+#: ../inc/pro/class-destination-glacier.php:161
+msgid "Asia Pacific (Singapore)"
+msgstr "Asien Stilla Havet (Singapore)"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:40
+#: ../inc/pro/class-destination-glacier.php:162
+msgid "Asia Pacific (Sydney)"
+msgstr "Asien Stilla Havet (Sydney)"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:41
+#: ../inc/pro/class-destination-glacier.php:163
+msgid "South America (Sao Paulo)"
+msgstr "Sydamerika (Sao Paulo)"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:42
+msgid "China (Beijing)"
+msgstr "Kina (Beijing)"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:48
+msgid "Amazon Access Keys"
+msgstr "Amazon Åtkomstnycklar"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:67
+msgid "Vault"
+msgstr "Valv"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:71
+msgid "Vault selection"
+msgstr "Valvval"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:83
+msgid "Create a new vault"
+msgstr "Skapa ett nytt valv"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:90
+msgid "Glacier Backup settings"
+msgstr "Glacier Backup-inställningar"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:97
+#: ../inc/pro/class-destination-glacier.php:181
+msgid "Number of files to keep in folder. (Archives deleted before 3 months after they have been stored may cause extra costs when deleted.)"
+msgstr "Antal filer att lagra i mapp. (Arkiv som tas bort tidigare än 3 månader efter att de sparats kan orsaka extra kostnader vid borttagning.)"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:130
+#: ../inc/pro/class-destination-glacier.php:215
+#, php-format
+msgid "Vault %1$s created."
+msgstr "Valv %1$s skapat."
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:132
+#: ../inc/pro/class-destination-glacier.php:217
+#, php-format
+msgid "Vault %s could not be created."
+msgstr "Valv %s kunde ej skapas."
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:153
+msgid "Select an Amazon Glacier region:"
+msgstr "Välj en Amazon Glacier-region:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:169
+msgid "Vault:"
+msgstr "Valv:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:178
+msgid "New Vault:"
+msgstr "Nytt Valv:"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:258
+#: ../inc/pro/class-destination-glacier.php:374
+#: ../inc/pro/class-destination-glacier.php:390
+#: ../inc/pro/class-destination-glacier.php:430
+#, php-format
+msgid "AWS API: %s"
+msgstr "AWS API: %s"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:282
+#, php-format
+msgid "%d. Trying to send backup file to Amazon Glacier&#160;&hellip;"
+msgstr "%d. Försöker skicka backup-fil till Amazon Glacier&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:295
+#, php-format
+msgid "Connected to Glacier vault \"%1$s\" with %2$d archives and size of %3$d"
+msgstr "Ansluten till Glacier-valv \"%1$s\" med %2$d arkiv och en storlek på %3$d"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:297
+#, php-format
+msgid "Glacier vault \"%s\" does not exist!"
+msgstr "Glacier-valv \"%s\" existerar ej!"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:303
+msgid "Starting upload to Amazon Glacier&#160;&hellip;"
+msgstr "Påbörjar uppladdning till Amazon Glacier&#160;&hellip;"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:356
+#, php-format
+msgid "Archive ID: %s"
+msgstr "Arkiv-ID: %s"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:420
+#, php-format
+msgid "Cannot delete archive from %s."
+msgstr "Kan ej ta bort arkiv från %s."
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:424
+#, php-format
+msgid "One file deleted on vault."
+msgid_plural "%d files deleted on vault"
+msgstr[0] "En fil borttagen från valv."
+msgstr[1] "%d filer borttagna från valv"
+
+# @ backwpup
+#: ../inc/pro/class-destination-glacier.php:538
+msgid "No vault found!"
+msgstr "Inget valv hittades!"
+
+# @ backwpup
+#: ../inc/pro/class-destination-sugarsync.php:25
+#: ../inc/pro/class-destination-sugarsync.php:84
+msgid "Sugarsync authenticate!"
+msgstr "SugarSync-autentisera!"
+
+# @ backwpup
+#: ../inc/pro/class-destination-sugarsync.php:36
+msgid "Root:"
+msgstr "Rot:"
+
+# @ backwpup
+#: ../inc/pro/class-marketpress-autoupdate.php:344
+#, php-format
+msgctxt "%s = plugin name"
+msgid "Your license for the plugin %s is not valid. The auto-update has been deactivated. Please insert a valid key on MarketPress Dashboard. Or if you want to add an other valid code use the form below."
+msgstr "Din licens för tillägget %s är ogiltig. Automatiska uppdateringar har deaktiverats. Vänligen ange en giltig nyckel på MarketPress Panel. Eller om du vill ange en annan giltig kod, använd formuläret nedan."
+
+# @ backwpup
+#: ../inc/pro/class-marketpress-autoupdate.php:356
+msgid "You are currently using a valid key for this plugin. You are able to renew the key in MarketPress Dashboard. Or if you want to add another valid code use the form below."
+msgstr "Du använder för tillfället en giltig nyckel för detta tillägg. Du kan förnya nyckeln på MarketPress Panel. Eller om du vill ange en annan giltig kod, använd formuläret nedan."
+
+# @ backwpup
+#: ../inc/pro/class-marketpress-autoupdate.php:367
+#, php-format
+msgctxt "%s = plugin name"
+msgid "Your license for the plugin %s is not valid. The auto-update has been deactivated."
+msgstr "Din licens för tillägget %s är ogiltig. Automatiska uppdateringar har deaktiverats."
+
+# @ backwpup
+#: ../inc/pro/class-marketpress-autoupdate.php:379
+#, php-format
+msgid "You are currently using a valid key for this plugin. You are able to renew the key below or you can delete the key by <a href=\"%s\">clicking here</a>."
+msgstr "Du använder för tillfället en giltig nyckel för detta tillägg. Du kan förnya nyckeln nedan eller så kan du ta bort nyckeln genom att <a href=\"%s\">klicka här</a>."
+
+# @ backwpup
+#: ../inc/pro/class-marketpress-autoupdate.php:386
+msgid "License Key"
+msgstr "Licensnyckel"
+
+# @ backwpup
+#: ../inc/pro/class-marketpress-autoupdate.php:389
+msgid "Activate"
+msgstr "Aktivera"
+
+# @ backwpup
+#: ../inc/pro/class-marketpress-autoupdate.php:558
+msgid "The License has been deleted."
+msgstr "Licensen har tagits bort."
+
+# @ backwpup
+#: ../inc/pro/class-marketpress-autoupdate.php:565
+msgid "Plugin successfully activated."
+msgstr "Aktivering av tillägget lyckades."
+
+# @ backwpup
+#: ../inc/pro/class-marketpress-autoupdate.php:572
+msgid "The entered license key is wrong."
+msgstr "Den angivna licensnyckeln är fel."
+
+# @ backwpup
+#: ../inc/pro/class-marketpress-autoupdate.php:579
+msgid "You have reached the limit of urls. Please update your license at <a href=\"http://marketpress.com\">marketpress.com</a>."
+msgstr "Du har nått maxgränsen för URL:er. Vänligen uppdatera din licens på <a href=\"http://marketpress.com\">marketpress.com</a>."
+
+# @ backwpup
+#: ../inc/pro/class-marketpress-autoupdate.php:586
+msgid "Something went wrong. Please try again later or contact the <a href=\"http://marketpress.com/support/\">MarketPress Team</a>."
+msgstr "Någonting gick fel. Vänligen försök igen senare eller kontakta <a href=\"http://marketpress.com/support/\">MarketPress-teamet</a>."
+
+# @ backwpup
+#: ../inc/pro/class-marketpress-autoupdate.php:593
+msgid "Due to a wrong license you are not allowed to activate this plugin. Please update your license at <a href=\"http://marketpress.com\">marketpress.com</a>."
+msgstr "P.g.a. en felaktig licens tillåts du ej aktivera detta tillägg. Vänligen uppdatera din licens på <a href=\"http://marketpress.com\">MarketPress.com</a>."

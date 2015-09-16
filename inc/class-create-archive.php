@@ -313,7 +313,7 @@ class BackWPup_Create_Archive {
 			case 'ZipArchive':
 				$file_size = filesize( $file_name );
 				if ( $file_size === FALSE ) {
-					$file_size = PHP_INT_MAX;
+					return FALSE;
 				}
 				//check if entry already in archive and delete it if it not in full size
 				if ( $zip_file_stat = $this->ziparchive->statName( $name_in_archive ) ) {
@@ -326,41 +326,49 @@ class BackWPup_Create_Archive {
 						return TRUE;
 					}
 				}
-				//close and reopen, all added files are open on fs
-				if ( $this->file_count > 20 ) { //35 works with PHP 5.2.4 on win
-					if ( ! $this->ziparchive->close() ) {
-						$this->ziparchive_status();
-						trigger_error(__( 'ZIP archive cannot be closed correctly', 'backwpup'	), E_USER_ERROR	);
-						sleep( 1 );
-					}
-					$this->ziparchive = NULL;
-					if ( ! $this->check_archive_filesize() ) {
-						return FALSE;
-					}
-					$this->ziparchive = new ZipArchive();
-					$ziparchive_open = $this->ziparchive->open( $this->file, ZipArchive::CREATE );
-					if ( $ziparchive_open !== TRUE ) {
-						$this->ziparchive_status();
-						return FALSE;
-					}
-					$this->file_count = 0;
-				}
-				if ( $file_size < ( 1024 * 1024 * 2 ) ) {
-					if ( ! $this->ziparchive->addFromString( $name_in_archive, file_get_contents( $file_name ) ) ) {
-						$this->ziparchive_status();
-						trigger_error( sprintf( __( 'Cannot add "%s" to zip archive!', 'backwpup' ), $name_in_archive ), E_USER_ERROR );
-						return FALSE;
-					} else {
-						$file_factor = round( $file_size / ( 1024 * 1024 ), 4 ) * 2;
-						$this->file_count = $this->file_count + $file_factor;
-					}
-				} else {
+				if ( version_compare( PHP_VERSION, '5.3.3', '>=') ) { //php > 5.3.3
 					if ( ! $this->ziparchive->addFile( $file_name, $name_in_archive ) ) {
 						$this->ziparchive_status();
 						trigger_error( sprintf( __( 'Cannot add "%s" to zip archive!', 'backwpup' ), $name_in_archive ), E_USER_ERROR );
 						return FALSE;
+					}
+				} else { //php < 5.3
+					//close and reopen, all added files are open on fs
+					if ( $this->file_count > 20 ) { //35 works with PHP 5.2.4 on win
+						if ( ! $this->ziparchive->close() ) {
+							$this->ziparchive_status();
+							trigger_error(__( 'ZIP archive cannot be closed correctly', 'backwpup'	), E_USER_ERROR	);
+							sleep( 1 );
+						}
+						$this->ziparchive = NULL;
+						if ( ! $this->check_archive_filesize() ) {
+							return FALSE;
+						}
+						$this->ziparchive = new ZipArchive();
+						$ziparchive_open = $this->ziparchive->open( $this->file, ZipArchive::CREATE );
+						if ( $ziparchive_open !== TRUE ) {
+							$this->ziparchive_status();
+							return FALSE;
+						}
+						$this->file_count = 0;
+					}
+					if ( $file_size < ( 1024 * 1024 * 2 ) ) {
+						if ( ! $this->ziparchive->addFromString( $name_in_archive, file_get_contents( $file_name ) ) ) {
+							$this->ziparchive_status();
+							trigger_error( sprintf( __( 'Cannot add "%s" to zip archive!', 'backwpup' ), $name_in_archive ), E_USER_ERROR );
+							return FALSE;
+						} else {
+							$file_factor = round( $file_size / ( 1024 * 1024 ), 4 ) * 2;
+							$this->file_count = $this->file_count + $file_factor;
+						}
 					} else {
-						$this->file_count++;
+						if ( ! $this->ziparchive->addFile( $file_name, $name_in_archive ) ) {
+							$this->ziparchive_status();
+							trigger_error( sprintf( __( 'Cannot add "%s" to zip archive!', 'backwpup' ), $name_in_archive ), E_USER_ERROR );
+							return FALSE;
+						} else {
+							$this->file_count++;
+						}
 					}
 				}
 				break;
@@ -653,13 +661,12 @@ class BackWPup_Create_Archive {
 	 */
 	private function check_archive_filesize( $file_to_add = '' ) {
 
+		$file_to_add_size = 0;
 		if ( ! empty( $file_to_add ) ) {
 			$file_to_add_size = filesize( $file_to_add );
 			if ( $file_to_add_size === FALSE ) {
-				$file_to_add_size = PHP_INT_MAX;
+				$file_to_add_size = 0;
 			}
-		} else {
-			$file_to_add_size = 0;
 		}
 
 		if ( is_resource( $this->filehandel ) ) {

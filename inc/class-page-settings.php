@@ -316,7 +316,7 @@ class BackWPup_Page_Settings {
 				            <legend class="screen-reader-text"><span><?php _e( 'Enable an empty Output on backup working.', 'backwpup' ); ?></span>
 				            </legend>
 				            <label for="jobdooutput">
-					            <input name="jobdooutput" type="checkbox" id="jobdooutput" class="help-tip" title="<?php esc_attr_e( 'This do an empty output on job working. This kan help in some situations or can brake the working. You must test it.', 'backwpup' ); ?>"
+					            <input name="jobdooutput" type="checkbox" id="jobdooutput" class="help-tip" title="<?php esc_attr_e( 'This do an empty output on job working. This can help in some situations or can brake the working. You must test it.', 'backwpup' ); ?>"
 						            value="1" <?php checked( get_site_option( 'backwpup_cfg_jobdooutput' ), TRUE ); ?> />
 					            <?php _e( 'Enable an empty Output on backup working.', 'backwpup' ); ?>
 				            </label>

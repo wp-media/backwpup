@@ -285,7 +285,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
             </tr>
         </table>
 
-		<h3 class="title"><?php _e( 'Special option', 'backwpup' ) ?></h3>
+		<h3 class="title"><?php _e( 'Special options', 'backwpup' ) ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
@@ -297,11 +297,11 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php _e( 'Move WP install folder up', 'backwpup' ); ?></th>
+				<th scope="row"><?php _e( 'Use one folder above as WP install folder', 'backwpup' ); ?></th>
 				<td>
 					<label for="idbackupabsfolderup"><input class="checkbox" id="idbackupabsfolderup"
 							type="checkbox"<?php checked( $abs_folder_up, TRUE, TRUE ); ?>
-							name="backupabsfolderup" value="1" /> <?php _e( 'Move WordPress install folder one folder up! If special WordPress installation that will help.', 'backwpup' ); ?></label>
+							name="backupabsfolderup" value="1" /> <?php _e( 'Use one folder above as WordPress install folder! That can be helpful, if you would backup files and folder that are not in the WordPress installation folder. Or if you made a "<a href="https://codex.wordpress.org/Giving_WordPress_Its_Own_Directory">Giving WordPress Its Own Directory</a>" installation. Excludes must be configured again.', 'backwpup' ); ?></label>
 				</td>
 			</tr>
 		</table>
@@ -502,7 +502,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 				$job_object->additional_files_to_backup[ ] = str_replace( '\\', '/', ABSPATH . 'wp-config.php' );
 				$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), 'wp-config.php' ) );
 			}
-			elseif ( BackWPup_File::is_in_open_basedir( dirname( ABSPATH ) . '/wp-config.php' ) ) {
+			elseif ( BackWPup_File::is_in_open_basedir( dirname( ABSPATH ) ) ) {
 				if ( is_readable( dirname( ABSPATH ) . '/wp-config.php' ) && ! is_readable( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
 					$job_object->additional_files_to_backup[ ] = str_replace( '\\', '/', dirname( ABSPATH ) . '/wp-config.php' );
 					$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), 'wp-config.php' ) );
