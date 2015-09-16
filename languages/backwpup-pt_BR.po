@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: BackWPup v3.0.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-06 17:42+0100\n"
-"PO-Revision-Date: 2015-05-27 15:14-0300\n"
+"PO-Revision-Date: 2015-09-16 02:05-0300\n"
 "Last-Translator: Matheus de Almeida Martins <matheus@matheuswd.com>\n"
 "Language-Team: Luc Capronnier <lcapronnier@yahoo.com>\n"
 "MIME-Version: 1.0\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
 "X-Poedit-Basepath: ../\n"
 "X-Textdomain-Support: yes\n"
-"X-Generator: Poedit 1.7.1\n"
+"X-Generator: Poedit 1.8\n"
 "X-Poedit-Bookmarks: 248,-1,-1,-1,-1,-1,-1,-1,-1,-1\n"
 "X-Poedit-SearchPath-0: .\n"
 
@@ -37,12 +37,12 @@ msgstr "Painel"
 #: inc/class-admin.php:166 inc/class-adminbar.php:83
 #: inc/class-page-settings.php:112
 msgid "Jobs"
-msgstr "Empregos"
+msgstr "Serviços"
 
 # @ backwpup
 #: inc/class-admin.php:181
 msgid "Add New Job"
-msgstr "Adicionar novo Emprego"
+msgstr "Adicionar novo serviço"
 
 # @ backwpup
 #: inc/class-admin.php:197 inc/class-adminbar.php:99
@@ -64,7 +64,7 @@ msgstr "Configurações"
 # @ backwpup
 #: inc/class-page-editjob.php:189
 msgid "Jobs overview"
-msgstr "Resumo dos Empregos"
+msgstr "Resumo dos serviços"
 
 # @ backwpup
 #: inc/class-page-editjob.php:189 inc/class-page-jobs.php:129
@@ -1418,24 +1418,24 @@ msgstr ""
 # @ backwpup
 #: inc/class-jobtype-file.php:15
 msgid "Files"
-msgstr ""
+msgstr "Arquivos"
 
 # @ backwpup
 #: inc/class-jobtype-file.php:16
 msgid "File backup"
-msgstr ""
+msgstr "Backup de arquivos"
 
 # @ backwpup
 #: inc/class-jobtype-file.php:80 inc/class-jobtype-file.php:110
 #: inc/class-jobtype-file.php:140 inc/class-jobtype-file.php:170
 #: inc/class-jobtype-file.php:200
 msgid "Exclude:"
-msgstr ""
+msgstr "Excluir:"
 
 # @ backwpup
 #: inc/class-jobtype-wpplugin.php:13
 msgid "Plugins"
-msgstr ""
+msgstr "Plugins"
 
 # @ backwpup
 #: inc/class-jobtype-file.php:420 inc/class-jobtype-file.php:427
@@ -1448,42 +1448,42 @@ msgstr ""
 # @ backwpup
 #: inc/class-jobtype-file.php:457
 msgid "No folder to back up."
-msgstr ""
+msgstr "Nenhuma pasta para fazer backup"
 
 # @ backwpup
 #: inc/class-jobtype-file.php:459
 #, php-format
 msgid "%1$d folders to back up."
-msgstr ""
+msgstr "%1$d pastar para fazer backup"
 
 # @ backwpup
 #: inc/class-jobtype-file.php:496
 #, php-format
 msgid "Folder \"%s\" is not readable!"
-msgstr ""
+msgstr "A pasta \"%s\" não pode ser lida!"
 
 # @ backwpup
 #: inc/class-jobtype-wpexp.php:18
 msgid "XML export"
-msgstr ""
+msgstr "Exportar XML"
 
 # @ backwpup
 #: inc/class-jobtype-wpexp.php:19 inc/class-page-about.php:188
 msgid "WordPress XML export"
-msgstr ""
+msgstr "Exportar XML do WordPress"
 
 # @ backwpup
 #: inc/class-jobtype-wpexp.php:53 inc/pro/class-jobtype-wpexp.php:16
 msgid "All content"
-msgstr ""
+msgstr "Todo o conteúdo"
 
 #: inc/class-jobtype-wpexp.php:54 inc/pro/class-jobtype-wpexp.php:17
 msgid "Posts"
-msgstr ""
+msgstr "Posts"
 
 #: inc/class-jobtype-wpexp.php:55 inc/pro/class-jobtype-wpexp.php:18
 msgid "Pages"
-msgstr ""
+msgstr "Páginas"
 
 # @ backwpup
 #: inc/class-jobtype-wpexp.php:248
@@ -1493,21 +1493,21 @@ msgstr ""
 
 #: inc/class-jobtype-wpplugin.php:14
 msgid "Installed plugins list"
-msgstr ""
+msgstr "Lista de plugins instalados"
 
 #: inc/class-jobtype-wpplugin.php:120
 #, php-format
 msgid "from %s"
-msgstr ""
+msgstr "de %s"
 
 #: inc/class-jobtype-wpplugin.php:122
 msgid "Active plugins:"
-msgstr ""
+msgstr "Plugins ativos: "
 
 # @ backwpup
 #: inc/class-jobtype-wpplugin.php:128
 msgid "Inactive plugins:"
-msgstr ""
+msgstr "Plugins inativos: "
 
 # @ backwpup
 #: inc/class-jobtype-wpplugin.php:140
@@ -1521,7 +1521,7 @@ msgstr ""
 #: inc/class-page-jobs.php:64 inc/class-page-jobs.php:125
 #: inc/class-page-logs.php:109 inc/class-page-logs.php:187
 msgid "Delete"
-msgstr ""
+msgstr "Excluir"
 
 # @ backwpup
 #: inc/class-page-backups.php:196
@@ -1531,29 +1531,29 @@ msgstr ""
 # @ backwpup
 #: inc/class-page-backups.php:234
 msgid "File"
-msgstr ""
+msgstr "Arquivo"
 
 # @ backwpup
 #: inc/class-page-backups.php:236 inc/class-page-logs.php:124
 msgid "Size"
-msgstr ""
+msgstr "Tamanho"
 
 # @ backwpup
 #: inc/class-page-backups.php:237 inc/class-page-backwpup.php:189
 #: inc/class-page-backwpup.php:250
 msgid "Time"
-msgstr ""
+msgstr "Tempo"
 
 # @ backwpup
 #: inc/class-page-backups.php:282 inc/class-page-jobs.php:253
 #: inc/class-page-logs.php:188
 msgid "Download"
-msgstr ""
+msgstr "Baixar"
 
 # @ backwpup
 #: inc/class-page-backups.php:311
 msgid "?"
-msgstr ""
+msgstr "?"
 
 # @ backwpup
 #: inc/class-page-backups.php:424
@@ -1568,12 +1568,12 @@ msgstr ""
 
 #: inc/class-page-about.php:72
 msgid "Welcome to BackWPup Pro"
-msgstr ""
+msgstr "Bem-vindo ao BackWPup Pro"
 
 # @ backwpup
 #: inc/class-page-about.php:82
 msgid "Welcome to BackWPup"
-msgstr ""
+msgstr "Bem-vindo ao BackWPup"
 
 #: inc/class-page-backwpup.php:121 inc/pro/class-page-wizard.php:288
 msgid "Start wizard"
@@ -1581,30 +1581,30 @@ msgstr ""
 
 #: inc/class-page-backwpup.php:152
 msgid "Test the installation"
-msgstr ""
+msgstr "Teste a instalação"
 
 # @ backwpup
 #: inc/class-page-backwpup.php:153 inc/class-page-backwpup.php:156
 msgid "Create a Job"
-msgstr ""
+msgstr "Criar um serviço"
 
 #: inc/class-page-backwpup.php:158
 msgid "Run the created job"
-msgstr ""
+msgstr "Executar o serviço criado"
 
 #: inc/class-page-backwpup.php:159
 msgid "Check the job log"
-msgstr ""
+msgstr "Verificar o log do serviço"
 
 #: inc/class-page-backwpup.php:248
 msgid "Next scheduled jobs"
-msgstr ""
+msgstr "Próximos serviços agendados"
 
 # @ backwpup
 #: inc/class-page-backwpup.php:189 inc/class-page-backwpup.php:251
 #: inc/class-page-logs.php:120
 msgid "Job"
-msgstr ""
+msgstr "Serviço"
 
 # @ backwpup
 #: inc/class-page-backwpup.php:274
@@ -1615,41 +1615,41 @@ msgstr ""
 # @ backwpup
 #: inc/class-page-backwpup.php:276 inc/class-page-jobs.php:469
 msgid "Abort"
-msgstr ""
+msgstr "Encerrar"
 
 # @ backwpup
 #: inc/class-page-backwpup.php:292
 msgid "Edit Job"
-msgstr ""
+msgstr "Editar serviço"
 
 #: inc/class-page-backwpup.php:188
 msgid "Last logs"
-msgstr ""
+msgstr "Últimos logs"
 
 #: inc/class-page-backwpup.php:189
 msgid "Result"
-msgstr ""
+msgstr "Resultado"
 
 # @ backwpup
 #: inc/class-page-backwpup.php:219
 #, php-format
 msgid "%d ERROR"
 msgid_plural "%d ERRORS"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d ERRO"
+msgstr[1] "%d ERROS"
 
 # @ backwpup
 #: inc/class-page-backwpup.php:221
 #, php-format
 msgid "%d WARNING"
 msgid_plural "%d WARNINGS"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d AVISO"
+msgstr[1] "%d AVISOS"
 
 # @ backwpup
 #: inc/class-page-logs.php:208
 msgid "O.K."
-msgstr ""
+msgstr "OK."
 
 # @ backwpup
 #: inc/class-page-editjob.php:37
@@ -1665,13 +1665,13 @@ msgstr ""
 #: inc/class-page-editjob.php:324
 #, php-format
 msgid "ATTENTION: Job runs every %d minutes!"
-msgstr ""
+msgstr "ATENÇÃO: os serviços são executados a cada %d minutos!"
 
 # @ backwpup
 #: inc/class-page-editjob.php:330
 #, php-format
 msgid "ATTENTION: Job runs every %d hours!"
-msgstr ""
+msgstr "ATENÇÃO: os serviços são executados a cada %d horas!"
 
 # @ backwpup
 #: inc/class-page-editjob.php:334
@@ -1685,7 +1685,7 @@ msgstr ""
 
 #: inc/class-page-editjob.php:372 inc/class-page-settings.php:112
 msgid "General"
-msgstr ""
+msgstr "Geral"
 
 # @ backwpup
 #: inc/class-page-editjob.php:372
@@ -1695,7 +1695,7 @@ msgstr ""
 #: inc/class-page-editjob.php:387
 #, php-format
 msgid "To: %s"
-msgstr ""
+msgstr "Para: %s"
 
 #: inc/class-page-editjob.php:393
 #, php-format
@@ -1715,7 +1715,7 @@ msgstr ""
 # @ backwpup
 #: inc/class-page-editjob.php:472 inc/pro/class-wizard-job.php:359
 msgid "Create a backup archive"
-msgstr ""
+msgstr "Criar um arquivo de backup"
 
 # @ backwpup
 #: inc/class-page-editjob.php:516 inc/class-page-editjob.php:519
@@ -1726,24 +1726,24 @@ msgstr ""
 #: inc/class-page-editjob.php:522 inc/class-page-editjob.php:524
 #: inc/pro/class-wizard-job.php:369 inc/pro/class-wizard-job.php:371
 msgid "Zip"
-msgstr ""
+msgstr "Zip"
 
 # @ backwpup
 #: inc/class-page-editjob.php:525 inc/pro/class-wizard-job.php:372
 msgid "Tar"
-msgstr ""
+msgstr "Tar"
 
 # @ backwpup
 #: inc/class-page-editjob.php:527 inc/class-page-editjob.php:529
 #: inc/pro/class-wizard-job.php:374 inc/pro/class-wizard-job.php:376
 msgid "Tar GZip"
-msgstr ""
+msgstr "Tar GZip"
 
 # @ backwpup
 #: inc/class-page-editjob.php:531 inc/class-page-editjob.php:533
 #: inc/pro/class-wizard-job.php:378 inc/pro/class-wizard-job.php:380
 msgid "Tar BZip2"
-msgstr ""
+msgstr "Tas BZip2"
 
 # @ backwpup
 #: inc/class-page-jobs.php:79 inc/pro/class-wizard-job.php:53
@@ -1753,11 +1753,11 @@ msgstr ""
 
 #: inc/class-page-editjob.php:604 inc/class-page-editjob.php:607
 msgid "Start job"
-msgstr ""
+msgstr "Iniciar serviço"
 
 #: inc/class-page-editjob.php:611
 msgid "manually only"
-msgstr ""
+msgstr "Manualmente apenas"
 
 #: inc/class-page-editjob.php:615
 msgid "with WordPress cron"
@@ -1779,7 +1779,7 @@ msgstr ""
 # @ backwpup
 #: inc/class-page-editjob.php:652
 msgid "basic"
-msgstr ""
+msgstr "báscio"
 
 # @ backwpup
 #: inc/class-page-editjob.php:656
