@@ -642,7 +642,7 @@ class BackWPup_Page_Editjob {
 			                            value="easycron" title="<?php _e( 'Use EasyCron.com Cron jobs.' ); ?>" /> <?php _e( 'with <a href="https://www.easycron.com?ref=36673" class="help-tip" title="Affiliate Link!">EasyCron.com</a>', 'backwpup' ); ?>
 	                            <?php
 	                            if ( empty( $easycron_api ) ) {
-		                            echo ' <strong>' . sprintf( __( 'Setup <a href="https://www.easycron.com?ref=36673" class="help-tip" title="Affiliate Link!">Account</a> / <a href="%s">API Key</a> first.', 'bbackwpup' ), network_admin_url( 'admin.php' ) . '?page=backwpupsettings#backwpup-tab-apikey' ) . '</strong>';
+		                            echo ' <strong>' . sprintf( __( 'Setup <a href="https://www.easycron.com?ref=36673" class="help-tip" title="Affiliate Link!">Account</a> / <a href="%s">API Key</a> first.', 'backwpup' ), network_admin_url( 'admin.php' ) . '?page=backwpupsettings#backwpup-tab-apikey' ) . '</strong>';
 	                            }
 	                            ?>
 	                            </label><br/>
