@@ -661,7 +661,7 @@ class BackWPup_Page_Editjob {
 						<th scope="row"><?php _e( 'Start job with CLI', 'backwpup' ); ?></th>
 						<td class="help-tip" title="<?php esc_attr_e( 'Use WP-CLI commands to let the job start with the server’s cron on command line interface.', 'backwpup' ); ?>">
 							<?php
-								 _e( 'Use <a href="http://wp-cli.org/">WP-CLI</a> to run jobs from commandline.</a>.', 'backwpup' );
+								 _e( 'Use <a href="http://wp-cli.org/">WP-CLI</a> to run jobs from commandline.', 'backwpup' );
 							?>
 						</td>
                     </tr>
