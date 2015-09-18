@@ -681,7 +681,7 @@ class BackWPup_Create_Archive {
 
 		$archive_size = $archive_size + $file_to_add_size;
 		if ( $archive_size >= PHP_INT_MAX ) {
-			trigger_error( sprintf( __( 'If %s will be added to your backup archive, the archive will be too large for for operations with this PHP Version. You might want to consider splitting the backup job in multiple jobs with less files each.', 'backwpup' ), $file_to_add ), E_USER_ERROR );
+			trigger_error( sprintf( __( 'If %s will be added to your backup archive, the archive will be too large for operations with this PHP Version. You might want to consider splitting the backup job in multiple jobs with less files each.', 'backwpup' ), $file_to_add ), E_USER_ERROR );
 
 			return FALSE;
 		}
