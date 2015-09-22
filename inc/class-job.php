@@ -2164,7 +2164,7 @@ final class BackWPup_Job {
 		}
 
 		if ( $this->backup_filesize >= PHP_INT_MAX ) {
-			$this->log( __( 'The Backup archive will be too large for for file operations with this PHP Version. You might want to consider splitting the backup job in multiple jobs with less files each.', 'backwpup' ), E_USER_ERROR );
+			$this->log( __( 'The Backup archive will be too large for file operations with this PHP Version. You might want to consider splitting the backup job in multiple jobs with less files each.', 'backwpup' ), E_USER_ERROR );
 			$this->end();
 		}
 		else {

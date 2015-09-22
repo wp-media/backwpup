@@ -432,7 +432,7 @@ _e( 'Use your backup archives to save your entire WordPress installation includi
                     <?php } ?>
 					<?php
             		if ( class_exists( 'BackWPup_Pro', FALSE ) ) :
-						$autoupdate = BackWPup_Pro_MarketPress_Autoupdate::get_instance( BackWPup::get_plugin_data( 'Slug' ) , BackWPup::get_plugin_data( 'MainFile' ) );
+			            $autoupdate = BackWPup_Pro_MarketPress_Autoupdate::get_instance();
 						if ( $autoupdate->license_check() == 'false' ) :
 							$plugins = get_plugins();
 							$localplugin = FALSE;

@@ -6,7 +6,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Tue Aug 25 2015 08:53:55 GMT+0200 (Mitteleuropäische "
 "Sommerzeit)\n"
-"POT-Revision-Date: Wed Sep 16 2015 08:28:32 GMT+0200 (Mitteleuropäische "
+"POT-Revision-Date: Tue Sep 22 2015 10:36:32 GMT+0200 (Mitteleuropäische "
 "Sommerzeit)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
@@ -46,92 +46,86 @@ msgstr ""
 msgid "http://inpsyde.com"
 msgstr ""
 
-#: ../backwpup.php:42
-msgid ""
-"BackWPup requires PHP version 5.2.7 with spl extension or greater and "
-"WordPress 3.4 or greater."
-msgstr ""
-
-#: ../backwpup.php:310 ../inc/class-page-backups.php:264
+#: ../backwpup.php:304 ../inc/class-page-backups.php:264
 msgid "Folder"
 msgstr ""
 
-#: ../backwpup.php:311
+#: ../backwpup.php:305
 msgid "Backup to Folder"
 msgstr ""
 
-#: ../backwpup.php:326
+#: ../backwpup.php:320
 msgid "Email"
 msgstr ""
 
-#: ../backwpup.php:327
+#: ../backwpup.php:321
 msgid "Backup sent via email"
 msgstr ""
 
-#: ../backwpup.php:342
+#: ../backwpup.php:336
 msgid "FTP"
 msgstr ""
 
-#: ../backwpup.php:343
+#: ../backwpup.php:337
 msgid "Backup to FTP"
 msgstr ""
 
-#: ../backwpup.php:358 ../inc/class-destination-dropbox.php:278
+#: ../backwpup.php:352 ../inc/class-destination-dropbox.php:278
 msgid "Dropbox"
 msgstr ""
 
-#: ../backwpup.php:359 ../inc/class-page-about.php:577
+#: ../backwpup.php:353 ../inc/class-page-about.php:577
 msgid "Backup to Dropbox"
 msgstr ""
 
-#: ../backwpup.php:375 ../backwpup.php:394 ../inc/class-destination-s3-v1.php:71 .
+#: ../backwpup.php:369 ../backwpup.php:388 ../inc/class-destination-s3-v1.php:71 .
 #: ./inc/class-destination-s3.php:74
 msgid "S3 Service"
 msgstr ""
 
-#: ../backwpup.php:376
+#: ../backwpup.php:370
 msgid "Backup to an S3 Service"
 msgstr ""
 
-#: ../backwpup.php:395
+#: ../backwpup.php:389
 msgid "Backup to an S3 Service v1"
 msgstr ""
 
-#: ../backwpup.php:411
+#: ../backwpup.php:405
 msgid "MS Azure"
 msgstr ""
 
-#: ../backwpup.php:412
+#: ../backwpup.php:406
 msgid "Backup to Microsoft Azure (Blob)"
 msgstr ""
 
-#: ../backwpup.php:427
+#: ../backwpup.php:421
 msgid "RSC"
 msgstr ""
 
-#: ../backwpup.php:428 ../inc/class-page-about.php:582
+#: ../backwpup.php:422 ../inc/class-page-about.php:582
 msgid "Backup to Rackspace Cloud Files"
 msgstr ""
 
-#: ../backwpup.php:444
+#: ../backwpup.php:438
 msgid "SugarSync"
 msgstr ""
 
-#: ../backwpup.php:445 ../inc/class-page-about.php:597
+#: ../backwpup.php:439 ../inc/class-page-about.php:597
 msgid "Backup to SugarSync"
 msgstr ""
 
-#: ../backwpup.php:464
+#: ../backwpup.php:458
 #, php-format
 msgid "PHP Version %1$s is to low, you need Version %2$s or above."
 msgstr ""
 
-#: ../backwpup.php:471
+#: ../backwpup.php:465
 #, php-format
 msgid "Missing function \"%s\"."
 msgstr ""
 
-#: ../backwpup.php:480
+#: ../backwpup.php:474
 #, php-format
 msgid "Missing class \"%s\"."
 msgstr ""
@@ -217,7 +211,7 @@ msgid "Log only"
 msgstr ""
 
 #: ../inc/class-page-logs.php:247 ../inc/class-destination-ftp.php:86 ..
-#: /inc/class-page-settings.php:470
+#: /inc/class-page-settings.php:477
 msgid "seconds"
 msgstr ""
 
@@ -692,11 +686,11 @@ msgstr ""
 msgid "Backup to your web space"
 msgstr ""
 
-#: ../inc/class-page-about.php:602 ../inc/pro/class-pro.php:122
+#: ../inc/class-page-about.php:602 ../inc/pro/class-pro.php:131
 msgid "Backup to Google Drive"
 msgstr ""
 
-#: ../inc/class-page-about.php:607 ../inc/pro/class-pro.php:103
+#: ../inc/class-page-about.php:607 ../inc/pro/class-pro.php:112
 msgid "Backup to Amazon Glacier"
 msgstr ""
 
@@ -1484,8 +1478,8 @@ msgstr ""
 #, php-format
 msgid ""
 "If %s will be added to your backup archive, the archive will be too large "
-"for for operations with this PHP Version. You might want to consider "
-"splitting the backup job in multiple jobs with less files each."
+"for operations with this PHP Version. You might want to consider splitting "
+"the backup job in multiple jobs with less files each."
 msgstr ""
 
 #: ../inc/class-admin.php:137 ../inc/class-help.php:29
@@ -1493,7 +1487,7 @@ msgid "https://marketpress.com/documentation/backwpup-pro/"
 msgstr ""
 
 #: ../inc/class-admin.php:137 ../inc/pro/class-marketpress-documentation.php:149 .
-#: ./inc/pro/class-pro.php:188 ../inc/pro/class-pro.php:188
+#: ./inc/pro/class-pro.php:197 ../inc/pro/class-pro.php:197
 msgid "Documentation"
 msgstr ""
 
@@ -2225,12 +2219,12 @@ msgstr ""
 msgid "The job \"%s\" needs properly configured destinations to run!"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:433 ../inc/class-page-settings.php:432
+#: ../inc/class-page-jobs.php:433 ../inc/class-page-settings.php:439
 #, php-format
 msgid "The HTTP response test get an error \"%s\""
 msgstr ""
 
-#: ../inc/class-page-jobs.php:437 ../inc/class-page-settings.php:434
+#: ../inc/class-page-jobs.php:437 ../inc/class-page-settings.php:441
 #, php-format
 msgid "The HTTP response test get a false http status (%s)"
 msgstr ""
@@ -2913,179 +2907,179 @@ msgstr ""
 msgid "BackWPup Pro version"
 msgstr ""
 
-#: ../inc/class-page-settings.php:416
+#: ../inc/class-page-settings.php:423
 msgid "PHP version"
 msgstr ""
 
-#: ../inc/class-page-settings.php:417
+#: ../inc/class-page-settings.php:424
 msgid "MySQL version"
 msgstr ""
 
-#: ../inc/class-page-settings.php:420 ../inc/class-page-settings.php:424
+#: ../inc/class-page-settings.php:427 ../inc/class-page-settings.php:431
 msgid "cURL version"
 msgstr ""
 
-#: ../inc/class-page-settings.php:421
+#: ../inc/class-page-settings.php:428
 msgid "cURL SSL version"
 msgstr ""
 
-#: ../inc/class-page-settings.php:424
+#: ../inc/class-page-settings.php:431
 msgid "unavailable"
 msgstr ""
 
-#: ../inc/class-page-settings.php:426
+#: ../inc/class-page-settings.php:433
 msgid "WP-Cron url:"
 msgstr ""
 
-#: ../inc/class-page-settings.php:428
+#: ../inc/class-page-settings.php:435
 msgid "Server self connect:"
 msgstr ""
 
-#: ../inc/class-page-settings.php:437 ../inc/pro/class-wizard-systemtest.php:183
+#: ../inc/class-page-settings.php:444 ../inc/pro/class-wizard-systemtest.php:183
 #, php-format
 msgid "The BackWPup HTTP response header returns a false value: \"%s\""
 msgstr ""
 
-#: ../inc/class-page-settings.php:440
+#: ../inc/class-page-settings.php:447
 msgid "Response Test O.K."
 msgstr ""
 
-#: ../inc/class-page-settings.php:445
+#: ../inc/class-page-settings.php:452
 msgid "Temp folder:"
 msgstr ""
 
-#: ../inc/class-page-settings.php:447
+#: ../inc/class-page-settings.php:454
 #, php-format
 msgid "Temp folder %s doesn't exist."
 msgstr ""
 
-#: ../inc/class-page-settings.php:449
+#: ../inc/class-page-settings.php:456
 #, php-format
 msgid "Temporary folder %s is not writable."
 msgstr ""
 
-#: ../inc/class-page-settings.php:455
+#: ../inc/class-page-settings.php:462
 msgid "Log folder:"
 msgstr ""
 
-#: ../inc/class-page-settings.php:457
+#: ../inc/class-page-settings.php:464
 #, php-format
 msgid "Logs folder %s not exist."
 msgstr ""
 
-#: ../inc/class-page-settings.php:459
+#: ../inc/class-page-settings.php:466
 #, php-format
 msgid "Log folder %s is not writable."
 msgstr ""
 
-#: ../inc/class-page-settings.php:464
+#: ../inc/class-page-settings.php:471
 msgid "Server"
 msgstr ""
 
-#: ../inc/class-page-settings.php:465
+#: ../inc/class-page-settings.php:472
 msgid "Operating System"
 msgstr ""
 
-#: ../inc/class-page-settings.php:466
+#: ../inc/class-page-settings.php:473
 msgid "PHP SAPI"
 msgstr ""
 
-#: ../inc/class-page-settings.php:467
+#: ../inc/class-page-settings.php:474
 msgid "Current PHP user"
 msgstr ""
 
-#: ../inc/class-page-settings.php:468 ../inc/class-page-settings.php:472 ..
-#: /inc/class-page-settings.php:476
+#: ../inc/class-page-settings.php:475 ../inc/class-page-settings.php:479 ..
+#: /inc/class-page-settings.php:483
 msgid "On"
 msgstr ""
 
-#: ../inc/class-page-settings.php:468 ../inc/class-page-settings.php:474 ..
-#: /inc/class-page-settings.php:478
+#: ../inc/class-page-settings.php:475 ../inc/class-page-settings.php:481 ..
+#: /inc/class-page-settings.php:485
 msgid "Off"
 msgstr ""
 
-#: ../inc/class-page-settings.php:469
+#: ../inc/class-page-settings.php:476
 msgid "Safe Mode"
 msgstr ""
 
-#: ../inc/class-page-settings.php:470
+#: ../inc/class-page-settings.php:477
 msgid "Maximum execution time"
 msgstr ""
 
-#: ../inc/class-page-settings.php:472 ../inc/class-page-settings.php:474
+#: ../inc/class-page-settings.php:479 ../inc/class-page-settings.php:481
 msgid "Alternative WP Cron"
 msgstr ""
 
-#: ../inc/class-page-settings.php:476 ../inc/class-page-settings.php:478
+#: ../inc/class-page-settings.php:483 ../inc/class-page-settings.php:485
 msgid "Disabled WP Cron"
 msgstr ""
 
-#: ../inc/class-page-settings.php:480 ../inc/class-page-settings.php:482
+#: ../inc/class-page-settings.php:487 ../inc/class-page-settings.php:489
 msgid "CHMOD Dir"
 msgstr ""
 
-#: ../inc/class-page-settings.php:484
+#: ../inc/class-page-settings.php:491
 msgid "Server Time"
 msgstr ""
 
-#: ../inc/class-page-settings.php:485
+#: ../inc/class-page-settings.php:492
 msgid "Blog Time"
 msgstr ""
 
-#: ../inc/class-page-settings.php:486
+#: ../inc/class-page-settings.php:493
 msgid "Blog Timezone"
 msgstr ""
 
-#: ../inc/class-page-settings.php:487
+#: ../inc/class-page-settings.php:494
 msgid "Blog Time offset"
 msgstr ""
 
-#: ../inc/class-page-settings.php:487
+#: ../inc/class-page-settings.php:494
 #, php-format
 msgid "%s hours"
 msgstr ""
 
-#: ../inc/class-page-settings.php:488
+#: ../inc/class-page-settings.php:495
 msgid "Blog language"
 msgstr ""
 
-#: ../inc/class-page-settings.php:489
+#: ../inc/class-page-settings.php:496
 msgid "MySQL Client encoding"
 msgstr ""
 
-#: ../inc/class-page-settings.php:492
+#: ../inc/class-page-settings.php:499
 msgid "Blog charset"
 msgstr ""
 
-#: ../inc/class-page-settings.php:493
+#: ../inc/class-page-settings.php:500
 msgid "PHP Memory limit"
 msgstr ""
 
-#: ../inc/class-page-settings.php:494
+#: ../inc/class-page-settings.php:501
 msgid "WP memory limit"
 msgstr ""
 
-#: ../inc/class-page-settings.php:495
+#: ../inc/class-page-settings.php:502
 msgid "WP maximum memory limit"
 msgstr ""
 
-#: ../inc/class-page-settings.php:496
+#: ../inc/class-page-settings.php:503
 msgid "Memory in use"
 msgstr ""
 
-#: ../inc/class-page-settings.php:501
+#: ../inc/class-page-settings.php:508
 msgid "Disabled PHP Functions:"
 msgstr ""
 
-#: ../inc/class-page-settings.php:506
+#: ../inc/class-page-settings.php:513
 msgid "Loaded PHP Extensions:"
 msgstr ""
 
-#: ../inc/class-page-settings.php:518
+#: ../inc/class-page-settings.php:525
 msgid "Save Changes"
 msgstr ""
 
-#: ../inc/class-page-settings.php:520
+#: ../inc/class-page-settings.php:527
 msgid "Reset all settings to default"
 msgstr ""
 
@@ -3542,7 +3536,7 @@ msgstr ""
 
 #: ../inc/class-job.php:2167
 msgid ""
-"The Backup archive will be too large for for file operations with this PHP "
+"The Backup archive will be too large for file operations with this PHP "
 "Version. You might want to consider splitting the backup job in multiple "
 "jobs with less files each."
 msgstr ""
@@ -4015,9 +4009,7 @@ msgid ""
 msgstr ""
 
 #: ../inc/class-page-editjob.php:664
-msgid ""
-"Use <a href=\"http://wp-cli.org/\">WP-CLI</a> to run jobs from commandline."
-"</a>."
+msgid "Use <a href=\"http://wp-cli.org/\">WP-CLI</a> to run jobs from commandline."
 msgstr ""
 
 #: ../inc/class-page-editjob.php:669
@@ -5295,7 +5287,7 @@ msgstr ""
 msgid "Archive ID: %s"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:368 ../inc/pro/class-pro.php:102
+#: ../inc/pro/class-destination-glacier.php:368 ../inc/pro/class-pro.php:111
 msgid "Glacier"
 msgstr ""
 
@@ -5319,73 +5311,102 @@ msgstr ""
 msgid "Nothing to configure"
 msgstr ""
 
-#: ../inc/pro/class-marketpress-autoupdate.php:344
-#, php-format
-msgctxt "%s = plugin name"
-msgid ""
-"Your license for the plugin %s is not valid. The auto-update has been "
-"deactivated. Please insert a valid key on MarketPress Dashboard. Or if you "
-"want to add an other valid code use the form below."
+#: ../inc/pro/class-marketpress-autoupdate.php:352 ../inc/pro/class-marketpress-
+#: autoupdate.php:587
+msgctxt "MarketPress URL part, should be .de for German languages"
+msgid "marketpress.com"
 msgstr ""
 
-#: ../inc/pro/class-marketpress-autoupdate.php:356
-msgid ""
-"You are currently using a valid key for this plugin. You are able to renew "
-"the key in MarketPress Dashboard. Or if you want to add another valid code "
-"use the form below."
-msgstr ""
-
-#: ../inc/pro/class-marketpress-autoupdate.php:366
-#, php-format
-msgctxt "%s = plugin name"
-msgid ""
-"Your license for the plugin %s is not valid. The auto-update has been "
-"deactivated."
-msgstr ""
-
-#: ../inc/pro/class-marketpress-autoupdate.php:379
+#: ../inc/pro/class-marketpress-autoupdate.php:362
 #, php-format
 msgid ""
-"You are currently using a valid key for this plugin. You are able to renew "
-"the key below or you can delete the key by <a href=\"%s\">clicking here</a>."
+"<strong>Whoops!</strong> The license key you have entered appears not to be "
+"valid. You can always get your valid key from your Downloads page at %s. "
+"Automatic updates for this plugin have been disabled until you enter a valid "
+"key."
 msgstr ""
 
-#: ../inc/pro/class-marketpress-autoupdate.php:386
+#: ../inc/pro/class-marketpress-autoupdate.php:369
+#, php-format
+msgid ""
+"<strong>All is fine.</strong> You are using a valid license key from %s for "
+"this plugin. If you need to enter a new key, just override the current one "
+"and save."
+msgstr ""
+
+#: ../inc/pro/class-marketpress-autoupdate.php:382
+#, php-format
+msgid "Enter a valid license key from %s below."
+msgstr ""
+
+#: ../inc/pro/class-marketpress-autoupdate.php:387
+msgid "Help! I need to retrieve my key."
+msgstr ""
+
+#: ../inc/pro/class-marketpress-autoupdate.php:393
+msgid ""
+"<strong>Whoops!</strong> The license key you have entered appears not to be "
+"valid. Automatic updates for this plugin have been disabled until you enter "
+"a valid key."
+msgstr ""
+
+#: ../inc/pro/class-marketpress-autoupdate.php:398
+#, php-format
+msgid ""
+"<strong>All is fine.</strong> You are using a valid license key from %s for "
+"this plugin. If you need to enter a new key, just override the current one "
+"and save. Or just <a href=\\\"%s\\\">delete it</a> to make it disappear."
+msgstr ""
+
+#: ../inc/pro/class-marketpress-autoupdate.php:408
+msgid "Your license status"
+msgstr ""
+
+#: ../inc/pro/class-marketpress-autoupdate.php:414
 msgid "License Key"
 msgstr ""
 
-#: ../inc/pro/class-marketpress-autoupdate.php:389
+#: ../inc/pro/class-marketpress-autoupdate.php:416
 msgid "Activate"
 msgstr ""
 
-#: ../inc/pro/class-marketpress-autoupdate.php:558
-msgid "The License has been deleted."
+#: ../inc/pro/class-marketpress-autoupdate.php:594
+msgid "License key has been deleted."
 msgstr ""
 
-#: ../inc/pro/class-marketpress-autoupdate.php:565
-msgid "Plugin successfully activated."
+#: ../inc/pro/class-marketpress-autoupdate.php:600
+msgid "License activated successfully."
 msgstr ""
 
-#: ../inc/pro/class-marketpress-autoupdate.php:572
-msgid "The entered license key is wrong."
+#: ../inc/pro/class-marketpress-autoupdate.php:606 ../inc/pro/class-marketpress-
+#: autoupdate.php:613 ../inc/pro/class-marketpress-autoupdate.php:622 ..
+#: /inc/pro/class-marketpress-autoupdate.php:631
+msgid "License cannot be activated."
 msgstr ""
 
-#: ../inc/pro/class-marketpress-autoupdate.php:579
+#: ../inc/pro/class-marketpress-autoupdate.php:607
+msgid "The license key you have entered is not correct."
+msgstr ""
+
+#: ../inc/pro/class-marketpress-autoupdate.php:614
+#, php-format
 msgid ""
-"You have reached the limit of urls. Please update your license at <a "
-"href=\"http://marketpress.com\">marketpress.com</a>."
+"You have reached the limit of URLs included in your license. Please update "
+"your license at %s."
 msgstr ""
 
-#: ../inc/pro/class-marketpress-autoupdate.php:586
+#: ../inc/pro/class-marketpress-autoupdate.php:623
+#, php-format
 msgid ""
-"Something went wrong. Please try again later or contact the <a href=\"http:"
-"//marketpress.com/support/\">MarketPress Team</a>."
+"Something went wrong. Please try again later or contact the support staff at "
+"%s."
 msgstr ""
 
-#: ../inc/pro/class-marketpress-autoupdate.php:593
+#: ../inc/pro/class-marketpress-autoupdate.php:632
+#, php-format
 msgid ""
-"Due to a wrong license you are not allowed to activate this plugin. Please "
-"update your license at <a href=\"http://marketpress.com\">marketpress.com</a>."
+"Your license does not appear to be valid for this plugin. Please update your "
+"license at %s."
 msgstr ""
 
 #: ../inc/pro/class-wizard-job.php:15
@@ -5509,11 +5530,11 @@ msgstr ""
 msgid "Custom configuration"
 msgstr ""
 
-#: ../inc/pro/class-pro.php:121
+#: ../inc/pro/class-pro.php:130
 msgid "GDrive"
 msgstr ""
 
-#: ../inc/pro/class-pro.php:174 ../inc/pro/class-pro.php:174 ../inc/pro/class-pro.
-#: php:210
+#: ../inc/pro/class-pro.php:183 ../inc/pro/class-pro.php:183 ../inc/pro/class-pro.
+#: php:219
 msgid "Wizards"
 msgstr ""

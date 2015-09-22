@@ -2,8 +2,8 @@
 Contributors: inpsyde, danielhuesken, Bueltge, nullbyte
 Tags: Amazon, Amazon S3, back up, backup, chinese, cloud, cloud files, database, db backup, dropbox, dump, file, french, ftp, ftps, german, migrate, multisite, russian, schedule, sftp, storage, S3, time, upload, xml
 Requires at least: 3.4
-Tested up to: 4.3
-Stable tag: 3.1.3
+Tested up to: 4.3.1
+Stable tag: 3.2.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -179,7 +179,7 @@ Please check all settings after the update:
 * Added: Email logfile to more than one receiver
 * Added: Creation of web.config for IIS Webserver
 * Added: Allow relative path to WP_CONTENT_DIR for logs and backups
-* Added: Prefer plugin translation loading from WP_LAND_DIR
+* Added: Prefer plugin translation loading from WP_LANG_DIR
 * Added: Option to move WordPress installation folder one folder up
 * Added: Ordering options for jobs page
 * Added: Added Google storage Bucket regions
@@ -193,6 +193,7 @@ Please check all settings after the update:
 * Improved: fcgi handling to prevent signal 15 errors (thanks to siteground.com)
 * Updated: AWS SDK to Version 2.7.7 (PHP 5.3.3+)
 * Updated: MSAZURE SDK to Version 0.4.0-dev
+* Updated: Translations from http://translate.marketpress.com/
 * Removed: Server script file generation, please use WP-CLI
 * Fixed: Notice if BuddyPress is active
 * Fixed: VIEW generation on Database backups

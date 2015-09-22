@@ -413,7 +413,14 @@ class BackWPup_Page_Settings {
 				echo '<tr title=""><td>' . __( 'BackWPup version', 'backwpup' ) . '</td><td>' . BackWPup::get_plugin_data( 'Version' ) . ' <a href="' . translate( BackWPup::get_plugin_data( 'pluginuri' ), 'backwpup' ) . '">' . __( 'Get pro.', 'backwpup' ) . '</a></td></tr>';
 			else
 				echo '<tr title=""><td>' . __( 'BackWPup Pro version', 'backwpup' ) . '</td><td>' . BackWPup::get_plugin_data( 'Version' ) . '</td></tr>';
-			echo '<tr title="&gt;=5.3.3"><td>' . __( 'PHP version', 'backwpup' ) . '</td><td>' . PHP_VERSION . '</td></tr>';
+			$bit = '';
+			if ( PHP_INT_SIZE === 4 ) {
+				$bit = ' (32bit)';
+			}
+			if ( PHP_INT_SIZE === 8 ) {
+				$bit = ' (64bit)';
+			}
+			echo '<tr title="&gt;=5.3.3"><td>' . __( 'PHP version', 'backwpup' ) . '</td><td>' . PHP_VERSION . ' ' . $bit . '</td></tr>';
 			echo '<tr title="&gt;=5.0.7"><td>' . __( 'MySQL version', 'backwpup' ) . '</td><td>' . $wpdb->get_var( "SELECT VERSION() AS version" ) . '</td></tr>';
 			if ( function_exists( 'curl_version' ) ) {
 				$curlversion = curl_version();
