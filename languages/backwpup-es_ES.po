@@ -2682,7 +2682,7 @@ msgstr "Por favor deje sin tocar manifest.json y en su sitio. De otro modo la se
 
 #: ../inc/class-job.php:2032
 msgid "Added manifest.json file with %1$s to backup file list."
-msgstr "Añadido archivo de lista de plugins \"%1$s\" con %2$s a la lista de archivos de respaldo."
+msgstr ""
 
 #: ../inc/class-job.php:2062
 msgid "%d. Trying to create backup archive &hellip;"
