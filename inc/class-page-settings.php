@@ -227,7 +227,7 @@ class BackWPup_Page_Settings {
 				            <legend class="screen-reader-text"><span><?php _e( 'Logging Level', 'backwpup' ); ?></span>
 				            </legend>
 				            <label for="loglevel">
-					            <select name="loglevel" size="1" class="help-tip" title="<?php esc_attr_e( 'Debug lag has much more informations than normal logs. It is for support and should be handled carefully. For support is the best to use a not translated log file. Usage of not translated logs can reduce the PHP memory usage.', 'backwpup' ); ?>">
+					            <select name="loglevel" size="1" class="help-tip" title="<?php esc_attr_e( 'Debug log has much more informations than normal logs. It is for support and should be handled carefully. For support is the best to use a not translated log file. Usage of not translated logs can reduce the PHP memory usage.', 'backwpup' ); ?>">
 						            <option value="normal_translated" <?php selected( get_site_option( 'backwpup_cfg_loglevel' ), 'normal_translated' ); ?>><?php _e( 'Normal (translated)', 'backwpup' ); ?></option>
 						            <option value="normal" <?php selected( get_site_option( 'backwpup_cfg_loglevel' ), 'normal' ); ?>><?php _e( 'Normal (not translated)', 'backwpup' ); ?></option>
 						            <option value="debug_translated" <?php selected( get_site_option( 'backwpup_cfg_loglevel' ), 'debug_translated' ); ?>><?php _e( 'Debug (translated)', 'backwpup' ); ?></option>
