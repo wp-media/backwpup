@@ -729,7 +729,7 @@ class BackWPup_Page_Editjob {
                                 <tr>
                                     <td><label for="idcronbtype-mon"><?php echo '<input class="radio" type="radio"' . checked( TRUE, is_numeric( $mday[ 0 ] ), FALSE ) . ' name="cronbtype" id="idcronbtype-mon" value="mon" /> ' . __( 'monthly', 'backwpup' ); ?></label></td>
                                     <td><select name="moncronmday"><?php for ( $i = 1; $i <= 31; $i ++ ) {
-										echo '<option ' . selected( in_array( "$i", $mday, TRUE ), TRUE, FALSE ) . '  value="' . $i . '" />' . __( 'on', 'backwpup' ) . ' ' . $i . '.</option>';
+										echo '<option ' . selected( in_array( "$i", $mday, TRUE ), TRUE, FALSE ) . '  value="' . $i . '" />' . __( 'on', 'backwpup' ) . ' ' . $i . '</option>';
 									} ?></select></td>
                                     <td><select name="moncronhours"><?php for ( $i = 0; $i < 24; $i ++ ) {
 										echo '<option ' . selected( in_array( "$i", $hours, TRUE ), TRUE, FALSE ) . '  value="' . $i . '" />' . $i . '</option>';
