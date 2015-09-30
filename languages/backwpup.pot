@@ -940,12 +940,16 @@ msgstr ""
 #: ../inc/class-page-backwpup.php:295
 #, php-format
 msgid "%d ERROR"
-msgstr ""
+msgid_plural "%d ERRORS"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../inc/class-page-backwpup.php:297
 #, php-format
 msgid "%d WARNING"
-msgstr ""
+msgid_plural "%d WARNINGS"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../inc/class-page-backwpup.php:299
 msgid "OK"
@@ -2717,7 +2721,7 @@ msgstr ""
 
 #: ../inc/class-page-settings.php:230
 msgid ""
-"Debug lag has much more informations than normal logs. It is for support and "
+"Debug log has much more informations than normal logs. It is for support and "
 "should be handled carefully. For support is the best to use a not translated "
 "log file. Usage of not translated logs can reduce the PHP memory usage."
 msgstr ""
