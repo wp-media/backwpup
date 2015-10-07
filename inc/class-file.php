@@ -32,23 +32,27 @@ class BackWPup_File {
 	 *
 	 * check if path in open basedir
 	 *
-	 * @param string $dir the folder to check
+	 * @param string $file the file path to check
 	 *
 	 * @return bool is it in open basedir
 	 */
-	public static function is_in_open_basedir( $dir ) {
+	public static function is_in_open_basedir( $file ) {
 
-		$ini_open_basedir = str_replace( '\\', '/', ini_get( 'open_basedir' ) );
+		$ini_open_basedir = strtolower( str_replace( '\\', '/', ini_get( 'open_basedir' ) ) );
 
 		if ( empty( $ini_open_basedir ) ) {
 			return TRUE;
 		}
 
 		$open_base_dirs = explode( PATH_SEPARATOR, $ini_open_basedir );
-		$dir            = trailingslashit( str_replace( '\\', '/', $dir ) );
+		$file           = trailingslashit( strtolower( str_replace( '\\', '/', $file ) ) );
 
 		foreach ( $open_base_dirs as $open_base_dir ) {
-			if ( stripos( $dir, trailingslashit( $open_base_dir ) ) <= 1 ) {
+			if ( empty( $open_base_dir ) ) {
+				continue;
+			}
+			$part = substr( $file, 0, strlen( $open_base_dir ) );
+			if ( $part === $open_base_dir ) {
 				return TRUE;
 			}
 		}

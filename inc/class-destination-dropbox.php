@@ -210,7 +210,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 	 * @return mixed
 	 */
 	public function file_get_list( $jobdest ) {
-		return get_site_transient( 'BackWPup_' . $jobdest );
+		return get_site_transient( 'backwpup_' . strtolower( $jobdest ) );
 	}
 
 	/**

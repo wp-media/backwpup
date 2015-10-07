@@ -218,6 +218,32 @@ class BackWPup_Page_BackWPup {
 				}
 			} ?>
 
+
+	        <div class="metabox-holder postbox backwpup-floated-postbox">
+		        <h3 class="hndle"><span><a href="https://www.ostraining.com/">OSTraining</a> <?php  _e( 'Video: Introduction', 'backwpup' ); ?></span></h3>
+		        <iframe class="inside" width="340" height="190" src="https://www.youtube.com/embed/pECMkLE27QQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+	        </div>
+
+	        <div class="metabox-holder postbox backwpup-floated-postbox">
+		        <h3 class="hndle"><span><a href="https://www.ostraining.com/">OSTraining</a> <?php  _e( 'Video: Settings', 'backwpup' ); ?></span></h3>
+		        <iframe class="inside" width="340" height="190" src="https://www.youtube.com/embed/F55xEoDnS0U?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+	        </div>
+
+	        <div class="metabox-holder postbox backwpup-floated-postbox">
+		        <h3 class="hndle"><span><a href="https://www.ostraining.com/">OSTraining</a> <?php  _e( 'Video: Daily Backups', 'backwpup' ); ?></span></h3>
+		        <iframe class="inside" width="340" height="190" src="https://www.youtube.com/embed/staZo0DS5m4?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+	        </div>
+
+	        <div class="metabox-holder postbox backwpup-floated-postbox">
+		        <h3 class="hndle"><span><a href="https://www.ostraining.com/">OSTraining</a> <?php  _e( 'Video: Creating Full Backups', 'backwpup' ); ?></span></h3>
+		        <iframe class="inside" width="340" height="190" src="https://www.youtube.com/embed/3N9FbmBuaac?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+	        </div>
+
+	        <div class="metabox-holder postbox backwpup-floated-postbox">
+		        <h3 class="hndle"><span><a href="https://www.ostraining.com/">OSTraining</a> <?php  _e( 'Video: Restoring Backups', 'backwpup' ); ?></span></h3>
+		        <iframe class="inside" width="340" height="190" src="https://www.youtube.com/embed/VIwDp87vYZY?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+	        </div>
+
 			<div id="backwpup-stats" class="metabox-holder postbox backwpup-cleared-postbox backwpup-max-width">
 				<div class="backwpup-table-wrap">
 				<?php

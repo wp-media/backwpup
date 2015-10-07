@@ -3,7 +3,7 @@ Contributors: inpsyde, danielhuesken, Bueltge, nullbyte
 Tags: Amazon, Amazon S3, back up, backup, chinese, cloud, cloud files, database, db backup, dropbox, dump, file, french, ftp, ftps, german, migrate, multisite, russian, schedule, sftp, storage, S3, time, upload, xml
 Requires at least: 3.4
 Tested up to: 4.3.1
-Stable tag: 3.2.0
+Stable tag: 3.2.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -33,17 +33,18 @@ The **backup plugin** **[BackWPup Free](http://marketpress.com/product/backwpup-
 * Multi-site support only as network admin
 * Pro version and support available - [BackWPup Pro](http://marketpress.com/product/backwpup-pro/)
 
-= Available languages =
-* english (standard)
-* french / français (fr_FR)
-* german / deutsch (de_DE)
-* russian / pоссия (ru_RU)
-* simplified chinese (zh_CN)
-
 = Requirements =
 * WordPress 3.4 and PHP 5.2.7 required!
 * To use the Plugin with full functionality PHP 5.3.3 with mysqli, FTP,gz, bz2, ZipArchive and curl is needed.
 * Plugin functions that don't work because of your server settings, will not be displayed in admin area.
+
+
+Our friends at [OSTraining](https://www.ostraining.com/) have done a tremendous job with their video tutorials on BackWPup. The complete series of five videos have been made [available for free on YouTube](https://www.youtube.com/watch?v=pECMkLE27QQ&list=PLtaXuX0nEZk9_54BOxcBYXMI3gx3ZxICQ&index=1).
+
+https://www.youtube.com/watch?v=pECMkLE27QQ&w=532&rel=0
+
+*(Are you a WordPress novice? Check out all of OSTraining’s [WordPress video trainings](https://www.ostraining.com/courses/categories/wordpress/)!)*
+
 
 **Remember: The most expensive backup is the one you never did! And please test your backups!**
 
@@ -169,6 +170,18 @@ Please check all settings after the update:
 
 
 == Changelog ==
+= Version 3.2.1 =
+* Fixed: open basedir check
+* Fixed: Change Zip creation back to use lower resources
+* Fixed: Deletion of backup files on Dropbrox not refreshes
+* Fixed: Delete 'doing_cron' transient before job starts
+* Added: Support for new Amazon S3 storage type 'Standard-Infrequent Access'
+* Added: Support for MYSQL_CLIENT_FLAGS
+* Updated: AWS SDK to Version 2.8.21 (PHP 5.3.3+)
+* Removed: SIGCONT,SIGCHLD,SIGALRM form signal handler
+* Free Removed: Bundled translations. Will be now come from https://translate.wordpress.org/projects/wp-plugins/backwpup
+* Pro Updated: Google SDK to Version 1.1.4
+
 = Version 3.2.0 =
 * Fixed: Sugarsync SSL message
 * Fixed: Job hang in some configurations

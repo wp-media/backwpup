@@ -45,19 +45,23 @@ class BackWPup_Page_Backups extends WP_List_Table {
 	function prepare_items() {
 
 		$per_page = $this->get_items_per_page( 'backwpupbackups_per_page' );
-		if ( empty( $per_page ) || $per_page < 1 )
+		if ( empty( $per_page ) || $per_page < 1 ) {
 			$per_page = 20;
+		}
 
 		$jobdest = '';
-		if ( ! empty( $_GET[ 'jobdets-button-top' ] ) )
+		if ( ! empty( $_GET[ 'jobdets-button-top' ] ) ) {
 			$jobdest = $_GET[ 'jobdest-top' ];
-		if( ! empty( $_GET[ 'jobdets-button-bottom' ] ) )
+		}
+		if( ! empty( $_GET[ 'jobdets-button-bottom' ] ) ) {
 			$jobdest =  $_GET[ 'jobdest-bottom' ];
+		}
 
 		if ( empty( $jobdest ) ) {
 			$jobdests = $this->get_destinations_list();
-			if ( empty( $jobdests ) )
+			if ( empty( $jobdests ) ) {
 				$jobdests = array( '_' );
+			}
 			$jobdest           	 	= $jobdests[ 0 ];
 			$_GET[ 'jobdest-top' ] 	= $jobdests[ 0 ];
 			$_GET[ 'jobdets-button-top' ]  = 'empty';
@@ -66,6 +70,7 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		list( $this->jobid, $this->dest ) = explode( '_', $jobdest );
 
 		if ( ! empty( $this->destinations[ $this->dest ][ 'class' ] ) ) {
+			/** @var BackWPup_Destinations $dest_object */
 			$dest_object = BackWPup::get_destination( $this->dest );
 			$this->items = $dest_object->file_get_list( $jobdest );
 		}
@@ -364,37 +369,50 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		switch ( self::$listtable->current_action() ) {
 			case 'delete': //Delete Backup archives
 				check_admin_referer( 'bulk-backups' );
-				if ( ! current_user_can( 'backwpup_backups_delete' ) )
-					wp_die( __( 'Sorry, you don\'t have permissions to do that.', 'backwpup') );
+				if ( ! current_user_can( 'backwpup_backups_delete' ) ) {
+					wp_die( __( 'Sorry, you don\'t have permissions to do that.', 'backwpup' ) );
+				}
 
-				$jobdest = '_';
-				if ( ! empty( $_GET[ 'jobdest' ] ) )
+				$jobdest = '';
+				if ( ! empty( $_GET[ 'jobdest' ] ) ) {
 					$jobdest = $_GET[ 'jobdest' ];
-				if ( ! empty( $_GET[ 'jobdest-top' ] ) )
+				}
+				if ( ! empty( $_GET[ 'jobdest-top' ] ) ) {
 					$jobdest = $_GET[ 'jobdest-top' ];
+				}
 
-				$_GET[ 'jobdest' ] = $jobdest;
+				$_GET[ 'jobdest-top' ] = $jobdest;
+				$_GET[ 'jobdets-button-top' ] = 'submit';
 
-				if ( $jobdest == '_' )
+				if ( $jobdest === '' ) {
 					return;
+				}
 
 				list( $jobid, $dest ) = explode( '_', $jobdest );
+				/** @var BackWPup_Destinations $dest_class */
 				$dest_class = BackWPup::get_destination( $dest );
 				$files = $dest_class->file_get_list( $jobdest );
 				foreach ( $_GET[ 'backupfiles' ] as $backupfile ) {
 					foreach ( $files as $file ) {
-						if ( is_array( $file ) && $file[ 'file' ] == $backupfile )
+						if ( is_array( $file ) && $file[ 'file' ] == $backupfile ) {
 							$dest_class->file_delete( $jobdest, $backupfile );
+						}
 					}
+				}
+				$files = $dest_class->file_get_list( $jobdest );
+				if ( empty ( $files ) ) {
+					$_GET[ 'jobdest-top' ] = '';
 				}
 				break;
 			default:
 				if ( isset( $_GET[ 'jobid' ] ) ) {
 					$dest = strtoupper( str_replace( 'download', '', self::$listtable->current_action() ) );
 					if ( ! empty( $dest ) && strstr( self::$listtable->current_action(), 'download' ) ) {
-						if ( ! current_user_can( 'backwpup_backups_download' ) )
+						if ( ! current_user_can( 'backwpup_backups_download' ) ) {
 							wp_die( __( 'Sorry, you don\'t have permissions to do that.', 'backwpup') );
+						}
 						check_admin_referer( 'download-backup' );
+						/** @var BackWPup_Destinations $dest_class */
 						$dest_class = BackWPup::get_destination( $dest );
 						$dest_class->file_download( (int)$_GET[ 'jobid' ], $_GET[ 'file' ] );
 						die();

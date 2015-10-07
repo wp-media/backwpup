@@ -13,25 +13,40 @@ return array(
             'endpoint' => 'iam.us-gov.amazonaws.com'
         ),
         'us-gov-west-1/sts' => array(
-            'endpoint' => 'sts.us-gov.amazonaws.com'
+            'endpoint' => 'sts.us-gov-west-1.amazonaws.com'
         ),
         'us-gov-west-1/s3' => array(
             'endpoint' => 's3-{region}.amazonaws.com'
         ),
         '*/cloudfront' => array(
-            'endpoint' => 'cloudfront.amazonaws.com'
+            'endpoint' => 'cloudfront.amazonaws.com',
+            'credentialScope' => array(
+                'region' => 'us-east-1'
+            )
         ),
         '*/iam' => array(
-            'endpoint' => 'iam.amazonaws.com'
+            'endpoint' => 'iam.amazonaws.com',
+            'credentialScope' => array(
+                'region' => 'us-east-1'
+            )
         ),
         '*/importexport' => array(
-            'endpoint' => 'importexport.amazonaws.com'
+            'endpoint' => 'importexport.amazonaws.com',
+            'credentialScope' => array(
+                'region' => 'us-east-1'
+            )
         ),
         '*/route53' => array(
-            'endpoint' => 'route53.amazonaws.com'
+            'endpoint' => 'route53.amazonaws.com',
+            'credentialScope' => array(
+                'region' => 'us-east-1'
+            )
         ),
         '*/sts' => array(
-            'endpoint' => 'sts.amazonaws.com'
+            'endpoint' => 'sts.amazonaws.com',
+            'credentialScope' => array(
+                'region' => 'us-east-1'
+            )
         ),
         'us-east-1/sdb' => array(
             'endpoint' => 'sdb.amazonaws.com'
@@ -47,9 +62,6 @@ return array(
         ),
         'eu-west-1/s3' => array(
             'endpoint' => 's3-{region}.amazonaws.com'
-        ),
-        'eu-central-1/s3' => array(
-	        'endpoint' => 's3-{region}.amazonaws.com'
         ),
         'ap-southeast-1/s3' => array(
             'endpoint' => 's3-{region}.amazonaws.com'

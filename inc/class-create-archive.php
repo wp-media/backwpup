@@ -326,49 +326,41 @@ class BackWPup_Create_Archive {
 						return TRUE;
 					}
 				}
-				if ( version_compare( PHP_VERSION, '5.3.3', '>=') ) { //php > 5.3.3
+				//close and reopen, all added files are open on fs
+				if ( $this->file_count > 20 ) { //35 works with PHP 5.2.4 on win
+					if ( ! $this->ziparchive->close() ) {
+						$this->ziparchive_status();
+						trigger_error(__( 'ZIP archive cannot be closed correctly', 'backwpup'	), E_USER_ERROR	);
+						sleep( 1 );
+					}
+					$this->ziparchive = NULL;
+					if ( ! $this->check_archive_filesize() ) {
+						return FALSE;
+					}
+					$this->ziparchive = new ZipArchive();
+					$ziparchive_open = $this->ziparchive->open( $this->file, ZipArchive::CREATE );
+					if ( $ziparchive_open !== TRUE ) {
+						$this->ziparchive_status();
+						return FALSE;
+					}
+					$this->file_count = 0;
+				}
+				if ( $file_size < ( 1024 * 1024 * 2 ) ) {
+					if ( ! $this->ziparchive->addFromString( $name_in_archive, file_get_contents( $file_name ) ) ) {
+						$this->ziparchive_status();
+						trigger_error( sprintf( __( 'Cannot add "%s" to zip archive!', 'backwpup' ), $name_in_archive ), E_USER_ERROR );
+						return FALSE;
+					} else {
+						$file_factor = round( $file_size / ( 1024 * 1024 ), 4 ) * 2;
+						$this->file_count = $this->file_count + $file_factor;
+					}
+				} else {
 					if ( ! $this->ziparchive->addFile( $file_name, $name_in_archive ) ) {
 						$this->ziparchive_status();
 						trigger_error( sprintf( __( 'Cannot add "%s" to zip archive!', 'backwpup' ), $name_in_archive ), E_USER_ERROR );
 						return FALSE;
-					}
-				} else { //php < 5.3
-					//close and reopen, all added files are open on fs
-					if ( $this->file_count > 20 ) { //35 works with PHP 5.2.4 on win
-						if ( ! $this->ziparchive->close() ) {
-							$this->ziparchive_status();
-							trigger_error(__( 'ZIP archive cannot be closed correctly', 'backwpup'	), E_USER_ERROR	);
-							sleep( 1 );
-						}
-						$this->ziparchive = NULL;
-						if ( ! $this->check_archive_filesize() ) {
-							return FALSE;
-						}
-						$this->ziparchive = new ZipArchive();
-						$ziparchive_open = $this->ziparchive->open( $this->file, ZipArchive::CREATE );
-						if ( $ziparchive_open !== TRUE ) {
-							$this->ziparchive_status();
-							return FALSE;
-						}
-						$this->file_count = 0;
-					}
-					if ( $file_size < ( 1024 * 1024 * 2 ) ) {
-						if ( ! $this->ziparchive->addFromString( $name_in_archive, file_get_contents( $file_name ) ) ) {
-							$this->ziparchive_status();
-							trigger_error( sprintf( __( 'Cannot add "%s" to zip archive!', 'backwpup' ), $name_in_archive ), E_USER_ERROR );
-							return FALSE;
-						} else {
-							$file_factor = round( $file_size / ( 1024 * 1024 ), 4 ) * 2;
-							$this->file_count = $this->file_count + $file_factor;
-						}
 					} else {
-						if ( ! $this->ziparchive->addFile( $file_name, $name_in_archive ) ) {
-							$this->ziparchive_status();
-							trigger_error( sprintf( __( 'Cannot add "%s" to zip archive!', 'backwpup' ), $name_in_archive ), E_USER_ERROR );
-							return FALSE;
-						} else {
-							$this->file_count++;
-						}
+						$this->file_count++;
 					}
 				}
 				break;

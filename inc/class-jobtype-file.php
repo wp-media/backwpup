@@ -498,11 +498,11 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 
 		//add extra files if selected
 		if ( ! empty( $job_object->job[ 'backupspecialfiles'] ) ) {
-			if ( is_readable( ABSPATH . 'wp-config.php' ) && empty( $job_object->job[ 'backuproot' ] ) ) {
+			if ( is_readable( ABSPATH . 'wp-config.php' ) ) {
 				$job_object->additional_files_to_backup[ ] = str_replace( '\\', '/', ABSPATH . 'wp-config.php' );
 				$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), 'wp-config.php' ) );
 			}
-			elseif ( BackWPup_File::is_in_open_basedir( dirname( ABSPATH ) ) ) {
+			elseif ( BackWPup_File::is_in_open_basedir( dirname( ABSPATH ) . '/wp-config.php' ) ) {
 				if ( is_readable( dirname( ABSPATH ) . '/wp-config.php' ) && ! is_readable( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
 					$job_object->additional_files_to_backup[ ] = str_replace( '\\', '/', dirname( ABSPATH ) . '/wp-config.php' );
 					$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), 'wp-config.php' ) );

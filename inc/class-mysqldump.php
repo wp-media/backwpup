@@ -60,21 +60,23 @@ class BackWPup_MySQLDump {
 			throw new BackWPup_MySQLDump_Exception( __( 'No MySQLi extension found. Please install it.', 'backwpup' ) );
 
 		$default_args = array(
-			'dbhost' 	  => DB_HOST,
-			'dbname' 	  => DB_NAME,
-			'dbuser' 	  => DB_USER,
-			'dbpassword'  => DB_PASSWORD,
-			'dbcharset'   => defined( 'DB_CHARSET' ) ? DB_CHARSET : '',
+			'dbhost' 	    => DB_HOST,
+			'dbname' 	    => DB_NAME,
+			'dbuser' 	    => DB_USER,
+			'dbpassword'    => DB_PASSWORD,
+			'dbcharset'     => defined( 'DB_CHARSET' ) ? DB_CHARSET : '',
 			'dumpfilehandle' => fopen( 'php://output', 'wb' ),
-			'dumpfile' 	  => NULL,
-			'compression' => ''
+			'dumpfile' 	    => NULL,
+			'dbclientflags' => defined( 'MYSQL_CLIENT_FLAGS' ) ? MYSQL_CLIENT_FLAGS : 0,
+			'compression'   => ''
 		);
 
 		$args = wp_parse_args( $args , $default_args );
 
 		//set empty host to localhost
-		if ( empty( $args[ 'dbhost' ] ) )
+		if ( empty( $args[ 'dbhost' ] ) ) {
 			$args[ 'dbhost' ] = NULL;
+		}
 
 		//check if port or socket in hostname and set port and socket
 		$args[ 'dbport' ]   = NULL;
@@ -104,7 +106,7 @@ class BackWPup_MySQLDump {
 		}
 
 		//connect to Database
-		if ( ! $this->mysqli->real_connect( $args[ 'dbhost' ], $args[ 'dbuser' ], $args[ 'dbpassword' ], $args[ 'dbname' ], $args[ 'dbport' ], $args[ 'dbsocket' ] ) ) {
+		if ( ! $this->mysqli->real_connect( $args[ 'dbhost' ], $args[ 'dbuser' ], $args[ 'dbpassword' ], $args[ 'dbname' ], $args[ 'dbport' ], $args[ 'dbsocket' ], $args[ 'dbclientflags' ] ) ) {
 			throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Cannot connect to MySQL database %1$d: %2$s', 'backwpup' ), mysqli_connect_errno(), mysqli_connect_error() ) );
 		}
 
@@ -120,8 +122,9 @@ class BackWPup_MySQLDump {
 		$this->dbname = $args[ 'dbname' ];
 
 		//set compression
-		if ( ! empty( $args[ 'compression' ] ) && in_array( $args[ 'compression' ], array( 'gz' ) ) )
+		if ( ! empty( $args[ 'compression' ] ) && in_array( $args[ 'compression' ], array( 'gz' ) ) ) {
 			$this->compression = $args[ 'compression' ];
+		}
 
 		//open file if set
 		if ( $args[ 'dumpfile' ] ) {

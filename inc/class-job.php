@@ -547,7 +547,7 @@ final class BackWPup_Job {
 		}
 
 		if ( ! in_array( $starttype, array( 'runnowlink', 'runext', 'restartalt' ) ) ) {
-			set_transient( 'doing_cron', $query_args[ 'doing_wp_cron' ] );
+			delete_transient( 'doing_cron' );
 			return wp_remote_post( $cron_request[ 'url' ], $cron_request[ 'args' ] );
 		}
 
@@ -829,13 +829,13 @@ final class BackWPup_Job {
 				//'SIGKILL',
 				'SIGSEGV',
 				//'SIGPIPE',
-				'SIGALRM',
+				//'SIGALRM',
 				'SIGTERM',
 				'SIGSTKFLT',
 				'SIGUSR1',
 				'SIGUSR2',
-				'SIGCHLD',
-				'SIGCONT',
+				//'SIGCHLD',
+				//'SIGCONT',
 				//'SIGSTOP',
 				'SIGTSTP',
 				'SIGTTIN',
@@ -843,13 +843,14 @@ final class BackWPup_Job {
 				'SIGURG',
 				'SIGXCPU',
 				'SIGXFSZ',
-				'SIGVTALRM',
+				//'SIGVTALRM',
 				'SIGPROF',
 				'SIGWINCH',
-				'SIGIO',
+				//'SIGIO',
 				'SIGPWR',
 				'SIGSYS',
 			);
+			$signals = apply_filters( 'backwpup_job_signals_to_handel', $signals );
 			declare( ticks = 1 ) ;
 			foreach( $signals as $signal ) {
 				if ( defined( $signal ) ) {
@@ -858,6 +859,7 @@ final class BackWPup_Job {
 			}
 		}
 		//clear output buffer
+		ob_start();
 		while( @ob_end_clean() );
 		@flush();
 		$job_types = BackWPup::get_job_types();

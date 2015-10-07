@@ -18,10 +18,10 @@ namespace Aws\Common\Client;
 
 use Aws\Common\Aws;
 use Aws\Common\Credentials\CredentialsInterface;
-use Aws\Common\Credentials\NullCredentials;
 use Aws\Common\Enum\ClientOptions as Options;
 use Aws\Common\Exception\InvalidArgumentException;
 use Aws\Common\Exception\TransferException;
+use Aws\Common\RulesEndpointProvider;
 use Aws\Common\Signature\EndpointSignatureInterface;
 use Aws\Common\Signature\SignatureInterface;
 use Aws\Common\Signature\SignatureListener;
@@ -31,6 +31,7 @@ use Aws\Common\Waiter\WaiterFactoryInterface;
 use Aws\Common\Waiter\WaiterConfigFactory;
 use Guzzle\Common\Collection;
 use Guzzle\Http\Exception\CurlException;
+use Guzzle\Http\QueryAggregator\DuplicateAggregator;
 use Guzzle\Service\Client;
 use Guzzle\Service\Description\ServiceDescriptionInterface;
 
@@ -39,20 +40,17 @@ use Guzzle\Service\Description\ServiceDescriptionInterface;
  */
 abstract class AbstractClient extends Client implements AwsClientInterface
 {
-    /**
-     * @var CredentialsInterface AWS credentials
-     */
+    /** @var CredentialsInterface AWS credentials */
     protected $credentials;
 
-    /**
-     * @var SignatureInterface Signature implementation of the service
-     */
+    /** @var SignatureInterface Signature implementation of the service */
     protected $signature;
 
-    /**
-     * @var WaiterFactoryInterface Factory used to create waiter classes
-     */
+    /** @var WaiterFactoryInterface Factory used to create waiter classes */
     protected $waiterFactory;
+
+    /** @var DuplicateAggregator Cached query aggregator*/
+    protected $aggregator;
 
     /**
      * {@inheritdoc}
@@ -78,15 +76,14 @@ abstract class AbstractClient extends Client implements AwsClientInterface
         parent::__construct($config->get(Options::BASE_URL), $config);
         $this->credentials = $credentials;
         $this->signature = $signature;
+        $this->aggregator = new DuplicateAggregator();
 
         // Make sure the user agent is prefixed by the SDK version
         $this->setUserAgent('aws-sdk-php2/' . Aws::VERSION, true);
 
         // Add the event listener so that requests are signed before they are sent
         $dispatcher = $this->getEventDispatcher();
-        if (!$credentials instanceof NullCredentials) {
-            $dispatcher->addSubscriber(new SignatureListener($credentials, $signature));
-        }
+        $dispatcher->addSubscriber(new SignatureListener($credentials, $signature));
 
         if ($backoff = $config->get(Options::BACKOFF)) {
             $dispatcher->addSubscriber($backoff, -255);
@@ -114,21 +111,18 @@ abstract class AbstractClient extends Client implements AwsClientInterface
      */
     public static function getEndpoint(ServiceDescriptionInterface $description, $region, $scheme)
     {
-        $service = $description->getData('serviceFullName');
-        // Lookup the region in the service description
-        if (!($regions = $description->getData('regions'))) {
-            throw new InvalidArgumentException("No regions found in the {$service} description");
+        try {
+            $service = $description->getData('endpointPrefix');
+            $provider = RulesEndpointProvider::fromDefaults();
+            $result = $provider(array(
+                'service' => $service,
+                'region'  => $region,
+                'scheme'  => $scheme
+            ));
+            return $result['endpoint'];
+        } catch (\InvalidArgumentException $e) {
+            throw new InvalidArgumentException($e->getMessage(), 0, $e);
         }
-        // Ensure that the region exists for the service
-        if (!isset($regions[$region])) {
-            throw new InvalidArgumentException("{$region} is not a valid region for {$service}");
-        }
-        // Ensure that the scheme is valid
-        if ($regions[$region][$scheme] == false) {
-            throw new InvalidArgumentException("{$scheme} is not a valid URI scheme for {$service} in {$region}");
-        }
-
-        return $scheme . '://' . $regions[$region]['hostname'];
     }
 
     public function getCredentials()
@@ -195,7 +189,7 @@ abstract class AbstractClient extends Client implements AwsClientInterface
             // Update the signature if necessary
             $signature = $this->getSignature();
             if ($signature instanceof EndpointSignatureInterface) {
-                /** @var $signature EndpointSignatureInterface */
+                /** @var EndpointSignatureInterface $signature */
                 $signature->setRegionName($region);
             }
 
@@ -268,5 +262,22 @@ abstract class AbstractClient extends Client implements AwsClientInterface
                 ->setRequest($e->getRequest());
             throw $wrapped;
         }
+    }
+
+    /**
+     * Ensures that the duplicate query string aggregator is used so that
+     * query string values are sent over the wire as foo=bar&foo=baz.
+     * {@inheritdoc}
+     */
+    public function createRequest(
+        $method = 'GET',
+        $uri = null,
+        $headers = null,
+        $body = null,
+        array $options = array()
+    ) {
+        $request = parent::createRequest($method, $uri, $headers, $body, $options);
+        $request->getQuery()->setAggregator($this->aggregator);
+        return $request;
     }
 }

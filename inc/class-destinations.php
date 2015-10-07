@@ -118,7 +118,7 @@ abstract class BackWPup_Destinations {
 
 	/**
 	 * @param $jobdest string
-	 * @return bool
+	 * @return array
 	 */
 	public function file_get_list( $jobdest ) {
 

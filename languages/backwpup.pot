@@ -6,7 +6,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Tue Aug 25 2015 08:53:55 GMT+0200 (Mitteleuropäische "
 "Sommerzeit)\n"
-"POT-Revision-Date: Tue Sep 22 2015 10:36:32 GMT+0200 (Mitteleuropäische "
+"POT-Revision-Date: Wed Oct 07 2015 12:44:48 GMT+0200 (Mitteleuropäische "
 "Sommerzeit)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
@@ -46,86 +46,86 @@ msgstr ""
 msgid "http://inpsyde.com"
 msgstr ""
 
-#: ../backwpup.php:304 ../inc/class-page-backups.php:264
+#: ../backwpup.php:295 ../inc/class-page-backups.php:269
 msgid "Folder"
 msgstr ""
 
-#: ../backwpup.php:305
+#: ../backwpup.php:296
 msgid "Backup to Folder"
 msgstr ""
 
-#: ../backwpup.php:320
+#: ../backwpup.php:311
 msgid "Email"
 msgstr ""
 
-#: ../backwpup.php:321
+#: ../backwpup.php:312
 msgid "Backup sent via email"
 msgstr ""
 
-#: ../backwpup.php:336
+#: ../backwpup.php:327
 msgid "FTP"
 msgstr ""
 
-#: ../backwpup.php:337
+#: ../backwpup.php:328
 msgid "Backup to FTP"
 msgstr ""
 
-#: ../backwpup.php:352 ../inc/class-destination-dropbox.php:278
+#: ../backwpup.php:343 ../inc/class-destination-dropbox.php:278
 msgid "Dropbox"
 msgstr ""
 
-#: ../backwpup.php:353 ../inc/class-page-about.php:577
+#: ../backwpup.php:344 ../inc/class-page-about.php:577
 msgid "Backup to Dropbox"
 msgstr ""
 
-#: ../backwpup.php:369 ../backwpup.php:388 ../inc/class-destination-s3-v1.php:71 .
+#: ../backwpup.php:360 ../backwpup.php:379 ../inc/class-destination-s3-v1.php:71 .
 #: ./inc/class-destination-s3.php:74
 msgid "S3 Service"
 msgstr ""
 
-#: ../backwpup.php:370
+#: ../backwpup.php:361
 msgid "Backup to an S3 Service"
 msgstr ""
 
-#: ../backwpup.php:389
+#: ../backwpup.php:380
 msgid "Backup to an S3 Service v1"
 msgstr ""
 
-#: ../backwpup.php:405
+#: ../backwpup.php:396
 msgid "MS Azure"
 msgstr ""
 
-#: ../backwpup.php:406
+#: ../backwpup.php:397
 msgid "Backup to Microsoft Azure (Blob)"
 msgstr ""
 
-#: ../backwpup.php:421
+#: ../backwpup.php:412
 msgid "RSC"
 msgstr ""
 
-#: ../backwpup.php:422 ../inc/class-page-about.php:582
+#: ../backwpup.php:413 ../inc/class-page-about.php:582
 msgid "Backup to Rackspace Cloud Files"
 msgstr ""
 
-#: ../backwpup.php:438
+#: ../backwpup.php:429
 msgid "SugarSync"
 msgstr ""
 
-#: ../backwpup.php:439 ../inc/class-page-about.php:597
+#: ../backwpup.php:430 ../inc/class-page-about.php:597
 msgid "Backup to SugarSync"
 msgstr ""
 
-#: ../backwpup.php:458
+#: ../backwpup.php:449
 #, php-format
 msgid "PHP Version %1$s is to low, you need Version %2$s or above."
 msgstr ""
 
-#: ../backwpup.php:465
+#: ../backwpup.php:456
 #, php-format
 msgid "Missing function \"%s\"."
 msgstr ""
 
-#: ../backwpup.php:474
+#: ../backwpup.php:465
 #, php-format
 msgid "Missing class \"%s\"."
 msgstr ""
@@ -136,17 +136,17 @@ msgstr ""
 
 #: ../inc/class-page-logs.php:120 ../inc/class-page-logs.php:198 ../inc/class-
 #: page-jobs.php:113 ../inc/class-page-jobs.php:177 ../inc/class-page-backups.php:
-#: 189 ../inc/class-page-backups.php:308
+#: 194 ../inc/class-page-backups.php:313
 msgid "Delete"
 msgstr ""
 
-#: ../inc/class-page-logs.php:131 ../inc/class-page-backwpup.php:262 ../inc/class-
-#: page-backwpup.php:326 ../inc/class-page-backups.php:262
+#: ../inc/class-page-logs.php:131 ../inc/class-page-backwpup.php:288 ../inc/class-
+#: page-backwpup.php:352 ../inc/class-page-backups.php:267
 msgid "Time"
 msgstr ""
 
-#: ../inc/class-page-logs.php:132 ../inc/class-page-backwpup.php:262 ../inc/class-
-#: page-backwpup.php:327
+#: ../inc/class-page-logs.php:132 ../inc/class-page-backwpup.php:288 ../inc/class-
+#: page-backwpup.php:353
 msgid "Job"
 msgstr ""
 
@@ -159,7 +159,7 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: ../inc/class-page-logs.php:135 ../inc/class-page-backups.php:265
+#: ../inc/class-page-logs.php:135 ../inc/class-page-backups.php:270
 msgid "Size"
 msgstr ""
 
@@ -167,9 +167,9 @@ msgstr ""
 msgid "Runtime"
 msgstr ""
 
-#: ../inc/class-page-logs.php:159 ../inc/class-page-backwpup.php:291 ../inc/class-
-#: page-backwpup.php:364 ../inc/class-page-jobs.php:313 ../inc/class-page-backups.
-#: php:352
+#: ../inc/class-page-logs.php:159 ../inc/class-page-backwpup.php:317 ../inc/class-
+#: page-backwpup.php:390 ../inc/class-page-jobs.php:313 ../inc/class-page-backups.
+#: php:357
 #, php-format
 msgid "%1$s at %2$s"
 msgstr ""
@@ -184,7 +184,7 @@ msgid "View"
 msgstr ""
 
 #: ../inc/class-page-logs.php:199 ../inc/class-page-jobs.php:323 ../inc/class-
-#: page-backups.php:310
+#: page-backups.php:315
 msgid "Download"
 msgstr ""
 
@@ -252,7 +252,7 @@ msgstr ""
 #: ../inc/class-destination-msazure.php:66 ../inc/class-destination-sugarsync.php:
 #: 86 ../inc/class-destination-folder.php:29 ../inc/class-destination-dropbox.php:
 #: 91 ../inc/class-destination-ftp.php:52 ../inc/class-destination-rsc.php:96 ..
-#: /inc/pro/class-destination-gdrive.php:63
+#: /inc/pro/class-destination-gdrive.php:61
 msgid "Backup settings"
 msgstr ""
 
@@ -273,7 +273,7 @@ msgstr ""
 #: ../inc/pro/class-destination-s3-v1.php:60 ../inc/pro/class-destination-folder.
 #: php:24 ../inc/pro/class-destination-dropbox.php:42 ../inc/pro/class-
 #: destination-s3.php:62 ../inc/pro/class-destination-rsc.php:55 ../inc/pro/class-
-#: destination-gdrive.php:78 ../inc/pro/class-destination-gdrive.php:284 ..
+#: destination-gdrive.php:76 ../inc/pro/class-destination-gdrive.php:285 ..
 #: /inc/pro/class-destination-glacier.php:96 ../inc/pro/class-destination-glacier.
 #: php:180
 msgid "Oldest files will be deleted first. 0 = no deletion"
@@ -286,7 +286,7 @@ msgstr ""
 #: php:36 ../inc/pro/class-destination-s3-v1.php:61 ../inc/pro/class-destination-
 #: folder.php:25 ../inc/pro/class-destination-dropbox.php:43 ../inc/pro/class-
 #: destination-s3.php:63 ../inc/pro/class-destination-rsc.php:56 ../inc/pro/class-
-#: destination-gdrive.php:79 ../inc/pro/class-destination-gdrive.php:285
+#: destination-gdrive.php:77 ../inc/pro/class-destination-gdrive.php:286
 msgid "Number of files to keep in folder."
 msgstr ""
 
@@ -299,7 +299,7 @@ msgstr ""
 #: destination-folder.php:30 ../inc/pro/class-destination-dropbox.php:45 ..
 #: /inc/pro/class-destination-ftp.php:46 ../inc/pro/class-destination-s3.php:68 ..
 #: /inc/pro/class-destination-rsc.php:61 ../inc/pro/class-destination-gdrive.php:
-#: 83 ../inc/pro/class-destination-gdrive.php:287
+#: 81 ../inc/pro/class-destination-gdrive.php:288
 msgid "Do not delete files while syncing to destination!"
 msgstr ""
 
@@ -337,16 +337,16 @@ msgid "Starting upload to MS Azure&#160;&hellip;"
 msgstr ""
 
 #: ../inc/class-destination-msazure.php:259 ../inc/class-destination-ftp.php:344 .
-#: ./inc/class-destination-s3.php:412 ../inc/class-destination-s3.php:498 ..
+#: ./inc/class-destination-s3.php:413 ../inc/class-destination-s3.php:499 ..
 #: /inc/class-destination-rsc.php:282 ../inc/pro/class-destination-rsc.php:215 ..
 #: /inc/pro/class-destination-rsc.php:248 ../inc/pro/class-destination-gdrive.php:
-#: 594 ../inc/pro/class-destination-glacier.php:387
+#: 602 ../inc/pro/class-destination-glacier.php:387
 msgid "Can not open source file for transfer."
 msgstr ""
 
 #: ../inc/class-destination-msazure.php:272 ../inc/class-destination-sugarsync.
 #: php:257 ../inc/class-destination-dropbox.php:269 ../inc/pro/class-destination-
-#: gdrive.php:603
+#: gdrive.php:611
 #, php-format
 msgid "Backup transferred to %s"
 msgstr ""
@@ -369,7 +369,7 @@ msgid "Missing account name!"
 msgstr ""
 
 #: ../inc/class-destination-msazure.php:421 ../inc/class-destination-s3-v1.php:
-#: 575 ../inc/class-destination-s3.php:675 ../inc/pro/class-destination-glacier.
+#: 576 ../inc/class-destination-s3.php:676 ../inc/pro/class-destination-glacier.
 #: php:536
 msgid "Missing access key!"
 msgstr ""
@@ -404,8 +404,7 @@ msgid "all"
 msgstr ""
 
 #: ../inc/class-jobtype-dbdump.php:68 ../inc/class-jobtype-dbdump.php:103 ..
-#: /inc/class-page-backwpup.php:307 ../inc/class-page-backwpup.php:372 ..
-#: /inc/class-destination-s3-v1.php:178 ../inc/class-destination-s3.php:193 ..
+#: /inc/class-page-backwpup.php:333 ../inc/class-page-backwpup.php:398 ..
 #: /inc/class-destination-email.php:114 ../inc/class-page-settings.php:345 ..
 #: /inc/class-jobtype-wpexp.php:73 ../inc/class-jobtype-wpplugin.php:57 ..
 #: /inc/pro/class-jobtype-dbdump.php:154 ../inc/pro/class-jobtype-dbdump.php:198
@@ -427,37 +426,36 @@ msgstr ""
 msgid "GZip"
 msgstr ""
 
-#: ../inc/class-jobtype-dbdump.php:155 ../inc/pro/class-jobtype-dbdump.php:453
+#: ../inc/class-jobtype-dbdump.php:155 ../inc/pro/class-jobtype-dbdump.php:456
 #, php-format
 msgid "%d. Try to backup database&#160;&hellip;"
 msgstr ""
 
-#: ../inc/class-jobtype-dbdump.php:169 ../inc/pro/class-jobtype-dbdump.php:472 ..
-#: /inc/pro/class-jobtype-dbdump.php:784
+#: ../inc/class-jobtype-dbdump.php:169 ../inc/pro/class-jobtype-dbdump.php:476
 #, php-format
 msgid "Connected to database %1$s on %2$s"
 msgstr ""
 
-#: ../inc/class-jobtype-dbdump.php:183 ../inc/pro/class-jobtype-dbdump.php:486
+#: ../inc/class-jobtype-dbdump.php:183 ../inc/pro/class-jobtype-dbdump.php:490
 msgid "No tables to backup."
 msgstr ""
 
-#: ../inc/class-jobtype-dbdump.php:206 ../inc/pro/class-jobtype-dbdump.php:512
+#: ../inc/class-jobtype-dbdump.php:206 ../inc/pro/class-jobtype-dbdump.php:516
 #, php-format
 msgid "Backup database table \"%s\" with \"%s\" records"
 msgstr ""
 
-#: ../inc/class-jobtype-dbdump.php:246 ../inc/pro/class-jobtype-dbdump.php:552
+#: ../inc/class-jobtype-dbdump.php:246 ../inc/pro/class-jobtype-dbdump.php:556
 msgid "MySQL backup file not created"
 msgstr ""
 
-#: ../inc/class-jobtype-dbdump.php:250 ../inc/pro/class-jobtype-dbdump.php:736
+#: ../inc/class-jobtype-dbdump.php:250 ../inc/pro/class-jobtype-dbdump.php:740
 #, php-format
 msgid "Added database dump \"%1$s\" with %2$s to backup file list"
 msgstr ""
 
-#: ../inc/class-jobtype-dbdump.php:256 ../inc/pro/class-jobtype-dbdump.php:562 ..
-#: /inc/pro/class-jobtype-dbdump.php:739
+#: ../inc/class-jobtype-dbdump.php:256 ../inc/pro/class-jobtype-dbdump.php:566 ..
+#: /inc/pro/class-jobtype-dbdump.php:743
 msgid "Database backup done!"
 msgstr ""
 
@@ -889,87 +887,107 @@ msgstr ""
 msgid "Start wizard"
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:232
+#: ../inc/class-page-backwpup.php:223
+msgid "Video: Introduction"
+msgstr ""
+
+#: ../inc/class-page-backwpup.php:228
+msgid "Video: Settings"
+msgstr ""
+
+#: ../inc/class-page-backwpup.php:233
+msgid "Video: Daily Backups"
+msgstr ""
+
+#: ../inc/class-page-backwpup.php:238
+msgid "Video: Creating Full Backups"
+msgstr ""
+
+#: ../inc/class-page-backwpup.php:243
+msgid "Video: Restoring Backups"
+msgstr ""
+
+#: ../inc/class-page-backwpup.php:258
 msgctxt "Pro teaser box"
 msgid "Thank you for using BackWPup!"
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:235
+#: ../inc/class-page-backwpup.php:261
 msgctxt "Pro teaser box"
 msgid "Get access to:"
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:237
+#: ../inc/class-page-backwpup.php:263
 msgctxt "Pro teaser box"
 msgid "First-class <strong>dedicated support</strong> at MarketPress Helpdesk."
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:238
+#: ../inc/class-page-backwpup.php:264
 msgctxt "Pro teaser box"
 msgid "Differential backups to Google Drive and other cloud storage service."
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:239
+#: ../inc/class-page-backwpup.php:265
 msgctxt "Pro teaser box"
 msgid "Easy-peasy wizards to create and schedule backup jobs."
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:240
+#: ../inc/class-page-backwpup.php:266
 msgctxt "Pro teaser box, link text"
 msgid "And more…"
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:242
+#: ../inc/class-page-backwpup.php:268
 msgctxt "Pro teaser box, link title"
 msgid "Get BackWPup Pro now"
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:242
+#: ../inc/class-page-backwpup.php:268
 msgctxt "Pro teaser box, link text"
 msgid "Get BackWPup Pro now"
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:260
+#: ../inc/class-page-backwpup.php:286
 msgid "Last logs"
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:262
+#: ../inc/class-page-backwpup.php:288
 msgid "Result"
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:295
+#: ../inc/class-page-backwpup.php:321
 #, php-format
 msgid "%d ERROR"
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:297
+#: ../inc/class-page-backwpup.php:323
 #, php-format
 msgid "%d WARNING"
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:299
+#: ../inc/class-page-backwpup.php:325
 msgid "OK"
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:323
+#: ../inc/class-page-backwpup.php:349
 msgid "Next scheduled jobs"
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:350
+#: ../inc/class-page-backwpup.php:376
 #, php-format
 msgid "working since %d seconds"
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:352 ../inc/class-page-jobs.php:616
+#: ../inc/class-page-backwpup.php:378 ../inc/class-page-jobs.php:616
 msgid "Abort"
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:366 ../inc/class-page-jobs.php:280 ../inc/class-
+#: ../inc/class-page-backwpup.php:392 ../inc/class-page-jobs.php:280 ../inc/class-
 #: page-jobs.php:289 ../inc/class-job.php:335
 msgid "Not scheduled!"
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:368
+#: ../inc/class-page-backwpup.php:394
 msgid "Edit Job"
 msgstr ""
 
@@ -1269,88 +1287,96 @@ msgstr ""
 msgid "Amazon: Storage Class"
 msgstr ""
 
+#: ../inc/class-destination-s3-v1.php:178 ../inc/class-destination-s3.php:193
+msgid "Standard"
+msgstr ""
+
 #: ../inc/class-destination-s3-v1.php:179 ../inc/class-destination-s3.php:194
+msgid "Standard-Infrequent Access"
+msgstr ""
+
+#: ../inc/class-destination-s3-v1.php:180 ../inc/class-destination-s3.php:195
 msgid "Reduced Redundancy"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:184 ../inc/class-destination-s3.php:199
+#: ../inc/class-destination-s3-v1.php:185 ../inc/class-destination-s3.php:200
 msgid "Server side encryption"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:188 ../inc/class-destination-s3.php:203
+#: ../inc/class-destination-s3-v1.php:189 ../inc/class-destination-s3.php:204
 msgid "Save files encrypted (AES256) on server."
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:249 ../inc/class-destination-s3.php:263
+#: ../inc/class-destination-s3-v1.php:250 ../inc/class-destination-s3.php:264
 #, php-format
 msgid "Bucket %1$s created."
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:251 ../inc/pro/class-destination-s3-v1.php:
+#: ../inc/class-destination-s3-v1.php:252 ../inc/pro/class-destination-s3-v1.php:
 #: 136
 #, php-format
 msgid "Bucket %s could not be created."
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:297 ../inc/class-destination-s3-v1.php:419 .
-#: ./inc/class-destination-s3-v1.php:470 ../inc/class-destination-s3.php:306 ..
-#: /inc/class-destination-s3.php:431 ../inc/class-destination-s3.php:483 ..
-#: /inc/class-destination-s3.php:517 ../inc/class-destination-s3.php:577 ..
+#: ../inc/class-destination-s3-v1.php:298 ../inc/class-destination-s3-v1.php:420 .
+#: ./inc/class-destination-s3-v1.php:471 ../inc/class-destination-s3.php:307 ..
+#: /inc/class-destination-s3.php:432 ../inc/class-destination-s3.php:484 ..
+#: /inc/class-destination-s3.php:518 ../inc/class-destination-s3.php:578 ..
 #: /inc/pro/class-destination-s3-v1.php:314 ../inc/pro/class-destination-s3.php:323
 #, php-format
 msgid "S3 Service API: %s"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:362 ../inc/class-destination-s3.php:370
+#: ../inc/class-destination-s3-v1.php:363 ../inc/class-destination-s3.php:371
 #, php-format
 msgid "%d. Trying to send backup file to S3 Service&#160;&hellip;"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:383 ../inc/class-destination-s3.php:383 ..
+#: ../inc/class-destination-s3-v1.php:384 ../inc/class-destination-s3.php:384 ..
 #: /inc/pro/class-destination-s3-v1.php:182 ../inc/pro/class-destination-s3.php:178
 #, php-format
 msgid "Connected to S3 Bucket \"%1$s\" in %2$s"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:386 ../inc/class-destination-s3.php:386 ..
+#: ../inc/class-destination-s3-v1.php:387 ../inc/class-destination-s3.php:387 ..
 #: /inc/pro/class-destination-s3-v1.php:185 ../inc/pro/class-destination-s3.php:181
 #, php-format
 msgid "S3 Bucket \"%s\" does not exist!"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:392 ../inc/class-destination-s3.php:405
+#: ../inc/class-destination-s3-v1.php:393 ../inc/class-destination-s3.php:406
 msgid "Starting upload to S3 Service&#160;&hellip;"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:410 ../inc/class-destination-s3.php:508 ..
+#: ../inc/class-destination-s3-v1.php:411 ../inc/class-destination-s3.php:509 ..
 #: /inc/pro/class-destination-glacier.php:363
 #, php-format
 msgid "Backup transferred to %s."
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:415 ../inc/class-destination-s3.php:513
+#: ../inc/class-destination-s3-v1.php:416 ../inc/class-destination-s3.php:514
 #, php-format
 msgid "Cannot transfer backup to S3! (%1$d) %2$s"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:460 ../inc/class-destination-s3.php:567
+#: ../inc/class-destination-s3-v1.php:461 ../inc/class-destination-s3.php:568
 #, php-format
 msgid "Cannot delete backup from %s."
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:464 ../inc/class-destination-s3.php:571
+#: ../inc/class-destination-s3-v1.php:465 ../inc/class-destination-s3.php:572
 #, php-format
 msgid "One file deleted on S3 Bucket."
 msgid_plural "%d files deleted on S3 Bucket"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../inc/class-destination-s3-v1.php:577 ../inc/class-destination-s3.php:677 ..
+#: ../inc/class-destination-s3-v1.php:578 ../inc/class-destination-s3.php:678 ..
 #: /inc/pro/class-destination-glacier.php:538
 msgid "Missing secret access key!"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:583 ../inc/class-destination-s3.php:683
+#: ../inc/class-destination-s3-v1.php:584 ../inc/class-destination-s3.php:684
 msgid "No bucket found!"
 msgstr ""
 
@@ -1365,7 +1391,7 @@ msgid "Folder %s for archive not found"
 msgstr ""
 
 #: ../inc/class-create-archive.php:85 ../inc/class-create-archive.php:120 ..
-#: /inc/class-create-archive.php:137 ../inc/class-mysqldump.php:130
+#: /inc/class-create-archive.php:137 ../inc/class-mysqldump.php:133
 msgid "Functions for gz compression not available"
 msgstr ""
 
@@ -1389,7 +1415,7 @@ msgstr ""
 msgid "Cannot open archive file"
 msgstr ""
 
-#: ../inc/class-create-archive.php:174 ../inc/class-create-archive.php:379
+#: ../inc/class-create-archive.php:174 ../inc/class-create-archive.php:371
 #, php-format
 msgid "PclZip archive add error: %s"
 msgstr ""
@@ -1409,7 +1435,7 @@ msgid "File %s does not exist or is not readable"
 msgstr ""
 
 #: ../inc/class-create-archive.php:278 ../inc/class-create-archive.php:294 ..
-#: /inc/class-create-archive.php:422 ../inc/class-create-archive.php:426
+#: /inc/class-create-archive.php:414 ../inc/class-create-archive.php:418
 msgid "This archive method can only add one file"
 msgstr ""
 
@@ -1418,63 +1444,63 @@ msgstr ""
 msgid "Cannot open source file %s to archive"
 msgstr ""
 
-#: ../inc/class-create-archive.php:332 ../inc/class-create-archive.php:358 ..
-#: /inc/class-create-archive.php:367 ../inc/class-create-archive.php:437
+#: ../inc/class-create-archive.php:333
+msgid "ZIP archive cannot be closed correctly"
+msgstr ""
+
+#: ../inc/class-create-archive.php:351 ../inc/class-create-archive.php:360 ..
+#: /inc/class-create-archive.php:429
 #, php-format
 msgid "Cannot add \"%s\" to zip archive!"
 msgstr ""
 
-#: ../inc/class-create-archive.php:340
-msgid "ZIP archive cannot be closed correctly"
-msgstr ""
-
-#: ../inc/class-create-archive.php:404
+#: ../inc/class-create-archive.php:396
 msgid "Folder name cannot be empty"
 msgstr ""
 
-#: ../inc/class-create-archive.php:409
+#: ../inc/class-create-archive.php:401
 #, php-format
 msgctxt "Folder path to add to archive"
 msgid "Folder %s does not exist or is not readable"
 msgstr ""
 
-#: ../inc/class-create-archive.php:459
+#: ../inc/class-create-archive.php:451
 #, php-format
 msgctxt "Text of ZipArchive status Message"
 msgid "ZipArchive returns status: %s"
 msgstr ""
 
-#: ../inc/class-create-archive.php:489
+#: ../inc/class-create-archive.php:481
 #, php-format
 msgid "File name \"%1$s\" is too long to be saved correctly in %2$s archive!"
 msgstr ""
 
-#: ../inc/class-create-archive.php:492
+#: ../inc/class-create-archive.php:484
 #, php-format
 msgid "File path \"%1$s\" is too long to be saved correctly in %2$s archive!"
 msgstr ""
 
-#: ../inc/class-create-archive.php:504
+#: ../inc/class-create-archive.php:496
 #, php-format
 msgid "Cannot open source file %s for archiving"
 msgstr ""
 
-#: ../inc/class-create-archive.php:509 ../inc/class-create-archive.php:510 ..
-#: /inc/class-create-archive.php:609 ../inc/class-create-archive.php:610
+#: ../inc/class-create-archive.php:501 ../inc/class-create-archive.php:502 ..
+#: /inc/class-create-archive.php:601 ../inc/class-create-archive.php:602
 msgid "Unknown"
 msgstr ""
 
-#: ../inc/class-create-archive.php:600
+#: ../inc/class-create-archive.php:592
 #, php-format
 msgid "Folder name \"%1$s\" is too long to be saved correctly in %2$s archive!"
 msgstr ""
 
-#: ../inc/class-create-archive.php:603
+#: ../inc/class-create-archive.php:595
 #, php-format
 msgid "Folder path \"%1$s\" is too long to be saved correctly in %2$s archive!"
 msgstr ""
 
-#: ../inc/class-create-archive.php:684
+#: ../inc/class-create-archive.php:676
 #, php-format
 msgid ""
 "If %s will be added to your backup archive, the archive will be too large "
@@ -1656,8 +1682,8 @@ msgstr ""
 
 #: ../inc/class-destination-sugarsync.php:49 ../inc/class-destination-dropbox.php:
 #: 60 ../inc/pro/class-destination-sugarsync.php:32 ../inc/pro/class-destination-
-#: dropbox.php:35 ../inc/pro/class-destination-gdrive.php:55 ../inc/pro/class-
-#: destination-gdrive.php:276
+#: dropbox.php:35 ../inc/pro/class-destination-gdrive.php:53 ../inc/pro/class-
+#: destination-gdrive.php:277
 msgid "Authenticated!"
 msgstr ""
 
@@ -1686,7 +1712,7 @@ msgstr ""
 
 #: ../inc/class-destination-sugarsync.php:96 ../inc/class-destination-folder.php:
 #: 39 ../inc/class-destination-dropbox.php:102 ../inc/class-destination-ftp.php:
-#: 62 ../inc/pro/class-destination-gdrive.php:73
+#: 62 ../inc/pro/class-destination-gdrive.php:71
 msgid "File Deletion"
 msgstr ""
 
@@ -1749,12 +1775,12 @@ msgid "Dropbox API: %s"
 msgstr ""
 
 #: ../inc/class-destination-dropbox.php:51 ../inc/pro/class-destination-gdrive.
-#: php:47
+#: php:45
 msgid "Login"
 msgstr ""
 
 #: ../inc/class-destination-dropbox.php:57 ../inc/pro/class-destination-gdrive.
-#: php:53 ../inc/pro/class-destination-gdrive.php:270
+#: php:51 ../inc/pro/class-destination-gdrive.php:271
 msgid "Not authenticated!"
 msgstr ""
 
@@ -1858,12 +1884,12 @@ msgid "Uploading to Dropbox&#160;&hellip;"
 msgstr ""
 
 #: ../inc/class-destination-dropbox.php:273 ../inc/pro/class-destination-gdrive.
-#: php:607
+#: php:615
 msgid "Uploaded file size and local file size don't match."
 msgstr ""
 
 #: ../inc/class-destination-dropbox.php:277 ../inc/pro/class-destination-gdrive.
-#: php:609 ../inc/pro/class-destination-glacier.php:367
+#: php:617 ../inc/pro/class-destination-glacier.php:367
 #, php-format
 msgid "Error transfering backup to %s."
 msgstr ""
@@ -2073,46 +2099,46 @@ msgstr ""
 msgid "Use multipart upload for uploading a file"
 msgstr ""
 
-#: ../inc/class-destination-s3.php:265 ../inc/pro/class-destination-s3.php:137
+#: ../inc/class-destination-s3.php:266 ../inc/pro/class-destination-s3.php:137
 #, php-format
 msgid " %s is not a valid bucket name."
 msgstr ""
 
-#: ../inc/class-destination-s3.php:393
+#: ../inc/class-destination-s3.php:394
 msgid "Checking for not aborted multipart Uploads&#160;&hellip;"
 msgstr ""
 
-#: ../inc/class-destination-s3.php:399
+#: ../inc/class-destination-s3.php:400
 #, php-format
 msgid "Upload for %s aborted."
 msgstr ""
 
-#: ../inc/class-destination-s3.php:541
+#: ../inc/class-destination-s3.php:542
 #, php-format
 msgid "Storage Class: %s"
 msgstr ""
 
-#: ../inc/class-file.php:148
+#: ../inc/class-file.php:152
 #, php-format
 msgid "Folder %1$s not allowed, please use another folder."
 msgstr ""
 
-#: ../inc/class-file.php:153
+#: ../inc/class-file.php:157
 #, php-format
 msgid "Folder %1$s is not in open basedir, please use another folder."
 msgstr ""
 
-#: ../inc/class-file.php:159
+#: ../inc/class-file.php:163
 #, php-format
 msgid "Cannot create folder: %1$s"
 msgstr ""
 
-#: ../inc/class-file.php:165
+#: ../inc/class-file.php:169
 #, php-format
 msgid "Folder \"%1$s\" is not writable"
 msgstr ""
 
-#: ../inc/class-file.php:194
+#: ../inc/class-file.php:198
 msgid ""
 "BackWPup will not backup folders and its sub folders when this file is "
 "inside."
@@ -2204,8 +2230,8 @@ msgstr ""
 msgid "Copy of"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:388 ../inc/class-page-backups.php:368 ../inc/class-
-#: page-backups.php:396 ../inc/class-page-editjob.php:35
+#: ../inc/class-page-jobs.php:388 ../inc/class-page-backups.php:373 ../inc/class-
+#: page-backups.php:412 ../inc/class-page-editjob.php:35
 msgid "Sorry, you don't have permissions to do that."
 msgstr ""
 
@@ -2286,18 +2312,18 @@ msgstr ""
 msgid "Job completed"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:786 ../inc/class-job.php:1273
+#: ../inc/class-page-jobs.php:786 ../inc/class-job.php:1275
 msgid "ERROR:"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:786 ../inc/class-job.php:1486
+#: ../inc/class-page-jobs.php:786 ../inc/class-job.php:1488
 #, php-format
 msgid ""
 "Job has ended with errors in %s seconds. You must resolve the errors for "
 "correct execution."
 msgstr ""
 
-#: ../inc/class-page-jobs.php:788 ../inc/class-job.php:1264
+#: ../inc/class-page-jobs.php:788 ../inc/class-job.php:1266
 msgid "WARNING:"
 msgstr ""
 
@@ -2308,7 +2334,7 @@ msgid ""
 "execution."
 msgstr ""
 
-#: ../inc/class-page-jobs.php:790 ../inc/class-job.php:1490
+#: ../inc/class-page-jobs.php:790 ../inc/class-job.php:1492
 #, php-format
 msgid "Job done in %s seconds."
 msgstr ""
@@ -2717,7 +2743,7 @@ msgstr ""
 
 #: ../inc/class-page-settings.php:230
 msgid ""
-"Debug lag has much more informations than normal logs. It is for support and "
+"Debug log has much more informations than normal logs. It is for support and "
 "should be handled carefully. For support is the best to use a not translated "
 "log file. Usage of not translated logs can reduce the PHP memory usage."
 msgstr ""
@@ -3083,33 +3109,33 @@ msgstr ""
 msgid "Reset all settings to default"
 msgstr ""
 
-#: ../inc/class-page-backups.php:177
+#: ../inc/class-page-backups.php:182
 msgid "No files could be found. (List will be generated during next backup.)"
 msgstr ""
 
-#: ../inc/class-page-backups.php:223
+#: ../inc/class-page-backups.php:228
 msgid "Change destination"
 msgstr ""
 
-#: ../inc/class-page-backups.php:263
+#: ../inc/class-page-backups.php:268
 msgid "File"
 msgstr ""
 
-#: ../inc/class-page-backups.php:308
+#: ../inc/class-page-backups.php:313
 msgid ""
 "You are about to delete this backup archive. \n"
 "  'Cancel' to stop, 'OK' to delete."
 msgstr ""
 
-#: ../inc/class-page-backups.php:339
+#: ../inc/class-page-backups.php:344
 msgid "?"
 msgstr ""
 
-#: ../inc/class-page-backups.php:418
+#: ../inc/class-page-backups.php:436
 msgid "Backup Files"
 msgstr ""
 
-#: ../inc/class-page-backups.php:466
+#: ../inc/class-page-backups.php:484
 #, php-format
 msgid "%s Manage Backup Archives"
 msgstr ""
@@ -3181,51 +3207,51 @@ msgstr ""
 msgid "No MySQLi extension found. Please install it."
 msgstr ""
 
-#: ../inc/class-mysqldump.php:98
+#: ../inc/class-mysqldump.php:100 ../inc/pro/class-jobtype-dbdump.php:808
 msgid "Cannot init MySQLi database connection"
 msgstr ""
 
-#: ../inc/class-mysqldump.php:103
+#: ../inc/class-mysqldump.php:105 ../inc/pro/class-jobtype-dbdump.php:814
 msgid "Setting of MySQLi connection timeout failed"
 msgstr ""
 
-#: ../inc/class-mysqldump.php:108 ../inc/pro/class-jobtype-dbdump.php:778
+#: ../inc/class-mysqldump.php:110 ../inc/pro/class-jobtype-dbdump.php:820
 #, php-format
 msgid "Cannot connect to MySQL database %1$d: %2$s"
 msgstr ""
 
-#: ../inc/class-mysqldump.php:115
+#: ../inc/class-mysqldump.php:117 ../inc/pro/class-jobtype-dbdump.php:828
 #, php-format
 msgctxt "Database Charset"
 msgid "Cannot set DB charset to %s"
 msgstr ""
 
-#: ../inc/class-mysqldump.php:143
+#: ../inc/class-mysqldump.php:146
 msgid "Cannot open SQL backup file"
 msgstr ""
 
-#: ../inc/class-mysqldump.php:150 ../inc/class-mysqldump.php:161 ../inc/class-
-#: mysqldump.php:254 ../inc/class-mysqldump.php:267 ../inc/class-mysqldump.php:
-#: 282 ../inc/class-mysqldump.php:295 ../inc/class-mysqldump.php:341 ../inc/class-
-#: mysqldump.php:365 ../inc/class-mysqldump.php:403 ../inc/class-mysqldump.php:
-#: 460 ../inc/pro/class-jobtype-dbdump.php:790 ../inc/pro/class-jobtype-dbdump.
-#: php:804 ../inc/pro/class-jobtype-dbdump.php:852 ../inc/pro/class-jobtype-
-#: dbdump.php:871 ../inc/pro/class-jobtype-dbdump.php:914
+#: ../inc/class-mysqldump.php:153 ../inc/class-mysqldump.php:164 ../inc/class-
+#: mysqldump.php:257 ../inc/class-mysqldump.php:270 ../inc/class-mysqldump.php:
+#: 285 ../inc/class-mysqldump.php:298 ../inc/class-mysqldump.php:344 ../inc/class-
+#: mysqldump.php:368 ../inc/class-mysqldump.php:406 ../inc/class-mysqldump.php:
+#: 463 ../inc/pro/class-jobtype-dbdump.php:836 ../inc/pro/class-jobtype-dbdump.
+#: php:850 ../inc/pro/class-jobtype-dbdump.php:898 ../inc/pro/class-jobtype-
+#: dbdump.php:917 ../inc/pro/class-jobtype-dbdump.php:960
 #, php-format
 msgid "Database error %1$s for query %2$s"
 msgstr ""
 
-#: ../inc/class-mysqldump.php:439
+#: ../inc/class-mysqldump.php:442
 #, php-format
 msgid "Start for table backup is not correctly set: %1$s "
 msgstr ""
 
-#: ../inc/class-mysqldump.php:443
+#: ../inc/class-mysqldump.php:446
 #, php-format
 msgid "Length for table backup is not correctly set: %1$s "
 msgstr ""
 
-#: ../inc/class-mysqldump.php:518
+#: ../inc/class-mysqldump.php:521
 msgid "Error while writing file!"
 msgstr ""
 
@@ -3378,175 +3404,175 @@ msgstr ""
 msgid "Job restarts due to inactivity for more than 5 minutes."
 msgstr ""
 
-#: ../inc/class-job.php:877
+#: ../inc/class-job.php:879
 msgid "Step aborted: too many attempts!"
 msgstr ""
 
-#: ../inc/class-job.php:968
+#: ../inc/class-job.php:970
 #, php-format
 msgid "Restart after %1$d seconds."
 msgstr ""
 
-#: ../inc/class-job.php:1168
+#: ../inc/class-job.php:1170
 #, php-format
 msgid "Signal \"%s\" is sent to script!"
 msgstr ""
 
-#: ../inc/class-job.php:1183 ../inc/class-job.php:1196
+#: ../inc/class-job.php:1185 ../inc/class-job.php:1198
 #, php-format
 msgid "System: %s"
 msgstr ""
 
-#: ../inc/class-job.php:1211
+#: ../inc/class-job.php:1213
 #, php-format
 msgid "Exception caught in %1$s: %2$s"
 msgstr ""
 
-#: ../inc/class-job.php:1277
+#: ../inc/class-job.php:1279
 msgid "DEPRECATED:"
 msgstr ""
 
-#: ../inc/class-job.php:1280
+#: ../inc/class-job.php:1282
 msgid "STRICT NOTICE:"
 msgstr ""
 
-#: ../inc/class-job.php:1285
+#: ../inc/class-job.php:1287
 msgid "RECOVERABLE ERROR:"
 msgstr ""
 
-#: ../inc/class-job.php:1435
+#: ../inc/class-job.php:1437
 msgid "Cannot write progress to working file. Job will be aborted."
 msgstr ""
 
-#: ../inc/class-job.php:1453
+#: ../inc/class-job.php:1455
 msgid "Aborted by user!"
 msgstr ""
 
-#: ../inc/class-job.php:1480
+#: ../inc/class-job.php:1482
 #, php-format
 msgid "One old log deleted"
 msgid_plural "%d old logs deleted"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../inc/class-job.php:1488
+#: ../inc/class-job.php:1490
 #, php-format
 msgid ""
 "Job finished with warnings in %s seconds. Please resolve them for correct "
 "execution."
 msgstr ""
 
-#: ../inc/class-job.php:1535
+#: ../inc/class-job.php:1537
 msgid "SUCCESSFUL"
 msgstr ""
 
-#: ../inc/class-job.php:1538
+#: ../inc/class-job.php:1540
 msgid "WARNING"
 msgstr ""
 
-#: ../inc/class-job.php:1542
+#: ../inc/class-job.php:1544
 msgid "ERROR"
 msgstr ""
 
-#: ../inc/class-job.php:1546
+#: ../inc/class-job.php:1548
 #, php-format
 msgid "[%3$s] BackWPup log %1$s: %2$s"
 msgstr ""
 
-#: ../inc/class-job.php:1920
+#: ../inc/class-job.php:1922
 #, php-format
 msgctxt "Folder name"
 msgid "Folder %s not exists"
 msgstr ""
 
-#: ../inc/class-job.php:1925
+#: ../inc/class-job.php:1927
 #, php-format
 msgctxt "Folder name"
 msgid "Folder %s not readable"
 msgstr ""
 
-#: ../inc/class-job.php:1944
+#: ../inc/class-job.php:1946
 #, php-format
 msgid "Link \"%s\" not following."
 msgstr ""
 
-#: ../inc/class-job.php:1946
+#: ../inc/class-job.php:1948
 #, php-format
 msgid "File \"%s\" is not readable!"
 msgstr ""
 
-#: ../inc/class-job.php:1950
+#: ../inc/class-job.php:1952
 #, php-format
 msgid ""
 "File size of “%s” cannot be retrieved. File might be too large and will not "
 "be added to queue."
 msgstr ""
 
-#: ../inc/class-job.php:1970
+#: ../inc/class-job.php:1972
 #, php-format
 msgid "%d. Trying to generate a manifest file&#160;&hellip;"
 msgstr ""
 
-#: ../inc/class-job.php:2020
+#: ../inc/class-job.php:2022
 msgid "You may have noticed the manifest.json file in this archive."
 msgstr ""
 
-#: ../inc/class-job.php:2021
+#: ../inc/class-job.php:2023
 msgid "manifest.json might be needed for later restoring a backup from this archive."
 msgstr ""
 
-#: ../inc/class-job.php:2022
+#: ../inc/class-job.php:2024
 msgid ""
 "Please leave manifest.json untouched and in place. Otherwise it is safe to "
 "be ignored."
 msgstr ""
 
-#: ../inc/class-job.php:2032
+#: ../inc/class-job.php:2034
 #, php-format
 msgid "Added manifest.json file with %1$s to backup file list."
 msgstr ""
 
-#: ../inc/class-job.php:2062
+#: ../inc/class-job.php:2064
 #, php-format
 msgid "%d. Trying to create backup archive &hellip;"
 msgstr ""
 
-#: ../inc/class-job.php:2069
+#: ../inc/class-job.php:2071
 #, php-format
 msgctxt "Archive compression method"
 msgid "Compressing files as %s. Please be patient, this may take a moment."
 msgstr ""
 
-#: ../inc/class-job.php:2076
+#: ../inc/class-job.php:2078
 msgid "Adding Extra files to Archive"
 msgstr ""
 
-#: ../inc/class-job.php:2087 ../inc/class-job.php:2145
+#: ../inc/class-job.php:2089 ../inc/class-job.php:2147
 msgid "Cannot create backup archive correctly. Aborting creation."
 msgstr ""
 
-#: ../inc/class-job.php:2102
+#: ../inc/class-job.php:2104
 #, php-format
 msgid "Archiving Folder: %s"
 msgstr ""
 
-#: ../inc/class-job.php:2154
+#: ../inc/class-job.php:2156
 msgid "Backup archive created."
 msgstr ""
 
-#: ../inc/class-job.php:2167
+#: ../inc/class-job.php:2169
 msgid ""
 "The Backup archive will be too large for file operations with this PHP "
 "Version. You might want to consider splitting the backup job in multiple "
 "jobs with less files each."
 msgstr ""
 
-#: ../inc/class-job.php:2171
+#: ../inc/class-job.php:2173
 #, php-format
 msgid "Archive size is %s."
 msgstr ""
 
-#: ../inc/class-job.php:2174
+#: ../inc/class-job.php:2176
 #, php-format
 msgid "%1$d Files with %2$s in Archive."
 msgstr ""
@@ -3650,11 +3676,11 @@ msgid ""
 "file can checked."
 msgstr ""
 
-#: ../inc/class-jobtype-wpexp.php:474 ../inc/pro/class-jobtype-dbdump.php:714
+#: ../inc/class-jobtype-wpexp.php:474 ../inc/pro/class-jobtype-dbdump.php:718
 msgid "Compressing file&#160;&hellip;"
 msgstr ""
 
-#: ../inc/class-jobtype-wpexp.php:481 ../inc/pro/class-jobtype-dbdump.php:721
+#: ../inc/class-jobtype-wpexp.php:481 ../inc/pro/class-jobtype-dbdump.php:725
 msgid "Compressing done."
 msgstr ""
 
@@ -3697,7 +3723,7 @@ msgstr ""
 msgid "Inactive plugins:"
 msgstr ""
 
-#: ../inc/class-jobtype-wpplugin.php:138 ../inc/pro/class-jobtype-dbdump.php:771
+#: ../inc/class-jobtype-wpplugin.php:138 ../inc/pro/class-jobtype-dbdump.php:775
 msgid "Can not open target file for writing."
 msgstr ""
 
@@ -4390,101 +4416,101 @@ msgid ""
 "system command. If <em>shell_exec</em> ist not active, this is disabled"
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:556
+#: ../inc/pro/class-jobtype-dbdump.php:560
 #, php-format
 msgid "Added database backup \"%1$s\" with %2$s to backup file list"
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:577
+#: ../inc/pro/class-jobtype-dbdump.php:581
 #, php-format
 msgid "%d. Try to backup MySQL system&#160;&hellip;"
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:584
+#: ../inc/pro/class-jobtype-dbdump.php:588
 msgid "Executing of system commands not allowed. Please use backup with mysqli."
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:589
+#: ../inc/pro/class-jobtype-dbdump.php:593
 #, php-format
 msgid "%s file not in open basedir of PHP."
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:594
+#: ../inc/pro/class-jobtype-dbdump.php:598
 #, php-format
 msgid "%s file not found. Please correct the path for the mysqldump file."
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:674
+#: ../inc/pro/class-jobtype-dbdump.php:678
 #, php-format
 msgctxt "Executed exec() command"
 msgid "CLI Exec: %s"
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:685
+#: ../inc/pro/class-jobtype-dbdump.php:689
 msgid "Usage error."
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:686
+#: ../inc/pro/class-jobtype-dbdump.php:690
 msgid ""
 "MySQL Server Error. This could be an issue with permissions. Try using "
 "database backup with mysqli."
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:687
+#: ../inc/pro/class-jobtype-dbdump.php:691
 msgid "Error during consistency checks."
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:688
+#: ../inc/pro/class-jobtype-dbdump.php:692
 msgid "Not enough memory."
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:689
+#: ../inc/pro/class-jobtype-dbdump.php:693
 msgid "Error during writing of SQL backup file."
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:690
+#: ../inc/pro/class-jobtype-dbdump.php:694
 msgid "Illegal table"
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:695
+#: ../inc/pro/class-jobtype-dbdump.php:699
 #, php-format
 msgid "mysqldump returned: (%d) %s"
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:708
+#: ../inc/pro/class-jobtype-dbdump.php:712
 msgid "Can not create mysql backup with mysqldump command"
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:754
+#: ../inc/pro/class-jobtype-dbdump.php:758
 #, php-format
 msgid "%d. Try to backup database as XML&#160;&hellip;"
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:811
+#: ../inc/pro/class-jobtype-dbdump.php:857
 msgid "No tables for XML backup"
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:847
+#: ../inc/pro/class-jobtype-dbdump.php:893
 #, php-format
 msgid "Dump database create view \"%s\""
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:865
+#: ../inc/pro/class-jobtype-dbdump.php:911
 #, php-format
 msgid "Backup database structure \"%s\" to XML"
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:907
+#: ../inc/pro/class-jobtype-dbdump.php:953
 #, php-format
 msgid "Backup table \"%s\" data to XML"
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:975
+#: ../inc/pro/class-jobtype-dbdump.php:1021
 #, php-format
 msgid "Added database XML dump \"%1$s\" with %2$s to backup file list"
 msgstr ""
 
-#: ../inc/pro/class-jobtype-dbdump.php:978
+#: ../inc/pro/class-jobtype-dbdump.php:1024
 msgid "Database XML backup done!"
 msgstr ""
 
@@ -4784,8 +4810,8 @@ msgid "Sugarsync authenticate!"
 msgstr ""
 
 #: ../inc/pro/class-destination-sugarsync.php:31 ../inc/pro/class-destination-
-#: dropbox.php:34 ../inc/pro/class-destination-gdrive.php:269 ../inc/pro/class-
-#: destination-gdrive.php:275
+#: dropbox.php:34 ../inc/pro/class-destination-gdrive.php:270 ../inc/pro/class-
+#: destination-gdrive.php:276
 msgid "Login:"
 msgstr ""
 
@@ -4794,7 +4820,7 @@ msgid "Root:"
 msgstr ""
 
 #: ../inc/pro/class-destination-sugarsync.php:58 ../inc/pro/class-destination-
-#: dropbox.php:38 ../inc/pro/class-destination-gdrive.php:280
+#: dropbox.php:38 ../inc/pro/class-destination-gdrive.php:281
 msgid "Folder:"
 msgstr ""
 
@@ -5018,8 +5044,8 @@ msgstr ""
 msgid "Items to export:"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:37 ../inc/pro/class-destination-gdrive.
-#: php:256
+#: ../inc/pro/class-destination-gdrive.php:35 ../inc/pro/class-destination-gdrive.
+#: php:257
 #, php-format
 msgid ""
 "Looks like you haven’t set up any API keys yet. Head over to <a "
@@ -5027,118 +5053,118 @@ msgid ""
 "back here."
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:51 ../inc/pro/class-destination-gdrive.
-#: php:271
+#: ../inc/pro/class-destination-gdrive.php:49 ../inc/pro/class-destination-gdrive.
+#: php:272
 msgid "Authenticate"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:57 ../inc/pro/class-destination-gdrive.
-#: php:277
+#: ../inc/pro/class-destination-gdrive.php:55 ../inc/pro/class-destination-gdrive.
+#: php:278
 msgid "Reauthenticate"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:67
+#: ../inc/pro/class-destination-gdrive.php:65
 msgid "Folder in Google Drive"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:87
+#: ../inc/pro/class-destination-gdrive.php:85
 msgid ""
 "Consider using trash to delete files. If trash is not enabled, files will be "
 "deleted permanently."
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:141 ../inc/pro/class-destination-
-#: gdrive.php:168
+#: ../inc/pro/class-destination-gdrive.php:142 ../inc/pro/class-destination-
+#: gdrive.php:169
 msgid "GDrive: Authenticated."
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:145 ../inc/pro/class-destination-
-#: gdrive.php:172
+#: ../inc/pro/class-destination-gdrive.php:146 ../inc/pro/class-destination-
+#: gdrive.php:173
 msgid "GDrive: No refresh token received. Try to Authenticate again!"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:152 ../inc/pro/class-destination-
-#: gdrive.php:177 ../inc/pro/class-destination-gdrive.php:201 ../inc/pro/class-
-#: destination-gdrive.php:223
+#: ../inc/pro/class-destination-gdrive.php:153 ../inc/pro/class-destination-
+#: gdrive.php:178 ../inc/pro/class-destination-gdrive.php:202 ../inc/pro/class-
+#: destination-gdrive.php:224
 #, php-format
 msgid "GDrive API: %s"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:382
+#: ../inc/pro/class-destination-gdrive.php:389
 #, php-format
 msgid "%d. Try to send backup file to Google Drive&#160;&hellip;"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:407
+#: ../inc/pro/class-destination-gdrive.php:415
 msgid "Uploading to Google Drive&#160;&hellip;"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:467
+#: ../inc/pro/class-destination-gdrive.php:475
 msgid "Google Drive API: could not create resumable file"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:513
+#: ../inc/pro/class-destination-gdrive.php:521
 msgid "Can not resume transfer backup to Google Drive!"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:582
+#: ../inc/pro/class-destination-gdrive.php:590
 #, php-format
 msgid "Error transfering file chunks to %s."
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:583 ../inc/pro/class-destination-
-#: gdrive.php:609
+#: ../inc/pro/class-destination-gdrive.php:591 ../inc/pro/class-destination-
+#: gdrive.php:617
 msgid "Google Drive"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:653
+#: ../inc/pro/class-destination-gdrive.php:661
 #, php-format
 msgid "One file deleted from Google Drive"
 msgid_plural "%d files deleted on Google Drive"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../inc/pro/class-destination-gdrive.php:659 ../inc/pro/class-destination-
-#: gdrive.php:877
+#: ../inc/pro/class-destination-gdrive.php:667 ../inc/pro/class-destination-
+#: gdrive.php:889
 #, php-format
 msgid "Google Drive API: %s"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:705
+#: ../inc/pro/class-destination-gdrive.php:715
 #, php-format
 msgid "%d. Try to sync files to Google Drive&#160;&hellip;"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:727
+#: ../inc/pro/class-destination-gdrive.php:739
 msgid "Syncing changed files to Google Drive"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:756
+#: ../inc/pro/class-destination-gdrive.php:768
 #, php-format
 msgid "File %s updated on Google Drive"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:776
+#: ../inc/pro/class-destination-gdrive.php:788
 #, php-format
 msgid "File %s uploaded to Google Drive"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:797
+#: ../inc/pro/class-destination-gdrive.php:809
 #, php-format
 msgid "File %s moved to trash in Google Drive"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:800
+#: ../inc/pro/class-destination-gdrive.php:812
 #, php-format
 msgid "File %s deleted permanently in Google Drive"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:845
+#: ../inc/pro/class-destination-gdrive.php:857
 #, php-format
 msgid "Extra file %s updated on Google Drive"
 msgstr ""
 
-#: ../inc/pro/class-destination-gdrive.php:866
+#: ../inc/pro/class-destination-gdrive.php:878
 #, php-format
 msgid "Extra file %s uploaded to Google Drive"
 msgstr ""

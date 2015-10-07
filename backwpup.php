@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.2.0
+ * Version: 3.2.1
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -240,25 +240,16 @@ if ( ! class_exists( 'BackWPup' ) ) {
 
 		/**
 		 * Load Plugin Translation
+		 *
+		 * @return bool Text domain loaded
 		 */
 		public static function load_text_domain() {
 
-			$domain = 'backwpup';
-
-			if ( is_textdomain_loaded( $domain ) ) {
-				return;
+			if ( is_textdomain_loaded( 'backwpup' ) ) {
+				return TRUE;
 			}
 
-			$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
-			$mofile = $domain . '-' . $locale . '.mo';
-
-			// load translation from WordPress plugins language folder
-			if ( load_textdomain( $domain, WP_LANG_DIR . '/plugins/' . $mofile ) ) {
-				return;
-			}
-
-			// load translation from plugin folder
-			load_textdomain( $domain, dirname( __FILE__ ) . '/languages/' . $mofile );
+			return load_plugin_textdomain( 'backwpup', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 		}
 
 		/**

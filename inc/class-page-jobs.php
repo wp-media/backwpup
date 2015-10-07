@@ -277,7 +277,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 			if ( $nextrun = wp_next_scheduled( 'backwpup_cron', array( 'id' => $item ) ) + ( get_option( 'gmt_offset' ) * 3600 )  ) {
 				$r .= '<span title="' . sprintf( __( 'Cron: %s','backwpup'),BackWPup_Option::get( $item, 'cron' ) ). '">' . sprintf( __( '%1$s at %2$s by WP-Cron', 'backwpup' ) , date_i18n( get_option( 'date_format' ), $nextrun, TRUE ) , date_i18n( get_option( 'time_format' ), $nextrun, TRUE ) ) . '</span><br />';
 			} else {
-				$r .= __( 'Not scheduled!', 'backwpup' ).'<br />';
+				$r .= __( 'Not scheduled!', 'backwpup' ) . '<br />';
 			}
 		}
 		if ( BackWPup_Option::get( $item, 'activetype' ) == 'easycron' ) {
@@ -286,7 +286,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 				$nextrun = BackWPup_Cron::cron_next( $easycron_status[ 'cron_expression' ] ) + ( get_option( 'gmt_offset' ) * 3600 );
 				$r .= '<span title="' . sprintf( __( 'Cron: %s','backwpup'), $easycron_status[ 'cron_expression' ] ). '">' . sprintf( __( '%1$s at %2$s by EasyCron', 'backwpup' ) , date_i18n( get_option( 'date_format' ), $nextrun, TRUE ) , date_i18n( get_option( 'time_format' ), $nextrun, TRUE ) ) . '</span><br />';
 			} else {
-				$r .= __( 'Not scheduled!', 'backwpup' ).'<br />';
+				$r .= __( 'Not scheduled!', 'backwpup' ) . '<br />';
 			}
 		}
 		else {
