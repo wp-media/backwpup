@@ -330,7 +330,7 @@ class BackWPup_Page_Settings {
         <div class="table ui-tabs-hide" id="backwpup-tab-net">
 
 			<h3 class="title"><?php echo sprintf( __( 'Authentication for <code>%s</code>', 'backwpup' ), site_url( 'wp-cron.php' ) ); ?></h3>
-            <p><?php _e( 'Is your blog protected with HTTP basic authentication (.htaccess)? Or did you use a Plugin to secure wp-cron.php than use the authentication methods below', 'backwpup' ); ?></p>
+            <p><?php _e( 'If you protected your blog with HTTP basic authentication (.htaccess), or you use a Plugin to secure wp-cron.php, than use the authentication methods below.', 'backwpup' ); ?></p>
             <?php
                 $authentication = get_site_option( 'backwpup_cfg_authentication', array( 'method' => '', 'basic_user' => '', 'basic_password' => '', 'user_id' => 0, 'query_arg' => '' ) );
             ?>

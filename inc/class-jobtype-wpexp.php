@@ -459,7 +459,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 				if ( $valid )
 					$job_object->log( __( 'WP Export file is a valid WXR file.', 'backwpup' ) );
 			} else {
-				$job_object->log( __( 'WP Export file can not checked, because no XML extension loaded with the file can checked.', 'backwpup' ) );
+				$job_object->log( __( 'WP Export file can not be checked, because no XML extension is loaded, to ensure the file verification.', 'backwpup' ) );
 			}
 
 			$job_object->steps_data[ $job_object->step_working ]['substep'] = 'compress';
