@@ -309,10 +309,12 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		if ( ! empty( $item[ 'info' ] ) )
 			$r .= esc_attr( $item[ 'info' ] ) . '<br />';
 		$actions               = array();
-		if ( current_user_can( 'backwpup_backups_delete' ) )
+		if ( current_user_can( 'backwpup_backups_delete' ) ) {
 			$actions[ 'delete' ]   = "<a class=\"submitdelete\" href=\"" . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=delete&jobdest-top=' . $this->jobid . '_' . $this->dest . '&paged=' . $this->get_pagenum() . '&backupfiles[]=' . esc_attr( $item[ 'file' ] ), 'bulk-backups' ) . "\" onclick=\"if ( confirm('" . esc_js( __( "You are about to delete this backup archive. \n  'Cancel' to stop, 'OK' to delete.", "backwpup" ) ) . "') ) { return true;}return false;\">" . __( 'Delete', 'backwpup' ) . "</a>";
-		if ( current_user_can( 'backwpup_backups_download' ) && ! empty( $item[ 'downloadurl' ] ) )
-			$actions[ 'download' ] = "<a href=\"" . wp_nonce_url( $item[ 'downloadurl' ], 'download-backup' ) . "\">" . __( 'Download', 'backwpup' ) . "</a>";
+		}
+		if ( current_user_can( 'backwpup_backups_download' ) && ! empty( $item[ 'downloadurl' ] ) ) {
+			$actions[ 'download' ] = "<a href=\"" . wp_nonce_url( $item[ 'downloadurl' ], 'download-backup_' . $this->jobid ) . "\">" . __( 'Download', 'backwpup' ) . "</a>";
+		}
 		$r .= $this->row_actions( $actions );
 
 		return $r;
@@ -411,10 +413,10 @@ class BackWPup_Page_Backups extends WP_List_Table {
 						if ( ! current_user_can( 'backwpup_backups_download' ) ) {
 							wp_die( __( 'Sorry, you don\'t have permissions to do that.', 'backwpup') );
 						}
-						check_admin_referer( 'download-backup' );
+						check_admin_referer( 'download-backup_' . $_GET[ 'jobid' ] );
 						/** @var BackWPup_Destinations $dest_class */
 						$dest_class = BackWPup::get_destination( $dest );
-						$dest_class->file_download( (int)$_GET[ 'jobid' ], $_GET[ 'file' ] );
+						$dest_class->file_download( (int)$_GET[ 'jobid' ], trim( $_GET[ 'file' ] ) );
 						die();
 					}
 				}

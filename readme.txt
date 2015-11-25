@@ -3,7 +3,7 @@ Contributors: inpsyde, danielhuesken, Bueltge, nullbyte
 Tags: Amazon, Amazon S3, back up, backup, chinese, cloud, cloud files, database, db backup, dropbox, dump, file, french, ftp, ftps, german, migrate, multisite, russian, schedule, sftp, storage, S3, time, upload, xml
 Requires at least: 3.4
 Tested up to: 4.3.1
-Stable tag: 3.2.1
+Stable tag: 3.2.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -170,6 +170,10 @@ Please check all settings after the update:
 
 
 == Changelog ==
+= Version 3.2.2 =
+* Fixed: Setting of S3 storage class STANDARD | STANDARD_IA | REDUCED_REDUNDANCY
+* Fixed: Potential security problems on log view and file download
+
 = Version 3.2.1 =
 * Fixed: open basedir check
 * Fixed: Change Zip creation back to use lower resources

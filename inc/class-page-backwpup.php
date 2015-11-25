@@ -315,7 +315,8 @@ class BackWPup_Page_BackWPup {
 						$alternate = FALSE;
 					}
 					echo '<td>' . sprintf( __( '%1$s at %2$s', 'backwpup' ), date_i18n( get_option( 'date_format' ) , $logdata[ 'logtime' ] ), date_i18n( get_option( 'time_format' ), $logdata[ 'logtime' ] ) ) . '</td>';
-					echo '<td><a class="thickbox" href="' . admin_url( 'admin-ajax.php' ) . '?&action=backwpup_view_log&logfile=' . basename( $logfile ) .'&_ajax_nonce=' . wp_create_nonce( 'view-logs' ) . '&amp;TB_iframe=true&amp;width=640&amp;height=440" title="' . esc_attr( basename( $logfile ) ) . '">' . $logdata[ 'name' ] . '</i></a></td>';
+					$log_name = str_replace( array( '.html', '.gz' ), '', basename( $logfile ) );
+					echo '<td><a class="thickbox" href="' . admin_url( 'admin-ajax.php' ) . '?&action=backwpup_view_log&log=' . $log_name .'&_ajax_nonce=' . wp_create_nonce( 'view-log_' . $log_name ) . '&amp;TB_iframe=true&amp;width=640&amp;height=440" title="' . esc_attr( basename( $logfile ) ) . '">' . $logdata[ 'name' ] . '</i></a></td>';
 					echo '<td>';
 					if ( $logdata[ 'errors' ] > 0 )
 						printf( '<span style="color:red;font-weight:bold;">' . _n( "%d ERROR", "%d ERRORS", $logdata[ 'errors' ], 'backwpup' ) . '</span><br />', $logdata[ 'errors' ] );

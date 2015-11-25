@@ -73,9 +73,20 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	 */
 	public function file_delete( $jobdest, $backupfile ) {
 
-		if ( is_writeable( $backupfile ) && !is_dir( $backupfile ) && !is_link( $backupfile ) )
-			 unlink( $backupfile );
+		list( $jobid, $dest ) = explode( '_', $jobdest, 2 );
 
+		if ( empty( $jobid ) ) {
+			return;
+		}
+
+		$backup_dir = esc_attr( BackWPup_Option::get( (int)$jobid, 'backupdir' ) );
+		$backup_dir = BackWPup_File::get_absolute_path( $backup_dir );
+
+		$backupfile =  realpath( trailingslashit( $backup_dir ) . basename( $backupfile ) );
+
+		if ( $backupfile && is_writeable( $backupfile ) && !is_dir( $backupfile ) && !is_link( $backupfile ) ) {
+			 unlink( $backupfile );
+		}
 	}
 
 	/**
@@ -84,7 +95,13 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	 */
 	public function file_download( $jobid, $get_file ) {
 
-		if ( is_readable( $get_file ) ) {
+		$backup_dir = esc_attr( BackWPup_Option::get( (int)$jobid, 'backupdir' ) );
+		$backup_dir = BackWPup_File::get_absolute_path( $backup_dir );
+
+		$get_file = realpath( trailingslashit( $backup_dir ) . basename( $get_file ) );
+
+		if ( $get_file && is_readable( $get_file ) ) {
+			while( @ob_end_clean() );
 			header( "Pragma: public" );
 			header( "Expires: 0" );
 			header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
@@ -93,14 +110,12 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 			header( "Content-Transfer-Encoding: binary" );
 			header( "Content-Length: " . filesize( $get_file ) );
 			@set_time_limit( 300 );
-			//chunked readfile
-			@ob_end_clean();
+			//chunked read file
 			$handle = fopen( $get_file, 'rb' );
 			if ( $handle ) {
 				while ( ! feof( $handle ) ) {
-					echo fread( $handle, 20482048 ); //2MB chunkes
-					@ob_flush();
-					@flush();
+					echo fread( $handle, 10241024 ); //chunks
+					flush();
 				}
 				fclose( $handle );
 			}
@@ -119,7 +134,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	 */
 	public function file_get_list( $jobdest ) {
 
-		list( $jobid, $dest ) = explode( '_', $jobdest );
+		list( $jobid, $dest ) = explode( '_', $jobdest, 2 );
 		$filecounter    = 0;
 		$files          = array();
 		$backup_folder  = BackWPup_Option::get( $jobid, 'backupdir' );
@@ -136,7 +151,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 					$files[ $filecounter ][ 'downloadurl' ] = add_query_arg( array(
 																				  'page'   => 'backwpupbackups',
 																				  'action' => 'downloadfolder',
-																				  'file'   => $backup_folder . $file,
+																				  'file'   => $file,
 																				  'jobid'  => $jobid
 																			 ), network_admin_url( 'admin.php' ) );
 					$files[ $filecounter ][ 'filesize' ]    = filesize( $backup_folder . $file );
@@ -161,7 +176,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 			BackWPup_Option::update( $job_object->job[ 'jobid' ], 'lastbackupdownloadurl', add_query_arg( array(
 																								  'page'   => 'backwpupbackups',
 																								  'action' => 'downloadfolder',
-																								  'file'   => $job_object->backup_folder . $job_object->backup_file,
+																								  'file'   => basename( $job_object->backup_file ),
 																								  'jobid'  => $job_object->job[ 'jobid' ]
 																							 ), network_admin_url( 'admin.php' ) ) );
 		//Delete old Backupfiles

@@ -1084,7 +1084,7 @@ final class BackWPup_Job {
 		//get metadata of logfile
 		$metas = array();
 		if ( is_readable( $logfile ) ) {
-			if (  '.gz' == substr( $logfile, -3 )  )
+			if (  '.gz' == substr( $logfile, -3 ) )
 				$metas = (array)get_meta_tags( 'compress.zlib://' . $logfile );
 			else
 				$metas = (array)get_meta_tags( $logfile );
@@ -1094,8 +1094,7 @@ final class BackWPup_Job {
 		foreach ( $usedmetas as $keyword => $field ) {
 			if ( isset( $metas[ $keyword ] ) ) {
 				$joddata[ $field ] = $metas[ $keyword ];
-			}
-			else {
+			} else {
 				$joddata[ $field ] = '';
 			}
 		}

@@ -190,7 +190,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				<th scope="row"><label for="ids3storageclass"><?php _e( 'Amazon: Storage Class', 'backwpup' ); ?></label></th>
 				<td>
 					<select name="s3storageclass" id="ids3storageclass" title="<?php _e( 'Amazon: Storage Class', 'backwpup' ); ?>">
-						<option value="" <?php selected( 'us-east-1', BackWPup_Option::get( $jobid, 's3storageclass' ), TRUE ) ?>><?php _e( 'Standard', 'backwpup' ); ?></option>
+						<option value="" <?php selected( '', BackWPup_Option::get( $jobid, 's3storageclass' ), TRUE ) ?>><?php _e( 'Standard', 'backwpup' ); ?></option>
 						<option value="STANDARD_IA" <?php selected( 'STANDARD_IA', BackWPup_Option::get( $jobid, 's3storageclass' ), TRUE ) ?>><?php _e( 'Standard-Infrequent Access', 'backwpup' ); ?></option>
 						<option value="REDUCED_REDUNDANCY" <?php selected( 'REDUCED_REDUNDANCY', BackWPup_Option::get( $jobid, 's3storageclass' ), TRUE ) ?>><?php _e( 'Reduced Redundancy', 'backwpup' ); ?></option>
 					</select>
@@ -416,10 +416,14 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				$create_args                 	= array();
 				$create_args[ 'Bucket' ] 	 	= $job_object->job[ 's3bucket' ];
 				$create_args[ 'ACL' ]        	= 'private';
-				if ( ! empty( $job_object->job[ 's3ssencrypt' ] ) )
-					$create_args[ 'ServerSideEncryption' ] = $job_object->job[ 's3ssencrypt' ]; //AES256
-				if ( ! empty( $job_object->job[ 's3storageclass' ] ) ) //REDUCED_REDUNDANCY
+				//encrxption
+				if ( ! empty( $job_object->job[ 's3ssencrypt' ] ) ) {
+					$create_args[ 'ServerSideEncryption' ] = $job_object->job[ 's3ssencrypt' ];
+				}
+				//Storage Class
+				if ( ! empty( $job_object->job[ 's3storageclass' ] ) ) {
 					$create_args[ 'StorageClass' ] = $job_object->job[ 's3storageclass' ];
+				}
 				$create_args[ 'Metadata' ]   	= array( 'BackupTime' => date( 'Y-m-d H:i:s', $job_object->start_time ) );
 
 				$create_args[ 'Body' ] 	  		= $up_file_handle;
@@ -444,10 +448,12 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 											'Bucket' 		=> $job_object->job[ 's3bucket' ],
 											'ContentType' 	=> $job_object->get_mime_type( $job_object->backup_folder . $job_object->backup_file ),
 											'Key'			=> $job_object->job[ 's3dir' ] . $job_object->backup_file );
-							if ( !empty( $job_object->job[ 's3ssencrypt' ] ) )
+							if ( !empty( $job_object->job[ 's3ssencrypt' ] ) ) {
 								$args[ 'ServerSideEncryption' ] = $job_object->job[ 's3ssencrypt' ];
-							if ( !empty( $job_object->job[ 's3storageclass' ] ) )
-								$args[ 'StorageClass' ] = empty( $job_object->job[ 's3storageclass' ] ) ? 'STANDARD' : 'REDUCED_REDUNDANCY';
+							}
+							if ( !empty( $job_object->job[ 's3storageclass' ] ) ) {
+								$args[ 'StorageClass' ] = empty( $job_object->job[ 's3storageclass' ] ) ? '' : $job_object->job[ 's3storageclass' ];
+							}
 
 							$upload = $s3->createMultipartUpload( $args );
 

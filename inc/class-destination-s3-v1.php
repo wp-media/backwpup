@@ -175,7 +175,7 @@ class BackWPup_Destination_S3_V1 extends BackWPup_Destinations {
 				<th scope="row"><label for="ids3storageclass"><?php _e( 'Amazon: Storage Class', 'backwpup' ); ?></label></th>
 				<td>
 					<select name="s3storageclass" id="ids3storageclass" title="<?php _e( 'Amazon: Storage Class', 'backwpup' ); ?>">
-						<option value="" <?php selected( 'us-east-1', BackWPup_Option::get( $jobid, 's3storageclass' ), TRUE ) ?>><?php _e( 'Standard', 'backwpup' ); ?></option>
+						<option value="" <?php selected( '', BackWPup_Option::get( $jobid, 's3storageclass' ), TRUE ) ?>><?php _e( 'Standard', 'backwpup' ); ?></option>
 						<option value="STANDARD_IA" <?php selected( 'STANDARD_IA', BackWPup_Option::get( $jobid, 's3storageclass' ), TRUE ) ?>><?php _e( 'Standard-Infrequent Access', 'backwpup' ); ?></option>
 						<option value="REDUCED_REDUNDANCY" <?php selected( 'REDUCED_REDUNDANCY', BackWPup_Option::get( $jobid, 's3storageclass' ), TRUE ) ?>><?php _e( 'Reduced Redundancy', 'backwpup' ); ?></option>
 				</select>

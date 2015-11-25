@@ -114,7 +114,7 @@ class BackWPup_MySQLDump {
 		if ( ! empty( $args[ 'dbcharset' ] ) && method_exists( $this->mysqli, 'set_charset' ) ) {
 			$res = $this->mysqli->set_charset( $args[ 'dbcharset' ] );
 			if ( ! $res ) {
-				throw new BackWPup_MySQLDump_Exception( sprintf( _x( 'Cannot set DB charset to %s','Database Charset', 'backwpup' ), $args[ 'dbcharset' ] ) );
+				throw new BackWPup_MySQLDump_Exception( sprintf( _x( 'Cannot set DB charset to %s error: %s','Database Charset', 'backwpup' ), $args[ 'dbcharset' ], $this->mysqli->error ) );
 			}
 		}
 
