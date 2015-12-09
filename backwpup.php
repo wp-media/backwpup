@@ -34,8 +34,8 @@
 if ( ! class_exists( 'BackWPup' ) ) {
 
 	// Don't activate on anything less than PHP 5.2.7 or WordPress 3.1
-	if ( version_compare( PHP_VERSION, '5.2.7', '<' ) || version_compare( get_bloginfo( 'version' ), '3.4', '<' ) || ! function_exists( 'spl_autoload_register' ) ) {
-		die( 'BackWPup requires PHP version 5.2.7 with spl extension or greater and WordPress 3.4 or greater.' );
+	if ( version_compare( PHP_VERSION, '5.2.7', '<' ) || version_compare( get_bloginfo( 'version' ), '3.8', '<' ) || ! function_exists( 'spl_autoload_register' ) ) {
+		die( 'BackWPup requires PHP version 5.2.7 with spl extension or greater and WordPress 3.8 or greater.' );
 	}
 
 	//Start Plugin
