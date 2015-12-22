@@ -170,6 +170,10 @@ Please check all settings after the update:
 
 
 == Changelog ==
+= Version 3.2.3 =
+* Improved: open basedir checking
+* Fixed: get_site_option() deprecated cache parameter in WordPress 4.4
+
 = Version 3.2.2 =
 * Fixed: Setting of S3 storage class STANDARD | STANDARD_IA | REDUCED_REDUNDANCY
 * Fixed: Potential security problems on log view and file download

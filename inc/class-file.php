@@ -38,7 +38,7 @@ class BackWPup_File {
 	 */
 	public static function is_in_open_basedir( $file ) {
 
-		$ini_open_basedir = strtolower( str_replace( '\\', '/', ini_get( 'open_basedir' ) ) );
+		$ini_open_basedir = ini_get( 'open_basedir' );
 
 		if ( empty( $ini_open_basedir ) ) {
 			return TRUE;
@@ -51,6 +51,8 @@ class BackWPup_File {
 			if ( empty( $open_base_dir ) ) {
 				continue;
 			}
+			$open_base_dir = realpath( $open_base_dir );
+			$open_base_dir = strtolower( str_replace( '\\', '/', $open_base_dir ) );
 			$part = substr( $file, 0, strlen( $open_base_dir ) );
 			if ( $part === $open_base_dir ) {
 				return TRUE;
