@@ -844,7 +844,7 @@ final class BackWPup_Job {
 				'SIGXCPU',
 				'SIGXFSZ',
 				//'SIGVTALRM',
-				'SIGPROF',
+				//'SIGPROF',
 				'SIGWINCH',
 				//'SIGIO',
 				'SIGPWR',

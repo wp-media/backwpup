@@ -47,8 +47,7 @@ final class BackWPup_Admin {
 		add_action( 'show_user_profile', array( $this, 'user_profile_fields' ) );
 		add_action( 'edit_user_profile',  array( $this, 'user_profile_fields' ) );
 		add_action( 'profile_update',  array( $this, 'save_profile_update' ) );
-		add_filter( 'manage_users_columns', array( $this, 'manage_users_columns' ) );
-		add_filter( 'manage_users_custom_column', array( $this, 'manage_users_custom_column' ), 10, 3 );
+
 		//Change Backup message on core updates
 		add_filter( 'gettext', array( $this, 'gettext' ), 10, 3 );
 
@@ -112,14 +111,8 @@ final class BackWPup_Admin {
 		//register js and css for BackWPup
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 			wp_enqueue_style( 'backwpup', BackWPup::get_plugin_data( 'URL' ) . '/assets/css/backwpup.css', array(), time(), 'screen' );
-			if ( version_compare( BackWPup::get_plugin_data( 'wp_version' ), '3.8-beta-1', '<' ) ) {
-				wp_enqueue_style( 'backwpup-wplt38', BackWPup::get_plugin_data( 'URL' ) . '/assets/css/lower_wp38.css', array( 'backwpup' ), time(), 'screen' );
-			}
 		} else {
 			wp_enqueue_style( 'backwpup', BackWPup::get_plugin_data( 'URL' ) . '/assets/css/backwpup.min.css', array(), BackWPup::get_plugin_data( 'Version' ), 'screen' );
-			if ( version_compare( BackWPup::get_plugin_data( 'wp_version' ), '3.8-beta-1', '<' ) ) {
-				wp_enqueue_style( 'backwpup-wplt38', BackWPup::get_plugin_data( 'URL' ) . '/assets/css/lower_wp38.min.css', array( 'backwpup' ),  BackWPup::get_plugin_data( 'Version' ), 'screen' );
-			}
 		}
 	}
 
@@ -498,9 +491,11 @@ final class BackWPup_Admin {
 			return;
 		}
 
-		if ( empty( $_POST[ 'backwpup_role' ] ) ) {
+		if ( ! isset( $_POST[ 'backwpup_role' ] ) ) {
 			return;
 		}
+
+		$backwpup_role = esc_attr( $_POST[ 'backwpup_role' ] );
 
 		//get BackWPup roles
 		$backwpup_roles = array();
@@ -513,17 +508,26 @@ final class BackWPup_Admin {
 
 		//get user for adding/removing role
 		$user = new WP_User( $user_id );
-		//remove BackWPup role from user
+		//a admin needs no extra role
+		if ( $user->has_cap( 'administrator' ) && $user->has_cap( 'backwpup_settings' ) ) {
+			$backwpup_role = '';
+		}
+
+		//remove BackWPup role from user if it not the actual
 		foreach ( $user->roles as $role ) {
 			if ( ! strstr( $role, 'backwpup_' ) ) {
 				continue;
 			}
-			$user->remove_role( $role );
+			if ( $role !== $backwpup_role ) {
+				$user->remove_role( $role );
+			} else {
+				$backwpup_role = '';
+			}
 		}
 
-		//add new role to user
-		if ( ! empty( $_POST['backwpup_role'] ) && in_array( $_POST['backwpup_role'], $backwpup_roles ) ) {
-			$user->add_role( $_POST['backwpup_role'] );
+		//add new role to user if it not the actual
+		if ( $backwpup_role && in_array( $backwpup_role, $backwpup_roles ) ) {
+			$user->add_role( $backwpup_role );
 		}
 
 		return;
@@ -555,46 +559,5 @@ final class BackWPup_Admin {
 		return $translations;
 	}
 
-	/**
-	 * Add column for displaying BackWPup user role
-	 *
-	 * @param $columns
-	 * @return mixed
-	 */
-	public function manage_users_columns( $columns ) {
-
-		$columns[ 'backwpup_role' ] = __( 'BackWPup Role', 'backwpup' );
-
-		return $columns;
-	}
-
-	/**
-	 * Display BackWPup user role in column
-	 *
-	 * @param $value
-	 * @param $column_name
-	 * @param $user_id
-	 * @return string
-	 */
-	public function manage_users_custom_column( $value, $column_name, $user_id ) {
-		global $wp_roles;
-
-		if ( 'backwpup_role' != $column_name ) {
-			return $value;
-		}
-
-		$user = get_userdata( $user_id );
-
-		foreach ( $user->roles as $role ) {
-			if ( substr( $role, 0, 8 ) === 'backwpup' ) {
-				$value .= $wp_roles->roles[ $role ][ 'name' ]. '<br />';
-			}
-			if ( $role === 'administrator' ) {
-				$value .= __( 'Administrator', 'backwpup' );
-			}
-		}
-
-		return $value;
-	}
 
 }

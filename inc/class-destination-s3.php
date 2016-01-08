@@ -32,6 +32,8 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				return 'https://s3-eu-central-1.amazonaws.com';
 			case 'ap-northeast-1':
 				return 'https://s3-ap-northeast-1.amazonaws.com';
+			case 'ap-northeast-2':
+				return 'https://s3-ap-northeast-2.amazonaws.com';
 			case 'ap-southeast-1':
 				return 'https://s3-ap-southeast-1.amazonaws.com';
 			case 'ap-southeast-2':
@@ -84,6 +86,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 						<option value="eu-west-1" <?php selected( 'eu-west-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: EU (Ireland)', 'backwpup' ); ?></option>
 						<option value="eu-central-1" <?php selected( 'eu-central-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: EU (Germany)', 'backwpup' ); ?></option>
 						<option value="ap-northeast-1" <?php selected( 'ap-northeast-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: Asia Pacific (Tokyo)', 'backwpup' ); ?></option>
+						<option value="ap-northeast-2" <?php selected( 'ap-northeast-2', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: Asia Pacific (Seoul)', 'backwpup' ); ?></option>
 						<option value="ap-southeast-1" <?php selected( 'ap-southeast-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: Asia Pacific (Singapore)', 'backwpup' ); ?></option>
 						<option value="ap-southeast-2" <?php selected( 'ap-southeast-2', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: Asia Pacific (Sydney)', 'backwpup' ); ?></option>
 						<option value="sa-east-1" <?php selected( 'sa-east-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: South America (Sao Paulo)', 'backwpup' ); ?></option>

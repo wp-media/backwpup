@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: BackWPup
+ * Plugin Name: BackWPup Pro
  * Plugin URI: https://marketpress.com/product/backwpup-pro/
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
@@ -14,7 +14,7 @@
  */
 
 /**
- *	Copyright (C) 2012-2015 Inpsyde GmbH (email: info@inpsyde.com)
+ *	Copyright (C) 2012-2016 Inpsyde GmbH (email: info@inpsyde.com)
  *
  *	This program is free software; you can redistribute it and/or
  *	modify it under the terms of the GNU General Public License
@@ -35,6 +35,8 @@ if ( ! class_exists( 'BackWPup' ) ) {
 
 	// Don't activate on anything less than PHP 5.2.7 or WordPress 3.1
 	if ( version_compare( PHP_VERSION, '5.2.7', '<' ) || version_compare( get_bloginfo( 'version' ), '3.8', '<' ) || ! function_exists( 'spl_autoload_register' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		deactivate_plugins( __FILE__ );
 		die( 'BackWPup requires PHP version 5.2.7 with spl extension or greater and WordPress 3.8 or greater.' );
 	}
 

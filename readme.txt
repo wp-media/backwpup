@@ -34,7 +34,7 @@ The **backup plugin** **[BackWPup Free](http://marketpress.com/product/backwpup-
 * Pro version and support available - [BackWPup Pro](http://marketpress.com/product/backwpup-pro/)
 
 = Requirements =
-* WordPress 3.4 and PHP 5.2.7 required!
+* WordPress 3.8 and PHP 5.2.7 required!
 * To use the Plugin with full functionality PHP 5.3.3 with mysqli, FTP,gz, bz2, ZipArchive and curl is needed.
 * Plugin functions that don't work because of your server settings, will not be displayed in admin area.
 
@@ -171,8 +171,14 @@ Please check all settings after the update:
 
 == Changelog ==
 = Version 3.2.3 =
+* Added: AWS Region Asien-Pazifik (Seoul)
 * Improved: open basedir checking
+* Changed: Minimum WordPress version is now 3.8
 * Fixed: get_site_option() deprecated cache parameter in WordPress 4.4
+* Fixed: displaying of inactive on scheduled jobs
+* Fixed: saving of adding extra user role
+* Removed: Handling of signal SIGPROF
+* Removed: Extra role column on user list
 
 = Version 3.2.2 =
 * Fixed: Setting of S3 storage class STANDARD | STANDARD_IA | REDUCED_REDUNDANCY

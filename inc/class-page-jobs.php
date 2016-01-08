@@ -282,7 +282,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 				$r .= __( 'Not scheduled!', 'backwpup' ) . '<br />';
 			}
 		}
-		if ( BackWPup_Option::get( $item, 'activetype' ) == 'easycron' ) {
+		elseif ( BackWPup_Option::get( $item, 'activetype' ) == 'easycron' ) {
 			$easycron_status = BackWPup_EasyCron::status( $item );
 			if ( !empty( $easycron_status ) ) {
 				$nextrun = BackWPup_Cron::cron_next( $easycron_status[ 'cron_expression' ] ) + ( get_option( 'gmt_offset' ) * 3600 );
@@ -290,6 +290,9 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 			} else {
 				$r .= __( 'Not scheduled!', 'backwpup' ) . '<br />';
 			}
+		}
+		elseif ( BackWPup_Option::get( $item, 'activetype' ) == 'link' ) {
+			$r .= __( 'External link', 'backwpup' ) . '<br />';
 		}
 		else {
 			$r .= __( 'Inactive', 'backwpup' );
