@@ -6,7 +6,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Tue Aug 25 2015 08:53:55 GMT+0200 (Mitteleuropäische "
 "Sommerzeit)\n"
-"POT-Revision-Date: Tue Nov 24 2015 13:41:11 GMT+0100 (Mitteleuropäische "
+"POT-Revision-Date: Fri Jan 08 2016 09:59:59 GMT+0100 (Mitteleuropäische "
 "Zeit)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
@@ -46,86 +46,86 @@ msgstr ""
 msgid "http://inpsyde.com"
 msgstr ""
 
-#: ../backwpup.php:295 ../inc/class-page-backups.php:269
+#: ../backwpup.php:297 ../inc/class-page-backups.php:269
 msgid "Folder"
 msgstr ""
 
-#: ../backwpup.php:296
+#: ../backwpup.php:298
 msgid "Backup to Folder"
 msgstr ""
 
-#: ../backwpup.php:311
+#: ../backwpup.php:313
 msgid "Email"
 msgstr ""
 
-#: ../backwpup.php:312
+#: ../backwpup.php:314
 msgid "Backup sent via email"
 msgstr ""
 
-#: ../backwpup.php:327
+#: ../backwpup.php:329
 msgid "FTP"
 msgstr ""
 
-#: ../backwpup.php:328
+#: ../backwpup.php:330
 msgid "Backup to FTP"
 msgstr ""
 
-#: ../backwpup.php:343 ../inc/class-destination-dropbox.php:278
+#: ../backwpup.php:345 ../inc/class-destination-dropbox.php:278
 msgid "Dropbox"
 msgstr ""
 
-#: ../backwpup.php:344 ../inc/class-page-about.php:577
+#: ../backwpup.php:346 ../inc/class-page-about.php:577
 msgid "Backup to Dropbox"
 msgstr ""
 
-#: ../backwpup.php:360 ../backwpup.php:379 ../inc/class-destination-s3-v1.php:71 .
-#: ./inc/class-destination-s3.php:74
+#: ../backwpup.php:362 ../backwpup.php:381 ../inc/class-destination-s3-v1.php:73 .
+#: ./inc/class-destination-s3.php:76
 msgid "S3 Service"
 msgstr ""
 
-#: ../backwpup.php:361
+#: ../backwpup.php:363
 msgid "Backup to an S3 Service"
 msgstr ""
 
-#: ../backwpup.php:380
+#: ../backwpup.php:382
 msgid "Backup to an S3 Service v1"
 msgstr ""
 
-#: ../backwpup.php:396
+#: ../backwpup.php:398
 msgid "MS Azure"
 msgstr ""
 
-#: ../backwpup.php:397
+#: ../backwpup.php:399
 msgid "Backup to Microsoft Azure (Blob)"
 msgstr ""
 
-#: ../backwpup.php:412
+#: ../backwpup.php:414
 msgid "RSC"
 msgstr ""
 
-#: ../backwpup.php:413 ../inc/class-page-about.php:582
+#: ../backwpup.php:415 ../inc/class-page-about.php:582
 msgid "Backup to Rackspace Cloud Files"
 msgstr ""
 
-#: ../backwpup.php:429
+#: ../backwpup.php:431
 msgid "SugarSync"
 msgstr ""
 
-#: ../backwpup.php:430 ../inc/class-page-about.php:597
+#: ../backwpup.php:432 ../inc/class-page-about.php:597
 msgid "Backup to SugarSync"
 msgstr ""
 
-#: ../backwpup.php:449
+#: ../backwpup.php:451
 #, php-format
 msgid "PHP Version %1$s is to low, you need Version %2$s or above."
 msgstr ""
 
-#: ../backwpup.php:456
+#: ../backwpup.php:458
 #, php-format
 msgid "Missing function \"%s\"."
 msgstr ""
 
-#: ../backwpup.php:465
+#: ../backwpup.php:467
 #, php-format
 msgid "Missing class \"%s\"."
 msgstr ""
@@ -168,7 +168,7 @@ msgid "Runtime"
 msgstr ""
 
 #: ../inc/class-page-logs.php:164 ../inc/class-page-backwpup.php:317 ../inc/class-
-#: page-backwpup.php:391 ../inc/class-page-jobs.php:315 ../inc/class-page-backups.
+#: page-backwpup.php:391 ../inc/class-page-jobs.php:318 ../inc/class-page-backups.
 #: php:359
 #, php-format
 msgid "%1$s at %2$s"
@@ -183,7 +183,7 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: ../inc/class-page-logs.php:206 ../inc/class-page-jobs.php:327 ../inc/class-
+#: ../inc/class-page-logs.php:206 ../inc/class-page-jobs.php:330 ../inc/class-
 #: page-backups.php:316
 msgid "Download"
 msgstr ""
@@ -215,8 +215,8 @@ msgstr ""
 msgid "seconds"
 msgstr ""
 
-#: ../inc/class-page-logs.php:321 ../inc/class-admin.php:201 ../inc/class-admin.
-#: php:201 ../inc/class-adminbar.php:102 ../inc/class-page-settings.php:120
+#: ../inc/class-page-logs.php:321 ../inc/class-admin.php:194 ../inc/class-admin.
+#: php:194 ../inc/class-adminbar.php:102 ../inc/class-page-settings.php:120
 msgid "Logs"
 msgstr ""
 
@@ -264,44 +264,44 @@ msgstr ""
 msgid "Folder in container"
 msgstr ""
 
-#: ../inc/class-destination-msazure.php:76 ../inc/class-destination-s3-v1.php:155 
-#: ../inc/class-destination-s3.php:160 ../inc/class-destination-rsc.php:106 ..
-#: /inc/pro/class-destination-glacier.php:94
+#: ../inc/class-destination-msazure.php:76 ../inc/class-destination-s3-v1.php:158 
+#: ../inc/class-destination-s3.php:163 ../inc/class-destination-rsc.php:106 ..
+#: /inc/pro/class-destination-glacier.php:95
 msgid "File deletion"
 msgstr ""
 
-#: ../inc/class-destination-msazure.php:81 ../inc/class-destination-s3-v1.php:160 
+#: ../inc/class-destination-msazure.php:81 ../inc/class-destination-s3-v1.php:163 
 #: ../inc/class-destination-sugarsync.php:101 ../inc/class-destination-folder.php:
-#: 44 ../inc/class-destination-ftp.php:67 ../inc/class-destination-s3.php:165 ..
+#: 44 ../inc/class-destination-ftp.php:67 ../inc/class-destination-s3.php:168 ..
 #: /inc/class-destination-rsc.php:111 ../inc/pro/class-destination-msazure.php:35 
-#: ../inc/pro/class-destination-s3-v1.php:60 ../inc/pro/class-destination-folder.
+#: ../inc/pro/class-destination-s3-v1.php:61 ../inc/pro/class-destination-folder.
 #: php:24 ../inc/pro/class-destination-dropbox.php:42 ../inc/pro/class-
-#: destination-s3.php:62 ../inc/pro/class-destination-rsc.php:55 ../inc/pro/class-
+#: destination-s3.php:63 ../inc/pro/class-destination-rsc.php:55 ../inc/pro/class-
 #: destination-gdrive.php:76 ../inc/pro/class-destination-gdrive.php:285 ..
-#: /inc/pro/class-destination-glacier.php:96 ../inc/pro/class-destination-glacier.
-#: php:180
+#: /inc/pro/class-destination-glacier.php:97 ../inc/pro/class-destination-glacier.
+#: php:183
 msgid "Oldest files will be deleted first. 0 = no deletion"
 msgstr ""
 
-#: ../inc/class-destination-msazure.php:82 ../inc/class-destination-s3-v1.php:161 
+#: ../inc/class-destination-msazure.php:82 ../inc/class-destination-s3-v1.php:164 
 #: ../inc/class-destination-sugarsync.php:102 ../inc/class-destination-folder.php:
 #: 45 ../inc/class-destination-dropbox.php:108 ../inc/class-destination-s3.php:
-#: 166 ../inc/class-destination-rsc.php:112 ../inc/pro/class-destination-msazure.
-#: php:36 ../inc/pro/class-destination-s3-v1.php:61 ../inc/pro/class-destination-
+#: 169 ../inc/class-destination-rsc.php:112 ../inc/pro/class-destination-msazure.
+#: php:36 ../inc/pro/class-destination-s3-v1.php:62 ../inc/pro/class-destination-
 #: folder.php:25 ../inc/pro/class-destination-dropbox.php:43 ../inc/pro/class-
-#: destination-s3.php:63 ../inc/pro/class-destination-rsc.php:56 ../inc/pro/class-
+#: destination-s3.php:64 ../inc/pro/class-destination-rsc.php:56 ../inc/pro/class-
 #: destination-gdrive.php:77 ../inc/pro/class-destination-gdrive.php:286
 msgid "Number of files to keep in folder."
 msgstr ""
 
-#: ../inc/class-destination-msazure.php:86 ../inc/class-destination-s3-v1.php:165 
+#: ../inc/class-destination-msazure.php:86 ../inc/class-destination-s3-v1.php:168 
 #: ../inc/class-destination-sugarsync.php:106 ../inc/class-destination-folder.php:
 #: 49 ../inc/class-destination-dropbox.php:112 ../inc/class-destination-ftp.php:
-#: 72 ../inc/class-destination-s3.php:170 ../inc/class-destination-rsc.php:116 ..
+#: 72 ../inc/class-destination-s3.php:173 ../inc/class-destination-rsc.php:116 ..
 #: /inc/pro/class-destination-msazure.php:41 ../inc/pro/class-destination-s3-v1.
-#: php:66 ../inc/pro/class-destination-sugarsync.php:68 ../inc/pro/class-
+#: php:67 ../inc/pro/class-destination-sugarsync.php:68 ../inc/pro/class-
 #: destination-folder.php:30 ../inc/pro/class-destination-dropbox.php:45 ..
-#: /inc/pro/class-destination-ftp.php:46 ../inc/pro/class-destination-s3.php:68 ..
+#: /inc/pro/class-destination-ftp.php:46 ../inc/pro/class-destination-s3.php:69 ..
 #: /inc/pro/class-destination-rsc.php:61 ../inc/pro/class-destination-gdrive.php:
 #: 81 ../inc/pro/class-destination-gdrive.php:288
 msgid "Do not delete files while syncing to destination!"
@@ -341,10 +341,10 @@ msgid "Starting upload to MS Azure&#160;&hellip;"
 msgstr ""
 
 #: ../inc/class-destination-msazure.php:259 ../inc/class-destination-ftp.php:344 .
-#: ./inc/class-destination-s3.php:413 ../inc/class-destination-s3.php:505 ..
+#: ./inc/class-destination-s3.php:416 ../inc/class-destination-s3.php:508 ..
 #: /inc/class-destination-rsc.php:282 ../inc/pro/class-destination-rsc.php:215 ..
 #: /inc/pro/class-destination-rsc.php:248 ../inc/pro/class-destination-gdrive.php:
-#: 602 ../inc/pro/class-destination-glacier.php:387
+#: 602 ../inc/pro/class-destination-glacier.php:390
 msgid "Can not open source file for transfer."
 msgstr ""
 
@@ -373,8 +373,8 @@ msgid "Missing account name!"
 msgstr ""
 
 #: ../inc/class-destination-msazure.php:421 ../inc/class-destination-s3-v1.php:
-#: 576 ../inc/class-destination-s3.php:682 ../inc/pro/class-destination-glacier.
-#: php:536
+#: 579 ../inc/class-destination-s3.php:685 ../inc/pro/class-destination-glacier.
+#: php:539
 msgid "Missing access key!"
 msgstr ""
 
@@ -756,7 +756,7 @@ msgstr ""
 msgid "<strong>Automatic update from MarketPress</strong>"
 msgstr ""
 
-#: ../inc/class-page-about.php:689 ../inc/class-admin.php:404
+#: ../inc/class-page-about.php:689 ../inc/class-admin.php:397
 msgid "http://marketpress.com/product/backwpup-pro/"
 msgstr ""
 
@@ -982,7 +982,7 @@ msgstr ""
 msgid "working since %d seconds"
 msgstr ""
 
-#: ../inc/class-page-backwpup.php:379 ../inc/class-page-jobs.php:622
+#: ../inc/class-page-backwpup.php:379 ../inc/class-page-jobs.php:625
 msgid "Abort"
 msgstr ""
 
@@ -1162,7 +1162,7 @@ msgstr ""
 msgid "Nothing to abort!"
 msgstr ""
 
-#: ../inc/class-wp-cli.php:59 ../inc/class-page-jobs.php:485
+#: ../inc/class-wp-cli.php:59 ../inc/class-page-jobs.php:488
 msgid "Job will be terminated."
 msgstr ""
 
@@ -1170,217 +1170,222 @@ msgstr ""
 msgid "No job running"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:75 ../inc/class-destination-s3.php:78
+#: ../inc/class-destination-s3-v1.php:77 ../inc/class-destination-s3.php:80
 msgid "Select a S3 service"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:77 ../inc/class-destination-s3.php:80 ..
+#: ../inc/class-destination-s3-v1.php:79 ../inc/class-destination-s3.php:82 ..
 #: /inc/pro/class-destination-s3-v1.php:18 ../inc/pro/class-destination-s3.php:18
 msgid "Amazon S3 Region"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:78 ../inc/class-destination-s3.php:81 ..
+#: ../inc/class-destination-s3-v1.php:80 ../inc/class-destination-s3.php:83 ..
 #: /inc/pro/class-destination-s3-v1.php:19 ../inc/pro/class-destination-s3.php:19
 msgid "Amazon S3: US Standard"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:79 ../inc/class-destination-s3.php:82 ..
+#: ../inc/class-destination-s3-v1.php:81 ../inc/class-destination-s3.php:84 ..
 #: /inc/pro/class-destination-s3-v1.php:20 ../inc/pro/class-destination-s3.php:20
 msgid "Amazon S3: US West (Northern California)"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:80 ../inc/class-destination-s3.php:83 ..
+#: ../inc/class-destination-s3-v1.php:82 ../inc/class-destination-s3.php:85 ..
 #: /inc/pro/class-destination-s3-v1.php:21 ../inc/pro/class-destination-s3.php:21
 msgid "Amazon S3: US West (Oregon)"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:81 ../inc/class-destination-s3.php:84 ..
+#: ../inc/class-destination-s3-v1.php:83 ../inc/class-destination-s3.php:86 ..
 #: /inc/pro/class-destination-s3-v1.php:22 ../inc/pro/class-destination-s3.php:22
 msgid "Amazon S3: EU (Ireland)"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:82 ../inc/class-destination-s3.php:85 ..
+#: ../inc/class-destination-s3-v1.php:84 ../inc/class-destination-s3.php:87 ..
 #: /inc/pro/class-destination-s3.php:23
 msgid "Amazon S3: EU (Germany)"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:83 ../inc/class-destination-s3.php:86 ..
+#: ../inc/class-destination-s3-v1.php:85 ../inc/class-destination-s3.php:88 ..
 #: /inc/pro/class-destination-s3-v1.php:23 ../inc/pro/class-destination-s3.php:24
 msgid "Amazon S3: Asia Pacific (Tokyo)"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:84 ../inc/class-destination-s3.php:87 ..
-#: /inc/pro/class-destination-s3-v1.php:24 ../inc/pro/class-destination-s3.php:25
-msgid "Amazon S3: Asia Pacific (Singapore)"
-msgstr ""
-
-#: ../inc/class-destination-s3-v1.php:85 ../inc/class-destination-s3.php:88 ..
-#: /inc/pro/class-destination-s3-v1.php:25 ../inc/pro/class-destination-s3.php:26
-msgid "Amazon S3: Asia Pacific (Sydney)"
-msgstr ""
-
 #: ../inc/class-destination-s3-v1.php:86 ../inc/class-destination-s3.php:89 ..
-#: /inc/pro/class-destination-s3-v1.php:26 ../inc/pro/class-destination-s3.php:27
-msgid "Amazon S3: South America (Sao Paulo)"
+#: /inc/pro/class-destination-s3-v1.php:24 ../inc/pro/class-destination-s3.php:25
+msgid "Amazon S3: Asia Pacific (Seoul)"
 msgstr ""
 
 #: ../inc/class-destination-s3-v1.php:87 ../inc/class-destination-s3.php:90 ..
+#: /inc/pro/class-destination-s3-v1.php:25 ../inc/pro/class-destination-s3.php:26
+msgid "Amazon S3: Asia Pacific (Singapore)"
+msgstr ""
+
+#: ../inc/class-destination-s3-v1.php:88 ../inc/class-destination-s3.php:91 ..
+#: /inc/pro/class-destination-s3-v1.php:26 ../inc/pro/class-destination-s3.php:27
+msgid "Amazon S3: Asia Pacific (Sydney)"
+msgstr ""
+
+#: ../inc/class-destination-s3-v1.php:89 ../inc/class-destination-s3.php:92 ..
 #: /inc/pro/class-destination-s3-v1.php:27 ../inc/pro/class-destination-s3.php:28
+msgid "Amazon S3: South America (Sao Paulo)"
+msgstr ""
+
+#: ../inc/class-destination-s3-v1.php:90 ../inc/class-destination-s3.php:93 ..
+#: /inc/pro/class-destination-s3-v1.php:28 ../inc/pro/class-destination-s3.php:29
 msgid "Amazon S3: China (Beijing)"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:88 ../inc/pro/class-destination-s3-v1.php:28
+#: ../inc/class-destination-s3-v1.php:91 ../inc/pro/class-destination-s3-v1.php:29
 msgid "Google Storage (Interoperable Access)"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:89 ../inc/class-destination-s3.php:94 ..
-#: /inc/pro/class-destination-s3-v1.php:30 ../inc/pro/class-destination-s3.php:32
+#: ../inc/class-destination-s3-v1.php:92 ../inc/class-destination-s3.php:97 ..
+#: /inc/pro/class-destination-s3-v1.php:31 ../inc/pro/class-destination-s3.php:33
 msgid "Dream Host Cloud Storage"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:90 ../inc/class-destination-s3.php:95 ..
-#: /inc/pro/class-destination-s3-v1.php:31 ../inc/pro/class-destination-s3.php:33
+#: ../inc/class-destination-s3-v1.php:93 ../inc/class-destination-s3.php:98 ..
+#: /inc/pro/class-destination-s3-v1.php:32 ../inc/pro/class-destination-s3.php:34
 msgid "GreenQloud Storage Qloud"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:95 ../inc/class-destination-s3.php:100
+#: ../inc/class-destination-s3-v1.php:98 ../inc/class-destination-s3.php:103
 msgid "Or a S3 Server URL"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:102 ../inc/class-destination-s3.php:107
+#: ../inc/class-destination-s3-v1.php:105 ../inc/class-destination-s3.php:110
 msgid "S3 Access Keys"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:106 ../inc/class-destination-s3.php:111 ..
-#: /inc/pro/class-destination-glacier.php:52
+#: ../inc/class-destination-s3-v1.php:109 ../inc/class-destination-s3.php:114 ..
+#: /inc/pro/class-destination-glacier.php:53
 msgid "Access Key"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:113 ../inc/class-destination-s3.php:118 ..
-#: /inc/pro/class-destination-glacier.php:59
+#: ../inc/class-destination-s3-v1.php:116 ../inc/class-destination-s3.php:121 ..
+#: /inc/pro/class-destination-glacier.php:60
 msgid "Secret Key"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:121 ../inc/class-destination-s3.php:126
+#: ../inc/class-destination-s3-v1.php:124 ../inc/class-destination-s3.php:129
 msgid "S3 Bucket"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:125 ../inc/class-destination-s3.php:130
+#: ../inc/class-destination-s3-v1.php:128 ../inc/class-destination-s3.php:133
 msgid "Bucket selection"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:138 ../inc/class-destination-s3.php:143
+#: ../inc/class-destination-s3-v1.php:141 ../inc/class-destination-s3.php:146
 msgid "Create a new bucket"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:145 ../inc/class-destination-s3.php:150
+#: ../inc/class-destination-s3-v1.php:148 ../inc/class-destination-s3.php:153
 msgid "S3 Backup settings"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:149 ../inc/class-destination-s3.php:154 ..
+#: ../inc/class-destination-s3-v1.php:152 ../inc/class-destination-s3.php:157 ..
 #: /inc/class-destination-rsc.php:100
 msgid "Folder in bucket"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:171 ../inc/class-destination-s3.php:186
+#: ../inc/class-destination-s3-v1.php:174 ../inc/class-destination-s3.php:189
 msgid "Amazon specific settings"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:175 ../inc/class-destination-s3-v1.php:177 .
-#: ./inc/class-destination-s3.php:190 ../inc/class-destination-s3.php:192
+#: ../inc/class-destination-s3-v1.php:178 ../inc/class-destination-s3-v1.php:180 .
+#: ./inc/class-destination-s3.php:193 ../inc/class-destination-s3.php:195
 msgid "Amazon: Storage Class"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:178 ../inc/class-destination-s3.php:193
+#: ../inc/class-destination-s3-v1.php:181 ../inc/class-destination-s3.php:196
 msgid "Standard"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:179 ../inc/class-destination-s3.php:194
+#: ../inc/class-destination-s3-v1.php:182 ../inc/class-destination-s3.php:197
 msgid "Standard-Infrequent Access"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:180 ../inc/class-destination-s3.php:195
+#: ../inc/class-destination-s3-v1.php:183 ../inc/class-destination-s3.php:198
 msgid "Reduced Redundancy"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:185 ../inc/class-destination-s3.php:200
+#: ../inc/class-destination-s3-v1.php:188 ../inc/class-destination-s3.php:203
 msgid "Server side encryption"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:189 ../inc/class-destination-s3.php:204
+#: ../inc/class-destination-s3-v1.php:192 ../inc/class-destination-s3.php:207
 msgid "Save files encrypted (AES256) on server."
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:250 ../inc/class-destination-s3.php:264
+#: ../inc/class-destination-s3-v1.php:253 ../inc/class-destination-s3.php:267
 #, php-format
 msgid "Bucket %1$s created."
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:252 ../inc/pro/class-destination-s3-v1.php:
-#: 136
+#: ../inc/class-destination-s3-v1.php:255 ../inc/pro/class-destination-s3-v1.php:
+#: 137
 #, php-format
 msgid "Bucket %s could not be created."
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:298 ../inc/class-destination-s3-v1.php:420 .
-#: ./inc/class-destination-s3-v1.php:471 ../inc/class-destination-s3.php:307 ..
-#: /inc/class-destination-s3.php:436 ../inc/class-destination-s3.php:490 ..
-#: /inc/class-destination-s3.php:524 ../inc/class-destination-s3.php:584 ..
-#: /inc/pro/class-destination-s3-v1.php:314 ../inc/pro/class-destination-s3.php:327
+#: ../inc/class-destination-s3-v1.php:301 ../inc/class-destination-s3-v1.php:423 .
+#: ./inc/class-destination-s3-v1.php:474 ../inc/class-destination-s3.php:310 ..
+#: /inc/class-destination-s3.php:439 ../inc/class-destination-s3.php:493 ..
+#: /inc/class-destination-s3.php:527 ../inc/class-destination-s3.php:587 ..
+#: /inc/pro/class-destination-s3-v1.php:315 ../inc/pro/class-destination-s3.php:328
 #, php-format
 msgid "S3 Service API: %s"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:363 ../inc/class-destination-s3.php:371
+#: ../inc/class-destination-s3-v1.php:366 ../inc/class-destination-s3.php:374
 #, php-format
 msgid "%d. Trying to send backup file to S3 Service&#160;&hellip;"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:384 ../inc/class-destination-s3.php:384 ..
-#: /inc/pro/class-destination-s3-v1.php:182 ../inc/pro/class-destination-s3.php:178
+#: ../inc/class-destination-s3-v1.php:387 ../inc/class-destination-s3.php:387 ..
+#: /inc/pro/class-destination-s3-v1.php:183 ../inc/pro/class-destination-s3.php:179
 #, php-format
 msgid "Connected to S3 Bucket \"%1$s\" in %2$s"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:387 ../inc/class-destination-s3.php:387 ..
-#: /inc/pro/class-destination-s3-v1.php:185 ../inc/pro/class-destination-s3.php:181
+#: ../inc/class-destination-s3-v1.php:390 ../inc/class-destination-s3.php:390 ..
+#: /inc/pro/class-destination-s3-v1.php:186 ../inc/pro/class-destination-s3.php:182
 #, php-format
 msgid "S3 Bucket \"%s\" does not exist!"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:393 ../inc/class-destination-s3.php:406
+#: ../inc/class-destination-s3-v1.php:396 ../inc/class-destination-s3.php:409
 msgid "Starting upload to S3 Service&#160;&hellip;"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:411 ../inc/class-destination-s3.php:515 ..
-#: /inc/pro/class-destination-glacier.php:363
+#: ../inc/class-destination-s3-v1.php:414 ../inc/class-destination-s3.php:518 ..
+#: /inc/pro/class-destination-glacier.php:366
 #, php-format
 msgid "Backup transferred to %s."
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:416 ../inc/class-destination-s3.php:520
+#: ../inc/class-destination-s3-v1.php:419 ../inc/class-destination-s3.php:523
 #, php-format
 msgid "Cannot transfer backup to S3! (%1$d) %2$s"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:461 ../inc/class-destination-s3.php:574
+#: ../inc/class-destination-s3-v1.php:464 ../inc/class-destination-s3.php:577
 #, php-format
 msgid "Cannot delete backup from %s."
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:465 ../inc/class-destination-s3.php:578
+#: ../inc/class-destination-s3-v1.php:468 ../inc/class-destination-s3.php:581
 #, php-format
 msgid "One file deleted on S3 Bucket."
 msgid_plural "%d files deleted on S3 Bucket"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../inc/class-destination-s3-v1.php:578 ../inc/class-destination-s3.php:684 ..
-#: /inc/pro/class-destination-glacier.php:538
+#: ../inc/class-destination-s3-v1.php:581 ../inc/class-destination-s3.php:687 ..
+#: /inc/pro/class-destination-glacier.php:541
 msgid "Missing secret access key!"
 msgstr ""
 
-#: ../inc/class-destination-s3-v1.php:584 ../inc/class-destination-s3.php:690
+#: ../inc/class-destination-s3-v1.php:587 ../inc/class-destination-s3.php:693
 msgid "No bucket found!"
 msgstr ""
 
@@ -1512,92 +1517,92 @@ msgid ""
 "the backup job in multiple jobs with less files each."
 msgstr ""
 
-#: ../inc/class-admin.php:137 ../inc/class-help.php:29
+#: ../inc/class-admin.php:130 ../inc/class-help.php:29
 msgid "https://marketpress.com/documentation/backwpup-pro/"
 msgstr ""
 
-#: ../inc/class-admin.php:137 ../inc/pro/class-marketpress-documentation.php:149 .
+#: ../inc/class-admin.php:130 ../inc/pro/class-marketpress-documentation.php:149 .
 #: ./inc/pro/class-pro.php:197 ../inc/pro/class-pro.php:197
 msgid "Documentation"
 msgstr ""
 
-#: ../inc/class-admin.php:139 ../inc/class-help.php:26
+#: ../inc/class-admin.php:132 ../inc/class-help.php:26
 msgid "https://marketpress.com/support/forum/plugins/backwpup-pro/"
 msgstr ""
 
-#: ../inc/class-admin.php:139 ../inc/class-help.php:26
+#: ../inc/class-admin.php:132 ../inc/class-help.php:26
 msgid "Pro Support"
 msgstr ""
 
-#: ../inc/class-admin.php:141 ../inc/class-help.php:28
+#: ../inc/class-admin.php:134 ../inc/class-help.php:28
 msgid "http://wordpress.org/support/plugin/backwpup/"
 msgstr ""
 
-#: ../inc/class-admin.php:141 ../inc/class-help.php:28
+#: ../inc/class-admin.php:134 ../inc/class-help.php:28
 msgid "Support"
 msgstr ""
 
-#: ../inc/class-admin.php:154
+#: ../inc/class-admin.php:147
 msgid "BackWPup Dashboard"
 msgstr ""
 
-#: ../inc/class-admin.php:154
+#: ../inc/class-admin.php:147
 msgid "Dashboard"
 msgstr ""
 
-#: ../inc/class-admin.php:171 ../inc/class-admin.php:171 ../inc/class-adminbar.
+#: ../inc/class-admin.php:164 ../inc/class-admin.php:164 ../inc/class-adminbar.
 #: php:86 ../inc/class-page-settings.php:120
 msgid "Jobs"
 msgstr ""
 
-#: ../inc/class-admin.php:186 ../inc/class-admin.php:186
+#: ../inc/class-admin.php:179 ../inc/class-admin.php:179
 msgid "Add new job"
 msgstr ""
 
-#: ../inc/class-admin.php:216 ../inc/class-admin.php:216 ../inc/class-adminbar.
+#: ../inc/class-admin.php:209 ../inc/class-admin.php:209 ../inc/class-adminbar.
 #: php:110
 msgid "Backups"
 msgstr ""
 
-#: ../inc/class-admin.php:231 ../inc/class-admin.php:231
+#: ../inc/class-admin.php:224 ../inc/class-admin.php:224
 msgid "Settings"
 msgstr ""
 
-#: ../inc/class-admin.php:244 ../inc/class-admin.php:244
+#: ../inc/class-admin.php:237 ../inc/class-admin.php:237
 msgid "About"
 msgstr ""
 
-#: ../inc/class-admin.php:281 ../inc/class-admin.php:287
+#: ../inc/class-admin.php:274 ../inc/class-admin.php:280
 msgid "Cheating, huh?"
 msgstr ""
 
-#: ../inc/class-admin.php:402
+#: ../inc/class-admin.php:395
 msgid "http://marketpress.com"
 msgstr ""
 
-#: ../inc/class-admin.php:402 ../inc/class-admin.php:402
+#: ../inc/class-admin.php:395 ../inc/class-admin.php:395
 msgid "MarketPress"
 msgstr ""
 
-#: ../inc/class-admin.php:404
+#: ../inc/class-admin.php:397
 #, php-format
 msgid "<a class=\"backwpup-get-pro\" href=\"%s\">Get BackWPup Pro now.</a>"
 msgstr ""
 
-#: ../inc/class-admin.php:423
+#: ../inc/class-admin.php:416
 #, php-format
 msgid "version %s"
 msgstr ""
 
-#: ../inc/class-admin.php:468
+#: ../inc/class-admin.php:461
 msgid "Add BackWPup Role"
 msgstr ""
 
-#: ../inc/class-admin.php:472
+#: ../inc/class-admin.php:465
 msgid "&mdash; No additional role for BackWPup &mdash;"
 msgstr ""
 
-#: ../inc/class-admin.php:544
+#: ../inc/class-admin.php:548
 #, php-format
 msgid ""
 "<strong>Important:</strong> before updating, please <a href=\"%1$s\">back up "
@@ -1607,20 +1612,12 @@ msgid ""
 "Codex page."
 msgstr ""
 
-#: ../inc/class-admin.php:548 ../inc/class-admin.php:552
+#: ../inc/class-admin.php:552 ../inc/class-admin.php:556
 #, php-format
 msgid ""
 "<strong>Important:</strong> before installing this plugin, please <a "
 "href=\"%1$s\">back up your database and files</a> with <a href=\"http:"
 "//marketpress.de/product/backwpup-pro/\">%2$s</a>."
-msgstr ""
-
-#: ../inc/class-admin.php:566
-msgid "BackWPup Role"
-msgstr ""
-
-#: ../inc/class-admin.php:593
-msgid "Administrator"
 msgstr ""
 
 #: ../inc/class-easycron.php:179
@@ -1893,7 +1890,7 @@ msgid "Uploaded file size and local file size don't match."
 msgstr ""
 
 #: ../inc/class-destination-dropbox.php:277 ../inc/pro/class-destination-gdrive.
-#: php:617 ../inc/pro/class-destination-glacier.php:367
+#: php:617 ../inc/pro/class-destination-glacier.php:370
 #, php-format
 msgid "Error transfering backup to %s."
 msgstr ""
@@ -2076,73 +2073,73 @@ msgid_plural "%d files deleted on FTP server"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../inc/class-destination-s3.php:91 ../inc/pro/class-destination-s3.php:29
+#: ../inc/class-destination-s3.php:94 ../inc/pro/class-destination-s3.php:30
 msgid "Google Storage: EU"
 msgstr ""
 
-#: ../inc/class-destination-s3.php:92 ../inc/pro/class-destination-s3.php:30
+#: ../inc/class-destination-s3.php:95 ../inc/pro/class-destination-s3.php:31
 msgid "Google Storage: USA"
 msgstr ""
 
-#: ../inc/class-destination-s3.php:93 ../inc/pro/class-destination-s3.php:31
+#: ../inc/class-destination-s3.php:96 ../inc/pro/class-destination-s3.php:32
 msgid "Google Storage: Asia"
 msgstr ""
 
-#: ../inc/class-destination-s3.php:176
+#: ../inc/class-destination-s3.php:179
 msgid "Multipart Upload"
 msgstr ""
 
-#: ../inc/class-destination-s3.php:178
+#: ../inc/class-destination-s3.php:181
 msgid ""
 "Multipart splits file into multiple chunks while uploading. This is "
 "necessary for displaying the upload process and to transfer bigger files. "
 "Works without a problem on Amazon. Other services might have issues."
 msgstr ""
 
-#: ../inc/class-destination-s3.php:180
+#: ../inc/class-destination-s3.php:183
 msgid "Use multipart upload for uploading a file"
 msgstr ""
 
-#: ../inc/class-destination-s3.php:266 ../inc/pro/class-destination-s3.php:137
+#: ../inc/class-destination-s3.php:269 ../inc/pro/class-destination-s3.php:138
 #, php-format
 msgid " %s is not a valid bucket name."
 msgstr ""
 
-#: ../inc/class-destination-s3.php:394
+#: ../inc/class-destination-s3.php:397
 msgid "Checking for not aborted multipart Uploads&#160;&hellip;"
 msgstr ""
 
-#: ../inc/class-destination-s3.php:400
+#: ../inc/class-destination-s3.php:403
 #, php-format
 msgid "Upload for %s aborted."
 msgstr ""
 
-#: ../inc/class-destination-s3.php:548
+#: ../inc/class-destination-s3.php:551
 #, php-format
 msgid "Storage Class: %s"
 msgstr ""
 
-#: ../inc/class-file.php:152
+#: ../inc/class-file.php:154
 #, php-format
 msgid "Folder %1$s not allowed, please use another folder."
 msgstr ""
 
-#: ../inc/class-file.php:157
+#: ../inc/class-file.php:159
 #, php-format
 msgid "Folder %1$s is not in open basedir, please use another folder."
 msgstr ""
 
-#: ../inc/class-file.php:163
+#: ../inc/class-file.php:165
 #, php-format
 msgid "Cannot create folder: %1$s"
 msgstr ""
 
-#: ../inc/class-file.php:169
+#: ../inc/class-file.php:171
 #, php-format
 msgid "Folder \"%1$s\" is not writable"
 msgstr ""
 
-#: ../inc/class-file.php:198
+#: ../inc/class-file.php:200
 msgid ""
 "BackWPup will not backup folders and its sub folders when this file is "
 "inside."
@@ -2210,135 +2207,139 @@ msgid "%1$s at %2$s by EasyCron"
 msgstr ""
 
 #: ../inc/class-page-jobs.php:295
+msgid "External link"
+msgstr ""
+
+#: ../inc/class-page-jobs.php:298
 msgid "Inactive"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:317
+#: ../inc/class-page-jobs.php:320
 #, php-format
 msgid "Runtime: %d seconds"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:321
+#: ../inc/class-page-jobs.php:324
 msgid "not yet"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:327
+#: ../inc/class-page-jobs.php:330
 msgid "Download last backup"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:336
+#: ../inc/class-page-jobs.php:339
 msgid "Log"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:379
+#: ../inc/class-page-jobs.php:382
 msgid "Copy of"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:394 ../inc/class-page-backups.php:375 ../inc/class-
+#: ../inc/class-page-jobs.php:397 ../inc/class-page-backups.php:375 ../inc/class-
 #: page-backups.php:414 ../inc/class-page-editjob.php:35
 msgid "Sorry, you don't have permissions to do that."
 msgstr ""
 
-#: ../inc/class-page-jobs.php:426
+#: ../inc/class-page-jobs.php:429
 #, php-format
 msgid "The job \"%s\" destination \"%s\" is not configured properly"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:431
+#: ../inc/class-page-jobs.php:434
 #, php-format
 msgid "The job \"%s\" needs properly configured destinations to run!"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:439 ../inc/class-page-settings.php:439
+#: ../inc/class-page-jobs.php:442 ../inc/class-page-settings.php:439
 #, php-format
 msgid "The HTTP response test get an error \"%s\""
 msgstr ""
 
-#: ../inc/class-page-jobs.php:443 ../inc/class-page-settings.php:441
+#: ../inc/class-page-jobs.php:446 ../inc/class-page-settings.php:441
 #, php-format
 msgid "The HTTP response test get a false http status (%s)"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:447
+#: ../inc/class-page-jobs.php:450
 #, php-format
 msgid "Not expected HTTP response body: %s"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:468
+#: ../inc/class-page-jobs.php:471
 #, php-format
 msgid "Job “%s” has started, but not responded for 10 seconds."
 msgstr ""
 
-#: ../inc/class-page-jobs.php:473
+#: ../inc/class-page-jobs.php:476
 #, php-format
 msgid "Job \"%s\" started."
 msgstr ""
 
-#: ../inc/class-page-jobs.php:598
+#: ../inc/class-page-jobs.php:601
 #, php-format
 msgid "%s Jobs"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:598 ../inc/class-adminbar.php:94
+#: ../inc/class-page-jobs.php:601 ../inc/class-adminbar.php:94
 msgid "Add new"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:618
+#: ../inc/class-page-jobs.php:621
 #, php-format
 msgid "Job currently running: %s"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:619
+#: ../inc/class-page-jobs.php:622
 msgid "Warnings:"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:620
+#: ../inc/class-page-jobs.php:623
 msgid "Errors:"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:621
+#: ../inc/class-page-jobs.php:624
 msgid "Log of running job"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:621
+#: ../inc/class-page-jobs.php:624
 msgid "Display working log"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:623
+#: ../inc/class-page-jobs.php:626
 msgid "Close working screen"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:623
+#: ../inc/class-page-jobs.php:626
 msgid "close"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:790
+#: ../inc/class-page-jobs.php:793
 msgid "Job completed"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:792 ../inc/class-job.php:1274
+#: ../inc/class-page-jobs.php:795 ../inc/class-job.php:1274
 msgid "ERROR:"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:792 ../inc/class-job.php:1487
+#: ../inc/class-page-jobs.php:795 ../inc/class-job.php:1487
 #, php-format
 msgid ""
 "Job has ended with errors in %s seconds. You must resolve the errors for "
 "correct execution."
 msgstr ""
 
-#: ../inc/class-page-jobs.php:794 ../inc/class-job.php:1265
+#: ../inc/class-page-jobs.php:797 ../inc/class-job.php:1265
 msgid "WARNING:"
 msgstr ""
 
-#: ../inc/class-page-jobs.php:794
+#: ../inc/class-page-jobs.php:797
 #, php-format
 msgid ""
 "Job has done with warnings in %s seconds. Please resolve them for correct "
 "execution."
 msgstr ""
 
-#: ../inc/class-page-jobs.php:796 ../inc/class-job.php:1491
+#: ../inc/class-page-jobs.php:799 ../inc/class-job.php:1491
 #, php-format
 msgid "Job done in %s seconds."
 msgstr ""
@@ -3247,12 +3248,12 @@ msgstr ""
 
 #: ../inc/class-mysqldump.php:442
 #, php-format
-msgid "Start for table backup is not correctly set: %1$s "
+msgid "Start for table backup is not correctly set: %1$s"
 msgstr ""
 
 #: ../inc/class-mysqldump.php:446
 #, php-format
-msgid "Length for table backup is not correctly set: %1$s "
+msgid "Length for table backup is not correctly set: %1$s"
 msgstr ""
 
 #: ../inc/class-mysqldump.php:521
@@ -3737,7 +3738,7 @@ msgid "Added plugin list file \"%1$s\" with %2$s to backup file list."
 msgstr ""
 
 #: ../inc/class-page-editjob.php:87 ../inc/class-page-editjob.php:444 ..
-#: /inc/class-option.php:107
+#: /inc/class-option.php:111
 msgid "New Job"
 msgstr ""
 
@@ -4209,8 +4210,8 @@ msgid "Account Name:"
 msgstr ""
 
 #: ../inc/pro/class-destination-msazure.php:19 ../inc/pro/class-destination-s3-v1.
-#: php:36 ../inc/pro/class-destination-s3.php:38 ../inc/pro/class-destination-
-#: glacier.php:165
+#: php:37 ../inc/pro/class-destination-s3.php:39 ../inc/pro/class-destination-
+#: glacier.php:168
 msgid "Access Key:"
 msgstr ""
 
@@ -4744,72 +4745,72 @@ msgstr ""
 msgid "Select a S3 service:"
 msgstr ""
 
-#: ../inc/pro/class-destination-s3-v1.php:29
+#: ../inc/pro/class-destination-s3-v1.php:30
 msgid "Hosteurope Cloud Storage"
 msgstr ""
 
-#: ../inc/pro/class-destination-s3-v1.php:33 ../inc/pro/class-destination-s3.php:35
+#: ../inc/pro/class-destination-s3-v1.php:34 ../inc/pro/class-destination-s3.php:36
 msgid "or set an S3 Server URL:"
 msgstr ""
 
-#: ../inc/pro/class-destination-s3-v1.php:39 ../inc/pro/class-destination-s3.php:
-#: 41 ../inc/pro/class-destination-glacier.php:167
+#: ../inc/pro/class-destination-s3-v1.php:40 ../inc/pro/class-destination-s3.php:
+#: 42 ../inc/pro/class-destination-glacier.php:170
 msgid "Secret Key:"
 msgstr ""
 
-#: ../inc/pro/class-destination-s3-v1.php:42 ../inc/pro/class-destination-s3.php:44
+#: ../inc/pro/class-destination-s3-v1.php:43 ../inc/pro/class-destination-s3.php:45
 msgid "Bucket:"
 msgstr ""
 
-#: ../inc/pro/class-destination-s3-v1.php:52 ../inc/pro/class-destination-s3.php:54
+#: ../inc/pro/class-destination-s3-v1.php:53 ../inc/pro/class-destination-s3.php:55
 msgid "New Bucket:"
 msgstr ""
 
-#: ../inc/pro/class-destination-s3-v1.php:54 ../inc/pro/class-destination-s3.php:56
+#: ../inc/pro/class-destination-s3-v1.php:55 ../inc/pro/class-destination-s3.php:57
 msgid "Folder in bucket:"
 msgstr ""
 
-#: ../inc/pro/class-destination-s3-v1.php:134 ../inc/pro/class-destination-s3.php:
-#: 135
+#: ../inc/pro/class-destination-s3-v1.php:135 ../inc/pro/class-destination-s3.php:
+#: 136
 #, php-format
 msgid "Bucket %1$s created in %2$s."
 msgstr ""
 
-#: ../inc/pro/class-destination-s3-v1.php:157 ../inc/pro/class-destination-s3.php:
-#: 159
+#: ../inc/pro/class-destination-s3-v1.php:158 ../inc/pro/class-destination-s3.php:
+#: 160
 #, php-format
 msgid "%d. Trying to sync files to S3 Service&#160;&hellip;"
 msgstr ""
 
-#: ../inc/pro/class-destination-s3-v1.php:196 ../inc/pro/class-destination-s3.php:
-#: 193
+#: ../inc/pro/class-destination-s3-v1.php:197 ../inc/pro/class-destination-s3.php:
+#: 194
 msgid "Retrieving file list from S3."
 msgstr ""
 
-#: ../inc/pro/class-destination-s3-v1.php:252 ../inc/pro/class-destination-s3.php:
-#: 255
+#: ../inc/pro/class-destination-s3-v1.php:253 ../inc/pro/class-destination-s3.php:
+#: 256
 msgid "Upload changed files to S3."
 msgstr ""
 
-#: ../inc/pro/class-destination-s3-v1.php:264 ../inc/pro/class-destination-s3.php:
-#: 270
+#: ../inc/pro/class-destination-s3-v1.php:265 ../inc/pro/class-destination-s3.php:
+#: 271
 #, php-format
 msgid "File %s uploaded to S3."
 msgstr ""
 
-#: ../inc/pro/class-destination-s3-v1.php:289 ../inc/pro/class-destination-s3.php:
-#: 298
+#: ../inc/pro/class-destination-s3-v1.php:290 ../inc/pro/class-destination-s3.php:
+#: 299
 #, php-format
 msgid "Extra file %s uploaded to S3."
 msgstr ""
 
-#: ../inc/pro/class-destination-s3-v1.php:302 ../inc/pro/class-destination-s3.php:
-#: 311
+#: ../inc/pro/class-destination-s3-v1.php:303 ../inc/pro/class-destination-s3.php:
+#: 312
 msgid "Delete nonexistent files on S3"
 msgstr ""
 
-#: ../inc/pro/class-destination-s3-v1.php:305 ../inc/pro/class-destination-s3.php:
-#: 318
+#: ../inc/pro/class-destination-s3-v1.php:306 ../inc/pro/class-destination-s3.php:
+#: 319
 #, php-format
 msgid "File %s deleted from S3."
 msgstr ""
@@ -5188,158 +5189,164 @@ msgid "Select a region:"
 msgstr ""
 
 #: ../inc/pro/class-destination-glacier.php:32 ../inc/pro/class-destination-
-#: glacier.php:154
+#: glacier.php:155
 msgid "Amazon Glacier Region"
 msgstr ""
 
 #: ../inc/pro/class-destination-glacier.php:33 ../inc/pro/class-destination-
-#: glacier.php:155
+#: glacier.php:156
 msgid "US Standard"
 msgstr ""
 
 #: ../inc/pro/class-destination-glacier.php:34 ../inc/pro/class-destination-
-#: glacier.php:156
+#: glacier.php:157
 msgid "US West (Northern California)"
 msgstr ""
 
 #: ../inc/pro/class-destination-glacier.php:35 ../inc/pro/class-destination-
-#: glacier.php:157
+#: glacier.php:158
 msgid "US West (Oregon)"
 msgstr ""
 
 #: ../inc/pro/class-destination-glacier.php:36 ../inc/pro/class-destination-
-#: glacier.php:158
+#: glacier.php:159
 msgid "EU (Ireland)"
 msgstr ""
 
 #: ../inc/pro/class-destination-glacier.php:37 ../inc/pro/class-destination-
-#: glacier.php:159
+#: glacier.php:160
 msgid "EU (Germany)"
 msgstr ""
 
 #: ../inc/pro/class-destination-glacier.php:38 ../inc/pro/class-destination-
-#: glacier.php:160
+#: glacier.php:161
 msgid "Asia Pacific (Tokyo)"
 msgstr ""
 
 #: ../inc/pro/class-destination-glacier.php:39 ../inc/pro/class-destination-
-#: glacier.php:161
-msgid "Asia Pacific (Singapore)"
+#: glacier.php:162
+msgid "Asia Pacific (Seoul)"
 msgstr ""
 
 #: ../inc/pro/class-destination-glacier.php:40 ../inc/pro/class-destination-
-#: glacier.php:162
-msgid "Asia Pacific (Sydney)"
+#: glacier.php:163
+msgid "Asia Pacific (Singapore)"
 msgstr ""
 
 #: ../inc/pro/class-destination-glacier.php:41 ../inc/pro/class-destination-
-#: glacier.php:163
+#: glacier.php:164
+msgid "Asia Pacific (Sydney)"
+msgstr ""
+
+#: ../inc/pro/class-destination-glacier.php:42 ../inc/pro/class-destination-
+#: glacier.php:165
 msgid "South America (Sao Paulo)"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:42
+#: ../inc/pro/class-destination-glacier.php:43 ../inc/pro/class-destination-
+#: glacier.php:166
 msgid "China (Beijing)"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:48
+#: ../inc/pro/class-destination-glacier.php:49
 msgid "Amazon Access Keys"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:67
+#: ../inc/pro/class-destination-glacier.php:68
 msgid "Vault"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:71
+#: ../inc/pro/class-destination-glacier.php:72
 msgid "Vault selection"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:83
+#: ../inc/pro/class-destination-glacier.php:84
 msgid "Create a new vault"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:90
+#: ../inc/pro/class-destination-glacier.php:91
 msgid "Glacier Backup settings"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:97 ../inc/pro/class-destination-
-#: glacier.php:181
+#: ../inc/pro/class-destination-glacier.php:98 ../inc/pro/class-destination-
+#: glacier.php:184
 msgid ""
 "Number of files to keep in folder. (Archives deleted before 3 months after "
 "they have been stored may cause extra costs when deleted.)"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:130 ../inc/pro/class-destination-
-#: glacier.php:216
+#: ../inc/pro/class-destination-glacier.php:131 ../inc/pro/class-destination-
+#: glacier.php:219
 #, php-format
 msgid "Vault %1$s created."
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:132 ../inc/pro/class-destination-
-#: glacier.php:218
+#: ../inc/pro/class-destination-glacier.php:133 ../inc/pro/class-destination-
+#: glacier.php:221
 #, php-format
 msgid "Vault %s could not be created."
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:153
+#: ../inc/pro/class-destination-glacier.php:154
 msgid "Select an Amazon Glacier region:"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:169
+#: ../inc/pro/class-destination-glacier.php:172
 msgid "Vault:"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:178
+#: ../inc/pro/class-destination-glacier.php:181
 msgid "New Vault:"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:259 ../inc/pro/class-destination-
-#: glacier.php:375 ../inc/pro/class-destination-glacier.php:394 ../inc/pro/class-
-#: destination-glacier.php:434
+#: ../inc/pro/class-destination-glacier.php:262 ../inc/pro/class-destination-
+#: glacier.php:378 ../inc/pro/class-destination-glacier.php:397 ../inc/pro/class-
+#: destination-glacier.php:437
 #, php-format
 msgid "AWS API: %s"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:283
+#: ../inc/pro/class-destination-glacier.php:286
 #, php-format
 msgid "%d. Trying to send backup file to Amazon Glacier&#160;&hellip;"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:296
+#: ../inc/pro/class-destination-glacier.php:299
 #, php-format
 msgid "Connected to Glacier vault \"%1$s\" with %2$d archives and size of %3$d"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:298
+#: ../inc/pro/class-destination-glacier.php:301
 #, php-format
 msgid "Glacier vault \"%s\" does not exist!"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:304
+#: ../inc/pro/class-destination-glacier.php:307
 msgid "Starting upload to Amazon Glacier&#160;&hellip;"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:357
+#: ../inc/pro/class-destination-glacier.php:360
 #, php-format
 msgid "Archive ID: %s"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:368 ../inc/pro/class-pro.php:111
+#: ../inc/pro/class-destination-glacier.php:371 ../inc/pro/class-pro.php:111
 msgid "Glacier"
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:424
+#: ../inc/pro/class-destination-glacier.php:427
 #, php-format
 msgid "Cannot delete archive from %s."
 msgstr ""
 
-#: ../inc/pro/class-destination-glacier.php:428
+#: ../inc/pro/class-destination-glacier.php:431
 #, php-format
 msgid "One file deleted on vault."
 msgid_plural "%d files deleted on vault"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../inc/pro/class-destination-glacier.php:542
+#: ../inc/pro/class-destination-glacier.php:545
 msgid "No vault found!"
 msgstr ""
 
