@@ -291,9 +291,9 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 			<tr>
 				<th scope="row"><?php _e( 'Include special files', 'backwpup' ); ?></th>
 				<td>
-					<label for="idbackupspecialfiles"><input class="checkbox help-tip" id="idbackupspecialfiles" title="<?php _e( 'If the WordPress root folder is not included in this backup job, check this option to additionally include wp-config.php, robots.txt, .htaccess, .htpasswd and favicon.ico into the backup. Your wp-config.php will be included even if you placed it in the parent directory of your root folder.', 'backwpup' ); ?>"
+					<label for="idbackupspecialfiles"><input class="checkbox help-tip" id="idbackupspecialfiles" title="<?php _e( 'If the WordPress root folder is not included in this backup job, check this option to additionally include wp-config.php, robots.txt, .htaccess, nginx.conf, .htpasswd and favicon.ico into the backup. Your wp-config.php will be included even if you placed it in the parent directory of your root folder.', 'backwpup' ); ?>"
 						   type="checkbox"<?php checked( BackWPup_Option::get( $main, 'backupspecialfiles' ), TRUE, TRUE ); ?>
-						   name="backupspecialfiles" value="1" /> <?php _e( 'Backup wp-config.php, robots.txt, .htaccess, .htpasswd and favicon.ico from root.', 'backwpup' ); ?></label>
+						   name="backupspecialfiles" value="1" /> <?php _e( 'Backup wp-config.php, robots.txt, nginx.conf, .htaccess, .htpasswd and favicon.ico from root.', 'backwpup' ); ?></label>
 				</td>
 			</tr>
 			<tr>
@@ -511,6 +511,10 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 			if ( is_readable( $abs_path . '.htaccess' ) && empty( $job_object->job[ 'backuproot' ] ) ) {
 				$job_object->additional_files_to_backup[ ] = $abs_path . '.htaccess';
 				$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), '.htaccess' ) );
+			}
+			if ( is_readable( $abs_path . 'nginx.conf' ) && empty( $job_object->job[ 'backuproot' ] ) ) {
+				$job_object->additional_files_to_backup[ ] = $abs_path . 'nginx.conf';
+				$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), 'nginx.conf' ) );
 			}
 			if ( is_readable( $abs_path . '.htpasswd' ) && empty( $job_object->job[ 'backuproot' ] ) ) {
 				$job_object->additional_files_to_backup[ ] = $abs_path . '.htpasswd';

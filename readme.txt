@@ -170,6 +170,11 @@ Please check all settings after the update:
 
 
 == Changelog ==
+= Version 3.2.4 =
+* Fixed: Charset issues on file names in archives
+* Improved: checking on response test
+* Changed: Dropbox API URLs
+
 = Version 3.2.3 =
 * Added: AWS Region Asien-Pazifik (Seoul)
 * Improved: open basedir checking

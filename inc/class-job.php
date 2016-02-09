@@ -452,7 +452,7 @@ final class BackWPup_Job {
 
 		$authentication     = get_site_option( 'backwpup_cfg_authentication', array( 'method' => '', 'basic_user' => '', 'basic_password' => '', 'user_id' => 0, 'query_arg' => '' ) );
 		$url        		= site_url( 'wp-cron.php' );
-		$header				= array();
+		$header				= array( 'x-backwpup-version' => BackWPup::get_plugin_data( 'version' ) );
 		$authurl    		= '';
 		$query_args 		= array( '_nonce' => substr( wp_hash( wp_nonce_tick() . 'backwpup_job_run-' . $starttype, 'nonce' ), - 12, 10 ), 'doing_wp_cron' => sprintf( '%.22F', microtime( true ) ) );
 
@@ -548,6 +548,9 @@ final class BackWPup_Job {
 
 		if ( ! in_array( $starttype, array( 'runnowlink', 'runext', 'restartalt' ) ) ) {
 			delete_transient( 'doing_cron' );
+			if ( $starttype === 'test' ) {
+				return wp_remote_head( $cron_request[ 'url' ], $cron_request[ 'args' ] );
+			}
 			return wp_remote_post( $cron_request[ 'url' ], $cron_request[ 'args' ] );
 		}
 
@@ -858,10 +861,6 @@ final class BackWPup_Job {
 				}
 			}
 		}
-		//clear output buffer
-		ob_start();
-		while( @ob_end_clean() );
-		@flush();
 		$job_types = BackWPup::get_job_types();
 		//go step by step
 		foreach ( $this->steps_todo as $this->step_working ) {
@@ -2387,7 +2386,7 @@ final class BackWPup_Job {
 	public static function clean_temp_folder() {
 
 		$temp_dir = BackWPup::get_plugin_data( 'TEMP' );
-		$do_not_delete_files = array( '.htaccess', 'index.php', '.', '..', '.donotbackup' );
+		$do_not_delete_files = array( '.htaccess', 'nginx.conf', 'index.php', '.', '..', '.donotbackup' );
 
 		if ( is_writable( $temp_dir ) && $dir = opendir( $temp_dir ) ) {
 			while ( FALSE !== ( $file = readdir( $dir ) ) ) {

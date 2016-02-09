@@ -102,7 +102,7 @@ class BackWPup_MySQLDump {
 
 
 		if ( ! $this->mysqli->options( MYSQLI_OPT_CONNECT_TIMEOUT, 5 ) ) {
-			throw new BackWPup_MySQLDump_Exception( __( 'Setting of MySQLi connection timeout failed', 'backwpup' ) );
+			trigger_error( __( 'Setting of MySQLi connection timeout failed', 'backwpup' ) );
 		}
 
 		//connect to Database
@@ -114,7 +114,7 @@ class BackWPup_MySQLDump {
 		if ( ! empty( $args[ 'dbcharset' ] ) && method_exists( $this->mysqli, 'set_charset' ) ) {
 			$res = $this->mysqli->set_charset( $args[ 'dbcharset' ] );
 			if ( ! $res ) {
-				throw new BackWPup_MySQLDump_Exception( sprintf( _x( 'Cannot set DB charset to %s error: %s','Database Charset', 'backwpup' ), $args[ 'dbcharset' ], $this->mysqli->error ) );
+				trigger_error( sprintf( _x( 'Cannot set DB charset to %s error: %s','Database Charset', 'backwpup' ), $args[ 'dbcharset' ], $this->mysqli->error ), E_USER_WARNING );
 			}
 		}
 

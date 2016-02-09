@@ -393,8 +393,9 @@ final class BackWPup_Admin {
 
 		if ( isset( $_REQUEST[ 'page' ] ) && strstr( $_REQUEST[ 'page' ], 'backwpup' ) ) {
 			$admin_footer_text = '<a href="' . __( 'http://marketpress.com', 'backwpup' ) . '" class="mp_logo" title="' . __( 'MarketPress', 'backwpup' ) . '">' . __( 'MarketPress', 'backwpup' ) . '</a>';
-			if ( ! class_exists( 'BackWPup_Pro', FALSE ) )
-				$admin_footer_text .= sprintf( __( '<a class="backwpup-get-pro" href="%s">Get BackWPup Pro now.</a>', 'backwpup' ), __( 'http://marketpress.com/product/backwpup-pro/', 'backwpup' ) );
+			if ( ! class_exists( 'BackWPup_Pro', FALSE ) ) {
+				$admin_footer_text .= sprintf( __( '<a class="backwpup-get-pro" href="%s">Get BackWPup Pro now.</a>', 'backwpup' ), translate( BackWPup::get_plugin_data( 'PluginURI' ), 'backwpup' ) );
+			}
 
 			return $admin_footer_text . $default_text;
 		}

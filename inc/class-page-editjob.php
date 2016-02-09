@@ -422,11 +422,12 @@ class BackWPup_Page_Editjob {
 		echo '</h2>';
 		//display messages
 		BackWPup_Admin::display_messages();
-		echo '<form name="editjob" id="editjob" method="post" action="' . admin_url( 'admin-post.php?action=backwpup' ) . '">';
+		echo '<form name="editjob" id="editjob" method="post" action="' . admin_url( 'admin-post.php' ) . '">';
 		echo '<input type="hidden" id="jobid" name="jobid" value="' . $jobid . '" />';
 		echo '<input type="hidden" name="tab" value="' . $_GET[ 'tab' ] . '" />';
 		echo '<input type="hidden" name="nexttab" value="' . $_GET[ 'tab' ] . '" />';
 		echo '<input type="hidden" name="page" value="backwpupeditjob" />';
+		echo '<input type="hidden" name="action" value="backwpup" />';
     	echo '<input type="hidden" name="anchor" value="" />';
 		wp_nonce_field( 'backwpupeditjob_page' );
 		wp_nonce_field( 'backwpup_ajax_nonce', 'backwpupajaxnonce', FALSE );

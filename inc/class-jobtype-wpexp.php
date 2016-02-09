@@ -305,7 +305,6 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 
 				// fetch 20 posts at a time rather than loading the entire table into memory
 				while ( $next_posts = array_splice( $job_object->steps_data[ $job_object->step_working ]['post_ids'], 0, 20 ) ) {
-					wp_cache_flush();
 					$where = 'WHERE ID IN (' . join( ',', $next_posts ) . ')';
 					$posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} $where" );
 					$wxr_post = '';
@@ -394,7 +393,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 			$job_object->do_restart_time();
 		}
 
-		remove_filter( 'wxr_export_skip_postmeta', array( $this, 'wxr_filter_postmeta' ), 10, 2 );
+		remove_filter( 'wxr_export_skip_postmeta', array( $this, 'wxr_filter_postmeta' ), 10 );
 
 		if ( $job_object->steps_data[ $job_object->step_working ]['substep'] == 'check' ) {
 
@@ -515,8 +514,9 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 	 * @return string
 	 */
 	private function wxr_cdata( $str ) {
-		if ( seems_utf8( $str ) == false )
+		if ( ! seems_utf8( $str ) ) {
 			$str = utf8_encode( $str );
+		}
 
 		// not allowed UTF-8 chars in XML
 		$str = preg_replace( '/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', '', $str );
@@ -637,8 +637,10 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 	 * Output list of authors with posts
 	 *
 	 * @since WordPress 3.1.0
+	 *
+	 * @return string
 	 */
-	private function wxr_authors_list() {
+	private function wxr_authors_list( ) {
 		global $wpdb;
 
 		$authors = array();
@@ -691,7 +693,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 	 * @since WordPress 2.3.0
 	 */
 	private function wxr_post_taxonomy() {
-		global $post;
+		$post = get_post();
 
 		$taxonomies = get_object_taxonomies( $post->post_type );
 		if ( empty( $taxonomies ) )

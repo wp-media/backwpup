@@ -445,9 +445,15 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 					if ( $response_code < 200  && $response_code > 204 ) {
 						$test_result .= sprintf( __( 'The HTTP response test get a false http status (%s)','backwpup' ), wp_remote_retrieve_response_code( $raw_response ) );
 					} else {
-						$response_body = wp_remote_retrieve_body( $raw_response );
-						if ( FALSE === strstr( $response_body, 'BackWPup Test' ) ) {
-							$test_result .= sprintf( __( 'Not expected HTTP response body: %s','backwpup' ), esc_attr( strip_tags( $response_body ) ) );
+						$response_header = wp_remote_retrieve_header( $raw_response, 'x-backwpup-version' );
+						$version = BackWPup::get_plugin_data( 'version' );
+						if ( $response_header !== $version ) {
+							$headers = '<br>';
+							$response_headers = wp_remote_retrieve_headers( $raw_response );
+							foreach( $response_headers as $key => $value ) {
+								$headers .= esc_attr( $key ) . ': ' . esc_attr( $value ) . '<br>';
+							}
+							$test_result .= sprintf( __( '<strong>Missing or not expected HTTP response headers:</strong> %s','backwpup' ), $headers );
 						}
 					}
 					if ( ! empty( $test_result ) ) {

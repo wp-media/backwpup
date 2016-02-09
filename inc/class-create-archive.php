@@ -45,13 +45,6 @@ class BackWPup_Create_Archive {
 	private $pclzip_file_list = array();
 
 	/**
-	 * Saved encoding will restored on __destruct
-	 *
-	 * @var string
-	 */
-	private $previous_encoding = '';
-
-	/**
 	 * File cont off added files to handel somethings that depends on it
 	 *
 	 * @var int number of files added
@@ -121,10 +114,6 @@ class BackWPup_Create_Archive {
 			}
 			if( $this->get_method() == 'PclZip' ) {
 				$this->method = 'PclZip';
-				if ( ini_get( 'mbstring.func_overload' ) && function_exists( 'mb_internal_encoding' ) ) {
-					$this->previous_encoding = mb_internal_encoding();
-					mb_internal_encoding( 'ISO-8859-1' );
-				}
 				if ( ! defined('PCLZIP_TEMPORARY_DIR') ) {
 					define( 'PCLZIP_TEMPORARY_DIR', BackWPup::get_plugin_data( 'TEMP' ) );
 				}
@@ -161,11 +150,6 @@ class BackWPup_Create_Archive {
 	 * Closes open archive on shutdown.
 	 */
 	public function __destruct() {
-
-		//set encoding back
-		if ( ! empty( $this->previous_encoding ) ) {
-			mb_internal_encoding( $this->previous_encoding );
-		}
 
 		//close PclZip Class
 		if ( is_object( $this->pclzip ) ) {
@@ -255,23 +239,6 @@ class BackWPup_Create_Archive {
 		//remove reserved chars
 		$name_in_archive = str_replace( array( "?", "<", ">", ":", "%","\"", "*", "|", chr(0) ) , '', $name_in_archive );
 
-		//convert chars in archives
-		if ( function_exists( 'iconv' ) ) {
-			$charsets = array( 'UTF-8', 'ASCII',
-				'ISO-8859-1', 'ISO-8859-2', 'ISO-8859-3', 'ISO-8859-4', 'ISO-8859-5',
-				'ISO-8859-6', 'ISO-8859-7', 'ISO-8859-8', 'ISO-8859-9', 'ISO-8859-10',
-				'ISO-8859-13', 'ISO-8859-14', 'ISO-8859-15', 'ISO-8859-16',
-				'Windows-1251', 'Windows-1252', 'Windows-1254'
-			);
-			foreach ( $charsets as $charset ) {
-				$test = @iconv( $charset, 'UTF-8', $name_in_archive );
-				if ( $test ) {
-					$name_in_archive = $test;
-					break;
-				}
-			}
-		}
-
 		switch ( $this->get_method() ) {
 			case 'gz':
 				if ( $this->file_count > 0 ) {
@@ -308,9 +275,23 @@ class BackWPup_Create_Archive {
 			case 'Tar':
 			case 'TarGz':
 			case 'TarBz2':
+				//convert chars for archives file names
+				if ( function_exists( 'iconv' ) && stristr( PHP_OS, 'win' ) !== false ) {
+					$test = @iconv( 'ISO-8859-1', 'UTF-8', $name_in_archive );
+					if ( $test ) {
+						$name_in_archive = $test;
+					}
+				}
 				return $this->tar_file( $file_name, $name_in_archive );
 				break;
 			case 'ZipArchive':
+				//convert chars for archives file names
+				if ( function_exists( 'iconv' ) && stristr( PHP_OS, 'win' ) === false ) {
+					$test = @iconv( 'UTF-8', 'CP437', $name_in_archive );
+					if ( $test ) {
+						$name_in_archive = $test;
+					}
+				}
 				$file_size = filesize( $file_name );
 				if ( $file_size === FALSE ) {
 					return FALSE;
