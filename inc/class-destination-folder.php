@@ -101,7 +101,6 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 		$get_file = realpath( trailingslashit( $backup_dir ) . basename( $get_file ) );
 
 		if ( $get_file && is_readable( $get_file ) ) {
-			while( @ob_end_clean() );
 			header( "Pragma: public" );
 			header( "Expires: 0" );
 			header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );

@@ -306,6 +306,30 @@ class BackWPup_MySQLDump {
 			$res->close();
 		}
 
+		//dump Trigger
+		$res = $this->mysqli->query( "SHOW TRIGGERS FROM `" . $this->dbname . "`" );
+		$GLOBALS[ 'wpdb' ]->num_queries ++;
+		if ( $this->mysqli->error ) {
+			trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SHOW TRIGGERS" ), E_USER_WARNING );
+		} else {
+			while ( $triggers = $res->fetch_assoc() ) {
+				$create = "\n--\n-- Trigger structure for " . $triggers[ 'Trigger' ] . "\n--\n\n";
+				$create .= "DROP TRIGGER IF EXISTS `" . $triggers[ 'Trigger' ] . "`;\n";
+				$create .= "DELIMITER //\n";
+				$res2 = $this->mysqli->query( "SHOW CREATE TRIGGER `" . $this->dbname . "`.`" . $triggers[ 'Trigger' ] . "`" );
+				$GLOBALS[ 'wpdb' ]->num_queries ++;
+				if ( $this->mysqli->error ) {
+					trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SHOW CREATE TRIGGER `" . $this->dbname . "`.`" . $triggers[ 'Trigger' ] . "`" ), E_USER_WARNING );
+				}
+				$create_trigger = $res2->fetch_assoc();
+				$res2->close();
+				$create .= $create_trigger[ 'SQL Original Statement' ] . ";\n";
+				$create .= "//\nDELIMITER ;\n";
+				$this->write( $create );
+			}
+			$res->close();
+		}
+
 		//for better import with mysql client
 		$dbdumpfooter  = "\n/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;\n";
 		$dbdumpfooter .= "/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;\n";
