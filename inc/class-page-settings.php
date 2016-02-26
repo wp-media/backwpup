@@ -84,7 +84,7 @@ class BackWPup_Page_Settings {
 		update_site_option( 'backwpup_cfg_protectfolders', isset( $_POST[ 'protectfolders' ] ) ? 1 : 0 );
 		$_POST[ 'jobrunauthkey' ] = preg_replace( '/[^a-zA-Z0-9]/', '', trim( $_POST[ 'jobrunauthkey' ] ) );
 		update_site_option( 'backwpup_cfg_jobrunauthkey', $_POST[ 'jobrunauthkey' ] );
-		$_POST[ 'logfolder' ] = trailingslashit( str_replace( '\\', '/', trim( stripslashes( $_POST[ 'logfolder' ] ) ) ) );
+		$_POST[ 'logfolder' ] = trailingslashit( str_replace( '\\', '/', trim( stripslashes( esc_attr( $_POST[ 'logfolder' ] ) ) ) ) );
 		//set def. folders
 		if ( empty( $_POST[ 'logfolder' ] ) || $_POST[ 'logfolder' ] === '/' ) {
 			delete_site_option( 'backwpup_cfg_logfolder' );
@@ -196,7 +196,7 @@ class BackWPup_Page_Settings {
                     <th scope="row"><label for="logfolder"><?php _e( 'Log file folder', 'backwpup' ); ?></label></th>
                     <td>
                         <input name="logfolder" type="text" id="logfolder" title="<?php esc_attr_e( 'You can use absolute or relative path! Relative path is relative to WP_CONTENT_DIR.', 'backwpup' ); ?>"
-                               value="<?php echo get_site_option( 'backwpup_cfg_logfolder' );?>"
+                               value="<?php echo esc_attr( get_site_option( 'backwpup_cfg_logfolder' ) );?>"
                                class="regular-text code help-tip"/>
                     </td>
                 </tr>

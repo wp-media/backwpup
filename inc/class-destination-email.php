@@ -271,8 +271,10 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 			// Create the Transport
 			if ( $emailmethod == 'smtp' ) {
 				$transport = Swift_SmtpTransport::newInstance( $emailhost, $emailhostport );
-				$transport->setUsername( $emailuser );
-				$transport->setPassword( $emailpass );
+				if ( $emailuser ) {
+					$transport->setUsername( $emailuser );
+					$transport->setPassword( $emailpass );
+				}
 				if ( $emailsecure == 'ssl' )
 					$transport->setEncryption( 'ssl' );
 				if ( $emailsecure == 'tls' )
@@ -395,8 +397,10 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 			// Create the Transport
 			if ( $emailmethod == 'smtp' ) {
 				$transport = Swift_SmtpTransport::newInstance( $emailhost, $emailhostport );
-				$transport->setUsername( $emailuser );
-				$transport->setPassword( $emailpass );
+				if ( $emailuser ) {
+					$transport->setUsername( $emailuser );
+					$transport->setPassword( $emailpass );
+				}
 				if ( $emailsecure == 'ssl' )
 					$transport->setEncryption( 'ssl' );
 				if ( $emailsecure == 'tls' )
