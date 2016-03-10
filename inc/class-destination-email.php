@@ -35,97 +35,89 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 	 */
 	public function edit_tab( $jobid ) {
 		?>
-		<h3 class="title"><?php _e( 'Email address', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php esc_html_e( 'Email address', 'backwpup' ); ?></h3>
 		<table class="form-table">
             <tr>
-                <th scope="row"><label for="emailaddress"><?php _e( 'Email address', 'backwpup' ); ?></label></th>
+                <th scope="row"><label for="emailaddress"><?php esc_html_e( 'To email address', 'backwpup' ); ?></label></th>
                 <td>
-                    <input name="emailaddress" id="emailaddress" type="text" title="<?php esc_attr_e('Email address to which Backups are sent.','backwpup'); ?>"
-                           value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailaddress' ) );?>" class="regular-text help-tip" />
+                    <input name="emailaddress" id="emailaddress" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailaddress' ) );?>" class="regular-text" />
                 </td>
             </tr>
             <tr>
-                <th scope="row"><label for="sendemailtest"><?php _e( 'Send test email', 'backwpup' ); ?></label></th>
+                <th scope="row"><label for="sendemailtest"><?php esc_html_e( 'Send test email', 'backwpup' ); ?></label></th>
                 <td>
-                    <button id="sendemailtest" class="button secondary"><?php _e( 'Send test email', 'backwpup' ); ?></button>
+                    <button id="sendemailtest" class="button secondary"><?php esc_html_e( 'Send test email', 'backwpup' ); ?></button>
                 </td>
             </tr>
 		</table>
 
-		<h3 class="title"><?php _e( 'Send email settings', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php esc_html_e( 'Send email settings', 'backwpup' ); ?></h3>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="idemailefilesize"><?php _e( 'Maximum file size', 'backwpup' ); ?></label></th>
-				<td><input id="idemailefilesize" name="emailefilesize" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailefilesize' ) ); ?>" class="small-text help-tip" title="<?php esc_attr_e('Maximum file size to be included in an email. 0 = unlimited','backwpup'); ?>" /><?php _e('MB','backwpup'); ?>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row"><label for="emailsndemail"><?php _e( 'Sender email address', 'backwpup' ); ?></label></th>
-				<td><input name="emailsndemail" type="text" id="emailsndemail" title="<?php esc_attr_e( 'Sender email address', 'backwpup' ); ?>"
-						   value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailsndemail' ) );?>"
-						   class="regular-text help-tip" />
-				</td>
-			</tr>
-			<tr>
-				<th scope="row"><label for="emailsndemailname"><?php _e( 'Sender name', 'backwpup' ); ?></label></th>
-				<td><input name="emailsndemailname" type="text" id="emailsndemailname" title="<?php esc_attr_e( 'Name of email sender', 'backwpup' ); ?>"
-						   value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailsndemailname' ) );?>"
-						   class="regular-text help-tip" />
-				</td>
-			</tr>
-			<tr>
-				<th scope="row"><label for="emailmethod"><?php _e( 'Sending method', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="idemailefilesize"><?php esc_html_e( 'Maximum file size', 'backwpup' ); ?></label></th>
 				<td>
-					<select id="emailmethod" name="emailmethod" class="help-tip" title="<?php esc_attr_e('- Use site settings: retrieve the email settings of your site.<br />-PHP mail(): needs more PHP memory','backwpup'); ?>">
+					<input id="idemailefilesize" name="emailefilesize" type="number" min="0" step="1" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailefilesize' ) ); ?>" class="small-text" /><?php esc_html_e('MB','backwpup'); ?>
+					<p class="description"><?php esc_attr_e('Maximum file size to be included in an email. 0 = unlimited','backwpup'); ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="emailsndemail"><?php esc_html_e( 'From email address', 'backwpup' ); ?></label></th>
+				<td>
+					<input name="emailsndemail" type="text" id="emailsndemail" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailsndemail' ) );?>" class="regular-text" />
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="emailsndemailname"><?php esc_html_e( 'From name', 'backwpup' ); ?></label></th>
+				<td>
+					<input name="emailsndemailname" type="text" id="emailsndemailname" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailsndemailname' ) );?>" class="regular-text" />
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="emailmethod"><?php esc_html_e( 'Sending method', 'backwpup' ); ?></label></th>
+				<td>
+					<select id="emailmethod" name="emailmethod">
 						<?php
-						echo '<option value=""' . selected( '', BackWPup_Option::get( $jobid, 'emailmethod' ), FALSE ) . '>' . __( 'Use site settings', 'backwpup' ) . '</option>';
-						echo '<option value="mail"' . selected( 'mail', BackWPup_Option::get( $jobid, 'emailmethod' ), FALSE ) . '>' . __( 'PHP: mail()', 'backwpup' ) . '</option>';
-						echo '<option value="sendmail"' . selected( 'sendmail', BackWPup_Option::get( $jobid, 'emailmethod' ), FALSE ) . '>' . __( 'Sendmail', 'backwpup' ) . '</option>';
-						echo '<option value="smtp"' . selected( 'smtp', BackWPup_Option::get( $jobid, 'emailmethod' ), FALSE ) . '>' . __( 'SMTP', 'backwpup' ) . '</option>';
+						echo '<option value=""' . selected( '', BackWPup_Option::get( $jobid, 'emailmethod' ), FALSE ) . '>' . esc_html__( 'Use WordPress settings', 'backwpup' ) . '</option>';
+						echo '<option value="mail"' . selected( 'mail', BackWPup_Option::get( $jobid, 'emailmethod' ), FALSE ) . '>' . esc_html__( 'PHP: mail()', 'backwpup' ) . '</option>';
+						echo '<option value="sendmail"' . selected( 'sendmail', BackWPup_Option::get( $jobid, 'emailmethod' ), FALSE ) . '>' . esc_html__( 'Sendmail', 'backwpup' ) . '</option>';
+						echo '<option value="smtp"' . selected( 'smtp', BackWPup_Option::get( $jobid, 'emailmethod' ), FALSE ) . '>' . esc_html__( 'SMTP', 'backwpup' ) . '</option>';
 						?>
 					</select>
-
 				</td>
 			</tr>
-			<tr id="emailsendmail" <?php if ( BackWPup_Option::get( $jobid, 'emailmethod' ) != 'sendmail' ) echo 'style="display:none;"';?>>
-				<th scope="row"><label for="emailsendmail"><?php _e( 'Sendmail path', 'backwpup' ); ?></label></th>
+			<tr id="emailsendmail" <?php if ( BackWPup_Option::get( $jobid, 'emailmethod' ) !== 'sendmail' ) echo 'style="display:none;"';?>>
+				<th scope="row"><label for="emailsendmail"><?php esc_html_e( 'Sendmail path', 'backwpup' ); ?></label></th>
 				<td>
-					<input name="emailsendmail" id="emailsendmail" type="text"
-						   value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailsendmail' ) );?>"
-						   class="regular-text code" />
+					<input name="emailsendmail" id="emailsendmail" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailsendmail' ) );?>" class="regular-text code" />
 				</td>
 			</tr>
-			<tr class="emailsmtp" <?php if ( BackWPup_Option::get( $jobid, 'emailmethod' ) != 'smtp' ) echo 'style="display:none;"';?>>
-				<th scope="row"><label for="emailhost"><?php _e( 'SMTP host name', 'backwpup' ); ?></label></th>
+			<tr class="emailsmtp" <?php if ( BackWPup_Option::get( $jobid, 'emailmethod' ) !== 'smtp' ) echo 'style="display:none;"';?>>
+				<th scope="row"><label for="emailhost"><?php esc_html_e( 'SMTP host name', 'backwpup' ); ?></label></th>
 				<td>
-					<input name="emailhost" id="emailhost" type="text"
-						   value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailhost' ) );?>"
-						   class="regular-text code"/>&nbsp;
-					<label for="emailhostport"><?php _e( 'Port:', 'backwpup' ); ?><input name="emailhostport" id="emailhostport" type="text"
-															  value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailhostport' ) );?>"
-															  class="small-text code" /></label>
+					<input name="emailhost" id="emailhost" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailhost' ) );?>" class="regular-text code"/>&nbsp;
+					<label for="emailhostport"><?php esc_html_e( 'Port:', 'backwpup' ); ?><input name="emailhostport" id="emailhostport" type="number" step="0" min="1" max="65000" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailhostport' ) );?>" class="small-text code" /></label>
 				</td>
 			</tr>
-			<tr class="emailsmtp" <?php if ( BackWPup_Option::get( $jobid, 'emailmethod' ) != 'smtp' ) echo 'style="display:none;"';?>>
-				<th scope="row"><label for="emailsecure"><?php _e( 'SMTP secure connection', 'backwpup' ); ?></label>
+			<tr class="emailsmtp" <?php if ( BackWPup_Option::get( $jobid, 'emailmethod' ) !== 'smtp' ) echo 'style="display:none;"';?>>
+				<th scope="row"><label for="emailsecure"><?php esc_html_e( 'SMTP secure connection', 'backwpup' ); ?></label>
 				</th>
 				<td>
 					<select id="emailsecure" name="emailsecure">
-						<option value=""<?php selected( '', BackWPup_Option::get( $jobid, 'emailsecure' ), TRUE ); ?>><?php _e( 'none', 'backwpup' ); ?></option>
-						<option value="ssl"<?php selected( 'ssl', BackWPup_Option::get( $jobid, 'emailsecure' ), TRUE ); ?>><?php _e( 'SSL', 'backwpup' ); ?></option>
-						<option value="tls"<?php selected( 'tls', BackWPup_Option::get( $jobid, 'emailsecure' ), TRUE ); ?>><?php _e( 'TLS', 'backwpup' ); ?></option>
+						<option value=""<?php selected( '', BackWPup_Option::get( $jobid, 'emailsecure' ), TRUE ); ?>><?php esc_html_e( 'none', 'backwpup' ); ?></option>
+						<option value="ssl"<?php selected( 'ssl', BackWPup_Option::get( $jobid, 'emailsecure' ), TRUE ); ?>><?php esc_html_e( 'SSL', 'backwpup' ); ?></option>
+						<option value="tls"<?php selected( 'tls', BackWPup_Option::get( $jobid, 'emailsecure' ), TRUE ); ?>><?php esc_html_e( 'TLS', 'backwpup' ); ?></option>
 					</select>
 				</td>
 			</tr>
-			<tr class="emailsmtp" <?php if ( BackWPup_Option::get( $jobid, 'emailmethod' ) != 'smtp' ) echo 'style="display:none;"';?>>
-				<th scope="row"><label for="emailuser"><?php _e( 'SMTP username', 'backwpup' ); ?></label></th>
+			<tr class="emailsmtp" <?php if ( BackWPup_Option::get( $jobid, 'emailmethod' ) !== 'smtp' ) echo 'style="display:none;"';?>>
+				<th scope="row"><label for="emailuser"><?php esc_html_e( 'SMTP username', 'backwpup' ); ?></label></th>
 				<td>
 					<input name="emailuser" id="emailuser" type="text"
 						   value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailuser' ) );?>" class="regular-text" autocomplete="off" />
 				</td>
 			</tr>
 			<tr class="emailsmtp" <?php if ( BackWPup_Option::get( $jobid, 'emailmethod' ) != 'smtp' ) echo 'style="display:none;"';?>>
-				<th scope="row"><label for="emailpass"><?php _e( 'SMTP password', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="emailpass"><?php esc_html_e( 'SMTP password', 'backwpup' ); ?></label></th>
 				<td>
 					<input name="emailpass" id="emailpass" type="password"
 						   value="<?php echo esc_attr( BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 'emailpass' ) ) );?>"
@@ -182,15 +174,15 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 	public function edit_form_post_save( $jobid ) {
 
 		BackWPup_Option::update( $jobid, 'emailaddress', isset( $_POST[ 'emailaddress' ] ) ? sanitize_email( $_POST[ 'emailaddress' ] ) : '' );
-		BackWPup_Option::update( $jobid, 'emailefilesize', isset( $_POST[ 'emailefilesize' ] ) ? (int)$_POST[ 'emailefilesize' ] : 0 );
+		BackWPup_Option::update( $jobid, 'emailefilesize', ! empty( $_POST[ 'emailefilesize' ] ) ? absint( $_POST[ 'emailefilesize' ] ) : 0 );
 		BackWPup_Option::update( $jobid, 'emailsndemail', sanitize_email( $_POST[ 'emailsndemail' ] ) );
-		BackWPup_Option::update( $jobid, 'emailmethod', ( $_POST[ 'emailmethod' ] == '' || $_POST[ 'emailmethod' ] == 'mail' || $_POST[ 'emailmethod' ] == 'sendmail' || $_POST[ 'emailmethod' ] == 'smtp' ) ? $_POST[ 'emailmethod' ] : '' );
-		BackWPup_Option::update( $jobid, 'emailsendmail', $_POST[ 'emailsendmail' ] );
-		BackWPup_Option::update( $jobid, 'emailsndemailname', $_POST[ 'emailsndemailname' ] );
-		BackWPup_Option::update( $jobid, 'emailhost', $_POST[ 'emailhost' ] );
-		BackWPup_Option::update( $jobid, 'emailhostport', (int)$_POST[ 'emailhostport' ] );
-		BackWPup_Option::update( $jobid, 'emailsecure', ( $_POST[ 'emailsecure' ] == 'ssl' || $_POST[ 'emailsecure' ] == 'tls' ) ? $_POST[ 'emailsecure' ] : '' );
-		BackWPup_Option::update( $jobid, 'emailuser', $_POST[ 'emailuser' ] );
+		BackWPup_Option::update( $jobid, 'emailmethod', ( $_POST[ 'emailmethod' ] === '' || $_POST[ 'emailmethod' ] === 'mail' || $_POST[ 'emailmethod' ] === 'sendmail' || $_POST[ 'emailmethod' ] === 'smtp' ) ? $_POST[ 'emailmethod' ] : '' );
+		BackWPup_Option::update( $jobid, 'emailsendmail', sanitize_text_field( $_POST[ 'emailsendmail' ] ) );
+		BackWPup_Option::update( $jobid, 'emailsndemailname', sanitize_text_field( $_POST[ 'emailsndemailname' ] ) );
+		BackWPup_Option::update( $jobid, 'emailhost', sanitize_text_field( $_POST[ 'emailhost' ] ) );
+		BackWPup_Option::update( $jobid, 'emailhostport', absint( $_POST[ 'emailhostport' ] ) );
+		BackWPup_Option::update( $jobid, 'emailsecure', ( $_POST[ 'emailsecure' ] === 'ssl' || $_POST[ 'emailsecure' ] === 'tls' ) ? $_POST[ 'emailsecure' ] : '' );
+		BackWPup_Option::update( $jobid, 'emailuser', sanitize_text_field( $_POST[ 'emailuser' ] ) );
 		BackWPup_Option::update( $jobid, 'emailpass', BackWPup_Encryption::encrypt( $_POST[ 'emailpass' ] ) );
 	}
 
@@ -374,12 +366,12 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 				$emailpass=$phpmailer->Password;
 			}
 		} else {
-			$emailmethod = $_POST[ 'emailmethod' ];
-			$emailsendmail = $_POST[ 'emailsendmail' ];
-			$emailhost = $_POST[ 'emailhost' ];
-			$emailhostport = $_POST[ 'emailhostport' ];
-			$emailsecure = $_POST[ 'emailsecure' ];
-			$emailuser = $_POST[ 'emailuser' ];
+			$emailmethod = sanitize_text_field( $_POST[ 'emailmethod' ] );
+			$emailsendmail = sanitize_email( $_POST[ 'emailsendmail' ] );
+			$emailhost = sanitize_text_field( $_POST[ 'emailhost' ] );
+			$emailhostport = absint( $_POST[ 'emailhostport' ] );
+			$emailsecure = sanitize_text_field( $_POST[ 'emailsecure' ] );
+			$emailuser = sanitize_text_field( $_POST[ 'emailuser' ] );
 			$emailpass = BackWPup_Encryption::decrypt( $_POST[ 'emailpass' ] );
 		}
 
@@ -417,8 +409,8 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 
 			// Create a message
 			$message = Swift_Message::newInstance( __( 'BackWPup archive sending TEST Message', 'backwpup' ) );
-			$message->setFrom( array( $_POST[ 'emailsndemail' ] => isset( $_POST[ 'emailsndemailname' ]) ? $_POST[ 'emailsndemailname' ] : '' ) );
-			$message->setTo( array( $_POST[ 'emailaddress' ] ) );
+			$message->setFrom( array( $_POST[ 'emailsndemail' ] => sanitize_email( $_POST[ 'emailsndemailname' ] ) ) );
+			$message->setTo( array( sanitize_email( $_POST[ 'emailaddress' ] ) ) );
 			$message->setBody( __( 'If this message reaches your inbox, sending backup archives via email should work for you.', 'backwpup' ) );
 			// Send the message
 			$result = $emailer->send( $message );
@@ -432,9 +424,9 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 		}
 
 		if ( ! isset( $result ) || ! $result ) {
-			echo '<span id="emailsendtext" style="color:red;">' . __( 'Error while sending email!', 'backwpup' ) . '</span>';
+			echo '<span id="emailsendtext" style="color:red;">' . esc_html__( 'Error while sending email!', 'backwpup' ) . '</span>';
 		} else {
-			echo '<span id="emailsendtext" style="color:green;">' . __( 'Email sent.', 'backwpup' ) . '</span>';
+			echo '<span id="emailsendtext" style="color:green;">' . esc_html__( 'Email sent.', 'backwpup' ) . '</span>';
 		}
 		die();
 	}

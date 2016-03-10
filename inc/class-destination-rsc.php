@@ -27,8 +27,9 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 
 		$region = strtoupper( $region );
 
-		if ( $region == 'LON' )
+		if ( $region === 'LON' ) {
 			return RACKSPACE_UK;
+		}
 
 		return RACKSPACE_US;
 	}
@@ -38,43 +39,41 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 	 */
 	public function edit_tab( $jobid ) {
 		?>
-		<h3 class="title"><?php _e( 'Rack Space Cloud Keys', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php esc_html_e( 'Rack Space Cloud Keys', 'backwpup' ); ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="rscusername"><?php _e( 'Username', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="rscusername"><?php esc_html_e( 'Username', 'backwpup' ); ?></label></th>
 				<td>
-					<input id="rscusername" name="rscusername" type="text"
-						   value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'rscusername' ) );?>" class="regular-text" autocomplete="off" />
+					<input id="rscusername" name="rscusername" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'rscusername' ) );?>" class="regular-text" autocomplete="off" />
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="rscapikey"><?php _e( 'API Key', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="rscapikey"><?php esc_html_e( 'API Key', 'backwpup' ); ?></label></th>
 				<td>
-					<input id="rscapikey" name="rscapikey" type="password"
-						   value="<?php echo esc_attr( BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 'rscapikey' ) ) ); ?>" class="regular-text" autocomplete="off" />
+					<input id="rscapikey" name="rscapikey" type="password" value="<?php echo esc_attr( BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 'rscapikey' ) ) ); ?>" class="regular-text" autocomplete="off" />
 				</td>
 			</tr>
 		</table>
 
-		<h3 class="title"><?php _e( 'Select region', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php esc_html_e( 'Select region', 'backwpup' ); ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="rscregion"><?php _e( 'Rackspace Cloud Files Region', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="rscregion"><?php esc_html_e( 'Rackspace Cloud Files Region', 'backwpup' ); ?></label></th>
 				<td>
-					<select name="rscregion" id="rscregion" title="<?php _e( 'Rackspace Cloud Files Region', 'backwpup' ); ?>">
-						<option value="DFW" <?php selected( 'DFW', BackWPup_Option::get( $jobid, 'rscregion' ), TRUE ) ?>><?php _e( 'Dallas (DFW)', 'backwpup' ); ?></option>
-						<option value="ORD" <?php selected( 'ORD', BackWPup_Option::get( $jobid, 'rscregion' ), TRUE ) ?>><?php _e( 'Chicago (ORD)', 'backwpup' ); ?></option>
-						<option value="SYD" <?php selected( 'SYD', BackWPup_Option::get( $jobid, 'rscregion' ), TRUE ) ?>><?php _e( 'Sydney (SYD)', 'backwpup' ); ?></option>
-						<option value="LON" <?php selected( 'LON', BackWPup_Option::get( $jobid, 'rscregion' ), TRUE ) ?>><?php _e( 'London (LON)', 'backwpup' ); ?></option>
-						<option value="IAD" <?php selected( 'IAD', BackWPup_Option::get( $jobid, 'rscregion' ), TRUE ) ?>><?php _e( 'Northern Virginia (IAD)', 'backwpup' ); ?></option>
-						<option value="HKG" <?php selected( 'HKG', BackWPup_Option::get( $jobid, 'rscregion' ), TRUE ) ?>><?php _e( 'Hong Kong (HKG)', 'backwpup' ); ?></option>
+					<select name="rscregion" id="rscregion" title="<?php esc_html_e( 'Rackspace Cloud Files Region', 'backwpup' ); ?>">
+						<option value="DFW" <?php selected( 'DFW', BackWPup_Option::get( $jobid, 'rscregion' ), TRUE ) ?>><?php esc_html_e( 'Dallas (DFW)', 'backwpup' ); ?></option>
+						<option value="ORD" <?php selected( 'ORD', BackWPup_Option::get( $jobid, 'rscregion' ), TRUE ) ?>><?php esc_html_e( 'Chicago (ORD)', 'backwpup' ); ?></option>
+						<option value="SYD" <?php selected( 'SYD', BackWPup_Option::get( $jobid, 'rscregion' ), TRUE ) ?>><?php esc_html_e( 'Sydney (SYD)', 'backwpup' ); ?></option>
+						<option value="LON" <?php selected( 'LON', BackWPup_Option::get( $jobid, 'rscregion' ), TRUE ) ?>><?php esc_html_e( 'London (LON)', 'backwpup' ); ?></option>
+						<option value="IAD" <?php selected( 'IAD', BackWPup_Option::get( $jobid, 'rscregion' ), TRUE ) ?>><?php esc_html_e( 'Northern Virginia (IAD)', 'backwpup' ); ?></option>
+						<option value="HKG" <?php selected( 'HKG', BackWPup_Option::get( $jobid, 'rscregion' ), TRUE ) ?>><?php esc_html_e( 'Hong Kong (HKG)', 'backwpup' ); ?></option>
 					</select><br/>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="rsccontainerselected"><?php _e( 'Container selection', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="rsccontainerselected"><?php esc_html_e( 'Container selection', 'backwpup' ); ?></label></th>
 				<td>
 					<input id="rsccontainerselected" name="rsccontainerselected" type="hidden" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'rsccontainer' ) ); ?>" />
 					<?php if ( BackWPup_Option::get( $jobid, 'rscusername' ) && BackWPup_Option::get( $jobid, 'rscapikey' ) ) $this->edit_ajax( array(
@@ -86,35 +85,38 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="idnewrsccontainer"><?php _e( 'Create a new container', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="idnewrsccontainer"><?php esc_html_e( 'Create a new container', 'backwpup' ); ?></label></th>
 				<td>
 					<input id="idnewrsccontainer" name="newrsccontainer" type="text" value="" class="text" />
 				</td>
 			</tr>
 		</table>
 
-		<h3 class="title"><?php _e( 'Backup settings', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php esc_html_e( 'Backup settings', 'backwpup' ); ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="idrscdir"><?php _e( 'Folder in bucket', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="idrscdir"><?php esc_html_e( 'Folder in bucket', 'backwpup' ); ?></label></th>
 				<td>
 					<input id="idrscdir" name="rscdir" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'rscdir' ) ); ?>" class="regular-text" />
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php _e( 'File deletion', 'backwpup' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'File deletion', 'backwpup' ); ?></th>
 				<td>
 					<?php
-					if ( BackWPup_Option::get( $jobid, 'backuptype' ) == 'archive' ) {
+					if ( BackWPup_Option::get( $jobid, 'backuptype' ) === 'archive' ) {
 						?>
-                        <label for="idrscmaxbackups"><input id="idrscmaxbackups" name="rscmaxbackups" type="text" size="3" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'rscmaxbackups' ) ); ?>" class="small-text help-tip" title="<?php esc_attr_e( 'Oldest files will be deleted first. 0 = no deletion', 'backwpup' ); ?>" />&nbsp;
-						<?php  _e( 'Number of files to keep in folder.', 'backwpup' ); ?></label>
-						<?php } else { ?>
-						<label for="idrscsyncnodelete"><input class="checkbox" value="1"
-							   type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'rscsyncnodelete' ), TRUE ); ?>
-							   name="rscsyncnodelete" id="idrscsyncnodelete" /> <?php _e( 'Do not delete files while syncing to destination!', 'backwpup' ); ?></label>
-						<?php } ?>
+						<label for="idrscmaxbackups">
+							<input id="idrscmaxbackups" name="rscmaxbackups" type="number" min="0" step="1" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'rscmaxbackups' ) ); ?>" class="small-text" />
+							&nbsp;<?php esc_html_e( 'Number of files to keep in folder.', 'backwpup' ); ?>
+						</label>
+					<?php } else { ?>
+						<label for="idrscsyncnodelete">
+							<input class="checkbox" value="1" type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'rscsyncnodelete' ), true ); ?> name="rscsyncnodelete" id="idrscsyncnodelete" />
+							&nbsp;<?php esc_html_e( 'Do not delete files while syncing to destination!', 'backwpup' ); ?>
+						</label>
+					<?php } ?>
 				</td>
 			</tr>
 		</table>
@@ -126,20 +128,20 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 	 */
 	public function edit_form_post_save( $id ) {
 
-		BackWPup_Option::update( $id, 'rscusername', isset( $_POST[ 'rscusername' ] ) ? $_POST[ 'rscusername' ] : '' );
-		BackWPup_Option::update( $id, 'rscapikey', isset( $_POST[ 'rscapikey' ] ) ? BackWPup_Encryption::encrypt( $_POST[ 'rscapikey' ] ) : '' );
-		BackWPup_Option::update( $id, 'rsccontainer', isset( $_POST[ 'rsccontainer' ] ) ? $_POST[ 'rsccontainer' ] : '' );
-		BackWPup_Option::update( $id, 'rscregion', ! empty( $_POST[ 'rscregion' ] ) ? $_POST[ 'rscregion' ] : 'DFW' );
+		BackWPup_Option::update( $id, 'rscusername', sanitize_text_field( $_POST[ 'rscusername' ] ) );
+		BackWPup_Option::update( $id, 'rscapikey', sanitize_text_field( $_POST[ 'rscapikey' ] ) );
+		BackWPup_Option::update( $id, 'rsccontainer', isset( $_POST[ 'rsccontainer' ] ) ? sanitize_text_field( $_POST[ 'rsccontainer' ] ) : '' );
+		BackWPup_Option::update( $id, 'rscregion', ! empty( $_POST[ 'rscregion' ] ) ? sanitize_text_field( $_POST[ 'rscregion' ] ) : 'DFW' );
 
-		$_POST[ 'rscdir' ] = trailingslashit( str_replace( '//', '/', str_replace( '\\', '/', trim( stripslashes( $_POST[ 'rscdir' ] ) ) ) ) );
-		if ( substr( $_POST[ 'rscdir' ], 0, 1 ) == '/' )
+		$_POST[ 'rscdir' ] = trailingslashit( str_replace( '//', '/', str_replace( '\\', '/', trim( sanitize_text_field( $_POST[ 'rscdir' ] ) ) ) ) );
+		if ( substr( $_POST[ 'rscdir' ], 0, 1 ) === '/' )
 			$_POST[ 'rscdir' ] = substr( $_POST[ 'rscdir' ], 1 );
-		if ( $_POST[ 'rscdir' ] == '/' )
+		if ( $_POST[ 'rscdir' ] === '/' )
 			$_POST[ 'rscdir' ] = '';
 		BackWPup_Option::update( $id, 'rscdir', $_POST[ 'rscdir' ] );
 
-		BackWPup_Option::update( $id, 'rscmaxbackups', isset( $_POST[ 'rscmaxbackups' ] ) ? (int)$_POST[ 'rscmaxbackups' ] : 0 );
-		BackWPup_Option::update( $id, 'rscsyncnodelete', ( isset( $_POST[ 'rscsyncnodelete' ] ) && $_POST[ 'rscsyncnodelete' ] == 1 ) ? TRUE : FALSE );
+		BackWPup_Option::update( $id, 'rscmaxbackups', ! empty( $_POST[ 'rscmaxbackups' ] ) ? absint( $_POST[ 'rscmaxbackups' ] ) : 0 );
+		BackWPup_Option::update( $id, 'rscsyncnodelete', ! empty( $_POST[ 'rscsyncnodelete' ] ) );
 
 		if ( ! empty( $_POST[ 'rscusername' ] ) && ! empty( $_POST[ 'rscapikey' ] ) && ! empty( $_POST[ 'newrsccontainer' ] ) ) {
 			try {
@@ -149,10 +151,10 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 						 'username' => $_POST[ 'rscusername' ],
 						 'apiKey' => $_POST[ 'rscapikey' ]
 					));
-				$ostore = $conn->objectStoreService( 'cloudFiles' , $_POST[ 'rscregion' ], 'publicURL');
+				$ostore = $conn->objectStoreService( 'cloudFiles', sanitize_text_field( $_POST[ 'rscregion' ] ), 'publicURL' );
 				$ostore->createContainer( $_POST[ 'newrsccontainer' ] );
-				BackWPup_Option::update( $id, 'rsccontainer', $_POST[ 'newrsccontainer' ] );
-				BackWPup_Admin::message( sprintf( __( 'Rackspace Cloud container "%s" created.', 'backwpup' ), $_POST[ 'newrsccontainer' ] ) );
+				BackWPup_Option::update( $id, 'rsccontainer', sanitize_text_field( $_POST[ 'newrsccontainer' ] ) );
+				BackWPup_Admin::message( sprintf( __( 'Rackspace Cloud container "%s" created.', 'backwpup' ), esc_html( sanitize_text_field( $_POST[ 'newrsccontainer' ] ) ) ) );
 
 			}
 			catch ( Exception $e ) {
@@ -214,14 +216,18 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			$ostore = $conn->objectStoreService( 'cloudFiles' , BackWPup_Option::get( $jobid, 'rscregion' ), 'publicURL');
 			$container = $ostore->getContainer( BackWPup_Option::get( $jobid, 'rsccontainer' ) );
 			$backupfile = $container->getObject( $get_file );
-			header( "Pragma: public" );
-			header( "Expires: 0" );
-			header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
-			header( "Content-Type: application/octet-stream" );
-			header( "Content-Disposition: attachment; filename=" . basename( $get_file ) . ";" );
-			header( "Content-Transfer-Encoding: binary" );
-			header( "Content-Length: " . $backupfile->getContentLength() );
+			if ( $level = ob_get_level() ) {
+				for ( $i = 0; $i < $level; $i ++ ) {
+					ob_end_clean();
+				}
+			}
 			@set_time_limit( 300 );
+			nocache_headers();
+			header( 'Content-Description: File Transfer' );
+			header( 'Content-Type: ' . BackWPup_Job::get_mime_type( $get_file ) );
+			header( 'Content-Disposition: attachment; filename="' . basename( $get_file ) . '"' );
+			header( 'Content-Transfer-Encoding: binary' );
+			header( 'Content-Length: ' . $backupfile->getContentLength() );
 			echo $backupfile->getContent();
 			die();
 		}
@@ -416,10 +422,10 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			if ( ! current_user_can( 'backwpup_jobs_edit' ) )
 				wp_die( -1 );
 			check_ajax_referer( 'backwpup_ajax_nonce' );
-			$args[ 'rscusername' ] = $_POST[ 'rscusername' ];
-			$args[ 'rscapikey' ]   = $_POST[ 'rscapikey' ];
-			$args[ 'rscselected' ] = $_POST[ 'rscselected' ];
-			$args[ 'rscregion' ] = $_POST[ 'rscregion' ];
+			$args[ 'rscusername' ] = sanitize_text_field( $_POST[ 'rscusername' ] );
+			$args[ 'rscapikey' ]   = sanitize_text_field( $_POST[ 'rscapikey' ] );
+			$args[ 'rscselected' ] = sanitize_text_field( $_POST[ 'rscselected' ] );
+			$args[ 'rscregion' ] = sanitize_text_field( $_POST[ 'rscregion' ] );
 			$ajax        = TRUE;
 		}
 		echo '<span id="rsccontainererror" style="color:red;">';

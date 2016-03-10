@@ -20,87 +20,84 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 	public function edit_tab( $jobid ) {
 		?>
 
-		<h3 class="title"><?php _e( 'FTP server and login', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php esc_html_e( 'FTP server and login', 'backwpup' ); ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="idftphost"><?php _e( 'FTP server', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="idftphost"><?php esc_html_e( 'FTP server', 'backwpup' ); ?></label></th>
 				<td>
-                    <input id="idftphost" name="ftphost" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'ftphost' ) );?>"
-                           class="regular-text" autocomplete="off" />&nbsp;&nbsp;
-                    <label for="idftphostport"><?php _e( 'Port:', 'backwpup' ); ?>
-                    <input name="ftphostport" id="idftphostport" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'ftphostport' ) ); ?>"
-                           class="small-text" /></label>
+                    <input id="idftphost" name="ftphost" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'ftphost' ) );?>" class="regular-text" autocomplete="off" />
+					&nbsp;&nbsp;
+                    <label for="idftphostport"><?php esc_html_e( 'Port:', 'backwpup' ); ?>
+                    <input name="ftphostport" id="idftphostport" type="number" step="1" min="1" max="66000" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'ftphostport' ) ); ?>" class="small-text" /></label>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="idftpuser"><?php _e( 'Username', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="idftpuser"><?php esc_html_e( 'Username', 'backwpup' ); ?></label></th>
 				<td>
-                    <input id="idftpuser" name="ftpuser" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'ftpuser' ) ); ?>"
-                           class="user regular-text" autocomplete="off" />
+                    <input id="idftpuser" name="ftpuser" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'ftpuser' ) ); ?>" class="user regular-text" autocomplete="off" />
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="idftppass"><?php _e( 'Password', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="idftppass"><?php esc_html_e( 'Password', 'backwpup' ); ?></label></th>
 				<td>
-                    <input id="idftppass" name="ftppass" type="password" value="<?php echo esc_attr( BackWPup_Encryption::decrypt(BackWPup_Option::get( $jobid, 'ftppass' ) ) ); ?>"
-                           class="password regular-text" autocomplete="off" />
+                    <input id="idftppass" name="ftppass" type="password" value="<?php echo esc_attr( BackWPup_Encryption::decrypt(BackWPup_Option::get( $jobid, 'ftppass' ) ) ); ?>" class="password regular-text" autocomplete="off" />
 				</td>
 			</tr>
 		</table>
 
-		<h3 class="title"><?php _e( 'Backup settings', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php esc_html_e( 'Backup settings', 'backwpup' ); ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="idftpdir"><?php _e( 'Folder to store files in', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="idftpdir"><?php esc_html_e( 'Folder to store files in', 'backwpup' ); ?></label></th>
 				<td>
 					<input id="idftpdir" name="ftpdir" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'ftpdir' ) ); ?>" class="regular-text" />
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php _e( 'File Deletion', 'backwpup' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'File Deletion', 'backwpup' ); ?></th>
 				<td>
 					<?php
-					if ( BackWPup_Option::get( $jobid, 'backuptype' ) == 'archive' ) {
+					if ( BackWPup_Option::get( $jobid, 'backuptype' ) === 'archive' ) {
 						?>
-						<label for="idftpmaxbackups"><input id="idftpmaxbackups" name="ftpmaxbackups" type="text" size="3" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'ftpmaxbackups' ) ); ?>" class="small-text help-tip" title="<?php esc_attr_e( 'Oldest files will be deleted first. 0 = no deletion', 'backwpup' ); ?>" />&nbsp;
-						<?php  _e( 'Maximum number of files to keep in folder.', 'backwpup' ); ?></label>
-						<?php } else { ?>
-						<label for="idftpsyncnodelete"><input class="checkbox" value="1"
-							   type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'ftpsyncnodelete' ), TRUE ); ?>
-							   name="ftpsyncnodelete" id="idftpsyncnodelete" /> <?php _e( 'Do not delete files while syncing to destination!', 'backwpup' ); ?></label>
-						<?php } ?>
+						<label for="idftpmaxbackups">
+							<input id="idftpmaxbackups" name="ftpmaxbackups" type="number" min="0" step="1" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'ftpmaxbackups' ) ); ?>" class="small-text" />
+							&nbsp;<?php esc_html_e( 'Number of files to keep in folder.', 'backwpup' ); ?>
+						</label>
+					<?php } else { ?>
+						<label for="idftpsyncnodelete">
+							<input class="checkbox" value="1" type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'ftpsyncnodelete' ), true ); ?> name="ftpsyncnodelete" id="idftpsyncnodelete" />
+							&nbsp;<?php esc_html_e( 'Do not delete files while syncing to destination!', 'backwpup' ); ?>
+						</label>
+					<?php } ?>
 				</td>
 			</tr>
 		</table>
 
-		<h3 class="title"><?php _e( 'FTP specific settings', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php esc_html_e( 'FTP specific settings', 'backwpup' ); ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="idftptimeout"><?php _e( 'Timeout for FTP connection', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="idftptimeout"><?php esc_html_e( 'Timeout for FTP connection', 'backwpup' ); ?></label></th>
 				<td>
-                    <input id="idftptimeout" name="ftptimeout" type="text" size="3"
+                    <input id="idftptimeout" name="ftptimeout" type="number" step="1" min="1" max="300"
                            value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'ftptimeout' ) ); ?>"
-                           class="small-text" /> <?php _e( 'seconds', 'backwpup' ); ?>
+                           class="small-text" /> <?php esc_html_e( 'seconds', 'backwpup' ); ?>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php _e( 'SSL-FTP connection', 'backwpup' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'SSL-FTP connection', 'backwpup' ); ?></th>
 				<td>
-                    <label for="idftpssl"><input class="checkbox" value="1"
-                           type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'ftpssl' ), TRUE ); ?>
-                           id="idftpssl" name="ftpssl"<?php if ( ! function_exists( 'ftp_ssl_connect' ) ) echo " disabled=\"disabled\""; ?> /> <?php _e( 'Use explicit SSL-FTP connection.', 'backwpup' ); ?></label>
+                    <label for="idftpssl"><input class="checkbox" value="1" type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'ftpssl' ), TRUE ); ?>
+                           id="idftpssl" name="ftpssl"<?php if ( ! function_exists( 'ftp_ssl_connect' ) ) echo " disabled=\"disabled\""; ?> /> <?php esc_html_e( 'Use explicit SSL-FTP connection.', 'backwpup' ); ?></label>
 
 				</td>
 			</tr>
             <tr>
-                <th scope="row"><?php _e( 'FTP Passive Mode', 'backwpup' ); ?></th>
+                <th scope="row"><?php esc_html_e( 'FTP Passive Mode', 'backwpup' ); ?></th>
                 <td>
-                    <label for="idftppasv"><input class="checkbox" value="1"
-                           type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'ftppasv' ), TRUE ); ?>
-                           name="ftppasv" id="idftppasv" /> <?php _e( 'Use FTP Passive Mode.', 'backwpup' ); ?></label>
+                    <label for="idftppasv"><input class="checkbox" value="1" type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'ftppasv' ), TRUE ); ?> name="ftppasv" id="idftppasv" /> <?php esc_html_e( 'Use FTP Passive Mode.', 'backwpup' ); ?></label>
                 </td>
             </tr>
 		</table>
@@ -114,26 +111,28 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 	 */
 	public function edit_form_post_save( $id ) {
 
-		$_POST[ 'ftphost' ] = str_replace( array( 'http://', 'ftp://' ), '', $_POST[ 'ftphost' ] );
+		$_POST[ 'ftphost' ] = str_replace( array( 'http://', 'ftp://' ), '', sanitize_text_field( $_POST[ 'ftphost' ] ) );
 		BackWPup_Option::update( $id, 'ftphost', isset( $_POST[ 'ftphost' ] ) ? $_POST[ 'ftphost' ] : '' );
 
-		BackWPup_Option::update( $id, 'ftphostport', ! empty( $_POST[ 'ftphostport' ] ) ? (int)$_POST[ 'ftphostport' ] : 21 );
-		BackWPup_Option::update( $id, 'ftptimeout', ! empty( $_POST[ 'ftptimeout' ] ) ? (int)$_POST[ 'ftptimeout' ] : 90 );
-		BackWPup_Option::update( $id, 'ftpuser', isset( $_POST[ 'ftpuser' ] ) ? $_POST[ 'ftpuser' ] : '' );
-		BackWPup_Option::update( $id, 'ftppass', isset( $_POST[ 'ftppass' ] ) ? BackWPup_Encryption::encrypt( $_POST[ 'ftppass' ] ) : '' );
+		BackWPup_Option::update( $id, 'ftphostport', ! empty( $_POST[ 'ftphostport' ] ) ? absint( $_POST[ 'ftphostport' ] ) : 21 );
+		BackWPup_Option::update( $id, 'ftptimeout', ! empty( $_POST[ 'ftptimeout' ] ) ? absint( $_POST[ 'ftptimeout' ] ) : 90 );
+		BackWPup_Option::update( $id, 'ftpuser', sanitize_text_field( $_POST[ 'ftpuser' ] ) );
+		BackWPup_Option::update( $id, 'ftppass', BackWPup_Encryption::encrypt( $_POST[ 'ftppass' ] ) );
 
-		if ( ! empty( $_POST[ 'ftpdir' ] ) )
-			$_POST[ 'ftpdir' ] = trailingslashit( str_replace( '//', '/', str_replace( '\\', '/', trim( stripslashes( $_POST[ 'ftpdir' ] ) ) ) ) );
+		if ( ! empty( $_POST[ 'ftpdir' ] ) ) {
+			$_POST['ftpdir'] = trailingslashit( str_replace( '//', '/', str_replace( '\\', '/', trim( sanitize_text_field( $_POST['ftpdir'] ) ) ) ) );
+		}
 		BackWPup_Option::update( $id, 'ftpdir', $_POST[ 'ftpdir' ] );
 
-		BackWPup_Option::update( $id, 'ftpmaxbackups', isset( $_POST[ 'ftpmaxbackups' ] ) ? (int)$_POST[ 'ftpmaxbackups' ] : 0 );
+		BackWPup_Option::update( $id, 'ftpmaxbackups', ! empty( $_POST[ 'ftpmaxbackups' ] ) ? absint( $_POST[ 'ftpmaxbackups' ] ) : 0 );
 
-		if ( function_exists( 'ftp_ssl_connect' ) )
-			BackWPup_Option::update( $id, 'ftpssl', ( isset( $_POST[ 'ftpssl' ] ) && $_POST[ 'ftpssl' ] == 1 ) ? TRUE : FALSE );
-		else
-			BackWPup_Option::update( $id, 'ftpssl', FALSE );
+		if ( function_exists( 'ftp_ssl_connect' ) ) {
+			BackWPup_Option::update( $id, 'ftpssl', ! empty( $_POST[ 'ftpssl' ] ) );
+		} else {
+			BackWPup_Option::update( $id, 'ftpssl', false );
+		}
 
-		BackWPup_Option::update( $id, 'ftppasv', ( isset( $_POST[ 'ftppasv' ] ) && $_POST[ 'ftppasv' ] == 1 ) ? TRUE : FALSE );
+		BackWPup_Option::update( $id, 'ftppasv', ! empty( $_POST[ 'ftppasv' ] ) );
 	}
 
 	/**

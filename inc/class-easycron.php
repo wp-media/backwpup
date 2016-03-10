@@ -185,23 +185,22 @@ class BackWPup_EasyCron {
 
 	public function api_key_form() {
 		?>
-		<h3 class="title"><?php _e( 'EasyCron', 'backwpup' ); ?></h3>
-		<p><?php _e( 'Here you can setup your <a href="https://www.easycron.com/user/token?ref=36673" class="help-tip" title="Affiliate Link!">EasyCron.com API key</a> to use this service.', 'backwpup' ); ?></p>
+		<h3 class="title"><?php esc_html_e( 'EasyCron', 'backwpup' ); ?></h3>
+		<p><?php _e( 'Here you can setup your <a href="https://www.easycron.com/user/token?ref=36673" title="Affiliate Link!">EasyCron.com API key</a> to use this service.', 'backwpup' ); ?></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="easycronapikeyid"><?php _e( 'Api key:', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="easycronapikeyid"><?php esc_html_e( 'Api key:', 'backwpup' ); ?></label></th>
 				<td>
 					<input name="easycronapikey" type="password" id="easycronapikeyid"
-						value="<?php echo get_site_option( 'backwpup_cfg_easycronapikey' );?>"
+						value="<?php echo esc_attr( get_site_option( 'backwpup_cfg_easycronapikey' ) );?>"
 						class="regular-text" autocomplete="off" />
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="easycronwpid"><?php _e( 'Trigger WordPress Cron:', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="easycronwpid"><?php esc_html_e( 'Trigger WordPress Cron:', 'backwpup' ); ?></label></th>
 				<td>
-					<input name="easycronwp" type="checkbox" id="easycronwpid" class="help-tip"
-						value="1" <?php $wpcron = get_site_option( 'backwpup_cfg_easycronjobid' ); checked( !empty( $wpcron ) ); ?>
-						autocomplete="off" title="<?php _e( 'If you check this box, a cron job will be created on EasyCron that all 5 Minutes calls the WordPress cron.', 'backwpup' ); ?>" />
+					<input name="easycronwp" type="checkbox" id="easycronwpid" value="1" <?php $wpcron = get_site_option( 'backwpup_cfg_easycronjobid' ); checked( !empty( $wpcron ) ); ?> />
+					<?php esc_html_e( 'If you check this box, a cron job will be created on EasyCron that all 5 Minutes calls the WordPress cron.', 'backwpup' ); ?>
 				</td>
 			</tr>
 		</table>
@@ -212,12 +211,12 @@ class BackWPup_EasyCron {
 	public function api_key_save_form() {
 
 		if ( ! empty( $_POST[ 'easycronapikey' ] ) ) {
-			update_site_option( 'backwpup_cfg_easycronapikey', esc_attr( $_POST[ 'easycronapikey' ] ) );
+			update_site_option( 'backwpup_cfg_easycronapikey',  sanitize_text_field( $_POST[ 'easycronapikey' ] ) );
 		} else {
 			delete_site_option( 'backwpup_cfg_easycronapikey' );
 		}
 
-		if ( ! empty( $_POST[ 'easycronwp' ] ) && $_POST[ 'easycronwp' ] == 1 ) {
+		if ( ! empty( $_POST[ 'easycronwp' ] ) ) {
 			BackWPup_EasyCron::update( 0 );
 		} else {
 			BackWPup_EasyCron::delete( 0 );

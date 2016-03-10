@@ -30,7 +30,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 	 */
 	public function edit_tab( $jobid ) {
 
-		if ( ! empty( $_GET['deleteauth'] ) && $_GET['deleteauth'] == 1 ) {
+		if ( ! empty( $_GET['deleteauth'] ) ) {
 			//disable token on dropbox
 			try {
 				$dropbox = new BackWPup_Destination_Dropbox_API( BackWPup_Option::get( $jobid, 'dropboxroot' ) );
@@ -59,90 +59,75 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 		$dropboxtoken = BackWPup_Option::get( $jobid, 'dropboxtoken' );
 		?>
 
-		<h3 class="title"><?php _e( 'Login', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php esc_html_e( 'Login', 'backwpup' ); ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><?php _e( 'Authentication', 'backwpup' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Authentication', 'backwpup' ); ?></th>
 				<td><?php if ( empty( $dropboxtoken['access_token'] ) ) { ?>
-						<span style="color:red;"><?php _e( 'Not authenticated!', 'backwpup' ); ?></span><br/>&nbsp;<br/>
+						<span style="color:red;"><?php esc_html_e( 'Not authenticated!', 'backwpup' ); ?></span><br/>&nbsp;<br/>
 						<a class="button secondary"
-						   href="http://db.tt/8irM1vQ0"><?php _e( 'Create Account', 'backwpup' ); ?></a>
+						   href="http://db.tt/8irM1vQ0"><?php esc_html_e( 'Create Account', 'backwpup' ); ?></a>
 					<?php } else { ?>
-						<span style="color:green;"><?php _e( 'Authenticated!', 'backwpup' ); ?></span><br/>&nbsp;<br/>
+						<span style="color:green;"><?php esc_html_e( 'Authenticated!', 'backwpup' ); ?></span><br/>&nbsp;<br/>
 						<a class="button secondary"
-						   href="<?php echo network_admin_url( 'admin.php' ) . '?page=backwpupeditjob&deleteauth=1&jobid=' . $jobid . '&tab=dest-dropbox&_wpnonce=' . wp_create_nonce( 'edit-job' ); ?>"
-						   title="<?php _e( 'Delete Dropbox Authentication', 'backwpup' ); ?>"><?php _e( 'Delete Dropbox Authentication', 'backwpup' ); ?></a>
+						   href="<?php echo wp_nonce_url(network_admin_url( 'admin.php?page=backwpupeditjob&deleteauth=1&jobid=' . $jobid . '&tab=dest-dropbox'), 'edit-job'  ); ?>"
+						   title="<?php esc_html_e( 'Delete Dropbox Authentication', 'backwpup' ); ?>"><?php esc_html_e( 'Delete Dropbox Authentication', 'backwpup' ); ?></a>
 					<?php } ?>
 				</td>
 			</tr>
 
 			<?php if ( empty( $dropboxtoken['access_token'] ) ) { ?>
 				<tr>
-					<th scope="row"><label
-							for="id_sandbox_code"><?php _e( 'App Access to Dropbox', 'backwpup' ); ?></label></th>
+					<th scope="row"><label for="id_sandbox_code"><?php esc_html_e( 'App Access to Dropbox', 'backwpup' ); ?></label></th>
 					<td>
-						<input id="id_sandbox_code" name="sandbox_code" type="text" value=""
-						       class="regular-text code help-tip"
-						       title="<?php esc_attr_e( 'A dedicated folder named BackWPup will be created inside of the Apps folder in your Dropbox. BackWPup will get read and write access to that folder only. You can specify a subfolder as your backup destination for this job in the destination field below.', 'backwpup' ); ?>"/>&nbsp;
-						<a class="button secondary" href="<?php echo $sandbox_auth_url; ?>"
-						   target="_blank"><?php _e( 'Get Dropbox App auth code', 'backwpup' ); ?></a>
-						<p><em><?php _e( 'Allows restricted access to Apps/BackWPup folder only.', 'backwpup' ); ?></em>
-						</p>
+						<input id="id_sandbox_code" name="sandbox_code" type="text" value="" class="regular-text code" />&nbsp;
+						<a class="button secondary" href="<?php echo esc_attr( $sandbox_auth_url ); ?>" target="_blank"><?php esc_html_e( 'Get Dropbox App auth code', 'backwpup' ); ?></a>
+						<p class="description"><?php esc_html_e( 'A dedicated folder named BackWPup will be created inside of the Apps folder in your Dropbox. BackWPup will get read and write access to that folder only. You can specify a subfolder as your backup destination for this job in the destination field below.', 'backwpup' ); ?></p>
 					</td>
 				</tr>
 				<tr>
 					<th></th>
-					<td><?php _e( '— OR —', 'backwpup' ); ?></td>
+					<td><?php esc_html_e( '— OR —', 'backwpup' ); ?></td>
 				</tr>
 				<tr>
-					<th scope="row"><label
-							for="id_dropbbox_code"><?php _e( 'Full Access to Dropbox', 'backwpup' ); ?></label></th>
+					<th scope="row"><label for="id_dropbbox_code"><?php esc_html_e( 'Full Access to Dropbox', 'backwpup' ); ?></label></th>
 					<td>
-						<input id="id_dropbbox_code" name="dropbbox_code" type="text" value=""
-						       class="regular-text code help-tip"
-						       title="<?php _e( 'BackWPup will have full read and write access to your entire Dropbox. You can specify your backup destination wherever you want, just be aware that ANY files or folders inside of your Dropbox can be overridden or deleted by BackWPup.', 'backwpup' ); ?>"/>&nbsp;
-						<a class="button secondary" href="<?php echo $dropbox_auth_url; ?>"
-						   target="_blank"><?php _e( 'Get full Dropbox auth code ', 'backwpup' ); ?></a>
-						<p><em><?php _e( 'Allows full access to your entire Dropbox.', 'backwpup' ); ?></em></p>
+						<input id="id_dropbbox_code" name="dropbbox_code" type="text" value="" class="regular-text code" />&nbsp;
+						<a class="button secondary" href="<?php echo esc_attr( $dropbox_auth_url ); ?>" target="_blank"><?php esc_html_e( 'Get full Dropbox auth code ', 'backwpup' ); ?></a>
+						<p class="description"><?php esc_html_e( 'BackWPup will have full read and write access to your entire Dropbox. You can specify your backup destination wherever you want, just be aware that ANY files or folders inside of your Dropbox can be overridden or deleted by BackWPup.', 'backwpup' ); ?></p>
 					</td>
 				</tr>
 			<?php } ?>
 		</table>
 
 
-		<h3 class="title"><?php _e( 'Backup settings', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php esc_html_e( 'Backup settings', 'backwpup' ); ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="iddropboxdir"><?php _e( 'Destination Folder', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="iddropboxdir"><?php esc_html_e( 'Destination Folder', 'backwpup' ); ?></label></th>
 				<td>
-					<input id="iddropboxdir" name="dropboxdir" type="text"
-					       value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'dropboxdir' ) ); ?>"
-					       class="regular-text help-tip"
-					       title="<?php esc_attr_e( 'Specify a subfolder where your backup archives will be stored. If you use the App option from above, this folder will be created inside of Apps/BackWPup. Otherwise it will be created at the root of your Dropbox. Already exisiting folders with the same name will not be overriden.', 'backwpup' ); ?>"/>
-					<p>
-						<em><?php _e( 'Folder inside your Dropbox where your backup archives will be stored.', 'backwpup' ); ?></em>
+					<input id="iddropboxdir" name="dropboxdir" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'dropboxdir' ) ); ?>" class="regular-text" />
+					<p class="description">
+						<?php esc_attr_e( 'Specify a subfolder where your backup archives will be stored. If you use the App option from above, this folder will be created inside of Apps/BackWPup. Otherwise it will be created at the root of your Dropbox. Already exisiting folders with the same name will not be overriden.', 'backwpup' ); ?>
 					</p>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php _e( 'File Deletion', 'backwpup' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'File Deletion', 'backwpup' ); ?></th>
 				<td>
 					<?php
-					if ( BackWPup_Option::get( $jobid, 'backuptype' ) == 'archive' ) {
+					if ( BackWPup_Option::get( $jobid, 'backuptype' ) === 'archive' ) {
 						?>
-						<label for="iddropboxmaxbackups"><input id="iddropboxmaxbackups" name="dropboxmaxbackups"
-						                                        title="<?php esc_attr_e( 'Older files will be deleted first. 0 = no files will be deleted.', 'backwpup' ); ?>"
-						                                        type="text" size="3"
-						                                        value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'dropboxmaxbackups' ) ); ?>"
-						                                        class="small-text help-tip"/>&nbsp;
-							<em><?php _e( 'Number of files to keep in folder.', 'backwpup' ); ?></em></label>
+						<label for="iddropboxmaxbackups">
+							<input id="iddropboxmaxbackups" name="dropboxmaxbackups" type="number" min="0" step="1" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'dropboxmaxbackups' ) ); ?>" class="small-text" />
+							&nbsp;<?php esc_html_e( 'Number of files to keep in folder.', 'backwpup' ); ?>
+						</label>
 					<?php } else { ?>
-						<label for="iddropboxsyncnodelete"><input class="checkbox" value="1"
-						                                          type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'dropboxsyncnodelete' ), true ); ?>
-						                                          name="dropboxsyncnodelete"
-						                                          id="iddropboxsyncnodelete"/> <?php _e( 'Do not delete files while syncing to destination!', 'backwpup' ); ?>
+						<label for="iddropboxsyncnodelete">
+							<input class="checkbox" value="1" type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'dropboxsyncnodelete' ), true ); ?> name="dropboxsyncnodelete" id="iddropboxsyncnodelete" />
+							&nbsp;<?php esc_html_e( 'Do not delete files while syncing to destination!', 'backwpup' ); ?>
 						</label>
 					<?php } ?>
 				</td>
@@ -182,14 +167,14 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 			}
 		}
 
-		BackWPup_Option::update( $jobid, 'dropboxsyncnodelete', ( isset( $_POST['dropboxsyncnodelete'] ) && $_POST['dropboxsyncnodelete'] == 1 ) ? true : false );
-		BackWPup_Option::update( $jobid, 'dropboxmaxbackups', isset( $_POST['dropboxmaxbackups'] ) ? (int) $_POST['dropboxmaxbackups'] : 0 );
+		BackWPup_Option::update( $jobid, 'dropboxsyncnodelete', ! empty( $_POST['dropboxsyncnodelete'] ) );
+		BackWPup_Option::update( $jobid, 'dropboxmaxbackups', ! empty( $_POST['dropboxmaxbackups'] ) ? absint( $_POST['dropboxmaxbackups'] ) : 0 );
 
-		$_POST['dropboxdir'] = trailingslashit( str_replace( '//', '/', str_replace( '\\', '/', trim( stripslashes( $_POST['dropboxdir'] ) ) ) ) );
-		if ( substr( $_POST['dropboxdir'], 0, 1 ) == '/' ) {
+		$_POST['dropboxdir'] = trailingslashit( str_replace( '//', '/', str_replace( '\\', '/', trim( sanitize_text_field( $_POST['dropboxdir'] ) ) ) ) );
+		if ( substr( $_POST['dropboxdir'], 0, 1 ) === '/' ) {
 			$_POST['dropboxdir'] = substr( $_POST['dropboxdir'], 1 );
 		}
-		if ( $_POST['dropboxdir'] == '/' ) {
+		if ( $_POST['dropboxdir'] === '/' ) {
 			$_POST['dropboxdir'] = '';
 		}
 		BackWPup_Option::update( $jobid, 'dropboxdir', $_POST['dropboxdir'] );
@@ -342,7 +327,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 						$files[ $filecounter ]['folder']      = "https://content.dropboxapi.com/1/files/" . $job_object->job['dropboxroot'] . dirname( $data['path'] ) . "/";
 						$files[ $filecounter ]['file']        = $data['path'];
 						$files[ $filecounter ]['filename']    = basename( $data['path'] );
-						$files[ $filecounter ]['downloadurl'] = network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=downloaddropbox&file=' . $data['path'] . '&jobid=' . $job_object->job['jobid'];
+						$files[ $filecounter ]['downloadurl'] = network_admin_url( 'admin.php?page=backwpupbackups&action=downloaddropbox&file=' . $data['path'] . '&jobid=' . $job_object->job['jobid'] );
 						$files[ $filecounter ]['filesize']    = $data['bytes'];
 						$files[ $filecounter ]['time']        = strtotime( $data['modified'] ) + ( get_option( 'gmt_offset' ) * 3600 );
 						$filecounter ++;
@@ -825,6 +810,7 @@ final class BackWPup_Destination_Dropbox_API {
 			return false;
 		} elseif ( isset( $output['error'] ) || $status['http_code'] >= 300 || $status['http_code'] < 200 || curl_errno( $ch ) > 0 ) {
 			if ( isset( $output['error'] ) && is_string( $output['error'] ) ) {
+				$args    = ( is_array( $args ) ) ? '?' . http_build_query( $args, '', '&' ) : $args;
 				$message = '(' . $status['http_code'] . ') ' . $output['error'] . ' ' . $url . $args;
 			} elseif ( isset( $output['error']['hash'] ) && $output['error']['hash'] != '' ) {
 				$message = (string) '(' . $status['http_code'] . ') ' . $output['error']['hash'] . ' ' . $url . $args;

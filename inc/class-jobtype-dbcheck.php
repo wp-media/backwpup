@@ -32,26 +32,26 @@ class BackWPup_JobType_DBCheck extends BackWPup_JobTypes {
 	 */
 	public function edit_tab( $jobid ) {
 		?>
-		<h3 class="title"><?php _e( 'Settings for database check', 'backwpup' ) ?></h3>
+		<h3 class="title"><?php esc_html_e( 'Settings for database check', 'backwpup' ) ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><?php _e( 'WordPress tables only', 'backwpup' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'WordPress tables only', 'backwpup' ); ?></th>
 				<td>
 					<label for="iddbcheckwponly">
 					<input class="checkbox" value="1" id="iddbcheckwponly"
 						   type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'dbcheckwponly' ), TRUE ); ?>
-						   name="dbcheckwponly"/> <?php _e( 'Check WordPress database tables only', 'backwpup' ); ?>
+						   name="dbcheckwponly"/> <?php esc_html_e( 'Check WordPress database tables only', 'backwpup' ); ?>
                     </label>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php _e( 'Repair', 'backwpup' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Repair', 'backwpup' ); ?></th>
 				<td>
                     <label for="iddbcheckrepair">
 					<input class="checkbox" value="1" id="iddbcheckrepair"
 						   type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'dbcheckrepair' ), TRUE ); ?>
-						   name="dbcheckrepair" /> <?php _e( 'Try to repair defect table', 'backwpup' ); ?>
+						   name="dbcheckrepair" /> <?php esc_html_e( 'Try to repair defect table', 'backwpup' ); ?>
 					</label>
 				</td>
 			</tr>
@@ -64,8 +64,8 @@ class BackWPup_JobType_DBCheck extends BackWPup_JobTypes {
 	 * @param $jobid
 	 */
 	public function edit_form_post_save( $jobid ) {
-		BackWPup_Option::update( $jobid, 'dbcheckwponly', ( isset( $_POST[ 'dbcheckwponly' ] ) && $_POST[ 'dbcheckwponly' ] == 1 ) ? TRUE : FALSE );
-		BackWPup_Option::update( $jobid, 'dbcheckrepair', ( isset( $_POST[ 'dbcheckrepair' ] ) && $_POST[ 'dbcheckrepair' ] == 1 ) ? TRUE : FALSE );
+		BackWPup_Option::update( $jobid, 'dbcheckwponly', ! empty( $_POST[ 'dbcheckwponly' ] ) );
+		BackWPup_Option::update( $jobid, 'dbcheckrepair', ! empty( $_POST[ 'dbcheckrepair' ] ) );
 	}
 
 	/**

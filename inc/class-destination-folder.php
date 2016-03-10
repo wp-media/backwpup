@@ -26,28 +26,31 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	 */
 	public function edit_tab( $jobid ) {
 		?>
-    <h3 class="title"><?php _e( 'Backup settings', 'backwpup' ); ?></h3>
+    <h3 class="title"><?php esc_html_e( 'Backup settings', 'backwpup' ); ?></h3>
     <p></p>
     <table class="form-table">
         <tr>
-            <th scope="row"><label for="idbackupdir"><?php _e( 'Folder to store backups in', 'backwpup' ); ?></label></th>
+            <th scope="row"><label for="idbackupdir"><?php esc_html_e( 'Folder to store backups in', 'backwpup' ); ?></label></th>
             <td>
                 <input name="backupdir" id="idbackupdir" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'backupdir' ) ); ?>" class="regular-text" />
             </td>
         </tr>
         <tr>
-            <th scope="row"><?php _e( 'File Deletion', 'backwpup' ); ?></th>
+            <th scope="row"><?php esc_html_e( 'File Deletion', 'backwpup' ); ?></th>
             <td>
-				<?php
-				if ( BackWPup_Option::get( $jobid, 'backuptype' ) == 'archive' ) {
-					?>
-                    <label for="idmaxbackups"><input name="maxbackups" id="idmaxbackups" type="text" size="3" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'maxbackups' ) ) ;?>" class="small-text help-tip" title="<?php esc_attr_e( 'Oldest files will be deleted first. 0 = no deletion', 'backwpup' ); ?>" />&nbsp;
-					<?php  _e( 'Number of files to keep in folder.', 'backwpup' ); ?></label>
-					<?php } else { ?>
-                    <label for="idbackupsyncnodelete"><input class="checkbox" value="1"
-                           type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'backupsyncnodelete' ), TRUE ); ?>
-                           name="backupsyncnodelete" id="idbackupsyncnodelete" /> <?php _e( 'Do not delete files while syncing to destination!', 'backwpup' ); ?></label>
-					<?php } ?>
+	            <?php
+	            if ( BackWPup_Option::get( $jobid, 'backuptype' ) === 'archive' ) {
+		            ?>
+		            <label for="idmaxbackups">
+			            <input id="idmaxbackups" name="maxbackups" type="number" min="0" step="1" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'maxbackups' ) ); ?>" class="small-text"/>
+			            &nbsp;<?php esc_html_e( 'Number of files to keep in folder.', 'backwpup' ); ?>
+		            </label>
+	            <?php } else { ?>
+		            <label for="idbackupsyncnodelete">
+			            <input class="checkbox" value="1" type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'backupsyncnodelete' ), true ); ?> name="backupsyncnodelete" id="idbackupsyncnodelete"/>
+			            &nbsp;<?php esc_html_e( 'Do not delete files while syncing to destination!', 'backwpup' ); ?>
+		            </label>
+	            <?php } ?>
             </td>
         </tr>
     </table>
@@ -60,11 +63,11 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	 */
 	public function edit_form_post_save( $jobid ) {
 
-		$_POST[ 'backupdir' ] = trailingslashit( str_replace( array( '//', '\\' ), '/', trim( stripslashes( $_POST[ 'backupdir' ] ) ) ) );
+		$_POST[ 'backupdir' ] = trailingslashit( str_replace( array( '//', '\\' ), '/', trim( sanitize_text_field( $_POST[ 'backupdir' ] ) ) ) );
 		BackWPup_Option::update( $jobid, 'backupdir', $_POST[ 'backupdir' ] );
 
-		BackWPup_Option::update( $jobid, 'maxbackups', isset( $_POST[ 'maxbackups' ] ) ? (int)$_POST[ 'maxbackups' ] : 0 );
-		BackWPup_Option::update( $jobid, 'backupsyncnodelete', ( isset( $_POST[ 'backupsyncnodelete' ] ) && $_POST[ 'backupsyncnodelete' ] == 1 ) ? TRUE : FALSE );
+		BackWPup_Option::update( $jobid, 'maxbackups', ! empty( $_POST[ 'maxbackups' ] ) ? absint( $_POST[ 'maxbackups' ] ) : 0 );
+		BackWPup_Option::update( $jobid, 'backupsyncnodelete', ! empty( $_POST[ 'backupsyncnodelete' ] ) );
 	}
 
 	/**
@@ -95,21 +98,24 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	 */
 	public function file_download( $jobid, $get_file ) {
 
-		$backup_dir = esc_attr( BackWPup_Option::get( (int)$jobid, 'backupdir' ) );
+		$backup_dir = esc_attr( BackWPup_Option::get( (int) $jobid, 'backupdir' ) );
 		$backup_dir = BackWPup_File::get_absolute_path( $backup_dir );
 
 		$get_file = realpath( trailingslashit( $backup_dir ) . basename( $get_file ) );
 
 		if ( $get_file && is_readable( $get_file ) ) {
-			header( "Pragma: public" );
-			header( "Expires: 0" );
-			header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
-			header( "Content-Type: application/octet-stream" );
-			header( "Content-Disposition: attachment; filename=" . basename( $get_file ) . ";" );
-			header( "Content-Transfer-Encoding: binary" );
-			header( "Content-Length: " . filesize( $get_file ) );
+			if ( $level = ob_get_level() ) {
+				for ( $i = 0; $i < $level; $i ++ ) {
+					ob_end_clean();
+				}
+			}
 			@set_time_limit( 300 );
-			//chunked read file
+			nocache_headers();
+			header( 'Content-Description: File Transfer' );
+			header( 'Content-Type: ' . BackWPup_Job::get_mime_type( $get_file ) );
+			header( 'Content-Disposition: attachment; filename="' . basename( $get_file ) . '"' );
+			header( 'Content-Transfer-Encoding: binary' );
+			header( 'Content-Length: ' . filesize( $get_file ) );
 			$handle = fopen( $get_file, 'rb' );
 			if ( $handle ) {
 				while ( ! feof( $handle ) ) {
@@ -119,9 +125,8 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 				fclose( $handle );
 			}
 			die();
-		}
-		else {
-			header( $_SERVER[ "SERVER_PROTOCOL" ] . " 404 Not Found" );
+		} else {
+			header( $_SERVER["SERVER_PROTOCOL"] . " 404 Not Found" );
 			header( "Status: 404 Not Found" );
 			die();
 		}
@@ -168,7 +173,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	 * @param $job_object
 	 * @return bool
 	 */
-	public function job_run_archive( BackWPup_Job$job_object ) {
+	public function job_run_archive( BackWPup_Job $job_object ) {
 
 		$job_object->substeps_todo = 1;
 		if ( ! empty( $job_object->job[ 'jobid' ] ) )

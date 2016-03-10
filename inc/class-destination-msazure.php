@@ -22,18 +22,18 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 	 */
 	public function edit_tab( $jobid ) {
 		?>
-		<h3 class="title"><?php _e( 'MS Azure access keys', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php esc_html_e( 'MS Azure access keys', 'backwpup' ); ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="msazureaccname"><?php _e( 'Account name', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="msazureaccname"><?php esc_html_e( 'Account name', 'backwpup' ); ?></label></th>
 				<td>
 					<input id="msazureaccname" name="msazureaccname" type="text"
 						   value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'msazureaccname' ) );?>" class="regular-text" autocomplete="off" />
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="msazurekey"><?php _e( 'Access key', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="msazurekey"><?php esc_html_e( 'Access key', 'backwpup' ); ?></label></th>
 				<td>
 					<input id="msazurekey" name="msazurekey" type="password"
 						   value="<?php echo esc_attr( BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 'msazurekey' ) ) );?>" class="regular-text" autocomplete="off" />
@@ -41,11 +41,11 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 			</tr>
 		</table>
 
-		<h3 class="title"><?php _e( 'Blob container', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php esc_html_e( 'Blob container', 'backwpup' ); ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="msazurecontainerselected"><?php _e( 'Container selection', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="msazurecontainerselected"><?php esc_html_e( 'Container selection', 'backwpup' ); ?></label></th>
 				<td>
 					<input id="msazurecontainerselected" name="msazurecontainerselected" type="hidden" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'msazurecontainer' ) );?>" />
 					<?php if ( BackWPup_Option::get( $jobid, 'msazureaccname' ) && BackWPup_Option::get( $jobid, 'msazurekey' ) ) $this->edit_ajax( array(
@@ -56,35 +56,38 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="newmsazurecontainer"><?php _e( 'Create a new container', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="newmsazurecontainer"><?php esc_html_e( 'Create a new container', 'backwpup' ); ?></label></th>
 				<td>
 					<input id="newmsazurecontainer" name="newmsazurecontainer" type="text" value="" class="small-text" autocomplete="off" />
 				</td>
 			</tr>
 		</table>
 
-		<h3 class="title"><?php _e( 'Backup settings', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php esc_html_e( 'Backup settings', 'backwpup' ); ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="idmsazuredir"><?php _e( 'Folder in container', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="idmsazuredir"><?php esc_html_e( 'Folder in container', 'backwpup' ); ?></label></th>
 				<td>
 					<input id="idmsazuredir" name="msazuredir" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'msazuredir' ) ); ?>" class="regular-text" />
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php _e( 'File deletion', 'backwpup' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'File deletion', 'backwpup' ); ?></th>
 				<td>
 					<?php
-					if ( BackWPup_Option::get( $jobid, 'backuptype' ) == 'archive' ) {
+					if ( BackWPup_Option::get( $jobid, 'backuptype' ) === 'archive' ) {
 						?>
-                        <label for="idmsazuremaxbackups"><input id="idmsazuremaxbackups" name="msazuremaxbackups" type="text" size="3" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'msazuremaxbackups' ) );?>" class="small-text help-tip" title="<?php esc_attr_e( 'Oldest files will be deleted first. 0 = no deletion', 'backwpup' );?>" />&nbsp;
-						<?php  _e( 'Number of files to keep in folder.', 'backwpup' ); ?></label>
-						<?php } else { ?>
-						<label for="idmsazuresyncnodelete"><input class="checkbox" value="1"
-							   type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'msazuresyncnodelete' ), TRUE ); ?>
-							   name="msazuresyncnodelete" id="idmsazuresyncnodelete" /> <?php _e( 'Do not delete files while syncing to destination!', 'backwpup' ); ?></label>
-						<?php } ?>
+						<label for="idmsazuremaxbackups">
+							<input id="idmsazuremaxbackups" name="msazuremaxbackups" type="number" min="0" step="1" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'msazuremaxbackups' ) ); ?>" class="small-text" />
+							&nbsp;<?php esc_html_e( 'Number of files to keep in folder.', 'backwpup' ); ?>
+						</label>
+					<?php } else { ?>
+						<label for="idmsazuresyncnodelete">
+							<input class="checkbox" value="1" type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'msazuresyncnodelete' ), true ); ?> name="msazuresyncnodelete" id="idmsazuresyncnodelete" />
+							&nbsp;<?php esc_html_e( 'Do not delete files while syncing to destination!', 'backwpup' ); ?>
+						</label>
+					<?php } ?>
 				</td>
 			</tr>
 		</table>
@@ -98,30 +101,30 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 	 */
 	public function edit_form_post_save( $jobid ) {
 
-		BackWPup_Option::update( $jobid, 'msazureaccname', isset( $_POST[ 'msazureaccname' ] ) ? $_POST[ 'msazureaccname' ] : '' );
-		BackWPup_Option::update( $jobid, 'msazurekey', isset( $_POST[ 'msazurekey' ] ) ? BackWPup_Encryption::encrypt( $_POST[ 'msazurekey' ] ) : '' );
-		BackWPup_Option::update( $jobid, 'msazurecontainer', isset( $_POST[ 'msazurecontainer' ] ) ? $_POST[ 'msazurecontainer' ] : '' );
+		BackWPup_Option::update( $jobid, 'msazureaccname', sanitize_text_field( $_POST[ 'msazureaccname' ] ) );
+		BackWPup_Option::update( $jobid, 'msazurekey', sanitize_text_field( $_POST[ 'msazurekey' ] ) );
+		BackWPup_Option::update( $jobid, 'msazurecontainer', sanitize_text_field( $_POST[ 'msazurecontainer' ] ) );
 
-		$_POST[ 'msazuredir' ] = trailingslashit( str_replace( '//', '/', str_replace( '\\', '/', trim( stripslashes( $_POST[ 'msazuredir' ] ) ) ) ) );
+		$_POST[ 'msazuredir' ] = trailingslashit( str_replace( '//', '/', str_replace( '\\', '/', trim( sanitize_text_field( $_POST[ 'msazuredir' ] ) ) ) ) );
 		if ( substr( $_POST[ 'msazuredir' ], 0, 1 ) == '/' )
 			$_POST[ 'msazuredir' ] = substr( $_POST[ 'msazuredir' ], 1 );
 		if ( $_POST[ 'msazuredir' ] == '/' )
 			$_POST[ 'msazuredir' ] = '';
 		BackWPup_Option::update( $jobid, 'msazuredir', $_POST[ 'msazuredir' ] );
 
-		BackWPup_Option::update( $jobid, 'msazuremaxbackups', isset( $_POST[ 'msazuremaxbackups' ] ) ? (int)$_POST[ 'msazuremaxbackups' ] : 0 );
-		BackWPup_Option::update( $jobid, 'msazuresyncnodelete', ( isset( $_POST[ 'msazuresyncnodelete' ] ) && $_POST[ 'msazuresyncnodelete' ] == 1 ) ? TRUE : FALSE );
+		BackWPup_Option::update( $jobid, 'msazuremaxbackups', ! empty( $_POST[ 'msazuremaxbackups' ] ) ? absint( $_POST[ 'msazuremaxbackups' ] ) : 0 );
+		BackWPup_Option::update( $jobid, 'msazuresyncnodelete', ! empty( $_POST[ 'msazuresyncnodelete' ] ) );
 
 		//create a new container
 		if ( ! empty( $_POST[ 'newmsazurecontainer' ] ) && ! empty( $_POST[ 'msazureaccname' ] ) && ! empty( $_POST[ 'msazurekey' ] ) ) {
 			try {
 				set_include_path( get_include_path() . PATH_SEPARATOR . BackWPup::get_plugin_data( 'plugindir' ) .'/vendor/PEAR/');
-				$blobRestProxy = WindowsAzure\Common\ServicesBuilder::getInstance()->createBlobService( 'DefaultEndpointsProtocol=https;AccountName=' . $_POST[ 'msazureaccname' ] . ';AccountKey=' . $_POST[ 'msazurekey' ] );
+				$blobRestProxy = WindowsAzure\Common\ServicesBuilder::getInstance()->createBlobService( 'DefaultEndpointsProtocol=https;AccountName=' . sanitize_text_field( $_POST[ 'msazureaccname' ] ) . ';AccountKey=' . sanitize_text_field( $_POST[ 'msazurekey' ] ) );
 				$container_options = new WindowsAzure\Blob\Models\CreateContainerOptions();
 				$container_options->setPublicAccess( WindowsAzure\Blob\Models\PublicAccessType::NONE );
 				$blobRestProxy->createContainer( $_POST[ 'newmsazurecontainer' ], $container_options );
-				BackWPup_Option::update( $jobid, 'msazurecontainer', $_POST[ 'newmsazurecontainer' ] );
-				BackWPup_Admin::message( sprintf( __( 'MS Azure container "%s" created.', 'backwpup' ), $_POST[ 'newmsazurecontainer' ] ) );
+				BackWPup_Option::update( $jobid, 'msazurecontainer', sanitize_text_field( $_POST[ 'newmsazurecontainer' ] ) );
+				BackWPup_Admin::message( sprintf( __( 'MS Azure container "%s" created.', 'backwpup' ), esc_html( sanitize_text_field( $_POST[ 'newmsazurecontainer' ] ) ) ) );
 			}
 			catch ( Exception $e ) {
 				BackWPup_Admin::message( sprintf( __( 'MS Azure container create: %s', 'backwpup' ), $e->getMessage() ), TRUE );
@@ -167,14 +170,18 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 			set_include_path( get_include_path() . PATH_SEPARATOR . BackWPup::get_plugin_data( 'plugindir' ) .'/vendor/PEAR/');
 			$blobRestProxy = WindowsAzure\Common\ServicesBuilder::getInstance()->createBlobService( 'DefaultEndpointsProtocol=https;AccountName=' . BackWPup_Option::get( $jobid, 'msazureaccname' ) . ';AccountKey=' . BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 'msazurekey' ) ) );
 			$blob = $blobRestProxy->getBlob( BackWPup_Option::get( $jobid, 'msazurecontainer' ), $get_file );
-			header( "Pragma: public" );
-			header( "Expires: 0" );
-			header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
-			header( "Content-Type: application/octet-stream" );
-			header( "Content-Disposition: attachment; filename=" . basename( $get_file ) . ";" );
-			header( "Content-Transfer-Encoding: binary" );
-			header( "Content-Length: " . $blob->getProperties()->getContentLength() );
+			if ( $level = ob_get_level() ) {
+				for ( $i = 0; $i < $level; $i ++ ) {
+					ob_end_clean();
+				}
+			}
 			@set_time_limit( 300 );
+			nocache_headers();
+			header( 'Content-Description: File Transfer' );
+			header( 'Content-Type: ' . BackWPup_Job::get_mime_type( $get_file ) );
+			header( 'Content-Disposition: attachment; filename="' . basename( $get_file ) . '"' );
+			header( 'Content-Transfer-Encoding: binary' );
+			header( 'Content-Length: ' . $blob->getProperties()->getContentLength() );
 			fpassthru( $blob->getContentStream() );
 			die();
 		}
@@ -397,9 +404,9 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 			if ( ! current_user_can( 'backwpup_jobs_edit' ) )
 				wp_die( -1 );
 			check_ajax_referer( 'backwpup_ajax_nonce' );
-			$args[ 'msazureaccname' ]  = $_POST[ 'msazureaccname' ];
-			$args[ 'msazurekey' ]      = $_POST[ 'msazurekey' ];
-			$args[ 'msazureselected' ] = $_POST[ 'msazureselected' ];
+			$args[ 'msazureaccname' ]  = sanitize_text_field( $_POST[ 'msazureaccname' ] );
+			$args[ 'msazurekey' ]      = sanitize_text_field( $_POST[ 'msazurekey' ] );
+			$args[ 'msazureselected' ] = sanitize_text_field( $_POST[ 'msazureselected' ] );
 			$ajax            = TRUE;
 		}
 		echo '<span id="msazurecontainererror" style="color:red;">';
@@ -428,7 +435,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 		if ( !empty( $containers ) ) {
 			echo '<select name="msazurecontainer" id="msazurecontainer">';
 			foreach ( $containers as $container ) {
-				echo "<option " . selected( strtolower( $args[ 'msazureselected' ] ), strtolower( $container->getName() ), FALSE ) . ">" . $container->getName() . "</option>";
+				echo "<option " . selected( strtolower( $args[ 'msazureselected' ] ), strtolower( $container->getName() ), FALSE ) . ">" . esc_html( $container->getName() ) . "</option>";
 			}
 			echo '</select>';
 		}

@@ -208,15 +208,15 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		if (  count( $destinations_list ) < 1)
 			return;
 
-		if ( count( $destinations_list ) == 1 ) {
+		if ( count( $destinations_list ) === 1 ) {
 			echo '<input type="hidden" name="jobdest-' . $which . '" value="' . $destinations_list[0] . '">';
 			return;
 		}
 
 		?>
 		<div class="alignleft actions">
-			<label for="jobdest-<?php echo $which;?>">
-				<select name="jobdest-<?php echo $which;?>" class="postform" id="jobdest-<?php echo $which;?>">
+			<label for="jobdest-<?php echo esc_attr($which);?>">
+				<select name="jobdest-<?php echo esc_html($which);?>" class="postform" id="jobdest-<?php echo esc_attr($which);?>">
 					<?php
 					foreach ( $destinations_list as $jobdest ) {
 						list( $jobid, $dest ) = explode( '_', $jobdest );
@@ -483,7 +483,7 @@ class BackWPup_Page_Backups extends WP_List_Table {
 
 		?>
 		<div class="wrap" id="backwpup-page">
-			<h2><span id="backwpup-page-icon">&nbsp;</span><?php echo esc_html( sprintf( __( '%s Manage Backup Archives', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ) ); ?></h2>
+			<h1><?php echo esc_html( sprintf( __( '%s &rsaquo; Manage Backup Archives', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ) ); ?></h1>
 			<?php BackWPup_Admin::display_messages(); ?>
             <form id="posts-filter" action="" method="get">
             	<input type="hidden" name="page" value="backwpupbackups" />

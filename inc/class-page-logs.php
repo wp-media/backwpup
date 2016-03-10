@@ -197,7 +197,7 @@ class BackWPup_Page_Logs extends WP_List_Table {
 	function column_job( $item ) {
 
 		$log_name = str_replace( array( '.html', '.gz' ), '', basename( $item['file'] ) );
-		$r = "<strong><a class=\"thickbox\" href=\"" . admin_url( 'admin-ajax.php' ) . '?&action=backwpup_view_log&log=' . $log_name .'&_ajax_nonce=' . wp_create_nonce( 'view-log_' . $log_name ) . "&amp;TB_iframe=true&amp;width=640&amp;height=440\" title=\"" . esc_attr( $item['file'] ) . "\n" . sprintf( __( 'Job ID: %d', 'backwpup' ), $item[ 'jobid' ] ) . "\">" .  esc_attr( ! empty( $item[ 'name' ] ) ? $item[ 'name' ] : $item['file'] ) . "</a></strong>";
+		$r = "<strong><a class=\"thickbox\" href=\"" . admin_url( 'admin-ajax.php' ) . '?&action=backwpup_view_log&log=' . $log_name .'&_ajax_nonce=' . wp_create_nonce( 'view-log_' . $log_name ) . "&amp;TB_iframe=true&amp;width=640&amp;height=440\" title=\"" . esc_attr( $item['file'] ) . "\n" . sprintf( __( 'Job ID: %d', 'backwpup' ), $item[ 'jobid' ] ) . "\">" .  esc_html( ! empty( $item[ 'name' ] ) ? $item[ 'name' ] : $item['file'] ) . "</a></strong>";
 		$actions               = array();
 		$actions[ 'view' ]     = '<a class="thickbox" href="' . admin_url( 'admin-ajax.php' ) . '?&action=backwpup_view_log&log=' . $log_name .'&_ajax_nonce=' . wp_create_nonce( 'view-log_' . $log_name ) . '&amp;TB_iframe=true&amp;width=640&amp;height=440" title="' . $item['file'] . '">' . __( 'View', 'backwpup' ) . '</a>';
 		if ( current_user_can( 'backwpup_logs_delete' ) ) {
@@ -218,12 +218,15 @@ class BackWPup_Page_Logs extends WP_List_Table {
 	function column_status( $item ) {
 
 		$r = '';
-		if ( $item[ 'errors' ] > 0 )
-			$r .= str_replace( '%d', $item[ 'errors' ], '<span style="color:red;font-weight:bold;">' . _n( "1 ERROR", "%d ERRORS", $item[ 'errors' ], 'backwpup' ) . '</span><br />' );
-		if ( $item[ 'warnings' ] > 0 )
-			$r .= str_replace( '%d', $item[ 'warnings' ], '<span style="color:#e66f00;font-weight:bold;">' . _n( "1 WARNING", "%d WARNINGS", $item[ 'warnings' ], 'backwpup' ) . '</span><br />' );
-		if ( $item[ 'errors' ] == 0 && $item[ 'warnings' ] == 0 )
+		if ( $item[ 'errors' ] ) {
+			$r .= sprintf( '<span style="color:red;font-weight:bold;">' . _n( "1 ERROR", "%d ERRORS", $item[ 'errors' ], 'backwpup' ) . '</span><br />', $item[ 'errors' ] );
+		}
+		if ( $item[ 'warnings' ] ) {
+			$r .= sprintf( '<span style="color:#e66f00;font-weight:bold;">' . _n( "1 WARNING", "%d WARNINGS", $item[ 'warnings' ], 'backwpup' ) . '</span><br />', $item[ 'warnings' ] );
+		}
+		if ( ! $item[ 'errors' ] && ! $item[ 'warnings' ] ) {
 			$r .= '<span style="color:green;font-weight:bold;">' . __( 'O.K.', 'backwpup' ) . '</span>';
+		}
 
 		return $r;
 	}
@@ -287,14 +290,18 @@ class BackWPup_Page_Logs extends WP_List_Table {
 				$log_file = realpath( $log_file );
 
 				if ( $log_file && is_readable( $log_file ) && ! is_dir( $log_file ) && !is_link( $log_file ) ) {
-					while( @ob_end_clean() );
-					header( "Pragma: public" );
-					header( "Expires: 0" );
-					header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
-					header( "Content-Type: application/force-download" );
-					header( "Content-Disposition: attachment; filename=" . $_GET[ 'file' ] . ";" );
-					header( "Content-Transfer-Encoding: binary" );
-					header( "Content-Length: " . filesize( $log_file ) );
+					if ( $level = ob_get_level() ) {
+						for ( $i = 0; $i < $level; $i ++ ) {
+							ob_end_clean();
+						}
+					}
+					@set_time_limit( 300 );
+					nocache_headers();
+					header( 'Content-Description: File Transfer' );
+					header( 'Content-Type: ' . BackWPup_Job::get_mime_type( $log_file ) );
+					header( 'Content-Disposition: attachment; filename="' . basename( $log_file ) . '"' );
+					header( 'Content-Transfer-Encoding: binary' );
+					header( 'Content-Length: ' . filesize( $log_file ) );
 					@readfile( $log_file );
 					die();
 				}
@@ -381,7 +388,7 @@ class BackWPup_Page_Logs extends WP_List_Table {
 
 		?>
 		<div class="wrap" id="backwpup-page">
-			<h2><span id="backwpup-page-icon">&nbsp;</span><?php echo esc_html( sprintf( __( '%s Logs', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ) ); ?></h2>
+			<h1><?php echo esc_html( sprintf( __( '%s &rsaquo; Logs', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ) ); ?></h1>
 			<?php BackWPup_Admin::display_messages(); ?>
 			<form id="posts-filter" action="" method="get">
 				<input type="hidden" name="page" value="backwpuplogs" />

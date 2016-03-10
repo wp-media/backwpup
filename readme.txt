@@ -170,6 +170,15 @@ Please check all settings after the update:
 
 
 == Changelog ==
+= Version 3.3 =
+* Improved: Text removed or rewritten
+* Improved: Security
+* Changed: Response test to work more as before
+* Removed: PCLZip selection setting
+* Removed: Help tooltips now uses the WordPress way
+* Updated: AWS SDK to Version 2.8.28 (PHP 5.3.3+)
+* PRO Fixed: Glacier will be only display 10 Vaults
+
 = Version 3.2.5 =
 * Fixed: two stored XSS issues
 

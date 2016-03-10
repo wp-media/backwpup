@@ -43,7 +43,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 		?>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><?php _e( 'Items to export', 'backwpup' ) ?></th>
+				<th scope="row"><?php esc_html_e( 'Items to export', 'backwpup' ) ?></th>
 				<td>
 					<fieldset>
 						<label for="idwpexportcontent-all"><input type="radio" name="wpexportcontent" id="idwpexportcontent-all" value="all" <?php checked( BackWPup_Option::get( $jobid, 'wpexportcontent' ), 'all' ); ?> /> <?php _e( 'All content', 'backwpup' ); ?></label><br />
@@ -58,27 +58,27 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="idwpexportfile"><?php _e( 'XML Export file name', 'backwpup' ) ?></label></th>
+				<th scope="row"><label for="idwpexportfile"><?php esc_html_e( 'XML Export file name', 'backwpup' ) ?></label></th>
 				<td>
 					<input name="wpexportfile" type="text" id="idwpexportfile"
-						   value="<?php echo BackWPup_Option::get( $jobid, 'wpexportfile' );?>"
+						   value="<?php echo esc_attr(BackWPup_Option::get( $jobid, 'wpexportfile' ));?>"
 						   class="medium-text code"/>.xml
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php _e( 'File compression', 'backwpup' ) ?></th>
+				<th scope="row"><?php esc_html_e( 'File compression', 'backwpup' ) ?></th>
 				<td>
 					<fieldset>
 						<?php
-						echo '<label for="idwpexportfilecompression"><input class="radio" type="radio"' . checked( '', BackWPup_Option::get( $jobid, 'wpexportfilecompression' ), FALSE ) . ' name="wpexportfilecompression" id="idwpexportfilecompression" value="" /> ' . __( 'none', 'backwpup' ). '</label><br />';
+						echo '<label for="idwpexportfilecompression"><input class="radio" type="radio"' . checked( '', BackWPup_Option::get( $jobid, 'wpexportfilecompression' ), FALSE ) . ' name="wpexportfilecompression" id="idwpexportfilecompression" value="" /> ' . esc_html__( 'none', 'backwpup' ). '</label><br />';
 						if ( function_exists( 'gzopen' ) )
-							echo '<label for="idwpexportfilecompression-gz"><input class="radio" type="radio"' . checked( '.gz', BackWPup_Option::get( $jobid, 'wpexportfilecompression' ), FALSE ) . ' name="wpexportfilecompression" id="idwpexportfilecompression-gz" value=".gz" /> ' . __( 'GZip', 'backwpup' ). '</label><br />';
+							echo '<label for="idwpexportfilecompression-gz"><input class="radio" type="radio"' . checked( '.gz', BackWPup_Option::get( $jobid, 'wpexportfilecompression' ), FALSE ) . ' name="wpexportfilecompression" id="idwpexportfilecompression-gz" value=".gz" /> ' . esc_html__( 'GZip', 'backwpup' ). '</label><br />';
 						else
-							echo '<label for="idwpexportfilecompression-gz"><input class="radio" type="radio"' . checked( '.gz', BackWPup_Option::get( $jobid, 'wpexportfilecompression' ), FALSE ) . ' name="wpexportfilecompression" id="idwpexportfilecompression-gz" value=".gz" disabled="disabled" /> ' . __( 'GZip', 'backwpup' ). '</label><br />';
+							echo '<label for="idwpexportfilecompression-gz"><input class="radio" type="radio"' . checked( '.gz', BackWPup_Option::get( $jobid, 'wpexportfilecompression' ), FALSE ) . ' name="wpexportfilecompression" id="idwpexportfilecompression-gz" value=".gz" disabled="disabled" /> ' . esc_html__( 'GZip', 'backwpup' ). '</label><br />';
 						if ( function_exists( 'bzopen' ) )
-							echo '<label for="idwpexportfilecompression-bz2"><input class="radio" type="radio"' . checked( '.bz2', BackWPup_Option::get( $jobid, 'wpexportfilecompression' ), FALSE ) . ' name="wpexportfilecompression" id="idwpexportfilecompression-bz2" value=".bz2" /> ' . __( 'BZip2', 'backwpup' ). '</label><br />';
+							echo '<label for="idwpexportfilecompression-bz2"><input class="radio" type="radio"' . checked( '.bz2', BackWPup_Option::get( $jobid, 'wpexportfilecompression' ), FALSE ) . ' name="wpexportfilecompression" id="idwpexportfilecompression-bz2" value=".bz2" /> ' . esc_html__( 'BZip2', 'backwpup' ). '</label><br />';
 						else
-							echo '<label for="idwpexportfilecompression-bz2"><input class="radio" type="radio"' . checked( '.bz2', BackWPup_Option::get( $jobid, 'wpexportfilecompression' ), FALSE ) . ' name="wpexportfilecompression" id="idwpexportfilecompression-bz2" value=".bz2" disabled="disabled" /> ' . __( 'BZip2', 'backwpup' ). '</label><br />';
+							echo '<label for="idwpexportfilecompression-bz2"><input class="radio" type="radio"' . checked( '.bz2', BackWPup_Option::get( $jobid, 'wpexportfilecompression' ), FALSE ) . ' name="wpexportfilecompression" id="idwpexportfilecompression-bz2" value=".bz2" disabled="disabled" /> ' . esc_html__( 'BZip2', 'backwpup' ). '</label><br />';
 						?>
 					</fieldset>
 				</td>
@@ -92,10 +92,11 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 	 */
 	public function edit_form_post_save( $id ) {
 
-		BackWPup_Option::update( $id, 'wpexportcontent', $_POST[ 'wpexportcontent' ] );
-		BackWPup_Option::update( $id, 'wpexportfile', BackWPup_Job::sanitize_file_name( $_POST[ 'wpexportfile' ] ) );
-		if ( $_POST[ 'wpexportfilecompression' ] == '' || $_POST[ 'wpexportfilecompression' ] == '.gz' || $_POST[ 'wpexportfilecompression' ] == '.bz2' )
+		BackWPup_Option::update( $id, 'wpexportcontent', sanitize_text_field( $_POST[ 'wpexportcontent' ] ) );
+		BackWPup_Option::update( $id, 'wpexportfile', sanitize_file_name( $_POST[ 'wpexportfile' ] ) );
+		if ( $_POST[ 'wpexportfilecompression' ] === '' || $_POST[ 'wpexportfilecompression' ] === '.gz' || $_POST[ 'wpexportfilecompression' ] === '.bz2' ) {
 			BackWPup_Option::update( $id, 'wpexportfilecompression', $_POST[ 'wpexportfilecompression' ] );
+		}
 	}
 
 	/**

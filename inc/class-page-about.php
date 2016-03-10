@@ -56,17 +56,10 @@ class BackWPup_Page_About {
 				margin:0 auto;
 				max-width: 960px;
 			}
-			.backwpup-welcome {
-/*
-				margin: 0 auto;
-				max-width: 960px;
-*/
-			}
-			.welcome .welcome_inner h3{
+			.welcome .welcome_inner h1{
 				font-size:42px;
 			}
 			.welcome .welcome_inner .welcometxt {
-/* 				width: 100%; */
 				margin-bottom: 40px;
 				overflow: hidden;
 				border-bottom: 1px #ccc dotted;
@@ -136,7 +129,7 @@ class BackWPup_Page_About {
 				cursor:pointer;
 			}
 			@media only screen and (max-width: 1100px), only screen and (max-device-width: 1100px) {
-				.welcome .welcome_inner h3{
+				.welcome .welcome_inner h1{
 					font-size:32px;
 				}
 				.welcome .welcome_inner .featuretitle h3 {
@@ -173,7 +166,7 @@ class BackWPup_Page_About {
 				}
 			}
 			@media only screen and (max-width: 780px), only screen and (max-device-width: 780px) {
-				.welcome .welcome_inner h3{
+				.welcome .welcome_inner h1{
 					font-size:22px;
 				}
 				.welcome .welcome_inner .featuretitle h3 {
@@ -391,30 +384,15 @@ class BackWPup_Page_About {
         	<div class="inpsyde">
             	<a href="http://inpsyde.com/" title="Inpsyde GmbH">Inpsyde</a>
             </div>
-            <h2><span id="backwpup-page-icon">&nbsp;</span><?php echo sprintf( __( '%s Welcome', 'backwpup' ), BackWPup::get_plugin_data( 'name') ); ?></h2>
 			<?php BackWPup_Admin::display_messages(); ?>
             <div class="welcome">
             	<div class="welcome_inner">
-                	<div class="top">
-						<?php if ( get_site_transient( 'backwpup_upgrade_from_version_two') ) { ?>
-                            <div id="update-notice" class="backwpup-welcome updated">
-                                <h3><?php _e( 'Heads up! You have updated from version 2.x', 'backwpup' ); ?></h3>
-                                <p><?php echo str_replace( '\"','"', sprintf( __( 'Please <a href="%s">check your settings</a> after updating from version 2.x:', 'backwpup' ), network_admin_url( 'admin.php').'?page=backwpupjobs') ); ?></a></p>
-                                <ul><li><?php _e('Dropbox authentication must be re-entered','backwpup'); ?></li>
-								<li><?php _e('SugarSync authentication must be re-entered','backwpup'); ?></li>
-                                <li><?php _e('S3 Settings','backwpup'); ?></li>
-                                <li><?php _e('Google Storage is now a part of S3 service settings','backwpup'); ?></li>
-                                <li><?php _e('All your passwords','backwpup'); ?></li>
-                                </ul>
-                             </div>
-                        <?php } ?>
-    				</div>
                     <?php if ( class_exists( 'BackWPup_Pro', FALSE ) ) { ?>
                     <div class="welcometxt">
                         <div class="backwpup-welcome">
 							<img class="backwpup-banner-img" src="<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/backwpupbanner-pro.png" />
-                            <h3><?php _e( 'Welcome to BackWPup Pro', 'backwpup' ); ?></h3>
-                            <p><?php _e( 'BackWPup’s job wizards make planning and scheduling your backup jobs a breeze.', 'backwpup' ); echo ' ';
+                            <h1><?php esc_html_e( 'Welcome to BackWPup Pro', 'backwpup' ); ?></h1>
+                            <p><?php esc_html_e( 'BackWPup’s job wizards make planning and scheduling your backup jobs a breeze.', 'backwpup' ); echo ' ';
 _e( 'Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server. With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin or a plugin like <a href="http://wordpress.org/plugins/adminer/" target="_blank">Adminer</a> to restore your database backup files.', 'backwpup' ); ?></p>
                             <p><?php echo str_replace( '\"','"', sprintf( __( 'Ready to <a href="%1$s">set up a backup job</a>? You can <a href="%2$s">use the wizards</a> or plan your backup in expert mode.', 'backwpup' ), network_admin_url( 'admin.php').'?page=backwpupeditjob' , network_admin_url( 'admin.php').'?page=backwpupwizard' ) ); ?></p>
                         </div>
@@ -422,11 +400,11 @@ _e( 'Use your backup archives to save your entire WordPress installation includi
                     <?php } else {?>
                     <div class="welcometxt">
                         <div class="backwpup-welcome">
-							<img class="backwpup-banner-img" src="<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/backwpupbanner-free.png" />
-                            <h3><?php _e( 'Welcome to BackWPup', 'backwpup' ); ?></h3>
+							<img class="backwpup-banner-img" src="<?php echo esc_attr( BackWPup::get_plugin_data( 'URL' ));?>/assets/images/backwpupbanner-free.png" />
+                            <h1><?php esc_html_e( 'Welcome to BackWPup', 'backwpup' ); ?></h1>
                             <p><?php
 _e( 'Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server. With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin or a plugin like <a href="http://wordpress.org/plugins/adminer/" target="_blank">Adminer</a> to restore your database backup files.', 'backwpup' ); ?></p>
-                            <p><?php _e( 'Ready to set up a backup job? Use one of the wizards to plan what you want to save.', 'backwpup' ); ?></p>
+                            <p><?php esc_html_e( 'Ready to set up a backup job? Use one of the wizards to plan what you want to save.', 'backwpup' ); ?></p>
                         </div>
                     </div>
                     <?php } ?>
@@ -443,8 +421,8 @@ _e( 'Use your backup archives to save your entire WordPress installation includi
 							?>
 		             		<div class="welcometxt">
 		                        <div class="backwpup-welcome">
-		                            <h3><?php _e( 'Please activate your license', 'backwpup' ); ?></h3>
-		                            <p><a href="<?php echo $localplugin ? admin_url( 'plugins.php' ) : network_admin_url( 'plugins.php' ); ?>"><?php _e( 'Please go to your plugin page and active the license to have the autoupdates enabled.', 'backwpup' ); ?></a></p>
+		                            <h3><?php esc_html_e( 'Please activate your license', 'backwpup' ); ?></h3>
+		                            <p><a href="<?php echo $localplugin ? esc_attr(admin_url( 'plugins.php' )) : esc_attr(network_admin_url( 'plugins.php' )); ?>"><?php esc_html_e( 'Please go to your plugin page and active the license to have the autoupdates enabled.', 'backwpup' ); ?></a></p>
 								</div>
 							</div>
 						<?php endif; ?>
@@ -453,47 +431,47 @@ _e( 'Use your backup archives to save your entire WordPress installation includi
 
                     	<div class="feature-box <?php self::feature_class(); ?>">
                         	<div class="feature-image">
-                                <img title="<?php _e( 'Save your database', 'backwpup' ); ?>" src="<?php echo BackWPup::get_plugin_data( 'URL' ); ?>/assets/images/imagesave.png" />
+                                <img title="<?php esc_html_e( 'Save your database', 'backwpup' ); ?>" src="<?php echo esc_attr(BackWPup::get_plugin_data( 'URL' )); ?>/assets/images/imagesave.png" />
                             </div>
                             <div class="feature-text">
-                            	<h3><?php _e( 'Save your database regularly', 'backwpup' ); ?></h3>
+                            	<h3><?php esc_html_e( 'Save your database regularly', 'backwpup' ); ?></h3>
                                 <p><?php echo str_replace( '\"','"', sprintf( __( 'With BackWPup you can schedule the database backup to run automatically. With a single backup file you can restore your database. You should <a href="%s">set up a backup job</a>, so you will never forget it. There is also an option to repair and optimize the database after each backup.', 'backwpup' ), network_admin_url( 'admin.php').'?page=backwpupeditjob' ) ); ?></p>
                             </div>
                         </div>
                         <div class="feature-box <?php self::feature_class(); ?>">
                             <div class="feature-text">
-                            	<h3><?php _e('WordPress XML Export', 'backwpup' ); ?></h3>
-                                <p><?php _e('You can choose the built-in WordPress export format in addition or exclusive to save your data. This works in automated backups too of course. The advantage is: you can import these files into a blog with the regular WordPress importer.', 'backwpup'); ?></p>
+                            	<h3><?php esc_html_e('WordPress XML Export', 'backwpup' ); ?></h3>
+                                <p><?php esc_html_e('You can choose the built-in WordPress export format in addition or exclusive to save your data. This works in automated backups too of course. The advantage is: you can import these files into a blog with the regular WordPress importer.', 'backwpup'); ?></p>
                             </div>
                             <div class="feature-image">
-                            	<img title="<?php _e( 'WordPress XML Export', 'backwpup' ); ?>" src="<?php echo BackWPup::get_plugin_data( 'URL' ); ?>/assets/images/imagexml.png" />
+                            	<img title="<?php esc_html_e( 'WordPress XML Export', 'backwpup' ); ?>" src="<?php echo BackWPup::get_plugin_data( 'URL' ); ?>/assets/images/imagexml.png" />
                             </div>
                         </div>
                         <div class="feature-box <?php self::feature_class(); ?>">
                             <div class="feature-image">
-                            	<img title="<?php _e( 'Save all data from the webserver', 'backwpup' ); ?>" src="<?php echo BackWPup::get_plugin_data( 'URL' ); ?>/assets/images/imagedata.png" />
+                            	<img title="<?php esc_html_e( 'Save all data from the webserver', 'backwpup' ); ?>" src="<?php echo BackWPup::get_plugin_data( 'URL' ); ?>/assets/images/imagedata.png" />
                             </div>
                             <div class="feature-text">
-                            	<h3><?php _e('Save all files', 'backwpup'); ?></h3>
+                            	<h3><?php esc_html_e('Save all files', 'backwpup'); ?></h3>
                                 <p><?php echo str_replace( '\"','"', sprintf( __('You can backup all your attachments, also all system files, plugins and themes in a single file. You can <a href="%s">create a job</a> to update a backup copy of your file system only when files are changed.', 'backwpup'), network_admin_url( 'admin.php' ) . '?page=backwpupeditjob' ) ); ?></p>
                             </div>
                         </div>
                         <div class="feature-box <?php self::feature_class(); ?>">
                             <div class="feature-text">
-                            	<h3><?php _e( 'Security!', 'backwpup' ); ?></h3>
-                                <p><?php _e('By default everything is encrypted: connections to external services, local files and access to directories.', 'backwpup'); ?></p>
+                            	<h3><?php esc_html_e( 'Security!', 'backwpup' ); ?></h3>
+                                <p><?php esc_html_e('By default everything is encrypted: connections to external services, local files and access to directories.', 'backwpup'); ?></p>
                             </div>
                         	<div class="feature-image">
-                            	<img title="<?php _e( 'Security!', 'backwpup' ); ?>" src="<?php echo BackWPup::get_plugin_data( 'URL' ); ?>/assets/images/imagesec.png" />
+                            	<img title="<?php esc_html_e( 'Security!', 'backwpup' ); ?>" src="<?php echo esc_attr(BackWPup::get_plugin_data( 'URL' )); ?>/assets/images/imagesec.png" />
                             </div>
                         </div>
                         <div class="feature-box <?php self::feature_class(); ?>">
                             <div class="feature-image">
-                            	<img title="<?php _e( 'Cloud Support', 'backwpup' ); ?>" src="<?php echo BackWPup::get_plugin_data( 'URL' ); ?>/assets/images/imagecloud.png" />
+                            	<img title="<?php esc_html_e( 'Cloud Support', 'backwpup' ); ?>" src="<?php echo BackWPup::get_plugin_data( 'URL' ); ?>/assets/images/imagecloud.png" />
                             </div>
                             <div class="feature-text">
-                            	<h3><?php _e( 'Cloud Support', 'backwpup' ); ?></h3>
-                                <p><?php _e( 'BackWPup supports multiple cloud services in parallel. This ensures backups are redundant.', 'backwpup' ); ?></p>
+                            	<h3><?php esc_html_e( 'Cloud Support', 'backwpup' ); ?></h3>
+                                <p><?php esc_html_e( 'BackWPup supports multiple cloud services in parallel. This ensures backups are redundant.', 'backwpup' ); ?></p>
                             </div>
                         </div>
                     </div>
@@ -501,170 +479,170 @@ _e( 'Use your backup archives to save your entire WordPress installation includi
 
 				<?php if ( ! class_exists( 'BackWPup_Pro', FALSE ) ) : ?>
 					<div class="backwpup_comp">
-						<h3><?php _e( 'Features / differences between Free and Pro', 'backwpup' ); ?></h3>
+						<h3><?php esc_html_e( 'Features / differences between Free and Pro', 'backwpup' ); ?></h3>
 						<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							<tr class="even ub">
-								<td><?php _e( 'Features', 'backwpup' ); ?></td>
-								<td class="free"><?php _e( 'FREE', 'backwpup' ); ?></td>
-								<td class="pro"><?php _e( 'PRO', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Features', 'backwpup' ); ?></td>
+								<td class="free"><?php esc_html_e( 'FREE', 'backwpup' ); ?></td>
+								<td class="pro"><?php esc_html_e( 'PRO', 'backwpup' ); ?></td>
 							</tr>
 							<tr class="odd">
-								<td><?php _e( 'Complete database backup', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Complete database backup', 'backwpup' ); ?></td>
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="even">
-								<td><?php _e( 'Complete file backup', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Complete file backup', 'backwpup' ); ?></td>
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="odd">
-								<td><?php _e( 'Database check', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Database check', 'backwpup' ); ?></td>
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="even">
-								<td><?php _e( 'Data compression', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Data compression', 'backwpup' ); ?></td>
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="odd">
-								<td><?php _e( 'WordPress XML export', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'WordPress XML export', 'backwpup' ); ?></td>
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="even">
-								<td><?php _e( 'List of installed plugins', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'List of installed plugins', 'backwpup' ); ?></td>
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="odd">
-								<td><?php _e( 'Backup archives management', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Backup archives management', 'backwpup' ); ?></td>
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="even">
-								<td><?php _e( 'Log file management', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Log file management', 'backwpup' ); ?></td>
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="odd">
-								<td><?php _e( 'Start jobs per WP-Cron, URL, system, backend or WP-CLI', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Start jobs per WP-Cron, URL, system, backend or WP-CLI', 'backwpup' ); ?></td>
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="even">
-								<td><?php _e( 'Log report via email', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Log report via email', 'backwpup' ); ?></td>
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="odd">
-								<td><?php _e( 'Backup to Microsoft Azure', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Backup to Microsoft Azure', 'backwpup' ); ?></td>
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="even">
-								<td><?php _e( 'Backup as email', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Backup as email', 'backwpup' ); ?></td>
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="odd">
-								<td><?php _e( 'Backup to S3 services <small>(Amazon, Google Storage, Hosteurope and more)</small>', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Backup to S3 services <small>(Amazon, Google Storage, Hosteurope and more)</small>', 'backwpup' ); ?></td>
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="even">
-								<td><?php _e( 'Backup to Dropbox', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Backup to Dropbox', 'backwpup' ); ?></td>
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="odd">
-								<td><?php _e( 'Backup to Rackspace Cloud Files', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Backup to Rackspace Cloud Files', 'backwpup' ); ?></td>
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="even">
-								<td><?php _e( 'Backup to FTP server', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Backup to FTP server', 'backwpup' ); ?></td>
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="odd">
-								<td><?php _e( 'Backup to your web space', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Backup to your web space', 'backwpup' ); ?></td>
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="even">
-								<td><?php _e( 'Backup to SugarSync', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Backup to SugarSync', 'backwpup' ); ?></td>
 								<td class="tick"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="odd">
-								<td><?php _e( 'Backup to Google Drive', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Backup to Google Drive', 'backwpup' ); ?></td>
 								<td class="error"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="even">
-								<td><?php _e( 'Backup to Amazon Glacier', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Backup to Amazon Glacier', 'backwpup' ); ?></td>
 								<td class="error"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="odd">
-								<td><?php _e( 'Custom API keys for DropBox and SugarSync', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Custom API keys for DropBox and SugarSync', 'backwpup' ); ?></td>
 								<td class="error"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="even">
-								<td><?php _e( 'XML database backup as PHPMyAdmin schema', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'XML database backup as PHPMyAdmin schema', 'backwpup' ); ?></td>
 								<td class="error"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="odd">
-								<td><?php _e( 'Database backup as mysqldump per command line', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Database backup as mysqldump per command line', 'backwpup' ); ?></td>
 								<td class="error"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="even">
-								<td><?php _e( 'Database backup for additional MySQL databases', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Database backup for additional MySQL databases', 'backwpup' ); ?></td>
 								<td class="error"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="odd">
-								<td><?php _e( 'Import and export job settings as XML', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Import and export job settings as XML', 'backwpup' ); ?></td>
 								<td class="error"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="even">
-								<td><?php _e( 'Wizard for system tests', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Wizard for system tests', 'backwpup' ); ?></td>
 								<td class="error"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="odd">
-								<td><?php _e( 'Wizard for scheduled backup jobs', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Wizard for scheduled backup jobs', 'backwpup' ); ?></td>
 								<td class="error"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="even">
-								<td><?php _e( 'Wizard to import settings and backup jobs', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Wizard to import settings and backup jobs', 'backwpup' ); ?></td>
 								<td class="error"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="odd">
-								<td><?php _e( 'Differential backup of changed directories to Dropbox', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Differential backup of changed directories to Dropbox', 'backwpup' ); ?></td>
 								<td class="error"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="even">
-								<td><?php _e( 'Differential backup of changed directories to Rackspace Cloud Files', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Differential backup of changed directories to Rackspace Cloud Files', 'backwpup' ); ?></td>
 								<td class="error"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="odd">
-								<td><?php _e( 'Differential backup of changed directories to S3', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Differential backup of changed directories to S3', 'backwpup' ); ?></td>
 								<td class="error"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="even">
-								<td><?php _e( 'Differential backup of changed directories to MS Azure', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Differential backup of changed directories to MS Azure', 'backwpup' ); ?></td>
 								<td class="error"></td>
 								<td class="tick"></td>
 							</tr>
@@ -686,7 +664,7 @@ _e( 'Use your backup archives to save your entire WordPress installation includi
 							<tr class="even ubdown">
 								<td></td>
 								<td></td>
-								<td class="pro buylink"><a href="<?php _e( 'http://marketpress.com/product/backwpup-pro/', 'backwpup' ); ?>"><?php _e( 'GET PRO', 'backwpup' ); ?></a></td>
+								<td class="pro buylink"><a href="<?php esc_html_e( 'http://marketpress.com/product/backwpup-pro/', 'backwpup' ); ?>"><?php _e( 'GET PRO', 'backwpup' ); ?></a></td>
 							</tr>
 						</table>
 					</div>

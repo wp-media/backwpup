@@ -36,6 +36,8 @@ class BackWPup_Install {
 			delete_site_option( 'backwpup_cfg_jobnotranslate' );
 		}
 
+		delete_site_option( 'backwpup_cfg_jobziparchivemethod' );
+
 		//create new options
 		if ( is_multisite() ) {
 			add_site_option( 'backwpup_jobs', array() );
@@ -321,6 +323,6 @@ class BackWPup_Install {
 			foreach ( $jobvalue as $jobvaluename => $jobvaluevalue )
 				BackWPup_Option::update( $jobvalue[ 'jobid' ], $jobvaluename, $jobvaluevalue );
 		}
-		set_site_transient( 'backwpup_upgrade_from_version_two', TRUE, 3600*24*7);
+
 	}
 }

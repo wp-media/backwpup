@@ -92,11 +92,8 @@ class BackWPup_Create_Archive {
 			$this->filehandel = fopen( $this->file, 'ab');
 		}
 		elseif ( strtolower( substr( $this->file, -4 ) ) == '.zip' ) {
-			$this->method = get_site_option( 'backwpup_cfg_jobziparchivemethod');
+			$this->method = 'ZipArchive';
 			//check and set method
-			if ( empty( $this->method ) || ( $this->method != 'ZipArchive' && $this->method != 'PclZip' ) ) {
-				$this->method = 'ZipArchive';
-			}
 			if ( ! class_exists( 'ZipArchive' ) ) {
 				$this->method = 'PclZip';
 			}

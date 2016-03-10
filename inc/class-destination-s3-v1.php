@@ -70,62 +70,60 @@ class BackWPup_Destination_S3_V1 extends BackWPup_Destinations {
 	public function edit_tab( $jobid ) {
 
 		?>
-		<h3 class="title"><?php _e( 'S3 Service', 'backwpup' ) ?></h3>
+		<h3 class="title"><?php esc_html_e( 'S3 Service', 'backwpup' ) ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="s3region"><?php _e( 'Select a S3 service', 'backwpup' ) ?></label></th>
+				<th scope="row"><label for="s3region"><?php esc_html_e( 'Select a S3 service', 'backwpup' ) ?></label></th>
 				<td>
-					<select name="s3region" id="s3region" title="<?php _e( 'Amazon S3 Region', 'backwpup' ); ?>">
-						<option value="us-east-1" <?php selected( 'us-east-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: US Standard', 'backwpup' ); ?></option>
-						<option value="us-west-1" <?php selected( 'us-west-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: US West (Northern California)', 'backwpup' ); ?></option>
-						<option value="us-west-2" <?php selected( 'us-west-2', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: US West (Oregon)', 'backwpup' ); ?></option>
-						<option value="eu-west-1" <?php selected( 'eu-west-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: EU (Ireland)', 'backwpup' ); ?></option>
-						<option value="eu-central-1" <?php selected( 'eu-central-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: EU (Germany)', 'backwpup' ); ?></option>
-						<option value="ap-northeast-1" <?php selected( 'ap-northeast-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: Asia Pacific (Tokyo)', 'backwpup' ); ?></option>
-						<option value="ap-northeast-2" <?php selected( 'ap-northeast-2', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: Asia Pacific (Seoul)', 'backwpup' ); ?></option>
-						<option value="ap-southeast-1" <?php selected( 'ap-southeast-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: Asia Pacific (Singapore)', 'backwpup' ); ?></option>
-						<option value="ap-southeast-2" <?php selected( 'ap-southeast-2', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: Asia Pacific (Sydney)', 'backwpup' ); ?></option>
-						<option value="sa-east-1" <?php selected( 'sa-east-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: South America (Sao Paulo)', 'backwpup' ); ?></option>
-						<option value="cn-north-1" <?php selected( 'cn-north-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Amazon S3: China (Beijing)', 'backwpup' ); ?></option>
-						<option value="google-storage" <?php selected( 'google-storage', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Google Storage (Interoperable Access)', 'backwpup' ); ?></option>
-                        <option value="dreamhost" <?php selected( 'dreamhost', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'Dream Host Cloud Storage', 'backwpup' ); ?></option>
-						<option value="greenqloud" <?php selected( 'greenqloud', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php _e( 'GreenQloud Storage Qloud', 'backwpup' ); ?></option>
+					<select name="s3region" id="s3region" title="<?php esc_html_e( 'Amazon S3 Region', 'backwpup' ); ?>">
+						<option value="us-east-1" <?php selected( 'us-east-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Amazon S3: US Standard', 'backwpup' ); ?></option>
+						<option value="us-west-1" <?php selected( 'us-west-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Amazon S3: US West (Northern California)', 'backwpup' ); ?></option>
+						<option value="us-west-2" <?php selected( 'us-west-2', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Amazon S3: US West (Oregon)', 'backwpup' ); ?></option>
+						<option value="eu-west-1" <?php selected( 'eu-west-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Amazon S3: EU (Ireland)', 'backwpup' ); ?></option>
+						<option value="eu-central-1" <?php selected( 'eu-central-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Amazon S3: EU (Germany)', 'backwpup' ); ?></option>
+						<option value="ap-northeast-1" <?php selected( 'ap-northeast-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Amazon S3: Asia Pacific (Tokyo)', 'backwpup' ); ?></option>
+						<option value="ap-northeast-2" <?php selected( 'ap-northeast-2', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Amazon S3: Asia Pacific (Seoul)', 'backwpup' ); ?></option>
+						<option value="ap-southeast-1" <?php selected( 'ap-southeast-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Amazon S3: Asia Pacific (Singapore)', 'backwpup' ); ?></option>
+						<option value="ap-southeast-2" <?php selected( 'ap-southeast-2', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Amazon S3: Asia Pacific (Sydney)', 'backwpup' ); ?></option>
+						<option value="sa-east-1" <?php selected( 'sa-east-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Amazon S3: South America (Sao Paulo)', 'backwpup' ); ?></option>
+						<option value="cn-north-1" <?php selected( 'cn-north-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Amazon S3: China (Beijing)', 'backwpup' ); ?></option>
+						<option value="google-storage" <?php selected( 'google-storage', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Google Storage (Interoperable Access)', 'backwpup' ); ?></option>
+                        <option value="dreamhost" <?php selected( 'dreamhost', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Dream Host Cloud Storage', 'backwpup' ); ?></option>
+						<option value="greenqloud" <?php selected( 'greenqloud', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'GreenQloud Storage Qloud', 'backwpup' ); ?></option>
 					</select>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="s3base_url"><?php _e( 'Or a S3 Server URL', 'backwpup' ) ?></label></th>
+				<th scope="row"><label for="s3base_url"><?php esc_html_e( 'Or a S3 Server URL', 'backwpup' ) ?></label></th>
 				<td>
 					<input id="s3base_url" name="s3base_url" type="text"  value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 's3base_url' ) );?>" class="regular-text" autocomplete="off" />
 				</td>
 			</tr>
 		</table>
 
-		<h3 class="title"><?php _e( 'S3 Access Keys', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php esc_html_e( 'S3 Access Keys', 'backwpup' ); ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="s3accesskey"><?php _e( 'Access Key', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="s3accesskey"><?php esc_html_e( 'Access Key', 'backwpup' ); ?></label></th>
 				<td>
-					<input id="s3accesskey" name="s3accesskey" type="text"
-						   value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 's3accesskey' ) );?>" class="regular-text" autocomplete="off" />
+					<input id="s3accesskey" name="s3accesskey" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 's3accesskey' ) );?>" class="regular-text" autocomplete="off" />
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="s3secretkey"><?php _e( 'Secret Key', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="s3secretkey"><?php esc_html_e( 'Secret Key', 'backwpup' ); ?></label></th>
 				<td>
-					<input id="s3secretkey" name="s3secretkey" type="password"
-						   value="<?php echo esc_attr( BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 's3secretkey' ) ) ); ?>" class="regular-text" autocomplete="off" />
+					<input id="s3secretkey" name="s3secretkey" type="password" value="<?php echo esc_attr( BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 's3secretkey' ) ) ); ?>" class="regular-text" autocomplete="off" />
 				</td>
 			</tr>
 		</table>
 
-		<h3 class="title"><?php _e( 'S3 Bucket', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php esc_html_e( 'S3 Bucket', 'backwpup' ); ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="s3bucketselected"><?php _e( 'Bucket selection', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="s3bucketselected"><?php esc_html_e( 'Bucket selection', 'backwpup' ); ?></label></th>
 				<td>
 					<input id="s3bucketselected" name="s3bucketselected" type="hidden" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 's3bucket' ) ); ?>" />
 					<?php if ( BackWPup_Option::get( $jobid, 's3accesskey' ) && BackWPup_Option::get( $jobid, 's3secretkey' ) ) $this->edit_ajax( array(
@@ -138,58 +136,61 @@ class BackWPup_Destination_S3_V1 extends BackWPup_Destinations {
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="s3newbucket"><?php _e( 'Create a new bucket', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="s3newbucket"><?php esc_html_e( 'Create a new bucket', 'backwpup' ); ?></label></th>
 				<td>
 					<input id="s3newbucket" name="s3newbucket" type="text" value="" class="small-text" autocomplete="off" />
 				</td>
 			</tr>
 		</table>
 
-		<h3 class="title"><?php _e( 'S3 Backup settings', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php esc_html_e( 'S3 Backup settings', 'backwpup' ); ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="ids3dir"><?php _e( 'Folder in bucket', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="ids3dir"><?php esc_html_e( 'Folder in bucket', 'backwpup' ); ?></label></th>
 				<td>
 					<input id="ids3dir" name="s3dir" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 's3dir' ) ); ?>" class="regular-text" />
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php _e( 'File deletion', 'backwpup' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'File deletion', 'backwpup' ); ?></th>
 				<td>
 					<?php
-					if ( BackWPup_Option::get( $jobid, 'backuptype' ) == 'archive' ) {
+					if ( BackWPup_Option::get( $jobid, 'backuptype' ) === 'archive' ) {
 						?>
-						<label for="ids3maxbackups"><input id="ids3maxbackups" name="s3maxbackups" type="text" size="3" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 's3maxbackups' ) ); ?>" class="small-text help-tip" title="<?php esc_attr_e( 'Oldest files will be deleted first. 0 = no deletion', 'backwpup' ); ?>" />&nbsp;
-						<?php  _e( 'Number of files to keep in folder.', 'backwpup' ); ?></label>
-						<?php } else { ?>
-                        <label for="ids3syncnodelete"><input class="checkbox" value="1"
-							   type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 's3syncnodelete' ), TRUE ); ?>
-							   name="s3syncnodelete" id="ids3syncnodelete" /> <?php _e( 'Do not delete files while syncing to destination!', 'backwpup' ); ?></label>
-						<?php } ?>
+						<label for="ids3maxbackups">
+							<input id="ids3maxbackups" name="s3maxbackups" type="number" min="0" step="1" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 's3maxbackups' ) ); ?>" class="small-text" />
+							&nbsp;<?php esc_html_e( 'Number of files to keep in folder.', 'backwpup' ); ?>
+						</label>
+					<?php } else { ?>
+						<label for="ids3syncnodelete">
+							<input class="checkbox" value="1" type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 's3syncnodelete' ), true ); ?> name="s3syncnodelete" id="ids3syncnodelete" />
+							&nbsp;<?php esc_html_e( 'Do not delete files while syncing to destination!', 'backwpup' ); ?>
+						</label>
+					<?php } ?>
 				</td>
 			</tr>
 		</table>
 
-		<h3 class="title"><?php _e( 'Amazon specific settings', 'backwpup' ); ?></h3>
+		<h3 class="title"><?php esc_html_e( 'Amazon specific settings', 'backwpup' ); ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="ids3storageclass"><?php _e( 'Amazon: Storage Class', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="ids3storageclass"><?php esc_html_e( 'Amazon: Storage Class', 'backwpup' ); ?></label></th>
 				<td>
-					<select name="s3storageclass" id="ids3storageclass" title="<?php _e( 'Amazon: Storage Class', 'backwpup' ); ?>">
-						<option value="" <?php selected( '', BackWPup_Option::get( $jobid, 's3storageclass' ), TRUE ) ?>><?php _e( 'Standard', 'backwpup' ); ?></option>
-						<option value="STANDARD_IA" <?php selected( 'STANDARD_IA', BackWPup_Option::get( $jobid, 's3storageclass' ), TRUE ) ?>><?php _e( 'Standard-Infrequent Access', 'backwpup' ); ?></option>
-						<option value="REDUCED_REDUNDANCY" <?php selected( 'REDUCED_REDUNDANCY', BackWPup_Option::get( $jobid, 's3storageclass' ), TRUE ) ?>><?php _e( 'Reduced Redundancy', 'backwpup' ); ?></option>
+					<select name="s3storageclass" id="ids3storageclass" title="<?php esc_html_e( 'Amazon: Storage Class', 'backwpup' ); ?>">
+						<option value="" <?php selected( '', BackWPup_Option::get( $jobid, 's3storageclass' ), TRUE ) ?>><?php esc_html_e( 'Standard', 'backwpup' ); ?></option>
+						<option value="STANDARD_IA" <?php selected( 'STANDARD_IA', BackWPup_Option::get( $jobid, 's3storageclass' ), TRUE ) ?>><?php esc_html_e( 'Standard-Infrequent Access', 'backwpup' ); ?></option>
+						<option value="REDUCED_REDUNDANCY" <?php selected( 'REDUCED_REDUNDANCY', BackWPup_Option::get( $jobid, 's3storageclass' ), TRUE ) ?>><?php esc_html_e( 'Reduced Redundancy', 'backwpup' ); ?></option>
 				</select>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="ids3ssencrypt"><?php _e( 'Server side encryption', 'backwpup' ); ?></label></th>
+				<th scope="row"><label for="ids3ssencrypt"><?php esc_html_e( 'Server side encryption', 'backwpup' ); ?></label></th>
 				<td>
 					<input class="checkbox" value="AES256"
 						   type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 's3ssencrypt' ), 'AES256' ); ?>
-						   name="s3ssencrypt" id="ids3ssencrypt" /> <?php _e( 'Save files encrypted (AES256) on server.', 'backwpup' ); ?>
+						   name="s3ssencrypt" id="ids3ssencrypt" /> <?php esc_html_e( 'Save files encrypted (AES256) on server.', 'backwpup' ); ?>
 				</td>
 			</tr>
 		</table>
@@ -204,32 +205,34 @@ class BackWPup_Destination_S3_V1 extends BackWPup_Destinations {
 	 */
 	public function edit_form_post_save( $jobid ) {
 
-		BackWPup_Option::update( $jobid, 's3accesskey', isset( $_POST[ 's3accesskey' ] ) ? $_POST[ 's3accesskey' ] : '' );
+		BackWPup_Option::update( $jobid, 's3accesskey', sanitize_text_field( $_POST[ 's3accesskey' ] ) );
 		BackWPup_Option::update( $jobid, 's3secretkey', isset( $_POST[ 's3secretkey' ] ) ? BackWPup_Encryption::encrypt( $_POST[ 's3secretkey' ] ) : '' );
 		BackWPup_Option::update( $jobid, 's3base_url', isset( $_POST[ 's3base_url' ] ) ? esc_url_raw( $_POST[ 's3base_url' ] ) : '' );
-		BackWPup_Option::update( $jobid, 's3region', isset( $_POST[ 's3region' ] ) ? $_POST[ 's3region' ] : '' );
-		BackWPup_Option::update( $jobid, 's3storageclass', isset( $_POST[ 's3storageclass' ] ) ? $_POST[ 's3storageclass' ] : '' );
-		BackWPup_Option::update( $jobid, 's3ssencrypt', ( isset( $_POST[ 's3ssencrypt' ] ) && $_POST[ 's3ssencrypt' ] == 'AES256' ) ? 'AES256' : '' );
+		BackWPup_Option::update( $jobid, 's3region', sanitize_text_field( $_POST[ 's3region' ] ) );
+		BackWPup_Option::update( $jobid, 's3storageclass', sanitize_text_field( $_POST[ 's3storageclass' ] ) );
+		BackWPup_Option::update( $jobid, 's3ssencrypt', ( isset( $_POST[ 's3ssencrypt' ] ) && $_POST[ 's3ssencrypt' ] === 'AES256' ) ? 'AES256' : '' );
 		BackWPup_Option::update( $jobid, 's3bucket', isset( $_POST[ 's3bucket' ] ) ? $_POST[ 's3bucket' ] : '' );
 
-		$_POST[ 's3dir' ] = trailingslashit( str_replace( '//', '/', str_replace( '\\', '/', trim( stripslashes( $_POST[ 's3dir' ] ) ) ) ) );
-		if ( substr( $_POST[ 's3dir' ], 0, 1 ) == '/' )
+		$_POST[ 's3dir' ] = trailingslashit( str_replace( '//', '/', str_replace( '\\', '/', trim( sanitize_text_field( $_POST[ 's3dir' ] ) ) ) ) );
+		if ( substr( $_POST[ 's3dir' ], 0, 1 ) === '/' ) {
 			$_POST[ 's3dir' ] = substr( $_POST[ 's3dir' ], 1 );
-		if ( $_POST[ 's3dir' ] == '/' )
+		}
+		if ( $_POST[ 's3dir' ] === '/' ) {
 			$_POST[ 's3dir' ] = '';
+		}
 		BackWPup_Option::update( $jobid, 's3dir', $_POST[ 's3dir' ] );
 
-		BackWPup_Option::update( $jobid, 's3maxbackups', isset( $_POST[ 's3maxbackups' ] ) ? (int)$_POST[ 's3maxbackups' ] : 0 );
-		BackWPup_Option::update( $jobid, 's3syncnodelete', ( isset( $_POST[ 's3syncnodelete' ] ) && $_POST[ 's3syncnodelete' ] == 1 ) ? TRUE : FALSE );
-		BackWPup_Option::update( $jobid, 's3multipart', ( isset( $_POST[ 's3multipart' ] ) && $_POST[ 's3multipart' ] == 1 ) ? TRUE : FALSE );
+		BackWPup_Option::update( $jobid, 's3maxbackups', ! empty( $_POST[ 's3maxbackups' ] ) ? absint( $_POST[ 's3maxbackups' ] ) : 0 );
+		BackWPup_Option::update( $jobid, 's3syncnodelete', ! empty( $_POST[ 's3syncnodelete' ] ) );
+		BackWPup_Option::update( $jobid, 's3multipart', ! empty( $_POST[ 's3multipart' ] ) );
 
 		//create new bucket
-		if ( !empty( $_POST[ 's3newbucket' ] ) ) {
+		if ( ! empty( $_POST[ 's3newbucket' ] ) ) {
 			try {
-				$s3 = new AmazonS3( array( 	'key' => $_POST[ 's3accesskey' ],
+				$s3 = new AmazonS3( array( 	'key' => sanitize_text_field( $_POST[ 's3accesskey' ] ),
 											'secret' => BackWPup_Encryption::decrypt( $_POST[ 's3secretkey' ] ),
 											'certificate_authority'	=> TRUE ) );
-				$base_url = $this->get_s3_base_url( $_POST[ 's3region' ], $_POST[ 's3base_url' ] );
+				$base_url = $this->get_s3_base_url( sanitize_text_field( $_POST[ 's3region' ] ), esc_url_raw( $_POST[ 's3base_url' ] ) );
 				if ( stristr( $base_url, 'amazonaws.com' ) ) {
 					$s3->set_region( str_replace( array( 'http://', 'https://' ), '', $base_url ) );
 				} else {
@@ -242,23 +245,24 @@ class BackWPup_Destination_S3_V1 extends BackWPup_Destinations {
 					$s3->disable_ssl();
 
 				// set bucket creation region
-				if ( $_POST[ 's3region' ] == 'google-storage' || $_POST[ 's3region' ] == 'hosteurope' )
+				if ( $_POST[ 's3region' ] === 'google-storage' ) {
 					$region = 'EU';
-				else
+				} else {
 					$region = str_replace( array( 'http://', 'https://' ), '', $base_url );
+				}
 
-				$bucket = $s3->create_bucket(  $_POST[ 's3newbucket' ], $region, 'private' );
+				$bucket = $s3->create_bucket( sanitize_text_field( $_POST[ 's3newbucket' ] ), $region, 'private' );
 
-				if ( $bucket->status == 200 )
-					BackWPup_Admin::message( sprintf( __( 'Bucket %1$s created.','backwpup'), $_POST[ 's3newbucket' ] ) );
+				if ( $bucket->status === 200 )
+					BackWPup_Admin::message( sprintf( __( 'Bucket %1$s created.','backwpup'), sanitize_text_field( $_POST[ 's3newbucket' ] ) ) );
 				else
-					BackWPup_Admin::message( sprintf( __( 'Bucket %s could not be created.','backwpup'), $_POST[ 's3newbucket' ] ), TRUE );
+					BackWPup_Admin::message( sprintf( __( 'Bucket %s could not be created.','backwpup'),  sanitize_text_field( $_POST[ 's3newbucket' ] ) ), TRUE );
 
 			}
 			catch ( Exception $e ) {
 				BackWPup_Admin::message( $e->getMessage(), TRUE );
 			}
-			BackWPup_Option::update( $jobid, 's3bucket', $_POST[ 's3newbucket' ] );
+			BackWPup_Option::update( $jobid, 's3bucket', sanitize_text_field( $_POST[ 's3newbucket' ] ) );
 		}
 	}
 
@@ -334,14 +338,18 @@ class BackWPup_Destination_S3_V1 extends BackWPup_Destinations {
 		}
 
 		if ( $s3file->status==200 ) {
-			header( "Pragma: public" );
-			header( "Expires: 0" );
-			header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
-			header( "Content-Type: application/octet-stream" );
-			header( "Content-Disposition: attachment; filename=" . basename( $get_file ) . ";" );
-			header( "Content-Transfer-Encoding: binary" );
-			header( "Content-Length: " . $s3file->header->_info->size_download );
+			if ( $level = ob_get_level() ) {
+				for ( $i = 0; $i < $level; $i ++ ) {
+					ob_end_clean();
+				}
+			}
 			@set_time_limit( 300 );
+			nocache_headers();
+			header( 'Content-Description: File Transfer' );
+			header( 'Content-Type: ' . BackWPup_Job::get_mime_type( $get_file ) );
+			header( 'Content-Disposition: attachment; filename="' . basename( $get_file ) . '"' );
+			header( 'Content-Transfer-Encoding: binary' );
+			header( 'Content-Length: ' . $s3file->header->_info->size_download );
 			echo $s3file->body;
 			die();
 		}
@@ -542,11 +550,11 @@ class BackWPup_Destination_S3_V1 extends BackWPup_Destinations {
 			if ( ! current_user_can( 'backwpup_jobs_edit' ) )
 				wp_die( -1 );
 			check_ajax_referer( 'backwpup_ajax_nonce' );
-			$args[ 's3accesskey' ]  	= $_POST[ 's3accesskey' ];
-			$args[ 's3secretkey' ]  	= $_POST[ 's3secretkey' ];
-			$args[ 's3bucketselected' ]	= $_POST[ 's3bucketselected' ];
-			$args[ 's3base_url' ]  	 	= $_POST[ 's3base_url' ];
-			$args[ 's3region' ]  	 	= $_POST[ 's3region' ];
+			$args[ 's3accesskey' ]  	= sanitize_text_field( $_POST[ 's3accesskey' ] );
+			$args[ 's3secretkey' ]  	= sanitize_text_field( $_POST[ 's3secretkey' ] );
+			$args[ 's3bucketselected' ]	= sanitize_text_field( $_POST[ 's3bucketselected' ] );
+			$args[ 's3base_url' ]  	 	= esc_url_raw( $_POST[ 's3base_url' ] );
+			$args[ 's3region' ]  	 	= sanitize_text_field( $_POST[ 's3region' ] );
 			$ajax         				= TRUE;
 		}
 		echo '<span id="s3bucketerror" style="color:red;">';

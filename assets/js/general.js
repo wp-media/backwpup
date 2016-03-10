@@ -4,11 +4,6 @@ jQuery(document).ready(function ($) {
         return jQuery('<span>').text( string ).html();
     };
 
-    $('.help-tip').backwpup_tipTip({
-        'attribute':'title',
-        'activation': 'hover'
-    });
-
     /* change size of thickbox */
     backwpup_tb_position = function() {
         var tbWindow = $('#TB_window'), width = $(window).width(), height = $(window).height(), W = ( 720 < width ) ? 720 : width,  H = ( 525 < height ) ? 525 : height, adminbar_height = 0;

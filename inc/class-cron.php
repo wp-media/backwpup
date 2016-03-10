@@ -132,39 +132,38 @@ class BackWPup_Cron {
 
 		//special header
 		@session_write_close();
-		@header( 'Content-Type: text/html; charset=' . get_bloginfo( 'charset' ), TRUE );
-		@header( 'X-Robots-Tag: noindex, nofollow', TRUE );
-		@header( 'X-BackWPup-Version: ' . BackWPup::get_plugin_data( 'version' ), TRUE );
+		@header( 'Content-Type: text/html; charset=' . get_bloginfo( 'charset' ), true );
+		@header( 'X-Robots-Tag: noindex, nofollow', true );
 		nocache_headers();
 
 		//on test die for fast feedback
-		if ( $_GET[ 'backwpup_run' ] === 'test' ) {
-			die( '' );
+		if ( $_GET['backwpup_run'] === 'test' ) {
+			die( 'BackWPup test request' );
 		}
 
 		// generate normal nonce
-		$nonce = substr( wp_hash( wp_nonce_tick() . 'backwpup_job_run-' . $_GET[ 'backwpup_run' ], 'nonce' ), - 12, 10 );
+		$nonce = substr( wp_hash( wp_nonce_tick() . 'backwpup_job_run-' . $_GET['backwpup_run'], 'nonce' ), - 12, 10 );
 		//special nonce on external start
-		if ( $_GET[ 'backwpup_run' ] == 'runext' ) {
+		if ( $_GET['backwpup_run'] === 'runext' ) {
 			$nonce = get_site_option( 'backwpup_cfg_jobrunauthkey' );
 		}
 		// check nonce
-		if ( empty( $_GET['_nonce'] ) || $nonce != $_GET['_nonce'] ) {
+		if ( empty( $_GET['_nonce'] ) || $nonce !== $_GET['_nonce'] ) {
 			return;
 		}
 
 		//check runext is allowed for job
-		if ( $_GET[ 'backwpup_run' ] == 'runext' ) {
+		if ( $_GET['backwpup_run'] === 'runext' ) {
 			$jobids_link = BackWPup_Option::get_job_ids( 'activetype', 'link' );
 			$jobids_easycron = BackWPup_Option::get_job_ids( 'activetype', 'easycron' );
 			$jobids_external = array_merge( $jobids_link, $jobids_easycron );
-			if ( ! isset( $_GET[ 'jobid' ] ) || ! in_array( $_GET[ 'jobid' ], $jobids_external ) ) {
+			if ( ! isset( $_GET['jobid'] ) || ! in_array( $_GET['jobid'], $jobids_external ) ) {
 				return;
 			}
 		}
 
 		//run BackWPup job
-		BackWPup_Job::start_http( $_GET[ 'backwpup_run' ] );
+		BackWPup_Job::start_http( $_GET['backwpup_run'] );
 		die( '' );
 	}
 
