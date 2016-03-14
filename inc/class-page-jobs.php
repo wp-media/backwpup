@@ -631,7 +631,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 					<span id="errorid"><?php esc_html_e( 'Errors:', 'backwpup' ); ?> <span id="errors"><?php echo $job_object->errors; ?></span></span>
 					<div class="infobuttons"><a href="#TB_inline?height=440&width=630&inlineId=tb-showworking" id="showworkingbutton" class="thickbox button button-primary button-primary-bwp" title="<?php esc_attr_e( 'Log of running job', 'backwpup'); ?>"><?php esc_html_e( 'Display working log', 'backwpup' ); ?></a>
 					<a href="<?php echo wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupjobs&action=abort', 'abort-job' ); ?>" id="abortbutton" class="backwpup-fancybox button button-bwp"><?php esc_html_e( 'Abort', 'backwpup' ); ?></a>
-					<a href="#" id="showworkingclose" title="<?php esc_html_e( 'Close working screen', 'backwpup'); ?>" class="button button-bwp" style="display:none" ><?php esc_html_e( 'close', 'backwpup' ); ?></a></div>
+					<a href="#" id="showworkingclose" title="<?php esc_html_e( 'Close working screen', 'backwpup'); ?>" class="button button-bwp" style="display:none" ><?php esc_html_e( 'Close', 'backwpup' ); ?></a></div>
 				</div>
 				<input type="hidden" name="logpos" id="logpos" value="<?php echo strlen( $logfiledata ); ?>">
 				<div id="lasterrormsg"></div>
@@ -855,4 +855,3 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	}
 
 }
-
