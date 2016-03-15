@@ -221,7 +221,7 @@ class BackWPup_Page_Settings {
 						            <option value="debug" <?php selected( get_site_option( 'backwpup_cfg_loglevel' ), 'debug' ); ?>><?php _e( 'Debug (not translated)', 'backwpup' ); ?></option>
 					            </select>
 				            </label>
-				            <p class="description"><?php esc_attr_e( 'Debug log has much more informations than normal logs. It is for support and should be handled carefully. For support is the best to use a not translated log file. Usage of not translated logs can reduce the PHP memory usage two.', 'backwpup' ); ?></p>
+				            <p class="description"><?php esc_attr_e( 'Debug log has much more informations than normal logs. It is for support and should be handled carefully. For support is the best to use a not translated log file. Usage of not translated logs can reduce the PHP memory usage too.', 'backwpup' ); ?></p>
 			            </fieldset>
 		            </td>
 	            </tr>
