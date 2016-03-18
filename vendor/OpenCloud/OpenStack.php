@@ -1,29 +1,36 @@
 <?php
 /**
- * PHP OpenCloud library.
- * 
- * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
- * @license   https://www.apache.org/licenses/LICENSE-2.0
- * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
- * @author    Glen Campbell <glen.campbell@rackspace.com>
+ * Copyright 2012-2014 Rackspace US, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 namespace OpenCloud;
 
-use OpenCloud\Common\Constants\Header;
-use OpenCloud\Common\Constants\Mime;
+use Guzzle\Http\Url;
+use OpenCloud\Common\Exceptions;
 use OpenCloud\Common\Http\Client;
+use OpenCloud\Common\Http\Message\Formatter;
 use OpenCloud\Common\Http\Message\RequestSubscriber;
 use OpenCloud\Common\Lang;
-use OpenCloud\Common\Exceptions;
-use OpenCloud\Common\Service\ServiceBuilder;
+use OpenCloud\Common\Log\Logger;
 use OpenCloud\Common\Service\Catalog;
-use OpenCloud\Common\Http\Message\Formatter;
-use OpenCloud\Identity\Service as IdentityService;
-use OpenCloud\Identity\Resource\Token;
+use OpenCloud\Common\Service\ServiceBuilder;
 use OpenCloud\Identity\Resource\Tenant;
+use OpenCloud\Identity\Resource\Token;
 use OpenCloud\Identity\Resource\User;
-use Guzzle\Http\Url;
+use OpenCloud\Identity\Service as IdentityService;
+use Psr\Log\LoggerInterface;
 
 define('RACKSPACE_US', 'https://identity.api.rackspacecloud.com/v2.0/');
 define('RACKSPACE_UK', 'https://lon.identity.api.rackspacecloud.com/v2.0/');
@@ -56,7 +63,7 @@ class OpenStack extends Client
     private $catalog;
 
     /**
-     * @var \OpenCloud\Common\Log\LoggerInterface The object responsible for logging output
+     * @var LoggerInterface The object responsible for logging output
      */
     private $logger;
 
@@ -72,17 +79,19 @@ class OpenStack extends Client
 
     public function __construct($url, array $secret, array $options = array())
     {
-        $this->getLogger()->info(Lang::translate('Initializing OpenStack client'));
+        if (isset($options['logger']) && $options['logger'] instanceof LoggerInterface) {
+            $this->setLogger($options['logger']);
+        }
 
         $this->setSecret($secret);
         $this->setAuthUrl($url);
 
         parent::__construct($url, $options);
-        
+
         $this->addSubscriber(RequestSubscriber::getInstance());
         $this->setDefaultOption('headers/Accept', 'application/json');
     }
-        
+
     /**
      * Set the credentials for the client
      *
@@ -92,25 +101,25 @@ class OpenStack extends Client
     public function setSecret(array $secret = array())
     {
         $this->secret = $secret;
-        
+
         return $this;
     }
-    
+
     /**
      * Get the secret.
-     * 
+     *
      * @return array
      */
     public function getSecret()
     {
         return $this->secret;
     }
-    
+
     /**
      * Set the token. If a string is passed in, the SDK assumes you want to set the ID of the full Token object
      * and sets this property accordingly. For any other data type, it assumes you want to populate the Token object.
      * This ambiguity arises due to backwards compatibility.
-     * 
+     *
      * @param  string $token
      * @return $this
      */
@@ -119,12 +128,10 @@ class OpenStack extends Client
         $identity = IdentityService::factory($this);
 
         if (is_string($token)) {
-
             if (!$this->token) {
                 $this->setTokenObject($identity->resource('Token'));
             }
             $this->token->setId($token);
-
         } else {
             $this->setTokenObject($identity->resource('Token', $token));
         }
@@ -143,7 +150,7 @@ class OpenStack extends Client
     }
 
     /**
-     * Set the full toke object
+     * Set the full token object
      */
     public function setTokenObject(Token $token)
     {
@@ -157,59 +164,58 @@ class OpenStack extends Client
     {
         return $this->token;
     }
-    
+
     /**
      * @deprecated
      */
     public function setExpiration($expiration)
     {
-        $this->getLogger()->deprecated(__METHOD__, '::getTokenObject()->setExpires()');
+        $this->getLogger()->warning(Logger::deprecated(__METHOD__, '::getTokenObject()->setExpires()'));
         if ($this->getTokenObject()) {
             $this->getTokenObject()->setExpires($expiration);
         }
+
         return $this;
     }
-    
+
     /**
      * @deprecated
      */
     public function getExpiration()
     {
-        $this->getLogger()->deprecated(__METHOD__, '::getTokenObject()->getExpires()');
+        $this->getLogger()->warning(Logger::deprecated(__METHOD__, '::getTokenObject()->getExpires()'));
         if ($this->getTokenObject()) {
             return $this->getTokenObject()->getExpires();
         }
     }
-    
+
     /**
-     * Set the tenant. If an integer is passed in, the SDK assumes you want to set the ID of the full Tenant object
-     * and sets this property accordingly. For any other data type, it assumes you want to populate the Tenant object.
-     * This ambiguity arises due to backwards compatibility.
-     * 
-     * @param  string $tenant
+     * Set the tenant. If an integer or string is passed in, the SDK assumes you want to set the ID of the full
+     * Tenant object and sets this property accordingly. For any other data type, it assumes you want to populate
+     * the Tenant object. This ambiguity arises due to backwards compatibility.
+     *
+     * @param  mixed $tenant
      * @return $this
      */
     public function setTenant($tenant)
     {
         $identity = IdentityService::factory($this);
 
-        if (is_numeric($tenant)) {
-
+        if (is_numeric($tenant) || is_string($tenant)) {
             if (!$this->tenant) {
                 $this->setTenantObject($identity->resource('Tenant'));
             }
             $this->tenant->setId($tenant);
-
         } else {
             $this->setTenantObject($identity->resource('Tenant', $tenant));
         }
-       
+
         return $this;
     }
-    
+
     /**
      * Returns the tenant ID only (backwards compatibility).
-     * 
+     *
      * @return string
      */
     public function getTenant()
@@ -236,10 +242,10 @@ class OpenStack extends Client
     {
         return $this->tenant;
     }
-    
+
     /**
      * Set the service catalog.
-     * 
+     *
      * @param  mixed $catalog
      * @return $this
      */
@@ -249,10 +255,10 @@ class OpenStack extends Client
 
         return $this;
     }
-    
+
     /**
      * Get the service catalog.
-     * 
+     *
      * @return array
      */
     public function getCatalog()
@@ -261,32 +267,44 @@ class OpenStack extends Client
     }
 
     /**
-     * @param Common\Log\LoggerInterface $logger
+     * @param LoggerInterface $logger
+     *
      * @return $this
      */
-    public function setLogger(Common\Log\LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
+
         return $this;
     }
 
     /**
-     * @return Common\Log\LoggerInterface
+     * @return LoggerInterface
      */
     public function getLogger()
     {
         if (null === $this->logger) {
             $this->setLogger(new Common\Log\Logger);
         }
+
         return $this->logger;
     }
-    
+
+    /**
+     * @return bool
+     */
+    public function hasLogger()
+    {
+        return (null !== $this->logger);
+    }
+
     /**
      * @deprecated
      */
     public function hasExpired()
     {
-        $this->getLogger()->deprecated(__METHOD__, 'getTokenObject()->hasExpired()');
+        $this->getLogger()->warning(Logger::deprecated(__METHOD__, 'getTokenObject()->hasExpired()'));
+
         return $this->getTokenObject() && $this->getTokenObject()->hasExpired();
     }
 
@@ -299,7 +317,6 @@ class OpenStack extends Client
     public function getCredentials()
     {
         if (!empty($this->secret['username']) && !empty($this->secret['password'])) {
-
             $credentials = array('auth' => array(
                 'passwordCredentials' => array(
                     'username' => $this->secret['username'],
@@ -314,10 +331,9 @@ class OpenStack extends Client
             }
 
             return json_encode($credentials);
-
         } else {
             throw new Exceptions\CredentialError(
-               Lang::translate('Unrecognized credential secret')
+                Lang::translate('Unrecognized credential secret')
             );
         }
     }
@@ -328,8 +344,9 @@ class OpenStack extends Client
      */
     public function setAuthUrl($url)
     {
-	    $this->authUrl = Url::factory($url);
-	    return $this;
+        $this->authUrl = Url::factory($url);
+
+        return $this;
     }
 
     /**
@@ -337,7 +354,7 @@ class OpenStack extends Client
      */
     public function getAuthUrl()
     {
-	    return $this->authUrl;
+        return $this->authUrl;
     }
 
     /**
@@ -366,6 +383,10 @@ class OpenStack extends Client
      */
     public function authenticate()
     {
+        // OpenStack APIs will return a 401 if an expired X-Auth-Token is sent,
+        // so we need to reset the value before authenticating for another one.
+        $this->updateTokenHeader('');
+
         $identity = IdentityService::factory($this);
         $response = $identity->generateToken($this->getCredentials());
 
@@ -380,7 +401,7 @@ class OpenStack extends Client
         }
 
         // Set X-Auth-Token HTTP request header
-        $this->updateTokenHeader();
+        $this->updateTokenHeader($this->getToken());
     }
 
     /**
@@ -400,6 +421,7 @@ class OpenStack extends Client
         if ($this->hasExpired()) {
             $this->authenticate();
         }
+
         return array(
             'token'      => $this->getToken(),
             'expiration' => $this->getExpiration(),
@@ -417,7 +439,7 @@ class OpenStack extends Client
     {
         if (!empty($values['token'])) {
             $this->setToken($values['token']);
-            $this->updateTokenHeader();
+            $this->updateTokenHeader($this->getToken());
         }
         if (!empty($values['expiration'])) {
             $this->setExpiration($values['expiration']);
@@ -433,12 +455,11 @@ class OpenStack extends Client
     /**
      * Sets the X-Auth-Token header. If no value is explicitly passed in, the current token is used.
      *
-     * @param  string $token Optional value of token.
+     * @param  string $token Value of header.
      * @return void
      */
-    private function updateTokenHeader($token = null)
+    private function updateTokenHeader($token)
     {
-        $token = $token ?: $this->getToken();
         $this->setDefaultOption('headers/X-Auth-Token', (string) $token);
     }
 
@@ -453,8 +474,8 @@ class OpenStack extends Client
     public function objectStoreService($name = null, $region = null, $urltype = null)
     {
         return ServiceBuilder::factory($this, 'OpenCloud\ObjectStore\Service', array(
-            'name'    => $name, 
-            'region'  => $region, 
+            'name'    => $name,
+            'region'  => $region,
             'urlType' => $urltype
         ));
     }
@@ -470,8 +491,8 @@ class OpenStack extends Client
     public function computeService($name = null, $region = null, $urltype = null)
     {
         return ServiceBuilder::factory($this, 'OpenCloud\Compute\Service', array(
-            'name'    => $name, 
-            'region'  => $region, 
+            'name'    => $name,
+            'region'  => $region,
             'urlType' => $urltype
         ));
     }
@@ -488,8 +509,8 @@ class OpenStack extends Client
     public function orchestrationService($name = null, $region = null, $urltype = null)
     {
         return ServiceBuilder::factory($this, 'OpenCloud\Orchestration\Service', array(
-            'name'    => $name, 
-            'region'  => $region, 
+            'name'    => $name,
+            'region'  => $region,
             'urlType' => $urltype
         ));
     }
@@ -505,8 +526,8 @@ class OpenStack extends Client
     public function volumeService($name = null, $region = null, $urltype = null)
     {
         return ServiceBuilder::factory($this, 'OpenCloud\Volume\Service', array(
-            'name'    => $name, 
-            'region'  => $region, 
+            'name'    => $name,
+            'region'  => $region,
             'urlType' => $urltype
         ));
     }
@@ -520,6 +541,42 @@ class OpenStack extends Client
     {
         $service = IdentityService::factory($this);
         $this->authenticate();
+
         return $service;
+    }
+
+    /**
+     * Creates a new Glance service
+     *
+     * @param string $name    The name of the service as it appears in the Catalog
+     * @param string $region  The region (DFW, IAD, ORD, LON, SYD)
+     * @param string $urltype The URL type ("publicURL" or "internalURL")
+     * @return Common\Service\ServiceInterface
+     */
+    public function imageService($name = null, $region = null, $urltype = null)
+    {
+        return ServiceBuilder::factory($this, 'OpenCloud\Image\Service', array(
+            'name'    => $name,
+            'region'  => $region,
+            'urlType' => $urltype
+        ));
+    }
+
+    /**
+     * Creates a new Networking (Neutron) service object
+     *
+     * @param string $name    The name of the service as it appears in the Catalog
+     * @param string $region  The region (DFW, IAD, ORD, LON, SYD)
+     * @param string $urltype The URL type ("publicURL" or "internalURL")
+     * @return \OpenCloud\Networking\Service
+     * @codeCoverageIgnore
+     */
+    public function networkingService($name = null, $region = null, $urltype = null)
+    {
+        return ServiceBuilder::factory($this, 'OpenCloud\Networking\Service', array(
+            'name'    => $name,
+            'region'  => $region,
+            'urlType' => $urltype
+        ));
     }
 }

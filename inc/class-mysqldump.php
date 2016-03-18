@@ -122,13 +122,13 @@ class BackWPup_MySQLDump {
 		$this->dbname = $args[ 'dbname' ];
 
 		//set compression
-		if ( ! empty( $args[ 'compression' ] ) && in_array( $args[ 'compression' ], array( 'gz' ) ) ) {
+		if ( ! empty( $args[ 'compression' ] ) && $args[ 'compression' ] === 'gz' ) {
 			$this->compression = $args[ 'compression' ];
 		}
 
 		//open file if set
 		if ( $args[ 'dumpfile' ] ) {
-			if ( substr( strtolower( $args[ 'dumpfile' ] ), -3 ) == '.gz' ) {
+			if ( substr( strtolower( $args[ 'dumpfile' ] ), -3 ) === '.gz' ) {
 				if ( ! function_exists( 'gzencode' ) )
 					throw new BackWPup_MySQLDump_Exception( __( 'Functions for gz compression not available', 'backwpup' ) );
 				$this->compression = 'gz';
@@ -503,7 +503,7 @@ class BackWPup_MySQLDump {
 			foreach ( $data as $key => $value ) {
 				if ( is_null( $value ) || ! isset( $value ) ) { // Make Value NULL to string NULL
 					$value = "NULL";
-				} elseif ( in_array($fieldinfo[ $key ]->type, array( MYSQLI_TYPE_DECIMAL, MYSQLI_TYPE_TINY, MYSQLI_TYPE_SHORT, MYSQLI_TYPE_LONG,  MYSQLI_TYPE_FLOAT, MYSQLI_TYPE_DOUBLE, MYSQLI_TYPE_LONGLONG, MYSQLI_TYPE_INT24 ) ) ) {//is value numeric no esc
+				} elseif ( in_array( (int) $fieldinfo[ $key ]->type, array( MYSQLI_TYPE_DECIMAL, MYSQLI_TYPE_TINY, MYSQLI_TYPE_SHORT, MYSQLI_TYPE_LONG,  MYSQLI_TYPE_FLOAT, MYSQLI_TYPE_DOUBLE, MYSQLI_TYPE_LONGLONG, MYSQLI_TYPE_INT24 ), true ) ) {//is value numeric no esc
 					$value = empty( $value ) ? 0 : $value;
 				} else {
 					$value = "'" . $this->mysqli->real_escape_string( $value ) . "'";

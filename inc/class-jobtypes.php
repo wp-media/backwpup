@@ -75,9 +75,6 @@ abstract class BackWPup_JobTypes {
 	 */
 	public function wizard_page( array $job_settings ) {
 
-		echo '<br /><pre>';
-		print_r( $job_settings );
-		echo '</pre>';
 	}
 
 	/**

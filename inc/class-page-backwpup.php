@@ -359,7 +359,7 @@ class BackWPup_Page_BackWPup {
 			$alternate = TRUE;
 			// add working job if it not in active jobs
 			$job_object = BackWPup_Job::get_working_data();
-			if ( ! empty( $job_object ) && ! empty( $job_object->job[ 'jobid' ] ) && ! in_array($job_object->job[ 'jobid' ], $mainsactive ) )
+			if ( ! empty( $job_object ) && ! empty( $job_object->job[ 'jobid' ] ) && ! in_array($job_object->job[ 'jobid' ], $mainsactive, true ) )
 				$mainsactive[ ] = $job_object->job[ 'jobid' ];
 			foreach ( $mainsactive as $jobid ) {
 				$name = BackWPup_Option::get( $jobid, 'name' );

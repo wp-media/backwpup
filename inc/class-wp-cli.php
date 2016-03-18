@@ -37,7 +37,7 @@ class BackWPup_WP_CLI extends WP_CLI_Command {
 
 
 		$jobids = BackWPup_Option::get_job_ids();
-		if ( ! in_array( $jobid, $jobids ) ) {
+		if ( ! in_array( $jobid, $jobids, true ) ) {
 			WP_CLI::error( __( 'Job ID does not exist!', 'backwpup' ) );
 		}
 

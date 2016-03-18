@@ -176,8 +176,13 @@ Please check all settings after the update:
 * Changed: Response test to work more as before
 * Removed: PCLZip selection setting
 * Removed: Help tooltips now uses the WordPress way
-* Updated: AWS SDK to Version 2.8.28 (PHP 5.3.3+)
-* PRO Fixed: Glacier will be only display 10 Vaults
+* Removed: Old AWS SDK for using backups to S3 with PHP Version lower than 5.3
+* Updated: AWS SDK to Version 2.8.28
+* Updated: MSAZURE SDK to Version 0.4.1
+* Updated: RSC SDK to Version 1.12.2
+* Updated: SwiftMailer to Version 5.2.2
+* Pro Updated: Google SDK to Version 1.1.7
+* Pro Fixed: Glacier will be only display 10 Vaults
 
 = Version 3.2.5 =
 * Fixed: two stored XSS issues

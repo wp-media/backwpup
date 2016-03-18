@@ -34,7 +34,6 @@ module.exports = function(grunt) {
 				expand: true,
 				files: {
 					'js/general.min.js': [ 'js/general.js' ],
-					'js/jquery.tipTip.min.js': [ 'js/jquery.tipTip.js' ],
 					'js/page_edit_jobtype_dbdump.min.js': [ 'js/page_edit_jobtype_dbdump.js' ],
 					'js/page_edit_jobtype_file.min.js': [ 'js/page_edit_jobtype_file.js' ],
 					'js/page_edit_tab_cron.min.js': [ 'js/page_edit_tab_cron.js' ],

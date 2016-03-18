@@ -9,7 +9,6 @@
 /**
  * Utility Class allowing users to simply check expressions again Swift Grammar.
  *
- * @package Swift
  * @author  Xavier De Cock <xdecock@gmail.com>
  */
 class Swift_Validate
@@ -30,13 +29,13 @@ class Swift_Validate
      */
     public static function email($email)
     {
-        if (self::$grammar===null) {
+        if (self::$grammar === null) {
             self::$grammar = Swift_DependencyContainer::getInstance()
                 ->lookup('mime.grammar');
         }
 
         return (bool) preg_match(
-                '/^' . self::$grammar->getDefinition('addr-spec') . '$/D',
+                '/^'.self::$grammar->getDefinition('addr-spec').'$/D',
                 $email
             );
     }

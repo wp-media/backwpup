@@ -230,7 +230,7 @@ class BackWPup_Install {
 				$jobvalue[ 'destinations' ][ ] = 'SUGARSYNC';
 			if ( ! empty( $jobvalue[ 'awsAccessKey' ] ) && ! empty( $jobvalue[ 'awsSecretKey' ] ) && ! empty( $jobvalue[ 'awsBucket' ] ) )
 				$jobvalue[ 'destinations' ][ ] = 'S3';
-			if ( ! empty( $jobvalue[ 'GStorageAccessKey' ] ) and ! empty( $jobvalue[ 'GStorageSecret' ] ) && ! empty( $jobvalue[ 'GStorageBucket' ] ) && !in_array( 'S3', $jobvalue[ 'destinations' ] ) )
+			if ( ! empty( $jobvalue[ 'GStorageAccessKey' ] ) and ! empty( $jobvalue[ 'GStorageSecret' ] ) && ! empty( $jobvalue[ 'GStorageBucket' ] ) && !in_array( 'S3', $jobvalue[ 'destinations' ], true ) )
 				$jobvalue[ 'destinations' ][ ] = 'S3';
 			if ( ! empty( $jobvalue[ 'rscUsername' ] ) && ! empty( $jobvalue[ 'rscAPIKey' ] ) && ! empty( $jobvalue[ 'rscContainer' ] ) )
 				$jobvalue[ 'destinations' ][ ] = 'RSC';

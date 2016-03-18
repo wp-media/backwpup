@@ -295,7 +295,7 @@ final class BackWPup_Option {
 		$new_option_job_ids = array();
 		foreach ( $jobs_options as $id => $option ) {
 			if ( isset( $option[ $key ] ) && $value == $option[ $key ] ) {
-				$new_option_job_ids[] = $id;
+				$new_option_job_ids[] = (int) $id;
 			}
 		}
 		sort( $new_option_job_ids );

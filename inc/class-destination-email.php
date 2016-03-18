@@ -1,5 +1,5 @@
 <?php
-// Swift Mailer v5.2.0
+// Swift Mailer v5.2.2
 // http://swiftmailer.org/
 // https://github.com/swiftmailer/swiftmailer
 
@@ -130,41 +130,44 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 
 
 	public function edit_inline_js() {
-		//<script type="text/javascript">
 		?>
-		$('#emailmethod').change(function () {
-			if ('smtp' == $('#emailmethod').val()) {
-				$('.emailsmtp').show();
-				$('#emailsendmail').hide();
-			} else if ('sendmail' == $('#emailmethod').val()) {
-				$('.emailsmtp').hide();
-				$('#emailsendmail').show();
-			} else {
-				$('.emailsmtp').hide();
-				$('#emailsendmail').hide();
-			}
-		});
-        $('#sendemailtest').live('click', function() {
-            $('#sendemailtest').after('&nbsp;<img id="emailsendtext" src="<?php echo get_admin_url().'images/loading.gif'; ?>" width="16" height="16" />');
-            var data = {
-                action: 'backwpup_dest_email',
-                emailaddress: $('input[name="emailaddress"]').val(),
-                emailsndemail: $('input[name="emailsndemail"]').val(),
-                emailmethod: $('#emailmethod').val(),
-                emailsendmail: $('input[name="emailsendmail"]').val(),
-				emailsndemailname: $('input[name="emailsndemailname"]').val(),
-                emailhost: $('input[name="emailhost"]').val(),
-                emailhostport: $('input[name="emailhostport"]').val(),
-                emailsecure: $('#emailsecure').val(),
-                emailuser: $('input[name="emailuser"]').val(),
-                emailpass: $('input[name="emailpass"]').val(),
-                _ajax_nonce: $('#backwpupajaxnonce').val()
-            };
-            $.post(ajaxurl, data, function(response) {
-                $('#emailsendtext').replaceWith( response );
-            });
-            return false;
-        });
+		<script type="text/javascript">
+			jQuery(document).ready(function ($) {
+				$('#emailmethod').change(function () {
+					if ('smtp' == $('#emailmethod').val()) {
+						$('.emailsmtp').show();
+						$('#emailsendmail').hide();
+					} else if ('sendmail' == $('#emailmethod').val()) {
+						$('.emailsmtp').hide();
+						$('#emailsendmail').show();
+					} else {
+						$('.emailsmtp').hide();
+						$('#emailsendmail').hide();
+					}
+				});
+				$('#sendemailtest').live('click', function () {
+					$('#sendemailtest').after('&nbsp;<img id="emailsendtext" src="<?php echo get_admin_url() . 'images/loading.gif'; ?>" width="16" height="16" />');
+					var data = {
+						action: 'backwpup_dest_email',
+						emailaddress: $('input[name="emailaddress"]').val(),
+						emailsndemail: $('input[name="emailsndemail"]').val(),
+						emailmethod: $('#emailmethod').val(),
+						emailsendmail: $('input[name="emailsendmail"]').val(),
+						emailsndemailname: $('input[name="emailsndemailname"]').val(),
+						emailhost: $('input[name="emailhost"]').val(),
+						emailhostport: $('input[name="emailhostport"]').val(),
+						emailsecure: $('#emailsecure').val(),
+						emailuser: $('input[name="emailuser"]').val(),
+						emailpass: $('input[name="emailpass"]').val(),
+						_ajax_nonce: $('#backwpupajaxnonce').val()
+					};
+					$.post(ajaxurl, data, function (response) {
+						$('#emailsendtext').replaceWith(response);
+					});
+					return false;
+				});
+			});
+		</script>
 		<?php
 	}
 

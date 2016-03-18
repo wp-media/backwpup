@@ -76,7 +76,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 						if ( $table[ 1 ] !== 'BASE TABLE' ) {
 							$tabletype = ' <i>(' . strtolower( esc_html( $table[ 1 ] ) ) . ')</i>';
 						}
-						echo '<label for="idtabledb-' . esc_html( $table[ 0 ] ) . '""><input class="checkbox" type="checkbox"' . checked( ! in_array( $table[ 0 ], BackWPup_Option::get( $jobid, 'dbdumpexclude' ) ), TRUE, FALSE ) . ' name="tabledb[]" id="idtabledb-' . esc_html( $table[ 0 ] ) . '" value="' . esc_html( $table[ 0 ] ) . '"/> ' . esc_html( $table[ 0 ] ) . $tabletype . '</label><br />';
+						echo '<label for="idtabledb-' . esc_html( $table[ 0 ] ) . '""><input class="checkbox" type="checkbox"' . checked( ! in_array( $table[ 0 ], BackWPup_Option::get( $jobid, 'dbdumpexclude' ), true ), TRUE, FALSE ) . ' name="tabledb[]" id="idtabledb-' . esc_html( $table[ 0 ] ) . '" value="' . esc_html( $table[ 0 ] ) . '"/> ' . esc_html( $table[ 0 ] ) . $tabletype . '</label><br />';
 						$counter++;
 						if ($next_row <= $counter) {
 							echo '</div><div style="width: 30%; float:left; min-width: 250px; margin-right: 10px;">';
@@ -136,7 +136,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 		}
 		$dbtables = $wpdb->get_results( 'SHOW TABLES FROM `' . DB_NAME . '`', ARRAY_N );
 		foreach ( $dbtables as $dbtable ) {
-			if ( ! in_array( $dbtable[ 0 ], $checked_db_tables ) ) {
+			if ( ! in_array( $dbtable[ 0 ], $checked_db_tables, true ) ) {
 				$dbdumpexclude[ ] = $dbtable[ 0 ];
 			}
 		}
@@ -176,7 +176,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 
 			//Exclude Tables
 			foreach ( $sql_dump->tables_to_dump as $key => $table ) {
-				if ( in_array( $table, $job_object->job[ 'dbdumpexclude' ] ) )
+				if ( in_array( $table, $job_object->job[ 'dbdumpexclude' ], true ) )
 					unset( $sql_dump->tables_to_dump[ $key ] );
 			}
 

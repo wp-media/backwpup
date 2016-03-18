@@ -1,11 +1,18 @@
 <?php
 /**
- * PHP OpenCloud library.
- * 
- * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
- * @license   https://www.apache.org/licenses/LICENSE-2.0
- * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
- * @author    Glen Campbell <glen.campbell@rackspace.com>
+ * Copyright 2012-2014 Rackspace US, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 namespace OpenCloud\ObjectStore\Resource;
@@ -13,8 +20,8 @@ namespace OpenCloud\ObjectStore\Resource;
 use OpenCloud\ObjectStore\Constants\Header as HeaderConst;
 
 /**
- * A container that has been CDN-enabled. Each CDN-enabled container has a unique 
- * Uniform Resource Locator (URL) that can be combined with its object names and 
+ * A container that has been CDN-enabled. Each CDN-enabled container has a unique
+ * Uniform Resource Locator (URL) that can be combined with its object names and
  * openly distributed in web pages, emails, or other applications.
  */
 class CDNContainer extends AbstractContainer
@@ -68,7 +75,7 @@ class CDNContainer extends AbstractContainer
         $headers = $response->getHeaders();
         $this->setMetadata($headers, true);
 
-        return $headers;  
+        return $headers;
     }
 
     /**
@@ -79,6 +86,7 @@ class CDNContainer extends AbstractContainer
     public function enableCdnLogging()
     {
         $headers = array('X-Log-Retention' => 'True');
+
         return $this->getClient()->put($this->getUrl(), $headers)->send();
     }
 
@@ -90,11 +98,25 @@ class CDNContainer extends AbstractContainer
     public function disableCdnLogging()
     {
         $headers = array('X-Log-Retention' => 'False');
+
         return $this->getClient()->put($this->getUrl(), $headers)->send();
     }
 
     public function isCdnEnabled()
     {
         return $this->metadata->getProperty(HeaderConst::ENABLED) == 'True';
+    }
+
+    /**
+     * Set the TTL.
+     *
+     * @param $ttl The time-to-live in seconds.
+     * @return \Guzzle\Http\Message\Response
+     */
+    public function setTtl($ttl)
+    {
+        $headers = array('X-Ttl' => $ttl);
+
+        return $this->getClient()->post($this->getUrl(), $headers)->send();
     }
 }

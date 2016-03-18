@@ -128,12 +128,12 @@ class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes {
 			fwrite( $handle, PHP_EOL . __( 'Active plugins:', 'backwpup' ) . PHP_EOL . '------------------------------' . PHP_EOL );
 
 			foreach ( $plugins as $key => $plugin ) {
-				if ( in_array( $key, $plugins_active ) )
+				if ( in_array( $key, $plugins_active, true ) )
 					fwrite( $handle, $plugin[ 'Name' ] . PHP_EOL );
 			}
 			fwrite( $handle, PHP_EOL . __( 'Inactive plugins:', 'backwpup' ) . PHP_EOL . '------------------------------' . PHP_EOL );
 			foreach ( $plugins as $key => $plugin ) {
-				if ( ! in_array( $key, $plugins_active ) )
+				if ( ! in_array( $key, $plugins_active, true ) )
 					fwrite( $handle, $plugin[ 'Name' ] . PHP_EOL );
 			}
 			fclose( $handle );

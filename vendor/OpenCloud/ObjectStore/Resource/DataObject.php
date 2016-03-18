@@ -1,11 +1,18 @@
 <?php
 /**
- * PHP OpenCloud library.
+ * Copyright 2012-2014 Rackspace US, Inc.
  *
- * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
- * @license   https://www.apache.org/licenses/LICENSE-2.0
- * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
- * @author    Glen Campbell <glen.campbell@rackspace.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 namespace OpenCloud\ObjectStore\Resource;
@@ -14,15 +21,15 @@ use Guzzle\Http\EntityBody;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Url;
 use OpenCloud\Common\Constants\Header as HeaderConst;
-use OpenCloud\Common\Lang;
 use OpenCloud\Common\Exceptions;
+use OpenCloud\Common\Lang;
 use OpenCloud\ObjectStore\Constants\UrlType;
 
 /**
- * Objects are the basic storage entities in Cloud Files. They represent the 
- * files and their optional metadata you upload to the system. When you upload 
- * objects to Cloud Files, the data is stored as-is (without compression or 
- * encryption) and consists of a location (container), the object's name, and 
+ * Objects are the basic storage entities in Cloud Files. They represent the
+ * files and their optional metadata you upload to the system. When you upload
+ * objects to Cloud Files, the data is stored as-is (without compression or
+ * encryption) and consists of a location (container), the object's name, and
  * any metadata you assign consisting of key/value pairs.
  */
 class DataObject extends AbstractResource
@@ -38,9 +45,9 @@ class DataObject extends AbstractResource
      * @var The file name of the object
      */
     protected $name;
-    
+
     /**
-     * @var EntityBody 
+     * @var EntityBody
      */
     protected $content;
 
@@ -82,10 +89,11 @@ class DataObject extends AbstractResource
         $this->setContainer($container);
 
         parent::__construct($container->getService());
-        
+
         // For pseudo-directories, we need to ensure the name is set
         if (!empty($data->subdir)) {
             $this->setName($data->subdir)->setDirectory(true);
+
             return;
         }
 
@@ -150,6 +158,7 @@ class DataObject extends AbstractResource
     public function setContainer(Container $container)
     {
         $this->container = $container;
+
         return $this;
     }
 
@@ -168,6 +177,7 @@ class DataObject extends AbstractResource
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -186,6 +196,7 @@ class DataObject extends AbstractResource
     public function setDirectory($directory)
     {
         $this->directory = $directory;
+
         return $this;
     }
 
@@ -196,7 +207,7 @@ class DataObject extends AbstractResource
     {
         return $this->directory;
     }
-    
+
     /**
      * @return bool Is this data object a pseudo-directory?
      */
@@ -214,6 +225,7 @@ class DataObject extends AbstractResource
         $this->etag = null;
         $this->contentType = null;
         $this->content = EntityBody::factory($content);
+
         return $this;
     }
 
@@ -232,6 +244,7 @@ class DataObject extends AbstractResource
     public function setContentType($contentType)
     {
         $this->contentType = $contentType;
+
         return $this;
     }
 
@@ -240,7 +253,7 @@ class DataObject extends AbstractResource
      */
     public function getContentType()
     {
-        return $this->contentType ?: $this->content->getContentType();
+        return $this->contentType ? : $this->content->getContentType();
     }
 
     /**
@@ -250,6 +263,7 @@ class DataObject extends AbstractResource
     public function setContentLength($contentLength)
     {
         $this->contentLength = $contentLength;
+
         return $this;
     }
 
@@ -268,6 +282,7 @@ class DataObject extends AbstractResource
     public function setEtag($etag)
     {
         $this->etag = $etag;
+
         return $this;
     }
 
@@ -276,12 +291,13 @@ class DataObject extends AbstractResource
      */
     public function getEtag()
     {
-        return $this->etag ?: $this->content->getContentMd5();
+        return $this->etag ? : $this->content->getContentMd5();
     }
 
     public function setLastModified($lastModified)
     {
         $this->lastModified = $lastModified;
+
         return $this;
     }
 
@@ -311,10 +327,10 @@ class DataObject extends AbstractResource
 
         // merge specific properties with metadata
         $metadata += array(
-            HeaderConst::CONTENT_TYPE => $this->contentType,
-            HeaderConst::LAST_MODIFIED => $this->lastModified,
+            HeaderConst::CONTENT_TYPE   => $this->contentType,
+            HeaderConst::LAST_MODIFIED  => $this->lastModified,
             HeaderConst::CONTENT_LENGTH => $this->contentLength,
-            HeaderConst::ETAG => $this->etag
+            HeaderConst::ETAG           => $this->etag
         );
 
         return $this->container->uploadObject($this->name, $this->content, $metadata);
@@ -363,14 +379,14 @@ class DataObject extends AbstractResource
                 $method
             ));
         }
-        
+
         // @codeCoverageIgnoreStart
         if (!($secret = $this->getService()->getAccount()->getTempUrlSecret())) {
             throw new Exceptions\ObjectError('Cannot produce temporary URL without an account secret.');
         }
         // @codeCoverageIgnoreEnd
 
-        $url  = $this->getUrl();
+        $url = $this->getUrl();
         $urlPath = urldecode($url->getPath());
         $body = sprintf("%s\n%d\n%s", $method, $expiry, $urlPath);
         $hash = hash_hmac('sha1', $body, $secret);
@@ -408,7 +424,7 @@ class DataObject extends AbstractResource
     public function getPublicUrl($type = UrlType::CDN)
     {
         $cdn = $this->container->getCdn();
-        
+
         switch ($type) {
             case UrlType::CDN:
                 $uri = $cdn->getCdnUri();
@@ -420,16 +436,17 @@ class DataObject extends AbstractResource
                 $uri = $cdn->getCdnStreamingUri();
                 break;
             case UrlType::IOS_STREAMING:
-            	$uri = $cdn->getIosStreamingUri();
-                break; 
+                $uri = $cdn->getIosStreamingUri();
+                break;
         }
-        
+
         return (isset($uri)) ? Url::factory($uri)->addPath($this->name) : false;
     }
 
     protected static function headerIsValidMetadata($header)
     {
         $pattern = sprintf('#^%s-%s-Meta-#i', self::GLOBAL_METADATA_PREFIX, self::METADATA_LABEL);
+
         return preg_match($pattern, $header);
     }
 }

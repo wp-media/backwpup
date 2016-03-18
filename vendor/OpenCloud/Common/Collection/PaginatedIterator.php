@@ -1,17 +1,25 @@
 <?php
 /**
- * PHP OpenCloud library.
- * 
- * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
- * @license   https://www.apache.org/licenses/LICENSE-2.0
- * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
+ * Copyright 2012-2014 Rackspace US, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 namespace OpenCloud\Common\Collection;
 
-use Iterator;
-use Guzzle\Http\Url;
 use Guzzle\Http\Exception\ClientErrorResponseException;
+use Guzzle\Http\Url;
+use Iterator;
 use OpenCloud\Common\Http\Message\Formatter;
 
 /**
@@ -25,7 +33,7 @@ use OpenCloud\Common\Http\Message\Formatter;
 class PaginatedIterator extends ResourceIterator implements Iterator
 {
     const MARKER = 'marker';
-    const LIMIT  = 'limit';
+    const LIMIT = 'limit';
 
     /**
      * @var string Used for requests which append elements.
@@ -39,24 +47,24 @@ class PaginatedIterator extends ResourceIterator implements Iterator
 
     protected $defaults = array(
         // Collection limits
-        'limit.total' => 10000,
-        'limit.page'  => 100,
+        'limit.total'           => 10000,
+        'limit.page'            => 100,
 
         // The "links" element key in response
-        'key.links'  => 'links',
+        'key.links'             => 'links',
 
         // JSON structure
-        'key.collection' => null,
+        'key.collection'        => null,
         'key.collectionElement' => null,
 
         // The property used as the marker
-        'key.marker' => 'name',
+        'key.marker'            => 'name',
 
         // Options for "next page" request
-        'request.method'      => 'GET',
-        'request.headers'     => array(),
-        'request.body'        => null,
-        'request.curlOptions' => array()
+        'request.method'        => 'GET',
+        'request.headers'       => array(),
+        'request.body'          => null,
+        'request.curlOptions'   => array()
     );
 
     protected $required = array('resourceClass', 'baseUrl');
@@ -64,11 +72,10 @@ class PaginatedIterator extends ResourceIterator implements Iterator
     /**
      * Basic factory method to easily instantiate a new ResourceIterator.
      *
-     * @param       $parent The parent object
-     * @param Url   $url    The base URL
-     * @param array $params Options for this iterator
+     * @param       $parent  The parent object
+     * @param array $options Iterator options
+     * @param array $data    Optional data to set initially
      * @return static
-     * @throws \OpenCloud\Common\Exceptions\InvalidArgumentError
      */
     public static function factory($parent, array $options = array(), array $data = null)
     {
@@ -95,6 +102,7 @@ class PaginatedIterator extends ResourceIterator implements Iterator
     public function setBaseUrl(Url $url)
     {
         $this->baseUrl = $url;
+
         return $this;
     }
 
@@ -137,7 +145,11 @@ class PaginatedIterator extends ResourceIterator implements Iterator
         }
 
         $element = $this->elements[$this->position];
+        $this->setMarkerFromElement($element);
+    }
 
+    protected function setMarkerFromElement($element)
+    {
         $key = $this->getOption('key.marker');
 
         if (isset($element->$key)) {
@@ -157,7 +169,8 @@ class PaginatedIterator extends ResourceIterator implements Iterator
 
     public function valid()
     {
-        if ($this->getOption('limit.total') !== false && $this->position >= $this->getOption('limit.total')) {
+        $totalLimit = $this->getOption('limit.total');
+        if ($totalLimit !== false && $this->position >= $totalLimit) {
             return false;
         } elseif (isset($this->elements[$this->position])) {
             return true;
@@ -172,7 +185,10 @@ class PaginatedIterator extends ResourceIterator implements Iterator
 
     protected function shouldAppend()
     {
-        return $this->currentMarker && $this->position % $this->getOption('limit.page') == 0;
+        return $this->currentMarker && (
+            $this->nextUrl ||
+            $this->position % $this->getOption('limit.page') == 0
+        );
     }
 
     /**
@@ -184,6 +200,7 @@ class PaginatedIterator extends ResourceIterator implements Iterator
     public function appendElements(array $elements)
     {
         $this->elements = array_merge($this->elements, $elements);
+
         return $this;
     }
 
@@ -252,7 +269,6 @@ class PaginatedIterator extends ResourceIterator implements Iterator
     public function constructNextUrl()
     {
         if (!$url = $this->nextUrl) {
-
             $url = clone $this->getOption('baseUrl');
             $query = $url->getQuery();
 
@@ -310,5 +326,4 @@ class PaginatedIterator extends ResourceIterator implements Iterator
             $this->next();
         }
     }
-
 }

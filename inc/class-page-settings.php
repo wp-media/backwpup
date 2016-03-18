@@ -70,7 +70,7 @@ class BackWPup_Page_Settings {
 			$_POST[ 'jobmaxexecutiontime' ] = 300;
 		}
 		update_site_option( 'backwpup_cfg_jobmaxexecutiontime', absint( $_POST[ 'jobmaxexecutiontime' ] ) );
-		update_site_option( 'backwpup_cfg_loglevel', in_array( $_POST[ 'loglevel' ], array( 'normal_translated', 'normal', 'debug_translated', 'debug' ) ) ? $_POST[ 'loglevel' ] : 'normal_translated' );
+		update_site_option( 'backwpup_cfg_loglevel', in_array( $_POST[ 'loglevel' ], array( 'normal_translated', 'normal', 'debug_translated', 'debug' ), true ) ? $_POST[ 'loglevel' ] : 'normal_translated' );
 		update_site_option( 'backwpup_cfg_jobwaittimems', absint( $_POST[ 'jobwaittimems' ] ) );
 		update_site_option( 'backwpup_cfg_jobdooutput', ! empty( $_POST[ 'jobdooutput' ] ) );
 		update_site_option( 'backwpup_cfg_maxlogs', absint( $_POST[ 'maxlogs' ] ) );
@@ -88,7 +88,7 @@ class BackWPup_Page_Settings {
 		}
 
 		$authentication = get_site_option( 'backwpup_cfg_authentication', array( 'method' => '', 'basic_user' => '', 'basic_password' => '', 'user_id' => 0, 'query_arg' => '' ) );
-		$authentication[ 'method' ] = ( in_array( $_POST[ 'authentication_method' ], array( 'user', 'basic', 'query_arg' ) ) ) ? $_POST[ 'authentication_method' ] : '';
+		$authentication[ 'method' ] = ( in_array( $_POST[ 'authentication_method' ], array( 'user', 'basic', 'query_arg' ), true ) ) ? $_POST[ 'authentication_method' ] : '';
 		$authentication[ 'basic_user' ] = sanitize_text_field( $_POST[ 'authentication_basic_user' ] );
 		$authentication[ 'basic_password' ] = BackWPup_Encryption::encrypt( (string) $_POST[ 'authentication_basic_password' ] );
 		$authentication[ 'query_arg' ] =  sanitize_text_field( $_POST[ 'authentication_query_arg' ] );

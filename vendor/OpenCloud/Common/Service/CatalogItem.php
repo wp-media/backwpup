@@ -1,11 +1,18 @@
 <?php
 /**
- * PHP OpenCloud library.
- * 
- * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
- * @license   https://www.apache.org/licenses/LICENSE-2.0
- * @author    Glen Campbell <glen.campbell@rackspace.com>
- * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
+ * Copyright 2012-2014 Rackspace US, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 namespace OpenCloud\Common\Service;
@@ -43,7 +50,7 @@ class CatalogItem
         $item->setName($object->name)
             ->setType($object->type)
             ->setEndpoints($object->endpoints);
-        
+
         return $item;
     }
 
@@ -54,6 +61,7 @@ class CatalogItem
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -83,6 +91,7 @@ class CatalogItem
     public function setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -110,6 +119,7 @@ class CatalogItem
     public function setEndpoints(array $endpoints)
     {
         $this->endpoints = $endpoints;
+
         return $this;
     }
 
@@ -131,6 +141,8 @@ class CatalogItem
     public function getEndpointFromRegion($region)
     {
         foreach ($this->endpoints as $endpoint) {
+            // Return the endpoint if it is regionless OR if the endpoint's
+            // region matches the $region supplied by the caller.
             if (!isset($endpoint->region) || $endpoint->region == $region) {
                 return $endpoint;
             }
@@ -142,5 +154,4 @@ class CatalogItem
             $region
         ));
     }
-    
 }

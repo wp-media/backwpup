@@ -11,7 +11,6 @@
 /**
  * Stores Messages in memory.
  *
- * @package Swift
  * @author  Fabien Potencier
  */
 class Swift_MemorySpool implements Swift_Spool
@@ -51,7 +50,8 @@ class Swift_MemorySpool implements Swift_Spool
      */
     public function queueMessage(Swift_Mime_Message $message)
     {
-        $this->messages[] = $message;
+        //clone the message to make sure it is not changed while in the queue
+        $this->messages[] = clone $message;
 
         return true;
     }

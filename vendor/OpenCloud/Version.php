@@ -1,25 +1,33 @@
 <?php
 /**
- * PHP OpenCloud library.
+ * Copyright 2012-2014 Rackspace US, Inc.
  *
- * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
- * @license   https://www.apache.org/licenses/LICENSE-2.0
- * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 namespace OpenCloud;
 
-use Guzzle\Http\Curl\CurlVersion;
 use Guzzle\Common\Version as GuzzleVersion;
+use Guzzle\Http\Curl\CurlVersion;
 
 /**
  * Class Version
  *
  * @package OpenCloud
  */
-class Version 
+class Version
 {
-    const VERSION = '1.9.2';
+    const VERSION = '1.12.2';
 
     /**
      * @return string Indicate current SDK version.
@@ -44,5 +52,4 @@ class Version
     {
         return GuzzleVersion::VERSION;
     }
-
-} 
+}

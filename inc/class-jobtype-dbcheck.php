@@ -104,7 +104,7 @@ class BackWPup_JobType_DBCheck extends BackWPup_JobTypes {
 		//check tables
 		if ( $job_object->substeps_todo > 0 ) {
 			foreach ( $tables as $table ) {
-				if ( in_array( $table, $job_object->steps_data[ $job_object->step_working ][ 'DONETABLE' ] ) )
+				if ( in_array( $table, $job_object->steps_data[ $job_object->step_working ][ 'DONETABLE' ], true ) )
 					continue;
 
 				if ( $tablestype[ $table ] == 'VIEW' ) {

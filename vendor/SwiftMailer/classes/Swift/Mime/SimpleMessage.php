@@ -11,8 +11,6 @@
 /**
  * The default email message class.
  *
- * @package    Swift
- * @subpackage Mime
  * @author     Chris Corbyn
  */
 class Swift_Mime_SimpleMessage extends Swift_Mime_MimePart implements Swift_Mime_Message
@@ -45,7 +43,7 @@ class Swift_Mime_SimpleMessage extends Swift_Mime_MimePart implements Swift_Mime
             'Bcc',
             'MIME-Version',
             'Content-Type',
-            'Content-Transfer-Encoding'
+            'Content-Transfer-Encoding',
             ));
         $this->getHeaders()->setAlwaysDisplayed(array('Date', 'Message-ID', 'From'));
         $this->getHeaders()->addTextHeader('MIME-Version', '1.0');
@@ -222,7 +220,7 @@ class Swift_Mime_SimpleMessage extends Swift_Mime_MimePart implements Swift_Mime
     /**
      * Get the from address of this message.
      *
-     * @return string
+     * @return mixed
      */
     public function getFrom()
     {
@@ -458,7 +456,7 @@ class Swift_Mime_SimpleMessage extends Swift_Mime_MimePart implements Swift_Mime
             2 => 'High',
             3 => 'Normal',
             4 => 'Low',
-            5 => 'Lowest'
+            5 => 'Lowest',
             );
         $pMapKeys = array_keys($priorityMap);
         if ($priority > max($pMapKeys)) {
@@ -467,8 +465,7 @@ class Swift_Mime_SimpleMessage extends Swift_Mime_MimePart implements Swift_Mime
             $priority = min($pMapKeys);
         }
         if (!$this->_setHeaderFieldModel('X-Priority',
-            sprintf('%d (%s)', $priority, $priorityMap[$priority])))
-        {
+            sprintf('%d (%s)', $priority, $priorityMap[$priority]))) {
             $this->getHeaders()->addTextHeader('X-Priority',
                 sprintf('%d (%s)', $priority, $priorityMap[$priority]));
         }
@@ -566,7 +563,7 @@ class Swift_Mime_SimpleMessage extends Swift_Mime_MimePart implements Swift_Mime
     {
         $this->attach($entity);
 
-        return 'cid:' . $entity->getId();
+        return 'cid:'.$entity->getId();
     }
 
     /**
@@ -615,8 +612,6 @@ class Swift_Mime_SimpleMessage extends Swift_Mime_MimePart implements Swift_Mime
         }
     }
 
-    // -- Protected methods
-
     /** @see Swift_Mime_SimpleMimeEntity::_getIdField() */
     protected function _getIdField()
     {
@@ -637,8 +632,6 @@ class Swift_Mime_SimpleMessage extends Swift_Mime_MimePart implements Swift_Mime
 
         return $part;
     }
-
-    // -- Private methods
 
     /** Get the highest nesting level nested inside this message */
     private function _getTopNestingLevel()

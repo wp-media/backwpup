@@ -79,7 +79,7 @@ class BackWPup_File {
 
 		if ( $dir = opendir( $folder ) ) {
 			while ( FALSE !== ( $file = readdir( $dir ) ) ) {
-				if ( in_array( $file, array( '.', '..' ) ) || is_link( $folder . '/' . $file ) ) {
+				if ( in_array( $file, array( '.', '..' ), true ) || is_link( $folder . '/' . $file ) ) {
 					continue;
 				}
 				if ( $deep && is_dir( $folder . '/' . $file ) ) {

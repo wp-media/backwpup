@@ -1,17 +1,35 @@
 <?php
+/**
+ * Copyright 2012-2014 Rackspace US, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 namespace OpenCloud\Common\Service;
 
 use Guzzle\Http\ClientInterface;
 use Guzzle\Http\Exception\BadResponseException;
 use Guzzle\Http\Url;
+use OpenCloud\Common\Base;
 use OpenCloud\Common\Exceptions;
 use OpenCloud\Common\Http\Message\Formatter;
+use OpenCloud\OpenStack;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 abstract class CatalogService extends AbstractService
 {
     const DEFAULT_URL_TYPE = 'publicURL';
+    const SUPPORTED_VERSION = null;
 
     /**
      * @var string The type of this service, as set in Catalog.
@@ -29,7 +47,7 @@ abstract class CatalogService extends AbstractService
     private $region;
 
     /**
-     * @var string Either 'publicURL' or 'privateURL'.
+     * @var string Either 'publicURL' or 'internalURL'.
      */
     private $urlType;
 
@@ -51,15 +69,21 @@ abstract class CatalogService extends AbstractService
      * @param string $type    Service type (e.g. 'compute')
      * @param string $name    Service name (e.g. 'cloudServersOpenStack')
      * @param string $region  Service region (e.g. 'DFW', 'ORD', 'IAD', 'LON', 'SYD' or 'HKG')
-     * @param string $urlType Either 'publicURL' or 'privateURL'
+     * @param string $urlType Either 'publicURL' or 'internalURL'
      */
     public function __construct(ClientInterface $client, $type = null, $name = null, $region = null, $urlType = null)
     {
+        if (($client instanceof Base || $client instanceof OpenStack) && $client->hasLogger()) {
+            $this->setLogger($client->getLogger());
+        }
+
         $this->setClient($client);
 
-        $this->name = $name ?: static::DEFAULT_NAME;
+        $this->name = $name ? : static::DEFAULT_NAME;
+        $this->region = $region;
 
-        if ($this->regionless !== true && !($this->region = $region)) {
+        $this->region = $region;
+        if ($this->regionless !== true && !$this->region) {
             throw new Exceptions\ServiceException(sprintf(
                 'The %s service must have a region set. You can either pass in a region string as an argument param, or'
                 . ' set a default region for your user account by executing User::setDefaultRegion and ::update().',
@@ -67,8 +91,8 @@ abstract class CatalogService extends AbstractService
             ));
         }
 
-        $this->type = $type ?: static::DEFAULT_TYPE;
-        $this->urlType = $urlType ?: static::DEFAULT_URL_TYPE;
+        $this->type = $type ? : static::DEFAULT_TYPE;
+        $this->urlType = $urlType ? : static::DEFAULT_URL_TYPE;
         $this->setEndpoint($this->findEndpoint());
 
         $this->client->setBaseUrl($this->getBaseUrl());
@@ -157,6 +181,7 @@ abstract class CatalogService extends AbstractService
     public function getExtensions()
     {
         $ext = $this->getMetaUrl('extensions');
+
         return (is_object($ext) && isset($ext->extensions)) ? $ext->extensions : array();
     }
 
@@ -168,6 +193,7 @@ abstract class CatalogService extends AbstractService
     public function limits()
     {
         $limits = $this->getMetaUrl('limits');
+
         return (is_object($limits)) ? $limits->limits : array();
     }
 
@@ -189,7 +215,7 @@ abstract class CatalogService extends AbstractService
         // Search each service to find The One
         foreach ($catalog->getItems() as $service) {
             if ($service->hasType($this->type) && $service->hasName($this->name)) {
-                return Endpoint::factory($service->getEndpointFromRegion($this->region));
+                return Endpoint::factory($service->getEndpointFromRegion($this->region), static::SUPPORTED_VERSION, $this->getClient());
             }
         }
 
@@ -209,7 +235,7 @@ abstract class CatalogService extends AbstractService
      * URL and retrieves the resource.
      *
      * @param string $resource The resource requested; should NOT have slashes
-     *      at the beginning or end
+     *                         at the beginning or end
      * @return \stdClass object
      */
     private function getMetaUrl($resource)
@@ -218,6 +244,7 @@ abstract class CatalogService extends AbstractService
         $url->addPath($resource);
         try {
             $response = $this->getClient()->get($url)->send();
+
             return Formatter::decode($response);
         } catch (BadResponseException $e) {
             // @codeCoverageIgnoreStart
@@ -248,5 +275,4 @@ abstract class CatalogService extends AbstractService
 
         return $url;
     }
-
-} 
+}

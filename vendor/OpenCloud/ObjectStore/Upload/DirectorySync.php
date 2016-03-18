@@ -1,10 +1,18 @@
 <?php
 /**
- * PHP OpenCloud library.
+ * Copyright 2012-2014 Rackspace US, Inc.
  *
- * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
- * @license   https://www.apache.org/licenses/LICENSE-2.0
- * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 namespace OpenCloud\ObjectStore\Upload;
@@ -13,7 +21,6 @@ use DirectoryIterator;
 use Guzzle\Http\EntityBody;
 use OpenCloud\Common\Collection\ResourceIterator;
 use OpenCloud\Common\Exceptions\InvalidArgumentError;
-use OpenCloud\Common\Exceptions\IOError;
 use OpenCloud\ObjectStore\Resource\Container;
 
 /**
@@ -105,7 +112,6 @@ class DirectorySync
 
         // Handle PUT requests (create/update files)
         foreach ($localFiles as $filename) {
-
             $callback = $this->getCallback($filename);
             $filePath = rtrim($this->basePath, '/') . '/' . $filename;
 
@@ -124,7 +130,6 @@ class DirectorySync
                         $entityBody
                     );
                 }
-
             } else {
                 // upload new file
                 $url = clone $this->container->getUrl();
@@ -206,12 +211,13 @@ class DirectorySync
     private function getCallback($name)
     {
         $name = trim($name, '/');
-        return function($remoteFile) use ($name) {
+
+        return function ($remoteFile) use ($name) {
             if ($remoteFile->getName() == $name) {
                 return true;
             }
+
             return false;
         };
     }
-
 }

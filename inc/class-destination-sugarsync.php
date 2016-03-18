@@ -400,7 +400,7 @@ class BackWPup_Destination_SugarSync_API {
 		$method = (string)$method;
 
 		// validate method
-		if ( ! in_array( $method, $allowedMethods ) )
+		if ( ! in_array( $method, $allowedMethods, true ) )
 			throw new BackWPup_Destination_SugarSync_API_Exception( 'Unknown method (' . $method . '). Allowed methods are: ' . implode( ', ', $allowedMethods ) );
 
 		// check auth token

@@ -1,21 +1,27 @@
 <?php
 /**
- * PHP OpenCloud library
- * 
- * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
- * @license   https://www.apache.org/licenses/LICENSE-2.0
- * @author    Glen Campbell <glen.campbell@rackspace.com>
- * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
+ * Copyright 2012-2014 Rackspace US, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 namespace OpenCloud\Common;
 
-use OpenCloud\Common\Collection\PaginatedIterator;
-use OpenCloud\Common\Exceptions\JsonError;
-use OpenCloud\Common\Exceptions\UrlError;
 use OpenCloud\Common\Collection\ResourceIterator;
 use OpenCloud\Common\Constants\Header as HeaderConst;
 use OpenCloud\Common\Constants\Mime as MimeConst;
+use OpenCloud\Common\Exceptions\JsonError;
+use Psr\Log\LoggerInterface;
 
 /**
  * The root class for all other objects used or defined by this SDK.
@@ -27,17 +33,25 @@ use OpenCloud\Common\Constants\Mime as MimeConst;
 abstract class Base
 {
     /**
-     * @var array Holds all the properties added by overloading.
+     * Holds all the properties added by overloading.
+     *
+     * @var array
      */
     private $properties = array();
 
     /**
-     * Debug status.
+     * The logger instance
      *
-     * @var    LoggerInterface
-     * @access private
+     * @var LoggerInterface
      */
     private $logger;
+
+    /**
+     * The aliases configure for the properties of the instance.
+     *
+     * @var array
+     */
+    protected $aliases = array();
 
     /**
      * @return static
@@ -70,14 +84,14 @@ abstract class Base
         if ($this->propertyExists($property) && $prefix == 'set') {
             return $this->setProperty($property, $args[0]);
         }
-        
+
         throw new Exceptions\RuntimeException(sprintf(
-        	'No method %s::%s()', 
-        	get_class($this), 
-        	$method
-		));
+            'No method %s::%s()',
+            get_class($this),
+            $method
+        ));
     }
-        
+
     /**
      * We can set a property under three conditions:
      *
@@ -94,11 +108,8 @@ abstract class Base
         $setter = 'set' . $this->toCamel($property);
 
         if (method_exists($this, $setter)) {
-            
             return call_user_func(array($this, $setter), $value);
-            
-        } elseif (false !== ($propertyVal = $this->propertyExists($property))) { 
-            
+        } elseif (false !== ($propertyVal = $this->propertyExists($property))) {
             // Are we setting a public or private property?
             if ($this->isAccessible($propertyVal)) {
                 $this->$propertyVal = $value;
@@ -107,9 +118,7 @@ abstract class Base
             }
 
             return $this;
-
         } else {
-
             $this->getLogger()->warning(
                 'Attempted to set {property} with value {value}, but the'
                 . ' property has not been defined. Please define first.',
@@ -150,12 +159,13 @@ abstract class Base
      * @param  bool $capitalise Optional flag which allows for word capitalization.
      * @return mixed
      */
-    function toCamel($string, $capitalise = true) 
+    public function toCamel($string, $capitalise = true)
     {
         if ($capitalise) {
             $string = ucfirst($string);
         }
-        return preg_replace_callback('/_([a-z])/', function($char) {
+
+        return preg_replace_callback('/_([a-z])/', function ($char) {
             return strtoupper($char[1]);
         }, $string);
     }
@@ -166,10 +176,11 @@ abstract class Base
      * @param $string
      * @return mixed
      */
-    function toUnderscores($string) 
+    public function toUnderscores($string)
     {
         $string = lcfirst($string);
-        return preg_replace_callback('/([A-Z])/', function($char) {
+
+        return preg_replace_callback('/([A-Z])/', function ($char) {
             return "_" . strtolower($char[1]);
         }, $string);
     }
@@ -184,7 +195,7 @@ abstract class Base
     {
         return array_key_exists($property, get_object_vars($this));
     }
-    
+
     /**
      * Checks the attribute $property and only permits it if the prefix is
      * in the specified $prefixes array
@@ -200,9 +211,10 @@ abstract class Base
             return false;
         }
         $prefix = strstr($property, ':', true);
+
         return in_array($prefix, $this->getService()->namespaces());
     }
-    
+
     /**
      * Grab value out of the data array.
      *
@@ -220,33 +232,44 @@ abstract class Base
         } elseif (false !== ($propertyVal = $this->propertyExists($property)) && $this->isAccessible($propertyVal)) {
             return $this->$propertyVal;
         }
-        
+
         return null;
     }
-    
+
     /**
      * Sets the logger.
      *
-     * @param Log\LoggerInterface $logger
+     * @param LoggerInterface $logger
+     *
      * @return $this
      */
-    public function setLogger(Log\LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger = null)
     {
         $this->logger = $logger;
+
         return $this;
     }
 
     /**
      * Returns the Logger object.
-     * 
-     * @return \OpenCloud\Common\Log\AbstractLogger
+     *
+     * @return LoggerInterface
      */
     public function getLogger()
     {
         if (null === $this->logger) {
             $this->setLogger(new Log\Logger);
         }
+
         return $this->logger;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasLogger()
+    {
+        return (null !== $this->logger);
     }
 
     /**
@@ -259,83 +282,61 @@ abstract class Base
 
     /**
      * Populates the current object based on an unknown data type.
-     * 
+     *
      * @param  mixed $info
-     * @param  bool
-     * @throws Exceptions\InvalidArgumentError
-     */
-    /**
-     * @param  mixed $info       The data structure that is populating the object.
-     * @param  bool  $setObjects If set to TRUE, then this method will try to populate associated resources as objects
-     *                           rather than anonymous data types. So, a Server being populated might stock a Network
-     *                           object instead of a stdClass object.
+     * @param        bool
      * @throws Exceptions\InvalidArgumentError
      */
     public function populate($info, $setObjects = true)
     {
         if (is_string($info) || is_integer($info)) {
-            
             $this->setProperty($this->primaryKeyField(), $info);
             $this->refresh($info);
-            
         } elseif (is_object($info) || is_array($info)) {
-
             foreach ($info as $key => $value) {
-                
                 if ($key == 'metadata' || $key == 'meta') {
-                    
                     // Try retrieving existing value
                     if (null === ($metadata = $this->getProperty($key))) {
                         // If none exists, create new object
                         $metadata = new Metadata;
                     }
-                    
+
                     // Set values for metadata
                     $metadata->setArray($value);
-                    
+
                     // Set object property
                     $this->setProperty($key, $metadata);
-                    
                 } elseif (!empty($this->associatedResources[$key]) && $setObjects === true) {
-
                     // Associated resource
                     try {
-
                         $resource = $this->getService()->resource($this->associatedResources[$key], $value);
                         $resource->setParent($this);
 
                         $this->setProperty($key, $resource);
-
-                    } catch (Exception\ServiceException $e) {}
-   
+                    } catch (Exception\ServiceException $e) {
+                    }
                 } elseif (!empty($this->associatedCollections[$key]) && $setObjects === true) {
-
                     // Associated collection
                     try {
-
                         $className = $this->associatedCollections[$key];
                         $options = $this->makeResourceIteratorOptions($className);
                         $iterator = ResourceIterator::factory($this, $options, $value);
 
                         $this->setProperty($key, $iterator);
-
-                    } catch (Exception\ServiceException $e) {}
-                    
+                    } catch (Exception\ServiceException $e) {
+                    }
                 } elseif (!empty($this->aliases[$key])) {
-
                     // Sometimes we might want to preserve camelCase
                     // or covert `rax-bandwidth:bandwidth` to `raxBandwidth`
                     $this->setProperty($this->aliases[$key], $value);
-                    
                 } else {
                     // Normal key/value pair
                     $this->setProperty($key, $value);
                 }
-
             }
         } elseif (null !== $info) {
             throw new Exceptions\InvalidArgumentError(sprintf(
-                Lang::translate('Argument for [%s] must be string or object'), 
+                Lang::translate('Argument for [%s] must be string or object'),
                 get_class()
             ));
         }
@@ -371,7 +372,7 @@ abstract class Base
                 $jsonError = 'Unexpected JSON error';
                 break;
         }
-        
+
         if (isset($jsonError)) {
             throw new JsonError(Lang::translate($jsonError));
         }
@@ -418,6 +419,7 @@ abstract class Base
     public function stripNamespace($namespace)
     {
         $array = explode('\\', $namespace);
+
         return end($array);
     }
 
@@ -425,5 +427,4 @@ abstract class Base
     {
         return array(HeaderConst::CONTENT_TYPE => MimeConst::JSON);
     }
-
 }

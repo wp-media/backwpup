@@ -51,7 +51,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 			$order = SORT_DESC;
 		}
 
-		if ( empty( $_GET[ 'orderby' ] ) || ! in_array( strtolower( $_GET[ 'orderby' ] ), array( 'jobname', 'type', 'dest', 'next', 'last' ) ) ) {
+		if ( empty( $_GET[ 'orderby' ] ) || ! in_array( strtolower( $_GET[ 'orderby' ] ), array( 'jobname', 'type', 'dest', 'next', 'last' ), true ) ) {
 			$orderby = 'jobname';
 		} else {
 			$orderby = strtolower( $_GET[ 'orderby' ] );
@@ -410,7 +410,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 					$job_conf_types = BackWPup_Option::get( $_GET[ 'jobid' ], 'type' );
 					$creates_file = FALSE;
 					foreach ( $job_types as $id => $job_type_class ) {
-						if ( in_array( $id, $job_conf_types ) && $job_type_class->creates_file( ) ) {
+						if ( in_array( $id, $job_conf_types, true ) && $job_type_class->creates_file( ) ) {
 							$creates_file = TRUE;
 							break;
 						}
@@ -420,7 +420,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 						$destinations = 0;
 						/* @var BackWPup_Destinations $dest_class */
 						foreach ( BackWPup::get_registered_destinations() as $id => $dest ) {
-							if ( ! in_array( $id, $job_conf_dests ) || empty( $dest[ 'class' ] ) ) {
+							if ( ! in_array( $id, $job_conf_dests, true ) || empty( $dest[ 'class' ] ) ) {
 								continue;
 							}
 							$dest_class = BackWPup::get_destination( $id );

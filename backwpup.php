@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.3-beta
+ * Version: 3.3-beta1
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -83,7 +83,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 					//early disable caches
 					BackWPup_Job::disable_caches();
 					//add action for running jobs in wp-cron.php
-					add_action( 'init', array( 'BackWPup_Cron', 'cron_active' ), PHP_INT_MAX );
+					add_action( 'wp_loaded', array( 'BackWPup_Cron', 'cron_active' ), PHP_INT_MAX );
 				} else {
 					//add cron actions
 					add_action( 'backwpup_cron', array( 'BackWPup_Cron', 'run' ) );
@@ -354,42 +354,24 @@ if ( ! class_exists( 'BackWPup' ) ) {
 								'autoload'	=> array()
 							);
 			// Backup to S3
-			if ( version_compare( PHP_VERSION, '5.3.3', '>=' ) ) {
-				self::$registered_destinations[ 'S3' ] 	= array(
-									'class' => 'BackWPup_Destination_S3',
-									'info'	=> array(
-										'ID'        	=> 'S3',
-										'name'       	=> __( 'S3 Service', 'backwpup' ),
-										'description' 	=> __( 'Backup to an S3 Service', 'backwpup' ),
-									),
-									'can_sync' => FALSE,
-									'needed' => array(
-										'php_version'	=> '5.3.3',
-										'functions'	=> array( 'curl_exec' ),
-										'classes'	=> array( 'XMLWriter' )
-									),
-									'autoload'	=> array( 	'Aws\\Common' => dirname( __FILE__ ) .'/vendor',
-															'Aws\\S3' => dirname( __FILE__ ) .'/vendor',
-															'Symfony\\Component\\EventDispatcher'  => dirname( __FILE__ ) . '/vendor',
-															'Guzzle' => dirname( __FILE__ ) . '/vendor'	)
-								);
-			} else {
-				self::$registered_destinations[ 'S3' ] 	= array(
-									'class' => 'BackWPup_Destination_S3_V1',
-									'info'	=> array(
-										'ID'        	=> 'S3',
-										'name'       	=> __( 'S3 Service', 'backwpup' ),
-										'description' 	=> __( 'Backup to an S3 Service v1', 'backwpup' ),
-									),
-									'can_sync' => FALSE,
-									'needed' => array(
-										'php_version'	=> '',
-										'functions'	=> array( 'curl_exec' ),
-										'classes'	=> array()
-									),
-									'autoload'	=> array( 'AmazonS3' => dirname( __FILE__ ) . '/vendor/Aws_v1/sdk.class.php' )
-								);
-			}
+			self::$registered_destinations[ 'S3' ] 	= array(
+								'class' => 'BackWPup_Destination_S3',
+								'info'	=> array(
+									'ID'        	=> 'S3',
+									'name'       	=> __( 'S3 Service', 'backwpup' ),
+									'description' 	=> __( 'Backup to an S3 Service', 'backwpup' ),
+								),
+								'can_sync' => FALSE,
+								'needed' => array(
+									'php_version'	=> '5.3.3',
+									'functions'	=> array( 'curl_exec' ),
+									'classes'	=> array( 'XMLWriter' )
+								),
+								'autoload'	=> array( 	'Aws\\Common' => dirname( __FILE__ ) .'/vendor',
+														'Aws\\S3' => dirname( __FILE__ ) .'/vendor',
+														'Symfony\\Component\\EventDispatcher'  => dirname( __FILE__ ) . '/vendor',
+														'Guzzle' => dirname( __FILE__ ) . '/vendor'	)
+							);
 			// backup to MS Azure
 			self::$registered_destinations[ 'MSAZURE' ] 	= array(
 								'class' => 'BackWPup_Destination_MSAzure',
@@ -421,7 +403,8 @@ if ( ! class_exists( 'BackWPup' ) ) {
 									'classes'	=> array()
 								),
 								'autoload'	=> array( 'OpenCloud' => dirname( __FILE__ ) . '/vendor',
-													  'Guzzle' => dirname( __FILE__ ) . '/vendor' )
+													  'Guzzle' => dirname( __FILE__ ) . '/vendor',
+													  'Psr' => dirname( __FILE__ ) . '/vendor' )
 							);
 			// backup to Sugarsync
 			self::$registered_destinations[ 'SUGARSYNC' ] 	= array(

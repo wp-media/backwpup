@@ -93,7 +93,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 						if ( $folder &&  $dir = opendir( $folder ) ) {
 							while ( ( $file = readdir( $dir ) ) !== FALSE ) {
 								$excludes = BackWPup_Option::get( $main, 'backuprootexcludedirs' );
-								if ( ! in_array( $file, array( '.', '..' ) ) && is_dir( $folder . '/' . $file ) && ! in_array( trailingslashit( $folder . '/' . $file ), $this->get_exclude_dirs( $folder ) ) ) {
+								if ( ! in_array( $file, array( '.', '..' ), true ) && is_dir( $folder . '/' . $file ) && ! in_array( trailingslashit( $folder . '/' . $file ), $this->get_exclude_dirs( $folder ), true ) ) {
 									$donotbackup = file_exists( $folder . '/' . $file . '/.donotbackup' );
 									$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize') ) ? ' (' . size_format( BackWPup_File::get_folder_size( $folder . '/' . $file ), 2 ) . ')' : '';
 									$title = '';
@@ -101,7 +101,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 										$excludes[] = $file;
 										$title = ' title="' . esc_attr__( 'Excluded by .donotbackup file!', 'backwpup' ) . '"';
 									}
-									echo '<nobr><label for="idrootexcludedirs-'.sanitize_file_name( $file ).'"><input class="checkbox" type="checkbox"' . checked( in_array( $file, $excludes ), TRUE, FALSE ) . ' name="backuprootexcludedirs[]" id="idrootexcludedirs-' . sanitize_file_name( $file ) . '" value="' . esc_attr( $file ) . '"' . disabled( $donotbackup, TRUE, FALSE ) . $title . ' /> ' . esc_html( $file ) . esc_html( $folder_size ) . '</label><br /></nobr>';
+									echo '<nobr><label for="idrootexcludedirs-'.sanitize_file_name( $file ).'"><input class="checkbox" type="checkbox"' . checked( in_array( $file, $excludes, true ), TRUE, FALSE ) . ' name="backuprootexcludedirs[]" id="idrootexcludedirs-' . sanitize_file_name( $file ) . '" value="' . esc_attr( $file ) . '"' . disabled( $donotbackup, TRUE, FALSE ) . $title . ' /> ' . esc_html( $file ) . esc_html( $folder_size ) . '</label><br /></nobr>';
 								}
 							}
 							closedir( $dir );
@@ -130,7 +130,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 						if ( $folder &&  $dir = opendir( $folder ) ) {
 							$excludes = BackWPup_Option::get( $main, 'backupcontentexcludedirs' );
 							while ( ( $file = readdir( $dir ) ) !== FALSE ) {
-								if ( ! in_array( $file, array( '.', '..' ) ) && is_dir( $folder . '/' . $file ) && ! in_array( trailingslashit( $folder . '/' . $file ), $this->get_exclude_dirs( $folder ) ) ) {
+								if ( ! in_array( $file, array( '.', '..' ), true ) && is_dir( $folder . '/' . $file ) && ! in_array( trailingslashit( $folder . '/' . $file ), $this->get_exclude_dirs( $folder ), true ) ) {
 									$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize') ) ? ' (' . size_format( BackWPup_File::get_folder_size( $folder . '/' . $file ), 2 ) . ')' : '';
 									$donotbackup = file_exists( $folder . '/' . $file . '/.donotbackup' );
 									$title = '';
@@ -138,7 +138,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 										$excludes[] = $file;
 										$title = ' title="' . esc_attr__( 'Excluded by .donotbackup file!', 'backwpup' ) . '"';
 									}
-									echo '<nobr><label for="idcontentexcludedirs-'.sanitize_file_name( $file ).'"><input class="checkbox" type="checkbox"' . checked( in_array( $file, $excludes ), TRUE, FALSE ) . ' name="backupcontentexcludedirs[]" id="idcontentexcludedirs-'.sanitize_file_name( $file ).'" value="' . esc_attr($file) . '"' . disabled( $donotbackup, TRUE, FALSE ) . $title . ' /> ' . esc_html( $file ) . esc_html($folder_size) . '</label><br /></nobr>';
+									echo '<nobr><label for="idcontentexcludedirs-'.sanitize_file_name( $file ).'"><input class="checkbox" type="checkbox"' . checked( in_array( $file, $excludes, true ), TRUE, FALSE ) . ' name="backupcontentexcludedirs[]" id="idcontentexcludedirs-'.sanitize_file_name( $file ).'" value="' . esc_attr($file) . '"' . disabled( $donotbackup, TRUE, FALSE ) . $title . ' /> ' . esc_html( $file ) . esc_html($folder_size) . '</label><br /></nobr>';
 								}
 							}
 							closedir( $dir );
@@ -167,7 +167,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 						if ( $folder &&  $dir = opendir( $folder ) ) {
 							$excludes = BackWPup_Option::get( $main, 'backuppluginsexcludedirs' );
 							while ( ( $file = readdir( $dir ) ) !== FALSE ) {
-								if ( ! in_array( $file, array( '.', '..' ) ) && is_dir( $folder . '/' . $file ) && ! in_array( trailingslashit( $folder . '/' . $file ), $this->get_exclude_dirs( $folder ) ) ) {
+								if ( ! in_array( $file, array( '.', '..' ), true ) && is_dir( $folder . '/' . $file ) && ! in_array( trailingslashit( $folder . '/' . $file ), $this->get_exclude_dirs( $folder ), true ) ) {
 									$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize') ) ? ' (' . size_format( BackWPup_File::get_folder_size( $folder . '/' . $file ), 2 ) . ')' : '';
 									$donotbackup = file_exists( $folder . '/' . $file . '/.donotbackup' );
 									$title = '';
@@ -175,7 +175,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 										$excludes[] = $file;
 										$title = ' title="' . esc_attr__( 'Excluded by .donotbackup file!', 'backwpup' ) . '"';
 									}
-									echo '<nobr><label for="idpluginexcludedirs-'.sanitize_file_name( $file ).'"><input class="checkbox" type="checkbox"' . checked( in_array( $file, $excludes ), TRUE, FALSE ) . ' name="backuppluginsexcludedirs[]" id="idpluginexcludedirs-'.sanitize_file_name( $file ).'" value="' . esc_attr($file) . '"' . disabled( $donotbackup, TRUE, FALSE ) . $title .  ' /> ' . esc_html( $file ) . esc_html($folder_size) . '</label><br /></nobr>';
+									echo '<nobr><label for="idpluginexcludedirs-'.sanitize_file_name( $file ).'"><input class="checkbox" type="checkbox"' . checked( in_array( $file, $excludes, true ), TRUE, FALSE ) . ' name="backuppluginsexcludedirs[]" id="idpluginexcludedirs-'.sanitize_file_name( $file ).'" value="' . esc_attr($file) . '"' . disabled( $donotbackup, TRUE, FALSE ) . $title .  ' /> ' . esc_html( $file ) . esc_html($folder_size) . '</label><br /></nobr>';
 								}
 							}
 							closedir( $dir );
@@ -204,7 +204,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 						if ( $folder &&  $dir = opendir( $folder ) ) {
 							$excludes = BackWPup_Option::get( $main, 'backupthemesexcludedirs' );
 							while ( ( $file = readdir( $dir ) ) !== FALSE ) {
-								if ( ! in_array( $file, array( '.', '..' ) ) && is_dir( $folder . '/' . $file ) && ! in_array( trailingslashit( $folder . '/' . $file ), $this->get_exclude_dirs( $folder ) ) ) {
+								if ( ! in_array( $file, array( '.', '..' ), true ) && is_dir( $folder . '/' . $file ) && ! in_array( trailingslashit( $folder . '/' . $file ), $this->get_exclude_dirs( $folder ), true ) ) {
 									$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize') ) ? ' (' . size_format( BackWPup_File::get_folder_size( $folder . '/' . $file ), 2 ) . ')' : '';
 									$donotbackup = file_exists( $folder . '/' . $file . '/.donotbackup' );
 									$title = '';
@@ -212,7 +212,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 										$excludes[] = $file;
 										$title = ' title="' . esc_attr__( 'Excluded by .donotbackup file!', 'backwpup' ) . '"';
 									}
-									echo '<nobr><label for="idthemesexcludedirs-'.sanitize_file_name( $file ).'"><input class="checkbox" type="checkbox"' . checked( in_array( $file, $excludes ), TRUE, FALSE ) . ' name="backupthemesexcludedirs[]" id="idthemesexcludedirs-'.sanitize_file_name( $file ).'" value="' . $file . '"' . disabled( $donotbackup, TRUE, FALSE ) . $title . ' /> ' . esc_attr( $file ) . $folder_size . '</label><br /></nobr>';
+									echo '<nobr><label for="idthemesexcludedirs-'.sanitize_file_name( $file ).'"><input class="checkbox" type="checkbox"' . checked( in_array( $file, $excludes, true ), TRUE, FALSE ) . ' name="backupthemesexcludedirs[]" id="idthemesexcludedirs-'.sanitize_file_name( $file ).'" value="' . $file . '"' . disabled( $donotbackup, TRUE, FALSE ) . $title . ' /> ' . esc_attr( $file ) . $folder_size . '</label><br /></nobr>';
 								}
 							}
 							closedir( $dir );
@@ -241,7 +241,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 						if ( $folder && $dir = opendir( $folder ) ) {
 							$excludes = BackWPup_Option::get( $main, 'backupuploadsexcludedirs' );
 							while ( ( $file = readdir( $dir ) ) !== FALSE ) {
-								if ( ! in_array( $file, array( '.', '..' ) ) && is_dir( $folder . '/' . $file ) && ! in_array( trailingslashit( $folder . '/' . $file ), $this->get_exclude_dirs( $folder ) ) ) {
+								if ( ! in_array( $file, array( '.', '..' ), true ) && is_dir( $folder . '/' . $file ) && ! in_array( trailingslashit( $folder . '/' . $file ), $this->get_exclude_dirs( $folder ), true ) ) {
 									$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize') ) ? ' (' . size_format( BackWPup_File::get_folder_size( $folder . '/' . $file ), 2 ) . ')' : '';
 									$donotbackup = file_exists( $folder . '/' . $file . '/.donotbackup' );
 									$title = '';
@@ -249,7 +249,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 										$excludes[] = $file;
 										$title = ' title="' . esc_attr__( 'Excluded by .donotbackup file!', 'backwpup' ) . '"';
 									}
-									echo '<nobr><label for="iduploadexcludedirs-'.sanitize_file_name( $file ).'"><input class="checkbox" type="checkbox"' . checked( in_array( $file, $excludes ), TRUE, FALSE ) . ' name="backupuploadsexcludedirs[]" id="iduploadexcludedirs-'.sanitize_file_name( $file ).'" value="' . esc_attr($file) . '"' . disabled( $donotbackup, TRUE, FALSE ) . $title . ' /> ' . esc_html( $file ) . esc_html($folder_size) . '</label><br /></nobr>';
+									echo '<nobr><label for="iduploadexcludedirs-'.sanitize_file_name( $file ).'"><input class="checkbox" type="checkbox"' . checked( in_array( $file, $excludes, true ), TRUE, FALSE ) . ' name="backupuploadsexcludedirs[]" id="iduploadexcludedirs-'.sanitize_file_name( $file ).'" value="' . esc_attr($file) . '"' . disabled( $donotbackup, TRUE, FALSE ) . $title . ' /> ' . esc_html( $file ) . esc_html($folder_size) . '</label><br /></nobr>';
 								}
 							}
 							closedir( $dir );
@@ -563,7 +563,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 			$this->folers_to_backup[] = $folder;
 			//scan folder
 			while ( FALSE !== ( $file = readdir( $dir ) ) ) {
-				if ( in_array( $file, array( '.', '..' ) ) )
+				if ( in_array( $file, array( '.', '..' ), true ) )
 					continue;
 				foreach ( $job_object->exclude_from_backup as $exclusion ) { //exclude files
 					$exclusion = trim( $exclusion );
@@ -571,7 +571,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 						continue 2;
 				}
 				if ( is_dir( $folder . $file ) ) {
-					if ( in_array( trailingslashit( $folder . $file ), $excludedirs ) )
+					if ( in_array( trailingslashit( $folder . $file ), $excludedirs, true ) )
 						continue;
 					if ( @file_exists( trailingslashit( $folder . $file ) . '.donotbackup' ) )
 						continue;

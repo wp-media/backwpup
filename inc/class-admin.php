@@ -252,9 +252,9 @@ final class BackWPup_Admin {
 
 		//register js and css for BackWPup
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-			wp_register_script( 'backwpupgeneral', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/general.js', array( 'jquery' ), time(), TRUE );
+			wp_register_script( 'backwpupgeneral', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/general.js', array( 'jquery' ), time(), false );
 		} else {
-			wp_register_script( 'backwpupgeneral', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/general.min.js', array( 'jquery' ), BackWPup::get_plugin_data( 'Version' ), TRUE );
+			wp_register_script( 'backwpupgeneral', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/general.min.js', array( 'jquery' ), BackWPup::get_plugin_data( 'Version' ), false );
 		}
 
 		//add Help
@@ -268,7 +268,7 @@ final class BackWPup_Admin {
 	public function save_post_form() {
 
 		//Allowed Pages
-		if ( ! in_array( $_POST[ 'page' ], array ( 'backwpupeditjob', 'backwpupinformation', 'backwpupsettings' ) ) )
+		if ( ! in_array( $_POST[ 'page' ], array ( 'backwpupeditjob', 'backwpupinformation', 'backwpupsettings' ), true ) )
 			wp_die( __( 'Cheating, huh?', 'backwpup' ) );
 
 		//nonce check
@@ -448,7 +448,7 @@ final class BackWPup_Admin {
 		}
 
 		//only if user has other than backwpup role
-		if ( ! empty( $user->roles[ 0 ] ) && in_array( $user->roles[ 0 ], array_keys( $backwpup_roles ) ) ) {
+		if ( ! empty( $user->roles[ 0 ] ) && in_array( $user->roles[ 0 ], array_keys( $backwpup_roles ), true ) ) {
 			return;
 		}
 
@@ -525,7 +525,7 @@ final class BackWPup_Admin {
 		}
 
 		//add new role to user if it not the actual
-		if ( $backwpup_role && in_array( $backwpup_role, $backwpup_roles ) ) {
+		if ( $backwpup_role && in_array( $backwpup_role, $backwpup_roles, true ) ) {
 			$user->add_role( $backwpup_role );
 		}
 

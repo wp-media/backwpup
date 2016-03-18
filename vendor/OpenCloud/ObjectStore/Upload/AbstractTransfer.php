@@ -1,19 +1,26 @@
 <?php
 /**
- * PHP OpenCloud library.
+ * Copyright 2012-2014 Rackspace US, Inc.
  *
- * @copyright 2014 Rackspace Hosting, Inc. See LICENSE for information.
- * @license   https://www.apache.org/licenses/LICENSE-2.0
- * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
- * @author    Glen Campbell <glen.campbell@rackspace.com>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 namespace OpenCloud\ObjectStore\Upload;
 
 use Exception;
-use OpenCloud\Common\Http\Client;
 use Guzzle\Http\EntityBody;
 use OpenCloud\Common\Exceptions\RuntimeException;
+use OpenCloud\Common\Http\Client;
 use OpenCloud\ObjectStore\Exception\UploadException;
 
 /**
@@ -25,12 +32,12 @@ class AbstractTransfer
      * Minimum chunk size is 1MB.
      */
     const MIN_PART_SIZE = 1048576;
-    
+
     /**
      * Maximum chunk size is 5GB.
      */
     const MAX_PART_SIZE = 5368709120;
-    
+
     /**
      * Default chunk size is 1GB.
      */
@@ -88,6 +95,7 @@ class AbstractTransfer
     public function setClient(Client $client)
     {
         $this->client = $client;
+
         return $this;
     }
 
@@ -98,6 +106,7 @@ class AbstractTransfer
     public function setEntityBody(EntityBody $entityBody)
     {
         $this->entityBody = $entityBody;
+
         return $this;
     }
 
@@ -108,6 +117,7 @@ class AbstractTransfer
     public function setTransferState(TransferState $transferState)
     {
         $this->transferState = $transferState;
+
         return $this;
     }
 
@@ -126,6 +136,7 @@ class AbstractTransfer
     public function setOptions($options)
     {
         $this->options = $options;
+
         return $this;
     }
 
@@ -137,6 +148,7 @@ class AbstractTransfer
     public function setOption($option, $value)
     {
         $this->options[$option] = $value;
+
         return $this;
     }
 
@@ -150,9 +162,9 @@ class AbstractTransfer
      */
     public function setup()
     {
-        $this->options  = array_merge($this->defaultOptions, $this->options);
+        $this->options = array_merge($this->defaultOptions, $this->options);
         $this->partSize = $this->validatePartSize();
-        
+
         return $this;
     }
 
@@ -164,9 +176,10 @@ class AbstractTransfer
     protected function validatePartSize()
     {
         $min = min($this->options['partSize'], self::MAX_PART_SIZE);
+
         return max($min, self::MIN_PART_SIZE);
     }
-    
+
     /**
      * Initiates the upload procedure.
      *
@@ -190,7 +203,7 @@ class AbstractTransfer
 
         return $response;
     }
-    
+
     /**
      * With large uploads, you must create a manifest file. Although each segment or TransferPart remains
      * individually addressable, the manifest file serves as the unified file (i.e. the 5GB download) which, when
@@ -203,7 +216,7 @@ class AbstractTransfer
     private function createManifest()
     {
         $parts = array();
-        
+
         foreach ($this->transferState as $part) {
             $parts[] = (object) array(
                 'path'       => $part->getPath(),
@@ -211,20 +224,19 @@ class AbstractTransfer
                 'size_bytes' => $part->getContentLength()
             );
         }
-        
+
         $headers = array(
             'Content-Length'    => 0,
-            'X-Object-Manifest' => sprintf('%s/%s/%s/', 
+            'X-Object-Manifest' => sprintf('%s/%s/%s/',
                 $this->options['containerName'],
-                $this->options['objectName'], 
+                $this->options['objectName'],
                 $this->options['prefix']
             )
         );
-        
+
         $url = clone $this->options['containerUrl'];
         $url->addPath($this->options['objectName']);
-        
+
         return $this->client->put($url, $headers)->send();
     }
-    
 }

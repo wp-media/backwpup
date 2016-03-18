@@ -11,8 +11,6 @@
 /**
  * Handles Base 64 Transfer Encoding in Swift Mailer.
  *
- * @package    Swift
- * @subpackage Mime
  * @author     Chris Corbyn
  */
 class Swift_Mime_ContentEncoder_Base64ContentEncoder extends Swift_Encoder_Base64Encoder implements Swift_Mime_ContentEncoder
@@ -39,7 +37,7 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoder extends Swift_Encoder_Base6
             $thisMaxLineLength = $maxLineLength - $remainder - $firstLineOffset;
 
             while ($thisMaxLineLength < strlen($encoded)) {
-                $encodedTransformed .= substr($encoded, 0, $thisMaxLineLength) . "\r\n";
+                $encodedTransformed .= substr($encoded, 0, $thisMaxLineLength)."\r\n";
                 $firstLineOffset = 0;
                 $encoded = substr($encoded, $thisMaxLineLength);
                 $thisMaxLineLength = $maxLineLength;

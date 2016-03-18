@@ -622,28 +622,40 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 	 *
 	 */
 	public function edit_inline_js() {
-		//<script type="text/javascript">
 		?>
-		function awsgetbucket() {
-            var data = {
-                action: 'backwpup_dest_s3',
-                s3accesskey: $('input[name="s3accesskey"]').val(),
-                s3secretkey: $('input[name="s3secretkey"]').val(),
-                s3bucketselected: $('input[name="s3bucketselected"]').val(),
-                s3base_url: $('input[name="s3base_url"]').val(),
-                s3region: $('#s3region').val(),
-                _ajax_nonce: $('#backwpupajaxnonce').val()
-            };
-            $.post(ajaxurl, data, function(response) {
-                $('#s3bucketerror').remove();
-                $('#s3bucket').remove();
-                $('#s3bucketselected').after(response);
-            });
-        }
-		$('input[name="s3accesskey"]').change(function() {awsgetbucket();});
-		$('input[name="s3secretkey"]').change(function() {awsgetbucket();});
-		$('input[name="s3base_url"]').change(function() {awsgetbucket();});
-		$('#s3region').change(function() {awsgetbucket();});
+		<script type="text/javascript">
+			jQuery(document).ready(function ($) {
+				function awsgetbucket() {
+					var data = {
+						action: 'backwpup_dest_s3',
+						s3accesskey: $('input[name="s3accesskey"]').val(),
+						s3secretkey: $('input[name="s3secretkey"]').val(),
+						s3bucketselected: $('input[name="s3bucketselected"]').val(),
+						s3base_url: $('input[name="s3base_url"]').val(),
+						s3region: $('#s3region').val(),
+						_ajax_nonce: $('#backwpupajaxnonce').val()
+					};
+					$.post(ajaxurl, data, function (response) {
+						$('#s3bucketerror').remove();
+						$('#s3bucket').remove();
+						$('#s3bucketselected').after(response);
+					});
+				}
+
+				$('input[name="s3accesskey"]').backwpupDelayKeyup(function () {
+					awsgetbucket();
+				});
+				$('input[name="s3secretkey"]').backwpupDelayKeyup(function () {
+					awsgetbucket();
+				});
+				$('input[name="s3base_url"]').backwpupDelayKeyup(function () {
+					awsgetbucket();
+				});
+				$('#s3region').change(function () {
+					awsgetbucket();
+				});
+			});
+		</script>
 		<?php
 	}
 
@@ -659,8 +671,9 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			$ajax = FALSE;
 		}
 		else {
-			if ( ! current_user_can( 'backwpup_jobs_edit' ) )
+			if ( ! current_user_can( 'backwpup_jobs_edit' ) ) {
 				wp_die( -1 );
+			}
 			check_ajax_referer( 'backwpup_ajax_nonce' );
 			$args[ 's3accesskey' ]  	= sanitize_text_field( $_POST[ 's3accesskey' ] );
 			$args[ 's3secretkey' ]  	= sanitize_text_field( $_POST[ 's3secretkey' ] );
@@ -717,7 +730,8 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			echo '</select>';
 		}
 
-		if ( $ajax )
+		if ( $ajax ) {
 			die();
+		}
 	}
 }

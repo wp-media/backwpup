@@ -1,5 +1,5 @@
 <?php
-// Windows Azure SDK v0.4.0_2014-01
+// Windows Azure SDK v0.4.1
 // http://www.windowsazure.com/en-us/develop/php/
 // https://github.com/WindowsAzure/azure-sdk-for-php
 
@@ -220,15 +220,15 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 				//test vor existing container
 				$containers    = $blobRestProxy->listContainers()->getContainers();
 
-				$container_url = '';
+				$job_object->steps_data[ $job_object->step_working ][ 'container_url' ] = '';
 				foreach( $containers as $container ) {
 					if ( $container->getName() == $job_object->job[ 'msazurecontainer' ] ) {
-						$container_url = $container->getUrl();
+						$job_object->steps_data[ $job_object->step_working ][ 'container_url' ] = $container->getUrl();
 						break;
 					}
 				}
 
-				if ( empty( $container_url ) ) {
+				if ( ! $job_object->steps_data[ $job_object->step_working ][ 'container_url' ] ) {
 					$job_object->log( sprintf( __( 'MS Azure container "%s" does not exist!', 'backwpup'), $job_object->job[ 'msazurecontainer' ] ), E_USER_ERROR );
 
 					return TRUE;
@@ -248,17 +248,21 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 				}
 
 				while ( ! feof( $file_handel ) ) {
+					$data = fread( $file_handel, 1048576 * 4 ); //4MB
+					if ( strlen( $data ) == 0 ) {
+						continue;
+					}
 					$chunk_upload_start = microtime( TRUE );
 					$block_count = count( $job_object->steps_data[ $job_object->step_working ][ 'BlockList' ] ) + 1;
-					$data = fread( $file_handel, 1048576 * 4 ); //4MB
 					$block_id = md5( $data ) . str_pad( $block_count, 6, "0", STR_PAD_LEFT );
 					$blobRestProxy->createBlobBlock( $job_object->job[ 'msazurecontainer' ], $job_object->job[ 'msazuredir'  ] . $job_object->backup_file, $block_id, $data );
-					$job_object->steps_data[ $job_object->step_working ][ 'BlockList' ][] =  $block_id;
+					$job_object->steps_data[ $job_object->step_working ][ 'BlockList' ][] = $block_id;
 					$chunk_upload_time = microtime( TRUE ) - $chunk_upload_start;
 					$job_object->substeps_done = $job_object->substeps_done + strlen( $data );
 					$time_remaining = $job_object->do_restart_time();
-					if ( $time_remaining < $chunk_upload_time )
+					if ( $time_remaining < $chunk_upload_time ) {
 						$job_object->do_restart_time( TRUE );
+					}
 					$job_object->update_working_data();
 				}
 				fclose( $file_handel );
@@ -269,16 +273,19 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 
 			//crate blog list
 			$blocklist = new WindowsAzure\Blob\Models\BlockList();
-			foreach( $job_object->steps_data[ $job_object->step_working ][ 'BlockList' ] as $block_id )
+			foreach( $job_object->steps_data[ $job_object->step_working ][ 'BlockList' ] as $block_id ) {
 				$blocklist->addUncommittedEntry( $block_id );
+			}
 			unset( $job_object->steps_data[ $job_object->step_working ][ 'BlockList' ] );
+
 			//Commit Blocks
 			$blobRestProxy->commitBlobBlocks( $job_object->job[ 'msazurecontainer' ], $job_object->job[ 'msazuredir'  ] . $job_object->backup_file, $blocklist->getEntries() );
 
 			$job_object->substeps_done ++;
-			$job_object->log( sprintf( __( 'Backup transferred to %s', 'backwpup' ), $container_url . '/' . $job_object->job[ 'msazuredir'  ] . $job_object->backup_file ), E_USER_NOTICE );
-			if ( !empty( $job_object->job[ 'jobid' ] ) )
+			$job_object->log( sprintf( __( 'Backup transferred to %s', 'backwpup' ), $job_object->steps_data[ $job_object->step_working ][ 'container_url' ] . '/' . $job_object->job[ 'msazuredir'  ] . $job_object->backup_file ), E_USER_NOTICE );
+			if ( !empty( $job_object->job[ 'jobid' ] ) ) {
 				BackWPup_Option::update( $job_object->job[ 'jobid' ] , 'lastbackupdownloadurl', network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=downloadmsazure&file=' . $job_object->job[ 'msazuredir'  ] . $job_object->backup_file . '&jobid=' . $job_object->job[ 'jobid' ] );
+			}
 		}
 		catch ( Exception $e ) {
 			$job_object->log( E_USER_ERROR, sprintf( __( 'Microsoft Azure API: %s', 'backwpup' ), $e->getMessage() ), $e->getFile(), $e->getLine() );
@@ -305,7 +312,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 					$file = basename( $blob->getName() );
 					if ( $job_object->is_backup_archive( $file ) )
 						$backupfilelist[ $blob->getProperties()->getLastModified()->getTimestamp() ] = $file;
-					$files[ $filecounter ][ 'folder' ]      = $container_url . "/" . dirname( $blob->getName() ) . "/";
+					$files[ $filecounter ][ 'folder' ]      = $job_object->steps_data[ $job_object->step_working ][ 'container_url' ] . "/" . dirname( $blob->getName() ) . "/";
 					$files[ $filecounter ][ 'file' ]        = $blob->getName();
 					$files[ $filecounter ][ 'filename' ]    = basename( $blob->getName() );
 					$files[ $filecounter ][ 'downloadurl' ] = network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=downloadmsazure&file=' . $blob->getName() . '&jobid=' . $job_object->job[ 'jobid' ];
@@ -369,24 +376,32 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 	 *
 	 */
 	public function edit_inline_js() {
-		//<script type="text/javascript">
 		?>
-            function msazuregetcontainer() {
-                var data = {
-                    action: 'backwpup_dest_msazure',
-                    msazureaccname: $('#msazureaccname').val(),
-                    msazurekey: $('#msazurekey').val(),
-                    msazureselected: $('#msazurecontainerselected').val(),
-                    _ajax_nonce: $('#backwpupajaxnonce').val()
-                };
-                $.post(ajaxurl, data, function(response) {
-                    $('#msazurecontainererror').remove();
-                    $('#msazurecontainer').remove();
-                    $('#msazurecontainerselected').after(response);
-                });
-            }
-            $('#msazureaccname').change(function() {msazuregetcontainer();});
-            $('#msazurekey').change(function() {msazuregetcontainer();});
+		<script type="text/javascript">
+			jQuery(document).ready(function ($) {
+				function msazuregetcontainer() {
+					var data = {
+						action: 'backwpup_dest_msazure',
+						msazureaccname: $('#msazureaccname').val(),
+						msazurekey: $('#msazurekey').val(),
+						msazureselected: $('#msazurecontainerselected').val(),
+						_ajax_nonce: $('#backwpupajaxnonce').val()
+					};
+					$.post(ajaxurl, data, function (response) {
+						$('#msazurecontainererror').remove();
+						$('#msazurecontainer').remove();
+						$('#msazurecontainerselected').after(response);
+					});
+				}
+
+				$('#msazureaccname').backwpupDelayKeyup(function () {
+					msazuregetcontainer();
+				});
+				$('#msazurekey').backwpupDelayKeyup(function () {
+					msazuregetcontainer();
+				});
+			});
+		</script>
 	<?php
 	}
 

@@ -1,5 +1,5 @@
 <?php
-// Rackspace OpenCloud SDK v1.9.2
+// Rackspace OpenCloud SDK v1.12.2
 // http://www.rackspace.com/cloud/files/
 // https://github.com/rackspace/php-opencloud
 
@@ -386,26 +386,36 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 	 *
 	 */
 	public function edit_inline_js() {
-		//<script type="text/javascript">
 		?>
-		function rscgetcontainer() {
-			var data = {
-				action: 'backwpup_dest_rsc',
-				rscusername: $('#rscusername').val(),
-				rscapikey: $('#rscapikey').val(),
-    			rscregion: $('#rscregion').val(),
-				rscselected: $('#rsccontainerselected').val(),
-				_ajax_nonce: $('#backwpupajaxnonce').val()
-			};
-			$.post(ajaxurl, data, function(response) {
-				$('#rsccontainererror').remove();
-				$('#rsccontainer').remove();
-				$('#rsccontainerselected').after(response);
+		<script type="text/javascript">
+			jQuery(document).ready(function ($) {
+				function rscgetcontainer() {
+					var data = {
+						action: 'backwpup_dest_rsc',
+						rscusername: $('#rscusername').val(),
+						rscapikey: $('#rscapikey').val(),
+						rscregion: $('#rscregion').val(),
+						rscselected: $('#rsccontainerselected').val(),
+						_ajax_nonce: $('#backwpupajaxnonce').val()
+					};
+					$.post(ajaxurl, data, function (response) {
+						$('#rsccontainererror').remove();
+						$('#rsccontainer').remove();
+						$('#rsccontainerselected').after(response);
+					});
+				}
+
+				$('#rscregion').change(function () {
+					rscgetcontainer();
+				});
+				$('#rscusername').backwpupDelayKeyup(function () {
+					rscgetcontainer();
+				});
+				$('#rscapikey').backwpupDelayKeyup(function () {
+					rscgetcontainer();
+				});
 			});
-		}
-    	$('#rscregion').change(function() {rscgetcontainer();});
-		$('#rscusername').change(function() {rscgetcontainer();});
-		$('#rscapikey').change(function() {rscgetcontainer();});
+		</script>
 	<?php
 	}
 
