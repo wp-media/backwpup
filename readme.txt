@@ -3,7 +3,7 @@ Contributors: inpsyde, danielhuesken, Bueltge, nullbyte
 Tags: Amazon, Amazon S3, back up, backup, chinese, cloud, cloud files, database, db backup, dropbox, dump, file, french, ftp, ftps, german, migrate, multisite, russian, schedule, sftp, storage, S3, time, upload, xml
 Requires at least: 3.8
 Tested up to: 4.4.1
-Stable tag: 3.2.5
+Stable tag: 3.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -23,7 +23,7 @@ The **backup plugin** **[BackWPup Free](http://marketpress.com/product/backwpup-
 * Store backup to directory
 * Store backup to FTP server *(needs ftp)*
 * Store backup to Dropbox *(needs curl)*
-* Store backup to S3 services *(needs curl)*
+* Store backup to S3 services *(needs PHP 5.3.3, needs curl)*
 * Store backup to Microsoft Azure (Blob) *(needs PHP 5.3.2, curl)*
 * Store backup to RackSpaceCloud *(needs PHP 5.3.2, curl)*
 * Store backup to SugarSync *(needs curl)*
@@ -171,9 +171,11 @@ Please check all settings after the update:
 
 == Changelog ==
 = Version 3.3 =
-* Improved: Text removed or rewritten
+* Improved: Texts removed or rewritten
 * Improved: Security
+* Improved: Response test
 * Changed: Response test to work more as before
+* Changed: Remove user roles on deactivation not on uninstall
 * Removed: PCLZip selection setting
 * Removed: Help tooltips now uses the WordPress way
 * Removed: Old AWS SDK for using backups to S3 with PHP Version lower than 5.3
