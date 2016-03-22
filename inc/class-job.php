@@ -325,7 +325,7 @@ final class BackWPup_Job {
 			$current_user = wp_get_current_user();
 			$info .= sprintf( __( '[INFO] Runs with user: %1$s (%2$d) ', 'backwpup' ), $current_user->user_login, $current_user->ID ) . '<br />' . PHP_EOL;
 		}
-		if ( $this->job['activetype'] == 'wpcron' ) {
+		if ( $this->job['activetype'] === 'wpcron' ) {
 			//check next run
 			$cron_next = wp_next_scheduled( 'backwpup_cron', array( 'id' => $this->job['jobid'] ) );
 			if ( ! $cron_next || $cron_next < time() ) {
@@ -462,7 +462,7 @@ final class BackWPup_Job {
 			'query_arg'      => ''
 		) );
 		$url            = site_url( 'wp-cron.php' );
-		$header         = array( 'x-backwpup-version' => BackWPup::get_plugin_data( 'version' ) );
+		$header         = array( 'Cache-Control' => 'no-cache' );
 		$authurl        = '';
 		$query_args     = array(
 			'_nonce'        => substr( wp_hash( wp_nonce_tick() . 'backwpup_job_run-' . $starttype, 'nonce' ), - 12, 10 ),
@@ -486,7 +486,7 @@ final class BackWPup_Job {
 			$url .= '?' . $authentication['query_arg'];
 		}
 
-		if ( $starttype == 'runext' ) {
+		if ( $starttype === 'runext' ) {
 			$query_args['_nonce']        = get_site_option( 'backwpup_cfg_jobrunauthkey' );
 			$query_args['doing_wp_cron'] = null;
 			if ( ! empty( $authurl ) ) {
@@ -495,7 +495,7 @@ final class BackWPup_Job {
 			}
 		}
 
-		if ( $starttype == 'runnowlink' && ( ! defined( 'ALTERNATE_WP_CRON' ) || ! ALTERNATE_WP_CRON ) ) {
+		if ( $starttype === 'runnowlink' && ( ! defined( 'ALTERNATE_WP_CRON' ) || ! ALTERNATE_WP_CRON ) ) {
 			$url                         = wp_nonce_url( network_admin_url( 'admin.php' ), 'backwpup_job_run-' . $starttype );
 			$query_args['page']          = 'backwpupjobs';
 			$query_args['action']        = 'runnow';
@@ -503,18 +503,22 @@ final class BackWPup_Job {
 			unset( $query_args['_nonce'] );
 		}
 
-		if ( $starttype == 'runnowlink' && defined( 'ALTERNATE_WP_CRON' ) && ALTERNATE_WP_CRON ) {
+		if ( $starttype === 'runnowlink' && defined( 'ALTERNATE_WP_CRON' ) && ALTERNATE_WP_CRON ) {
 			$query_args['backwpup_run']  = 'runnowalt';
 			$query_args['_nonce']        = substr( wp_hash( wp_nonce_tick() . 'backwpup_job_run-runnowalt', 'nonce' ), - 12, 10 );
 			$query_args['doing_wp_cron'] = null;
 		}
 
-		if ( $starttype == 'restartalt' && defined( 'ALTERNATE_WP_CRON' ) && ALTERNATE_WP_CRON ) {
+		if ( $starttype === 'restartalt' && defined( 'ALTERNATE_WP_CRON' ) && ALTERNATE_WP_CRON ) {
 			$query_args['backwpup_run'] = 'restart';
-			$query_args['_nonce']       = substr( wp_hash( wp_nonce_tick() . 'backwpup_job_run-restart', 'nonce' ), - 12, 10 );
+			$query_args['_nonce']       = null;
 		}
 
-		if ( ! empty( $authentication['user_id'] ) && $authentication['method'] == 'user' ) {
+		if ( $starttype === 'restart' || $starttype === 'test' ) {
+			$query_args['_nonce']       = null;
+		}
+
+		if ( ! empty( $authentication['user_id'] ) && $authentication['method'] === 'user' ) {
 			//cache cookies for auth some
 			$cookies = get_site_transient( 'backwpup_cookies' );
 			if ( empty( $cookies ) ) {
@@ -539,10 +543,10 @@ final class BackWPup_Job {
 			'key'  => $query_args['doing_wp_cron'],
 			'args' => array(
 				'blocking'   => false,
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
+				'sslverify'  => false,
 				'timeout'    => 0.01,
 				'headers'    => $header,
-				'user-agent' => BackWpup::get_plugin_data( 'User-Agent' )
+				'user-agent' => BackWPup::get_plugin_data( 'User-Agent' )
 			)
 		);
 

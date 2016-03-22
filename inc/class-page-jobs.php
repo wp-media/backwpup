@@ -355,46 +355,48 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 
 		switch ( self::$listtable->current_action() ) {
 			case 'delete': //Delete Job
-				if ( ! current_user_can( 'backwpup_jobs_edit' ) )
+				if ( ! current_user_can( 'backwpup_jobs_edit' ) ) {
 					break;
+				}
 				if ( is_array( $_GET[ 'jobs' ] ) ) {
 					check_admin_referer( 'bulk-jobs' );
 					foreach ( $_GET[ 'jobs' ] as $jobid ) {
-						wp_clear_scheduled_hook( 'backwpup_cron', array( 'id' => $jobid ) );
-						BackWPup_Option::delete_job( $jobid );
+						wp_clear_scheduled_hook( 'backwpup_cron', array( 'id' => absint( $jobid ) ) );
+						BackWPup_Option::delete_job( absint( $jobid ) );
 					}
 				}
 				break;
 			case 'copy': //Copy Job
-				if ( ! current_user_can( 'backwpup_jobs_edit' ) )
+				if ( ! current_user_can( 'backwpup_jobs_edit' ) ) {
 					break;
-				$old_job_id = (int)$_GET[ 'jobid' ];
-				check_admin_referer( 'copy-job_' . $_GET[ 'jobid' ] );
+				}
+				$old_job_id = absint( $_GET[ 'jobid' ] );
+				check_admin_referer( 'copy-job_' . $old_job_id );
 				//create new
 				$newjobid = BackWPup_Option::get_job_ids();
 				sort( $newjobid );
 				$newjobid    = end( $newjobid ) + 1;
 				$old_options = BackWPup_Option::get_job( $old_job_id );
 				foreach ( $old_options as $key => $option ) {
-					if ( $key == "jobid" )
+					if ( $key === "jobid" )
 						$option = $newjobid;
-					if ( $key == "name" )
+					if ( $key === "name" )
 						$option = __( 'Copy of', 'backwpup' ) . ' ' . $option;
-					if ( $key == "activetype" )
+					if ( $key === "activetype" )
 						$option = '';
-					if ( $key == "archivename" )
-						$option = str_replace( $_GET[ 'jobid' ], $newjobid, $option );
-					if ( $key == "logfile" || $key == "lastbackupdownloadurl" || $key == "lastruntime" ||
-						$key == "lastrun" )
+					if ( $key === "archivename" )
+						$option = str_replace( $old_job_id, $newjobid, $option );
+					if ( $key === "logfile" || $key === "lastbackupdownloadurl" || $key === "lastruntime" || $key === "lastrun" )
 						continue;
 					BackWPup_Option::update( $newjobid, $key, $option );
 				}
 				break;
 			case 'runnow':
-				$_GET[ 'jobid' ] = (int) $_GET[ 'jobid' ];
-				if ( ! empty( $_GET[ 'jobid' ] ) ) {
-					if ( ! current_user_can( 'backwpup_jobs_start' ) )
+				$jobid = absint( $_GET[ 'jobid' ] );
+				if ( $jobid ) {
+					if ( ! current_user_can( 'backwpup_jobs_start' ) ) {
 						wp_die( __( 'Sorry, you don\'t have permissions to do that.', 'backwpup') );
+					}
 					check_admin_referer( 'backwpup_job_run-runnowlink' );
 
 					//check temp folder
@@ -407,7 +409,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 					BackWPup_Admin::message( $log_folder_message, TRUE );
 					//check backup destinations
 					$job_types = BackWPup::get_job_types();
-					$job_conf_types = BackWPup_Option::get( $_GET[ 'jobid' ], 'type' );
+					$job_conf_types = BackWPup_Option::get( $jobid, 'type' );
 					$creates_file = FALSE;
 					foreach ( $job_types as $id => $job_type_class ) {
 						if ( in_array( $id, $job_conf_types, true ) && $job_type_class->creates_file( ) ) {
@@ -416,7 +418,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 						}
 					}
 					if ( $creates_file ) {
-						$job_conf_dests = BackWPup_Option::get( $_GET[ 'jobid' ], 'destinations' );
+						$job_conf_dests = BackWPup_Option::get( $jobid, 'destinations' );
 						$destinations = 0;
 						/* @var BackWPup_Destinations $dest_class */
 						foreach ( BackWPup::get_registered_destinations() as $id => $dest ) {
@@ -424,64 +426,59 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 								continue;
 							}
 							$dest_class = BackWPup::get_destination( $id );
-							$job_settings = BackWPup_Option::get_job( $_GET[ 'jobid' ] );
+							$job_settings = BackWPup_Option::get_job( $jobid );
 							if ( ! $dest_class->can_run( $job_settings ) ) {
-								BackWPup_Admin::message( sprintf( __( 'The job "%s" destination "%s" is not configured properly','backwpup' ), esc_attr( BackWPup_Option::get( $_GET[ 'jobid' ], 'name' ) ), $id ), TRUE );
+								BackWPup_Admin::message( sprintf( __( 'The job "%s" destination "%s" is not configured properly','backwpup' ), esc_attr( BackWPup_Option::get( $jobid, 'name' ) ), $id ), TRUE );
 							}
 							$destinations++;
 						}
 						if ( $destinations < 1 ) {
-							BackWPup_Admin::message( sprintf( __( 'The job "%s" needs properly configured destinations to run!','backwpup' ), esc_attr( BackWPup_Option::get( $_GET[ 'jobid' ], 'name' ) ) ), TRUE );
+							BackWPup_Admin::message( sprintf( __( 'The job "%s" needs properly configured destinations to run!','backwpup' ), esc_attr( BackWPup_Option::get( $jobid, 'name' ) ) ), TRUE );
 						}
 					}
 
 					//check server callback
 					$raw_response = BackWPup_Job::get_jobrun_url( 'test' );
-					$test_result = '';
-					if ( is_wp_error( $raw_response ) ) {
-						$test_result .= sprintf( __( 'The HTTP response test get an error "%s"','backwpup' ), $raw_response->get_error_message() );
-					}
 					$response_code = wp_remote_retrieve_response_code( $raw_response );
-					if ( $response_code < 200  && $response_code > 204 ) {
-						$test_result .= sprintf( __( 'The HTTP response test get a false http status (%s)','backwpup' ), wp_remote_retrieve_response_code( $raw_response ) );
-					} else {
-						$response_body = wp_remote_retrieve_body( $raw_response );
-						if ( strstr( $response_body, 'BackWPup test request') === false ) {
-							$headers = '<br>';
-							$response_headers = wp_remote_retrieve_headers( $raw_response );
-							foreach( $response_headers as $key => $value ) {
-								if ( $key === 'set-cookie' ) {
-									continue;
-								}
-								$headers .= esc_attr( $key ) . ': ' . esc_attr( $value ) . '<br>';
-							}
-							$test_result .= sprintf( __( '<strong>Not expected HTTP response headers or body:</strong> %s','backwpup' ), $headers );
+					$response_body = wp_remote_retrieve_body( $raw_response );
+					if ( strstr( $response_body, 'BackWPup test request') === false ) {
+						$test_result = __( '<strong>Not expected HTTP response:</strong><br>','backwpup' );
+						if ( ! $response_code ) {
+							$test_result .= sprintf( __( 'WP Http Error: <code>%s</code>', 'backwpup' ), esc_html( $raw_response->get_error_message() ) ) . '<br>';
+						} else {
+							$test_result .= sprintf( __( 'Status-Code: <code>%d</code>', 'backwpup' ), esc_html( $response_code ) ) . '<br>';
 						}
-					}
-					if ( ! empty( $test_result ) ) {
-						BackWPup_Admin::message( $test_result, TRUE );
+						$response_headers = wp_remote_retrieve_headers( $raw_response );
+						foreach( $response_headers as $key => $value ) {
+							$test_result .= esc_html( ucfirst( $key ) ) . ': <code>' . esc_html( $value ) . '</code><br>';
+						}
+						$content = esc_html( wp_remote_retrieve_body( $raw_response ) );
+						if ( $content ) {
+							$test_result .= sprintf( __( 'Content: <code>%s</code>', 'backwpup' ), $content );
+						}
+						BackWPup_Admin::message( $test_result, true );
 					}
 
 					//only start job if messages empty
 					$log_messages = BackWPup_Admin::get_messages();
 					if ( empty ( $log_messages ) )  {
-						$old_log_file = BackWPup_Option::get( $_GET[ 'jobid' ], 'logfile' );
-						BackWPup_Job::get_jobrun_url( 'runnow', $_GET[ 'jobid' ] );
+						$old_log_file = BackWPup_Option::get( $jobid, 'logfile' );
+						BackWPup_Job::get_jobrun_url( 'runnow', $jobid );
 						usleep( 250000 ); //wait a quarter second
-						$new_log_file = BackWPup_Option::get( $_GET[ 'jobid' ], 'logfile', NULL, FALSE );
+						$new_log_file = BackWPup_Option::get( $jobid, 'logfile', null, false );
 						//sleep as long as job not started
 						$i=0;
-						while ( $old_log_file == $new_log_file ) {
+						while ( $old_log_file === $new_log_file ) {
 							usleep( 250000 ); //wait a quarter second for next try
-							$new_log_file = BackWPup_Option::get( $_GET[ 'jobid' ], 'logfile', NULL, FALSE );
+							$new_log_file = BackWPup_Option::get( $jobid, 'logfile', null, false );
 							//wait maximal 10 sec.
 							if ( $i >= 40 ) {
-								BackWPup_Admin::message( sprintf( __( 'Job “%s” has started, but not responded for 10 seconds.', 'backwpup' ), esc_attr( BackWPup_Option::get( $_GET[ 'jobid' ], 'name' ) ) ), TRUE );
+								BackWPup_Admin::message( sprintf( __( 'Job “%s” has started, but not responded for 10 seconds.', 'backwpup' ), esc_attr( BackWPup_Option::get( $jobid, 'name' ) ) ), true );
 								break 2;
 							}
 							$i++;
 						}
-						BackWPup_Admin::message( sprintf( __( 'Job "%s" started.', 'backwpup' ), esc_attr( BackWPup_Option::get( $_GET[ 'jobid' ], 'name' ) ) ) );
+						BackWPup_Admin::message( sprintf( __( 'Job "%s" started.', 'backwpup' ), esc_attr( BackWPup_Option::get( $jobid, 'name' ) ) ) );
 					}
 				}
 				break;
@@ -855,3 +852,4 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	}
 
 }
+

@@ -50,11 +50,11 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		}
 
 		$jobdest = '';
-		if ( ! empty( $_GET[ 'jobdets-button-top' ] ) ) {
-			$jobdest = $_GET[ 'jobdest-top' ];
+		if ( isset( $_GET[ 'jobdets-button-top' ] ) ) {
+			$jobdest = sanitize_text_field( $_GET[ 'jobdest-top' ] );
 		}
-		if( ! empty( $_GET[ 'jobdets-button-bottom' ] ) ) {
-			$jobdest =  $_GET[ 'jobdest-bottom' ];
+		if( isset( $_GET[ 'jobdets-button-bottom' ] ) ) {
+			$jobdest = sanitize_text_field( $_GET[ 'jobdest-bottom' ] );
 		}
 
 		if ( empty( $jobdest ) ) {
@@ -64,7 +64,7 @@ class BackWPup_Page_Backups extends WP_List_Table {
 			}
 			$jobdest           	 	= $jobdests[ 0 ];
 			$_GET[ 'jobdest-top' ] 	= $jobdests[ 0 ];
-			$_GET[ 'jobdets-button-top' ]  = 'empty';
+			$_GET[ 'jobdets-button-top' ] = 'empty';
 		}
 
 		list( $this->jobid, $this->dest ) = explode( '_', $jobdest );
@@ -86,8 +86,8 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		$order   = isset( $_GET[ 'order' ] ) ? $_GET[ 'order' ] : 'desc';
 		$orderby = isset( $_GET[ 'orderby' ] ) ? $_GET[ 'orderby' ] : 'time';
 		$tmp     = Array();
-		if ( $orderby == 'time' ) {
-			if ( $order == 'asc' ) {
+		if ( $orderby === 'time' ) {
+			if ( $order === 'asc' ) {
 				foreach ( $this->items as &$ma ) {
 					$tmp[ ] = & $ma[ "time" ];
 				}
@@ -100,8 +100,8 @@ class BackWPup_Page_Backups extends WP_List_Table {
 				array_multisort( $tmp, SORT_DESC, $this->items );
 			}
 		}
-		elseif ( $orderby == 'file' ) {
-			if ( $order == 'asc' ) {
+		elseif ( $orderby === 'file' ) {
+			if ( $order === 'asc' ) {
 				foreach ( $this->items as &$ma ) {
 					$tmp[ ] = & $ma[ "filename" ];
 				}
@@ -114,8 +114,8 @@ class BackWPup_Page_Backups extends WP_List_Table {
 				array_multisort( $tmp, SORT_DESC, $this->items );
 			}
 		}
-		elseif ( $orderby == 'folder' ) {
-			if ( $order == 'asc' ) {
+		elseif ( $orderby === 'folder' ) {
+			if ( $order === 'asc' ) {
 				foreach ( $this->items as &$ma ) {
 					$tmp[ ] = & $ma[ "folder" ];
 				}
@@ -128,8 +128,8 @@ class BackWPup_Page_Backups extends WP_List_Table {
 				array_multisort( $tmp, SORT_DESC, $this->items );
 			}
 		}
-		elseif ( $orderby == 'size' ) {
-			if ( $order == 'asc' ) {
+		elseif ( $orderby === 'size' ) {
+			if ( $order === 'asc' ) {
 				foreach ( $this->items as &$ma ) {
 					$tmp[ ] = & $ma[ "filesize" ];
 				}
@@ -187,8 +187,9 @@ class BackWPup_Page_Backups extends WP_List_Table {
 	 */
 	function get_bulk_actions() {
 
-		if ( ! $this->has_items() )
+		if ( ! $this->has_items() ) {
 			return array ();
+		}
 
 		$actions             = array();
 		$actions[ 'delete' ] = __( 'Delete', 'backwpup' );
@@ -238,18 +239,19 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		$jobdest      = array();
 		$jobids       = BackWPup_Option::get_job_ids();
 
-		if ( ! empty( $jobids ) ) {
-			foreach ( $jobids as $jobid ) {
-				if ( BackWPup_Option::get( $jobid, 'backuptype' ) == 'sync' ) // jump over sync
+		foreach ( $jobids as $jobid ) {
+			if ( BackWPup_Option::get( $jobid, 'backuptype' ) === 'sync' ) {
+				continue;
+			}
+			$dests = BackWPup_Option::get( $jobid, 'destinations' );
+			foreach ( $dests as $dest ) {
+				if ( ! $this->destinations[ $dest ][ 'class' ] ) {
 					continue;
-				$dests = BackWPup_Option::get( $jobid, 'destinations' );
-				foreach ( $dests as $dest ) {
-					if ( empty( $this->destinations[ $dest ][ 'class' ] ) )
-						continue;
-					$dest_class = BackWPup::get_destination( $dest );
-					$can_do_dest = $dest_class->file_get_list( $jobid . '_' . $dest );
-					if ( ! empty( $can_do_dest ) )
-						$jobdest[ ] = $jobid . '_' . $dest;
+				}
+				$dest_class = BackWPup::get_destination( $dest );
+				$can_do_dest = $dest_class->file_get_list( $jobid . '_' . $dest );
+				if ( ! empty( $can_do_dest ) ) {
+					$jobdest[ ] = $jobid . '_' . $dest;
 				}
 			}
 		}
@@ -376,11 +378,11 @@ class BackWPup_Page_Backups extends WP_List_Table {
 				}
 
 				$jobdest = '';
-				if ( ! empty( $_GET[ 'jobdest' ] ) ) {
-					$jobdest = $_GET[ 'jobdest' ];
+				if ( isset( $_GET[ 'jobdest' ] ) ) {
+					$jobdest = sanitize_text_field( $_GET[ 'jobdest' ] );
 				}
-				if ( ! empty( $_GET[ 'jobdest-top' ] ) ) {
-					$jobdest = $_GET[ 'jobdest-top' ];
+				if ( isset( $_GET[ 'jobdest-top' ] ) ) {
+					$jobdest = sanitize_text_field( $_GET[ 'jobdest-top' ] );
 				}
 
 				$_GET[ 'jobdest-top' ] = $jobdest;
@@ -408,15 +410,16 @@ class BackWPup_Page_Backups extends WP_List_Table {
 				break;
 			default:
 				if ( isset( $_GET[ 'jobid' ] ) ) {
+					$jobid = absint( $_GET[ 'jobid' ] );
 					$dest = strtoupper( str_replace( 'download', '', self::$listtable->current_action() ) );
 					if ( ! empty( $dest ) && strstr( self::$listtable->current_action(), 'download' ) ) {
 						if ( ! current_user_can( 'backwpup_backups_download' ) ) {
 							wp_die( __( 'Sorry, you don\'t have permissions to do that.', 'backwpup') );
 						}
-						check_admin_referer( 'download-backup_' . $_GET[ 'jobid' ] );
+						check_admin_referer( 'download-backup_' . $jobid );
 						/** @var BackWPup_Destinations $dest_class */
 						$dest_class = BackWPup::get_destination( $dest );
-						$dest_class->file_download( (int)$_GET[ 'jobid' ], trim( $_GET[ 'file' ] ) );
+						$dest_class->file_download( $jobid, trim( sanitize_text_field( $_GET[ 'file' ] ) ) );
 						die();
 					}
 				}

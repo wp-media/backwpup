@@ -144,9 +144,10 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 		$backup_folder  = BackWPup_Option::get( $jobid, 'backupdir' );
 		$backup_folder  = BackWPup_File::get_absolute_path( $backup_folder );
 		if ( is_dir( $backup_folder ) && $dir = opendir( $backup_folder ) ) { //make file list
-			while ( FALSE !== ( $file = readdir( $dir ) ) ) {
-				if ( in_array( $file, array( '.', '..', 'index.php', '.htaccess', '.donotbackup', true ) ) || is_dir( $backup_folder . $file ) || is_link( $backup_folder . $file ) )
+			while ( false !== ( $file = readdir( $dir ) ) ) {
+				if ( in_array( $file, array( '.', '..', 'index.php', '.htaccess', '.donotbackup' ), true ) || is_dir( $backup_folder . $file ) || is_link( $backup_folder . $file ) ) {
 					continue;
+				}
 				if ( is_readable( $backup_folder . $file ) ) {
 					//file list for backups
 					$files[ $filecounter ][ 'folder' ]      = $backup_folder;
@@ -190,8 +191,9 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 			while ( FALSE !== ( $file = readdir( $dir ) ) ) {
 				if ( is_writeable( $job_object->backup_folder . $file ) && ! is_dir( $job_object->backup_folder . $file ) && ! is_link( $job_object->backup_folder . $file ) ) {
 					//list for deletion
-					if ( $job_object->is_backup_archive( $file ) )
+					if ( $job_object->is_backup_archive( $file ) ) {
 						$backupfilelist[ filemtime( $job_object->backup_folder . $file ) ] = $file;
+					}
 				}
 			}
 			closedir( $dir );

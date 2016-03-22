@@ -396,28 +396,26 @@ class BackWPup_Page_Settings {
 			//response test
 			echo '<tr><td>' . __( 'Server self connect:', 'backwpup' ) . '</td><td>';
 			$raw_response = BackWPup_Job::get_jobrun_url( 'test' );
-			$test_result = '';
-			if ( is_wp_error( $raw_response ) )
-				$test_result .= sprintf( __( 'The HTTP response test get an error "%s"','backwpup' ), $raw_response->get_error_message() );
-			elseif ( 200 != wp_remote_retrieve_response_code( $raw_response ) && 204 != wp_remote_retrieve_response_code( $raw_response ) )
-				$test_result .= sprintf( __( 'The HTTP response test get a false http status (%s)','backwpup' ), wp_remote_retrieve_response_code( $raw_response ) );
+			$response_code = wp_remote_retrieve_response_code( $raw_response );
 			$response_body = wp_remote_retrieve_body( $raw_response );
-			if ( strstr( $response_body, 'BackWPup test request') === false ) {
-				$headers = '<br>';
+			if ( strstr( $response_body, 'BackWPup test request' ) === false ) {
+				$test_result = __( '<strong>Not expected HTTP response:</strong><br>','backwpup' );
+				if ( ! $response_code ) {
+					$test_result .= sprintf( __( 'WP Http Error: <code>%s</code>', 'backwpup' ), esc_html( $raw_response->get_error_message() ) ) . '<br>';
+				} else {
+					$test_result .= sprintf( __( 'Status-Code: <code>%d</code>', 'backwpup' ), esc_html( $response_code ) ) . '<br>';
+				}
 				$response_headers = wp_remote_retrieve_headers( $raw_response );
 				foreach( $response_headers as $key => $value ) {
-					if ( $key === 'set-cookie' ) {
-						continue;
-					}
-					$headers .= esc_attr( $key ) . ': ' . esc_attr( $value ) . '<br>';
+					$test_result .= esc_html( ucfirst( $key ) ) . ': <code>' . esc_html( $value ) . '</code><br>';
 				}
-				$test_result .= sprintf( __( '<strong>Not expected HTTP response headers or body:</strong> %s','backwpup' ), $headers );
-			}
-
-			if ( empty( $test_result ) ) {
-				_e( 'Response Test O.K.', 'backwpup' );
-			} else {
+				$content = esc_html( wp_remote_retrieve_body( $raw_response ) );
+				if ( $content ) {
+					$test_result .= sprintf( __( 'Content: <code>%s</code>', 'backwpup' ), $content );
+				}
 				echo $test_result;
+			} else {
+				_e( 'Response Test O.K.', 'backwpup' );
 			}
 			echo '</td></tr>';
 			//folder test

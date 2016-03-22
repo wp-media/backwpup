@@ -10,22 +10,19 @@ class BackWPup_Cron {
 	 * @param $arg
 	 * @internal param $args
 	 */
-	public static function run( $arg ) {
+	public static function run( $arg = 'restart' ) {
 
-		$job_object = BackWPup_Job::get_working_data();
-
-		if ( $arg === 'restart' && $job_object ) {
+		if ( $arg === 'restart' ) {
 			//reschedule restart
 			wp_schedule_single_event( time() + 60, 'backwpup_cron', array( 'id' => 'restart' ) );
 			//restart job if not working or a restart imitated
-			$not_worked_time = microtime( TRUE ) - $job_object->timestamp_last_update;
-			if ( ! $job_object->pid || $not_worked_time > 300 ) {
-				self::cron_active( array( 'run' => 'restart' ) );
-			}
+			self::cron_active( array( 'run' => 'restart' ) );
+
 			return;
 		}
 
-		if ( ! $arg || $arg === 'restart' ) {
+		$arg = abs( $arg );
+		if ( ! $arg ) {
 			return;
 		}
 
@@ -36,8 +33,10 @@ class BackWPup_Cron {
 		}
 
 		//delay other job start for 5 minutes if already one is running
+		$job_object = BackWPup_Job::get_working_data();
 		if ( $job_object ) {
-			wp_schedule_single_event( time() + 300 , 'backwpup_cron', array( 'id' => $arg ) );
+			wp_schedule_single_event( time() + 300, 'backwpup_cron', array( 'id' => $arg ) );
+
 			return;
 		}
 
@@ -47,8 +46,8 @@ class BackWPup_Cron {
 
 		//start job
 		self::cron_active( array(
-			'run' => 'cronrun',
-			'jobid' => absint( $arg )
+			'run'   => 'cronrun',
+			'jobid' => $arg
 		) );
 
 	}
@@ -99,7 +98,7 @@ class BackWPup_Cron {
 		}
 
 		//Jobs cleanings
-		if ( ! is_object( $job_object ) ) {
+		if ( ! $job_object ) {
 			//remove restart cron
 			wp_clear_scheduled_hook( 'backwpup_cron', array( 'id' => 'restart' ) );
 			//temp cleanup
@@ -108,14 +107,12 @@ class BackWPup_Cron {
 
 		//check scheduling jobs that not found will removed because there are single scheduled
 		$activejobs = BackWPup_Option::get_job_ids( 'activetype', 'wpcron' );
-		if ( ! empty( $activejobs ) ) {
-			foreach ( $activejobs as $jobid ) {
-				$cron_next = wp_next_scheduled( 'backwpup_cron', array( 'id' => $jobid ) );
-				if ( ! $cron_next || $cron_next < time() ) {
-					wp_unschedule_event( $cron_next, 'backwpup_cron', array( 'id' => $jobid ) );
-					$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $jobid, 'cron') );
-					wp_schedule_single_event( $cron_next, 'backwpup_cron', array( 'id' => $jobid ) );
-				}
+		foreach ( $activejobs as $jobid ) {
+			$cron_next = wp_next_scheduled( 'backwpup_cron', array( 'id' => $jobid ) );
+			if ( ! $cron_next || $cron_next < time() ) {
+				wp_unschedule_event( $cron_next, 'backwpup_cron', array( 'id' => $jobid ) );
+				$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $jobid, 'cron' ) );
+				wp_schedule_single_event( $cron_next, 'backwpup_cron', array( 'id' => $jobid ) );
 			}
 		}
 
@@ -163,6 +160,16 @@ class BackWPup_Cron {
 		//on test die for fast feedback
 		if ( $args['run'] === 'test' ) {
 			die( 'BackWPup test request' );
+		}
+
+		if ( $args['run'] === 'restart' ) {
+			$job_object = BackWPup_Job::get_working_data();
+			//restart job if not working or a restart wished
+			$not_worked_time = microtime( TRUE ) - $job_object->timestamp_last_update;
+			if ( ! $job_object->pid || $not_worked_time > 300 ) {
+				BackWPup_Job::start_http( 'restart' );
+				return;
+			}
 		}
 
 		// generate normal nonce
