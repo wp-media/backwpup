@@ -140,7 +140,7 @@ class BackWPup_EasyCron {
 		$message = self::query_api( 'detail', array( 'id' => $id ) );
 
 		if ( $message[ 'status' ] == 'success' && ! empty( $message[ 'cron_job' ] ) ) {
-			set_site_transient( 'backwpup_easycron_' . $id, $message[ 'cron_job' ], 3600 - 30 );
+			set_site_transient( 'backwpup_easycron_' . $id, $message[ 'cron_job' ], HOUR_IN_SECONDS - 30 );
 			return $message[ 'cron_job' ];
 		} else {
 			if ( $message[ 'error' ][ 'code' ] == 25 ) {

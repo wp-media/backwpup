@@ -205,7 +205,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 			BackWPup_Admin::message( 'DROPBOX: ' . $e->getMessage(), true );
 		}
 
-		set_site_transient( 'backwpup_' . strtolower( $jobdest ), $files, 3600 * 24 * 7 );
+		set_site_transient( 'backwpup_' . strtolower( $jobdest ), $files, YEAR_IN_SECONDS );
 	}
 
 	/**
@@ -359,7 +359,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 					}
 				}
 			}
-			set_site_transient( 'backwpup_' . $job_object->job['jobid'] . '_dropbox', $files, 60 * 60 * 24 * 7 );
+			set_site_transient( 'backwpup_' . $job_object->job['jobid'] . '_dropbox', $files, YEAR_IN_SECONDS );
 		} catch ( Exception $e ) {
 			$job_object->log( E_USER_ERROR, sprintf( __( 'Dropbox API: %s', 'backwpup' ), $e->getMessage() ), $e->getFile(), $e->getLine() );
 

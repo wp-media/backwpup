@@ -437,28 +437,6 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 						}
 					}
 
-					//check server callback
-					$raw_response = BackWPup_Job::get_jobrun_url( 'test' );
-					$response_code = wp_remote_retrieve_response_code( $raw_response );
-					$response_body = wp_remote_retrieve_body( $raw_response );
-					if ( strstr( $response_body, 'BackWPup test request') === false ) {
-						$test_result = __( '<strong>Not expected HTTP response:</strong><br>','backwpup' );
-						if ( ! $response_code ) {
-							$test_result .= sprintf( __( 'WP Http Error: <code>%s</code>', 'backwpup' ), esc_html( $raw_response->get_error_message() ) ) . '<br>';
-						} else {
-							$test_result .= sprintf( __( 'Status-Code: <code>%d</code>', 'backwpup' ), esc_html( $response_code ) ) . '<br>';
-						}
-						$response_headers = wp_remote_retrieve_headers( $raw_response );
-						foreach( $response_headers as $key => $value ) {
-							$test_result .= esc_html( ucfirst( $key ) ) . ': <code>' . esc_html( $value ) . '</code><br>';
-						}
-						$content = esc_html( wp_remote_retrieve_body( $raw_response ) );
-						if ( $content ) {
-							$test_result .= sprintf( __( 'Content: <code>%s</code>', 'backwpup' ), $content );
-						}
-						BackWPup_Admin::message( $test_result, true );
-					}
-
 					//only start job if messages empty
 					$log_messages = BackWPup_Admin::get_messages();
 					if ( empty ( $log_messages ) )  {
@@ -473,7 +451,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 							$new_log_file = BackWPup_Option::get( $jobid, 'logfile', null, false );
 							//wait maximal 10 sec.
 							if ( $i >= 40 ) {
-								BackWPup_Admin::message( sprintf( __( 'Job “%s” has started, but not responded for 10 seconds.', 'backwpup' ), esc_attr( BackWPup_Option::get( $jobid, 'name' ) ) ), true );
+								BackWPup_Admin::message( sprintf( __( 'Job "%s" has started, but not responded for 10 seconds. Please check <a href="%s">information</a>.', 'backwpup' ), esc_attr( BackWPup_Option::get( $jobid, 'name' ) ), network_admin_url( 'admin.php' ) . '?page=backwpupsettings#backwpup-tab-information' ), true );
 								break 2;
 							}
 							$i++;
@@ -514,7 +492,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 
 			#TB_ajaxContent {
 				background-color: black;
-				color: white;
+				color: #c0c0c0;
 			}
 
 			#showworking {

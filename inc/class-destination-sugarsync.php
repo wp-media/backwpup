@@ -178,7 +178,7 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 			}
 		}
 
-		set_site_transient( 'backwpup_' . strtolower( $jobdest ), $files, 60 * 60 * 24 * 7 );
+		set_site_transient( 'backwpup_' . strtolower( $jobdest ), $files, YEAR_IN_SECONDS );
 	}
 
 	/**
@@ -301,7 +301,7 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 						$job_object->log( sprintf( _n( 'One file deleted on SugarSync folder', '%d files deleted on SugarSync folder', $numdeltefiles, 'backwpup' ), $numdeltefiles ), E_USER_NOTICE );
 				}
 			}
-			set_site_transient( 'BackWPup_' .  $job_object->job[ 'jobid' ] . '_SUGARSYNC', $files, 60 * 60 * 24 * 7 );
+			set_site_transient( 'BackWPup_' .  $job_object->job[ 'jobid' ] . '_SUGARSYNC', $files, YEAR_IN_SECONDS );
 		}
 		catch ( Exception $e ) {
 			$job_object->log( E_USER_ERROR, sprintf( __( 'SugarSync API: %s', 'backwpup' ), $e->getMessage() ), $e->getFile(), $e->getLine() );

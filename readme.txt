@@ -170,6 +170,13 @@ Please check all settings after the update:
 
 
 == Changelog ==
+= Version 3.3.1 =
+* Improved: Signal handling again
+* Improved: Restarts on getting folder list
+* Improved: Text Color in log files
+* Changed: Save file list cache for one year
+* Removed: Server callback check on job start no it is only in Settings > Tab: Information
+
 = Version 3.3 =
 * Improved: Texts removed or rewritten
 * Improved: Security

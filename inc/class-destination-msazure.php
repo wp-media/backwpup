@@ -158,7 +158,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 			}
 		}
 
-		set_site_transient( 'backwpup_' . strtolower( $jobdest ), $files, 60 * 60 * 24 * 7 );
+		set_site_transient( 'backwpup_' . strtolower( $jobdest ), $files, YEAR_IN_SECONDS );
 	}
 
 	/**
@@ -341,7 +341,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 
 				}
 			}
-			set_site_transient( 'backwpup_' . $job_object->job[ 'jobid' ] . '_msazure', $files, 60 * 60 * 24 * 7 );
+			set_site_transient( 'backwpup_' . $job_object->job[ 'jobid' ] . '_msazure', $files, YEAR_IN_SECONDS );
 		}
 		catch ( Exception $e ) {
 			$job_object->log( E_USER_ERROR, sprintf( __( 'Microsoft Azure API: %s', 'backwpup' ), $e->getMessage() ), $e->getFile(), $e->getLine() );

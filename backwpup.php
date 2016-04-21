@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.3
+ * Version: 3.3.1-alpha
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true

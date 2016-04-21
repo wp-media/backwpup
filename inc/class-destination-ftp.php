@@ -179,7 +179,7 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 			}
 		}
 
-		set_site_transient( 'backwpup_'. strtolower( $jobdest ), $files, 60 * 60 * 24 * 7 );
+		set_site_transient( 'backwpup_'. strtolower( $jobdest ), $files, YEAR_IN_SECONDS );
 	}
 
 	/**
@@ -390,7 +390,7 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 					$job_object->log( sprintf( _n( 'One file deleted on FTP server', '%d files deleted on FTP server', $numdeltefiles, 'backwpup' ), $numdeltefiles ), E_USER_NOTICE );
 			}
 		}
-		set_site_transient( 'backwpup_' . $job_object->job[ 'jobid' ] . '_ftp', $files, 60 * 60 * 24 * 7 );
+		set_site_transient( 'backwpup_' . $job_object->job[ 'jobid' ] . '_ftp', $files, YEAR_IN_SECONDS );
 		$job_object->substeps_done++;
 
 		ftp_close( $ftp_conn_id );
