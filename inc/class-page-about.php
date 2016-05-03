@@ -14,33 +14,6 @@ class BackWPup_Page_About {
 
 		?>
 		<style type="text/css" media="screen">
-			.inpsyde {
-				width:79px;
-				height:119px;
-				background: url( '<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/inpsyde.png' ) no-repeat;
-				position: absolute;
-				top:0;
-				right: 100px;
-				z-index: 1;
-			}
-			.inpsyde a, .inpsyde a:link{
-				float:left;
-				font-size:14px;
-				color:#fff;
-				text-decoration:none;
-				padding:65px 15px 15px 15px;
-				text-align:center;
-			}
-			@media screen and (max-width: 782px) {
-				.inpsyde {
-					right:10px;
-				}
-			}
-			@media screen and (max-width: 600px) {
-				.inpsyde {
-					display: none;
-				}
-			}
 			#backwpup-page {
 				background: #fff;
 				margin-top: 22px;
@@ -381,9 +354,6 @@ class BackWPup_Page_About {
 
 		?>
         <div class="wrap" id="backwpup-page">
-        	<div class="inpsyde">
-            	<a href="http://inpsyde.com/" title="Inpsyde GmbH">Inpsyde</a>
-            </div>
 			<?php BackWPup_Admin::display_messages(); ?>
             <div class="welcome">
             	<div class="welcome_inner">
@@ -476,8 +446,6 @@ _e( 'Use your backup archives to save your entire WordPress installation includi
                         </div>
                     </div>
                 </div>
-
-				<?php if ( ! class_exists( 'BackWPup_Pro', FALSE ) ) : ?>
 					<div class="backwpup_comp">
 						<h3><?php esc_html_e( 'Features / differences between Free and Pro', 'backwpup' ); ?></h3>
 						<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -652,25 +620,17 @@ _e( 'Use your backup archives to save your entire WordPress installation includi
 								<td class="tick"></td>
 							</tr>
 							<tr class="even">
-								<td><?php _e( '<strong>Dynamically loaded documentation</strong>', 'backwpup' ); ?></td>
-								<td class="error" style="border-bottom:none;"></td>
-								<td class="tick" style="border-bottom:none;"></td>
-							</tr>
-							<tr class="odd">
 								<td><?php _e( '<strong>Automatic update from MarketPress</strong>', 'backwpup' ); ?></td>
 								<td class="error" style="border-bottom:none;"></td>
 								<td class="tick" style="border-bottom:none;"></td>
 							</tr>
-							<tr class="even ubdown">
+							<tr class="odd ubdown">
 								<td></td>
 								<td></td>
-								<td class="pro buylink"><a href="<?php esc_html_e( 'http://marketpress.com/product/backwpup-pro/', 'backwpup' ); ?>"><?php _e( 'GET PRO', 'backwpup' ); ?></a></td>
+								<td class="pro buylink"><a href="<?php esc_html_e( 'http://backwpup.com', 'backwpup' ); ?>"><?php _e( 'GET PRO', 'backwpup' ); ?></a></td>
 							</tr>
 						</table>
 					</div>
-				<?php
-				endif;
- 				?>
             </div>
         </div>
 	<?php

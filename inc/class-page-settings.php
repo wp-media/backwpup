@@ -53,6 +53,7 @@ class BackWPup_Page_Settings {
 			delete_site_option( 'backwpup_cfg_sugarsynckey' );
 			delete_site_option( 'backwpup_cfg_sugarsyncsecret' );
 			delete_site_option( 'backwpup_cfg_sugarsyncappid' );
+			delete_site_option( 'backwpup_cfg_hash' );
 
 			BackWPup_Option::default_site_options();
 
@@ -372,7 +373,7 @@ class BackWPup_Page_Settings {
 			echo '<tfoot><tr><th>' . __( 'Setting', 'backwpup' ) . '</th><th>' . __( 'Value', 'backwpup' ) . '</th></tr></tfoot>';
 			echo '<tr title="&gt;=3.2"><td>' . __( 'WordPress version', 'backwpup' ) . '</td><td>' . esc_html( BackWPup::get_plugin_data( 'wp_version' ) ) . '</td></tr>';
 			if ( ! class_exists( 'BackWPup_Pro', FALSE ) )
-				echo '<tr title=""><td>' . __( 'BackWPup version', 'backwpup' ) . '</td><td>' . esc_html( BackWPup::get_plugin_data( 'Version' ) ) . ' <a href="' . translate( BackWPup::get_plugin_data( 'pluginuri' ), 'backwpup' ) . '">' . __( 'Get pro.', 'backwpup' ) . '</a></td></tr>';
+				echo '<tr title=""><td>' . __( 'BackWPup version', 'backwpup' ) . '</td><td>' . esc_html( BackWPup::get_plugin_data( 'Version' ) ) . ' <a href="' . __( 'http://backwpup.com', 'backwpup' ) . '">' . __( 'Get pro.', 'backwpup' ) . '</a></td></tr>';
 			else
 				echo '<tr title=""><td>' . __( 'BackWPup Pro version', 'backwpup' ) . '</td><td>' . esc_html( BackWPup::get_plugin_data( 'Version' ) ) . '</td></tr>';
 			$bit = '';

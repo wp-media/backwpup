@@ -214,7 +214,7 @@ class BackWPup_MySQLDump {
 		//For SQL always use \n as MySQL wants this on all platforms.
 		$dbdumpheader  = "-- ---------------------------------------------------------\n";
 		$dbdumpheader .= "-- Backup with BackWPup ver.: " . BackWPup::get_plugin_data( 'Version' ) . "\n";
-		$dbdumpheader .= "-- https://marketpress.de/product/backwpup-pro/\n";
+		$dbdumpheader .= "-- http://backwpup.com/\n";
 		if ( $wp_info ) {
 			$dbdumpheader .= "-- Blog Name: " . get_bloginfo( 'name' ) . "\n";
 			$dbdumpheader .= "-- Blog URL: " . trailingslashit( get_bloginfo( 'url' ) ) . "\n";

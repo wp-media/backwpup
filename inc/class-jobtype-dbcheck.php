@@ -12,9 +12,9 @@ class BackWPup_JobType_DBCheck extends BackWPup_JobTypes {
 		$this->info[ 'ID' ]          = 'DBCHECK';
 		$this->info[ 'name' ]        = __( 'DB Check', 'backwpup' );
 		$this->info[ 'description' ] = __( 'Check database tables', 'backwpup' );
-		$this->info[ 'URI' ]         = translate( BackWPup::get_plugin_data( 'PluginURI' ), 'backwpup' );
-		$this->info[ 'author' ]      = BackWPup::get_plugin_data( 'Author' );
-		$this->info[ 'authorURI' ]   = translate( BackWPup::get_plugin_data( 'AuthorURI' ), 'backwpup' );
+		$this->info[ 'URI' ]         = __( 'http://backwpup.com', 'backwpup' );
+		$this->info[ 'author' ]      = 'Inpsyde GmbH';
+		$this->info[ 'authorURI' ]   = __( 'http://inpsyde.com', 'backwpup' );
 		$this->info[ 'version' ]     = BackWPup::get_plugin_data( 'Version' );
 
 	}

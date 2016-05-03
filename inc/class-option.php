@@ -21,11 +21,7 @@ final class BackWPup_Option {
 		add_site_option( 'backwpup_cfg_showfoldersize', 0 );
 		add_site_option( 'backwpup_cfg_protectfolders', 1 );
 		//job
-		$max_execution_time = 0;
-		if ( strstr( PHP_SAPI, 'cgi' ) ) {
-			$max_execution_time = (int) ini_get( 'max_execution_time' );
-		}
-		add_site_option( 'backwpup_cfg_jobmaxexecutiontime', $max_execution_time );
+		add_site_option( 'backwpup_cfg_jobmaxexecutiontime', 30 );
 		add_site_option( 'backwpup_cfg_jobstepretry', 3 );
 		add_site_option( 'backwpup_cfg_jobrunauthkey', substr( md5( BackWPup::get_plugin_data( 'hash' ) ), 11, 8 ) );
 		add_site_option( 'backwpup_cfg_loglevel', 'normal_translated' );
@@ -34,7 +30,7 @@ final class BackWPup_Option {
 		//Logs
 		add_site_option( 'backwpup_cfg_maxlogs', 30 );
 		add_site_option( 'backwpup_cfg_gzlogs', 0 );
-		$upload_dir   = wp_upload_dir();
+		$upload_dir   = wp_upload_dir( null, false, true );
 		$logs_dir     = trailingslashit( str_replace( '\\', '/', $upload_dir['basedir'] ) ) . 'backwpup-' . BackWPup::get_plugin_data( 'hash' ) . '-logs/';
 		$content_path = trailingslashit( str_replace( '\\', '/', WP_CONTENT_DIR ) );
 		$logs_dir     = str_replace( $content_path, '', $logs_dir );

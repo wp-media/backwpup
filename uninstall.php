@@ -9,25 +9,6 @@ global $wpdb;
 
 //only uninstall if no BackWPup Version active
 if ( ! class_exists( 'BackWPup' ) ) {
-	//remove roles
-	remove_role( 'backwpup_admin' );
-	remove_role( 'backwpup_helper' );
-	remove_role( 'backwpup_check' );
-
-	//remove capabilities to administrator role
-	$role = get_role( 'administrator' );
-	if ( is_object( $role )  && method_exists( $role, 'remove_cap' ) ) {
-		$role->remove_cap( 'backwpup' );
-		$role->remove_cap( 'backwpup_jobs' );
-		$role->remove_cap( 'backwpup_jobs_edit' );
-		$role->remove_cap( 'backwpup_jobs_start' );
-		$role->remove_cap( 'backwpup_backups' );
-		$role->remove_cap( 'backwpup_backups_download' );
-		$role->remove_cap( 'backwpup_backups_delete' );
-		$role->remove_cap( 'backwpup_logs' );
-		$role->remove_cap( 'backwpup_logs_delete' );
-		$role->remove_cap( 'backwpup_settings' );
-	}
 
 	//delete plugin options
 	if ( is_multisite() )

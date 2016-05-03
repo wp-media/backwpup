@@ -109,7 +109,7 @@ class BackWPup_Page_Editjob {
 				$mailaddresslog = implode( ', ', $emails );
 				BackWPup_Option::update( $jobid, 'mailaddresslog', $mailaddresslog );
 
-				$mailaddresssenderlog = esc_attr( trim( $_POST['mailaddresssenderlog'] ) );
+				$mailaddresssenderlog = trim( $_POST['mailaddresssenderlog'] );
 				BackWPup_Option::update( $jobid, 'mailaddresssenderlog', $mailaddresssenderlog );
 
 				BackWPup_Option::update( $jobid, 'mailerroronly', ! empty( $_POST['mailerroronly'] ) );

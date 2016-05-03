@@ -48,9 +48,6 @@ final class BackWPup_Admin {
 		add_action( 'edit_user_profile',  array( $this, 'user_profile_fields' ) );
 		add_action( 'profile_update',  array( $this, 'save_profile_update' ) );
 
-		//Change Backup message on core updates
-		add_filter( 'gettext', array( $this, 'gettext' ), 10, 3 );
-
 		new BackWPup_EasyCron();
 	}
 
@@ -127,12 +124,7 @@ final class BackWPup_Admin {
 	public function plugin_links( $links, $file ) {
 
 		if ( $file == plugin_basename( BackWPup::get_plugin_data( 'MainFile' ) ) ) {
-			$links[ ] = '<a href="' . esc_attr__( 'https://marketpress.com/documentation/backwpup-pro/', 'backwpup' ) . '">' . __( 'Documentation', 'backwpup' ) . '</a>';
-			if ( class_exists( 'BackWPup_Pro', FALSE ) )
-				$links[ ] = '<a href="' . esc_attr__( 'https://marketpress.com/support/forum/plugins/backwpup-pro/', 'backwpup' ) . '">' . __( 'Pro Support', 'backwpup' ) . '</a>';
-			else
-				$links[ ] = '<a href="' . esc_attr__( 'http://wordpress.org/support/plugin/backwpup/', 'backwpup' ) . '">' . __( 'Support', 'backwpup' ) . '</a>';
-
+			$links[ ] = '<a href="' . esc_attr__( 'http://docs.backwpup.com', 'backwpup' ) . '">' . __( 'Documentation', 'backwpup' ) . '</a>';
 		}
 
 		return $links;
@@ -143,11 +135,11 @@ final class BackWPup_Admin {
 	 */
 	public function admin_menu() {
 
-		add_menu_page( BackWPup::get_plugin_data( 'name' ), BackWPup::get_plugin_data( 'name' ), 'backwpup', 'backwpup', array( 'BackWPup_Page_Backwpup', 'page' ), 'div' );
-		$this->page_hooks[ 'backwpup' ] = add_submenu_page( 'backwpup', __( 'BackWPup Dashboard', 'backwpup' ), __( 'Dashboard', 'backwpup' ), 'backwpup', 'backwpup', array( 'BackWPup_Page_Backwpup', 'page' ) );
+		add_menu_page( BackWPup::get_plugin_data( 'name' ), BackWPup::get_plugin_data( 'name' ), 'backwpup', 'backwpup', array( 'BackWPup_Page_BackWPup', 'page' ), 'div' );
+		$this->page_hooks[ 'backwpup' ] = add_submenu_page( 'backwpup', __( 'BackWPup Dashboard', 'backwpup' ), __( 'Dashboard', 'backwpup' ), 'backwpup', 'backwpup', array( 'BackWPup_Page_BackWPup', 'page' ) );
 		add_action( 'load-' . $this->page_hooks[ 'backwpup' ], array( 'BackWPup_Admin', 'init_general' ) );
-		add_action( 'load-' . $this->page_hooks[ 'backwpup' ], array( 'BackWPup_Page_Backwpup', 'load' ) );
-		add_action( 'admin_print_scripts-' . $this->page_hooks[ 'backwpup' ], array( 'BackWPup_Page_Backwpup', 'admin_print_scripts' ) );
+		add_action( 'load-' . $this->page_hooks[ 'backwpup' ], array( 'BackWPup_Page_BackWPup', 'load' ) );
+		add_action( 'admin_print_scripts-' . $this->page_hooks[ 'backwpup' ], array( 'BackWPup_Page_BackWPup', 'admin_print_scripts' ) );
 
 		//Add pages form plugins
 		$this->page_hooks = apply_filters( 'backwpup_admin_pages' ,$this->page_hooks );
@@ -390,9 +382,9 @@ final class BackWPup_Admin {
 		$default_text = $admin_footer_text;
 
 		if ( isset( $_REQUEST[ 'page' ] ) && strstr( $_REQUEST[ 'page' ], 'backwpup' ) ) {
-			$admin_footer_text = '<a href="' . __( 'http://marketpress.com', 'backwpup' ) . '" class="mp_logo" title="' . __( 'MarketPress', 'backwpup' ) . '">' . __( 'MarketPress', 'backwpup' ) . '</a>';
+			$admin_footer_text = '<a href="http://inpsyde.com" class="inpsyde_logo" title="Inpsyde GmbH">Inpsyde GmbH</a>';
 			if ( ! class_exists( 'BackWPup_Pro', FALSE ) ) {
-				$admin_footer_text .= sprintf( __( '<a class="backwpup-get-pro" href="%s">Get BackWPup Pro now.</a>', 'backwpup' ), translate( BackWPup::get_plugin_data( 'PluginURI' ), 'backwpup' ) );
+				$admin_footer_text .= sprintf( __( '<a class="backwpup-get-pro" href="%s">Get BackWPup Pro now.</a>', 'backwpup' ), __( 'http://backwpup.com', 'backwpup' ) );
 			}
 
 			return $admin_footer_text . $default_text;
@@ -412,7 +404,7 @@ final class BackWPup_Admin {
 		$default_text = $update_footer_text;
 
 		if ( isset( $_REQUEST[ 'page' ] ) && strstr( $_REQUEST[ 'page' ], 'backwpup') ) {
-			$update_footer_text  = '<span class="backwpup-update-footer"><a href="' . translate( BackWPup::get_plugin_data( 'PluginURI' ), 'backwpup' ) . '">' . BackWPup::get_plugin_data( 'Name' ) . '</a> '. sprintf( __( 'version %s' ,'backwpup'), BackWPup::get_plugin_data( 'Version' ) ) . '</span>';
+			$update_footer_text  = '<span class="backwpup-update-footer"><a href="' . __( 'http://backwpup.com', 'backwpup' ) . '">' . BackWPup::get_plugin_data( 'Name' ) . '</a> '. sprintf( __( 'version %s' ,'backwpup'), BackWPup::get_plugin_data( 'Version' ) ) . '</span>';
 
 			return $update_footer_text . $default_text;
 		}
@@ -531,32 +523,5 @@ final class BackWPup_Admin {
 
 		return;
 	}
-
-	/**
-	 * Replace some text strings to add backup notify
-	 *
-	 * @param $translations
-	 * @param $text
-	 * @param $domain
-	 *
-	 * @return string
-	 */
-	public function gettext( $translations, $text, $domain ) {
-
-		if ( strstr( $text, '<a href="http://codex.wordpress.org/WordPress_Backups">back up your database and files</a>' ) ) {
-			return sprintf( __( '<strong>Important:</strong> before updating, please <a href="%1$s">back up your database and files</a> with <a href="http://marketpress.de/product/backwpup-pro/">%2$s</a>. For help with updates, visit the <a href="http://codex.wordpress.org/Updating_WordPress">Updating WordPress</a> Codex page.', 'backwpup' ), network_admin_url( 'admin.php?page=backwpupjobs' ), BackWPup::get_plugin_data( 'name' ) );
-		}
-
-		if ( strstr( $text, 'This plugin has <strong>not been tested</strong> with your current version of WordPress.' ) ) {
-			return $translations . '</p></div><div class="updated"><p>' .sprintf( __( '<strong>Important:</strong> before installing this plugin, please <a href="%1$s">back up your database and files</a> with <a href="http://marketpress.de/product/backwpup-pro/">%2$s</a>.', 'backwpup' ), network_admin_url( 'admin.php?page=backwpupjobs' ), BackWPup::get_plugin_data( 'name' ) );
-		}
-
-		if ( strstr( $text, 'This plugin has <strong>not been marked as compatible</strong> with your version of WordPress.' ) ) {
-			return $translations . '</p></div><div class="updated"><p>' .sprintf( __( '<strong>Important:</strong> before installing this plugin, please <a href="%1$s">back up your database and files</a> with <a href="http://marketpress.de/product/backwpup-pro/">%2$s</a>.', 'backwpup' ), network_admin_url( 'admin.php?page=backwpupjobs' ), BackWPup::get_plugin_data( 'name' ) );
-		}
-
-		return $translations;
-	}
-
 
 }

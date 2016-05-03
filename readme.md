@@ -1,8 +1,8 @@
-# BackWPup Free - WordPress Backup Plugin
+# BackWPup - WordPress Backup Plugin
 Schedule complete automatic backups of your WordPress installation. Decide which content will be stored (Dropbox, S3…). This is the free version
 
 ## Description
-The **backup plugin** **[BackWPup Free](http://marketpress.com/product/backwpup-pro/)** can be used to save your complete installation including /wp-content/ and push them to an external Backup Service, like **Dropbox**, **S3**, **FTP** and many more, see list below. With a single backup .zip file you are able to easily restore an installation. Please understand: this free version will not be supported as good as the [BackWPup Pro version](http://marketpress.com/product/backwpup-pro/).
+The **backup plugin** **[BackWPup Free](http://backwpup.com)** can be used to save your complete installation including /wp-content/ and push them to an external Backup Service, like **Dropbox**, **S3**, **FTP** and many more, see list below. With a single backup .zip file you are able to easily restore an installation. Please understand: this free version will not be supported as good as the [BackWPup Pro version](http://marketpress.com/product/backwpup-pro/).
 
 
 * Database Backup  *(needs mysqli)*
@@ -23,17 +23,14 @@ The **backup plugin** **[BackWPup Free](http://marketpress.com/product/backwpup-
 * PRO: Store backup to Google Drive *(needs PHP 5.3.3, curl)*
 * Send logs and backups by email
 * Multi-site support only as network admin
-* Pro version and support available - [BackWPup Pro](http://marketpress.com/product/backwpup-pro/)
+* Pro version and support available - [BackWPup Pro](http://backwpup.com)
 
 
 **Remember: The most expensive backup is the one you never did! And please test your backups!**
 
-Get the [BackWPup Pro](http://marketpress.com/product/backwpup-pro/) Version with more features on [MarketPress.com](http://marketpress.com/product/backwpup-pro/)
+Get the [BackWPup Pro](http://backwpup.com) Version with more features.
 
 **Made by [Inpsyde](http://inpsyde.com) &middot; We love WordPress**
-
-Have a look at our other premium plugins at [MarketPress.com](http://marketpress.com).
-
 
 ## Available languages
 * english (standard)

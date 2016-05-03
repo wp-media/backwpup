@@ -12,9 +12,9 @@ class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes {
 		$this->info[ 'ID' ]          = 'WPPLUGIN';
 		$this->info[ 'name' ]        = __( 'Plugins', 'backwpup' );
 		$this->info[ 'description' ] = __( 'Installed plugins list', 'backwpup' );
-		$this->info[ 'URI' ]         = translate( BackWPup::get_plugin_data( 'PluginURI' ), 'backwpup' );
-		$this->info[ 'author' ]      = BackWPup::get_plugin_data( 'Author' );
-		$this->info[ 'authorURI' ]   = translate( BackWPup::get_plugin_data( 'AuthorURI' ), 'backwpup' );
+		$this->info[ 'URI' ]         = __( 'http://backwpup.com', 'backwpup' );
+		$this->info[ 'author' ]      = 'Inpsyde GmbH';
+		$this->info[ 'authorURI' ]   = __( 'http://inpsyde.com', 'backwpup' );
 		$this->info[ 'version' ]     = BackWPup::get_plugin_data( 'Version' );
 
 	}
@@ -79,7 +79,7 @@ class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes {
 	 */
 	public function edit_form_post_save( $id ) {
 
-		BackWPup_Option::update( $id, 'pluginlistfile', sanitize_file_name( $_POST[ 'pluginlistfile' ] ) );
+		BackWPup_Option::update( $id, 'pluginlistfile', sanitize_text_field( $_POST[ 'pluginlistfile' ] ) );
 		if ( $_POST[ 'pluginlistfilecompression' ] === '' || $_POST[ 'pluginlistfilecompression' ] === '.gz' || $_POST[ 'pluginlistfilecompression' ] === '.bz2' ) {
 			BackWPup_Option::update( $id, 'pluginlistfilecompression', $_POST[ 'pluginlistfilecompression' ] );
 		}
@@ -109,7 +109,7 @@ class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes {
 			//open file
 			$header = "------------------------------------------------------------" . PHP_EOL;
 			$header .= "  Plugin list generated with BackWPup version: " . BackWPup::get_plugin_data( 'Version' ) . PHP_EOL;
-			$header .= "  " . translate( BackWPup::get_plugin_data( 'pluginuri' ), 'backwpup' ) . PHP_EOL;
+			$header .= "  http://backwpup.com" . PHP_EOL;
 			$header .= "  Blog Name: " . get_bloginfo( 'name' ) . PHP_EOL;
 			$header .= "  Blog URL: " . get_bloginfo( 'url' ) . PHP_EOL;
 			$header .= "  Generated on: " . date( 'Y-m-d H:i.s', current_time( 'timestamp' ) ) . PHP_EOL;

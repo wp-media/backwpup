@@ -308,7 +308,7 @@ final class BackWPup_Job {
 		$head .= str_pad( '<meta name="backwpup_jobruntime" content="0" />', 100 ) . PHP_EOL;
 		$head .= '</head>' . PHP_EOL;
 		$head .= '<body style="margin:0;padding:3px;font-family:monospace;font-size:12px;line-height:15px;background-color:black;color:#c0c0c0;white-space:nowrap;">' . PHP_EOL;
-		$info .= sprintf( _x( '[INFO] %1$s %2$s; A project of Inpsyde GmbH', 'Plugin name; Plugin Version; plugin url', 'backwpup' ), BackWPup::get_plugin_data( 'name' ), BackWPup::get_plugin_data( 'Version' ), BackWPup::get_plugin_data( 'pluginuri' ) ) . '<br />' . PHP_EOL;
+		$info .= sprintf( _x( '[INFO] %1$s %2$s; A project of Inpsyde GmbH', 'Plugin name; Plugin Version; plugin url', 'backwpup' ), BackWPup::get_plugin_data( 'name' ), BackWPup::get_plugin_data( 'Version' ), __( 'http://backwpup.com', 'backwpup' ) ) . '<br />' . PHP_EOL;
 		if ( $this->is_debug() ) {
 			$info .= sprintf( _x( '[INFO] WordPress %1$s on %2$s', 'WordPress Version; Blog url', 'backwpup' ), BackWPup::get_plugin_data( 'wp_version' ), esc_attr( site_url( '/' ) ) ) . '<br />' . PHP_EOL;
 		}
@@ -1545,7 +1545,7 @@ final class BackWPup_Job {
 		} elseif ( $this->warnings > 0 ) {
 			$this->log( sprintf( __( 'Job finished with warnings in %s seconds. Please resolve them for correct execution.', 'backwpup' ), current_time( 'timestamp' ) - $this->start_time ), E_USER_WARNING );
 		} else {
-			$this->log( sprintf( __( 'Job done in %s seconds.', 'backwpup' ), current_time( 'timestamp' ) - $this->start_time, E_USER_NOTICE ) );
+			$this->log( sprintf( __( 'Job done in %s seconds.', 'backwpup' ), current_time( 'timestamp' ) - $this->start_time ) );
 		}
 
 		//Update job options
@@ -1579,57 +1579,45 @@ final class BackWPup_Job {
 				fclose( $fd );
 			}
 
-			//logfile end
-			file_put_contents( $this->logfile, "</body>" . PHP_EOL . "</html>", FILE_APPEND );
-
 			//Send mail with log
 			$sendmail = false;
-			if ( $this->errors > 0 && ! empty( $this->job['mailerroronly'] ) && ! empty( $this->job['mailaddresslog'] ) ) {
+			if ( $this->job['mailaddresslog'] ) {
 				$sendmail = true;
 			}
-			if ( empty( $this->job['mailerroronly'] ) && ! empty( $this->job['mailaddresslog'] ) ) {
-				$sendmail = true;
+			if ( $this->errors === 0 && $this->job['mailerroronly'] ) {
+				$sendmail = false;
 			}
 			if ( $sendmail ) {
 				//special subject
 				$status   = __( 'SUCCESSFUL', 'backwpup' );
-				$priority = 3; //Normal
 				if ( $this->warnings > 0 ) {
 					$status   = __( 'WARNING', 'backwpup' );
-					$priority = 2; //High
 				}
 				if ( $this->errors > 0 ) {
 					$status   = __( 'ERROR', 'backwpup' );
-					$priority = 1; //Highest
 				}
 
 				$subject   = sprintf( __( '[%3$s] BackWPup log %1$s: %2$s', 'backwpup' ), date_i18n( 'd-M-Y H:i', $this->start_time, true ), esc_attr( $this->job['name'] ), $status );
 				$headers   = array();
 				$headers[] = 'Content-Type: text/html; charset=' . get_bloginfo( 'charset' );
-				/* $headers[] = 'X-Priority: ' . $priority; */ // Priority not working with header setting
-				if ( ! empty( $this->job['mailaddresssenderlog'] ) ) {
-					if ( false === $start_mail = strpos( $this->job['mailaddresssenderlog'], '<' ) ) {
-						if ( false === strpos( $this->job['mailaddresssenderlog'], '@' ) ) {
-							$this->job['mailaddresssenderlog'] = '"' . str_replace( array(
-									'<',
-									'>',
-									'@'
-								), '', $this->job['mailaddresssenderlog'] ) . '" <' . get_bloginfo( 'admin_email' ) . '>';
-						}
-					} elseif ( false === strpos( $this->job['mailaddresssenderlog'], '>', $start_mail ) ) {
-						$this->job['mailaddresssenderlog'] = '"' . str_replace( array( '<', '>', '@' ), '', substr( $this->job['mailaddresssenderlog'], 0, $start_mail ) ) . '" <' . get_bloginfo( 'admin_email' ) . '>';
+				if ( $this->job['mailaddresssenderlog'] ) {
+					$this->job['mailaddresssenderlog'] = str_replace( array( '&lt;', '&gt;' ), array( '<', '>' ), $this->job['mailaddresssenderlog'] );
+
+					$bracket_pos = strpos( $this->job['mailaddresssenderlog'], '<' );
+					$at_pos = strpos( $this->job['mailaddresssenderlog'], '@' );
+					if ( $bracket_pos === false || $at_pos === false ) {
+						$this->job['mailaddresssenderlog'] = str_replace( array( '<', '>' ), '', $this->job['mailaddresssenderlog'] ) . ' <' . get_bloginfo( 'admin_email' ) . '>';
 					}
 
 					$headers[] = 'From: ' . $this->job['mailaddresssenderlog'];
 				}
-
 				wp_mail( $this->job['mailaddresslog'], $subject, file_get_contents( $this->logfile ), $headers );
 			}
 		}
 
 		//set done
 		$this->substeps_done = 1;
-		$this->steps_done[]  = 'END';
+		$this->steps_done[] = 'END';
 
 		//clean up temp
 		self::clean_temp_folder();
@@ -1638,6 +1626,9 @@ final class BackWPup_Job {
 		remove_action( 'shutdown', array( $this, 'shutdown' ) );
 		restore_exception_handler();
 		restore_error_handler();
+
+		//logfile end
+		file_put_contents( $this->logfile, "</body>" . PHP_EOL . "</html>", FILE_APPEND );
 
 		BackWPup_Cron::check_cleanup();
 
@@ -2045,7 +2036,7 @@ final class BackWPup_Job {
 		$manifest['blog_info']['language']             = get_bloginfo( 'language' );
 		$manifest['blog_info']['name']                 = get_bloginfo( 'name' );
 		$manifest['blog_info']['abspath']              = ABSPATH;
-		$manifest['blog_info']['uploads']              = wp_upload_dir();
+		$manifest['blog_info']['uploads']              = wp_upload_dir( null, false, true );
 		$manifest['blog_info']['contents']['basedir']  = WP_CONTENT_DIR;
 		$manifest['blog_info']['contents']['baseurl']  = WP_CONTENT_URL;
 		$manifest['blog_info']['plugins']['basedir']   = WP_PLUGIN_DIR;

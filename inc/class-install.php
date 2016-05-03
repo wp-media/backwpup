@@ -20,7 +20,7 @@ class BackWPup_Install {
 
 		//changes for version before 3.0.14
 		if ( version_compare( '3.0.13', get_site_option( 'backwpup_version' ), '>' ) && version_compare( '3.0', get_site_option( 'backwpup_version' ), '<' ) ) {
-			$upload_dir = wp_upload_dir();
+			$upload_dir = wp_upload_dir( null, false, true );
 			$logfolder = get_site_option( 'backwpup_cfg_logfolder' );
 			if ( empty( $logfolder ) ) {
 				$old_log_folder = trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . substr( md5( md5( SECURE_AUTH_KEY ) ), 9, 5 ) . '-logs/';

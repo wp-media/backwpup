@@ -10,7 +10,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	 */
 	public function option_defaults() {
 
-		$upload_dir = wp_upload_dir();
+		$upload_dir = wp_upload_dir( null, false, true );
 		$backups_dir = trailingslashit( str_replace( '\\', '/',$upload_dir[ 'basedir' ] ) ) . 'backwpup-' . BackWPup::get_plugin_data( 'hash' ) . '-backups/';
 		$content_path = trailingslashit( str_replace( '\\', '/', WP_CONTENT_DIR ) );
 		$backups_dir = str_replace( $content_path, '', $backups_dir );

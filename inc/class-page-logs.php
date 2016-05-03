@@ -412,7 +412,7 @@ class BackWPup_Page_Logs extends WP_List_Table {
 
 		$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
 		$log_folder = BackWPup_File::get_absolute_path( $log_folder );
-		$log_file = $log_folder . esc_attr( trim( $_GET[ 'log' ] ) );
+		$log_file = $log_folder . basename( trim( $_GET[ 'log' ] ) );
 
 		if ( file_exists( $log_file . '.html' ) && is_readable( $log_file . '.html' ) ) {
 			echo file_get_contents( $log_file . '.html', FALSE );

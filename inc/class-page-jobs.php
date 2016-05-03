@@ -744,16 +744,18 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 
 		$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
 		$log_folder = BackWPup_File::get_absolute_path( $log_folder );
-		$logfile = isset( $_GET[ 'logfile' ] ) ? $log_folder . trim( $_GET[ 'logfile' ] ) : NULL;
-		$logpos  = isset( $_GET[ 'logpos' ] ) ? (int)$_GET[ 'logpos' ] : 0;
+		$logfile = isset( $_GET[ 'logfile' ] ) ? $log_folder . basename( trim( $_GET[ 'logfile' ] ) ) : NULL;
+		$logpos  = isset( $_GET[ 'logpos' ] ) ? absint( $_GET[ 'logpos' ] ) : 0;
 		$restart_url = '';
 
 		//check if logfile renamed
-		if ( file_exists( $logfile . '.gz' ) )
+		if ( file_exists( $logfile . '.gz' ) ) {
 			$logfile .= '.gz';
+		}
 
-		if ( ! is_readable( $logfile ) )
+		if ( ! is_readable( $logfile ) || strstr( $_GET[ 'logfile' ], 'backwpup_log_' ) === false ) {
 			die( '0' );
+		}
 
 		$job_object = BackWPup_Job::get_working_data();
 		$done = 0;

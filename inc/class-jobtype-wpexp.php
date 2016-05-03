@@ -12,9 +12,9 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 		$this->info[ 'ID' ]        	 = 'WPEXP';
 		$this->info[ 'name' ]        = __( 'XML export', 'backwpup' );
 		$this->info[ 'description' ] = __( 'WordPress XML export', 'backwpup' );
-		$this->info[ 'URI' ]         = translate( BackWPup::get_plugin_data( 'PluginURI' ), 'backwpup' );
-		$this->info[ 'author' ]      = BackWPup::get_plugin_data( 'Author' );
-		$this->info[ 'authorURI' ]   = translate( BackWPup::get_plugin_data( 'AuthorURI' ), 'backwpup' );
+		$this->info[ 'URI' ]         = __( 'http://backwpup.com', 'backwpup' );
+		$this->info[ 'author' ]      = 'Inpsyde GmbH';
+		$this->info[ 'authorURI' ]   = __( 'http://inpsyde.com', 'backwpup' );
 		$this->info[ 'version' ]     = BackWPup::get_plugin_data( 'Version' );
 
 	}
@@ -31,7 +31,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 	 * @return array
 	 */
 	public function option_defaults() {
-		return array( 'wpexportcontent' => 'all', 'wpexportfilecompression' => '', 'wpexportfile' => sanitize_file_name( get_bloginfo( 'name' ) ) . '.wordpress.%Y-%m-%d' );
+		return array( 'wpexportcontent' => 'all', 'wpexportfilecompression' => '', 'wpexportfile' => sanitize_text_field( get_bloginfo( 'name' ) ) . '.wordpress.%Y-%m-%d' );
 	}
 
 

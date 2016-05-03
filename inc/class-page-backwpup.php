@@ -112,7 +112,7 @@ class BackWPup_Page_BackWPup {
 
 			if ( current_user_can( 'backwpup_jobs_start' ) ) {?>
 				<div id="backwpup-one-click-backup" class="metabox-holder postbox backwpup-floated-postbox">
-					<h3 class="hndle"><span><?php  esc_html_e( 'One click backup', 'backwpup' ); ?></span></h3>
+					<h3 class="hndle"><span><?php esc_html_e( 'One click backup', 'backwpup' ); ?></span></h3>
 					<div class="inside">
 						<a href="<?php echo wp_nonce_url( network_admin_url( 'admin.php?page=backwpup&action=dbdumpdl' ), 'backwpupdbdumpdl' ); ?>" class="button button-primary button-primary-bwp" title="<?php esc_attr_e( 'Generate a database backup of WordPress tables and download it right away!', 'backwpup' ); ?>"><?php esc_html_e( 'Download database backup', 'backwpup' ); ?></a><br />
 					</div>
@@ -120,11 +120,11 @@ class BackWPup_Page_BackWPup {
 			<?php } ?>
 
 			<div id="backwpup-rss-feed" class="metabox-holder postbox backwpup-cleared-postbox backwpup-max-width">
-				<h3 class="hndle"><span><?php  esc_attr_e( 'BackWPup News', 'backwpup' ); ?></span></h3>
+				<h3 class="hndle"><span><?php esc_attr_e( 'BackWPup News', 'backwpup' ); ?></span></h3>
 				<div class="inside">
 					<?php
 
-						$rss = fetch_feed( _x( 'https://marketpress.com/tag/backwpup/feed/', 'BackWPup News RSS Feed URL', 'backwpup' ) );
+						$rss = fetch_feed( _x( 'http://marketpress.com/news/tag/backwpup/feed/', 'BackWPup News RSS Feed URL', 'backwpup' ) );
 
 						if ( is_wp_error( $rss ) ) {
 							echo '<p>' . sprintf( __('<strong>RSS Error</strong>: %s', 'backwpup' ), $rss->get_error_message() ) . '</p>';
@@ -213,8 +213,7 @@ class BackWPup_Page_BackWPup {
 				}
 			} ?>
 
-
-	        <div class="metabox-holder postbox backwpup-floated-postbox">
+	        <div class="metabox-holder postbox backwpup-cleared-postbox backwpup-floated-postbox">
 		        <h3 class="hndle"><span><a href="https://www.ostraining.com/">OSTraining</a> <?php  esc_html_e( 'Video: Introduction', 'backwpup' ); ?></span></h3>
 		        <iframe class="inside" width="340" height="190" src="https://www.youtube.com/embed/pECMkLE27QQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
 	        </div>
@@ -224,7 +223,7 @@ class BackWPup_Page_BackWPup {
 		        <iframe class="inside" width="340" height="190" src="https://www.youtube.com/embed/F55xEoDnS0U?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
 	        </div>
 
-	        <div class="metabox-holder postbox backwpup-floated-postbox">
+	        <div class="metabox-holder postbox backwpup-cleared-postbox backwpup-floated-postbox">
 		        <h3 class="hndle"><span><a href="https://www.ostraining.com/">OSTraining</a> <?php  esc_html_e( 'Video: Daily Backups', 'backwpup' ); ?></span></h3>
 		        <iframe class="inside" width="340" height="190" src="https://www.youtube.com/embed/staZo0DS5m4?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
 	        </div>
@@ -234,7 +233,7 @@ class BackWPup_Page_BackWPup {
 		        <iframe class="inside" width="340" height="190" src="https://www.youtube.com/embed/3N9FbmBuaac?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
 	        </div>
 
-	        <div class="metabox-holder postbox backwpup-floated-postbox">
+	        <div class="metabox-holder postbox backwpup-cleared-postbox backwpup-floated-postbox">
 		        <h3 class="hndle"><span><a href="https://www.ostraining.com/">OSTraining</a> <?php  esc_html_e( 'Video: Restoring Backups', 'backwpup' ); ?></span></h3>
 		        <iframe class="inside" width="340" height="190" src="https://www.youtube.com/embed/VIwDp87vYZY?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
 	        </div>
@@ -258,9 +257,9 @@ class BackWPup_Page_BackWPup {
 						<li><?php _ex( 'First-class <strong>dedicated support</strong> at MarketPress Helpdesk.', 'Pro teaser box', 'backwpup' ); ?></li>
 						<li><?php echo esc_html_x( 'Differential backups to Google Drive and other cloud storage service.', 'Pro teaser box', 'backwpup' ); ?></li>
 						<li><?php echo esc_html_x( 'Easy-peasy wizards to create and schedule backup jobs.', 'Pro teaser box', 'backwpup' ); ?></li>
-						<li><?php printf( '<a href="http://marketpress.com/product/backwpup-pro/">%s</a>', _x( 'And more…', 'Pro teaser box, link text', 'backwpup' ) ); ?></li>
+						<li><?php printf( '<a href="' . esc_html__( 'http://backwpup.com', 'backwpup' ) .'">%s</a>', _x( 'And more…', 'Pro teaser box, link text', 'backwpup' ) ); ?></li>
 					</ul>
-					<p class="backwpup-text-center"><a href="http://marketpress.com/product/backwpup-pro/" class="button button-primary button-primary-bwp" title="<?php _ex( 'Get BackWPup Pro now', 'Pro teaser box, link title', 'backwpup' ); ?>"><?php _ex( 'Get BackWPup Pro now', 'Pro teaser box, link text', 'backwpup' ); ?></a></p>
+					<p class="backwpup-text-center"><a href="<?php esc_html_e( 'http://backwpup.com', 'backwpup' ); ?>" class="button button-primary button-primary-bwp" title="<?php _ex( 'Get BackWPup Pro now', 'Pro teaser box, link title', 'backwpup' ); ?>"><?php _ex( 'Get BackWPup Pro now', 'Pro teaser box, link text', 'backwpup' ); ?></a></p>
 				</div>
 			</div>
 			<?php } ?>

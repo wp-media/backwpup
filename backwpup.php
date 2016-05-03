@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: BackWPup
- * Plugin URI: https://marketpress.com/product/backwpup-pro/
+ * Plugin URI: http://backwpup.com
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.3.1-alpha
+ * Version: 3.3.1
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -138,43 +138,27 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			if ( empty( self::$plugin_data ) ) {
 				self::$plugin_data = get_file_data( __FILE__, array(
 																   'name'        => 'Plugin Name',
-																   'pluginuri'   => 'Plugin URI',
-																   'version'     => 'Version',
-																   'description' => 'Description',
-																   'author'      => 'Author',
-																   'authoruri'   => 'Author URI',
-																   'textdomain'  => 'Text Domain',
-																   'domainpath'  => 'Domain Path',
-																   'license'     => 'License',
-																   'licenseuri'  => 'License URI'
+																   'version'     => 'Version'
 															  ), 'plugin' );
-				//Translate some vars
 				self::$plugin_data[ 'name' ]        = trim( self::$plugin_data[ 'name' ] );
-				self::$plugin_data[ 'pluginuri' ]   = trim( self::$plugin_data[ 'pluginuri' ] );
-				self::$plugin_data[ 'description' ] = trim( self::$plugin_data[ 'description' ] );
-				self::$plugin_data[ 'author' ]      = trim( self::$plugin_data[ 'author' ] );
-				self::$plugin_data[ 'authoruri' ]   = trim( self::$plugin_data[ 'authoruri' ] );
 				//set some extra vars
 				self::$plugin_data[ 'basename' ] = plugin_basename( dirname( __FILE__ ) );
 				self::$plugin_data[ 'mainfile' ] = __FILE__ ;
 				self::$plugin_data[ 'plugindir' ] = untrailingslashit( dirname( __FILE__ ) ) ;
 				self::$plugin_data[ 'hash' ] = get_site_option( 'backwpup_cfg_hash' );
 				if ( empty( self::$plugin_data[ 'hash' ] ) || strlen( self::$plugin_data[ 'hash' ] ) < 6 || strlen( self::$plugin_data[ 'hash' ] ) > 12 ) {
-					update_site_option( 'backwpup_cfg_hash', substr( md5( md5( BackWPup::get_plugin_data( "mainfile" ) ) ), 14, 6 ) );
-					self::$plugin_data[ 'hash' ] = get_site_option( 'backwpup_cfg_hash' );
+					self::$plugin_data[ 'hash' ] = substr( md5( md5( __FILE__ ) ), 14, 6 );
+					update_site_option( 'backwpup_cfg_hash', self::$plugin_data[ 'hash' ] );
 				}
 				if ( defined( 'WP_TEMP_DIR' ) && is_dir( WP_TEMP_DIR ) ) {
-					self::$plugin_data[ 'temp' ] = trailingslashit( untrailingslashit( str_replace( '\\', '/', WP_TEMP_DIR ) ) . '/backwpup-' . self::$plugin_data[ 'hash' ] );
+					self::$plugin_data['temp'] = str_replace( '\\', '/', get_temp_dir() ) . 'backwpup-' . self::$plugin_data['hash'] . '/';
 				} else {
-					$upload_dir = wp_upload_dir();
-					self::$plugin_data[ 'temp' ] = trailingslashit( untrailingslashit( str_replace( '\\', '/', $upload_dir[ 'basedir' ] ) ) . '/backwpup-' . self::$plugin_data[ 'hash' ] . '-temp' );
+					$upload_dir                = wp_upload_dir();
+					self::$plugin_data['temp'] = str_replace( '\\', '/', $upload_dir['basedir'] ) . '/backwpup-' . self::$plugin_data['hash'] . '-temp/';
 				}
 				self::$plugin_data[ 'running_file' ] = self::$plugin_data[ 'temp' ] . 'backwpup-working.php';
 				self::$plugin_data[ 'url' ] = plugins_url( '', __FILE__ );
-				self::$plugin_data[ 'cacert' ] = FALSE;
-				if ( file_exists( self::$plugin_data[ 'plugindir' ] . '/vendor/Guzzle/Http/Resources/cacert.pem' ) )
-					self::$plugin_data[ 'cacert' ] = self::$plugin_data[ 'plugindir' ] . '/vendor/Guzzle/Http/Resources/cacert.pem';
-				self::$plugin_data[ 'cacert' ] = apply_filters( 'backwpup_cacert_bundle', self::$plugin_data[ 'cacert' ] );
+				self::$plugin_data[ 'cacert' ] = apply_filters( 'backwpup_cacert_bundle', ABSPATH . WPINC . '/certificates/ca-bundle.crt' );
 				//get unmodified WP Versions
 				include ABSPATH . WPINC . '/version.php';
 				/** @var $wp_version string */
