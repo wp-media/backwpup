@@ -17,9 +17,9 @@ final class BackWPup_Option {
 		//job default
 		add_site_option( 'backwpup_jobs', array() );
 		//general
-		add_site_option( 'backwpup_cfg_showadminbar', 1 );
-		add_site_option( 'backwpup_cfg_showfoldersize', 0 );
-		add_site_option( 'backwpup_cfg_protectfolders', 1 );
+		add_site_option( 'backwpup_cfg_showadminbar', false );
+		add_site_option( 'backwpup_cfg_showfoldersize', false );
+		add_site_option( 'backwpup_cfg_protectfolders', true );
 		//job
 		add_site_option( 'backwpup_cfg_jobmaxexecutiontime', 30 );
 		add_site_option( 'backwpup_cfg_jobstepretry', 3 );
@@ -41,6 +41,31 @@ final class BackWPup_Option {
 
 	}
 
+	/**
+	 *
+	 * Update a BackWPup option
+	 *
+	 * @param int $jobid the job id
+	 * @param string $option Option key
+	 * @param mixed $value the value to store
+	 *
+	 * @return bool if option save or not
+	 */
+	public static function update( $jobid, $option, $value ) {
+
+		$jobid  = (int) $jobid;
+		$option = sanitize_key( trim( $option ) );
+
+		if ( empty( $jobid ) || empty( $option ) ) {
+			return false;
+		}
+
+		//Update option
+		$jobs_options                      = self::jobs_options( false );
+		$jobs_options[ $jobid ][ $option ] = $value;
+
+		return self::update_jobs_options( $jobs_options );
+	}
 
 	/**
 	 *
@@ -85,6 +110,35 @@ final class BackWPup_Option {
 		return update_site_option( 'backwpup_jobs', $options );
 	}
 
+	/**
+	 *
+	 * Get a BackWPup Option
+	 *
+	 * @param int $jobid Option the job id
+	 * @param string $option Option key
+	 * @param mixed $default returned if no value, if null the the default BackWPup option will get
+	 * @param bool $use_cache USe the cache
+	 *
+	 * @return bool|mixed        false if nothing can get else the option value
+	 */
+	public static function get( $jobid, $option, $default = null, $use_cache = true ) {
+
+		$jobid  = (int) $jobid;
+		$option = sanitize_key( trim( $option ) );
+
+		if ( empty( $jobid ) || empty( $option ) ) {
+			return false;
+		}
+
+		$jobs_options = self::jobs_options( $use_cache );
+		if ( ! isset( $jobs_options[ $jobid ][ $option ] ) && isset( $default ) ) {
+			return $default;
+		} elseif ( ! isset( $jobs_options[ $jobid ][ $option ] ) ) {
+			return self::defaults_job( $option );
+		} else {
+			return $jobs_options[ $jobid ][ $option ];
+		}
+	}
 
 	/**
 	 *
@@ -136,63 +190,6 @@ final class BackWPup_Option {
 			return $default[ $key ];
 		} else {
 			return false;
-		}
-	}
-
-	/**
-	 *
-	 * Update a BackWPup option
-	 *
-	 * @param int $jobid the job id
-	 * @param string $option Option key
-	 * @param mixed $value the value to store
-	 *
-	 * @return bool if option save or not
-	 */
-	public static function update( $jobid, $option, $value ) {
-
-		$jobid  = (int) $jobid;
-		$option = sanitize_key( trim( $option ) );
-
-		if ( empty( $jobid ) || empty( $option ) ) {
-			return false;
-		}
-
-		//Update option
-		$jobs_options                      = self::jobs_options( false );
-		$jobs_options[ $jobid ][ $option ] = $value;
-
-		return self::update_jobs_options( $jobs_options );
-	}
-
-
-	/**
-	 *
-	 * Get a BackWPup Option
-	 *
-	 * @param int $jobid Option the job id
-	 * @param string $option Option key
-	 * @param mixed $default returned if no value, if null the the default BackWPup option will get
-	 * @param bool $use_cache USe the cache
-	 *
-	 * @return bool|mixed        false if nothing can get else the option value
-	 */
-	public static function get( $jobid, $option, $default = null, $use_cache = true ) {
-
-		$jobid  = (int) $jobid;
-		$option = sanitize_key( trim( $option ) );
-
-		if ( empty( $jobid ) || empty( $option ) ) {
-			return false;
-		}
-
-		$jobs_options = self::jobs_options( $use_cache );
-		if ( ! isset( $jobs_options[ $jobid ][ $option ] ) && isset( $default ) ) {
-			return $default;
-		} elseif ( ! isset( $jobs_options[ $jobid ][ $option ] ) ) {
-			return self::defaults_job( $option );
-		} else {
-			return $jobs_options[ $jobid ][ $option ];
 		}
 	}
 

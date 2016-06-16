@@ -124,7 +124,7 @@ class BackWPup_Page_BackWPup {
 				<div class="inside">
 					<?php
 
-						$rss = fetch_feed( _x( 'http://marketpress.com/news/tag/backwpup/feed/', 'BackWPup News RSS Feed URL', 'backwpup' ) );
+						$rss = fetch_feed( _x( 'https://backwpup.com/feed/', 'BackWPup News RSS Feed URL', 'backwpup' ) );
 
 						if ( is_wp_error( $rss ) ) {
 							echo '<p>' . sprintf( __('<strong>RSS Error</strong>: %s', 'backwpup' ), $rss->get_error_message() ) . '</p>';
@@ -269,6 +269,71 @@ class BackWPup_Page_BackWPup {
 	}
 
 	/**
+	 * Displaying next jobs
+	 */
+	private static function mb_next_jobs() {
+
+		if ( ! current_user_can( 'backwpup_jobs' ) )
+			return;
+		?>
+		<table class="wp-list-table widefat" cellspacing="0">
+			<caption><?php _e( 'Next scheduled jobs', 'backwpup' ); ?></caption>
+			<thead>
+			<tr>
+				<th style="width: 30%"><?php  esc_html_e( 'Time', 'backwpup' ); ?></th>
+				<th style="width: 70%"><?php  esc_html_e( 'Job', 'backwpup' ); ?></th>
+			</tr>
+			</thead>
+			<?php
+			//get next jobs
+			$mainsactive = BackWPup_Option::get_job_ids( 'activetype', 'wpcron' );
+			sort( $mainsactive );
+			$alternate = TRUE;
+			// add working job if it not in active jobs
+			$job_object = BackWPup_Job::get_working_data();
+			if ( ! empty( $job_object ) && ! empty( $job_object->job[ 'jobid' ] ) && ! in_array($job_object->job[ 'jobid' ], $mainsactive, true ) )
+				$mainsactive[ ] = $job_object->job[ 'jobid' ];
+			foreach ( $mainsactive as $jobid ) {
+				$name = BackWPup_Option::get( $jobid, 'name' );
+				if ( ! empty( $job_object ) && $job_object->job[ 'jobid' ] == $jobid ) {
+					$runtime  = current_time( 'timestamp' ) -  $job_object->job[ 'lastrun' ];
+					if ( ! $alternate ) {
+						echo '<tr>';
+						$alternate = TRUE;
+					} else {
+						echo '<tr class="alternate">';
+						$alternate = FALSE;
+					}
+					echo '<td>' . sprintf( '<span style="color:#e66f00;">' . esc_html__( 'working since %d seconds', 'backwpup' ) . '</span>', $runtime ) . '</td>';
+					echo '<td><span style="font-weight:bold;">' . esc_html ( $job_object->job[ 'name' ] ) . '</span><br />';
+					echo "<a style=\"color:red;\" href=\"" . wp_nonce_url( network_admin_url( 'admin.php?page=backwpupjobs&action=abort'), 'abort-job' ) . "\">" . esc_html__( 'Abort', 'backwpup' ) . "</a>";
+					echo "</td></tr>";
+				}
+				else {
+					if ( ! $alternate ) {
+						echo '<tr>';
+						$alternate = TRUE;
+					} else {
+						echo '<tr class="alternate">';
+						$alternate = FALSE;
+					}
+					if ( $nextrun = wp_next_scheduled( 'backwpup_cron', array( 'id' => $jobid ) ) + ( get_option( 'gmt_offset' ) * 3600 ) )
+						echo '<td>' . sprintf( __( '%1$s at %2$s', 'backwpup' ), date_i18n( get_option( 'date_format' ), $nextrun, TRUE ), date_i18n( get_option( 'time_format' ), $nextrun, TRUE ) ) . '</td>';
+					else
+						echo '<td><em>' . esc_html__( 'Not scheduled!', 'backwpup' ) . '</em></td>';
+
+					echo '<td><a href="' . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupeditjob&jobid=' . $jobid, 'edit-job' ) . '" title="' . esc_attr( __( 'Edit Job', 'backwpup' ) ) . '">' . esc_html($name) . '</a></td></tr>';
+				}
+			}
+			if ( empty( $mainsactive ) and ! empty( $job_object ) ) {
+				echo '<tr><td colspan="2"><i>' . esc_html__( 'none', 'backwpup' ) . '</i></td></tr>';
+			}
+			?>
+		</table>
+		<?php
+	}
+
+	/**
 	 * Displaying last logs
 	 */
 	private static function mb_last_logs() {
@@ -329,71 +394,6 @@ class BackWPup_Page_BackWPup {
 			}
 			else {
 				echo '<tr><td colspan="3">' . __( 'none', 'backwpup' ) . '</td></tr>';
-			}
-			?>
-		</table>
-		<?php
-	}
-
-	/**
-	 * Displaying next jobs
-	 */
-	private static function mb_next_jobs() {
-
-		if ( ! current_user_can( 'backwpup_jobs' ) )
-			return;
-		?>
-		<table class="wp-list-table widefat" cellspacing="0">
-			<caption><?php _e( 'Next scheduled jobs', 'backwpup' ); ?></caption>
-			<thead>
-			<tr>
-				<th style="width: 30%"><?php  esc_html_e( 'Time', 'backwpup' ); ?></th>
-				<th style="width: 70%"><?php  esc_html_e( 'Job', 'backwpup' ); ?></th>
-			</tr>
-			</thead>
-			<?php
-			//get next jobs
-			$mainsactive = BackWPup_Option::get_job_ids( 'activetype', 'wpcron' );
-			sort( $mainsactive );
-			$alternate = TRUE;
-			// add working job if it not in active jobs
-			$job_object = BackWPup_Job::get_working_data();
-			if ( ! empty( $job_object ) && ! empty( $job_object->job[ 'jobid' ] ) && ! in_array($job_object->job[ 'jobid' ], $mainsactive, true ) )
-				$mainsactive[ ] = $job_object->job[ 'jobid' ];
-			foreach ( $mainsactive as $jobid ) {
-				$name = BackWPup_Option::get( $jobid, 'name' );
-				if ( ! empty( $job_object ) && $job_object->job[ 'jobid' ] == $jobid ) {
-					$runtime  = current_time( 'timestamp' ) -  $job_object->job[ 'lastrun' ];
-					if ( ! $alternate ) {
-						echo '<tr>';
-						$alternate = TRUE;
-					} else {
-						echo '<tr class="alternate">';
-						$alternate = FALSE;
-					}
-					echo '<td>' . sprintf( '<span style="color:#e66f00;">' . esc_html__( 'working since %d seconds', 'backwpup' ) . '</span>', $runtime ) . '</td>';
-					echo '<td><span style="font-weight:bold;">' . esc_html ( $job_object->job[ 'name' ] ) . '</span><br />';
-					echo "<a style=\"color:red;\" href=\"" . wp_nonce_url( network_admin_url( 'admin.php?page=backwpupjobs&action=abort'), 'abort-job' ) . "\">" . esc_html__( 'Abort', 'backwpup' ) . "</a>";
-					echo "</td></tr>";
-				}
-				else {
-					if ( ! $alternate ) {
-						echo '<tr>';
-						$alternate = TRUE;
-					} else {
-						echo '<tr class="alternate">';
-						$alternate = FALSE;
-					}
-					if ( $nextrun = wp_next_scheduled( 'backwpup_cron', array( 'id' => $jobid ) ) + ( get_option( 'gmt_offset' ) * 3600 ) )
-						echo '<td>' . sprintf( __( '%1$s at %2$s', 'backwpup' ), date_i18n( get_option( 'date_format' ), $nextrun, TRUE ), date_i18n( get_option( 'time_format' ), $nextrun, TRUE ) ) . '</td>';
-					else
-						echo '<td><em>' . esc_html__( 'Not scheduled!', 'backwpup' ) . '</em></td>';
-
-					echo '<td><a href="' . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupeditjob&jobid=' . $jobid, 'edit-job' ) . '" title="' . esc_attr( __( 'Edit Job', 'backwpup' ) ) . '">' . esc_html($name) . '</a></td></tr>';
-				}
-			}
-			if ( empty( $mainsactive ) and ! empty( $job_object ) ) {
-				echo '<tr><td colspan="2"><i>' . esc_html__( 'none', 'backwpup' ) . '</i></td></tr>';
 			}
 			?>
 		</table>

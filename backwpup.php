@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.3.1
+ * Version: 3.3.2
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -33,7 +33,7 @@
 
 if ( ! class_exists( 'BackWPup' ) ) {
 
-	// Don't activate on anything less than PHP 5.2.7 or WordPress 3.1
+	// Don't activate on anything less than PHP 5.2.7 or WordPress 3.8
 	if ( version_compare( PHP_VERSION, '5.2.7', '<' ) || version_compare( get_bloginfo( 'version' ), '3.8', '<' ) || ! function_exists( 'spl_autoload_register' ) ) {
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		deactivate_plugins( __FILE__ );
@@ -70,12 +70,8 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			//auto loader
 			spl_autoload_register( array( $this, 'autoloader' ) );
 			//start upgrade if needed
-			if ( get_site_option( 'backwpup_version' ) != self::get_plugin_data( 'Version' ) ) {
+			if ( get_site_option( 'backwpup_version' ) !== self::get_plugin_data( 'Version' ) || ! wp_next_scheduled( 'backwpup_check_cleanup' ) ) {
 				BackWPup_Install::activate();
-			}
-			//load pro features
-			if ( class_exists( 'BackWPup_Pro' ) ) {
-				BackWPup_Pro::get_instance();
 			}
 			//WP-Cron
 			if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
@@ -95,7 +91,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			//deactivation hook
 			register_deactivation_hook( __FILE__, array( 'BackWPup_Install', 'deactivate' ) );
 			//Admin bar
-			if ( get_site_option( 'backwpup_cfg_showadminbar', FALSE ) ) {
+			if ( get_site_option( 'backwpup_cfg_showadminbar' ) ) {
 				add_action( 'init', array( 'BackWPup_Adminbar', 'get_instance' ) );
 			}
 			//only in backend

@@ -309,9 +309,7 @@ final class BackWPup_Job {
 		$head .= '</head>' . PHP_EOL;
 		$head .= '<body style="margin:0;padding:3px;font-family:monospace;font-size:12px;line-height:15px;background-color:black;color:#c0c0c0;white-space:nowrap;">' . PHP_EOL;
 		$info .= sprintf( _x( '[INFO] %1$s %2$s; A project of Inpsyde GmbH', 'Plugin name; Plugin Version; plugin url', 'backwpup' ), BackWPup::get_plugin_data( 'name' ), BackWPup::get_plugin_data( 'Version' ), __( 'http://backwpup.com', 'backwpup' ) ) . '<br />' . PHP_EOL;
-		if ( $this->is_debug() ) {
-			$info .= sprintf( _x( '[INFO] WordPress %1$s on %2$s', 'WordPress Version; Blog url', 'backwpup' ), BackWPup::get_plugin_data( 'wp_version' ), esc_attr( site_url( '/' ) ) ) . '<br />' . PHP_EOL;
-		}
+		$info .= sprintf( _x( '[INFO] WordPress %1$s on %2$s', 'WordPress Version; Blog url', 'backwpup' ), BackWPup::get_plugin_data( 'wp_version' ), esc_attr( site_url( '/' ) ) ) . '<br />' . PHP_EOL;
 		$level      = __( 'Normal', 'backwpup' );
 		$translated = '';
 		if ( $this->is_debug() ) {
@@ -587,6 +585,9 @@ final class BackWPup_Job {
 		$log_level = get_site_option( 'backwpup_cfg_loglevel', 'normal_translated' );
 		if ( strstr( $log_level, 'translated' ) ) {
 			BackWPup::load_text_domain();
+		} else {
+			add_filter( 'override_load_textdomain', '__return_true' );
+			$GLOBALS['l10n'] = array();
 		}
 
 		if ( $starttype !== 'restart' ) {
@@ -657,6 +658,9 @@ final class BackWPup_Job {
 		$log_level = get_site_option( 'backwpup_cfg_loglevel', 'normal_translated' );
 		if ( strstr( $log_level, 'translated' ) ) {
 			BackWPup::load_text_domain();
+		} else {
+			add_filter( 'override_load_textdomain', '__return_true' );
+			$GLOBALS['l10n'] = array();
 		}
 
 		$jobid = absint( $jobid );
@@ -758,8 +762,6 @@ final class BackWPup_Job {
 		@ini_set( 'report_memleaks', '1' );
 		@ini_set( 'zlib.output_compression', '0' );
 		@ini_set( 'implicit_flush', '0' );
-		//increase MySQL timeout
-		@ini_set( 'mysql.connect_timeout', '360' );
 		//set temp folder
 		$can_set_temp_env   = true;
 		$protected_env_vars = explode( ',', ini_get( 'safe_mode_protected_env_vars' ) ); //removed in php 5.4.0
@@ -785,11 +787,6 @@ final class BackWPup_Job {
 			}
 		}
 		set_exception_handler( array( $this, 'exception_handler' ) );
-		//not loading Textdomains and unload loaded
-		if ( ! strstr( $this->log_level, 'translated' ) ) {
-			add_filter( 'override_load_textdomain', create_function( '', 'return TRUE;' ) );
-			$GLOBALS['l10n'] = array();
-		}
 		// execute function on job shutdown  register_shutdown_function( array( $this, 'shutdown' ) );
 		add_action( 'shutdown', array( $this, 'shutdown' ) );
 
@@ -825,7 +822,7 @@ final class BackWPup_Job {
 				//'SIGWINCH', //Ign
 				//'SIGIO', //Term
 				'SIGPWR', //Term
-				'SIGSYS', //Core
+				'SIGSYS' //Core
 			);
 			$signals = apply_filters( 'backwpup_job_signals_to_handel', $signals );
 			declare( ticks = 1 );
@@ -913,7 +910,7 @@ final class BackWPup_Job {
 		}
 
 		//no restart if in end step
-		if ( $this->step_working == 'END' || ( count( $this->steps_done ) + 1 ) >= count( $this->steps_todo ) ) {
+		if ( $this->step_working === 'END' || ( count( $this->steps_done ) + 1 ) >= count( $this->steps_todo ) ) {
 			return;
 		}
 
@@ -970,7 +967,7 @@ final class BackWPup_Job {
 	 */
 	public function do_restart_time( $do_restart_now = false ) {
 
-		//do restart after signel is send
+		//do restart after signal is send
 		if ( $this->signal !== 0 ) {
 			$this->steps_data[ $this->step_working ]['SAVE_STEP_TRY'] = $this->steps_data[ $this->step_working ]['STEP_TRY'];
 			$this->steps_data[ $this->step_working ]['STEP_TRY'] -= 1;
@@ -1111,84 +1108,78 @@ final class BackWPup_Job {
 		$signals = array(
 			'SIGHUP'    => array(
 				'description' => _x( 'Hangup detected on controlling terminal or death of controlling process', 'SIGHUP: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details', 'backwpup' ),
-				'error'       => true
+				'error'       => E_USER_ERROR
 			),
 			'SIGINT'    => array(
 				'description' => _x( 'Interrupt from keyboard', 'SIGINT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details', 'backwpup' ),
-				'error'       => true
+				'error'       => E_USER_ERROR
 			),
 			'SIGQUIT'   => array(
 				'description' => _x( 'Quit from keyboard', 'SIGQUIT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details', 'backwpup' ),
-				'error'       => true
+				'error'       => E_USER_ERROR
 			),
 			'SIGILL'    => array(
 				'description' => _x( 'Illegal Instruction', 'SIGILL: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details', 'backwpup' ),
-				'error'       => true
+				'error'       => E_USER_ERROR
 			),
 			'SIGABRT'   => array(
 				'description' => _x( 'Abort signal from abort(3)', 'SIGABRT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details', 'backwpup' ),
-				'error'       => false
+				'error'       => E_USER_NOTICE
 			),
 			'SIGBUS'    => array(
 				'description' => _x( 'Bus error (bad memory access)', 'SIGBUS: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details', 'backwpup' ),
-				'error'       => true
+				'error'       => E_USER_ERROR
 			),
 			'SIGFPE'    => array(
 				'description' => _x( 'Floating point exception', 'SIGFPE: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details', 'backwpup' ),
-				'error'       => true
+				'error'       => E_USER_ERROR
 			),
 			'SIGSEGV'   => array(
 				'description' => _x( 'Invalid memory reference', 'SIGSEGV: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details', 'backwpup' ),
-				'error'       => true
+				'error'       => E_USER_ERROR
 			),
 			'SIGTERM'   => array(
 				'description' => _x( 'Termination signal', 'SIGTERM: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details', 'backwpup' ),
-				'error'       => false
+				'error'       => E_USER_WARNING
 			),
 			'SIGSTKFLT' => array(
 				'description' => _x( 'Stack fault on coprocessor', 'SIGSTKFLT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details', 'backwpup' ),
-				'error'       => true
+				'error'       => E_USER_ERROR
 			),
 			'SIGUSR1'   => array(
 				'description' => _x( 'User-defined signal 1', 'SIGUSR1: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details', 'backwpup' ),
-				'error'       => false
+				'error'       => E_USER_NOTICE
 			),
 			'SIGUSR2'   => array(
 				'description' => _x( 'User-defined signal 2', 'SIGUSR2: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details', 'backwpup' ),
-				'error'       => false
+				'error'       => E_USER_NOTICE
 			),
 			'SIGURG'    => array(
 				'description' => _x( 'Urgent condition on socket', 'SIGURG: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details', 'backwpup' ),
-				'error'       => false
+				'error'       => E_USER_NOTICE
 			),
 			'SIGXCPU'   => array(
 				'description' => _x( 'CPU time limit exceeded', 'SIGXCPU: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details', 'backwpup' ),
-				'error'       => true
+				'error'       => E_USER_ERROR
 			),
 			'SIGXFSZ'   => array(
 				'description' => _x( 'File size limit exceeded', 'SIGXFSZ: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details', 'backwpup' ),
-				'error'       => true
+				'error'       => E_USER_ERROR
 			),
 			'SIGPWR'    => array(
 				'description' => _x( 'Power failure', 'SIGPWR: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details', 'backwpup' ),
-				'error'       => false
+				'error'       => E_USER_ERROR
 			),
 			'SIGSYS'    => array(
 				'description' => _x( 'Bad argument to routine', 'SIGSYS: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details', 'backwpup' ),
-				'error'       => true
+				'error'       => E_USER_ERROR
 			),
 		);
 
 		foreach ( $signals as $signal => $config ) {
 			if ( defined( $signal ) && $signal_send === constant( $signal ) ) {
-				if ( $config['error'] || php_sapi_name() == 'cli' ) {
-					$this->log( sprintf( __( 'Signal "%1$s" (%2$s) is sent to script!', 'backwpup' ), $signal, $config['description'] ), E_USER_ERROR );
-					$this->signal = $signal_send;
-					$this->do_restart( true );
-				} else {
-					$this->log( sprintf( __( 'Signal "%1$s" (%2$s) is sent to script!', 'backwpup' ), $signal, $config['description'] ) );
-					$this->signal = $signal_send;
-				}
+				$this->log( sprintf( __( 'Signal "%1$s" (%2$s) is sent to script!', 'backwpup' ), $signal, $config['description'] ), $config['error'] );
+				$this->signal = $signal_send;
 				break;
 			}
 		}
@@ -1377,11 +1368,11 @@ final class BackWPup_Job {
 
 		//set last Message
 		if ( $error ) {
-			$output_message = '<span style="background-color:red;color:#c0c0c0;">' . esc_html( $message ) . '</span>';
+			$output_message = '<span style="background-color:#ff6766;color:black;padding:0 2px;">' . esc_html( $message ) . '</span>';
 			$this->lasterrormsg = $output_message;
 		}
 		elseif ( $warning ) {
-			$output_message = '<span style="background-color:#ffc000;color:#c0c0c0;">' . esc_html( $message ) . '</span>';
+			$output_message = '<span style="background-color:#ffc766;color:black;padding:0 2px;">' . esc_html( $message ) . '</span>';
 			$this->lasterrormsg = $output_message;
 		}
 		else {
@@ -1459,12 +1450,6 @@ final class BackWPup_Job {
 		//set execution time again for 5 min
 		@set_time_limit( 300 );
 
-		//check MySQL connection to WordPress Database and reconnect if needed
-		$res = $wpdb->query( 'SELECT ' . time() );
-		if ( $res === false ) {
-			$wpdb->db_connect();
-		}
-
 		//calc sub step percent
 		if ( $this->substeps_todo > 0 && $this->substeps_done > 0 ) {
 			$this->substep_percent = round( $this->substeps_done / $this->substeps_todo * 100 );
@@ -1480,6 +1465,10 @@ final class BackWPup_Job {
 		} else {
 			$this->timestamp_last_update = microtime( true ); //last update of working file
 			$this->write_running_file();
+		}
+
+		if ( $this->signal !== 0 ) {
+			$this->do_restart();
 		}
 	}
 

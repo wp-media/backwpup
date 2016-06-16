@@ -61,7 +61,7 @@ class BackWPup_Page_Settings {
 			return;
 		}
 
-		update_site_option( 'backwpup_cfg_showadminbar', ! empty( $_POST[ 'showadminbar' ] ) );
+		update_site_option( 'backwpup_cfg_showadminbar', ! empty( $_POST[ 'showadminbarmenu' ] ) );
 		update_site_option( 'backwpup_cfg_showfoldersize', ! empty( $_POST[ 'showfoldersize' ] ) );
 		if ( empty( $_POST[ 'jobstepretry' ] ) || 100 < $_POST[ 'jobstepretry' ] || 1 > $_POST[ 'jobstepretry' ] ) {
 			$_POST[ 'jobstepretry' ] = 3;
@@ -138,8 +138,8 @@ class BackWPup_Page_Settings {
                     <td>
                         <fieldset>
                             <legend class="screen-reader-text"><span><?php _e( 'Admin Bar', 'backwpup' ); ?></span></legend>
-                            <label for="showadminbar">
-                                <input name="showadminbar" type="checkbox" id="showadminbar" value="1" <?php checked( get_site_option( 'backwpup_cfg_showadminbar' ), TRUE ); ?> />
+                            <label for="showadminbarmenu">
+                                <input name="showadminbarmenu" type="checkbox" id="showadminbarmenu" value="1" <?php checked( get_site_option( 'backwpup_cfg_showadminbar' ), TRUE ); ?> />
 								<?php _e( 'Show BackWPup links in admin bar.', 'backwpup' ); ?>
                             </label>
                         </fieldset>

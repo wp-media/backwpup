@@ -49,7 +49,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			case 'google-storage-asia':
 				return 'https://storage.googleapis.com';
 			case 'dreamhost':
-				return 'https://objects.dreamhost.com';
+				return 'https://objects-us-west-1.dream.io';
 			case 'greenqloud':
 				return 'http://s.greenqloud.com';
 			default:

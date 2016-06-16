@@ -38,10 +38,6 @@ class BackWPup_Adminbar {
 		return self::$instance;
 	}
 
-
-	private function __clone() {}
-
-
 	/**
 	 * @global $wp_admin_bar WP_Admin_Bar
 	 */
@@ -49,7 +45,7 @@ class BackWPup_Adminbar {
 		global $wp_admin_bar;
 		/* @var WP_Admin_Bar $wp_admin_bar */
 
-		$menu_title = '<span class="ab-icon"></span><span class="ab-label">' . BackWPup::get_plugin_data( 'name' ) . '</span>';
+		$menu_title = '<span class="ab-icon"></span>';
 		$menu_herf  = network_admin_url( 'admin.php?page=backwpup' );
 		if ( file_exists( BackWPup::get_plugin_data( 'running_file' ) ) && current_user_can( 'backwpup_jobs_start' ) ) {
 			$menu_title = '<span class="ab-icon"></span><span class="ab-label">' . esc_html( BackWPup::get_plugin_data( 'name' ) )  . ' <span id="backwpup-adminbar-running">' . esc_html__( 'running', 'backwpup' ) . '</span></span>';
@@ -135,4 +131,6 @@ class BackWPup_Adminbar {
 			}
 		}
 	}
+
+	private function __clone() {}
 }

@@ -3,7 +3,7 @@ Contributors: inpsyde, danielhuesken, Bueltge, nullbyte
 Tags: Amazon, Amazon S3, back up, backup, chinese, cloud, cloud files, database, db backup, dropbox, dump, file, french, ftp, ftps, german, migrate, multisite, russian, schedule, sftp, storage, S3, time, upload, xml
 Requires at least: 3.8
 Tested up to: 4.5.1
-Stable tag: 3.3.1
+Stable tag: 3.3.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -12,6 +12,7 @@ Schedule complete automatic backups of your WordPress installation. Decide which
 == Description ==
 
 The **backup plugin** **[BackWPup](http://backwpup.com/)** can be used to save your complete installation including /wp-content/ and push them to an external Backup Service, like **Dropbox**, **S3**, **FTP** and many more, see list below. With a single backup .zip file you are able to easily restore an installation. Please understand: this free version will not be supported as good as the [BackWPup Pro version](http://backwpup.com). With our premium version you get first class support and more features.
+
 
 * Database Backup  *(needs mysqli)*
 * WordPress XML Export
@@ -150,23 +151,22 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 5. Dashboard
 
 == Upgrade Notice ==
-= After an upgrade from version 2 =
-
-Please check all settings after the update:
-
-* Dropbox authentication must be done again
-* SugarSync authentication must be done again
-* S3 Settings
-* Google Storage is now in S3
-* Check all your passwords
 
 == Installation ==
 
-1. Download the BackWPup plugin.
-2. Decompress the ZIP file and upload the contents of the archive into `/wp-content/plugins/`.
-3. Activate the plugin through the 'Plugins' menu in WordPress
+[You can find a detailed tutorial in the BackWPup documentation.](http://docs.backwpup.com/article/118-install-backwpup)
 
 == Changelog ==
+= Version 3.3.2 =
+* Notice: For MSAzure requires PHP 5.5 in next BackWPup Version
+* Changed: Colors of Warning and Error messages
+* Changed: Display Blog url in log again
+* Changed: Dreamhost url in S3 destination
+* Changed: Adminbar menu disabled by default
+* Removed: Adminbar plugin name for smaller size
+* Improved: Signal handling more again
+* Fixed: English log with WP 4.6
+
 = Version 3.3.1 =
 * Fixed: Security exploit in getting working data
 * Fixed: Bug in log mail sending
@@ -176,7 +176,7 @@ Please check all settings after the update:
 * Changed: URLs to MarketPress and Documentation
 * Changed: Save file list cache for one year
 * Changed: Use WordPress ca-bundle.crt
-* Removed: Server callback check on job start no it is only in Settings > Tab: Information
+* Removed: Server callback check on job start now it is only in Settings > Tab: Information
 
 = Version 3.3 =
 * Improved: Texts removed or rewritten

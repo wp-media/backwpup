@@ -742,6 +742,10 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 
 		check_ajax_referer( 'backwpupworking_ajax_nonce' );
 
+		if ( ! current_user_can( 'backwpup_jobs_start' ) ) {
+			die( '-1' );
+		}
+
 		$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
 		$log_folder = BackWPup_File::get_absolute_path( $log_folder );
 		$logfile = isset( $_GET[ 'logfile' ] ) ? $log_folder . basename( trim( $_GET[ 'logfile' ] ) ) : NULL;
