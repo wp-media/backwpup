@@ -49,26 +49,6 @@ final class BackWPup_Admin {
 		add_action( 'profile_update',  array( $this, 'save_profile_update' ) );
 
 		new BackWPup_EasyCron();
-
-		if ( ! class_exists( 'backwpup_pro' ) ) {
-			$lang = substr( get_locale(), 0 ,2 );
-			if ( $lang !== 'de' ) {
-				$lang = 'en';
-			}
-			$message_box = new BackWPup_Message_Box( 'campaign_2016_06' );
-			$message_box->set_campaign_to_date( '2016-06-20' );
-			$message_box->set_box_html(
-				'<a href="' . __( 'http://backwpup.com', 'backwpup' ) . '" style="display:block;height:60px;"><img src="' . BackWPup::get_plugin_data( 'url' ) . '/assets/images/banner-' . $lang . '.jpg" /></a>'
-			);
-	        $message_box->init_hooks();
-		}
-
-		$message_box = new BackWPup_Message_Box( 'restore_beta_survey' );
-		$message_box->set_campaign_to_date( '2016-06-30' );
-		$message_box->set_box_html(
-			'<a href="' . __( 'https://www.surveymonkey.com/r/BQJZSG2', 'backwpup' ) . '" style="padding:10px;display: block;"><strong>' . __( 'BackWPup Restore function is coming! Participate in our survey and with a little bit of luck you win a BackWPup Pro licence!', 'backwpup' ) . '</strong></a>'
-		);
-		$message_box->init_hooks();
 	}
 
 	/**

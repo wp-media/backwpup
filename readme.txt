@@ -2,8 +2,8 @@
 Contributors: inpsyde, danielhuesken, Bueltge, nullbyte
 Tags: Amazon, Amazon S3, back up, backup, chinese, cloud, cloud files, database, db backup, dropbox, dump, file, french, ftp, ftps, german, migrate, multisite, russian, schedule, sftp, storage, S3, time, upload, xml
 Requires at least: 3.8
-Tested up to: 4.5.1
-Stable tag: 3.3.2
+Tested up to: 4.5.3
+Stable tag: 3.3.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -157,6 +157,9 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 [You can find a detailed tutorial in the BackWPup documentation.](http://docs.backwpup.com/article/118-install-backwpup)
 
 == Changelog ==
+= Version 3.3.3 =
+* Removed admin notices
+
 = Version 3.3.2 =
 * Notice: For MSAzure requires PHP 5.5 in next BackWPup Version
 * Changed: Colors of Warning and Error messages
