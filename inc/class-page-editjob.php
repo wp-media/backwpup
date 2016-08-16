@@ -304,92 +304,6 @@ class BackWPup_Page_Editjob {
 	}
 
 	/**
-	 * @static
-	 *
-	 * @param string $args
-	 *
-	 * @return mixed
-	 */
-	public static function ajax_cron_text( $args = '' ) {
-
-		if ( is_array( $args ) ) {
-			extract( $args );
-			$ajax = FALSE;
-		} else {
-			if ( ! current_user_can( 'backwpup_jobs_edit' ) )
-				wp_die( -1 );
-			check_ajax_referer( 'backwpup_ajax_nonce' );
-			if ( empty( $_POST[ 'cronminutes' ] ) || $_POST[ 'cronminutes' ][ 0 ] == '*' ) {
-				if ( ! empty( $_POST[ 'cronminutes' ][ 1 ] ) )
-					$_POST[ 'cronminutes' ] = array( '*/' . $_POST[ 'cronminutes' ][ 1 ] );
-				else
-					$_POST[ 'cronminutes' ] = array( '*' );
-			}
-			if ( empty( $_POST[ 'cronhours' ] ) || $_POST[ 'cronhours' ][ 0 ] == '*' ) {
-				if ( ! empty( $_POST[ 'cronhours' ][ 1 ] ) )
-					$_POST[ 'cronhours' ] = array( '*/' . $_POST[ 'cronhours' ][ 1 ] );
-				else
-					$_POST[ 'cronhours' ] = array( '*' );
-			}
-			if ( empty( $_POST[ 'cronmday' ] ) || $_POST[ 'cronmday' ][ 0 ] == '*' ) {
-				if ( ! empty( $_POST[ 'cronmday' ][ 1 ] ) )
-					$_POST[ 'cronmday' ] = array( '*/' . $_POST[ 'cronmday' ][ 1 ] );
-				else
-					$_POST[ 'cronmday' ] = array( '*' );
-			}
-			if ( empty( $_POST[ 'cronmon' ] ) || $_POST[ 'cronmon' ][ 0 ] == '*' ) {
-				if ( ! empty( $_POST[ 'cronmon' ][ 1 ] ) )
-					$_POST[ 'cronmon' ] = array( '*/' . $_POST[ 'cronmon' ][ 1 ] );
-				else
-					$_POST[ 'cronmon' ] = array( '*' );
-			}
-			if ( empty( $_POST[ 'cronwday' ] ) || $_POST[ 'cronwday' ][ 0 ] == '*' ) {
-				if ( ! empty( $_POST[ 'cronwday' ][ 1 ] ) )
-					$_POST[ 'cronwday' ] = array( '*/' . $_POST[ 'cronwday' ][ 1 ] );
-				else
-					$_POST[ 'cronwday' ] = array( '*' );
-			}
-			$crontype  = $_POST[ 'crontype' ];
-			$cronstamp = implode( ",", $_POST[ 'cronminutes' ] ) . ' ' . implode( ",", $_POST[ 'cronhours' ] ) . ' ' . implode( ",", $_POST[ 'cronmday' ] ) . ' ' . implode( ",", $_POST[ 'cronmon' ] ) . ' ' . implode( ",", $_POST[ 'cronwday' ] );
-			$ajax      = TRUE;
-		}
-		echo '<p class="wpcron" id="schedulecron">';
-
-		if ( $crontype == 'advanced' ) {
-			echo str_replace( '\"','"', __( 'Working as <a href="http://wikipedia.org/wiki/Cron">Cron</a> schedule:', 'backwpup' ) );
-			echo ' <i><b>' . esc_attr( $cronstamp ). '</b></i><br />';
-		}
-
-		list( $cronstr[ 'minutes' ], $cronstr[ 'hours' ], $cronstr[ 'mday' ], $cronstr[ 'mon' ], $cronstr[ 'wday' ] ) = explode( ' ', $cronstamp, 5 );
-		if ( FALSE !== strpos( $cronstr[ 'minutes' ], '*/' ) || $cronstr[ 'minutes' ] == '*' ) {
-			$repeatmins = str_replace( '*/', '', $cronstr[ 'minutes' ] );
-			if ( $repeatmins == '*' || empty( $repeatmins ) )
-				$repeatmins = 5;
-			echo '<span style="color:red;">' . sprintf( __( 'ATTENTION: Job runs every %d minutes!', 'backwpup' ), $repeatmins ) . '</span><br />';
-		}
-		if ( FALSE !== strpos( $cronstr[ 'hours' ], '*/' ) || $cronstr[ 'hours' ] == '*' ) {
-			$repeathouer = str_replace( '*/', '', $cronstr[ 'hours' ] );
-			if ( $repeathouer == '*' || empty( $repeathouer ) )
-				$repeathouer = 1;
-			echo '<span style="color:red;">' . sprintf( __( 'ATTENTION: Job runs every %d hours!', 'backwpup' ), $repeathouer ) . '</span><br />';
-		}
-		$cron_next = BackWPup_Cron::cron_next( $cronstamp ) + ( get_option( 'gmt_offset' ) * 3600 );
-		if ( PHP_INT_MAX === $cron_next ) {
-			echo '<span style="color:red;">' . __( 'ATTENTION: Can\'t calculate cron!', 'backwpup' ) . '</span><br />';
-		}
-		else {
-			_e( 'Next runtime:', 'backwpup' );
-			echo ' <b>' . date_i18n( 'D, j M Y, H:i', $cron_next, TRUE ) . '</b>';
-		}
-		echo "</p>";
-
-		if ( $ajax )
-			die();
-		else
-			return;
-	}
-
-	/**
 	 *
 	 */
 	public static function page() {
@@ -934,6 +848,86 @@ class BackWPup_Page_Editjob {
 			$job_types[ $id ]->edit_inline_js();
 		}
 
+	}
+
+	/**
+	 * @static
+	 *
+	 * @param string $args
+	 *
+	 * @return mixed
+	 */
+	public static function ajax_cron_text( $args = '' ) {
+
+		if ( is_array( $args ) ) {
+			extract( $args );
+			$ajax = FALSE;
+		} else {
+			if ( ! current_user_can( 'backwpup_jobs_edit' ) )
+				wp_die( -1 );
+			check_ajax_referer( 'backwpup_ajax_nonce' );
+			if ( empty( $_POST[ 'cronminutes' ] ) || $_POST[ 'cronminutes' ][ 0 ] == '*' ) {
+				if ( ! empty( $_POST[ 'cronminutes' ][ 1 ] ) )
+					$_POST[ 'cronminutes' ] = array( '*/' . $_POST[ 'cronminutes' ][ 1 ] );
+				else
+					$_POST[ 'cronminutes' ] = array( '*' );
+			}
+			if ( empty( $_POST[ 'cronhours' ] ) || $_POST[ 'cronhours' ][ 0 ] == '*' ) {
+				if ( ! empty( $_POST[ 'cronhours' ][ 1 ] ) )
+					$_POST[ 'cronhours' ] = array( '*/' . $_POST[ 'cronhours' ][ 1 ] );
+				else
+					$_POST[ 'cronhours' ] = array( '*' );
+			}
+			if ( empty( $_POST[ 'cronmday' ] ) || $_POST[ 'cronmday' ][ 0 ] == '*' ) {
+				if ( ! empty( $_POST[ 'cronmday' ][ 1 ] ) )
+					$_POST[ 'cronmday' ] = array( '*/' . $_POST[ 'cronmday' ][ 1 ] );
+				else
+					$_POST[ 'cronmday' ] = array( '*' );
+			}
+			if ( empty( $_POST[ 'cronmon' ] ) || $_POST[ 'cronmon' ][ 0 ] == '*' ) {
+				if ( ! empty( $_POST[ 'cronmon' ][ 1 ] ) )
+					$_POST[ 'cronmon' ] = array( '*/' . $_POST[ 'cronmon' ][ 1 ] );
+				else
+					$_POST[ 'cronmon' ] = array( '*' );
+			}
+			if ( empty( $_POST[ 'cronwday' ] ) || $_POST[ 'cronwday' ][ 0 ] == '*' ) {
+				if ( ! empty( $_POST[ 'cronwday' ][ 1 ] ) )
+					$_POST[ 'cronwday' ] = array( '*/' . $_POST[ 'cronwday' ][ 1 ] );
+				else
+					$_POST[ 'cronwday' ] = array( '*' );
+			}
+			$crontype  = $_POST[ 'crontype' ];
+			$cronstamp = implode( ",", $_POST[ 'cronminutes' ] ) . ' ' . implode( ",", $_POST[ 'cronhours' ] ) . ' ' . implode( ",", $_POST[ 'cronmday' ] ) . ' ' . implode( ",", $_POST[ 'cronmon' ] ) . ' ' . implode( ",", $_POST[ 'cronwday' ] );
+			$ajax      = TRUE;
+		}
+		echo '<p class="wpcron" id="schedulecron">';
+
+		if ( $crontype == 'advanced' ) {
+			echo str_replace( '\"','"', __( 'Working as <a href="http://wikipedia.org/wiki/Cron">Cron</a> schedule:', 'backwpup' ) );
+			echo ' <i><b>' . esc_attr( $cronstamp ). '</b></i><br />';
+		}
+
+		list( $cronstr[ 'minutes' ], $cronstr[ 'hours' ], $cronstr[ 'mday' ], $cronstr[ 'mon' ], $cronstr[ 'wday' ] ) = explode( ' ', $cronstamp, 5 );
+		if ( FALSE !== strpos( $cronstr[ 'minutes' ], '*/' ) || $cronstr[ 'minutes' ] == '*' ) {
+			$repeatmins = str_replace( '*/', '', $cronstr[ 'minutes' ] );
+			if ( $repeatmins == '*' || empty( $repeatmins ) )
+				$repeatmins = 5;
+			echo '<span style="color:red;">' . sprintf( __( 'ATTENTION: Job runs every %d minutes!', 'backwpup' ), $repeatmins ) . '</span><br />';
+		}
+		$cron_next = BackWPup_Cron::cron_next( $cronstamp ) + ( get_option( 'gmt_offset' ) * 3600 );
+		if ( PHP_INT_MAX === $cron_next ) {
+			echo '<span style="color:red;">' . __( 'ATTENTION: Can\'t calculate cron!', 'backwpup' ) . '</span><br />';
+		}
+		else {
+			_e( 'Next runtime:', 'backwpup' );
+			echo ' <b>' . date_i18n( 'D, j M Y, H:i', $cron_next, TRUE ) . '</b>';
+		}
+		echo "</p>";
+
+		if ( $ajax )
+			die();
+		else
+			return;
 	}
 }
 

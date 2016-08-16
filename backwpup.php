@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.3.3
+ * Version: 3.3.4
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -33,8 +33,8 @@
 
 if ( ! class_exists( 'BackWPup' ) ) {
 
-	// Don't activate on anything less than PHP 5.2.7 or WordPress 3.8
-	if ( version_compare( PHP_VERSION, '5.2.7', '<' ) || version_compare( get_bloginfo( 'version' ), '3.8', '<' ) || ! function_exists( 'spl_autoload_register' ) ) {
+	// Don't activate on anything less than PHP 5.2.7 or WordPress 3.9
+	if ( version_compare( PHP_VERSION, '5.2.7', '<' ) || version_compare( get_bloginfo( 'version' ), '3.9', '<' ) || ! function_exists( 'spl_autoload_register' ) ) {
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		deactivate_plugins( __FILE__ );
 		die( 'BackWPup requires PHP version 5.2.7 with spl extension or greater and WordPress 3.8 or greater.' );
@@ -72,6 +72,10 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			//start upgrade if needed
 			if ( get_site_option( 'backwpup_version' ) !== self::get_plugin_data( 'Version' ) || ! wp_next_scheduled( 'backwpup_check_cleanup' ) ) {
 				BackWPup_Install::activate();
+			}
+			//load pro features
+			if ( class_exists( 'BackWPup_Pro' ) ) {
+				BackWPup_Pro::get_instance();
 			}
 			//WP-Cron
 			if ( defined( 'DOING_CRON' ) && DOING_CRON ) {

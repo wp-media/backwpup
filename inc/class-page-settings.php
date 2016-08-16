@@ -448,8 +448,6 @@ class BackWPup_Page_Settings {
 				$php_user = get_current_user();
 			}
 			echo '<tr title=""><td>' . __( 'Current PHP user', 'backwpup' ) . '</td><td>' . esc_html( $php_user )  . '</td></tr>';
-			$text  = (bool) ini_get( 'safe_mode' ) ? __( 'On', 'backwpup' ) : __( 'Off', 'backwpup' );
-			echo '<tr title=""><td>' . __( 'Safe Mode', 'backwpup' ) . '</td><td>' . $text . '</td></tr>';
 			echo '<tr title="&gt;=30"><td>' . __( 'Maximum execution time', 'backwpup' ) . '</td><td>' . esc_html( ini_get( 'max_execution_time' ) ) . ' ' . __( 'seconds', 'backwpup' ) . '</td></tr>';
 			if ( defined( 'ALTERNATE_WP_CRON' ) && ALTERNATE_WP_CRON )
 				echo '<tr title="ALTERNATE_WP_CRON"><td>' . __( 'Alternative WP Cron', 'backwpup' ) . '</td><td>' . __( 'On', 'backwpup' ) . '</td></tr>';

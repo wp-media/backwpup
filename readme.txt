@@ -1,9 +1,9 @@
 === BackWPup - WordPress Backup Plugin ===
 Contributors: inpsyde, danielhuesken, Bueltge, nullbyte
 Tags: Amazon, Amazon S3, back up, backup, chinese, cloud, cloud files, database, db backup, dropbox, dump, file, french, ftp, ftps, german, migrate, multisite, russian, schedule, sftp, storage, S3, time, upload, xml
-Requires at least: 3.8
+Requires at least: 3.9
 Tested up to: 4.5.3
-Stable tag: 3.3.3
+Stable tag: 3.3.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -35,7 +35,7 @@ The **backup plugin** **[BackWPup](http://backwpup.com/)** can be used to save y
 * Pro version and support available - [BackWPup Pro](http://backwpup.com)
 
 = Requirements =
-* WordPress 3.8 and PHP 5.2.7 required!
+* WordPress 3.9 and PHP 5.2.7 required!
 * To use the Plugin with full functionality PHP 5.3.3 with mysqli, FTP,gz, bz2, ZipArchive and curl is needed.
 * Plugin functions that don't work because of your server settings, will not be displayed in admin area.
 
@@ -157,6 +157,13 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 [You can find a detailed tutorial in the BackWPup documentation.](http://docs.backwpup.com/article/118-install-backwpup)
 
 == Changelog ==
+= Version 3.3.4 =
+* Fixed: Database gone away messages
+* Fixed: restarts in cli mode
+* Added: AWS S3 Region Asia Pacific (Mumbai)
+* PRO: fix false email sender address in job creation wizard
+* PRO: fix gdrive ssl problem on uploads
+
 = Version 3.3.3 =
 * Removed admin notices
 

@@ -251,7 +251,7 @@ class BackWPup_Page_BackWPup {
 			<div id="backwpup-thank-you" class="metabox-holder postbox backwpup-cleared-postbox backwpup-max-width">
 				<h3 class="hndle"><span><?php  _ex( 'Thank you for using BackWPup!', 'Pro teaser box', 'backwpup' ); ?></span></h3>
 				<div class="inside">
-					<p><img class="backwpup-banner-img" src="<?php echo BackWPup::get_plugin_data( 'URL' ) . '/assets/images/backwpupbanner-pro.png'; ?>" alt="BackWPup Banner" /></p>
+					<p><img class="backwpup-banner-img" src="<?php echo BackWPup::get_plugin_data( 'URL' ) . '/assets/images/backwpupbanner.png'; ?>" alt="BackWPup Banner" /></p>
 					<h3 class="backwpup-text-center"><?php _ex( 'Get access to:', 'Pro teaser box', 'backwpup' ); ?></h3>
 					<ul class="backwpup-text-center">
 						<li><?php _ex( 'First-class <strong>dedicated support</strong> at MarketPress Helpdesk.', 'Pro teaser box', 'backwpup' ); ?></li>

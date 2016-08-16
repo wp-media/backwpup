@@ -2,6 +2,7 @@
 // Amazon S3 SDK v2.8.27
 // http://aws.amazon.com/de/sdkforphp2/
 // https://github.com/aws/aws-sdk-php
+// http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region
 
 /**
  * Documentation: http://docs.amazonwebservices.com/aws-sdk-php-2/latest/class-Aws.S3.S3Client.html
@@ -10,62 +11,12 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 
 
 	/**
-	 * @param        $s3region
-	 * @param string $s3base_url
-	 * @return string
-	 */
-	protected function get_s3_base_url( $s3region, $s3base_url = '' ) {
-
-		if ( ! empty( $s3base_url ) )
-			return $s3base_url;
-
-		switch ( $s3region ) {
-			case 'us-east-1':
-				return 'https://s3.amazonaws.com';
-			case 'us-west-1':
-				return 'https://s3-us-west-1.amazonaws.com';
-			case 'us-west-2':
-				return 'https://s3-us-west-2.amazonaws.com';
-			case 'eu-west-1':
-				return 'https://s3-eu-west-1.amazonaws.com';
-			case 'eu-central-1':
-				return 'https://s3-eu-central-1.amazonaws.com';
-			case 'ap-northeast-1':
-				return 'https://s3-ap-northeast-1.amazonaws.com';
-			case 'ap-northeast-2':
-				return 'https://s3-ap-northeast-2.amazonaws.com';
-			case 'ap-southeast-1':
-				return 'https://s3-ap-southeast-1.amazonaws.com';
-			case 'ap-southeast-2':
-				return 'https://s3-ap-southeast-2.amazonaws.com';
-			case 'sa-east-1':
-				return 'https://s3-sa-east-1.amazonaws.com';
-			case 'cn-north-1':
-				return 'https:/cn-north-1.amazonaws.com';
-			case 'google-storage':
-				return 'https://storage.googleapis.com';
-			case 'google-storage-us':
-				return 'https://storage.googleapis.com';
-			case 'google-storage-asia':
-				return 'https://storage.googleapis.com';
-			case 'dreamhost':
-				return 'https://objects-us-west-1.dream.io';
-			case 'greenqloud':
-				return 'http://s.greenqloud.com';
-			default:
-				return '';
-		}
-
-	}
-
-	/**
 	 * @return array
 	 */
 	public function option_defaults() {
 
 		return array( 's3accesskey' => '', 's3secretkey' => '', 's3bucket' => '', 's3region' => 'us-east-1', 's3base_url' => '', 's3ssencrypt' => '', 's3storageclass' => '', 's3dir' => trailingslashit( sanitize_file_name( get_bloginfo( 'name' ) ) ), 's3maxbackups' => 15, 's3syncnodelete' => TRUE, 's3multipart' => TRUE );
 	}
-
 
 	/**
 	 * @param $jobid
@@ -85,6 +36,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 						<option value="us-west-2" <?php selected( 'us-west-2', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Amazon S3: US West (Oregon)', 'backwpup' ); ?></option>
 						<option value="eu-west-1" <?php selected( 'eu-west-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Amazon S3: EU (Ireland)', 'backwpup' ); ?></option>
 						<option value="eu-central-1" <?php selected( 'eu-central-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Amazon S3: EU (Germany)', 'backwpup' ); ?></option>
+						<option value="ap-south-1" <?php selected( 'ap-south-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Amazon S3: Asia Pacific (Mumbai)', 'backwpup' ); ?></option>
 						<option value="ap-northeast-1" <?php selected( 'ap-northeast-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Amazon S3: Asia Pacific (Tokyo)', 'backwpup' ); ?></option>
 						<option value="ap-northeast-2" <?php selected( 'ap-northeast-2', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Amazon S3: Asia Pacific (Seoul)', 'backwpup' ); ?></option>
 						<option value="ap-southeast-1" <?php selected( 'ap-southeast-1', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Amazon S3: Asia Pacific (Singapore)', 'backwpup' ); ?></option>
@@ -214,6 +166,132 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 		<?php
 	}
 
+	/**
+	 * @param string $args
+	 */
+	public function edit_ajax( $args = '' ) {
+
+		$error = '';
+		$buckets_list =  array();
+
+		if ( is_array( $args ) ) {
+			$ajax = FALSE;
+		}
+		else {
+			if ( ! current_user_can( 'backwpup_jobs_edit' ) ) {
+				wp_die( -1 );
+			}
+			check_ajax_referer( 'backwpup_ajax_nonce' );
+			$args[ 's3accesskey' ]  	= sanitize_text_field( $_POST[ 's3accesskey' ] );
+			$args[ 's3secretkey' ]  	= sanitize_text_field( $_POST[ 's3secretkey' ] );
+			$args[ 's3bucketselected' ]	= sanitize_text_field( $_POST[ 's3bucketselected' ] );
+			$args[ 's3base_url' ]  	 	= esc_url_raw( $_POST[ 's3base_url' ] );
+			$args[ 's3region' ]  	 	= sanitize_text_field( $_POST[ 's3region' ] );
+			$ajax         				= TRUE;
+		}
+		echo '<span id="s3bucketerror" style="color:red;">';
+
+		if ( ! empty( $args[ 's3accesskey' ] ) && ! empty( $args[ 's3secretkey' ] ) ) {
+			try {
+				$s3 = Aws\S3\S3Client::factory( array( 	'key'		=> $args[ 's3accesskey' ],
+														'secret'	=> BackWPup_Encryption::decrypt( $args[ 's3secretkey' ] ),
+														'region'	=> $args[ 's3region' ],
+														'base_url'	=> $this->get_s3_base_url( $args[ 's3region' ], $args[ 's3base_url' ]),
+														'scheme'	=> 'https',
+														'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' )
+				                                ) );
+
+				$buckets = $s3->listBuckets();
+				if ( ! empty( $buckets['Buckets'] ) ) {
+					$buckets_list = $buckets['Buckets'];
+				}
+				while ( ! empty( $vaults['Marker'] ) ) {
+					$buckets = $s3->listBuckets( array( 'marker' => $buckets['Marker'] ) );
+					if ( ! empty( $buckets['Buckets'] ) ) {
+						$buckets_list = array_merge( $buckets_list, $buckets['Buckets'] );
+					}
+				}
+			}
+			catch ( Exception $e ) {
+				$error = $e->getMessage();
+			}
+		}
+
+		if ( empty( $args[ 's3accesskey' ] ) )
+			_e( 'Missing access key!', 'backwpup' );
+		elseif ( empty( $args[ 's3secretkey' ] ) )
+			_e( 'Missing secret access key!', 'backwpup' );
+		elseif ( ! empty( $error ) && $error == 'Access Denied' )
+			echo '<input type="text" name="s3bucket" id="s3bucket" value="' . esc_attr( $args[ 's3bucketselected' ] ) . '" >';
+		elseif ( ! empty( $error ) )
+			echo esc_html( $error );
+		elseif ( ! isset( $buckets ) || count( $buckets['Buckets']  ) < 1 )
+			_e( 'No bucket found!', 'backwpup' );
+		echo '</span>';
+
+		if ( !empty( $buckets_list ) ) {
+			echo '<select name="s3bucket" id="s3bucket">';
+			foreach ( $buckets_list  as $bucket ) {
+				echo "<option " . selected( $args[ 's3bucketselected' ], esc_attr( $bucket['Name'] ), FALSE ) . ">" . esc_attr( $bucket['Name'] ) . "</option>";
+			}
+			echo '</select>';
+		}
+
+		if ( $ajax ) {
+			die();
+		}
+	}
+
+	/**
+	 * @param        $s3region
+	 * @param string $s3base_url
+	 * @return string
+	 */
+	protected function get_s3_base_url( $s3region, $s3base_url = '' ) {
+
+		if ( ! empty( $s3base_url ) )
+			return $s3base_url;
+
+		switch ( $s3region ) {
+			case 'us-east-1':
+				return 'https://s3.amazonaws.com';
+			case 'us-west-1':
+				return 'https://s3-us-west-1.amazonaws.com';
+			case 'us-west-2':
+				return 'https://s3-us-west-2.amazonaws.com';
+			case 'eu-west-1':
+				return 'https://s3-eu-west-1.amazonaws.com';
+			case 'eu-central-1':
+				return 'https://s3-eu-central-1.amazonaws.com';
+			case 'ap-south-1':
+				return 'https://s3-ap-south-1.amazonaws.com';
+			case 'ap-northeast-1':
+				return 'https://s3-ap-northeast-1.amazonaws.com';
+			case 'ap-northeast-2':
+				return 'https://s3-ap-northeast-2.amazonaws.com';
+			case 'ap-southeast-1':
+				return 'https://s3-ap-southeast-1.amazonaws.com';
+			case 'ap-southeast-2':
+				return 'https://s3-ap-southeast-2.amazonaws.com';
+			case 'sa-east-1':
+				return 'https://s3-sa-east-1.amazonaws.com';
+			case 'cn-north-1':
+				return 'https://cn-north-1.amazonaws.com';
+			case 'google-storage':
+				return 'https://storage.googleapis.com';
+			case 'google-storage-us':
+				return 'https://storage.googleapis.com';
+			case 'google-storage-asia':
+				return 'https://storage.googleapis.com';
+			case 'dreamhost':
+				return 'https://objects-us-west-1.dream.io';
+			case 'greenqloud':
+				return 'http://s.greenqloud.com';
+			default:
+				return '';
+		}
+
+	}
 
 	/**
 	 * @param $jobid
@@ -599,7 +677,6 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 		return TRUE;
 	}
 
-
 	/**
 	 * @param $job_settings array
 	 * @return bool
@@ -657,81 +734,5 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			});
 		</script>
 		<?php
-	}
-
-	/**
-	 * @param string $args
-	 */
-	public function edit_ajax( $args = '' ) {
-
-		$error = '';
-		$buckets_list =  array();
-
-		if ( is_array( $args ) ) {
-			$ajax = FALSE;
-		}
-		else {
-			if ( ! current_user_can( 'backwpup_jobs_edit' ) ) {
-				wp_die( -1 );
-			}
-			check_ajax_referer( 'backwpup_ajax_nonce' );
-			$args[ 's3accesskey' ]  	= sanitize_text_field( $_POST[ 's3accesskey' ] );
-			$args[ 's3secretkey' ]  	= sanitize_text_field( $_POST[ 's3secretkey' ] );
-			$args[ 's3bucketselected' ]	= sanitize_text_field( $_POST[ 's3bucketselected' ] );
-			$args[ 's3base_url' ]  	 	= esc_url_raw( $_POST[ 's3base_url' ] );
-			$args[ 's3region' ]  	 	= sanitize_text_field( $_POST[ 's3region' ] );
-			$ajax         				= TRUE;
-		}
-		echo '<span id="s3bucketerror" style="color:red;">';
-
-		if ( ! empty( $args[ 's3accesskey' ] ) && ! empty( $args[ 's3secretkey' ] ) ) {
-			try {
-				$s3 = Aws\S3\S3Client::factory( array( 	'key'		=> $args[ 's3accesskey' ],
-														'secret'	=> BackWPup_Encryption::decrypt( $args[ 's3secretkey' ] ),
-														'region'	=> $args[ 's3region' ],
-														'base_url'	=> $this->get_s3_base_url( $args[ 's3region' ], $args[ 's3base_url' ]),
-														'scheme'	=> 'https',
-														'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' )
-				                                ) );
-
-				$buckets = $s3->listBuckets();
-				if ( ! empty( $buckets['Buckets'] ) ) {
-					$buckets_list = $buckets['Buckets'];
-				}
-				while ( ! empty( $vaults['Marker'] ) ) {
-					$buckets = $s3->listBuckets( array( 'marker' => $buckets['Marker'] ) );
-					if ( ! empty( $buckets['Buckets'] ) ) {
-						$buckets_list = array_merge( $buckets_list, $buckets['Buckets'] );
-					}
-				}
-			}
-			catch ( Exception $e ) {
-				$error = $e->getMessage();
-			}
-		}
-
-		if ( empty( $args[ 's3accesskey' ] ) )
-			_e( 'Missing access key!', 'backwpup' );
-		elseif ( empty( $args[ 's3secretkey' ] ) )
-			_e( 'Missing secret access key!', 'backwpup' );
-		elseif ( ! empty( $error ) && $error == 'Access Denied' )
-			echo '<input type="text" name="s3bucket" id="s3bucket" value="' . esc_attr( $args[ 's3bucketselected' ] ) . '" >';
-		elseif ( ! empty( $error ) )
-			echo esc_html( $error );
-		elseif ( ! isset( $buckets ) || count( $buckets['Buckets']  ) < 1 )
-			_e( 'No bucket found!', 'backwpup' );
-		echo '</span>';
-
-		if ( !empty( $buckets_list ) ) {
-			echo '<select name="s3bucket" id="s3bucket">';
-			foreach ( $buckets_list  as $bucket ) {
-				echo "<option " . selected( $args[ 's3bucketselected' ], esc_attr( $bucket['Name'] ), FALSE ) . ">" . esc_attr( $bucket['Name'] ) . "</option>";
-			}
-			echo '</select>';
-		}
-
-		if ( $ajax ) {
-			die();
-		}
 	}
 }

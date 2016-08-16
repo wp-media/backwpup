@@ -391,25 +391,6 @@ _e( 'Use your backup archives to save your entire WordPress installation includi
                     <?php } ?>
 		            <div>
 		            </div>
-					<?php
-            		if ( class_exists( 'BackWPup_Pro', FALSE ) ) :
-			            $autoupdate = BackWPup_Pro_MarketPress_Autoupdate::get_instance();
-						if ( $autoupdate->license_check() == 'false' ) :
-							$plugins = get_plugins();
-							$localplugin = FALSE;
-							foreach ( $plugins as $plugin ) {
-								if ( BackWPup::get_plugin_data( 'Name' ) == $plugin[ 'Name' ] )
-									$localplugin = TRUE;
-							}
-							?>
-		             		<div class="welcometxt">
-		                        <div class="backwpup-welcome">
-		                            <h3><?php esc_html_e( 'Please activate your license', 'backwpup' ); ?></h3>
-		                            <p><a href="<?php echo $localplugin ? esc_attr(admin_url( 'plugins.php' )) : esc_attr(network_admin_url( 'plugins.php' )); ?>"><?php esc_html_e( 'Please go to your plugin page and active the license to have the autoupdates enabled.', 'backwpup' ); ?></a></p>
-								</div>
-							</div>
-						<?php endif; ?>
-					<?php endif; ?>
             		<div class="features">
 
                     	<div class="feature-box <?php self::feature_class(); ?>">
