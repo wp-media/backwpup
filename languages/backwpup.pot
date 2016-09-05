@@ -2642,7 +2642,7 @@ msgstr ""
 #: ../inc/class-page-settings.php:301
 msgid ""
 "If you protected your blog with HTTP basic authentication (.htaccess), or "
-"you use a Plugin to secure wp-cron.php, than use the authentication methods "
+"you use a Plugin to secure wp-cron.php, then use the authentication methods "
 "below."
 msgstr ""
 
