@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: BackWPup
+ * Plugin Name: BackWPup Pro
  * Plugin URI: http://backwpup.com
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.3.4
+ * Version: 3.3.6
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -69,6 +69,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			}
 			//auto loader
 			spl_autoload_register( array( $this, 'autoloader' ) );
+
 			//start upgrade if needed
 			if ( get_site_option( 'backwpup_version' ) !== self::get_plugin_data( 'Version' ) || ! wp_next_scheduled( 'backwpup_check_cleanup' ) ) {
 				BackWPup_Install::activate();
@@ -106,6 +107,48 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			if ( defined( 'WP_CLI' ) && WP_CLI && method_exists( 'WP_CLI', 'add_command' ) ) {
 				WP_CLI::add_command( 'backwpup', 'BackWPup_WP_CLI' );
 			}
+
+			// Notices and messages in admin
+			if ( is_admin() ) {
+
+				/// Notice for PHP 5.2 users
+				$php_notice = new BackWPup_Php_Admin_Notice();
+				add_action( 'admin_notices', array( $php_notice, 'admin_notice' ), 0 );
+				add_action( 'backwpup_admin_messages', array( $php_notice, 'admin_page_message' ) );
+
+				// Work for Inpsyde widget
+				$inpsyder_widget = new BackWPup_Become_Inpsyder_Widget();
+				add_action( 'wp_dashboard_setup', array( $inpsyder_widget, 'setup_widget' ) );
+				add_action( 'backwpup_admin_messages', array( $inpsyder_widget, 'print_plugin_widget_markup' ), 0 );
+
+				// Setup "dismissible" option actions for PHP 5.2 notice and work for Inpsyde widget
+				BackWPup_Dismissible_Notice_Option::setup_actions(
+					true,
+					BackWPup_Php_Admin_Notice::NOTICE_ID,
+					'manage_options'
+				);
+				BackWPup_Dismissible_Notice_Option::setup_actions(
+					false,
+					BackWPup_Become_Inpsyder_Widget::NOTICE_ID,
+					'backwpup'
+				);
+			}
+
+			// Phone Home
+			require_once dirname( __FILE__ ) . '/vendor/inpsyde/phone-home-client/inc/autoload.php';
+			Inpsyde_PhoneHome_FrontController::initialize_for_network(
+				'BackWPup',
+				dirname( __FILE__ ) . '/assets/templates/php52notice',
+				'backwpup',
+				array(
+					Inpsyde_PhoneHome_Configuration::ANONYMIZE          => true,
+					Inpsyde_PhoneHome_Configuration::MINIMUM_CAPABILITY => 'manage_options',
+					Inpsyde_PhoneHome_Configuration::COLLECT_PHP        => true,
+					Inpsyde_PhoneHome_Configuration::COLLECT_WP         => true,
+					Inpsyde_PhoneHome_Configuration::SERVER_ADDRESS     => 'https://backwpup.com/wp-json',
+				)
+			);
+
 		}
 
 		/**

@@ -1,0 +1,36 @@
+{
+  "name": "inpsyde/phone-home-client",
+  "description": "A WordPress package to be used by plugins to add a page that ask for phone-home consensus and send data in case user approves.",
+  "type": "library",
+  "license": "GPL-3.0",
+  "authors": [
+    {
+      "name": "Inpsyde GmbH",
+      "email": "hello@inpsyde.com",
+      "homepage": "http://inpsyde.com",
+      "role": "Company"
+    },
+    {
+      "name": "Giuseppe Mazzapica",
+      "email": "giuseppe.mazzapica@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=5.2"
+  },
+  "autoload": {
+    "classmap": [
+        "src/"
+    ]
+  },
+  "config": {
+    "optimize-autoloader": true
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.1.x-dev"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+# Inpsyde Phone Home Client Italian Translation.
+# Copyright (C) 2017 Inpsyde GmbH
+# This file is distributed under the same license as the Inpsyde Phone Home Client package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Phone Home Client 0.1.0\n"
+"PO-Revision-Date: 2017-02-02 11:40+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/CronController.php:80
+#, php-format
+msgid "Every %d days"
+msgstr "Ogni %d giorni"
+
+#: src/FrontController.php:131
+#, php-format
+msgid "%s needs your help"
+msgstr "%s ha bisogno del tuo aiuto"
+
+#: src/FrontController.php:132
+#, php-format
+msgid "Help %s"
+msgstr "Aiuta %s"
+
+#: src/Template/Buttons.php:28
+msgid "Yes, I agree."
+msgstr "Sì, sono d'accordo"
+
+#: src/Template/Buttons.php:45
+msgid "I have to think about that, ask me later."
+msgstr "Non sono sicuro, chiedimelo piu tardi."
+
+#: src/Template/Buttons.php:62
+msgid "Please no. Don't ask me again."
+msgstr "No, grazie. Non chiedermelo di nuovo."
+
+#: src/Template/Buttons.php:84
+msgid "More info"
+msgstr "Voglio più informazioni"

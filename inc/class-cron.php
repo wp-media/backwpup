@@ -21,7 +21,7 @@ class BackWPup_Cron {
 			return;
 		}
 
-		$arg = abs( $arg );
+		$arg = is_numeric( $arg ) ? abs( (int) $arg ) : 0;
 		if ( ! $arg ) {
 			return;
 		}
@@ -127,6 +127,10 @@ class BackWPup_Cron {
 		//only if cron active
 		if ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) {
 			return;
+		}
+
+		if ( ! is_array( $args ) ) {
+			$args = array();
 		}
 
 		if ( isset( $_GET[ 'backwpup_run' ] ) ) {

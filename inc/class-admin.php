@@ -10,8 +10,6 @@ final class BackWPup_Admin {
 	/**
 	 *
 	 * Set needed filters and actions and load all needed
-	 *
-	 * @return \BackWPup_Admin
 	 */
 	public function __construct() {
 
@@ -53,7 +51,7 @@ final class BackWPup_Admin {
 
 	/**
 	 * @static
-	 * @return \BackWPup
+	 * @return \BackWPup_Admin
 	 */
 	public static function get_instance() {
 
@@ -133,6 +131,11 @@ final class BackWPup_Admin {
 	 * @return string
 	 */
 	public static function display_messages( $echo = TRUE ) {
+
+		/**
+		 * This hook can be used to display more messages in all BackWPup pages
+		 */
+		do_action( 'backwpup_admin_messages' );
 
 		$message_updated= '';
 		$message_error	= '';
