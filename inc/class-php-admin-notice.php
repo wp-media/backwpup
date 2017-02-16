@@ -21,7 +21,8 @@ class BackWPup_Php_Admin_Notice {
 	 * @var string[]
 	 */
 	private static $pages_to_skip = array(
-		'backwpup-pro_page_backwpupabout'
+		'backwpup-pro_page_backwpupabout',
+		'backwpup-pro_page_backwpup-phone-home-consent',
 	);
 
 	/**
@@ -70,10 +71,13 @@ class BackWPup_Php_Admin_Notice {
 			return self::$should_show;
 		}
 
-		$screen = get_current_screen();
+		$screen        = get_current_screen();
+		$is_dashboard  = $screen->id === 'dashboard';
+		$is_backwpup   = $screen->id === 'toplevel_page_backwpup' || strpos( $screen->id, 'backwpup' ) === 0;
+		$pages_to_skip = in_array( $screen->id, self::$pages_to_skip, true );
 
 		// On pages explicitly skipped, don't show anything
-		if ( in_array( $screen->id, self::$pages_to_skip, true ) ) {
+		if ( ! $is_dashboard && ( ! $is_backwpup || $pages_to_skip ) ) {
 
 			self::$should_show = false;
 
