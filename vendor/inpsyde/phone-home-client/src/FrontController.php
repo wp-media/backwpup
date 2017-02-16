@@ -65,7 +65,7 @@ final class Inpsyde_PhoneHome_FrontController {
 		$network = false
 	) {
 
-		$instance = new static(
+		$instance = new Inpsyde_PhoneHome_FrontController(
 			(string) $plugin_name,
 			new Inpsyde_PhoneHome_Configuration( $configs ),
 			new Inpsyde_PhoneHome_Template_Loader( $templates_dir ),
