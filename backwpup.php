@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: BackWPup Pro
+ * Plugin Name: BackWPup
  * Plugin URI: http://backwpup.com
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.3.6
+ * Version: 3.3.7
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -109,7 +109,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			}
 
 			// Notices and messages in admin
-			if ( is_admin() ) {
+			if ( is_admin() && current_user_can( 'backwpup' ) ) {
 
 				/// Notice for PHP 5.2 users
 				$php_notice = new BackWPup_Php_Admin_Notice();
@@ -121,15 +121,24 @@ if ( ! class_exists( 'BackWPup' ) ) {
 				add_action( 'wp_dashboard_setup', array( $inpsyder_widget, 'setup_widget' ) );
 				add_action( 'backwpup_admin_messages', array( $inpsyder_widget, 'print_plugin_widget_markup' ), 0 );
 
-				// Setup "dismissible" option actions for PHP 5.2 notice and work for Inpsyde widget
+				// Beta Tester notice
+				$beta_tester_notice = new BackWPup_BetaTester_Admin_Notice();
+				add_action( 'backwpup_admin_messages', array( $beta_tester_notice, 'dashboard_message' ), 20 );
+
+				// Setup "dismissible" option actions for notices
 				BackWPup_Dismissible_Notice_Option::setup_actions(
 					true,
 					BackWPup_Php_Admin_Notice::NOTICE_ID,
-					'manage_options'
+					'backwpup'
 				);
 				BackWPup_Dismissible_Notice_Option::setup_actions(
 					false,
 					BackWPup_Become_Inpsyder_Widget::NOTICE_ID,
+					'backwpup'
+				);
+				BackWPup_Dismissible_Notice_Option::setup_actions(
+					false,
+					BackWPup_BetaTester_Admin_Notice::NOTICE_ID,
 					'backwpup'
 				);
 			}

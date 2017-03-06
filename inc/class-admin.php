@@ -525,7 +525,7 @@ final class BackWPup_Admin {
 	 */
 	public function hide_phone_home_client_notices( $show = true, $screen = null ) {
 
-		if ( $screen instanceof \WP_Screen ) {
+		if ( $screen instanceof WP_Screen ) {
 			return $screen->id === 'toplevel_page_backwpup' || strpos( $screen->id, 'backwpup' ) === 0;
 		}
 

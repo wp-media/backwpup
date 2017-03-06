@@ -12,137 +12,137 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "Project-Id-Version: BackWPup Pro\n"
 
-#: backwpup.php:324 inc/class-page-backups.php:271
+#: backwpup.php:333 inc/class-page-backups.php:271
 msgid "Folder"
 msgstr ""
 
-#: backwpup.php:325
+#: backwpup.php:334
 msgid "Backup to Folder"
 msgstr ""
 
-#: backwpup.php:340
+#: backwpup.php:349
 msgid "Email"
 msgstr ""
 
-#: backwpup.php:341
+#: backwpup.php:350
 msgid "Backup sent via email"
 msgstr ""
 
-#: backwpup.php:356
+#: backwpup.php:365
 msgid "FTP"
 msgstr ""
 
-#: backwpup.php:357
+#: backwpup.php:366
 msgid "Backup to FTP"
 msgstr ""
 
-#: backwpup.php:372 inc/class-destination-dropbox.php:307
+#: backwpup.php:381 inc/class-destination-dropbox.php:307
 msgid "Dropbox"
 msgstr ""
 
-#: backwpup.php:373 inc/class-page-about.php:517
+#: backwpup.php:382 inc/class-page-about.php:517
 msgid "Backup to Dropbox"
 msgstr ""
 
-#: backwpup.php:388 inc/class-destination-s3.php:27
+#: backwpup.php:397 inc/class-destination-s3.php:27
 msgid "S3 Service"
 msgstr ""
 
-#: backwpup.php:389
+#: backwpup.php:398
 msgid "Backup to an S3 Service"
 msgstr ""
 
-#: backwpup.php:407
+#: backwpup.php:416
 msgid "MS Azure"
 msgstr ""
 
-#: backwpup.php:408
+#: backwpup.php:417
 msgid "Backup to Microsoft Azure (Blob)"
 msgstr ""
 
-#: backwpup.php:423
+#: backwpup.php:432
 msgid "RSC"
 msgstr ""
 
-#: backwpup.php:424 inc/class-page-about.php:522
+#: backwpup.php:433 inc/class-page-about.php:522
 msgid "Backup to Rackspace Cloud Files"
 msgstr ""
 
-#: backwpup.php:441
+#: backwpup.php:450
 msgid "SugarSync"
 msgstr ""
 
-#: backwpup.php:442 inc/class-page-about.php:537
+#: backwpup.php:451 inc/class-page-about.php:537
 msgid "Backup to SugarSync"
 msgstr ""
 
-#: backwpup.php:461
+#: backwpup.php:470
 #, php-format
 msgid "PHP Version %1$s is to low, you need Version %2$s or above."
 msgstr ""
 
-#: backwpup.php:468
+#: backwpup.php:477
 #, php-format
 msgid "Missing function \"%s\"."
 msgstr ""
 
-#: backwpup.php:477
+#: backwpup.php:486
 #, php-format
 msgid "Missing class \"%s\"."
 msgstr ""
 
-#: inc/class-admin.php:213 inc/class-help.php:24
+#: inc/class-admin.php:215 inc/class-help.php:24
 msgid "http://docs.backwpup.com"
 msgstr ""
 
-#: inc/class-admin.php:213
+#: inc/class-admin.php:215
 msgid "Documentation"
 msgstr ""
 
-#: inc/class-admin.php:225
+#: inc/class-admin.php:227
 msgid "BackWPup Dashboard"
 msgstr ""
 
-#: inc/class-admin.php:225
+#: inc/class-admin.php:227
 msgid "Dashboard"
 msgstr ""
 
-#: inc/class-admin.php:241 inc/class-adminbar.php:82
+#: inc/class-admin.php:243 inc/class-adminbar.php:82
 #: inc/class-page-settings.php:115
 msgid "Jobs"
 msgstr ""
 
-#: inc/class-admin.php:256
+#: inc/class-admin.php:258
 msgid "Add new job"
 msgstr ""
 
-#: inc/class-admin.php:271 inc/class-adminbar.php:98
+#: inc/class-admin.php:273 inc/class-adminbar.php:98
 #: inc/class-page-logs.php:328 inc/class-page-settings.php:115
 msgid "Logs"
 msgstr ""
 
-#: inc/class-admin.php:286 inc/class-adminbar.php:106
+#: inc/class-admin.php:288 inc/class-adminbar.php:106
 msgid "Backups"
 msgstr ""
 
-#: inc/class-admin.php:301
+#: inc/class-admin.php:303
 msgid "Settings"
 msgstr ""
 
-#: inc/class-admin.php:314
+#: inc/class-admin.php:316
 msgid "About"
 msgstr ""
 
-#: inc/class-admin.php:329 inc/class-admin.php:335
+#: inc/class-admin.php:331 inc/class-admin.php:337
 msgid "Cheating, huh?"
 msgstr ""
 
-#: inc/class-admin.php:379
+#: inc/class-admin.php:381
 #, php-format
 msgid "<a class=\"backwpup-get-pro\" href=\"%s\">Get BackWPup Pro now.</a>"
 msgstr ""
 
-#: inc/class-admin.php:379 inc/class-admin.php:399 inc/class-help.php:17
+#: inc/class-admin.php:381 inc/class-admin.php:401 inc/class-help.php:17
 #: inc/class-help.php:22 inc/class-job.php:394
 #: inc/class-jobtype-dbcheck.php:15 inc/class-jobtype-dbdump.php:15
 #: inc/class-jobtype-file.php:15 inc/class-jobtype-wpexp.php:15
@@ -154,16 +154,16 @@ msgstr ""
 msgid "http://backwpup.com"
 msgstr ""
 
-#: inc/class-admin.php:399
+#: inc/class-admin.php:401
 #, php-format
 msgid "version %s"
 msgstr ""
 
-#: inc/class-admin.php:443
+#: inc/class-admin.php:445
 msgid "Add BackWPup Role"
 msgstr ""
 
-#: inc/class-admin.php:447
+#: inc/class-admin.php:449
 msgid "&mdash; No additional role for BackWPup &mdash;"
 msgstr ""
 
@@ -187,37 +187,50 @@ msgstr ""
 msgid "Run Now"
 msgstr ""
 
-#: inc/class-become-inpsyder-widget.php:22
-#: inc/class-become-inpsyder-widget.php:34
+#: inc/class-become-inpsyder-widget.php:31
+#: inc/class-become-inpsyder-widget.php:45
 msgid "Make BackWPup better!"
 msgstr ""
 
-#: inc/class-become-inpsyder-widget.php:88
+#: inc/class-become-inpsyder-widget.php:105
 msgid "https://inpsyde.com/en/jobs/?utm_source=BackWPup&utm_medium=Link&utm_campaign=BecomeAnInpsyder"
 msgstr ""
 
-#: inc/class-become-inpsyder-widget.php:96
+#: inc/class-become-inpsyder-widget.php:115
 msgid "We want to make BackWPup even stronger and its support much faster."
 msgstr ""
 
-#: inc/class-become-inpsyder-widget.php:104
+#: inc/class-become-inpsyder-widget.php:123
 msgid "This is why we are looking for a talented developer who can work remotely and support us in BackWPup"
 msgstr ""
 
-#: inc/class-become-inpsyder-widget.php:111
+#: inc/class-become-inpsyder-widget.php:130
 msgid "and other exciting WordPress projects at our VIP partner agency."
 msgstr ""
 
-#: inc/class-become-inpsyder-widget.php:122
+#: inc/class-become-inpsyder-widget.php:141
 msgid "Apply now!"
 msgstr ""
 
-#: inc/class-become-inpsyder-widget.php:129
+#: inc/class-become-inpsyder-widget.php:148
+#: inc/class-betatester-admin-notice.php:96
 msgid "Don't show again"
 msgstr ""
 
-#: inc/class-become-inpsyder-widget.php:133
+#: inc/class-become-inpsyder-widget.php:152
 msgid "Work for Inpsyde"
+msgstr ""
+
+#: inc/class-betatester-admin-notice.php:69
+msgid "Join us as beta tester!"
+msgstr ""
+
+#: inc/class-betatester-admin-notice.php:70
+msgid "https://backwpup.com/become-backwpup-beta-tester/"
+msgstr ""
+
+#: inc/class-betatester-admin-notice.php:78
+msgid "To ensure that our releases are as bug-free as possible, we need you as a beta tester!"
 msgstr ""
 
 #: inc/class-create-archive.php:64
@@ -3934,62 +3947,62 @@ msgstr ""
 msgid "Reset all settings to default"
 msgstr ""
 
-#: inc/class-php-admin-notice.php:119
+#: inc/class-php-admin-notice.php:123
 msgid "With the upcoming major release, BackWPup will be requiring PHP version 5.3 or higher."
 msgstr ""
 
-#: inc/class-php-admin-notice.php:121
+#: inc/class-php-admin-notice.php:125
 msgid "Currently, you are running PHP version 5.2."
 msgstr ""
 
-#: inc/class-php-admin-notice.php:123 inc/class-php-admin-notice.php:158
+#: inc/class-php-admin-notice.php:127 inc/class-php-admin-notice.php:162
 msgid "Please urgently read here!"
 msgstr ""
 
-#: inc/class-php-admin-notice.php:128
+#: inc/class-php-admin-notice.php:132
 msgid "Don't show again."
 msgstr ""
 
-#: inc/class-php-admin-notice.php:160
+#: inc/class-php-admin-notice.php:164
 msgid "BackWPup has determined, your installation is still running on the old PHP 5.2 version."
 msgstr ""
 
-#: inc/class-php-admin-notice.php:163
+#: inc/class-php-admin-notice.php:167
 msgid "In order to ensure a fast and secure development for BackWPup, we will most likely not support PHP version 5.2 in our next version."
 msgstr ""
 
-#: inc/class-php-admin-notice.php:164
+#: inc/class-php-admin-notice.php:168
 msgid "No need to worry, your host can update your PHP version relatively quickly and without any problems."
 msgstr ""
 
-#: inc/class-php-admin-notice.php:165
+#: inc/class-php-admin-notice.php:169
 msgid "Otherwise you can continue to stay on this last version and do not update the plugin in the future!"
 msgstr ""
 
-#: inc/class-php-admin-notice.php:169
+#: inc/class-php-admin-notice.php:173
 msgid "If the response from PHP 5.2 users is surprisingly high, we will eventually keep support for PHP 5.2 for a while."
 msgstr ""
 
-#: inc/class-php-admin-notice.php:172
+#: inc/class-php-admin-notice.php:176
 msgid "Cheers!"
 msgstr ""
 
-#: inc/class-php-admin-notice.php:173
+#: inc/class-php-admin-notice.php:177
 msgid "Your BackWPup Team!"
 msgstr ""
 
-#. Translators: This is the anchor text for an HTML link pointing to BackWPup contact page
-#: inc/class-php-admin-notice.php:201
+#.  Translators: This is the anchor text for an HTML link pointing to BackWPup contact page
+#: inc/class-php-admin-notice.php:205
 msgid "contact us"
 msgstr ""
 
-#. Translators: %s is replaced by an HTML link with text "contact us" pointing to BackWPup contact page
-#: inc/class-php-admin-notice.php:203
+#.  Translators: %s is replaced by an HTML link with text "contact us" pointing to BackWPup contact page
+#: inc/class-php-admin-notice.php:207
 #, php-format
 msgid "If you would like to have PHP 5.2 supported, please %s."
 msgstr ""
 
-#: inc/class-php-admin-notice.php:204
+#: inc/class-php-admin-notice.php:208
 msgid "https://backwpup.com/php52/"
 msgstr ""
 
@@ -4831,79 +4844,79 @@ msgstr ""
 msgid "Wizards"
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:42
+#: inc/pro/class-settings-apikeys.php:45
 msgid "Hash key"
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:43
+#: inc/pro/class-settings-apikeys.php:46
 msgid "Hash Key for BackWPup. It will be used to have hashes in folder and file names. It must at least 6 chars long."
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:46
+#: inc/pro/class-settings-apikeys.php:49
 msgid "Hash key:"
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:59
+#: inc/pro/class-settings-apikeys.php:73
 msgid "Dropbox API Keys"
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:60
+#: inc/pro/class-settings-apikeys.php:74
 msgid "If you want to set your own Dropbox API Keys, you can do it here. Leave empty for default."
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:63
+#: inc/pro/class-settings-apikeys.php:77
 msgid "Full Dropbox App key:"
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:71
+#: inc/pro/class-settings-apikeys.php:88
 msgid "Full Dropbox App secret:"
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:79
+#: inc/pro/class-settings-apikeys.php:100
 msgid "Sandbox App key:"
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:87
+#: inc/pro/class-settings-apikeys.php:111
 msgid "Sandbox App secret:"
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:100
+#: inc/pro/class-settings-apikeys.php:131
 msgid "SugarSync API Keys"
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:101
+#: inc/pro/class-settings-apikeys.php:132
 msgid "If you want to set your own SugarSync API keys you can do that here. Leave empty for default."
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:104
+#: inc/pro/class-settings-apikeys.php:135
 msgid "Access Key ID:"
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:112
+#: inc/pro/class-settings-apikeys.php:143
 msgid "Private Access Key:"
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:119
+#: inc/pro/class-settings-apikeys.php:154
 msgid "App ID:"
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:132
+#: inc/pro/class-settings-apikeys.php:175
 msgid "Google API Keys"
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:136
+#: inc/pro/class-settings-apikeys.php:179
 msgid "Client ID:"
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:144
+#: inc/pro/class-settings-apikeys.php:191
 msgid "Client secret:"
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:151
+#: inc/pro/class-settings-apikeys.php:202
 msgid "Redirect URIs:"
 msgstr ""
 
-#: inc/pro/class-settings-apikeys.php:155
+#: inc/pro/class-settings-apikeys.php:206
 msgid "Add this URI in a new line to the field."
 msgstr ""
 

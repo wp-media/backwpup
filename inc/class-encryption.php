@@ -40,7 +40,7 @@ class BackWPup_Encryption {
 		try {
 			$cypher_class = self::cypher_class_for_string( $string );
 		}
-		catch ( \Exception $e ) {
+		catch ( Exception $e ) {
 
 			/** @TODO what to do here? The string is encrypted, but cypher used to encrypt isn't supported in current system */
 
@@ -50,7 +50,7 @@ class BackWPup_Encryption {
 		try {
 			list( $key, $key_type ) = self::get_encrypt_info( $cypher_class, $string );
 		}
-		catch ( \Exception $e ) {
+		catch ( Exception $e ) {
 
 			/** @TODO what to do here? The string is encrypted, a custom key was used to encrypt, but it is not available anymore */
 
@@ -100,7 +100,7 @@ class BackWPup_Encryption {
 		try {
 			$cypher_class = self::cypher_class_for_string( $string );
 		}
-		catch ( \Exception $e ) {
+		catch ( Exception $e ) {
 
 			/** @TODO what to do here? The cypher used to encrypt is not supported in current system */
 
@@ -117,7 +117,7 @@ class BackWPup_Encryption {
 		try {
 			list( $key, $key_type ) = self::get_encrypt_info( $cypher_class, $string );
 		}
-		catch ( \Exception $e ) {
+		catch ( Exception $e ) {
 
 			/** @TODO what to do here? A custom key was used to encrypt but it is not available anymore */
 			return '';
@@ -126,7 +126,7 @@ class BackWPup_Encryption {
 		/** @var BackWPup_Encryption_OpenSSL|BackWPup_Encryption_Mcrypt|BackWPup_Encryption_Fallback $cypher */
 		$cypher = new $cypher_class( $key, $key_type );
 
-		return $cypher->decrypt( $string );
+		return trim( $cypher->decrypt( $string ), "\0" );
 	}
 
 	/**
@@ -146,7 +146,7 @@ class BackWPup_Encryption {
 			}
 
 			if ( ! call_user_func( array( $class, 'supported' ) ) ) {
-				throw new \Exception(
+				throw new Exception(
 					"Give string was encrypted using {$class} but it is not currently supported in this system."
 				);
 			}
@@ -197,7 +197,7 @@ class BackWPup_Encryption {
 		$has_custom_key = strpos( $string, $enc_prefix . self::KEY_TYPE_CUSTOM ) === 0;
 
 		if ( $has_custom_key && ! defined( 'BACKWPUP_ENC_KEY' ) ) {
-			throw new \Exception(
+			throw new Exception(
 				"Give string was encrypted using a custom key but 'BACKWPUP_ENC_KEY' constant is not defined anymore."
 			);
 		}

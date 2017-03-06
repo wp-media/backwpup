@@ -120,16 +120,16 @@ class BackWPup_Php_Admin_Notice {
 		?>
 		<div class="notice notice-warning is-dismissible">
 			<p>
-				<?= esc_html__( 'With the upcoming major release, BackWPup will be requiring PHP version 5.3 or higher.',
+				<?php echo esc_html__( 'With the upcoming major release, BackWPup will be requiring PHP version 5.3 or higher.',
 				                'backwpup' ) ?>
-				<?= esc_html__( 'Currently, you are running PHP version 5.2.', 'backwpup' ) ?>
+				<?php echo esc_html__( 'Currently, you are running PHP version 5.2.', 'backwpup' ) ?>
 				<strong>
-					<a href="<?= $learn_more_url ?>"><?= esc_html__( 'Please urgently read here!', 'backwpup' ) ?></a>
+					<a href="<?php echo $learn_more_url ?>"><?php echo esc_html__( 'Please urgently read here!', 'backwpup' ) ?></a>
 				</strong>
 			</p>
 			<p>
-				<a style="font-size:smaller;" id="backwpup_dismiss_php52_notice" href="<?= esc_url( $dismiss_url ) ?>">
-					<?= esc_html__( 'Don\'t show again.', 'backwpup' ) ?>
+				<a style="font-size:smaller;" id="backwpup_dismiss_php52_notice" href="<?php echo esc_url( $dismiss_url ) ?>">
+					<?php echo esc_html__( 'Don\'t show again.', 'backwpup' ) ?>
 				</a>
 			</p>
 		</div>
@@ -159,22 +159,22 @@ class BackWPup_Php_Admin_Notice {
 		ob_start();
 		?>
 		<div class="notice notice-error is-dismissible">
-			<h3><?= esc_html__( 'Please urgently read here!', 'backwpup' ) ?></h3>
+			<h3><?php echo esc_html__( 'Please urgently read here!', 'backwpup' ) ?></h3>
 			<p>
-				<?= esc_html__( 'BackWPup has determined, your installation is still running on the old PHP 5.2 version.', 'backwpup' ) ?>
+				<?php echo esc_html__( 'BackWPup has determined, your installation is still running on the old PHP 5.2 version.', 'backwpup' ) ?>
 			</p>
 			<p>
-				<?= esc_html__( 'In order to ensure a fast and secure development for BackWPup, we will most likely not support PHP version 5.2 in our next version.', 'backwpup' ) ?>
-				<?= esc_html__( 'No need to worry, your host can update your PHP version relatively quickly and without any problems.', 'backwpup' ) ?>
-				<?= esc_html__( 'Otherwise you can continue to stay on this last version and do not update the plugin in the future!', 'backwpup' ) ?>
+				<?php echo esc_html__( 'In order to ensure a fast and secure development for BackWPup, we will most likely not support PHP version 5.2 in our next version.', 'backwpup' ) ?>
+				<?php echo esc_html__( 'No need to worry, your host can update your PHP version relatively quickly and without any problems.', 'backwpup' ) ?>
+				<?php echo esc_html__( 'Otherwise you can continue to stay on this last version and do not update the plugin in the future!', 'backwpup' ) ?>
 			</p>
 			<p>
-				<strong><?= $this->contact_page_link() ?></strong><br>
-				<?= esc_html__( 'If the response from PHP 5.2 users is surprisingly high, we will eventually keep support for PHP 5.2 for a while.', 'backwpup' ) ?>
+				<strong><?php echo $this->contact_page_link() ?></strong><br>
+				<?php echo esc_html__( 'If the response from PHP 5.2 users is surprisingly high, we will eventually keep support for PHP 5.2 for a while.', 'backwpup' ) ?>
 			</p>
 			<p>
-				<?= esc_html__( 'Cheers!', 'backwpup' ) ?><br>
-				<?= esc_html__( 'Your BackWPup Team!', 'backwpup' ) ?>
+				<?php echo esc_html__( 'Cheers!', 'backwpup' ) ?><br>
+				<?php echo esc_html__( 'Your BackWPup Team!', 'backwpup' ) ?>
 			</p>
 		</div>
 		<?php

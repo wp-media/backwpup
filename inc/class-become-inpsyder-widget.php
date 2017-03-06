@@ -6,7 +6,11 @@
 class BackWPup_Become_Inpsyder_Widget {
 
 	const NOTICE_ID = 'become_inpsyder';
-	const MAIN_ADMIN_PAGE_ID = 'toplevel_page_backwpup';
+
+	private static $main_admin_page_ids = array(
+		'toplevel_page_backwpup',
+		'toplevel_page_backwpup-network',
+	);
 
 	/**
 	 * A flag set once per request that is true when the widget should not be shown on the page
@@ -16,6 +20,11 @@ class BackWPup_Become_Inpsyder_Widget {
 	private static $should_show;
 
 	public function setup_widget() {
+
+		if ( defined( 'INPSYDE_DASHBOARD_WIDGET' ) && ! INPSYDE_DASHBOARD_WIDGET ) {
+			return;
+		}
+
 		if ( $this->should_display() ) {
 			wp_add_dashboard_widget(
 				'backwpup_become_inpsyder',
@@ -26,14 +35,16 @@ class BackWPup_Become_Inpsyder_Widget {
 	}
 
 	public function print_plugin_widget_markup() {
+
 		static $done;
-		if ( ! $done && get_current_screen()->id === self::MAIN_ADMIN_PAGE_ID && $this->should_display() ) {
+		$screen_id = get_current_screen()->id;
+		if ( ! $done && in_array( $screen_id, self::$main_admin_page_ids, true ) && $this->should_display() ) {
 			$done = true;
 			?>
-			<div class="metabox-holder postbox">
-				<h3 class="hndle"><span><?= esc_html__( 'Make BackWPup better!', 'backwpup' ) ?></span></h3>
+			<div class="metabox-holder postbox" id="backwpup_become_inpsyder">
+				<h3 class="hndle"><span><?php echo esc_html__( 'Make BackWPup better!', 'backwpup' ) ?></span></h3>
 				<div class="inside">
-					<?= $this->widget_markup( 'left' ) ?>
+					<?php echo $this->widget_markup( 'left' ) ?>
 				</div>
 			</div>
 			<?php
@@ -41,6 +52,11 @@ class BackWPup_Become_Inpsyder_Widget {
 	}
 
 	public function print_widget_markup() {
+
+		if ( defined( 'INPSYDE_DASHBOARD_WIDGET' ) && ! INPSYDE_DASHBOARD_WIDGET ) {
+			return;
+		}
+
 		static $done;
 		if ( ! $done && $this->should_display() ) {
 			$done = true;
@@ -85,7 +101,10 @@ class BackWPup_Become_Inpsyder_Widget {
 		$plugin_file = dirname( dirname( __FILE__ ) ) . '/backwpup.php';
 		$logo_url    = plugins_url( '/assets/images/inpsyde.png', $plugin_file );
 
-		$job_url = esc_url( __( 'https://inpsyde.com/en/jobs/?utm_source=BackWPup&utm_medium=Link&utm_campaign=BecomeAnInpsyder', 'backwpup' ) );
+		$job_url = __(
+			'https://inpsyde.com/en/jobs/?utm_source=BackWPup&utm_medium=Link&utm_campaign=BecomeAnInpsyder',
+			'backwpup'
+		);
 
 		ob_start();
 		?>
@@ -99,12 +118,12 @@ class BackWPup_Become_Inpsyder_Widget {
 				?>
 				<br>
 				<strong>
-				<?php
-				esc_html_e(
-					'This is why we are looking for a talented developer who can work remotely and support us in BackWPup',
-					'backwpup'
-				);
-				?>
+					<?php
+					esc_html_e(
+						'This is why we are looking for a talented developer who can work remotely and support us in BackWPup',
+						'backwpup'
+					);
+					?>
 				</strong>
 				<?php
 				esc_html_e(
@@ -113,24 +132,24 @@ class BackWPup_Become_Inpsyder_Widget {
 				);
 				?>
 			</p>
-			<p<?= $btn_float === 'right' ? ' align="right' : '' ?>">
-				<a
-					style="background: #8fba2b; border-color: #7ba617 #719c0d #719c0d; -webkit-box-shadow: 0 1px 0 #719c0d; box-shadow: 0 1px 0 #719c0d; text-shadow: 0 -1px 1px #719c0d, 1px 0 1px #719c0d, 0 1px 1px #719c0d, -1px 0 1px #719c0d;"
-					class="button button-large button-primary"
-					href="<?= $job_url ?>"
-					target="_blank">
-					<?= esc_html__( 'Apply now!', 'backwpup' ) ?>
-				</a>
+			<p<?php echo $btn_float === 'right' ? ' align="right' : '' ?>">
+			<a
+				style="background: #8fba2b; border-color: #7ba617 #719c0d #719c0d; -webkit-box-shadow: 0 1px 0 #719c0d; box-shadow: 0 1px 0 #719c0d; text-shadow: 0 -1px 1px #719c0d, 1px 0 1px #719c0d, 0 1px 1px #719c0d, -1px 0 1px #719c0d;"
+				class="button button-large button-primary"
+				href="<?php echo esc_url( $job_url ) ?>"
+				target="_blank">
+				<?php echo esc_html__( 'Apply now!', 'backwpup' ) ?>
+			</a>
 			</p>
 			<hr>
 			<p>
 
-				<a class="button button-small" id="backwpup_dismiss_become_new_inpsyder" href="<?= esc_url( $dismiss_url ) ?>">
-					<?= esc_html__( 'Don\'t show again', 'backwpup' ) ?>
+				<a class="button button-small" id="backwpup_dismiss_become_new_inpsyder" href="<?php echo esc_url( $dismiss_url ) ?>">
+					<?php echo esc_html__( 'Don\'t show again', 'backwpup' ) ?>
 				</a>
 
-				<a style="float: right;" href="<?= $job_url ?>">
-					<img src="<?= $logo_url ?>" alt="<?= esc_attr__( 'Work for Inpsyde', 'backwpup' ) ?>">
+				<a style="float: right;" href="<?php echo $job_url ?>">
+					<img src="<?php echo $logo_url ?>" alt="<?php echo esc_attr__( 'Work for Inpsyde', 'backwpup' ) ?>">
 				</a>
 			</p>
 		</div>
@@ -139,7 +158,7 @@ class BackWPup_Become_Inpsyder_Widget {
 				function( $ ) {
 					$( '#backwpup_dismiss_become_new_inpsyder' ).on( 'click', function( e ) {
 						e.preventDefault();
-						$.post(  $( this ).attr( 'href' ), { isAjax: 1 } );
+						$.post( $( this ).attr( 'href' ), { isAjax: 1 } );
 						$( '#backwpup_become_inpsyder' ).hide();
 						$( '#backwpup_become_inpsyder-hide' ).click();
 					} );

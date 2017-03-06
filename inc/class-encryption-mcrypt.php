@@ -88,8 +88,34 @@ class BackWPup_Encryption_Mcrypt {
 			return '';
 		}
 
-		return $this->deprecated
+		if ( defined( 'BACKWPUP_MCRYPT_KEY_MODE' ) && BACKWPUP_MCRYPT_KEY_MODE === 1 ) {
+			return $this->decrypt_deprecated( $encrypted );
+		}
+
+		$decrypted = $this->deprecated
 			? @mcrypt_decrypt( MCRYPT_RIJNDAEL_256, $this->key, $encrypted, MCRYPT_MODE_CBC, md5( $this->key ) )
 			: mcrypt_decrypt( MCRYPT_RIJNDAEL_256, $this->key, $encrypted, MCRYPT_MODE_CBC, md5( $this->key ) );
+
+		$skip_deprecated = defined( 'BACKWPUP_MCRYPT_KEY_MODE' ) && BACKWPUP_MCRYPT_KEY_MODE === 2;
+
+		if ( ! $skip_deprecated && ! @wp_check_invalid_utf8( $decrypted ) ) {
+			$decrypted = $this->decrypt_deprecated( $encrypted );
+		}
+
+		return $decrypted;
+	}
+
+	/**
+	 * @param string $encrypted
+	 *
+	 * @return string
+	 */
+	private function decrypt_deprecated( $encrypted ) {
+
+		$key = md5( $this->key );
+
+		return $this->deprecated
+			? @mcrypt_decrypt( MCRYPT_RIJNDAEL_256, $key, $encrypted, MCRYPT_MODE_CBC, md5( $key ) )
+			: mcrypt_decrypt( MCRYPT_RIJNDAEL_256, $key, $encrypted, MCRYPT_MODE_CBC, md5( $key ) );
 	}
 }
