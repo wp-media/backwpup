@@ -339,7 +339,7 @@ class BackWPup_Page_Settings {
 					        <label for="authentication_user_id">
 						        <select name="authentication_user_id" size="1" >
 							        <?php
-							        $users = get_users( array( 'who' => 'administrators', 'number' => 99, 'orderby' => 'display_name' ) );
+							        $users = get_users( array( 'role' => 'administrator', 'number' => 99, 'orderby' => 'display_name' ) );
 							        foreach ( $users as $user ) {
 								        echo '<option value="' . $user->ID . '" '. selected( $authentication[ 'user_id' ], $user->ID, FALSE ) .'>'. esc_attr( $user->display_name ) .'</option>';
 							        }

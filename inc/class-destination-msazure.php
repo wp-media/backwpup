@@ -82,6 +82,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 							<input id="idmsazuremaxbackups" name="msazuremaxbackups" type="number" min="0" step="1" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'msazuremaxbackups' ) ); ?>" class="small-text" />
 							&nbsp;<?php esc_html_e( 'Number of files to keep in folder.', 'backwpup' ); ?>
 						</label>
+						<p><?php _e( '<strong>Warning</strong>: Files belonging to this job are now tracked. Old backup archives which are untracked will not be automatically deleted.', 'backwpup' ) ?></p>
 					<?php } else { ?>
 						<label for="idmsazuresyncnodelete">
 							<input class="checkbox" value="1" type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'msazuresyncnodelete' ), true ); ?> name="msazuresyncnodelete" id="idmsazuresyncnodelete" />
@@ -310,7 +311,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 			if ( is_array( $blobs ) ) {
 				foreach ( $blobs as $blob ) {
 					$file = basename( $blob->getName() );
-					if ( $job_object->is_backup_archive( $file ) )
+					if ( $job_object->is_backup_archive( $file ) && $job_object->owns_backup_archive( $file ) == true )
 						$backupfilelist[ $blob->getProperties()->getLastModified()->getTimestamp() ] = $file;
 					$files[ $filecounter ][ 'folder' ]      = $job_object->steps_data[ $job_object->step_working ][ 'container_url' ] . "/" . dirname( $blob->getName() ) . "/";
 					$files[ $filecounter ][ 'file' ]        = $blob->getName();

@@ -309,69 +309,67 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 	 */
 	public function edit_form_post_save( $id ) {
 
-		$fileexclude = explode( ',', sanitize_text_field( stripslashes( str_replace( array( "\r\n", "\r" ), ',', $_POST[ 'fileexclude' ] ) ) ) );
-
-		foreach ( $fileexclude as $key => $value ) {
-			$fileexclude[ $key ] = str_replace( '//', '/', str_replace( '\\', '/', trim( $value ) ) );
-			if ( empty( $fileexclude[ $key ] ) ) {
-				unset( $fileexclude[ $key ] );
-			}
+		// Parse and save files to exclude
+		$exclude_input = filter_input( INPUT_POST , 'fileexclude' );
+		$to_exclude_list = $exclude_input ? str_replace( array( "\r\n", "\r" ), ',', $exclude_input ) : array();
+		$to_exclude_list and $to_exclude_list = sanitize_text_field( stripslashes( $to_exclude_list ) );
+		$to_exclude = $to_exclude_list ? explode( ',', $to_exclude_list ) : array();
+		$to_exclude_parsed = array();
+		foreach ( $to_exclude as $key => $value ) {
+			$normalized = wp_normalize_path( trim( $value ) );
+			$normalized and $to_exclude_parsed[$key] = $normalized;
 		}
-		sort( $fileexclude );
-		BackWPup_Option::update( $id, 'fileexclude', implode( ',', $fileexclude ) );
+		sort( $to_exclude_parsed );
+		BackWPup_Option::update( $id, 'fileexclude', implode( ',', $to_exclude_parsed ) );
+		unset( $exclude_input, $to_exclude_list, $to_exclude, $to_exclude_parsed, $normalized );
 
-		$dirinclude = explode( ',', sanitize_text_field( stripslashes( str_replace( array( "\r\n", "\r" ), ',', $_POST[ 'dirinclude' ] ) ) ) );
-		foreach ( $dirinclude as $key => $value ) {
-			$dirinclude[ $key ] = trailingslashit( str_replace( '//', '/', str_replace( '\\', '/', trim( $value ) ) ) );
-			if ( $dirinclude[ $key ] == '/' || empty( $dirinclude[ $key ] ) || ! is_dir( $dirinclude[ $key ] ) ) {
-				unset( $dirinclude[ $key ] );
-			}
+		// Parse and save folders to include
+		$include_input = filter_input( INPUT_POST , 'dirinclude' );
+		$include_list = $include_input ? str_replace( array( "\r\n", "\r" ), ',', $include_input ) : array();
+		$to_include = $include_list ? explode( ',', $include_list ) : array();
+		$to_include_parsed = array();
+		foreach ( $to_include as $key => $value ) {
+			$normalized = trailingslashit( wp_normalize_path( trim( $value ) ) );
+			$normalized and $normalized = filter_var( $normalized, FILTER_SANITIZE_URL );
+			$realpath = $normalized && $normalized !== '/' ? realpath( $normalized ) : false;
+			$realpath and $to_include_parsed[$key] = $realpath;
 		}
-		sort( $dirinclude );
-		BackWPup_Option::update( $id, 'dirinclude', implode( ',', $dirinclude ) );
+		sort( $to_include_parsed );
+		BackWPup_Option::update( $id, 'dirinclude', implode( ',', $to_include_parsed ) );
+		unset( $include_input, $include_list, $to_include, $to_include_parsed, $normalized, $realpath  );
 
-		BackWPup_Option::update( $id, 'backupexcludethumbs', ! empty( $_POST[ 'backupexcludethumbs' ] ) );
-		BackWPup_Option::update( $id, 'backupspecialfiles', ! empty( $_POST[ 'backupspecialfiles' ] ) );
-		BackWPup_Option::update( $id, 'backuproot', ! empty( $_POST[ 'backuproot' ] ) );
-		BackWPup_Option::update( $id, 'backupabsfolderup', ! empty( $_POST[ 'backupabsfolderup' ] ) );
-
-		if ( ! isset( $_POST[ 'backuprootexcludedirs' ] ) || ! is_array( $_POST[ 'backuprootexcludedirs' ] ) ) {
-			$_POST[ 'backuprootexcludedirs' ] = array();
+		// Parse and save boolean fields
+		$boolean_fields_def = array(
+			'backupexcludethumbs' => FILTER_VALIDATE_BOOLEAN,
+			'backupspecialfiles'  => FILTER_VALIDATE_BOOLEAN,
+			'backuproot'          => FILTER_VALIDATE_BOOLEAN,
+			'backupabsfolderup'   => FILTER_VALIDATE_BOOLEAN,
+			'backupcontent'       => FILTER_VALIDATE_BOOLEAN,
+			'backupplugins'       => FILTER_VALIDATE_BOOLEAN,
+			'backupthemes'        => FILTER_VALIDATE_BOOLEAN,
+			'backupuploads'       => FILTER_VALIDATE_BOOLEAN,
+		);
+		$boolean_data = filter_input_array( INPUT_POST, $boolean_fields_def );
+		$boolean_data or $boolean_data = array();
+		foreach( $boolean_fields_def as $key => $value ) {
+			BackWPup_Option::update( $id, $key, ! empty( $boolean_data[$key] ) );
 		}
-		sort( $_POST[ 'backuprootexcludedirs' ] );
-		BackWPup_Option::update( $id, 'backuprootexcludedirs', $_POST[ 'backuprootexcludedirs' ] );
+		unset( $boolean_fields_def, $boolean_data );
 
-		BackWPup_Option::update( $id, 'backupcontent', ! empty( $_POST[ 'backupcontent' ] ) );
-
-		if ( ! isset( $_POST[ 'backupcontentexcludedirs' ] ) || ! is_array( $_POST[ 'backupcontentexcludedirs' ] ) ) {
-			$_POST[ 'backupcontentexcludedirs' ] = array();
+		// Parse and save directories to exclude
+		$exclude_dirs_def = array(
+			'backuprootexcludedirs'    => array( 'filter' => FILTER_SANITIZE_URL, 'flags' => FILTER_FORCE_ARRAY ),
+			'backuppluginsexcludedirs' => array( 'filter' => FILTER_SANITIZE_URL, 'flags' => FILTER_FORCE_ARRAY ),
+			'backupthemesexcludedirs'  => array( 'filter' => FILTER_SANITIZE_URL, 'flags' => FILTER_FORCE_ARRAY ),
+			'backupuploadsexcludedirs' => array( 'filter' => FILTER_SANITIZE_URL, 'flags' => FILTER_FORCE_ARRAY ),
+		);
+		$exclude_dirs = filter_input_array( INPUT_POST, $exclude_dirs_def );
+		$exclude_dirs or $exclude_dirs = array();
+		foreach( $exclude_dirs_def as $key => $filter ) {
+			$value = ! empty( $exclude_dirs[$key] ) && is_array( $exclude_dirs[$key] ) ? $exclude_dirs[$key] : array();
+			BackWPup_Option::update( $id, $key, $value );
 		}
-		sort( $_POST[ 'backupcontentexcludedirs' ] );
-		BackWPup_Option::update( $id, 'backupcontentexcludedirs', $_POST[ 'backupcontentexcludedirs' ] );
-
-		BackWPup_Option::update( $id, 'backupplugins', ! empty( $_POST[ 'backupplugins' ] ) );
-
-		if ( ! isset( $_POST[ 'backuppluginsexcludedirs' ] ) || ! is_array( $_POST[ 'backuppluginsexcludedirs' ] ) ) {
-			$_POST[ 'backuppluginsexcludedirs' ] = array();
-		}
-		sort( $_POST[ 'backuppluginsexcludedirs' ] );
-		BackWPup_Option::update( $id, 'backuppluginsexcludedirs', $_POST[ 'backuppluginsexcludedirs' ] );
-
-		BackWPup_Option::update( $id, 'backupthemes', ! empty( $_POST[ 'backupthemes' ] ) );
-
-		if ( ! isset( $_POST[ 'backupthemesexcludedirs' ] ) || ! is_array( $_POST[ 'backupthemesexcludedirs' ] ) ) {
-			$_POST[ 'backupthemesexcludedirs' ] = array();
-		}
-		sort( $_POST[ 'backupthemesexcludedirs' ] );
-		BackWPup_Option::update( $id, 'backupthemesexcludedirs', $_POST[ 'backupthemesexcludedirs' ] );
-
-		BackWPup_Option::update( $id, 'backupuploads', ! empty( $_POST[ 'backupuploads' ] ) );
-
-		if ( ! isset( $_POST[ 'backupuploadsexcludedirs' ] ) || ! is_array( $_POST[ 'backupuploadsexcludedirs' ] ) ) {
-			$_POST[ 'backupuploadsexcludedirs' ] = array();
-		}
-		sort( $_POST[ 'backupuploadsexcludedirs' ] );
-		BackWPup_Option::update( $id, 'backupuploadsexcludedirs', $_POST[ 'backupuploadsexcludedirs' ] );
+		unset( $exclude_dirs_def, $exclude_dirs );
 	}
 
 	/**

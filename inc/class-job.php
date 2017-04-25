@@ -620,6 +620,19 @@ final class BackWPup_Job {
 		return $filename;
 	}
 
+	/**
+	 * Checks if the given archive belongs to this job.
+	 *
+	 * @param string $file
+	 *
+	 * @return bool
+	 */
+	public function owns_backup_archive( $file ) {
+		$prefix         = BackWPup_Option::get_archive_name_prefix( $this->job['jobid'] );
+		return substr( basename( $file ), 0, strlen( $prefix ) ) == $prefix;
+	}
+
+
 	private function write_running_file() {
 
 		$clone = clone $this;
@@ -751,7 +764,7 @@ final class BackWPup_Job {
 		//timestamp for log file
 		$debug_info = '';
 		if ( $this->is_debug() ) {
-			$debug_info = ' title="[Type: ' . $type . '|Line: ' . $line . '|File: ' . $in_file . '|Mem: ' . size_format( @memory_get_usage( true ), 2 ) . '|Mem Max: ' . size_format( @memory_get_peak_usage( true ), 2 ) . '|Mem Limit: ' . ini_get( 'memory_limit' ) . '|PID: ' . self::get_pid() . ' | UniqID: ' . $this->uniqid . '|Query\'s: ' . get_num_queries() . ']"';
+			$debug_info = ' title="[Type: ' . $type . '|Line: ' . $line . '|File: ' . $in_file . '|Mem: ' . size_format( @memory_get_usage( true ), 2 ) . '|Mem Max: ' . size_format( @memory_get_peak_usage( true ), 2 ) . '|Mem Limit: ' . ini_get( 'memory_limit' ) . '|PID: ' . self::get_pid() . ' | UniqID: ' . $this->uniqid . '|Queries: ' . get_num_queries() . ']"';
 		}
 		$timestamp = '<span datetime="' . date( 'c' ) . '" ' . $debug_info . '>[' . date( 'd-M-Y H:i:s', current_time( 'timestamp' ) ) . ']</span> ';
 

@@ -111,6 +111,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 							<input id="idrscmaxbackups" name="rscmaxbackups" type="number" min="0" step="1" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'rscmaxbackups' ) ); ?>" class="small-text" />
 							&nbsp;<?php esc_html_e( 'Number of files to keep in folder.', 'backwpup' ); ?>
 						</label>
+						<p><?php _e( '<strong>Warning</strong>: Files belonging to this job are now tracked. Old backup archives which are untracked will not be automatically deleted.', 'backwpup' ) ?></p>
 					<?php } else { ?>
 						<label for="idrscsyncnodelete">
 							<input class="checkbox" value="1" type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'rscsyncnodelete' ), true ); ?> name="rscsyncnodelete" id="idrscsyncnodelete" />
@@ -323,7 +324,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			while ( $object = $objlist->next() ) {
 				$file = basename( $object->getName() );
 				if ( $job_object->job[ 'rscdir' ] . $file == $object->getName() ) { //only in the folder and not in complete bucket
-					if ( $job_object->is_backup_archive( $file ) )
+					if ( $job_object->is_backup_archive( $file ) && $job_object->owns_backup_archive( $file ) == true )
 						$backupfilelist[ strtotime( $object->getLastModified() ) ] = $object;
 				}
 				$files[ $filecounter ][ 'folder' ]      = "RSC://" . $job_object->job[ 'rsccontainer' ] . "/" . dirname( $object->getName() ) . "/";

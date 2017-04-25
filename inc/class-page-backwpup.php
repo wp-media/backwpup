@@ -74,7 +74,7 @@ class BackWPup_Page_BackWPup {
 					<h3><?php _ex( 'Planning backups', 'Dashboard heading', 'backwpup' ); ?></h3>
 					<p><?php _e('BackWPup’s job wizards make planning and scheduling your backup jobs a breeze.','backwpup' ); echo ' '; _e('Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server.','backwpup'); ?></p>
 					<h3><?php _ex( 'Restoring backups', 'Dashboard heading', 'backwpup' ); ?></h3>
-					<p><?php _e( 'With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin or a plugin like <a href="http://wordpress.org/plugins/adminer/" target="_blank">Adminer</a> to restore your database backup files.', 'backwpup' ) ?></p>
+					<p><?php _e( 'With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin to restore your database backup files.', 'backwpup' ) ?></p>
 					<h3><?php _ex( 'Ready to set up a backup job?', 'Dashboard heading','backwpup' ); ?></h3>
 					<p><?php printf( __('Use one of the wizards to plan a backup, or use <a href="%s">expert mode</a> for full control over all options.','backwpup'), network_admin_url( 'admin.php') . '?page=backwpupeditjob' ); echo ' '; _e( '<strong>Please note: You are solely responsible for the security of your data; the authors of this plugin are not.</strong>', 'backwpup' ); ?></p>
 				</div>
@@ -83,7 +83,7 @@ class BackWPup_Page_BackWPup {
 					<h3><?php _ex( 'Planning backups', 'Dashboard heading', 'backwpup' ); ?></h3>
 					<p><?php _e('Use the short links in the <strong>First steps</strong> box to plan and schedule backup jobs.','backwpup' ); echo ' '; _e('Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server.','backwpup'); ?></p>
 					<h3><?php _ex( 'Restoring backups', 'Dashboard heading', 'backwpup' ); ?></h3>
-					<p><?php _e( 'With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin or a plugin like <a href="http://wordpress.org/plugins/adminer/" target="_blank">Adminer</a> to restore your database backup files.', 'backwpup' ) ?></p>
+					<p><?php _e( 'With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin to restore your database backup files.', 'backwpup' ) ?></p>
 					<h3><?php _ex( 'Ready to set up a backup job?', 'Dashboard heading','backwpup' ); ?></h3>
 					<p><?php printf( __('<a href="%s">Add a new backup job</a> and plan what you want to save.','backwpup'), network_admin_url( 'admin.php') . '?page=backwpupeditjob' ); ?>
 					<br /><?php _e( '<strong>Please note: You are solely responsible for the security of your data; the authors of this plugin are not.</strong>', 'backwpup' ); ?></p>
@@ -254,7 +254,7 @@ class BackWPup_Page_BackWPup {
 					<p><img class="backwpup-banner-img" src="<?php echo BackWPup::get_plugin_data( 'URL' ) . '/assets/images/backwpupbanner.png'; ?>" alt="BackWPup Banner" /></p>
 					<h3 class="backwpup-text-center"><?php _ex( 'Get access to:', 'Pro teaser box', 'backwpup' ); ?></h3>
 					<ul class="backwpup-text-center">
-						<li><?php _ex( 'First-class <strong>dedicated support</strong> at MarketPress Helpdesk.', 'Pro teaser box', 'backwpup' ); ?></li>
+						<li><?php _ex( 'First-class <strong>dedicated support</strong> at backwpup.com.', 'Pro teaser box', 'backwpup' ); ?></li>
 						<li><?php echo esc_html_x( 'Differential backups to Google Drive and other cloud storage service.', 'Pro teaser box', 'backwpup' ); ?></li>
 						<li><?php echo esc_html_x( 'Easy-peasy wizards to create and schedule backup jobs.', 'Pro teaser box', 'backwpup' ); ?></li>
 						<li><?php printf( '<a href="' . esc_html__( 'http://backwpup.com', 'backwpup' ) .'">%s</a>', _x( 'And more…', 'Pro teaser box, link text', 'backwpup' ) ); ?></li>

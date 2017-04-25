@@ -45,6 +45,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 			            <input id="idmaxbackups" name="maxbackups" type="number" min="0" step="1" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'maxbackups' ) ); ?>" class="small-text"/>
 			            &nbsp;<?php esc_html_e( 'Number of files to keep in folder.', 'backwpup' ); ?>
 		            </label>
+		            <p><?php _e( '<strong>Warning</strong>: Files belonging to this job are now tracked. Old backup archives which are untracked will not be automatically deleted.', 'backwpup' ) ?></p>
 	            <?php } else { ?>
 		            <label for="idbackupsyncnodelete">
 			            <input class="checkbox" value="1" type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'backupsyncnodelete' ), true ); ?> name="backupsyncnodelete" id="idbackupsyncnodelete"/>
@@ -191,7 +192,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 			while ( FALSE !== ( $file = readdir( $dir ) ) ) {
 				if ( is_writeable( $job_object->backup_folder . $file ) && ! is_dir( $job_object->backup_folder . $file ) && ! is_link( $job_object->backup_folder . $file ) ) {
 					//list for deletion
-					if ( $job_object->is_backup_archive( $file ) ) {
+					if ( $job_object->is_backup_archive( $file ) && $job_object->owns_backup_archive( $file ) == true ) {
 						$backupfilelist[ filemtime( $job_object->backup_folder . $file ) ] = $file;
 					}
 				}

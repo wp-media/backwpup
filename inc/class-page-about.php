@@ -368,7 +368,7 @@ class BackWPup_Page_About {
 							<img class="backwpup-banner-img" src="<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/backwpupbanner.png" />
                             <h1><?php esc_html_e( 'Welcome to BackWPup Pro', 'backwpup' ); ?></h1>
                             <p><?php esc_html_e( 'BackWPup’s job wizards make planning and scheduling your backup jobs a breeze.', 'backwpup' ); echo ' ';
-_e( 'Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server. With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin or a plugin like <a href="http://wordpress.org/plugins/adminer/" target="_blank">Adminer</a> to restore your database backup files.', 'backwpup' ); ?></p>
+_e( 'Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server. With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin to restore your database backup files.', 'backwpup' ); ?></p>
                             <p><?php echo str_replace( '\"','"', sprintf( __( 'Ready to <a href="%1$s">set up a backup job</a>? You can <a href="%2$s">use the wizards</a> or plan your backup in expert mode.', 'backwpup' ), network_admin_url( 'admin.php').'?page=backwpupeditjob' , network_admin_url( 'admin.php').'?page=backwpupwizard' ) ); ?></p>
                         </div>
 	                    <?php if ( '2016-06-30' > date( 'Y-m-d' ) ) { ?>
@@ -381,7 +381,7 @@ _e( 'Use your backup archives to save your entire WordPress installation includi
 							<img class="backwpup-banner-img" src="<?php echo esc_attr( BackWPup::get_plugin_data( 'URL' ));?>/assets/images/backwpupbanner.png" />
                             <h1><?php esc_html_e( 'Welcome to BackWPup', 'backwpup' ); ?></h1>
                             <p><?php
-_e( 'Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server. With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin or a plugin like <a href="http://wordpress.org/plugins/adminer/" target="_blank">Adminer</a> to restore your database backup files.', 'backwpup' ); ?></p>
+_e( 'Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server. With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin to restore your database backup files.', 'backwpup' ); ?></p>
                             <p><?php esc_html_e( 'Ready to set up a backup job? Use one of the wizards to plan what you want to save.', 'backwpup' ); ?></p>
                         </div>
 	                    <?php if ( '2016-06-30' > date( 'Y-m-d' ) ) { ?>

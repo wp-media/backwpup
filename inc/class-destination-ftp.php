@@ -65,6 +65,7 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 							<input id="idftpmaxbackups" name="ftpmaxbackups" type="number" min="0" step="1" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'ftpmaxbackups' ) ); ?>" class="small-text" />
 							&nbsp;<?php esc_html_e( 'Number of files to keep in folder.', 'backwpup' ); ?>
 						</label>
+						<p><?php _e( '<strong>Warning</strong>: Files belonging to this job are now tracked. Old backup archives which are untracked will not be automatically deleted.', 'backwpup' ) ?></p>
 					<?php } else { ?>
 						<label for="idftpsyncnodelete">
 							<input class="checkbox" value="1" type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'ftpsyncnodelete' ), true ); ?> name="ftpsyncnodelete" id="idftpsyncnodelete" />
@@ -351,7 +352,7 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 		if ( $filelist = ftp_nlist( $ftp_conn_id, '.' ) ) {
 			foreach ( $filelist as $file ) {
 				if ( basename( $file ) != '.' && basename( $file ) != '..' ) {
-					if ( $job_object->is_backup_archive( $file ) ) {
+					if ( $job_object->is_backup_archive( $file ) && $job_object->owns_backup_archive( $file ) == true ) {
 						$time = ftp_mdtm( $ftp_conn_id, $file );
 						if ( $time != - 1 )
 							$backupfilelist[ $time ] = basename( $file );

@@ -122,7 +122,7 @@ class BackWPup_Page_Editjob {
 				), true ) ? $_POST['archiveformat'] : '.zip';
 				BackWPup_Option::update( $jobid, 'archiveformat', $archiveformat );
 
-				BackWPup_Option::update( $jobid, 'archivename', BackWPup_Job::sanitize_file_name( $_POST['archivename'] ) );
+				BackWPup_Option::update( $jobid, 'archivename', BackWPup_Job::sanitize_file_name( BackWPup_Option::normalize_archive_name($_POST['archivename'] ) ) );
 				break;
 			case 'cron':
 				$activetype = in_array( $_POST['activetype'], array(
@@ -313,9 +313,7 @@ class BackWPup_Page_Editjob {
 		}
 		else {
 			//generate jobid if not exists
-			$newjobid = BackWPup_Option::get_job_ids();
-			sort( $newjobid );
-			$jobid = end( $newjobid ) + 1;
+			$jobid = BackWPup_Option::next_job_id();
 		}
 
 		$destinations = BackWPup::get_registered_destinations();
@@ -437,7 +435,8 @@ class BackWPup_Page_Editjob {
 						<tr class="nosync">
 							<th scope="row"><label for="archivename"><?php esc_html_e( 'Archive name', 'backwpup' ) ?></label></th>
 							<td>
-								<input name="archivename" type="text" id="archivename" placeholder="backwpup_%Y-%m-%d_%H-%i-%s" value="<?php echo esc_attr(BackWPup_Option::get( $jobid, 'archivename' ));?>" class="regular-text code" />
+								<input name="archivename" type="text" id="archivename" placeholder="%Y-%m-%d_%H-%i-%s" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'archivename' ) );?>" class="regular-text code" />
+								<p><?php printf( __( '<em>Note</em>: In order for backup file tracking to work, the archive name must begin with %s.', 'backwpup' ), BackWPup_Option::get_archive_name_prefix( $jobid ) ) ?></p>
 								<?php
 								$current_time = current_time( 'timestamp' );
 								$datevars    = array( '%d', '%j', '%m', '%n', '%Y', '%y', '%a', '%A', '%B', '%g', '%G', '%h', '%H', '%i', '%s' );
