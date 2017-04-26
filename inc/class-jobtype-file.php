@@ -289,7 +289,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 			<tr>
 				<th scope="row"><?php esc_html_e( 'Include special files', 'backwpup' ); ?></th>
 				<td>
-					<label for="idbackupspecialfiles"><input class="checkbox" id="idbackupspecialfiles" type="checkbox"<?php checked( BackWPup_Option::get( $main, 'backupspecialfiles' ), TRUE, TRUE ); ?> name="backupspecialfiles" value="1" /> <?php esc_html_e( 'Backup wp-config.php, robots.txt, nginx.conf, .htaccess, .htpasswd and favicon.ico from root if it is not included in backup.', 'backwpup' ); ?></label>
+					<label for="idbackupspecialfiles"><input class="checkbox" id="idbackupspecialfiles" type="checkbox"<?php checked( BackWPup_Option::get( $main, 'backupspecialfiles' ), TRUE, TRUE ); ?> name="backupspecialfiles" value="1" /> <?php esc_html_e( 'Backup wp-config.php, robots.txt, nginx.conf, .htaccess, .htpasswd, favicon.ico, and Web.config from root if it is not included in backup.', 'backwpup' ); ?></label>
 				</td>
 			</tr>
 			<tr>
@@ -495,6 +495,8 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 
 		//add extra files if selected
 		if ( ! empty( $job_object->job['backupspecialfiles'] ) ) {
+
+			// Special handling for wp-config.php
 			if ( is_readable( ABSPATH . 'wp-config.php' ) ) {
 				$job_object->additional_files_to_backup[] = str_replace( '\\', '/', ABSPATH . 'wp-config.php' );
 				$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), 'wp-config.php' ) );
@@ -504,25 +506,22 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 					$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), 'wp-config.php' ) );
 				}
 			}
-			if ( is_readable( $abs_path . '.htaccess' ) && empty( $job_object->job['backuproot'] ) ) {
-				$job_object->additional_files_to_backup[] = $abs_path . '.htaccess';
-				$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), '.htaccess' ) );
-			}
-			if ( is_readable( $abs_path . 'nginx.conf' ) && empty( $job_object->job['backuproot'] ) ) {
-				$job_object->additional_files_to_backup[] = $abs_path . 'nginx.conf';
-				$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), 'nginx.conf' ) );
-			}
-			if ( is_readable( $abs_path . '.htpasswd' ) && empty( $job_object->job['backuproot'] ) ) {
-				$job_object->additional_files_to_backup[] = $abs_path . '.htpasswd';
-				$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), '.htpasswd' ) );
-			}
-			if ( is_readable( $abs_path . 'robots.txt' ) && empty( $job_object->job['backuproot'] ) ) {
-				$job_object->additional_files_to_backup[] = $abs_path . 'robots.txt';
-				$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), 'robots.txt' ) );
-			}
-			if ( is_readable( $abs_path . 'favicon.ico' ) && empty( $job_object->job['backuproot'] ) ) {
-				$job_object->additional_files_to_backup[] = $abs_path . 'favicon.ico';
-				$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), 'favicon.ico' ) );
+
+			// Files to include
+			$special_files = array(
+				'.htaccess',
+				'nginx.conf',
+				'.htpasswd',
+				'robots.txt',
+				'favicon.ico',
+				'Web.config',
+			);
+
+			foreach ( $special_files as $file ) {
+				if ( is_readable( $abs_path . $file ) && empty( $job_object->job['backuproot'] ) ) {
+					$job_object->additional_files_to_backup[] = $abs_path . $file;
+					$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), $file ) );
+				}
 			}
 		}
 
