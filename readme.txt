@@ -1,9 +1,9 @@
 === BackWPup - WordPress Backup Plugin ===
-Contributors: inpsyde, danielhuesken, Bueltge, nullbyte
+Contributors: inpsyde, cocreation, danielhuesken, Bueltge, nullbyte
 Tags: Amazon, Amazon S3, back up, backup, chinese, cloud, cloud files, database, db backup, dropbox, dump, file, french, ftp, ftps, german, migrate, multisite, russian, schedule, sftp, storage, S3, time, upload, xml
 Requires at least: 3.9
 Tested up to: 4.7.2
-Stable tag: 3.3.6
+Stable tag: 3.4.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -157,6 +157,12 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 [You can find a detailed tutorial in the BackWPup documentation.](http://docs.backwpup.com/article/118-install-backwpup)
 
 == Changelog ==
+= Version 3.4.0 =
+* Improved: Migrated to Dropbox API V2.
+* Changed: Removed Adminer link from backend.
+* Added: Backup file tracking so backups from other jobs aren't accidentally deleted.
+* Fixed: Call to get_users was previously incorrect.
+
 = Version 3.3.7 =
 * Fixed: Services credentials lost after 3.3.6 update
 * Fixed: Removed all instances of PHP short echo tags and other minor PHP 5.2 compatibility issues
