@@ -38,7 +38,7 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 		<h3 class="title"><?php esc_html_e( 'Email address', 'backwpup' ); ?></h3>
 		<table class="form-table">
             <tr>
-                <th scope="row"><label for="emailaddress"><?php esc_html_e( 'To email address', 'backwpup' ); ?></label></th>
+                <th scope="row"><label for="emailaddress"><?php esc_html_e( 'To email address (separate with commas for multiple addresses)', 'backwpup' ); ?></label></th>
                 <td>
                     <input name="emailaddress" id="emailaddress" type="text" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailaddress' ) );?>" class="regular-text" />
                 </td>
@@ -176,7 +176,7 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 	 */
 	public function edit_form_post_save( $jobid ) {
 
-		BackWPup_Option::update( $jobid, 'emailaddress', isset( $_POST[ 'emailaddress' ] ) ? sanitize_email( $_POST[ 'emailaddress' ] ) : '' );
+		BackWPup_Option::update( $jobid, 'emailaddress', isset( $_POST['emailaddress'] ) ? implode( ', ', $this->get_email_array( $_POST['emailaddress'] ) ) : '' );
 		BackWPup_Option::update( $jobid, 'emailefilesize', ! empty( $_POST[ 'emailefilesize' ] ) ? absint( $_POST[ 'emailefilesize' ] ) : 0 );
 		BackWPup_Option::update( $jobid, 'emailsndemail', sanitize_email( $_POST[ 'emailsndemail' ] ) );
 		BackWPup_Option::update( $jobid, 'emailmethod', ( $_POST[ 'emailmethod' ] === '' || $_POST[ 'emailmethod' ] === 'mail' || $_POST[ 'emailmethod' ] === 'sendmail' || $_POST[ 'emailmethod' ] === 'smtp' ) ? $_POST[ 'emailmethod' ] : '' );
@@ -288,7 +288,7 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 			// Create a message
 			$message = Swift_Message::newInstance( sprintf( __( 'BackWPup archive from %1$s: %2$s', 'backwpup' ), date_i18n( 'd-M-Y H:i', $job_object->start_time, TRUE ), esc_attr($job_object->job[ 'name' ] ) ) );
 			$message->setFrom( array( $job_object->job[ 'emailsndemail' ] => $job_object->job[ 'emailsndemailname' ] ) );
-			$message->setTo( array( $job_object->job[ 'emailaddress' ] ) );
+			$message->setTo( $this->get_email_array( $job_object->job['emailaddress'] ) );
 			$message->setBody( sprintf( __( 'Backup archive: %s', 'backwpup' ), $job_object->backup_file ), 'text/plain', strtolower( get_bloginfo( 'charset' ) ) );
 			$message->attach( Swift_Attachment::fromPath( $job_object->backup_folder . $job_object->backup_file, $job_object->get_mime_type( $job_object->backup_folder . $job_object->backup_file ) ) );
 			// Send the message
@@ -413,7 +413,7 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 			// Create a message
 			$message = Swift_Message::newInstance( __( 'BackWPup archive sending TEST Message', 'backwpup' ) );
 			$message->setFrom( array( $_POST[ 'emailsndemail' ] => sanitize_email( $_POST[ 'emailsndemailname' ] ) ) );
-			$message->setTo( array( sanitize_email( $_POST[ 'emailaddress' ] ) ) );
+			$message->setTo( $this->get_email_array( $_POST['emailaddress'] ) );
 			$message->setBody( __( 'If this message reaches your inbox, sending backup archives via email should work for you.', 'backwpup' ) );
 			// Send the message
 			$result = $emailer->send( $message );
@@ -433,4 +433,25 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 		}
 		die();
 	}
+
+	/**
+	 * Get an array of emails from comma-separated string.
+	 *
+	 * @param string $emailString
+	 *
+	 * @return array
+	 */
+	private function get_email_array( $emailString ) {
+		$emails = explode( ',', sanitize_text_field( $emailString ) );
+
+		foreach ( $emails as $key => $email ) {
+			$emails[ $key ] = sanitize_email( trim( $email ) );
+			if ( ! is_email( $emails[ $key ] ) ) {
+				unset( $emails[ $key ] );
+			}
+		}
+
+		return $emails;
+	}
+
 }
