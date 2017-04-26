@@ -162,6 +162,8 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 * Changed: Removed Adminer link from backend.
 * Added: Backup file tracking so backups from other jobs aren't accidentally deleted.
 * Fixed: Call to get_users was previously incorrect.
+* Added: Ability to have backup file sent to multiple email addresses.
+* Added: Web.config is now included in list of special files to back up.
 
 = Version 3.3.7 =
 * Fixed: Services credentials lost after 3.3.6 update
