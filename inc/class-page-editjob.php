@@ -122,7 +122,7 @@ class BackWPup_Page_Editjob {
 				), true ) ? $_POST['archiveformat'] : '.zip';
 				BackWPup_Option::update( $jobid, 'archiveformat', $archiveformat );
 
-				BackWPup_Option::update( $jobid, 'archivename', BackWPup_Job::sanitize_file_name( BackWPup_Option::normalize_archive_name($_POST['archivename'] ) ) );
+				BackWPup_Option::update( $jobid, 'archivename', BackWPup_Job::sanitize_file_name( BackWPup_Option::normalize_archive_name( $_POST['archivename'], $jobid ) ) );
 				break;
 			case 'cron':
 				$activetype = in_array( $_POST['activetype'], array(
