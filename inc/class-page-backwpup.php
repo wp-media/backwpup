@@ -351,39 +351,47 @@ class BackWPup_Page_BackWPup {
 			$logfiles = array();
 			$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
 			$log_folder = BackWPup_File::get_absolute_path( $log_folder );
-			if ( is_readable( $log_folder ) && $dir = opendir( $log_folder ) ) {
-				while ( ( $file = readdir( $dir ) ) !== FALSE ) {
-					if ( is_readable( $log_folder . $file ) && is_file( $log_folder . $file ) && FALSE !== strpos( $file, 'backwpup_log_' ) && FALSE !== strpos( $file, '.html' ) ) {
-						$logfiles[ filemtime( $log_folder . $file ) ] = $file;
+			try {
+				$dir = new BackWPup_Directory( $log_folder );
+				if ( $dir->isReadable() ) {
+					foreach ( $dir as $file ) {
+						if ( $file->isReadable() && $file->isFile() && strpos( $file->getFilename(), 'backwpup_log_' ) !== false && strpos( $file->getFilename(), '.html' ) !== false ) {
+							$logfiles[ $file->getMTime() ] = clone $file;
+						}
 					}
+					krsort( $logfiles, SORT_NUMERIC );
 				}
-				closedir( $dir );
-				krsort( $logfiles, SORT_NUMERIC );
+			}
+				catch ( UnexpectedValueException $e ) {
+				echo '<tr><td colspan="3"><span style="color:red;font-weight:bold;">' .
+					sprintf( __( 'Could not open log folder: %s' ), $log_folder ) .
+					'</td></tr>';
 			}
 
 			if ( count( $logfiles ) > 0 ) {
 				$count = 0;
 				$alternate = TRUE;
 				foreach ( $logfiles as $logfile ) {
-					$logdata = BackWPup_Job::read_logheader( $log_folder . $logfile );
+					$logdata = BackWPup_Job::read_logheader( $logfile->getPathname() );
 					if ( ! $alternate ) {
 						echo '<tr>';
 						$alternate = TRUE;
-					} else {
+					}
+					else {
 						echo '<tr class="alternate">';
 						$alternate = FALSE;
 					}
 					echo '<td>' . sprintf( __( '%1$s at %2$s', 'backwpup' ), date_i18n( get_option( 'date_format' ) , $logdata[ 'logtime' ] ), date_i18n( get_option( 'time_format' ), $logdata[ 'logtime' ] ) ) . '</td>';
-					$log_name = str_replace( array( '.html', '.gz' ), '', basename( $logfile ) );
-					echo '<td><a class="thickbox" href="' . admin_url( 'admin-ajax.php' ) . '?&action=backwpup_view_log&log=' . $log_name .'&_ajax_nonce=' . wp_create_nonce( 'view-log_' . $log_name ) . '&amp;TB_iframe=true&amp;width=640&amp;height=440" title="' . esc_attr( basename( $logfile ) ) . '">' . esc_html( $logdata[ 'name' ] ) . '</i></a></td>';
+					$log_name = str_replace( array( '.html', '.gz' ), '', $logfile->getBasename() );
+					echo '<td><a class="thickbox" href="' . admin_url( 'admin-ajax.php?action=backwpup_view_log&log=' . $log_name .'&_ajax_nonce=' . wp_create_nonce( 'view-log_' . $log_name ) . '&TB_iframe=true&width=640&height=440' ) . '" title="' . esc_attr( $logfile->getBasename() ) . '">' . esc_html( $logdata['name'] ) . '</i></a></td>';
 					echo '<td>';
-					if ( $logdata[ 'errors' ] ) {
-						printf( '<span style="color:red;font-weight:bold;">' . _n( "%d ERROR", "%d ERRORS", $logdata[ 'errors' ], 'backwpup' ) . '</span><br />', $logdata[ 'errors' ] );
+					if ( $logdata['errors'] ) {
+						printf( '<span style="color:red;font-weight:bold;">' . _n( "%d ERROR", "%d ERRORS", $logdata['errors'], 'backwpup' ) . '</span><br />', $logdata[ 'errors' ] );
 					}
-					if ( $logdata[ 'warnings' ] ) {
-						printf( '<span style="color:#e66f00;font-weight:bold;">' . _n( "%d WARNING", "%d WARNINGS", $logdata[ 'warnings' ], 'backwpup' ) . '</span><br />', $logdata[ 'warnings' ] );
+					if ( $logdata['warnings'] ) {
+						printf( '<span style="color:#e66f00;font-weight:bold;">' . _n( "%d WARNING", "%d WARNINGS", $logdata['warnings'], 'backwpup' ) . '</span><br />', $logdata['warnings'] );
 					}
-					if ( ! $logdata[ 'errors' ] && ! $logdata[ 'warnings' ] ) {
+					if ( ! $logdata['errors'] && ! $logdata['warnings'] ) {
 						echo '<span style="color:green;font-weight:bold;">' . __( 'OK', 'backwpup' ) . '</span>';
 					}
 					echo '</td></tr>';

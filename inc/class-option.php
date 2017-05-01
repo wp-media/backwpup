@@ -27,6 +27,7 @@ final class BackWPup_Option {
 		add_site_option( 'backwpup_cfg_loglevel', 'normal_translated' );
 		add_site_option( 'backwpup_cfg_jobwaittimems', 0 );
 		add_site_option( 'backwpup_cfg_jobdooutput', 0 );
+		add_site_option( 'backwpup_cfg_windows', 0 );
 		//Logs
 		add_site_option( 'backwpup_cfg_maxlogs', 30 );
 		add_site_option( 'backwpup_cfg_gzlogs', 0 );

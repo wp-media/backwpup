@@ -72,29 +72,34 @@ class BackWPup_Cron {
 			}
 		}
 
-		//Compress not compressed logs
-		if ( is_readable( $log_folder ) && function_exists( 'gzopen' ) && get_site_option( 'backwpup_cfg_gzlogs' ) && ! is_object( $job_object ) ) {
-			//Compress old not compressed logs
-			if ( $dir = opendir( $log_folder ) ) {
+		try {
+			$dir = new BackWPup_Directory( $log_folder );
+
+			//Compress not compressed logs
+			if ( $dir->isReadable() && function_exists( 'gzopen' )
+				&& get_site_option( 'backwpup_cfg_gzlogs' ) && ! is_object( $job_object ) ) {
+				//Compress old not compressed logs
 				$jobids = BackWPup_Option::get_job_ids();
-				while ( FALSE !== ( $file = readdir( $dir ) ) ) {
-					if ( is_writeable( $log_folder . $file ) && '.html' == substr( $file, -5 ) ) {
-						$compress = new BackWPup_Create_Archive( $log_folder . $file . '.gz' );
-						if ( $compress->add_file( $log_folder . $file ) ) {
-							unlink( $log_folder . $file );
+				foreach ( $dir as $file ) {
+					if ( $file->isWritable() && '.html' == substr( $file->getFilename(), -5 ) ) {
+						$compress = new BackWPup_Create_Archive( $file->getPathname() . '.gz' );
+						if ( $compress->add_file( $file->getPathname() ) ) {
+							unlink( $file->getPathname() );
 							//change last logfile in jobs
 							foreach( $jobids as $jobid ) {
 								$job_logfile = BackWPup_Option::get( $jobid, 'logfile' );
-								if ( ! empty( $job_logfile ) && $job_logfile === $log_folder . $file ) {
-									BackWPup_Option::update( $jobid, 'logfile', $log_folder . $file . '.gz' );
+								if ( ! empty( $job_logfile ) && $job_logfile === $file->getPathname() ) {
+									BackWPup_Option::update( $jobid, 'logfile', $file->getPathname() . '.gz' );
 								}
 							}
 						}
 						unset( $compress );
 					}
 				}
-				closedir( $dir );
 			}
+		}
+		catch ( UnexpectedValueException $e ) {
+			$job_object->log( sprintf( __( "Could not open path: %s" ), $e->getMessage() ), E_USER_WARNING );
 		}
 
 		//Jobs cleanings

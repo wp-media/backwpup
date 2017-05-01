@@ -144,28 +144,31 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 		$files          = array();
 		$backup_folder  = BackWPup_Option::get( $jobid, 'backupdir' );
 		$backup_folder  = BackWPup_File::get_absolute_path( $backup_folder );
-		if ( is_dir( $backup_folder ) && $dir = opendir( $backup_folder ) ) { //make file list
-			while ( false !== ( $file = readdir( $dir ) ) ) {
-				if ( in_array( $file, array( '.', '..', 'index.php', '.htaccess', '.donotbackup' ), true ) || is_dir( $backup_folder . $file ) || is_link( $backup_folder . $file ) ) {
+
+		$dir = new BackWPup_Directory( $backup_folder );
+
+		if ( $dir->isDir() ) { //make file list
+			foreach ( $dir as $file ) {
+				if ( $file->isDot() || in_array( $file->getFilename(), array( 'index.php', '.htaccess', '.donotbackup' ), true ) || $file->isDir() || $file->isLink() ) {
 					continue;
 				}
-				if ( is_readable( $backup_folder . $file ) ) {
+
+				if ( $file->isReadable() ) {
 					//file list for backups
 					$files[ $filecounter ][ 'folder' ]      = $backup_folder;
-					$files[ $filecounter ][ 'file' ]        = $backup_folder . $file;
-					$files[ $filecounter ][ 'filename' ]    = $file;
+					$files[ $filecounter ][ 'file' ]        = $file->getPathname();
+					$files[ $filecounter ][ 'filename' ]    = $file->getFilename();
 					$files[ $filecounter ][ 'downloadurl' ] = add_query_arg( array(
 																				  'page'   => 'backwpupbackups',
 																				  'action' => 'downloadfolder',
-																				  'file'   => $file,
+																				  'file'   => $file->getFilename(),
 																				  'jobid'  => $jobid
 																			 ), network_admin_url( 'admin.php' ) );
-					$files[ $filecounter ][ 'filesize' ]    = filesize( $backup_folder . $file );
-					$files[ $filecounter ][ 'time' ]        = filemtime( $backup_folder . $file );
+					$files[ $filecounter ][ 'filesize' ]    = $file->getSize();
+					$files[ $filecounter ][ 'time' ]        = $file->getMTime();
 					$filecounter ++;
 				}
 			}
-			closedir( $dir );
 		}
 
 		return $files;
@@ -188,17 +191,25 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 		//Delete old Backupfiles
 		$backupfilelist = array();
 		$files          = array();
-		if ( is_writable( $job_object->backup_folder ) && $dir = opendir( $job_object->backup_folder ) ) { //make file list
-			while ( FALSE !== ( $file = readdir( $dir ) ) ) {
-				if ( is_writeable( $job_object->backup_folder . $file ) && ! is_dir( $job_object->backup_folder . $file ) && ! is_link( $job_object->backup_folder . $file ) ) {
-					//list for deletion
-					if ( $job_object->is_backup_archive( $file ) && $job_object->owns_backup_archive( $file ) == true ) {
-						$backupfilelist[ filemtime( $job_object->backup_folder . $file ) ] = $file;
+
+		try {
+			$dir = new BackWPup_Directory( $job_object->backup_folder );
+
+			if ( $dir->isWritable() ) { //make file list
+				foreach ( $dir as $file ) {
+					if ( $file->isWritable() && ! $file->isDir() && ! $file->isLink() ) {
+						//list for deletion
+						if ( $job_object->is_backup_archive( $file->getFilename() ) && $job_object->owns_backup_archive( $file->getFilename() ) ) {
+							$backupfilelist[ $file->getMTime() ] = clone $file;
+						}
 					}
 				}
 			}
-			closedir( $dir );
 		}
+		catch ( UnexpectedValueException $e ) {
+			$job_object->log( sprintf( __( "Could not open path: %s" ), $e->getMessage() ), E_USER_WARNING );
+		}
+
 		if ( $job_object->job[ 'maxbackups' ] > 0 ) {
 			if ( count( $backupfilelist ) > $job_object->job[ 'maxbackups' ] ) {
 				ksort( $backupfilelist );
@@ -206,9 +217,9 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 				while ( $file = array_shift( $backupfilelist ) ) {
 					if ( count( $backupfilelist ) < $job_object->job[ 'maxbackups' ] )
 						break;
-					unlink( $job_object->backup_folder . $file );
+					unlink( $file->getPathname() );
 					foreach ( $files as $key => $filedata ) {
-						if ( $filedata[ 'file' ] == $job_object->backup_folder . $file ) {
+						if ( $filedata[ 'file' ] == $file->getPathname() ) {
 							unset( $files[ $key ] );
 						}
 					}

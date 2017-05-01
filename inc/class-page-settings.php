@@ -41,6 +41,7 @@ class BackWPup_Page_Settings {
 			delete_site_option( 'backwpup_cfg_jobwaittimems' );
 			delete_site_option( 'backwpup_cfg_jobrunauthkey' );
 			delete_site_option( 'backwpup_cfg_jobdooutput' );
+			delete_site_option( 'backwpup_cfg_windows' );
 			delete_site_option( 'backwpup_cfg_maxlogs' );
 			delete_site_option( 'backwpup_cfg_gzlogs' );
 			delete_site_option( 'backwpup_cfg_protectfolders' );
@@ -74,6 +75,7 @@ class BackWPup_Page_Settings {
 		update_site_option( 'backwpup_cfg_loglevel', in_array( $_POST[ 'loglevel' ], array( 'normal_translated', 'normal', 'debug_translated', 'debug' ), true ) ? $_POST[ 'loglevel' ] : 'normal_translated' );
 		update_site_option( 'backwpup_cfg_jobwaittimems', absint( $_POST[ 'jobwaittimems' ] ) );
 		update_site_option( 'backwpup_cfg_jobdooutput', ! empty( $_POST[ 'jobdooutput' ] ) );
+		update_site_option( 'backwpup_cfg_windows', ! empty( $_POST[ 'windows' ] ) );
 		update_site_option( 'backwpup_cfg_maxlogs', absint( $_POST[ 'maxlogs' ] ) );
 		update_site_option( 'backwpup_cfg_gzlogs', ! empty( $_POST[ 'gzlogs' ] ) );
 		update_site_option( 'backwpup_cfg_protectfolders', ! empty( $_POST[ 'protectfolders' ] ) );
@@ -288,6 +290,19 @@ class BackWPup_Page_Settings {
 					            <?php _e( 'Enable an empty Output on backup working.', 'backwpup' ); ?>
 				            </label>
 				            <p class="description"><?php _e( 'This do an empty output on job working. This can help in some situations or can brake the working. You must test it.', 'backwpup' ); ?></p>
+			            </fieldset>
+		            </td>
+	            </tr>
+	            <tr>
+		            <th scope="row"><?php _e( 'Windows IIS compatibility', 'backwpup' ); ?></th>
+		            <td>
+			            <fieldset>
+				            <legend class="screen-reader-text"><span><?php _e( 'Enable compatibility with IIS on Windows.', 'backwpup' ); ?></span></legend>
+				            <label for="windows">
+					            <input name="windows" type="checkbox" id="windows" value="1"<?php checked( get_site_option( 'backwpup_cfg_windows' ), true ) ?> />
+					            <?php _e( 'Enable compatibility with IIS on Windows.', 'backwpup' ); ?>
+				            </label>
+				            <p class="description"><?php _e( 'There is a PHP bug (<a href="https://bugs.php.net/43817">bug #43817</a>), which is triggered on some versions of Windows and IIS. Checking this box will enable a workaround for that bug. Only enable if you are getting errors about &ldquo;Permission denied&rdquo; in your logs.', 'backwpup' ) ?></p>
 			            </fieldset>
 		            </td>
 	            </tr>

@@ -75,185 +75,40 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 				<th scope="row"><label for="idbackuproot"><?php esc_html_e( 'Backup WordPress install folder', 'backwpup' ); ?></label></th>
 				<td>
 					<?php
-					$folder = $abs_path;
-					if ( $folder ) {
-						$folder = untrailingslashit( str_replace( '\\', '/', $folder ) );
-						$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize') ) ? ' (' . size_format( BackWPup_File::get_folder_size( $folder, FALSE ), 2 ) . ')' : '';
-					}
+					$this->show_folder( 'root', $main, $abs_path );
 					?>
-					<input class="checkbox"
-						   type="checkbox"<?php checked( BackWPup_Option::get( $main, 'backuproot' ), TRUE, TRUE );?>
-						   name="backuproot" id="idbackuproot" value="1" /> <code title="<?php echo esc_attr(sprintf( __( 'Path as set by user (symlink?): %s', 'backwpup' ), $abs_path )); ?>"><?php echo esc_attr( $folder ); ?></code><?php echo esc_html( $folder_size ); ?>
-
-					<fieldset id="backuprootexcludedirs" style="padding-left:15px; margin:2px;">
-                        <legend><strong><?php  esc_html_e( 'Exclude:', 'backwpup' ); ?></strong></legend>
-						<?php
-						if ( $folder &&  $dir = opendir( $folder ) ) {
-							while ( ( $file = readdir( $dir ) ) !== FALSE ) {
-								$excludes = BackWPup_Option::get( $main, 'backuprootexcludedirs' );
-								if ( ! in_array( $file, array( '.', '..' ), true ) && is_dir( $folder . '/' . $file ) && ! in_array( trailingslashit( $folder . '/' . $file ), $this->get_exclude_dirs( $folder ), true ) ) {
-									$donotbackup = file_exists( $folder . '/' . $file . '/.donotbackup' );
-									$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize') ) ? ' (' . size_format( BackWPup_File::get_folder_size( $folder . '/' . $file ), 2 ) . ')' : '';
-									$title = '';
-									if ( $donotbackup ) {
-										$excludes[] = $file;
-										$title = ' title="' . esc_attr__( 'Excluded by .donotbackup file!', 'backwpup' ) . '"';
-									}
-									echo '<nobr><label for="idrootexcludedirs-'.sanitize_file_name( $file ).'"><input class="checkbox" type="checkbox"' . checked( in_array( $file, $excludes, true ), TRUE, FALSE ) . ' name="backuprootexcludedirs[]" id="idrootexcludedirs-' . sanitize_file_name( $file ) . '" value="' . esc_attr( $file ) . '"' . disabled( $donotbackup, TRUE, FALSE ) . $title . ' /> ' . esc_html( $file ) . esc_html( $folder_size ) . '</label><br /></nobr>';
-								}
-							}
-							closedir( $dir );
-						}
-						?>
-                    </fieldset>
 				</td>
 			</tr>
             <tr>
                 <th scope="row"><label for="idbackupcontent"><?php esc_html_e( 'Backup content folder', 'backwpup' ); ?></label></th>
                 <td>
 					<?php
-					$folder = realpath( WP_CONTENT_DIR );
-					if ( $folder ) {
-						$folder = untrailingslashit( str_replace( '\\', '/', $folder ) );
-						$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize') ) ? ' (' . size_format( BackWPup_File::get_folder_size( $folder, FALSE ), 2 ) . ')' : '';
-					}
+					$this->show_folder( 'content', $main, WP_CONTENT_DIR );
 					?>
-                    <input class="checkbox"
-                           type="checkbox"<?php checked( BackWPup_Option::get( $main, 'backupcontent' ), TRUE, TRUE );?>
-                           name="backupcontent" id="idbackupcontent" value="1" /> <code title="<?php echo esc_attr(sprintf( __( 'Path as set by user (symlink?): %s', 'backwpup' ),  WP_CONTENT_DIR )); ?>"><?php echo esc_html( $folder ); ?></code><?php echo esc_html($folder_size); ?>
-
-                    <fieldset id="backupcontentexcludedirs" style="padding-left:15px; margin:2px;">
-						<legend><strong><?php  esc_html_e( 'Exclude:', 'backwpup' ); ?></strong></legend>
-						<?php
-						if ( $folder &&  $dir = opendir( $folder ) ) {
-							$excludes = BackWPup_Option::get( $main, 'backupcontentexcludedirs' );
-							while ( ( $file = readdir( $dir ) ) !== FALSE ) {
-								if ( ! in_array( $file, array( '.', '..' ), true ) && is_dir( $folder . '/' . $file ) && ! in_array( trailingslashit( $folder . '/' . $file ), $this->get_exclude_dirs( $folder ), true ) ) {
-									$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize') ) ? ' (' . size_format( BackWPup_File::get_folder_size( $folder . '/' . $file ), 2 ) . ')' : '';
-									$donotbackup = file_exists( $folder . '/' . $file . '/.donotbackup' );
-									$title = '';
-									if ( $donotbackup ) {
-										$excludes[] = $file;
-										$title = ' title="' . esc_attr__( 'Excluded by .donotbackup file!', 'backwpup' ) . '"';
-									}
-									echo '<nobr><label for="idcontentexcludedirs-'.sanitize_file_name( $file ).'"><input class="checkbox" type="checkbox"' . checked( in_array( $file, $excludes, true ), TRUE, FALSE ) . ' name="backupcontentexcludedirs[]" id="idcontentexcludedirs-'.sanitize_file_name( $file ).'" value="' . esc_attr($file) . '"' . disabled( $donotbackup, TRUE, FALSE ) . $title . ' /> ' . esc_html( $file ) . esc_html($folder_size) . '</label><br /></nobr>';
-								}
-							}
-							closedir( $dir );
-						}
-						?>
-                    </fieldset>
                 </td>
             </tr>
             <tr>
                 <th scope="row"><label for="idbackupplugins"><?php _e( 'Backup plugins', 'backwpup' ); ?></label></th>
                 <td>
 					<?php
-					$folder = realpath( WP_PLUGIN_DIR );
-					if ( $folder ) {
-						$folder = untrailingslashit( str_replace( '\\', '/', $folder ) );
-						$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize') ) ? ' (' . size_format( BackWPup_File::get_folder_size( $folder, FALSE ), 2 ) . ')' : '';
-					}
+					$this->show_folder( 'plugins', $main, WP_PLUGIN_DIR );
 					?>
-                    <input class="checkbox"
-                           type="checkbox"<?php checked( BackWPup_Option::get( $main, 'backupplugins' ), TRUE, TRUE );?>
-                           name="backupplugins" id="idbackupplugins" value="1" /> <code title="<?php echo sprintf( __( 'Path as set by user (symlink?): %s', 'backwpup' ), esc_attr( WP_PLUGIN_DIR ) ); ?>"><?php echo esc_attr( $folder ); ?></code><?php echo $folder_size; ?>
-
-                    <fieldset id="backuppluginsexcludedirs" style="padding-left:15px; margin:2px;">
-						<legend><strong><?php  _e( 'Exclude:', 'backwpup' ); ?></strong></legend>
-						<?php
-						if ( $folder &&  $dir = opendir( $folder ) ) {
-							$excludes = BackWPup_Option::get( $main, 'backuppluginsexcludedirs' );
-							while ( ( $file = readdir( $dir ) ) !== FALSE ) {
-								if ( ! in_array( $file, array( '.', '..' ), true ) && is_dir( $folder . '/' . $file ) && ! in_array( trailingslashit( $folder . '/' . $file ), $this->get_exclude_dirs( $folder ), true ) ) {
-									$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize') ) ? ' (' . size_format( BackWPup_File::get_folder_size( $folder . '/' . $file ), 2 ) . ')' : '';
-									$donotbackup = file_exists( $folder . '/' . $file . '/.donotbackup' );
-									$title = '';
-									if ( $donotbackup ) {
-										$excludes[] = $file;
-										$title = ' title="' . esc_attr__( 'Excluded by .donotbackup file!', 'backwpup' ) . '"';
-									}
-									echo '<nobr><label for="idpluginexcludedirs-'.sanitize_file_name( $file ).'"><input class="checkbox" type="checkbox"' . checked( in_array( $file, $excludes, true ), TRUE, FALSE ) . ' name="backuppluginsexcludedirs[]" id="idpluginexcludedirs-'.sanitize_file_name( $file ).'" value="' . esc_attr($file) . '"' . disabled( $donotbackup, TRUE, FALSE ) . $title .  ' /> ' . esc_html( $file ) . esc_html($folder_size) . '</label><br /></nobr>';
-								}
-							}
-							closedir( $dir );
-						}
-						?>
-                    </fieldset>
                 </td>
             </tr>
             <tr>
                 <th scope="row"><label for="idbackupthemes"><?php esc_html_e( 'Backup themes', 'backwpup' ); ?></label></th>
                 <td>
 					<?php
-					$folder = realpath( get_theme_root() );
-					if ( $folder ) {
-						$folder = untrailingslashit( str_replace( '\\', '/', $folder ) );
-						$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize') ) ? ' (' . size_format( BackWPup_File::get_folder_size( $folder, FALSE ), 2 ) . ')' : '';
-					}
+					$this->show_folder( 'themes', $main, get_theme_root() );
 					?>
-                    <input class="checkbox"
-                           type="checkbox"<?php checked( BackWPup_Option::get( $main, 'backupthemes' ), TRUE, TRUE );?>
-                           name="backupthemes" id="idbackupthemes" value="1" /> <code title="<?php echo sprintf( __( 'Path as set by user (symlink?): %s', 'backwpup' ), esc_attr( get_theme_root() ) ); ?>"><?php echo esc_attr( $folder ); ?></code><?php echo $folder_size; ?>
-
-                    <fieldset id="backupthemesexcludedirs" style="padding-left:15px; margin:2px;">
-						<legend><strong><?php  _e( 'Exclude:', 'backwpup' ); ?></strong></legend>
-						<?php
-						if ( $folder &&  $dir = opendir( $folder ) ) {
-							$excludes = BackWPup_Option::get( $main, 'backupthemesexcludedirs' );
-							while ( ( $file = readdir( $dir ) ) !== FALSE ) {
-								if ( ! in_array( $file, array( '.', '..' ), true ) && is_dir( $folder . '/' . $file ) && ! in_array( trailingslashit( $folder . '/' . $file ), $this->get_exclude_dirs( $folder ), true ) ) {
-									$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize') ) ? ' (' . size_format( BackWPup_File::get_folder_size( $folder . '/' . $file ), 2 ) . ')' : '';
-									$donotbackup = file_exists( $folder . '/' . $file . '/.donotbackup' );
-									$title = '';
-									if ( $donotbackup ) {
-										$excludes[] = $file;
-										$title = ' title="' . esc_attr__( 'Excluded by .donotbackup file!', 'backwpup' ) . '"';
-									}
-									echo '<nobr><label for="idthemesexcludedirs-'.sanitize_file_name( $file ).'"><input class="checkbox" type="checkbox"' . checked( in_array( $file, $excludes, true ), TRUE, FALSE ) . ' name="backupthemesexcludedirs[]" id="idthemesexcludedirs-'.sanitize_file_name( $file ).'" value="' . $file . '"' . disabled( $donotbackup, TRUE, FALSE ) . $title . ' /> ' . esc_attr( $file ) . $folder_size . '</label><br /></nobr>';
-								}
-							}
-							closedir( $dir );
-						}
-						?>
-                    </fieldset>
                 </td>
             </tr>
             <tr>
                 <th scope="row"><label for="idbackupuploads"><?php esc_html_e( 'Backup uploads folder', 'backwpup' ); ?></label></th>
                 <td>
 					<?php
-					$folder = realpath( BackWPup_File::get_upload_dir() );
-					if ( $folder ) {
-						$folder = untrailingslashit( str_replace( '\\', '/', $folder ) );
-						$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize') ) ? ' (' . size_format( BackWPup_File::get_folder_size( $folder, FALSE ), 2 ) . ')' : '';
-					}
+					$this->show_folder( 'uploads', $main, BackWPup_File::get_upload_dir() );
 					?>
-                    <input class="checkbox"
-                           type="checkbox"<?php checked( BackWPup_Option::get( $main, 'backupuploads' ), TRUE, TRUE );?>
-                           name="backupuploads" id="idbackupuploads" value="1" /> <code title="<?php echo sprintf( __( 'Path as set by user (symlink?): %s', 'backwpup' ), esc_attr( BackWPup_File::get_upload_dir() ) ); ?>"><?php echo esc_html( $folder ); ?></code><?php echo $folder_size; ?>
-
-                    <fieldset id="backupuploadsexcludedirs" style="padding-left:15px; margin:2px;">
-						<legend><strong><?php  esc_html_e( 'Exclude:', 'backwpup' ); ?></strong></legend>
-						<?php
-						if ( $folder && $dir = opendir( $folder ) ) {
-							$excludes = BackWPup_Option::get( $main, 'backupuploadsexcludedirs' );
-							while ( ( $file = readdir( $dir ) ) !== FALSE ) {
-								if ( ! in_array( $file, array( '.', '..' ), true ) && is_dir( $folder . '/' . $file ) && ! in_array( trailingslashit( $folder . '/' . $file ), $this->get_exclude_dirs( $folder ), true ) ) {
-									$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize') ) ? ' (' . size_format( BackWPup_File::get_folder_size( $folder . '/' . $file ), 2 ) . ')' : '';
-									$donotbackup = file_exists( $folder . '/' . $file . '/.donotbackup' );
-									$title = '';
-									if ( $donotbackup ) {
-										$excludes[] = $file;
-										$title = ' title="' . esc_attr__( 'Excluded by .donotbackup file!', 'backwpup' ) . '"';
-									}
-									echo '<nobr><label for="iduploadexcludedirs-'.sanitize_file_name( $file ).'"><input class="checkbox" type="checkbox"' . checked( in_array( $file, $excludes, true ), TRUE, FALSE ) . ' name="backupuploadsexcludedirs[]" id="iduploadexcludedirs-'.sanitize_file_name( $file ).'" value="' . esc_attr($file) . '"' . disabled( $donotbackup, TRUE, FALSE ) . $title . ' /> ' . esc_html( $file ) . esc_html($folder_size) . '</label><br /></nobr>';
-								}
-							}
-							closedir( $dir );
-						}
-						?>
-                    </fieldset>
                 </td>
             </tr>
             <tr>
@@ -552,43 +407,45 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 
 		$folder = trailingslashit( $folder );
 
-		if ( $dir = opendir( $folder ) ) {
+		try {
+			$dir = new BackWPup_Directory( $folder );
 			//add folder to folder list
 			$job_object->add_folders_to_backup( $folder );
 			//scan folder
-			while ( false !== ( $file = readdir( $dir ) ) ) {
-				if ( in_array( $file, array( '.', '..' ), true ) ) {
+			foreach ( $dir as $file ) {
+				if ( $file->isDot() ) {
 					continue;
 				}
 				foreach ( $job_object->exclude_from_backup as $exclusion ) { //exclude files
 					$exclusion = trim( $exclusion );
-					if ( false !== stripos( $folder . $file, trim( $exclusion ) ) && ! empty( $exclusion ) ) {
+					if ( stripos( $file->getPathname(), $exclusion ) !== false && ! empty( $exclusion ) ) {
 						continue 2;
 					}
 				}
-				if ( is_dir( $folder . $file ) ) {
-					if ( in_array( trailingslashit( $folder . $file ), $excludedirs, true ) ) {
+				if ( $file->isDir() ) {
+					if ( in_array( trailingslashit( $file->getPathname() ), $excludedirs, true ) ) {
 						continue;
 					}
-					if ( file_exists( trailingslashit( $folder . $file ) . '.donotbackup' ) ) {
+					if ( file_exists( trailingslashit( $file->getPathname() ) . '.donotbackup' ) ) {
 						continue;
 					}
-					if ( ! is_readable( $folder . $file ) ) {
-						$job_object->log( sprintf( __( 'Folder "%s" is not readable!', 'backwpup' ), $folder . $file ), E_USER_WARNING );
+					if ( ! $file->isReadable() ) {
+						$job_object->log( sprintf( __( 'Folder "%s" is not readable!', 'backwpup' ), $file->getPathname() ), E_USER_WARNING );
 						continue;
 					}
-					$this->get_folder_list( $job_object, trailingslashit( $folder . $file ), $excludedirs, false );
+					$this->get_folder_list( $job_object, trailingslashit( $file->getPathname() ), $excludedirs, false );
 				}
 				if ( $first ) {
 					$job_object->do_restart_time();
 				}
 			}
-			closedir( $dir );
+		}
+		catch ( UnexpectedValueException $e ) {
+			$job_object->log( sprintf( __( "Could not open path: %s" ), $e->getMessage() ), E_USER_WARNING );
 		}
 
 		return true;
 	}
-
 
 	/**
 	 *
@@ -619,4 +476,52 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 
 		return array_unique( $excludedir );
 	}
+
+	/**
+	 * Shows a folder with the options of which files to exclude.
+	 *
+	 */
+	private function show_folder( $id, $jobid, $path ) {
+		$folder = realpath( $path );
+		if ( $folder ) {
+			$folder = untrailingslashit( str_replace( '\\', '/', $folder ) );
+			$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize') ) ? ' (' . size_format( BackWPup_File::get_folder_size( $folder, FALSE ), 2 ) . ')' : '';
+		}
+		?>
+		<input class="checkbox"
+			   type="checkbox"<?php checked( BackWPup_Option::get( $jobid, 'backup' . $id ) ) ?>
+			   name="backup<?php echo esc_attr( $id ) ?>" id="idbackup<?php echo esc_attr( $id ) ?>" value="1" /> <code title="<?php echo esc_attr( sprintf( __( 'Path as set by user (symlink?): %s', 'backwpup' ), $path ) ) ?>"><?php echo esc_attr( $folder ) ?></code><?php echo esc_html( $folder_size ) ?>
+
+		<fieldset id="backup<?php echo esc_attr( $id ) ?>excludedirs" style="padding-left:15px; margin:2px;">
+			<legend><strong><?php  esc_html_e( 'Exclude:', 'backwpup' ) ?></strong></legend>
+			<?php
+			try {
+				$dir = new BackWPup_Directory( $folder );
+				$excludes = BackWPup_Option::get( $jobid, 'backup' . $id . 'excludedirs' );
+				foreach ( $dir as $file ) {
+					if ( ! $file->isDot() && $file->isDir() && ! in_array( trailingslashit( $file->getPathname() ), $this->get_exclude_dirs( $folder ), true ) ) {
+						$donotbackup = file_exists( $file->getPathname() . '/.donotbackup' );
+						$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize' ) ) ? ' (' . size_format( BackWPup_File::get_folder_size( $file->getPathname() ), 2 ) . ')' : '';
+						$title = '';
+						if ( $donotbackup ) {
+							$excludes[] = $file->getFilename();
+							$title = ' title="' . esc_attr__( 'Excluded by .donotbackup file!', 'backwpup' ) . '"';
+						}
+						echo '<nobr><label for="id' . esc_attr( $id ) . 'excludedirs-' . sanitize_file_name( $file->getFilename() ) . '">' .
+							'<input class="checkbox" type="checkbox"' .
+							checked( in_array( $file->getFilename(), $excludes, true ), true, false ) . ' name="backup' . esc_attr( $id ) . 'excludedirs[]" ' .
+							'id="id' . esc_attr( $id ) . 'excludedirs-' . sanitize_file_name( $file->getFilename() ) . '" ' .
+							'value="' . esc_attr( $file->getFilename() ) . '"' . disabled( $donotbackup, true, false ) . $title . ' /> ' .
+							esc_html( $file->getFilename() ) . esc_html( $folder_size ) . '</label><br /></nobr>';
+					}
+				}
+			}
+			catch ( Exception $e ) {
+				// Do nothing, just skip
+			}
+			?>
+		</fieldset>
+		<?php
+	}
+
 }
