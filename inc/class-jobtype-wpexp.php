@@ -117,7 +117,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 			$job_object->substeps_done = 0;
 		}
 
-		add_filter( 'wxr_export_skip_postmeta', array( $this, 'wxr_filter_postmeta' ), 10, 2 );
+		add_filter( 'backwpup_wxr_export_skip_postmeta', array( $this, 'wxr_filter_postmeta' ), 10, 2 );
 
 		if ( $job_object->steps_data[ $job_object->step_working ]['substep'] == 'header' ) {
 
@@ -343,7 +343,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 
 						$postmeta = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->postmeta WHERE post_id = %d", $post->ID ) );
 						foreach ( $postmeta as $meta ) {
-							if ( apply_filters( 'wxr_export_skip_postmeta', false, $meta->meta_key, $meta ) ) {
+							if ( apply_filters( 'backwpup_wxr_export_skip_postmeta', false, $meta->meta_key, $meta ) ) {
 								continue;
 							}
 							$wxr_post .= "\t\t<wp:postmeta>\n\t\t\t<wp:meta_key>" . $meta->meta_key ."</wp:meta_key>\n\t\t\t<wp:meta_value>" .$this->wxr_cdata( $meta->meta_value ) ."</wp:meta_value>\n\t\t</wp:postmeta>\n";
@@ -394,7 +394,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 			$job_object->do_restart_time();
 		}
 
-		remove_filter( 'wxr_export_skip_postmeta', array( $this, 'wxr_filter_postmeta' ), 10 );
+		remove_filter( 'backwpup_wxr_export_skip_postmeta', array( $this, 'wxr_filter_postmeta' ), 10 );
 
 		if ( $job_object->steps_data[ $job_object->step_working ]['substep'] == 'check' ) {
 
