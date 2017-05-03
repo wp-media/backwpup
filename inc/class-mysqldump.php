@@ -518,6 +518,9 @@ class BackWPup_MySQLDump {
 					$value = "NULL";
 				} elseif ( in_array( (int) $fieldinfo[ $key ]->type, array( MYSQLI_TYPE_DECIMAL, MYSQLI_TYPE_TINY, MYSQLI_TYPE_SHORT, MYSQLI_TYPE_LONG,  MYSQLI_TYPE_FLOAT, MYSQLI_TYPE_DOUBLE, MYSQLI_TYPE_LONGLONG, MYSQLI_TYPE_INT24 ), true ) ) {//is value numeric no esc
 					$value = empty( $value ) ? 0 : $value;
+				} elseif ( $fieldinfo[ $key ]->flags & ( MYSQLI_BLOB_FLAG | MYSQLI_BINARY_FLAG ) ) {//is value binary or blob
+					$hex = unpack( 'H*', $value );
+					$value = empty( $value ) ? "''" : "0x$hex[1]";
 				} else {
 					$value = "'" . $this->mysqli->real_escape_string( $value ) . "'";
 				}
