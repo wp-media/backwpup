@@ -568,7 +568,7 @@ final class BackWPup_Job {
 			unlink( BackWPup::get_plugin_data( 'TEMP' ) . $name );
 		}
 
-		return $name;
+		return BackWPup_Option::normalize_archive_name( $name, $this->job['jobid'] );
 	}
 
 	/**

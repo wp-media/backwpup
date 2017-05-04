@@ -340,6 +340,11 @@ final class BackWPup_Option {
 					// Append the job id
 					$parts[1] .= sprintf( '%02d', $jobid );
 				}
+				elseif ( $matches[1] != $jobid ) {
+					// This isn't the job ID you're looking for
+					// So fix, append the correct one
+					$parts[1] = $hash . sprintf( '%02d', $jobid );
+				}
 			}
 			else {
 				// Hash not included, so insert
