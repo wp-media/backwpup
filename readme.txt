@@ -164,6 +164,9 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 * Fixed: Call to get_users was previously incorrect.
 * Added: Ability to have backup file sent to multiple email addresses.
 * Added: Web.config is now included in list of special files to back up.
+* Fixed: error for some users when generating XML export.
+* Fixed: opendir permission denied warning on some versions of IIS.
+* Improved: accuracy of binary column export.
 
 = Version 3.3.7 =
 * Fixed: Services credentials lost after 3.3.6 update
