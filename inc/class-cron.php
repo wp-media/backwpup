@@ -99,7 +99,7 @@ class BackWPup_Cron {
 			}
 		}
 		catch ( UnexpectedValueException $e ) {
-			$job_object->log( sprintf( __( "Could not open path: %s" ), $e->getMessage() ), E_USER_WARNING );
+			$job_object->log( sprintf( __( "Could not open path: %s", 'backwpup' ), $e->getMessage() ), E_USER_WARNING );
 		}
 
 		//Jobs cleanings

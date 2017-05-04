@@ -207,7 +207,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 			}
 		}
 		catch ( UnexpectedValueException $e ) {
-			$job_object->log( sprintf( __( "Could not open path: %s" ), $e->getMessage() ), E_USER_WARNING );
+			$job_object->log( sprintf( __( "Could not open path: %s", 'backwpup' ), $e->getMessage() ), E_USER_WARNING );
 		}
 
 		if ( $job_object->job[ 'maxbackups' ] > 0 ) {

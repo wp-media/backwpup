@@ -1001,7 +1001,7 @@ final class BackWPup_Job {
 				}
 			}
 			catch ( UnexpectedValueException $e ) {
-				$this->log( sprintf( __( "Could not open path: %s" ), $e->getMessage() ), E_USER_WARNING );
+				$this->log( sprintf( __( "Could not open path: %s", 'backwpup' ), $e->getMessage() ), E_USER_WARNING );
 			}
 			if ( count( $log_file_list ) > 0 ) {
 				krsort( $log_file_list, SORT_NUMERIC );
@@ -1139,7 +1139,7 @@ final class BackWPup_Job {
 			}
 		}
 		catch ( UnexpectedValueException $e ) {
-			$this->log( sprintf( __( "Could not open path: %s" ), $e->getMessage() ), E_USER_WARNING );
+			$this->log( sprintf( __( "Could not open path: %s", 'backwpup' ), $e->getMessage() ), E_USER_WARNING );
 		}
 	}
 
@@ -1736,7 +1736,7 @@ final class BackWPup_Job {
 
 		}
 		catch ( UnexpectedValueException $e ) {
-			$this->log( sprintf( __( "Could not open path: %s" ), $e->getMessage() ), E_USER_WARNING );
+			$this->log( sprintf( __( "Could not open path: %s", 'backwpup' ), $e->getMessage() ), E_USER_WARNING );
 		}
 
 		return $files;

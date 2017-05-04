@@ -441,7 +441,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 			}
 		}
 		catch ( UnexpectedValueException $e ) {
-			$job_object->log( sprintf( __( "Could not open path: %s" ), $e->getMessage() ), E_USER_WARNING );
+			$job_object->log( sprintf( __( "Could not open path: %s", 'backwpup' ), $e->getMessage() ), E_USER_WARNING );
 		}
 
 		return true;

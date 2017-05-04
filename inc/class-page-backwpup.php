@@ -364,7 +364,7 @@ class BackWPup_Page_BackWPup {
 			}
 				catch ( UnexpectedValueException $e ) {
 				echo '<tr><td colspan="3"><span style="color:red;font-weight:bold;">' .
-					sprintf( __( 'Could not open log folder: %s' ), $log_folder ) .
+					sprintf( __( 'Could not open log folder: %s', 'backwpup' ), $log_folder ) .
 					'</td></tr>';
 			}
 
