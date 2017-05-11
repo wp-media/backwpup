@@ -46,8 +46,8 @@ class BackWPup_Page_Logs extends WP_List_Table {
 
 		//load logs
 		$logfiles = array();
-		$dir = new BackWPup_Directory( $this->log_folder );
-		if ( $dir->isReadable() ) {
+		if ( is_readable( $this->log_folder ) ) {
+			$dir = new BackWPup_Directory( $this->log_folder );
 			foreach ( $dir as $file ) {
 				if ( $file->isFile() && $file->isReadable() && strpos( $file->getFilename(), 'backwpup_log_' ) !== false && strpos( $file->getFilename(), '.html' ) !== false ) {
 					$logfiles[] = $file->getFilename();

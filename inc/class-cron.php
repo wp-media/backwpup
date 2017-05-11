@@ -72,13 +72,13 @@ class BackWPup_Cron {
 			}
 		}
 
-		try {
-			$dir = new BackWPup_Directory( $log_folder );
-
-			//Compress not compressed logs
-			if ( $dir->isReadable() && function_exists( 'gzopen' )
-				&& get_site_option( 'backwpup_cfg_gzlogs' ) && ! is_object( $job_object ) ) {
-				//Compress old not compressed logs
+		//Compress not compressed logs
+		if ( is_readable( $log_folder ) && function_exists( 'gzopen' )
+			&& get_site_option( 'backwpup_cfg_gzlogs' ) && ! is_object( $job_object ) ) {
+			//Compress old not compressed logs
+			try {
+				$dir = new BackWPup_Directory( $log_folder );
+			
 				$jobids = BackWPup_Option::get_job_ids();
 				foreach ( $dir as $file ) {
 					if ( $file->isWritable() && '.html' == substr( $file->getFilename(), -5 ) ) {
@@ -97,9 +97,9 @@ class BackWPup_Cron {
 					}
 				}
 			}
-		}
-		catch ( UnexpectedValueException $e ) {
-			$job_object->log( sprintf( __( "Could not open path: %s", 'backwpup' ), $e->getMessage() ), E_USER_WARNING );
+			catch ( UnexpectedValueException $e ) {
+				$job_object->log( sprintf( __( "Could not open path: %s", 'backwpup' ), $e->getMessage() ), E_USER_WARNING );
+			}
 		}
 
 		//Jobs cleanings

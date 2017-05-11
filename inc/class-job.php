@@ -989,19 +989,19 @@ final class BackWPup_Job {
 		if ( get_site_option( 'backwpup_cfg_maxlogs' ) ) {
 			$log_file_list = array();
 			$log_folder    = trailingslashit( dirname( $this->logfile ) );
-			try {
-				$dir = new BackWPup_Directory( $log_folder );
+			if ( is_readable( $log_folder ) ) { //make file list
+				try {
+					$dir = new BackWPup_Directory( $log_folder );
 
-				if ( $dir->isReadable() ) { //make file list
 					foreach ( $dir as $file ) {
 						if ( ! $file->isDot() && strpos( $file->getFilename(), 'backwpup_log_' ) === 0 && strpos( $file->getFilename(), '.html' ) !== false ) {
 							$log_file_list[ $file->getMTime() ] = clone $file;
 						}
 					}
 				}
-			}
-			catch ( UnexpectedValueException $e ) {
-				$this->log( sprintf( __( "Could not open path: %s", 'backwpup' ), $e->getMessage() ), E_USER_WARNING );
+				catch ( UnexpectedValueException $e ) {
+					$this->log( sprintf( __( "Could not open path: %s" ), $e->getMessage() ), E_USER_WARNING );
+				}
 			}
 			if ( count( $log_file_list ) > 0 ) {
 				krsort( $log_file_list, SORT_NUMERIC );
@@ -1125,9 +1125,9 @@ final class BackWPup_Job {
 		$temp_dir            = BackWPup::get_plugin_data( 'TEMP' );
 		$do_not_delete_files = array( '.htaccess', 'nginx.conf', 'index.php', '.', '..', '.donotbackup' );
 
-		try {
-			$dir = new BackWPup_Directory( $temp_dir );
-			if ( $dir->isWritable() ) {
+		if ( is_writable( $temp_dir ) ) {
+			try {
+				$dir = new BackWPup_Directory( $temp_dir );
 				foreach ( $dir as $file ) {
 					if ( in_array( $file->getFilename(), $do_not_delete_files, true ) || $file->isDir() || $file->isLink() ) {
 						continue;
@@ -1137,9 +1137,9 @@ final class BackWPup_Job {
 					}
 				}
 			}
-		}
-		catch ( UnexpectedValueException $e ) {
-			$this->log( sprintf( __( "Could not open path: %s", 'backwpup' ), $e->getMessage() ), E_USER_WARNING );
+			catch ( UnexpectedValueException $e ) {
+				$this->log( sprintf( __( "Could not open path: %s" ), $e->getMessage() ), E_USER_WARNING );
+			}
 		}
 	}
 
@@ -1694,18 +1694,18 @@ final class BackWPup_Job {
 		$files  = array();
 		$folder = trailingslashit( $folder );
 
+		if ( ! is_dir( $folder ) ) {
+			$this->log( sprintf( _x( 'Folder %s does not exist', 'Folder name', 'backwpup' ), $folder ), E_USER_WARNING );
+			return $files;
+		}
+
+		if ( ! is_readable( $folder ) ) {
+			$this->log( sprintf( _x( 'Folder %s is not readable', 'Folder name', 'backwpup' ), $folder ), E_USER_WARNING );
+			return $files;
+		}
+
 		try {
 			$dir = new BackWPup_Directory( $folder );
-	
-			if ( ! $dir->isDir() ) {
-				$this->log( sprintf( _x( 'Folder %s does not exist', 'Folder name', 'backwpup' ), $folder ), E_USER_WARNING );
-				return $files;
-			}
-	
-			if ( ! $dir->isReadable() ) {
-				$this->log( sprintf( _x( 'Folder %s is not readable', 'Folder name', 'backwpup' ), $folder ), E_USER_WARNING );
-				return $files;
-			}
 	
 			foreach ( $dir as $file ) {
 				if ( $file->isDir() ) {
@@ -1717,7 +1717,7 @@ final class BackWPup_Job {
 						continue 2;
 					}
 				}
-				if ( $this->job['backupexcludethumbs'] && strpos( $dir->getPathname(), BackWPup_File::get_upload_dir() ) !== false && preg_match( "/\-[0-9]{1,4}x[0-9]{1,4}.+\.(jpg|png|gif)$/i", $file->getFilename() ) ) {
+				if ( $this->job['backupexcludethumbs'] && strpos( $folder, BackWPup_File::get_upload_dir() ) !== false && preg_match( "/\-[0-9]{1,4}x[0-9]{1,4}.+\.(jpg|png|gif)$/i", $file->getFilename() ) ) {
 					continue;
 				}
 				if ( $file->isLink() ) {
@@ -1736,7 +1736,7 @@ final class BackWPup_Job {
 
 		}
 		catch ( UnexpectedValueException $e ) {
-			$this->log( sprintf( __( "Could not open path: %s", 'backwpup' ), $e->getMessage() ), E_USER_WARNING );
+			$this->log( sprintf( __( "Could not open path: %s" ), $e->getMessage() ), E_USER_WARNING );
 		}
 
 		return $files;

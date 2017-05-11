@@ -145,9 +145,9 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 		$backup_folder  = BackWPup_Option::get( $jobid, 'backupdir' );
 		$backup_folder  = BackWPup_File::get_absolute_path( $backup_folder );
 
-		$dir = new BackWPup_Directory( $backup_folder );
+		if ( is_dir( $backup_folder ) ) { //make file list
+			$dir = new BackWPup_Directory( $backup_folder );
 
-		if ( $dir->isDir() ) { //make file list
 			foreach ( $dir as $file ) {
 				if ( $file->isDot() || in_array( $file->getFilename(), array( 'index.php', '.htaccess', '.donotbackup' ), true ) || $file->isDir() || $file->isLink() ) {
 					continue;
@@ -192,10 +192,10 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 		$backupfilelist = array();
 		$files          = array();
 
-		try {
-			$dir = new BackWPup_Directory( $job_object->backup_folder );
+		if ( is_writable( $job_object->backup_folder ) ) { //make file list
+			try {
+				$dir = new BackWPup_Directory( $job_object->backup_folder );
 
-			if ( $dir->isWritable() ) { //make file list
 				foreach ( $dir as $file ) {
 					if ( $file->isWritable() && ! $file->isDir() && ! $file->isLink() ) {
 						//list for deletion
@@ -205,9 +205,9 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 					}
 				}
 			}
-		}
-		catch ( UnexpectedValueException $e ) {
-			$job_object->log( sprintf( __( "Could not open path: %s", 'backwpup' ), $e->getMessage() ), E_USER_WARNING );
+			catch ( UnexpectedValueException $e ) {
+				$job_object->log( sprintf( __( "Could not open path: %s", 'backwpup' ), $e->getMessage() ), E_USER_WARNING );
+			}
 		}
 
 		if ( $job_object->job[ 'maxbackups' ] > 0 ) {

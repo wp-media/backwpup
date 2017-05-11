@@ -351,9 +351,9 @@ class BackWPup_Page_BackWPup {
 			$logfiles = array();
 			$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
 			$log_folder = BackWPup_File::get_absolute_path( $log_folder );
-			try {
-				$dir = new BackWPup_Directory( $log_folder );
-				if ( $dir->isReadable() ) {
+			if ( is_readable( $log_folder ) ) {
+				try {
+					$dir = new BackWPup_Directory( $log_folder );
 					foreach ( $dir as $file ) {
 						if ( $file->isReadable() && $file->isFile() && strpos( $file->getFilename(), 'backwpup_log_' ) !== false && strpos( $file->getFilename(), '.html' ) !== false ) {
 							$logfiles[ $file->getMTime() ] = clone $file;
@@ -361,11 +361,11 @@ class BackWPup_Page_BackWPup {
 					}
 					krsort( $logfiles, SORT_NUMERIC );
 				}
-			}
-				catch ( UnexpectedValueException $e ) {
-				echo '<tr><td colspan="3"><span style="color:red;font-weight:bold;">' .
-					sprintf( __( 'Could not open log folder: %s', 'backwpup' ), $log_folder ) .
-					'</td></tr>';
+					catch ( UnexpectedValueException $e ) {
+					echo '<tr><td colspan="3"><span style="color:red;font-weight:bold;">' .
+						sprintf( __( 'Could not open log folder: %s', 'backwpup' ), $log_folder ) .
+						'</td></tr>';
+				}
 			}
 
 			if ( count( $logfiles ) > 0 ) {
