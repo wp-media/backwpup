@@ -160,8 +160,15 @@ return $files_size;
 			$server_software = strtolower( $_SERVER[ 'SERVER_SOFTWARE' ] );
 			//IIS
 			if ( strstr( $server_software, 'microsoft-iis' ) ) {
-				if ( ! file_exists( $folder . '/web.config' ) ) {
-					file_put_contents( $folder . '/web.config', "<configuration>" . PHP_EOL . "\t<system.webServer>" . PHP_EOL . "\t\t<authorization>" . PHP_EOL . "\t\t\t<deny users=" * " />" . PHP_EOL . "\t\t</authorization>" . PHP_EOL . "\t</system.webServer>" . PHP_EOL . "</configuration>" );
+				if ( ! file_exists( $folder . '/Web.config' ) ) {
+					file_put_contents( $folder . '/Web.config',
+						"<configuration>" . PHP_EOL .
+						"\t<system.webServer>" . PHP_EOL .
+						"\t\t<authorization>" . PHP_EOL .
+						"\t\t\t<deny users=\"*\" />" . PHP_EOL .
+						"\t\t</authorization>" . PHP_EOL .
+						"\t</system.webServer>" . PHP_EOL .
+						"</configuration>" );
 				}
 			} //Nginx
 			elseif ( strstr( $server_software, 'nginx' ) ) {
