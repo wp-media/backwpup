@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BackWPup Pro 3.3.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/backwpup-pro\n"
-"POT-Creation-Date: 2017-05-02 12:45:00+00:00\n"
+"POT-Creation-Date: 2017-05-22 17:29:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -353,8 +353,8 @@ msgstr ""
 msgid "Aborted, because no progress for one hour!"
 msgstr ""
 
-#: inc/class-cron.php:102 inc/class-destination-folder.php:210
-#: inc/class-job.php:1004 inc/class-job.php:1142 inc/class-job.php:1740
+#: inc/class-cron.php:101 inc/class-destination-folder.php:209
+#: inc/class-job.php:1003 inc/class-job.php:1141 inc/class-job.php:1739
 #: inc/class-jobtype-file.php:444
 msgid "Could not open path: %s"
 msgstr ""
@@ -460,20 +460,20 @@ msgstr ""
 
 #: inc/class-destination-dropbox.php:118 inc/class-destination-folder.php:46
 #: inc/class-destination-ftp.php:66 inc/class-destination-msazure.php:83
-#: inc/class-destination-rsc.php:112 inc/class-destination-s3.php:122
+#: inc/class-destination-rsc.php:112 inc/class-destination-s3.php:121
 #: inc/class-destination-sugarsync.php:98
 #: inc/pro/class-destination-dropbox.php:51
 #: inc/pro/class-destination-folder.php:43
 #: inc/pro/class-destination-gdrive.php:90
 #: inc/pro/class-destination-gdrive.php:323
 #: inc/pro/class-destination-msazure.php:45
-#: inc/pro/class-destination-rsc.php:65 inc/pro/class-destination-s3.php:74
+#: inc/pro/class-destination-rsc.php:65 inc/pro/class-destination-s3.php:73
 msgid "Number of files to keep in folder."
 msgstr ""
 
 #: inc/class-destination-dropbox.php:120 inc/class-destination-folder.php:48
 #: inc/class-destination-ftp.php:68 inc/class-destination-msazure.php:85
-#: inc/class-destination-rsc.php:114 inc/class-destination-s3.php:124
+#: inc/class-destination-rsc.php:114 inc/class-destination-s3.php:123
 #: inc/class-destination-sugarsync.php:100
 #: inc/pro/class-destination-gdrive.php:92
 #: inc/pro/class-destination-glacier.php:109
@@ -484,7 +484,7 @@ msgstr ""
 
 #: inc/class-destination-dropbox.php:124 inc/class-destination-folder.php:52
 #: inc/class-destination-ftp.php:72 inc/class-destination-msazure.php:89
-#: inc/class-destination-rsc.php:118 inc/class-destination-s3.php:128
+#: inc/class-destination-rsc.php:118 inc/class-destination-s3.php:127
 #: inc/class-destination-sugarsync.php:104
 #: inc/pro/class-destination-dropbox.php:54
 #: inc/pro/class-destination-folder.php:48
@@ -492,7 +492,7 @@ msgstr ""
 #: inc/pro/class-destination-gdrive.php:98
 #: inc/pro/class-destination-gdrive.php:328
 #: inc/pro/class-destination-msazure.php:56
-#: inc/pro/class-destination-rsc.php:70 inc/pro/class-destination-s3.php:79
+#: inc/pro/class-destination-rsc.php:70 inc/pro/class-destination-s3.php:78
 #: inc/pro/class-destination-sugarsync.php:65
 msgid "Do not delete files while syncing to destination!"
 msgstr ""
@@ -842,8 +842,8 @@ msgid "Backup transferred to FTP server: %s"
 msgstr ""
 
 #: inc/class-destination-ftp.php:344 inc/class-destination-msazure.php:271
-#: inc/class-destination-rsc.php:289 inc/class-destination-s3.php:502
-#: inc/class-destination-s3.php:594 inc/pro/class-destination-gdrive.php:653
+#: inc/class-destination-rsc.php:289 inc/class-destination-s3.php:499
+#: inc/class-destination-s3.php:591 inc/pro/class-destination-gdrive.php:653
 #: inc/pro/class-destination-glacier.php:468
 #: inc/pro/class-destination-rsc.php:226 inc/pro/class-destination-rsc.php:259
 msgid "Can not open source file for transfer."
@@ -888,7 +888,7 @@ msgid "Folder in container"
 msgstr ""
 
 #: inc/class-destination-msazure.php:76 inc/class-destination-rsc.php:105
-#: inc/class-destination-s3.php:115 inc/pro/class-destination-glacier.php:96
+#: inc/class-destination-s3.php:114 inc/pro/class-destination-glacier.php:96
 msgid "File deletion"
 msgstr ""
 
@@ -935,7 +935,7 @@ msgstr[1] ""
 msgid "Missing account name!"
 msgstr ""
 
-#: inc/class-destination-msazure.php:444 inc/class-destination-s3.php:223
+#: inc/class-destination-msazure.php:444 inc/class-destination-s3.php:222
 #: inc/pro/class-destination-glacier.php:166
 msgid "Missing access key!"
 msgstr ""
@@ -985,7 +985,7 @@ msgstr ""
 msgid "Hong Kong (HKG)"
 msgstr ""
 
-#: inc/class-destination-rsc.php:99 inc/class-destination-s3.php:109
+#: inc/class-destination-rsc.php:99 inc/class-destination-s3.php:108
 msgid "Folder in bucket"
 msgstr ""
 
@@ -1110,148 +1110,144 @@ msgstr ""
 msgid "Dream Host Cloud Storage"
 msgstr ""
 
-#: inc/class-destination-s3.php:50 inc/pro/class-destination-s3.php:35
-msgid "GreenQloud Storage Qloud"
-msgstr ""
-
-#: inc/class-destination-s3.php:55
+#: inc/class-destination-s3.php:54
 msgid "Or a S3 Server URL"
 msgstr ""
 
-#: inc/class-destination-s3.php:62
+#: inc/class-destination-s3.php:61
 msgid "S3 Access Keys"
 msgstr ""
 
-#: inc/class-destination-s3.php:66 inc/pro/class-destination-glacier.php:54
+#: inc/class-destination-s3.php:65 inc/pro/class-destination-glacier.php:54
 msgid "Access Key"
 msgstr ""
 
-#: inc/class-destination-s3.php:73 inc/pro/class-destination-glacier.php:61
+#: inc/class-destination-s3.php:72 inc/pro/class-destination-glacier.php:61
 msgid "Secret Key"
 msgstr ""
 
-#: inc/class-destination-s3.php:81
+#: inc/class-destination-s3.php:80
 msgid "S3 Bucket"
 msgstr ""
 
-#: inc/class-destination-s3.php:85
+#: inc/class-destination-s3.php:84
 msgid "Bucket selection"
 msgstr ""
 
-#: inc/class-destination-s3.php:98
+#: inc/class-destination-s3.php:97
 msgid "Create a new bucket"
 msgstr ""
 
-#: inc/class-destination-s3.php:105
+#: inc/class-destination-s3.php:104
 msgid "S3 Backup settings"
 msgstr ""
 
-#: inc/class-destination-s3.php:135
+#: inc/class-destination-s3.php:134
 msgid "Multipart Upload"
 msgstr ""
 
-#: inc/class-destination-s3.php:137
+#: inc/class-destination-s3.php:136
 msgid "Use multipart upload for uploading a file"
 msgstr ""
 
-#: inc/class-destination-s3.php:138
+#: inc/class-destination-s3.php:137
 msgid ""
 "Multipart splits file into multiple chunks while uploading. This is "
 "necessary for displaying the upload process and to transfer bigger files. "
 "Works without a problem on Amazon. Other services might have issues."
 msgstr ""
 
-#: inc/class-destination-s3.php:144
+#: inc/class-destination-s3.php:143
 msgid "Amazon specific settings"
 msgstr ""
 
-#: inc/class-destination-s3.php:148 inc/class-destination-s3.php:150
+#: inc/class-destination-s3.php:147 inc/class-destination-s3.php:149
 msgid "Amazon: Storage Class"
 msgstr ""
 
-#: inc/class-destination-s3.php:151
+#: inc/class-destination-s3.php:150
 msgid "Standard"
 msgstr ""
 
-#: inc/class-destination-s3.php:152
+#: inc/class-destination-s3.php:151
 msgid "Standard-Infrequent Access"
 msgstr ""
 
-#: inc/class-destination-s3.php:153
+#: inc/class-destination-s3.php:152
 msgid "Reduced Redundancy"
 msgstr ""
 
-#: inc/class-destination-s3.php:158
+#: inc/class-destination-s3.php:157
 msgid "Server side encryption"
 msgstr ""
 
-#: inc/class-destination-s3.php:162
+#: inc/class-destination-s3.php:161
 msgid "Save files encrypted (AES256) on server."
 msgstr ""
 
-#: inc/class-destination-s3.php:225 inc/pro/class-destination-glacier.php:168
+#: inc/class-destination-s3.php:224 inc/pro/class-destination-glacier.php:168
 msgid "Missing secret access key!"
 msgstr ""
 
-#: inc/class-destination-s3.php:231
+#: inc/class-destination-s3.php:230
 msgid "No bucket found!"
 msgstr ""
 
-#: inc/class-destination-s3.php:349
+#: inc/class-destination-s3.php:346
 msgid "Bucket %1$s created."
 msgstr ""
 
-#: inc/class-destination-s3.php:351 inc/pro/class-destination-s3.php:148
+#: inc/class-destination-s3.php:348 inc/pro/class-destination-s3.php:147
 msgid " %s is not a valid bucket name."
 msgstr ""
 
-#: inc/class-destination-s3.php:392 inc/class-destination-s3.php:525
-#: inc/class-destination-s3.php:579 inc/class-destination-s3.php:613
-#: inc/class-destination-s3.php:673 inc/pro/class-destination-s3.php:338
+#: inc/class-destination-s3.php:389 inc/class-destination-s3.php:522
+#: inc/class-destination-s3.php:576 inc/class-destination-s3.php:610
+#: inc/class-destination-s3.php:670 inc/pro/class-destination-s3.php:337
 msgid "S3 Service API: %s"
 msgstr ""
 
-#: inc/class-destination-s3.php:460
+#: inc/class-destination-s3.php:457
 msgid "%d. Trying to send backup file to S3 Service&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-s3.php:473 inc/pro/class-destination-s3.php:189
+#: inc/class-destination-s3.php:470 inc/pro/class-destination-s3.php:188
 msgid "Connected to S3 Bucket \"%1$s\" in %2$s"
 msgstr ""
 
-#: inc/class-destination-s3.php:476 inc/pro/class-destination-s3.php:192
+#: inc/class-destination-s3.php:473 inc/pro/class-destination-s3.php:191
 msgid "S3 Bucket \"%s\" does not exist!"
 msgstr ""
 
-#: inc/class-destination-s3.php:483
+#: inc/class-destination-s3.php:480
 msgid "Checking for not aborted multipart Uploads&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-s3.php:489
+#: inc/class-destination-s3.php:486
 msgid "Upload for %s aborted."
 msgstr ""
 
-#: inc/class-destination-s3.php:495
+#: inc/class-destination-s3.php:492
 msgid "Starting upload to S3 Service&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-s3.php:604 inc/pro/class-destination-glacier.php:444
+#: inc/class-destination-s3.php:601 inc/pro/class-destination-glacier.php:444
 msgid "Backup transferred to %s."
 msgstr ""
 
-#: inc/class-destination-s3.php:609
+#: inc/class-destination-s3.php:606
 msgid "Cannot transfer backup to S3! (%1$d) %2$s"
 msgstr ""
 
-#: inc/class-destination-s3.php:637
+#: inc/class-destination-s3.php:634
 msgid "Storage Class: %s"
 msgstr ""
 
-#: inc/class-destination-s3.php:663
+#: inc/class-destination-s3.php:660
 msgid "Cannot delete backup from %s."
 msgstr ""
 
-#: inc/class-destination-s3.php:667
+#: inc/class-destination-s3.php:664
 msgid "One file deleted on S3 Bucket."
 msgid_plural "%d files deleted on S3 Bucket"
 msgstr[0] ""
@@ -1388,7 +1384,7 @@ msgstr ""
 msgid "Folder \"%1$s\" is not writable"
 msgstr ""
 
-#: inc/class-file.php:184
+#: inc/class-file.php:191
 msgid ""
 "BackWPup will not backup folders and its sub folders when this file is "
 "inside."
@@ -1674,7 +1670,7 @@ msgstr ""
 msgid "Adding Extra files to Archive"
 msgstr ""
 
-#: inc/class-job.php:1559 inc/class-job.php:1620
+#: inc/class-job.php:1559 inc/class-job.php:1619
 msgid "Cannot create backup archive correctly. Aborting creation."
 msgstr ""
 
@@ -1682,208 +1678,208 @@ msgstr ""
 msgid "Archiving Folder: %s"
 msgstr ""
 
-#: inc/class-job.php:1630
+#: inc/class-job.php:1629
 msgid "Backup archive created."
 msgstr ""
 
-#: inc/class-job.php:1644
+#: inc/class-job.php:1643
 msgid ""
 "The Backup archive will be too large for file operations with this PHP "
 "Version. You might want to consider splitting the backup job in multiple "
 "jobs with less files each."
 msgstr ""
 
-#: inc/class-job.php:1647
+#: inc/class-job.php:1646
 msgid "Archive size is %s."
 msgstr ""
 
-#: inc/class-job.php:1650
+#: inc/class-job.php:1649
 msgid "%1$d Files with %2$s in Archive."
 msgstr ""
 
-#: inc/class-job.php:1702
+#: inc/class-job.php:1698
 msgctxt "Folder name"
 msgid "Folder %s does not exist"
 msgstr ""
 
-#: inc/class-job.php:1707
+#: inc/class-job.php:1703
 msgctxt "Folder name"
 msgid "Folder %s is not readable"
 msgstr ""
 
-#: inc/class-job.php:1725
+#: inc/class-job.php:1724
 msgid "Link \"%s\" not following."
 msgstr ""
 
-#: inc/class-job.php:1727
+#: inc/class-job.php:1726
 msgid "File \"%s\" is not readable!"
 msgstr ""
 
-#: inc/class-job.php:1731
+#: inc/class-job.php:1730
 msgid ""
 "File size of “%s” cannot be retrieved. File might be too large and will not "
 "be added to queue."
 msgstr ""
 
-#: inc/class-job.php:1814
+#: inc/class-job.php:1813
 msgid "%d. Trying to generate a manifest file&#160;&hellip;"
 msgstr ""
 
-#: inc/class-job.php:1870
+#: inc/class-job.php:1869
 msgid "You may have noticed the manifest.json file in this archive."
 msgstr ""
 
-#: inc/class-job.php:1871
+#: inc/class-job.php:1870
 msgid ""
 "manifest.json might be needed for later restoring a backup from this archive."
 msgstr ""
 
-#: inc/class-job.php:1872
+#: inc/class-job.php:1871
 msgid ""
 "Please leave manifest.json untouched and in place. Otherwise it is safe to "
 "be ignored."
 msgstr ""
 
-#: inc/class-job.php:1882
+#: inc/class-job.php:1881
 msgid "Added manifest.json file with %1$s to backup file list."
 msgstr ""
 
-#: inc/class-job.php:1921
+#: inc/class-job.php:1920
 msgid "Wrong BackWPup JobID"
 msgstr ""
 
-#: inc/class-job.php:1934
+#: inc/class-job.php:1933
 msgid "A BackWPup job is already running"
 msgstr ""
 
-#: inc/class-job.php:2302
+#: inc/class-job.php:2301
 msgctxt ""
 "SIGHUP: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
 "details"
 msgid "Hangup detected on controlling terminal or death of controlling process"
 msgstr ""
 
-#: inc/class-job.php:2306
+#: inc/class-job.php:2305
 msgctxt ""
 "SIGINT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
 "details"
 msgid "Interrupt from keyboard"
 msgstr ""
 
-#: inc/class-job.php:2310
+#: inc/class-job.php:2309
 msgctxt ""
 "SIGQUIT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
 "details"
 msgid "Quit from keyboard"
 msgstr ""
 
-#: inc/class-job.php:2314
+#: inc/class-job.php:2313
 msgctxt ""
 "SIGILL: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
 "details"
 msgid "Illegal Instruction"
 msgstr ""
 
-#: inc/class-job.php:2318
+#: inc/class-job.php:2317
 msgctxt ""
 "SIGABRT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
 "details"
 msgid "Abort signal from abort(3)"
 msgstr ""
 
-#: inc/class-job.php:2322
+#: inc/class-job.php:2321
 msgctxt ""
 "SIGBUS: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
 "details"
 msgid "Bus error (bad memory access)"
 msgstr ""
 
-#: inc/class-job.php:2326
+#: inc/class-job.php:2325
 msgctxt ""
 "SIGFPE: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
 "details"
 msgid "Floating point exception"
 msgstr ""
 
-#: inc/class-job.php:2330
+#: inc/class-job.php:2329
 msgctxt ""
 "SIGSEGV: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
 "details"
 msgid "Invalid memory reference"
 msgstr ""
 
-#: inc/class-job.php:2334
+#: inc/class-job.php:2333
 msgctxt ""
 "SIGTERM: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
 "details"
 msgid "Termination signal"
 msgstr ""
 
-#: inc/class-job.php:2338
+#: inc/class-job.php:2337
 msgctxt ""
 "SIGSTKFLT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
 "details"
 msgid "Stack fault on coprocessor"
 msgstr ""
 
-#: inc/class-job.php:2342
+#: inc/class-job.php:2341
 msgctxt ""
 "SIGUSR1: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
 "details"
 msgid "User-defined signal 1"
 msgstr ""
 
-#: inc/class-job.php:2346
+#: inc/class-job.php:2345
 msgctxt ""
 "SIGUSR2: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
 "details"
 msgid "User-defined signal 2"
 msgstr ""
 
-#: inc/class-job.php:2350
+#: inc/class-job.php:2349
 msgctxt ""
 "SIGURG: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
 "details"
 msgid "Urgent condition on socket"
 msgstr ""
 
-#: inc/class-job.php:2354
+#: inc/class-job.php:2353
 msgctxt ""
 "SIGXCPU: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
 "details"
 msgid "CPU time limit exceeded"
 msgstr ""
 
-#: inc/class-job.php:2358
+#: inc/class-job.php:2357
 msgctxt ""
 "SIGXFSZ: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
 "details"
 msgid "File size limit exceeded"
 msgstr ""
 
-#: inc/class-job.php:2362
+#: inc/class-job.php:2361
 msgctxt ""
 "SIGPWR: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
 "details"
 msgid "Power failure"
 msgstr ""
 
-#: inc/class-job.php:2366
+#: inc/class-job.php:2365
 msgctxt ""
 "SIGSYS: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
 "details"
 msgid "Bad argument to routine"
 msgstr ""
 
-#: inc/class-job.php:2373
+#: inc/class-job.php:2372
 msgid "Signal \"%1$s\" (%2$s) is sent to script!"
 msgstr ""
 
-#: inc/class-job.php:2407 inc/class-job.php:2420
+#: inc/class-job.php:2406 inc/class-job.php:2419
 msgid "System: %s"
 msgstr ""
 
-#: inc/class-job.php:2435
+#: inc/class-job.php:2434
 msgid "Exception caught in %1$s: %2$s"
 msgstr ""
 
@@ -2333,7 +2329,7 @@ msgstr ""
 msgid "Length for table backup is not correctly set: %1$s"
 msgstr ""
 
-#: inc/class-mysqldump.php:558
+#: inc/class-mysqldump.php:561
 msgid "Error while writing file!"
 msgstr ""
 
@@ -2848,7 +2844,7 @@ msgstr ""
 msgid "Result"
 msgstr ""
 
-#: inc/class-page-backwpup.php:367
+#: inc/class-page-backwpup.php:366
 msgid "Could not open log folder: %s"
 msgstr ""
 
@@ -4396,12 +4392,12 @@ msgstr ""
 
 #: inc/pro/class-destination-glacier.php:248
 #: inc/pro/class-destination-msazure.php:19
-#: inc/pro/class-destination-s3.php:40
+#: inc/pro/class-destination-s3.php:39
 msgid "Access Key:"
 msgstr ""
 
 #: inc/pro/class-destination-glacier.php:250
-#: inc/pro/class-destination-s3.php:43
+#: inc/pro/class-destination-s3.php:42
 msgid "Secret Key:"
 msgstr ""
 
@@ -4545,51 +4541,51 @@ msgstr ""
 msgid "Select a S3 service:"
 msgstr ""
 
-#: inc/pro/class-destination-s3.php:37
+#: inc/pro/class-destination-s3.php:36
 msgid "or set an S3 Server URL:"
 msgstr ""
 
-#: inc/pro/class-destination-s3.php:46
+#: inc/pro/class-destination-s3.php:45
 msgid "Bucket:"
 msgstr ""
 
-#: inc/pro/class-destination-s3.php:56
+#: inc/pro/class-destination-s3.php:55
 msgid "New Bucket:"
 msgstr ""
 
-#: inc/pro/class-destination-s3.php:58
+#: inc/pro/class-destination-s3.php:57
 msgid "Folder in bucket:"
 msgstr ""
 
-#: inc/pro/class-destination-s3.php:146
+#: inc/pro/class-destination-s3.php:145
 msgid "Bucket %1$s created in %2$s."
 msgstr ""
 
-#: inc/pro/class-destination-s3.php:170
+#: inc/pro/class-destination-s3.php:169
 msgid "%d. Trying to sync files to S3 Service&#160;&hellip;"
 msgstr ""
 
-#: inc/pro/class-destination-s3.php:204
+#: inc/pro/class-destination-s3.php:203
 msgid "Retrieving file list from S3."
 msgstr ""
 
-#: inc/pro/class-destination-s3.php:266
+#: inc/pro/class-destination-s3.php:265
 msgid "Upload changed files to S3."
 msgstr ""
 
-#: inc/pro/class-destination-s3.php:281
+#: inc/pro/class-destination-s3.php:280
 msgid "File %s uploaded to S3."
 msgstr ""
 
-#: inc/pro/class-destination-s3.php:309
+#: inc/pro/class-destination-s3.php:308
 msgid "Extra file %s uploaded to S3."
 msgstr ""
 
-#: inc/pro/class-destination-s3.php:322
+#: inc/pro/class-destination-s3.php:321
 msgid "Delete nonexistent files on S3"
 msgstr ""
 
-#: inc/pro/class-destination-s3.php:329
+#: inc/pro/class-destination-s3.php:328
 msgid "File %s deleted from S3."
 msgstr ""
 
