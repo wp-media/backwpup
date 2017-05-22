@@ -47,7 +47,6 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 						<option value="google-storage-us" <?php selected( 'google-storage-us', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Google Storage: USA', 'backwpup' ); ?></option>
 						<option value="google-storage-asia" <?php selected( 'google-storage-asia', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Google Storage: Asia', 'backwpup' ); ?></option>
 						<option value="dreamhost" <?php selected( 'dreamhost', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'Dream Host Cloud Storage', 'backwpup' ); ?></option>
-						<option value="greenqloud" <?php selected( 'greenqloud', BackWPup_Option::get( $jobid, 's3region' ), TRUE ) ?>><?php esc_html_e( 'GreenQloud Storage Qloud', 'backwpup' ); ?></option>
 					</select>
 				</td>
 			</tr>
@@ -287,8 +286,6 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				return 'https://storage.googleapis.com';
 			case 'dreamhost':
 				return 'https://objects-us-west-1.dream.io';
-			case 'greenqloud':
-				return 'http://s.greenqloud.com';
 			default:
 				return '';
 		}
