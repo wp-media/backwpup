@@ -51,7 +51,7 @@ class BackWPup_JobType_DBCheck extends BackWPup_JobTypes {
                     <label for="iddbcheckrepair">
 					<input class="checkbox" value="1" id="iddbcheckrepair"
 						   type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'dbcheckrepair' ), TRUE ); ?>
-						   name="dbcheckrepair" /> <?php esc_html_e( 'Try to repair defect table', 'backwpup' ); ?>
+						   name="dbcheckrepair" /> <?php esc_html_e( 'Try to repair any defected tables', 'backwpup' ); ?>
 					</label>
 				</td>
 			</tr>

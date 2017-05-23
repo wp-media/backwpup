@@ -1918,7 +1918,7 @@ msgid "Repair"
 msgstr ""
 
 #: inc/class-jobtype-dbcheck.php:54 inc/pro/class-jobtype-dbcheck.php:38
-msgid "Try to repair defect table"
+msgid "Try to repair any defected tables"
 msgstr ""
 
 #: inc/class-jobtype-dbcheck.php:79

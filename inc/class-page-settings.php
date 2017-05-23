@@ -183,13 +183,13 @@ class BackWPup_Page_Settings {
 
         <div class="table ui-tabs-hide" id="backwpup-tab-log">
 
-            <p><?php _e( 'Every time BackWPup runs a backup job, a log file is being generated. Choose where to store your log files and how many of them.', 'backwpup' ); ?></p>
+            <p><?php _e( 'Every time BackWPup runs a backup job, a log file is generated. Choose where to store your log files and how many of them.', 'backwpup' ); ?></p>
             <table class="form-table">
                 <tr>
                     <th scope="row"><label for="logfolder"><?php _e( 'Log file folder', 'backwpup' ); ?></label></th>
                     <td>
                         <input name="logfolder" type="text" id="logfolder" value="<?php echo esc_attr( get_site_option( 'backwpup_cfg_logfolder' ) );?>" class="regular-text code"/>
-	                    <p class="description"><?php echo sprintf( __( 'You can use absolute or relative path! Relative path is relative to %s.', 'backwpup' ), '<code>' . trailingslashit( str_replace( '\\', '/', WP_CONTENT_DIR ) ) .'</code>' ); ?></p>
+	                    <p class="description"><?php echo sprintf( __( 'You can use an absolute or relative path! Relative path is relative to %s.', 'backwpup' ), '<code>' . trailingslashit( str_replace( '\\', '/', WP_CONTENT_DIR ) ) .'</code>' ); ?></p>
                     </td>
                 </tr>
                 <tr>
@@ -224,7 +224,7 @@ class BackWPup_Page_Settings {
 						            <option value="debug" <?php selected( get_site_option( 'backwpup_cfg_loglevel' ), 'debug' ); ?>><?php _e( 'Debug (not translated)', 'backwpup' ); ?></option>
 					            </select>
 				            </label>
-				            <p class="description"><?php esc_attr_e( 'Debug log has much more informations than normal logs. It is for support and should be handled carefully. For support is the best to use a not translated log file. Usage of not translated logs can reduce the PHP memory usage too.', 'backwpup' ); ?></p>
+				            <p class="description"><?php esc_attr_e( 'Debug logs have much more information than normal logs. They\'re used for support and should be handled carefully. For support, it\'s best not to use a translated log file. Using non-translated logs can reduce the PHP memory usage too.', 'backwpup' ); ?></p>
 			            </fieldset>
 		            </td>
 	            </tr>
@@ -260,7 +260,7 @@ class BackWPup_Page_Settings {
                     </th>
                     <td>
                         <input name="jobrunauthkey" type="text" id="jobrunauthkey" value="<?php echo esc_attr( get_site_option( 'backwpup_cfg_jobrunauthkey' ) );?>" class="text code"/>
-	                    <p class="description"><?php _e( 'Will be used to protect job starts from unauthorized person.', 'backwpup' ); ?></p>
+	                    <p class="description"><?php _e( 'Will be used to protect job starts from an unauthorized person.', 'backwpup' ); ?></p>
                     </td>
                 </tr>
                 <tr>
@@ -276,7 +276,7 @@ class BackWPup_Page_Settings {
                                     <option value="90000" <?php selected( get_site_option( 'backwpup_cfg_jobwaittimems' ), 90000 ); ?>><?php _e( 'maximum', 'backwpup' ); ?></option>
                                 </select>
                             </label>
-	                        <p class="description"><?php _e( 'This adds short pauses to the process. Can be used to reduce the CPU load.', 'backwpup' ); ?></p>
+	                        <p class="description"><?php _e( 'This adds short pauses to the process, which can be used to reduce the CPU load.', 'backwpup' ); ?></p>
                         </fieldset>
                     </td>
                 </tr>
@@ -289,7 +289,7 @@ class BackWPup_Page_Settings {
 					            <input name="jobdooutput" type="checkbox" id="jobdooutput" value="1" <?php checked( get_site_option( 'backwpup_cfg_jobdooutput' ), TRUE ); ?> />
 					            <?php _e( 'Enable an empty Output on backup working.', 'backwpup' ); ?>
 				            </label>
-				            <p class="description"><?php _e( 'This do an empty output on job working. This can help in some situations or can brake the working. You must test it.', 'backwpup' ); ?></p>
+				            <p class="description"><?php _e( 'This adds an empty output to working jobs, which can help in some situations but could also stop the jobs from working. You must test it.', 'backwpup' ); ?></p>
 			            </fieldset>
 		            </td>
 	            </tr>

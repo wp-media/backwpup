@@ -151,7 +151,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 				<th scope="row"><?php esc_html_e( 'Use one folder above as WP install folder', 'backwpup' ); ?></th>
 				<td>
 					<label for="idbackupabsfolderup"><input class="checkbox" id="idbackupabsfolderup" type="checkbox"<?php checked( $abs_folder_up, TRUE, TRUE ); ?>
-							name="backupabsfolderup" value="1" /> <?php _e( 'Use one folder above as WordPress install folder! That can be helpful, if you would backup files and folder that are not in the WordPress installation folder. Or if you made a "<a href="https://codex.wordpress.org/Giving_WordPress_Its_Own_Directory">Giving WordPress Its Own Directory</a>" installation. Excludes must be configured again.', 'backwpup' ); ?></label>
+							name="backupabsfolderup" value="1" /> <?php _e( 'Use one folder above as a WordPress install folder! That can be helpful, if you want to backup files and folders that are not in the WordPress installation folder. Or if you made a "<a href="https://codex.wordpress.org/Giving_WordPress_Its_Own_Directory">Giving WordPress Its Own Directory</a>" installation. Excludes must be configured again.', 'backwpup' ); ?></label>
 				</td>
 			</tr>
 		</table>
