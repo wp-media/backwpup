@@ -156,7 +156,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 				if ( $file->isReadable() ) {
 					//file list for backups
 					$files[ $filecounter ][ 'folder' ]      = $backup_folder;
-					$files[ $filecounter ][ 'file' ]        = $file->getPathname();
+					$files[ $filecounter ][ 'file' ]        = str_replace( '\\', '/', $file->getPathname() );
 					$files[ $filecounter ][ 'filename' ]    = $file->getFilename();
 					$files[ $filecounter ][ 'downloadurl' ] = add_query_arg( array(
 																				  'page'   => 'backwpupbackups',
