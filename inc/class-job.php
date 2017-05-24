@@ -841,7 +841,7 @@ final class BackWPup_Job {
 
 		$path = str_replace( '\\', '/', $path );
 
-		$abs_path = realpath( ABSPATH );
+		$abs_path = realpath( BackWPup_Path_Fixer::fix_path( ABSPATH ) );
 		if ( $this->job['backupabsfolderup'] ) {
 			$abs_path = dirname( $abs_path );
 		}
