@@ -64,9 +64,6 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 		@set_time_limit( 300 );
 		$abs_folder_up  = BackWPup_Option::get( $main, 'backupabsfolderup' );
 		$abs_path = realpath( BackWPup_Path_Fixer::fix_path( ABSPATH ) );
-		if ( $abs_path === false ) {
-			$job_object->log( __( 'Error: Unable to fetch WP base path.', 'backwpup' ) );
-		}
 		if ( $abs_folder_up ) {
 			$abs_path = dirname( $abs_path );
 		}
@@ -242,9 +239,6 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 		$job_object->substeps_todo = 8;
 
 		$abs_path = realpath( BackWPup_Path_Fixer::fix_path( ABSPATH ) );
-		if ( $abs_path === false ) {
-			$job_object->log( __( 'Error: Unable to fetch WP base path.', 'backwpup' ) );
-		}
 		if ( $job_object->job['backupabsfolderup'] ) {
 			$abs_path = dirname( $abs_path );
 		}
@@ -465,7 +459,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 	 */
 	private function get_exclude_dirs( $folder, $excludedir = array() ) {
 
-		$folder     = trailingslashit( str_replace( '\\', '/', realpath( $folder ) ) );
+		$folder     = trailingslashit( str_replace( '\\', '/', realpath( BackWPup_Path_Fixer::fix_path( $folder ) ) ) );
 
 		if ( false !== strpos( trailingslashit( str_replace( '\\', '/', realpath( WP_CONTENT_DIR ) ) ), $folder ) && trailingslashit( str_replace( '\\', '/', realpath( WP_CONTENT_DIR ) ) ) != $folder ) {
 			$excludedir[] = trailingslashit( str_replace( '\\', '/', realpath( WP_CONTENT_DIR ) ) );
@@ -488,7 +482,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 	 *
 	 */
 	private function show_folder( $id, $jobid, $path ) {
-		$folder = realpath( $path );
+		$folder = realpath( BackWPup_Path_Fixer::fix_path( $path ) );
 		if ( $folder ) {
 			$folder = untrailingslashit( str_replace( '\\', '/', $folder ) );
 			$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize') ) ? ' (' . size_format( BackWPup_File::get_folder_size( $folder, FALSE ), 2 ) . ')' : '';

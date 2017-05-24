@@ -14,7 +14,10 @@ class BackWPup_Recursive_Directory extends RecursiveDirectoryIterator {
 	 *
 	 * @param string $path
 	 */
-	public function __construct( $path, $flags = FilesystemIterator::KEY_AS_PATHNAME | FilesystemIterator::CURRENT_AS_FILEINFO ) {
+	public function __construct( $path, $flags = null ) {
+		if ( $flags === null ) {
+			$flags = FilesystemIterator::KEY_AS_PATHNAME | FilesystemIterator::CURRENT_AS_FILEINFO;
+		}
 		parent::__construct( BackWPup_Path_Fixer::fix_path( $path ), $flags );
 	}
 

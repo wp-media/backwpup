@@ -1708,7 +1708,7 @@ final class BackWPup_Job {
 			$dir = new BackWPup_Directory( $folder );
 	
 			foreach ( $dir as $file ) {
-				if ( $file->isDir() ) {
+				if ( $file->isDir() || $file->isDot() ) {
 					continue;
 				}
 				foreach ( $this->exclude_from_backup as $exclusion ) { //exclude files
