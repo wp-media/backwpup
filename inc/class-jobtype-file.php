@@ -249,7 +249,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 
 		//Folder lists for blog folders
 		if ( $job_object->substeps_done === 0 ) {
-			if ( $abs_path && ! empty( $job_object->job['backuproot'] ) ) {
+			if ( $abs_path && ! empty( $job_object->job['backupgroot'] ) ) {
 				$abs_path = trailingslashit( str_replace( '\\', '/', $abs_path ) );
 				$excludes = $this->get_exclude_dirs( $abs_path, $folders_already_in );
 				foreach ( $job_object->job['backuprootexcludedirs'] as $folder ) {
@@ -416,14 +416,15 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 				if ( $file->isDot() ) {
 					continue;
 				}
+				$path = str_replace( '\\', '/', $file->getPathname() );
 				foreach ( $job_object->exclude_from_backup as $exclusion ) { //exclude files
 					$exclusion = trim( $exclusion );
-					if ( stripos( $file->getPathname(), $exclusion ) !== false && ! empty( $exclusion ) ) {
+					if ( stripos( $path, $exclusion ) !== false && ! empty( $exclusion ) ) {
 						continue 2;
 					}
 				}
 				if ( $file->isDir() ) {
-					if ( in_array( trailingslashit( $file->getPathname() ), $excludedirs, true ) ) {
+					if ( in_array( trailingslashit( $path ), $excludedirs, true ) ) {
 						continue;
 					}
 					if ( file_exists( trailingslashit( $file->getPathname() ) . '.donotbackup' ) ) {
@@ -433,7 +434,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 						$job_object->log( sprintf( __( 'Folder "%s" is not readable!', 'backwpup' ), $file->getPathname() ), E_USER_WARNING );
 						continue;
 					}
-					$this->get_folder_list( $job_object, trailingslashit( $file->getPathname() ), $excludedirs, false );
+					$this->get_folder_list( $job_object, trailingslashit( $path ), $excludedirs, false );
 				}
 				if ( $first ) {
 					$job_object->do_restart_time();

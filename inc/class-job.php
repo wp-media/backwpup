@@ -1708,12 +1708,13 @@ final class BackWPup_Job {
 			$dir = new BackWPup_Directory( $folder );
 	
 			foreach ( $dir as $file ) {
+				$path = str_replace( '\\', '/', $file->getPathname() );
 				if ( $file->isDir() || $file->isDot() ) {
 					continue;
 				}
 				foreach ( $this->exclude_from_backup as $exclusion ) { //exclude files
 					$exclusion = trim( $exclusion );
-					if ( stripos( $file->getPathname(), trim( $exclusion ) ) !== false && ! empty( $exclusion ) ) {
+					if ( stripos( $path, trim( $exclusion ) ) !== false && ! empty( $exclusion ) ) {
 						continue 2;
 					}
 				}
@@ -1730,7 +1731,7 @@ final class BackWPup_Job {
 						$this->log( sprintf( __( 'File size of “%s” cannot be retrieved. File might be too large and will not be added to queue.', 'backwpup' ), $file->getPathname() . ' ' . $file_size ), E_USER_WARNING );
 						continue;
 					}
-					$files[] = $file->getPathname();
+					$files[] = $path;
 				}
 			}
 
