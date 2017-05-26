@@ -249,7 +249,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 
 		//Folder lists for blog folders
 		if ( $job_object->substeps_done === 0 ) {
-			if ( $abs_path && ! empty( $job_object->job['backupgroot'] ) ) {
+			if ( $abs_path && ! empty( $job_object->job['backuproot'] ) ) {
 				$abs_path = trailingslashit( str_replace( '\\', '/', $abs_path ) );
 				$excludes = $this->get_exclude_dirs( $abs_path, $folders_already_in );
 				foreach ( $job_object->job['backuprootexcludedirs'] as $folder ) {
