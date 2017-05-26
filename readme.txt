@@ -35,7 +35,7 @@ The **backup plugin** **[BackWPup](http://backwpup.com/)** can be used to save y
 * Pro version and support available - [BackWPup Pro](http://backwpup.com)
 
 = Requirements =
-* WordPress 3.9 and PHP 5.2.7 required!
+* WordPress 3.9 and PHP 5.3 required!
 * To use the Plugin with full functionality PHP 5.3.3 with mysqli, FTP,gz, bz2, ZipArchive and curl is needed.
 * Plugin functions that don't work because of your server settings, will not be displayed in admin area.
 
@@ -158,6 +158,7 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 
 == Changelog ==
 = Version 3.4.0 =
+* Changed: Dropped support for PHP 5.2.
 * Improved: Migrated to Dropbox API V2.
 * Changed: Removed Adminer link from backend.
 * Added: Backup file tracking so backups from other jobs aren't accidentally deleted.

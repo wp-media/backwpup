@@ -33,11 +33,11 @@
 
 if ( ! class_exists( 'BackWPup' ) ) {
 
-	// Don't activate on anything less than PHP 5.2.7 or WordPress 3.9
-	if ( version_compare( PHP_VERSION, '5.2.7', '<' ) || version_compare( get_bloginfo( 'version' ), '3.9', '<' ) || ! function_exists( 'spl_autoload_register' ) ) {
+	// Don't activate on anything less than PHP 5.3 or WordPress 3.9
+	if ( version_compare( PHP_VERSION, '5.3.0', '<' ) || version_compare( get_bloginfo( 'version' ), '3.9', '<' ) || ! function_exists( 'spl_autoload_register' ) ) {
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		deactivate_plugins( __FILE__ );
-		die( 'BackWPup requires PHP version 5.2.7 with spl extension or greater and WordPress 3.8 or greater.' );
+		die( 'BackWPup requires PHP version 5.3 with spl extension or greater and WordPress 3.9 or greater.' );
 	}
 
 	//Start Plugin
@@ -111,11 +111,6 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			// Notices and messages in admin
 			if ( is_admin() && current_user_can( 'backwpup' ) ) {
 
-				/// Notice for PHP 5.2 users
-				$php_notice = new BackWPup_Php_Admin_Notice();
-				add_action( 'admin_notices', array( $php_notice, 'admin_notice' ), 0 );
-				add_action( 'backwpup_admin_messages', array( $php_notice, 'admin_page_message' ) );
-
 				// Work for Inpsyde widget
 				$inpsyder_widget = new BackWPup_Become_Inpsyder_Widget();
 				add_action( 'wp_dashboard_setup', array( $inpsyder_widget, 'setup_widget' ) );
@@ -126,11 +121,6 @@ if ( ! class_exists( 'BackWPup' ) ) {
 				add_action( 'backwpup_admin_messages', array( $beta_tester_notice, 'dashboard_message' ), 20 );
 
 				// Setup "dismissible" option actions for notices
-				BackWPup_Dismissible_Notice_Option::setup_actions(
-					true,
-					BackWPup_Php_Admin_Notice::NOTICE_ID,
-					'backwpup'
-				);
 				BackWPup_Dismissible_Notice_Option::setup_actions(
 					false,
 					BackWPup_Become_Inpsyder_Widget::NOTICE_ID,
@@ -147,7 +137,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			require_once dirname( __FILE__ ) . '/vendor/inpsyde/phone-home-client/inc/autoload.php';
 			Inpsyde_PhoneHome_FrontController::initialize_for_network(
 				'BackWPup',
-				dirname( __FILE__ ) . '/assets/templates/php52notice',
+				dirname( __FILE__ ) . '/assets/templates/phpnotice',
 				'backwpup',
 				array(
 					Inpsyde_PhoneHome_Configuration::ANONYMIZE          => true,
