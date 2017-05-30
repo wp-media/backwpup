@@ -165,7 +165,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 																				  'jobid'  => $jobid
 																			 ), network_admin_url( 'admin.php' ) );
 					$files[ $filecounter ][ 'filesize' ]    = $file->getSize();
-					$files[ $filecounter ][ 'time' ]        = $file->getMTime();
+					$files[ $filecounter ][ 'time' ]        = $file->getMTime() + ( get_option( 'gmt_offset' ) * 3600 );
 					$filecounter ++;
 				}
 			}
