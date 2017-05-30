@@ -1708,13 +1708,13 @@ final class BackWPup_Job {
 			$dir = new BackWPup_Directory( $folder );
 	
 			foreach ( $dir as $file ) {
-				$path = str_replace( '\\', '/', $file->getPathname() );
 				if ( $file->isDir() || $file->isDot() ) {
 					continue;
 				}
+				$path = str_replace( '\\', '/', realpath( $file->getPathname() ) );
 				foreach ( $this->exclude_from_backup as $exclusion ) { //exclude files
 					$exclusion = trim( $exclusion );
-					if ( stripos( $path, trim( $exclusion ) ) !== false && ! empty( $exclusion ) ) {
+					if ( stripos( $path, $exclusion ) !== false && ! empty( $exclusion ) ) {
 						continue 2;
 					}
 				}

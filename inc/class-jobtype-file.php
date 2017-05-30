@@ -416,7 +416,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 				if ( $file->isDot() ) {
 					continue;
 				}
-				$path = str_replace( '\\', '/', $file->getPathname() );
+				$path = str_replace( '\\', '/', realpath( $file->getPathname() ) );
 				foreach ( $job_object->exclude_from_backup as $exclusion ) { //exclude files
 					$exclusion = trim( $exclusion );
 					if ( stripos( $path, $exclusion ) !== false && ! empty( $exclusion ) ) {
