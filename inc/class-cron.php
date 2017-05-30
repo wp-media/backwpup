@@ -173,6 +173,11 @@ class BackWPup_Cron {
 
 		if ( $args['run'] === 'restart' ) {
 			$job_object = BackWPup_Job::get_working_data();
+			// Restart if cannot find job
+			if ( ! $job_object ) {
+				BackWPup_Job::start_http( 'restart' );
+				return;
+			}
 			//restart job if not working or a restart wished
 			$not_worked_time = microtime( TRUE ) - $job_object->timestamp_last_update;
 			if ( ! $job_object->pid || $not_worked_time > 300 ) {
