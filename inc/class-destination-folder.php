@@ -149,7 +149,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 			$dir = new BackWPup_Directory( $backup_folder );
 
 			foreach ( $dir as $file ) {
-				if ( $file->isDot() || in_array( $file->getFilename(), array( 'index.php', '.htaccess', '.donotbackup' ), true ) || $file->isDir() || $file->isLink() ) {
+				if ( $file->isDot() || in_array( $file->getFilename(), array( 'index.php', '.htaccess', '.donotbackup', 'Web.config' ), true ) || $file->isDir() || $file->isLink() ) {
 					continue;
 				}
 
