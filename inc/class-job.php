@@ -1708,7 +1708,7 @@ final class BackWPup_Job {
 			$dir = new BackWPup_Directory( $folder );
 	
 			foreach ( $dir as $file ) {
-				if ( $file->isDir() || $file->isDot() ) {
+				if ( $file->isDot() || $file->isDir() ) {
 					continue;
 				}
 				$path = str_replace( '\\', '/', realpath( $file->getPathname() ) );
