@@ -535,8 +535,11 @@ final class BackWPup_Destination_Dropbox_API {
 
 		while ( $data = fread( $file_handel, $chunk_size ) ) {
 			$chunk_upload_start = microtime( true );
+			
+			if ( $this->job_object->is_debug() ) {
+				$this->job_object->log( sprintf( __( 'Uploading %s of data', 'backwpup' ), size_format( strlen( $data ) ) ) );
+			}
 
-			$this->job_object->log( sprintf( __( 'Uploading %s of data', 'backwpup' ), size_format( strlen( $data ) ) ) );
 			$this->filesUploadSessionAppendV2( array(
 				'contents' => $data,
 				'cursor' => array(
