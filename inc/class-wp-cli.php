@@ -23,7 +23,7 @@ class BackWPup_WP_CLI extends WP_CLI_Command {
 			WP_CLI::error( __( 'A job is already running.', 'backwpup' ) );
 		}
 
-		if ( isset( $jobid ) ) {
+		if ( isset( $assoc_args['jobid'] ) ) {
 			$jobid = (int) $assoc_args[ 'jobid' ];
 		}
 
