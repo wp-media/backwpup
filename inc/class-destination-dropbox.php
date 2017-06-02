@@ -680,7 +680,7 @@ final class BackWPup_Destination_Dropbox_API {
 			return $this->request( 'files/get_metadata', $args );
 		}
 		catch ( BackWPup_Destination_Dropbox_API_Request_Exception $e ) {
-			$this->handleFilesGetMetadataError( $e->error() );
+			$this->handleFilesGetMetadataError( $e->getError() );
 		}
 	}
 
@@ -714,7 +714,7 @@ final class BackWPup_Destination_Dropbox_API {
 			Return $this->request( 'files/list_folder', $args );
 		}
 		catch ( BackWPup_Destination_Dropbox_API_Request_Exception $e ) {
-			$this->handleFilesListFolderError( $e->error() );
+			$this->handleFilesListFolderError( $e->getError() );
 		}
 	}
 
@@ -733,7 +733,7 @@ final class BackWPup_Destination_Dropbox_API {
 			Return $this->request( 'files/list_folder/continue', $args );
 		}
 		catch ( BackWPup_Destination_Dropbox_API_Request_Exception $e ) {
-			$this->handleFilesListFolderContinueError( $e->error() );
+			$this->handleFilesListFolderContinueError( $e->getError() );
 		}
 	}
 
