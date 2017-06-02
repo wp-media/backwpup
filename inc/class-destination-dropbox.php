@@ -901,7 +901,7 @@ final class BackWPup_Destination_Dropbox_API {
 			}
 
 		if ( $endpointFormat == 'oauth' ) {
-			curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $args ) );
+			curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $args, null, '&' ) );
 			$headers[] = 'Content-Type: application/x-www-form-urlencoded';
 		}
 		elseif ( $endpointFormat == 'rpc' ) {
