@@ -1056,8 +1056,11 @@ final class BackWPup_Destination_Dropbox_API {
 	 * @return string The formatted path
 	 */
 	private function formatPath( $path ) {
-		if ( substr( $path, 0, 1 ) != '/' ) {
+		if ( ! empty( $path ) && substr( $path, 0, 1 ) != '/' ) {
 			$path = "/$path";
+		}
+		elseif ( $path == '/' ) {
+			$path = '';
 		}
 
 		return $path;
