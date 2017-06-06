@@ -1711,7 +1711,7 @@ final class BackWPup_Job {
 				if ( $file->isDot() || $file->isDir() ) {
 					continue;
 				}
-				$path = str_replace( '\\', '/', realpath( $file->getPathname() ) );
+				$path = BackWPup_Path_Fixer::slashify( $file->getPathname() );
 				foreach ( $this->exclude_from_backup as $exclusion ) { //exclude files
 					$exclusion = trim( $exclusion );
 					if ( stripos( $path, $exclusion ) !== false && ! empty( $exclusion ) ) {
@@ -1731,7 +1731,7 @@ final class BackWPup_Job {
 						$this->log( sprintf( __( 'File size of “%s” cannot be retrieved. File might be too large and will not be added to queue.', 'backwpup' ), $file->getPathname() . ' ' . $file_size ), E_USER_WARNING );
 						continue;
 					}
-					$files[] = $path;
+					$files[] = BackWPup_Path_Fixer::slashify( realpath( $path ) );
 				}
 			}
 

@@ -80,7 +80,9 @@ class BackWPup_File {
 		$iterator = new RecursiveIteratorIterator( new BackWPup_Recursive_Directory( $folder, FilesystemIterator::SKIP_DOTS ) );
 
 		foreach ( $iterator as $file ) {
-			$files_size += $file->getSize();
+			if ( ! $file->isLink() ) {
+				$files_size += $file->getSize();
+			}
 		}
 
 return $files_size;

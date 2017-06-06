@@ -29,5 +29,9 @@ class BackWPup_Path_Fixer {
 
 		return $path;
 	}
+	
+	public static function slashify( $path ) {
+		return str_replace( '\\', '/', $path );
+	}
 
 }
