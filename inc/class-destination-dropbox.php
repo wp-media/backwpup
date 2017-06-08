@@ -444,6 +444,10 @@ final class BackWPup_Destination_Dropbox_API {
 	public function listFolder( $path ) {
 		$files = array();
 		$result = $this->filesListFolder( array( 'path' => $path ) );
+		if ( ! $result ) {
+			return array();
+		}
+		
 		$files = array_merge( $files, $result['entries'] );
 
 		$args = array( 'cursor' => $result['cursor'] );
