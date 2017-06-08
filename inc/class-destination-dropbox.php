@@ -8,11 +8,6 @@
 class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 
 	/**
-	 * @var $backwpup_job_object BackWPup_Job
-	 */
-	public static $backwpup_job_object = null;
-
-	/**
 	 * @return array
 	 */
 	public function option_defaults() {
@@ -271,8 +266,6 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 			}
 
 			// put the file
-			self::$backwpup_job_object = &$job_object;
-
 			if ( $job_object->substeps_done < $job_object->backup_filesize ) { //only if upload not complete
 				$response = $dropbox->upload( $job_object->backup_folder . $job_object->backup_file, $job_object->job['dropboxdir'] . $job_object->backup_file );
 				if ( $response['size'] == $job_object->backup_filesize ) {
