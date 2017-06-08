@@ -2511,7 +2511,19 @@ final class BackWPup_Job {
 			'([0-5][0-9])'
 		);
 
-		$regex = "/^" . str_replace( $datevars, $dateregex, preg_quote( self::sanitize_file_name( $this->job['archivename'] ) ) ) . "$/i";
+		$regex = "/^" .
+			str_replace(
+				$datevars,
+				$dateregex,
+				preg_quote(
+					self::sanitize_file_name(
+						BackWPup_Option::normalize_archive_name(
+							$this->job['archivename'],
+							$this->job['jobid']
+						)
+					)
+				)
+			) . "$/i";
 
 		preg_match( $regex, $filename, $matches );
 		if ( ! empty( $matches[0] ) && $matches[0] === $filename ) {
