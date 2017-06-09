@@ -14,6 +14,8 @@ class BackWPup_Page_Settings {
 
 		wp_enqueue_script( 'backwpupgeneral' );
 
+		wp_enqueue_script( 'backwpup_clipboard' );
+
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 			wp_enqueue_script( 'backwpuppagesettings', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/page_settings.js', array( 'jquery' ), time(), TRUE );
 		} else {
@@ -383,127 +385,97 @@ class BackWPup_Page_Settings {
         <div class="table ui-tabs-hide" id="backwpup-tab-information">
 			<br />
 			<?php
+			$information = self::get_information();
+			
+			echo '<p>';
+			_e(
+				'Experiencing an issue and need to contact BackWPup support? ' .
+				'Click the link below to get debug information you can send to us.',
+				'backwpup'
+			);
+			echo '</p>';
+			
+			?><p><a href="#TB_inline?height=440&width=630&inlineId=tb-debug-info" id="debug-button" class="thickbox button button-primary">
+					<?php _e( 'Get Debug Info', 'backwpup' ) ?></a></p>
+					
+					<div id="tb-debug-info" tabindex="-1" style="display: none;"><?php
+						ob_start();
+						?>
+						<p><?php _e( 'You will find debug information below. Click the button to copy the debug info to send to support.', 'backwpup' ) ?></p>
+						<p><?php _e( '<strong>Note</strong>: ' .
+							'Would you like faster, more streamlined support? ' .
+							'Pro users can contact BackWPup from right within the plugin.',
+							'backwpup'
+						) ?> <a href="<?php _e( 'https://backwpup.com', 'backwpup' ) ?>">
+								<?php _e( 'Get Pro', 'backwpup' ) ?>
+							</a></p>
+						<?php
+						$html = ob_get_clean();
+						echo apply_filters( 'backwpup_get_debug_info_text', $html );
+						?>
+						<p><a href="#" id="backwpup-copy-debug-info" data-clipboard-target="#backwpup-debug-info" class="button button-primary">
+							<?php _e( 'Copy Debug Info', 'backwpup' ) ?>
+						</a></p>
+						
+						<div class="inline" id="backwpup-copy-debug-info-success" style="display:none;">
+							<p><span class="dashicons dashicons-yes"></span><?php _e( 'Debug info copied to clipboard.', 'backwpup' ) ?></p>
+						</div>
+						<div class="inline" id="backwpup-copy-debug-info-error" style="display:none;">
+							<p><span class="dashicons dashicons-no"></span><?php _e( 'Could not copy debug info. You can simply press ctrl+C to copy it.', 'backwpup' ) ?></p>
+						</div>
+						
+						<textarea id="backwpup-debug-info" readonly="readonly"><?php
+							foreach ( $information as $item ) {
+								echo esc_html( $item['label'] ) . ': ' .
+								esc_html( $item['value'] ) . "\n";
+							}
+						?></textarea>
+					</div>
+
+						<script type="text/javascript">
+							jQuery(document).ready(function ($) {
+								clipboard = new Clipboard('#backwpup-copy-debug-info');
+								
+								clipboard.on('success', function (e) {
+									setTimeout(
+										function () {
+											$('#backwpup-copy-debug-info-success').attr('style', 'display:inline-block !important;');
+										},
+										300
+									);
+									
+									setTimeout(
+										function () {
+											$('#backwpup-copy-debug-info-success').attr('style', 'display:none !important;');
+										},
+										5000
+									);
+									e.clearSelection();
+								});
+								
+								clipboard.on('error', function (e) {
+									$('backwpup-copy-debug-info-error').attr('style', 'display:inline-block !important;');
+								});
+								
+								$('#debug-button').on('click', function () {
+									$('#tb-debug-info').focus();
+								})
+							});
+						</script>
+
+					<?php
+					
 			echo '<table class="wp-list-table widefat fixed" cellspacing="0" style="width:85%;margin-left:auto;margin-right:auto;">';
 			echo '<thead><tr><th width="35%">' . __( 'Setting', 'backwpup' ) . '</th><th>' . __( 'Value', 'backwpup' ) . '</th></tr></thead>';
 			echo '<tfoot><tr><th>' . __( 'Setting', 'backwpup' ) . '</th><th>' . __( 'Value', 'backwpup' ) . '</th></tr></tfoot>';
-			echo '<tr title="&gt;=3.2"><td>' . __( 'WordPress version', 'backwpup' ) . '</td><td>' . esc_html( BackWPup::get_plugin_data( 'wp_version' ) ) . '</td></tr>';
-			if ( ! class_exists( 'BackWPup_Pro', FALSE ) )
-				echo '<tr title=""><td>' . __( 'BackWPup version', 'backwpup' ) . '</td><td>' . esc_html( BackWPup::get_plugin_data( 'Version' ) ) . ' <a href="' . __( 'http://backwpup.com', 'backwpup' ) . '">' . __( 'Get pro.', 'backwpup' ) . '</a></td></tr>';
-			else
-				echo '<tr title=""><td>' . __( 'BackWPup Pro version', 'backwpup' ) . '</td><td>' . esc_html( BackWPup::get_plugin_data( 'Version' ) ) . '</td></tr>';
-			$bit = '';
-			if ( PHP_INT_SIZE === 4 ) {
-				$bit = ' (32bit)';
+			foreach ( $information as $item ) {
+				echo "<tr>\n" .
+					"<td>" . $item['label'] . "</td>\n" .
+					"<td>" .
+					( isset( $item['html'] ) ? $item['html'] : esc_html( $item['value'] ) ) .
+					"</td>\n" .
+					"</tr>\n";
 			}
-			if ( PHP_INT_SIZE === 8 ) {
-				$bit = ' (64bit)';
-			}
-			echo '<tr title="&gt;=5.3.3"><td>' . __( 'PHP version', 'backwpup' ) . '</td><td>' . esc_html( PHP_VERSION . ' ' . $bit ) . '</td></tr>';
-			echo '<tr title="&gt;=5.0.7"><td>' . __( 'MySQL version', 'backwpup' ) . '</td><td>' . esc_html( $wpdb->get_var( "SELECT VERSION() AS version" ) ) . '</td></tr>';
-			if ( function_exists( 'curl_version' ) ) {
-				$curlversion = curl_version();
-				echo '<tr title=""><td>' . __( 'cURL version', 'backwpup' ) . '</td><td>' . esc_html( $curlversion[ 'version' ] ) . '</td></tr>';
-				echo '<tr title=""><td>' . __( 'cURL SSL version', 'backwpup' ) . '</td><td>' . esc_html( $curlversion[ 'ssl_version' ] ) . '</td></tr>';
-			}
-			else {
-				echo '<tr title=""><td>' . __( 'cURL version', 'backwpup' ) . '</td><td>' . __( 'unavailable', 'backwpup' ) . '</td></tr>';
-			}
-			echo '<tr title=""><td>' . __( 'WP-Cron url:', 'backwpup' ) . '</td><td>' . site_url( 'wp-cron.php' ) . '</td></tr>';
-			//response test
-			echo '<tr><td>' . __( 'Server self connect:', 'backwpup' ) . '</td><td>';
-			$raw_response = BackWPup_Job::get_jobrun_url( 'test' );
-			$response_code = wp_remote_retrieve_response_code( $raw_response );
-			$response_body = wp_remote_retrieve_body( $raw_response );
-			if ( strstr( $response_body, 'BackWPup test request' ) === false ) {
-				$test_result = __( '<strong>Not expected HTTP response:</strong><br>','backwpup' );
-				if ( ! $response_code ) {
-					$test_result .= sprintf( __( 'WP Http Error: <code>%s</code>', 'backwpup' ), esc_html( $raw_response->get_error_message() ) ) . '<br>';
-				} else {
-					$test_result .= sprintf( __( 'Status-Code: <code>%d</code>', 'backwpup' ), esc_html( $response_code ) ) . '<br>';
-				}
-				$response_headers = wp_remote_retrieve_headers( $raw_response );
-				foreach( $response_headers as $key => $value ) {
-					$test_result .= esc_html( ucfirst( $key ) ) . ': <code>' . esc_html( $value ) . '</code><br>';
-				}
-				$content = esc_html( wp_remote_retrieve_body( $raw_response ) );
-				if ( $content ) {
-					$test_result .= sprintf( __( 'Content: <code>%s</code>', 'backwpup' ), $content );
-				}
-				echo $test_result;
-			} else {
-				_e( 'Response Test O.K.', 'backwpup' );
-			}
-			echo '</td></tr>';
-			//folder test
-			echo '<tr><td>' . __( 'Temp folder:', 'backwpup' ) . '</td><td>';
-			if ( ! is_dir( BackWPup::get_plugin_data( 'TEMP' ) ) ) {
-				echo sprintf( __( 'Temp folder %s doesn\'t exist.', 'backwpup' ), esc_html( BackWPup::get_plugin_data( 'TEMP' ) ) );
-			} elseif ( ! is_writable( BackWPup::get_plugin_data( 'TEMP' ) ) ) {
-				echo sprintf( __( 'Temporary folder %s is not writable.', 'backwpup' ), esc_html( BackWPup::get_plugin_data( 'TEMP' ) ) );
-			} else {
-				echo esc_html( BackWPup::get_plugin_data( 'TEMP' ) );
-			}
-			echo '</td></tr>';
-			$log_folder = esc_html( get_site_option( 'backwpup_cfg_logfolder' ) );
-			$log_folder = BackWPup_File::get_absolute_path( $log_folder );
-			echo '<tr><td>' . __( 'Log folder:', 'backwpup' ) . '</td><td>';
-			if ( ! is_dir( $log_folder ) ) {
-				echo sprintf( __( 'Logs folder %s not exist.','backwpup' ), $log_folder );
-			} elseif ( ! is_writable( $log_folder ) ) {
-				echo sprintf( __( 'Log folder %s is not writable.','backwpup' ), $log_folder );
-			} else {
-				echo $log_folder;
-			}
-			echo '</td></tr>';
-			echo '<tr title=""><td>' . __( 'Server', 'backwpup' ) . '</td><td>' . esc_html( $_SERVER[ 'SERVER_SOFTWARE' ] ) . '</td></tr>';
-			echo '<tr title=""><td>' . __( 'Operating System', 'backwpup' ) . '</td><td>' . esc_html( PHP_OS ) . '</td></tr>';
-			echo '<tr title=""><td>' . __( 'PHP SAPI', 'backwpup' ) . '</td><td>' . esc_html( PHP_SAPI ) . '</td></tr>';
-			$php_user = __( 'Function Disabled', 'backwpup' );
-			if ( function_exists( 'get_current_user' ) ) {
-				$php_user = get_current_user();
-			}
-			echo '<tr title=""><td>' . __( 'Current PHP user', 'backwpup' ) . '</td><td>' . esc_html( $php_user )  . '</td></tr>';
-			echo '<tr title="&gt;=30"><td>' . __( 'Maximum execution time', 'backwpup' ) . '</td><td>' . esc_html( ini_get( 'max_execution_time' ) ) . ' ' . __( 'seconds', 'backwpup' ) . '</td></tr>';
-			if ( defined( 'ALTERNATE_WP_CRON' ) && ALTERNATE_WP_CRON )
-				echo '<tr title="ALTERNATE_WP_CRON"><td>' . __( 'Alternative WP Cron', 'backwpup' ) . '</td><td>' . __( 'On', 'backwpup' ) . '</td></tr>';
-			else
-				echo '<tr title="ALTERNATE_WP_CRON"><td>' . __( 'Alternative WP Cron', 'backwpup' ) . '</td><td>' . __( 'Off', 'backwpup' ) . '</td></tr>';
-			if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON )
-				echo '<tr title="DISABLE_WP_CRON"><td>' . __( 'Disabled WP Cron', 'backwpup' ) . '</td><td>' . __( 'On', 'backwpup' ) . '</td></tr>';
-			else
-				echo '<tr title="DISABLE_WP_CRON"><td>' . __( 'Disabled WP Cron', 'backwpup' ) . '</td><td>' . __( 'Off', 'backwpup' ) . '</td></tr>';
-			if ( defined( 'FS_CHMOD_DIR' ) )
-				echo '<tr title="FS_CHMOD_DIR"><td>' . __( 'CHMOD Dir', 'backwpup' ) . '</td><td>' . esc_html( FS_CHMOD_DIR ) . '</td></tr>';
-			else
-				echo '<tr title="FS_CHMOD_DIR"><td>' . __( 'CHMOD Dir', 'backwpup' ) . '</td><td>0755</td></tr>';
-			$now = localtime( time(), TRUE );
-			echo '<tr title=""><td>' . __( 'Server Time', 'backwpup' ) . '</td><td>' . esc_html( $now[ 'tm_hour' ] . ':' . $now[ 'tm_min' ] ) . '</td></tr>';
-			echo '<tr title=""><td>' . __( 'Blog Time', 'backwpup' ) . '</td><td>' . date( 'H:i', current_time( 'timestamp' ) ) . '</td></tr>';
-			echo '<tr title=""><td>' . __( 'Blog Timezone', 'backwpup' ) . '</td><td>' . esc_html( get_option( 'timezone_string' ) ) . '</td></tr>';
-			echo '<tr title=""><td>' . __( 'Blog Time offset', 'backwpup' ) . '</td><td>' . sprintf( __( '%s hours', 'backwpup' ), (int) get_option( 'gmt_offset' ) ) . '</td></tr>';
-			echo '<tr title="WPLANG"><td>' . __( 'Blog language', 'backwpup' ) . '</td><td>' . get_bloginfo( 'language' ) . '</td></tr>';
-			echo '<tr title="utf8"><td>' . __( 'MySQL Client encoding', 'backwpup' ) . '</td><td>';
-			echo defined( 'DB_CHARSET' ) ? DB_CHARSET : '';
-			echo '</td></tr>';
-			echo '<tr title="URF-8"><td>' . __( 'Blog charset', 'backwpup' ) . '</td><td>' . get_bloginfo( 'charset' ) . '</td></tr>';
-			echo '<tr title="&gt;=128M"><td>' . __( 'PHP Memory limit', 'backwpup' ) . '</td><td>' . esc_html( ini_get( 'memory_limit' ) ) . '</td></tr>';
-			echo '<tr title="WP_MEMORY_LIMIT"><td>' . __( 'WP memory limit', 'backwpup' ) . '</td><td>' . esc_html( WP_MEMORY_LIMIT ) . '</td></tr>';
-			echo '<tr title="WP_MAX_MEMORY_LIMIT"><td>' . __( 'WP maximum memory limit', 'backwpup' ) . '</td><td>' . esc_html( WP_MAX_MEMORY_LIMIT ) . '</td></tr>';
-			echo '<tr title=""><td>' . __( 'Memory in use', 'backwpup' ) . '</td><td>' . size_format( @memory_get_usage( TRUE ), 2 ) . '</td></tr>';
-			//disabled PHP functions
-			$disabled = esc_html( ini_get( 'disable_functions' ) );
-			if ( ! empty( $disabled ) ) {
-				$disabledarry = explode( ',', $disabled );
-				echo '<tr title=""><td>' . __( 'Disabled PHP Functions:', 'backwpup' ) . '</td><td>';
-				echo implode( ', ', $disabledarry );
-				echo '</td></tr>';
-			}
-			//Loaded PHP Extensions
-			echo '<tr title=""><td>' . __( 'Loaded PHP Extensions:', 'backwpup' ) . '</td><td>';
-			$extensions = get_loaded_extensions();
-			sort( $extensions );
-			echo  esc_html( implode( ', ', $extensions ) );
-			echo '</td></tr>';
 			echo '</table>'
 			?>
         </div>
@@ -517,7 +489,228 @@ class BackWPup_Page_Settings {
         </p>
     </form>
     </div>
+
 	<?php
+	}
+	
+	/**
+	 * Get debug information for this installation
+	 */
+	private static function get_information() {
+		global $wpdb;
+		
+		$information = array();
+		
+		// Wordpress version
+		$information['wpversion']['label'] = __( 'WordPress version', 'backwpup' );
+		$information['wpversion']['value'] = BackWPup::get_plugin_data( 'wp_version' );
+		
+		// BackWPup version
+		if ( ! class_exists( 'BackWPup_Pro', false ) ) {
+			$information['bwuversion']['label'] = __( 'BackWPup version', 'backwpup' );
+			$information['bwuversion']['value'] = BackWPup::get_plugin_data( 'Version' );
+			$information['bwuversion']['html'] = BackWPup::get_plugin_data( 'Version' ) .
+				' <a href="' . __( 'http://backwpup.com', 'backwpup' ) . '">' .
+				__( 'Get pro.', 'backwpup' ) . '</a>';
+		} else {
+			$information['bwuversion']['label'] = __( 'BackWPup Pro version', 'backwpup' );
+			$information['bwuversion']['value'] = BackWPup::get_plugin_data( 'Version' );
+		}
+		
+		// PHP version
+		$information['phpversion']['label'] = __( 'PHP version', 'backwpup' );
+		$bit = '';
+		if ( PHP_INT_SIZE === 4 ) {
+			$bit = ' (32bit)';
+		} elseif ( PHP_INT_SIZE === 8 ) {
+			$bit = ' (64bit)';
+		}
+		$information['phpversion']['value'] = PHP_VERSION . ' ' . $bit;
+		
+		// MySQL version
+		$information['mysqlversion']['label'] = __( 'MySQL version', 'backwpup' );
+		$information['mysqlversion']['value'] = $wpdb->get_var( "SELECT VERSION() AS version" );
+		
+		// Curl version
+		$information['curlversion']['label'] = __( 'cURL version', 'backwpup' );
+		if ( function_exists( 'curl_version' ) ) {
+			$curl_version = curl_version();
+			$information['curlversion']['value'] = $curl_version['version'];
+			$information['curlsslversion']['label'] = __( 'cURL SSL version', 'backwpup' );
+			$information['curlsslversion']['value'] = $curl_version['ssl_version'];
+		} else {
+			$information['curlversion']['value'] = __( 'unavailable', 'backwpup' );
+		}
+		
+		// WP cron URL
+		$information['wpcronurl']['label'] = __( 'WP-Cron url', 'backwpup' );
+		$information['wpcronurl']['value'] = site_url( 'wp-cron.php' );
+		
+		// Response test
+		$server_connect['label'] = __( 'Server self connect', 'backwpup' );
+		
+		$raw_response = BackWPup_Job::get_jobrun_url( 'test' );
+		$response_code = wp_remote_retrieve_response_code( $raw_response );
+		$response_body = wp_remote_retrieve_body( $raw_response );
+		if ( strstr( $response_body, 'BackWPup test request' ) === false ) {
+			$server_connect['value'] = __( 'Not expected HTTP response:', 'backwpup' ) . "\n";
+			$server_connect['html'] = __( '<strong>Not expected HTTP response:</strong><br>', 'backwpup' );
+			if ( ! $response_code ) {
+				$server_connect['value'] .= sprintf( __( 'WP Http Error: %s', 'backwpup' ), $raw_response->get_error_message() ) . "\n";
+				$server_connect['html'] = sprintf( __( 'WP Http Error: <code>%s</code>', 'backwpup' ), esc_html( $raw_response->get_error_message() ) ) . '<br>';
+			} else {
+				$server_connect['value'] .= sprintf( __( 'Status-Code: %d', 'backwpup' ), $response_code ) . "\n";
+				$server_connect['html'] .= sprintf( __( 'Status-Code: <code>%d</code>', 'backwpup' ), esc_html( $response_code ) ) . '<br>';
+			}
+			$response_headers = wp_remote_retrieve_headers( $raw_response );
+			foreach( $response_headers as $key => $value ) {
+				$server_connect['value'] .= ucfirst( $key ) . ": $value\n";
+				$server_connect['html'] .= esc_html( ucfirst( $key ) ) . ': <code>' . esc_html( $value ) . '</code><br>';
+			}
+			$content = wp_remote_retrieve_body( $raw_response );
+			if ( $content ) {
+				$server_connect['value'] .= sprintf( __( 'Content: %s', 'backwpup' ), $content );
+				$server_connect['html'] .= sprintf( __( 'Content: <code>%s</code>', 'backwpup' ), esc_html( $content ) );
+			}
+		} else {
+			$server_connect['value'] = __( 'Response Test O.K.', 'backwpup' );
+		}
+		$information['serverconnect'] = $server_connect;
+		
+		// Document root
+		$information['docroot']['label'] = 'Document root';
+		$information['docroot']['value'] = $_SERVER['DOCUMENT_ROOT'];
+		
+		// Temp folder
+		$information['tmpfolder']['label'] = __( 'Temp folder', 'backwpup' );
+		if ( ! is_dir( BackWPup::get_plugin_data( 'TEMP' ) ) ) {
+			$information['tmpfolder']['value'] = sprintf( __( 'Temp folder %s doesn\'t exist.', 'backwpup' ), BackWPup::get_plugin_data( 'TEMP' ) );
+		} elseif ( ! is_writable( BackWPup::get_plugin_data( 'TEMP' ) ) ) {
+			$information['tmpfolder']['value'] = sprintf( __( 'Temporary folder %s is not writable.', 'backwpup' ), BackWPup::get_plugin_data( 'TEMP' ) );
+		} else {
+			$information['tmpfolder']['value'] = BackWPup::get_plugin_data( 'TEMP' );
+		}
+		
+		// Log folder
+		$information['logfolder']['label'] = __( 'Log folder', 'backwpup' );
+		$log_folder = BackWPup_File::get_absolute_path( get_site_option( 'backwpup_cfg_logfolder' ) );
+		if ( ! is_dir( $log_folder ) ) {
+			$information['logfolder']['value'] = sprintf( __( 'Log folder %s does not exist.','backwpup' ), $log_folder );
+		} elseif ( ! is_writable( $log_folder ) ) {
+			$information['logfolder']['value'] = sprintf( __( 'Log folder %s is not writable.','backwpup' ), $log_folder );
+		} else {
+			$information['logfolder']['value'] = $log_folder;
+		}
+		
+		// Server
+		$information['server']['label'] = __( 'Server', 'backwpup' );
+		$information['server']['value'] = $_SERVER['SERVER_SOFTWARE'];
+		
+		// OS
+		$information['os']['label'] = __( 'Operating System', 'backwpup' );
+		$information['os']['value'] = PHP_OS;
+		
+		// PHP SAPI
+		$information['phpsapi']['label'] = __( 'PHP SAPI', 'backwpup' );
+		$information['phpsapi']['value'] = PHP_SAPI;
+		
+		// PHP user
+		$information['phpuser']['label'] = __( 'Current PHP user', 'backwpup' );
+		if ( function_exists( 'get_current_user' ) ) {
+			$information['phpuser']['value'] = get_current_user();
+		} else {
+			$information['phpuser']['value'] = __( 'Function Disabled', 'backwpup' );
+		}
+		
+		// Maximum execution time
+		$information['maxexectime']['label'] = __( 'Maximum execution time', 'backwpup' );
+		$information['maxexectime']['value'] = sprintf(
+			__( '%d seconds', 'backwpup' ),
+			ini_get( 'max_execution_time' )
+		);
+		
+		// Alternate WP cron
+		$information['altwpcron']['label'] = __( 'Alternative WP Cron', 'backwpup' );
+		if ( defined( 'ALTERNATE_WP_CRON' ) && ALTERNATE_WP_CRON ) {
+			$information['altwpcron']['value'] = __( 'On', 'backwpup' );
+		} else {
+			$information['altwpcron']['value'] = __( 'Off', 'backwpup' );
+		}
+		
+		// Disable WP cron
+		$information['disablewpcron']['label'] = __( 'Disabled WP Cron', 'backwpup' );
+		if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON ) {
+			$information['disablewpcron']['value'] = __( 'On', 'backwpup' );
+		} else {
+			$information['disablewpcron']['value'] = __( 'Off', 'backwpup' );
+		}
+		
+		// CHMOD dir
+		$information['chmoddir']['label'] = __( 'CHMOD Dir', 'backwpup' );
+		if ( defined( 'FS_CHMOD_DIR' ) ) {
+			$information['chmoddir']['value'] = FS_CHMOD_DIR;
+		} else {
+			$information['chmoddir']['value'] = '0755';
+		}
+		
+		// Server time
+		$information['servertime']['label'] = __( 'Server Time', 'backwpup' );
+		$now = localtime( time(), TRUE );
+		$information['servertime']['value'] = $now['tm_hour'] . ':' . $now['tm_min'];
+		
+		// Blog time
+		$information['blogtime']['label'] = __( 'Blog Time', 'backwpup' );
+		$information['blogtime']['value'] = date( 'H:i', current_time( 'timestamp' ) );
+		
+		// Blog timezone
+		$information['blogtz']['label'] = __( 'Blog Timezone', 'backwpup' );
+		$information['blogtz']['value'] = get_option( 'timezone_string' );
+		
+		// Blog time offset
+		$information['blogoffset']['label'] = __( 'Blog Time offset', 'backwpup' );
+		$information['blogoffset']['value'] = sprintf(
+			__( '%s hours', 'backwpup' ),
+			(int) get_option( 'gmt_offset' )
+		);
+		
+		// Blog language
+		$information['bloglang']['label'] = __( 'Blog language', 'backwpup' );
+		$information['bloglang']['value'] = get_bloginfo( 'language' );
+		
+		// MySQL encoding
+		$information['mysqlencoding']['label'] = __( 'MySQL Client encoding', 'backwpup' );
+		$information['mysqlencoding']['value'] = defined( 'DB_CHARSET' ) ? DB_CHARSET : '';
+		
+		// PHP memory limit
+		$information['phpmemlimit']['label'] = __( 'PHP Memory limit', 'backwpup' );
+		$information['phpmemlimit']['value'] = ini_get( 'memory_limit' );
+		
+		// WP memory limit
+		$information['wpmemlimit']['label'] = __( 'WP memory limit', 'backwpup' );
+		$information['wpmemlimit']['value'] = WP_MEMORY_LIMIT;
+		
+		// WP maximum memory limit
+		$information['wpmaxmemlimit']['label'] = __( 'WP maximum memory limit', 'backwpup' );
+		$information['wpmaxmemlimit']['value'] = WP_MAX_MEMORY_LIMIT;
+		
+		// Memory in use
+		$information['memusage']['label'] = __( 'Memory in use', 'backwpup' );
+		$information['memusage']['value'] = size_format( @memory_get_usage( true ), 2 );
+		
+		// Disabled PHP functions
+		$disabled = esc_html( ini_get( 'disable_functions' ) );
+		if ( ! empty( $disabled ) ) {
+			$information['disabledfunctions']['label'] = __( 'Disabled PHP Functions:', 'backwpup' );
+			$information['disabledfunctions']['value'] = implode( ', ', explode( ',', $disabled ) );
+		}
+		
+		// Loaded PHP extensions
+		$information['loadedextensions']['label'] = __( 'Loaded PHP Extensions:', 'backwpup' );
+		$extensions = get_loaded_extensions();
+		sort( $extensions );
+		$information['loadedextensions']['value'] = implode( ', ', $extensions );
+		
+		return $information;
 	}
 
 }

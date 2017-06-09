@@ -89,6 +89,9 @@ final class BackWPup_Admin {
 		} else {
 			wp_register_script( 'backwpupgeneral', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/general.min.js', array( 'jquery' ), BackWPup::get_plugin_data( 'Version' ), false );
 		}
+		
+		// Register clipboard.js script
+		wp_register_script( 'backwpup_clipboard', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/clipboard.min.js', array( 'jquery' ), '1.7.1', true );
 
 		//add Help
 		BackWPup_Help::help();
