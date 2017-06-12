@@ -47,8 +47,12 @@ class BackWPup_BetaTester_Admin_Notice {
 	private function should_display() {
 
 		if ( ! is_bool( self::$should_show ) ) {
-			$option            = new BackWPup_Dismissible_Notice_Option( true );
-			self::$should_show = ! $option->is_dismissed( self::NOTICE_ID );
+			if ( class_exists( 'BackWPup_Pro', false ) ) {
+				self::$should_show = false;
+			} else {
+				$option            = new BackWPup_Dismissible_Notice_Option( true );
+				self::$should_show = ! $option->is_dismissed( self::NOTICE_ID );
+			}
 		}
 
 		return self::$should_show;

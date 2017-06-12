@@ -75,11 +75,15 @@ class BackWPup_Become_Inpsyder_Widget {
 		if ( is_bool( self::$should_show ) ) {
 			return self::$should_show;
 		}
+		
+		if ( class_exists( 'BackWPup_Pro', false ) ) {
+			self::$should_show = false;
+		} else {
+			$option = new BackWPup_Dismissible_Notice_Option( false );
 
-		$option = new BackWPup_Dismissible_Notice_Option( false );
-
-		// If notice is dismissed for good, don't show it
-		self::$should_show = ! $option->is_dismissed( self::NOTICE_ID );
+			// If notice is dismissed for good, don't show it
+			self::$should_show = ! $option->is_dismissed( self::NOTICE_ID );
+		}
 
 		return self::$should_show;
 	}
