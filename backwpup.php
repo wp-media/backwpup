@@ -112,23 +112,36 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			if ( is_admin() && current_user_can( 'backwpup' ) ) {
 
 				// Work for Inpsyde widget
+/*
 				$inpsyder_widget = new BackWPup_Become_Inpsyder_Widget();
 				add_action( 'wp_dashboard_setup', array( $inpsyder_widget, 'setup_widget' ) );
 				add_action( 'backwpup_admin_messages', array( $inpsyder_widget, 'print_plugin_widget_markup' ), 0 );
+*/
 
 				// Beta Tester notice
 				$beta_tester_notice = new BackWPup_BetaTester_Admin_Notice();
 				add_action( 'backwpup_admin_messages', array( $beta_tester_notice, 'dashboard_message' ), 20 );
+				
+				// Rate Us notice
+				$rate_us_notice = new BackWPup_Rate_Us_Admin_Notice();
+				add_action( 'backwpup_admin_messages', array( $rate_us_notice, 'dashboard_message' ), 20 );
 
 				// Setup "dismissible" option actions for notices
+/*
 				BackWPup_Dismissible_Notice_Option::setup_actions(
 					false,
 					BackWPup_Become_Inpsyder_Widget::NOTICE_ID,
 					'backwpup'
 				);
+*/
 				BackWPup_Dismissible_Notice_Option::setup_actions(
 					false,
 					BackWPup_BetaTester_Admin_Notice::NOTICE_ID,
+					'backwpup'
+				);
+				BackWPup_Dismissible_Notice_Option::setup_actions(
+					false,
+					BackWPup_Rate_Us_Admin_Notice::NOTICE_ID,
 					'backwpup'
 				);
 			}
