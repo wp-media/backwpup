@@ -496,7 +496,7 @@ class BackWPup_Page_Settings {
 	/**
 	 * Get debug information for this installation
 	 */
-	private static function get_information() {
+	public static function get_information() {
 		global $wpdb;
 		
 		$information = array();
