@@ -395,7 +395,7 @@ class BackWPup_Page_Settings {
 			);
 			echo '</p>';
 			
-			?><p><a href="#TB_inline?height=440&width=630&inlineId=tb-debug-info" id="debug-button" class="thickbox button button-primary">
+			?><p><a href="#TB_inline?height=440&width=630&inlineId=tb-debug-info" id="debug-button" class="thickbox button button-primary" title="<?php _e("Debug Info" , "backwpup");?>">
 					<?php _e( 'Get Debug Info', 'backwpup' ) ?></a></p>
 					
 					<div id="tb-debug-info" tabindex="-1" style="display: none;"><?php
@@ -424,12 +424,14 @@ class BackWPup_Page_Settings {
 							<p><span class="dashicons dashicons-no"></span><?php _e( 'Could not copy debug info. You can simply press ctrl+C to copy it.', 'backwpup' ) ?></p>
 						</div>
 						
-						<textarea id="backwpup-debug-info" readonly="readonly"><?php
+                                                <textarea id="backwpup-debug-info" readonly="readonly" style="width: 100%;height: 100%;overflow: scroll;">
+                                                    <?php
 							foreach ( $information as $item ) {
 								echo esc_html( $item['label'] ) . ': ' .
 								esc_html( $item['value'] ) . "\n";
 							}
-						?></textarea>
+                                                ?>
+                                                </textarea>
 					</div>
 
 						<script type="text/javascript">
@@ -439,7 +441,7 @@ class BackWPup_Page_Settings {
 								clipboard.on('success', function (e) {
 									setTimeout(
 										function () {
-											$('#backwpup-copy-debug-info-success').attr('style', 'display:inline-block !important;');
+											$('#backwpup-copy-debug-info-success').attr('style', 'display:inline-block !important;color:green');
 										},
 										300
 									);
@@ -454,12 +456,15 @@ class BackWPup_Page_Settings {
 								});
 								
 								clipboard.on('error', function (e) {
-									$('backwpup-copy-debug-info-error').attr('style', 'display:inline-block !important;');
+									$('backwpup-copy-debug-info-error').attr('style', 'display:inline-block !important;color:red');
 								});
 								
+                                                        
 								$('#debug-button').on('click', function () {
 									$('#tb-debug-info').focus();
-								})
+//                                                               $("#TB_ajaxWindowTitle").text("<?php _e("Debug Info");?>");
+                                                               $("#TB_ajaxWindowTitle").text("WTF");
+								});
 							});
 						</script>
 
