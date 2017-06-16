@@ -470,7 +470,7 @@ class BackWPup_Page_Settings {
 
 					<?php
 					
-			echo '<table class="wp-list-table widefat fixed" cellspacing="0" style="width:85%;margin-left:auto;margin-right:auto;">';
+			echo '<table class="wp-list-table widefat fixed" cellspacing="0" style="width:100%;margin-left:auto;margin-right:auto;">';
 			echo '<thead><tr><th width="35%">' . __( 'Setting', 'backwpup' ) . '</th><th>' . __( 'Value', 'backwpup' ) . '</th></tr></thead>';
 			echo '<tfoot><tr><th>' . __( 'Setting', 'backwpup' ) . '</th><th>' . __( 'Value', 'backwpup' ) . '</th></tr></tfoot>';
 			foreach ( $information as $item ) {
