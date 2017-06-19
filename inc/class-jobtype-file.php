@@ -214,6 +214,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 		// Parse and save directories to exclude
 		$exclude_dirs_def = array(
 			'backuprootexcludedirs'    => array( 'filter' => FILTER_SANITIZE_URL, 'flags' => FILTER_FORCE_ARRAY ),
+			'backupcontentexcludedirs'    => array( 'filter' => FILTER_SANITIZE_URL, 'flags' => FILTER_FORCE_ARRAY ),
 			'backuppluginsexcludedirs' => array( 'filter' => FILTER_SANITIZE_URL, 'flags' => FILTER_FORCE_ARRAY ),
 			'backupthemesexcludedirs'  => array( 'filter' => FILTER_SANITIZE_URL, 'flags' => FILTER_FORCE_ARRAY ),
 			'backupuploadsexcludedirs' => array( 'filter' => FILTER_SANITIZE_URL, 'flags' => FILTER_FORCE_ARRAY ),
