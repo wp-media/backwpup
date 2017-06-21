@@ -424,14 +424,12 @@ class BackWPup_Page_Settings {
 							<p><span class="dashicons dashicons-no"></span><?php _e( 'Could not copy debug info. You can simply press ctrl+C to copy it.', 'backwpup' ) ?></p>
 						</div>
 						
-                                                <textarea id="backwpup-debug-info" readonly="readonly" style="width: 100%;height: 100%;overflow: scroll;">
-                                                    <?php
+                                                <textarea id="backwpup-debug-info" readonly="readonly" style="width: 100%;height: 100%;overflow: scroll;"><?php
 							foreach ( $information as $item ) {
 								echo esc_html( $item['label'] ) . ': ' .
 								esc_html( $item['value'] ) . "\n";
 							}
-                                                ?>
-                                                </textarea>
+                                                ?></textarea>
 					</div>
 
 						<script type="text/javascript">
