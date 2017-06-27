@@ -3,9 +3,8 @@
 /**
  *
  */
-class BackWPup_Rate_Us_Admin_Notice {
+class BackWPup_Admin_Notice {
 
-	const NOTICE_ID = 'rate_us';
 	const MAIN_ADMIN_PAGE_IDS = 'toplevel_page_backwpup';
 
 	private static $main_admin_page_ids = array(
@@ -18,19 +17,46 @@ class BackWPup_Rate_Us_Admin_Notice {
 	 *
 	 * @var bool
 	 */
-	private static $should_show;
+	private $should_show;
+	
+	private $has_displayed;
+	
+	private $id;
+	
+	private $button_text;
+	
+	private $button_url;
+	
+	private $priority;
+	
+	public function __construct( $id, $button_text, $button_url, $priority = 20 ) {
+		$this->has_displayed = false;
+		$this->id = $id;
+		$this->button_text = $button_text;
+		$this->button_url = $button_url;
+		$this->priority = $priority;
+	}
+	
+	public function initiate() {
+		add_action( 'backwpup_admin_messages', array( $this, 'dashboard_message' ), 20 );
+		BackWPup_Dismissible_Notice_Option::setup_actions(
+			false,
+			$this->id,
+			'backwpup'
+		);
+	}
 
 	/**
 	 * Display a notice in BackWPup admin dashboard.
 	 */
 	public function dashboard_message() {
 
-		static $done;
 		$screen_id = get_current_screen()->id;
-		if ( ! $done && in_array( $screen_id, self::$main_admin_page_ids, true ) && $this->should_display() ) {
+		if ( ! $this->has_displayed && in_array( $screen_id, self::$main_admin_page_ids, true )
+			&& $this->should_display() ) {
 			$done = true;
 			?>
-			<div class="metabox-holder postbox" id="backwpup_dismiss_rate_us_notice">
+			<div class="metabox-holder postbox" id="backwpup_dismiss_<?php echo esc_attr( $this->id ) ?>_notice">
 				<div class="inside">
 					<?php echo $this->widget_markup() ?>
 				</div>
@@ -46,16 +72,16 @@ class BackWPup_Rate_Us_Admin_Notice {
 	 */
 	private function should_display() {
 
-		if ( ! is_bool( self::$should_show ) ) {
+		if ( ! is_bool( $this->should_show ) ) {
 			if ( class_exists( 'BackWPup_Pro', false ) ) {
-				self::$should_show = false;
+				$this->should_show = false;
 			} else {
 				$option            = new BackWPup_Dismissible_Notice_Option( true );
-				self::$should_show = ! $option->is_dismissed( self::NOTICE_ID );
+				$this->should_show = ! $option->is_dismissed( $this->id );
 			}
 		}
 
-		return self::$should_show;
+		return $this->should_show;
 	}
 
 	/**
@@ -66,36 +92,27 @@ class BackWPup_Rate_Us_Admin_Notice {
 	private function widget_markup() {
 
 		$dismiss_url = BackWPup_Dismissible_Notice_Option::dismiss_action_url(
-			self::NOTICE_ID,
+			$this->id,
 			BackWPup_Dismissible_Notice_Option::FOR_USER_FOR_GOOD_ACTION
 		);
 
-		$rate_us     = esc_html__( 'Make Us Happy and Give Your Rating', 'backwpup' );
-		$rate_us_url = esc_html__( 'https://wordpress.org/support/plugin/backwpup/reviews/', 'backwpup' );
-
 		ob_start();
+		?><div><?php
+		require dirname( dirname( __FILE__ ) ) . '/assets/templates/admin-notices/' .
+			sanitize_file_name( str_replace( '_', '-', $this->id ) . '.php' );
 		?>
-		<div>
-			<p>
-				<?php
-				echo esc_html__(
-					'Are you happy with BackWPup? If you are satisfied with our free plugin and support, then please make us even happier and just take 30 seconds to leave a positive rating. :) We would really appreciate that and it will motivate our team to develop even more cool features for BackWPup!',
-					'backwpup'
-				);
-				?>
-			</p>
 			<p>
 				<a
 					style="background: #9FC65D; border-color: #7ba617 #719c0d #719c0d; -webkit-box-shadow: 0 1px 0 #719c0d; box-shadow: 0 1px 0 #719c0d; text-shadow: 0 -1px 1px #719c0d, 1px 0 1px #719c0d, 0 1px 1px #719c0d, -1px 0 1px #719c0d;"
 					class="button button-primary"
-					href="<?php echo esc_url( $rate_us_url ) ?>"
+					href="<?php echo esc_url( $this->button_url ) ?>"
 					target="_blank">
-					<?php echo $rate_us ?>
+					<?php echo $this->button_text ?>
 				</a>
 
 				<a
 					class="button"
-					id="backwpup_dismiss_rate_us"
+					id="backwpup_dismiss_<?php echo esc_attr( $this->id ) ?>"
 					href="<?php echo esc_url( $dismiss_url ) ?>">
 					<?php echo esc_html__( 'Don\'t show again', 'backwpup' ) ?>
 				</a>
@@ -104,10 +121,10 @@ class BackWPup_Rate_Us_Admin_Notice {
 		<script>
 			(
 				function( $ ) {
-					$( '#backwpup_dismiss_rate_us' ).on( 'click', function( e ) {
+					$( '#backwpup_dismiss_<?php echo esc_js( $this->id ) ?>' ).on( 'click', function( e ) {
 						e.preventDefault();
 						$.post( $( this ).attr( 'href' ), { isAjax: 1 } );
-						$( '#backwpup_dismiss_rate_us_notice' ).hide();
+						$( '#backwpup_dismiss_<?php echo esc_js( $this->id ) ?>_notice' ).hide();
 					} );
 				}
 			)( jQuery );
