@@ -2,12 +2,16 @@
 Contributors: inpsyde, cocreation, danielhuesken, Bueltge, nullbyte
 Tags: Amazon, Amazon S3, back up, backup, chinese, cloud, cloud files, database, db backup, dropbox, dump, file, french, ftp, ftps, german, migrate, multisite, russian, schedule, sftp, storage, S3, time, upload, xml
 Requires at least: 3.9
-Tested up to: 4.7.4
-Stable tag: 3.4.0
+Tested up to: 4.8
+Stable tag: 3.4.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Schedule complete automatic backups of your WordPress installation. Decide which content will be stored (Dropbox, S3…). This is the free version
+
+== Independence Day Sale ==
+
+Get your 30% Independence Day discount for BackWPup Pro! Only available until July 5th, 2017. [Save Now](https://backwpup.com/?utm_source=BackWPup&utm_campaign=IndependenceDay&utm_medium=Link)
 
 == Description ==
 
@@ -157,6 +161,22 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 [You can find a detailed tutorial in the BackWPup documentation.](http://docs.backwpup.com/article/118-install-backwpup)
 
 == Changelog ==
+= Version 3.4.1 =
+* Check if file is dot to prevent open_basedir warning.
+* Only display Dropbox upload progress in debug mode.
+* Fix PHP notice when running job via WP CLI.
+* Fix the way Dropbox API wrapper handles errors.
+* Only encode DB values to hex when binary flag is set.
+* Fix handling of storing backups in root Dropbox dir.
+* Allow symbolic links to be excluded.
+* If archive name is not valid format, will still recognize and delete old files.
+* Allow user to copy debug info for support.
+* Do not display notices for pro users.
+* Add support form for pro users.
+* Add Rate Us admin notice.
+* Support empty folder name when syncing to Dropbox.
+* Allow folders under wp-content to be excluded.
+
 = Version 3.4.0 =
 * Changed: Dropped support for PHP 5.2.
 * Improved: Migrated to Dropbox API V2.
