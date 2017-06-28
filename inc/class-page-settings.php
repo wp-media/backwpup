@@ -389,8 +389,7 @@ class BackWPup_Page_Settings {
 			
 			echo '<p>';
 			_e(
-				'Experiencing an issue and need to contact BackWPup support? ' .
-				'Click the link below to get debug information you can send to us.',
+				'Experiencing an issue and need to contact BackWPup support? Click the link below to get debug information you can send to us.',
 				'backwpup'
 			);
 			echo '</p>';
@@ -403,8 +402,7 @@ class BackWPup_Page_Settings {
 						?>
 						<p><?php _e( 'You will find debug information below. Click the button to copy the debug info to send to support.', 'backwpup' ) ?></p>
 						<p><?php _e( '<strong>Note</strong>: ' .
-							'Would you like faster, more streamlined support? ' .
-							'Pro users can contact BackWPup from right within the plugin.',
+							'Would you like faster, more streamlined support? Pro users can contact BackWPup from right within the plugin.',
 							'backwpup'
 						) ?> <a href="<?php _e( 'https://backwpup.com', 'backwpup' ) ?>">
 								<?php _e( 'Get Pro', 'backwpup' ) ?>
