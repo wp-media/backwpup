@@ -116,34 +116,37 @@ if ( ! class_exists( 'BackWPup' ) ) {
 				$inpsyder_widget = new BackWPup_Become_Inpsyder_Widget();
 				add_action( 'wp_dashboard_setup', array( $inpsyder_widget, 'setup_widget' ) );
 				add_action( 'backwpup_admin_messages', array( $inpsyder_widget, 'print_plugin_widget_markup' ), 0 );
-*/
-
-				// Beta Tester notice
-				$beta_tester_notice = new BackWPup_BetaTester_Admin_Notice();
-				add_action( 'backwpup_admin_messages', array( $beta_tester_notice, 'dashboard_message' ), 20 );
-				
-				// Rate Us notice
-				$rate_us_notice = new BackWPup_Rate_Us_Admin_Notice();
-				add_action( 'backwpup_admin_messages', array( $rate_us_notice, 'dashboard_message' ), 20 );
-
-				// Setup "dismissible" option actions for notices
-/*
 				BackWPup_Dismissible_Notice_Option::setup_actions(
 					false,
 					BackWPup_Become_Inpsyder_Widget::NOTICE_ID,
 					'backwpup'
 				);
 */
-				BackWPup_Dismissible_Notice_Option::setup_actions(
-					false,
-					BackWPup_BetaTester_Admin_Notice::NOTICE_ID,
-					'backwpup'
+
+				$rate_us = new BackWPup_Admin_Notice(
+					'rate_us',
+					esc_html__( 'Make Us Happy and Give Your Rating', 'backwpup' ),
+					esc_html__( 'https://wordpress.org/support/plugin/backwpup/reviews/', 'backwpup' )
 				);
-				BackWPup_Dismissible_Notice_Option::setup_actions(
-					false,
-					BackWPup_Rate_Us_Admin_Notice::NOTICE_ID,
-					'backwpup'
-				);
+				$rate_us->initiate();
+				
+				$now = new DateTime();
+				$end_discount = new DateTime( '2017-07-06' );
+				if ( $now < $end_discount ) {
+					$independence_day = new BackWPup_Admin_Notice(
+						'independence_day',
+						esc_html__( 'Save Now!', 'backwpup' ),
+						esc_html__( 'https://backwpup.com/?utm_source=BackWPup&utm_campaign=IndependenceDay&utm_medium=Link', 'backwpup' )
+					);
+					$independence_day->initiate();
+				} else {
+					$beta_tester = new BackWPup_Admin_Notice(
+						'beta_tester',
+						esc_html__( 'Join Us as a Beta Tester', 'backwpup' ),
+						esc_html__( 'https://backwpup.com/become-backwpup-beta-tester/', 'backwpup' )
+					);
+					$beta_tester->initiate();
+				}
 			}
 
 			// Phone Home
