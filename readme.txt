@@ -11,7 +11,7 @@ Schedule complete automatic backups of your WordPress installation. Decide which
 
 == Independence Day Sale ==
 
-Get your 30% Independence Day discount for BackWPup Pro! Only available until July 5th, 2017. [Save Now](https://backwpup.com/?utm_source=BackWPup&utm_campaign=IndependenceDay&utm_medium=Link)
+Get your 30% Independence Day discount for BackWPup Pro! Only available until July 5th, 2017. [Save Now](https://backwpup.com/)
 
 == Description ==
 
