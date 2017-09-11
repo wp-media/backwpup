@@ -25,7 +25,7 @@ class Inpsyde_PhoneHome_Template_Buttons {
 		<a
 			href="<?= esc_url( Inpsyde_PhoneHome_ActionController::url_for_action( $action ) ) ?>"
 			class="button button-primary">
-			<?= esc_html__( 'Yes, I agree.', 'inpsyde-phone-home' ) ?>
+			<?= esc_html__( 'Yes, I agree.', 'backwpup' ) ?>
 		</a>
 		<?php
 
@@ -42,7 +42,7 @@ class Inpsyde_PhoneHome_Template_Buttons {
 		<a
 			href="<?= esc_url( Inpsyde_PhoneHome_ActionController::url_for_action( $action ) ) ?>"
 			class="button">
-			<?= esc_html__( 'I have to think about that, ask me later.', 'inpsyde-phone-home' ) ?>
+			<?= esc_html__( 'I have to think about that, ask me later.', 'backwpup' ) ?>
 		</a>
 		<?php
 
@@ -59,7 +59,7 @@ class Inpsyde_PhoneHome_Template_Buttons {
 		<a
 			href="<?= esc_url( Inpsyde_PhoneHome_ActionController::url_for_action( $action ) ) ?>"
 			class="button">
-			<?= esc_html__( 'Please no. Don\'t ask me again.', 'inpsyde-phone-home' ) ?>
+			<?= esc_html__( 'Please no. Don\'t ask me again.', 'backwpup' ) ?>
 		</a>
 		<?php
 
@@ -81,7 +81,7 @@ class Inpsyde_PhoneHome_Template_Buttons {
 		<a
 			href="<?= esc_url( $more_info_url ) ?>"
 			class="button button-secondary">
-			<?= esc_html__( 'More info', 'inpsyde-phone-home' ) ?>
+			<?= esc_html__( 'More info', 'backwpup' ) ?>
 		</a>
 		<?php
 

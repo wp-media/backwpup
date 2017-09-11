@@ -140,8 +140,8 @@ final class Inpsyde_PhoneHome_FrontController {
 			return;
 		}
 
-		$page_title     = esc_html( sprintf( __( '%s needs your help', 'inpsyde-phone-home' ), $this->plugin_name ) );
-		$menu_title     = esc_html( sprintf( __( 'Help %s', 'inpsyde-phone-home' ), $this->plugin_name ) );
+		$page_title     = esc_html( sprintf( __( '%s needs your help', 'backwpup' ), $this->plugin_name ) );
+		$menu_title     = esc_html( sprintf( __( 'Help %s', 'backwpup' ), $this->plugin_name ) );
 		$menu_page_slug = sanitize_title( $this->plugin_name ) . '-phone-home-consent';
 
 		$menu_page_id = add_submenu_page(
@@ -331,7 +331,7 @@ final class Inpsyde_PhoneHome_FrontController {
 		$locale  = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
 		$mo_file = apply_filters( 'inpsyde-phone-home-mo-file', "{$path}/inpsyde-phone-home-{$locale}.mo", $locale );
 
-		load_textdomain( 'inpsyde-phone-home', $mo_file );
+		load_textdomain( 'backwpup', $mo_file );
 	}
 
 }

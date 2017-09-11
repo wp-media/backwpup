@@ -77,7 +77,7 @@ class Inpsyde_PhoneHome_CronController {
 	public function filter_schedules( $schedules ) {
 
 		is_array( $schedules ) or $schedules = array();
-		$label = __( 'Every %d days', 'inpsyde-phone-home' );
+		$label = __( 'Every %d days', 'backwpup' );
 
 		$interval = apply_filters( 'inpsyde-phone-home-cron-interval', self::RECURRENCE_INTERVAL );
 		is_int( $interval ) or $interval = self::RECURRENCE_INTERVAL;
