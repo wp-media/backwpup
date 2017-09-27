@@ -48,7 +48,7 @@ class BackWPup_File {
 		$file           = trailingslashit( strtolower( str_replace( '\\', '/', $file ) ) );
 
 		foreach ( $open_base_dirs as $open_base_dir ) {
-			if ( empty( $open_base_dir ) ) {
+			if ( empty( $open_base_dir ) || ! realpath( $open_base_dir ) ) {
 				continue;
 			}
 			$open_base_dir = realpath( $open_base_dir );

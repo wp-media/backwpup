@@ -628,8 +628,22 @@ final class BackWPup_Job {
 	 * @return bool
 	 */
 	public function owns_backup_archive( $file ) {
-		$prefix         = BackWPup_Option::get_archive_name_prefix( $this->job['jobid'] );
-		return substr( basename( $file ), 0, strlen( $prefix ) ) == $prefix;
+		$parts = explode( '_', $file );
+		if ( $parts[0] != 'backwpup' ) {
+			return false;
+		}
+		
+		$data = base_convert( $parts[1], 36, 16 );
+		
+		if ( strpos( $data, BackWPup::get_plugin_data( 'hash' ) ) === false ) {
+			return false;
+		}
+		
+		if ( intval( substr( $data, -2 ) ) != $this->job['jobid'] ) {
+			return false;
+		}
+		
+		return true;
 	}
 
 
@@ -2510,20 +2524,15 @@ final class BackWPup_Job {
 			'([0-5][0-9])',
 			'([0-5][0-9])'
 		);
+		
+		$regex_part = self::sanitize_file_name(
+			BackWPup_Option::normalize_archive_name( $this->job['archivename'],
+				$this->job['jobid'] ) );
+				$regex_part = preg_quote( $regex_part );
+		$regex_part = str_replace( $datevars, $dateregex, $regex_part );
+		$regex_part = preg_replace( '/^backwpup_[^_]+_/', 'backwpup_[^_]+_', $regex_part );
 
-		$regex = "/^" .
-			str_replace(
-				$datevars,
-				$dateregex,
-				preg_quote(
-					self::sanitize_file_name(
-						BackWPup_Option::normalize_archive_name(
-							$this->job['archivename'],
-							$this->job['jobid']
-						)
-					)
-				)
-			) . "$/i";
+		$regex = "/^" . $regex_part . "$/i";
 
 		preg_match( $regex, $filename, $matches );
 		if ( ! empty( $matches[0] ) && $matches[0] === $filename ) {

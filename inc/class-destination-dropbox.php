@@ -979,9 +979,14 @@ final class BackWPup_Destination_Dropbox_API {
 		}
 		else {
 			curl_setopt( $ch, CURLOPT_HEADER, true );
-			$responce = explode( "\r\n\r\n", curl_exec( $ch ), 2 );
-			if ( ! empty( $responce[1] ) ) {
-				$output = json_decode( $responce[1], true );
+			$response = curl_exec( $ch );
+			if ( stripos( $response, "HTTP/1.0 200 Connection established\r\n\r\n" ) !== false ) {
+				$response = str_ireplace( "HTTP/1.0 200 Connection established\r\n\r\n", '', $response );
+			}
+			$response = explode( "\r\n\r\n", $response, 2 );
+			
+			if ( ! empty( $response[1] ) ) {
+				$output = json_decode( $response[1], true );
 			}
 		}
 		$status = curl_getinfo( $ch );
@@ -992,7 +997,7 @@ final class BackWPup_Destination_Dropbox_API {
 		// Code 429 = rate limited
 		if ( $status['http_code'] == 429 ) {
 			$wait = 0;
-			if ( preg_match( "/retry-after:\s*(.*?)\r/i", $responce[0], $matches ) ) {
+			if ( preg_match( "/retry-after:\s*(.*?)\r/i", $response[0], $matches ) ) {
 				$wait = trim( $matches[1] );
 			}
 			//only wait if we get a retry-after header.
@@ -1015,7 +1020,7 @@ final class BackWPup_Destination_Dropbox_API {
 			$code = 0;
 			}
 			elseif ( $status['http_code'] == 400 ) {
-				$message = '(400) Bad input parameter: ' . strip_tags( $responce[1] );
+				$message = '(400) Bad input parameter: ' . strip_tags( $response[1] );
 			}
 			elseif ( $status['http_code'] == 401 ) {
 				$message = '(401) Bad or expired token. This can happen if the user or Dropbox revoked or expired an access token. To fix, you should re-authenticate the user.';
@@ -1030,14 +1035,14 @@ final class BackWPup_Destination_Dropbox_API {
 				$message = '(' . $status['http_code'] . ') Invalid response.';
 			}
 			if ( $this->job_object && $this->job_object->is_debug() ) {
-				$this->job_object->log( 'Response with header: ' . $responce[0] );
+				$this->job_object->log( 'Response with header: ' . $response[0] );
 			}
 			throw new BackWPup_Destination_Dropbox_API_Request_Exception( $message, $code, null, isset( $output['error'] ) ? $output['error'] : null );
 		}
 		else {
 			curl_close( $ch );
 			if ( ! is_array( $output ) ) {
-				return $responce[1];
+				return $response[1];
 			}
 			else {
 				return $output;
@@ -1054,7 +1059,7 @@ final class BackWPup_Destination_Dropbox_API {
 	 */
 	private function formatPath( $path ) {
 		if ( ! empty( $path ) && substr( $path, 0, 1 ) != '/' ) {
-			$path = "/$path";
+			$path = '/' . rtrim( $path, '/' );
 		}
 		elseif ( $path == '/' ) {
 			$path = '';

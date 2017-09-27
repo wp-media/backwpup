@@ -328,33 +328,33 @@ final class BackWPup_Option {
 	 */
 	public static function normalize_archive_name( $archive_name, $jobid ) {
 		$hash = BackWPup::get_plugin_data( 'hash' );
+		$prefix = dechex( mt_rand( 0, 255 ) );
+		$suffix = dechex( mt_rand( 0, 255 ) );
 
 		// If name starts with 'backwpup', then we can try to parse
 		if ( substr( $archive_name, 0, 8 ) == 'backwpup' ) {
 			$parts = explode( '_', $archive_name );
-
-			// Format = [hash][jobid]
-			if ( preg_match( '/^' . preg_quote( $hash ) . '(\d{2,})?$/', $parts[1], $matches ) ) {
-				// Was job id included?
-				if ( ! isset( $matches[1] ) ) {
-					// Append the job id
-					$parts[1] .= sprintf( '%02d', $jobid );
-				}
-				elseif ( $matches[1] != $jobid ) {
-					// This isn't the job ID you're looking for
-					// So fix, append the correct one
-					$parts[1] = $hash . sprintf( '%02d', $jobid );
-				}
+			
+			// Decode hash part
+			if ( strpos( $parts[1], $hash ) === false ) {
+				$parts[1] = base_convert($parts[1], 36, 16);
+			}
+			if ( strpos( $parts[1], $hash ) !== false ) {
+				$parts[1] = sprintf( '%s%s%s%02d', $prefix, $hash, $suffix, $jobid );
+				$parts[1] = base_convert( $parts[1], 16, 36 );
 			}
 			else {
 				// Hash not included, so insert
-				array_splice( $parts, 1, 0, $hash . sprintf( '%02d', $jobid ) );
+				array_splice( $parts, 1, 0,
+					base_convert( sprintf( '%s%s%s%02d', $prefix, $hash, $suffix, $jobid ), 16, 36 ) );
 			}
 			return implode( '_', $parts );
 		}
 		else {
 			// But otherwise, just prepend required format
-			return "backwpup_$hash" . sprintf( '%02d', $jobid ) . '_' . $archive_name;
+			return 'backwpup_' .
+				base_convert( "{$prefix}{$hash}{$suffix}" . sprintf( '%02d', $jobid ), 16, 36 ) .
+				'_' . $archive_name;
 		}
 	}
 
@@ -366,7 +366,9 @@ final class BackWPup_Option {
 	 * @return string
 	 */
 	public static function get_archive_name_prefix( $jobid ) {
-		return 'backwpup_' . BackWPup::get_plugin_data( 'hash' ) . sprintf( '%02d', $jobid ) . '_';
+		return 'backwpup_' .
+			base_convert( dechex( mt_rand( 0, 255 ) ) . BackWPup::get_plugin_data( 'hash' ) .
+			dechex( mt_rand( 0, 255 ) ) . sprintf( '%02d', $jobid ), 16, 36 ) . '_';
 	}
 
 }

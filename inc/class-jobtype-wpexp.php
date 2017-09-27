@@ -408,7 +408,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 				$old_value = NULL;
 				if ( function_exists( 'libxml_disable_entity_loader' ) )
 					$old_value = libxml_disable_entity_loader( TRUE );
-				$success = $dom->loadXML( file_get_contents( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] ) );
+				$success = $dom->loadXML( file_get_contents( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] ), LIBXML_PARSEHUGE );
 				if ( ! is_null( $old_value ) )
 					libxml_disable_entity_loader( $old_value );
 
