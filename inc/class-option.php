@@ -132,11 +132,17 @@ final class BackWPup_Option {
 		}
 
 		$jobs_options = self::jobs_options( $use_cache );
-		$jobs_options[ $jobid ]['archivenamenohash'] = $jobs_options[ $jobid ]['archivename'];
+		if ( isset( $jobs_options[ $jobid ] ) ) {
+			$jobs_options[ $jobid ]['archivenamenohash'] = $jobs_options[ $jobid ]['archivename'];
+		}
 		if ( ! isset( $jobs_options[ $jobid ][ $option ] ) && isset( $default ) ) {
 			return $default;
 		} elseif ( ! isset( $jobs_options[ $jobid ][ $option ] ) ) {
-			return self::defaults_job( $option );
+			if ( $option == 'archivename' ) {
+				return self::normalize_archive_name( self::defaults_job( $option ), $jobid );
+			} else {
+				return self::defaults_job( $option );
+			}
 		} else {
 			// Ensure archive name formatted properly
 			if ( $option == 'archivename' ) {
@@ -178,6 +184,7 @@ final class BackWPup_Option {
 		$default['backuptype']            = 'archive';
 		$default['archiveformat']         = '.zip';
 		$default['archivename']           = '%Y-%m-%d_%H-%i-%s_%hash%';
+		$default['archivenamenohash']           = '%Y-%m-%d_%H-%i-%s_%hash%';
 		//defaults vor destinations
 		foreach ( BackWPup::get_registered_destinations() as $dest_key => $dest ) {
 			if ( ! empty( $dest['class'] ) ) {
