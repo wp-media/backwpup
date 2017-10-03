@@ -122,7 +122,7 @@ class BackWPup_Page_Editjob {
 				), true ) ? $_POST['archiveformat'] : '.zip';
 				BackWPup_Option::update( $jobid, 'archiveformat', $archiveformat );
 
-				BackWPup_Option::update( $jobid, 'archivename', BackWPup_Job::sanitize_file_name( BackWPup_Option::normalize_archive_name( $_POST['archivename'], $jobid ) ) );
+				BackWPup_Option::update( $jobid, 'archivename', BackWPup_Job::sanitize_file_name( BackWPup_Option::normalize_archive_name( $_POST['archivename'], $jobid, false ) ) );
 				break;
 			case 'cron':
 				$activetype = in_array( $_POST['activetype'], array(
@@ -435,8 +435,9 @@ class BackWPup_Page_Editjob {
 						<tr class="nosync">
 							<th scope="row"><label for="archivename"><?php esc_html_e( 'Archive name', 'backwpup' ) ?></label></th>
 							<td>
-								<input name="archivename" type="text" id="archivename" placeholder="%Y-%m-%d_%H-%i-%s" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'archivename' ) );?>" class="regular-text code" />
-								<p><?php printf( __( '<em>Note</em>: In order for backup file tracking to work, the archive name must begin with %s.', 'backwpup' ), BackWPup_Option::get_archive_name_prefix( $jobid ) ) ?></p>
+								<input name="archivename" type="text" id="archivename" placeholder="%Y-%m-%d_%H-%i-%s_%hash%" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'archivenamenohash' ) );?>" class="regular-text code" />
+								<input type="hidden" id="hash" value="<?php echo esc_attr( BackWPup_Option::get_generated_hash( $jobid ) ) ?>" />
+								<p><?php _e( '<em>Note</em>: In order for backup file tracking to work, %hash% must be included anywhere in the archive name.', 'backwpup' ) ?></p>
 								<?php
 								$current_time = current_time( 'timestamp' );
 								$datevars    = array( '%d', '%j', '%m', '%n', '%Y', '%y', '%a', '%A', '%B', '%g', '%G', '%h', '%H', '%i', '%s' );

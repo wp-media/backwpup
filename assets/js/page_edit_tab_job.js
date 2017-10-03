@@ -296,7 +296,9 @@ jQuery(document).ready(function ($) {
     }
 
     $('input[name="archivename"]').keyup(function () {
+		var hash = $('#hash').val();
 		var filename = $(this).val();
+		filename = filename.replace( '%hash%', hash );
 		filename = filename.replace( '%d', date( 'd' ) );
 		filename = filename.replace( '%j', date( 'j' ) );
 		filename = filename.replace( '%m', date( 'm' ) );

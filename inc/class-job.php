@@ -568,7 +568,7 @@ final class BackWPup_Job {
 			unlink( BackWPup::get_plugin_data( 'TEMP' ) . $name );
 		}
 
-		return BackWPup_Option::normalize_archive_name( $name, $this->job['jobid'] );
+		return $name;
 	}
 
 	/**
@@ -1547,6 +1547,7 @@ final class BackWPup_Job {
 		}
 
 		try {
+			$this->log($this->backup_file);
 			$backup_archive = new BackWPup_Create_Archive( $this->backup_folder . $this->backup_file );
 
 			//show method for creation
