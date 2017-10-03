@@ -1547,7 +1547,6 @@ final class BackWPup_Job {
 		}
 
 		try {
-			$this->log($this->backup_file);
 			$backup_archive = new BackWPup_Create_Archive( $this->backup_folder . $this->backup_file );
 
 			//show method for creation
