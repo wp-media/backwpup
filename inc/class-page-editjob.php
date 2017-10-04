@@ -436,11 +436,10 @@ class BackWPup_Page_Editjob {
 							<th scope="row"><label for="archivename"><?php esc_html_e( 'Archive name', 'backwpup' ) ?></label></th>
 							<td>
 								<input name="archivename" type="text" id="archivename" placeholder="%Y-%m-%d_%H-%i-%s_%hash%" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'archivenamenohash' ) );?>" class="regular-text code" />
-								<input type="hidden" id="hash" value="<?php echo esc_attr( BackWPup_Option::get_generated_hash( $jobid ) ) ?>" />
 								<p><?php _e( '<em>Note</em>: In order for backup file tracking to work, %hash% must be included anywhere in the archive name.', 'backwpup' ) ?></p>
 								<?php
 								$archivename = BackWPup_Option::substitute_date_vars(
-									BackWPup_Option::get( $jobid, 'archivename' ) );
+									BackWPup_Option::get( $jobid, 'archivenamenohash' ) );
 								echo '<p>Preview: <code><span id="archivefilename">' . esc_attr( $archivename ) . '</span><span id="archiveformat">' . esc_attr( BackWPup_Option::get( $jobid, 'archiveformat' ) ) . '</span></code></p>';
 								echo '<p class="description">';
 								echo "<strong>" . esc_attr__( 'Replacement patterns:', 'backwpup' ) . "</strong><br />";

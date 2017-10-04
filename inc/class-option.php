@@ -464,9 +464,9 @@ final class BackWPup_Option {
 		// Temporarily replace %hash% with [hash]
 		$archivename = str_replace( '%hash%', '[hash]', $archivename );
 		$archivename = str_replace( $datevars, $datevalues,
-			BackWPup_Job::sanitize_file_name( $archivename ) );
+			$archivename );
 		$archivename = str_replace( '[hash]', '%hash%', $archivename );
-		return $archivename;
+		return BackWPup_Job::sanitize_file_name( $archivename );
 	}
 
 }

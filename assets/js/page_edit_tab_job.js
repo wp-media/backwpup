@@ -296,9 +296,8 @@ jQuery(document).ready(function ($) {
     }
 
     $('input[name="archivename"]').keyup(function () {
-		var hash = $('#hash').val();
 		var filename = $(this).val();
-		filename = filename.replace( '%hash%', hash );
+		filename = filename.replace( '%hash%', '[hash]' );
 		filename = filename.replace( '%d', date( 'd' ) );
 		filename = filename.replace( '%j', date( 'j' ) );
 		filename = filename.replace( '%m', date( 'm' ) );
@@ -314,6 +313,7 @@ jQuery(document).ready(function ($) {
 		filename = filename.replace( '%H', date( 'H' ) );
 		filename = filename.replace( '%i', date( 'i' ) );
 		filename = filename.replace( '%s', date( 's' ) );
+		filename = filename.replace( '[hash]', '%hash%' );
         $('#archivefilename').replaceWith('<span id="archivefilename">' + backwpup_htmlspecialchars( filename ) + '</span>');
     });
 
