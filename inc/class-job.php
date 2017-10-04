@@ -537,32 +537,11 @@ final class BackWPup_Job {
 	 */
 	public function generate_filename( $name, $suffix = '', $delete_temp_file = true ) {
 
-		$local_time = current_time( 'timestamp' );
-
-		$datevars   = array( '%d', '%j', '%m', '%n', '%Y', '%y', '%a', '%A', '%B', '%g', '%G', '%h', '%H', '%i', '%s' );
-		$datevalues = array(
-			date( 'd', $local_time ),
-			date( 'j', $local_time ),
-			date( 'm', $local_time ),
-			date( 'n', $local_time ),
-			date( 'Y', $local_time ),
-			date( 'y', $local_time ),
-			date( 'a', $local_time ),
-			date( 'A', $local_time ),
-			date( 'B', $local_time ),
-			date( 'g', $local_time ),
-			date( 'G', $local_time ),
-			date( 'h', $local_time ),
-			date( 'H', $local_time ),
-			date( 'i', $local_time ),
-			date( 's', $local_time )
-		);
-
 		if ( $suffix ) {
 			$suffix = '.' . trim( $suffix, '. ' );
 		}
 
-		$name = str_replace( $datevars, $datevalues, self::sanitize_file_name( $name ) );
+		$name = BackWPup_Option::substitute_date_vars( $name );
 		$name .= $suffix;
 		if ( $delete_temp_file && is_writeable( BackWPup::get_plugin_data( 'TEMP' ) . $name ) && ! is_dir( BackWPup::get_plugin_data( 'TEMP' ) . $name ) && ! is_link( BackWPup::get_plugin_data( 'TEMP' ) . $name ) ) {
 			unlink( BackWPup::get_plugin_data( 'TEMP' ) . $name );
@@ -628,18 +607,49 @@ final class BackWPup_Job {
 	 * @return bool
 	 */
 	public function owns_backup_archive( $file ) {
-		$parts = explode( '_', $file );
-		if ( $parts[0] != 'backwpup' ) {
+		$info = pathinfo( $file );
+		$file = basename( $file, '.' . $info['extension'] );
+
+		// If starts with backwpup, then old-style hash
+		$data = array();
+		if ( substr( $file, 0, 8 ) == 'backwpup' ) {
+			$parts = explode( '_', $file );
+			$data = BackWPup_Option::decode_hash( $parts[1] );
+			if ( ! $data ) {
+				return false;
+			}
+		} else {
+			// New style, must parse
+			// Start at end of file since that's where it is by default
+			
+			// Try 10-character chunks first for base 32 and most of base 36
+			for ( $i = strlen( $file ) - 10; $i >= 0; $i--) {
+				$data = BackWPup_Option::decode_hash( substr( $file, $i, 10 ) );
+				if ( $data ) {
+					break;
+				}
+			}
+			
+			// Try 9-character chunks for any left-over base 36
+			if ( ! $data ) {
+				for ( $i = strlen( $file ) - 9; $i >= 0; $i--) {
+					$data = BackWPup_Option::decode_hash( substr( $file, $i, 9 ) );
+					if ( $data ) {
+						break;
+					}
+				}
+			}
+			
+			if ( ! $data ) {
+				return false;
+			}
+		}
+		
+		if ( $data[0] != BackWPup::get_plugin_data( 'hash' ) ) {
 			return false;
 		}
 		
-		$data = base_convert( $parts[1], 36, 16 );
-		
-		if ( strpos( $data, BackWPup::get_plugin_data( 'hash' ) ) === false ) {
-			return false;
-		}
-		
-		if ( intval( substr( $data, -2 ) ) != $this->job['jobid'] ) {
+		if ( $data[1] != $this->job['jobid'] ) {
 			return false;
 		}
 		
@@ -2506,40 +2516,7 @@ final class BackWPup_Job {
 			return false;
 		}
 
-		$datevars  = array( '%d', '%j', '%m', '%n', '%Y', '%y', '%a', '%A', '%B', '%g', '%G', '%h', '%H', '%i', '%s' );
-		$dateregex = array(
-			'(0[1-9]|[12][0-9]|3[01])',
-			'([1-9]|[12][0-9]|3[01])',
-			'(0[1-9]|1[012])',
-			'([1-9]|1[012])',
-			'((19|20|21)[0-9]{2})',
-			'([0-9]{2})',
-			'(am|pm)',
-			'(AM|PM)',
-			'([0-9]{3})',
-			'([1-9]|1[012])',
-			'([0-9]|1[0-9]|2[0-3])',
-			'(0[1-9]|1[012])',
-			'([01][0-9]|2[0-3])',
-			'([0-5][0-9])',
-			'([0-5][0-9])'
-		);
-		
-		$regex_part = self::sanitize_file_name(
-			BackWPup_Option::normalize_archive_name( $this->job['archivename'],
-				$this->job['jobid'] ) );
-				$regex_part = preg_quote( $regex_part );
-		$regex_part = str_replace( $datevars, $dateregex, $regex_part );
-		$regex_part = preg_replace( '/^backwpup_[^_]+_/', 'backwpup_[^_]+_', $regex_part );
-
-		$regex = "/^" . $regex_part . "$/i";
-
-		preg_match( $regex, $filename, $matches );
-		if ( ! empty( $matches[0] ) && $matches[0] === $filename ) {
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 
 	/**
