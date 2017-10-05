@@ -163,6 +163,7 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 * Fixed: Compatibility with Sunrise.
 * Fixed: Delete old-style archive names.
 * Improved: Changed the way hashes are generated.
+* Added: Support for EU (London) S3 region.
 
 = Version 3.4.2 =
 * Fixed: Security issue to prevent backups from being seen by others.
