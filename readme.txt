@@ -164,6 +164,7 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 * Fixed: Delete old-style archive names.
 * Improved: Changed the way hashes are generated.
 * Added: Support for EU (London) S3 region.
+* Added: Support for Amazon S3 signature V4.
 
 = Version 3.4.2 =
 * Fixed: Security issue to prevent backups from being seen by others.
