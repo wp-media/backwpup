@@ -64,7 +64,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 		private function __construct() {
 
 			// Nothing else matters if we're not on the main site
-			if ( ! is_main_site() ) {
+			if ( ! is_main_network() && ! is_main_site() ) {
 				return;
 			}
 			//auto loader
