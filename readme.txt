@@ -4,7 +4,7 @@ Tags: Amazon, Amazon S3, back up, backup, chinese, cloud, cloud files, database,
 Requires at least: 3.9
 Tested up to: 4.8.2
 Requires PHP: 5.3
-Stable tag: 3.4.2
+Stable tag: 3.4.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -158,6 +158,12 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 [You can find a detailed tutorial in the BackWPup documentation.](http://docs.backwpup.com/article/118-install-backwpup)
 
 == Changelog ==
+= Version 3.4.3 =
+* Fixed: No longer show hashes on job edit page.
+* Fixed: Compatibility with Sunrise.
+* Fixed: Delete old-style archive names.
+* Improved: Changed the way hashes are generated.
+
 = Version 3.4.2 =
 * Fixed: Security issue to prevent backups from being seen by others.
 * Fixed: Only one admin notice shown at a time.
