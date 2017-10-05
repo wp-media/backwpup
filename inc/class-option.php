@@ -133,7 +133,7 @@ final class BackWPup_Option {
 		}
 
 		$jobs_options = self::jobs_options( $use_cache );
-		if ( isset( $jobs_options[ $jobid ] ) ) {
+		if ( isset( $jobs_options[ $jobid ] ) && isset( $jobs_options[ $jobid ]['archivename'] ) ) {
 			$jobs_options[ $jobid ]['archivenamenohash'] = $jobs_options[ $jobid ]['archivename'];
 		}
 		if ( ! isset( $jobs_options[ $jobid ][ $option ] ) && isset( $default ) ) {
