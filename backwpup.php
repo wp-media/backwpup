@@ -264,11 +264,11 @@ if ( ! class_exists( 'BackWPup' ) ) {
 					require $filePath;
 				}
 			}
-
-						// Base32 autoloading
-						if ( strpos( $class, 'Base32' ) !== false ) {
-											require_once self::get_plugin_data( 'plugindir' ) . '/vendor/base32/src/Base32.php';
-														}
+			
+			// Base32 autoloading
+			if ( strpos( $class, 'Base32' ) !== false ) {
+				require_once self::get_plugin_data( 'plugindir' ) . '/vendor/base32/src/Base32.php';
+			}
 
 		}
 
