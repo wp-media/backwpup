@@ -933,7 +933,7 @@ final class BackWPup_Job {
 
 		//calc sub step percent
 		if ( $this->substeps_todo > 0 && $this->substeps_done > 0 ) {
-			$this->substep_percent = round( $this->substeps_done / $this->substeps_todo * 100 );
+			$this->substep_percent = min( round( $this->substeps_done / $this->substeps_todo * 100 ), 100 );
 		} else {
 			$this->substep_percent = 1;
 		}
@@ -1475,7 +1475,7 @@ final class BackWPup_Job {
 			}
 			//calc step percent
 			if ( count( $this->steps_done ) > 0 ) {
-				$this->step_percent = round( count( $this->steps_done ) / count( $this->steps_todo ) * 100 );
+				$this->step_percent = min( round( count( $this->steps_done ) / count( $this->steps_todo ) * 100 ), 100 );
 			} else {
 				$this->step_percent = 1;
 			}
