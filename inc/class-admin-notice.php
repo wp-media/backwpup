@@ -36,7 +36,7 @@ class BackWPup_Admin_Notice {
 		// Check if message exists in given language
 		if ( ! get_site_option( "backwpup_message_id_$language" ) ) {
 			// Default to English
-			$this->language = 'en';
+			$language = 'en';
 		}
 		$this->id = get_site_option( "backwpup_message_id_$language" );
 		$this->content = get_site_option( "backwpup_message_content_$language" );
