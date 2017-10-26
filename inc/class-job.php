@@ -1312,12 +1312,12 @@ final class BackWPup_Job {
 					$wp_admin_user = get_users( array( 'role' => 'backwpup_admin', 'number' => 1 ) );
 				}
 				if ( ! empty( $wp_admin_user[0]->ID ) ) {
-					$expiration                  = time() + ( 356 * DAY_IN_SECONDS );
+					$expiration                  = time() + ( 2 * DAY_IN_SECONDS );
 					$manager                     = WP_Session_Tokens::get_instance( $wp_admin_user[0]->ID );
 					$token                       = $manager->create( $expiration );
 					$cookies[ LOGGED_IN_COOKIE ] = wp_generate_auth_cookie( $wp_admin_user[0]->ID, $expiration, 'logged_in', $token );
 				}
-				set_site_transient( 'backwpup_cookies', $cookies, HOUR_IN_SECONDS - 30 );
+				set_site_transient( 'backwpup_cookies', $cookies, 2 * DAY_IN_SECONDS );
 			}
 		} else {
 			$cookies = '';
