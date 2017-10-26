@@ -23,18 +23,25 @@ class BackWPup_Admin_Notice {
 	
 	private $id;
 	
+	private $content;
+	
 	private $button_text;
 	
 	private $button_url;
 	
-	private $priority;
-	
-	public function __construct( $id, $button_text, $button_url, $priority = 20 ) {
+	public function __construct() {
 		$this->has_displayed = false;
-		$this->id = $id;
-		$this->button_text = $button_text;
-		$this->button_url = $button_url;
-		$this->priority = $priority;
+		$language = substr( get_locale(), 0, 2 );
+		
+		// Check if message exists in given language
+		if ( ! get_site_option( "backwpup_message_id_$language" ) ) {
+			// Default to English
+			$this->language = 'en';
+		}
+		$this->id = get_site_option( "backwpup_message_id_$language" );
+		$this->content = get_site_option( "backwpup_message_content_$language" );
+		$this->button_text = get_site_option( "backwpup_message_button_text_$language" );
+		$this->button_url = get_site_option( "backwpup_message_url_$language" );
 	}
 	
 	public function initiate() {
@@ -97,10 +104,7 @@ class BackWPup_Admin_Notice {
 		);
 
 		ob_start();
-		?><div><?php
-		require dirname( dirname( __FILE__ ) ) . '/assets/templates/admin-notices/' .
-			sanitize_file_name( str_replace( '_', '-', $this->id ) . '.php' );
-		?>
+		?><div><p><?php echo esc_html( $this->content ) ?></p>
 			<p>
 				<a
 					style="background: #9FC65D; border-color: #7ba617 #719c0d #719c0d; -webkit-box-shadow: 0 1px 0 #719c0d; box-shadow: 0 1px 0 #719c0d; text-shadow: 0 -1px 1px #719c0d, 1px 0 1px #719c0d, 0 1px 1px #719c0d, -1px 0 1px #719c0d;"
