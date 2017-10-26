@@ -160,7 +160,6 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 == Changelog ==
 = Version 3.4.4 =
 * Fixed: Security issue that created too many sessions.
-* Added: Update message dynamically in the backend.
 * Fixed: Correct decryption of passwords when escaped.
 
 = Version 3.4.3 =
