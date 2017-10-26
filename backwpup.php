@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.4.3
+ * Version: 3.4.4
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -71,7 +71,9 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			spl_autoload_register( array( $this, 'autoloader' ) );
 
 			//start upgrade if needed
-			if ( get_site_option( 'backwpup_version' ) !== self::get_plugin_data( 'Version' ) || ! wp_next_scheduled( 'backwpup_check_cleanup' ) ) {
+			if ( get_site_option( 'backwpup_version' ) !== self::get_plugin_data( 'Version' )
+				|| ! wp_next_scheduled( 'backwpup_check_cleanup' )
+				|| ! wp_next_scheduled( 'backwpup_update_message' ) ) {
 				BackWPup_Install::activate();
 			}
 			//load pro features
@@ -89,6 +91,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 					//add cron actions
 					add_action( 'backwpup_cron', array( 'BackWPup_Cron', 'run' ) );
 					add_action( 'backwpup_check_cleanup', array( 'BackWPup_Cron', 'check_cleanup' ) );
+					add_action( 'backwpup_update_message', array( 'BackWPup_Cron', 'update_message' ) );
 				}
 				//if in cron the rest is not needed
 				return;
@@ -111,24 +114,8 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			// Notices and messages in admin
 			if ( is_admin() && current_user_can( 'backwpup' ) ) {
 
-				// Work for Inpsyde widget
-/*
-				$inpsyder_widget = new BackWPup_Become_Inpsyder_Widget();
-				add_action( 'wp_dashboard_setup', array( $inpsyder_widget, 'setup_widget' ) );
-				add_action( 'backwpup_admin_messages', array( $inpsyder_widget, 'print_plugin_widget_markup' ), 0 );
-				BackWPup_Dismissible_Notice_Option::setup_actions(
-					false,
-					BackWPup_Become_Inpsyder_Widget::NOTICE_ID,
-					'backwpup'
-				);
-*/
-
-				$rate_us = new BackWPup_Admin_Notice(
-					'rate_us',
-					esc_html__( 'Make Us Happy and Give Your Rating', 'backwpup' ),
-					esc_html__( 'https://wordpress.org/support/plugin/backwpup/reviews/', 'backwpup' )
-				);
-				$rate_us->initiate();
+				$admin_notice = new BackWPup_Admin_Notice();
+				$admin_notice->initiate();
 				
 			}
 
