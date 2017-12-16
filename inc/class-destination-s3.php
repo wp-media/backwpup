@@ -15,7 +15,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 	 */
 	public function option_defaults() {
 
-		return array( 's3accesskey' => '', 's3secretkey' => '', 's3bucket' => '', 's3region' => 'us-east-1', 's3base_url' => '', 's3ssencrypt' => '', 's3storageclass' => '', 's3dir' => trailingslashit( sanitize_file_name( get_bloginfo( 'name' ) ) ), 's3maxbackups' => 15, 's3syncnodelete' => TRUE, 's3multipart' => TRUE );
+		return array( 's3accesskey' => '', 's3secretkey' => '', 's3bucket' => '', 's3pathstyle' => FALSE, 's3region' => 'us-east-1', 's3base_url' => '', 's3ssencrypt' => '', 's3storageclass' => '', 's3dir' => trailingslashit( sanitize_file_name( get_bloginfo( 'name' ) ) ), 's3maxbackups' => 15, 's3syncnodelete' => TRUE, 's3multipart' => TRUE );
 	}
 
 	/**
@@ -98,6 +98,13 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				<th scope="row"><label for="s3newbucket"><?php esc_html_e( 'Create a new bucket', 'backwpup' ); ?></label></th>
 				<td>
 					<input id="s3newbucket" name="s3newbucket" type="text" value="" class="small-text" autocomplete="off" />
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="s3pathstyle"><?php esc_html_e( 'Path style', 'backwpup' ); ?></label></th>
+				<td>
+					<input class="checkbox" value="1" type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 's3pathstyle' ), true ); ?> name="s3pathstyle" id="s3pathstyle" />
+					<?php esc_html_e( 'Use path style, if your S3 provider requires it.', 'backwpup' ); ?>
 				</td>
 			</tr>
 		</table>
@@ -308,6 +315,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 		BackWPup_Option::update( $jobid, 's3storageclass', sanitize_text_field( $_POST[ 's3storageclass' ] ) );
 		BackWPup_Option::update( $jobid, 's3ssencrypt', ( isset( $_POST[ 's3ssencrypt' ] ) && $_POST[ 's3ssencrypt' ] === 'AES256' ) ? 'AES256' : '' );
 		BackWPup_Option::update( $jobid, 's3bucket', isset( $_POST[ 's3bucket' ] ) ? sanitize_text_field( $_POST[ 's3bucket' ] ) : '' );
+		BackWPup_Option::update( $jobid, 's3pathstyle', ! empty( $_POST[ 's3pathstyle' ] ) );
 
 		$_POST[ 's3dir' ] = trailingslashit( str_replace( '//', '/', str_replace( '\\', '/', trim( sanitize_text_field( $_POST[ 's3dir' ] ) ) ) ) );
 		if ( substr( $_POST[ 's3dir' ], 0, 1 ) == '/' )
@@ -343,9 +351,10 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				if ($s3->isValidBucketName( $_POST[ 's3newbucket' ] ) ) {
 					$s3->createBucket( array(
 											  'Bucket' => sanitize_text_field( $_POST[ 's3newbucket' ] ),
+											  'PathStyle' => ! empty( $_POST[ 's3pathstyle' ] ),
 											  'LocationConstraint' => $region
 										 ) );
-					$s3->waitUntil( 'bucket_exists', array( 'Bucket' => $_POST[ 's3newbucket' ] ) );
+					$s3->waitUntil( 'bucket_exists', array( 'Bucket' => $_POST[ 's3newbucket' ], 'PathStyle' => ! empty( $_POST[ 's3pathstyle' ] ) ) );
 					BackWPup_Admin::message( sprintf( __( 'Bucket %1$s created.','backwpup'), sanitize_text_field( $_POST[ 's3newbucket' ] ) ) );
 				} else {
 					BackWPup_Admin::message( sprintf( __( ' %s is not a valid bucket name.','backwpup'), sanitize_text_field( $_POST[ 's3newbucket' ] ) ), TRUE );
@@ -378,6 +387,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 
 				$s3->deleteObject( array(
 										'Bucket' => BackWPup_Option::get( $jobid, 's3bucket' ),
+										'PathStyle' => BackWPup_Option::get( $jobid, 's3pathstyle' ),
 										'Key' => $backupfile
 								   ) );
 				//update file list
@@ -412,6 +422,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 
 			$s3file = $s3->getObject( array(
 										   'Bucket' => BackWPup_Option::get( $jobid, 's3bucket' ),
+										   'PathStyle' => BackWPup_Option::get( $jobid, 's3pathstyle' ),
 										   'Key' => $get_file ) );
 		}
 		catch ( Exception $e ) {
@@ -468,8 +479,8 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 													'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ) ) );
 
 			if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] != $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] && $job_object->substeps_done < $job_object->backup_filesize ) {
-				if ( $s3->doesBucketExist( $job_object->job[ 's3bucket' ] ) ) {
-					$bucketregion = $s3->getBucketLocation( array( 'Bucket' => $job_object->job[ 's3bucket' ] ) );
+				if ( $s3->doesBucketExist( $job_object->job[ 's3bucket' ], true, [ 'PathStyle' => $job_object->job[ 's3pathstyle' ] ] ) ) {
+					$bucketregion = $s3->getBucketLocation( array( 'Bucket' => $job_object->job[ 's3bucket' ], 'PathStyle' => $job_object->job[ 's3pathstyle' ] ) );
 					$job_object->log( sprintf( __( 'Connected to S3 Bucket "%1$s" in %2$s', 'backwpup' ), $job_object->job[ 's3bucket' ], $bucketregion->get( 'Location' ) ), E_USER_NOTICE );
 				}
 				else {
@@ -481,11 +492,11 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				if ( $job_object->job[ 's3multipart' ] && empty( $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ] ) ) {
 					//Check for aboded Multipart Uploads
 					$job_object->log( __( 'Checking for not aborted multipart Uploads&#160;&hellip;', 'backwpup' ) );
-					$multipart_uploads = $s3->listMultipartUploads( array( 	'Bucket' => $job_object->job[ 's3bucket' ], 'Prefix' => (string) $job_object->job[ 's3dir' ] ) );
+					$multipart_uploads = $s3->listMultipartUploads( array( 	'Bucket' => $job_object->job[ 's3bucket' ], 'PathStyle' => $job_object->job[ 's3pathstyle' ], 'Prefix' => (string) $job_object->job[ 's3dir' ] ) );
 					$uploads = $multipart_uploads->get( 'Uploads' );
 					if ( ! empty( $uploads ) ) {
 						foreach( $uploads as $upload ) {
-							$s3->abortMultipartUpload( array( 'Bucket' => $job_object->job[ 's3bucket' ], 'Key' => $upload[ 'Key' ], 'UploadId' => $upload[ 'UploadId' ] ) );
+							$s3->abortMultipartUpload( array( 'Bucket' => $job_object->job[ 's3bucket' ], 'PathStyle' => $job_object->job[ 's3pathstyle' ], 'Key' => $upload[ 'Key' ], 'UploadId' => $upload[ 'UploadId' ] ) );
 							$job_object->log( sprintf( __( 'Upload for %s aborted.', 'backwpup' ), $upload[ 'Key' ] ) );
 						}
 					}
@@ -504,6 +515,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				}
 				$create_args                 	= array();
 				$create_args[ 'Bucket' ] 	 	= $job_object->job[ 's3bucket' ];
+				$create_args[ 'PathStyle' ]  	= $job_object->job[ 's3pathstyle' ];
 				$create_args[ 'ACL' ]        	= 'private';
 				//encrxption
 				if ( ! empty( $job_object->job[ 's3ssencrypt' ] ) ) {
@@ -535,6 +547,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 						if ( empty ( $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ] ) ) {
 							$args = array(	'ACL' 			=> 'private',
 											'Bucket' 		=> $job_object->job[ 's3bucket' ],
+											'PathStyle'   	=> $job_object->job[ 's3pathstyle' ],
 											'ContentType' 	=> $job_object->get_mime_type( $job_object->backup_folder . $job_object->backup_file ),
 											'Key'			=> $job_object->job[ 's3dir' ] . $job_object->backup_file );
 							if ( !empty( $job_object->job[ 's3ssencrypt' ] ) ) {
@@ -555,6 +568,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 							$chunk_upload_start = microtime( TRUE );
 							$part_data = fread( $file_handle, 1048576 * 5 ); //5MB Minimum part size
 							$part = $s3->uploadPart( array(	'Bucket'	=> $job_object->job[ 's3bucket' ],
+															'PathStyle' => $job_object->job[ 's3pathstyle' ],
 															'UploadId'  => $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ],
 															'Key'		=> $job_object->job[ 's3dir' ] . $job_object->backup_file,
 															'PartNumber' => $job_object->steps_data[ $job_object->step_working ][ 'Part' ],
@@ -571,6 +585,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 						}
 
 						$s3->completeMultipartUpload( array(	'Bucket'	=> $job_object->job[ 's3bucket' ],
+																'PathStyle' => $job_object->job[ 's3pathstyle' ],
 																'UploadId'  => $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ],
 																'Key'		=> $job_object->job[ 's3dir' ] . $job_object->backup_file,
 																'Parts'		=> $job_object->steps_data[ $job_object->step_working ][ 'Parts' ] ) );
@@ -579,6 +594,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 						$job_object->log( E_USER_ERROR, sprintf( __( 'S3 Service API: %s', 'backwpup' ), $e->getMessage() ), $e->getFile(), $e->getLine() );
 						if ( ! empty( $job_object->steps_data[ $job_object->step_working ][ 'uploadId' ] ) )
 							$s3->abortMultipartUpload( array(	'Bucket'	=> $job_object->job[ 's3bucket' ],
+																'PathStyle' => $job_object->job[ 's3pathstyle' ],
 																'UploadId'  => $job_object->steps_data[ $job_object->step_working ][ 'uploadId' ],
 																'Key'		=> $job_object->job[ 's3dir' ] . $job_object->backup_file ) );
 						unset( $job_object->steps_data[ $job_object->step_working ][ 'UploadId' ] );
@@ -597,6 +613,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			}
 
 			$result = $s3->headObject( array( 	'Bucket' => $job_object->job[ 's3bucket' ],
+												'PathStyle' => $job_object->job[ 's3pathstyle' ],
 												'Key' 	 => $job_object->job[ 's3dir' ] . $job_object->backup_file) );
 
 			if ( $result->get( 'ContentLength' ) == filesize( $job_object->backup_folder . $job_object->backup_file ) ) {
@@ -621,6 +638,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			$files          = array();
 			$args			= array(
 				'Bucket' => $job_object->job[ 's3bucket' ],
+				'PathStyle' => $job_object->job[ 's3pathstyle' ],
 				'Prefix' => (string) $job_object->job[ 's3dir' ]
 			);
 			$objects = $s3->getIterator('ListObjects',  $args );
@@ -651,6 +669,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 						//delete files on S3
 						$args = array(
 							'Bucket' => $job_object->job[ 's3bucket' ],
+							'PathStyle' => $job_object->job[ 's3pathstyle' ],
 							'Key' => $job_object->job[ 's3dir' ] . $file
 						);
 						if ( $s3->deleteObject( $args ) ) {
