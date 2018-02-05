@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<ruleset name="Inpsyde">
+
+	<description>A custom set of code standard rules to check for Inpsyde Codex.</description>
+
+	<!-- Include the WordPress ruleset, with exclusions. -->
+	<rule ref="WordPress">
+
+		<exclude name="WordPress.PHP.YodaConditions"/>
+
+		<!-- Exclude to be able to adhere to PSR-4. -->
+		<exclude name="WordPress.Files.FileName"/>
+
+		<exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect"/>
+		<exclude name="Generic.Commenting.DocComment.MissingShort"/>
+		<exclude name="Generic.PHP.DisallowShortOpenTag"/>
+
+		<exclude name="Squiz.Commenting.FileComment.MissingPackageTag"/>
+		<exclude name="Squiz.Commenting.FileComment.Missing"/>
+
+		<exclude name="PEAR.Functions.FunctionCallSignature"/>
+
+		<!-- Remove spaces before types check. -->
+		<exclude name="Squiz.Commenting.VariableComment.VarIndent"/>
+		<exclude name="Squiz.Commenting.FunctionComment.SpacingBeforeParamType"/>
+		<exclude name="Squiz.Commenting.FunctionComment.SpacingBeforeParams"/>
+
+		<!-- Exclude Full Stops on inline comment. -->
+		<exclude name="Squiz.Commenting.InlineComment.InvalidEndChar"/>
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamComment"/>
+
+		<!-- Remove empty line not required before block comment -->
+		<exclude name="Squiz.Commenting.BlockComment.HasEmptyLineBefore"/>
+		<!-- Remove rule for /** style for each var -->
+		<exclude name="Squiz.Commenting.VariableComment.WrongStyle"/>
+		<!-- Exclude to be able to include an encoding cookie. -->
+		<exclude name="Squiz.Commenting.FileComment.WrongStyle"/>
+		<exclude name="Squiz.Commenting.InlineComment.WrongStyle"/>
+
+		<!-- Exclude to be able to use variadic arguments. https://github.com/squizlabs/PHP_CodeSniffer/issues/1652 -->
+		<exclude name="Squiz.Commenting.FunctionComment.IncorrectTypeHint"/>
+
+		<!-- Exclude to be able to use "@noinspection PhpUnusedParameterInspection" annotations. -->
+		<exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingAfterHint"/>
+
+		<exclude name="WordPress.WhiteSpace.ScopeIndent.Incorrect"/>
+		<exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions"/>
+		<exclude name="WordPress.Arrays.ArrayDeclaration.KeyNotAligned"/>
+		<!-- Remove spaces instead of tabs check -->
+		<exclude name="WordPress.Arrays.ArrayDeclaration.ValueNotAligned"/>
+		<exclude name="WordPress.Arrays.ArrayDeclaration.CloseBraceNotAligned"/>
+
+		<!-- Exclude to not be forced to use a space before return type colons. https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/issues/547. -->
+		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterCloseParenthesis"/>
+
+	</rule>
+
+	<!-- Adapt to be able to use namespaced hooks in dot notation. -->
+	<rule ref="WordPress.NamingConventions.ValidHookName">
+		<properties>
+			<property name="additionalWordDelimiters" value="."/>
+		</properties>
+	</rule>
+
+	<exclude-pattern>/tests/php/*</exclude-pattern>
+
+	<!-- Check for cross-version support for PHP 5.3 and higher. -->
+	<config name="testVersion" value="5.3"/>
+
+</ruleset>
