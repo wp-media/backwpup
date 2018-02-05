@@ -472,7 +472,7 @@ class BackWPup_Page_Editjob {
 										echo '<p><label for="idarchiveformat-zip"><input class="radio" type="radio"' . checked( '.zip', BackWPup_Option::get( $jobid, 'archiveformat' ), FALSE ) . ' name="archiveformat" id="idarchiveformat-zip" value=".zip" /> ' . esc_html__( 'Zip', 'backwpup' ) . '</label></p>';
 									} else {
 										echo '<p><label for="idarchiveformat-zip"><input class="radio" type="radio"' . checked( '.zip', BackWPup_Option::get( $jobid, 'archiveformat' ), FALSE ) . ' name="archiveformat" id="idarchiveformat-zip" value=".zip" disabled="disabled" /> ' . esc_html__( 'Zip', 'backwpup' ) . '</label>';
-										echo '<br /><span class="description">' . esc_html(sprintf( __( '%s PHP class is missing, so BackWPUp will use PclZip instead.', 'backwpup' ), 'ZipArchive' )) . '</span></p>';
+										echo '<br /><span class="description">' . esc_html(__( 'ZipArchive PHP class is missing, so BackWPUp will use PclZip instead.', 'backwpup' )) . '</span></p>';
 									}
 									echo '<p><label for="idarchiveformat-tar"><input class="radio" type="radio"' . checked( '.tar', BackWPup_Option::get( $jobid, 'archiveformat' ), FALSE ) . ' name="archiveformat" id="idarchiveformat-tar" value=".tar" /> ' . esc_html__( 'Tar', 'backwpup' )  . '</label></p>';
 									if ( function_exists( 'gzopen' ) ) {
