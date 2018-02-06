@@ -621,7 +621,7 @@ final class BackWPup_Job {
 		} else {
 			// New style, must parse
 			// Start at end of file since that's where it is by default
-			
+
 			// Try 10-character chunks first for base 32 and most of base 36
 			for ( $i = strlen( $file ) - 10; $i >= 0; $i--) {
 				$data = BackWPup_Option::decode_hash( substr( $file, $i, 10 ) );
@@ -629,7 +629,7 @@ final class BackWPup_Job {
 					break;
 				}
 			}
-			
+
 			// Try 9-character chunks for any left-over base 36
 			if ( ! $data ) {
 				for ( $i = strlen( $file ) - 9; $i >= 0; $i--) {
@@ -639,20 +639,20 @@ final class BackWPup_Job {
 					}
 				}
 			}
-			
+
 			if ( ! $data ) {
 				return false;
 			}
 		}
-		
+
 		if ( $data[0] != BackWPup::get_plugin_data( 'hash' ) ) {
 			return false;
 		}
-		
+
 		if ( $data[1] != $this->job['jobid'] ) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -1730,7 +1730,7 @@ final class BackWPup_Job {
 
 		try {
 			$dir = new BackWPup_Directory( $folder );
-	
+
 			foreach ( $dir as $file ) {
 				if ( $file->isDot() || $file->isDir() ) {
 					continue;
@@ -2303,6 +2303,27 @@ final class BackWPup_Job {
 
 		return true;
 
+	}
+
+	/**
+	 * Check if mysqldump is installed in the server.
+	 *
+	 * @param string $dbdumpmysqlfolder Path to mysqldump binary
+	 *
+	 * @return bool
+	 */
+	public static function mysqldump_installed( $dbdumpmysqlfolder ) {
+
+		if( false === self::is_exec() ) {
+			return false;
+		}
+
+		// Path to mysqldump binary does not exists.
+		if( 'mysqldump' === $dbdumpmysqlfolder ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
