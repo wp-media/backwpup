@@ -2318,12 +2318,35 @@ final class BackWPup_Job {
 			return false;
 		}
 
-		// Path to mysqldump binary does not exists.
-		if( 'mysqldump' === $dbdumpmysqlfolder ) {
+		if ( ! file_exists( $dbdumpmysqlfolder ) || ! is_executable( $dbdumpmysqlfolder ) ) {
 			return false;
 		}
 
 		return true;
+	}
+
+	/**
+	 * Returns mysqldump error message.
+	 *
+	 * @param string $dbdumpmysqlfolder Path to mysqldump binary
+	 *
+	 * @return string
+	 */
+	public static function mysqldump_error_message( $dbdumpmysqlfolder ) {
+
+		$output = '';
+
+		if( false === self::is_exec() ) {
+			$output = '<span style="color:#999;">'. __( 'exec command is not active.', 'backwpup' ) .'</span>';
+			return $output;
+		}
+
+		if ( ! file_exists( $dbdumpmysqlfolder ) || ! is_executable( $dbdumpmysqlfolder ) ) {
+			$output = '<span style="color:#999;">'. __( 'mysqldump binary not found.', 'backwpup' ) .'</span>';
+			return $output;
+		}
+
+		return $output;
 	}
 
 	/**
