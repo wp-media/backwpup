@@ -81,7 +81,7 @@ class BackWPup_Cron {
 			//Compress old not compressed logs
 			try {
 				$dir = new BackWPup_Directory( $log_folder );
-			
+
 				$jobids = BackWPup_Option::get_job_ids();
 				foreach ( $dir as $file ) {
 					if ( $file->isWritable() && '.html' == substr( $file->getFilename(), -5 ) ) {
@@ -125,42 +125,48 @@ class BackWPup_Cron {
 		}
 
 	}
-	
+
 	/**
-    	 * Update the backend message.
-    	 */
+	 * Update the backend message.
+	 *
+	 * @return void
+	 */
 	public static function update_message() {
+
 		// Fetch message from API
-		$api_request = esc_url( 'http://backwpup.com/wp-json/inpsyde-messages/v1/message/' );
+		$api_request  = esc_url( 'http://backwpup.com/wp-json/inpsyde-messages/v1/message/' );
 		$api_response = wp_remote_get( $api_request );
-		$api_data = json_decode( wp_remote_retrieve_body( $api_response ), true );
-		
-		// Add messages to options
-		foreach ( $api_data as $lang => $value ) {
-			$content = $value['content'];
-			$button = $value['button-text'];
-			$url = $value['url'];
-			
-			// Calculate ID based on button text and URL
-			$id = "$button|$url";
-			// Padd to nearest 5 bytes for base32
-			$pad = strlen($id);
-			if ( $pad % 5 > 0 ) {
-				$pad += 5 - ($pad % 5);
-				$id = str_pad( $id, $pad, '|' );
+		$api_data     = json_decode( wp_remote_retrieve_body( $api_response ), true );
+
+		// Check API response
+		if ( isset( $api_response ) && $api_response['response']['code'] === 200 ) {
+
+			// Add messages to options
+			foreach ( $api_data as $lang => $value ) {
+				$content = $value['content'];
+				$button  = $value['button-text'];
+				$url     = $value['url'];
+
+				// Calculate ID based on button text and URL
+				$id = "$button|$url";
+				// Padd to nearest 5 bytes for base32
+				$pad = strlen( $id );
+				if ( $pad % 5 > 0 ) {
+					$pad += 5 - ( $pad % 5 );
+					$id  = str_pad( $id, $pad, '|' );
+				}
+
+				// Encode $id so it will be unique
+				$id = Base32::encode( $id );
+
+				// Save in site options
+				update_site_option( "backwpup_message_id_$lang", $id );
+				update_site_option( "backwpup_message_content_$lang", $content );
+				update_site_option( "backwpup_message_button_text_$lang", $button );
+				update_site_option( "backwpup_message_url_$lang", $url );
 			}
-			
-			// Encode $id so it will be unique
-			$id = Base32::encode( $id );
-			
-			// Save in site options
-			update_site_option( "backwpup_message_id_$lang", $id );
-			update_site_option( "backwpup_message_content_$lang", $content );
-			update_site_option( "backwpup_message_button_text_$lang", $button );
-			update_site_option( "backwpup_message_url_$lang", $url );
 		}
 	}
-
 
 	/**
 	 * Start job if in cron and run query args are set.
