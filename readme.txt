@@ -158,6 +158,11 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 [You can find a detailed tutorial in the BackWPup documentation.](http://docs.backwpup.com/article/118-install-backwpup)
 
 == Changelog ==
+= Version 3.4.5 =
+* Added: Support for PclZip.
+* Fixed: Disable use of mysqldump if it is not available.
+* Fixed: Invalid argument supplied for foreach() error.
+
 = Version 3.4.4 =
 * Fixed: Security issue that created too many sessions.
 * Fixed: Correct decryption of passwords when escaped.
