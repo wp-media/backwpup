@@ -120,22 +120,21 @@ if ( ! class_exists( 'BackWPup' ) ) {
 			}
 
 			// Phone Home
-/*
-			require_once dirname( __FILE__ ) . '/vendor/inpsyde/phone-home-client/inc/autoload.php';
-			Inpsyde_PhoneHome_FrontController::initialize_for_network(
-				'BackWPup',
-				dirname( __FILE__ ) . '/assets/templates/phpnotice',
-				'backwpup',
-				array(
-					Inpsyde_PhoneHome_Configuration::ANONYMIZE          => true,
-					Inpsyde_PhoneHome_Configuration::MINIMUM_CAPABILITY => 'manage_options',
-					Inpsyde_PhoneHome_Configuration::COLLECT_PHP        => true,
-					Inpsyde_PhoneHome_Configuration::COLLECT_WP         => true,
-					Inpsyde_PhoneHome_Configuration::SERVER_ADDRESS     => 'https://backwpup.com/wp-json',
-				)
-			);
-*/
-
+			if ( false === class_exists( 'BackWPup_Pro' ) ) {
+				require_once dirname( __FILE__ ) . '/vendor/inpsyde/phone-home-client/inc/autoload.php';
+				Inpsyde_PhoneHome_FrontController::initialize_for_network(
+					'BackWPup',
+					dirname( __FILE__ ) . '/assets/templates/phpnotice',
+					'backwpup',
+					array(
+						Inpsyde_PhoneHome_Configuration::ANONYMIZE          => true,
+						Inpsyde_PhoneHome_Configuration::MINIMUM_CAPABILITY => 'manage_options',
+						Inpsyde_PhoneHome_Configuration::COLLECT_PHP        => true,
+						Inpsyde_PhoneHome_Configuration::COLLECT_WP         => true,
+						Inpsyde_PhoneHome_Configuration::SERVER_ADDRESS     => 'https://backwpup.com/wp-json',
+					)
+				);
+			}
 		}
 
 		/**
@@ -251,7 +250,7 @@ if ( ! class_exists( 'BackWPup' ) ) {
 					require $filePath;
 				}
 			}
-			
+
 			// Base32 autoloading
 			if ( strpos( $class, 'Base32' ) !== false ) {
 				require_once self::get_plugin_data( 'plugindir' ) . '/vendor/base32/src/Base32.php';
