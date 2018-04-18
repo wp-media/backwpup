@@ -74,6 +74,15 @@ return array(
         ),
         'sa-east-1/s3' => array(
             'endpoint' => 's3-{region}.amazonaws.com'
+        ),
+        'google-storage/*' => array(
+            'endpoint' => 'storage.googleapis.com'
+        ),
+        'google-storage-us/*' => array(
+            'endpoint' => 'storage.googleapis.com'
+        ),
+        'google-storage-asia/*' => array(
+            'endpoint' => 'storage.googleapis.com'
         )
     )
 );
