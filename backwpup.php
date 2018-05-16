@@ -213,44 +213,6 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 			} else {
 				return self::$plugin_data;
 			}
-<<<<<<< HEAD
-=======
-
-			// namespaced PSR-0
-			if ( ! empty( self::$autoload ) ) {
-				$pos = strrpos( $class, '\\' );
-				if ( $pos !== FALSE ) {
-					$class_path = str_replace( '\\', DIRECTORY_SEPARATOR, substr( $class, 0, $pos ) ) . DIRECTORY_SEPARATOR . str_replace( '_', DIRECTORY_SEPARATOR, substr( $class, $pos + 1 ) ) . '.php';
-					foreach ( self::$autoload as $prefix => $dir ) {
-						if ( $class === strstr( $class, $prefix ) ) {
-							if ( file_exists( $dir . DIRECTORY_SEPARATOR . $class_path ) )
-								require $dir . DIRECTORY_SEPARATOR . $class_path;
-						}
-					}
-				} // Single class file
-				elseif ( ! empty( self::$autoload[ $class ] ) && is_file( self::$autoload[ $class ] ) ) {
-					require self::$autoload[ $class ];
-				}
-			}
-
-			//Google SDK Auto loading
-			$classPath = explode( '_', $class );
-			if ( $classPath[0] == 'Google' ) {
-				if ( count( $classPath ) > 3 ) {
-					$classPath = array_slice( $classPath, 0, 3 );
-				}
-				$filePath = self::get_plugin_data( 'plugindir' ) . '/vendor/' . implode( '/', $classPath ) . '.php';
-				if ( file_exists( $filePath ) ) {
-					require $filePath;
-				}
-			}
-
-			// Base32 autoloading
-			if ( strpos( $class, 'Base32' ) !== false ) {
-				require_once self::get_plugin_data( 'plugindir' ) . '/vendor/base32/src/Base32.php';
-			}
-
->>>>>>> release/3.4.5
 		}
 
 		/**
