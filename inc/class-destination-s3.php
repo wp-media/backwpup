@@ -381,55 +381,145 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $jobid
-	 * @param $get_file
+	 * Download
+	 *
+	 * @param int    $jobid
+	 * @param string $file_path
 	 */
-	public function file_download( $jobid, $get_file ) {
+	public function file_download( $jobid, $file_path ) {
 
-		try {
-			$s3 = Aws\S3\S3Client::factory( array( 'signature' => 'v4', 'key'		=> BackWPup_Option::get( $jobid, 's3accesskey' ),
-													 'secret'	=> BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 's3secretkey' ) ),
-													 'region'	=> BackWPup_Option::get( $jobid, 's3region' ),
-													 'scheme'	=> 'https',
-													 'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ) ) );
+		$capability = 'backwpup_backups_download';
+		$filename   = untrailingslashit( BackWPup::get_plugin_data( 'temp' ) ) . '/' . basename( $file_path );
+		$job_id     = filter_var( $_GET['jobid'], FILTER_SANITIZE_NUMBER_INT );
 
-			$s3file = $s3->getObject( array(
-										   'Bucket' => BackWPup_Option::get( $jobid, 's3bucket' ),
-										   'Key' => $get_file ) );
-		}
-		catch ( Exception $e ) {
-			die( $e->getMessage() );
-		}
+		$downloader = new BackWpup_Download_Handler(
+			new BackWPup_Download_File(
+				$filename,
+				mime_content_type( $filename ),
+				function ( \BackWPup_Download_File_Interface $obj ) use ( $filename, $file_path, $job_id ) {
 
-		if ( $s3file[ 'ContentLength' ] > 0 && ! empty( $s3file[ 'ContentType' ] ) ) {
-			if ( $level = ob_get_level() ) {
-				for ( $i = 0; $i < $level; $i ++ ) {
-					ob_end_clean();
-				}
-			}
-			@set_time_limit( 300 );
-			nocache_headers();
-			header( 'Content-Description: File Transfer' );
-			header( 'Content-Type: ' . BackWPup_Job::get_mime_type( $get_file ) );
-			header( 'Content-Disposition: attachment; filename="' . basename( $get_file ) . '"' );
-			header( 'Content-Transfer-Encoding: binary' );
-			header( 'Content-Length: ' . $s3file[ 'ContentLength' ] );
-			$body = $s3file->get( 'Body' );
-			$body->rewind();
-			while ( $filedata = $body->read( 1024 ) ) {
-				echo $filedata;
-			}
-			die();
-		}
+					$filesystem = backwpup_wpfilesystem();
+
+					// Setup Destionation service and download file.
+					$service = new BackWPup_Destination_S3_Downloader();
+					$service->for_job( $job_id )
+					        ->from( $file_path )
+					        ->to( $filename )
+					        ->with_service()
+					        ->download();
+
+					$obj->clean_ob()
+					    ->headers();
+
+					echo $filesystem->get_contents( $filename );
+
+					// Delete the temporary file.
+					$filesystem->delete( $filename );
+					die();
+				},
+				$capability
+			),
+			"download-backup_{$job_id}",
+			$capability,
+			'downloads3'
+		);
+
+		// Download the file.
+		$downloader->handle();
 	}
 
 	/**
-	 * @param $jobdest
-	 * @return mixed
+	 * @inheritdoc
 	 */
 	public function file_get_list( $jobdest ) {
 
-		return get_site_transient( 'backwpup_' . strtolower( $jobdest ) );
+		$list = (array) get_site_transient( 'backwpup_' . strtolower( $jobdest ) );
+		$list = array_filter( $list );
+
+		return $list;
+	}
+
+	/**
+	 * File Update List
+	 *
+	 * Update the list of files in the transient.
+	 *
+	 * @param BackWPup_Job|int $job    Either the job object or job ID
+	 * @param bool             $delete Whether to delete old backups.
+	 */
+	public function file_update_list( $job, $delete = false ) {
+
+		if ( $job instanceof BackWPup_Job ) {
+			$job_object = $job;
+			$jobid      = $job->job['jobid'];
+		} else {
+			$job_object = null;
+			$jobid = $job;
+		}
+
+		if ( ! $this->s3 ) {
+			$s3 = Aws\S3\S3Client::factory( array( 'signature' => 'v4', 'key'		=> BackWPup_Option::get( $jobid, 's3accesskey' ),
+												  	'secret'	=> BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 's3secretkey' ) ),
+													'region'	=> BackWPup_Option::get( $jobid, 's3region' ),
+													'scheme'	=> 'https',
+													'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ) ) );
+		} else {
+			$s3 = $this->s3;
+		}
+
+		$backupfilelist = array();
+		$filecounter    = 0;
+		$files          = array();
+		$args			= array(
+			'Bucket' => BackWPup_Option::get( $jobid, 's3bucket' ),
+			'Prefix' => (string) BackWPup_Option::get( $jobid, 's3dir' )
+		);
+		$objects = $s3->getIterator('ListObjects',  $args );
+		if ( is_object( $objects ) ) {
+			foreach ( $objects as $object ) {
+				$file       = basename( $object[ 'Key' ] );
+				$changetime = strtotime( $object[ 'LastModified' ] ) + ( get_option( 'gmt_offset' ) * 3600 );
+				if ( $this->is_backup_archive( $file ) && $this->is_backup_owned_by_job( $file, $jobid ) == true )
+					$backupfilelist[ $changetime ] = $file;
+				$files[ $filecounter ][ 'folder' ]      = $this->get_s3_base_url( BackWPup_Option::get( $jobid, 's3region' ) ). '/' .BackWPup_Option::get( $jobid, 's3bucket' ) . '/' . dirname( $object['Key'] );
+				$files[ $filecounter ][ 'file' ]        = $object[ 'Key' ];
+				$files[ $filecounter ][ 'filename' ]    = basename( $object[ 'Key' ] );
+				if ( ! empty( $object[ 'StorageClass' ] ) )
+					$files[ $filecounter ][ 'info' ]    = sprintf( __('Storage Class: %s', 'backwpup' ), $object[ 'StorageClass' ] );
+				$files[ $filecounter ][ 'downloadurl' ] = network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=downloads3&file=' . $object[ 'Key' ] . '&jobid=' . $jobid;
+				$files[ $filecounter ][ 'filesize' ]    = $object[ 'Size' ];
+				$files[ $filecounter ][ 'time' ]        = $changetime;
+				$filecounter ++;
+			}
+		}
+		if ( $delete && $job_object && $job_object->job[ 's3maxbackups' ] > 0 && is_object( $s3 ) ) { //Delete old backups
+			if ( count( $backupfilelist ) > $job_object->job[ 's3maxbackups' ] ) {
+				ksort( $backupfilelist );
+				$numdeltefiles = 0;
+				while ( $file = array_shift( $backupfilelist ) ) {
+					if ( count( $backupfilelist ) < $job_object->job[ 's3maxbackups' ] )
+						break;
+					//delete files on S3
+					$args = array(
+						'Bucket' => $job_object->job[ 's3bucket' ],
+						'Key' => $job_object->job[ 's3dir' ] . $file
+					);
+					if ( $s3->deleteObject( $args ) ) {
+						foreach ( $files as $key => $filedata ) {
+							if ( $filedata[ 'file' ] == $job_object->job[ 's3dir' ] . $file )
+								unset( $files[ $key ] );
+						}
+						$numdeltefiles ++;
+					} else {
+						$job_object->log( sprintf( __( 'Cannot delete backup from %s.', 'backwpup' ), $this->get_s3_base_url( $job_object->job[ 's3region' ] ). '/' .$job_object->job[ 's3bucket' ] . '/' . $job_object->job[ 's3dir' ] . $file ), E_USER_ERROR );
+					}
+				}
+				if ( $numdeltefiles > 0 )
+					$job_object->log( sprintf( _n( 'One file deleted on S3 Bucket.', '%d files deleted on S3 Bucket', $numdeltefiles, 'backwpup' ), $numdeltefiles ), E_USER_NOTICE );
+			}
+		}
+		set_site_transient( 'backwpup_' . $jobid . '_s3', $files, YEAR_IN_SECONDS );
+
 	}
 
 	/**
@@ -448,6 +538,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 													'region'	=> $job_object->job[ 's3region' ],
 													'scheme'	=> 'https',
 													'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ) ) );
+													$this->s3 = $s3;
 
 			if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] != $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] && $job_object->substeps_done < $job_object->backup_filesize ) {
 				if ( $s3->doesBucketExist( $job_object->job[ 's3bucket' ] ) ) {
@@ -598,60 +689,8 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 		}
 
 		try {
-			$backupfilelist = array();
-			$filecounter    = 0;
-			$files          = array();
-			$args			= array(
-				'Bucket' => $job_object->job[ 's3bucket' ],
-				'Prefix' => (string) $job_object->job[ 's3dir' ]
-			);
-			$objects = $s3->getIterator('ListObjects',  $args );
-			if ( is_object( $objects ) ) {
-				foreach ( $objects as $object ) {
-					$file       = basename( $object[ 'Key' ] );
-					$changetime = strtotime( $object[ 'LastModified' ] ) + ( get_option( 'gmt_offset' ) * 3600 );
-					if ( $job_object->is_backup_archive( $file ) && $job_object->owns_backup_archive( $file ) == true )
-						$backupfilelist[ $changetime ] = $file;
-					$files[ $filecounter ][ 'folder' ]      = $this->get_s3_base_url( $job_object->job[ 's3region' ] ). '/' .$job_object->job[ 's3bucket' ] . '/' . dirname( $object[ 'Key' ] );
-					$files[ $filecounter ][ 'file' ]        = $object[ 'Key' ];
-					$files[ $filecounter ][ 'filename' ]    = basename( $object[ 'Key' ] );
-					if ( ! empty( $object[ 'StorageClass' ] ) )
-						$files[ $filecounter ][ 'info' ]    = sprintf( __('Storage Class: %s', 'backwpup' ), $object[ 'StorageClass' ] );
-					$files[ $filecounter ][ 'downloadurl' ] = network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=downloads3&file=' . $object[ 'Key' ] . '&jobid=' . $job_object->job[ 'jobid' ];
-					$files[ $filecounter ][ 'filesize' ]    = $object[ 'Size' ];
-					$files[ $filecounter ][ 'time' ]        = $changetime;
-					$filecounter ++;
-				}
-			}
-			if ( $job_object->job[ 's3maxbackups' ] > 0 && is_object( $s3 ) ) { //Delete old backups
-				if ( count( $backupfilelist ) > $job_object->job[ 's3maxbackups' ] ) {
-					ksort( $backupfilelist );
-					$numdeltefiles = 0;
-					while ( $file = array_shift( $backupfilelist ) ) {
-						if ( count( $backupfilelist ) < $job_object->job[ 's3maxbackups' ] )
-							break;
-						//delete files on S3
-						$args = array(
-							'Bucket' => $job_object->job[ 's3bucket' ],
-							'Key' => $job_object->job[ 's3dir' ] . $file
-						);
-						if ( $s3->deleteObject( $args ) ) {
-							foreach ( $files as $key => $filedata ) {
-								if ( $filedata[ 'file' ] == $job_object->job[ 's3dir' ] . $file )
-									unset( $files[ $key ] );
-							}
-							$numdeltefiles ++;
-						} else {
-							$job_object->log( sprintf( __( 'Cannot delete backup from %s.', 'backwpup' ), $this->get_s3_base_url( $job_object->job[ 's3region' ] ). '/' .$job_object->job[ 's3bucket' ] . '/' . $job_object->job[ 's3dir' ] . $file ), E_USER_ERROR );
-						}
-					}
-					if ( $numdeltefiles > 0 )
-						$job_object->log( sprintf( _n( 'One file deleted on S3 Bucket.', '%d files deleted on S3 Bucket', $numdeltefiles, 'backwpup' ), $numdeltefiles ), E_USER_NOTICE );
-				}
-			}
-			set_site_transient( 'backwpup_' . $job_object->job[ 'jobid' ] . '_s3', $files, YEAR_IN_SECONDS );
-		}
-		catch ( Exception $e ) {
+			$this->file_update_list( $job_object, true );
+		} catch ( Exception $e ) {
 			$job_object->log( E_USER_ERROR, sprintf( __( 'S3 Service API: %s', 'backwpup' ), $e->getMessage() ), $e->getFile(), $e->getLine() );
 
 			return FALSE;

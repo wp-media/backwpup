@@ -1,0 +1,40 @@
+//
+// Components Admin Bar
+//
+
+#wp-admin-bar-backwpup {
+  .ab-icon {
+    font: normal 20px/1 'backwpup' !important;
+
+    &::before {
+      content: "\e600";
+      top: 2px;
+    }
+  }
+}
+
+//
+// MEDIA QUERIES
+//
+
+// 782px
+@media screen and (max-width: 48.875em) {
+
+  #wp-admin-bar-backwpup {
+    .ab-icon {
+      font: normal 32px/1 'backwpup' !important;
+      display: block;
+      text-indent: 0;
+      speak: none;
+      top: 7px;
+      width: 50px;
+      text-align: center;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    &::before {
+      top: 0;
+    }
+  }
+}

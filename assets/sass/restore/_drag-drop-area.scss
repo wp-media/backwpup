@@ -1,0 +1,32 @@
+//
+// Restore Drag & Drop Area
+//
+.drag-drop-area {
+  background:    #fafafa;
+  border:        4px dashed #ddd;
+  color:         #aaa;
+  margin-bottom: 30px;
+  margin-top:    30px;
+  padding:       60px 0;
+  text-align:    center;
+  width:         100%;
+
+  .drag-drop-inside {
+    align-items:     center;
+    display:         flex;
+    justify-content: center;
+  }
+
+  .drop-text {
+    font-size:   1rem;
+    margin-left: .8125em;
+  }
+  .separator {
+    font-size:   .8125rem;
+    margin-left: .8125em;
+  }
+}
+
+.drag-drop-active {
+  border: 4px dashed #1d94cf !important;
+}

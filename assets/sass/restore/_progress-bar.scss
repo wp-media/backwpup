@@ -1,0 +1,27 @@
+//
+// Restore Progress Bar
+//
+
+.restore-progress-container {
+  padding-left: 12px;
+  padding-top:  10px;
+}
+
+.restore-progress-container .progressbar {
+  display: none;
+}
+
+.restore-progress-container #upload_progress {
+  height: 5px;
+}
+
+.restore-progress-container #onstep {
+  text-align: center;
+  margin-top: 10px;
+  width:      100%;
+}
+
+.restore-progress-container #restore_progress {
+  height:        15px;
+  margin-bottom: 15px;
+}

@@ -1,0 +1,90 @@
+//
+// Wizard
+//
+
+#wizard,
+#wizard_description {
+  max-width: 850px;
+  width:     100%;
+}
+
+#wizard_navigation {
+  overflow: hidden;
+
+  ul {
+    list-style: none;
+    margin:     0;
+
+    li {
+      display:  inline-block;
+      float:    left;
+      padding:  0 30px 0 0;
+      position: relative;
+    }
+
+    li::after {
+      content:     '\203A';
+      display:     inline-block;
+      font-size:   20px;
+      line-height: 18px;
+      margin:      0 0 0 12px;
+      position:    absolute;
+      top:         0;
+    }
+
+    li:last-child::after {
+      content: '';
+      display: none;
+    }
+
+    .current {
+      font-weight: bold;
+    }
+
+    li a {
+      text-decoration: none;
+    }
+  }
+}
+
+#wizard_settings {
+  float:     left;
+  max-width: 620px;
+
+  h3 {
+    margin-top: 0;
+  }
+}
+
+#wizard_settings_area {
+  // Table
+  .table_planung {
+    #wpcronbasic {
+      max-width: 540px;
+    }
+
+    th {
+      border-bottom: 1px dotted #ccc;
+      text-align:    left;
+    }
+
+    td {
+      border-bottom: 1px dotted #ccc;
+    }
+
+    tr {
+      line-height: 60px;
+    }
+  }
+
+  pre {
+    height:   455px;
+    overflow: scroll;
+  }
+}
+
+#wizard_navbuttons {
+  clear:    both;
+  position: relative;
+  top:      26px;
+}

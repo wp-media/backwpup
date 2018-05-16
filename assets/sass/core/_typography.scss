@@ -1,0 +1,26 @@
+//
+// Core Typography
+//
+
+@font-face {
+  font-family: 'backwpup';
+  src:url('../fonts/backwpup.eot');
+  src:url('../fonts/backwpup.eot?#iefix') format('embedded-opentype'),
+               url('../fonts/backwpup.ttf') format('truetype'),
+               url('../fonts/backwpup.woff') format('woff'),
+               url('../fonts/backwpup.svg#backwpup') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.error {
+  color: $color-red;
+}
+
+.warning {
+  color: $color-yellow;
+}
+
+.success {
+  color: $color-green;
+}

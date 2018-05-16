@@ -96,6 +96,7 @@ class BackWPup_Cron {
 								}
 							}
 						}
+						$compress->close();
 						unset( $compress );
 					}
 				}

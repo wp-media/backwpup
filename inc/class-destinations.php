@@ -118,11 +118,12 @@ abstract class BackWPup_Destinations {
 
 	/**
 	 * @param $jobdest string
+	 *
 	 * @return array
 	 */
 	public function file_get_list( $jobdest ) {
 
-		return FALSE;
+		return array();
 	}
 
 	/**
@@ -138,8 +139,118 @@ abstract class BackWPup_Destinations {
 	}
 
 	/**
+	 * Prepare Restore
+	 *
+	 * Method for preparing the restore process.
+	 *
+	 * @param $job_id    int    Number of job.
+	 * @param $file_name string Name of backup.
+	 *
+	 * @return string The file path, empty string if file cannot be found.
+	 */
+	public function prepare_restore( $job_id, $file_name ) {
+
+	}
+
+	/**
 	 * @param $job_settings array
 	 * @return bool
 	 */
 	abstract public function can_run( array $job_settings );
+
+	/**
+	 * Is Backup Archive
+	 *
+	 * Checks if given file is a backup archive.
+	 *
+	 * @param $file
+	 *
+	 * @return bool
+	 */
+	public function is_backup_archive( $file ) {
+
+		$extensions = array(
+			'.tar.gz',
+			'.tar.bz2',
+			'.tar',
+			'.zip',
+		);
+
+		$file     = trim( basename( $file ) );
+		$filename = '';
+
+		foreach ( $extensions as $extension ) {
+			if ( substr( $file, ( strlen( $extension ) * - 1 ) ) === $extension ) {
+				$filename = substr( $file, 0, ( strlen( $extension ) * - 1 ) );
+			}
+		}
+
+		if ( ! $filename ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Is Backup Owned by Job
+	 *
+	 * Checks if the given archive belongs to the given job.
+	 *
+	 * @param string $file
+	 * @param int    $jobid
+	 *
+	 * @return bool
+	 */
+	public function is_backup_owned_by_job( $file, $jobid ) {
+
+		$info = pathinfo( $file );
+		$file = basename( $file, '.' . $info['extension'] );
+
+		// If starts with backwpup, then old-style hash
+		$data = array();
+		if ( substr( $file, 0, 8 ) == 'backwpup' ) {
+			$parts = explode( '_', $file );
+			$data  = BackWPup_Option::decode_hash( $parts[1] );
+			if ( ! $data ) {
+				return false;
+			}
+		} else {
+			// New style, must parse
+			// Start at end of file since that's where it is by default
+
+			// Try 10-character chunks first for base 32 and most of base 36
+			for ( $i = strlen( $file ) - 10; $i >= 0; $i -- ) {
+				$data = BackWPup_Option::decode_hash( substr( $file, $i, 10 ) );
+				if ( $data ) {
+					break;
+				}
+			}
+
+			// Try 9-character chunks for any left-over base 36
+			if ( ! $data ) {
+				for ( $i = strlen( $file ) - 9; $i >= 0; $i -- ) {
+					$data = BackWPup_Option::decode_hash( substr( $file, $i, 9 ) );
+					if ( $data ) {
+						break;
+					}
+				}
+			}
+
+			if ( ! $data ) {
+				return false;
+			}
+		}
+
+		if ( $data[0] != BackWPup::get_plugin_data( 'hash' ) ) {
+			return false;
+		}
+
+		if ( $data[1] != $jobid ) {
+			return false;
+		}
+
+		return true;
+	}
+
 }

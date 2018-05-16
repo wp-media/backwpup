@@ -1,0 +1,23 @@
+//
+// Admin Menu
+//
+
+#adminmenu {
+  #toplevel_page_backwpup div.wp-menu-image:before {
+    font:    normal 20px/1 'backwpup' !important;
+    content: "\e600";
+  }
+
+  #toplevel_page_backwpup a[href$="backwpuprestore"]::after {
+    content:       'New';
+    font-size:     .55rem;
+    color:         $color-white;
+    padding:       .18rem .33rem;
+    background:    darken($color-brand, 10%);
+    border-radius: .23rem;
+    line-height:   1;
+    position:      relative;
+    bottom:        5px;
+    left:          1em;
+  }
+}

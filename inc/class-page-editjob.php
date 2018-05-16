@@ -482,7 +482,8 @@ class BackWPup_Page_Editjob {
 										echo '<br /><span class="description">' . esc_html(sprintf( __( 'Disabled due to missing %s PHP function.', 'backwpup' ), 'gzopen()' )) . '</span></p>';
 									}
 									if ( function_exists( 'bzopen' ) ) {
-										echo '<p><label for="idarchiveformat-tarbz2"><input class="radio" type="radio"' . checked( '.tar.bz2', BackWPup_Option::get( $jobid, 'archiveformat' ), FALSE ) . ' name="archiveformat" id="idarchiveformat-tarbz2" value=".tar.bz2" /> ' . esc_html__( 'Tar BZip2', 'backwpup' ) . '</label></p>';
+										echo '<p><label for="idarchiveformat-tarbz2"><input class="radio" type="radio"' . checked( '.tar.bz2', BackWPup_Option::get( $jobid, 'archiveformat' ), FALSE ) . ' name="archiveformat" id="idarchiveformat-tarbz2" value=".tar.bz2" /> ' . esc_html__( 'Tar BZip2', 'backwpup' ) . '</label>';
+										echo ' <span class="description warning">' . __('Not supported <b>yet</b> by the <b>automatic</b> restore functionality', 'backwpup' ) . '</span></p>';
 									} else {
 										echo '<p><label for="idarchiveformat-tarbz2"><input class="radio" type="radio"' . checked( '.tar.bz2', BackWPup_Option::get( $jobid, 'archiveformat' ), FALSE ) . ' name="archiveformat" id="idarchiveformat-tarbz2" value=".tar.bz2" disabled="disabled" /> ' . esc_html__( 'Tar BZip2', 'backwpup' ) . '</label>';
 										echo '<br /><span class="description">' . esc_html(sprintf( __( 'Disabled due to missing %s PHP function.', 'backwpup' ), 'bzopen()' )) . '</span></p>';

@@ -1,0 +1,20 @@
+//
+// Components Progress Bar
+//
+
+.progressbar {
+  margin-top: 20px;
+  height: auto;
+  background: #f6f6f6 url('../../assets/images/progressbarhg.jpg');
+
+  #progresssteps {
+    background-color: #007fb6;
+  }
+
+  .bwpu-progress {
+    background-color: #1d94cf;
+    color: #fff;
+    padding: 5px 0;
+    text-align: center;
+  }
+}

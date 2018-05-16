@@ -1,0 +1,42 @@
+//
+// Components Footer
+//
+
+#wpfooter {
+  #footer-left,
+  #footer-right {
+    overflow: hidden;
+  }
+
+  #footer-left {
+    #footer-thankyou {
+      clear:       both;
+      display:     block;
+      padding-top: .5em;
+    }
+
+    .backwpup-get-pro {
+      display:     inline-block;
+      line-height: 25px;
+    }
+  }
+
+  #footer-upgrade {
+    .backwpup-update-footer {
+      display:     block;
+      line-height: 25px;
+    }
+  }
+
+  .inpsyde_logo {
+    background:      url('../images/inpsyde.png') no-repeat;
+    display:         inline-block;
+    margin-right:    15px;
+    margin-top:      5px;
+    line-height:     25px;
+    height:          25px;
+    width:           80px;
+    text-indent:     -9999em;
+    text-decoration: none;
+  }
+}

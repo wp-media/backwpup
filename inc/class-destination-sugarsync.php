@@ -212,12 +212,14 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $jobdest
-	 * @return mixed
+	 * @inheritdoc
 	 */
 	public function file_get_list( $jobdest ) {
 
-		return get_site_transient( 'backwpup_' . strtolower( $jobdest ) );
+		$list = (array) get_site_transient( 'backwpup_' . strtolower( $jobdest ) );
+		$list = array_filter( $list );
+
+		return $list;
 	}
 
 	/**
@@ -273,7 +275,7 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 			if ( is_object( $getfiles ) ) {
 				foreach ( $getfiles->file as $getfile ) {
 					$getfile->displayName = utf8_decode( (string)$getfile->displayName );
-					if ( $job_object->is_backup_archive( $getfile->displayName ) && $job_object->owns_backup_archive( $getfile->displayName ) == true )
+					if ( $this->is_backup_archive( $getfile->displayName ) && $this->is_backup_owned_by_job( $getfile->displayName, $job_object->job['jobid'] ) == true )
 						$backupfilelist[ strtotime( (string)$getfile->lastModified ) ] = (string)$getfile->ref;
 					$files[ $filecounter ][ 'folder' ]      = 'https://' . (string)$user->nickname . '.sugarsync.com/' . $dir;
 					$files[ $filecounter ][ 'file' ]        = (string)$getfile->ref;

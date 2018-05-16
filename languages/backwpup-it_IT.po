@@ -1,0 +1,6303 @@
+# Translation of BackWPup Pro in Italian
+# Copyright (C) 2017 Inpsyde GmbH
+# This file is distributed under the same license BackWPup Pro package.
+msgid ""
+msgstr ""
+"Project-Id-Version: backwpup-pro\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/backwpup-pro\n"
+"POT-Creation-Date: 2018-05-11 09:51+0200\n"
+"PO-Revision-Date: 2018-05-11 18:40+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 2.0.7\n"
+
+#: backwpup.php:258 inc/class-page-backups.php:276
+msgid "Folder"
+msgstr "Cartella"
+
+#: backwpup.php:259
+msgid "Backup to Folder"
+msgstr "Backup su cartella"
+
+#: backwpup.php:274
+msgid "Email"
+msgstr "Email"
+
+#: backwpup.php:275
+msgid "Backup sent via email"
+msgstr "Backup inviato via mail"
+
+#: backwpup.php:290
+msgid "FTP"
+msgstr ""
+
+#: backwpup.php:291
+msgid "Backup to FTP"
+msgstr "Backup su FTP"
+
+#: backwpup.php:306 inc/class-destination-dropbox.php:408
+msgid "Dropbox"
+msgstr ""
+
+#: backwpup.php:307 inc/class-page-about.php:517
+msgid "Backup to Dropbox"
+msgstr "Backup su Dropbox"
+
+#: backwpup.php:322 inc/class-destination-s3.php:27
+msgid "S3 Service"
+msgstr ""
+
+#: backwpup.php:323
+msgid "Backup to an S3 Service"
+msgstr "Backup su un S3 Service"
+
+#: backwpup.php:343
+msgid "MS Azure"
+msgstr ""
+
+#: backwpup.php:344
+msgid "Backup to Microsoft Azure (Blob)"
+msgstr "Backup su Microsoft Azure (Blob)"
+
+#: backwpup.php:359
+msgid "RSC"
+msgstr ""
+
+#: backwpup.php:360 inc/class-page-about.php:522
+msgid "Backup to Rackspace Cloud Files"
+msgstr "Backup su Rackspace Cloud Files"
+
+#: backwpup.php:379
+msgid "SugarSync"
+msgstr ""
+
+#: backwpup.php:380 inc/class-page-about.php:537
+msgid "Backup to SugarSync"
+msgstr "Backup su SugarSync"
+
+#: backwpup.php:399
+#, php-format
+msgid "PHP Version %1$s is to low, you need Version %2$s or above."
+msgstr ""
+"La versione in uso di PHP %1$s è troppo vecchia, hai bisogno della versione "
+"%2$s o superiore."
+
+#: backwpup.php:406
+#, php-format
+msgid "Missing function \"%s\"."
+msgstr "Funzione mancante \"%s\"."
+
+#: backwpup.php:415
+#, php-format
+msgid "Missing class \"%s\"."
+msgstr "Classe \"%s\" mancante."
+
+#: backwpup.php:533
+msgid ""
+"BackWPup requires PHP version %$1s with spl extension or greater and "
+"WordPress %$2s or greater."
+msgstr ""
+"BackWPup necessita della versione %$1s di PHP o superiore, con estensione "
+"spl; e della versione WordPress %$2s o superiore."
+
+#: inc/class-admin-notice.php:121 inc/class-become-inpsyder-widget.php:152
+msgid "Don't show again"
+msgstr "Non mostrare più"
+
+#: inc/class-admin.php:246 inc/class-help.php:24
+msgid "http://docs.backwpup.com"
+msgstr ""
+
+#: inc/class-admin.php:246
+msgid "Documentation"
+msgstr "Documentazione"
+
+#: inc/class-admin.php:261
+msgid "BackWPup Dashboard"
+msgstr "Dashboard BackWPup "
+
+#: inc/class-admin.php:261
+msgid "Dashboard"
+msgstr ""
+
+#: inc/class-admin.php:284 inc/class-adminbar.php:82
+#: inc/class-page-settings.php:119
+msgid "Jobs"
+msgstr "Processi"
+
+#: inc/class-admin.php:309
+msgid "Add new job"
+msgstr "Aggiungi nuovo processo"
+
+#: inc/class-admin.php:334 inc/class-adminbar.php:98
+#: inc/class-page-logs.php:377 inc/class-page-settings.php:119
+msgid "Logs"
+msgstr ""
+
+#: inc/class-admin.php:359 inc/class-adminbar.php:106
+msgid "Backups"
+msgstr ""
+
+#: inc/class-admin.php:384
+msgid "Settings"
+msgstr "Impostazioni"
+
+#: inc/class-admin.php:404
+msgid "About"
+msgstr "Info"
+
+#: inc/class-admin.php:432 inc/class-admin.php:439
+msgid "Cheating, huh?"
+msgstr "Fai il furbo, eh?"
+
+#: inc/class-admin.php:489
+#, php-format
+msgid "<a class=\"backwpup-get-pro\" href=\"%s\">Get BackWPup Pro now.</a>"
+msgstr ""
+"<a class=\"backwpup-get-pro\" href=\"%s\">Scarica ora la BackWPup Pro.</a>"
+
+#: inc/class-admin.php:489 inc/class-admin.php:510 inc/class-help.php:17
+#: inc/class-help.php:22 inc/class-job.php:409 inc/class-jobtype-dbcheck.php:15
+#: inc/class-jobtype-dbdump.php:15 inc/class-jobtype-file.php:15
+#: inc/class-jobtype-wpexp.php:15 inc/class-jobtype-wpplugin.php:15
+#: inc/class-page-about.php:624 inc/class-page-backwpup.php:260
+#: inc/class-page-backwpup.php:262 inc/class-page-settings.php:514
+#: inc/pro/class-wizard-job.php:17 inc/pro/class-wizard-jobimport.php:16
+#: inc/pro/class-wizard-systemtest.php:27
+msgid "http://backwpup.com"
+msgstr ""
+
+#: inc/class-admin.php:510
+#, php-format
+msgid "version %s"
+msgstr "versione %s"
+
+#: inc/class-admin.php:555
+msgid "Add BackWPup Role"
+msgstr "Aggiungi un ruolo BackWPup"
+
+#: inc/class-admin.php:560
+msgid "&mdash; No additional role for BackWPup &mdash;"
+msgstr "&mdash; Nessun ruolo aggiuntivo per BackWPup &mdash;"
+
+#: inc/class-adminbar.php:51
+msgid "running"
+msgstr "esecuzione"
+
+#: inc/class-adminbar.php:67
+msgid "Now Running"
+msgstr "In esecuzione"
+
+#: inc/class-adminbar.php:73
+msgid "Abort!"
+msgstr "Annulla!"
+
+#: inc/class-adminbar.php:90 inc/class-page-jobs.php:584
+msgid "Add new"
+msgstr "Aggiungi nuovo"
+
+#: inc/class-adminbar.php:128
+msgid "Run Now"
+msgstr "Avvia ora"
+
+#: inc/class-become-inpsyder-widget.php:31
+#: inc/class-become-inpsyder-widget.php:45
+msgid "Make BackWPup better!"
+msgstr "Migliora BackWPup!"
+
+#: inc/class-become-inpsyder-widget.php:109
+msgid ""
+"https://inpsyde.com/en/jobs/?"
+"utm_source=BackWPup&utm_medium=Link&utm_campaign=BecomeAnInpsyder"
+msgstr ""
+
+#: inc/class-become-inpsyder-widget.php:119
+msgid "We want to make BackWPup even stronger and its support much faster."
+msgstr ""
+"Vogliamo migliorare sempre di più BackWPup e dare un supporto sempre più "
+"rapido."
+
+#: inc/class-become-inpsyder-widget.php:127
+msgid ""
+"This is why we are looking for a talented developer who can work remotely "
+"and support us in BackWPup"
+msgstr ""
+"Questo è il motivo per cui cerchiamo sviluppatori di talento che possano "
+"lavorare da remoto e aiutarci con BackWPup"
+
+#: inc/class-become-inpsyder-widget.php:134
+msgid "and other exciting WordPress projects at our VIP partner agency."
+msgstr ""
+"e con altri interesanti progetti WordPress presso la nostra agenzia VIP "
+"partner."
+
+#: inc/class-become-inpsyder-widget.php:145
+msgid "Apply now!"
+msgstr "Candidati!"
+
+#: inc/class-become-inpsyder-widget.php:156
+msgid "Work for Inpsyde"
+msgstr "Lavora con Inpsyde"
+
+#: inc/class-create-archive.php:80
+msgid "The file name of an archive cannot be empty."
+msgstr "Il nome del file di un archivio non può essere vuoto."
+
+#: inc/class-create-archive.php:89
+#, php-format
+msgctxt "%s = Folder name"
+msgid "Folder %s for archive not found"
+msgstr "La cartella %s  per l'archiviazione non è stata trovata"
+
+#: inc/class-create-archive.php:101 inc/class-create-archive.php:147
+#: inc/class-create-archive.php:188 inc/class-mysqldump.php:133
+msgid "Functions for gz compression not available"
+msgstr "Non sono disponibili funzioni per la compressione gz"
+
+#: inc/class-create-archive.php:117
+#, fuzzy
+#| msgid "Functions for bz2 compression not available"
+msgid "Functions for bz2 compression not available."
+msgstr "Non sono disponibili funzioni per la compressione bz2"
+
+#: inc/class-create-archive.php:161
+#, php-format
+msgctxt "ZipArchive open() result"
+msgid "Cannot create zip archive: %d"
+msgstr "Impossibile creare un archivio zip: %d"
+
+#: inc/class-create-archive.php:201
+msgid "Functions for bz2 compression not available"
+msgstr "Non sono disponibili funzioni per la compressione bz2"
+
+#: inc/class-create-archive.php:214
+#, php-format
+msgctxt "%s = file name"
+msgid "Method to archive file %s not detected"
+msgstr "Il metodo %s per l'archiviazione del file non è stato trovato"
+
+#: inc/class-create-archive.php:221
+msgid "Cannot open archive file"
+msgstr "Impossibile aprire il file di archivio"
+
+#: inc/class-create-archive.php:239 inc/class-create-archive.php:524
+#, php-format
+msgid "PclZip archive add error: %s"
+msgstr "L'archivio PclZip aggiunge un errore: %s"
+
+#: inc/class-create-archive.php:317
+#, fuzzy
+#| msgid "File name cannot be empty"
+msgid "File name cannot be empty."
+msgstr "Il nome file non può essere vuoto"
+
+#: inc/class-create-archive.php:332
+#, php-format
+msgctxt "File to add to archive"
+msgid "File %s does not exist or is not readable"
+msgstr "Il file %s non esiste o non è leggibile"
+
+#: inc/class-create-archive.php:357 inc/class-create-archive.php:384
+#: inc/class-create-archive.php:589 inc/class-create-archive.php:598
+msgid "This archive method can only add one file"
+msgstr "Questo metodo di archiviazione può aggiungere solo un file"
+
+#: inc/class-create-archive.php:452
+msgid "ZIP archive cannot be closed correctly"
+msgstr "Impossibile chiudere correttamente l'archivio ZIP "
+
+#: inc/class-create-archive.php:483 inc/class-create-archive.php:500
+#: inc/class-create-archive.php:618
+#, php-format
+msgid "Cannot add \"%s\" to zip archive!"
+msgstr "Impossibile aggiungere \"%s\" all'archivio zip!"
+
+#: inc/class-create-archive.php:554
+msgid "Folder name cannot be empty"
+msgstr "Il nome della cartella non può essere vuoto"
+
+#: inc/class-create-archive.php:566
+#, php-format
+msgctxt "Folder path to add to archive"
+msgid "Folder %s does not exist or is not readable"
+msgstr "La cartella %s non esiste o non è leggibile"
+
+#: inc/class-create-archive.php:650
+#, php-format
+msgctxt "Text of ZipArchive status Message"
+msgid "ZipArchive returns status: %s"
+msgstr "L'archivio ZIP riporta lo stato: %s"
+
+#: inc/class-create-archive.php:698
+#, php-format
+msgid "File name \"%1$s\" is too long to be saved correctly in %2$s archive!"
+msgstr ""
+"Il nome file \"%1$s\" è troppo lungo per essere salvato nell'archivio %2$s !"
+
+#: inc/class-create-archive.php:710
+#, php-format
+msgid "File path \"%1$s\" is too long to be saved correctly in %2$s archive!"
+msgstr ""
+"Il nome cartella \"%1$s\" è troppo lungo per essere salvato nell'archivio "
+"%2$s !"
+
+#: inc/class-create-archive.php:806
+#, php-format
+msgid "Folder name \"%1$s\" is too long to be saved correctly in %2$s archive!"
+msgstr ""
+"Il nome file \"%1$s\" è troppo lungo per essere salvato nell'archivio %2$s !"
+
+#: inc/class-create-archive.php:821
+#, php-format
+msgid "Folder path \"%1$s\" is too long to be saved correctly in %2$s archive!"
+msgstr ""
+"Il nome cartella \"%1$s\" è troppo lungo per essere salvato nell'archivio "
+"%2$s !"
+
+#: inc/class-create-archive.php:889
+#, php-format
+msgid ""
+"If %s will be added to your backup archive, the archive will be too large "
+"for operations with this PHP Version. You might want to consider splitting "
+"the backup job in multiple jobs with less files each."
+msgstr ""
+"Se %s verrà aggiunto al tuo archivio di backup, l'archivio sarà troppo "
+"grande per le operazioni con questa versione di PHP. considera l'ipotesi di "
+"suddividere il processo di backup in processi multipli con meno file "
+"ciascuno."
+
+#: inc/class-create-archive.php:966 inc/class-create-archive.php:967
+msgid "Unknown"
+msgstr "Sconosciuto"
+
+#: inc/class-create-archive.php:1008
+#, fuzzy, php-format
+#| msgid "Cannot open source file %s to archive"
+msgid "Cannot open source file %s."
+msgstr "Imposibile aprire il file %s sull'archivio"
+
+#: inc/class-cron.php:72
+msgid "Aborted, because no progress for one hour!"
+msgstr "Annullato: nessuna progressione per un'ora!"
+
+#: inc/class-cron.php:105 inc/class-destination-folder.php:235
+#: inc/class-job.php:1045 inc/class-job.php:1189 inc/class-job.php:1790
+#: inc/class-jobtype-file.php:446
+#, php-format
+msgid "Could not open path: %s"
+msgstr "Impossibile apripre la risorsa: %s"
+
+#: inc/class-destination-dropbox-api.php:177
+msgid "Beginning new file upload session"
+msgstr "Nuova sessione di file upload in corso"
+
+#: inc/class-destination-dropbox-api.php:199
+#, php-format
+msgid "Uploading %s of data"
+msgstr "Upload %s in corso"
+
+#: inc/class-destination-dropbox-api.php:244
+#, php-format
+msgid "Finishing upload session with a total of %s uploaded"
+msgstr "Sessione di upload terminata con un totale di %s caricati"
+
+#: inc/class-destination-dropbox-downloader.php:132
+#: inc/class-destination-ftp-downloader.php:159
+#: inc/class-destination-s3-downloader.php:134
+#: inc/pro/class-destination-gdrive-downloader.php:162
+#, fuzzy
+#| msgid "Can not open target file for writing."
+msgid "File could not be opened for writing."
+msgstr "Non è possibile aprire il file per la scrittura."
+
+#: inc/class-destination-dropbox-downloader.php:144
+#: inc/class-destination-ftp-downloader.php:170
+#: inc/class-destination-s3-downloader.php:140
+#: inc/pro/class-destination-gdrive-downloader.php:177
+#, fuzzy
+#| msgid "Could not write log file"
+msgid "Could not write data to file."
+msgstr "Non è possibile scrivere il file di log"
+
+#: inc/class-destination-dropbox.php:47 inc/class-destination-dropbox.php:478
+#: inc/pro/class-destination-dropbox.php:405
+#, php-format
+msgid "Dropbox API: %s"
+msgstr ""
+
+#: inc/class-destination-dropbox.php:64 inc/pro/class-destination-gdrive.php:79
+msgid "Login"
+msgstr ""
+
+#: inc/class-destination-dropbox.php:68 inc/class-destination-sugarsync.php:28
+#: inc/class-destination-sugarsync.php:43
+msgid "Authentication"
+msgstr "Autenticazione"
+
+#: inc/class-destination-dropbox.php:70 inc/pro/class-destination-gdrive.php:85
+#: inc/pro/class-destination-gdrive.php:401
+msgid "Not authenticated!"
+msgstr "Non autenticato!"
+
+#: inc/class-destination-dropbox.php:73
+#: inc/pro/class-destination-dropbox.php:51
+msgid "Create Account"
+msgstr "Crea Account"
+
+#: inc/class-destination-dropbox.php:75 inc/class-destination-sugarsync.php:45
+#: inc/pro/class-destination-dropbox.php:57
+#: inc/pro/class-destination-gdrive.php:87
+#: inc/pro/class-destination-gdrive.php:411
+#: inc/pro/class-destination-sugarsync.php:31
+msgid "Authenticated!"
+msgstr "Autenticato!"
+
+#: inc/class-destination-dropbox.php:85 inc/class-destination-dropbox.php:87
+msgid "Delete Dropbox Authentication"
+msgstr "Elimina l'autenticazione Dropbox"
+
+#: inc/class-destination-dropbox.php:95
+msgid "App Access to Dropbox"
+msgstr "Accesso App su Dropbox"
+
+#: inc/class-destination-dropbox.php:102
+msgid "Get Dropbox App auth code"
+msgstr "Ottieni il Dropbox App auth code "
+
+#: inc/class-destination-dropbox.php:104
+msgid ""
+"A dedicated folder named BackWPup will be created inside of the Apps folder "
+"in your Dropbox. BackWPup will get read and write access to that folder "
+"only. You can specify a subfolder as your backup destination for this job in "
+"the destination field below."
+msgstr ""
+"Una cartella dedicata chiamata BackWPup verrà creata all'interno della "
+"cartella Applicazioni nel vostro Dropbox. BackWPup avrà permessi di lettura "
+"e scrittura solo per quella cartella. È possibile specificare una "
+"sottocartella come destinazione di backup per questo processo nel campo di "
+"destinazione sottostante."
+
+#: inc/class-destination-dropbox.php:111
+msgid "— OR —"
+msgstr "— O —"
+
+#: inc/class-destination-dropbox.php:115
+msgid "Full Access to Dropbox"
+msgstr "Accesso completo a Dropbox"
+
+#: inc/class-destination-dropbox.php:122
+msgid "Get full Dropbox auth code "
+msgstr "Ottieni l'intero Dropbox auth code "
+
+#: inc/class-destination-dropbox.php:124
+msgid ""
+"BackWPup will have full read and write access to your entire Dropbox. You "
+"can specify your backup destination wherever you want, just be aware that "
+"ANY files or folders inside of your Dropbox can be overridden or deleted by "
+"BackWPup."
+msgstr ""
+"BackWPup avrà accesso completo in lettura e scrittura a tutto Dropbox. È "
+"possibile specificare la destinazione di backup che vuoi usare, basta essere "
+"consapevoli che tutti i file o cartelle all'interno del vostro Dropbox "
+"possono essere sovrascritte o cancellate da BackWPup."
+
+#: inc/class-destination-dropbox.php:133 inc/class-destination-folder.php:27
+#: inc/class-destination-ftp.php:75 inc/class-destination-msazure.php:66
+#: inc/class-destination-rsc.php:95 inc/class-destination-sugarsync.php:81
+#: inc/pro/class-destination-gdrive.php:98
+msgid "Backup settings"
+msgstr "Impostazioni Backup "
+
+#: inc/class-destination-dropbox.php:138
+msgid "Destination Folder"
+msgstr "Cartella di destinazione"
+
+#: inc/class-destination-dropbox.php:147
+msgid ""
+"Specify a subfolder where your backup archives will be stored. If you use "
+"the App option from above, this folder will be created inside of Apps/"
+"BackWPup. Otherwise it will be created at the root of your Dropbox. Already "
+"exisiting folders with the same name will not be overriden."
+msgstr ""
+"Specificare una sottocartella in cui verranno archiviati gli archivi di "
+"backup. Se si utilizza l'opzione App sopra, questa cartella viene creata "
+"all'interno di applicazioni / BackWPup. In caso contrario, verrà creata "
+"nella root del vostro Dropbox. Se esistono altre cartelle con lo stesso nome "
+"non verranno sovrascritte."
+
+#: inc/class-destination-dropbox.php:154 inc/class-destination-folder.php:40
+#: inc/class-destination-ftp.php:88 inc/class-destination-sugarsync.php:91
+#: inc/pro/class-destination-gdrive.php:111
+msgid "File Deletion"
+msgstr "Cancellazione file"
+
+#: inc/class-destination-dropbox.php:163 inc/class-destination-folder.php:49
+#: inc/class-destination-ftp.php:97 inc/class-destination-msazure.php:83
+#: inc/class-destination-rsc.php:112 inc/class-destination-s3.php:115
+#: inc/class-destination-sugarsync.php:98
+#: inc/pro/class-destination-dropbox.php:76
+#: inc/pro/class-destination-folder.php:43
+#: inc/pro/class-destination-gdrive.php:120
+#: inc/pro/class-destination-gdrive.php:442
+#: inc/pro/class-destination-msazure.php:45
+#: inc/pro/class-destination-rsc.php:65 inc/pro/class-destination-s3.php:182
+msgid "Number of files to keep in folder."
+msgstr "Numero di file da mantenere nella cartella"
+
+#: inc/class-destination-dropbox.php:166 inc/class-destination-folder.php:51
+#: inc/class-destination-ftp.php:100 inc/class-destination-msazure.php:85
+#: inc/class-destination-rsc.php:114 inc/class-destination-s3.php:117
+#: inc/class-destination-sugarsync.php:100
+#: inc/pro/class-destination-gdrive.php:123
+#: inc/pro/class-destination-glacier.php:109
+msgid ""
+"<strong>Warning</strong>: Files belonging to this job are now tracked. Old "
+"backup archives which are untracked will not be automatically deleted."
+msgstr ""
+"<strong>Attenzione</strong>: I file appartenenti a questo processo ora sono "
+"tracciati. I vecchi archivi di backup che non sono tracciati non verranno "
+"automaticamente eliminati."
+
+#: inc/class-destination-dropbox.php:176 inc/class-destination-folder.php:57
+#: inc/class-destination-ftp.php:112 inc/class-destination-msazure.php:89
+#: inc/class-destination-rsc.php:118 inc/class-destination-s3.php:121
+#: inc/class-destination-sugarsync.php:104
+#: inc/pro/class-destination-dropbox.php:83
+#: inc/pro/class-destination-folder.php:50 inc/pro/class-destination-ftp.php:76
+#: inc/pro/class-destination-gdrive.php:134
+#: inc/pro/class-destination-gdrive.php:448
+#: inc/pro/class-destination-msazure.php:56
+#: inc/pro/class-destination-rsc.php:70 inc/pro/class-destination-s3.php:188
+#: inc/pro/class-destination-sugarsync.php:65
+msgid "Do not delete files while syncing to destination!"
+msgstr ""
+"Non eliminare i file durante la sincronizzazione verso la destinazione!"
+
+#: inc/class-destination-dropbox.php:334
+#, php-format
+msgid "%d. Try to send backup file to Dropbox&#160;&hellip;"
+msgstr "%d. Prova a inviare il file di backup a Dropbox&#160;&hellip;"
+
+#: inc/class-destination-dropbox.php:353
+#: inc/pro/class-destination-dropbox.php:209
+#, php-format
+msgid "Authenticated with Dropbox of user: %s"
+msgstr "Autenticazione con Dropbox dell'utente: %s"
+
+#: inc/class-destination-dropbox.php:361
+#: inc/pro/class-destination-dropbox.php:217
+#, php-format
+msgid "%s available on your Dropbox"
+msgstr "%s disponibile sul tuo Dropbox"
+
+#: inc/class-destination-dropbox.php:367
+#: inc/pro/class-destination-dropbox.php:223
+msgid "Not Authenticated with Dropbox!"
+msgstr "Non autenticato con Dropbox!"
+
+#: inc/class-destination-dropbox.php:371
+msgid "Uploading to Dropbox&#160;&hellip;"
+msgstr "Caricamento su Dropbox&#160;&hellip;"
+
+#: inc/class-destination-dropbox.php:395 inc/class-destination-msazure.php:289
+#: inc/class-destination-sugarsync.php:262
+#: inc/pro/class-destination-gdrive.php:863
+#, php-format
+msgid "Backup transferred to %s"
+msgstr "Backup trasferito su %s"
+
+#: inc/class-destination-dropbox.php:401
+#: inc/pro/class-destination-gdrive.php:869
+msgid "Uploaded file size and local file size don't match."
+msgstr ""
+"La dimensione del file caricato e la dimensione del file locale non "
+"corrispondono."
+
+#: inc/class-destination-dropbox.php:407
+#: inc/pro/class-destination-gdrive.php:875
+#: inc/pro/class-destination-glacier.php:450
+#, php-format
+msgid "Error transfering backup to %s."
+msgstr "Errore nel trasferimento del backup su %s."
+
+#: inc/class-destination-dropbox.php:463
+#, php-format
+msgid "One file deleted from Dropbox"
+msgid_plural "%d files deleted on Dropbox"
+msgstr[0] "Un file eliminato da Dropbox"
+msgstr[1] "%d file eliminati da Dropbox"
+
+#: inc/class-destination-email.php:39 inc/pro/class-destination-email.php:16
+#: inc/pro/class-destination-email.php:18
+msgid "Email address"
+msgstr "Indirizzo mail"
+
+#: inc/class-destination-email.php:43
+msgid "To email address (separate with commas for multiple addresses)"
+msgstr ""
+"indirizzo mail destinatario (in caso di più indirizzi separali utilizzando "
+"la virgola)"
+
+#: inc/class-destination-email.php:52 inc/class-destination-email.php:56
+#: inc/pro/class-destination-email.php:29
+#: inc/pro/class-destination-email.php:30
+msgid "Send test email"
+msgstr "Invia mail di prova"
+
+#: inc/class-destination-email.php:61
+msgid "Send email settings"
+msgstr "Invia impostazioni dell'email"
+
+#: inc/class-destination-email.php:65
+msgid "Maximum file size"
+msgstr "Massima grandezza file"
+
+#: inc/class-destination-email.php:69
+msgid "MB"
+msgstr ""
+
+#: inc/class-destination-email.php:70
+msgid "Maximum file size to be included in an email. 0 = unlimited"
+msgstr "Massima grandezza file da includere in una mail. 0 = illimitata"
+
+#: inc/class-destination-email.php:75
+msgid "From email address"
+msgstr "indirizzo mail mittente"
+
+#: inc/class-destination-email.php:83
+msgid "From name"
+msgstr "Nome mittente"
+
+#: inc/class-destination-email.php:92
+msgid "Sending method"
+msgstr "Metodo di spedizione"
+
+#: inc/class-destination-email.php:97
+msgid "Use WordPress settings"
+msgstr "Usa le impostazioni WordPress"
+
+#: inc/class-destination-email.php:98
+msgid "PHP: mail()"
+msgstr ""
+
+#: inc/class-destination-email.php:99
+msgid "Sendmail"
+msgstr ""
+
+#: inc/class-destination-email.php:100
+msgid "SMTP"
+msgstr ""
+
+#: inc/class-destination-email.php:108
+msgid "Sendmail path"
+msgstr "Cartella sendmail"
+
+#: inc/class-destination-email.php:119
+msgid "SMTP host name"
+msgstr "Nome host SMTP"
+
+#: inc/class-destination-email.php:124 inc/class-destination-ftp.php:49
+#: inc/pro/class-destination-ftp.php:35
+msgid "Port:"
+msgstr "Porta:"
+
+#: inc/class-destination-email.php:136
+msgid "SMTP secure connection"
+msgstr "Connessione sicura SMTP"
+
+#: inc/class-destination-email.php:141 inc/class-jobtype-dbdump.php:67
+#: inc/class-jobtype-dbdump.php:103 inc/class-jobtype-wpexp.php:73
+#: inc/class-jobtype-wpplugin.php:57 inc/class-page-backwpup.php:329
+#: inc/class-page-backwpup.php:404 inc/class-page-settings.php:330
+#: inc/pro/class-jobtype-dbdump.php:157 inc/pro/class-jobtype-dbdump.php:205
+msgid "none"
+msgstr "nessuna"
+
+#: inc/class-destination-email.php:143
+msgid "SSL"
+msgstr ""
+
+#: inc/class-destination-email.php:145
+msgid "TLS"
+msgstr ""
+
+#: inc/class-destination-email.php:152
+msgid "SMTP username"
+msgstr "Nome utente SMTP"
+
+#: inc/class-destination-email.php:162
+msgid "SMTP password"
+msgstr "Password SMTP"
+
+#: inc/class-destination-email.php:243
+#, php-format
+msgid "%d. Try to send backup with email&#160;&hellip;"
+msgstr "%d. Prova a spedire il backup con l'email&#160;&hellip;"
+
+#: inc/class-destination-email.php:248
+msgid "Backup archive too big to be sent by email!"
+msgstr "Archivio di backup troppo grande per essere spedito via mail!"
+
+#: inc/class-destination-email.php:255
+#, php-format
+msgid "Sending email to %s&hellip;"
+msgstr "Invio dell'email a %s&hellip;"
+
+#: inc/class-destination-email.php:333
+#, php-format
+msgid "BackWPup archive from %1$s: %2$s"
+msgstr "Archivio BackWPup per %1$s: %2$s"
+
+#: inc/class-destination-email.php:336
+#, php-format
+msgid "Backup archive: %s"
+msgstr "Archivio backup: %s"
+
+#: inc/class-destination-email.php:349 inc/class-destination-email.php:474
+msgid "Error while sending email!"
+msgstr "Errore durante l'invio della mail!"
+
+#: inc/class-destination-email.php:354 inc/class-destination-email.php:476
+msgid "Email sent."
+msgstr "Email inviata."
+
+#: inc/class-destination-email.php:459
+msgid "BackWPup archive sending TEST Message"
+msgstr "Archivio BackWPup: invio in corso del messaggio di TEST"
+
+#: inc/class-destination-email.php:462
+msgid ""
+"If this message reaches your inbox, sending backup archives via email should "
+"work for you."
+msgstr ""
+"Se questo messaggio viene inviato correttamente, anche l'invio degli archivi "
+"di backup tramite e-mail dovrebbe funzionare."
+
+#: inc/class-destination-folder.php:32
+msgid "Folder to store backups in"
+msgstr "Cartella di conservazione dei backup"
+
+#: inc/class-destination-folder.php:259
+#, php-format
+msgid "One backup file deleted"
+msgid_plural "%d backup files deleted"
+msgstr[0] "Eliminato un file di backup"
+msgstr[1] "Eliminato %d files di backup"
+
+#: inc/class-destination-ftp-downloader.php:151
+#, fuzzy
+#| msgid "Can not open target file for writing."
+msgid "Cannot open FTP file for download."
+msgstr "Non è possibile aprire il file per la scrittura."
+
+#: inc/class-destination-ftp.php:39
+msgid "FTP server and login"
+msgstr "FTP server e login"
+
+#: inc/class-destination-ftp.php:43
+msgid "FTP server"
+msgstr "Server FTP"
+
+#: inc/class-destination-ftp.php:56 inc/class-destination-rsc.php:46
+msgid "Username"
+msgstr "Nome utente"
+
+#: inc/class-destination-ftp.php:64
+msgid "Password"
+msgstr ""
+
+#: inc/class-destination-ftp.php:80
+msgid "Folder to store files in"
+msgstr "Cartella dove conservare i file in "
+
+#: inc/class-destination-ftp.php:121
+msgid "FTP specific settings"
+msgstr "Impostazioni specifiche FTP"
+
+#: inc/class-destination-ftp.php:126
+msgid "Timeout for FTP connection"
+msgstr "Timeout per la connesione FTP "
+
+#: inc/class-destination-ftp.php:130 inc/class-page-logs.php:288
+msgid "seconds"
+msgstr "secondi"
+
+#: inc/class-destination-ftp.php:134
+msgid "SSL-FTP connection"
+msgstr "Connessione SSL-FTP"
+
+#: inc/class-destination-ftp.php:141
+msgid "Use explicit SSL-FTP connection."
+msgstr "Usa una connessione SSL-FTP esplicita"
+
+#: inc/class-destination-ftp.php:146
+msgid "FTP Passive Mode"
+msgstr "Modalità passiva"
+
+#: inc/class-destination-ftp.php:151
+msgid "Use FTP Passive Mode."
+msgstr "Usa FTP in modalità passiva"
+
+#: inc/class-destination-ftp.php:272
+#, php-format
+msgid "%d. Try to send backup file to an FTP server&#160;&hellip;"
+msgstr "%d. Prova a spedire il file di backup all' FTP server&#160;&hellip;"
+
+#: inc/class-destination-ftp.php:289
+#, php-format
+msgid "Connected via explicit SSL-FTP to server: %s"
+msgstr "Connessione via explicit SSL-FTP to server: %s"
+
+#: inc/class-destination-ftp.php:297
+#, php-format
+msgid "Cannot connect via explicit SSL-FTP to server: %s"
+msgstr "Impossibole connettersi via explicit SSL-FTP to server: %s"
+
+#: inc/class-destination-ftp.php:307
+msgid "PHP function to connect with explicit SSL-FTP to server does not exist!"
+msgstr ""
+"La funzione PHP per connettersi con explicit SSL-FTP to server non esiste!"
+
+#: inc/class-destination-ftp.php:322
+#, php-format
+msgid "Connected to FTP server: %s"
+msgstr "Connesso a FTP server: %s"
+
+#: inc/class-destination-ftp.php:330
+#, php-format
+msgid "Cannot connect to FTP server: %s"
+msgstr "Impossibile connettersi a FTP server: %s"
+
+#: inc/class-destination-ftp.php:342 inc/class-destination-ftp.php:362
+#: inc/class-destination-ftp.php:383 inc/class-destination-ftp.php:440
+#, php-format
+msgid "FTP client command: %s"
+msgstr "Comando FTP client: %s"
+
+#: inc/class-destination-ftp.php:352
+#, php-format
+msgid "FTP server response: %s"
+msgstr "Risposta FTP server: %s"
+
+#: inc/class-destination-ftp.php:359 inc/class-destination-ftp.php:370
+#: inc/class-destination-ftp.php:373 inc/class-destination-ftp.php:386
+#: inc/class-destination-ftp.php:389 inc/class-destination-ftp.php:444
+#: inc/class-destination-ftp.php:449 inc/class-destination-ftp.php:456
+#: inc/class-destination-ftp.php:461
+#, php-format
+msgid "FTP server reply: %s"
+msgstr "Replica di FTP server: %s"
+
+#: inc/class-destination-ftp.php:389
+msgid "Error getting SYSTYPE"
+msgstr "Impossibile ottenere SYSTYPE"
+
+#: inc/class-destination-ftp.php:427
+#, php-format
+msgid "FTP current folder is: %s"
+msgstr "L'attuale cartella FTP è: %s"
+
+#: inc/class-destination-ftp.php:444
+msgid "Entering passive mode"
+msgstr "Invio in modalità passiva"
+
+#: inc/class-destination-ftp.php:449
+msgid "Cannot enter passive mode"
+msgstr "Impossibile inviare in modalità passiva"
+
+#: inc/class-destination-ftp.php:456
+msgid "Entering normal mode"
+msgstr "Invio in modalità normale"
+
+#: inc/class-destination-ftp.php:461
+msgid "Cannot enter normal mode"
+msgstr "Impossibile inviare in modalità normale"
+
+#: inc/class-destination-ftp.php:468
+msgid "Starting upload to FTP &#160;&hellip;"
+msgstr "Inizio caricamento su FTP &#160;&hellip;"
+
+#: inc/class-destination-ftp.php:486
+msgid "Cannot transfer backup to FTP server!"
+msgstr "Impossibile trasferire il backup sul server FTP!"
+
+#: inc/class-destination-ftp.php:493
+#, php-format
+msgid "Backup transferred to FTP server: %s"
+msgstr "Backup trasferito sul server FTP: %s"
+
+#: inc/class-destination-ftp.php:510 inc/class-destination-msazure.php:274
+#: inc/class-destination-rsc.php:291 inc/class-destination-s3.php:491
+#: inc/class-destination-s3.php:583 inc/pro/class-destination-gdrive.php:844
+#: inc/pro/class-destination-glacier.php:470
+#: inc/pro/class-destination-rsc.php:228 inc/pro/class-destination-rsc.php:261
+msgid "Can not open source file for transfer."
+msgstr "Non è possibile aprire il file sorgente per il trasferimento."
+
+#: inc/class-destination-ftp.php:568
+#, php-format
+msgid "Cannot delete \"%s\" on FTP server!"
+msgstr "Impossibile eliminare \"%s\" nel server FTP!"
+
+#: inc/class-destination-ftp.php:579
+#, php-format
+msgid "One file deleted on FTP server"
+msgid_plural "%d files deleted on FTP server"
+msgstr[0] "Un file eliminato sul server FTP"
+msgstr[1] "%d eliminati sul server FTP"
+
+#: inc/class-destination-ftp.php:648
+#, php-format
+msgid ""
+"FTP Folder \"%s\" cannot be created! Parent directory may be not writable."
+msgstr ""
+"Impossibile creare la cartella FTP \"%s\"! La cartella genitore potrebbe non "
+"avere accesso in scrittura."
+
+#: inc/class-destination-ftp.php:665
+#, php-format
+msgid "FTP Folder \"%s\" cannot be created!"
+msgstr "Impossibile creare la cartella FTP \"%s\" !"
+
+#: inc/class-destination-ftp.php:677
+#, php-format
+msgid "FTP Folder \"%s\" created!"
+msgstr "Cartella FTP \"%s\" creata!"
+
+#: inc/class-destination-msazure.php:25
+msgid "MS Azure access keys"
+msgstr "Chiavi di accesso MS Azure "
+
+#: inc/class-destination-msazure.php:29
+msgid "Account name"
+msgstr "Nome account"
+
+#: inc/class-destination-msazure.php:36
+msgid "Access key"
+msgstr "Chiave di accesso"
+
+#: inc/class-destination-msazure.php:44
+msgid "Blob container"
+msgstr ""
+
+#: inc/class-destination-msazure.php:48 inc/class-destination-rsc.php:76
+msgid "Container selection"
+msgstr "Selezione container"
+
+#: inc/class-destination-msazure.php:59 inc/class-destination-rsc.php:88
+msgid "Create a new container"
+msgstr "Crae un nuovo container"
+
+#: inc/class-destination-msazure.php:70
+msgid "Folder in container"
+msgstr "Cartella nel container"
+
+#: inc/class-destination-msazure.php:76 inc/class-destination-rsc.php:105
+#: inc/class-destination-s3.php:108 inc/pro/class-destination-glacier.php:96
+msgid "File deletion"
+msgstr "Eliminazione file"
+
+#: inc/class-destination-msazure.php:128
+#: inc/pro/class-destination-msazure.php:99
+#, php-format
+msgid "MS Azure container \"%s\" created."
+msgstr "Container MS Azure \"%s\" creato."
+
+#: inc/class-destination-msazure.php:131
+#: inc/pro/class-destination-msazure.php:102
+#, php-format
+msgid "MS Azure container create: %s"
+msgstr "Container MS Azure creato: %s"
+
+#: inc/class-destination-msazure.php:214
+#, php-format
+msgid "%d. Try sending backup to a Microsoft Azure (Blob)&#160;&hellip;"
+msgstr "%d. Provo a spedire il backup a Microsoft Azure (Blob)&#160;&hellip;"
+
+#: inc/class-destination-msazure.php:236
+#: inc/pro/class-destination-msazure.php:144
+#, php-format
+msgid "MS Azure container \"%s\" does not exist!"
+msgstr "Il container MS Azure \"%s\" non esiste!"
+
+#: inc/class-destination-msazure.php:240
+#: inc/pro/class-destination-msazure.php:148
+#, php-format
+msgid "Connected to MS Azure container \"%s\"."
+msgstr "Connesso a MS Azure container \"%s\"."
+
+#: inc/class-destination-msazure.php:243
+msgid "Starting upload to MS Azure&#160;&hellip;"
+msgstr "Inizio caricamento su MS Azure&#160;&hellip;"
+
+#: inc/class-destination-msazure.php:295 inc/class-destination-msazure.php:351
+#: inc/pro/class-destination-msazure.php:233
+#, php-format
+msgid "Microsoft Azure API: %s"
+msgstr ""
+
+#: inc/class-destination-msazure.php:344
+#, php-format
+msgid "One file deleted on Microsoft Azure container."
+msgid_plural "%d files deleted on Microsoft Azure container."
+msgstr[0] "Un file eliminato su Microsoft Azure container."
+msgstr[1] "%d files eliminati su Microsoft Azure container."
+
+#: inc/class-destination-msazure.php:445
+msgid "Missing account name!"
+msgstr "Nome account mancante!"
+
+#: inc/class-destination-msazure.php:447 inc/class-destination-s3.php:214
+#: inc/pro/class-destination-glacier.php:166
+msgid "Missing access key!"
+msgstr "Chiave di accesso mancante!"
+
+#: inc/class-destination-msazure.php:451
+msgid "No container found!"
+msgstr "Nessun container trovato!"
+
+#: inc/class-destination-rsc.php:42
+msgid "Rack Space Cloud Keys"
+msgstr "Chiavi Rack Space Cloud"
+
+#: inc/class-destination-rsc.php:52
+msgid "API Key"
+msgstr "Chiave API"
+
+#: inc/class-destination-rsc.php:59
+msgid "Select region"
+msgstr "Seleziona regione"
+
+#: inc/class-destination-rsc.php:63 inc/class-destination-rsc.php:65
+#: inc/pro/class-destination-rsc.php:30
+msgid "Rackspace Cloud Files Region"
+msgstr "Regione dei files Rackspace Cloud"
+
+#: inc/class-destination-rsc.php:66 inc/pro/class-destination-rsc.php:31
+msgid "Dallas (DFW)"
+msgstr ""
+
+#: inc/class-destination-rsc.php:67 inc/pro/class-destination-rsc.php:32
+msgid "Chicago (ORD)"
+msgstr ""
+
+#: inc/class-destination-rsc.php:68 inc/pro/class-destination-rsc.php:33
+msgid "Sydney (SYD)"
+msgstr ""
+
+#: inc/class-destination-rsc.php:69 inc/pro/class-destination-rsc.php:34
+msgid "London (LON)"
+msgstr ""
+
+#: inc/class-destination-rsc.php:70 inc/pro/class-destination-rsc.php:35
+msgid "Northern Virginia (IAD)"
+msgstr ""
+
+#: inc/class-destination-rsc.php:71 inc/pro/class-destination-rsc.php:36
+msgid "Hong Kong (HKG)"
+msgstr ""
+
+#: inc/class-destination-rsc.php:99 inc/class-destination-s3.php:102
+msgid "Folder in bucket"
+msgstr "Cartella nel bucket"
+
+#: inc/class-destination-rsc.php:158 inc/pro/class-destination-rsc.php:116
+#, php-format
+msgid "Rackspace Cloud container \"%s\" created."
+msgstr "Il container Rackspace Cloud \"%s\" è stato creato."
+
+#: inc/class-destination-rsc.php:162 inc/class-destination-rsc.php:276
+#: inc/class-destination-rsc.php:316 inc/class-destination-rsc.php:361
+#: inc/pro/class-destination-rsc.php:120 inc/pro/class-destination-rsc.php:172
+#: inc/pro/class-destination-rsc.php:292
+#, php-format
+msgid "Rackspace Cloud API: %s"
+msgstr ""
+
+#: inc/class-destination-rsc.php:259
+#, php-format
+msgid "%d. Trying to send backup file to Rackspace cloud &hellip;"
+msgstr "%d. Sto provando a inviare il backup su Rackspace cloud &hellip;"
+
+#: inc/class-destination-rsc.php:273
+#, php-format
+msgid "Connected to Rackspace cloud files container %s"
+msgstr "Connesso a Rackspace cloud files container %s"
+
+#: inc/class-destination-rsc.php:285
+msgid "Upload to Rackspace cloud started &hellip;"
+msgstr "Inizio caricamento su Rackspace cloud &hellip;"
+
+#: inc/class-destination-rsc.php:304
+msgid "Backup File transferred to RSC://"
+msgstr "File di backup trasferito su RSC://"
+
+#: inc/class-destination-rsc.php:310
+msgid "Cannot transfer backup to Rackspace cloud."
+msgstr "Impossibile trasferire il backup su Rackspace cloud."
+
+#: inc/class-destination-rsc.php:355
+#, php-format
+msgid "One file deleted on Rackspace cloud container."
+msgid_plural "%d files deleted on Rackspace cloud container."
+msgstr[0] "Eliminato un file dal container Rackspace cloud"
+msgstr[1] "Eliminati %d files dal container Rackspace cloud."
+
+#: inc/class-destination-rsc.php:468
+msgid "Missing username!"
+msgstr "Username mancante!"
+
+#: inc/class-destination-rsc.php:470
+msgid "Missing API Key!"
+msgstr "API Key mancante!"
+
+#: inc/class-destination-rsc.php:474
+msgid "A container could not be found!"
+msgstr "Non è possibile trovare un container!"
+
+#: inc/class-destination-s3.php:31
+msgid "Select a S3 service"
+msgstr "Seleziona un servizio S3"
+
+#: inc/class-destination-s3.php:33 inc/pro/class-destination-s3.php:33
+msgid "Amazon S3 Region"
+msgstr "Regione Amazon S3"
+
+#: inc/class-destination-s3.php:34 inc/pro/class-destination-s3.php:40
+msgid "Amazon S3: US Standard"
+msgstr ""
+
+#: inc/class-destination-s3.php:35 inc/pro/class-destination-s3.php:46
+msgid "Amazon S3: US West (Northern California)"
+msgstr ""
+
+#: inc/class-destination-s3.php:36 inc/pro/class-destination-s3.php:53
+msgid "Amazon S3: US West (Oregon)"
+msgstr ""
+
+#: inc/class-destination-s3.php:37 inc/pro/class-destination-s3.php:58
+msgid "Amazon S3: EU (Ireland)"
+msgstr ""
+
+#: inc/class-destination-s3.php:38 inc/pro/class-destination-s3.php:63
+msgid "Amazon S3: EU (London)"
+msgstr ""
+
+#: inc/class-destination-s3.php:39 inc/pro/class-destination-s3.php:68
+msgid "Amazon S3: EU (Germany)"
+msgstr ""
+
+#: inc/class-destination-s3.php:40 inc/pro/class-destination-s3.php:73
+msgid "Amazon S3: Asia Pacific (Mumbai)"
+msgstr ""
+
+#: inc/class-destination-s3.php:41 inc/pro/class-destination-s3.php:78
+msgid "Amazon S3: Asia Pacific (Tokyo)"
+msgstr ""
+
+#: inc/class-destination-s3.php:42 inc/pro/class-destination-s3.php:83
+msgid "Amazon S3: Asia Pacific (Seoul)"
+msgstr ""
+
+#: inc/class-destination-s3.php:43 inc/pro/class-destination-s3.php:88
+msgid "Amazon S3: Asia Pacific (Singapore)"
+msgstr ""
+
+#: inc/class-destination-s3.php:44 inc/pro/class-destination-s3.php:93
+msgid "Amazon S3: Asia Pacific (Sydney)"
+msgstr ""
+
+#: inc/class-destination-s3.php:45 inc/pro/class-destination-s3.php:98
+msgid "Amazon S3: South America (Sao Paulo)"
+msgstr ""
+
+#: inc/class-destination-s3.php:46 inc/pro/class-destination-s3.php:103
+msgid "Amazon S3: China (Beijing)"
+msgstr ""
+
+#: inc/class-destination-s3.php:47 inc/pro/class-destination-s3.php:108
+msgid "Google Storage: EU"
+msgstr ""
+
+#: inc/class-destination-s3.php:48 inc/pro/class-destination-s3.php:113
+msgid "Google Storage: USA"
+msgstr ""
+
+#: inc/class-destination-s3.php:49 inc/pro/class-destination-s3.php:118
+msgid "Google Storage: Asia"
+msgstr ""
+
+#: inc/class-destination-s3.php:50 inc/pro/class-destination-s3.php:123
+msgid "Dream Host Cloud Storage"
+msgstr ""
+
+#: inc/class-destination-s3.php:56
+msgid "S3 Access Keys"
+msgstr "Chiave di Accesso S3 "
+
+#: inc/class-destination-s3.php:60 inc/pro/class-destination-glacier.php:54
+msgid "Access Key"
+msgstr "Chiave di Accesso"
+
+#: inc/class-destination-s3.php:67 inc/pro/class-destination-glacier.php:61
+msgid "Secret Key"
+msgstr "Chiave Segreta"
+
+#: inc/class-destination-s3.php:75
+msgid "S3 Bucket"
+msgstr ""
+
+#: inc/class-destination-s3.php:79
+msgid "Bucket selection"
+msgstr "Selezione bucket"
+
+#: inc/class-destination-s3.php:91
+msgid "Create a new bucket"
+msgstr "Crea un nuovo bucket"
+
+#: inc/class-destination-s3.php:98
+msgid "S3 Backup settings"
+msgstr "Impostazioni S3 backup"
+
+#: inc/class-destination-s3.php:128
+msgid "Multipart Upload"
+msgstr ""
+
+#: inc/class-destination-s3.php:130
+msgid "Use multipart upload for uploading a file"
+msgstr "Usa multipart upload per caricare un file"
+
+#: inc/class-destination-s3.php:131
+msgid ""
+"Multipart splits file into multiple chunks while uploading. This is "
+"necessary for displaying the upload process and to transfer bigger files. "
+"Works without a problem on Amazon. Other services might have issues."
+msgstr ""
+"Multipart divide il file in più parti durante il caricamento. Ciò è "
+"necessario per visualizzare il processo di caricamento e per trasferire file "
+"di grandi dimensioni. Funziona senza problemi su Amazon. Altri servizi "
+"potrebbero avere problemi."
+
+#: inc/class-destination-s3.php:137
+msgid "Amazon specific settings"
+msgstr "Impostazioni specifiche Amazon"
+
+#: inc/class-destination-s3.php:141 inc/class-destination-s3.php:143
+msgid "Amazon: Storage Class"
+msgstr ""
+
+#: inc/class-destination-s3.php:144
+msgid "Standard"
+msgstr ""
+
+#: inc/class-destination-s3.php:145
+msgid "Standard-Infrequent Access"
+msgstr ""
+
+#: inc/class-destination-s3.php:146
+msgid "Reduced Redundancy"
+msgstr "Ridondanza Ridotta"
+
+#: inc/class-destination-s3.php:151
+msgid "Server side encryption"
+msgstr "Codifica lato server"
+
+#: inc/class-destination-s3.php:155
+msgid "Save files encrypted (AES256) on server."
+msgstr "Salva file criptati (AES256) sul server."
+
+#: inc/class-destination-s3.php:216 inc/pro/class-destination-glacier.php:168
+msgid "Missing secret access key!"
+msgstr "Manca la secret access key!"
+
+#: inc/class-destination-s3.php:222
+msgid "No bucket found!"
+msgstr "Nessun bucket trovato!"
+
+#: inc/class-destination-s3.php:334
+#, php-format
+msgid "Bucket %1$s created."
+msgstr "Bucket %1$s creato."
+
+#: inc/class-destination-s3.php:336 inc/pro/class-destination-s3.php:285
+#, php-format
+msgid " %s is not a valid bucket name."
+msgstr " %s non è un nome bucket valido."
+
+#: inc/class-destination-s3.php:376 inc/class-destination-s3.php:514
+#: inc/class-destination-s3.php:568 inc/class-destination-s3.php:602
+#: inc/class-destination-s3.php:662 inc/pro/class-destination-s3.php:623
+#, php-format
+msgid "S3 Service API: %s"
+msgstr ""
+
+#: inc/class-destination-s3.php:450
+#, php-format
+msgid "%d. Trying to send backup file to S3 Service&#160;&hellip;"
+msgstr "%d. Prova spedizone file di backup su S3 Service&#160;&hellip;"
+
+#: inc/class-destination-s3.php:462 inc/pro/class-destination-s3.php:383
+#, php-format
+msgid "Connected to S3 Bucket \"%1$s\" in %2$s"
+msgstr "Connessio a S3 Bucket \"%1$s\" in %2$s"
+
+#: inc/class-destination-s3.php:465 inc/pro/class-destination-s3.php:391
+#, php-format
+msgid "S3 Bucket \"%s\" does not exist!"
+msgstr "S3 Bucket \"%s\" non esiste!"
+
+#: inc/class-destination-s3.php:472
+msgid "Checking for not aborted multipart Uploads&#160;&hellip;"
+msgstr "Controllo dei caricamenti&#160;&hellip; multipart non annullati "
+
+#: inc/class-destination-s3.php:478
+#, php-format
+msgid "Upload for %s aborted."
+msgstr "Caricamento per %s annullato."
+
+#: inc/class-destination-s3.php:484
+msgid "Starting upload to S3 Service&#160;&hellip;"
+msgstr "Inizio caricamento su S3 Service&#160;&hellip;"
+
+#: inc/class-destination-s3.php:593 inc/pro/class-destination-glacier.php:446
+#, php-format
+msgid "Backup transferred to %s."
+msgstr "Backup trasferito su %s."
+
+#: inc/class-destination-s3.php:598
+#, php-format
+msgid "Cannot transfer backup to S3! (%1$d) %2$s"
+msgstr "Impossibile trasferire il backup su S3! (%1$d) %2$s"
+
+#: inc/class-destination-s3.php:626
+#, php-format
+msgid "Storage Class: %s"
+msgstr ""
+
+#: inc/class-destination-s3.php:652
+#, php-format
+msgid "Cannot delete backup from %s."
+msgstr "Impossibile eliminare il backup da %s."
+
+#: inc/class-destination-s3.php:656
+#, php-format
+msgid "One file deleted on S3 Bucket."
+msgid_plural "%d files deleted on S3 Bucket"
+msgstr[0] "Un file cancellato su S3 Bucket."
+msgstr[1] "%d  files cancellati su S3 Bucket."
+
+#: inc/class-destination-sugarsync.php:22
+msgid "Sugarsync Login"
+msgstr ""
+
+#: inc/class-destination-sugarsync.php:30
+#: inc/pro/class-destination-sugarsync.php:17
+msgid "Email address:"
+msgstr "Indirizzo mail:"
+
+#: inc/class-destination-sugarsync.php:33 inc/pro/class-destination-ftp.php:47
+#: inc/pro/class-destination-sugarsync.php:20
+#: inc/pro/class-jobtype-dbdump.php:126
+msgid "Password:"
+msgstr ""
+
+#: inc/class-destination-sugarsync.php:37
+#: inc/class-destination-sugarsync.php:120
+msgid "Authenticate with Sugarsync!"
+msgstr "Autenticato con Sugarsync!"
+
+#: inc/class-destination-sugarsync.php:38
+#: inc/class-destination-sugarsync.php:136
+#: inc/pro/class-destination-sugarsync.php:26
+#: inc/pro/class-destination-sugarsync.php:98
+msgid "Create Sugarsync account"
+msgstr "Crea un account Sugarsync"
+
+#: inc/class-destination-sugarsync.php:46
+#: inc/class-destination-sugarsync.php:132
+#: inc/pro/class-destination-sugarsync.php:32
+#: inc/pro/class-destination-sugarsync.php:94
+msgid "Delete Sugarsync authentication!"
+msgstr "Elimina l'autenticazione Sugarsync!"
+
+#: inc/class-destination-sugarsync.php:52
+msgid "SugarSync Root"
+msgstr ""
+
+#: inc/class-destination-sugarsync.php:56
+msgid "Sync folder selection"
+msgstr "Selezione  Syncfolder"
+
+#: inc/class-destination-sugarsync.php:64
+#: inc/pro/class-destination-sugarsync.php:41
+msgid "No Syncfolders found!"
+msgstr "Nessuna Syncfolders trovata!"
+
+#: inc/class-destination-sugarsync.php:85
+msgid "Folder in root"
+msgstr "Cartella in root"
+
+#: inc/class-destination-sugarsync.php:232
+#, php-format
+msgid "%d. Try to send backup to SugarSync&#160;&hellip;"
+msgstr "%d. Provo a spedire il backup a SugarSync&#160;&hellip;"
+
+#: inc/class-destination-sugarsync.php:239
+#, php-format
+msgid "Authenticated to SugarSync with nickname %s"
+msgstr "Autenticato su SugarSync con nickname %s"
+
+#: inc/class-destination-sugarsync.php:242
+#, php-format
+msgctxt "Available space on SugarSync"
+msgid "Not enough disk space available on SugarSync. Available: %s."
+msgstr "Non è disponibile spazio sufficiente su SugarSync. Disponibile: %s."
+
+#: inc/class-destination-sugarsync.php:248
+#, php-format
+msgid "%s available at SugarSync"
+msgstr "%s disponibile su SugarSync"
+
+#: inc/class-destination-sugarsync.php:255
+msgid "Starting upload to SugarSync&#160;&hellip;"
+msgstr "Inizio caricamento su SugarSync&#160;&hellip;"
+
+#: inc/class-destination-sugarsync.php:265
+msgid "Cannot transfer backup to SugarSync!"
+msgstr "Impossibile trasferire il backup su SugarSync!"
+
+#: inc/class-destination-sugarsync.php:304
+#, php-format
+msgid "One file deleted on SugarSync folder"
+msgid_plural "%d files deleted on SugarSync folder"
+msgstr[0] "Un file eliminato sulla cartella SugarSync"
+msgstr[1] "%d  files eliminati sulla cartella SugarSync"
+
+#: inc/class-destination-sugarsync.php:310
+#, php-format
+msgid "SugarSync API: %s"
+msgstr ""
+
+#: inc/class-download-file.php:135
+msgid "Invalid file name, seems file include invalid characters."
+msgstr "Nome file non valido, sembra che il file abbia caratteri non validi."
+
+#: inc/class-easycron.php:179
+#, php-format
+msgid "EasyCron.com API returns (%s): %s"
+msgstr "EasyCron.com API ritornano (%s): %s"
+
+#: inc/class-easycron.php:188
+msgid "EasyCron"
+msgstr ""
+
+#: inc/class-easycron.php:189
+msgid ""
+"Here you can setup your <a href=\"https://www.easycron.com/user/token?"
+"ref=36673\" title=\"Affiliate Link!\">EasyCron.com API key</a> to use this "
+"service."
+msgstr ""
+"Qui puoi impostare la tua tuo <a href=\"https://www.easycron.com/user/token?"
+"ref=36673\" title=\"Affiliate Link!\"> EasyCron.com chiave API </a> per "
+"utilizzare questo servizio."
+
+#: inc/class-easycron.php:192
+msgid "Api key:"
+msgstr "Chiave Api:"
+
+#: inc/class-easycron.php:200
+msgid "Trigger WordPress Cron:"
+msgstr "Attiva Cron WordPress:"
+
+#: inc/class-easycron.php:203
+msgid ""
+"If you check this box, a cron job will be created on EasyCron that all 5 "
+"Minutes calls the WordPress cron."
+msgstr ""
+"Se si seleziona questa casella, verrà creato un processo cron su EasyCron "
+"che ogni 5 minuti richiama il cron WordPress."
+
+#: inc/class-file.php:142
+#, php-format
+msgid "Folder %1$s not allowed, please use another folder."
+msgstr ""
+"La cartella %1$s non è consentita, si prega di usare un'altra cartella."
+
+#: inc/class-file.php:147
+#, php-format
+msgid "Folder %1$s is not in open basedir, please use another folder."
+msgstr ""
+"La cartella %1$s non è nella directory base, si prega di usare un'altra "
+"cartella."
+
+#: inc/class-file.php:153
+#, php-format
+msgid "Cannot create folder: %1$s"
+msgstr "Impossibile creare la cartella: %1$s"
+
+#: inc/class-file.php:159
+#, php-format
+msgid "Folder \"%1$s\" is not writable"
+msgstr "La cartella \"%1$s\" non è accessibile in scrittura"
+
+#: inc/class-file.php:195
+msgid ""
+"BackWPup will not backup folders and its sub folders when this file is "
+"inside."
+msgstr ""
+"BackWPup non può eseguire il backup delle cartelle e relative sottocartelle "
+"quando questo file è dentro."
+
+#: inc/class-help.php:15
+msgid "Plugin Info"
+msgstr "Informazioni Plugin"
+
+#: inc/class-help.php:17
+#, php-format
+msgctxt "Plugin name and link; Plugin Version"
+msgid ""
+"%1$s version %2$s. A project by <a href=\"http://inpsyde.com\">Inpsyde GmbH</"
+"a>."
+msgstr ""
+"%1$s versione %2$s. Realizzato da <a href=\"http://inpsyde.com\">Inpsyde "
+"GmbH</a>."
+
+#: inc/class-help.php:18
+msgid ""
+"BackWPup comes with ABSOLUTELY NO WARRANTY. This is a free software, and you "
+"are welcome to redistribute it under certain conditions."
+msgstr ""
+"BackWPup viene fornito con NESSUNA GARANZIA. Questo è un software gratuito, "
+"e siete invitati a ridistribuirlo sotto certe condizioni."
+
+#: inc/class-help.php:21
+msgid "For more information:"
+msgstr "Per ulteriori informazioni:"
+
+#: inc/class-help.php:23
+msgid "Plugin on wordpress.org"
+msgstr "Plugin su wordpress.org"
+
+#: inc/class-help.php:24
+msgid "Manual"
+msgstr "Guida"
+
+#: inc/class-install.php:90
+msgid "BackWPup Admin"
+msgstr ""
+
+#: inc/class-install.php:105
+msgid "BackWPup jobs checker"
+msgstr "BackWPup verifica processi"
+
+#: inc/class-install.php:120
+msgid "BackWPup jobs helper"
+msgstr "BackWPup assistenza processi"
+
+#: inc/class-job.php:273
+msgid "Starting job"
+msgstr "Inizializzazione processo"
+
+#: inc/class-job.php:288
+msgid "Job Start"
+msgstr "Inizio processo"
+
+#: inc/class-job.php:308
+msgid "Creates manifest file"
+msgstr "Crea il file manifest"
+
+#: inc/class-job.php:330
+msgid "Creates archive"
+msgstr "Crea archivi"
+
+#: inc/class-job.php:370
+msgid "End of Job"
+msgstr "Fine del processo"
+
+#: inc/class-job.php:392
+#, php-format
+msgid "BackWPup log for %1$s from %2$s at %3$s"
+msgstr "Log BackWPup per %1$s da %2$s a %3$s"
+
+#: inc/class-job.php:409
+#, php-format
+msgctxt "Plugin name; Plugin Version; plugin url"
+msgid "[INFO] %1$s %2$s; A project of Inpsyde GmbH"
+msgstr "[INFO] %1$s %2$s; Progetto realizzato da Inpsyde GmbH"
+
+#: inc/class-job.php:410
+#, php-format
+msgctxt "WordPress Version; Blog url"
+msgid "[INFO] WordPress %1$s on %2$s"
+msgstr "[INFO] WordPress %1$s su %2$s"
+
+#: inc/class-job.php:411
+msgid "Normal"
+msgstr "Normale"
+
+#: inc/class-job.php:414
+msgid "Debug"
+msgstr ""
+
+#: inc/class-job.php:417
+msgid "(translated)"
+msgstr "(tradotto)"
+
+#: inc/class-job.php:419
+#, php-format
+msgid "[INFO] Log Level: %1$s %2$s"
+msgstr "[INFO] Livello Log: %1$s %2$s"
+
+#: inc/class-job.php:424
+#, php-format
+msgid "[INFO] BackWPup job: %1$s"
+msgstr "[INFO] Processo BackWPup: %1$s"
+
+#: inc/class-job.php:427
+#, php-format
+msgid "[INFO] Runs with user: %1$s (%2$d) "
+msgstr "[INFO] Funzionamento con utente: %1$s (%2$d) "
+
+#: inc/class-job.php:441 inc/class-page-backwpup.php:323
+#: inc/class-page-jobs.php:282 inc/class-page-jobs.php:291
+msgid "Not scheduled!"
+msgstr "Non programmato!"
+
+#: inc/class-job.php:445 inc/class-job.php:455
+#, php-format
+msgid "[INFO] Cron: %s; Next: %s "
+msgstr "[INFO] Cron: %s; Prossimo: %s "
+
+#: inc/class-job.php:448
+msgid "[INFO] BackWPup job start with link is active"
+msgstr "[INFO] Il processo BackWPup inizia con link attivo"
+
+#: inc/class-job.php:450
+msgid "[INFO] BackWPup job start with EasyCron.com"
+msgstr "[INFO] Il processo BackWPup inizia con EasyCron.com"
+
+#: inc/class-job.php:458
+msgid "[INFO] BackWPup no automatic job start configured"
+msgstr "[INFO] Nessun avvio automatico di processo BackWPup configurato"
+
+#: inc/class-job.php:462
+msgid "[INFO] BackWPup job started from wp-cron"
+msgstr "[INFO] Il processo BackWPup è partito da wp-cron"
+
+#: inc/class-job.php:464
+msgid "[INFO] BackWPup job started manually"
+msgstr "[INFO] Il processo BackWPup è partito manualmente"
+
+#: inc/class-job.php:466
+msgid "[INFO] BackWPup job started from external url"
+msgstr "[INFO] Il processo BackWPup è partito da url esterno"
+
+#: inc/class-job.php:468
+msgid "[INFO] BackWPup job started form commandline interface"
+msgstr "[INFO] Il processo BackWPup è partito da interfaccia di commandline "
+
+#: inc/class-job.php:477
+msgid "[INFO] PHP ver.:"
+msgstr ""
+
+#: inc/class-job.php:478
+#, php-format
+msgid "[INFO] Maximum PHP script execution time is %1$d seconds"
+msgstr "[INFO] Il Max PHP script execution time è di %1$d secondi"
+
+#: inc/class-job.php:482
+#, php-format
+msgid "[INFO] Script restart time is configured to %1$d seconds"
+msgstr "[INFO] Il restart dello script è configurato su %1$d secondi"
+
+#: inc/class-job.php:485
+#, php-format
+msgid "[INFO] MySQL ver.: %s"
+msgstr ""
+
+#: inc/class-job.php:487
+#, php-format
+msgid "[INFO] Web Server: %s"
+msgstr ""
+
+#: inc/class-job.php:491
+#, php-format
+msgid "[INFO] curl ver.: %1$s; %2$s"
+msgstr ""
+
+#: inc/class-job.php:493
+#, php-format
+msgid "[INFO] Temp folder is: %s"
+msgstr "[INFO] Temp folder è: %s"
+
+#: inc/class-job.php:500
+#, php-format
+msgid "[INFO] Logfile is: %s"
+msgstr "[INFO] Logfile è: %s"
+
+#: inc/class-job.php:507
+#, php-format
+msgid "[INFO] Backup file is: %s"
+msgstr "[INFO] Il file di backup è: %s"
+
+#: inc/class-job.php:509
+#, php-format
+msgid "[INFO] Backup type is: %s"
+msgstr "[INFO] Il tipo di backup è: %s"
+
+#: inc/class-job.php:517
+msgid "Could not write log file"
+msgstr "Non è possibile scrivere il file di log"
+
+#: inc/class-job.php:529
+msgid ""
+"No destination correctly defined for backup! Please correct job settings."
+msgstr ""
+"Nessuna destinazione definita correttamente per il backup! Correggi le "
+"impostazioni del processo."
+
+#: inc/class-job.php:684
+msgid "Cannot write progress to working file. Job will be aborted."
+msgstr ""
+"Impossibile scrivere l'avanzamento del processo sul file in esecuzione. Il "
+"processo verrà interrotto."
+
+#: inc/class-job.php:756 inc/class-page-jobs.php:786
+msgid "WARNING:"
+msgstr "AVVISO:"
+
+#: inc/class-job.php:765 inc/class-page-jobs.php:784
+msgid "ERROR:"
+msgstr "ERRORE:"
+
+#: inc/class-job.php:769
+msgid "DEPRECATED:"
+msgstr ""
+
+#: inc/class-job.php:772
+msgid "STRICT NOTICE:"
+msgstr "AVVISO IMPORTANTE:"
+
+#: inc/class-job.php:777
+msgid "RECOVERABLE ERROR:"
+msgstr "ERRORE RECUPERABILE:"
+
+#: inc/class-job.php:1028
+msgid "Aborted by user!"
+msgstr "Annullato dall'utente!"
+
+#: inc/class-job.php:1061
+#, php-format
+msgid "One old log deleted"
+msgid_plural "%d old logs deleted"
+msgstr[0] "Un log vecchio eliminato"
+msgstr[1] "%d log vecchi eliminati"
+
+#: inc/class-job.php:1068 inc/class-page-jobs.php:784
+#, php-format
+msgid ""
+"Job has ended with errors in %s seconds. You must resolve the errors for "
+"correct execution."
+msgstr ""
+"Il processo si è concluso con errori in %s secondi. È necessario risolvere "
+"gli errori per l'esecuzione corretta."
+
+#: inc/class-job.php:1070
+#, php-format
+msgid ""
+"Job finished with warnings in %s seconds. Please resolve them for correct "
+"execution."
+msgstr ""
+"Processo finito con avvisi in% s secondi. Si prega di risolverli per "
+"l'esecuzione corretta."
+
+#: inc/class-job.php:1072 inc/class-page-jobs.php:788
+#, php-format
+msgid "Job done in %s seconds."
+msgstr "Processo eseguito in %s secondi."
+
+#: inc/class-job.php:1116
+msgid "SUCCESSFUL"
+msgstr "SUCCESSO"
+
+#: inc/class-job.php:1118
+msgid "WARNING"
+msgstr "ATTENZIONE"
+
+#: inc/class-job.php:1121
+msgid "ERROR"
+msgstr "ERRORE"
+
+#: inc/class-job.php:1124
+#, php-format
+msgid "[%3$s] BackWPup log %1$s: %2$s"
+msgstr ""
+
+#: inc/class-job.php:1236
+#, php-format
+msgid "Restart after %1$d seconds."
+msgstr "Riparte dopo %1$d secondi."
+
+#: inc/class-job.php:1238
+msgid "Restart after getting signal."
+msgstr "Riprende dopo aver ottenuto il segnale"
+
+#: inc/class-job.php:1413
+msgid "Job restarts due to inactivity for more than 5 minutes."
+msgstr "Il processo riparte a causa di un'inattività di oltre 5 minuti."
+
+#: inc/class-job.php:1511
+msgid "Step aborted: too many attempts!"
+msgstr "Step annullato: troppi tentativi!"
+
+#: inc/class-job.php:1582
+#, php-format
+msgid "%d. Trying to create backup archive &hellip;"
+msgstr "%d. Provo a creare l'archivio di backup &hellip;"
+
+#: inc/class-job.php:1590
+#, php-format
+msgctxt "Archive compression method"
+msgid "Compressing files as %s. Please be patient, this may take a moment."
+msgstr ""
+"Compressione file come %s. Si prega di pazientare, potrebbe richiedere "
+"qualche istante."
+
+#: inc/class-job.php:1597
+msgid "Adding Extra files to Archive"
+msgstr "Aggiunti file extra all'archivio"
+
+#: inc/class-job.php:1608 inc/class-job.php:1668
+msgid "Cannot create backup archive correctly. Aborting creation."
+msgstr ""
+"Impossibile creare correttamente il file d'archivio. Creazione annullata."
+
+#: inc/class-job.php:1624
+#, php-format
+msgid "Archiving Folder: %s"
+msgstr "Cartella di archiviazione: %s"
+
+#: inc/class-job.php:1678
+msgid "Backup archive created."
+msgstr "Archivio di backup creato."
+
+#: inc/class-job.php:1692
+msgid ""
+"The Backup archive will be too large for file operations with this PHP "
+"Version. You might want to consider splitting the backup job in multiple "
+"jobs with less files each."
+msgstr ""
+"L'archivio di backup è troppo grande per le operazioni sui file con questa "
+"versione di PHP. Si potrebbe prendere in considerazione la divisione del "
+"processo di backup in più processi con meno file ciascuno."
+
+#: inc/class-job.php:1695
+#, php-format
+msgid "Archive size is %s."
+msgstr "La grandezza dell'archivio è %s."
+
+#: inc/class-job.php:1698
+#, php-format
+msgid "%1$d Files with %2$s in Archive."
+msgstr "%1$d Files con %2$s nell'archivio."
+
+#: inc/class-job.php:1747
+#, fuzzy, php-format
+#| msgctxt "Folder name"
+#| msgid "Folder %s not exists"
+msgctxt "Folder name"
+msgid "Folder %s does not exist"
+msgstr "La cartella %s non esiste"
+
+#: inc/class-job.php:1753
+#, fuzzy, php-format
+#| msgid "Folder \"%s\" is not readable!"
+msgctxt "Folder name"
+msgid "Folder %s is not readable"
+msgstr "La cartella \"%s\" non è leggibile!"
+
+#: inc/class-job.php:1776
+#, php-format
+msgid "Link \"%s\" not following."
+msgstr "Link \"%s\" non funzionante."
+
+#: inc/class-job.php:1778
+#, php-format
+msgid "File \"%s\" is not readable!"
+msgstr "Il file \"%s\" non è leggibile!"
+
+#: inc/class-job.php:1782
+#, php-format
+msgid ""
+"File size of “%s” cannot be retrieved. File might be too large and will not "
+"be added to queue."
+msgstr ""
+"La dimensione del file %s non può essere recuperata. Il file potrebbe essere "
+"troppo grande e non sarà aggiunto alla coda."
+
+#: inc/class-job.php:1865
+#, php-format
+msgid "%d. Trying to generate a manifest file&#160;&hellip;"
+msgstr "%d. Provo a generare un manifest file&#160;&hellip;"
+
+#: inc/class-job.php:1921
+msgid "You may have noticed the manifest.json file in this archive."
+msgstr "Potresti aver notato il manifest.json file in questo archivio."
+
+#: inc/class-job.php:1922
+msgid ""
+"manifest.json might be needed for later restoring a backup from this archive."
+msgstr ""
+"manifest.json potrebbe essere necessario per poi ripristinare un backup da "
+"questo archivio."
+
+#: inc/class-job.php:1923
+msgid ""
+"Please leave manifest.json untouched and in place. Otherwise it is safe to "
+"be ignored."
+msgstr ""
+"Si prega di lasciare manifest.json intatto e al suo posto. In caso contrario "
+"può essere ignorato."
+
+#: inc/class-job.php:1933
+#, php-format
+msgid "Added manifest.json file with %1$s to backup file list."
+msgstr "Aggiunto il file manifest.json con %1$s alla lista di backup dei file."
+
+#: inc/class-job.php:1972
+msgid "Wrong BackWPup JobID"
+msgstr "BackWPup JobID Errato"
+
+#: inc/class-job.php:1985
+msgid "A BackWPup job is already running"
+msgstr "Un processo di BackWPup è già in esecuzione"
+
+#: inc/class-job.php:2354
+msgctxt ""
+"SIGHUP: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
+"details"
+msgid "Hangup detected on controlling terminal or death of controlling process"
+msgstr ""
+"Connessione saltata durante il controllo del terminale o il processo è stato "
+"terminato"
+
+#: inc/class-job.php:2358
+msgctxt ""
+"SIGINT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
+"details"
+msgid "Interrupt from keyboard"
+msgstr "Interrotto da tastiera"
+
+#: inc/class-job.php:2362
+msgctxt ""
+"SIGQUIT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
+"details"
+msgid "Quit from keyboard"
+msgstr "Esci da tastiera"
+
+#: inc/class-job.php:2366
+msgctxt ""
+"SIGILL: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
+"details"
+msgid "Illegal Instruction"
+msgstr "Istruzioni non valide"
+
+#: inc/class-job.php:2370
+msgctxt ""
+"SIGABRT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
+"details"
+msgid "Abort signal from abort(3)"
+msgstr "Segnale di annullamento da abort(3)"
+
+#: inc/class-job.php:2374
+msgctxt ""
+"SIGBUS: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
+"details"
+msgid "Bus error (bad memory access)"
+msgstr "Errore bus (errore di accesso alla memoria)"
+
+#: inc/class-job.php:2378
+msgctxt ""
+"SIGFPE: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
+"details"
+msgid "Floating point exception"
+msgstr "Eccezione floating point"
+
+#: inc/class-job.php:2382
+msgctxt ""
+"SIGSEGV: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
+"details"
+msgid "Invalid memory reference"
+msgstr "Riferimento di memoria non valido"
+
+#: inc/class-job.php:2386
+msgctxt ""
+"SIGTERM: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
+"details"
+msgid "Termination signal"
+msgstr "Segnale di terminazione"
+
+#: inc/class-job.php:2390
+msgctxt ""
+"SIGSTKFLT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
+"details"
+msgid "Stack fault on coprocessor"
+msgstr "Errore sullo stack del coprocessore"
+
+#: inc/class-job.php:2394
+msgctxt ""
+"SIGUSR1: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
+"details"
+msgid "User-defined signal 1"
+msgstr "Segnale utente 1"
+
+#: inc/class-job.php:2398
+msgctxt ""
+"SIGUSR2: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
+"details"
+msgid "User-defined signal 2"
+msgstr "Segnale utente 2"
+
+#: inc/class-job.php:2402
+msgctxt ""
+"SIGURG: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
+"details"
+msgid "Urgent condition on socket"
+msgstr "Condizione urgente sul socket"
+
+#: inc/class-job.php:2406
+msgctxt ""
+"SIGXCPU: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
+"details"
+msgid "CPU time limit exceeded"
+msgstr "Superato il limite massimo di tempo della CPU"
+
+#: inc/class-job.php:2410
+msgctxt ""
+"SIGXFSZ: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
+"details"
+msgid "File size limit exceeded"
+msgstr "Superata la grandezza massima del file"
+
+#: inc/class-job.php:2414
+msgctxt ""
+"SIGPWR: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
+"details"
+msgid "Power failure"
+msgstr "Errore di alimentazione"
+
+#: inc/class-job.php:2418
+msgctxt ""
+"SIGSYS: Please see http://man7.org/linux/man-pages/man7/signal.7.html for "
+"details"
+msgid "Bad argument to routine"
+msgstr "Parametri di routine errati"
+
+#: inc/class-job.php:2425
+#, php-format
+msgid "Signal \"%1$s\" (%2$s) is sent to script!"
+msgstr "Il segnale \"%1$s\" (%2$s) è stato inviato allo script!"
+
+#: inc/class-job.php:2459 inc/class-job.php:2472
+#, php-format
+msgid "System: %s"
+msgstr "Sistema: %s"
+
+#: inc/class-job.php:2487
+#, php-format
+msgid "Exception caught in %1$s: %2$s"
+msgstr "Eccezione individuata in %1$s: %2$s"
+
+#: inc/class-jobtype-dbcheck.php:13
+msgid "DB Check"
+msgstr "Controllo database"
+
+#: inc/class-jobtype-dbcheck.php:14
+msgid "Check database tables"
+msgstr "Controllo tabelle del database"
+
+#: inc/class-jobtype-dbcheck.php:17 inc/class-jobtype-dbdump.php:17
+#: inc/class-jobtype-file.php:17 inc/class-jobtype-wpexp.php:17
+#: inc/class-jobtype-wpplugin.php:17 inc/pro/class-wizard-job.php:19
+#: inc/pro/class-wizard-jobimport.php:18 inc/pro/class-wizard-systemtest.php:29
+msgid "http://inpsyde.com"
+msgstr ""
+
+#: inc/class-jobtype-dbcheck.php:35 inc/pro/class-jobtype-dbcheck.php:16
+msgid "Settings for database check"
+msgstr "Impostazioni per il controllo database"
+
+#: inc/class-jobtype-dbcheck.php:39
+msgid "WordPress tables only"
+msgstr "Solo tabelle Wordpress"
+
+#: inc/class-jobtype-dbcheck.php:44
+msgid "Check WordPress database tables only"
+msgstr "Controlla solo le tabelle Wordpress del database"
+
+#: inc/class-jobtype-dbcheck.php:49
+msgid "Repair"
+msgstr "Ripara"
+
+#: inc/class-jobtype-dbcheck.php:54 inc/pro/class-jobtype-dbcheck.php:38
+msgid "Try to repair defect table"
+msgstr "Prova a riparare le tabelle rotte"
+
+#: inc/class-jobtype-dbcheck.php:79
+#, php-format
+msgid "%d. Trying to check database&#160;&hellip;"
+msgstr "%d. Provo a controllare il databse&#160;&hellip;"
+
+#: inc/class-jobtype-dbcheck.php:111
+#, php-format
+msgid "Table %1$s is a view. Not checked."
+msgstr "Tabella %1$s è una vista. Non controllata."
+
+#: inc/class-jobtype-dbcheck.php:116
+#, php-format
+msgid "Table %1$s is not a MyISAM/InnoDB table. Not checked."
+msgstr "La tabella %1$s non è nella tabella MyISAM/InnoDB. Non controllata."
+
+#: inc/class-jobtype-dbcheck.php:124 inc/class-jobtype-dbcheck.php:127
+#: inc/class-jobtype-dbcheck.php:129
+#, php-format
+msgid "Result of table check for %1$s is: %2$s"
+msgstr "Risultato del controllo tabella per %1$s is: %2$s"
+
+#: inc/class-jobtype-dbcheck.php:135 inc/class-jobtype-dbcheck.php:137
+#: inc/class-jobtype-dbcheck.php:139
+#, php-format
+msgid "Result of table repair for %1$s is: %2$s"
+msgstr "Risultato della riparazione tabella per %1$s is: %2$s"
+
+#: inc/class-jobtype-dbcheck.php:145
+msgid "Database check done!"
+msgstr "Controllo del database effettuato!"
+
+#: inc/class-jobtype-dbcheck.php:148
+msgid "No tables to check."
+msgstr "Nessuna tabella da controllare."
+
+#: inc/class-jobtype-dbdump.php:13
+msgid "DB Backup"
+msgstr ""
+
+#: inc/class-jobtype-dbdump.php:14
+msgid "Database backup"
+msgstr "Backup del database"
+
+#: inc/class-jobtype-dbdump.php:60 inc/pro/class-jobtype-dbdump.php:87
+#: inc/pro/class-jobtype-dbdump.php:108
+msgid "Settings for database backup"
+msgstr "Impostazione per il database backup"
+
+#: inc/class-jobtype-dbdump.php:64 inc/pro/class-jobtype-dbdump.php:154
+msgid "Tables to backup"
+msgstr "Tabelle per il backup"
+
+#: inc/class-jobtype-dbdump.php:66 inc/pro/class-jobtype-dbdump.php:156
+msgid "all"
+msgstr "tutte"
+
+#: inc/class-jobtype-dbdump.php:91 inc/pro/class-jobtype-dbdump.php:195
+msgid "Backup file name"
+msgstr "Nome file di backup"
+
+#: inc/class-jobtype-dbdump.php:99 inc/pro/class-jobtype-dbdump.php:201
+msgid "Backup file compression"
+msgstr "Compressione file di backup"
+
+#: inc/class-jobtype-dbdump.php:105 inc/class-jobtype-dbdump.php:107
+#: inc/class-jobtype-wpexp.php:75 inc/class-jobtype-wpexp.php:77
+#: inc/class-jobtype-wpplugin.php:59 inc/class-jobtype-wpplugin.php:61
+#: inc/pro/class-jobtype-dbdump.php:207 inc/pro/class-jobtype-dbdump.php:209
+msgid "GZip"
+msgstr ""
+
+#: inc/class-jobtype-dbdump.php:159 inc/pro/class-jobtype-dbdump.php:475
+#, php-format
+msgid "%d. Try to backup database&#160;&hellip;"
+msgstr "%d. Provo ad eseguire il backup del database&#160;&hellip;"
+
+#: inc/class-jobtype-dbdump.php:173 inc/pro/class-jobtype-dbdump.php:495
+#, php-format
+msgid "Connected to database %1$s on %2$s"
+msgstr "Connesso al database %1$s on %2$s"
+
+#: inc/class-jobtype-dbdump.php:187 inc/pro/class-jobtype-dbdump.php:510
+msgid "No tables to backup."
+msgstr "nessuna tabella per il backup"
+
+#: inc/class-jobtype-dbdump.php:210 inc/pro/class-jobtype-dbdump.php:536
+#, php-format
+msgid "Backup database table \"%s\" with \"%s\" records"
+msgstr "Esegui il backup della tabella del database \"%s\" con \"%s\" records"
+
+#: inc/class-jobtype-dbdump.php:250 inc/pro/class-jobtype-dbdump.php:576
+msgid "MySQL backup file not created"
+msgstr "MySQL backup file non craeto"
+
+#: inc/class-jobtype-dbdump.php:254 inc/pro/class-jobtype-dbdump.php:764
+#, php-format
+msgid "Added database dump \"%1$s\" with %2$s to backup file list"
+msgstr ""
+"Aggiunto il dump del database \"%1$s\" con %2$s per la lista dei file backup"
+
+#: inc/class-jobtype-dbdump.php:260 inc/pro/class-jobtype-dbdump.php:586
+#: inc/pro/class-jobtype-dbdump.php:767
+msgid "Database backup done!"
+msgstr "Backup del database effettuato!"
+
+#: inc/class-jobtype-file.php:13
+msgid "Files"
+msgstr ""
+
+#: inc/class-jobtype-file.php:14
+msgid "File backup"
+msgstr "Backup dei file"
+
+#: inc/class-jobtype-file.php:71
+msgid "Folders to backup"
+msgstr "Cartella per il backup"
+
+#: inc/class-jobtype-file.php:75
+msgid "Backup WordPress install folder"
+msgstr "Esegui il Backup della cartella di istallazione di Wordpress"
+
+#: inc/class-jobtype-file.php:83
+msgid "Backup content folder"
+msgstr "Cartella del contenuto di backup"
+
+#: inc/class-jobtype-file.php:91
+msgid "Backup plugins"
+msgstr "Esegui il backup dei plugins"
+
+#: inc/class-jobtype-file.php:99
+msgid "Backup themes"
+msgstr "Esegui il backup del tema"
+
+#: inc/class-jobtype-file.php:107 inc/pro/class-wizard-job.php:745
+#: inc/pro/class-wizard-job.php:746
+msgid "Backup uploads folder"
+msgstr "Esegui il backup della cartella uploads"
+
+#: inc/class-jobtype-file.php:115
+msgid "Extra folders to backup"
+msgstr "Cartella extra per il backup"
+
+#: inc/class-jobtype-file.php:118
+msgid ""
+"Separate folder names with a line-break or a comma. Folders must be set with "
+"their absolute path!"
+msgstr ""
+"Separa i nomi delle cartelle con una linea o una virgola. Le cartelle devono "
+"essere impostate con il loro percorso assoluto!"
+
+#: inc/class-jobtype-file.php:123
+msgid "Exclude from backup"
+msgstr "Escludi dal backup"
+
+#: inc/class-jobtype-file.php:127
+msgid "Thumbnails in uploads"
+msgstr "Miniature nella cartella uploads"
+
+#: inc/class-jobtype-file.php:129
+msgid "Don't backup thumbnails from the site's uploads folder."
+msgstr "Non fare il backup delle miniature della cartella uploads del sito."
+
+#: inc/class-jobtype-file.php:133
+msgid "Exclude files/folders from backup"
+msgstr "Escludi i/le file/cartelle dal backup"
+
+#: inc/class-jobtype-file.php:136
+msgid ""
+"Separate file / folder name parts with a line-break or a comma. For example /"
+"logs/,.log,.tmp"
+msgstr ""
+"Separa i nomi dei/delle file/cartelle con una linea o una virgola. Per "
+"esempio /logs/,.log,.tmp"
+
+#: inc/class-jobtype-file.php:141
+msgid "Special options"
+msgstr "Opzioni speciali"
+
+#: inc/class-jobtype-file.php:145
+msgid "Include special files"
+msgstr "Includi i file speciali"
+
+#: inc/class-jobtype-file.php:147
+#, fuzzy
+#| msgid ""
+#| "Backup wp-config.php, robots.txt, nginx.conf, .htaccess, .htpasswd and "
+#| "favicon.ico from root if it is not included in backup."
+msgid ""
+"Backup wp-config.php, robots.txt, nginx.conf, .htaccess, .htpasswd, favicon."
+"ico, and Web.config from root if it is not included in backup."
+msgstr ""
+"Esegui il backup di wp-config.php, robots.txt, nginx.conf, .htaccess, ."
+"htpasswd e favicon.ico dalla root se non è incluso nel backup."
+
+#: inc/class-jobtype-file.php:151
+msgid "Use one folder above as WP install folder"
+msgstr "Usa una cartella sopra come cartella di istallazione WP"
+
+#: inc/class-jobtype-file.php:154
+msgid ""
+"Use one folder above as WordPress install folder! That can be helpful, if "
+"you would backup files and folder that are not in the WordPress installation "
+"folder. Or if you made a \"<a href=\"https://codex.wordpress.org/"
+"Giving_WordPress_Its_Own_Directory\">Giving WordPress Its Own Directory</a>"
+"\" installation. Excludes must be configured again."
+msgstr ""
+"Utilizzare una cartella sopra come cartella di installazione WordPress ! "
+"Questo può essere utile, se vuoi eseguire il backup di file e cartelle che "
+"non sono nella cartella di installazione di WordPress. Oppure, se hai fatto "
+"un'istallazione \"<a href=\"https://codex.wordpress.org/"
+"Giving_WordPress_Its_Own_Directory\">Giving WordPress Its Own Directory</a>"
+"\". Gli \"Escludi\" devono essere configurati di nuovo."
+
+#: inc/class-jobtype-file.php:238
+#, php-format
+msgid "%d. Trying to make a list of folders to back up&#160;&hellip;"
+msgstr "%d. Provo a creare una lista di cartelle per il backup&#160;&hellip;"
+
+#: inc/class-jobtype-file.php:358 inc/class-jobtype-file.php:362
+#: inc/class-jobtype-file.php:379
+#, php-format
+msgid "Added \"%s\" to backup file list"
+msgstr "Aggiunti \"%s\" alla lista dei file di backup "
+
+#: inc/class-jobtype-file.php:385
+msgid "No files/folder for the backup."
+msgstr "Nessun file/cartella per il backup"
+
+#: inc/class-jobtype-file.php:387
+#, php-format
+msgid "%1$d folders to backup."
+msgstr "%1$d cartelle per il backup."
+
+#: inc/class-jobtype-file.php:435
+#, php-format
+msgid "Folder \"%s\" is not readable!"
+msgstr "La cartella \"%s\" non ha accesso in lettura!"
+
+#: inc/class-jobtype-file.php:495
+#, php-format
+msgid "Path as set by user (symlink?): %s"
+msgstr "Percorso impostato dall'utente (symlink?): %s"
+
+#: inc/class-jobtype-file.php:498
+msgid "Exclude:"
+msgstr "Escludi:"
+
+#: inc/class-jobtype-file.php:510
+msgid "Excluded by .donotbackup file!"
+msgstr "Escludi dal file .donotbackup!"
+
+#: inc/class-jobtype-wpexp.php:13
+msgid "XML export"
+msgstr ""
+
+#: inc/class-jobtype-wpexp.php:14 inc/class-page-about.php:472
+msgid "WordPress XML export"
+msgstr ""
+
+#: inc/class-jobtype-wpexp.php:46
+msgid "Items to export"
+msgstr "Elementi da esportare"
+
+#: inc/class-jobtype-wpexp.php:49 inc/pro/class-jobtype-wpexp.php:28
+msgid "All content"
+msgstr "Tutto il contenuto"
+
+#: inc/class-jobtype-wpexp.php:50 inc/pro/class-jobtype-wpexp.php:38
+msgid "Posts"
+msgstr ""
+
+#: inc/class-jobtype-wpexp.php:51 inc/pro/class-jobtype-wpexp.php:48
+msgid "Pages"
+msgstr "Pagine"
+
+#: inc/class-jobtype-wpexp.php:61
+msgid "XML Export file name"
+msgstr "Nome del file XML Export"
+
+#: inc/class-jobtype-wpexp.php:69 inc/class-jobtype-wpplugin.php:53
+msgid "File compression"
+msgstr "Compressione del file"
+
+#: inc/class-jobtype-wpexp.php:79 inc/class-jobtype-wpexp.php:81
+#: inc/class-jobtype-wpplugin.php:64 inc/class-jobtype-wpplugin.php:66
+msgid "BZip2"
+msgstr ""
+
+#: inc/class-jobtype-wpexp.php:112
+#, php-format
+msgid "%d. Trying to create a WordPress export to XML file&#160;&hellip;"
+msgstr ""
+"%d. Provo a creare una esportazione di WordPress su XML file&#160;&hellip;"
+
+#: inc/class-jobtype-wpexp.php:127
+#, php-format
+msgid "WP Export: Post type “%s” does not allow export."
+msgstr "WP Export: Non è consentito esportare il tipo di post  %s ."
+
+#: inc/class-jobtype-wpexp.php:172 inc/class-jobtype-wpexp.php:186
+#: inc/class-jobtype-wpexp.php:215 inc/class-jobtype-wpexp.php:236
+#: inc/class-jobtype-wpexp.php:269 inc/class-jobtype-wpexp.php:289
+#: inc/class-jobtype-wpexp.php:378 inc/class-jobtype-wpexp.php:387
+msgid "WP Export file could not written."
+msgstr "Il file WP Export non può essere scritto."
+
+#: inc/class-jobtype-wpexp.php:402
+msgid "Check WP Export file&#160;&hellip;"
+msgstr "Controllo WP Export file&#160;&hellip;"
+
+#: inc/class-jobtype-wpexp.php:422
+#, php-format
+msgid "XML WARNING (%s): %s"
+msgstr "AVVISO XML (%s): %s"
+
+#: inc/class-jobtype-wpexp.php:425
+#, php-format
+msgid "XML RECOVERABLE (%s): %s"
+msgstr "XML RECUPERABILE (%s): %s"
+
+#: inc/class-jobtype-wpexp.php:428
+#, php-format
+msgid "XML ERROR (%s): %s"
+msgstr "ERRORE XML (%s): %s"
+
+#: inc/class-jobtype-wpexp.php:438
+msgid "There was an error when reading this WXR file"
+msgstr "C'è stato un errore durante la lettura del file WXR"
+
+#: inc/class-jobtype-wpexp.php:444 inc/class-jobtype-wpexp.php:451
+msgid ""
+"This does not appear to be a WXR file, missing/invalid WXR version number"
+msgstr ""
+"Questo non sembra essere un fle WXR, numero di versione WXR mancante o non "
+"valido"
+
+#: inc/class-jobtype-wpexp.php:460
+msgid "WP Export file is a valid WXR file."
+msgstr "Il file WP Export è un file WXR valido."
+
+#: inc/class-jobtype-wpexp.php:462
+msgid ""
+"WP Export file can not be checked, because no XML extension is loaded, to "
+"ensure the file verification."
+msgstr ""
+"Il file WP Export non può essere verificato, in quanto è stato caricato "
+"senza estensione XML, per garantire la verifica dei file."
+
+#: inc/class-jobtype-wpexp.php:474 inc/pro/class-jobtype-dbdump.php:741
+msgid "Compressing file&#160;&hellip;"
+msgstr "Compressione file&#160;&hellip;"
+
+#: inc/class-jobtype-wpexp.php:481 inc/pro/class-jobtype-dbdump.php:748
+msgid "Compressing done."
+msgstr "Compressione eseguita."
+
+#: inc/class-jobtype-wpexp.php:501
+#, php-format
+msgid "Added XML export \"%1$s\" with %2$s to backup file list."
+msgstr "Aggiunto XML export \"%1$s\" con %2$s sulla lista dei file di backup."
+
+#: inc/class-jobtype-wpplugin.php:13
+msgid "Plugins"
+msgstr ""
+
+#: inc/class-jobtype-wpplugin.php:14
+msgid "Installed plugins list"
+msgstr "Lista dei plugins installati"
+
+#: inc/class-jobtype-wpplugin.php:45
+msgid "Plugin list file name"
+msgstr "Nome del file della lista dei plugins"
+
+#: inc/class-jobtype-wpplugin.php:96
+#, php-format
+msgid "%d. Trying to generate a file with installed plugin names&#160;&hellip;"
+msgstr ""
+"%d. Provo a generare un file con i nomi dei plugin installati&#160;&hellip;"
+
+#: inc/class-jobtype-wpplugin.php:124
+msgid "All plugin information:"
+msgstr "Tutte le informazioni sui plugin:"
+
+#: inc/class-jobtype-wpplugin.php:126
+#, php-format
+msgid "from %s"
+msgstr "da %s"
+
+#: inc/class-jobtype-wpplugin.php:128
+msgid "Active plugins:"
+msgstr "Plugin attivi:"
+
+#: inc/class-jobtype-wpplugin.php:134
+msgid "Inactive plugins:"
+msgstr "Plugin disattivati:"
+
+#: inc/class-jobtype-wpplugin.php:141 inc/pro/class-jobtype-dbdump.php:799
+msgid "Can not open target file for writing."
+msgstr "Non è possibile aprire il file per la scrittura."
+
+#: inc/class-jobtype-wpplugin.php:148
+#, php-format
+msgid "Added plugin list file \"%1$s\" with %2$s to backup file list."
+msgstr ""
+"Aggiunto il file lista plugin \"%1$s\" con %2$s sulla lista dei file di "
+"backup."
+
+#: inc/class-message-box.php:89
+msgid "Dismiss"
+msgstr "Scartato"
+
+#: inc/class-mysqldump.php:60
+msgid "No MySQLi extension found. Please install it."
+msgstr "Nessuna estensione MySQL trovata. Si prega di installarne una."
+
+#: inc/class-mysqldump.php:100 inc/pro/class-jobtype-dbdump.php:832
+msgid "Cannot init MySQLi database connection"
+msgstr "Non è possibile inizializzare la connessione al database MySQLi"
+
+#: inc/class-mysqldump.php:105 inc/pro/class-jobtype-dbdump.php:838
+msgid "Setting of MySQLi connection timeout failed"
+msgstr "Impostazione del timeout di connessione MySQLi fallita"
+
+#: inc/class-mysqldump.php:110 inc/pro/class-jobtype-dbdump.php:844
+#, php-format
+msgid "Cannot connect to MySQL database %1$d: %2$s"
+msgstr "Impossibile connettersi al MySQL database %1$d: %2$s"
+
+#: inc/class-mysqldump.php:117
+#, php-format
+msgctxt "Database Charset"
+msgid "Cannot set DB charset to %s error: %s"
+msgstr "Impossibile impostare il DB charset su %s errore: %s"
+
+#: inc/class-mysqldump.php:146
+msgid "Cannot open SQL backup file"
+msgstr "Impossibile aprire il file di backup SQL"
+
+#: inc/class-mysqldump.php:153 inc/class-mysqldump.php:165
+#: inc/class-mysqldump.php:259 inc/class-mysqldump.php:268
+#: inc/class-mysqldump.php:288 inc/class-mysqldump.php:297
+#: inc/class-mysqldump.php:317 inc/class-mysqldump.php:323
+#: inc/class-mysqldump.php:368 inc/class-mysqldump.php:400
+#: inc/class-mysqldump.php:437 inc/class-mysqldump.php:500
+#: inc/pro/class-jobtype-dbdump.php:860 inc/pro/class-jobtype-dbdump.php:874
+#: inc/pro/class-jobtype-dbdump.php:922 inc/pro/class-jobtype-dbdump.php:941
+#: inc/pro/class-jobtype-dbdump.php:984
+#, php-format
+msgid "Database error %1$s for query %2$s"
+msgstr "Errore database %1$s per la query %2$s"
+
+#: inc/class-mysqldump.php:479
+#, php-format
+msgid "Start for table backup is not correctly set: %1$s"
+msgstr ""
+"L'inizio per il backup della tabella non è impostato correttamente: %1$s"
+
+#: inc/class-mysqldump.php:483
+#, php-format
+msgid "Length for table backup is not correctly set: %1$s"
+msgstr "La lunghezza per il backup tabella non è impostata correttamente: %1$s"
+
+#: inc/class-mysqldump.php:561
+msgid "Error while writing file!"
+msgstr "Errore durante la scrittura del file!"
+
+#: inc/class-option.php:176 inc/class-page-editjob.php:97
+#: inc/class-page-editjob.php:383
+msgid "New Job"
+msgstr "Nuovo processo"
+
+#: inc/class-page-about.php:369
+msgid "Welcome to BackWPup Pro"
+msgstr "Benvenuti su BackWPup Pro"
+
+#: inc/class-page-about.php:370 inc/class-page-backwpup.php:75
+msgid ""
+"BackWPup’s job wizards make planning and scheduling your backup jobs a "
+"breeze."
+msgstr ""
+"Il wizard di processo di BackWPup rende la pianificazione e la "
+"programmazione dei processi di backup un gioco da ragazzi."
+
+#: inc/class-page-about.php:371 inc/class-page-about.php:384
+msgid ""
+"Use your backup archives to save your entire WordPress installation "
+"including <code>/wp-content/</code>. Push them to an external storage "
+"service if you don’t want to save the backups on the same server. With a "
+"single backup archive you are able to restore an installation. Use a tool "
+"like phpMyAdmin to restore your database backup files."
+msgstr ""
+"Usa i tuoi archivi di backup per salvare l'intera installazione di WordPress "
+"compreso <code>/wp-content/</code>. Inviali ad un servizio di archiviazione "
+"esterno se non vuoi salvare i backup sullo stesso server. Con un unico "
+"archivio di backup è possibile ripristinare un'installazione. Utilizza uno "
+"strumento come phpMyAdmin per ripristinare i file di backup del database."
+
+#: inc/class-page-about.php:372
+#, php-format
+msgid ""
+"Ready to <a href=\"%1$s\">set up a backup job</a>? You can <a href=\"%2$s"
+"\">use the wizards</a> or plan your backup in expert mode."
+msgstr ""
+"Sei pronto ad <a href=\"%1$s\">impostare un processo di backup</a>? Puoi <a "
+"href=\"%2$s\">usare il wizards</a> o pianificare il tuo backup in expert "
+"mode."
+
+#: inc/class-page-about.php:382
+msgid "Welcome to BackWPup"
+msgstr "Benvenuto su BackWPup"
+
+#: inc/class-page-about.php:385
+msgid ""
+"Ready to set up a backup job? Use one of the wizards to plan what you want "
+"to save."
+msgstr ""
+"Sei pronto ad impostare un processo di backup? Utilizza una delle procedure "
+"guidate (wizard) per pianificare ciò che si desidera salvare."
+
+#: inc/class-page-about.php:398
+msgid "Save your database"
+msgstr "Salva il database"
+
+#: inc/class-page-about.php:401
+msgid "Save your database regularly"
+msgstr "Salva il  databse regolarmente"
+
+#: inc/class-page-about.php:402
+#, php-format
+msgid ""
+"With BackWPup you can schedule the database backup to run automatically. "
+"With a single backup file you can restore your database. You should <a href="
+"\"%s\">set up a backup job</a>, so you will never forget it. There is also "
+"an option to repair and optimize the database after each backup."
+msgstr ""
+"Con BackWPup è possibile pianificare il backup del database per avviarlo "
+"automaticamente. Con un singolo file di backup è possibile ripristinare il "
+"database. Puoi <a href=\"%s\"> impostare un processo di backup </a>, in modo "
+"da non dimenticarlo. C'è anche la possibilità di riparare e ottimizzare il "
+"database dopo ogni backup."
+
+#: inc/class-page-about.php:407 inc/class-page-about.php:411
+msgid "WordPress XML Export"
+msgstr ""
+
+#: inc/class-page-about.php:408
+msgid ""
+"You can choose the built-in WordPress export format in addition or exclusive "
+"to save your data. This works in automated backups too of course. The "
+"advantage is: you can import these files into a blog with the regular "
+"WordPress importer."
+msgstr ""
+"È possibile scegliere il formato di esportazione di WordPress  in aggiunta o "
+"in esclusiva per salvare i dati. Questo funziona anche nei backup "
+"automatici. Il vantaggio principale è che puoi importare questi file in un "
+"blog con mediante le funzionalità di importazione di WordPress."
+
+#: inc/class-page-about.php:416
+msgid "Save all data from the webserver"
+msgstr "Salva tutti i dati dal webserver"
+
+#: inc/class-page-about.php:419
+msgid "Save all files"
+msgstr "Salva tutti i file"
+
+#: inc/class-page-about.php:420
+#, php-format
+msgid ""
+"You can backup all your attachments, also all system files, plugins and "
+"themes in a single file. You can <a href=\"%s\">create a job</a> to update a "
+"backup copy of your file system only when files are changed."
+msgstr ""
+"Puoi eseguire il backup di tutti gli allegati, incluso i file di sistema, i "
+"plugin e i temi in un unico file. Puoi <a href=\"%s\"> creare un processo</"
+"a> per aggiornare una copia di backup del file system solo quando i file "
+"vengono modificati."
+
+#: inc/class-page-about.php:425 inc/class-page-about.php:429
+msgid "Security!"
+msgstr "Sicurezza!"
+
+#: inc/class-page-about.php:426
+msgid ""
+"By default everything is encrypted: connections to external services, local "
+"files and access to directories."
+msgstr ""
+"Per impostazione predefinita tutto è crittografato: le connessioni ai "
+"servizi esterni, i file locali e l'accesso alle directory."
+
+#: inc/class-page-about.php:434 inc/class-page-about.php:437
+msgid "Cloud Support"
+msgstr "Supporto cloud"
+
+#: inc/class-page-about.php:438
+msgid ""
+"BackWPup supports multiple cloud services in parallel. This ensures backups "
+"are redundant."
+msgstr ""
+"BackWPup supporta più servizi cloud in parallelo. In questo modo i backup "
+"sono ridondanti."
+
+#: inc/class-page-about.php:444
+msgid "Features / differences between Free and Pro"
+msgstr "Caratteristiche/differenze tra Free e Pro"
+
+#: inc/class-page-about.php:447
+msgid "Features"
+msgstr "Caratteristiche"
+
+#: inc/class-page-about.php:448
+msgid "FREE"
+msgstr ""
+
+#: inc/class-page-about.php:449
+msgid "PRO"
+msgstr ""
+
+#: inc/class-page-about.php:452
+msgid "Complete database backup"
+msgstr "Backup completo del database"
+
+#: inc/class-page-about.php:457
+msgid "Complete file backup"
+msgstr "Backup completo dei file"
+
+#: inc/class-page-about.php:462
+msgid "Database check"
+msgstr "Controllo database"
+
+#: inc/class-page-about.php:467
+msgid "Data compression"
+msgstr "Compressione dati"
+
+#: inc/class-page-about.php:477
+msgid "List of installed plugins"
+msgstr "Lista dei plugin istallati"
+
+#: inc/class-page-about.php:482
+msgid "Backup archives management"
+msgstr "Gestione degli archivi di backup"
+
+#: inc/class-page-about.php:487
+msgid "Log file management"
+msgstr "Gestione dei file di log"
+
+#: inc/class-page-about.php:492
+msgid "Start jobs per WP-Cron, URL, system, backend or WP-CLI"
+msgstr "Inizia processo per WP-Cron, URL, system, backend or WP-CLI"
+
+#: inc/class-page-about.php:497
+msgid "Log report via email"
+msgstr "Rapporto log via mail"
+
+#: inc/class-page-about.php:502
+msgid "Backup to Microsoft Azure"
+msgstr "Backup su Microsoft Azure"
+
+#: inc/class-page-about.php:507
+msgid "Backup as email"
+msgstr "Backup su email"
+
+#: inc/class-page-about.php:512
+msgid "Backup to S3 services (Amazon, Google Storage, Hosteurope and more)"
+msgstr "Backup su S3 services (Amazon, Google Storage, Hosteurope e altri)"
+
+#: inc/class-page-about.php:527
+msgid "Backup to FTP server"
+msgstr "Backup su server FTP"
+
+#: inc/class-page-about.php:532
+msgid "Backup to your web space"
+msgstr "Backup sul tuo spazio web"
+
+#: inc/class-page-about.php:542 inc/pro/class-pro.php:155
+msgid "Backup to Google Drive"
+msgstr "Backup su Google Drive"
+
+#: inc/class-page-about.php:547 inc/pro/class-pro.php:134
+msgid "Backup to Amazon Glacier"
+msgstr "Backup su Amazon Glacier"
+
+#: inc/class-page-about.php:552
+msgid "Custom API keys for DropBox and SugarSync"
+msgstr "Custom API keys per DropBox e SugarSync"
+
+#: inc/class-page-about.php:557
+msgid "XML database backup as PHPMyAdmin schema"
+msgstr "XML database backup come PHPMyAdmin schema"
+
+#: inc/class-page-about.php:562
+msgid "Database backup as mysqldump per command line"
+msgstr "Database backup come mysqldump per linea di comando"
+
+#: inc/class-page-about.php:567
+msgid "Database backup for additional MySQL databases"
+msgstr "Database backup per database MySQL aggiuntivi"
+
+#: inc/class-page-about.php:572
+msgid "Import and export job settings as XML"
+msgstr "Importa ed esporta le impostazioni dei processi come XML"
+
+#: inc/class-page-about.php:577
+msgid "Wizard for system tests"
+msgstr "Wizard per system tests"
+
+#: inc/class-page-about.php:582
+msgid "Wizard for scheduled backup jobs"
+msgstr "Wizard per processi di backup programmati"
+
+#: inc/class-page-about.php:587
+msgid "Wizard to import settings and backup jobs"
+msgstr "Wizard per importare impostazioni e i processi di backup"
+
+#: inc/class-page-about.php:592
+msgid "Differential backup of changed directories to Dropbox"
+msgstr "Backup differenziale delle directory cambiate su Dropbox"
+
+#: inc/class-page-about.php:597
+msgid "Differential backup of changed directories to Rackspace Cloud Files"
+msgstr "Backup differenziale delle directory cambiate su Rackspace Cloud Files"
+
+#: inc/class-page-about.php:602
+msgid "Differential backup of changed directories to S3"
+msgstr "Backup differenziale delle directory cambiate su S3"
+
+#: inc/class-page-about.php:607
+msgid "Differential backup of changed directories to MS Azure"
+msgstr "Backup differenziale delle directory cambiate su MS Azure"
+
+#: inc/class-page-about.php:612
+msgid "<strong>Premium support</strong>"
+msgstr "<strong>Supporto Premium</strong>"
+
+#: inc/class-page-about.php:617
+msgid "<strong>Automatic updates</strong>"
+msgstr "<strong>Aggiornamenti automatici</strong>"
+
+#: inc/class-page-about.php:624
+msgid "GET PRO"
+msgstr "PASSA ALLA VERSIONE PRO"
+
+#: inc/class-page-backups.php:177
+msgid "No files could be found. (List will be generated during next backup.)"
+msgstr ""
+"Nessun file trovato. (Verrà generata la lista durante il prossimo backup)"
+
+#: inc/class-page-backups.php:190 inc/class-page-backups.php:325
+#: inc/class-page-jobs.php:113 inc/class-page-jobs.php:177
+#: inc/class-page-logs.php:151 inc/class-page-logs.php:232
+msgid "Delete"
+msgstr "Elimina"
+
+#: inc/class-page-backups.php:230
+msgid "Change destination"
+msgstr "Cambia destinazione"
+
+#: inc/class-page-backups.php:274 inc/class-page-backwpup.php:283
+#: inc/class-page-backwpup.php:347 inc/class-page-logs.php:163
+msgid "Time"
+msgstr "Tempo"
+
+#: inc/class-page-backups.php:275
+msgid "File"
+msgstr ""
+
+#: inc/class-page-backups.php:277 inc/class-page-logs.php:167
+msgid "Size"
+msgstr "Dimensione"
+
+#: inc/class-page-backups.php:324
+msgid ""
+"You are about to delete this backup archive. \n"
+"  'Cancel' to stop, 'OK' to delete."
+msgstr ""
+"Stai per eliminare questo archivio di backup.\n"
+"   'Annulla' per annullare, 'OK' per confermare la cancellazione."
+
+#: inc/class-page-backups.php:329 inc/class-page-jobs.php:330
+#: inc/class-page-logs.php:234
+msgid "Download"
+msgstr ""
+
+#: inc/class-page-backups.php:336 inc/pro/class-pro.php:288
+#: inc/pro/class-pro.php:289 views/pro/restore/steps/step4_top.php:2
+msgid "Restore"
+msgstr "Ripristina"
+
+#: inc/class-page-backups.php:368
+msgid "?"
+msgstr ""
+
+#: inc/class-page-backups.php:381 inc/class-page-backwpup.php:321
+#: inc/class-page-backwpup.php:384 inc/class-page-jobs.php:318
+#: inc/class-page-logs.php:190
+#, php-format
+msgid "%1$s at %2$s"
+msgstr "%1$s a %2$s"
+
+#: inc/class-page-backups.php:399 inc/class-page-backups.php:439
+#: inc/class-page-editjob.php:35 inc/class-page-jobs.php:398
+msgid "Sorry, you don't have permissions to do that."
+msgstr "Non hai i permessi per fare questo."
+
+#: inc/class-page-backups.php:450
+msgid "Ops! Unfortunately the file doesn't exists. May be was deleted?"
+msgstr "Ops! Sfortunatamente il file non esiste. Forse è stato cancellato?"
+
+#: inc/class-page-backups.php:451
+msgid "404 - File Not Found."
+msgstr "404 - File non trovato."
+
+#: inc/class-page-backups.php:453
+msgid "&laquo; Go back"
+msgstr "&laquo; Indietro"
+
+#: inc/class-page-backups.php:477
+msgid "Backup Files"
+msgstr "Files di backup"
+
+#: inc/class-page-backups.php:527
+#, php-format
+msgid "%s &rsaquo; Manage Backup Archives"
+msgstr "%s &rsaquo; Gestisci gli archivi di backup"
+
+#: inc/class-page-backwpup.php:67
+#, php-format
+msgid "%s &rsaquo; Dashboard"
+msgstr ""
+
+#: inc/class-page-backwpup.php:74 inc/class-page-backwpup.php:83
+msgctxt "Dashboard heading"
+msgid "Planning backups"
+msgstr "Pianifica i backup"
+
+#: inc/class-page-backwpup.php:75 inc/class-page-backwpup.php:84
+msgid ""
+"Use your backup archives to save your entire WordPress installation "
+"including <code>/wp-content/</code>. Push them to an external storage "
+"service if you don’t want to save the backups on the same server."
+msgstr ""
+"Usa i tuoi archivi di backup per salvare l'intera installazione di WordPress "
+"compreso <code> / wp-content / </code>. Inviali ad un servizio di "
+"archiviazione esterno se non vuoi salvare i backup sullo stesso server."
+
+#: inc/class-page-backwpup.php:76 inc/class-page-backwpup.php:85
+msgctxt "Dashboard heading"
+msgid "Restoring backups"
+msgstr "Ripristino dei backup"
+
+#: inc/class-page-backwpup.php:77 inc/class-page-backwpup.php:86
+msgid ""
+"With a single backup archive you are able to restore an installation. Use a "
+"tool like phpMyAdmin to restore your database backup files."
+msgstr ""
+"Con un unico archivio di backup è possibile di ripristinare "
+"un'installazione. Utilizzare uno strumento come phpMyAdmin per ripristinare "
+"i file di backup del database."
+
+#: inc/class-page-backwpup.php:78 inc/class-page-backwpup.php:87
+msgctxt "Dashboard heading"
+msgid "Ready to set up a backup job?"
+msgstr "Sei pronto per impostare un processo di backup?"
+
+#: inc/class-page-backwpup.php:79
+#, php-format
+msgid ""
+"Use one of the wizards to plan a backup, or use <a href=\"%s\">expert mode</"
+"a> for full control over all options."
+msgstr ""
+"Utilizzare una delle procedure guidate per pianificare un backup, o utilizza "
+"<a href=\"%s\">expert mode</a> per il pieno controllo su tutte le opzioni."
+
+#: inc/class-page-backwpup.php:79 inc/class-page-backwpup.php:89
+msgid ""
+"<strong>Please note: You are solely responsible for the security of your "
+"data; the authors of this plugin are not.</strong>"
+msgstr ""
+"<Strong> Nota: Sei il solo responsabile per la sicurezza dei dati; gli "
+"autori di questo plugin non hanno alcuna responsabilità. </ strong>"
+
+#: inc/class-page-backwpup.php:84
+msgid ""
+"Use the short links in the <strong>First steps</strong> box to plan and "
+"schedule backup jobs."
+msgstr ""
+"Utilizzare i collegamenti brevi in <strong> Primi passi </ strong> per "
+"pianificare e programmare i processi di backup."
+
+#: inc/class-page-backwpup.php:88
+#, php-format
+msgid "<a href=\"%s\">Add a new backup job</a> and plan what you want to save."
+msgstr ""
+"<a href=\"%s\">Aggiungi un nuovo processo di backup</a> e programma ciò che "
+"vuoi salvare."
+
+#: inc/class-page-backwpup.php:96
+msgid "First Steps"
+msgstr "Primi passi"
+
+#: inc/class-page-backwpup.php:100
+msgid "Test the installation"
+msgstr "Test dell'installazione"
+
+#: inc/class-page-backwpup.php:101 inc/class-page-backwpup.php:104
+msgid "Create a Job"
+msgstr "Crea un processo"
+
+#: inc/class-page-backwpup.php:103
+msgid "Check the installation"
+msgstr "Controlla l'installazione"
+
+#: inc/class-page-backwpup.php:106
+msgid "Run the created job"
+msgstr "Avvia il processo creato"
+
+#: inc/class-page-backwpup.php:107
+msgid "Check the job log"
+msgstr "Controlla i log del processo"
+
+#: inc/class-page-backwpup.php:115
+msgid "One click backup"
+msgstr "Backup in un click"
+
+#: inc/class-page-backwpup.php:117
+msgid ""
+"Generate a database backup of WordPress tables and download it right away!"
+msgstr ""
+"Genera un database backup delle tabelle WordPress ed esegui subito il "
+"download!"
+
+#: inc/class-page-backwpup.php:117
+msgid "Download database backup"
+msgstr "Download del backup del database"
+
+#: inc/class-page-backwpup.php:123
+msgid "BackWPup News"
+msgstr ""
+
+#: inc/class-page-backwpup.php:127
+msgctxt "BackWPup News RSS Feed URL"
+msgid "https://backwpup.com/feed/"
+msgstr ""
+
+#: inc/class-page-backwpup.php:130
+#, php-format
+msgid "<strong>RSS Error</strong>: %s"
+msgstr "<strong>Errore RSS</strong>: %s"
+
+#: inc/class-page-backwpup.php:132
+msgid ""
+"An error has occurred, which probably means the feed is down. Try again "
+"later."
+msgstr ""
+"Si è verificato un errore, questo significa che probabilmente il feed non è "
+"attivo. Riprovare più tardi."
+
+#: inc/class-page-backwpup.php:146
+msgid "Untitled"
+msgstr "Senza nome"
+
+#: inc/class-page-backwpup.php:211 inc/pro/class-page-wizard.php:331
+msgid "Start wizard"
+msgstr "Avvia il wizard"
+
+#: inc/class-page-backwpup.php:217
+msgid "Video: Introduction"
+msgstr "Video: Introduzione"
+
+#: inc/class-page-backwpup.php:222
+msgid "Video: Settings"
+msgstr "Video: Impostazioni"
+
+#: inc/class-page-backwpup.php:227
+msgid "Video: Daily Backups"
+msgstr "Video: Backup giornalieri"
+
+#: inc/class-page-backwpup.php:232
+msgid "Video: Creating Full Backups"
+msgstr "Video: Creare Backup completi"
+
+#: inc/class-page-backwpup.php:237
+msgid "Video: Restoring Backups"
+msgstr "Video: Ripristino dei Backup"
+
+#: inc/class-page-backwpup.php:252
+msgctxt "Pro teaser box"
+msgid "Thank you for using BackWPup!"
+msgstr "Grazie per usare BackWPup!"
+
+#: inc/class-page-backwpup.php:255
+msgctxt "Pro teaser box"
+msgid "Get access to:"
+msgstr "Ottieni l'accesso a:"
+
+#: inc/class-page-backwpup.php:257
+msgctxt "Pro teaser box"
+msgid "First-class <strong>dedicated support</strong> at backwpup.com."
+msgstr "<strong>Supporto dedicato</strong> solo su backwpup.com."
+
+#: inc/class-page-backwpup.php:258
+msgctxt "Pro teaser box"
+msgid "Differential backups to Google Drive and other cloud storage service."
+msgstr "Backup differenziali su Google Drive e altri servizi di cloud storage."
+
+#: inc/class-page-backwpup.php:259
+msgctxt "Pro teaser box"
+msgid "Easy-peasy wizards to create and schedule backup jobs."
+msgstr ""
+"Wizard semplici e intuitivi per creare e pianificare i processi di backup."
+
+#: inc/class-page-backwpup.php:260
+msgctxt "Pro teaser box, link text"
+msgid "And more…"
+msgstr "E molto altro..."
+
+#: inc/class-page-backwpup.php:262
+msgctxt "Pro teaser box, link title"
+msgid "Get BackWPup Pro now"
+msgstr "Ottieni subito BackWPup Pro"
+
+#: inc/class-page-backwpup.php:262
+msgctxt "Pro teaser box, link text"
+msgid "Get BackWPup Pro now"
+msgstr "Ottieni subito BackWPup Pro"
+
+#: inc/class-page-backwpup.php:280
+msgid "Next scheduled jobs"
+msgstr "Prossimi processi pianificati"
+
+#: inc/class-page-backwpup.php:284 inc/class-page-backwpup.php:347
+#: inc/class-page-logs.php:164
+msgid "Job"
+msgstr "Processo"
+
+#: inc/class-page-backwpup.php:307
+#, php-format
+msgid "working since %d seconds"
+msgstr "in esecuzione da %d secondi"
+
+#: inc/class-page-backwpup.php:309 inc/class-page-jobs.php:608
+msgid "Abort"
+msgstr "Annulla"
+
+#: inc/class-page-backwpup.php:325
+msgid "Edit Job"
+msgstr "Modifica processo"
+
+#: inc/class-page-backwpup.php:345
+msgid "Last logs"
+msgstr "Ultimi logs"
+
+#: inc/class-page-backwpup.php:347
+msgid "Result"
+msgstr "Risultato"
+
+#: inc/class-page-backwpup.php:366
+#, php-format
+msgid "Could not open log folder: %s"
+msgstr "Non è possibile accedere alla cartella dei log: %s"
+
+#: inc/class-page-backwpup.php:389
+#, php-format
+msgid "%d ERROR"
+msgid_plural "%d ERRORS"
+msgstr[0] "%d ERRORE"
+msgstr[1] "%d ERRORI"
+
+#: inc/class-page-backwpup.php:392
+#, php-format
+msgid "%d WARNING"
+msgid_plural "%d WARNINGS"
+msgstr[0] "%d AVVISO"
+msgstr[1] "%d AVVISI"
+
+#: inc/class-page-backwpup.php:395
+msgid "OK"
+msgstr ""
+
+#: inc/class-page-editjob.php:98
+#, php-format
+msgid "Job with ID %d"
+msgstr "Processo con ID %d"
+
+#: inc/class-page-editjob.php:222
+#, php-format
+msgid "Changes for job <i>%s</i> saved."
+msgstr "Cambiamenti per il processo <i>%s</i> salvati."
+
+#: inc/class-page-editjob.php:222
+msgid "Jobs overview"
+msgstr "Panoramica processi"
+
+#: inc/class-page-editjob.php:222 inc/class-page-jobs.php:181
+msgid "Run now"
+msgstr "Avvia ora"
+
+#: inc/class-page-editjob.php:325
+#, php-format
+msgid "%1$s &rsaquo; Job: %2$s"
+msgstr "%1$s &rsaquo; Processo: %2$s"
+
+#: inc/class-page-editjob.php:328 inc/class-page-settings.php:119
+msgid "General"
+msgstr "Generale"
+
+#: inc/class-page-editjob.php:328
+msgid "Schedule"
+msgstr "Programma"
+
+#: inc/class-page-editjob.php:343
+#, php-format
+msgid "To: %s"
+msgstr "Su: %s"
+
+#: inc/class-page-editjob.php:378 inc/class-page-editjob.php:383
+#: inc/class-page-jobs.php:125
+msgid "Job Name"
+msgstr "Nome del processo"
+
+#: inc/class-page-editjob.php:381
+msgid "Please name this job."
+msgstr "Dai un nome a questo processo"
+
+#: inc/class-page-editjob.php:388
+msgid "Job Tasks"
+msgstr "Compiti del processo"
+
+#: inc/class-page-editjob.php:391 inc/pro/class-wizard-job.php:254
+msgid "This job is a&#160;&hellip;"
+msgstr "Questo processo è a&#160;&hellip;"
+
+#: inc/class-page-editjob.php:394 inc/pro/class-wizard-job.php:257
+msgid "Job tasks"
+msgstr "Compiti del processo"
+
+#: inc/class-page-editjob.php:412
+msgid "Backup File Creation"
+msgstr "Creazione file di backup"
+
+#: inc/class-page-editjob.php:417 inc/class-page-editjob.php:420
+#: inc/pro/class-wizard-job.php:402 inc/pro/class-wizard-job.php:405
+msgid "Backup type"
+msgstr "Tipo di backup"
+
+#: inc/class-page-editjob.php:423
+msgid "Synchronize file by file to destination"
+msgstr "Sincronizzare il file con il file di destinazione"
+
+#: inc/class-page-editjob.php:428 inc/pro/class-wizard-job.php:413
+msgid "Create a backup archive"
+msgstr "Crea un archivio di backup"
+
+#: inc/class-page-editjob.php:436
+msgid "Archive name"
+msgstr "Nome dell'archivio"
+
+#: inc/class-page-editjob.php:439
+msgid ""
+"<em>Note</em>: In order for backup file tracking to work, %hash% must be "
+"included anywhere in the archive name."
+msgstr ""
+"<em>Nota</em>: Per il corretto tracciamento del file di backup, il valore "
+"%hash% deve necessariamente essere inserito nel nome dell'archivio."
+
+#: inc/class-page-editjob.php:445
+msgid "Replacement patterns:"
+msgstr "Modelli di ricambio:"
+
+#: inc/class-page-editjob.php:446
+#, php-format
+msgid "%d = Two digit day of the month, with leading zeros"
+msgstr "%d = Giorni del mese a due cifre, eventualmente preceduto da zeri"
+
+#: inc/class-page-editjob.php:447
+msgid "%j = Day of the month, without leading zeros"
+msgstr "%j = Giorno del mese, senza zeri"
+
+#: inc/class-page-editjob.php:448
+msgid "%m = Day of the month, with leading zeros"
+msgstr "%m = Giorno del mese, eventualmente preceduto da zeri"
+
+#: inc/class-page-editjob.php:449
+msgid "%n = Representation of the month (without leading zeros)"
+msgstr "%n = Rappresentazione del mese (senza lo zero)"
+
+#: inc/class-page-editjob.php:450
+msgid "%Y = Four digit representation for the year"
+msgstr "%Y = Rappresentazione a quattro cifre per l'anno"
+
+#: inc/class-page-editjob.php:451
+msgid "%y = Two digit representation of the year"
+msgstr "%y = Rappresentazione a due cifre dell'anno"
+
+#: inc/class-page-editjob.php:452
+msgid "%a = Lowercase ante meridiem (am) and post meridiem (pm)"
+msgstr "%a = Minuscolo ante meridiem (mattino) e post meridiem (pm)"
+
+#: inc/class-page-editjob.php:453
+msgid "%A = Uppercase ante meridiem (AM) and post meridiem (PM)"
+msgstr "%A = Maiuscolo ante meridiem (mattino) e post meridiem (pm)"
+
+#: inc/class-page-editjob.php:454
+msgid "%B = Swatch Internet Time"
+msgstr ""
+
+#: inc/class-page-editjob.php:455
+msgid "%g = Hour in 12-hour format, without leading zeros"
+msgstr "%g = Ore in formato 12 ore, senza zeri"
+
+#: inc/class-page-editjob.php:456
+msgid "%G = Hour in 24-hour format, without leading zeros"
+msgstr "%G = ore in formato 24 ore, senza zeri"
+
+#: inc/class-page-editjob.php:457
+msgid "%h = Hour in 12-hour format, with leading zeros"
+msgstr "%h = Ore in formato 12 ore, eventualmente preceduto da zeri"
+
+#: inc/class-page-editjob.php:458
+msgid "%H = Hour in 24-hour format, with leading zeros"
+msgstr "%H =  ore in formato 24 ore, eventualmente preceduto da zeri"
+
+#: inc/class-page-editjob.php:459
+msgid "%i = Two digit representation of the minute"
+msgstr "%i = Rappresentazione a due cifre del minuto"
+
+#: inc/class-page-editjob.php:460
+#, php-format
+msgid "%s = Two digit representation of the second"
+msgstr "%s = Rappresentazione a due cifre del secondo"
+
+#: inc/class-page-editjob.php:466 inc/class-page-editjob.php:469
+msgid "Archive Format"
+msgstr "Formato dell'archivio"
+
+#: inc/class-page-editjob.php:472 inc/class-page-editjob.php:474
+#: inc/pro/class-wizard-job.php:426 inc/pro/class-wizard-job.php:429
+msgid "Zip"
+msgstr ""
+
+#: inc/class-page-editjob.php:475
+#, php-format
+msgid "Disabled due to missing %s PHP class."
+msgstr "Disabilitato a causa della mancanza della classe %s PHP ."
+
+#: inc/class-page-editjob.php:477 inc/pro/class-wizard-job.php:433
+msgid "Tar"
+msgstr ""
+
+#: inc/class-page-editjob.php:479 inc/class-page-editjob.php:481
+#: inc/pro/class-wizard-job.php:437 inc/pro/class-wizard-job.php:440
+msgid "Tar GZip"
+msgstr ""
+
+#: inc/class-page-editjob.php:482 inc/class-page-editjob.php:488
+#, php-format
+msgid "Disabled due to missing %s PHP function."
+msgstr "Disabilitato a causa della mancanza della funzione %s PHP ."
+
+#: inc/class-page-editjob.php:485 inc/class-page-editjob.php:487
+#: inc/pro/class-wizard-job.php:444 inc/pro/class-wizard-job.php:447
+msgid "Tar BZip2"
+msgstr ""
+
+#: inc/class-page-editjob.php:495
+msgid "Job Destination"
+msgstr "Destinazione processo"
+
+#: inc/class-page-editjob.php:499 inc/class-page-editjob.php:502
+msgid "Where should your backup file be stored?"
+msgstr "Dove deve essere salvato il file di backup?"
+
+#: inc/class-page-editjob.php:520
+msgid "Log Files"
+msgstr "File di Log"
+
+#: inc/class-page-editjob.php:524
+msgid "Send log to email address"
+msgstr "Invia il log all'indirizzo mail"
+
+#: inc/class-page-editjob.php:527
+msgid ""
+"Leave empty to not have log sent. Or separate with , for more than one "
+"receiver."
+msgstr ""
+"Lasciare vuoto per non inviare il log. Oppure separare con , per riceverne "
+"più di un destinatario."
+
+#: inc/class-page-editjob.php:531
+msgid "Email FROM field"
+msgstr "Campo email DA"
+
+#: inc/class-page-editjob.php:533
+msgid "Your Name &lt;mail@domain.tld&gt;"
+msgstr "Tuo Nome &lt;mail@domain.tld&gt;"
+
+#: inc/class-page-editjob.php:537
+msgid "Errors only"
+msgstr "Solo errori"
+
+#: inc/class-page-editjob.php:542
+msgid "Send email with log only when errors occur during job execution."
+msgstr ""
+"Invia e-mail con log solo quando si verificano errori durante l'esecuzione "
+"del processo di backup."
+
+#: inc/class-page-editjob.php:553
+msgid "Job Schedule"
+msgstr "Pianifica il processo"
+
+#: inc/class-page-editjob.php:557 inc/class-page-editjob.php:560
+msgid "Start job"
+msgstr "Avvia il processo"
+
+#: inc/class-page-editjob.php:564
+msgid "manually only"
+msgstr "Solo manuale"
+
+#: inc/class-page-editjob.php:568
+msgid "with WordPress cron"
+msgstr "con il cron di WordPress"
+
+#: inc/class-page-editjob.php:577
+msgid ""
+"with <a href=\"https://www.easycron.com?ref=36673\" title=\"Affiliate Link!"
+"\">EasyCron.com</a>"
+msgstr ""
+"con <a href=\"https://www.easycron.com?ref=36673\" title=\"Affiliate Link!"
+"\">EasyCron.com</a>"
+
+#: inc/class-page-editjob.php:579
+#, php-format
+msgid "First setup <a href=\"%s\">API Key</a>."
+msgstr "Primo setup <a href=\"%s\">API Key</a>."
+
+#: inc/class-page-editjob.php:588
+msgid "with a link"
+msgstr "con un link"
+
+#: inc/class-page-editjob.php:589
+msgid ""
+"Copy the link for an external start. This option has to be activated to make "
+"the link work."
+msgstr ""
+"Copiare il link per un avvio esterno. Questa opzione deve essere attivata "
+"per far funzionare il collegamento."
+
+#: inc/class-page-editjob.php:596
+msgid "Start job with CLI"
+msgstr "Avvia il processo con CLI"
+
+#: inc/class-page-editjob.php:599
+msgid ""
+"Use <a href=\"http://wp-cli.org/\">WP-CLI</a> to run jobs from commandline."
+msgstr ""
+"Usa <a href=\"http://wp-cli.org/\">WP-CLI</a> per avviare processi da linea "
+"di comando."
+
+#: inc/class-page-editjob.php:604
+msgid "Schedule execution time"
+msgstr "Programma l'execution time"
+
+#: inc/class-page-editjob.php:608 inc/class-page-editjob.php:611
+msgid "Scheduler type"
+msgstr "Tipo di pianificazione "
+
+#: inc/class-page-editjob.php:615
+msgid "basic"
+msgstr "base"
+
+#: inc/class-page-editjob.php:619
+msgid "advanced"
+msgstr "avanzata"
+
+#: inc/class-page-editjob.php:648 inc/class-page-editjob.php:716
+#: inc/pro/class-wizard-job.php:320
+msgid "Scheduler"
+msgstr "Pianificatore"
+
+#: inc/class-page-editjob.php:653 inc/class-page-jobs.php:126
+#: inc/class-page-logs.php:166 inc/pro/class-wizard-job.php:324
+msgid "Type"
+msgstr "Tipo"
+
+#: inc/class-page-editjob.php:658 inc/pro/class-wizard-job.php:330
+msgid "Hour"
+msgstr "Ora"
+
+#: inc/class-page-editjob.php:661 inc/pro/class-wizard-job.php:333
+msgid "Minute"
+msgstr "Minuto"
+
+#: inc/class-page-editjob.php:665 inc/pro/class-wizard-job.php:337
+msgid "monthly"
+msgstr "Mensile"
+
+#: inc/class-page-editjob.php:667 inc/pro/class-wizard-job.php:339
+msgid "on"
+msgstr "su"
+
+#: inc/class-page-editjob.php:677 inc/pro/class-wizard-job.php:349
+msgid "weekly"
+msgstr "settimanale"
+
+#: inc/class-page-editjob.php:679 inc/class-page-editjob.php:786
+#: inc/pro/class-wizard-job.php:351
+msgid "Sunday"
+msgstr "Domenica"
+
+#: inc/class-page-editjob.php:680 inc/class-page-editjob.php:787
+#: inc/pro/class-wizard-job.php:352
+msgid "Monday"
+msgstr "Lunedì"
+
+#: inc/class-page-editjob.php:681 inc/class-page-editjob.php:788
+#: inc/pro/class-wizard-job.php:353
+msgid "Tuesday"
+msgstr "Martedì"
+
+#: inc/class-page-editjob.php:682 inc/class-page-editjob.php:789
+#: inc/pro/class-wizard-job.php:354
+msgid "Wednesday"
+msgstr "Mercoledì"
+
+#: inc/class-page-editjob.php:683 inc/class-page-editjob.php:790
+#: inc/pro/class-wizard-job.php:355
+msgid "Thursday"
+msgstr "Giovedì"
+
+#: inc/class-page-editjob.php:684 inc/class-page-editjob.php:791
+#: inc/pro/class-wizard-job.php:356
+msgid "Friday"
+msgstr "Venerdì"
+
+#: inc/class-page-editjob.php:685 inc/class-page-editjob.php:792
+#: inc/pro/class-wizard-job.php:357
+msgid "Saturday"
+msgstr "Sabato"
+
+#: inc/class-page-editjob.php:695 inc/pro/class-wizard-job.php:367
+msgid "daily"
+msgstr "quotidiano"
+
+#: inc/class-page-editjob.php:705 inc/pro/class-wizard-job.php:377
+msgid "hourly"
+msgstr "orario"
+
+#: inc/class-page-editjob.php:719
+msgid "Minutes:"
+msgstr "Minuti:"
+
+#: inc/class-page-editjob.php:721 inc/class-page-editjob.php:734
+#: inc/class-page-editjob.php:746 inc/class-page-editjob.php:760
+#: inc/class-page-editjob.php:782
+msgid "Any (*)"
+msgstr "Qualsiasi (*)"
+
+#: inc/class-page-editjob.php:731
+msgid "Hours:"
+msgstr "Ore:"
+
+#: inc/class-page-editjob.php:744
+msgid "Day of Month:"
+msgstr "Giorno del mese:"
+
+#: inc/class-page-editjob.php:758
+msgid "Month:"
+msgstr "Mese:"
+
+#: inc/class-page-editjob.php:764
+msgid "January"
+msgstr "Gennaio"
+
+#: inc/class-page-editjob.php:765
+msgid "February"
+msgstr "Febbraio"
+
+#: inc/class-page-editjob.php:766
+msgid "March"
+msgstr "Marzo"
+
+#: inc/class-page-editjob.php:767
+msgid "April"
+msgstr "Aprile"
+
+#: inc/class-page-editjob.php:768
+msgid "May"
+msgstr "Maggio"
+
+#: inc/class-page-editjob.php:769
+msgid "June"
+msgstr "Giugno"
+
+#: inc/class-page-editjob.php:770
+msgid "July"
+msgstr "Luglio"
+
+#: inc/class-page-editjob.php:771
+msgid "August"
+msgstr "Agosto"
+
+#: inc/class-page-editjob.php:772
+msgid "September"
+msgstr "Settembre"
+
+#: inc/class-page-editjob.php:773
+msgid "October"
+msgstr "Ottobre"
+
+#: inc/class-page-editjob.php:774
+msgid "November"
+msgstr "Novembre"
+
+#: inc/class-page-editjob.php:775
+msgid "December"
+msgstr "Dicembre"
+
+#: inc/class-page-editjob.php:780
+msgid "Day of Week:"
+msgstr "Giorno della settimana:"
+
+#: inc/class-page-editjob.php:816
+msgid "Save changes"
+msgstr "Salva cambiamenti"
+
+#: inc/class-page-editjob.php:903
+msgid ""
+"Working as <a href=\"http://wikipedia.org/wiki/Cron\">Cron</a> schedule:"
+msgstr ""
+"Funziona come <a href=\"http://wikipedia.org/wiki/Cron\">Cron</a> "
+"programmazione:"
+
+#: inc/class-page-editjob.php:912
+#, php-format
+msgid "ATTENTION: Job runs every %d minutes!"
+msgstr "ATTENZIONE: Il processo si avvia ogni %d minuti!"
+
+#: inc/class-page-editjob.php:916
+msgid "ATTENTION: Can't calculate cron!"
+msgstr "ATTENZIONE: Non è possibile calcolare il cron!"
+
+#: inc/class-page-editjob.php:919
+msgid "Next runtime:"
+msgstr "Prossimo momento d'avvio:"
+
+#: inc/class-page-jobs.php:100
+msgid "No Jobs."
+msgstr "Nessun processo."
+
+#: inc/class-page-jobs.php:127 inc/pro/class-wizard-job.php:67
+#: inc/pro/class-wizard-job.php:473
+msgid "Destinations"
+msgstr "Destinazioni"
+
+#: inc/class-page-jobs.php:128
+msgid "Next Run"
+msgstr "Prossimo avvio"
+
+#: inc/class-page-jobs.php:129
+msgid "Last Run"
+msgstr "Ultimo avvio"
+
+#: inc/class-page-jobs.php:172 inc/class-page-logs.php:228
+#: inc/pro/class-page-support.php:221
+#, php-format
+msgid "Job ID: %d"
+msgstr "ID Processo: %d"
+
+#: inc/class-page-jobs.php:175 views/pro/restore/steps/step3_action.php:45
+msgid "Edit"
+msgstr "Modifica"
+
+#: inc/class-page-jobs.php:176
+msgid "Copy"
+msgstr "Copia"
+
+#: inc/class-page-jobs.php:189
+msgid "Last log"
+msgstr "Ultimo log"
+
+#: inc/class-page-jobs.php:251
+msgid "Not needed or set"
+msgstr "Non necessario o impostato"
+
+#: inc/class-page-jobs.php:273
+#, php-format
+msgid "Running for: %s seconds"
+msgstr "In esecuzione da: %s secondi"
+
+#: inc/class-page-jobs.php:280 inc/class-page-jobs.php:289
+#, php-format
+msgid "Cron: %s"
+msgstr ""
+
+#: inc/class-page-jobs.php:280
+#, php-format
+msgid "%1$s at %2$s by WP-Cron"
+msgstr "%1$s a %2$s con WP-Cron"
+
+#: inc/class-page-jobs.php:289
+#, php-format
+msgid "%1$s at %2$s by EasyCron"
+msgstr "%1$s a %2$s con EasyCron"
+
+#: inc/class-page-jobs.php:295
+msgid "External link"
+msgstr "Link esterno"
+
+#: inc/class-page-jobs.php:298
+msgid "Inactive"
+msgstr "Non attivo"
+
+#: inc/class-page-jobs.php:320
+#, php-format
+msgid "Runtime: %d seconds"
+msgstr "Durata: %d secondi"
+
+#: inc/class-page-jobs.php:324
+msgid "not yet"
+msgstr "non ancora"
+
+#: inc/class-page-jobs.php:330
+msgid "Download last backup"
+msgstr "Download ultimo backup"
+
+#: inc/class-page-jobs.php:339
+msgid "Log"
+msgstr ""
+
+#: inc/class-page-jobs.php:384
+msgid "Copy of"
+msgstr "Copia di"
+
+#: inc/class-page-jobs.php:431
+#, php-format
+msgid "The job \"%s\" destination \"%s\" is not configured properly"
+msgstr ""
+"La destinazione \"%s\" del processo \"%s\" non è adeguatamente configurata"
+
+#: inc/class-page-jobs.php:436
+#, php-format
+msgid "The job \"%s\" needs properly configured destinations to run!"
+msgstr ""
+"Per l'avvio del processo \"%s\" devi configurare correttamente le "
+"destinazioni!"
+
+#: inc/class-page-jobs.php:454
+#, php-format
+msgid ""
+"Job \"%s\" has started, but not responded for 10 seconds. Please check <a "
+"href=\"%s\">information</a>."
+msgstr ""
+"Il processo \"%s\" è stato avviato, ma non risponde da 10 secondi. Controlla "
+"<a href=\"%s\">impostazioni</a>."
+
+#: inc/class-page-jobs.php:459
+#, php-format
+msgid "Job \"%s\" started."
+msgstr "Processo \"%s\" avviato."
+
+#: inc/class-page-jobs.php:471 inc/class-wp-cli.php:59
+msgid "Job will be terminated."
+msgstr "Il processo verrà terminato."
+
+#: inc/class-page-jobs.php:584
+#, php-format
+msgid "%s &rsaquo; Jobs"
+msgstr "%s &rsaquo; Processi"
+
+#: inc/class-page-jobs.php:604
+#, php-format
+msgid "Job currently running: %s"
+msgstr "Processo attualmente avviato: %s"
+
+#: inc/class-page-jobs.php:605
+msgid "Warnings:"
+msgstr "Avvisi:"
+
+#: inc/class-page-jobs.php:606
+msgid "Errors:"
+msgstr "Errori:"
+
+#: inc/class-page-jobs.php:607
+msgid "Log of running job"
+msgstr "Log del processo avviato"
+
+#: inc/class-page-jobs.php:607
+msgid "Display working log"
+msgstr "Mostra il log "
+
+#: inc/class-page-jobs.php:609
+msgid "Close working screen"
+msgstr "Chiudi la schermata di lavoro"
+
+#: inc/class-page-jobs.php:609
+msgid "Close"
+msgstr "Chiudi"
+
+#: inc/class-page-jobs.php:782
+msgid "Job completed"
+msgstr "Processo completato"
+
+#: inc/class-page-jobs.php:786
+#, php-format
+msgid ""
+"Job has done with warnings in %s seconds. Please resolve them for correct "
+"execution."
+msgstr ""
+"Il processo è terminato con avvisi in %s secondi. Si prega di risolverli per "
+"la corretta esecuzione."
+
+#: inc/class-page-logs.php:138
+msgid "No Logs."
+msgstr "Nessun log."
+
+#: inc/class-page-logs.php:165
+msgid "Status"
+msgstr "Stato"
+
+#: inc/class-page-logs.php:168
+msgid "Runtime"
+msgstr "Durata"
+
+#: inc/class-page-logs.php:230
+msgid "View"
+msgstr "Vista"
+
+#: inc/class-page-logs.php:251
+#, php-format
+msgid "1 ERROR"
+msgid_plural "%d ERRORS"
+msgstr[0] "1 ERRORE"
+msgstr[1] "%d ERRORI"
+
+#: inc/class-page-logs.php:254
+#, php-format
+msgid "1 WARNING"
+msgid_plural "%d WARNINGS"
+msgstr[0] "1 AVVISO"
+msgstr[1] "%d AVVISI"
+
+#: inc/class-page-logs.php:257
+msgid "O.K."
+msgstr ""
+
+#: inc/class-page-logs.php:275
+msgid "Log only"
+msgstr "Solo log"
+
+#: inc/class-page-logs.php:440
+#, php-format
+msgid "%s &rsaquo; Logs"
+msgstr ""
+
+#: inc/class-page-logs.php:471
+msgid "Logfile not found!"
+msgstr "File di log non trovato!"
+
+#: inc/class-page-settings.php:63
+msgid "Settings reset to default"
+msgstr "Impostazioni resettate a quelle di default"
+
+#: inc/class-page-settings.php:106
+msgid "Settings saved"
+msgstr "Impostazioni salvate"
+
+#: inc/class-page-settings.php:117
+#, php-format
+msgid "%s &rsaquo; Settings"
+msgstr "%s &rsaquo; Impostazioni"
+
+#: inc/class-page-settings.php:119
+msgid "Network"
+msgstr ""
+
+#: inc/class-page-settings.php:119
+msgid "API Keys"
+msgstr ""
+
+#: inc/class-page-settings.php:119
+msgid "Information"
+msgstr "Informazioni"
+
+#: inc/class-page-settings.php:137
+msgid "Display Settings"
+msgstr "Mostra impostazioni"
+
+#: inc/class-page-settings.php:138
+msgid "Do you want to see BackWPup in the WordPress admin bar?"
+msgstr "Vuoi vedere BackWPup nella barra di amministrazione di WordPress?"
+
+#: inc/class-page-settings.php:141
+msgid "Admin bar"
+msgstr "Barra di amministrazione"
+
+#: inc/class-page-settings.php:144
+msgid "Admin Bar"
+msgstr "Barra di amministrazione"
+
+#: inc/class-page-settings.php:147
+msgid "Show BackWPup links in admin bar."
+msgstr "Mostra il link di BackWPup nella barra di amministrazionea."
+
+#: inc/class-page-settings.php:153 inc/class-page-settings.php:156
+msgid "Folder sizes"
+msgstr "Dimensioni cartelle"
+
+#: inc/class-page-settings.php:159
+msgid ""
+"Display folder sizes in the files tab when editing a job. (Might increase "
+"loading time of files tab.)"
+msgstr ""
+"Visualizza le dimensioni della cartella nella scheda dei file durante la "
+"modifica di un processo. (Potrebbe aumentare il tempo di caricamento della "
+"scheda file)"
+
+#: inc/class-page-settings.php:165
+msgid "Security"
+msgstr "Sicurezza"
+
+#: inc/class-page-settings.php:166
+msgid "Security option for BackWPup"
+msgstr "Opzione di sicurezza per BackWPup"
+
+#: inc/class-page-settings.php:169 inc/class-page-settings.php:172
+msgid "Protect folders"
+msgstr "Proteggi le cartelle"
+
+#: inc/class-page-settings.php:175
+msgid ""
+"Protect BackWPup folders ( Temp, Log and Backups ) with <code>.htaccess</"
+"code> and <code>index.php</code>"
+msgstr ""
+"Proteggere le cartelle di BackWPup (Temp, log e backup) con <code>.htaccess</"
+"code> e <code>index.php</code>"
+
+#: inc/class-page-settings.php:188
+msgid ""
+"Every time BackWPup runs a backup job, a log file is being generated. Choose "
+"where to store your log files and how many of them."
+msgstr ""
+"Ogni volta che BackWPup esegue un processo di backup, viene generato un file "
+"di log. Scegliere dove memorizzare i file di log e quanti devono essere."
+
+#: inc/class-page-settings.php:191
+msgid "Log file folder"
+msgstr "Cartella del file log"
+
+#: inc/class-page-settings.php:194
+#, php-format
+msgid "You can use absolute or relative path! Relative path is relative to %s."
+msgstr ""
+"È possibile utilizzare il percorso assoluto o relativo! Il percorso relativo "
+"è relativo a %s."
+
+#: inc/class-page-settings.php:198
+msgid "Maximum log files"
+msgstr "Numero massimo di file di log"
+
+#: inc/class-page-settings.php:201
+msgid "Maximum log files in folder."
+msgstr "Numero massimo di file di log nella cartella"
+
+#: inc/class-page-settings.php:205 inc/class-page-settings.php:208
+msgid "Compression"
+msgstr "Compressione"
+
+#: inc/class-page-settings.php:211
+msgid "Compress log files with GZip."
+msgstr "Comprimi i file di log con GZip."
+
+#: inc/class-page-settings.php:217 inc/class-page-settings.php:220
+msgid "Logging Level"
+msgstr "Livello di log"
+
+#: inc/class-page-settings.php:223
+msgid "Normal (translated)"
+msgstr "Normale (translated)"
+
+#: inc/class-page-settings.php:224
+msgid "Normal (not translated)"
+msgstr "Normale (not translated)"
+
+#: inc/class-page-settings.php:225
+msgid "Debug (translated)"
+msgstr ""
+
+#: inc/class-page-settings.php:226
+msgid "Debug (not translated)"
+msgstr ""
+
+#: inc/class-page-settings.php:229
+msgid ""
+"Debug log has much more informations than normal logs. It is for support and "
+"should be handled carefully. For support is the best to use a not translated "
+"log file. Usage of not translated logs can reduce the PHP memory usage too."
+msgstr ""
+"Il registro di debug ha molte più informazioni del log normale. E' per il "
+"supporto e deve essere maneggiato con cura. Per il supporto è meglio "
+"utilizzare un file di log non tradotto. L'uso di registri non tradotti è in "
+"grado di ridurre l'eccessivo utilizzo della memoria PHP."
+
+#: inc/class-page-settings.php:238
+msgid "There are a couple of general options for backup jobs. Set them here."
+msgstr ""
+"Ci sono un paio di opzioni generali per i processi di backup. Impostali qui."
+
+#: inc/class-page-settings.php:241
+msgid "Maximum number of retries for job steps"
+msgstr "Numero massimo di tentativi per i passaggi del processo"
+
+#: inc/class-page-settings.php:247
+msgid "Maximum script execution time"
+msgstr "Tempo massimo di esecuzione script"
+
+#: inc/class-page-settings.php:250
+msgid "Maximum PHP Script execution time"
+msgstr "Tempo massimo di esecuzione Script PHP"
+
+#: inc/class-page-settings.php:253
+msgid "seconds."
+msgstr "secondi."
+
+#: inc/class-page-settings.php:254
+msgid ""
+"Job will restart before hitting maximum execution time. Restarts will be "
+"disabled on CLI usage. If <code>ALTERNATE_WP_CRON</code> has been defined, "
+"WordPress Cron will be used for restarts, so it can take a while. 0 means no "
+"maximum."
+msgstr ""
+"Il processo ripartirà prima di raggiungere il tempo massimo di esecuzione "
+"consentito. I riavvii verranno disabilitati sull'utilizzo CLI. Se <code> "
+"ALTERNATE_WP_CRON </code> è stato definito, il Cron di WordPress verrà "
+"utilizzato per il riavvio, quindi potrà impiegare un po' di tempo. 0 "
+"significa nessuna massimo."
+
+#: inc/class-page-settings.php:261
+msgid "Key to start jobs externally with an URL"
+msgstr "Chiave per iniziare i processi esternamente con un URL"
+
+#: inc/class-page-settings.php:265
+msgid "Will be used to protect job starts from unauthorized person."
+msgstr ""
+"Saranno utilizzati per proteggere gli avvii dei processi da persone non "
+"autorizzate."
+
+#: inc/class-page-settings.php:269 inc/class-page-settings.php:272
+msgid "Reduce server load"
+msgstr "Ridurre il carico del server"
+
+#: inc/class-page-settings.php:275
+msgid "disabled"
+msgstr "non abilitato"
+
+#: inc/class-page-settings.php:276
+msgid "minimum"
+msgstr "minimo"
+
+#: inc/class-page-settings.php:277
+msgid "medium"
+msgstr "medio"
+
+#: inc/class-page-settings.php:278
+msgid "maximum"
+msgstr "massimo"
+
+#: inc/class-page-settings.php:281
+msgid ""
+"This adds short pauses to the process. Can be used to reduce the CPU load."
+msgstr ""
+"Questo aggiunge brevi pause al processo. Può essere utilizzato per ridurre "
+"il carico della CPU."
+
+#: inc/class-page-settings.php:286
+msgid "Empty output on working"
+msgstr "Output vuoto sul processo di backup."
+
+#: inc/class-page-settings.php:289 inc/class-page-settings.php:292
+msgid "Enable an empty Output on backup working."
+msgstr "Abilita un output vuoto sul processo di backup."
+
+#: inc/class-page-settings.php:294
+msgid ""
+"This do an empty output on job working. This can help in some situations or "
+"can brake the working. You must test it."
+msgstr ""
+"Questo crea un output vuoto sul processo di backup. Questo può aiutare in "
+"alcune situazioni o può frenare il lavoro. È necessario verificarlo."
+
+#: inc/class-page-settings.php:299
+msgid "Windows IIS compatibility"
+msgstr "Compatibilità Windows IIS"
+
+#: inc/class-page-settings.php:302 inc/class-page-settings.php:305
+msgid "Enable compatibility with IIS on Windows."
+msgstr "Abilita la compatibilità con Windows IIS."
+
+#: inc/class-page-settings.php:307
+msgid ""
+"There is a PHP bug (<a href=\"https://bugs.php.net/43817\">bug #43817</a>), "
+"which is triggered on some versions of Windows and IIS. Checking this box "
+"will enable a workaround for that bug. Only enable if you are getting errors "
+"about &ldquo;Permission denied&rdquo; in your logs."
+msgstr ""
+"Esiste un bug PHP (<a href=\"https://bugs.php.net/43817\">bug #43817</a>), "
+"che si verifica in alcune versioni di Windows e IIS. Selezionando questa "
+"opzione verrà attivato un meccanismo di gestione di tale bug. Utilizza tale "
+"opzione solamente se stai rilevando errori del tipo &ldquo;Permission "
+"denied&rdquo; nei tuoi log."
+
+#: inc/class-page-settings.php:317
+#, php-format
+msgid "Authentication for <code>%s</code>"
+msgstr "Autenticazione per <code>%s</code>"
+
+#: inc/class-page-settings.php:318
+msgid ""
+"If you protected your blog with HTTP basic authentication (.htaccess), or "
+"you use a Plugin to secure wp-cron.php, then use the authentication methods "
+"below."
+msgstr ""
+"Se hai protetto il tuo blog con l'autenticazione di base HTTP (.htaccess), "
+"oppure utilizzi un plugin per garantire wp-cron.php, utilizza i metodi di "
+"autenticazione di seguito riportati."
+
+#: inc/class-page-settings.php:324 inc/class-page-settings.php:327
+msgid "Authentication method"
+msgstr "Metodo di autenticazione"
+
+#: inc/class-page-settings.php:331
+msgid "Basic auth"
+msgstr "Autenticazione di base"
+
+#: inc/class-page-settings.php:332
+msgid "WordPress User"
+msgstr "Utente WordPress"
+
+#: inc/class-page-settings.php:333
+msgid "Query argument"
+msgstr "Argomento della query"
+
+#: inc/class-page-settings.php:340
+msgid "Basic Auth Username:"
+msgstr ""
+
+#: inc/class-page-settings.php:346
+msgid "Basic Auth Password:"
+msgstr ""
+
+#: inc/class-page-settings.php:351 inc/class-page-settings.php:354
+msgid "Select WordPress User"
+msgstr "Seleziona l'utente Wordpress"
+
+#: inc/class-page-settings.php:370
+msgid "Query arg key=value:"
+msgstr "Argomento query chiave=valore"
+
+#: inc/class-page-settings.php:392
+msgid ""
+"Experiencing an issue and need to contact BackWPup support? Click the link "
+"below to get debug information you can send to us."
+msgstr ""
+"Si è verificato un problema e hai bisogno di contattare il supporto "
+"BackWPup? Fai click sul link qui sotto per ottenere le informazioni di debug "
+"che puoi inviarci per aiutarti a risolvere il problema."
+
+#: inc/class-page-settings.php:397 inc/class-page-settings.php:461
+msgid "Debug Info"
+msgstr "Informazioni di debug"
+
+#: inc/class-page-settings.php:398
+msgid "Get Debug Info"
+msgstr "Ottieni le informazioni di Debug"
+
+#: inc/class-page-settings.php:403
+msgid ""
+"You will find debug information below. Click the button to copy the debug "
+"info to send to support."
+msgstr ""
+"Qui sotto trovi le informazioni di Debug. Premi il pulsante per copiarle e "
+"poterle inviarle poi al supporto."
+
+#: inc/class-page-settings.php:404
+msgid ""
+"<strong>Note</strong>: Would you like faster, more streamlined support? Pro "
+"users can contact BackWPup from right within the plugin."
+msgstr ""
+"<strong>Nota</strong>: Vorresti un supporto più rapido? Gli utenti Pro "
+"possono contattare BackWPup direttamente dal plug-in."
+
+#: inc/class-page-settings.php:407
+msgid "https://backwpup.com"
+msgstr ""
+
+#: inc/class-page-settings.php:408
+#, fuzzy
+#| msgid "Get pro."
+msgid "Get Pro"
+msgstr "Ottieni Pro."
+
+#: inc/class-page-settings.php:415
+msgid "Copy Debug Info"
+msgstr "Copia le informazioni di Debug"
+
+#: inc/class-page-settings.php:419
+msgid "Debug info copied to clipboard."
+msgstr "Informazioni di Debug copiate."
+
+#: inc/class-page-settings.php:422
+msgid "Could not copy debug info. You can simply press ctrl+C to copy it."
+msgstr ""
+"Non è stato possibile copiare le informazioni di Debug. Puoi semplicemente "
+"premere ctrl+C per copiarle."
+
+#: inc/class-page-settings.php:470 inc/class-page-settings.php:471
+msgid "Setting"
+msgstr "Impostazione"
+
+#: inc/class-page-settings.php:470 inc/class-page-settings.php:471
+msgid "Value"
+msgstr "Valore"
+
+#: inc/class-page-settings.php:487
+msgid "Save Changes"
+msgstr "Salva le modifiche"
+
+#: inc/class-page-settings.php:489
+msgid "Reset all settings to default"
+msgstr "Imposta tutti i valori a quelli di default"
+
+#: inc/class-page-settings.php:506
+msgid "WordPress version"
+msgstr "Versione WordPress"
+
+#: inc/class-page-settings.php:511
+msgid "BackWPup version"
+msgstr "Versione BackWPup "
+
+#: inc/class-page-settings.php:515
+msgid "Get pro."
+msgstr "Ottieni Pro."
+
+#: inc/class-page-settings.php:517
+msgid "BackWPup Pro version"
+msgstr "Versione BackWPup Pro"
+
+#: inc/class-page-settings.php:522
+msgid "PHP version"
+msgstr "Versione PHP"
+
+#: inc/class-page-settings.php:532
+msgid "MySQL version"
+msgstr "Versione MySQL"
+
+#: inc/class-page-settings.php:536
+msgid "cURL version"
+msgstr "Versione cURL"
+
+#: inc/class-page-settings.php:540
+msgid "cURL SSL version"
+msgstr "Versione cURL SSL "
+
+#: inc/class-page-settings.php:543
+msgid "unavailable"
+msgstr "Non disponibile"
+
+#: inc/class-page-settings.php:547
+msgid "WP-Cron url"
+msgstr ""
+
+#: inc/class-page-settings.php:551
+msgid "Server self connect"
+msgstr ""
+
+#: inc/class-page-settings.php:557
+#, fuzzy
+#| msgid "<strong>Not expected HTTP response:</strong><br>"
+msgid "Not expected HTTP response:"
+msgstr "<strong>Risposta HTTP non prevista:</strong><br>"
+
+#: inc/class-page-settings.php:558
+msgid "<strong>Not expected HTTP response:</strong><br>"
+msgstr "<strong>Risposta HTTP non prevista:</strong><br>"
+
+#: inc/class-page-settings.php:560
+#, php-format
+msgid "WP Http Error: %s"
+msgstr ""
+
+#: inc/class-page-settings.php:561
+#, php-format
+msgid "WP Http Error: <code>%s</code>"
+msgstr ""
+
+#: inc/class-page-settings.php:563
+#, php-format
+msgid "Status-Code: %d"
+msgstr ""
+
+#: inc/class-page-settings.php:564
+#, php-format
+msgid "Status-Code: <code>%d</code>"
+msgstr ""
+
+#: inc/class-page-settings.php:573
+#, fuzzy, php-format
+#| msgid "Content: <code>%s</code>"
+msgid "Content: %s"
+msgstr "Contenuto: <code>%s</code>"
+
+#: inc/class-page-settings.php:574
+#, php-format
+msgid "Content: <code>%s</code>"
+msgstr "Contenuto: <code>%s</code>"
+
+#: inc/class-page-settings.php:577
+msgid "Response Test O.K."
+msgstr "Risposta Test O.K."
+
+#: inc/class-page-settings.php:586
+#, fuzzy
+#| msgid "Temp folder:"
+msgid "Temp folder"
+msgstr "Cartella Temp:"
+
+#: inc/class-page-settings.php:588
+#, php-format
+msgid "Temp folder %s doesn't exist."
+msgstr "La cartella Temp %s non esiste."
+
+#: inc/class-page-settings.php:590
+#, php-format
+msgid "Temporary folder %s is not writable."
+msgstr "La cartella temporanea %s non ha accesso in scrittura."
+
+#: inc/class-page-settings.php:596
+msgid "Log folder"
+msgstr "Cartella del log"
+
+#: inc/class-page-settings.php:599
+#, fuzzy, php-format
+#| msgid "Logs folder %s not exist."
+msgid "Log folder %s does not exist."
+msgstr "La cartella del log %s non esisite"
+
+#: inc/class-page-settings.php:601
+#, php-format
+msgid "Log folder %s is not writable."
+msgstr "La cartella del log %s non ha accesso in scrittura"
+
+#: inc/class-page-settings.php:607
+msgid "Server"
+msgstr ""
+
+#: inc/class-page-settings.php:611
+msgid "Operating System"
+msgstr "Sistema Operativo"
+
+#: inc/class-page-settings.php:615
+msgid "PHP SAPI"
+msgstr ""
+
+#: inc/class-page-settings.php:619
+msgid "Current PHP user"
+msgstr "Utente PHP attuale"
+
+#: inc/class-page-settings.php:623
+msgid "Function Disabled"
+msgstr "Funzione disabilitata"
+
+#: inc/class-page-settings.php:627
+msgid "Maximum execution time"
+msgstr "Tempo di esecuzione massimo"
+
+#: inc/class-page-settings.php:629
+#, fuzzy, php-format
+#| msgid "seconds"
+msgid "%d seconds"
+msgstr "secondi"
+
+#: inc/class-page-settings.php:634
+msgid "Alternative WP Cron"
+msgstr "WP cron alternativo"
+
+#: inc/class-page-settings.php:636 inc/class-page-settings.php:644
+msgid "On"
+msgstr ""
+
+#: inc/class-page-settings.php:638 inc/class-page-settings.php:646
+msgid "Off"
+msgstr ""
+
+#: inc/class-page-settings.php:642
+msgid "Disabled WP Cron"
+msgstr "Disabilita WP Cron"
+
+#: inc/class-page-settings.php:650
+msgid "CHMOD Dir"
+msgstr ""
+
+#: inc/class-page-settings.php:658
+msgid "Server Time"
+msgstr ""
+
+#: inc/class-page-settings.php:663
+msgid "Blog Time"
+msgstr ""
+
+#: inc/class-page-settings.php:667
+msgid "Blog Timezone"
+msgstr ""
+
+#: inc/class-page-settings.php:671
+msgid "Blog Time offset"
+msgstr ""
+
+#: inc/class-page-settings.php:673
+#, php-format
+msgid "%s hours"
+msgstr "%s ore"
+
+#: inc/class-page-settings.php:678
+msgid "Blog language"
+msgstr "Lingua del blog"
+
+#: inc/class-page-settings.php:682
+msgid "MySQL Client encoding"
+msgstr ""
+
+#: inc/class-page-settings.php:686
+msgid "PHP Memory limit"
+msgstr "PHP limite della memoria"
+
+#: inc/class-page-settings.php:690
+msgid "WP memory limit"
+msgstr "WP limite della memoria"
+
+#: inc/class-page-settings.php:694
+msgid "WP maximum memory limit"
+msgstr "WP limite massimo della memoria"
+
+#: inc/class-page-settings.php:698
+msgid "Memory in use"
+msgstr "Memoria in uso"
+
+#: inc/class-page-settings.php:704
+msgid "Disabled PHP Functions:"
+msgstr "Funzioni PHP disabilitate:"
+
+#: inc/class-page-settings.php:709
+msgid "Loaded PHP Extensions:"
+msgstr "Estensione PHP caricate:"
+
+#: inc/class-system-tests-runner.php:68
+#, php-format
+msgctxt "%1 = extension name, %2 = file suffix"
+msgid "We recommend to install the %1$s extension to generate %2$s archives."
+msgstr ""
+"Si consiglia di installare l'estensione %1$s per generare gli archivi %2$s."
+
+#: inc/class-system-tests-runner.php:78
+#, php-format
+msgid ""
+"You must run WordPress version %1$s or higher to use this plugin. You are "
+"using version %2$s now."
+msgstr ""
+"Per usare questo plugin è necessario eseguire WordPress versione %1$s o "
+"superiore. Attualmente si utilizza la versione %2$s."
+
+#: inc/class-system-tests-runner.php:89
+#, php-format
+msgid ""
+"We recommend to run a PHP version above %1$s to get the full plugin "
+"functionality. You are using version %2$s now."
+msgstr ""
+"Si consiglia di usare una versione di PHP maggiore della %1$s per poter "
+"sfruttare a pieno il plug-in. Attualmente si sta utilizzando la versione "
+"%2$s."
+
+#: inc/class-system-tests-runner.php:101
+#, php-format
+msgid ""
+"You must have the MySQLi extension installed and a MySQL server version of "
+"%1$s or higher to use this plugin. You are using version %2$s now."
+msgstr ""
+"È necessario avere l'estensione MySQLi installata e una versione server "
+"MySQL di %1$s o superiore per usare questo plugin. Ora si utilizza la "
+"versione %2$s."
+
+#: inc/class-system-tests-runner.php:112
+msgid ""
+"PHP cURL extension must be installed to use the full plugin functionality."
+msgstr ""
+"L'estensione PHP cURL deve essere istallata per usare le funzionalità del "
+"plugin in modo completo."
+
+#: inc/class-system-tests-runner.php:136
+#, php-format
+msgctxt "Link to PHP manual"
+msgid "Please disable the deprecated <a href=\"%s\">PHP safe mode</a>."
+msgstr "Disabilita <a href=\"%s\">PHP safe mode</a> poichè non più valida."
+
+#: inc/class-system-tests-runner.php:146
+msgid ""
+"We recommend to install the PHP FTP extension to use the FTP backup "
+"destination."
+msgstr ""
+"Si raccomanda di istallare l'estensione PHP FTP per usare la destinazione di "
+"backup FTP."
+
+#: inc/class-system-tests-runner.php:165
+#, php-format
+msgid "The HTTP response test result is an error: \"%s\"."
+msgstr "C'è un errore nella risposta del test HTTP: \"%s\"."
+
+#: inc/class-system-tests-runner.php:176
+#, php-format
+msgid ""
+"The HTTP response test result is a wrong HTTP status: %s. It should be "
+"status 200."
+msgstr ""
+"La risposta del test HTTP riporta un stato errato HTTP: %s. Dovrebbe essere "
+"200."
+
+#: inc/class-system-tests-runner.php:193
+msgid "Yeah!"
+msgstr ""
+
+#: inc/class-system-tests-runner.php:194
+msgid "All tests passed without errors."
+msgstr "Tutti i test sono stati passati senza errori."
+
+#: inc/class-system-tests-runner.php:221
+msgid "WP-Cron seems to be broken. But it is needed to run scheduled jobs."
+msgstr ""
+"WP-Cron sembra non funzionare. Ma è necessario per eseguire processi "
+"pianificati."
+
+#: inc/class-system-tests-runner.php:239
+msgid "There are errors. Please correct them, or BackWPup cannot work."
+msgstr ""
+"Ci sono errori. Si prega di correggerli, o BackWPup non può funzionare."
+
+#: inc/class-system-tests-runner.php:261
+msgid "There are some warnings. BackWPup will work, but with limitations."
+msgstr ""
+"Non c'è alcun errore, ma alcune avvisi. BackWPup continuerà a funzionare, ma "
+"con limitazioni."
+
+#: inc/class-wp-cli.php:23
+msgid "A job is already running."
+msgstr "Un processo è già in esecuzione."
+
+#: inc/class-wp-cli.php:35
+msgid "No job ID specified!"
+msgstr "Nessun ID di processo specificato!"
+
+#: inc/class-wp-cli.php:41
+msgid "Job ID does not exist!"
+msgstr "L'ID di processo non esiste!"
+
+#: inc/class-wp-cli.php:54
+msgid "Nothing to abort!"
+msgstr "Nulla da annullare!"
+
+#: inc/class-wp-cli.php:105
+msgid "No job running"
+msgstr "Nessun processo in esecuzione"
+
+#: inc/pro/class-destination-dropbox.php:41
+msgid "Auth Code:"
+msgstr ""
+
+#: inc/pro/class-destination-dropbox.php:49
+msgid "Get auth code"
+msgstr "Ottieni l'auth code"
+
+#: inc/pro/class-destination-dropbox.php:56
+#: inc/pro/class-destination-gdrive.php:400
+#: inc/pro/class-destination-gdrive.php:410
+#: inc/pro/class-destination-sugarsync.php:30
+msgid "Login:"
+msgstr ""
+
+#: inc/pro/class-destination-dropbox.php:60
+#: inc/pro/class-destination-gdrive.php:422
+#: inc/pro/class-destination-sugarsync.php:56
+msgid "Folder:"
+msgstr "Cartella:"
+
+#: inc/pro/class-destination-dropbox.php:190
+#, php-format
+msgid "%d. Try to sync files to Dropbox&#160;&hellip;"
+msgstr "%d. Provo a sincronizzare i file su Dropbox&#160;&hellip;"
+
+#: inc/pro/class-destination-dropbox.php:234
+msgid "Retrieving file list from Dropbox"
+msgstr "Recupero la lista dei file da Dropbox"
+
+#: inc/pro/class-destination-dropbox.php:250
+msgid "Upload changed files to Dropbox"
+msgstr "Aggiornamento dei file cambiati su Dropbox"
+
+#: inc/pro/class-destination-dropbox.php:303
+#, php-format
+msgid "File %s uploaded to Dropbox"
+msgstr "Il file %s è stato aggiornato su Dropbox"
+
+#: inc/pro/class-destination-dropbox.php:342
+#, php-format
+msgid "Extra file %s uploaded to Dropbox"
+msgstr "Il file extra %s è stato aggiornato su Dropbox"
+
+#: inc/pro/class-destination-dropbox.php:356
+msgid "Delete not existing files from Dropbox"
+msgstr "Cancellati file non esistente da Dropbox"
+
+#: inc/pro/class-destination-dropbox.php:368
+#, php-format
+msgid "Folder %s deleted from Dropbox"
+msgstr "La cartella %s è stata cancellata da Dropbox"
+
+#: inc/pro/class-destination-dropbox.php:392
+#, php-format
+msgid "File %s deleted from Dropbox"
+msgstr "Il file %s è stato cancellato da Dropbox"
+
+#: inc/pro/class-destination-folder.php:19
+msgid "Absolute path to folder for backup files:"
+msgstr "Percorso assoluto della cartella per i file di backup:"
+
+#: inc/pro/class-destination-folder.php:41
+#: inc/pro/class-destination-gdrive.php:438
+msgid "Oldest files will be deleted first."
+msgstr "Saranno cancellati prima i file più vecchi."
+
+#: inc/pro/class-destination-folder.php:106
+#, php-format
+msgid "%d. Try to sync files to folder&#160;&hellip;"
+msgstr "%d. Provo a sincronizare i file con la cartella&#160;&hellip;"
+
+#: inc/pro/class-destination-folder.php:115
+msgid "Retrieving file list from folder"
+msgstr "Recupero elenco dei file dalla cartella"
+
+#: inc/pro/class-destination-folder.php:126
+msgid "Copy changed files to folder"
+msgstr "Copia dei file modificati nella cartella"
+
+#: inc/pro/class-destination-folder.php:150
+#, php-format
+msgid "File %s copied"
+msgstr "File %s copiato"
+
+#: inc/pro/class-destination-folder.php:164
+msgid "Delete not existing files from folder"
+msgstr "Elimina i file non esistenti dalla cartella"
+
+#: inc/pro/class-destination-folder.php:177
+#, php-format
+msgid "Extra file %s copied"
+msgstr "File extra %s copiato"
+
+#: inc/pro/class-destination-folder.php:201
+#, php-format
+msgid "File %s deleted from folder"
+msgstr "File %s cancellato dalla cartella"
+
+#: inc/pro/class-destination-folder.php:310
+#, php-format
+msgid "Empty folder %s deleted"
+msgstr "Cartella vuota %s cancellata"
+
+#: inc/pro/class-destination-ftp.php:29
+msgid "Hostname:"
+msgstr ""
+
+#: inc/pro/class-destination-ftp.php:41 inc/pro/class-destination-rsc.php:23
+msgid "Username:"
+msgstr ""
+
+#: inc/pro/class-destination-ftp.php:54
+msgid "Folder on server:"
+msgstr "Cartella su server:"
+
+#: inc/pro/class-destination-ftp.php:70
+#: inc/pro/class-destination-sugarsync.php:60
+msgid "Maximum number of backup files to keep in folder:"
+msgstr "Massimo numero di file di backup da mantenere nella cartella:"
+
+#: inc/pro/class-destination-gdrive.php:63
+#: inc/pro/class-destination-gdrive.php:382
+#, php-format
+msgid ""
+"Looks like you haven’t set up any API keys yet. Head over to <a href=\"%s"
+"\">Settings | API-Keys</a> and get Google Drive all set up, then come back "
+"here."
+msgstr ""
+"Sembra che tu non abbia ancora impostato tutte le chiavi API. Vai su <a href="
+"\"%s\">impostazioni | API-Keys</a> per ottenere tutte le impostazioni Google "
+"Drive, poi torna qui."
+
+#: inc/pro/class-destination-gdrive.php:83
+#: inc/pro/class-destination-gdrive.php:406
+msgid "Authenticate"
+msgstr "Autenticati"
+
+#: inc/pro/class-destination-gdrive.php:92
+#: inc/pro/class-destination-gdrive.php:416
+msgid "Reauthenticate"
+msgstr "Riautenticati"
+
+#: inc/pro/class-destination-gdrive.php:103
+msgid "Folder in Google Drive"
+msgstr "Cartella in Google Drive"
+
+#: inc/pro/class-destination-gdrive.php:147
+msgid ""
+"Consider using trash to delete files. If trash is not enabled, files will be "
+"deleted permanently."
+msgstr ""
+"Considerare l'utilizzo del cestino per eliminare i file. Se il cestino non è "
+"abilitato, i file verranno eliminati in modo permanente."
+
+#: inc/pro/class-destination-gdrive.php:212
+#: inc/pro/class-destination-gdrive.php:255
+msgid "GDrive: Authenticated."
+msgstr "GDrive: Autenticato."
+
+#: inc/pro/class-destination-gdrive.php:217
+#: inc/pro/class-destination-gdrive.php:260
+msgid "GDrive: No refresh token received. Try to Authenticate again!"
+msgstr ""
+"GDrive: Nessun token di aggiornamento ricevuto. Prova ad autenticarti di "
+"nuovo!"
+
+#: inc/pro/class-destination-gdrive.php:231
+#: inc/pro/class-destination-gdrive.php:270
+#: inc/pro/class-destination-gdrive.php:293
+#: inc/pro/class-destination-gdrive.php:320
+#, php-format
+msgid "GDrive API: %s"
+msgstr ""
+
+#: inc/pro/class-destination-gdrive.php:603
+#, php-format
+msgid "%d. Try to send backup file to Google Drive&#160;&hellip;"
+msgstr "%d. Provo a spedire il backup su Google Drive&#160;&hellip;"
+
+#: inc/pro/class-destination-gdrive.php:640
+msgid "Uploading to Google Drive&#160;&hellip;"
+msgstr "Aggiornamento su Google Drive&#160;&hellip;"
+
+#: inc/pro/class-destination-gdrive.php:708
+msgid "Could not create resumable file transfer to Google Drive"
+msgstr ""
+"Impossibile creare il trasferimento del file ripristinato su Google Drive"
+
+#: inc/pro/class-destination-gdrive.php:759
+msgid "Can not resume transfer backup to Google Drive!"
+msgstr "Impossibile riprendere il backup trasferito su Google Drive!"
+
+#: inc/pro/class-destination-gdrive.php:831
+#, php-format
+msgid "Error transfering file chunks to %s."
+msgstr "Errore trasferimento file su %s."
+
+#: inc/pro/class-destination-gdrive.php:832
+#: inc/pro/class-destination-gdrive.php:876
+msgid "Google Drive"
+msgstr ""
+
+#: inc/pro/class-destination-gdrive.php:939
+#, php-format
+msgid "One file deleted from Google Drive"
+msgid_plural "%d files deleted on Google Drive"
+msgstr[0] "Un file eliminato da Google Drive"
+msgstr[1] "%d file eliminati da Google Drive"
+
+#: inc/pro/class-destination-gdrive.php:955
+#: inc/pro/class-destination-gdrive.php:1338
+#, php-format
+msgid "Google Drive API: %s"
+msgstr ""
+
+#: inc/pro/class-destination-gdrive.php:1098
+#, php-format
+msgid "%d. Try to sync files to Google Drive&#160;&hellip;"
+msgstr "%d. Provo a sincronizzare i file su Google Drive&#160;&hellip;"
+
+#: inc/pro/class-destination-gdrive.php:1131
+msgid "Syncing changed files to Google Drive"
+msgstr "Sincronizzazione dei file cambiati su Google Drive"
+
+#: inc/pro/class-destination-gdrive.php:1174
+#, php-format
+msgid "File %s updated on Google Drive"
+msgstr "Il file %s è stato aggiornato su Google Drive"
+
+#: inc/pro/class-destination-gdrive.php:1200
+#, php-format
+msgid "File %s uploaded to Google Drive"
+msgstr "Il file %s è stato caricato su Google Drive"
+
+#: inc/pro/class-destination-gdrive.php:1224
+#, php-format
+msgid "File %s moved to trash in Google Drive"
+msgstr "Il file %s è stato spostato nel cestino su Google Drive"
+
+#: inc/pro/class-destination-gdrive.php:1232
+#, php-format
+msgid "File %s deleted permanently in Google Drive"
+msgstr "Il file %s è stato definitivamente eliminato su Google Drive"
+
+#: inc/pro/class-destination-gdrive.php:1293
+#, php-format
+msgid "Extra file %s updated on Google Drive"
+msgstr "Il file extra %s è stato aggiornato su Google Drive"
+
+#: inc/pro/class-destination-gdrive.php:1323
+#, php-format
+msgid "Extra file %s uploaded to Google Drive"
+msgstr "Il file extra %s è stato caricato su Google Drive"
+
+#: inc/pro/class-destination-glacier.php:27
+msgid "Amazon Glacier"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:31
+msgid "Select a region:"
+msgstr "Seleziona la regione:"
+
+#: inc/pro/class-destination-glacier.php:33
+#: inc/pro/class-destination-glacier.php:235
+msgid "Amazon Glacier Region"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:34
+#: inc/pro/class-destination-glacier.php:236
+msgid "US Standard"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:35
+#: inc/pro/class-destination-glacier.php:237
+msgid "US West (Northern California)"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:36
+#: inc/pro/class-destination-glacier.php:238
+msgid "US West (Oregon)"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:37
+#: inc/pro/class-destination-glacier.php:239
+msgid "EU (Ireland)"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:38
+#: inc/pro/class-destination-glacier.php:240
+msgid "EU (Germany)"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:39
+#: inc/pro/class-destination-glacier.php:241
+msgid "Asia Pacific (Tokyo)"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:40
+#: inc/pro/class-destination-glacier.php:242
+msgid "Asia Pacific (Seoul)"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:41
+msgid "Asia Pacific (Mumbai)"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:42
+#: inc/pro/class-destination-glacier.php:244
+msgid "Asia Pacific (Sydney)"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:43
+#: inc/pro/class-destination-glacier.php:245
+msgid "South America (Sao Paulo)"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:44
+#: inc/pro/class-destination-glacier.php:246
+msgid "China (Beijing)"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:50
+msgid "Amazon Access Keys"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:69
+msgid "Vault"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:73
+msgid "Vault selection"
+msgstr "Selezione vault"
+
+#: inc/pro/class-destination-glacier.php:85
+msgid "Create a new vault"
+msgstr "Crea un nuovo vault"
+
+#: inc/pro/class-destination-glacier.php:92
+msgid "Glacier Backup settings"
+msgstr "Impostazioni Glacier Backup"
+
+#: inc/pro/class-destination-glacier.php:108
+#: inc/pro/class-destination-glacier.php:264
+msgid ""
+"Number of files to keep in folder. (Archives deleted before 3 months after "
+"they have been stored may cause extra costs when deleted.)"
+msgstr ""
+"Numero di file da tenere nella cartella. (Gli archivi cancellati prima di 3 "
+"mesi dopo che sono stati memorizzati possono causare costi aggiuntivi quando "
+"vengono cancellati)."
+
+#: inc/pro/class-destination-glacier.php:172
+msgid "No vault found!"
+msgstr "Nessun vault trovato!"
+
+#: inc/pro/class-destination-glacier.php:211
+#: inc/pro/class-destination-glacier.php:299
+#, php-format
+msgid "Vault %1$s created."
+msgstr "Vault %1$s creato."
+
+#: inc/pro/class-destination-glacier.php:213
+#: inc/pro/class-destination-glacier.php:301
+#, php-format
+msgid "Vault %s could not be created."
+msgstr "Il Vault %s non può essere creato."
+
+#: inc/pro/class-destination-glacier.php:234
+msgid "Select an Amazon Glacier region:"
+msgstr "Seleziona una regione per Amazon Glacier "
+
+#: inc/pro/class-destination-glacier.php:243
+msgid "Asia Pacific (Singapore)"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:248
+#: inc/pro/class-destination-msazure.php:19
+#: inc/pro/class-destination-s3.php:125
+msgid "Access Key:"
+msgstr "Chiave di Accesso:"
+
+#: inc/pro/class-destination-glacier.php:250
+#: inc/pro/class-destination-s3.php:131
+msgid "Secret Key:"
+msgstr "Chiave Segreta:"
+
+#: inc/pro/class-destination-glacier.php:252
+msgid "Vault:"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:261
+msgid "New Vault:"
+msgstr "Nuovo Vault"
+
+#: inc/pro/class-destination-glacier.php:341
+#: inc/pro/class-destination-glacier.php:458
+#: inc/pro/class-destination-glacier.php:477
+#: inc/pro/class-destination-glacier.php:520
+#, php-format
+msgid "AWS API: %s"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:366
+#, php-format
+msgid "%d. Trying to send backup file to Amazon Glacier&#160;&hellip;"
+msgstr "%d. Provo a spedire il backup su Amazon Glacier&#160;&hellip;"
+
+#: inc/pro/class-destination-glacier.php:379
+#, php-format
+msgid "Connected to Glacier vault \"%1$s\" with %2$d archives and size of %3$d"
+msgstr ""
+"Collegato al Glacier vault \"%1$s\" con %2$d archivi e dimensioni di %3$d"
+
+#: inc/pro/class-destination-glacier.php:381
+#, php-format
+msgid "Glacier vault \"%s\" does not exist!"
+msgstr "Glacier vault \"%s\" non esiste!"
+
+#: inc/pro/class-destination-glacier.php:387
+msgid "Starting upload to Amazon Glacier&#160;&hellip;"
+msgstr "Avvio aggiormaneto su Amazon Glacier&#160;&hellip;"
+
+#: inc/pro/class-destination-glacier.php:440
+#, php-format
+msgid "Archive ID: %s"
+msgstr "ID Archivio: %s"
+
+#: inc/pro/class-destination-glacier.php:451 inc/pro/class-pro.php:133
+msgid "Glacier"
+msgstr ""
+
+#: inc/pro/class-destination-glacier.php:510
+#, php-format
+msgid "Cannot delete archive from %s."
+msgstr "Impossibile eliminare l'archivio da %s."
+
+#: inc/pro/class-destination-glacier.php:514
+#, php-format
+msgid "One file deleted on vault."
+msgid_plural "%d files deleted on vault"
+msgstr[0] "Un file eliminato su vault."
+msgstr[1] "%d file eliminati su vault."
+
+#: inc/pro/class-destination-msazure.php:17
+msgid "Account Name:"
+msgstr "Nome account:"
+
+#: inc/pro/class-destination-msazure.php:21
+#: inc/pro/class-destination-rsc.php:38
+msgid "Container:"
+msgstr ""
+
+#: inc/pro/class-destination-msazure.php:28
+#: inc/pro/class-destination-rsc.php:47
+msgid "Create container:"
+msgstr "Crea container:"
+
+#: inc/pro/class-destination-msazure.php:30
+#: inc/pro/class-destination-rsc.php:49
+msgid "Folder in container:"
+msgstr "Cartella nel container:"
+
+#: inc/pro/class-destination-msazure.php:119
+#, php-format
+msgid "%d. Trying to sync files with Microsoft Azure (Blob) &hellip;"
+msgstr "%d. Provo a sincronizzare i file con Microsoft Azure (Blob) &hellip;"
+
+#: inc/pro/class-destination-msazure.php:154
+msgid "Retrieving file list from MS Azure."
+msgstr "Recupero lista dei file da MS Azure."
+
+#: inc/pro/class-destination-msazure.php:170
+msgid "Upload changed files to MS Azure."
+msgstr "Aggiorno i file modificati su MS Azure."
+
+#: inc/pro/class-destination-msazure.php:182
+#, php-format
+msgid "File %s uploaded to MS Azure."
+msgstr "File %s aggiornati su MS Azure."
+
+#: inc/pro/class-destination-msazure.php:208
+#, php-format
+msgid "Extra file %s uploaded to MS Azure."
+msgstr "File extra %s aggiornati su MS Azure."
+
+#: inc/pro/class-destination-msazure.php:221
+msgid "Delete nonexistent files on MS Azure."
+msgstr "Elimina i file inesistenti su MS Azure."
+
+#: inc/pro/class-destination-msazure.php:224
+#, php-format
+msgid "File %s deleted from MS Azure."
+msgstr "File %s eliminato da MS Azure."
+
+#: inc/pro/class-destination-rsc.php:26
+msgid "API Key:"
+msgstr ""
+
+#: inc/pro/class-destination-rsc.php:29
+msgid "Select region:"
+msgstr "Seleziona la regione:"
+
+#: inc/pro/class-destination-rsc.php:149
+#, php-format
+msgid "%d. Trying to sync files to Rackspace cloud&#160;&hellip;"
+msgstr "%d. Provo a sincronizare i file con Rackspace cloud&#160;&hellip;"
+
+#: inc/pro/class-destination-rsc.php:169
+#, php-format
+msgid "Connected to Rackspace cloud files container %s."
+msgstr "Connesso a Rackspace cloud files container %s."
+
+#: inc/pro/class-destination-rsc.php:183
+msgid "Retrieving files list from Rackspace Cloud."
+msgstr "Recupero la lista dei file da Rackspace Cloud."
+
+#: inc/pro/class-destination-rsc.php:214
+msgid "Upload changed files to Rackspace Cloud."
+msgstr "Aggiorno i file cambaiti su Rackspace Cloud."
+
+#: inc/pro/class-destination-rsc.php:232
+#, php-format
+msgid "File %s uploaded to Rackspace Cloud."
+msgstr "Il file %s è stato aggiornato su Rackspace Cloud."
+
+#: inc/pro/class-destination-rsc.php:265
+#, php-format
+msgid "Extra file %s uploaded to Rackspace Cloud."
+msgstr "Il file extra %s è stato aggiornato su Rackspace Cloud."
+
+#: inc/pro/class-destination-rsc.php:278
+msgid "Delete nonexistent files on Rackspace Cloud."
+msgstr "Cancello i file non esistenti su Rackspace Cloud."
+
+#: inc/pro/class-destination-rsc.php:282
+#, php-format
+msgid "File %s deleted from Rackspace Cloud."
+msgstr "Il file %s è stato eliminato su Rackspace Cloud."
+
+#: inc/pro/class-destination-s3.php:31
+msgid "Select a S3 service:"
+msgstr "Seleziona un servizio S3:"
+
+#: inc/pro/class-destination-s3.php:139
+msgid "Bucket:"
+msgstr ""
+
+#: inc/pro/class-destination-s3.php:158
+msgid "New Bucket:"
+msgstr "Nuovo bucket:"
+
+#: inc/pro/class-destination-s3.php:162
+msgid "Folder in bucket:"
+msgstr "Cartella nel Bucket:"
+
+#: inc/pro/class-destination-s3.php:278
+#, php-format
+msgid "Bucket %1$s created in %2$s."
+msgstr "Bucket %1$s creato in %2$s."
+
+#: inc/pro/class-destination-s3.php:353
+#, php-format
+msgid "%d. Trying to sync files to S3 Service&#160;&hellip;"
+msgstr "%d. Provo a sincronizzare i file su S3 Service&#160;&hellip;"
+
+#: inc/pro/class-destination-s3.php:405
+msgid "Retrieving file list from S3."
+msgstr "Recupero della lista file da S3."
+
+#: inc/pro/class-destination-s3.php:471
+msgid "Upload changed files to S3."
+msgstr "Aggiornamento dei file modificati su S3."
+
+#: inc/pro/class-destination-s3.php:521
+#, php-format
+msgid "File %s uploaded to S3."
+msgstr "File %s caricato su S3."
+
+#: inc/pro/class-destination-s3.php:576
+#, php-format
+msgid "Extra file %s uploaded to S3."
+msgstr "Il File extra %s è stato caricato su S3."
+
+#: inc/pro/class-destination-s3.php:599
+msgid "Delete nonexistent files on S3"
+msgstr "Elimino i file non esistenti su S3."
+
+#: inc/pro/class-destination-s3.php:612
+#, php-format
+msgid "File %s deleted from S3."
+msgstr "Il file %s è stato eliminato su S3."
+
+#: inc/pro/class-destination-sugarsync.php:24
+#: inc/pro/class-destination-sugarsync.php:82
+msgid "Sugarsync authenticate!"
+msgstr "Autenticazione Sugarsync!"
+
+#: inc/pro/class-destination-sugarsync.php:34
+msgid "Root:"
+msgstr ""
+
+#: inc/pro/class-export-jobs.php:12 inc/pro/class-export-jobs.php:23
+msgid "Export"
+msgstr ""
+
+#: inc/pro/class-jobtype-dbcheck.php:27
+msgid "Check only WordPress Database tables"
+msgstr "Controlla solo le tabelle del database di WordPress"
+
+#: inc/pro/class-jobtype-dbdump.php:92
+msgid "Backup only WordPress Database tables"
+msgstr "Backup solo delle tabelle del database di WordPress"
+
+#: inc/pro/class-jobtype-dbdump.php:112
+msgid "Database connection"
+msgstr "Connessione database"
+
+#: inc/pro/class-jobtype-dbdump.php:116
+msgid "Use WordPress database connection."
+msgstr "Usa la connessione del database di WordPress"
+
+#: inc/pro/class-jobtype-dbdump.php:120
+msgid "Host:"
+msgstr ""
+
+#: inc/pro/class-jobtype-dbdump.php:123
+msgid "User:"
+msgstr ""
+
+#: inc/pro/class-jobtype-dbdump.php:130
+msgid "Charset:"
+msgstr ""
+
+#: inc/pro/class-jobtype-dbdump.php:141
+msgid "Database:"
+msgstr ""
+
+#: inc/pro/class-jobtype-dbdump.php:169
+msgid "Database Backup type"
+msgstr "Tipo di backup del database"
+
+#: inc/pro/class-jobtype-dbdump.php:173
+msgid "SQL File (with mysqli)"
+msgstr "SQL File (con mysqli)"
+
+#: inc/pro/class-jobtype-dbdump.php:174
+msgid "SQL File (with mysqldump)"
+msgstr "SQL File (con mysqldump)"
+
+#: inc/pro/class-jobtype-dbdump.php:175
+msgid "XML File (phpMyAdmin schema)"
+msgstr ""
+
+#: inc/pro/class-jobtype-dbdump.php:181
+msgid "Path to <em>mysqldump</em> file"
+msgstr "Percorso del file <em>mysqldump</em>"
+
+#: inc/pro/class-jobtype-dbdump.php:190
+msgid ""
+"Path to mysqldump file, so a backup can be made with it. If it is correct "
+"and <em>shell_exec</em> is active, the backup will be generated with a "
+"system command. If <em>shell_exec</em> ist not active, this is disabled"
+msgstr ""
+"Inserisci il percorso del file mysqldump, in modo che il backup possa essere "
+"fatto utilizzarlo. Se è corretto e <em> shell_exec </em> è attiva, il backup "
+"verrà generato con un comando di sistema. Se <em> shell_exec </em> non è "
+"attivo, verrà disattivato"
+
+#: inc/pro/class-jobtype-dbdump.php:580
+#, php-format
+msgid "Added database backup \"%1$s\" with %2$s to backup file list"
+msgstr ""
+"Aggiunto il backup del database  \"%1$s\" con %2$s sulla lista file di backup"
+
+#: inc/pro/class-jobtype-dbdump.php:601
+#, php-format
+msgid "%d. Try to backup MySQL system&#160;&hellip;"
+msgstr "%d. Provo ad eseguire il backup di MySQL system&#160;&hellip;"
+
+#: inc/pro/class-jobtype-dbdump.php:608
+msgid ""
+"Executing of system commands not allowed. Please use backup with mysqli."
+msgstr ""
+"Esecuzione di comandi di sistema non consentita. Si prega di utilizzare il "
+"backup con mysqli."
+
+#: inc/pro/class-jobtype-dbdump.php:613
+#, php-format
+msgid "%s file not in open basedir of PHP."
+msgstr "%s il file non è nella directory di base aperta di PHP."
+
+#: inc/pro/class-jobtype-dbdump.php:618
+#, php-format
+msgid "%s file not found. Please correct the path for the mysqldump file."
+msgstr ""
+"il file % s non è stato trovato. Si prega di correggere il percorso per il "
+"file mysqldump."
+
+#: inc/pro/class-jobtype-dbdump.php:702
+#, php-format
+msgctxt "Executed exec() command"
+msgid "CLI Exec: %s"
+msgstr ""
+
+#: inc/pro/class-jobtype-dbdump.php:712
+msgid "Usage error."
+msgstr "Errore di utilizzo."
+
+#: inc/pro/class-jobtype-dbdump.php:713
+msgid ""
+"MySQL Server Error. This could be an issue with permissions. Try using "
+"database backup with mysqli."
+msgstr ""
+"Errore MySQL Server. Potrebbe essereci un problema con le autorizzazioni. "
+"Prova a utilizzare il backup del database con mysqli."
+
+#: inc/pro/class-jobtype-dbdump.php:714
+msgid "Error during consistency checks."
+msgstr "Errore durante i controlli di coerenza."
+
+#: inc/pro/class-jobtype-dbdump.php:715
+msgid "Not enough memory."
+msgstr "Memoria insufficiente."
+
+#: inc/pro/class-jobtype-dbdump.php:716
+msgid "Error during writing of SQL backup file."
+msgstr "Errore durante la scrittura del file backup SQL."
+
+#: inc/pro/class-jobtype-dbdump.php:717
+msgid "Illegal table"
+msgstr "Tabella illegittima"
+
+#: inc/pro/class-jobtype-dbdump.php:722
+#, php-format
+msgid "mysqldump returned: (%d) %s"
+msgstr "mysqldump ha restituito: (%d) %s"
+
+#: inc/pro/class-jobtype-dbdump.php:735
+msgid "Can not create mysql backup with mysqldump command"
+msgstr "Impossibile creare il backup MySQL con il comando mysqldump "
+
+#: inc/pro/class-jobtype-dbdump.php:782
+#, php-format
+msgid "%d. Try to backup database as XML&#160;&hellip;"
+msgstr "%d. Provo ad eseguire il backup del databse come XML&#160;&hellip;"
+
+#: inc/pro/class-jobtype-dbdump.php:852
+#, php-format
+msgctxt "Database Charset"
+msgid "Cannot set DB charset to %s"
+msgstr "Impossibile impostare il DB charset su %s"
+
+#: inc/pro/class-jobtype-dbdump.php:881
+msgid "No tables for XML backup"
+msgstr "Nessuna tabella per XML backup"
+
+#: inc/pro/class-jobtype-dbdump.php:917
+#, php-format
+msgid "Dump database create view \"%s\""
+msgstr "Il dump del database crea la vista \"%s\""
+
+#: inc/pro/class-jobtype-dbdump.php:935
+#, php-format
+msgid "Backup database structure \"%s\" to XML"
+msgstr "Backup della struttura del databse \"%s\" su XML"
+
+#: inc/pro/class-jobtype-dbdump.php:977
+#, php-format
+msgid "Backup table \"%s\" data to XML"
+msgstr "Backup della tabella dati \"%s\" su XML"
+
+#: inc/pro/class-jobtype-dbdump.php:1045
+#, php-format
+msgid "Added database XML dump \"%1$s\" with %2$s to backup file list"
+msgstr ""
+"Aggiunto il dump del database XML \"%1$s\" with %2$s alla lista file di "
+"backup"
+
+#: inc/pro/class-jobtype-dbdump.php:1048
+msgid "Database XML backup done!"
+msgstr "Backup del database XML eseguito!"
+
+#: inc/pro/class-jobtype-file.php:19
+msgid "Backup WordPress main files"
+msgstr "Backup dei file principali di Wordpress"
+
+#: inc/pro/class-jobtype-file.php:23
+msgid "Backup blog content folder"
+msgstr "Backup della cartella dei contenuti del blog"
+
+#: inc/pro/class-jobtype-file.php:27
+msgid "Backup blog plugins"
+msgstr "Backup dei plugins del blog"
+
+#: inc/pro/class-jobtype-file.php:31
+msgid "Backup blog themes"
+msgstr "Backup dei temi del blog"
+
+#: inc/pro/class-jobtype-file.php:35
+msgid "Backup blog uploads folder"
+msgstr "Backup della cartella aggiornamenti del blog"
+
+#: inc/pro/class-jobtype-wpexp.php:17
+msgid "Items to export:"
+msgstr "Elementi da esportare:"
+
+#: inc/pro/class-jobtype-wpplugin.php:13
+msgid "Nothing to configure"
+msgstr "Nulla da configurare"
+
+#: inc/pro/class-page-restore.php:182
+#, php-format
+msgid "%s &rsaquo; Restore"
+msgstr "%s &rsaquo; Ripristina"
+
+#: inc/pro/class-page-support.php:27
+msgid "E-mail address is required."
+msgstr "L'indirizzo mail è obbligatorio"
+
+#: inc/pro/class-page-support.php:43
+msgid "support@backwpup.com"
+msgstr ""
+
+#: inc/pro/class-page-support.php:52
+msgid "Message has been sent to support. We will get back to you shortly."
+msgstr "Il messaggio è stato inoltrato al supporto. A breve ti contatteremo."
+
+#: inc/pro/class-page-support.php:84
+msgid "Contact BackWPup Support"
+msgstr "Contatta il supporto BackWPup"
+
+#: inc/pro/class-page-support.php:86
+msgid ""
+"Fill out the form below to contact BackWPup support. We will get back to you "
+"as soon as possible."
+msgstr ""
+"Compila il modulo sottostante per contattare il supporto BackWPup. Ti "
+"risponderemo il prima possibile."
+
+#: inc/pro/class-page-support.php:94
+#, fuzzy
+#| msgid "Job Name"
+msgid "Name:"
+msgstr "Nome del processo"
+
+#: inc/pro/class-page-support.php:112
+msgid "E-mail adress:"
+msgstr "Indirizzo mail:"
+
+#: inc/pro/class-page-support.php:122
+msgid "Subject:"
+msgstr "Oggetto:"
+
+#: inc/pro/class-page-support.php:131
+msgid "Message:"
+msgstr "Messaggio:"
+
+#: inc/pro/class-page-support.php:140
+msgid "Send debug info:"
+msgstr "Invia le informazioni di debug:"
+
+#: inc/pro/class-page-support.php:149
+msgid "Select log to attach"
+msgstr "Seleziona il log da allegare"
+
+#: inc/pro/class-page-support.php:178
+#, php-format
+msgid ""
+"No logs could be found. If you want to attach a log, please <a href=\"%s"
+"\">run a job first</a>."
+msgstr ""
+"Impossibile trovare illog. Se desideri allegare un log, si prega si <a href="
+"\"%s\">avviare prima un processo</a>."
+
+#: inc/pro/class-page-support.php:184
+#, fuzzy
+#| msgctxt "Folder name"
+#| msgid "Folder %s not readable"
+msgid "Log folder not readable."
+msgstr "La cartella %s non è leggibile"
+
+#: inc/pro/class-page-support.php:191
+msgid "Send Message"
+msgstr "Invia Messaggio"
+
+#: inc/pro/class-page-support.php:227
+#, php-format
+msgid "1 error"
+msgid_plural "%d errors"
+msgstr[0] "1 errore"
+msgstr[1] "%d errori"
+
+#: inc/pro/class-page-support.php:233
+msgctxt "1 error and 1 warning"
+msgid "and"
+msgstr "e"
+
+#: inc/pro/class-page-support.php:236
+#, php-format
+msgid "1 warning"
+msgid_plural "%d warnings"
+msgstr[0] "1 avviso"
+msgstr[1] "%d avvertimenti"
+
+#: inc/pro/class-page-support.php:241
+msgid "no errors"
+msgstr "nessun errore"
+
+#: inc/pro/class-page-wizard.php:150
+msgid "No BackWPup Wizard Session found!"
+msgstr "Nessuna sessione wizard di backup trovata!"
+
+#: inc/pro/class-page-wizard.php:163 inc/pro/class-page-wizard.php:423
+msgid "Cancel"
+msgstr "Cancella"
+
+#: inc/pro/class-page-wizard.php:200 inc/pro/class-page-wizard.php:418
+#: inc/pro/class-page-wizard.php:451
+msgid "Next ›"
+msgstr "Successivo ›"
+
+#: inc/pro/class-page-wizard.php:216 inc/pro/class-page-wizard.php:414
+msgid "‹ Previous"
+msgstr "‹ Precedente"
+
+#: inc/pro/class-page-wizard.php:307
+#, php-format
+msgctxt "Plugin Name"
+msgid "%s &rsaquo; Wizards"
+msgstr "%s &rsaquo; Wizards"
+
+#: inc/pro/class-page-wizard.php:346
+#, php-format
+msgctxt "Plugin Name"
+msgid "%s Wizard:"
+msgstr "%s Wizard:"
+
+#: inc/pro/class-page-wizard.php:426
+msgid "Back to overview"
+msgstr "Torna alla panoramica"
+
+#: inc/pro/class-pro.php:154
+msgid "GDrive"
+msgstr ""
+
+#: inc/pro/class-pro.php:220 inc/pro/class-pro.php:221
+#: inc/pro/class-pro.php:345
+msgid "Wizards"
+msgstr ""
+
+#: inc/pro/class-pro.php:256
+#, fuzzy
+#| msgid "Cloud Support"
+msgid "Support"
+msgstr "Supporto cloud"
+
+#: inc/pro/class-pro.php:257
+msgid "Contact Support"
+msgstr "Contatta il supporto"
+
+#: inc/pro/class-pro.php:381
+msgid ""
+"If you are experiencing issues, the debug information shown below can help "
+"us to better investigate and solve it for you."
+msgstr ""
+"Se riscontri problemi, le informazioni di debug mostrate di seguito possono "
+"aiutarci a indagare e risolverlo."
+
+#: inc/pro/class-pro.php:387
+msgid ""
+"If you already have a support ticket open with BackWPup, then you can simply "
+"click the copy button below to copy the debug information, and paste it into "
+"a response to your ticket."
+msgstr ""
+"Se hai già un ticket di supporto aperto con BackWPup, puoi semplicemente "
+"fare clic sul pulsante di copia in basso per copiare le informazioni di "
+"debug e incollarle in risposta al ticket."
+
+#: inc/pro/class-pro.php:394
+#, php-format
+msgid ""
+"If you have not yet opened a ticket, you may contact us directly by <a href="
+"\"%s\">clicking here</a>."
+msgstr ""
+"Se non hai ancora aperto un ticket, puoi contattarci direttamente <a href="
+"\"%s\"> facendo clic qui </a>."
+
+#: inc/pro/class-settings-apikeys.php:45
+msgid "Hash key"
+msgstr "Chiave hash"
+
+#: inc/pro/class-settings-apikeys.php:46
+msgid ""
+"Hash Key for BackWPup. It will be used to have hashes in folder and file "
+"names. It must at least 6 chars long."
+msgstr ""
+"Chiave hash per BackWPup. Sarà utilizzata per avere una chiave nei nomi di "
+"file e cartelle. Deve contenere almeno 6 caratteri."
+
+#: inc/pro/class-settings-apikeys.php:49
+msgid "Hash key:"
+msgstr "Chiave hash:"
+
+#: inc/pro/class-settings-apikeys.php:73
+msgid "Dropbox API Keys"
+msgstr ""
+
+#: inc/pro/class-settings-apikeys.php:74
+msgid ""
+"If you want to set your own Dropbox API Keys, you can do it here. Leave "
+"empty for default."
+msgstr ""
+"Se si desidera impostare la propria chiave API di Dropbox, potete farlo qui. "
+"Lasciare vuoto per impostazione predefinita."
+
+#: inc/pro/class-settings-apikeys.php:77
+msgid "Full Dropbox App key:"
+msgstr "Dropbox App key completa:"
+
+#: inc/pro/class-settings-apikeys.php:88
+msgid "Full Dropbox App secret:"
+msgstr "Dropbox App secret completa:"
+
+#: inc/pro/class-settings-apikeys.php:100
+msgid "Sandbox App key:"
+msgstr ""
+
+#: inc/pro/class-settings-apikeys.php:111
+msgid "Sandbox App secret:"
+msgstr ""
+
+#: inc/pro/class-settings-apikeys.php:131
+msgid "SugarSync API Keys"
+msgstr ""
+
+#: inc/pro/class-settings-apikeys.php:132
+msgid ""
+"If you want to set your own SugarSync API keys you can do that here. Leave "
+"empty for default."
+msgstr ""
+"Se si desidera impostare le proprie chiavi API SugarSync potete farlo qui. "
+"Lasciare vuoto per impostazione predefinita."
+
+#: inc/pro/class-settings-apikeys.php:135
+msgid "Access Key ID:"
+msgstr ""
+
+#: inc/pro/class-settings-apikeys.php:143
+msgid "Private Access Key:"
+msgstr ""
+
+#: inc/pro/class-settings-apikeys.php:154
+msgid "App ID:"
+msgstr ""
+
+#: inc/pro/class-settings-apikeys.php:175
+msgid "Google API Keys"
+msgstr ""
+
+#: inc/pro/class-settings-apikeys.php:179
+msgid "Client ID:"
+msgstr ""
+
+#: inc/pro/class-settings-apikeys.php:191
+msgid "Client secret:"
+msgstr ""
+
+#: inc/pro/class-settings-apikeys.php:202
+msgid "Redirect URIs:"
+msgstr ""
+
+#: inc/pro/class-settings-apikeys.php:206
+msgid "Add this URI in a new line to the field."
+msgstr "Aggiungi questa URI in una nuova linea del campo."
+
+#: inc/pro/class-wizard-job.php:15
+msgid "Create a job"
+msgstr "Crea un processo"
+
+#: inc/pro/class-wizard-job.php:16
+msgid "Choose a job"
+msgstr "Scegli un processo"
+
+#: inc/pro/class-wizard-job.php:41
+msgid "Job Types"
+msgstr "Tipi di processi"
+
+#: inc/pro/class-wizard-job.php:41
+msgid "Select a task for your job."
+msgstr "Seleziona un compito per il tuo processo"
+
+#: inc/pro/class-wizard-job.php:61
+msgid "Archive Settings"
+msgstr "Impostazioni dell'archivio"
+
+#: inc/pro/class-wizard-job.php:62
+msgid "Settings for the Backup Archive"
+msgstr "Impostazioni per l'archivio di backup"
+
+#: inc/pro/class-wizard-job.php:68
+msgid "Where would you like to store the backup file?"
+msgstr "Dove si desidera memorizzare il file di backup?"
+
+#: inc/pro/class-wizard-job.php:82 inc/pro/class-wizard-job.php:314
+msgid "Scheduling"
+msgstr "Programma"
+
+#: inc/pro/class-wizard-job.php:82
+msgid "When would you like to start the job?"
+msgstr "Quando vuoi avviare il processo?"
+
+#: inc/pro/class-wizard-job.php:255
+msgid "Select one or more tasks for your backup job."
+msgstr "Seleziona uno o più compiti per il processo di backup."
+
+#: inc/pro/class-wizard-job.php:315
+msgid "Activate scheduling"
+msgstr "Attiva la programmazione"
+
+#: inc/pro/class-wizard-job.php:409
+msgid "Sync file by file to destination"
+msgstr "Sincronizza i file verso la destinazione"
+
+#: inc/pro/class-wizard-job.php:420
+msgid "Select a compression type for the backup archive"
+msgstr "Seleziona un tipo di compressione per l'archivio di backup"
+
+#: inc/pro/class-wizard-job.php:423
+msgid "Archive compression type"
+msgstr "Tipo di compressione dell'archivio"
+
+#: inc/pro/class-wizard-job.php:427
+msgid ""
+"PHP Zip functions will be used if available (memory lees). Else PCLZip Class "
+"will used."
+msgstr ""
+"Le funzioni Zip PHP saranno utilizzate se disponibili. Altrimenti verrà "
+"utilizzata la calsse PCLZip."
+
+#: inc/pro/class-wizard-job.php:430 inc/pro/class-wizard-job.php:441
+#: inc/pro/class-wizard-job.php:449
+msgid "Disabled because missing PHP function."
+msgstr "Disattivato perchè manca la funzione PHP."
+
+#: inc/pro/class-wizard-job.php:433 inc/pro/class-wizard-job.php:434
+msgid "Tar (fast and memory less) uncompressed"
+msgstr "Tar (veloce e meno memoria) non compresso "
+
+#: inc/pro/class-wizard-job.php:437 inc/pro/class-wizard-job.php:438
+msgid "A tared and GZipped archive (fast and memory less)"
+msgstr "Un archivio GZip e Tar (veloce e meno memoria)"
+
+#: inc/pro/class-wizard-job.php:445
+msgid "A tared and BZipped archive (fast and memory less)"
+msgstr "Un archivio BZip e Tar (veloce e meno memoria)"
+
+#: inc/pro/class-wizard-job.php:470
+msgid "Where to store the files"
+msgstr "Dove salvare i file"
+
+#: inc/pro/class-wizard-job.php:661
+#, php-format
+msgid "Wizard: %1$s"
+msgstr ""
+
+#: inc/pro/class-wizard-job.php:680
+#, php-format
+msgid "New job %s generated."
+msgstr "Nuovo processo %s generato."
+
+#: inc/pro/class-wizard-job.php:692
+msgid "Create Job"
+msgstr "Crea processo"
+
+#: inc/pro/class-wizard-job.php:717 inc/pro/class-wizard-job.php:718
+msgid "Database Backup and XML Export (Daily)"
+msgstr "Backup del databse e XML Export (Quotidiana)"
+
+#: inc/pro/class-wizard-job.php:735 inc/pro/class-wizard-job.php:736
+msgid "Database Check (Weekly)"
+msgstr "Controllo database (Settimanale)"
+
+#: inc/pro/class-wizard-job.php:760 inc/pro/class-wizard-job.php:761
+msgid "Backup all files"
+msgstr "Crea il backup di tutti i file"
+
+#: inc/pro/class-wizard-job.php:775
+msgid "Essential files + list of plugins"
+msgstr "File essenziali + lista dei plugins"
+
+#: inc/pro/class-wizard-job.php:776
+msgid "Backup essential files and folders, plus a list of installed plugins."
+msgstr ""
+"Esegui il backup dei file e delle cartelle essenziali, più una lista dei "
+"plugins istallati."
+
+#: inc/pro/class-wizard-job.php:791 inc/pro/class-wizard-job.php:792
+msgid "Custom configuration"
+msgstr "Configurazione custom"
+
+#: inc/pro/class-wizard-jobimport.php:14
+msgid "XML job import"
+msgstr "import processo XML"
+
+#: inc/pro/class-wizard-jobimport.php:15
+msgid "Wizard for importing BackWPup jobs from an XML file"
+msgstr "Wizard per l'importazione dei processi di BackWPup da un file XML"
+
+#: inc/pro/class-wizard-jobimport.php:32 inc/pro/class-wizard-jobimport.php:101
+msgid "Import"
+msgstr "Importa"
+
+#: inc/pro/class-wizard-jobimport.php:45
+msgid "Import File"
+msgstr "Importa file"
+
+#: inc/pro/class-wizard-jobimport.php:45
+msgid "Upload XML job file for import"
+msgstr "Carica il processo XML per l'importazione"
+
+#: inc/pro/class-wizard-jobimport.php:46
+msgid "Select items to import"
+msgstr "Seleziona gli elementi da importare"
+
+#: inc/pro/class-wizard-jobimport.php:46
+msgid "Select which job should be imported or overwritten."
+msgstr "Seleziona quale processo deve essere importato o sovrascritto."
+
+#: inc/pro/class-wizard-jobimport.php:67
+msgid ""
+"Please upload your BackWPup job XML export file and we&#8217;ll import the "
+"jobs into BackWPup."
+msgstr ""
+"Carica il file di esportazione XML del processo BackWPup e &#8217; "
+"importeremo i processi su BackWPup."
+
+#: inc/pro/class-wizard-jobimport.php:69
+msgid "Choose a file from your computer:"
+msgstr "Scegli un file dal tuo computer"
+
+#: inc/pro/class-wizard-jobimport.php:69
+#, php-format
+msgid "Maximum size: %s"
+msgstr "Dimensione massima: %s"
+
+#: inc/pro/class-wizard-jobimport.php:92
+msgid "Import Jobs"
+msgstr "Importa i processi"
+
+#: inc/pro/class-wizard-jobimport.php:95
+msgid "Import Type"
+msgstr "Tipo di importazione"
+
+#: inc/pro/class-wizard-jobimport.php:96
+msgid "No Import"
+msgstr "Nessuna importanzione"
+
+#: inc/pro/class-wizard-jobimport.php:99
+msgid "Overwrite"
+msgstr "Sovrascrivi"
+
+#: inc/pro/class-wizard-jobimport.php:99
+msgid "Append"
+msgstr "Appendi"
+
+#: inc/pro/class-wizard-jobimport.php:114
+msgid "Import Config"
+msgstr "Importa Config"
+
+#: inc/pro/class-wizard-jobimport.php:117
+msgid "Import BackWPup configuration"
+msgstr "Importa la configurazione di BackWPup"
+
+#: inc/pro/class-wizard-jobimport.php:142
+msgid ""
+"File is empty. Please upload something more substantial. This error could "
+"also caused by uploads being disabled in your php.ini or by post_max_size "
+"being defined as smaller than upload_max_filesize in php.ini."
+msgstr ""
+"Il file è vuoto. Si prega di caricare qualcosa di più sostanzioso. Questo "
+"errore potrebbe essere causato dall'impostazione disabilitata del "
+"caricamento nel tuo file php.ini, o il post_max_size potrebbe essere "
+"definito come inferiore rispetto upload_max_filesize sempre nel file php.ini."
+
+#: inc/pro/class-wizard-jobimport.php:157
+#, php-format
+msgid ""
+"The export file could not be found at <code>%s</code>. This is likely due to "
+"an issue with permissions."
+msgstr ""
+"Il file di esportazione non è stato trovato in <code>%s</code>. "
+"Probabilmente questo è dovuto a un problema con i permessi."
+
+#: inc/pro/class-wizard-jobimport.php:164
+msgid "Sorry, there has been a phrase error."
+msgstr "Siamo spiacenti, c'è stato un errore di frase."
+
+#: inc/pro/class-wizard-jobimport.php:171
+#, php-format
+msgid ""
+"This Export file (version %s) may not be supported by this version of the "
+"importer."
+msgstr ""
+"Questo file di esportazione (versione %s) potrebbe non essere supportato da "
+"questa versione della funzione di importazione."
+
+#: inc/pro/class-wizard-jobimport.php:177
+msgid "This is not a BackWPup XML file"
+msgstr "Questo non è un file BackWPup XML"
+
+#: inc/pro/class-wizard-jobimport.php:243
+#, php-format
+msgid "Job %1$s with id %2$d imported"
+msgstr "Processo %1$s con id %2$d importato"
+
+#: inc/pro/class-wizard-jobimport.php:251
+msgid "BackWPup config imported"
+msgstr "Importato BackWPup config "
+
+#: inc/pro/class-wizard-systemtest.php:25
+msgid "System Test"
+msgstr "Test del Sistema"
+
+#: inc/pro/class-wizard-systemtest.php:26
+msgid "Wizard to test if BackWPup can work properly"
+msgstr "Wizard per testare se BackWPup può funzionare correttamente"
+
+#: inc/pro/class-wizard-systemtest.php:39
+msgid "Run tests"
+msgstr "Avvia i test"
+
+#: inc/pro/class-wizard-systemtest.php:50
+msgid "Environment"
+msgstr "Ambiente"
+
+#: inc/pro/class-wizard-systemtest.php:51
+msgid "System Environment"
+msgstr "Ambiente di sistema"
+
+#: inc/pro/class-wizard-systemtest.php:64
+msgid "Test if BackWPup can work without problems."
+msgstr "Verifica se BackWPup può funzionare senza problemi."
+
+#: inc/pro/restore/TemplateLoader.php:224
+msgid "Download log"
+msgstr "Download log"
+
+#: views/pro/restore/steps/step1_action.php:21
+msgid "Select Archive"
+msgstr "Seleziona archivio"
+
+#: views/pro/restore/steps/step1_action.php:22
+msgid "or"
+msgstr "o"
+
+#: views/pro/restore/steps/step1_action.php:23
+msgid "Drop file here"
+msgstr "Trascina il file qui"
+
+#: views/pro/restore/steps/step1_action.php:26
+msgid "Supported archive format zip,tar,tar.gz,tar.bz2"
+msgstr "Formato di archivio supportato zip, tar, tar.gz, tar.bz2"
+
+#: views/pro/restore/steps/step1_top.php:2
+#, fuzzy
+#| msgid "Backup uploads folder"
+msgid "Backup Upload"
+msgstr "Esegui il backup della cartella uploads"
+
+#: views/pro/restore/steps/step1_top.php:5
+msgid ""
+"Welcome to BackWPup Restore. This tool helps you to restore a backup of your "
+"WordPress installation. Each step of the restore process will be explained "
+"in this box to get you quickly running."
+msgstr ""
+"Benvenuto in BackWPup Restore. Questo strumento ti aiuta a ripristinare un "
+"backup della tua installazione di WordPress. Ogni fase del processo di "
+"ripristino verrà qui spiegata per farti rapidamente utilizzare la "
+"funzionalità di ripristino."
+
+#: views/pro/restore/steps/step1_top.php:10
+msgid ""
+"The first step is to upload a backup file. You can simply drag'n'drop a ZIP "
+"file of your backup into the box below or click on the `Select Archive` "
+"button and select the file using the file explorer."
+msgstr ""
+"Il primo passo è caricare un file di backup. Puoi semplicemente trascinare "
+"un file ZIP del tuo backup nella casella sottostante o fare clic sul "
+"pulsante \"Seleziona archivio\" e selezionare il file utilizzando il file "
+"explorer."
+
+#: views/pro/restore/steps/step1_top.php:14
+msgid ""
+"The upload of the file should start automatically and you will be lead to "
+"the next step."
+msgstr ""
+"Il caricamento del file dovrebbe essere avviato automaticamente e sarai "
+"guidato al passaggio successivo."
+
+#: views/pro/restore/steps/step1_top.php:17
+msgid "Note: Only backups done with BackWPup can be restored."
+msgstr "Nota: è possibile ripristinare solo i backup eseguiti con BackWPup."
+
+#: views/pro/restore/steps/step2_action.php:9
+msgid "Choose your restore strategy."
+msgstr "Scegli la tua strategia di ripristino."
+
+#: views/pro/restore/steps/step2_action.php:15
+#: views/pro/restore/steps/step2_top.php:6
+msgid "Full Restore"
+msgstr "Ripristino Completo"
+
+#: views/pro/restore/steps/step2_action.php:21
+#: views/pro/restore/steps/step2_top.php:16
+msgid "Database Only"
+msgstr "Solo Database"
+
+#: views/pro/restore/steps/step2_action.php:25
+msgid "Restore Database."
+msgstr "Ripristina il Database."
+
+#: views/pro/restore/steps/step2_action.php:31
+#: views/pro/restore/steps/step3_action.php:54
+msgid "Continue"
+msgstr "Continua"
+
+#: views/pro/restore/steps/step2_action.php:38
+msgid ""
+"There seems to be a problem with the archive. It is neither an archive nor a "
+"SQL file. Try again and repeat the upload."
+msgstr ""
+"Sembra esserci un problema con l'archivio. Non è né un archivio né un file "
+"SQL. Riprova e ripeti il caricamento."
+
+#: views/pro/restore/steps/step2_top.php:2
+msgid "Select Strategy"
+msgstr "Seleziona la strategia"
+
+#: views/pro/restore/steps/step2_top.php:4
+msgid ""
+"This page provides two options you can choose from. Your decision affects "
+"the behavior of the restore process and decides which files are going to be "
+"restored."
+msgstr ""
+"Questa pagina offre due opzioni tra cui è possibile scegliere. La decisione "
+"influisce sul comportamento del processo di ripristino e decide quali file "
+"verranno ripristinati."
+
+#: views/pro/restore/steps/step2_top.php:10
+msgid ""
+"This option restores everything. Your database as well as all files within "
+"the backup are restored. The backup usually holds files from your <code>wp-"
+"content/</code> directory."
+msgstr ""
+"Questa opzione ripristina tutto. Il database e tutti i file all'interno del "
+"backup vengono ripristinati. Il backup di solito contiene file dalla "
+"directory <code> wp-content / </ code>."
+
+#: views/pro/restore/steps/step2_top.php:17
+msgid ""
+"The second option is a database only restore. Choosing this option will "
+"restore only the database dump. No files will be restored."
+msgstr ""
+"La seconda opzione è un ripristino solo del database. Scegliendo questa "
+"opzione si ripristinerà solo il dump del database. Nessun file verrà "
+"ripristinato."
+
+#: views/pro/restore/steps/step2_top.php:20
+msgid ""
+"Note: Only <strong>Full Restore</strong> can be done, if everything is also "
+"included in the zip file. If your zip file is only including a database, "
+"then only a <strong>Database only</strong> restore can be made."
+msgstr ""
+"Nota: è possibile eseguire solo il <strong> Ripristino completo </ strong>, "
+"se tutto è incluso anche nel file zip. Se il file zip include solo un "
+"database, può essere eseguito esclusivamente un ripristino <strong> Solo "
+"Database </ strong>."
+
+#: views/pro/restore/steps/step3_action.php:6
+msgid "Database Connection Settings."
+msgstr "impostazioni Connessione Database"
+
+#: views/pro/restore/steps/step3_action.php:13
+msgid "Database Host"
+msgstr ""
+
+#: views/pro/restore/steps/step3_action.php:19
+msgid "Database Name"
+msgstr ""
+
+#: views/pro/restore/steps/step3_action.php:25
+msgid "Database User"
+msgstr ""
+
+#: views/pro/restore/steps/step3_action.php:31
+msgid "Database Password"
+msgstr ""
+
+#: views/pro/restore/steps/step3_action.php:39
+msgid "Database Charset"
+msgstr ""
+
+#: views/pro/restore/steps/step3_action.php:49
+msgid "Test Connection"
+msgstr "Verifica la Connessione"
+
+#: views/pro/restore/steps/step3_top.php:2
+msgid "Database Settings"
+msgstr "Impostazioni Database"
+
+#: views/pro/restore/steps/step3_top.php:4
+msgid ""
+"Before the actually restore can take place you need to tell us some "
+"information about your database. Probably, these information are the same as "
+"your WordPress database. The restore will overwrite all information within "
+"this database. So make sure you choose the correct database."
+msgstr ""
+"Prima che il ripristino effettivo possa aver luogo, è necessario comunicarci "
+"alcune informazioni sul database. Probabilmente, queste informazioni sono le "
+"stesse del tuo database WordPress. Il ripristino sovrascriverà tutte le "
+"informazioni all'interno di questo database. Quindi assicurati di scegliere "
+"il database corretto."
+
+#: views/pro/restore/steps/step3_top.php:7
+msgid ""
+"You can use the <strong>Test Connection</strong> button below to test, you "
+"guessed it, your connection to the database.\n"
+"\t\t\t\tIf everything is fine a green message box will appear. Otherwise, a "
+"red message box will tell you more about the problem.\n"
+"\t\t\t\tYou can only continue when a working connection to the database "
+"could be established."
+msgstr ""
+"Puoi utilizzare il pulsante <strong> Verifica Connessione </ strong> qui "
+"sotto per testare, hai indovinato, la tua connessione al database.\n"
+"\t\t\t\tSe tutto va bene, verrà visualizzata una finestra di messaggio "
+"verde. Altrimenti, una finestra di messaggio rossa riporterà informazioni "
+"sul problemas riscontrato.\n"
+"\t\t\t\tÈ possibile continuare solo quando è possibile stabilire una "
+"connessione funzionante al database."
+
+#: views/pro/restore/steps/step3_top.php:13
+msgid ""
+"Having trouble getting your database connection settings? <a href=\"https://"
+"backwpup.com/docs/restore-database-connection-settings/\" target=\"_blank"
+"\">Go to documentation</a> to get more information."
+msgstr ""
+"Hai problemi ad ottenere le impostazioni di connessione del tuo database? <a "
+"href=\"https://backwpup.com/docs/restore-database-connection-settings/\" "
+"target=\"_blank\"> Vai alla documentazione </a> per ottenere ulteriori "
+"informazioni."
+
+#: views/pro/restore/steps/step4_action.php:8
+msgid "Restore Progress."
+msgstr "Stato Avanzamento Ripristino."
+
+#: views/pro/restore/steps/step4_action.php:20
+#, fuzzy
+#| msgid "Job Start"
+msgid "Start"
+msgstr "Inizio processo"
+
+#: views/pro/restore/steps/step4_top.php:6
+msgid ""
+"You reached the last step. Now you're ready to restore the data. Simply "
+"press the <strong>Start</strong> button and the restore starts."
+msgstr ""
+"Hai raggiunto l'ultimo passaggio. Ora sei pronto per ripristinare i dati. "
+"Basta premere il pulsante <strong> Start </ strong> per avviare il "
+"ripristino."
+
+#: views/pro/restore/steps/step5_top.php:2
+msgid "Success"
+msgstr "Successo"
+
+#: views/pro/restore/steps/step5_top.php:5
+msgid "Your restore was successful and everything should be back to normal."
+msgstr ""
+"Il tuo ripristino è andato a buon fine e tutto dovrebbe essere tornato alla "
+"normalità."
+
+#~ msgid "Join us as beta tester!"
+#~ msgstr "Unisciti a noi come beta tester!"
+
+#~ msgid ""
+#~ "To ensure that our releases are as bug-free as possible, we need you as a "
+#~ "beta tester!"
+#~ msgstr ""
+#~ "Per assicurarci che le nuove versioni siano il pi\\ possibile prive di "
+#~ "difetti, abbiamo bisogno di come beta tester!"
+
+#~ msgid "ZIP archive cannot be closed correctly."
+#~ msgstr "Impossibile chiudere correttamente l'archivio ZIp."
+
+#~ msgid "Cannot open source file %s for archiving"
+#~ msgstr "Impossibile aprire il file di risorsa %s per l'archiviazione"
+
+#~ msgid "FTP: Login failure!"
+#~ msgstr "FTP: Login fallito!"
+
+#~ msgid ""
+#~ "With the upcoming major release, BackWPup will be requiring PHP version "
+#~ "5.3 or higher."
+#~ msgstr ""
+#~ "Con l'imminente release, BackWPup richiederà la versione di PHP 5.3 o "
+#~ "superiore."
+
+#~ msgid "Currently, you are running PHP version 5.2."
+#~ msgstr "Attualmente, hai la versione PHP 5.2."
+
+#~ msgid "Please urgently read here!"
+#~ msgstr "Pre favore, leggi qui al più presto."
+
+#~ msgid "Don't show again."
+#~ msgstr "Non mostrare di nuovo."
+
+#~ msgid ""
+#~ "BackWPup has determined, your installation is still running on the old "
+#~ "PHP 5.2 version."
+#~ msgstr ""
+#~ "BackWPup ha riscontrato che nel sistema corrente è ancora una vecchia "
+#~ "versione di PHP, la 5.2."
+
+#~ msgid ""
+#~ "In order to ensure a fast and secure development for BackWPup, we will "
+#~ "most likely not support PHP version 5.2 in our next version."
+#~ msgstr ""
+#~ "Al fine di garantire uno sviluppo veloce e sicuro per BackWPup, molto "
+#~ "probabilmente non supporterremo PHP 5.2 nella prossima versione del "
+#~ "plugin."
+
+#~ msgid ""
+#~ "No need to worry, your host can update your PHP version relatively "
+#~ "quickly and without any problems."
+#~ msgstr ""
+#~ "Non preoccuparti, il tuo servizio hosting può aggiornare la propria "
+#~ "versione di PHP in tempi relativamente brevi e senza problemi."
+
+#~ msgid ""
+#~ "Otherwise you can continue to stay on this last version and do not update "
+#~ "the plugin in the future!"
+#~ msgstr ""
+#~ "In caso contrario, è possibile continuare a rimanere su questa ultima "
+#~ "versione e non senza aggiornare il plug-in in futuro!"
+
+#~ msgid ""
+#~ "If the response from PHP 5.2 users is surprisingly high, we will "
+#~ "eventually keep support for PHP 5.2 for a while."
+#~ msgstr ""
+#~ "Se la risposta degli utenti PHP 5.2 è sorprendentemente alta, "
+#~ "continueremo il supporto per PHP 5.2 per un po' di tempo."
+
+#~ msgid "Cheers!"
+#~ msgstr "Salute!"
+
+#~ msgid "contact us"
+#~ msgstr "Contattaci"
+
+#~ msgid "If you would like to have PHP 5.2 supported, please %s."
+#~ msgstr "Se vorresti avere il supporto per PHP 5.2, %s."
+
+#~ msgid "or set an S3 Server URL:"
+#~ msgstr "o imposta l' URL del server S3"
+
+#~ msgid ""
+#~ "You must run PHP version 5.2.6 or higher to use this plugin. You are "
+#~ "using version %s now."
+#~ msgstr ""
+#~ "È necessario eseguire PHP versione 5.2.6 o superiore per usare questo "
+#~ "plugin. Ora si utilizza la versione %s."
+
+#~ msgid "BackWPup Pro"
+#~ msgstr "BackWPup Pro"
+
+#~ msgid "WordPress Backup Plugin"
+#~ msgstr "Esegui il backup dei plugins"
+
+#~ msgid "Error while deleting file from Dropbox: %s"
+#~ msgstr "Errore durante l'eliminazione del file da Dropbox: %s"
+
+#~ msgid "To email address"
+#~ msgstr "All'indirizzo mail"
+
+#~ msgid " OR "
+#~ msgstr "OPPURE"

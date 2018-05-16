@@ -1,0 +1,230 @@
+//
+// Components Backwpup Page
+// @todo Split in separated components.
+//
+#backwpup-page {
+  // Default Tags
+  hr {
+    border:        0;
+    border-top:    none;
+    border-bottom: 1px solid #eee;
+  }
+
+  // Positioned Boxes.
+  .backwpup-floated-postbox {
+    margin:    25px 0 0;
+    max-width: 100%;
+    overflow:  hidden;
+    padding:   15px;
+    position:  relative;
+
+    h3 a {
+      font-size:       14px;
+      text-decoration: none;
+      font-weight:     600;
+    }
+  }
+
+  .backwpup-cleared-postbox {
+    clear:   both;
+    margin:  25px 0 0;
+    padding: 10px;
+  }
+
+  // Post Box
+  .postbox {
+    ul {
+      padding-left: 10px;
+    }
+
+    table {
+      caption-side:  top;
+      margin-bottom: 25px;
+
+      caption {
+        color:       #222;
+        font-size:   14px;
+        font-weight: 600;
+        padding:     8px 12px;
+        margin:      0;
+        line-height: 1.4;
+        text-align:  left;
+      }
+    }
+
+    .hndle {
+      cursor: auto;
+    }
+
+    .backwpup-bullet-list {
+      list-style:   disc;
+      padding-left: 16px;
+    }
+
+    ol.backwpup-bullet-list {
+      list-style: decimal;
+    }
+  }
+
+  // Wizard Box
+  .wizardbox {
+    color:      #fff;
+    background: #1d94cf url('../images/hgbox.png') no-repeat right bottom;
+    min-height: 20em;
+
+    &:hover {
+      background-color: #0f79ae;
+    }
+
+    .wizardbox_name {
+      color:      #fff;
+      margin-top: 0;
+    }
+
+    .wizardbox_start {
+      position: absolute;
+      bottom:   10px;
+      left:     10px;
+    }
+
+    select {
+      max-width: 100%;
+      width:     100%;
+    }
+  }
+
+  // Buttons
+  .button-bwp,
+  .button-primary-bwp {
+    border-radius:      0;
+    -webkit-box-shadow: none;
+    box-shadow:         none;
+  }
+
+  .button-primary-bwp {
+    border:     none;
+    background: #38b0eb;
+    color:      #fff;
+    min-width:  8em;
+
+    &:hover {
+      background: #064565;
+    }
+  }
+
+  .backwpup-table-wrap {
+    overflow-x: auto;
+  }
+
+  .backwpup-banner-img {
+    display:   block;
+    height:    auto;
+    margin:    26px auto;
+    max-width: 100%;
+  }
+
+  .backwpup-text-center {
+    text-align: center;
+  }
+  ul.backwpup-text-center {
+    padding-left: 0;
+  }
+
+  // Messages
+  // copied from WP 3.8 CSS
+  .backwpup-message {
+    background-color:   #fff;
+    border:             none;
+    border-left:        4px solid #ccc;
+    box-shadow:         0px 1px 1px 0px rgba(0, 0, 0, 0.1);
+    margin:             5px 0 15px;
+    padding:            1px 12px;
+    -webkit-box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1);
+
+    p {
+      margin:  0.5em 0;
+      padding: 2px;
+    }
+  }
+
+  .backwpup-info {
+    border-left: 4px solid #38b0eb; /* BackWPup button-primary color */
+  }
+
+  .backwpup-warning {
+    border-left: 4px solid #ffba00; /* UI color .update-nag */
+  }
+
+  .backwpup-full-width {
+    max-width: 100%;
+
+    &.action {
+      margin-bottom: 20px;
+    }
+  }
+
+  // Notices
+  .notice {
+    ul {
+      list-style-type: disc;
+      margin-left:     2em;
+    }
+  }
+}
+
+//
+// MEDIA QUERIES
+//
+
+// 720px
+@media screen and (min-width: 45em) {
+
+  #backwpup-page {
+    // Positioned Boxes
+    .backwpup-floated-postbox {
+      float:  left;
+      margin: 25px 25px 25px 0;
+      width:  290px;
+    }
+
+    // Grouped
+    #backwpup-one-click-backup,
+    #wizard-jobimport,
+    #backwpup-thank-you,
+    #backwpup-stats {
+      margin-right: 0;
+    }
+
+    #backwpup-one-click-backup + .backwpup-floated-postbox,
+    #backwpup-thank-you,
+    #backwpup-stats {
+      clear: left;
+    }
+  }
+
+}
+
+// 1024px
+@media screen and (min-width: 64em) {
+
+  #backwpup-page {
+    // Positioned Boxes
+    .backwpup-floated-postbox {
+      width: 362px;
+    }
+
+    // Wizard Box
+    .wizardbox {
+      width:      225px;
+      min-height: 225px;
+    }
+
+    .backwpup-max-width {
+      max-width: 800px;
+    }
+
+    body[class*="_backwpupabout"] & .backwpup-welcome {
+      max-width: none;
+    }
+  }
+}

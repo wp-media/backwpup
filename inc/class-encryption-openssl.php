@@ -12,8 +12,14 @@
  */
 class BackWPup_Encryption_OpenSSL {
 
+	/**
+	 * @var string
+	 */
 	const PREFIX = 'OSSL$';
 
+	/**
+	 * @var string
+	 */
 	private static $cipher_method;
 
 	/**
@@ -81,26 +87,19 @@ class BackWPup_Encryption_OpenSSL {
 			return '';
 		}
 
-		$base64_encode = '';
-		$args          = array(
+		$nonce = openssl_random_pseudo_bytes( openssl_cipher_iv_length( self::cipher_method() ) );
+
+		// phpcs:disable
+		$encrypted = openssl_encrypt(
 			$string,
 			self::cipher_method(),
 			$this->key,
 			OPENSSL_RAW_DATA,
+			$nonce
 		);
+		// phpcs:enable
 
-		if ( 1 === version_compare( PHP_VERSION, '5.3.2' ) ) {
-			$args[] = openssl_random_pseudo_bytes( openssl_cipher_iv_length( self::cipher_method() ) );
-
-			// Include nonce if possible.
-			$base64_encode .= end( $args );
-		}
-
-		$encrypted = call_user_func_array( 'openssl_encrypt', $args );
-
-		$base64_encode .= $encrypted;
-
-		return BackWPup_Encryption::PREFIX . self::PREFIX . $this->key_type . base64_encode( $base64_encode );
+		return BackWPup_Encryption::PREFIX . self::PREFIX . $this->key_type . base64_encode( $nonce . $encrypted );
 	}
 
 	/**
@@ -121,28 +120,25 @@ class BackWPup_Encryption_OpenSSL {
 			return '';
 		}
 
-		$no_prefix  = substr( $string, strlen( BackWPup_Encryption::PREFIX . self::PREFIX . $this->key_type ) );
-		$encrypted  = base64_decode( $no_prefix, true );
-		$to_decrypt = $encrypted;
-		$args       = array(
-			$to_decrypt,
-			self::cipher_method(),
-			$this->key,
-			OPENSSL_RAW_DATA,
-		);
+		$no_prefix = substr( $string, strlen( BackWPup_Encryption::PREFIX . self::PREFIX . $this->key_type ) );
 
+		$encrypted = base64_decode( $no_prefix, true );
 		if ( $encrypted === false ) {
 			return '';
 		}
 
-		if ( 1 === version_compare( PHP_VERSION, '5.3.2' ) ) {
-			$nonce_size = openssl_cipher_iv_length( self::cipher_method() );
-			$nonce      = substr( $encrypted, 0, $nonce_size );
+		$nonce_size = openssl_cipher_iv_length( self::cipher_method() );
+		$nonce      = substr( $encrypted, 0, $nonce_size );
+		$to_decrypt = substr( $encrypted, $nonce_size );
 
-			$args[0] = substr( $encrypted, $nonce_size );
-			$args[]  = $nonce;
-		}
-
-		return call_user_func_array( 'openssl_decrypt', $args );
+		// phpcs:disable
+		return openssl_decrypt(
+			$to_decrypt,
+			self::cipher_method(),
+			$this->key,
+			OPENSSL_RAW_DATA,
+			$nonce
+		);
+		// phpcs:enable
 	}
 }

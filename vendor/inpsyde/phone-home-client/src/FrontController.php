@@ -258,7 +258,7 @@ final class Inpsyde_PhoneHome_FrontController {
 		if ( is_string( $menu_page_id ) && $menu_page_id ) {
 			self::$menu_page_ids[ $menu_page_id ] = $menu_page_slug;
 			$this->page_id                        = $menu_page_slug;
-			add_action( 'admin_notices', array( $this, 'print_notice' ), 999 );
+			add_action( 'admin_notices', array( $this, 'print_notice' ) );
 		}
 	}
 

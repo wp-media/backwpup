@@ -1,5 +1,5 @@
 <?php
-		use Base32\Base32;
+use Base32\Base32;
 
 /**
  * Class for options

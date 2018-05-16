@@ -192,11 +192,14 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $jobdest
-	 * @return mixed
+	 * @inheritdoc
 	 */
 	public function file_get_list( $jobdest ) {
-		return get_site_transient( 'backwpup_' . $jobdest );
+
+		$list = (array) get_site_transient( 'backwpup_' . strtolower( $jobdest ) );
+		$list = array_filter( $list );
+
+		return $list;
 	}
 
 	/**
@@ -311,7 +314,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 			if ( is_array( $blobs ) ) {
 				foreach ( $blobs as $blob ) {
 					$file = basename( $blob->getName() );
-					if ( $job_object->is_backup_archive( $file ) && $job_object->owns_backup_archive( $file ) == true )
+					if ( $this->is_backup_archive( $file ) && $this->is_backup_owned_by_job( $file, $job_object->job['jobid'] ) == true )
 						$backupfilelist[ $blob->getProperties()->getLastModified()->getTimestamp() ] = $file;
 					$files[ $filecounter ][ 'folder' ]      = $job_object->steps_data[ $job_object->step_working ][ 'container_url' ] . "/" . dirname( $blob->getName() ) . "/";
 					$files[ $filecounter ][ 'file' ]        = $blob->getName();
