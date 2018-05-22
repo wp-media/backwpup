@@ -4,7 +4,7 @@
  * LICENSE: Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,56 +15,46 @@
  * PHP version 5
  *
  * @category  Microsoft
- *
+ * @package   Tests\Framework
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 
-namespace Tests\framework;
-
-use MicrosoftAzure\Storage\Blob\Internal\IBlob;
-
-use MicrosoftAzure\Storage\Blob\Models\CreateContainerOptions;
-use MicrosoftAzure\Storage\Blob\Models\ListContainersOptions;
-use MicrosoftAzure\Storage\Common\ServiceException;
+namespace Tests\Framework;
+use Tests\Framework\ServiceRestProxyTestBase;
+use WindowsAzure\Blob\Models\CreateContainerOptions;
+use WindowsAzure\Blob\Models\ListContainersOptions;
+use WindowsAzure\Common\ServiceException;
 
 /**
  * TestBase class for each unit test class.
  *
  * @category  Microsoft
- *
+ * @package   Tests\Framework
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
- * @version   Release: 0.5.0_2016-11
- *
+ * @version   Release: 0.4.2_2016-04
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 class BlobServiceRestProxyTestBase extends ServiceRestProxyTestBase
 {
     protected $_createdContainers;
-
-    /**
-     * @var IBlob
-     */
-    private $blobRestProxy;
-
+    
     public function setUp()
     {
         parent::setUp();
-        $this->blobRestProxy = $this->builder->createBlobService($this->connectionString);
-        parent::setProxy($this->blobRestProxy);
-        $this->_createdContainers = [];
+        $blobRestProxy = $this->builder->createBlobService($this->connectionString);
+        parent::setProxy($blobRestProxy);
+        $this->_createdContainers = array();
 
         // delete all existing blob containers
-        $containerList = $this->blobRestProxy->listContainers();
-        $containers = $containerList->getContainers();
-        foreach ($containers as $container) {
-            $this->blobRestProxy->deleteContainer($container->getName());
+        $containerlist = $this->restProxy->listContainers();
+        $containers = $containerlist->getcontainers();
+        foreach($containers as $container) {
+            $this->restProxy->deleteContainer($container->getName());
         }
     }
 
@@ -75,7 +65,7 @@ class BlobServiceRestProxyTestBase extends ServiceRestProxyTestBase
             $options->setPublicAccess('container');
         }
 
-        $this->blobRestProxy->createContainer($containerName, $options);
+        $this->restProxy->createContainer($containerName, $options);
         $this->_createdContainers[] = $containerName;
     }
 
@@ -97,7 +87,7 @@ class BlobServiceRestProxyTestBase extends ServiceRestProxyTestBase
                     throw $e;
                 }
                 sleep(10);
-                ++$counter;
+                $counter++;
             }
         } while (!$ok);
     }
@@ -105,15 +95,15 @@ class BlobServiceRestProxyTestBase extends ServiceRestProxyTestBase
     public function createContainers($containerList, $containerPrefix = null)
     {
         $containers = $this->listContainers($containerPrefix);
-        foreach ($containerList as $container) {
-            if (array_search($container, $containers) === false) {
+        foreach($containerList as $container) {
+            if (array_search($container, $containers) === FALSE) {
                 $this->createContainer($container);
             } else {
-                $listResults = $this->blobRestProxy->listBlobs($container);
+                $listResults = $this->restProxy->listBlobs($container);
                 $blobs = $listResults->getBlobs();
-                foreach ($blobs as $blob) {
+                foreach($blobs as $blob)  {
                     try {
-                        $this->blobRestProxy->deleteBlob($container, $blob->getName());
+                        $this->restProxy->deleteBlob($container, $blob->getName());
                     } catch (\Exception $e) {
                         // Ignore exception and continue.
                         error_log($e->getMessage());
@@ -125,14 +115,14 @@ class BlobServiceRestProxyTestBase extends ServiceRestProxyTestBase
 
     public function deleteContainer($containerName)
     {
-        $this->blobRestProxy->deleteContainer($containerName);
+        $this->restProxy->deleteContainer($containerName);
     }
 
     public function deleteContainers($containerList, $containerPrefix = null)
     {
         $containers = $this->listContainers($containerPrefix);
-        foreach ($containerList as $container) {
-            if (!(array_search($container, $containers) === false)) {
+        foreach($containerList as $container)  {
+            if (!(array_search($container, $containers) === FALSE)) {
                 $this->deleteContainer($container);
             }
         }
@@ -140,14 +130,14 @@ class BlobServiceRestProxyTestBase extends ServiceRestProxyTestBase
 
     public function listContainers($containerPrefix = null)
     {
-        $result = [];
+        $result = array();
         $opts = new ListContainersOptions();
         if (!is_null($containerPrefix)) {
             $opts->setPrefix($containerPrefix);
         }
 
-        $list = $this->blobRestProxy->listContainers($opts);
-        foreach ($list->getContainers() as $item) {
+        $list = $this->restProxy->listContainers($opts);
+        foreach($list->getContainers() as $item)  {
             array_push($result, $item->getName());
         }
 
@@ -162,9 +152,11 @@ class BlobServiceRestProxyTestBase extends ServiceRestProxyTestBase
             try {
                 $this->deleteContainer($value);
             } catch (\Exception $e) {
-                // Ignore exception and continue, will assume that this container doesn't exist in the storage account
+                // Ignore exception and continue, will assume that this container doesn't exist in the sotrage account
                 error_log($e->getMessage());
             }
         }
     }
 }
+
+

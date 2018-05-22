@@ -4,7 +4,7 @@
  * LICENSE: Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,16 +15,14 @@
  * PHP version 5
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\Common\Internal
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 
-namespace Tests\unit\WindowsAzure\Common\Internal;
-
+namespace Tests\Unit\WindowsAzure\Common\Internal;
 use WindowsAzure\Common\Internal\Validate;
 use WindowsAzure\Common\Internal\InvalidArgumentTypeException;
 use WindowsAzure\Common\Internal\Resources;
@@ -32,32 +30,30 @@ use WindowsAzure\Common\Internal\Utilities;
 use WindowsAzure\MediaServices\Models\Asset;
 
 /**
- * Unit tests for class ValidateTest.
+ * Unit tests for class ValidateTest
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\Common\Internal
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
- * @version   Release: 0.5.0_2016-11
- *
+ * @version   Release: 0.4.2_2016-04
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 class ValidateTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isArray
+     * @covers WindowsAzure\Common\Internal\Validate::isArray
      */
     public function testIsArrayWithArray()
     {
-        Validate::isArray([], 'array');
+        Validate::isArray(array(), 'array');
 
         $this->assertTrue(true);
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isArray
+     * @covers WindowsAzure\Common\Internal\Validate::isArray
      */
     public function testIsArrayWithNonArray()
     {
@@ -66,7 +62,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isString
+     * @covers WindowsAzure\Common\Internal\Validate::isString
      */
     public function testIsStringWithString()
     {
@@ -76,7 +72,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isString
+     * @covers WindowsAzure\Common\Internal\Validate::isString
      */
     public function testIsStringWithNonString()
     {
@@ -85,17 +81,17 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isBoolean
+     * @covers WindowsAzure\Common\Internal\Validate::isBoolean
      */
     public function testIsBooleanWithBoolean()
     {
-        Validate::isBoolean(true, 'boolean');
+        Validate::isBoolean(true);
 
         $this->assertTrue(true);
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isInteger
+     * @covers WindowsAzure\Common\Internal\Validate::isInteger
      */
     public function testIsIntegerWithInteger()
     {
@@ -105,7 +101,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isInteger
+     * @covers WindowsAzure\Common\Internal\Validate::isInteger
      */
     public function testIsIntegerWithNonInteger()
     {
@@ -114,7 +110,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isTrue
+     * @covers WindowsAzure\Common\Internal\Validate::isTrue
      */
     public function testIsTrueWithTrue()
     {
@@ -124,7 +120,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isTrue
+     * @covers WindowsAzure\Common\Internal\Validate::isTrue
      */
     public function testIsTrueWithFalse()
     {
@@ -133,27 +129,27 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isDate
+     * @covers WindowsAzure\Common\Internal\Validate::isDate
      */
     public function testIsDateWithDate()
     {
         $date = Utilities::rfc1123ToDateTime('Fri, 09 Oct 2009 21:04:30 GMT');
-        Validate::isDate($date, 'date');
+        Validate::isDate($date);
 
         $this->assertTrue(true);
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isDate
+     * @covers WindowsAzure\Common\Internal\Validate::isDate
      */
     public function testIsDateWithNonDate()
     {
         $this->setExpectedException(get_class(new InvalidArgumentTypeException('DateTime')));
-        Validate::isDate('not date', 'date');
+        Validate::isDate('not date');
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::notNullOrEmpty
+     * @covers WindowsAzure\Common\Internal\Validate::notNullOrEmpty
      */
     public function testNotNullOrEmptyWithNonEmpty()
     {
@@ -163,7 +159,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::notNullOrEmpty
+     * @covers WindowsAzure\Common\Internal\Validate::notNullOrEmpty
      */
     public function testNotNullOrEmptyWithEmpty()
     {
@@ -172,7 +168,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::notNull
+     * @covers WindowsAzure\Common\Internal\Validate::notNull
      */
     public function testNotNullWithNull()
     {
@@ -181,7 +177,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isInstanceOf
+     * @covers WindowsAzure\Common\Internal\Validate::isInstanceOf
      */
     public function testIsInstanceOfStringPasses()
     {
@@ -197,14 +193,14 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isInstanceOf
+     * @covers WindowsAzure\Common\Internal\Validate::isInstanceOf
      */
     public function testIsInstanceOfStringFail()
     {
         // Setup
         $this->setExpectedException('\InvalidArgumentException');
         $value = 'testString';
-        $arrayObject = [];
+        $arrayObject = array();
 
         // Test
         $result = Validate::isInstanceOf($value, $arrayObject, 'value');
@@ -213,13 +209,13 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isInstanceOf
+     * @covers WindowsAzure\Common\Internal\Validate::isInstanceOf
      */
     public function testIsInstanceOfArrayPasses()
     {
         // Setup
-        $value = [];
-        $arrayObject = [];
+        $value = array();
+        $arrayObject = array();
 
         // Test
         $result = Validate::isInstanceOf($value, $arrayObject, 'value');
@@ -229,13 +225,13 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isInstanceOf
+     * @covers WindowsAzure\Common\Internal\Validate::isInstanceOf
      */
     public function testIsInstanceOfArrayFail()
     {
         // Setup
         $this->setExpectedException('\InvalidArgumentException');
-        $value = [];
+        $value = array();
         $stringObject = 'testString';
 
         // Test
@@ -245,7 +241,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isInstanceOf
+     * @covers WindowsAzure\Common\Internal\Validate::isInstanceOf
      */
     public function testIsInstanceOfIntPasses()
     {
@@ -261,7 +257,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isInstanceOf
+     * @covers WindowsAzure\Common\Internal\Validate::isInstanceOf
      */
     public function testIsInstanceOfIntFail()
     {
@@ -276,14 +272,15 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
         // Assert
     }
 
+
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isInstanceOf
+     * @covers WindowsAzure\Common\Internal\Validate::isInstanceOf
      */
     public function testIsInstanceOfNullValue()
     {
         // Setup
         $value = null;
-        $arrayObject = [];
+        $arrayObject = array();
 
         // Test
         $result = Validate::isInstanceOf($value, $arrayObject, 'value');
@@ -293,7 +290,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isDouble
+     * @covers WindowsAzure\Common\Internal\Validate::isDouble
      */
     public function testIsDoubleSuccess()
     {
@@ -308,7 +305,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isDouble
+     * @covers WindowsAzure\Common\Internal\Validate::isDouble
      */
     public function testIsDoubleFail()
     {
@@ -323,7 +320,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isDouble
+     * @covers WindowsAzure\Common\Internal\Validate::isDouble
      */
     public function testGetValidateUri()
     {
@@ -335,7 +332,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isValidUri
+     * @covers WindowsAzure\Common\Internal\Validate::isValidUri
      */
     public function testIsValidUriPass()
     {
@@ -343,14 +340,14 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
         $value = 'http://test.com';
 
         // Test
-        $result = Validate::isValidUri($value, 'uri');
+        $result = Validate::isValidUri($value);
 
         // Assert
         $this->assertTrue($result);
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isValidUri
+     * @covers WindowsAzure\Common\Internal\Validate::isValidUri
      */
     public function testIsValidUriNull()
     {
@@ -359,13 +356,13 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
         $value = null;
 
         // Test
-        $result = Validate::isValidUri($value, 'uri');
+        $result = Validate::isValidUri($value);
 
         // Assert
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isValidUri
+     * @covers WindowsAzure\Common\Internal\Validate::isValidUri
      */
     public function testIsValidUriNotUri()
     {
@@ -374,13 +371,13 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
         $value = 'test string';
 
         // Test
-        $result = Validate::isValidUri($value, 'uri');
+        $result = Validate::isValidUri($value);
 
         // Assert
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isObject
+     * @covers WindowsAzure\Common\Internal\Validate::isObject
      */
     public function testIsObjectPass()
     {
@@ -395,7 +392,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isObject
+     * @covers WindowsAzure\Common\Internal\Validate::isObject
      */
     public function testIsObjectNull()
     {
@@ -410,7 +407,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isObject
+     * @covers WindowsAzure\Common\Internal\Validate::isObject
      */
     public function testIsObjectNotObject()
     {
@@ -425,7 +422,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isA
+     * @covers WindowsAzure\Common\Internal\Validate::isA
      */
     public function testIsAResourcesPasses()
     {
@@ -441,7 +438,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isA
+     * @covers WindowsAzure\Common\Internal\Validate::isA
      */
     public function testIsANull()
     {
@@ -457,7 +454,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isA
+     * @covers WindowsAzure\Common\Internal\Validate::isA
      */
     public function testIsAInvalidClass()
     {
@@ -473,7 +470,7 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isA
+     * @covers WindowsAzure\Common\Internal\Validate::isA
      */
     public function testIsANotAClass()
     {
@@ -489,10 +486,9 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::methodExists
+     * @covers WindowsAzure\Common\Internal\Validate::methodExists
      */
-    public function testMethodExistsIfExists()
-    {
+    public function testMethodExistsIfExists(){
 
         // Setup
         $asset = new Asset(Asset::OPTIONS_NONE);
@@ -506,10 +502,9 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::methodExists
+     * @covers WindowsAzure\Common\Internal\Validate::methodExists
      */
-    public function testMethodExistsIfNotExists()
-    {
+    public function testMethodExistsIfNotExists(){
 
         // Setup
         $this->setExpectedException('\InvalidArgumentException');
@@ -523,10 +518,9 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isDateString
+     * @covers WindowsAzure\Common\Internal\Validate::isDateString
      */
-    public function testIsDateStringValid()
-    {
+    public function testIsDateStringValid(){
 
         // Setup
         $value = '2013-11-25';
@@ -539,10 +533,9 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Validate::isDateString
+     * @covers WindowsAzure\Common\Internal\Validate::isDateString
      */
-    public function testIsDateStringNotValid()
-    {
+    public function testIsDateStringNotValid(){
 
         // Setup
         $this->setExpectedException('\InvalidArgumentException');
@@ -554,3 +547,4 @@ class ValidateTest extends \PHPUnit_Framework_TestCase
         // Assert
     }
 }
+

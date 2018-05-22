@@ -1,0 +1,25 @@
+<VirtualHost *:80>
+    ServerName hr2.local
+    ServerAlias hr2 www.hr2.local
+
+    DocumentRoot "%TRAVIS_BUILD_DIR%/tests/_network"
+
+    <Directory "%TRAVIS_BUILD_DIR%/tests/_network">
+        Options FollowSymLinks MultiViews +ExecCGI
+        AllowOverride All
+        Order deny,allow
+        Allow from all
+    </Directory>
+
+
+    # Wire up Apache to use Travis CI's php-fpm.
+    #<IfModule mod_fastcgi.c>
+    #    AddHandler php5-fcgi .php
+    #    Action php5-fcgi /php5-fcgi
+    #    Alias /php5-fcgi /usr/lib/cgi-bin/php5-fcgi
+    #    FastCgiExternalServer /usr/lib/cgi-bin/php5-fcgi -host 127.0.0.1:9000 -pass-header Authorization
+    #</IfModule>
+
+    ErrorLog "%TRAVIS_BUILD_DIR%/logs/hr2-error.log"
+    CustomLog "%TRAVIS_BUILD_DIR%/logs/hr2-access.log" combined
+</VirtualHost>

@@ -4,7 +4,7 @@
  * LICENSE: Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,34 +15,33 @@
  * PHP version 5
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\Common\Internal\Http
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 
-namespace Tests\unit\WindowsAzure\Common\Internal\Http;
-
+namespace Tests\Unit\WindowsAzure\Common\Internal\Http;
 use WindowsAzure\Common\Internal\Http\HttpCallContext;
 use WindowsAzure\Common\Internal\Http\Url;
 
 /**
- * Unit tests for class HttpCallContext.
+ * Unit tests for class HttpCallContext
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\Common\Internal\Http
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
- * @version   Release: 0.5.0_2016-11
- *
+ * @version   Release: 0.4.2_2016-04
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 class HttpCallContextTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::__construct
+     */
     public function test__construct()
     {
         // Test
@@ -61,11 +60,11 @@ class HttpCallContextTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::getMethod
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::setMethod
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::getMethod
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::setMethod
      * @depends test__construct
      */
-    public function testSetMethod(HttpCallContext $context)
+    public function testSetMethod($context)
     {
         // Setup
         $expected = 'Method';
@@ -78,11 +77,11 @@ class HttpCallContextTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::getBody
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::setBody
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::getBody
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::setBody
      * @depends test__construct
      */
-    public function testSetBody(HttpCallContext $context)
+    public function testSetBody($context)
     {
         // Setup
         $expected = 'Body';
@@ -95,11 +94,11 @@ class HttpCallContextTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::getPath
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::setPath
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::getPath
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::setPath
      * @depends test__construct
      */
-    public function testSetPath(HttpCallContext $context)
+    public function testSetPath($context)
     {
         // Setup
         $expected = 'Path';
@@ -112,11 +111,11 @@ class HttpCallContextTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::getUri
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::setUri
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::getUri
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::setUri
      * @depends test__construct
      */
-    public function testSetUri(HttpCallContext $context)
+    public function testSetUri($context)
     {
         // Setup
         $expected = new Url('http://www.microsoft.com');
@@ -129,15 +128,15 @@ class HttpCallContextTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::getHeaders
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::setHeaders
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::addHeader
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::getHeaders
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::setHeaders
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::addHeader
      * @depends test__construct
      */
-    public function testSetHeaders(HttpCallContext $context)
+    public function testSetHeaders($context)
     {
         // Setup
-        $expected = ['value1', 'value2', 'value3'];
+        $expected = array('value1', 'value2', 'value3');
 
         // Test
         $context->setHeaders($expected);
@@ -147,15 +146,15 @@ class HttpCallContextTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::getQueryParameters
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::setQueryParameters
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::addQueryParameter
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::getQueryParameters
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::setQueryParameters
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::addQueryParameter
      * @depends test__construct
      */
-    public function testSetQueryParameters(HttpCallContext $context)
+    public function testSetQueryParameters($context)
     {
         // Setup
-        $expected = ['value1', 'value2', 'value3'];
+        $expected = array('value1', 'value2', 'value3');
 
         // Test
         $context->setQueryParameters($expected);
@@ -165,15 +164,15 @@ class HttpCallContextTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::getStatusCodes
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::setStatusCodes
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::addStatusCode
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::getStatusCodes
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::setStatusCodes
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::addStatusCode
      * @depends test__construct
      */
-    public function testSetStatusCodes(HttpCallContext $context)
+    public function testSetStatusCodes($context)
     {
         // Setup
-        $expected = [1, 2, 3];
+        $expected = array(1, 2, 3);
 
         // Test
         $context->setStatusCodes($expected);
@@ -183,11 +182,11 @@ class HttpCallContextTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::getHeader
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::addHeader
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::getHeader
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::addHeader
      * @depends test__construct
      */
-    public function testAddHeader(HttpCallContext $context)
+    public function testAddHeader($context)
     {
         // Setup
         $expected = 'value';
@@ -201,12 +200,12 @@ class HttpCallContextTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::removeHeader
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::getHeaders
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::addHeader
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::removeHeader
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::getHeaders
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::addHeader
      * @depends test__construct
      */
-    public function testRemoveHeader(HttpCallContext $context)
+    public function testRemoveHeader($context)
     {
         // Setup
         $value = 'value';
@@ -221,13 +220,13 @@ class HttpCallContextTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Http\HttpCallContext::__toString
+     * @covers WindowsAzure\Common\Internal\Http\HttpCallContext::__toString
      * @depends test__construct
      */
-    public function test__toString(HttpCallContext $context)
+    public function test__toString($context)
     {
         // Setup
-        $headers = ['h1' => 'v1', 'h2' => 'v2'];
+        $headers = array('h1' => 'v1', 'h2' => 'v2');
         $method = 'GET';
         $uri = 'http://microsoft.com';
         $path = 'windowsazure/services';
@@ -246,3 +245,5 @@ class HttpCallContextTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $actual);
     }
 }
+
+

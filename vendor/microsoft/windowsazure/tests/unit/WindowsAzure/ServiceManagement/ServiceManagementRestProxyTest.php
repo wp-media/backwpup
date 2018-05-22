@@ -4,7 +4,7 @@
  * LICENSE: Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,23 +15,20 @@
  * PHP version 5
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\ServiceManagement
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 
-namespace Tests\unit\WindowsAzure\ServiceManagement;
-
-use Tests\framework\ServiceRestProxyTestBase;
-use Tests\framework\ServiceManagementRestProxyTestBase;
-use Tests\framework\TestResources;
+namespace Tests\Unit\WindowsAzure\ServiceManagement;
+use Tests\Framework\ServiceRestProxyTestBase;
+use Tests\Framework\ServiceManagementRestProxyTestBase;
+use Tests\Framework\TestResources;
 use WindowsAzure\Common\Internal\Resources;
 use WindowsAzure\Common\Internal\Http\HttpClient;
 use WindowsAzure\Common\Internal\Serialization\XmlSerializer;
-use WindowsAzure\Common\ServiceException;
 use WindowsAzure\ServiceManagement\ServiceManagementRestProxy;
 use WindowsAzure\ServiceManagement\Models\CreateServiceOptions;
 use WindowsAzure\ServiceManagement\Models\UpdateServiceOptions;
@@ -46,22 +43,20 @@ use WindowsAzure\ServiceManagement\Models\UpgradeDeploymentOptions;
 use WindowsAzure\ServiceManagement\Models\CreateDeploymentOptions;
 
 /**
- * Unit tests for class ServiceManagementRestProxy.
+ * Unit tests for class ServiceManagementRestProxy
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\ServiceManagement
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
- * @version   Release: 0.5.0_2016-11
- *
+ * @version   Release: 0.4.2_2016-04
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
 {
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::__construct
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::__construct
      */
     public function test__construct()
     {
@@ -84,9 +79,9 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::createAffinityGroup
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getAffinityGroupPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::createAffinityGroup
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getAffinityGroupPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
      * @group AffinityGroup
      */
     public function testCreateAffinityGroup()
@@ -97,7 +92,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $location = $this->defaultLocation;
 
         // Test
-        $this->serviceManagementRestProxy->createAffinityGroup($name, $label, $location);
+        $this->restProxy->createAffinityGroup($name, $label, $location);
 
         // Assert
         $this->assertTrue($this->affinityGroupExists($name));
@@ -105,9 +100,9 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::deleteAffinityGroup
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getAffinityGroupPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::deleteAffinityGroup
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getAffinityGroupPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
      * @group AffinityGroup
      */
     public function testDeleteAffinityGroup()
@@ -116,30 +111,30 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $name = $this->getTestName();
         $label = base64_encode($name);
         $location = $this->defaultLocation;
-        $this->serviceManagementRestProxy->createAffinityGroup($name, $label, $location);
+        $this->restProxy->createAffinityGroup($name, $label, $location);
 
         // Test
-        $this->serviceManagementRestProxy->deleteAffinityGroup($name);
+        $this->restProxy->deleteAffinityGroup($name);
 
         // Assert
         $this->assertFalse($this->affinityGroupExists($name));
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::listAffinityGroups
-     * @covers \WindowsAzure\ServiceManagement\Models\ListAffinityGroupsResult::create
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getAffinityGroupPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::listAffinityGroups
+     * @covers WindowsAzure\ServiceManagement\Models\ListAffinityGroupsResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getAffinityGroupPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
      * @group AffinityGroup
      */
     public function testListAffinityGroupsWithEmpty()
     {
         // Setup
-        $currentCount = count($this->serviceManagementRestProxy->listAffinityGroups()->getAffinityGroups());
+        $currentCount = count($this->restProxy->listAffinityGroups()->getAffinityGroups());
         $expectedCount = 0 + $currentCount;
 
         // Test
-        $result = $this->serviceManagementRestProxy->listAffinityGroups();
+        $result = $this->restProxy->listAffinityGroups();
 
         // Assert
         $affinityGroups = $result->getAffinityGroups();
@@ -147,22 +142,22 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::listAffinityGroups
-     * @covers \WindowsAzure\ServiceManagement\Models\ListAffinityGroupsResult::create
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getAffinityGroupPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::listAffinityGroups
+     * @covers WindowsAzure\ServiceManagement\Models\ListAffinityGroupsResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getAffinityGroupPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
      * @group AffinityGroup
      */
     public function testListAffinityGroupsWithOneEntry()
     {
         // Setup
         $name = $this->getTestName();
-        $currentCount = count($this->serviceManagementRestProxy->listAffinityGroups()->getAffinityGroups());
+        $currentCount = count($this->restProxy->listAffinityGroups()->getAffinityGroups());
         $expectedCount = 1 + $currentCount;
         $this->createAffinityGroup($name);
 
         // Test
-        $result = $this->serviceManagementRestProxy->listAffinityGroups();
+        $result = $this->restProxy->listAffinityGroups();
 
         // Assert
         $affinityGroups = $result->getAffinityGroups();
@@ -170,10 +165,10 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::listAffinityGroups
-     * @covers \WindowsAzure\ServiceManagement\Models\ListAffinityGroupsResult::create
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getAffinityGroupPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::listAffinityGroups
+     * @covers WindowsAzure\ServiceManagement\Models\ListAffinityGroupsResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getAffinityGroupPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
      * @group AffinityGroup
      */
     public function testListAffinityGroupsWithMultipleEntries()
@@ -181,13 +176,13 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         // Setup
         $name1 = $this->getTestName();
         $name2 = $this->getTestName();
-        $currentCount = count($this->serviceManagementRestProxy->listAffinityGroups()->getAffinityGroups());
+        $currentCount = count($this->restProxy->listAffinityGroups()->getAffinityGroups());
         $expectedCount = 2 + $currentCount;
         $this->createAffinityGroup($name1);
         $this->createAffinityGroup($name2);
 
         // Test
-        $result = $this->serviceManagementRestProxy->listAffinityGroups();
+        $result = $this->restProxy->listAffinityGroups();
 
         // Assert
         $affinityGroups = $result->getAffinityGroups();
@@ -195,9 +190,9 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::updateAffinityGroup
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getAffinityGroupPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::updateAffinityGroup
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getAffinityGroupPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
      * @group AffinityGroup
      */
     public function testUpdateAffinityGroup()
@@ -210,7 +205,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $this->createAffinityGroup($name, $label, $location);
 
         // Test
-        $this->serviceManagementRestProxy->updateAffinityGroup($name, $expectedLabel);
+        $this->restProxy->updateAffinityGroup($name, $expectedLabel);
 
         // Assert
         $affinityGroup = $this->getAffinityGroup($name);
@@ -218,10 +213,10 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getAffinityGroupProperties
-     * @covers \WindowsAzure\ServiceManagement\Models\GetAffinityGroupPropertiesResult::create
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getAffinityGroupPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getAffinityGroupProperties
+     * @covers WindowsAzure\ServiceManagement\Models\GetAffinityGroupPropertiesResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getAffinityGroupPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
      * @group AffinityGroup
      */
     public function testGetAffinityGroupProperties()
@@ -231,7 +226,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $this->createAffinityGroup($name);
 
         // Test
-        $result = $this->serviceManagementRestProxy->getAffinityGroupProperties($name);
+        $result = $this->restProxy->getAffinityGroupProperties($name);
 
         // Assert
         $expected = $this->getAffinityGroup($name);
@@ -241,14 +236,14 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::createStorageService
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getOperationStatus
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getOperationPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getStorageServicePath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\Models\GetOperationStatusResult::create
-     * @covers \WindowsAzure\ServiceManagement\Models\StorageService::toArray
-     * @covers \WindowsAzure\ServiceManagement\Internal\WindowsAzureService::toArray
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::createStorageService
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getOperationStatus
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getOperationPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getStorageServicePath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\Models\GetOperationStatusResult::create
+     * @covers WindowsAzure\ServiceManagement\Models\StorageService::toArray
+     * @covers WindowsAzure\ServiceManagement\Internal\WindowsAzureService::toArray
      * @group StorageService
      */
     public function testCreateStorageService()
@@ -260,10 +255,10 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $options->setLocation($this->defaultLocation);
 
         // Count the storage services before creating new one.
-        $storageCount = count($this->serviceManagementRestProxy->listStorageServices()->getStorageServices());
+        $storageCount = count($this->restProxy->listStorageServices()->getStorageServices());
 
         // Test
-        $result = $this->serviceManagementRestProxy->createStorageService($name, $label, $options);
+        $result = $this->restProxy->createStorageService($name, $label, $options);
         $this->blockUntilAsyncSucceed($result);
 
         // Assert
@@ -273,10 +268,10 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::listStorageServices
-     * @covers \WindowsAzure\ServiceManagement\Models\ListStorageServicesResult::create
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getStorageServicePath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::listStorageServices
+     * @covers WindowsAzure\ServiceManagement\Models\ListStorageServicesResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getStorageServicePath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
      * @depends testCreateStorageService
      * @group StorageService
      */
@@ -286,16 +281,16 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $expected = 1;
 
          // Test
-        $result = $this->serviceManagementRestProxy->listStorageServices();
+        $result = $this->restProxy->listStorageServices();
 
         // Assert
         $this->assertCount($expected + $storageCount, $result->getStorageServices());
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::updateStorageService
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getStorageServicePath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::updateStorageService
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getStorageServicePath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
      * @depends testListStorageServices
      * @group StorageService
      */
@@ -310,19 +305,19 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $options->setLabel($expectedLabel);
 
         // Test
-        $this->serviceManagementRestProxy->updateStorageService($name, $options);
+        $this->restProxy->updateStorageService($name, $options);
 
         // Assert
-        $result = $this->serviceManagementRestProxy->getStorageServiceProperties($name);
+        $result = $this->restProxy->getStorageServiceProperties($name);
         $this->assertEquals($expectedDesc, $result->getStorageService()->getDescription());
         $this->assertEquals($expectedLabel, $result->getStorageService()->getLabel());
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getStorageServiceProperties
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getStorageServicePath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\Models\GetStorageServicePropertiesResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getStorageServiceProperties
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getStorageServicePath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\Models\GetStorageServicePropertiesResult::create
      * @depends testUpdateStorageService
      * @group StorageService
      */
@@ -332,7 +327,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $name = $this->storageServiceName;
 
         // Test
-        $result = $this->serviceManagementRestProxy->getStorageServiceProperties($name);
+        $result = $this->restProxy->getStorageServiceProperties($name);
 
         // Assert
         $this->assertEquals($name, $result->getStorageService()->getName());
@@ -341,10 +336,10 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getStorageServiceKeys
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getStorageServiceKeysPath
-     * @covers \WindowsAzure\ServiceManagement\Models\GetStorageServiceKeysResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getStorageServiceKeys
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getStorageServiceKeysPath
+     * @covers WindowsAzure\ServiceManagement\Models\GetStorageServiceKeysResult::create
      * @depends testGetStorageServiceProperties
      * @group StorageService
      * @group StorageService
@@ -355,7 +350,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $name = $this->storageServiceName;
 
         // Test
-        $result = $this->serviceManagementRestProxy->getStorageServiceKeys($name);
+        $result = $this->restProxy->getStorageServiceKeys($name);
 
         // Assert
         $this->assertNotNull($result->getUrl());
@@ -364,10 +359,10 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::regenerateStorageServiceKeys
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getStorageServiceKeysPath
-     * @covers \WindowsAzure\ServiceManagement\Models\GetStorageServiceKeysResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::regenerateStorageServiceKeys
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getStorageServiceKeysPath
+     * @covers WindowsAzure\ServiceManagement\Models\GetStorageServiceKeysResult::create
      * @depends testGetStorageServiceKeys
      * @group StorageService
      */
@@ -375,10 +370,10 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     {
         // Setup
         $name = $this->storageServiceName;
-        $old = $this->serviceManagementRestProxy->getStorageServiceKeys($name);
+        $old = $this->restProxy->getStorageServiceKeys($name);
 
         // Test
-        $new = $this->serviceManagementRestProxy->regenerateStorageServiceKeys($name, KeyType::PRIMARY_KEY);
+        $new = $this->restProxy->regenerateStorageServiceKeys($name, KeyType::PRIMARY_KEY);
 
         // Assert
         $this->assertNotEquals($old->getPrimary(), $new->getPrimary());
@@ -386,9 +381,9 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::deleteStorageService
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getStorageServicePath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::deleteStorageService
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getStorageServicePath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
      * @depends testRegenerateStorageServiceKeys
      */
     public function testDeleteStorageService()
@@ -401,49 +396,49 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $name = $this->storageServiceName;
 
          // Test
-        $this->serviceManagementRestProxy->deleteStorageService($name);
+        $this->restProxy->deleteStorageService($name);
 
         // Assert
         $this->assertFalse($this->storageServiceExists($name));
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::listHostedServices
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getHostedServicePath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\Models\ListHostedServicesResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::listHostedServices
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getHostedServicePath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\Models\ListHostedServicesResult::create
      * @group HostedService
      */
     public function testListHostedServicesEmpty()
     {
         // Setup
-        $currentCount = count($this->serviceManagementRestProxy->listHostedServices()->getHostedServices());
+        $currentCount = count($this->restProxy->listHostedServices()->getHostedServices());
         $expectedCount = $currentCount;
 
          // Test
-        $result = $this->serviceManagementRestProxy->listHostedServices();
+        $result = $this->restProxy->listHostedServices();
 
         // Assert
         $this->assertCount($expectedCount, $result->getHostedServices());
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::listHostedServices
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getHostedServicePath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\Models\ListHostedServicesResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::listHostedServices
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getHostedServicePath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\Models\ListHostedServicesResult::create
      * @group HostedService
      */
     public function testListHostedServicesOne()
     {
         // Setup
-        $currentCount = count($this->serviceManagementRestProxy->listHostedServices()->getHostedServices());
+        $currentCount = count($this->restProxy->listHostedServices()->getHostedServices());
         $name = $this->getTestName();
         $this->createHostedService($name);
         $expectedCount = $currentCount + 1;
 
          // Test
-        $result = $this->serviceManagementRestProxy->listHostedServices();
+        $result = $this->restProxy->listHostedServices();
 
         // Assert
         $actual = $result->getHostedServices();
@@ -459,16 +454,16 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::listHostedServices
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getHostedServicePath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\Models\ListHostedServicesResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::listHostedServices
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getHostedServicePath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\Models\ListHostedServicesResult::create
      * @group HostedService
      */
     public function testListHostedServicesMultiple()
     {
         // Setup
-        $currentCount = count($this->serviceManagementRestProxy->listHostedServices()->getHostedServices());
+        $currentCount = count($this->restProxy->listHostedServices()->getHostedServices());
         $name1 = $this->getTestName();
         $name2 = $this->getTestName();
         $name3 = $this->getTestName();
@@ -478,7 +473,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $expectedCount = $currentCount + 3;
 
          // Test
-        $result = $this->serviceManagementRestProxy->listHostedServices();
+        $result = $this->restProxy->listHostedServices();
 
         // Assert
         $actual = $result->getHostedServices();
@@ -490,9 +485,9 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         foreach ($actual as $hostedService) {
             if ($hostedService->getName() === $name1) {
                 $service1Exists = true;
-            } elseif ($hostedService->getName() === $name2) {
+            } else if ($hostedService->getName() === $name2) {
                 $service2Exists = true;
-            } elseif ($hostedService->getName() === $name3) {
+            } else if ($hostedService->getName() === $name3) {
                 $service3Exists = true;
             }
         }
@@ -502,9 +497,9 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::deleteHostedService
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getHostedServicePath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::deleteHostedService
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getHostedServicePath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
      * @group HostedService
      */
     public function testDeleteHostedService()
@@ -514,21 +509,21 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $this->createHostedService($name);
 
          // Test
-        $this->serviceManagementRestProxy->deleteHostedService($name);
+        $this->restProxy->deleteHostedService($name);
 
         // Assert
         $this->assertFalse($this->hostedServiceExists($name));
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::createHostedService
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getOperationStatus
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getOperationPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getHostedServicePath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\Models\GetOperationStatusResult::create
-     * @covers \WindowsAzure\ServiceManagement\Models\HostedService::toArray
-     * @covers \WindowsAzure\ServiceManagement\Internal\WindowsAzureService::toArray
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::createHostedService
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getOperationStatus
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getOperationPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getHostedServicePath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\Models\GetOperationStatusResult::create
+     * @covers WindowsAzure\ServiceManagement\Models\HostedService::toArray
+     * @covers WindowsAzure\ServiceManagement\Internal\WindowsAzureService::toArray
      * @group HostedService
      */
     public function testCreateHostedService()
@@ -541,7 +536,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $options->setDescription('I am description');
 
         // Test
-        $this->serviceManagementRestProxy->createHostedService($name, $label, $options);
+        $this->restProxy->createHostedService($name, $label, $options);
         $this->createdHostedServices[] = $name;
 
         // Assert
@@ -549,9 +544,9 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::updateHostedService
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getHostedServicePath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::updateHostedService
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getHostedServicePath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
      * @group HostedService
      */
     public function testUpdateHostedService()
@@ -566,19 +561,19 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $options->setLabel($expectedLabel);
 
         // Test
-        $this->serviceManagementRestProxy->updateHostedService($name, $options);
+        $this->restProxy->updateHostedService($name, $options);
 
         // Assert
-        $result = $this->serviceManagementRestProxy->getHostedServiceProperties($name);
+        $result = $this->restProxy->getHostedServiceProperties($name);
         $this->assertEquals($expectedDesc, $result->getHostedService()->getDescription());
         $this->assertEquals($expectedLabel, $result->getHostedService()->getLabel());
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getHostedServiceProperties
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getHostedServicePath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\Models\GetHostedServicePropertiesResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getHostedServiceProperties
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getHostedServicePath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\Models\GetHostedServicePropertiesResult::create
      * @group HostedService
      */
     public function testGetHostedServiceProperties()
@@ -588,7 +583,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $this->createHostedService($name);
 
         // Test
-        $result = $this->serviceManagementRestProxy->getHostedServiceProperties($name);
+        $result = $this->restProxy->getHostedServiceProperties($name);
 
         // Assert
         $this->assertEquals($name, $result->getHostedService()->getName());
@@ -597,24 +592,24 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getHostedServiceProperties
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getHostedServicePath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\Models\GetHostedServicePropertiesResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getHostedServiceProperties
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getHostedServicePath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\Models\GetHostedServicePropertiesResult::create
      * @group HostedService
      */
     public function testGetHostedServicePropertiesWithEmbed()
     {
         // Setup
         $name = $this->getTestName();
-        $stagingName = $name.'staging';
+        $stagingName = $name . 'staging';
         $options = new GetHostedServicePropertiesOptions();
         $options->setEmbedDetail(true);
         $this->createDeployment($name);
         $this->createDeployment($name, DeploymentSlot::STAGING, $stagingName);
 
         // Test
-        $result = $this->serviceManagementRestProxy->getHostedServiceProperties($name, $options);
+        $result = $this->restProxy->getHostedServiceProperties($name, $options);
 
         // Need to delete the staging deployment manually
         $this->deleteDeployment($name, DeploymentSlot::STAGING);
@@ -648,10 +643,10 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::createDeployment
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPathUsingSlot
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_createRequestXml
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::createDeployment
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPathUsingSlot
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_createRequestXml
      * @group Deployment
      */
     public function testCreateDeployment()
@@ -667,10 +662,10 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::deleteDeployment
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPathUsingSlot
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::deleteDeployment
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPathUsingSlot
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
      * @group Deployment
      */
     public function testDeleteDeploymentWithSlot()
@@ -684,7 +679,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $configuration = $this->defaultDeploymentConfiguration;
         $this->createHostedService($name);
         $this->createdHostedServices[] = $name;
-        $result = $this->serviceManagementRestProxy->createDeployment(
+        $result = $this->restProxy->createDeployment(
             $name,
             $deploymentName,
             $slot,
@@ -697,7 +692,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $options->setSlot($slot);
 
         // Test
-        $result = $this->serviceManagementRestProxy->deleteDeployment($name, $options);
+        $result = $this->restProxy->deleteDeployment($name, $options);
         $this->blockUntilAsyncSucceed($result);
 
         // Assert
@@ -706,10 +701,10 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::deleteDeployment
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPathUsingName
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::deleteDeployment
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPathUsingName
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
      * @group Deployment
      */
     public function testDeleteDeploymentWithName()
@@ -723,7 +718,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $configuration = $this->defaultDeploymentConfiguration;
         $this->createHostedService($name);
         $this->createdHostedServices[] = $name;
-        $result = $this->serviceManagementRestProxy->createDeployment(
+        $result = $this->restProxy->createDeployment(
             $name,
             $deploymentName,
             $slot,
@@ -736,7 +731,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $options->setDeploymentName($name);
 
         // Test
-        $result = $this->serviceManagementRestProxy->deleteDeployment($name, $options);
+        $result = $this->restProxy->deleteDeployment($name, $options);
         $this->blockUntilAsyncSucceed($result);
 
         // Assert
@@ -745,17 +740,17 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getDeployment
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPathUsingName
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
-     * @covers \WindowsAzure\ServiceManagement\Models\GetDeploymentResult::create
-     * @covers \WindowsAzure\ServiceManagement\Models\Deployment::create
-     * @covers \WindowsAzure\Common\Internal\Utilities::createInstanceList
-     * @covers \WindowsAzure\ServiceManagement\Models\UpgradeStatus::create
-     * @covers \WindowsAzure\ServiceManagement\Models\RoleInstance::create
-     * @covers \WindowsAzure\ServiceManagement\Models\Role::create
-     * @covers \WindowsAzure\ServiceManagement\Models\InputEndpoint::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getDeployment
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPathUsingName
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
+     * @covers WindowsAzure\ServiceManagement\Models\GetDeploymentResult::create
+     * @covers WindowsAzure\ServiceManagement\Models\Deployment::create
+     * @covers WindowsAzure\Common\Internal\Utilities::createInstanceList
+     * @covers WindowsAzure\ServiceManagement\Models\UpgradeStatus::create
+     * @covers WindowsAzure\ServiceManagement\Models\RoleInstance::create
+     * @covers WindowsAzure\ServiceManagement\Models\Role::create
+     * @covers WindowsAzure\ServiceManagement\Models\InputEndpoint::create
      * @group Deployment
      */
     public function testGetDeploymentWithOneRole()
@@ -767,7 +762,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $options->setDeploymentName($name);
 
         // Test
-        $result = $this->serviceManagementRestProxy->getDeployment($name, $options);
+        $result = $this->restProxy->getDeployment($name, $options);
 
         // Assert
         $this->assertNotNull($result);
@@ -781,22 +776,22 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getDeployment
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPathUsingSlot
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
-     * @covers \WindowsAzure\ServiceManagement\Models\GetDeploymentResult::create
-     * @covers \WindowsAzure\ServiceManagement\Models\Deployment::create
-     * @covers \WindowsAzure\Common\Internal\Utilities::createInstanceList
-     * @covers \WindowsAzure\ServiceManagement\Models\UpgradeStatus::create
-     * @covers \WindowsAzure\ServiceManagement\Models\RoleInstance::create
-     * @covers \WindowsAzure\ServiceManagement\Models\Role::create
-     * @covers \WindowsAzure\ServiceManagement\Models\InputEndpoint::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getDeployment
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPathUsingSlot
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
+     * @covers WindowsAzure\ServiceManagement\Models\GetDeploymentResult::create
+     * @covers WindowsAzure\ServiceManagement\Models\Deployment::create
+     * @covers WindowsAzure\Common\Internal\Utilities::createInstanceList
+     * @covers WindowsAzure\ServiceManagement\Models\UpgradeStatus::create
+     * @covers WindowsAzure\ServiceManagement\Models\RoleInstance::create
+     * @covers WindowsAzure\ServiceManagement\Models\Role::create
+     * @covers WindowsAzure\ServiceManagement\Models\InputEndpoint::create
      * @group Deployment
      */
     public function testGetDeploymentWithMultipleRoles()
     {
-        $this->markTestSkipped('Skip it. Complex package not set up yet.');
+        $this->markTestSkipped("Skip it. Complex package not set up yet.");
         // Setup
         $name = $this->getTestName();
         $label = base64_encode($name);
@@ -807,7 +802,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $this->createHostedService($name);
         $this->createdHostedServices[] = $name;
         $this->createdDeployments[] = $name;
-        $result = $this->serviceManagementRestProxy->createDeployment(
+        $result = $this->restProxy->createDeployment(
             $name,
             $deploymentName,
             $slot,
@@ -824,7 +819,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $inputEndpointCount = 1;
 
         // Test
-        $result = $this->serviceManagementRestProxy->getDeployment($name, $options);
+        $result = $this->restProxy->getDeployment($name, $options);
 
         // Assert
         $this->assertNotNull($result);
@@ -840,17 +835,17 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getDeployment
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPathUsingSlot
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
-     * @covers \WindowsAzure\ServiceManagement\Models\GetDeploymentResult::create
-     * @covers \WindowsAzure\ServiceManagement\Models\Deployment::create
-     * @covers \WindowsAzure\Common\Internal\Utilities::createInstanceList
-     * @covers \WindowsAzure\ServiceManagement\Models\UpgradeStatus::create
-     * @covers \WindowsAzure\ServiceManagement\Models\RoleInstance::create
-     * @covers \WindowsAzure\ServiceManagement\Models\Role::create
-     * @covers \WindowsAzure\ServiceManagement\Models\InputEndpoint::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::getDeployment
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPathUsingSlot
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
+     * @covers WindowsAzure\ServiceManagement\Models\GetDeploymentResult::create
+     * @covers WindowsAzure\ServiceManagement\Models\Deployment::create
+     * @covers WindowsAzure\Common\Internal\Utilities::createInstanceList
+     * @covers WindowsAzure\ServiceManagement\Models\UpgradeStatus::create
+     * @covers WindowsAzure\ServiceManagement\Models\RoleInstance::create
+     * @covers WindowsAzure\ServiceManagement\Models\Role::create
+     * @covers WindowsAzure\ServiceManagement\Models\InputEndpoint::create
      * @group Deployment
      */
     public function testGetDeploymentWhileUpgrading()
@@ -862,12 +857,12 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $mode = Mode::AUTO;
         $configuration = $this->complexConfiguration;
         $packageUrl = TestResources::complexPackageUrl();
-        $label = base64_encode($name.'upgraded');
+        $label = base64_encode($name . 'upgraded');
         $force = true;
         $options = new UpgradeDeploymentOptions();
         $options->setDeploymentName($name);
 
-        $upgradeResult = $this->serviceManagementRestProxy->upgradeDeployment(
+        $upgradeResult = $this->restProxy->upgradeDeployment(
             $name,
             $mode,
             $packageUrl,
@@ -878,7 +873,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         );
 
         // Test
-        $result = $this->serviceManagementRestProxy->getDeployment($name, $options);
+        $result = $this->restProxy->getDeployment($name, $options);
 
         // Block until the upgrade is done.
         $this->blockUntilAsyncSucceed($upgradeResult);
@@ -892,16 +887,16 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::swapDeployment
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getHostedServicePath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_createRequestXml
-     * @covers \WindowsAzure\ServiceManagement\Models\AsynchronousOperationResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::swapDeployment
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getHostedServicePath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_createRequestXml
+     * @covers WindowsAzure\ServiceManagement\Models\AsynchronousOperationResult::create
      * @group Deployment
      */
     public function testSwapDeployment()
     {
-        $this->markTestSkipped('Skip it. Complex package not set up yet.');
+        $this->markTestSkipped("Skip it. Complex package not set up yet.");
         // Setup
         $name = $this->getTestName();
         $staging = 'stagingdeployment';
@@ -911,7 +906,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $this->createDeployment($name, DeploymentSlot::PRODUCTION, $production);
 
         // Test
-        $result = $this->serviceManagementRestProxy->swapDeployment($name, $staging, $production);
+        $result = $this->restProxy->swapDeployment($name, $staging, $production);
 
         // Block until the swap is done
         $this->blockUntilAsyncSucceed($result);
@@ -919,7 +914,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         // Assert
         $options = new GetDeploymentOptions();
         $options->setSlot(DeploymentSlot::PRODUCTION);
-        $result = $this->serviceManagementRestProxy->getDeployment($name, $options);
+        $result = $this->restProxy->getDeployment($name, $options);
         $deployment = $result->getDeployment();
         $this->assertCount($expectedInstanceCount, $deployment->getRoleInstanceList());
 
@@ -928,11 +923,11 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::changeDeploymentConfiguration
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_createRequestXml
-     * @covers \WindowsAzure\ServiceManagement\Models\AsynchronousOperationResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::changeDeploymentConfiguration
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_createRequestXml
+     * @covers WindowsAzure\ServiceManagement\Models\AsynchronousOperationResult::create
      * @group Deployment
      */
     public function testChangeDeploymentConfiguration()
@@ -954,7 +949,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $options->setDeploymentName($name);
 
         // Test
-        $result = $this->serviceManagementRestProxy->changeDeploymentConfiguration($name, $newConfig, $options);
+        $result = $this->restProxy->changeDeploymentConfiguration($name, $newConfig, $options);
 
         // Block until the change is done.
         $this->blockUntilAsyncSucceed($result);
@@ -962,17 +957,17 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         // Assert
         $options = new GetDeploymentOptions();
         $options->setSlot(DeploymentSlot::PRODUCTION);
-        $result = $this->serviceManagementRestProxy->getDeployment($name, $options);
+        $result = $this->restProxy->getDeployment($name, $options);
         $deployment = $result->getDeployment();
         $this->assertEquals($expected, $deployment->getConfiguration());
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::updateDeploymentStatus
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_createRequestXml
-     * @covers \WindowsAzure\ServiceManagement\Models\AsynchronousOperationResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::updateDeploymentStatus
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_createRequestXml
+     * @covers WindowsAzure\ServiceManagement\Models\AsynchronousOperationResult::create
      * @group Deployment
      */
     public function testUpdateDeploymentStatus()
@@ -984,7 +979,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $options->setDeploymentName($name);
 
         // Test
-        $result = $this->serviceManagementRestProxy->updateDeploymentStatus($name, DeploymentStatus::SUSPENDED, $options);
+        $result = $this->restProxy->updateDeploymentStatus($name, DeploymentStatus::SUSPENDED, $options);
 
         // Block until the status update is done.
         $this->blockUntilAsyncSucceed($result);
@@ -992,36 +987,36 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         // Assert
         $options = new GetDeploymentOptions();
         $options->setDeploymentName($name);
-        $result = $this->serviceManagementRestProxy->getDeployment($name, $options);
+        $result = $this->restProxy->getDeployment($name, $options);
         $deployment = $result->getDeployment();
         $this->assertEquals(DeploymentStatus::SUSPENDED, $deployment->getStatus());
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::upgradeDeployment
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_createRequestXml
-     * @covers \WindowsAzure\ServiceManagement\Models\AsynchronousOperationResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::upgradeDeployment
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_createRequestXml
+     * @covers WindowsAzure\ServiceManagement\Models\AsynchronousOperationResult::create
      * @group Deployment
      */
     public function testUpgradeDeployment()
     {
-        $this->markTestSkipped('Skip it. Complex package not set up yet.');
+        $this->markTestSkipped("Skip it. Complex package not set up yet.");
         // Setup
         $name = $this->getTestName();
         $this->createDeployment($name);
         $mode = Mode::AUTO;
         $configuration = $this->complexConfiguration;
         $packageUrl = TestResources::complexPackageUrl();
-        $label = base64_encode($name.'upgraded');
+        $label = base64_encode($name . 'upgraded');
         $force = true;
         $options = new UpgradeDeploymentOptions();
         $options->setDeploymentName($name);
         $expectedInstancesCount = 4;
 
         // Test
-        $result = $this->serviceManagementRestProxy->upgradeDeployment(
+        $result = $this->restProxy->upgradeDeployment(
             $name,
             $mode,
             $packageUrl,
@@ -1037,22 +1032,22 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         // Assert
         $options = new GetDeploymentOptions();
         $options->setSlot(DeploymentSlot::PRODUCTION);
-        $result = $this->serviceManagementRestProxy->getDeployment($name, $options);
+        $result = $this->restProxy->getDeployment($name, $options);
         $deployment = $result->getDeployment();
         $this->assertCount($expectedInstancesCount, $deployment->getRoleInstanceList());
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::walkUpgradeDomain
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_createRequestXml
-     * @covers \WindowsAzure\ServiceManagement\Models\AsynchronousOperationResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::walkUpgradeDomain
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_createRequestXml
+     * @covers WindowsAzure\ServiceManagement\Models\AsynchronousOperationResult::create
      * @group Deployment
      */
     public function testWalkUpgradeDomain()
     {
-        $this->markTestSkipped('Skip it. Complex package not set up yet.');
+        $this->markTestSkipped("Skip it. Complex package not set up yet.");
         // Setup
         $name = $this->getTestName();
         $this->createDeployment($name);
@@ -1060,13 +1055,13 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $mode = Mode::MANUAL;
         $configuration = $this->complexConfiguration;
         $packageUrl = TestResources::complexPackageUrl();
-        $label = base64_encode($name.'upgraded');
+        $label = base64_encode($name . 'upgraded');
         $force = true;
         $options = new UpgradeDeploymentOptions();
         $options->setDeploymentName($name);
         $expectedInstancesCount = 4;
 
-        $result = $this->serviceManagementRestProxy->upgradeDeployment(
+        $result = $this->restProxy->upgradeDeployment(
             $name,
             $mode,
             $packageUrl,
@@ -1080,7 +1075,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $this->blockUntilAsyncSucceed($result);
 
         // Test
-        $result = $this->serviceManagementRestProxy->walkUpgradeDomain($name, 0, $options);
+        $result = $this->restProxy->walkUpgradeDomain($name, 0, $options);
 
         // Block until the walk upgrade is done.
         $this->blockUntilAsyncSucceed($result);
@@ -1088,19 +1083,19 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         // Assert
         $options = new GetDeploymentOptions();
         $options->setSlot(DeploymentSlot::PRODUCTION);
-        $result = $this->serviceManagementRestProxy->getDeployment($name, $options);
+        $result = $this->restProxy->getDeployment($name, $options);
         $deployment = $result->getDeployment();
         $this->assertCount($expectedInstancesCount, $deployment->getRoleInstanceList());
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::rebootRoleInstance
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getRoleInstancePath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_sendRoleInstanceOrder
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_createRequestXml
-     * @covers \WindowsAzure\ServiceManagement\Models\AsynchronousOperationResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::rebootRoleInstance
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getRoleInstancePath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_sendRoleInstanceOrder
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_createRequestXml
+     * @covers WindowsAzure\ServiceManagement\Models\AsynchronousOperationResult::create
      * @group Deployment
      */
     public function testRebootRoleInstance()
@@ -1124,13 +1119,13 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $this->waitUntilRoleInstanceReachStatus($name, 'ReadyRole', $roleName);
 
         // Test
-        $result = $this->serviceManagementRestProxy->rebootRoleInstance($name, $roleName, $options);
+        $result = $this->restProxy->rebootRoleInstance($name, $roleName, $options);
 
         // Block until reboot request is completed
         $this->blockUntilAsyncSucceed($result);
 
         // Assert
-        $result = $this->serviceManagementRestProxy->getDeployment($name, $options);
+        $result = $this->restProxy->getDeployment($name, $options);
         $deployment = $result->getDeployment();
         $roleInstanceList = $deployment->getRoleInstanceList();
         $webRoleInstance = $roleInstanceList[0];
@@ -1138,13 +1133,13 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::reimageRoleInstance
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getRoleInstancePath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_sendRoleInstanceOrder
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_createRequestXml
-     * @covers \WindowsAzure\ServiceManagement\Models\AsynchronousOperationResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::reimageRoleInstance
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getRoleInstancePath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_sendRoleInstanceOrder
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_createRequestXml
+     * @covers WindowsAzure\ServiceManagement\Models\AsynchronousOperationResult::create
      * @group Deployment
      */
     public function testReimageRoleInstance()
@@ -1168,13 +1163,13 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
         $this->waitUntilRoleInstanceReachStatus($name, 'ReadyRole', $roleName);
 
         // Test
-        $result = $this->serviceManagementRestProxy->reimageRoleInstance($name, $roleName, $options);
+        $result = $this->restProxy->reimageRoleInstance($name, $roleName, $options);
 
         // Block until reboot request is completed
         $this->blockUntilAsyncSucceed($result);
 
         // Assert
-        $result = $this->serviceManagementRestProxy->getDeployment($name, $options);
+        $result = $this->restProxy->getDeployment($name, $options);
         $deployment = $result->getDeployment();
         $roleInstanceList = $deployment->getRoleInstanceList();
         $webRoleInstance = $roleInstanceList[0];
@@ -1182,11 +1177,11 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
     }
 
     /**
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::rollbackUpdateOrUpgrade
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
-     * @covers \WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_createRequestXml
-     * @covers \WindowsAzure\ServiceManagement\Models\AsynchronousOperationResult::create
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::rollbackUpdateOrUpgrade
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getDeploymentPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_getPath
+     * @covers WindowsAzure\ServiceManagement\ServiceManagementRestProxy::_createRequestXml
+     * @covers WindowsAzure\ServiceManagement\Models\AsynchronousOperationResult::create
      * @group Deployment
      */
     public function testRollbackUpgradeOrUpdate()
@@ -1216,7 +1211,7 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
                 $this->createComplexDeployment($name);
                 $options = new ChangeDeploymentConfigurationOptions();
                 $options->setSlot($this->defaultSlot);
-                $this->serviceManagementRestProxy->changeDeploymentConfiguration($name, $newConfig, $options);
+                $this->restProxy->changeDeploymentConfiguration($name, $newConfig, $options);
                 $mode = Mode::AUTO;
                 $force = true;
                 $expectedInstanceCount = 4;
@@ -1224,22 +1219,24 @@ class ServiceManagementRestProxyTest extends ServiceManagementRestProxyTestBase
                 $this->waitUntilRollbackIsAllowed($name);
 
                 // Test
-                $result = $this->serviceManagementRestProxy->rollbackUpdateOrUpgrade($name, $mode, $force, $options);
+                $result = $this->restProxy->rollbackUpdateOrUpgrade($name, $mode, $force, $options);
 
                 // Block until reboot request is completed
                 $this->blockUntilAsyncSucceed($result);
 
                 // Assert
-                $result = $this->serviceManagementRestProxy->getDeployment($name, $options);
+                $result = $this->restProxy->getDeployment($name, $options);
                 $deployment = $result->getDeployment();
                 $this->assertCount($expectedInstanceCount, $deployment->getRoleInstanceList());
 
                 $isPassed = true;
-            } catch (ServiceException $e) {
+            }
+            catch (\Exception $e) {
                 if (($e->getCode() == 400) && ($e->getErrorText() == 'Bad Request')
                    && (strpos($e->getErrorReason(), 'The previous update has completed and so rollback is not allowed.'))) {
-                    ++$attempt;
-                } else {
+                    $attempt++;
+                }
+                else {
                     throw $e;
                 }
             }

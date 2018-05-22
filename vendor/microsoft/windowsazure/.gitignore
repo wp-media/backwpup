@@ -1,6 +1,9 @@
-bin/api
-bin/logs
-bin/coverage
+build/api
+build/code-browser
+build/coverage
+build/logs
+build/pdepend
+build/phpdox
 channel/
 *.tgz
 phpunit.xml
@@ -9,6 +12,3 @@ vendor
 nbproject
 phpcs-checkstyle.tmp
 composer.phar
-.vscode/
-.idea/
-examples/MediaServices/IndexerOutput/

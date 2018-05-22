@@ -4,7 +4,7 @@
  * LICENSE: Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,56 +15,54 @@
  * PHP version 5
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\Common\Internal\Atom
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
  * @link      https://github.com/WindowsAzure/azure-sdk-for-php
  */
 
-namespace Tests\unit\WindowsAzure\Common\Internal\Atom;
-
+namespace Tests\Unit\WindowsAzure\Common\Internal\Atom;
 use WindowsAzure\Common\Internal\Atom\Generator;
 
 /**
  * Unit tests for class Generator.
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\Common\Internal\Atom
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
- * @version   Release: 0.5.0_2016-11
- *
+ * @version   Release: 0.4.2_2016-04
  * @link      https://github.com/WindowsAzure/azure-sdk-for-php
  */
+
 class GeneratorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \WindowsAzure\Common\Internal\Atom\Generator::__construct
+     * @covers WindowsAzure\Common\Internal\Atom\Generator::__construct
      */
     public function testGeneratorConstructor()
     {
         // Setup
         $expectedText = 'testGenerator';
-
+        
         // Test
         $generator = new Generator($expectedText);
         $actualText = $generator->getText();
-
+        
         // Assert
         $this->assertNotNull($generator);
         $this->assertEquals(
-            $expectedText,
+            $expectedText,  
             $actualText
         );
+        
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Atom\Generator::getText
-     * @covers \WindowsAzure\Common\Internal\Atom\Generator::setText
+     * @covers WindowsAzure\Common\Internal\Atom\Generator::getText
+     * @covers WindowsAzure\Common\Internal\Atom\Generator::setText
      */
     public function testGeneratorGetSetText()
     {
@@ -74,7 +72,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
 
         // Test
         $generator->setText($expectedText);
-        $actualText = $generator->getText();
+        $actualText = $generator->getText(); 
 
         // Assert
         $this->assertEquals(
@@ -84,8 +82,8 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Atom\Generator::getUri
-     * @covers \WindowsAzure\Common\Internal\Atom\Generator::setUri
+     * @covers WindowsAzure\Common\Internal\Atom\Generator::getUri
+     * @covers WindowsAzure\Common\Internal\Atom\Generator::setUri
      */
     public function testGeneratorGetSetUri()
     {
@@ -95,7 +93,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
 
         // Test
         $generator->setUri($expectedUri);
-        $actualUri = $generator->getUri();
+        $actualUri = $generator->getUri(); 
 
         // Assert
         $this->assertEquals(
@@ -105,10 +103,10 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Atom\Generator::getVersion
-     * @covers \WindowsAzure\Common\Internal\Atom\Generator::setVersion
+     * @covers WindowsAzure\Common\Internal\Atom\Generator::getVersion
+     * @covers WindowsAzure\Common\Internal\Atom\Generator::setVersion
      */
-    public function testGeneratorGetSetVersion()
+    public function testGeneratorGetSetVersion()    
     {
         // Setup
         $expectedVersion = 'testGetSetVersion';
@@ -116,7 +114,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
 
         // Test
         $generator->setVersion($expectedVersion);
-        $actualVersion = $generator->getVersion();
+        $actualVersion = $generator->getVersion(); 
 
         // Assert
         $this->assertEquals(
@@ -126,11 +124,10 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Generator::getText
-     * @covers \WindowsAzure\Common\Internal\Atom\Generator::setText
+     * @covers WindowsAzure\Common\Internal\Atom\Generator::getText
+     * @covers WindowsAzure\Common\Internal\Atom\Generator::setText
      */
-    public function testGetSetText()
-    {
+    public function testGetSetText() {
         // Setup
         $expected = 'testText';
         $generator = new Generator();
@@ -144,14 +141,14 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Generator::getUri
-     * @covers \WindowsAzure\Common\Internal\Atom\Generator::setUri
+     * @covers WindowsAzure\Common\Internal\Atom\Generator::getUri
+     * @covers WindowsAzure\Common\Internal\Atom\Generator::setUri
      */
-    public function testGetSetUri()
-    {
+    public function testGetSetUri() {
         // Setup
         $expected = 'testUri';
         $generator = new Generator();
@@ -165,14 +162,14 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Generator::getVersion
-     * @covers \WindowsAzure\Common\Internal\Atom\Generator::setVersion
+     * @covers WindowsAzure\Common\Internal\Atom\Generator::getVersion
+     * @covers WindowsAzure\Common\Internal\Atom\Generator::setVersion
      */
-    public function testGetSetVersion()
-    {
+    public function testGetSetVersion() {
         // Setup
         $expected = 'testVersion';
         $generator = new Generator();
@@ -186,5 +183,8 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 }
+
+

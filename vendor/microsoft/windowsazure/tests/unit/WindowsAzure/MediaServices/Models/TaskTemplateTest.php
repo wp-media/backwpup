@@ -3,7 +3,7 @@
  * LICENSE: Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,76 +14,72 @@
  * PHP version 5
  *
  * @category  Microsoft
- *
+ * @package   WindowsAzure\MediaServices\Models
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 
-namespace Tests\unit\WindowsAzure\MediaServices\Models;
-
+namespace Tests\Unit\WindowsAzure\MediaServices\Models;
 use WindowsAzure\MediaServices\Models\TaskTemplate;
 
 /**
- * Represents access policy object used in media services.
+ * Represents access policy object used in media services
  *
  * @category  Microsoft
- *
+ * @package   WindowsAzure\MediaServices\Models
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
- * @version   Release: 0.5.0_2016-11
- *
+ * @version   Release: 0.4.2_2016-04
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
+
 class TaskTemplateTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::__construct
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::__construct
      */
-    public function test__construct()
-    {
+    public function test__construct(){
 
         // Setup
-        $numberOfInputAssets = 3;
-        $numberOfOutputAssets = 4;
+        $numberofInputAssets = 3;
+        $numberofOutputAssets = 4;
 
         // Test
-        $taskTemplate = new TaskTemplate($numberOfInputAssets, $numberOfOutputAssets);
+        $taskTempl = new TaskTemplate($numberofInputAssets, $numberofOutputAssets);
 
         // Assert
-        $this->assertEquals($numberOfInputAssets, $taskTemplate->getNumberofInputAssets());
-        $this->assertEquals($numberOfOutputAssets, $taskTemplate->getNumberofOutputAssets());
-        $this->assertContains('nb:ttid:UUID:', $taskTemplate->getId());
+        $this->assertEquals($numberofInputAssets, $taskTempl->getNumberofInputAssets());
+        $this->assertEquals($numberofOutputAssets, $taskTempl->getNumberofOutputAssets());
+        $this->assertContains('nb:ttid:UUID:', $taskTempl->getId());
+
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::createFromOptions
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::fromArray
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::createFromOptions
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::fromArray
      */
-    public function testCreateFromOptions()
-    {
+    public function testCreateFromOptions(){
 
         // Setup
-        $options = [
-                'Id' => 'jdfghrf78',
-                'Configuration' => 'some configuration',
-                'Created' => '2013-11-27',
-                'Description' => 'description of task template',
-                'Name' => 'Task Template name',
-                'LastModified' => '2013-11-27',
-                'MediaProcessorId' => '46id89',
-                'NumberofInputAssets' => 4,
-                'NumberofOutputAssets' => 3,
-                'Options' => 2,
-                'EncryptionKeyId' => '90key80',
-                'EncryptionScheme' => 'encryption scheme',
-                'EncryptionVersion' => 'version 2.1.1',
-                'InitializationVector' => 'Initialization Vector',
-        ];
+        $options = array(
+                'Id'                    => 'jdfghrf78',
+                'Configuration'         => 'some configuration',
+                'Created'               => '2013-11-27',
+                'Description'           => 'description of task template',
+                'Name'                  => 'Task Template name',
+                'LastModified'          => '2013-11-27',
+                'MediaProcessorId'      => '46id89',
+                'NumberofInputAssets'   => 4,
+                'NumberofOutputAssets'  => 3,
+                'Options'               => 2,
+                'EncryptionKeyId'       => '90key80',
+                'EncryptionScheme'      => 'encryption scheme',
+                'EncryptionVersion'     => 'version 2.1.1',
+                'InitializationVector'  => 'Initialization Vector'
+        );
         $created = new \Datetime($options['Created']);
         $modified = new \Datetime($options['LastModified']);
 
@@ -108,17 +104,16 @@ class TaskTemplateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::getId
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::getId
      */
-    public function testGetId()
-    {
+    public function testGetId(){
 
         // Setup
-        $options = [
-                'Id' => 'jdfghrf78',
-                'NumberofInputAssets' => 4,
-                'NumberofOutputAssets' => 3,
-        ];
+        $options = array(
+                'Id'                    => 'jdfghrf78',
+                'NumberofInputAssets'   => 4,
+                'NumberofOutputAssets'  => 3
+        );
         $task = TaskTemplate::createFromOptions($options);
 
         // Test
@@ -129,16 +124,15 @@ class TaskTemplateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::getConfiguration
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::setConfiguration
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::getConfiguration
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::setConfiguration
      */
-    public function testGetSetConfiguration()
-    {
+    public function testGetSetConfiguration(){
 
         // Setup
-        $numberOfInputAssets = 3;
-        $numberOfOutputAssets = 4;
-        $task = new TaskTemplate($numberOfInputAssets, $numberOfOutputAssets);
+        $numberofInputAssets = 3;
+        $numberofOutputAssets = 4;
+        $task = new TaskTemplate($numberofInputAssets, $numberofOutputAssets);
         $config = 'configuration of task template';
 
         // Test
@@ -150,37 +144,35 @@ class TaskTemplateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::getMediaProcessorId
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::setMediaProcessorId
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::getMediaProcessorId
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::setMediaProcessorId
      */
-    public function testGetSetMediaProcessorId()
-    {
+    public function testGetSetMediaProcessorId(){
 
         // Setup
-        $numberOfInputAssets = 3;
-        $numberOfOutputAssets = 4;
-        $task = new TaskTemplate($numberOfInputAssets, $numberOfOutputAssets);
-        $mediaProcessorId = 'kdfjg57';
+        $numberofInputAssets = 3;
+        $numberofOutputAssets = 4;
+        $task = new TaskTemplate($numberofInputAssets, $numberofOutputAssets);
+        $mediaProcId = 'kdfjg57';
 
         // Test
-        $task->setMediaProcessorId($mediaProcessorId);
+        $task->setMediaProcessorId($mediaProcId);
         $result = $task->getMediaProcessorId();
 
         // Assert
-        $this->assertEquals($mediaProcessorId, $result);
+        $this->assertEquals($mediaProcId, $result);
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::getName
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::setName
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::getName
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::setName
      */
-    public function testGetSetName()
-    {
+    public function testGetSetName(){
 
         // Setup
-        $numberOfInputAssets = 3;
-        $numberOfOutputAssets = 4;
-        $task = new TaskTemplate($numberOfInputAssets, $numberOfOutputAssets);
+        $numberofInputAssets = 3;
+        $numberofOutputAssets = 4;
+        $task = new TaskTemplate($numberofInputAssets, $numberofOutputAssets);
         $name = 'task name';
 
         // Test
@@ -192,18 +184,17 @@ class TaskTemplateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::getOptions
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::getOptions
      */
-    public function testGetOptions()
-    {
+    public function testGetOptions(){
 
         // Setup
-        $options = [
-                'NumberofInputAssets' => 4,
-                'NumberofOutputAssets' => 3,
-                'Options' => 42,
+        $options = array(
+                'NumberofInputAssets'   => 4,
+                'NumberofOutputAssets'  => 3,
+                'Options'               => 42
 
-        ];
+        );
         $task = TaskTemplate::createFromOptions($options);
 
         // Test
@@ -214,16 +205,15 @@ class TaskTemplateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::getEncryptionKeyId
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::setEncryptionKeyId
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::getEncryptionKeyId
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::setEncryptionKeyId
      */
-    public function testGetSetEncryptionKeyId()
-    {
+    public function testGetSetEncryptionKeyId(){
 
         // Setup
-        $numberOfInputAssets = 3;
-        $numberOfOutputAssets = 4;
-        $task = new TaskTemplate($numberOfInputAssets, $numberOfOutputAssets);
+        $numberofInputAssets = 3;
+        $numberofOutputAssets = 4;
+        $task = new TaskTemplate($numberofInputAssets, $numberofOutputAssets);
         $encrKeyId = '45key89';
 
         // Test
@@ -235,16 +225,15 @@ class TaskTemplateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::getEncryptionScheme
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::setEncryptionScheme
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::getEncryptionScheme
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::setEncryptionScheme
      */
-    public function testGetSetEncryptionScheme()
-    {
+    public function testGetSetEncryptionScheme(){
 
         // Setup
-        $numberOfInputAssets = 3;
-        $numberOfOutputAssets = 4;
-        $task = new TaskTemplate($numberOfInputAssets, $numberOfOutputAssets);
+        $numberofInputAssets = 3;
+        $numberofOutputAssets = 4;
+        $task = new TaskTemplate($numberofInputAssets, $numberofOutputAssets);
         $encrScheme = 'encryption scheme';
 
         // Test
@@ -256,16 +245,15 @@ class TaskTemplateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::getEncryptionVersion
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::setEncryptionVersion
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::getEncryptionVersion
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::setEncryptionVersion
      */
-    public function testGetSetEncryptionVersion()
-    {
+    public function testGetSetEncryptionVersion(){
 
         // Setup
-        $numberOfInputAssets = 3;
-        $numberOfOutputAssets = 4;
-        $task = new TaskTemplate($numberOfInputAssets, $numberOfOutputAssets);
+        $numberofInputAssets = 3;
+        $numberofOutputAssets = 4;
+        $task = new TaskTemplate($numberofInputAssets, $numberofOutputAssets);
         $encrVersion = '1.1.5';
 
         // Test
@@ -277,16 +265,15 @@ class TaskTemplateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::getInitializationVector
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::setInitializationVector
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::getInitializationVector
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::setInitializationVector
      */
-    public function testGetSetInitializationVector()
-    {
+    public function testGetSetInitializationVector(){
 
         // Setup
-        $numberOfInputAssets = 3;
-        $numberOfOutputAssets = 4;
-        $task = new TaskTemplate($numberOfInputAssets, $numberOfOutputAssets);
+        $numberofInputAssets = 3;
+        $numberofOutputAssets = 4;
+        $task = new TaskTemplate($numberofInputAssets, $numberofOutputAssets);
         $initVector = 'initialization vector';
 
         // Test
@@ -298,17 +285,16 @@ class TaskTemplateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::getCreated
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::getCreated
      */
-    public function testGetCreated()
-    {
+    public function testGetCreated(){
 
         // Setup
-        $options = [
-                'NumberofInputAssets' => 4,
-                'NumberofOutputAssets' => 3,
-                'Created' => '2013-11-27',
-        ];
+        $options = array(
+                'NumberofInputAssets'   => 4,
+                'NumberofOutputAssets'  => 3,
+                'Created'               => '2013-11-27'
+        );
         $task = TaskTemplate::createFromOptions($options);
         $created = new \Datetime($options['Created']);
 
@@ -320,17 +306,16 @@ class TaskTemplateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::getLastModified
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::getLastModified
      */
-    public function testGetLastModified()
-    {
+    public function testGetLastModified(){
 
         // Setup
-        $options = [
-                'NumberofInputAssets' => 4,
-                'NumberofOutputAssets' => 3,
-                'LastModified' => '2013-11-27',
-        ];
+        $options = array(
+                'NumberofInputAssets'   => 4,
+                'NumberofOutputAssets'  => 3,
+                'LastModified'               => '2013-11-27'
+        );
         $task = TaskTemplate::createFromOptions($options);
         $modified = new \Datetime($options['LastModified']);
 
@@ -342,16 +327,15 @@ class TaskTemplateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::getDescription
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::setDescription
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::getDescription
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::setDescription
      */
-    public function testGetDescription()
-    {
+    public function testGetDescription(){
 
         // Setup
-        $numberOfInputAssets = 3;
-        $numberOfOutputAssets = 4;
-        $task = new TaskTemplate($numberOfInputAssets, $numberOfOutputAssets);
+        $numberofInputAssets = 3;
+        $numberofOutputAssets = 4;
+        $task = new TaskTemplate($numberofInputAssets, $numberofOutputAssets);
         $description = 'Description of task template';
 
         // Test
@@ -363,44 +347,42 @@ class TaskTemplateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::getNumberofInputAssets
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::setNumberofInputAssets
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::getNumberofInputAssets
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::setNumberofInputAssets
      */
-    public function testGetSetNumberOfInputAssets()
-    {
+    public function testGetSetNumberofInputAssets(){
 
         // Setup
-        $numberOfInputAssets = 3;
-        $numberOfOutputAssets = 4;
-        $task = new TaskTemplate($numberOfInputAssets, $numberOfOutputAssets);
-        $numberOfInputAssets = 6;
+        $numberofInputAssets = 3;
+        $numberofOutputAssets = 4;
+        $task = new TaskTemplate($numberofInputAssets, $numberofOutputAssets);
+        $numberofInputAssets = 6;
 
         // Test
-        $task->setNumberofInputAssets($numberOfInputAssets);
+        $task->setNumberofInputAssets($numberofInputAssets);
         $result = $task->getNumberofInputAssets();
 
         // Assert
-        $this->assertEquals($numberOfInputAssets, $result);
+        $this->assertEquals($numberofInputAssets, $result);
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::getNumberofOutputAssets
-     * @covers \WindowsAzure\MediaServices\Models\TaskTemplate::setNumberofOutputAssets
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::getNumberofOutputAssets
+     * @covers WindowsAzure\MediaServices\Models\TaskTemplate::setNumberofOutputAssets
      */
-    public function testGetSetNumberOfOutputAssets()
-    {
+    public function testGetSetNumberofOutputAssets(){
 
         // Setup
-        $numberOfInputAssets = 3;
-        $numberOfOutputAssets = 4;
-        $task = new TaskTemplate($numberOfInputAssets, $numberOfOutputAssets);
-        $numberOfOutputAssets = 6;
+        $numberofInputAssets = 3;
+        $numberofOutputAssets = 4;
+        $task = new TaskTemplate($numberofInputAssets, $numberofOutputAssets);
+        $numberofOutputAssets = 6;
 
         // Test
-        $task->setNumberofOutputAssets($numberOfOutputAssets);
+        $task->setNumberofOutputAssets($numberofOutputAssets);
         $result = $task->getNumberofOutputAssets();
 
         // Assert
-        $this->assertEquals($numberOfOutputAssets, $result);
+        $this->assertEquals($numberofOutputAssets, $result);
     }
 }

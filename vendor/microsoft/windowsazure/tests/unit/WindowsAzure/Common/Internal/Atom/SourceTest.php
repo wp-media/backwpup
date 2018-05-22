@@ -4,7 +4,7 @@
  * LICENSE: Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,16 +15,14 @@
  * PHP version 5
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\Common\Internal\Atom
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
  * @link      https://github.com/WindowsAzure/azure-sdk-for-php
  */
 
-namespace Tests\unit\WindowsAzure\Common\Internal\Atom;
-
+namespace Tests\Unit\WindowsAzure\Common\Internal\Atom;
 use WindowsAzure\Common\Internal\Atom\AtomLink;
 use WindowsAzure\Common\Internal\Atom\Source;
 use WindowsAzure\Common\Internal\Atom\Person;
@@ -32,22 +30,20 @@ use WindowsAzure\Common\Internal\Atom\Generator;
 use WindowsAzure\Common\Internal\Atom\Category;
 
 /**
- * Unit tests for class Source.
+ * Unit tests for class Source
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\Common\Internal\Atom
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
- * @version   Release: 0.5.0_2016-11
- *
+ * @version   Release: 0.4.2_2016-04
  * @link      https://github.com/WindowsAzure/azure-sdk-for-php
  */
 class SourceTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::__construct
+     * @covers WindowsAzure\Common\Internal\Atom\Source::__construct
      */
     public function testSourceConstructor()
     {
@@ -55,19 +51,18 @@ class SourceTest extends \PHPUnit_Framework_TestCase
 
         // Test
         $feed = new Source();
-
+        
         // Assert
         $this->assertNotNull($feed);
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::getAttributes
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::setAttributes
+     * @covers WindowsAzure\Common\Internal\Atom\Source::getAttributes
+     * @covers WindowsAzure\Common\Internal\Atom\Source::setAttributes
      */
-    public function testGetSetAttributes()
-    {
+    public function testGetSetAttributes() {
         // Setup
-        $expected = [];
+        $expected = array();
         $expected['attributeKey'] = 'attributeValue';
         $source = new Source();
 
@@ -80,16 +75,16 @@ class SourceTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::getAuthor
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::setAuthor
+     * @covers WindowsAzure\Common\Internal\Atom\Source::getAuthor
+     * @covers WindowsAzure\Common\Internal\Atom\Source::setAuthor
      */
-    public function testGetSetAuthor()
-    {
+    public function testGetSetAuthor() {
         // Setup
-        $expected = ['testAuthor'];
+        $expected = 'testAuthor';
         $source = new Source();
 
         // Test
@@ -101,16 +96,16 @@ class SourceTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::getCategory
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::setCategory
+     * @covers WindowsAzure\Common\Internal\Atom\Source::getCategory
+     * @covers WindowsAzure\Common\Internal\Atom\Source::setCategory
      */
-    public function testGetSetCategory()
-    {
+    public function testGetSetCategory() {
         // Setup
-        $expected = [];
+        $expected = array();
         $category = new Category();
         $category->setTerm('testTerm');
         $expected[] = $category;
@@ -125,16 +120,16 @@ class SourceTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::getContributor
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::setContributor
+     * @covers WindowsAzure\Common\Internal\Atom\Source::getContributor
+     * @covers WindowsAzure\Common\Internal\Atom\Source::setContributor
      */
-    public function testGetSetContributor()
-    {
+    public function testGetSetContributor() {
         // Setup
-        $expected = ['testContributor'];
+        $expected = 'testContributor';
         $source = new Source();
 
         // Test
@@ -146,16 +141,16 @@ class SourceTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::getGenerator
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::setGenerator
+     * @covers WindowsAzure\Common\Internal\Atom\Source::getGenerator
+     * @covers WindowsAzure\Common\Internal\Atom\Source::setGenerator
      */
-    public function testGetSetGenerator()
-    {
+    public function testGetSetGenerator() {
         // Setup
-        $expected = new Generator();
+        $expected = 'testGenerator';
         $source = new Source();
 
         // Test
@@ -167,14 +162,14 @@ class SourceTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::getIcon
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::setIcon
+     * @covers WindowsAzure\Common\Internal\Atom\Source::getIcon
+     * @covers WindowsAzure\Common\Internal\Atom\Source::setIcon
      */
-    public function testGetSetIcon()
-    {
+    public function testGetSetIcon() {
         // Setup
         $expected = 'testIcon';
         $source = new Source();
@@ -188,14 +183,14 @@ class SourceTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::getId
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::setId
+     * @covers WindowsAzure\Common\Internal\Atom\Source::getId
+     * @covers WindowsAzure\Common\Internal\Atom\Source::setId
      */
-    public function testGetSetId()
-    {
+    public function testGetSetId() {
         // Setup
         $expected = 'testId';
         $source = new Source();
@@ -209,14 +204,14 @@ class SourceTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::getLink
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::setLink
+     * @covers WindowsAzure\Common\Internal\Atom\Source::getLink
+     * @covers WindowsAzure\Common\Internal\Atom\Source::setLink
      */
-    public function testGetSetLink()
-    {
+    public function testGetSetLink() {
         // Setup
         $expected = 'testLink';
         $source = new Source();
@@ -230,14 +225,14 @@ class SourceTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::getLogo
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::setLogo
+     * @covers WindowsAzure\Common\Internal\Atom\Source::getLogo
+     * @covers WindowsAzure\Common\Internal\Atom\Source::setLogo
      */
-    public function testGetSetLogo()
-    {
+    public function testGetSetLogo() {
         // Setup
         $expected = 'testLogo';
         $source = new Source();
@@ -251,14 +246,14 @@ class SourceTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::getRights
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::setRights
+     * @covers WindowsAzure\Common\Internal\Atom\Source::getRights
+     * @covers WindowsAzure\Common\Internal\Atom\Source::setRights
      */
-    public function testGetSetRights()
-    {
+    public function testGetSetRights() {
         // Setup
         $expected = 'testRights';
         $source = new Source();
@@ -272,14 +267,14 @@ class SourceTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::getSubtitle
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::setSubtitle
+     * @covers WindowsAzure\Common\Internal\Atom\Source::getSubtitle
+     * @covers WindowsAzure\Common\Internal\Atom\Source::setSubtitle
      */
-    public function testGetSetSubtitle()
-    {
+    public function testGetSetSubtitle() {
         // Setup
         $expected = 'testSubtitle';
         $source = new Source();
@@ -293,14 +288,14 @@ class SourceTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::getTitle
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::setTitle
+     * @covers WindowsAzure\Common\Internal\Atom\Source::getTitle
+     * @covers WindowsAzure\Common\Internal\Atom\Source::setTitle
      */
-    public function testGetSetTitle()
-    {
+    public function testGetSetTitle() {
         // Setup
         $expected = 'testTitle';
         $source = new Source();
@@ -314,14 +309,14 @@ class SourceTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::getUpdated
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::setUpdated
+     * @covers WindowsAzure\Common\Internal\Atom\Source::getUpdated
+     * @covers WindowsAzure\Common\Internal\Atom\Source::setUpdated
      */
-    public function testGetSetUpdated()
-    {
+    public function testGetSetUpdated() {
         // Setup
         $expected = new \DateTime();
         $source = new Source();
@@ -335,14 +330,14 @@ class SourceTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::getExtensionElement
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::setExtensionElement
+     * @covers WindowsAzure\Common\Internal\Atom\Source::getExtensionElement
+     * @covers WindowsAzure\Common\Internal\Atom\Source::setExtensionElement
      */
-    public function testGetSetExtensionElement()
-    {
+    public function testGetSetExtensionElement() {
         // Setup
         $expected = 'testExtensionElement';
         $source = new Source();
@@ -356,14 +351,14 @@ class SourceTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::writeXml
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::writeInnerXml
+     * @covers WindowsAzure\Common\Internal\Atom\Source::writeXml
+     * @covers WindowsAzure\Common\Internal\Atom\Source::writeInnerXml
      */
-    public function testSourceWriteXmlWorks()
-    {
+    public function testSourceWriteXmlWorks() {
         // Setup
         $expected = '<atom:source xmlns:atom="http://www.w3.org/2005/Atom"/>';
         $source = new Source();
@@ -373,7 +368,7 @@ class SourceTest extends \PHPUnit_Framework_TestCase
         $xmlWriter->openMemory();
         $source->writeXml($xmlWriter);
         $actual = $xmlWriter->outputMemory();
-
+ 
         // Assert
         $this->assertEquals(
             $expected,
@@ -382,28 +377,27 @@ class SourceTest extends \PHPUnit_Framework_TestCase
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::writeXml
-     * @covers \WindowsAzure\Common\Internal\Atom\Source::writeInnerXml
+     * @covers WindowsAzure\Common\Internal\Atom\Source::writeXml
+     * @covers WindowsAzure\Common\Internal\Atom\Source::writeInnerXml
      */
-    public function testSourceWriteXmlAllPropertiesWorks()
-    {
+    public function testSourceWriteXmlAllPropertiesWorks() {
         // Setup
         $expected = '<atom:source xmlns:atom="http://www.w3.org/2005/Atom"><atom:author xmlns:atom="http://www.w3.org/2005/Atom"><atom:name xmlns:atom="http://www.w3.org/2005/Atom"></atom:name></atom:author><atom:category xmlns:atom="http://www.w3.org/2005/Atom"/><atom:contributor xmlns:atom="http://www.w3.org/2005/Atom"><atom:name xmlns:atom="http://www.w3.org/2005/Atom"></atom:name></atom:contributor><atom:category xmlns:atom="http://www.w3.org/2005/Atom"></atom:category><atom:icon xmlns:atom="http://www.w3.org/2005/Atom">testIcon</atom:icon><atom:logo xmlns:atom="http://www.w3.org/2005/Atom">testLogo</atom:logo><atom:id xmlns:atom="http://www.w3.org/2005/Atom">testId</atom:id><atom:link xmlns:atom="http://www.w3.org/2005/Atom"/><atom:rights xmlns:atom="http://www.w3.org/2005/Atom">testRights</atom:rights><atom:subtitle xmlns:atom="http://www.w3.org/2005/Atom">testSubtitle</atom:subtitle><atom:title xmlns:atom="http://www.w3.org/2005/Atom">testTitle</atom:title><atom:updated xmlns:atom="http://www.w3.org/2005/Atom">2012-06-17T20:53:36-07:00</atom:updated></atom:source>';
 
         $source = new Source();
-        $author = [];
+        $author = array();
         $authorInstance = new Person();
         $author[] = $authorInstance;
 
-        $category = [];
+        $category = array();
         $categoryInstance = new Category();
         $category[] = $categoryInstance;
 
-        $contributor = [];
+        $contributor = array();
         $contributorInstance = new Person();
         $contributor[] = $contributorInstance;
 
-        $link = [];
+        $link = array();
         $linkInstance = new AtomLink();
         $link[] = $linkInstance;
 
@@ -412,7 +406,7 @@ class SourceTest extends \PHPUnit_Framework_TestCase
         $source->setContributor($contributor);
         $source->setGenerator(new Generator());
         $source->setIcon('testIcon');
-        $source->setId('testId');
+        $source->setId('testId');        
         $source->setLink($link);
         $source->setLogo('testLogo');
         $source->setRights('testRights');
@@ -425,11 +419,14 @@ class SourceTest extends \PHPUnit_Framework_TestCase
         $xmlWriter->openMemory();
         $source->writeXml($xmlWriter);
         $actual = $xmlWriter->outputMemory();
-
+ 
         // Assert
         $this->assertEquals(
             $expected,
             $actual
         );
     }
+
 }
+
+

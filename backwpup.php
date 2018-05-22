@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: BackWPup
+ * Plugin Name: BackWPup Pro
  * Plugin URI: http://backwpup.com
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.5.0
+ * Version: 3.5.1-beta
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true

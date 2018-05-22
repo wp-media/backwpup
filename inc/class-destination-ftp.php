@@ -282,7 +282,8 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 		}
 
 		if ( ! $this->ftp_conn_id ) {
-			if ( ! empty( BackWPup_Option::get( $jobid, 'ftpssl' ) )
+			$ftp_ssl = BackWPup_Option::get( $jobid, 'ftpssl' );
+			if ( ! empty( $ftp_ssl )
 				&& function_exists( 'ftp_ssl_connect' ) ) {
 				$ftp_conn_id = ftp_ssl_connect(
 					BackWPup_Option::get( $jobid, 'ftphost' ),

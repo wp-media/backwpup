@@ -121,57 +121,24 @@
         ]
     },
     {
-        "name": "container-interop/container-interop",
-        "version": "1.2.0",
-        "version_normalized": "1.2.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/container-interop/container-interop.git",
-            "reference": "79cbf1341c22ec75643d841642dd5d6acd83bdb8"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/container-interop/container-interop/zipball/79cbf1341c22ec75643d841642dd5d6acd83bdb8",
-            "reference": "79cbf1341c22ec75643d841642dd5d6acd83bdb8",
-            "shasum": ""
-        },
-        "require": {
-            "psr/container": "^1.0"
-        },
-        "time": "2017-02-14T19:40:03+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Interop\\Container\\": "src/Interop/Container/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
-        "homepage": "https://github.com/container-interop/container-interop"
-    },
-    {
         "name": "firebase/php-jwt",
-        "version": "v4.0.0",
-        "version_normalized": "4.0.0.0",
+        "version": "v3.0.0",
+        "version_normalized": "3.0.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/firebase/php-jwt.git",
-            "reference": "dccf163dc8ed7ed6a00afc06c51ee5186a428d35"
+            "reference": "fa8a06e96526eb7c0eeaa47e4f39be59d21f16e1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/firebase/php-jwt/zipball/dccf163dc8ed7ed6a00afc06c51ee5186a428d35",
-            "reference": "dccf163dc8ed7ed6a00afc06c51ee5186a428d35",
+            "url": "https://api.github.com/repos/firebase/php-jwt/zipball/fa8a06e96526eb7c0eeaa47e4f39be59d21f16e1",
+            "reference": "fa8a06e96526eb7c0eeaa47e4f39be59d21f16e1",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2016-07-18T04:51:16+00:00",
+        "time": "2015-07-22T18:31:08+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -298,46 +265,69 @@
     },
     {
         "name": "guzzlehttp/guzzle",
-        "version": "6.3.3",
-        "version_normalized": "6.3.3.0",
+        "version": "v3.8.1",
+        "version_normalized": "3.8.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/guzzle/guzzle.git",
-            "reference": "407b0cb880ace85c9b63c5f9551db498cb2d50ba"
+            "reference": "4de0618a01b34aa1c8c33a3f13f396dcd3882eba"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/guzzle/guzzle/zipball/407b0cb880ace85c9b63c5f9551db498cb2d50ba",
-            "reference": "407b0cb880ace85c9b63c5f9551db498cb2d50ba",
+            "url": "https://api.github.com/repos/guzzle/guzzle/zipball/4de0618a01b34aa1c8c33a3f13f396dcd3882eba",
+            "reference": "4de0618a01b34aa1c8c33a3f13f396dcd3882eba",
             "shasum": ""
         },
         "require": {
-            "guzzlehttp/promises": "^1.0",
-            "guzzlehttp/psr7": "^1.4",
-            "php": ">=5.5"
+            "ext-curl": "*",
+            "php": ">=5.3.3",
+            "symfony/event-dispatcher": ">=2.1"
+        },
+        "replace": {
+            "guzzle/batch": "self.version",
+            "guzzle/cache": "self.version",
+            "guzzle/common": "self.version",
+            "guzzle/http": "self.version",
+            "guzzle/inflection": "self.version",
+            "guzzle/iterator": "self.version",
+            "guzzle/log": "self.version",
+            "guzzle/parser": "self.version",
+            "guzzle/plugin": "self.version",
+            "guzzle/plugin-async": "self.version",
+            "guzzle/plugin-backoff": "self.version",
+            "guzzle/plugin-cache": "self.version",
+            "guzzle/plugin-cookie": "self.version",
+            "guzzle/plugin-curlauth": "self.version",
+            "guzzle/plugin-error-response": "self.version",
+            "guzzle/plugin-history": "self.version",
+            "guzzle/plugin-log": "self.version",
+            "guzzle/plugin-md5": "self.version",
+            "guzzle/plugin-mock": "self.version",
+            "guzzle/plugin-oauth": "self.version",
+            "guzzle/service": "self.version",
+            "guzzle/stream": "self.version"
         },
         "require-dev": {
-            "ext-curl": "*",
-            "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.4 || ^7.0",
-            "psr/log": "^1.0"
+            "doctrine/cache": "*",
+            "monolog/monolog": "1.*",
+            "phpunit/phpunit": "3.7.*",
+            "psr/log": "1.0.*",
+            "symfony/class-loader": "*",
+            "zendframework/zend-cache": "<2.3",
+            "zendframework/zend-log": "<2.3"
         },
-        "suggest": {
-            "psr/log": "Required for using the Log middleware"
-        },
-        "time": "2018-04-22T15:46:56+00:00",
+        "time": "2014-01-28T22:29:15+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "6.3-dev"
+                "dev-master": "3.8-dev"
             }
         },
         "installation-source": "dist",
         "autoload": {
-            "files": [
-                "src/functions_include.php"
-            ],
-            "psr-4": {
-                "GuzzleHttp\\": "src/"
+            "psr-0": {
+                "Guzzle": "src/",
+                "Guzzle\\Tests": "tests/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -349,9 +339,13 @@
                 "name": "Michael Dowling",
                 "email": "mtdowling@gmail.com",
                 "homepage": "https://github.com/mtdowling"
+            },
+            {
+                "name": "Guzzle Community",
+                "homepage": "https://github.com/guzzle/guzzle/contributors"
             }
         ],
-        "description": "Guzzle is a PHP HTTP client library",
+        "description": "Guzzle is a PHP HTTP client library and framework for building RESTful web service clients",
         "homepage": "http://guzzlephp.org/",
         "keywords": [
             "client",
@@ -361,126 +355,6 @@
             "http client",
             "rest",
             "web service"
-        ]
-    },
-    {
-        "name": "guzzlehttp/promises",
-        "version": "v1.3.1",
-        "version_normalized": "1.3.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/guzzle/promises.git",
-            "reference": "a59da6cf61d80060647ff4d3eb2c03a2bc694646"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/guzzle/promises/zipball/a59da6cf61d80060647ff4d3eb2c03a2bc694646",
-            "reference": "a59da6cf61d80060647ff4d3eb2c03a2bc694646",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.5.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^4.0"
-        },
-        "time": "2016-12-20T10:07:11+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.4-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "GuzzleHttp\\Promise\\": "src/"
-            },
-            "files": [
-                "src/functions_include.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Michael Dowling",
-                "email": "mtdowling@gmail.com",
-                "homepage": "https://github.com/mtdowling"
-            }
-        ],
-        "description": "Guzzle promises library",
-        "keywords": [
-            "promise"
-        ]
-    },
-    {
-        "name": "guzzlehttp/psr7",
-        "version": "1.4.2",
-        "version_normalized": "1.4.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/guzzle/psr7.git",
-            "reference": "f5b8a8512e2b58b0071a7280e39f14f72e05d87c"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/guzzle/psr7/zipball/f5b8a8512e2b58b0071a7280e39f14f72e05d87c",
-            "reference": "f5b8a8512e2b58b0071a7280e39f14f72e05d87c",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.4.0",
-            "psr/http-message": "~1.0"
-        },
-        "provide": {
-            "psr/http-message-implementation": "1.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "~4.0"
-        },
-        "time": "2017-03-20T17:10:46+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.4-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "GuzzleHttp\\Psr7\\": "src/"
-            },
-            "files": [
-                "src/functions_include.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Michael Dowling",
-                "email": "mtdowling@gmail.com",
-                "homepage": "https://github.com/mtdowling"
-            },
-            {
-                "name": "Tobias Schultze",
-                "homepage": "https://github.com/Tobion"
-            }
-        ],
-        "description": "PSR-7 message implementation that also provides common utility methods",
-        "keywords": [
-            "http",
-            "message",
-            "request",
-            "response",
-            "stream",
-            "uri",
-            "url"
         ]
     },
     {
@@ -527,106 +401,33 @@
         "description": "A WordPress package to be used by plugins to add a page that ask for phone-home consensus and send data in case user approves."
     },
     {
-        "name": "microsoft/azure-storage",
-        "version": "v0.19.1",
-        "version_normalized": "0.19.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/Azure/azure-storage-php.git",
-            "reference": "e1702ae9e6194fa392b64a11737c5e3252d2c8e6"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/Azure/azure-storage-php/zipball/e1702ae9e6194fa392b64a11737c5e3252d2c8e6",
-            "reference": "e1702ae9e6194fa392b64a11737c5e3252d2c8e6",
-            "shasum": ""
-        },
-        "require": {
-            "guzzlehttp/guzzle": "~6.0",
-            "php": ">=5.5.0"
-        },
-        "require-dev": {
-            "friendsofphp/php-cs-fixer": "@stable",
-            "mikey179/vfsstream": "~1.6",
-            "pdepend/pdepend": "~2.2",
-            "phpdocumentor/phpdocumentor": "dev-master",
-            "phploc/phploc": "~2.1",
-            "phpmd/phpmd": "@stable",
-            "phpunit/phpunit": "~4.0",
-            "sebastian/phpcpd": "~2.0",
-            "squizlabs/php_codesniffer": "@stable",
-            "theseer/phpdox": "~0.8"
-        },
-        "time": "2017-09-25T08:35:45+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "0.10.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "MicrosoftAzure\\Storage\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Azure Storage PHP SDK",
-                "email": "dmsh@microsoft.com"
-            }
-        ],
-        "description": "This project provides a set of PHP client libraries that make it easy to access Microsoft Azure storage APIs.",
-        "keywords": [
-            "azure",
-            "php",
-            "sdk",
-            "storage"
-        ],
-        "abandoned": "microsoft/azure-storage-blob, microsoft/azure-storage-table, microsoft/azure-storage-queue, microsoft/azure-storage-file"
-    },
-    {
         "name": "microsoft/windowsazure",
-        "version": "v0.5.7",
-        "version_normalized": "0.5.7.0",
+        "version": "v0.4.2",
+        "version_normalized": "0.4.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Azure/azure-sdk-for-php.git",
-            "reference": "498a386a351a5caefa8533bd9539f2bcfbff1c00"
+            "reference": "b157dcac862659f0b55dc10302335bfcb9e878b5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Azure/azure-sdk-for-php/zipball/498a386a351a5caefa8533bd9539f2bcfbff1c00",
-            "reference": "498a386a351a5caefa8533bd9539f2bcfbff1c00",
+            "url": "https://api.github.com/repos/Azure/azure-sdk-for-php/zipball/b157dcac862659f0b55dc10302335bfcb9e878b5",
+            "reference": "b157dcac862659f0b55dc10302335bfcb9e878b5",
             "shasum": ""
         },
         "require": {
-            "firebase/php-jwt": "^4.0",
-            "guzzlehttp/guzzle": "^6.2",
-            "microsoft/azure-storage": "^0.19.1",
+            "firebase/php-jwt": "^3.0",
+            "pear/http_request2": "^2.3",
             "pear/mail_mime": "^1.10",
+            "pear/mail_mime-decode": "^1.5",
             "pear/net_url2": "^2.2",
-            "php": ">=5.6",
-            "zendframework/zend-mail": "^2.7",
-            "zendframework/zend-mime": "^2.6"
+            "php": ">=5.4"
         },
         "require-dev": {
-            "friendsofphp/php-cs-fixer": "^1.12.2",
-            "mayflower/php-codebrowser": "^1.1",
             "mikey179/vfsstream": "^1.6",
-            "pdepend/pdepend": "^2.2",
-            "phpdocumentor/phpdocumentor": "^2.8",
-            "phploc/phploc": "^2.1",
-            "phpmd/phpmd": "^2.4",
-            "phpunit/phpunit": "^4.8",
-            "sebastian/phpcpd": "^2.0",
-            "squizlabs/php_codesniffer": "^2.6"
+            "phpunit/phpunit": "^4.7"
         },
-        "time": "2017-11-27T23:49:28+00:00",
+        "time": "2016-04-12T18:11:35+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -636,7 +437,7 @@
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "WindowsAzure\\": "src/"
+                "WindowsAzure\\": "WindowsAzure/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -883,6 +684,67 @@
         "description": "More info available on: http://pear.php.net/package/Console_Getopt"
     },
     {
+        "name": "pear/http_request2",
+        "version": "v2.3.0",
+        "version_normalized": "2.3.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pear/HTTP_Request2.git",
+            "reference": "3599cf0fe455a4e281da464f6510bfc5c2ce54c4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/pear/HTTP_Request2/zipball/3599cf0fe455a4e281da464f6510bfc5c2ce54c4",
+            "reference": "3599cf0fe455a4e281da464f6510bfc5c2ce54c4",
+            "shasum": ""
+        },
+        "require": {
+            "pear/net_url2": "^2.2.0",
+            "pear/pear_exception": "^1.0.0",
+            "php": ">=5.2.0"
+        },
+        "suggest": {
+            "ext-fileinfo": "Adds support for looking up mime-types using finfo.",
+            "ext-zlib": "Allows handling gzip compressed responses.",
+            "lib-curl": "Allows using cURL as a request backend.",
+            "lib-openssl": "Allows handling SSL requests when not using cURL."
+        },
+        "time": "2016-02-13T20:20:39+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-trunk": "2.2-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "HTTP_Request2": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "include-path": [
+            "./"
+        ],
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Alexey Borzov",
+                "email": "avb@php.net"
+            }
+        ],
+        "description": "Provides an easy way to perform HTTP requests.",
+        "homepage": "http://pear.php.net/package/HTTP_Request2",
+        "keywords": [
+            "PEAR",
+            "curl",
+            "http",
+            "request"
+        ]
+    },
+    {
         "name": "pear/mail_mime",
         "version": "1.10.2",
         "version_normalized": "1.10.2.0",
@@ -929,6 +791,56 @@
         ],
         "description": "Mail_Mime provides classes to create MIME messages",
         "homepage": "http://pear.php.net/package/Mail_Mime"
+    },
+    {
+        "name": "pear/mail_mime-decode",
+        "version": "1.5.5.2",
+        "version_normalized": "1.5.5.2",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/dreamfactorysoftware/Mail_mimeDecode.git",
+            "reference": "a53c1ce051b212e23f7f67ea8d31015640de1129"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/dreamfactorysoftware/Mail_mimeDecode/zipball/a53c1ce051b212e23f7f67ea8d31015640de1129",
+            "reference": "a53c1ce051b212e23f7f67ea8d31015640de1129",
+            "shasum": ""
+        },
+        "require": {
+            "pear/pear_exception": "*"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "*"
+        },
+        "time": "2014-04-15T19:29:16+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Mail_mimeDecode": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "include-path": [
+            "./"
+        ],
+        "license": [
+            "BSD-2-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Cipriano Groenendal",
+                "email": "cipri@php.net",
+                "role": "Lead"
+            },
+            {
+                "name": "Aleksander Machniak",
+                "email": "alec@php.net",
+                "role": "Lead"
+            }
+        ],
+        "description": "More info available on: http://pear.php.net/package/Mail_mimeDecode"
     },
     {
         "name": "pear/net_url2",
@@ -1203,58 +1115,6 @@
         ]
     },
     {
-        "name": "psr/http-message",
-        "version": "1.0.1",
-        "version_normalized": "1.0.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/php-fig/http-message.git",
-            "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/php-fig/http-message/zipball/f6561bf28d520154e4b0ec72be95418abe6d9363",
-            "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "time": "2016-08-06T14:39:51+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Psr\\Http\\Message\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "PHP-FIG",
-                "homepage": "http://www.php-fig.org/"
-            }
-        ],
-        "description": "Common interface for HTTP messages",
-        "homepage": "https://github.com/php-fig/http-message",
-        "keywords": [
-            "http",
-            "http-message",
-            "psr",
-            "psr-7",
-            "request",
-            "response"
-        ]
-    },
-    {
         "name": "psr/log",
         "version": "1.0.2",
         "version_normalized": "1.0.2.0",
@@ -1420,8 +1280,8 @@
     },
     {
         "name": "symfony/event-dispatcher",
-        "version": "v2.8.39",
-        "version_normalized": "2.8.39.0",
+        "version": "v2.8.40",
+        "version_normalized": "2.8.40.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/event-dispatcher.git",
@@ -1543,17 +1403,17 @@
     },
     {
         "name": "symfony/translation",
-        "version": "v2.8.39",
-        "version_normalized": "2.8.39.0",
+        "version": "v2.8.40",
+        "version_normalized": "2.8.40.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/translation.git",
-            "reference": "6f744108f846097cb250d90c8c463ddd23b43f60"
+            "reference": "c6a27966a92fa361bf2c3a938abc6dee91f7ad67"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/translation/zipball/6f744108f846097cb250d90c8c463ddd23b43f60",
-            "reference": "6f744108f846097cb250d90c8c463ddd23b43f60",
+            "url": "https://api.github.com/repos/symfony/translation/zipball/c6a27966a92fa361bf2c3a938abc6dee91f7ad67",
+            "reference": "c6a27966a92fa361bf2c3a938abc6dee91f7ad67",
             "shasum": ""
         },
         "require": {
@@ -1574,7 +1434,7 @@
             "symfony/config": "",
             "symfony/yaml": ""
         },
-        "time": "2018-04-30T01:21:07+00:00",
+        "time": "2018-05-21T09:59:10+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1606,290 +1466,5 @@
         ],
         "description": "Symfony Translation Component",
         "homepage": "https://symfony.com"
-    },
-    {
-        "name": "zendframework/zend-loader",
-        "version": "2.6.0",
-        "version_normalized": "2.6.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/zendframework/zend-loader.git",
-            "reference": "78f11749ea340f6ca316bca5958eef80b38f9b6c"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/zendframework/zend-loader/zipball/78f11749ea340f6ca316bca5958eef80b38f9b6c",
-            "reference": "78f11749ea340f6ca316bca5958eef80b38f9b6c",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^5.6 || ^7.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.4",
-            "zendframework/zend-coding-standard": "~1.0.0"
-        },
-        "time": "2018-04-30T15:20:54+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.6.x-dev",
-                "dev-develop": "2.7.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Zend\\Loader\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "description": "Autoloading and plugin loading strategies",
-        "keywords": [
-            "ZendFramework",
-            "loader",
-            "zf"
-        ]
-    },
-    {
-        "name": "zendframework/zend-mail",
-        "version": "2.9.0",
-        "version_normalized": "2.9.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/zendframework/zend-mail.git",
-            "reference": "067248425f285dec0bdb74256a8f67f9092f115e"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/zendframework/zend-mail/zipball/067248425f285dec0bdb74256a8f67f9092f115e",
-            "reference": "067248425f285dec0bdb74256a8f67f9092f115e",
-            "shasum": ""
-        },
-        "require": {
-            "ext-iconv": "*",
-            "php": "^7.1",
-            "zendframework/zend-loader": "^2.5",
-            "zendframework/zend-mime": "^2.5",
-            "zendframework/zend-stdlib": "^2.7 || ^3.0",
-            "zendframework/zend-validator": "^2.10.2"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^6.0.8 || ^5.7.15",
-            "zendframework/zend-coding-standard": "~1.0.0",
-            "zendframework/zend-config": "^2.6",
-            "zendframework/zend-crypt": "^2.6",
-            "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3"
-        },
-        "suggest": {
-            "ext-intl": "Handle IDN in AddressList hostnames",
-            "zendframework/zend-crypt": "Crammd5 support in SMTP Auth",
-            "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3 when using SMTP to deliver messages"
-        },
-        "time": "2018-03-01T18:57:00+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.8-dev",
-                "dev-develop": "2.9-dev"
-            },
-            "zf": {
-                "component": "Zend\\Mail",
-                "config-provider": "Zend\\Mail\\ConfigProvider"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Zend\\Mail\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "description": "provides generalized functionality to compose and send both text and MIME-compliant multipart e-mail messages",
-        "homepage": "https://github.com/zendframework/zend-mail",
-        "keywords": [
-            "mail",
-            "zf2"
-        ]
-    },
-    {
-        "name": "zendframework/zend-mime",
-        "version": "2.7.1",
-        "version_normalized": "2.7.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/zendframework/zend-mime.git",
-            "reference": "52ae5fa9f12845cae749271034a2d594f0e4c6f2"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/zendframework/zend-mime/zipball/52ae5fa9f12845cae749271034a2d594f0e4c6f2",
-            "reference": "52ae5fa9f12845cae749271034a2d594f0e4c6f2",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^5.6 || ^7.0",
-            "zendframework/zend-stdlib": "^2.7 || ^3.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^5.7.21 || ^6.3",
-            "zendframework/zend-coding-standard": "~1.0.0",
-            "zendframework/zend-mail": "^2.6"
-        },
-        "suggest": {
-            "zendframework/zend-mail": "Zend\\Mail component"
-        },
-        "time": "2018-05-14T19:02:50+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.7-dev",
-                "dev-develop": "2.8-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Zend\\Mime\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "description": "Create and parse MIME messages and parts",
-        "homepage": "https://github.com/zendframework/zend-mime",
-        "keywords": [
-            "ZendFramework",
-            "mime",
-            "zf"
-        ]
-    },
-    {
-        "name": "zendframework/zend-stdlib",
-        "version": "3.2.0",
-        "version_normalized": "3.2.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/zendframework/zend-stdlib.git",
-            "reference": "cd164b4a18b5d1aeb69be2c26db035b5ed6925ae"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/cd164b4a18b5d1aeb69be2c26db035b5ed6925ae",
-            "reference": "cd164b4a18b5d1aeb69be2c26db035b5ed6925ae",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^5.6 || ^7.0"
-        },
-        "require-dev": {
-            "phpbench/phpbench": "^0.13",
-            "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.2",
-            "zendframework/zend-coding-standard": "~1.0.0"
-        },
-        "time": "2018-04-30T13:50:40+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.2.x-dev",
-                "dev-develop": "3.3.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Zend\\Stdlib\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "description": "SPL extensions, array utilities, error handlers, and more",
-        "keywords": [
-            "ZendFramework",
-            "stdlib",
-            "zf"
-        ]
-    },
-    {
-        "name": "zendframework/zend-validator",
-        "version": "2.10.2",
-        "version_normalized": "2.10.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/zendframework/zend-validator.git",
-            "reference": "38109ed7d8e46cfa71bccbe7e6ca80cdd035f8c9"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/zendframework/zend-validator/zipball/38109ed7d8e46cfa71bccbe7e6ca80cdd035f8c9",
-            "reference": "38109ed7d8e46cfa71bccbe7e6ca80cdd035f8c9",
-            "shasum": ""
-        },
-        "require": {
-            "container-interop/container-interop": "^1.1",
-            "php": "^5.6 || ^7.0",
-            "zendframework/zend-stdlib": "^2.7.6 || ^3.1"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^6.0.8 || ^5.7.15",
-            "zendframework/zend-cache": "^2.6.1",
-            "zendframework/zend-coding-standard": "~1.0.0",
-            "zendframework/zend-config": "^2.6",
-            "zendframework/zend-db": "^2.7",
-            "zendframework/zend-filter": "^2.6",
-            "zendframework/zend-http": "^2.5.4",
-            "zendframework/zend-i18n": "^2.6",
-            "zendframework/zend-math": "^2.6",
-            "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3",
-            "zendframework/zend-session": "^2.8",
-            "zendframework/zend-uri": "^2.5"
-        },
-        "suggest": {
-            "zendframework/zend-db": "Zend\\Db component, required by the (No)RecordExists validator",
-            "zendframework/zend-filter": "Zend\\Filter component, required by the Digits validator",
-            "zendframework/zend-i18n": "Zend\\I18n component to allow translation of validation error messages",
-            "zendframework/zend-i18n-resources": "Translations of validator messages",
-            "zendframework/zend-math": "Zend\\Math component, required by the Csrf validator",
-            "zendframework/zend-servicemanager": "Zend\\ServiceManager component to allow using the ValidatorPluginManager and validator chains",
-            "zendframework/zend-session": "Zend\\Session component, ^2.8; required by the Csrf validator",
-            "zendframework/zend-uri": "Zend\\Uri component, required by the Uri and Sitemap\\Loc validators"
-        },
-        "time": "2018-02-01T17:05:33+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.10.x-dev",
-                "dev-develop": "2.11.x-dev"
-            },
-            "zf": {
-                "component": "Zend\\Validator",
-                "config-provider": "Zend\\Validator\\ConfigProvider"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Zend\\Validator\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "description": "provides a set of commonly needed validators",
-        "homepage": "https://github.com/zendframework/zend-validator",
-        "keywords": [
-            "validator",
-            "zf2"
-        ]
     }
 ]

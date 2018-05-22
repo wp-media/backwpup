@@ -4,7 +4,7 @@
  * LICENSE: Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,47 +15,45 @@
  * PHP version 5
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\Common\Internal
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 
-namespace Tests\unit\WindowsAzure\Common\Internal;
-
+namespace Tests\Unit\WindowsAzure\Common\Internal;
 use WindowsAzure\Common\Internal\Utilities;
 use WindowsAzure\Common\Internal\Resources;
 use Tests\Framework\TestResources;
+use Tests\Framework\VirtualFileSystem;
 use WindowsAzure\Common\Models\ServiceProperties;
 use WindowsAzure\Common\Internal\Serialization\XmlSerializer;
 use WindowsAzure\MediaServices\Models\Asset;
 
+
 /**
- * Unit tests for class Utilities.
+ * Unit tests for class Utilities
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\Common\Internal
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
- * @version   Release: 0.5.0_2016-11
- *
+ * @version   Release: 0.4.2_2016-04
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 class UtilitiesTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::tryGetValue
+     * @covers WindowsAzure\Common\Internal\Utilities::tryGetValue
      */
     public function testTryGetValue()
     {
         // Setup
         $key = 0;
         $expected = 10;
-        $data = [10, 20, 30];
+        $data = array(10, 20, 30);
 
         // Test
         $actual = Utilities::tryGetValue($data, $key);
@@ -64,14 +62,14 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::tryGetValue
+     * @covers WindowsAzure\Common\Internal\Utilities::tryGetValue
      */
     public function testTryGetValueUsingDefault()
     {
         // Setup
         $key = 10;
         $expected = 6;
-        $data = [10, 20, 30];
+        $data = array(10, 20, 30);
 
         // Test
         $actual = Utilities::tryGetValue($data, $key, $expected);
@@ -80,13 +78,13 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::tryGetValue
+     * @covers WindowsAzure\Common\Internal\Utilities::tryGetValue
      */
     public function testTryGetValueWithNull()
     {
         // Setup
         $key = 10;
-        $data = [10, 20, 30];
+        $data = array(10, 20, 30);
 
         // Test
         $actual = Utilities::tryGetValue($data, $key);
@@ -95,15 +93,15 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::tryGetKeysChainValue
+     * @covers WindowsAzure\Common\Internal\Utilities::tryGetKeysChainValue
      */
     public function testTryGetKeysChainValue()
     {
         // Setup
-        $array = [];
-        $array['a1'] = [];
+        $array = array();
+        $array['a1'] = array();
         $array['a2'] = 'value1';
-        $array['a1']['b1'] = [];
+        $array['a1']['b1'] = array();
         $array['a1']['b2'] = 'value2';
         $array['a1']['b1']['c1'] = 'value3';
 
@@ -121,7 +119,7 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::startsWith
+     * @covers WindowsAzure\Common\Internal\Utilities::startsWith
      */
     public function testStartsWith()
     {
@@ -136,7 +134,7 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::startsWith
+     * @covers WindowsAzure\Common\Internal\Utilities::startsWith
      */
     public function testStartsWithDoesNotStartWithPrefix()
     {
@@ -151,12 +149,12 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::getArray
+     * @covers WindowsAzure\Common\Internal\Utilities::getArray
      */
     public function testGetArray()
     {
         // Setup
-        $expected = [[1, 2, 3, 4],  [5, 6, 7, 8]];
+        $expected = array(array(1, 2, 3, 4),  array(5, 6, 7, 8));
 
         // Test
         $actual = Utilities::getArray($expected);
@@ -165,13 +163,13 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::getArray
+     * @covers WindowsAzure\Common\Internal\Utilities::getArray
      */
     public function testGetArrayWithFlatValue()
     {
         // Setup
-        $flat = [1, 2, 3, 4, 5, 6, 7, 8];
-        $expected = [[1, 2, 3, 4, 5, 6, 7, 8]];
+        $flat = array(1, 2, 3, 4, 5, 6, 7, 8);
+        $expected = array(array(1, 2, 3, 4, 5, 6, 7, 8));
 
         // Test
         $actual = Utilities::getArray($flat);
@@ -180,13 +178,13 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::getArray
+     * @covers WindowsAzure\Common\Internal\Utilities::getArray
      */
     public function testGetArrayWithMixtureValue()
     {
         // Setup
-        $flat = [[10, 2], 1, 2, 3, 4, 5, 6, 7, 8];
-        $expected = [[[10, 2], 1, 2, 3, 4, 5, 6, 7, 8]];
+        $flat = array(array(10, 2), 1, 2, 3, 4, 5, 6, 7, 8);
+        $expected = array(array(array(10, 2), 1, 2, 3, 4, 5, 6, 7, 8));
 
         // Test
         $actual = Utilities::getArray($flat);
@@ -195,13 +193,13 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::getArray
+     * @covers WindowsAzure\Common\Internal\Utilities::getArray
      */
     public function testGetArrayWithEmptyValue()
     {
         // Setup
         $empty = Resources::EMPTY_STRING;
-        $expected = [];
+        $expected = array();
 
         // Test
         $actual = Utilities::getArray($empty);
@@ -210,8 +208,8 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::unserialize
-     * @covers \WindowsAzure\Common\Internal\Utilities::_sxml2arr
+     * @covers WindowsAzure\Common\Internal\Utilities::unserialize
+     * @covers WindowsAzure\Common\Internal\Utilities::_sxml2arr
      */
     public function testUnserialize()
     {
@@ -229,15 +227,15 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::serialize
-     * @covers \WindowsAzure\Common\Internal\Utilities::_arr2xml
+     * @covers WindowsAzure\Common\Internal\Utilities::serialize
+     * @covers WindowsAzure\Common\Internal\Utilities::_arr2xml
      */
     public function testSerialize()
     {
         // Setup
         $propertiesSample = TestResources::getServicePropertiesSample();
         $properties = ServiceProperties::create($propertiesSample);
-        $expected = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
+        $expected  = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
         $expected .= '<StorageServiceProperties><Logging><Version>1.0</Version><Delete>true</Delete>';
         $expected .= '<Read>false</Read><Write>true</Write><RetentionPolicy><Enabled>true</Enabled>';
         $expected .= '<Days>20</Days></RetentionPolicy></Logging><Metrics><Version>1.0</Version>';
@@ -252,8 +250,8 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::serialize
-     * @covers \WindowsAzure\Common\Internal\Utilities::_arr2xml
+     * @covers WindowsAzure\Common\Internal\Utilities::serialize
+     * @covers WindowsAzure\Common\Internal\Utilities::_arr2xml
      */
     public function testSerializeNoArray()
     {
@@ -268,21 +266,21 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::serialize
-     * @covers \WindowsAzure\Common\Internal\Utilities::_arr2xml
+     * @covers WindowsAzure\Common\Internal\Utilities::serialize
+     * @covers WindowsAzure\Common\Internal\Utilities::_arr2xml
      */
     public function testSerializeAttribute()
     {
         // Setup
-        $expected = '<?xml version="1.0" encoding="UTF-8"?>'."\n".
+        $expected = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" .
             '<Object field1="value1" field2="value2"/>';
 
-        $object = [
-            '@attributes' => [
+        $object = array(
+            '@attributes' => array(
                 'field1' => 'value1',
-                'field2' => 'value2',
-            ],
-        ];
+                'field2' => 'value2'
+            )
+        );
 
         // Test
         $actual = Utilities::serialize($object, 'Object');
@@ -291,7 +289,7 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::toBoolean
+     * @covers WindowsAzure\Common\Internal\Utilities::toBoolean
      */
     public function testToBoolean()
     {
@@ -308,7 +306,7 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::booleanToString
+     * @covers WindowsAzure\Common\Internal\Utilities::booleanToString
      */
     public function testBooleanToString()
     {
@@ -324,7 +322,7 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::isoDate
+     * @covers WindowsAzure\Common\Internal\Utilities::isoDate
      */
     public function testIsoDate()
     {
@@ -336,7 +334,7 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::convertToEdmDateTime
+     * @covers WindowsAzure\Common\Internal\Utilities::convertToEdmDateTime
      */
     public function testConvertToEdmDateTime()
     {
@@ -348,7 +346,7 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::convertToDateTime
+     * @covers WindowsAzure\Common\Internal\Utilities::convertToDateTime
      */
     public function testConvertToDateTime()
     {
@@ -363,7 +361,7 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::convertToDateTime
+     * @covers WindowsAzure\Common\Internal\Utilities::convertToDateTime
      */
     public function testConvertToDateTimeWithDate()
     {
@@ -378,12 +376,12 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::stringToStream
+     * @covers WindowsAzure\Common\Internal\Utilities::stringToStream
      */
     public function testStringToStream()
     {
         $data = 'This is string';
-        $expected = fopen('data://text/plain,'.$data, 'r');
+        $expected = fopen('data://text/plain,' . $data, 'r');
 
         // Test
         $actual = Utilities::stringToStream($data);
@@ -393,7 +391,7 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::rfc1123ToDateTime
+     * @covers WindowsAzure\Common\Internal\Utilities::rfc1123ToDateTime
      */
     public function testWindowsAzureDateToDateTime()
     {
@@ -408,7 +406,7 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::tryAddUrlScheme
+     * @covers WindowsAzure\Common\Internal\Utilities::tryAddUrlScheme
      */
     public function testTryAddUrlSchemeWithScheme()
     {
@@ -423,7 +421,7 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::tryAddUrlScheme
+     * @covers WindowsAzure\Common\Internal\Utilities::tryAddUrlScheme
      */
     public function testTryAddUrlSchemeWithoutScheme()
     {
@@ -439,7 +437,7 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::startsWith
+     * @covers WindowsAzure\Common\Internal\Utilities::startsWith
      */
     public function testStartsWithIgnoreCase()
     {
@@ -455,13 +453,13 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::inArrayInsensitive
+     * @covers WindowsAzure\Common\Internal\Utilities::inArrayInsensitive
      */
     public function testInArrayInsensitive()
     {
         // Setup
         $value = 'CaseInsensitiVe';
-        $array = ['caSeinSenSitivE'];
+        $array = array('caSeinSenSitivE');
 
         // Test
         $actual = Utilities::inArrayInsensitive($value, $array);
@@ -471,13 +469,13 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::inArrayInsensitive
+     * @covers WindowsAzure\Common\Internal\Utilities::inArrayInsensitive
      */
     public function testArrayKeyExistsInsensitive()
     {
         // Setup
         $key = 'CaseInsensitiVe';
-        $array = ['caSeinSenSitivE' => '123'];
+        $array = array('caSeinSenSitivE' => '123');
 
         // Test
         $actual = Utilities::arrayKeyExistsInsensitive($key, $array);
@@ -487,14 +485,14 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::tryGetValueInsensitive
+     * @covers WindowsAzure\Common\Internal\Utilities::tryGetValueInsensitive
      */
     public function testTryGetValueInsensitive()
     {
         // Setup
         $key = 'KEy';
         $value = 1;
-        $array = [$key => $value];
+        $array = array($key => $value);
 
         // Test
         $actual = Utilities::tryGetValueInsensitive('keY', $array);
@@ -504,7 +502,7 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::getGuid
+     * @covers WindowsAzure\Common\Internal\Utilities::getGuid
      */
     public function testGetGuid()
     {
@@ -521,7 +519,7 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::endsWith
+     * @covers WindowsAzure\Common\Internal\Utilities::endsWith
      */
     public function testEndsWith()
     {
@@ -538,48 +536,45 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::getEntityId
+     * @covers WindowsAzure\Common\Internal\Utilities::getEntityId
      */
-    public function testGetEntityIdWithString()
-    {
+    public function testGetEntityIdWithString(){
 
         // Setup
         $id = 'kjgdfg57';
 
         // Test
-        $result = Utilities::getEntityId($id, 'WindowsAzure\MediaServices\Models\Asset');
+        $result = Utilities::GetEntityId($id, 'WindowsAzure\MediaServices\Models\Asset');
 
         //Assert
         $this->assertEquals($id, $result);
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::getEntityId
+     * @covers WindowsAzure\Common\Internal\Utilities::getEntityId
      */
-    public function testGetEntityIdWithObject()
-    {
+    public function testGetEntityIdWithObject(){
 
         // Setup
         $idKey = 'Id';
         $optionKey = 'Options';
-        $assetArray = [
-                $idKey => 'kjgdfg57',
-                $optionKey => Asset::OPTIONS_NONE,
-        ];
+        $assetArray= array(
+                $idKey                  => 'kjgdfg57',
+                $optionKey             => Asset::OPTIONS_NONE,
+        );
         $value = Asset::createFromOptions($assetArray);
 
         // Test
-        $result = Utilities::getEntityId($value, 'WindowsAzure\MediaServices\Models\Asset');
+        $result = Utilities::GetEntityId($value,'WindowsAzure\MediaServices\Models\Asset');
 
         //Assert
         $this->assertEquals($assetArray[$idKey], $result);
     }
 
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::generateCryptoKey
+     * @covers WindowsAzure\Common\Internal\Utilities::generateCryptoKey
      */
-    public function testGenerateCryptoKey()
-    {
+    public function testGenerateCryptoKey(){
 
         // Setup
         $length = 32;
@@ -590,146 +585,139 @@ class UtilitiesTest extends \PHPUnit_Framework_TestCase
         // Assert
         $this->assertEquals($length, strlen($result));
     }
-
+    
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::ctrCrypt
+     * @covers WindowsAzure\Common\Internal\Utilities::ctrCrypt
      */
-    public function testCtrCrypt()
-    {
-
+    public function testCtrCrypt(){
+    
         // Setup
         $data = 'Test data more than 16 bytes';
         $key = Utilities::generateCryptoKey(32);
         $efectiveInitializationVector = Utilities::generateCryptoKey(8);
         $initializationVector = str_pad($efectiveInitializationVector, 16, chr(255));
-
+    
         // Test
         $ecnrypted = Utilities::ctrCrypt($data, $key, $initializationVector);
         $decrypted = Utilities::ctrCrypt($ecnrypted, $key, $initializationVector);
-
+    
         // Assert
         $this->assertEquals($data, $decrypted);
     }
-
+    
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::ctrCrypt
+     * @covers WindowsAzure\Common\Internal\Utilities::ctrCrypt
      */
-    public function testCtrCryptFixedKeys()
-    {
-
+    public function testCtrCryptFixedKeys(){
+    
         // Setup
         $data = 'Test data more than 16 bytes';
         $key = base64_decode('QNhZJajWRH3fmCKDJtMluj6PUBvkADwJ7dX4KQGI99o=');
         $efectiveInitializationVector = base64_decode('k3AmLEGFubw=');
         $expected = base64_decode('j3+9MFQVctoWlUvqbn/xReun0XnWqwJ3tpvbpw==');
-
+        
         $initializationVector = str_pad($efectiveInitializationVector, 16, chr(255));
-
+        
         // Test
         $actual = Utilities::ctrCrypt($data, $key, $initializationVector);
-
+    
         // Assert
         $this->assertEquals($actual, $expected);
     }
-
+    
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::ctrCrypt
+     * @covers WindowsAzure\Common\Internal\Utilities::ctrCrypt
      */
-    public function testCtrCryptInvalidKeyLength()
-    {
-
+    public function testCtrCryptInvalidKeyLength(){
+    
         // Setup
         $data = 'Test data more than 16 bytes';
         $key = '12345';
         $efectiveInitializationVector = Utilities::generateCryptoKey(8);
         $this->setExpectedException(get_class(new \InvalidArgumentException('')));
-
+        
         $initializationVector = str_pad($efectiveInitializationVector, 16, chr(255));
-
+        
         // Test
         $actual = Utilities::ctrCrypt($data, $key, $initializationVector);
     }
-
+    
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::ctrCrypt
+     * @covers WindowsAzure\Common\Internal\Utilities::ctrCrypt
      */
-    public function testCtrCryptInvalidInitializationVectorLength()
-    {
-
+    public function testCtrCryptInvalidInitializationVectorLength(){
+    
         // Setup
         $data = 'Test data more than 16 bytes';
         $key = Utilities::generateCryptoKey(32);
         $initializationVector = '1234';
         $this->setExpectedException(get_class(new \InvalidArgumentException('')));
-
+        
         // Test
         $actual = Utilities::ctrCrypt($data, $key, $initializationVector);
     }
-
+    
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::base256ToDec
+     * @covers WindowsAzure\Common\Internal\Utilities::base256ToDec
      */
-    public function testBase256ToDecF()
-    {
-
+    public function testBase256ToDecF(){
+    
         // Setup
         $data = pack('C*', 255, 255, 255, 255);
         $expected = 4294967295;
-
+    
         // Test
         $actual = Utilities::base256ToDec($data);
-
+    
         // Assert
         $this->assertEquals($expected, $actual);
     }
-
+    
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::base256ToDec
+     * @covers WindowsAzure\Common\Internal\Utilities::base256ToDec
      */
-    public function testBase256ToDec0()
-    {
-
+    public function testBase256ToDec0(){
+    
         // Setup
         $data = pack('C*', 0, 0, 0, 0);
         $expected = 0;
-
+    
         // Test
         $actual = Utilities::base256ToDec($data);
-
+    
         // Assert
         $this->assertEquals($expected, $actual);
     }
-
+    
+    
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::base256ToDec
+     * @covers WindowsAzure\Common\Internal\Utilities::base256ToDec
      */
-    public function testBase256ToDec()
-    {
-
+    public function testBase256ToDec(){
+    
         // Setup
         $data = pack('C*', 34, 78, 27, 55);
         $expected = 575544119;
-
+    
         // Test
         $actual = Utilities::base256ToDec($data);
-
+    
         // Assert
         $this->assertEquals($expected, $actual);
     }
-
+    
     /**
-     * @covers \WindowsAzure\Common\Internal\Utilities::base256ToDec
+     * @covers WindowsAzure\Common\Internal\Utilities::base256ToDec
      */
-    public function testBase256ToDecBig()
-    {
-
+    public function testBase256ToDecBig(){
+    
         // Setup
         $data = pack('C*', 81, 35, 29, 39, 236, 104, 105, 144); //51 23 1D 27 EC 68 69 90
         $expected = '5846548798564231568';
-
+    
         // Test
         $actual = Utilities::base256ToDec($data);
-
+    
         // Assert
         $this->assertEquals($expected, $actual);
     }

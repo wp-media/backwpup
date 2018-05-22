@@ -480,7 +480,6 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 						$job_object->steps_data[ $job_object->step_working ]['wpexportfile'] .= $job_object->job[ 'wpexportfilecompression' ];
 						$job_object->log( __( 'Compressing done.', 'backwpup' ) );
 					}
-					$compress->close();
 				} catch ( Exception $e ) {
 					$job_object->log( $e->getMessage(), E_USER_ERROR, $e->getFile(), $e->getLine() );
 					unset( $compress );

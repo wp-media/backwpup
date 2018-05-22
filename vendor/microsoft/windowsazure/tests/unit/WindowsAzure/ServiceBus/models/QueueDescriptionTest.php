@@ -4,7 +4,7 @@
  * LICENSE: Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,53 +15,48 @@
  * PHP version 5
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\ServiceBus\Models
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
  * @link      https://github.com/WindowsAzure/azure-sdk-for-php
  */
 
-namespace Tests\unit\WindowsAzure\ServiceBus\models;
-
+namespace Tests\Unit\WindowsAzure\ServiceBus\Models;
 use WindowsAzure\ServiceBus\Models\QueueDescription;
 
 /**
- * Unit tests for class WrapAccessTokenResult.
+ * Unit tests for class WrapAccessTokenResult
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\ServiceBus\Models
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
- * @version   Release: 0.5.0_2016-11
- *
+ * @version   Release: 0.4.2_2016-04
  * @link      https://github.com/WindowsAzure/azure-sdk-for-php
  */
 class QueueDescriptionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::__construct
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::__construct
      */
     public function testQueueDescriptionConstructor()
     {
         // Setup
-
+        
         // Test
         $queueDescription = new QueueDescription();
-
+        
         // Assert
         $this->assertNotNull($queueDescription);
     }
 
     /** 
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::getLockDuration
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::setLockDuration
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::getLockDuration
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::setLockDuration
      */
-    public function testGetSetLockDuration()
-    {
+    public function testGetSetLockDuration() {
         // Setup
         $expected = 'testLockDuration';
         $queueDescription = new QueueDescription();
@@ -75,14 +70,15 @@ class QueueDescriptionTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
+
     /** 
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::getMaxSizeInMegabytes
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::setMaxSizeInMegabytes
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::getMaxSizeInMegabytes
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::setMaxSizeInMegabytes
      */
-    public function testGetSetMaxSizeInMegabytes()
-    {
+    public function testGetSetMaxSizeInMegabytes() {
         // Setup
         $expected = 'testMaxSizeInMegabytes';
         $queueDescription = new QueueDescription();
@@ -96,14 +92,15 @@ class QueueDescriptionTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
+
     /** 
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::getRequiresDuplicateDetection
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::setRequiresDuplicateDetection
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::getRequiresDuplicateDetection
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::setRequiresDuplicateDetection
      */
-    public function testGetSetRequiresDuplicateDetection()
-    {
+    public function testGetSetRequiresDuplicateDetection() {
         // Setup
         $expected = 'testRequiresDuplicateDetection';
         $queueDescription = new QueueDescription();
@@ -117,14 +114,15 @@ class QueueDescriptionTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
+
     /** 
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::getRequiresSession
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::setRequiresSession
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::getRequiresSession
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::setRequiresSession
      */
-    public function testGetSetRequiresSession()
-    {
+    public function testGetSetRequiresSession() {
         // Setup
         $expected = 'testRequiresSession';
         $queueDescription = new QueueDescription();
@@ -138,14 +136,15 @@ class QueueDescriptionTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
+
     /** 
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::getDefaultMessageTimeToLive
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::setDefaultMessageTimeToLive
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::getDefaultMessageTimeToLive
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::setDefaultMessageTimeToLive
      */
-    public function testGetSetDefaultMessageTimeToLive()
-    {
+    public function testGetSetDefaultMessageTimeToLive() {
         // Setup
         $expected = 'testDefaultMessageTimeToLive';
         $queueDescription = new QueueDescription();
@@ -159,14 +158,15 @@ class QueueDescriptionTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
+
     /** 
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::getDeadLetteringOnMessageExpiration
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::setDeadLetteringOnMessageExpiration
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::getDeadLetteringOnMessageExpiration
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::setDeadLetteringOnMessageExpiration
      */
-    public function testGetSetDeadLetteringOnMessageExpiration()
-    {
+    public function testGetSetDeadLetteringOnMessageExpiration() {
         // Setup
         $expected = 'testDeadLetteringOnMessageExpiration';
         $queueDescription = new QueueDescription();
@@ -180,14 +180,15 @@ class QueueDescriptionTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
+
     /** 
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::getDuplicateDetectionHistoryTimeWindow
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::setDuplicateDetectionHistoryTimeWindow
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::getDuplicateDetectionHistoryTimeWindow
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::setDuplicateDetectionHistoryTimeWindow
      */
-    public function testGetSetDuplicateDetectionHistoryTimeWindow()
-    {
+    public function testGetSetDuplicateDetectionHistoryTimeWindow() {
         // Setup
         $expected = 'testDuplicateDetectionHistoryTimeWindow';
         $queueDescription = new QueueDescription();
@@ -201,14 +202,15 @@ class QueueDescriptionTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
+
     /** 
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::getMaxDeliveryCount
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::setMaxDeliveryCount
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::getMaxDeliveryCount
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::setMaxDeliveryCount
      */
-    public function testGetSetMaxDeliveryCount()
-    {
+    public function testGetSetMaxDeliveryCount() {
         // Setup
         $expected = 'testMaxDeliveryCount';
         $queueDescription = new QueueDescription();
@@ -222,14 +224,15 @@ class QueueDescriptionTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
+
     /** 
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::getEnableBatchedOperations
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::setEnableBatchedOperations
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::getEnableBatchedOperations
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::setEnableBatchedOperations
      */
-    public function testGetSetEnableBatchedOperations()
-    {
+    public function testGetSetEnableBatchedOperations() {
         // Setup
         $expected = 'testEnableBatchedOperations';
         $queueDescription = new QueueDescription();
@@ -243,14 +246,15 @@ class QueueDescriptionTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
+
     /** 
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::getSizeInBytes
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::setSizeInBytes
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::getSizeInBytes
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::setSizeInBytes
      */
-    public function testGetSetSizeInBytes()
-    {
+    public function testGetSetSizeInBytes() {
         // Setup
         $expected = 'testSizeInBytes';
         $queueDescription = new QueueDescription();
@@ -264,14 +268,15 @@ class QueueDescriptionTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
+
     /** 
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::getMessageCount
-     * @covers \WindowsAzure\ServiceBus\Models\QueueDescription::setMessageCount
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::getMessageCount
+     * @covers WindowsAzure\ServiceBus\Models\QueueDescription::setMessageCount
      */
-    public function testGetSetMessageCount()
-    {
+    public function testGetSetMessageCount() {
         // Setup
         $expected = 'testMessageCount';
         $queueDescription = new QueueDescription();
@@ -285,5 +290,9 @@ class QueueDescriptionTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
+
 }
+
+

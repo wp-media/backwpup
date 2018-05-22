@@ -3,7 +3,7 @@
  * LICENSE: Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,44 +14,42 @@
  * PHP version 5
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\MediaServices\Models
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 
-namespace Tests\unit\WindowsAzure\MediaServices\Templates;
-
+namespace Tests\Unit\WindowsAzure\MediaServices\Templates;
+use Tests\Framework\TestResources;
 use WindowsAzure\MediaServices\Templates\PlayReadyPlayRight;
 use WindowsAzure\MediaServices\Templates\ScmsRestriction;
 use WindowsAzure\MediaServices\Templates\AgcAndColorStripeRestriction;
 use WindowsAzure\MediaServices\Templates\ExplicitAnalogTelevisionRestriction;
 use WindowsAzure\MediaServices\Templates\UnknownOutputPassingOption;
 use WindowsAzure\MediaServices\Templates\ErrorMessages;
+use WindowsAzure\Common\Internal\Resources;
+use WindowsAzure\Common\Internal\Utilities;
 
 /**
- * Unit Tests for PlayReadyPlayRight.
+ * Unit Tests for PlayReadyPlayRight
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\MediaServices\Templates
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
- * @version   Release: 0.5.0_2016-11
- *
+ * @version   Release: 0.4.2_2016-04
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 class PlayReadyPlayRightTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getFirstPlayExpiration
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setFirstPlayExpiration
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getFirstPlayExpiration
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setFirstPlayExpiration
      */
-    public function testGetSetFirstPlayExpiration()
-    {
+    public function testGetSetFirstPlayExpiration() {
         // Setup
         $entity = new PlayReadyPlayRight();
         $payload = new \DateInterval('PT30S');
@@ -65,11 +63,10 @@ class PlayReadyPlayRightTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getScmsRestriction
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setScmsRestriction
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getScmsRestriction
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setScmsRestriction
      */
-    public function testGetSetScmsRestriction()
-    {
+    public function testGetSetScmsRestriction() {
         // Setup
         $entity = new PlayReadyPlayRight();
         $payload = new ScmsRestriction(1);
@@ -83,11 +80,10 @@ class PlayReadyPlayRightTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getAgcAndColorStripeRestriction
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setAgcAndColorStripeRestriction
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getAgcAndColorStripeRestriction
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setAgcAndColorStripeRestriction
      */
-    public function testGetSetAgcAndColorStripeRestriction()
-    {
+    public function testGetSetAgcAndColorStripeRestriction() {
         // Setup
         $entity = new PlayReadyPlayRight();
         $payload = new AgcAndColorStripeRestriction(1);
@@ -101,11 +97,10 @@ class PlayReadyPlayRightTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getExplicitAnalogTelevisionOutputRestriction
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setExplicitAnalogTelevisionOutputRestriction
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getExplicitAnalogTelevisionOutputRestriction
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setExplicitAnalogTelevisionOutputRestriction
      */
-    public function testGetSetExplicitAnalogTelevisionOutputRestriction()
-    {
+    public function testGetSetExplicitAnalogTelevisionOutputRestriction() {
         // Setup
         $entity = new PlayReadyPlayRight();
         $payload = new ExplicitAnalogTelevisionRestriction(1);
@@ -119,11 +114,10 @@ class PlayReadyPlayRightTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getDigitalVideoOnlyContentRestriction
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setDigitalVideoOnlyContentRestriction
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getDigitalVideoOnlyContentRestriction
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setDigitalVideoOnlyContentRestriction
      */
-    public function testGetSetDigitalVideoOnlyContentRestriction()
-    {
+    public function testGetSetDigitalVideoOnlyContentRestriction() {
         // Setup
         $entity = new PlayReadyPlayRight();
         $payload = true;
@@ -136,12 +130,12 @@ class PlayReadyPlayRightTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($payload, $result);
     }
 
+    
     /**
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getImageConstraintForAnalogComponentVideoRestriction
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setImageConstraintForAnalogComponentVideoRestriction
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getImageConstraintForAnalogComponentVideoRestriction
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setImageConstraintForAnalogComponentVideoRestriction
      */
-    public function testGetSetImageConstraintForAnalogComponentVideoRestriction()
-    {
+    public function testGetSetImageConstraintForAnalogComponentVideoRestriction() {
         // Setup
         $entity = new PlayReadyPlayRight();
         $payload = true;
@@ -155,11 +149,10 @@ class PlayReadyPlayRightTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getImageConstraintForAnalogComputerMonitorRestriction
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setImageConstraintForAnalogComputerMonitorRestriction
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getImageConstraintForAnalogComputerMonitorRestriction
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setImageConstraintForAnalogComputerMonitorRestriction
      */
-    public function testGetSetImageConstraintForAnalogComputerMonitorRestriction()
-    {
+    public function testGetSetImageConstraintForAnalogComputerMonitorRestriction() {
         // Setup
         $entity = new PlayReadyPlayRight();
         $payload = true;
@@ -173,11 +166,10 @@ class PlayReadyPlayRightTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getAllowPassingVideoContentToUnknownOutput
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setAllowPassingVideoContentToUnknownOutput
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getAllowPassingVideoContentToUnknownOutput
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setAllowPassingVideoContentToUnknownOutput
      */
-    public function testGetSetAllowPassingVideoContentToUnknownOutput()
-    {
+    public function testGetSetAllowPassingVideoContentToUnknownOutput() {
         // Setup
         $entity = new PlayReadyPlayRight();
         $payload = UnknownOutputPassingOption::ALLOWED;
@@ -191,11 +183,10 @@ class PlayReadyPlayRightTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getUncompressedDigitalVideoOpl
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setUncompressedDigitalVideoOpl
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getUncompressedDigitalVideoOpl
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setUncompressedDigitalVideoOpl
      */
-    public function testGetSetUncompressedDigitalVideoOpl()
-    {
+    public function testGetSetUncompressedDigitalVideoOpl() {
         // Setup
         $entity = new PlayReadyPlayRight();
         $payload = 100;
@@ -209,25 +200,23 @@ class PlayReadyPlayRightTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setUncompressedDigitalVideoOpl
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setUncompressedDigitalVideoOpl
      */
-    public function testSetInvalidUncompressedDigitalVideoOplShouldThrown()
-    {
+    public function testSetInvalidUncompressedDigitalVideoOplShouldThrown() {
         // Setup
         $entity = new PlayReadyPlayRight();
         $payload = 105;
         $this->setExpectedException('InvalidArgumentException', ErrorMessages::UNCOMPRESSED_DIGITAL_VIDEO_OPL_VALUE_ERROR);
 
         // Test
-        $entity->setUncompressedDigitalVideoOpl($payload);
+        $entity->setUncompressedDigitalVideoOpl($payload);        
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getCompressedDigitalVideoOpl
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setCompressedDigitalVideoOpl
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getCompressedDigitalVideoOpl
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setCompressedDigitalVideoOpl
      */
-    public function testGetSetCompressedDigitalVideoOpl()
-    {
+    public function testGetSetCompressedDigitalVideoOpl() {
         // Setup
         $entity = new PlayReadyPlayRight();
         $payload = 400;
@@ -241,25 +230,23 @@ class PlayReadyPlayRightTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setCompressedDigitalVideoOpl
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setCompressedDigitalVideoOpl
      */
-    public function testSetInvalidCompressedDigitalVideoOplShouldThrown()
-    {
+    public function testSetInvalidCompressedDigitalVideoOplShouldThrown() {
         // Setup
         $entity = new PlayReadyPlayRight();
         $payload = 405;
         $this->setExpectedException('InvalidArgumentException', ErrorMessages::COMPRESSED_DIGITAL_VIDEO_OPL_VALUE_ERROR);
 
         // Test
-        $entity->setCompressedDigitalVideoOpl($payload);
+        $entity->setCompressedDigitalVideoOpl($payload);        
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getAnalogVideoOpl
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setAnalogVideoOpl
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getAnalogVideoOpl
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setAnalogVideoOpl
      */
-    public function testGetSetAnalogVideoOpl()
-    {
+    public function testGetSetAnalogVideoOpl() {
         // Setup
         $entity = new PlayReadyPlayRight();
         $payload = 100;
@@ -273,25 +260,23 @@ class PlayReadyPlayRightTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setAnalogVideoOpl
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setAnalogVideoOpl
      */
-    public function testSetInvalidAnalogVideoOplShouldThrown()
-    {
+    public function testSetInvalidAnalogVideoOplShouldThrown() {
         // Setup
         $entity = new PlayReadyPlayRight();
         $payload = 105;
         $this->setExpectedException('InvalidArgumentException', ErrorMessages::ANALOG_VIDEO_OPL_VALUE_ERROR);
 
         // Test
-        $entity->setAnalogVideoOpl($payload);
+        $entity->setAnalogVideoOpl($payload);        
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getCompressedDigitalAudioOpl
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setCompressedDigitalAudioOpl
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getCompressedDigitalAudioOpl
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setCompressedDigitalAudioOpl
      */
-    public function testGetSetCompressedDigitalAudioOpl()
-    {
+    public function testGetSetCompressedDigitalAudioOpl() {
         // Setup
         $entity = new PlayReadyPlayRight();
         $payload = 100;
@@ -305,25 +290,23 @@ class PlayReadyPlayRightTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setCompressedDigitalAudioOpl
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setCompressedDigitalAudioOpl
      */
-    public function testSetInvalidCompressedDigitalAudioOplShouldThrown()
-    {
+    public function testSetInvalidCompressedDigitalAudioOplShouldThrown() {
         // Setup
         $entity = new PlayReadyPlayRight();
         $payload = 105;
         $this->setExpectedException('InvalidArgumentException', ErrorMessages::COMPRESSED_DIGITAL_AUDIO_OPL_VALUE_ERROR);
 
         // Test
-        $entity->setCompressedDigitalAudioOpl($payload);
+        $entity->setCompressedDigitalAudioOpl($payload);        
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getUncompressedDigitalAudioOpl
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setUncompressedDigitalAudioOpl
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::getUncompressedDigitalAudioOpl
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setUncompressedDigitalAudioOpl
      */
-    public function testGetSetUncompressedDigitalAudioOpl()
-    {
+    public function testGetSetUncompressedDigitalAudioOpl() {
         // Setup
         $entity = new PlayReadyPlayRight();
         $payload = 100;
@@ -337,16 +320,15 @@ class PlayReadyPlayRightTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setUncompressedDigitalAudioOpl
+     * @covers WindowsAzure\MediaServices\Templates\PlayReadyPlayRight::setUncompressedDigitalAudioOpl
      */
-    public function testSetInvalidUncompressedDigitalAudioOplShouldThrown()
-    {
+    public function testSetInvalidUncompressedDigitalAudioOplShouldThrown() {
         // Setup
         $entity = new PlayReadyPlayRight();
         $payload = 105;
         $this->setExpectedException('InvalidArgumentException', ErrorMessages::UNCOMPRESSED_DIGITAL_AUDIO_OPL_VALUE_ERROR);
 
         // Test
-        $entity->setUncompressedDigitalAudioOpl($payload);
+        $entity->setUncompressedDigitalAudioOpl($payload);        
     }
 }

@@ -1,0 +1,34 @@
+language: php
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - 5.6
+  - 7.0
+install: pear install Net_URL2
+addons:
+  hosts:
+    - hr2.local
+    - www.hr2.local
+before_script:
+  # directory for apache logs
+  - mkdir -p $TRAVIS_BUILD_DIR/logs
+  # As described @ http://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
+  - sudo apt-get update
+  - sudo apt-get install apache2 libapache2-mod-php5
+  #- sudo apt-get install apache2 libapache2-mod-fastcgi
+  # enable php-fpm
+  #- sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  #- sudo a2enmod rewrite actions fastcgi alias
+  #- echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  #- ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
+  # configure apache virtual hosts
+  - sudo cp -f tests/travis-ci-apache /etc/apache2/sites-available/default
+  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+  - sudo service apache2 restart
+  # use travis config for network-backed tests
+  - cp tests/NetworkConfig.php.travis tests/NetworkConfig.php
+script: phpunit tests
+after_failure:
+  - cat $TRAVIS_BUILD_DIR/logs/hr2-error.log
+  - cat $TRAVIS_BUILD_DIR/logs/hr2-access.log

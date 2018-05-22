@@ -4,7 +4,7 @@
  * LICENSE: Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,35 +15,31 @@
  * PHP version 5
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\Common\Internal\Atom
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
  * @link      https://github.com/WindowsAzure/azure-sdk-for-php
  */
 
-namespace Tests\unit\WindowsAzure\Common\Internal\Atom;
-
-
+namespace Tests\Unit\WindowsAzure\Common\Internal\Atom;
 use WindowsAzure\Common\Internal\Atom\AtomLink;
 
 /**
- * Unit tests for class AtomLink.
+ * Unit tests for class AtomLink
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\Common\Internal\Atom
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
- * @version   Release: 0.5.0_2016-11
- *
+ * @version   Release: 0.4.2_2016-04
  * @link      https://github.com/WindowsAzure/azure-sdk-for-php
  */
 class AtomLinkTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::__construct
      */
     public function testAtomLinkConstructor()
     {
@@ -51,17 +47,16 @@ class AtomLinkTest extends \PHPUnit_Framework_TestCase
 
         // Test
         $feed = new AtomLink();
-
+        
         // Assert
         $this->assertNotNull($feed);
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\AtomLink::getUndefinedContent
-     * @covers \WindowsAzure\Common\Internal\Atom\AtomLink::setUndefinedContent
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::getUndefinedContent
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::setUndefinedContent
      */
-    public function testGetSetUndefinedContent()
-    {
+    public function testGetSetUndefinedContent() {
         // Setup
         $expected = 'testUndefinedContent';
         $atomLink = new AtomLink();
@@ -75,14 +70,14 @@ class AtomLinkTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\AtomLink::getHref
-     * @covers \WindowsAzure\Common\Internal\Atom\AtomLink::setHref
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::getHref
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::setHref
      */
-    public function testGetSetHref()
-    {
+    public function testGetSetHref() {
         // Setup
         $expected = 'testHref';
         $atomLink = new AtomLink();
@@ -96,14 +91,15 @@ class AtomLinkTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
+
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\AtomLink::getRel
-     * @covers \WindowsAzure\Common\Internal\Atom\AtomLink::setRel
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::getRel
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::setRel
      */
-    public function testGetSetRel()
-    {
+    public function testGetSetRel() {
         // Setup
         $expected = 'testRel';
         $atomLink = new AtomLink();
@@ -117,14 +113,15 @@ class AtomLinkTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
+
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\AtomLink::getType
-     * @covers \WindowsAzure\Common\Internal\Atom\AtomLink::setType
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::getType
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::setType
      */
-    public function testGetSetType()
-    {
+    public function testGetSetType() {
         // Setup
         $expected = 'testType';
         $atomLink = new AtomLink();
@@ -138,14 +135,15 @@ class AtomLinkTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
+
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\AtomLink::getHreflang
-     * @covers \WindowsAzure\Common\Internal\Atom\AtomLink::setHreflang
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::getHreflang
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::setHreflang
      */
-    public function testGetSetHreflang()
-    {
+    public function testGetSetHreflang() {
         // Setup
         $expected = 'testHreflang';
         $atomLink = new AtomLink();
@@ -159,14 +157,14 @@ class AtomLinkTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\AtomLink::getTitle
-     * @covers \WindowsAzure\Common\Internal\Atom\AtomLink::setTitle
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::getTitle
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::setTitle
      */
-    public function testGetSetTitle()
-    {
+    public function testGetSetTitle() {
         // Setup
         $expected = 'testTitle';
         $atomLink = new AtomLink();
@@ -180,14 +178,14 @@ class AtomLinkTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\AtomLink::getLength
-     * @covers \WindowsAzure\Common\Internal\Atom\AtomLink::setLength
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::getLength
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::setLength
      */
-    public function testGetSetLength()
-    {
+    public function testGetSetLength() {
         // Setup
         $expected = 'testLength';
         $atomLink = new AtomLink();
@@ -201,34 +199,34 @@ class AtomLinkTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\AtomLink::parseXml
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::parseXml
      */
-    public function testParseXmlSuccess()
-    {
+    public function testParseXmlSuccess() {
         // Setup
         $xml = '<link href="http://www.contonso.com"/>';
         $expected = new AtomLink();
-        $expected->setHref('http://www.contonso.com');
+        $expected->setHref('http://www.contonso.com'); 
         $actual = new AtomLink();
 
         // Test
         $actual->parseXml($xml);
-
+        
         // Assert
         $this->assertEquals(
             $expected,
             $actual
         );
+        
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\AtomLink::parseXml
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::parseXml
      */
-    public function testParseXmlInvalidArgument()
-    {
+    public function testParseXmlInvalidArgument() {
         // Setup
         $this->setExpectedException(get_class(new \InvalidArgumentException()));
         $atomLink = new AtomLink();
@@ -240,10 +238,9 @@ class AtomLinkTest extends \PHPUnit_Framework_TestCase
     }
 
     /** 
-     * @covers \WindowsAzure\Common\Internal\Atom\AtomLink::writeXml
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::writeXml
      */
-    public function testWriteXmlSuccess()
-    {
+    public function testWriteXmlSuccess() {
         // Setup
         $expected = '<atom:link href="http://www.contonso.com" xmlns:atom="http://www.w3.org/2005/Atom"/>';
         $atomLink = new AtomLink();
@@ -261,4 +258,21 @@ class AtomLinkTest extends \PHPUnit_Framework_TestCase
             $actual
         );
     }
+
+    /** 
+     * @covers WindowsAzure\Common\Internal\Atom\AtomLink::parseXml
+     */
+    public function testWriteXmlInvalidArgument()
+    {
+        // Setup
+        $this->setExpectedException(get_class(new \InvalidArgumentException()));
+        $atomLink = new AtomLink();
+
+        // Test
+        $atomLink->writeXml(null);
+        // Assert
+    }
+
 }
+
+

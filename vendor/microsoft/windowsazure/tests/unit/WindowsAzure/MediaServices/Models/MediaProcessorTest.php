@@ -3,7 +3,7 @@
  * LICENSE: Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,172 +14,163 @@
  * PHP version 5
  *
  * @category  Microsoft
- *
+ * @package   WindowsAzure\MediaServices\Models
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 
-namespace Tests\unit\WindowsAzure\MediaServices\Models;
-
+namespace Tests\Unit\WindowsAzure\MediaServices\Models;
 use WindowsAzure\MediaServices\Models\MediaProcessor;
 
 /**
- * Represents access policy object used in media services.
+ * Represents access policy object used in media services
  *
  * @category  Microsoft
- *
+ * @package   WindowsAzure\MediaServices\Models
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
- * @version   Release: 0.5.0_2016-11
- *
+ * @version   Release: 0.4.2_2016-04
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
+
 class MediaProcessorTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
-     * @covers \WindowsAzure\MediaServices\Models\MediaProcessor::createFromOptions
-     * @covers \WindowsAzure\MediaServices\Models\MediaProcessor::fromArray
+     * @covers WindowsAzure\MediaServices\Models\MediaProcessor::createFromOptions
+     * @covers WindowsAzure\MediaServices\Models\MediaProcessor::fromArray
      */
-    public function testCreateFromOptions()
-    {
+    public function testCreateFromOptions(){
 
         // Setup
-        $options = [
-                'Id' => 'sfgsfg34',
-                'Name' => 'Some Name',
-                'Description' => 'Description of media processor',
-                'Sku' => '456-123-789',
-                'Vendor' => 'Vendors name',
-                'Version' => '3.6.5',
-        ];
+        $options = array(
+                'Id'                  => 'sfgsfg34',
+                'Name'                => 'Some Name',
+                'Description'         => 'Description of media processor',
+                'Sku'                 => '456-123-789',
+                'Vendor'              => 'Vendors name',
+                'Version'             => '3.6.5',
+        );
 
         // Test
-        $mediaProcessor = MediaProcessor::createFromOptions($options);
+        $mediaProc = MediaProcessor::createFromOptions($options);
 
         // Assert
-        $this->assertEquals($options['Id'], $mediaProcessor->getId());
-        $this->assertEquals($options['Name'], $mediaProcessor->getName());
-        $this->assertEquals($options['Description'], $mediaProcessor->getDescription());
-        $this->assertEquals($options['Sku'], $mediaProcessor->getSku());
-        $this->assertEquals($options['Vendor'], $mediaProcessor->getVendor());
-        $this->assertEquals($options['Version'], $mediaProcessor->getVersion());
+        $this->assertEquals($options['Id'], $mediaProc->getId());
+        $this->assertEquals($options['Name'], $mediaProc->getName());
+        $this->assertEquals($options['Description'], $mediaProc->getDescription());
+        $this->assertEquals($options['Sku'], $mediaProc->getSku());
+        $this->assertEquals($options['Vendor'], $mediaProc->getVendor());
+        $this->assertEquals($options['Version'], $mediaProc->getVersion());
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\MediaProcessor::getId
-     * @covers \WindowsAzure\MediaServices\Models\MediaProcessor::__construct
+     * @covers WindowsAzure\MediaServices\Models\MediaProcessor::getId
+     * @covers WindowsAzure\MediaServices\Models\MediaProcessor::__construct
      */
-    public function testGetId()
-    {
+    public function testGetId(){
 
         // Setup
-        $options = [
-                'Id' => 'sfgsfg34',
-        ];
-        $mediaProcessor = MediaProcessor::createFromOptions($options);
+        $options = array(
+                'Id'             => 'sfgsfg34',
+        );
+        $mediaProc = MediaProcessor::createFromOptions($options);
 
         // Test
-        $result = $mediaProcessor->getId();
+        $result = $mediaProc->getId();
 
         // Assert
         $this->assertEquals($options['Id'], $result);
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\MediaProcessor::getName
+     * @covers WindowsAzure\MediaServices\Models\MediaProcessor::getName
      */
-    public function testGetName()
-    {
+    public function testGetName(){
 
         // Setup
-        $options = [
-                'Name' => 'Some Name',
-        ];
-        $mediaProcessor = MediaProcessor::createFromOptions($options);
+        $options = array(
+                'Name'           => 'Some Name',
+        );
+        $mediaProc = MediaProcessor::createFromOptions($options);
 
         // Test
-        $result = $mediaProcessor->getName();
+        $result = $mediaProc->getName();
 
         // Assert
         $this->assertEquals($options['Name'], $result);
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\MediaProcessor::getDescription
+     * @covers WindowsAzure\MediaServices\Models\MediaProcessor::getDescription
      */
-    public function testGetDescription()
-    {
+    public function testGetDescription(){
 
         // Setup
-        $options = [
-                'Description' => 'Description of media processor',
-        ];
-        $mediaProcessor = MediaProcessor::createFromOptions($options);
+        $options = array(
+                'Description'          => 'Description of media processor'
+        );
+        $mediaProc = MediaProcessor::createFromOptions($options);
 
         // Test
-        $result = $mediaProcessor->getDescription();
+        $result = $mediaProc->getDescription();
 
         // Assert
         $this->assertEquals($options['Description'], $result);
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\MediaProcessor::getSku
+     * @covers WindowsAzure\MediaServices\Models\MediaProcessor::getSku
      */
-    public function testGetSku()
-    {
+    public function testGetSku(){
 
         // Setup
-        $options = [
-                'Sku' => '123-456-789',
-        ];
-        $mediaProcessor = MediaProcessor::createFromOptions($options);
+        $options = array(
+                'Sku'        => '123-456-789'
+        );
+        $mediaProc = MediaProcessor::createFromOptions($options);
 
         // Test
-        $result = $mediaProcessor->getSku();
+        $result = $mediaProc->getSku();
 
         // Assert
         $this->assertEquals($options['Sku'], $result);
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\MediaProcessor::getVendor
+     * @covers WindowsAzure\MediaServices\Models\MediaProcessor::getVendor
      */
-    public function testGetVendor()
-    {
+    public function testGetVendor(){
 
         // Setup
-        $options = [
-                'Vendor' => 'Vendors name',
-        ];
-        $mediaProcessor = MediaProcessor::createFromOptions($options);
+        $options = array(
+                'Vendor'        => 'Vendors name'
+        );
+        $mediaProc = MediaProcessor::createFromOptions($options);
 
         // Test
-        $result = $mediaProcessor->getVendor();
+        $result = $mediaProc->getVendor();
 
         // Assert
         $this->assertEquals($options['Vendor'], $result);
     }
 
     /**
-     * @covers \WindowsAzure\MediaServices\Models\MediaProcessor::getVersion
+     * @covers WindowsAzure\MediaServices\Models\MediaProcessor::getVersion
      */
-    public function testGetVersion()
-    {
+    public function testGetVersion(){
 
         // Setup
-        $options = [
-                'Version' => '3.6.5',
-        ];
-        $mediaProcessor = MediaProcessor::createFromOptions($options);
+        $options = array(
+                'Version'        => '3.6.5'
+        );
+        $mediaProc = MediaProcessor::createFromOptions($options);
 
         // Test
-        $result = $mediaProcessor->getVersion();
+        $result = $mediaProc->getVersion();
 
         // Assert
         $this->assertEquals($options['Version'], $result);

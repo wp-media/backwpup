@@ -4,7 +4,7 @@
  * LICENSE: Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,54 +15,49 @@
  * PHP version 5
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\ServiceBus\Models
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
  * @link      https://github.com/WindowsAzure/azure-sdk-for-php
  */
 
-namespace Tests\unit\WindowsAzure\ServiceBus\models;
-
+namespace Tests\Unit\WindowsAzure\ServiceBus\Models;
 use WindowsAzure\ServiceBus\Models\SqlFilter;
-
+use WindowsAzure\ServiceBus\Internal\WrapAccessTokenResult;
 
 /**
- * Unit tests for class WrapAccessTokenResult.
+ * Unit tests for class WrapAccessTokenResult
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\ServiceBus\Models
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
- * @version   Release: 0.5.0_2016-11
- *
+ * @version   Release: 0.4.2_2016-04
  * @link      https://github.com/WindowsAzure/azure-sdk-for-php
  */
 class SqlFilterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \WindowsAzure\ServiceBus\Models\SqlFilter::__construct
+     * @covers WindowsAzure\ServiceBus\Models\SqlFilter::__construct
      */
     public function testSqlFilterConstructor()
     {
         // Setup
-
+        
         // Test
         $sqlFilter = new SqlFilter();
-
+        
         // Assert
         $this->assertNotNull($sqlFilter);
     }
 
     /** 
-     * @covers \WindowsAzure\ServiceBus\Models\SqlFilter::getSqlExpression
-     * @covers \WindowsAzure\ServiceBus\Models\SqlFilter::setSqlExpression
+     * @covers WindowsAzure\ServiceBus\Models\SqlFilter::getSqlExpression
+     * @covers WindowsAzure\ServiceBus\Models\SqlFilter::setSqlExpression
      */
-    public function testGetSetSqlExpression()
-    {
+    public function testGetSetSqlExpression() {
         // Setup
         $expected = 'testSqlExpression';
         $sqlFilter = new SqlFilter();
@@ -76,14 +71,14 @@ class SqlFilterTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
 
     /** 
-     * @covers \WindowsAzure\ServiceBus\Models\SqlFilter::getCompatibilityLevel
-     * @covers \WindowsAzure\ServiceBus\Models\SqlFilter::setCompatibilityLevel
+     * @covers WindowsAzure\ServiceBus\Models\SqlFilter::getCompatibilityLevel
+     * @covers WindowsAzure\ServiceBus\Models\SqlFilter::setCompatibilityLevel
      */
-    public function testGetSetCompatibilityLevel()
-    {
+    public function testGetSetCompatibilityLevel() {
         // Setup
         $expected = 'testCompatibilityLevel';
         $filter = new SqlFilter();
@@ -97,5 +92,11 @@ class SqlFilterTest extends \PHPUnit_Framework_TestCase
             $expected,
             $actual
         );
+
     }
+
+
+
 }
+
+

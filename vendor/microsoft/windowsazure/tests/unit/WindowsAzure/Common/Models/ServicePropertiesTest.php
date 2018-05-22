@@ -4,7 +4,7 @@
  * LICENSE: Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,16 +15,14 @@
  * PHP version 5
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\Common\Models
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 
-namespace Tests\unit\WindowsAzure\Common\Models;
-
+namespace Tests\Unit\WindowsAzure\Common\Models;
 use Tests\Framework\TestResources;
 use WindowsAzure\Common\Internal\Utilities;
 use WindowsAzure\Common\Models\Logging;
@@ -34,22 +32,20 @@ use WindowsAzure\Common\Models\GetServicePropertiesResult;
 use WindowsAzure\Common\Internal\Serialization\XmlSerializer;
 
 /**
- * Unit tests for class ServiceProperties.
+ * Unit tests for class ServiceProperties
  *
  * @category  Microsoft
- *
+ * @package   Tests\Unit\WindowsAzure\Common\Models
  * @author    Azure PHP SDK <azurephpsdk@microsoft.com>
  * @copyright 2012 Microsoft Corporation
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
- *
- * @version   Release: 0.5.0_2016-11
- *
+ * @version   Release: 0.4.2_2016-04
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 class ServicePropertiesTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \WindowsAzure\Common\Models\ServiceProperties::create
+     * @covers WindowsAzure\Common\Models\ServiceProperties::create
      */
     public function testCreate()
     {
@@ -57,17 +53,17 @@ class ServicePropertiesTest extends \PHPUnit_Framework_TestCase
         $sample = TestResources::getServicePropertiesSample();
         $logging = Logging::create($sample['Logging']);
         $metrics = Metrics::create($sample['Metrics']);
-
+        
         // Test
         $result = ServiceProperties::create($sample);
-
+        
         // Assert
         $this->assertEquals($logging, $result->getLogging());
         $this->assertEquals($metrics, $result->getMetrics());
     }
-
+    
     /**
-     * @covers \WindowsAzure\Common\Models\ServiceProperties::setLogging
+     * @covers WindowsAzure\Common\Models\ServiceProperties::setLogging
      */
     public function testSetLogging()
     {
@@ -75,16 +71,16 @@ class ServicePropertiesTest extends \PHPUnit_Framework_TestCase
         $sample = TestResources::getServicePropertiesSample();
         $logging = Logging::create($sample['Logging']);
         $result = new ServiceProperties();
-
+        
         // Test
         $result->setLogging($logging);
-
+        
         // Assert
         $this->assertEquals($logging, $result->getLogging());
     }
-
+    
     /**
-     * @covers \WindowsAzure\Common\Models\ServiceProperties::getLogging
+     * @covers WindowsAzure\Common\Models\ServiceProperties::getLogging
      */
     public function testGetLogging()
     {
@@ -93,16 +89,16 @@ class ServicePropertiesTest extends \PHPUnit_Framework_TestCase
         $logging = Logging::create($sample['Logging']);
         $result = new ServiceProperties();
         $result->setLogging($logging);
-
+        
         // Test
         $actual = $result->getLogging($logging);
-
+        
         // Assert
         $this->assertEquals($logging, $actual);
     }
-
+    
     /**
-     * @covers \WindowsAzure\Common\Models\ServiceProperties::setMetrics
+     * @covers WindowsAzure\Common\Models\ServiceProperties::setMetrics
      */
     public function testSetMetrics()
     {
@@ -110,16 +106,16 @@ class ServicePropertiesTest extends \PHPUnit_Framework_TestCase
         $sample = TestResources::getServicePropertiesSample();
         $metrics = Metrics::create($sample['Metrics']);
         $result = new ServiceProperties();
-
+        
         // Test
         $result->setMetrics($metrics);
-
+        
         // Assert
         $this->assertEquals($metrics, $result->getMetrics());
     }
-
+    
     /**
-     * @covers \WindowsAzure\Common\Models\ServiceProperties::getMetrics
+     * @covers WindowsAzure\Common\Models\ServiceProperties::getMetrics
      */
     public function testGetMetrics()
     {
@@ -128,48 +124,50 @@ class ServicePropertiesTest extends \PHPUnit_Framework_TestCase
         $metrics = Metrics::create($sample['Metrics']);
         $result = new ServiceProperties();
         $result->setMetrics($metrics);
-
+        
         // Test
         $actual = $result->getMetrics($metrics);
-
+        
         // Assert
         $this->assertEquals($metrics, $actual);
     }
-
+    
     /**
-     * @covers \WindowsAzure\Common\Models\ServiceProperties::toArray
+     * @covers WindowsAzure\Common\Models\ServiceProperties::toArray
      */
     public function testToArray()
     {
         // Setup
         $properties = ServiceProperties::create(TestResources::getServicePropertiesSample());
-        $expected = [
+        $expected = array(
             'Logging' => $properties->getLogging()->toArray(),
-            'Metrics' => $properties->getMetrics()->toArray(),
-        ];
-
+            'Metrics' => $properties->getMetrics()->toArray()
+        );
+        
         // Test
         $actual = $properties->toArray();
-
+        
         // Assert
         $this->assertEquals($expected, $actual);
     }
-
+    
     /**
-     * @covers \WindowsAzure\Common\Models\ServiceProperties::toXml
+     * @covers WindowsAzure\Common\Models\ServiceProperties::toXml
      */
     public function testToXml()
     {
         // Setup
         $properties = ServiceProperties::create(TestResources::getServicePropertiesSample());
         $xmlSerializer = new XmlSerializer();
-
+        
         // Test
         $actual = $properties->toXml($xmlSerializer);
-
+        
         // Assert
         $actualParsed = Utilities::unserialize($actual);
         $actualProperties = GetServicePropertiesResult::create($actualParsed);
         $this->assertEquals($actualProperties->getValue(), $properties);
     }
 }
+
+
