@@ -2,9 +2,9 @@
 Contributors: inpsyde, cocreation, danielhuesken, Bueltge, nullbyte
 Tags: backup, restore, back up, Amazon, Amazon S3, chinese, cloud, cloud files, database, db backup, dropbox, dump, file, french, ftp, ftps, german, migrate, multisite, russian, schedule, sftp, storage, S3, time, upload, xml
 Requires at least: 3.9
-Tested up to: 4.9.5
+Tested up to: 4.9.6
 Requires PHP: 5.3
-Stable tag: 3.5.0
+Stable tag: 3.5.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -161,6 +161,15 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 [You can find a detailed tutorial in the BackWPup documentation.](http://docs.backwpup.com/article/118-install-backwpup)
 
 == Changelog ==
+= Version 3.5.1 =
+Release Date: May 23, 2018
+
+* Fixed: call to a member function close() on null
+* Fixed: Cannot use object of type WP_Error as array
+* Fixed: Can't use function return value in write context
+* Fixed: Compatibility with PHP 5.3
+* Fixed: Decreased size of plugin by purging unneeded files
+
 = Version 3.5.0 =
 Release Date: May 16, 2018
 
