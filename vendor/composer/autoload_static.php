@@ -9,9 +9,14 @@ class ComposerStaticInit60d0ebfd52f1976313219c1674abb3d8
     public static $files = array (
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        'p' => 
+        array (
+            'phpseclib\\' => 10,
+        ),
         'm' => 
         array (
             'mikemccabe\\JsonPatch\\' => 21,
@@ -51,6 +56,10 @@ class ComposerStaticInit60d0ebfd52f1976313219c1674abb3d8
     );
 
     public static $prefixDirsPsr4 = array (
+        'phpseclib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
+        ),
         'mikemccabe\\JsonPatch\\' => 
         array (
             0 => __DIR__ . '/..' . '/mikemccabe/json-patch-php/src',
@@ -1155,11 +1164,12 @@ class ComposerStaticInit60d0ebfd52f1976313219c1674abb3d8
         'BackWPup_Create_Archive' => __DIR__ . '/../..' . '/inc/class-create-archive.php',
         'BackWPup_Create_Archive_Exception' => __DIR__ . '/../..' . '/inc/class-create-archive-exception.php',
         'BackWPup_Cron' => __DIR__ . '/../..' . '/inc/class-cron.php',
+        'BackWPup_Decrypter' => __DIR__ . '/../..' . '/inc/class-decrypter.php',
         'BackWPup_Destination_Connect_Exception' => __DIR__ . '/../..' . '/inc/class-destination-connect-exception.php',
         'BackWPup_Destination_Connect_Interface' => __DIR__ . '/../..' . '/inc/class-destination-connect-interface.php',
         'BackWPup_Destination_Download_Exception' => __DIR__ . '/../..' . '/inc/class-destination-download-exception.php',
+        'BackWPup_Destination_Downloader' => __DIR__ . '/../..' . '/inc/class-destination-downloader.php',
         'BackWPup_Destination_Downloader_Factory' => __DIR__ . '/../..' . '/inc/class-destination-downloader-factory.php',
-        'BackWPup_Destination_Downloader_Interface' => __DIR__ . '/../..' . '/inc/class-destination-downloader-interface.php',
         'BackWPup_Destination_Dropbox' => __DIR__ . '/../..' . '/inc/class-destination-dropbox.php',
         'BackWPup_Destination_Dropbox_API' => __DIR__ . '/../..' . '/inc/class-destination-dropbox-api.php',
         'BackWPup_Destination_Dropbox_API_Exception' => __DIR__ . '/../..' . '/inc/class-destination-dropbox-api-exception.php',
@@ -1168,6 +1178,7 @@ class ComposerStaticInit60d0ebfd52f1976313219c1674abb3d8
         'BackWPup_Destination_Email' => __DIR__ . '/../..' . '/inc/class-destination-email.php',
         'BackWPup_Destination_Factory' => __DIR__ . '/../..' . '/inc/class-destination-factory.php',
         'BackWPup_Destination_Folder' => __DIR__ . '/../..' . '/inc/class-destination-folder.php',
+        'BackWPup_Destination_Folder_Downloader' => __DIR__ . '/../..' . '/inc/class-destination-folder-downloader.php',
         'BackWPup_Destination_Ftp' => __DIR__ . '/../..' . '/inc/class-destination-ftp.php',
         'BackWPup_Destination_Ftp_Connect' => __DIR__ . '/../..' . '/inc/class-destination-ftp-connect.php',
         'BackWPup_Destination_Ftp_Downloader' => __DIR__ . '/../..' . '/inc/class-destination-ftp-downloader.php',
@@ -1212,32 +1223,6 @@ class ComposerStaticInit60d0ebfd52f1976313219c1674abb3d8
         'BackWPup_Page_Logs' => __DIR__ . '/../..' . '/inc/class-page-logs.php',
         'BackWPup_Page_Settings' => __DIR__ . '/../..' . '/inc/class-page-settings.php',
         'BackWPup_Path_Fixer' => __DIR__ . '/../..' . '/inc/class-path-fixer.php',
-        'BackWPup_Pro' => __DIR__ . '/../..' . '/inc/Pro/class-pro.php',
-        'BackWPup_Pro_Destination_Dropbox' => __DIR__ . '/../..' . '/inc/Pro/class-destination-dropbox.php',
-        'BackWPup_Pro_Destination_Email' => __DIR__ . '/../..' . '/inc/Pro/class-destination-email.php',
-        'BackWPup_Pro_Destination_Folder' => __DIR__ . '/../..' . '/inc/Pro/class-destination-folder.php',
-        'BackWPup_Pro_Destination_Ftp' => __DIR__ . '/../..' . '/inc/Pro/class-destination-ftp.php',
-        'BackWPup_Pro_Destination_GDrive' => __DIR__ . '/../..' . '/inc/Pro/class-destination-gdrive.php',
-        'BackWPup_Pro_Destination_Gdrive_Downloader' => __DIR__ . '/../..' . '/inc/Pro/class-destination-gdrive-downloader.php',
-        'BackWPup_Pro_Destination_Glacier' => __DIR__ . '/../..' . '/inc/Pro/class-destination-glacier.php',
-        'BackWPup_Pro_Destination_MSAzure' => __DIR__ . '/../..' . '/inc/Pro/class-destination-msazure.php',
-        'BackWPup_Pro_Destination_RSC' => __DIR__ . '/../..' . '/inc/Pro/class-destination-rsc.php',
-        'BackWPup_Pro_Destination_S3' => __DIR__ . '/../..' . '/inc/Pro/class-destination-s3.php',
-        'BackWPup_Pro_Destination_SugarSync' => __DIR__ . '/../..' . '/inc/Pro/class-destination-sugarsync.php',
-        'BackWPup_Pro_Export_Jobs' => __DIR__ . '/../..' . '/inc/Pro/class-export-jobs.php',
-        'BackWPup_Pro_JobType_DBCheck' => __DIR__ . '/../..' . '/inc/Pro/class-jobtype-dbcheck.php',
-        'BackWPup_Pro_JobType_DBDump' => __DIR__ . '/../..' . '/inc/Pro/class-jobtype-dbdump.php',
-        'BackWPup_Pro_JobType_File' => __DIR__ . '/../..' . '/inc/Pro/class-jobtype-file.php',
-        'BackWPup_Pro_JobType_WPEXP' => __DIR__ . '/../..' . '/inc/Pro/class-jobtype-wpexp.php',
-        'BackWPup_Pro_JobType_WPPlugin' => __DIR__ . '/../..' . '/inc/Pro/class-jobtype-wpplugin.php',
-        'BackWPup_Pro_Page_Restore' => __DIR__ . '/../..' . '/inc/Pro/class-page-restore.php',
-        'BackWPup_Pro_Page_Support' => __DIR__ . '/../..' . '/inc/Pro/class-page-support.php',
-        'BackWPup_Pro_Page_Wizard' => __DIR__ . '/../..' . '/inc/Pro/class-page-wizard.php',
-        'BackWPup_Pro_Settings_APIKeys' => __DIR__ . '/../..' . '/inc/Pro/class-settings-apikeys.php',
-        'BackWPup_Pro_Wizard_Job' => __DIR__ . '/../..' . '/inc/Pro/class-wizard-job.php',
-        'BackWPup_Pro_Wizard_JobImport' => __DIR__ . '/../..' . '/inc/Pro/class-wizard-jobimport.php',
-        'BackWPup_Pro_Wizard_SystemTest' => __DIR__ . '/../..' . '/inc/Pro/class-wizard-systemtest.php',
-        'BackWPup_Pro_Wizards' => __DIR__ . '/../..' . '/inc/Pro/class-wizards.php',
         'BackWPup_Recursive_Directory' => __DIR__ . '/../..' . '/inc/class-recursive-directory.php',
         'BackWPup_Sanitize_Path' => __DIR__ . '/../..' . '/inc/class-sanitize-path.php',
         'BackWPup_System_Requirements' => __DIR__ . '/../..' . '/inc/class-system-requirements.php',
@@ -1688,13 +1673,6 @@ class ComposerStaticInit60d0ebfd52f1976313219c1674abb3d8
         'HTTP_Request2_ResponseTest' => __DIR__ . '/..' . '/pear/http_request2/tests/Request2/ResponseTest.php',
         'HTTP_Request2_SOCKS5' => __DIR__ . '/..' . '/pear/http_request2/HTTP/Request2/SOCKS5.php',
         'HTTP_Request2_SocketWrapper' => __DIR__ . '/..' . '/pear/http_request2/HTTP/Request2/SocketWrapper.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\LogDownloader\\Downloader' => __DIR__ . '/../..' . '/inc/Pro/Restore/LogDownloader/Downloader.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\LogDownloader\\DownloaderFactory' => __DIR__ . '/../..' . '/inc/Pro/Restore/LogDownloader/DownloaderFactory.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\LogDownloader\\View' => __DIR__ . '/../..' . '/inc/Pro/Restore/LogDownloader/View.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\LogDownloader\\ZipGenerator' => __DIR__ . '/../..' . '/inc/Pro/Restore/LogDownloader/ZipGenerator.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\Notificator' => __DIR__ . '/../..' . '/inc/Pro/Restore/Notificator.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\Restore' => __DIR__ . '/../..' . '/inc/Pro/Restore/Restore.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\TemplateLoader' => __DIR__ . '/../..' . '/inc/Pro/Restore/TemplateLoader.php',
         'Inpsyde\\BackWPup\\Tests\\BackWPupTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/PluginAutoloader.php',
         'Inpsyde\\BackWPup\\Tests\\BackWPupTestCase' => __DIR__ . '/../..' . '/tests/php/BackWPupTestCase.php',
         'Inpsyde\\BackWPup\\Tests\\BackWPup_Create_ArchiveTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/BackWPup_Create_ArchiveTest.php',
@@ -1714,6 +1692,7 @@ class ComposerStaticInit60d0ebfd52f1976313219c1674abb3d8
         'Inpsyde\\BackWPup\\Tests\\SanitizePathTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/SanitizePathTest.php',
         'Inpsyde\\BackWPup\\Tests\\StringToBoolAndBoolToStringTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/StringToBoolAndBoolToStringTest.php',
         'Inpsyde\\BackWPup\\Tests\\TemplateLoaderTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/pro/restore/TemplateLoaderTest.php',
+        'Inpsyde\\BackWPup\\Tests\\unit\\inc\\BackWPup_Encryption_OpenSSLTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/BackWPup_Encryption_OpenSSLTest.php',
         'Inpsyde_PhoneHome_ActionController' => __DIR__ . '/..' . '/inpsyde/phone-home-client/src/ActionController.php',
         'Inpsyde_PhoneHome_Configuration' => __DIR__ . '/..' . '/inpsyde/phone-home-client/src/Configuration.php',
         'Inpsyde_PhoneHome_Consent' => __DIR__ . '/..' . '/inpsyde/phone-home-client/src/Consent/Consent.php',
@@ -2575,6 +2554,30 @@ class ComposerStaticInit60d0ebfd52f1976313219c1674abb3d8
         'WindowsAzure\\Table\\TableRestProxy' => __DIR__ . '/..' . '/microsoft/windowsazure/WindowsAzure/Table/TableRestProxy.php',
         'mikemccabe\\JsonPatch\\JsonPatch' => __DIR__ . '/..' . '/mikemccabe/json-patch-php/src/JsonPatch.php',
         'mikemccabe\\JsonPatch\\JsonPatchException' => __DIR__ . '/..' . '/mikemccabe/json-patch-php/src/JsonPatch.php',
+        'phpseclib\\Crypt\\AES' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/AES.php',
+        'phpseclib\\Crypt\\Base' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/Base.php',
+        'phpseclib\\Crypt\\Blowfish' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/Blowfish.php',
+        'phpseclib\\Crypt\\DES' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/DES.php',
+        'phpseclib\\Crypt\\Hash' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/Hash.php',
+        'phpseclib\\Crypt\\RC2' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/RC2.php',
+        'phpseclib\\Crypt\\RC4' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/RC4.php',
+        'phpseclib\\Crypt\\RSA' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/RSA.php',
+        'phpseclib\\Crypt\\Random' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/Random.php',
+        'phpseclib\\Crypt\\Rijndael' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/Rijndael.php',
+        'phpseclib\\Crypt\\TripleDES' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/TripleDES.php',
+        'phpseclib\\Crypt\\Twofish' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/Twofish.php',
+        'phpseclib\\File\\ANSI' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/File/ANSI.php',
+        'phpseclib\\File\\ASN1' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/File/ASN1.php',
+        'phpseclib\\File\\ASN1\\Element' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/File/ASN1/Element.php',
+        'phpseclib\\File\\X509' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/File/X509.php',
+        'phpseclib\\Math\\BigInteger' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Math/BigInteger.php',
+        'phpseclib\\Net\\SCP' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Net/SCP.php',
+        'phpseclib\\Net\\SFTP' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Net/SFTP.php',
+        'phpseclib\\Net\\SFTP\\Stream' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Net/SFTP/Stream.php',
+        'phpseclib\\Net\\SSH1' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Net/SSH1.php',
+        'phpseclib\\Net\\SSH2' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Net/SSH2.php',
+        'phpseclib\\System\\SSH\\Agent' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/System/SSH/Agent.php',
+        'phpseclib\\System\\SSH\\Agent\\Identity' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/System/SSH/Agent/Identity.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

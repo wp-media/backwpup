@@ -269,54 +269,6 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 	}
 
 	/**
-	 * Download
-	 *
-	 * @param int    $jobid
-	 * @param string $file_path
-	 */
-	public function file_download( $jobid, $file_path ) {
-
-		$capability = 'backwpup_backups_download';
-		$filename   = untrailingslashit( BackWPup::get_plugin_data( 'temp' ) ) . '/' . basename( $file_path );
-		$job_id     = filter_var( $_GET['jobid'], FILTER_SANITIZE_NUMBER_INT );
-
-		$downloader = new BackWpup_Download_Handler(
-			new BackWPup_Download_File(
-				$filename,
-				mime_content_type( $filename ),
-				function ( \BackWPup_Download_File_Interface $obj ) use ( $filename, $file_path, $job_id ) {
-
-					$filesystem = backwpup_wpfilesystem();
-
-					// Setup Destionation service and download file.
-					$service = new BackWPup_Destination_Dropbox_Downloader();
-					$service->for_job( $job_id )
-					        ->from( $file_path )
-					        ->to( $filename )
-					        ->with_service()
-					        ->download();
-
-					$obj->clean_ob()
-					    ->headers();
-
-					echo $filesystem->get_contents( $filename );
-
-					// Delete the temporary file.
-					$filesystem->delete( $filename );
-					die();
-				},
-				$capability
-			),
-			"download-backup_{$job_id}",
-			$capability,
-			'downloaddropbox'
-		);
-
-		// Download the file.
-		$downloader->handle();
-	}
-
-	/**
 	 * @inheritdoc
 	 */
 	public function file_get_list( $jobdest ) {
@@ -360,7 +312,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 					$files[ $filecounter ]['file']        = $data['path_display'];
 					$files[ $filecounter ]['filename']    = $data['name'];
 					$files[ $filecounter ]['downloadurl'] = network_admin_url(
-						'admin.php?page=backwpupbackups&action=downloaddropbox&file=' . $data['path_display'] . '&jobid=' . $jobid
+						'admin.php?page=backwpupbackups&action=downloaddropbox&file=' . $data['path_display'] . '&local_file=' . $data['name'] . '&jobid=' . $jobid
 					);
 					$files[ $filecounter ]['filesize']    = $data['size'];
 					$files[ $filecounter ]['time']        = strtotime( $data['server_modified'] ) + ( get_option(

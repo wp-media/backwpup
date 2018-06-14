@@ -121,6 +121,7 @@ class BackWPup_Page_Editjob {
 					'.tar.bz2'
 				), true ) ? $_POST['archiveformat'] : '.zip';
 				BackWPup_Option::update( $jobid, 'archiveformat', $archiveformat );
+				BackWPup_Option::update( $jobid, 'archiveencryption', ! empty( $_POST['archiveencryption'] ) );
 
 				BackWPup_Option::update( $jobid, 'archivename', BackWPup_Job::sanitize_file_name( BackWPup_Option::normalize_archive_name( $_POST['archivename'], $jobid, false ) ) );
 				break;
@@ -319,6 +320,14 @@ class BackWPup_Page_Editjob {
 		$destinations = BackWPup::get_registered_destinations();
 		$job_types    = BackWPup::get_job_types();
 
+		// Is encryption disabled?
+		$disable_encryption = true;
+		if ( (get_site_option( 'backwpup_cfg_encryption' ) === 'symmetric' && get_site_option( 'backwpup_cfg_encryptionkey' ))
+		     || (get_site_option( 'backwpup_cfg_encryption' ) === 'asymmetric' && get_site_option( 'backwpup_cfg_publickey' ))
+		) {
+			$disable_encryption = false;
+		}
+
 		?>
     <div class="wrap" id="backwpup-page">
 		<?php
@@ -483,7 +492,7 @@ class BackWPup_Page_Editjob {
 									}
 									if ( function_exists( 'bzopen' ) ) {
 										echo '<p><label for="idarchiveformat-tarbz2"><input class="radio" type="radio"' . checked( '.tar.bz2', BackWPup_Option::get( $jobid, 'archiveformat' ), FALSE ) . ' name="archiveformat" id="idarchiveformat-tarbz2" value=".tar.bz2" /> ' . esc_html__( 'Tar BZip2', 'backwpup' ) . '</label>';
-										echo ' <span class="description warning">' . __('Not supported <b>yet</b> by the <b>automatic</b> restore functionality', 'backwpup' ) . '</span></p>';
+										echo BackWPup::is_pro() ? ' <span class="description warning">' . __('Not supported <b>yet</b> by the <b>automatic</b> restore functionality', 'backwpup' ) . '</span></p>' : '';
 									} else {
 										echo '<p><label for="idarchiveformat-tarbz2"><input class="radio" type="radio"' . checked( '.tar.bz2', BackWPup_Option::get( $jobid, 'archiveformat' ), FALSE ) . ' name="archiveformat" id="idarchiveformat-tarbz2" value=".tar.bz2" disabled="disabled" /> ' . esc_html__( 'Tar BZip2', 'backwpup' ) . '</label>';
 										echo '<br /><span class="description">' . esc_html(sprintf( __( 'Disabled due to missing %s PHP function.', 'backwpup' ), 'bzopen()' )) . '</span></p>';
@@ -491,6 +500,34 @@ class BackWPup_Page_Editjob {
 									?></fieldset>
 							</td>
 						</tr>
+						<?php if ( class_exists( 'BackWPup_Pro', false ) ): ?>
+							<tr>
+								<th scope="row">
+									<?php esc_html_e( 'Encrypt Archive', 'backwpup' ) ?>
+								</th>
+								<td>
+									<fieldset>
+										<legend class="screen-reader-text">
+										<span><?php esc_html_e( 'Encrypt Archive', 'backwpup' ) ?></span>
+										</legend>
+										<?php
+										?>
+										<label for="archiveencryption">
+											<input type="checkbox" name="archiveencryption"
+												id="archiveencryption" value="1"<?php if ( $disable_encryption ):
+												?> disabled="disabled"<?php
+													else: checked( BackWPup_Option::get( $jobid, 'archiveencryption' ) ); endif ?> />
+											<?php _e( 'Encrypt Archive', 'backwpup' ) ?>
+										</label>
+										<?php if ( $disable_encryption ): ?>
+											<p class="description">
+												<?php _e( 'You must generate your encryption key in BackWPup Settings before you can enable this option.', 'backwpup' ) ?>
+											</p>
+										<?php endif ?>
+									</fieldset>
+								</td>
+							</tr>
+						<?php endif ?>
 					</table>
 
 					<h3 class="title hasdests"><?php esc_html_e( 'Job Destination', 'backwpup' ) ?></h3>

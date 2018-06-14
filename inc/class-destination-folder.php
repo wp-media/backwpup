@@ -102,47 +102,6 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	/**
 	 * @inheritdoc
 	 */
-	public function file_download( $jobid, $get_file ) {
-
-		$jobid      = (int) $jobid;
-		$backup_dir = esc_attr( BackWPup_Option::get( $jobid, 'backupdir' ) );
-		$backup_dir = BackWPup_File::get_absolute_path( $backup_dir );
-		$file       = realpath( BackWPup_Sanitize_Path::sanitize_path(
-			trailingslashit( $backup_dir ) . basename( $get_file ) )
-		);
-
-		$capability       = 'backwpup_backups_download';
-		$download_handler = new BackWpup_Download_Handler(
-			new BackWPup_Download_File(
-				$file,
-				BackWPup_Job::get_mime_type( $file ),
-				function ( \BackWPup_Download_File_Interface $obj ) {
-
-					if ( ! is_file( $obj->filepath() ) ) {
-						throw new BackWPup_Destination_Download_Exception();
-					}
-
-					$obj->clean_ob()
-					    ->headers();
-
-					// phpcs:ignore
-					echo backwpup_wpfilesystem()->get_contents( $obj->filepath() );
-
-					die();
-				},
-				$capability
-			),
-			'download-backup_' . $jobid,
-			$capability,
-			'downloadfolder'
-		);
-
-		$download_handler->handle();
-	}
-
-	/**
-	 * @inheritdoc
-	 */
 	public function file_get_list( $jobdest ) {
 
 		list( $jobid, $dest ) = explode( '_', $jobdest, 2 );
@@ -176,10 +135,11 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 					$files[ $filecounter ]['file']        = str_replace( '\\', '/', $file->getPathname() );
 					$files[ $filecounter ]['filename']    = $file->getFilename();
 					$files[ $filecounter ]['downloadurl'] = add_query_arg( array(
-						'page'   => 'backwpupbackups',
-						'action' => 'downloadfolder',
-						'file'   => $file->getFilename(),
-						'jobid'  => $jobid,
+						'page'       => 'backwpupbackups',
+						'action'     => 'downloadfolder',
+						'file'       => $file->getFilename(),
+						'local_file' => $file->getFilename(),
+						'jobid'      => $jobid,
 					),
 						network_admin_url( 'admin.php' ) );
 					$files[ $filecounter ]['filesize']    = $file->getSize();

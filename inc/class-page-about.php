@@ -250,6 +250,7 @@ class BackWPup_Page_About {
 				background: url(<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/hgbtgreen.png) no-repeat top center;
 				color: #fff;
 				border-left: 1px solid #1c3e49;
+				background-color: #153540;
 			}
 
 			.backwpup_comp table tbody tr.ubdown td.pro a {
@@ -324,6 +325,7 @@ class BackWPup_Page_About {
 
 			.backwpup_comp table tbody tr.ubdown:hover td.pro:hover {
 				background: url(<?php echo BackWPup::get_plugin_data( 'URL' );?>/assets/images/hgbtgreenhover.png) no-repeat top center;
+				background-color: #255667;
 			}
 
 			.backwpup_comp table tbody tr.ubdown:hover td.free:hover {
@@ -609,16 +611,41 @@ _e( 'Use your backup archives to save your entire WordPress installation includi
 								<td class="tick"></td>
 							</tr>
 							<tr class="odd">
-								<td><?php _e( '<strong>Premium support</strong>', 'backwpup' ); ?></td>
+								<td><?php esc_html_e( 'Restore from Folder', 'backwpup' ); ?></td>
 								<td class="error"></td>
 								<td class="tick"></td>
 							</tr>
 							<tr class="even">
+								<td><?php esc_html_e( 'Restore from Google Drive', 'backwpup' ); ?></td>
+								<td class="error"></td>
+								<td class="tick"></td>
+							</tr>
+							<tr class="odd">
+								<td><?php esc_html_e( 'Restore from Amazon S3', 'backwpup' ); ?></td>
+								<td class="error"></td>
+								<td class="tick"></td>
+							</tr>
+							<tr class="even">
+								<td><?php esc_html_e( 'Restore from Dropbox', 'backwpup' ); ?></td>
+								<td class="error"></td>
+								<td class="tick"></td>
+							</tr>
+							<tr class="odd">
+								<td><?php esc_html_e( 'Restore from FTP', 'backwpup' ); ?></td>
+								<td class="error"></td>
+								<td class="tick"></td>
+							</tr>
+							<tr class="even">
+								<td><?php _e( '<strong>Premium support</strong>', 'backwpup' ); ?></td>
+								<td class="error"></td>
+								<td class="tick"></td>
+							</tr>
+							<tr class="odd">
 								<td><?php _e( '<strong>Automatic updates</strong>', 'backwpup' ); ?></td>
 								<td class="error" style="border-bottom:none;"></td>
 								<td class="tick" style="border-bottom:none;"></td>
 							</tr>
-							<tr class="odd ubdown">
+							<tr class="even ubdown">
 								<td></td>
 								<td></td>
 								<td class="pro buylink"><a href="<?php esc_html_e( 'http://backwpup.com', 'backwpup' ); ?>"><?php _e( 'GET PRO', 'backwpup' ); ?></a></td>

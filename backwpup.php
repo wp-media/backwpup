@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.5.1
+ * Version: 3.6.0
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -49,6 +49,8 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 
 		private static $wizards = array();
 
+		private static $is_pro = false;
+
 		/**
 		 * Set needed filters and actions and load
 		 */
@@ -63,48 +65,54 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 				require_once dirname( __FILE__ ) . '/inc/functions.php';
 			}
 
-			$is_pro = file_exists( plugin_dir_path( __FILE__ ) . '/inc/Pro' );
-
 			$this->set_autoloader();
 
-			//start upgrade if needed
+			self::$is_pro = class_exists('BackWPup_Pro', true);
+
+			// Start upgrade if needed
 			if ( get_site_option( 'backwpup_version' ) !== self::get_plugin_data( 'Version' )
 				|| ! wp_next_scheduled( 'backwpup_check_cleanup' )
 				|| ! wp_next_scheduled( 'backwpup_update_message' ) ) {
 				BackWPup_Install::activate();
 			}
-			//load pro features
-			if ( $is_pro ) {
+
+			// Load pro features
+			if ( self::$is_pro ) {
 				BackWPup_Pro::get_instance();
 			}
-			//WP-Cron
+
+			// WP-Cron
 			if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 				if ( ! empty( $_GET['backwpup_run'] ) && class_exists( 'BackWPup_Job' ) ) {
-					//early disable caches
+					// Early disable caches
 					BackWPup_Job::disable_caches();
-					//add action for running jobs in wp-cron.php
+					// Add action for running jobs in wp-cron.php
 					add_action( 'wp_loaded', array( 'BackWPup_Cron', 'cron_active' ), PHP_INT_MAX );
 				} else {
-					//add cron actions
+					// Add cron actions
 					add_action( 'backwpup_cron', array( 'BackWPup_Cron', 'run' ) );
 					add_action( 'backwpup_check_cleanup', array( 'BackWPup_Cron', 'check_cleanup' ) );
 					add_action( 'backwpup_update_message', array( 'BackWPup_Cron', 'update_message' ) );
 				}
 
-				//if in cron the rest is not needed
+				// If in cron the rest is not needed
 				return;
 			}
-			//deactivation hook
+
+			// Deactivation hook
 			register_deactivation_hook( __FILE__, array( 'BackWPup_Install', 'deactivate' ) );
-			//Admin bar
+
+			// Admin bar
 			if ( get_site_option( 'backwpup_cfg_showadminbar' ) ) {
 				add_action( 'init', array( 'BackWPup_Adminbar', 'get_instance' ) );
 			}
-			//only in backend
+
+			// Only in backend
 			if ( is_admin() && class_exists( 'BackWPup_Admin' ) ) {
 				BackWPup_Admin::get_instance();
 			}
-			//work with wp-cli
+
+			// Work with wp-cli
 			if ( defined( 'WP_CLI' ) && WP_CLI && method_exists( 'WP_CLI', 'add_command' ) ) {
 				WP_CLI::add_command( 'backwpup', 'BackWPup_WP_CLI' );
 			}
@@ -116,14 +124,12 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 				$admin_notice->initiate();
 			}
 
-			if ( ! $is_pro ) {
+			if ( ! self::$is_pro ) {
 				$this->home_phone_client_init();
 			}
 		}
 
 		/**
-		 * @static
-		 *
 		 * @return self
 		 */
 		public static function get_instance() {
@@ -133,6 +139,11 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 			}
 
 			return self::$instance;
+		}
+
+		public static function is_pro()
+		{
+			return self::$is_pro;
 		}
 
 		/**
@@ -507,7 +518,7 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 		/**
 		 * Set autoloader
 		 *
-		 * return void
+		 * @return void
 		 */
 		private function set_autoloader() {
 

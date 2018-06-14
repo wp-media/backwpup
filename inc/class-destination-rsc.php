@@ -204,8 +204,9 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 	/**
 	 * @param $jobid
 	 * @param $get_file
+	 * @param $local_file_path
 	 */
-	public function file_download( $jobid, $get_file ) {
+	public function file_download( $jobid, $get_file, $local_file_path = null ) {
 
 		try {
 			$conn = new OpenCloud\Rackspace(

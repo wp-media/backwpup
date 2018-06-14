@@ -4,7 +4,7 @@ Tags: backup, restore, back up, Amazon, Amazon S3, chinese, cloud, cloud files, 
 Requires at least: 3.9
 Tested up to: 4.9.6
 Requires PHP: 5.3
-Stable tag: 3.5.1
+Stable tag: 3.6.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -35,6 +35,7 @@ The **backup plugin** **[BackWPup](https://backwpup.com/)** can be used to save 
 * Multi-site support only as network admin
 * Pro version and support available - [BackWPup Pro](https://backwpup.com)
 * NEW - PRO: Restore your backups with only a few clicks from your WordPress backend. Also available as Standalone App.
+* NEW - PRO: Encrypt backup archives and restore from encrypted backups.
 
 In case you need to comply with the new GDPR regulation, check out our post [BacKWPup, Backups and GDPR](https://backwpup.com/docs/backwpup-backups-and-gdpr/).
 
@@ -161,6 +162,18 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 [You can find a detailed tutorial in the BackWPup documentation.](http://docs.backwpup.com/article/118-install-backwpup)
 
 == Changelog ==
+= Version 3.6.0 =
+Release Date: June 14, 2018
+
+* Added: Pro Feature - Encrypt before sending backups to the cloud
+* Fixed: Handling of special Amazon S3 regions such as Google Storage
+* Fixed: Downloading of large files encountered PHP memory error
+* Improved: Delete pro-only scss files in free version
+* Fixed: Version constraints of composer dependencies
+* Fixed: Localized strings from restore
+* Fixed: Deleting FTP backup resulted in error
+* Fixed: openssl_encrypt compatibility with PHP 5.3
+
 = Version 3.5.1 =
 Release Date: May 23, 2018
 

@@ -11,50 +11,7 @@
  * @since   3.5.0
  * @package Inpsyde\BackWPup
  */
-final class BackWPup_Destination_Dropbox_Downloader implements BackWPup_Destination_Downloader_Interface {
-
-	/**
-	 * Capability
-	 *
-	 * @var string The capability the user should have in order to download the file.
-	 */
-	private static $capability = 'backwpup_backups_download';
-
-	/**
-	 * Service
-	 *
-	 * @since 3.5.0
-	 *
-	 * @var mixed Depending on the service. It will be an instance of that class
-	 */
-	private $service;
-
-	/**
-	 * Job ID
-	 *
-	 * @since 3.5.0
-	 *
-	 * @var int The job Identifier to use to retrieve the job informations
-	 */
-	private $job_id;
-
-	/**
-	 * File Path
-	 *
-	 * @since 3.5.0
-	 *
-	 * @var string From where download the file content
-	 */
-	private $file_path;
-
-	/**
-	 * Destination
-	 *
-	 * @since 3.5.0
-	 *
-	 * @var string Where store the file content
-	 */
-	private $destination;
+final class BackWPup_Destination_Dropbox_Downloader extends BackWPup_Destination_Downloader {
 
 	/**
 	 * File handle
@@ -85,31 +42,6 @@ final class BackWPup_Destination_Dropbox_Downloader implements BackWPup_Destinat
 		);
 
 		$this->service->setOAuthTokens( \BackWPup_Option::get( $this->job_id, 'dropboxtoken' ) );
-
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function download() {
-
-		if ( ! current_user_can( self::$capability ) ) {
-			wp_die( 'Cheatin&#8217; huh?' );
-		}
-
-		try {
-			backwpup_wpfilesystem()->put_contents(
-				$this->destination,
-				$this->service->download( array( 'path' => $this->file_path ) )
-			);
-		} catch ( \Exception $e ) {
-			BackWPup_Admin::message( 'Dropbox: ' . $e->getMessage() );
-		}
-
-		if ( ! is_file( $this->destination ) ) {
-			throw new \BackWPup_Destination_Download_Exception();
-		}
 
 		return $this;
 	}
@@ -151,40 +83,11 @@ final class BackWPup_Destination_Dropbox_Downloader implements BackWPup_Destinat
 	/**
 	 * @inheritdoc
 	 */
-	public function for_job( $job_id ) {
-
-		$this->job_id = $job_id;
-
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function from( $file_path ) {
-
-		$this->file_path = $file_path;
-
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function to( $destination ) {
-
-		$this->destination = $destination;
-
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
 	public function getSize() {
 
 		$metadata = $this->service->filesGetMetadata( array( 'path' => $this->file_path ) );
 
 		return $metadata['size'];
 	}
+
 }

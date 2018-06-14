@@ -326,6 +326,13 @@ final class BackWPup_Job {
 				$this->steps_data['CREATE_ARCHIVE']['NAME']          = __( 'Creates archive', 'backwpup' );
 				$this->steps_data['CREATE_ARCHIVE']['STEP_TRY']      = 0;
 				$this->steps_data['CREATE_ARCHIVE']['SAVE_STEP_TRY'] = 0;
+				// Encrypt archive
+				if ( BackWPup_Option::get( $this->job['jobid'], 'archiveencryption' ) ) {
+					$this->steps_todo[]                                   = 'ENCRYPT_ARCHIVE';
+					$this->steps_data['ENCRYPT_ARCHIVE']['NAME']          = __( 'Encrypts the archive', 'backwpup' );
+					$this->steps_data['ENCRYPT_ARCHIVE']['STEP_TRY']      = 0;
+					$this->steps_data['ENCRYPT_ARCHIVE']['SAVE_STEP_TRY'] = 0;
+				}
 			}
 			//ADD Destinations
 			/* @var BackWPup_Destinations $dest_class */
@@ -888,7 +895,7 @@ final class BackWPup_Job {
 
 		//calc sub step percent
 		if ( $this->substeps_todo > 0 && $this->substeps_done > 0 ) {
-			$this->substep_percent = round( $this->substeps_done / $this->substeps_todo * 100 );
+			$this->substep_percent = min( round( $this->substeps_done / $this->substeps_todo * 100 ), 100 );
 		} else {
 			$this->substep_percent = 1;
 		}
@@ -1438,7 +1445,7 @@ final class BackWPup_Job {
 			}
 			//calc step percent
 			if ( count( $this->steps_done ) > 0 ) {
-				$this->step_percent = round( count( $this->steps_done ) / count( $this->steps_todo ) * 100 );
+				$this->step_percent = min( round( count( $this->steps_done ) / count( $this->steps_todo ) * 100 ), 100 );
 			} else {
 				$this->step_percent = 1;
 			}
@@ -1460,6 +1467,8 @@ final class BackWPup_Job {
 				//executes the methods of job process
 				if ( $this->step_working == 'CREATE_ARCHIVE' ) {
 					$done = $this->create_archive();
+				} elseif ( $this->step_working == 'ENCRYPT_ARCHIVE' ) {
+					$done = $this->encrypt_archive();
 				} elseif ( $this->step_working == 'CREATE_MANIFEST' ) {
 					$done = $this->create_manifest();
 				} elseif ( $this->step_working == 'END' ) {
@@ -1633,6 +1642,132 @@ final class BackWPup_Job {
 		}
 
 		$this->log( sprintf( __( '%1$d Files with %2$s in Archive.', 'backwpup' ), $this->count_files, size_format( $this->count_files_size, 2 ) ), E_USER_NOTICE );
+
+		return true;
+	}
+
+	/**
+	 * Encrypt Archive
+	 *
+	 * Encrypt the backup archive.
+	 *
+	 * @return bool true when done, false otherwise
+	 */
+	private function encrypt_archive() {
+
+		// Substeps is number of 128 KB chunks
+		$block_size = 128 * 1024;
+		$this->substeps_todo = ceil( $this->backup_filesize / $block_size );
+
+		if ( ! isset( $this->steps_data[ $this->step_working ]['encrypted_filename'] ) ) {
+			$this->steps_data[ $this->step_working ]['encrypted_filename'] = $this->backup_folder . $this->backup_file . '.encrypted';
+			if ( is_file( $this->steps_data[ $this->step_working ]['encrypted_filename'] ) ) {
+				unlink( $this->steps_data[ $this->step_working ]['encrypted_filename'] );
+			}
+		}
+
+		if ( ! isset( $this->steps_data[ $this->step_working ]['key'] ) ) {
+			if ( get_site_option( 'backwpup_cfg_encryption' ) == 'symmetric' ) {
+				$this->steps_data[ $this->step_working ]['key'] = pack( 'H*', get_site_option( 'backwpup_cfg_encryptionkey' ) );
+			} elseif ( get_site_option( 'backwpup_cfg_encryption' ) == 'asymmetric' ) {
+				// Generate random symmetric key
+				$this->steps_data[ $this->step_working ]['key'] = \phpseclib\Crypt\Random::string( 32 );
+			}
+			if ( empty( $this->steps_data[ $this->step_working ]['key'] ) ) {
+				$this->log( __( 'No encryption key was provided. Aborting encryption.', 'backwpup' ), E_USER_WARNING );
+				return false;
+			}
+		}
+
+		if ( $this->steps_data[ $this->step_working ]['SAVE_STEP_TRY'] != $this->steps_data[ $this->step_working ]['STEP_TRY'] ) {
+			// Show initial log message
+			$this->log( sprintf( __( '%d. Trying to encrypt archive &hellip;', 'backwpup' ), $this->steps_data[ $this->step_working ]['STEP_TRY'] ), E_USER_NOTICE );
+		}
+
+		$aes = new \phpseclib\Crypt\AES( \phpseclib\Crypt\AES::MODE_CBC );
+		$aes->setKey( $this->steps_data[ $this->step_working ]['key'] );
+		$aes->enableContinuousBuffer();
+		$aes->disablePadding();
+
+		$file_in = fopen( $this->backup_folder . $this->backup_file, 'rb' );
+		if ( ! $file_in ) {
+			$this->log( __( 'Cannot open the archive for reading. Aborting encryption.', 'backwpup' ), E_USER_ERROR );
+			return false;
+		}
+
+		$file_out = fopen( $this->steps_data[ $this->step_working ]['encrypted_filename'], 'a+b' );
+		if ( ! $file_out ) {
+			$this->log( __( 'Cannot write the encrypted archive. Aborting encryption.', 'backwpup' ), E_USER_ERROR );
+			return false;
+		}
+
+		if ( $this->substeps_done == 0 ) {
+			// First byte: 0 if symmetric, 1 otherwise
+			if ( get_site_option( 'backwpup_cfg_encryption' ) == 'symmetric' ) {
+				fwrite( $file_out, "\x00" );
+			} elseif ( get_site_option( 'backwpup_cfg_encryption' ) == 'asymmetric' ) {
+				fwrite( $file_out, "\x01" );
+
+				// Next, encode random symmetric key
+				$rsa = new \phpseclib\Crypt\RSA();
+				$rsa->loadKey( get_site_option( 'backwpup_cfg_publickey' ) );
+				$key    = $rsa->encrypt( $this->steps_data[ $this->step_working ]['key'] );
+				$length = strlen( $key );
+
+				// Second byte is the length of the encrypted symmetric key
+				fwrite( $file_out, pack( 'H*', dechex( $length ) ) );
+
+				// Then write the encrypted symmetric key
+				fwrite( $file_out, $key );
+			}
+		}
+
+		$bytes_read = $this->substeps_done * $block_size;
+		fseek( $file_in, $bytes_read );
+
+		while ( $bytes_read <= $this->backup_filesize ) {
+			$data = fread( $file_in, $block_size );
+			// Check if final block
+			$length = strlen( $data );
+			if ( $this->substeps_done == $this->substeps_todo - 1 ) {
+				// Pad as necessary
+				$pad = 16 - ($length % 16);
+				$data = str_pad( $data, $length + $pad, chr( $pad ) );
+			}
+			fwrite( $file_out, $aes->encrypt( $data ) );
+
+			$this->substeps_done++;
+			$bytes_read += strlen( $data );
+			$this->update_working_data();
+
+			// Should we restart?
+			$restart_time = $this->get_restart_time();
+			if ( $restart_time <= 0 ) {
+				$this->do_restart_time( true );
+				fclose( $file_in );
+				fclose( $file_out );
+
+				return false;
+			}
+		}
+
+		fclose( $file_in );
+		fclose( $file_out );
+
+		$this->log( sprintf( __( 'Encrypted %s of data.', 'backwpup' ), size_format( $bytes_read, 2 ) ), E_USER_NOTICE );
+
+		// Remove the original file then rename the encrypted file
+		if ( ! unlink( $this->backup_folder . $this->backup_file ) ) {
+			$this->log( __( 'Unable to delete unencrypted archive.', 'backwpup' ) );
+			return false;
+		}
+		if ( ! rename( $this->steps_data[ $this->step_working ]['encrypted_filename'], $this->backup_folder . $this->backup_file ) ) {
+			$this->log( __( 'Unable to rename encrypted archive.', 'backwpup' ) );
+			return false;
+		}
+
+		$this->backup_filesize = filesize( $this->backup_folder . $this->backup_file );
+		$this->log( __( 'Archive has been successfully encrypted.', 'backwpup' ) );
 
 		return true;
 	}

@@ -228,7 +228,7 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 		$service     = new BackWPup_Destination_Ftp_Connect(
 			$job_options->ftphost,
 			$job_options->ftpuser,
-			$job_options->ftppass,
+			BackWPup_Encryption::decrypt( $job_options->ftppass ),
 			$job_options->ftphostport,
 			$job_options->ftptimeout,
 			$job_options->ftpssl,
@@ -363,13 +363,9 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 					$files[ $filecounter ]['folder']      = 'ftp://' . BackWPup_Option::get( $jobid, 'ftphost' ) . ':' . BackWPup_Option::get( $jobid, 'ftphostport' ) . $ftp_dir;
 					$files[ $filecounter ]['file']        = trailingslashit( $ftp_dir ) . basename( $file );
 					$files[ $filecounter ]['filename']    = basename( $file );
-					$files[ $filecounter ]['downloadurl'] = 'ftp://' . rawurlencode(
-							BackWPup_Option::get( $jobid, 'ftpuser' )
-						) . ':' . rawurlencode(
-							BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 'ftppass' ) )
-						) . '@' . BackWPup_Option::get( $jobid, 'ftphost' ) . ':' . BackWPup_Option::get( $jobid, 'ftphostport' ) . trailingslashit( $ftp_dir ) . basename(
-							$file
-						);
+					$files[ $filecounter ]['downloadurl'] = network_admin_url(
+						'admin.php?page=backwpupbackups&action=downloadftp&file=' . trailingslashit( $ftp_dir ) . basename( $file ) . '&local_file=' . basename( $file ) . '&jobid=' . $jobid
+					);
 					$files[ $filecounter ]['filesize']    = ftp_size( $ftp_conn_id, $file );
 					$files[ $filecounter ]['time']        = ftp_mdtm( $ftp_conn_id, $file );
 					$filecounter ++;

@@ -325,8 +325,17 @@ class BackWPup_Page_Backups extends WP_List_Table {
 					"backwpup" ) ) . "') ) { return true;}return false;\">" . __( 'Delete', 'backwpup' ) . "</a>";
 		}
 		if ( current_user_can( 'backwpup_backups_download' ) && ! empty( $item['downloadurl'] ) ) {
-			$actions['download'] = "<a href=\"" . wp_nonce_url( $item['downloadurl'],
-					'download-backup_' . $this->jobid ) . "\">" . __( 'Download', 'backwpup' ) . "</a>";
+			// Check if downloader class exists
+			try {
+				$factory = new BackWPup_Destination_Downloader_Factory( $this->dest );
+				$factory->create();
+				// If we're still here, the downloader exists
+				$actions['download'] = "<a href=\"#TB_inline?height=440&width=630&inlineId=tb-download-file\" data-jobid=\"" . $this->jobid . "\" data-destination=\"" . esc_attr( $this->dest ) . "\" data-file=\"" . esc_attr( $item['file'] ) . "\" data-local-file=\"" . esc_attr( $item['filename'] ) . "\" data-nonce=\"" . wp_create_nonce( 'download-backup_' . $this->jobid ) . "\" data-url=\"" . wp_nonce_url( $item['downloadurl'],
+				'download-backup_' . $this->jobid ) . "\" class=\"backup-download-link thickbox\">" . __( 'Download', 'backwpup' ) . "</a>";
+			} catch ( BackWPup_Factory_Exception $e ) {
+				$actions['download'] = "<a href=\"" . wp_nonce_url( $item['downloadurl'],
+				'download-backup_' . $this->jobid ) . "\">" . __( 'Download', 'backwpup' ) . "</a>";
+			}
 		}
 
 		// Add restore url to link list
@@ -433,26 +442,49 @@ class BackWPup_Page_Backups extends WP_List_Table {
 			default:
 				if ( isset( $_GET['jobid'] ) ) {
 					$jobid = absint( $_GET['jobid'] );
-					$dest  = strtoupper( str_replace( 'download', '', self::$listtable->current_action() ) );
-					if ( ! empty( $dest ) && strstr( self::$listtable->current_action(), 'download' ) ) {
-						if ( ! current_user_can( 'backwpup_backups_download' ) ) {
-							wp_die( __( 'Sorry, you don\'t have permissions to do that.', 'backwpup' ) );
-						}
-						check_admin_referer( 'download-backup_' . $jobid );
-						/** @var BackWPup_Destinations $dest_class */
-						$dest_class = BackWPup::get_destination( $dest );
+					if ( ! current_user_can( 'backwpup_backups_download' ) ) {
+						wp_die( __( 'Sorry, you don\'t have permissions to do that.', 'backwpup' ) );
+					}
+					check_admin_referer( 'download-backup_' . $jobid );
 
-						try {
-							$dest_class->file_download( $jobid, trim( sanitize_text_field( $_GET['file'] ) ) );
-						} catch ( BackWPup_Destination_Download_Exception $e ) {
-							header( 'HTTP/1.0 404 Not Found' );
-							wp_die(
-								esc_html__( 'Ops! Unfortunately the file doesn\'t exists. May be was deleted?' ),
-								esc_html__( '404 - File Not Found.' ),
-								array(
-									'back_link' => esc_html__( '&laquo; Go back', 'backwpup' ),
-								)
-							);
+					$filename = untrailingslashit( BackWPup::get_plugin_data( 'temp' ) ) . '/' . basename( isset( $_GET['local_file'] ) ? $_GET['local_file'] : $_GET['file'] );
+					if ( file_exists( $filename ) ) {
+						$downloader = new BackWPup_Download_File(
+							$filename,
+							mime_content_type( $filename ),
+							function ( \BackWPup_Download_File_Interface $obj ) use ( $filename ) {
+
+								$obj->clean_ob()
+								    ->headers();
+
+								readfile( $filename );
+
+								// Delete the temporary file.
+								unlink( $filename );
+								die();
+							},
+							'backwpup_backups_download'
+						);
+						$downloader->download();
+					} else {
+						// If the file doesn't exist, fallback to old way of downloading
+						// This is for destinations without a downloader class
+						$dest  = strtoupper( str_replace( 'download', '', self::$listtable->current_action() ) );
+						if ( ! empty( $dest ) && strstr( self::$listtable->current_action(), 'download' ) ) {
+							$dest_class = BackWPup::get_destination( $dest );
+
+							try {
+								$dest_class->file_download( $jobid, trim( sanitize_text_field( $_GET['file'] ) ) );
+							} catch ( BackWPup_Destination_Download_Exception $e ) {
+								header( 'HTTP/1.0 404 Not Found' );
+								wp_die(
+									esc_html__( 'Ops! Unfortunately the file doesn\'t exists. May be was deleted?' ),
+									esc_html__( '404 - File Not Found.' ),
+									array(
+										'back_link' => esc_html__( '&laquo; Go back', 'backwpup' ),
+									)
+								);
+							}
 						}
 					}
 				}
@@ -515,6 +547,24 @@ class BackWPup_Page_Backups extends WP_List_Table {
 	public static function admin_print_scripts() {
 
 		wp_enqueue_script( 'backwpupgeneral' );
+
+		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+			wp_enqueue_script(
+				'backwpuppagebackups',
+				BackWPup::get_plugin_data( 'URL' ) . '/assets/js/page_backups.js',
+				array( 'jquery' ),
+				time(),
+				true
+			);
+		} else {
+			wp_enqueue_script(
+				'backwpuppagebackups',
+				BackWPup::get_plugin_data( 'URL' ) . '/assets/js/page_backups.min.js',
+				array( 'jquery' ),
+				BackWPup::get_plugin_data( 'Version' ),
+				true
+			);
+		}
 	}
 
 	/**
@@ -533,7 +583,72 @@ class BackWPup_Page_Backups extends WP_List_Table {
 				<div id="ajax-response"></div>
 			</form>
 		</div>
+
+		<div id="tb-download-file" style="display: none;">
+			<div id="download-file-waiting" style="display: none;">
+				<p><?php esc_html_e( 'Please wait &hellip;', 'backwpup' ) ?></p>
+			</div>
+			<div id="download-file-generating" style="display: none;">
+				<p><?php esc_html_e( 'Your download is being generated &hellip;', 'backwpup' ) ?></p>
+				<div class="progressbar">
+					<div id="progresssteps" class="bwpu-progress" style="width:0%;">0%</div>
+				</div>
+			</div>
+			<div id="download-file-private-key" style="display: none;">
+				<p><?php esc_html_e( 'Please enter your private key to decrypt your backup.', 'backwpup' ) ?></p>
+				<p id="download-file-private-key-invalid" class="error" style="display: none;">
+					<?php esc_html_e( 'The private key you entered was invalid. Please try again.', 'backwpup' ) ?>
+				</p>
+				<label for="download-file-private-key-input">
+					<?php esc_html_e( 'Private Key', 'backwpup' ) ?>
+				</label>
+				<br />
+				<textarea id="download-file-private-key-input" rows="8" style="width: 100%; overflow: scroll;"></textarea>
+				<p>
+					<button id="download-file-private-key-button" class="button button-primary">
+						<?php esc_html_e( 'Submit', 'backwpup' ) ?>
+					</button>
+				</p>
+			</div>
+			<div id="download-file-done" style="display: none;">
+				<p><?php esc_html_e( 'Your download has been generated. It should begin downloading momentarily.', 'backwpup' ) ?></p>
+			</div>
+		</div>
 		<?php
 	}
-}
 
+	public static function ajax_download_file() {
+
+		set_time_limit( 0 );
+		// Set up eventsource headers
+		header( 'Content-Type: text/event-stream' );
+		header( 'Cache-Control: no-cache' );
+		header( 'X-Accel-Buffering: no' );
+		header( 'Content-Encoding: none' );
+
+		// 2KB padding for IE
+		echo ':' . str_repeat( ' ', 2048 ) . "\n\n"; // phpcs:ignore
+
+		// Ensure we're not buffered.
+		wp_ob_end_flush_all();
+		flush();
+
+		$dest       = strtoupper( $_GET['destination'] );
+		$dest_class = BackWPup::get_destination( $dest );
+
+		$dest_class->file_download(
+			$_GET['jobid'],
+			trim( sanitize_text_field( $_GET['file'] ) ),
+			trim( sanitize_text_field( $_GET['local_file'] ) )
+		);
+	}
+
+	public static function ajax_send_private_key() {
+
+		$private_key = $_POST['privatekey'];
+		$private_key_filename = untrailingslashit( BackWPup::get_plugin_data( 'temp' ) ) . '/id_rsa_backwpup.pri';
+		file_put_contents( $private_key_filename, $private_key );
+		echo 'ok';
+		wp_die();
+	}
+}

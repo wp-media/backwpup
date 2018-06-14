@@ -21,7 +21,7 @@ interface BackWPup_Factory_Interface {
 	 *
 	 * @throws BackWPup_Factory_Exception If the class we want to instantiate doesn't exists.
 	 *
-	 * @return BackWPup_Destination_Downloader_Interface
+	 * @return BackWPup_Destination_Downloader
 	 */
 	public function create();
 }

@@ -165,8 +165,9 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 	/**
 	 * @param $jobid
 	 * @param $get_file
+	 * @param $local_file_path
 	 */
-	public function file_download( $jobid, $get_file ) {
+	public function file_download( $jobid, $get_file, $local_file_path = null ) {
 		try {
 			set_include_path( get_include_path() . PATH_SEPARATOR . BackWPup::get_plugin_data( 'plugindir' ) .'/vendor/PEAR/');
 			$blobRestProxy = WindowsAzure\Common\ServicesBuilder::getInstance()->createBlobService( 'DefaultEndpointsProtocol=https;AccountName=' . BackWPup_Option::get( $jobid, 'msazureaccname' ) . ';AccountKey=' . BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 'msazurekey' ) ) );

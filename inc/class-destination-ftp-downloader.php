@@ -12,50 +12,7 @@
  * @since   3.5.0
  * @package Inpsyde\BackWPup
  */
-final class BackWPup_Destination_Ftp_Downloader implements BackWPup_Destination_Downloader_Interface {
-
-	/**
-	 * Capability
-	 *
-	 * @var string The capability the user should have in order to download the file.
-	 */
-	private static $capability = 'backwpup_backups_download';
-
-	/**
-	 * Service
-	 *
-	 * @since 3.5.0
-	 *
-	 * @var mixed Depending on the service. It will be an instance of that class
-	 */
-	private $service;
-
-	/**
-	 * Job ID
-	 *
-	 * @since 3.5.0
-	 *
-	 * @var int The job Identifier to use to retrieve the job informations
-	 */
-	private $job_id;
-
-	/**
-	 * File Path
-	 *
-	 * @since 3.5.0
-	 *
-	 * @var string From where download the file content
-	 */
-	private $file_path;
-
-	/**
-	 * Destination
-	 *
-	 * @since 3.5.0
-	 *
-	 * @var string Where store the file content
-	 */
-	private $destination;
+final class BackWPup_Destination_Ftp_Downloader extends BackWPup_Destination_Downloader {
 
 	/**
 		 * File handle
@@ -63,14 +20,14 @@ final class BackWPup_Destination_Ftp_Downloader implements BackWPup_Destination_
 		 * @var resource A handle to the file being downloaded
 		 */
 	private $file_handle;
-	
+
 	/**
 		 * FTP handle
 		 *
 		 * @var resource The handle to the FTP file.
 		 */
 	private $ftp_handle;
-	
+
 	/**
 		 * Close the file handle on destruct
 		 */
@@ -105,33 +62,6 @@ final class BackWPup_Destination_Ftp_Downloader implements BackWPup_Destination_
 		return $this;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
-	public function download() {
-
-		if ( ! current_user_can( self::$capability ) ) {
-			wp_die( 'Cheatin&#8217; huh?' );
-		}
-
-		// Connect and Login
-		$resource = $this->service
-			->connect()
-			->resource();
-
-		// Download the file and close connection.
-		ftp_get( $resource, $this->destination, $this->file_path, FTP_BINARY );
-		ftp_close( $resource );
-
-		if ( ! is_file( $this->destination ) ) {
-			throw new \BackWPup_Destination_Download_Exception(
-				'Something went wrong during file download, seems wasn\'t possible to store it. Please see the log.'
-			);
-		}
-
-		return $this;
-	}
-	
 	/**
 		 * @inheritdoc
 		 */
@@ -171,36 +101,6 @@ final class BackWPup_Destination_Ftp_Downloader implements BackWPup_Destination_
 			}
 	}
 
-	/**
-	 * @inheritdoc
-	 */
-	public function for_job( $job_id ) {
-
-		$this->job_id = $job_id;
-
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function from( $file_path ) {
-
-		$this->file_path = $file_path;
-
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function to( $destination ) {
-
-		$this->destination = $destination;
-
-		return $this;
-	}
-	
 	/**
 		 * @inheritdoc
 		 */

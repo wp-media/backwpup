@@ -185,8 +185,9 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 	/**
 	 * @param $jobid
 	 * @param $get_file
+	 * @param $local_file_path
 	 */
-	public function file_download( $jobid, $get_file ) {
+	public function file_download( $jobid, $get_file, $local_file_path = null ) {
 
 		try {
 			$sugarsync = new BackWPup_Destination_SugarSync_API( BackWPup_Option::get( $jobid, 'sugarrefreshtoken' ) );

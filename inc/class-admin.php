@@ -210,6 +210,27 @@ final class BackWPup_Admin {
 			add_action( 'wp_ajax_backwpup_cron_text', array( 'BackWPup_Page_Editjob', 'ajax_cron_text' ) );
 			//ajax or view logs
 			add_action( 'wp_ajax_backwpup_view_log', array( 'BackWPup_Page_Logs', 'ajax_view_log' ) );
+			// Ajax for encryption
+			add_action(
+				'wp_ajax_generate_key',
+				array( 'BackWPup_Page_Settings', 'ajax_generate_key' )
+			);
+			add_action(
+				'wp_ajax_validate_key',
+				array( 'BackWPup_Page_Settings', 'ajax_validate_key' )
+			);
+			add_action(
+				'wp_ajax_generate_key_pair',
+				array( 'BackWPup_Page_Settings', 'ajax_generate_key_pair' )
+			);
+			add_action(
+				'wp_ajax_download_file',
+				array( 'BackWPup_Page_Backups', 'ajax_download_file' )
+			);
+			add_action(
+				'wp_ajax_send_private_key',
+				array( 'BackWPup_Page_Backups', 'ajax_send_private_key' )
+			);
 			//ajax calls for job types
 			if ( $jobtypes = BackWPup::get_job_types() ) {
 				foreach ( $jobtypes as $id => $jobtypeclass ) {

@@ -33,6 +33,17 @@ class BackWPup_Page_Settings {
 				true
 			);
 		}
+
+		// Localize script
+		$data = array(
+			'no_public_key'             => __( 'Please enter a public key first, or generate a key pair.', 'backwpup' ),
+			'no_private_key'            => __( 'Please enter your private key.', 'backwpup' ),
+			'public_key_valid'          => __( 'Public key is valid.', 'backwpup' ),
+			'public_key_invalid'        => __( 'Public key is invalid.', 'backwpup' ),
+			'must_download_private_key' => __( 'Please download the private key before continuing. If you do not save it locally, you cannot decrypt your backups later.', 'backwpup' ),
+		);
+
+		wp_localize_script( 'backwpuppagesettings', 'backwpup_vars', $data );
 	}
 
 	/**
@@ -55,6 +66,9 @@ class BackWPup_Page_Settings {
 			delete_site_option( 'backwpup_cfg_jobrunauthkey' );
 			delete_site_option( 'backwpup_cfg_jobdooutput' );
 			delete_site_option( 'backwpup_cfg_windows' );
+			delete_site_option( 'backwpup_cfg_encryption' );
+			delete_site_option( 'backwpup_cfg_encryptionkey' );
+			delete_site_option( 'backwpup_cfg_publickey' );
 			delete_site_option( 'backwpup_cfg_maxlogs' );
 			delete_site_option( 'backwpup_cfg_gzlogs' );
 			delete_site_option( 'backwpup_cfg_protectfolders' );
@@ -84,6 +98,7 @@ class BackWPup_Page_Settings {
 		}
 
 		update_site_option( 'backwpup_cfg_jobstepretry', absint( $_POST['jobstepretry'] ) );
+
 		if ( (int) $_POST['jobmaxexecutiontime'] > 300 ) {
 			$_POST['jobmaxexecutiontime'] = 300;
 		}
@@ -99,15 +114,49 @@ class BackWPup_Page_Settings {
 		);
 		update_site_option( 'backwpup_cfg_jobwaittimems', absint( $_POST['jobwaittimems'] ) );
 		update_site_option( 'backwpup_cfg_jobdooutput', ! empty( $_POST['jobdooutput'] ) );
-		update_site_option( 'backwpup_cfg_windows', ! empty( $_POST['windows'] ) );
+		update_site_option( 'backwpup_cfg_windows', ! empty( $_POST['windows'] ));
+		update_site_option(
+			'backwpup_cfg_encryption',
+			filter_input( INPUT_POST, 'encryption', FILTER_CALLBACK, array(
+				'options' => function ( $value ) {
+					return in_array(
+						$value,
+						array( 'symmetric', 'asymmetric' ),
+						true
+					) ? $value : 'symmetric';
+				}
+			) )
+		);
+
+		// Ensure encryption key is hexadecimal
+		$encryptionkey = filter_input( INPUT_POST, 'encryptionkey', FILTER_CALLBACK, array(
+			'options' => function ( $value ) {
+				if ( ctype_xdigit( $value ) ) {
+					return substr( $value, 0, 64 );
+				}
+				return false;
+			}
+		) );
+		if ( $encryptionkey ) {
+			update_site_option( 'backwpup_cfg_encryptionkey', $encryptionkey );
+		}
+
+		if ( isset( $_POST['publickey'] ) ) {
+			update_site_option( 'backwpup_cfg_publickey', filter_input( INPUT_POST, 'publickey', FILTER_SANITIZE_STRING ) );
+		}
+
 		update_site_option( 'backwpup_cfg_maxlogs', absint( $_POST['maxlogs'] ) );
 		update_site_option( 'backwpup_cfg_gzlogs', ! empty( $_POST['gzlogs'] ) );
 		update_site_option( 'backwpup_cfg_protectfolders', ! empty( $_POST['protectfolders'] ) );
+
 		$_POST['jobrunauthkey'] = preg_replace( '/[^a-zA-Z0-9]/', '', trim( $_POST['jobrunauthkey'] ) );
+
 		update_site_option( 'backwpup_cfg_jobrunauthkey', $_POST['jobrunauthkey'] );
+
 		$_POST['logfolder'] = trailingslashit(
 			str_replace( '\\', '/', trim( stripslashes( sanitize_text_field( $_POST['logfolder'] ) ) ) )
 		);
+
 		//set def. folders
 		if ( empty( $_POST['logfolder'] ) || $_POST['logfolder'] === '/' ) {
 			delete_site_option( 'backwpup_cfg_logfolder' );
@@ -152,6 +201,8 @@ class BackWPup_Page_Settings {
 
 		global $wpdb;
 
+		$encryption_textarea_readonly = get_site_option( 'backwpup_cfg_publickey' ) ? 'readonly="readonly"' : '';
+
 		?>
 		<div class="wrap" id="backwpup-page">
 			<h1><?php echo sprintf(
@@ -159,15 +210,17 @@ class BackWPup_Page_Settings {
 					BackWPup::get_plugin_data( 'name' )
 				); ?></h1>
 			<?php
-			$tabs = array(
-				'general'     => esc_html__( 'General', 'backwpup' ),
-				'job'         => esc_html__( 'Jobs', 'backwpup' ),
-				'log'         => esc_html__( 'Logs', 'backwpup' ),
-				'net'         => esc_html__( 'Network', 'backwpup' ),
-				'apikey'      => esc_html__( 'API Keys', 'backwpup' ),
-				'information' => esc_html__( 'Information', 'backwpup' ),
-			);
-			$tabs = apply_filters( 'backwpup_page_settings_tab', $tabs );
+			$tabs            = array();
+			$tabs['general'] = esc_html__( 'General', 'backwpup' );
+			$tabs['job']     = esc_html__( 'Jobs', 'backwpup' );
+			if ( BackWPup::is_pro() ) {
+				$tabs['encryption'] = esc_html__( 'Encryption', 'backwpup' );
+			}
+			$tabs['log']         = esc_html__( 'Logs', 'backwpup' );
+			$tabs['net']         = esc_html__( 'Network', 'backwpup' );
+			$tabs['apikey']      = esc_html__( 'API Keys', 'backwpup' );
+			$tabs['information'] = esc_html__( 'Information', 'backwpup' );
+			$tabs                = apply_filters( 'backwpup_page_settings_tab', $tabs );
 			echo '<h2 class="nav-tab-wrapper">';
 			foreach ( $tabs as $id => $name ) {
 				echo '<a href="#backwpup-tab-' . esc_attr( $id ) . '" class="nav-tab">' . esc_attr( $name ) . '</a>';
@@ -178,6 +231,7 @@ class BackWPup_Page_Settings {
 
 			<form id="settingsform" action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post">
 				<?php wp_nonce_field( 'backwpupsettings_page' ); ?>
+				<?php wp_nonce_field( 'backwpup_ajax_nonce', 'backwpupajaxnonce', false ) ?>
 				<input type="hidden" name="page" value="backwpupsettings" />
 				<input type="hidden" name="action" value="backwpup" />
 				<input type="hidden" name="anchor" value="#backwpup-tab-general" />
@@ -532,6 +586,213 @@ class BackWPup_Page_Settings {
 
 				</div>
 
+				<?php if ( BackWPup::is_pro() ): ?>
+					<div class="table ui-tabs-hide" id="backwpup-tab-encryption">
+					<p>
+						<?php
+							esc_html_e(
+								'Here you can set your keys for encrypting your backups.',
+								'backwpup'
+							) ?>
+					</p>
+						<p>
+							<?php
+								echo wp_kses(
+									__(
+										'If you select symmetric encryption (default), you can generate a 256-bit key by clicking <code>Generate Key</code>.',
+										'backwpup'
+									),
+									array( 'code' => array() )
+								) ?>
+						</p>
+						<p>
+							<?php
+								echo wp_kses(
+									__(
+										'If you select asymmetric encryption (more secure), you must have an RSA public/private key pair. You would enter the public key in the <code>Public Key</code> field. If you do not have a key pair, click <code>Generate Key Pair</code> and they will be generated for you.',
+										'backwpup'
+									),
+									array( 'code' => array() )
+								) ?>
+						</p>
+						<p>
+							<?php
+							echo wp_kses(
+								__(
+									'<strong>Note</strong>: You will be asked to download the keys for safe storage. We do not keep a copy of the private key, so if you lose this, your data cannot be decrypted!',
+									'backwpup'
+								),
+								array( 'strong' => array() )
+							) ?>
+						</p>
+						<p>
+							<?php
+							echo wp_kses(
+								__(
+									'You can also click <code>Validate</code> to validate that you have the proper private key for the given public key.',
+									'backwpup'
+								),
+								array( 'code' => array() )
+							) ?>
+						</p>
+
+						<table class="form-table">
+							<tr>
+								<th scope="row">
+									<?php esc_html_e( 'Encryption Type', 'backwpup' ) ?>
+								</th>
+								<td>
+									<label for="encryption-symmetric">
+									<input type="radio" name="encryption" id="encryption-symmetric"
+										value="symmetric"<?php
+											checked( get_site_option( 'backwpup_cfg_encryption', 'symmetric' ), 'symmetric' ) ?> />
+									<?php esc_html_e( 'Symmetric (public key only)', 'backwpup' ) ?>
+									</label>
+									<label for="encryption-asymmetric">
+									<input type="radio" name="encryption"
+										id="encryption-asymmetric" value="asymmetric"<?php
+											checked( get_site_option( 'backwpup_cfg_encryption', 'symmetric' ), 'asymmetric' ) ?> />
+											<?php esc_html_e( 'Asymmetric (public and private key)', 'backwpup' ) ?>
+									</label>
+								</td>
+							</tr>
+						<tr id="encryption-key-row" style="display: none;">
+							<th scope="row">
+								<?php esc_html_e( 'Encryption Key', 'backwpup' ) ?>
+							</th>
+							<td>
+								<fieldset>
+									<legend class="screen-reader-text">
+										<span>
+											<?php esc_html_e( 'Encryption Key', 'backwpup' ) ?>
+										</span>
+									</legend>
+	
+									<label for="encryptionkey">
+										<?php esc_html_e( 'Key', 'backwpup' ) ?>
+										<input type="text"
+										       name="encryptionkey"
+										       id="encryptionkey"
+										       readonly="readonly"
+										       value="<?php echo esc_attr( get_site_option( 'backwpup_cfg_encryptionkey' ) ) ?>"
+										/>
+									</label>
+	
+									<?php if ( ! get_site_option( 'backwpup_cfg_encryptionkey' ) ): ?>
+										<div id="key-generation">
+											<p>
+												<?php esc_html_e( 'Click below to generate a random key.', 'backwpup' ) ?>
+											</p>
+											<button id="generate-key-button" class=" button button-primary" style="margin-top: .63em">
+												<?php esc_html_e( 'Generate Key', 'backwpup' ) ?>
+											</button>
+										</div>
+									<?php endif ?>
+								</fieldset>
+							</td>
+						</tr>
+						<tr id="public-key-row" style="display: none;">
+							<th scope="row">
+								<?php esc_html_e( 'Public Key', 'backwpup' ) ?>
+							</th>
+							<td>
+								<fieldset>
+									<legend class="screen-reader-text">
+										<span><?php esc_html_e( 'Public Key', 'backwpup' ) ?></span>
+									</legend>
+									<label for="publickey">
+										<?php esc_html_e( 'RSA Public Key', 'backwpup' ) ?>
+									</label>
+									<br />
+									<textarea name="publickey"
+									          id="publickey"
+									          rows="8"
+									          cols="40"
+									          style="overflow: scroll"<?php echo esc_attr($encryption_textarea_readonly); ?>><?php echo esc_textarea( get_site_option( 'backwpup_cfg_publickey' ) ) ?></textarea>
+									<p style="margin-top: .63em">
+										<a href="#TB_inline?height=440&width=630&inlineId=tb-generate-key-pair"
+										   id="generate-key-pair-button"
+										   class="thickbox button button-primary"
+										   title="<?php _e( 'Generate Key Pair', 'backwpup' ) ?>">
+											<?php _e( 'Generate Key Pair', 'backwpup' ) ?>
+										</a>
+										<a href="#TB_inline?height=440&width=630&inlineId=tb-validate-key"
+											id="validate-key-button"
+											class="thickbox button"
+											title="<?php _e( 'Validate Key', 'backwpup' ) ?>">
+											<?php _e( 'Validate', 'backwpup' ) ?>
+										</a>
+									</p>
+								</fieldset>
+							</td>
+						</tr>
+						</table>
+					</div>
+				<?php endif ?>
+
+				<div id="tb-validate-key" style="display: none;">
+					<p>
+						<?php esc_html_e( 'Enter your private key below to validate it will work with the provided public key.', 'backwpup' ) ?>
+					</p>
+					<p>
+						<?php esc_html_e( 'The private key will not be stored, so you must still securely store it yourself.', 'backwpup' ) ?>
+					</p>
+					<p>
+						<label for="privatekey">
+							<?php esc_html_e( 'Private Key', 'backwpup' ) ?>
+						</label>
+						<br />
+						<textarea id="privatekey" style="overflow: scroll;" rows="8" cols="40"></textarea>
+					</p>
+					<button id="do-validate" class="button button-primary">
+						<?php esc_html_e( 'Validate', 'backwpup' ) ?>
+					</button>
+				</div>
+
+				<div id="tb-generate-key-pair" style="display: none;">
+					<p id="key-pair-generating-progress" style="display: none;">
+						<?php _e( 'Your keys are being generated. Please hold a moment &hellip;', 'backwpup' ) ?>
+					</p>
+					<div id="key-pair-generating-done" style="display: none;">
+						<p>
+							<?php esc_html_e( 'Here are your keys. Please store them in a safe location.', 'backwpup' ) ?>
+						</p>
+						<p>
+							<label for="generated-public-key">
+							<?php esc_html_e( 'Public Key', 'backwpup' ) ?>
+							<textarea id="generated-public-key" readonly="readonly" rows="8" style="width: 100%; overflow: scroll;"></textarea>
+							</label>
+						</p>
+						<p>
+							<a id="generated-public-key-link" download="id_rsa_backwpup.pub" class="button button-primary">
+								<?php esc_html_e( 'Download', 'backwpup' ) ?>
+							</a>
+						</p>
+						<p>
+							<label for="generated-private-key">
+							<?php esc_html_e( 'Private Key', 'backwpup' ) ?>
+							<textarea id="generated-private-key" rows="10" readonly="readonly" style="width: 100%; overflow: scroll;"></textarea>
+							</label>
+						</p>
+						<p>
+							<a id="generated-private-key-link" download="id_rsa_backwpup.pri" class="button button-primary">
+								<?php esc_html_e( 'Download', 'backwpup' ) ?>
+							</a>
+						</p>
+						<p>
+							<?php esc_html_e( 'Please download at least your private key above, as we will not store this key, and if you lose it, your backups cannot be decrypted.', 'backwpup' ) ?>
+						</p>
+						<p>
+							<?php esc_html_e( 'Click the button below to use these keys and paste the public key into the RSA public key field above.', 'backwpup' ) ?>
+						</p>
+						<p>
+							<button id="use-key-pair-button" class="button">
+							<?php esc_html_e( 'Use These Keys', 'backwpup' ) ?>
+							</button>
+						</p>
+					</div>
+				</div>
+
 				<div class="table ui-tabs-hide" id="backwpup-tab-net">
 
 					<h3>
@@ -855,7 +1116,7 @@ class BackWPup_Page_Settings {
 		$information['wpversion']['value'] = BackWPup::get_plugin_data( 'wp_version' );
 
 		// BackWPup version
-		if ( ! class_exists( 'BackWPup_Pro', false ) ) {
+		if ( ! BackWPup::is_pro() ) {
 			$information['bwuversion']['label'] = esc_html__( 'BackWPup version', 'backwpup' );
 			$information['bwuversion']['value'] = BackWPup::get_plugin_data( 'Version' );
 			$information['bwuversion']['html']  = BackWPup::get_plugin_data( 'Version' ) .
@@ -1095,5 +1356,72 @@ class BackWPup_Page_Settings {
 		$information['loadedextensions']['value'] = implode( ', ', $extensions );
 
 		return $information;
+	}
+
+	/**
+	 * Generate an AES key.
+	 */
+	public static function ajax_generate_key() {
+
+		if ( ! BackWPup::is_pro() ) {
+			wp_die();
+		}
+
+		// Generate 256-bit string
+		$hex = unpack( 'H*', \phpseclib\Crypt\Random::string( 32 ) );
+		echo $hex[1];
+
+		wp_die();
+	}
+
+	/**
+	 * Validate Key
+	 */
+	public static function ajax_validate_key() {
+
+		if ( ! BackWPup::is_pro() ) {
+			wp_die();
+		}
+
+		$public_key = $_POST['publickey'];
+		$private_key = $_POST['privatekey'];
+
+		$rsa = new \phpseclib\Crypt\RSA();
+
+		$rsa->loadKey( $public_key );
+		$data = $rsa->encrypt( 'test' );
+
+		// Decrypt
+		$rsa->loadKey( $private_key );
+		$result = $rsa->decrypt( $data );
+
+		if ( $result == 'test' ) {
+			echo 'valid';
+		} else {
+			echo 'invalid';
+		}
+
+		wp_die();
+	}
+
+	/**
+	 * Generate Key Pair
+	 */
+	public static function ajax_generate_key_pair() {
+
+		$rsa = new \phpseclib\Crypt\RSA();
+
+		$partial = array();
+		do {
+			$keys = $rsa->createKey( 1024, false, $partial );
+			$partial = $keys['partialkey'];
+		} while ( $partial !== false );
+
+		$data = array(
+			'public_key'  => $keys['publickey'],
+			'private_key' => $keys['privatekey'],
+		);
+
+		wp_send_json( $data );
 	}
 }
