@@ -943,7 +943,9 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 							'Bucket'   => $job_object->job['s3bucket'],
 							'UploadId' => $job_object->steps_data[ $job_object->step_working ]['UploadId'],
 							'Key'      => $job_object->job['s3dir'] . $job_object->backup_file,
-							'Parts'    => $job_object->steps_data[ $job_object->step_working ]['Parts'],
+							'MultipartUpload' => array(
+								'Parts'    => $job_object->steps_data[ $job_object->step_working ]['Parts'],
+							),
 						) );
 
 					} catch ( Exception $e ) {
