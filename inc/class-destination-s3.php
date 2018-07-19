@@ -331,12 +331,15 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			try {
 				$s3 = Aws\S3\S3Client::factory( array(
 					'signature'                 => 'v4',
-					'key'                       => $args['s3accesskey'],
-					'secret'                    => BackWPup_Encryption::decrypt( $args['s3secretkey'] ),
+					'credentials' => array(
+						'key'                       => $args['s3accesskey'],
+						'secret'                    => BackWPup_Encryption::decrypt( $args['s3secretkey'] ),
+					),
 					'region'                    => $args['s3region'],
 					'base_url'                  => $this->get_s3_base_url( $args['s3region'], $args['s3base_url'] ),
 					'scheme'                    => 'https',
 					'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ),
+					'version' => '2016-03-01',
 				) );
 
 				$buckets = $s3->listBuckets();
@@ -487,8 +490,10 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			try {
 				$s3 = Aws\S3\S3Client::factory( array(
 					'signature'                 => 'v4',
-					'key'                       => sanitize_text_field( $_POST['s3accesskey'] ),
-					'secret'                    => sanitize_text_field( $_POST['s3secretkey'] ),
+					'credentials' => array(
+						'key'                       => sanitize_text_field( $_POST['s3accesskey'] ),
+						'secret'                    => sanitize_text_field( $_POST['s3secretkey'] ),
+					),
 					'region'                    => sanitize_text_field( $_POST['s3region'] ),
 					'base_url'                  => $this->get_s3_base_url(
 						sanitize_text_field( $_POST['s3region'] ),
@@ -496,6 +501,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 					),
 					'scheme'                    => 'https',
 					'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ),
+					'version' => '2016-03-01',
 				) );
 				// set bucket creation region
 				if ( $_POST['s3region'] === 'google-storage' ) {
@@ -542,9 +548,11 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			try {
 				$s3 = Aws\S3\S3Client::factory( array(
 					'signature'                 => 'v4',
-					'key'                       => BackWPup_Option::get( $jobid, 's3accesskey' ),
-					'secret'                    => BackWPup_Encryption::decrypt(
-						BackWPup_Option::get( $jobid, 's3secretkey' )
+					'credentials' => array(
+						'key'                       => BackWPup_Option::get( $jobid, 's3accesskey' ),
+						'secret'                    => BackWPup_Encryption::decrypt(
+							BackWPup_Option::get( $jobid, 's3secretkey' )
+						),
 					),
 					'region'                    => BackWPup_Option::get( $jobid, 's3region' ),
 					'base_url'                  => $this->get_s3_base_url(
@@ -553,6 +561,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 					),
 					'scheme'                    => 'https',
 					'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ),
+					'version' => '2016-03-01',
 				) );
 
 				$s3->deleteObject( array(
@@ -653,13 +662,16 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 		if ( ! $this->s3 ) {
 			$s3 = Aws\S3\S3Client::factory( array(
 				'signature'                 => 'v4',
-				'key'                       => BackWPup_Option::get( $jobid, 's3accesskey' ),
-				'secret'                    => BackWPup_Encryption::decrypt(
-					BackWPup_Option::get( $jobid, 's3secretkey' )
+				'credentials' => array(
+					'key'                       => BackWPup_Option::get( $jobid, 's3accesskey' ),
+					'secret'                    => BackWPup_Encryption::decrypt(
+						BackWPup_Option::get( $jobid, 's3secretkey' )
+					),
 				),
 				'region'                    => BackWPup_Option::get( $jobid, 's3region' ),
 				'scheme'                    => 'https',
 				'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ),
+				'version' => '2016-03-01',
 			) );
 		} else {
 			$s3 = $this->s3;
@@ -784,8 +796,10 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 		try {
 			$s3 = Aws\S3\S3Client::factory( array(
 				'signature'                 => 'v4',
-				'key'                       => $job_object->job['s3accesskey'],
-				'secret'                    => BackWPup_Encryption::decrypt( $job_object->job['s3secretkey'] ),
+				'credentials' => array(
+					'key'                       => $job_object->job['s3accesskey'],
+					'secret'                    => BackWPup_Encryption::decrypt( $job_object->job['s3secretkey'] ),
+				),
 				'region'                    => $job_object->job['s3region'],
 				'base_url'                  => $this->get_s3_base_url(
 					$job_object->job['s3region'],
@@ -793,6 +807,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				),
 				'scheme'                    => 'https',
 				'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ),
+				'version' => '2016-03-01',
 			) );
 
 			$this->s3 = $s3;
