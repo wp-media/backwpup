@@ -80,14 +80,17 @@ class BackWPup_Destination_S3_Downloader extends BackWPup_Destination_Downloader
 		$this->service = Aws\S3\S3Client::factory(
 			array(
 				'signature'                 => 'v4',
-				'key'                       => BackWPup_Option::get( $this->job_id, 's3accesskey' ),
-				'secret'                    => BackWPup_Encryption::decrypt(
-					BackWPup_Option::get( $this->job_id, 's3secretkey' )
+				'credentials' => array(
+					'key'                       => BackWPup_Option::get( $this->job_id, 's3accesskey' ),
+					'secret'                    => BackWPup_Encryption::decrypt(
+						BackWPup_Option::get( $this->job_id, 's3secretkey' )
+					),
 				),
 				'region'                    => BackWPup_Option::get( $this->job_id, 's3region' ),
 				'base_url'                  => $this->base_url,
 				'scheme'                    => 'https',
 				'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ),
+				'version' => '2016-03-01'
 			)
 		);
 
