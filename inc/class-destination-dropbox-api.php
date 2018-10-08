@@ -331,12 +331,12 @@ final class BackWPup_Destination_Dropbox_API {
 	 *
 	 * @return mixed Whatever the api request returns.
 	 */
-	public function download( $args, $startByte = null, $endByte = null ) {
+	public function download( $args, $start_byte = null, $end_byte = null ) {
 
 		$args['path'] = $this->formatPath( $args['path'] );
 
-		if ( $startByte !== null && $endByte !== null ) {
-			return $this->request( 'files/download', $args, 'download', false, "{$startByte}-{$endByte}" );
+		if ( $start_byte !== null && $end_byte !== null ) {
+			return $this->request( 'files/download', $args, 'download', false, "{$start_byte}-{$end_byte}" );
 		}
 
 		return $this->request( 'files/download', $args, 'download' );

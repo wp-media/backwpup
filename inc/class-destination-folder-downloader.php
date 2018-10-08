@@ -11,114 +11,136 @@
  * @since   3.6.0
  * @package Inpsyde\BackWPup
  */
-final class BackWPup_Destination_Folder_Downloader extends BackWPup_Destination_Downloader {
+final class BackWPup_Destination_Folder_Downloader implements BackWPup_Destination_Downloader_Interface {
+
+	const OPTION_BACKUP_DIR = 'backupdir';
 
 	/**
-	 * File handle
-	 *
-	 * @var resource A handle to the file being downloaded
+	 * @var \BackWpUp_Destination_Downloader_Data
 	 */
-	private $file;
+	private $data;
 
 	/**
-	 * Destructor
-	 *
-	 * Closes file handle if opened.
+	 * @var resource
+	 */
+	private $source_file_handler;
+
+	/**
+	 * @var resource
+	 */
+	private $local_file_handler;
+
+	/**
+	 * BackWPup_Destination_Folder_Downloader constructor
+	 */
+	public function __construct( BackWpUp_Destination_Downloader_Data $data ) {
+
+		$this->data = $data;
+
+		$this->source_file_handler();
+		$this->local_file_handler();
+	}
+
+	/**
+	 * Clean up things
 	 */
 	public function __destruct() {
 
-		if ( $this->file ) {
-			$this->file = null;
+		fclose( $this->local_file_handler );
+		fclose( $this->source_file_handler );
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function download_chunk( $start_byte, $end_byte ) {
+
+		if ( ftell( $this->source_file_handler ) !== $start_byte ) {
+			fseek( $this->source_file_handler, $start_byte );
+		}
+
+		$data = fread( $this->source_file_handler, $end_byte - $start_byte + 1 );
+		if ( ! $data ) {
+			throw new Exception( __( 'Could not read data from source file.', 'backwpup' ) );
+		}
+
+		$bytes = (int) fwrite( $this->local_file_handler, $data );
+		if ( $bytes === 0 ) {
+			throw new Exception( __( 'Could not write data into target file.', 'backwpup' ) );
 		}
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function with_service() {
+	public function calculate_size() {
 
-		$backup_dir = esc_attr( BackWPup_Option::get( $this->job_id, 'backupdir' ) );
-		$backup_dir = BackWPup_File::get_absolute_path( $backup_dir );
-		$file       = realpath( BackWPup_Sanitize_Path::sanitize_path(
-			trailingslashit( $backup_dir ) . basename( $this->file_path ) )
-		);
+		return filesize( $this->source_backup_file() );
+	}
 
-		try {
-			$this->service = new \SplFileObject( $file, 'rb' );
-		} catch ( \RuntimeException $e ) {
+	/**
+	 * Retrieve the file handler for the source file
+	 *
+	 * @return void
+	 */
+	private function source_file_handler() {
+
+		if ( is_resource( $this->source_file_handler ) ) {
+			return;
+		}
+
+		$file = $this->source_backup_file();
+
+		$this->source_file_handler = @fopen( $file, 'rb' );
+		if ( ! is_resource( $this->source_file_handler ) ) {
 			throw new \RuntimeException( __( 'File could not be opened for reading.', 'backwpup' ) );
 		}
+	}
+
+	/**
+	 * @return string
+	 */
+	private function backup_dir() {
+
+		$backup_dir = esc_attr( BackWPup_Option::get( $this->data->job_id(), self::OPTION_BACKUP_DIR ) );
+		$backup_dir = trailingslashit( BackWPup_File::get_absolute_path( $backup_dir ) );
+
+		return (string) $backup_dir;
+	}
+
+	/**
+	 * @return string
+	 */
+	private function source_backup_file() {
+
+		return (string) realpath(
+			BackWPup_Sanitize_Path::sanitize_path(
+				$this->backup_dir() . basename( $this->data->source_file_path() )
+			)
+		);
+	}
+
+	/**
+	 * Retrieve the file handler for the local file
+	 *
+	 * @return void
+	 */
+	private function local_file_handler() {
+
+		if ( is_resource( $this->local_file_handler ) ) {
+			return;
+		}
 
 		try {
-			$this->file = new \SplFileObject( $this->destination, 'wb' );
-		} catch ( \RuntimeException $e ) {
+			$this->local_file_handler = @fopen( $this->data->local_file_path(), 'wb' );
+		} catch ( \RuntimeException $exc ) {
 			throw new \RuntimeException( __( 'File could not be opened for writing.', 'backwpup' ) );
-		}
-
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function downloadChunk( $startByte, $endByte ) {
-
-		if ( ! current_user_can( self::$capability ) ) {
-			wp_die( 'Cheatin&#8217; huh?' );
-		}
-
-		if ( $this->service->ftell() != $startByte ) {
-			$this->service->fseek( $startByte );
-		}
-
-		try {
-			$data = $this->service->fread( $endByte - $startByte + 1 );
-
-			$bytes = $this->file->fwrite( $data );
-			if ( $bytes == 0 ) {
-				throw new \RuntimeException( __( 'Could not write data to file.', 'backwpup' ) );
-			}
-		} catch ( \Exception $e ) {
-			BackWPup_Admin::message( 'Folder: ' . $e->getMessage() );
+		} catch ( \LogicException $exc ) {
+			throw new \RuntimeException( sprintf(
+			/* translators: $1 is the path of the local file where the backup will be stored */
+				__( '%s is a directory not a file.', 'backwpup' ),
+				$this->data->local_file_path()
+			) );
 		}
 	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function for_job( $job_id ) {
-
-		$this->job_id = $job_id;
-
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function from( $file_path ) {
-
-		$this->file_path = $file_path;
-
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function to( $destination ) {
-
-		$this->destination = $destination;
-
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function getSize() {
-
-		return $this->service->getSize();
-	}
-
 }

@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Base class for adding BackWPup destinations.
  *
  * @package    BackWPup
  * @subpackage BackWPup_Destinations
  * @since      3.0.0
- * @access private
+ * @access     private
  */
 abstract class BackWPup_Destinations {
 
@@ -120,25 +121,30 @@ abstract class BackWPup_Destinations {
 		$job_id     = filter_var( $_GET['jobid'], FILTER_SANITIZE_NUMBER_INT );
 
 		// Dynamically get downloader class
-		$class_name      = get_class( $this );
-		$parts           = explode( '_', $class_name );
-		$destination     = array_pop( $parts );
+		$class_name  = get_class( $this );
+		$parts       = explode( '_', $class_name );
+		$destination = array_pop( $parts );
 
 		$downloader = new BackWpup_Download_Handler(
 			new BackWPup_Download_File(
 				$filename,
 				mime_content_type( $filename ),
-				function ( \BackWPup_Download_File_Interface $obj ) use ( $filename, $file_path, $job_id, $destination ) {
+				function ( \BackWPup_Download_File_Interface $obj ) use (
+					$filename,
+					$file_path,
+					$job_id,
+					$destination
+				) {
 
 					// Setup Destination service and download file.
-					$factory = new BackWPup_Destination_Downloader_Factory( $destination );
-					$service = $factory->create();
-					$service->for_job( $job_id )
-					        ->from( $file_path )
-					        ->to( $filename )
-					        ->with_service()
-					        ->download();
-
+					$factory    = new BackWPup_Destination_Downloader_Factory();
+					$downloader = $factory->create(
+						$destination,
+						$job_id,
+						$file_path,
+						$filename
+					);
+					$downloader->download_by_chunks();
 					die();
 				},
 				$capability
@@ -190,6 +196,7 @@ abstract class BackWPup_Destinations {
 
 	/**
 	 * @param $job_settings array
+	 *
 	 * @return bool
 	 */
 	abstract public function can_run( array $job_settings );

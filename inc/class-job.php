@@ -1539,6 +1539,7 @@ final class BackWPup_Job {
 			//add extra files
 			if ( $this->substeps_done == 0 ) {
 				if ( ! empty( $this->additional_files_to_backup ) && $this->substeps_done == 0 ) {
+					$this->log(print_r($this->additional_files_to_backup, true));
 					if ( $this->is_debug() ) {
 						$this->log( __( 'Adding Extra files to Archive', 'backwpup' ) );
 					}
@@ -1583,6 +1584,17 @@ final class BackWPup_Job {
 				while ( $file = array_shift( $files_in_folder ) ) {
 					//jump over already done files
 					if ( in_array( $this->steps_data[ $this->step_working ]['on_file'], $files_in_folder, true ) ) {
+						continue;
+					}
+
+					// Check if the file matches a filename in $this->additional_files_to_backup
+					// This prevents .sql files from being overwritten,
+					// as well as manifest.json, etc.
+					$alreadyAdded = count( array_filter( $this->additional_files_to_backup, function( $value ) use ( $file )
+					{
+						return strstr( $value, basename( $file ) );
+					})) > 0;
+					if ( $alreadyAdded ) {
 						continue;
 					}
 					$this->steps_data[ $this->step_working ]['on_file'] = $file;

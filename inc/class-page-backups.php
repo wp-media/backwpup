@@ -1,26 +1,16 @@
 <?php
 
-/**
- *
- */
-class BackWPup_Page_Backups extends WP_List_Table {
+final class BackWPup_Page_Backups extends WP_List_Table {
 
 	private static $listtable = null;
+
 	private $destinations = array();
 
-	/**
-	 * @var int
-	 */
 	private $jobid = 1;
-	/**
-	 * @var string
-	 */
+
 	private $dest = 'FOLDER';
 
-	/**
-	 *
-	 */
-	function __construct() {
+	public function __construct() {
 
 		parent::__construct( array(
 			'plural'   => 'backups',
@@ -32,18 +22,12 @@ class BackWPup_Page_Backups extends WP_List_Table {
 
 	}
 
-	/**
-	 * @return bool
-	 */
-	function ajax_user_can() {
+	public function ajax_user_can() {
 
 		return current_user_can( 'backwpup_backups' );
 	}
 
-	/**
-	 *
-	 */
-	function prepare_items() {
+	public function prepare_items() {
 
 		$per_page = $this->get_items_per_page( 'backwpupbackups_per_page' );
 		if ( empty( $per_page ) || $per_page < 1 ) {
@@ -83,8 +67,8 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		}
 
 		// Sorting.
-		$order   = filter_input( INPUT_GET, 'order', FILTER_SANITIZE_STRING ) ? : 'desc';
-		$orderby = filter_input( INPUT_GET, 'orderby', FILTER_SANITIZE_STRING ) ? : 'time';
+		$order   = filter_input( INPUT_GET, 'order', FILTER_SANITIZE_STRING ) ?: 'desc';
+		$orderby = filter_input( INPUT_GET, 'orderby', FILTER_SANITIZE_STRING ) ?: 'time';
 		$tmp     = array();
 
 		if ( $orderby === 'time' ) {
@@ -169,18 +153,12 @@ class BackWPup_Page_Backups extends WP_List_Table {
 
 	}
 
-	/**
-	 *
-	 */
-	function no_items() {
+	public function no_items() {
 
 		_e( 'No files could be found. (List will be generated during next backup.)', 'backwpup' );
 	}
 
-	/**
-	 * @return array
-	 */
-	function get_bulk_actions() {
+	public function get_bulk_actions() {
 
 		if ( ! $this->has_items() ) {
 			return array();
@@ -192,12 +170,7 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		return $actions;
 	}
 
-	/**
-	 * @param $which
-	 *
-	 * @return mixed
-	 */
-	function extra_tablenav( $which ) {
+	public function extra_tablenav( $which ) {
 
 		$destinations_list = $this->get_destinations_list();
 
@@ -236,10 +209,7 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		<?php
 	}
 
-	/**
-	 * @return array
-	 */
-	function get_destinations_list() {
+	public function get_destinations_list() {
 
 		$jobdest = array();
 		$jobids  = BackWPup_Option::get_job_ids();
@@ -264,10 +234,7 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		return $jobdest;
 	}
 
-	/**
-	 * @return array
-	 */
-	function get_columns() {
+	public function get_columns() {
 
 		$posts_columns           = array();
 		$posts_columns['cb']     = '<input type="checkbox" />';
@@ -279,10 +246,7 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		return $posts_columns;
 	}
 
-	/**
-	 * @return array
-	 */
-	function get_sortable_columns() {
+	public function get_sortable_columns() {
 
 		return array(
 			'file'   => array( 'file', false ),
@@ -292,27 +256,12 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		);
 	}
 
-	/**
-	 * The cb Column
-	 *
-	 * @param $item
-	 *
-	 * @return string
-	 */
-	function column_cb( $item ) {
+	public function column_cb( $item ) {
 
 		return '<input type="checkbox" name="backupfiles[]" value="' . esc_attr( $item['file'] ) . '" />';
 	}
 
-
-	/**
-	 * The file Column
-	 *
-	 * @param $item
-	 *
-	 * @return string
-	 */
-	function column_file( $item ) {
+	public function column_file( $item ) {
 
 		$r = '<strong>' . esc_attr( $item['filename'] ) . '</strong><br />';
 		if ( ! empty( $item['info'] ) ) {
@@ -327,14 +276,13 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		if ( current_user_can( 'backwpup_backups_download' ) && ! empty( $item['downloadurl'] ) ) {
 			// Check if downloader class exists
 			try {
-				$factory = new BackWPup_Destination_Downloader_Factory( $this->dest );
-				$factory->create();
 				// If we're still here, the downloader exists
 				$actions['download'] = "<a href=\"#TB_inline?height=440&width=630&inlineId=tb-download-file\" data-jobid=\"" . $this->jobid . "\" data-destination=\"" . esc_attr( $this->dest ) . "\" data-file=\"" . esc_attr( $item['file'] ) . "\" data-local-file=\"" . esc_attr( $item['filename'] ) . "\" data-nonce=\"" . wp_create_nonce( 'download-backup_' . $this->jobid ) . "\" data-url=\"" . wp_nonce_url( $item['downloadurl'],
-				'download-backup_' . $this->jobid ) . "\" class=\"backup-download-link thickbox\">" . __( 'Download', 'backwpup' ) . "</a>";
+						'download-backup_' . $this->jobid ) . "\" class=\"backup-download-link thickbox\">" . __( 'Download',
+						'backwpup' ) . "</a>";
 			} catch ( BackWPup_Factory_Exception $e ) {
 				$actions['download'] = "<a href=\"" . wp_nonce_url( $item['downloadurl'],
-				'download-backup_' . $this->jobid ) . "\">" . __( 'Download', 'backwpup' ) . "</a>";
+						'download-backup_' . $this->jobid ) . "\">" . __( 'Download', 'backwpup' ) . "</a>";
 			}
 		}
 
@@ -350,26 +298,12 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		return $r;
 	}
 
-	/**
-	 * The folder Column
-	 *
-	 * @param $item
-	 *
-	 * @return string
-	 */
-	function column_folder( $item ) {
+	public function column_folder( $item ) {
 
 		return esc_attr( $item['folder'] );
 	}
 
-	/**
-	 * The size Column
-	 *
-	 * @param $item
-	 *
-	 * @return string
-	 */
-	function column_size( $item ) {
+	public function column_size( $item ) {
 
 		if ( ! empty( $item['filesize'] ) && $item['filesize'] != - 1 ) {
 			return size_format( $item['filesize'], 2 );
@@ -378,24 +312,13 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		}
 	}
 
-	/**
-	 * The time Column
-	 *
-	 * @param $item
-	 *
-	 * @return string
-	 */
-	function column_time( $item ) {
+	public function column_time( $item ) {
 
 		return sprintf( __( '%1$s at %2$s', 'backwpup' ),
 			date_i18n( get_option( 'date_format' ), $item['time'], true ),
 			date_i18n( get_option( 'time_format' ), $item['time'], true ) );
 	}
 
-
-	/**
-	 *
-	 */
 	public static function load() {
 
 		//Create Table
@@ -469,8 +392,9 @@ class BackWPup_Page_Backups extends WP_List_Table {
 					} else {
 						// If the file doesn't exist, fallback to old way of downloading
 						// This is for destinations without a downloader class
-						$dest  = strtoupper( str_replace( 'download', '', self::$listtable->current_action() ) );
+						$dest = strtoupper( str_replace( 'download', '', self::$listtable->current_action() ) );
 						if ( ! empty( $dest ) && strstr( self::$listtable->current_action(), 'download' ) ) {
+							/** @var BackWPup_Destinations $dest_class */
 							$dest_class = BackWPup::get_destination( $dest );
 
 							try {
@@ -514,9 +438,6 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		self::$listtable->prepare_items();
 	}
 
-	/**
-	 * Output css
-	 */
 	public static function admin_print_styles() {
 
 		?>
@@ -538,12 +459,6 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		<?php
 	}
 
-	/**
-	 *
-	 * Output js
-	 *
-	 * @return void
-	 */
 	public static function admin_print_scripts() {
 
 		wp_enqueue_script( 'backwpupgeneral' );
@@ -567,9 +482,6 @@ class BackWPup_Page_Backups extends WP_List_Table {
 		}
 	}
 
-	/**
-	 * Display the page content
-	 */
 	public static function page() {
 
 		?>
@@ -602,8 +514,9 @@ class BackWPup_Page_Backups extends WP_List_Table {
 				<label for="download-file-private-key-input">
 					<?php esc_html_e( 'Private Key', 'backwpup' ) ?>
 				</label>
-				<br />
-				<textarea id="download-file-private-key-input" rows="8" style="width: 100%; overflow: scroll;"></textarea>
+				<br/>
+				<textarea id="download-file-private-key-input" rows="8"
+				          style="width: 100%; overflow: scroll;"></textarea>
 				<p>
 					<button id="download-file-private-key-button" class="button button-primary">
 						<?php esc_html_e( 'Submit', 'backwpup' ) ?>
@@ -611,7 +524,8 @@ class BackWPup_Page_Backups extends WP_List_Table {
 				</p>
 			</div>
 			<div id="download-file-done" style="display: none;">
-				<p><?php esc_html_e( 'Your download has been generated. It should begin downloading momentarily.', 'backwpup' ) ?></p>
+				<p><?php esc_html_e( 'Your download has been generated. It should begin downloading momentarily.',
+						'backwpup' ) ?></p>
 			</div>
 		</div>
 		<?php
@@ -645,10 +559,30 @@ class BackWPup_Page_Backups extends WP_List_Table {
 
 	public static function ajax_send_private_key() {
 
-		$private_key = $_POST['privatekey'];
-		$private_key_filename = untrailingslashit( BackWPup::get_plugin_data( 'temp' ) ) . '/id_rsa_backwpup.pri';
-		file_put_contents( $private_key_filename, $private_key );
-		echo 'ok';
-		wp_die();
+		$private_key = (string) filter_input( INPUT_POST, 'privatekey', FILTER_SANITIZE_STRING );
+
+		if ( ! $private_key ) {
+			return;
+		}
+
+		$temporary_file_path  = untrailingslashit( BackWPup::get_plugin_data( 'temp' ) );
+		$private_key_filename = $temporary_file_path . '/' . BackWPup_Decrypter::PRIVATE_RSA_ID_FILE;
+		$saved                = file_put_contents( $private_key_filename, $private_key );
+
+		if ( ! $saved ) {
+			wp_send_json_error( array(
+				'message' => sprintf(
+					__(
+						'Seems is not possible to store your private key, be sure the directory %s is writable.',
+						'backwpup'
+					),
+					dirname( $private_key_filename )
+				),
+			) );
+		}
+
+		wp_send_json_success( array(
+			'message' => __( 'The key has been succesfull stored.' ),
+		) );
 	}
 }

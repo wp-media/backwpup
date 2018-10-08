@@ -2,8 +2,8 @@
 /**
  * BackWPup_Decrypter
  *
- * @since 3.6.0
- * @author Brandon Olivares
+ * @since   3.6.0
+ * @author  Brandon Olivares
  * @package Inpsyde\BackWPup
  */
 
@@ -15,65 +15,70 @@ use phpseclib\Crypt\RSA;
  *
  * Decrypt backup archives using AES or RSA.
  *
- * @since 3.6.0
- * @author Brandon Olivares
+ * @since   3.6.0
+ * @author  Brandon Olivares
  * @package Inpsyde\BackWPup
  */
 class BackWPup_Decrypter {
 
-	/**
-	 * File Path
-	 *
-	 * @var string The path to the file to decrypt
-	 */
-	private $file_path;
+	const PRIVATE_KEY_STATUS_OK = 'ok';
+	const PRIVATE_KEY_STATUS_INVALID = 'invalid';
+	const PRIVATE_KEY_STATUS_NOT_FOUND = 'not-found';
+	const PUBLIC_KEY_OPTION = 'backwpup_cfg_publickey';
+	const ENCRYPTION_KEY_OPTION = 'backwpup_cfg_encryptionkey';
+	const PRIVATE_RSA_ID_FILE = 'id_rsa_backwpup.pri';
 
 	/**
-	 * Constructor
-	 *
-	 * @param string $file_path Path to the file to decrypt
+	 * @var
 	 */
-	public function __construct( $file_path ) {
+	private $local_file_path;
 
-		$this->file_path = $file_path;
+	/**
+	 * BackWPup_Decrypter constructor
+	 *
+	 * @param $local_file_path
+	 */
+	public function __construct( $local_file_path ) {
+
+		$this->local_file_path = $local_file_path;
 	}
 
 	/**
-	 * Decrypt
-	 *
-	 * Decrypts the archive.
+	 * @return bool
+	 * @throws \Exception
 	 */
 	public function decrypt() {
 
-		$aes = new AES( AES::MODE_CBC );
+		$aes                 = new AES( AES::MODE_CBC );
+		$source_file_handler = fopen( $this->local_file_path, 'rb' );
 
-		try {
-			$file_in = new \SplFileObject( $this->file_path, 'rb' );
-		} catch ( \RuntimeException $e ) {
+		if ( ! is_resource( $source_file_handler ) ) {
 			throw new \Exception( __( 'Cannot open the archive for reading.', 'backwpup' ) );
 		}
 
 		// Read first byte to know what encryption method was used
-		$key = null;
-		$type = $file_in->fread( 1 );
-		if ( $type == chr( 0 ) ) {
-			// Symmetric mode
-			$key = pack( 'H*', get_site_option( 'backwpup_cfg_encryptionkey' ) );
-		} elseif ( $type == chr( 1 ) ) {
-			// Asymmetric mode
-			$key = $this->getRSADecryptedKey( $file_in );
-		} else {
-			// Neither, which means it's probably not encrypted
+		$key  = '';
+		$type = fread( $source_file_handler, 1 );
+
+		// Symmetric mode
+		if ( $type === chr( 0 ) ) {
+			$key = pack( 'H*', get_site_option( self::ENCRYPTION_KEY_OPTION ) );
+		}
+		// Asymmetric mode
+		if ( $type === chr( 1 ) ) {
+			$key = $this->get_rsa_decrypted_key( $source_file_handler );
+		}
+
+		if ( $key === '' ) {
 			return false;
 		}
 
-		if ( file_exists( $this->file_path . '.encrypted' ) ) {
-			unlink( $this->file_path . '.encrypted' );
+		if ( file_exists( $this->local_file_path . '.encrypted' ) ) {
+			unlink( $this->local_file_path . '.encrypted' );
 		}
 
-		try {
-			$file_out = new \SplFileObject( $this->file_path . '.encrypted', 'a+b' );
-		} catch ( \RuntimeException $e ) {
+		$local_file_handler = fopen( $this->local_file_path . '.encrypted', 'a+b' );
+		if ( ! is_resource( $local_file_handler ) ) {
 			throw new \Exception( __( 'Cannot write the encrypted archive.', 'backwpup' ) );
 		}
 
@@ -83,106 +88,111 @@ class BackWPup_Decrypter {
 
 		$block_size = 128 * 1024;
 		$bytes_read = 0;
-		$size       = $file_in->getSize();
-		// Subtract the number of bytes we've read into $file_in
-		// This is to make up for the overhead of the data we've stored in the encrypted file
-		// $size - overhead = the actual encrypted file
-		$size -= $file_in->ftell();
 
-		while ( $file_in->valid() ) {
-			$data = $file_in->fread( $block_size );
-			$packet = $aes->decrypt( $data );
+		while ( ! feof( $source_file_handler ) ) {
+			$data       = fread( $source_file_handler, $block_size );
+			$packet     = $aes->decrypt( $data );
 			$bytes_read += strlen( $data );
 
-			if ( $file_in->eof() ) {
+			if ( feof( $source_file_handler ) ) {
 				// This is the last chunk, so strip padding
 				$padding_length = ord( $packet[ strlen( $packet ) - 1 ] );
 				if ( $padding_length <= 16 ) {
-					$packet = substr( $packet, 0, -$padding_length );
+					$packet = substr( $packet, 0, - $padding_length );
 				}
 			}
-			$file_out->fwrite( $packet );
+			fwrite( $local_file_handler, $packet );
 		}
 
-		$file_in = null;
+		$file_in  = null;
 		$file_out = null;
 
-		unlink( $this->file_path );
-		rename( $this->file_path . '.encrypted', $this->file_path );
+		unlink( $this->local_file_path );
+		rename( $this->local_file_path . '.encrypted', $this->local_file_path );
 
 		return true;
 	}
 
 	/**
-	 * Get RSA Decrypted Key
+	 * @param $source_file_handler
 	 *
-	 * Reads and decrypts the generated AES key at the start of the archive.
-	 *
-	 * This key is RSA-encrypted.
-	 *
-	 * @param SplFileObject $file_in The file to read from
-	 *
-	 * @return string The decrypted AES key.
+	 * @return bool|string
 	 */
-	private function getRSADecryptedKey( \SplFileObject $file_in ) {
+	private function get_rsa_decrypted_key( $source_file_handler ) {
 
-		// The next byte is the length of the encrypted key
-		$length = unpack( 'H*', $file_in->fread( 1 ) );
-		$length = hexdec($length[1]);
+		$rsa              = new RSA();
+		$private_key      = '';
+		$verified         = false;
+		$status           = self::PRIVATE_KEY_STATUS_NOT_FOUND;
+		$length           = unpack( 'H*', fread( $source_file_handler, 1 ) );
+		$length           = hexdec( $length[1] );
+		$key              = fread( $source_file_handler, $length );
+		$private_key_file = dirname( $this->local_file_path ) . '/' . self::PRIVATE_RSA_ID_FILE;
 
-		// Read $length bytes to get encrypted key
-		$key = $file_in->fread( $length );
+		if ( ! file_exists( $private_key_file ) ) {
+			self::send_message( array(
+				'state'  => 'need-private-key',
+				'status' => $status,
+			) );
 
-		// Decrypt
-		$rsa = new RSA();
-
-		// Check for private key file
-		$key_filename = dirname( $this->file_path ) . '/id_rsa_backwpup.pri';
-		$status = 'not-found';
-		while ( $status != 'ok' ) {
-			if ( ! file_exists( $key_filename ) ) {
-				BackWPup_Destination_Downloader::sendMessage( array(
-					'state'  => 'need-private-key',
-					'status' => $status,
-				) );
-
-				// Loop until we see the private key
-				do {
-					sleep( 5 );
-				} while ( ! file_exists( $key_filename ) );
-			}
-
-			$private_key = file_get_contents( $key_filename );
-			unlink( $key_filename );
-
-			// Verify the private key is correct
-			$rsa->setSignatureMode( RSA::SIGNATURE_PKCS1 );
-
-			// Load private key
-			$rsa->loadKey( $private_key );
-
-			// Get signature
-			$signature = $rsa->sign( 'test' );
-
-			// And verify signature
-			$rsa->loadKey( get_site_option( 'backwpup_cfg_publickey' ) );
-			$verified = $rsa->verify( 'test', $signature );
-
-			if ( $verified) {
-				$status = 'ok';
-			} else {
-				$status = 'invalid';
-			}
+			return '';
 		}
 
-		$rsa->loadKey( $private_key );
+		if ( file_exists( $private_key_file ) ) {
+			$private_key = file_get_contents( $private_key_file );
+			unlink( $private_key_file );
+
+			$verified = $this->verify_private_key( $rsa, $private_key );
+		}
+
+		if ( ! $verified ) {
+			self::send_message( array(
+				'state'  => 'need-private-key',
+				'status' => self::PRIVATE_KEY_STATUS_INVALID,
+			) );
+
+			return '';
+		}
+
+		$private_key and $rsa->loadKey( $private_key );
+
 		$key = $rsa->decrypt( $key );
 
-		if ( ! $key ) {
-			throw new \Exception( __( 'Private key invalid.', 'backwpup' ) );
+		if ( $key === '' ) {
+			throw new \RuntimeException( __( 'Private key invalid.', 'backwpup' ) );
 		}
 
 		return $key;
 	}
 
+	/**
+	 * @param \phpseclib\Crypt\RSA $rsa
+	 * @param                      $private_key
+	 *
+	 * @return bool
+	 */
+	private function verify_private_key( RSA $rsa, $private_key ) {
+
+		$rsa->setSignatureMode( RSA::SIGNATURE_PKCS1 );
+
+		if ( ! $rsa->loadKey( $private_key ) ) {
+			return false;
+		}
+
+		$signature = $rsa->sign( 'test' );
+		$rsa->loadKey( get_site_option( self::PUBLIC_KEY_OPTION ) );
+
+		return $rsa->verify( 'test', $signature );
+	}
+
+	/**
+	 * @param        $data
+	 * @param string $event
+	 */
+	private static function send_message( $data, $event = 'message' ) {
+
+		echo "event: {$event}\n";
+		echo "data: " . wp_json_encode( $data ) . "\n\n";
+		flush();
+	}
 }

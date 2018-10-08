@@ -667,7 +667,7 @@ class BackWPup_Page_Settings {
 											<?php esc_html_e( 'Encryption Key', 'backwpup' ) ?>
 										</span>
 									</legend>
-	
+
 									<label for="encryptionkey">
 										<?php esc_html_e( 'Key', 'backwpup' ) ?>
 										<input type="text"
@@ -677,7 +677,7 @@ class BackWPup_Page_Settings {
 										       value="<?php echo esc_attr( get_site_option( 'backwpup_cfg_encryptionkey' ) ) ?>"
 										/>
 									</label>
-	
+
 									<?php if ( ! get_site_option( 'backwpup_cfg_encryptionkey' ) ): ?>
 										<div id="key-generation">
 											<p>

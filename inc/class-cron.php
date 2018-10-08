@@ -12,8 +12,7 @@ class BackWPup_Cron {
 	 */
 	public static function run( $arg = 'restart' ) {
 
-		if (get_current_blog_id() != get_main_site_id()){
-			// Don't repeat if on multisite
+		if ( ! is_main_site( get_current_blog_id() ) ) {
 			return;
 		}
 

@@ -37,21 +37,20 @@ abstract class AbstractOperation implements OperationInterface
      * This array stores 'all', 'new' and 'obsolete' messages for all valid domains.
      *
      * The data structure of this array is as follows:
-     * ```php
-     * array(
-     *     'domain 1' => array(
-     *         'all' => array(...),
-     *         'new' => array(...),
-     *         'obsolete' => array(...)
-     *     ),
-     *     'domain 2' => array(
-     *         'all' => array(...),
-     *         'new' => array(...),
-     *         'obsolete' => array(...)
-     *     ),
-     *     ...
-     * )
-     * ```
+     *
+     *     array(
+     *         'domain 1' => array(
+     *             'all' => array(...),
+     *             'new' => array(...),
+     *             'obsolete' => array(...)
+     *         ),
+     *         'domain 2' => array(
+     *             'all' => array(...),
+     *             'new' => array(...),
+     *             'obsolete' => array(...)
+     *         ),
+     *         ...
+     *     )
      *
      * @var array The array that stores 'all', 'new' and 'obsolete' messages
      */
@@ -89,7 +88,7 @@ abstract class AbstractOperation implements OperationInterface
      */
     public function getMessages($domain)
     {
-        if (!in_array($domain, $this->getDomains())) {
+        if (!\in_array($domain, $this->getDomains())) {
             throw new \InvalidArgumentException(sprintf('Invalid domain: %s.', $domain));
         }
 
@@ -105,7 +104,7 @@ abstract class AbstractOperation implements OperationInterface
      */
     public function getNewMessages($domain)
     {
-        if (!in_array($domain, $this->getDomains())) {
+        if (!\in_array($domain, $this->getDomains())) {
             throw new \InvalidArgumentException(sprintf('Invalid domain: %s.', $domain));
         }
 
@@ -121,7 +120,7 @@ abstract class AbstractOperation implements OperationInterface
      */
     public function getObsoleteMessages($domain)
     {
-        if (!in_array($domain, $this->getDomains())) {
+        if (!\in_array($domain, $this->getDomains())) {
             throw new \InvalidArgumentException(sprintf('Invalid domain: %s.', $domain));
         }
 

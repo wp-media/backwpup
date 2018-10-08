@@ -163,54 +163,6 @@ function backwpup_wpdb() {
 }
 
 /**
- * Sanitizes a filename, replacing whitespace with dashes.
- *
- * @since 3.5.0
- *
- * @param string $filename The filename to be sanitized.
- *
- * @return string The sanitized filename
- */
-function backwpup_sanitize_file_name( $filename ) {
-
-	$special_chars = array(
-		'?',
-		'[',
-		']',
-		'/',
-		'\\',
-		'=',
-		'<',
-		'>',
-		':',
-		';',
-		',',
-		"'",
-		'"',
-		'&',
-		'$',
-		'#',
-		'*',
-		'(',
-		')',
-		'|',
-		'~',
-		'`',
-		'!',
-		'{',
-		'}',
-		'%',
-		'+',
-		chr( 0 ),
-	);
-
-	$filename = preg_replace( "#\x{00a0}#siu", ' ', $filename );
-	$filename = str_replace( $special_chars, '', $filename );
-
-	return $filename;
-}
-
-/**
  * Remove Invalid Characters from Directory Name
  *
  * @since 3.5.0

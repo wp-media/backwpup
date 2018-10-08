@@ -449,7 +449,7 @@ class BackWPup_Page_Editjob {
 								<?php
 								$archivename = BackWPup_Option::substitute_date_vars(
 									BackWPup_Option::get( $jobid, 'archivenamenohash' ) );
-								echo '<p>Preview: <code><span id="archivefilename">' . esc_attr( $archivename ) . '</span><span id="archiveformat">' . esc_attr( BackWPup_Option::get( $jobid, 'archiveformat' ) ) . '</span></code></p>';
+								echo '<p>' . esc_html__( 'Preview: ', 'backwpup' ) . '<code><span id="archivefilename">' . esc_attr( $archivename ) . '</span><span id="archiveformat">' . esc_attr( BackWPup_Option::get( $jobid, 'archiveformat' ) ) . '</span></code></p>';
 								echo '<p class="description">';
 								echo "<strong>" . esc_attr__( 'Replacement patterns:', 'backwpup' ) . "</strong><br />";
 								echo esc_attr__( '%d = Two digit day of the month, with leading zeros', 'backwpup' ) . '<br />';

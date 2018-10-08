@@ -11,68 +11,64 @@
  * @since   3.5.0
  * @package Inpsyde\BackWPup
  */
-final class BackWPup_Destination_Dropbox_Downloader extends BackWPup_Destination_Downloader {
+final class BackWPup_Destination_Dropbox_Downloader implements BackWPup_Destination_Downloader_Interface {
+
+	const OPTION_ROOT = 'dropboxroot';
+	const OPTION_TOKEN = 'dropboxtoken';
 
 	/**
-	 * File handle
-	 *
-	 * @var resource A handle to the file being downloaded
+	 * @var \BackWpUp_Destination_Downloader_Data
 	 */
-	private $file_handle;
+	private $data;
 
 	/**
-	 * Destructor
+	 * @var resource
+	 */
+	private $local_file_handler;
+
+	/**
+	 * @var BackWPup_Destination_Dropbox_API
+	 */
+	private $dropbox_api;
+
+	/**
+	 * BackWPup_Destination_Dropbox_Downloader constructor
 	 *
-	 * Closes file handle if opened.
+	 * @param \BackWpUp_Destination_Downloader_Data $data
+	 *
+	 * @throws \BackWPup_Destination_Dropbox_API_Exception
+	 */
+	public function __construct( BackWpUp_Destination_Downloader_Data $data ) {
+
+		$this->data = $data;
+
+		$this->dropbox_api();
+	}
+
+	/**
+	 * Clean up things
 	 */
 	public function __destruct() {
 
-		if ( $this->file_handle ) {
-			fclose( $this->file_handle );
-		}
+		fclose( $this->local_file_handler );
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function with_service() {
+	public function download_chunk( $start_byte, $end_byte ) {
 
-		$this->service = new \BackWPup_Destination_Dropbox_API(
-			\BackWPup_Option::get( $this->job_id, 'dropboxroot' )
-		);
-
-		$this->service->setOAuthTokens( \BackWPup_Option::get( $this->job_id, 'dropboxtoken' ) );
-
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function downloadChunk( $startByte, $endByte ) {
-
-		if ( ! current_user_can( self::$capability ) ) {
-			wp_die( 'Cheatin&#8217; huh?' );
-		}
+		$this->local_file_handler( $start_byte );
 
 		try {
-			if ( is_null( $this->file_handle ) ) {
-				// Open file; write mode if $startByte is 0, else append
-				$this->file_handle = fopen( $this->destination, $startByte == 0 ? 'wb' : 'ab' );
-
-				if ( $this->file_handle === false ) {
-					throw new \RuntimeException( __( 'File could not be opened for writing.', 'backwpup' ) );
-				}
-			}
-
-			$data = $this->service->download(
-				array( 'path' => $this->file_path ),
-				$startByte,
-				$endByte
+			$data = $this->dropbox_api->download(
+				array( 'path' => $this->data->source_file_path() ),
+				$start_byte,
+				$end_byte
 			);
 
-			$bytes = fwrite( $this->file_handle, $data );
-			if ( $bytes === false ) {
+			$bytes = (int) fwrite( $this->local_file_handler, $data );
+			if ( $bytes === 0 ) {
 				throw new \RuntimeException( __( 'Could not write data to file.', 'backwpup' ) );
 			}
 		} catch ( \Exception $e ) {
@@ -83,11 +79,44 @@ final class BackWPup_Destination_Dropbox_Downloader extends BackWPup_Destination
 	/**
 	 * @inheritdoc
 	 */
-	public function getSize() {
+	public function calculate_size() {
 
-		$metadata = $this->service->filesGetMetadata( array( 'path' => $this->file_path ) );
+		$metadata = $this->dropbox_api->filesGetMetadata( array( 'path' => $this->data->source_file_path() ) );
 
 		return $metadata['size'];
 	}
 
+	/**
+	 * Set local file hanlder
+	 *
+	 * @param int $start_byte
+	 */
+	private function local_file_handler( $start_byte ) {
+
+		if ( is_resource( $this->local_file_handler ) ) {
+			return;
+		}
+
+		// Open file; write mode if $start_byte is 0, else append
+		$this->local_file_handler = fopen( $this->data->local_file_path(), $start_byte == 0 ? 'wb' : 'ab' );
+
+		if ( ! is_resource( $this->local_file_handler ) ) {
+			throw new \RuntimeException( __( 'File could not be opened for writing.', 'backwpup' ) );
+		}
+	}
+
+	/**
+	 * Set the dropbox api instance
+	 *
+	 * @return $this
+	 * @throws \BackWPup_Destination_Dropbox_API_Exception
+	 */
+	private function dropbox_api() {
+
+		$this->dropbox_api = new \BackWPup_Destination_Dropbox_API(
+			\BackWPup_Option::get( $this->data->job_id(), self::OPTION_ROOT )
+		);
+
+		$this->dropbox_api->setOAuthTokens( \BackWPup_Option::get( $this->data->job_id(), self::OPTION_TOKEN ) );
+	}
 }

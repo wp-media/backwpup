@@ -12,59 +12,32 @@
  * @since   3.5.0
  * @package Inpsyde\BackWPup
  */
-final class BackWPup_Destination_Downloader_Factory implements BackWPup_Factory_Interface {
+class BackWPup_Destination_Downloader_Factory {
+
+	const DESTINATION_S3 = 's3';
+
+	const CLASS_PREFIX = 'BackWPup_Destination_';
+	const CLASS_PRO_PREFIX = 'BackWPup_Pro_Destination_';
+	const CLASS_SUFFIX = '_Downloader';
 
 	/**
-	 * Destination
+	 * @param string $service_name
+	 * @param int    $job_id
+	 * @param string $source_file_path
+	 * @param string $local_file_path
+	 * @param string $base_url
 	 *
-	 * @var string The destination identifier
+	 * @return \BackWPup_Destination_Downloader
 	 */
-	private $destination;
+	public function create( $service_name, $job_id, $source_file_path, $local_file_path, $base_url = '' ) {
 
-	/**
-	 * Class Prefix
-	 *
-	 * @var string The class prefix. The part before the destination
-	 */
-	private static $prefix = 'BackWPup_Destination_';
-
-	/**
-	 * Class Prefix for Pro Classes
-	 *
-	 * @since 3.5.0
-	 *
-	 * @var string The class prefix for pro classe
-	 */
-	private static $pro_prefix = 'BackWPup_Pro_Destination_';
-
-	/**
-	 * Class Suffix
-	 *
-	 * @var string The class suffix. The part after the destination
-	 */
-	private static $suffix = '_Downloader';
-
-	/**
-	 * BackWPup_Destination_Downloader_Factory constructor
-	 *
-	 * @param string $destination The destination name.
-	 */
-	public function __construct( $destination ) {
-
-		$this->destination = $destination;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function create() {
-
-		// Build the class name.
-		$class = self::$prefix . $this->destination . self::$suffix;
+		$destination  = null;
+		$service_name = ucwords( $service_name );
+		$class        = self::CLASS_PREFIX . $service_name . self::CLASS_SUFFIX;
 
 		// If class doesn't exists, try within the Pro directory.
-		if ( ! class_exists( $class ) ) {
-			$class = str_replace( self::$prefix, self::$pro_prefix, $class );
+		if ( BackWPup::is_pro() && ! class_exists( $class ) ) {
+			$class = str_replace( self::CLASS_PREFIX, self::CLASS_PRO_PREFIX, $class );
 		}
 
 		if ( ! class_exists( $class ) ) {
@@ -76,6 +49,16 @@ final class BackWPup_Destination_Downloader_Factory implements BackWPup_Factory_
 			);
 		}
 
-		return new $class();
+		$data = new BackWpUp_Destination_Downloader_Data( $job_id, $source_file_path, $local_file_path );
+
+		if ( strtolower( $service_name ) === self::DESTINATION_S3 ) {
+			/** @var \BackWPup_Destination_Downloader_Interface $destination */
+			$destination = new $class( $data, $base_url );
+		}
+
+		/** @var \BackWPup_Destination_Downloader_Interface $destination */
+		! $destination and $destination = new $class( $data );
+
+		return new BackWPup_Destination_Downloader( $data, $destination );
 	}
 }

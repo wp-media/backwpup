@@ -594,19 +594,19 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				mime_content_type( $filename ),
 				function ( \BackWPup_Download_File_Interface $obj ) use ( $self, $filename, $file_path, $job_id ) {
 
-					// Setup Destination service and download file.
-					$service = new BackWPup_Destination_S3_Downloader(
-						$self->get_s3_base_url(
-							BackWPup_Option::get( $job_id, 's3region' ),
-							BackWPup_Option::get( $job_id, 's3base_url' )
-						)
+					$base_url = $self->get_s3_base_url(
+						BackWPup_Option::get( $job_id, 's3region' ),
+						BackWPup_Option::get( $job_id, 's3base_url' )
 					);
-
-					$service->for_job( $job_id )
-					        ->from( $file_path )
-					        ->to( $filename )
-					        ->with_service()
-					        ->download();
+					$factory = new BackWPup_Destination_Downloader_Factory();
+					$downloader = $factory->create(
+						'S3',
+						$job_id,
+						$file_path,
+						$filename,
+						$base_url
+					);
+					$downloader->download_by_chunks();
 
 					die();
 				},

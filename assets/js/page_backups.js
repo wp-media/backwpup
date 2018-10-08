@@ -1,68 +1,115 @@
-jQuery( document ).ready( function ( $ ) {
+( function ( $, ajaxurl, tbRemove ) {
 
-	$( '.backup-download-link' ).click( function () {
-		$( '#download-file-waiting' ).show();
-		$( '#download-file-generating' ).hide();
-		$( '#download-file-private-key' ).hide();
-		$( '#download-file-done' ).hide();
+	var link;
+	var eventsource;
+	var $waiting;
+	var $generating;
+	var $privateKey;
+	var $done;
+	var $privateKeyInput;
+	var $privateKeyInvalid;
+	var $privateKeySubmit;
 
-		var link              = this;
-		var eventsource       = new EventSource( ajaxurl + '?action=download_file&destination=' + $( this ).data( 'destination' ) + '&jobid=' + $( this ).data( 'jobid' ) + '&file=' + $( this ).data( 'file' ) + '&local_file=' + $( this ).data( 'localFile' ) + '&_wpnonce=' + $( this ).data( 'nonce' ) );
-		eventsource.onmessage = function ( message ) {
-			var data = JSON.parse( message.data );
-			if ( data.state === 'downloading' ) {
-				$( '#download-file-waiting' ).hide();
-				$( '#download-file-generating' ).show();
-				$( '#download-file-private-key' ).hide();
-				$( '#download-file-done' ).hide();
+	if ( !ajaxurl ) {
+		console.warn( 'Missing ajaxurl value.' ); // eslint-disable-line
 
-				// Progress bar
-				$( '#progresssteps' )
-					.css( {
-						width: data.download_percent + '%'
-					} )
-					.text( data.download_percent + '%' );
+		return;
+	}
+	if ( !( 'EventSource' in window ) ) {
+		console.warn( 'Event Source does not exist in this browser' ); // eslint-disable-line
 
-			} else if ( data.state === 'need-private-key' ) {
-				$( '#download-file-waiting' ).hide();
-				$( '#download-file-generating' ).hide();
-				$( '#download-file-private-key' ).show();
-				$( '#download-file-done' ).hide();
-				$( '#download-file-private-key-input' ).focus();
-				if ( data.status === 'invalid' ) {
-					// Private key invalid
-					$( '#download-file-private-key-invalid' ).show();
-				} else {
-					$( '#download-file-private-key-invalid' ).hide();
+		return;
+	}
+
+	window.addEventListener( 'load', function () {
+		$waiting = $( '#download-file-waiting' );
+		$generating = $( '#download-file-generating' );
+		$privateKey = $( '#download-file-private-key' );
+		$done = $( '#download-file-done' );
+		$privateKeyInput = $( '#download-file-private-key-input' );
+		$privateKeyInvalid = $( '#download-file-private-key-invalid' );
+		$privateKeySubmit = $( '#download-file-private-key-button' );
+
+		$( '.backup-download-link' ).click( function () {
+			$waiting.show();
+			$generating.hide();
+			$privateKey.hide();
+			$done.hide();
+
+			link = this;
+			eventsource = new EventSource(
+				ajaxurl
+				+ '?action=download_file&destination=' + $( this ).data( 'destination' )
+				+ '&jobid=' + $( this ).data( 'jobid' )
+				+ '&file=' + $( this ).data( 'file' )
+				+ '&local_file=' + $( this ).data( 'localFile' )
+				+ '&_wpnonce=' + $( this ).data( 'nonce' )
+			);
+
+			eventsource.onmessage = function ( message ) {
+				var data = JSON.parse( message.data );
+
+				if ( 'downloading' === data.state ) {
+					$waiting.hide();
+					$generating.show();
+					$privateKey.hide();
+					$done.hide();
+
+					// Progress bar
+					$( '#progresssteps' )
+						.css( {
+							width: data.download_percent + '%'
+						} )
+						.text( data.download_percent + '%' );
 				}
-			} else if ( data.state === 'done' ) {
-				$( '#download-file-waiting' ).hide();
-				$( '#download-file-generating' ).hide();
-				$( '#download-file-private-key' ).hide();
-				$( '#download-file-done' ).show();
-				eventsource.close();
-				window.location.href = $( link ).data( 'url' );
-				setTimeout( function () {
-					tb_remove();
-				}, 3000 );
-			}
-		};
 
-	} );
+				if ( 'need-private-key' === data.state ) {
+					$waiting.hide();
+					$generating.hide();
+					$privateKey.show();
+					$done.hide();
+					$privateKeyInput.focus();
 
-	$( '#download-file-private-key-button' ).click( function () {
-		data = {
-			action    : 'send_private_key',
-			privatekey: $( '#download-file-private-key-input' ).val(),
-		};
+					if ( 'invalid' === data.status ) {
+						$privateKeyInvalid.show();
 
-		$.post( ajaxurl, data, function ( response ) {
-			if ( response === 'ok' ) {
-				$( '#download-file-private-key-input' ).val( '' );
-				$( '#download-file-private-key-invalid' ).hide();
-				$( '#download-file-private-key' ).hide();
-				$( '#download-file-generating' ).show();
-			}
+						return;
+					}
+
+					$privateKeyInvalid.hide();
+				}
+
+				if ( 'done' === data.state ) {
+					$waiting.hide();
+					$generating.hide();
+					$privateKey.hide();
+					$done.show();
+
+					eventsource.close();
+
+					window.location.href = $( link ).data( 'url' );
+
+					setTimeout( tbRemove, 3000 );
+				}
+			};
+
+		} );
+
+		$privateKeySubmit.click( function () {
+			var data = {
+				action: 'send_private_key',
+				privatekey: $privateKeyInput.val(),
+			};
+
+			$.post( ajaxurl, data, function ( response ) {
+				if ( true === response.success ) {
+					$privateKeyInput.val( '' );
+					$privateKeyInvalid.hide();
+					$privateKey.hide();
+					$generating.show();
+				}
+			} );
 		} );
 	} );
-} );
+
+}( window.jQuery, window.ajaxurl, window.tb_remove ) );

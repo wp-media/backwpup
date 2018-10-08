@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit60d0ebfd52f1976313219c1674abb3d8
+class ComposerStaticInit37cb09134d372658514673099c06afe0
 {
     public static $files = array (
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
@@ -1156,79 +1156,6 @@ class ComposerStaticInit60d0ebfd52f1976313219c1674abb3d8
         'Aws\\WorkSpaces\\Exception\\WorkSpacesException' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Aws/WorkSpaces/Exception/WorkSpacesException.php',
         'Aws\\WorkSpaces\\WorkSpacesClient' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Aws/WorkSpaces/WorkSpacesClient.php',
         'BackWPup' => __DIR__ . '/../..' . '/backwpup.php',
-        'BackWPup_Admin' => __DIR__ . '/../..' . '/inc/class-admin.php',
-        'BackWPup_Admin_Notice' => __DIR__ . '/../..' . '/inc/class-admin-notice.php',
-        'BackWPup_Adminbar' => __DIR__ . '/../..' . '/inc/class-adminbar.php',
-        'BackWPup_Autoload' => __DIR__ . '/../..' . '/inc/class-autoload.php',
-        'BackWPup_Become_Inpsyder_Widget' => __DIR__ . '/../..' . '/inc/class-become-inpsyder-widget.php',
-        'BackWPup_Create_Archive' => __DIR__ . '/../..' . '/inc/class-create-archive.php',
-        'BackWPup_Create_Archive_Exception' => __DIR__ . '/../..' . '/inc/class-create-archive-exception.php',
-        'BackWPup_Cron' => __DIR__ . '/../..' . '/inc/class-cron.php',
-        'BackWPup_Decrypter' => __DIR__ . '/../..' . '/inc/class-decrypter.php',
-        'BackWPup_Destination_Connect_Exception' => __DIR__ . '/../..' . '/inc/class-destination-connect-exception.php',
-        'BackWPup_Destination_Connect_Interface' => __DIR__ . '/../..' . '/inc/class-destination-connect-interface.php',
-        'BackWPup_Destination_Download_Exception' => __DIR__ . '/../..' . '/inc/class-destination-download-exception.php',
-        'BackWPup_Destination_Downloader' => __DIR__ . '/../..' . '/inc/class-destination-downloader.php',
-        'BackWPup_Destination_Downloader_Factory' => __DIR__ . '/../..' . '/inc/class-destination-downloader-factory.php',
-        'BackWPup_Destination_Dropbox' => __DIR__ . '/../..' . '/inc/class-destination-dropbox.php',
-        'BackWPup_Destination_Dropbox_API' => __DIR__ . '/../..' . '/inc/class-destination-dropbox-api.php',
-        'BackWPup_Destination_Dropbox_API_Exception' => __DIR__ . '/../..' . '/inc/class-destination-dropbox-api-exception.php',
-        'BackWPup_Destination_Dropbox_API_Request_Exception' => __DIR__ . '/../..' . '/inc/class-destination-dropbox-api-request-exception.php',
-        'BackWPup_Destination_Dropbox_Downloader' => __DIR__ . '/../..' . '/inc/class-destination-dropbox-downloader.php',
-        'BackWPup_Destination_Email' => __DIR__ . '/../..' . '/inc/class-destination-email.php',
-        'BackWPup_Destination_Factory' => __DIR__ . '/../..' . '/inc/class-destination-factory.php',
-        'BackWPup_Destination_Folder' => __DIR__ . '/../..' . '/inc/class-destination-folder.php',
-        'BackWPup_Destination_Folder_Downloader' => __DIR__ . '/../..' . '/inc/class-destination-folder-downloader.php',
-        'BackWPup_Destination_Ftp' => __DIR__ . '/../..' . '/inc/class-destination-ftp.php',
-        'BackWPup_Destination_Ftp_Connect' => __DIR__ . '/../..' . '/inc/class-destination-ftp-connect.php',
-        'BackWPup_Destination_Ftp_Downloader' => __DIR__ . '/../..' . '/inc/class-destination-ftp-downloader.php',
-        'BackWPup_Destination_MSAzure' => __DIR__ . '/../..' . '/inc/class-destination-msazure.php',
-        'BackWPup_Destination_RSC' => __DIR__ . '/../..' . '/inc/class-destination-rsc.php',
-        'BackWPup_Destination_S3' => __DIR__ . '/../..' . '/inc/class-destination-s3.php',
-        'BackWPup_Destination_S3_Downloader' => __DIR__ . '/../..' . '/inc/class-destination-s3-downloader.php',
-        'BackWPup_Destination_SugarSync' => __DIR__ . '/../..' . '/inc/class-destination-sugarsync.php',
-        'BackWPup_Destination_SugarSync_API' => __DIR__ . '/../..' . '/inc/class-destination-sugarsync.php',
-        'BackWPup_Destination_SugarSync_API_Exception' => __DIR__ . '/../..' . '/inc/class-destination-sugarsync.php',
-        'BackWPup_Destinations' => __DIR__ . '/../..' . '/inc/class-destinations.php',
-        'BackWPup_Directory' => __DIR__ . '/../..' . '/inc/class-directory.php',
-        'BackWPup_Dismissible_Notice_Option' => __DIR__ . '/../..' . '/inc/class-dismissible-notice-option.php',
-        'BackWPup_Download_File' => __DIR__ . '/../..' . '/inc/class-download-file.php',
-        'BackWPup_Download_File_Interface' => __DIR__ . '/../..' . '/inc/class-download-file-interface.php',
-        'BackWPup_EasyCron' => __DIR__ . '/../..' . '/inc/class-easycron.php',
-        'BackWPup_Encryption' => __DIR__ . '/../..' . '/inc/class-encryption.php',
-        'BackWPup_Encryption_Fallback' => __DIR__ . '/../..' . '/inc/class-encryption-fallback.php',
-        'BackWPup_Encryption_Mcrypt' => __DIR__ . '/../..' . '/inc/class-encryption-mcrypt.php',
-        'BackWPup_Encryption_OpenSSL' => __DIR__ . '/../..' . '/inc/class-encryption-openssl.php',
-        'BackWPup_Factory_Exception' => __DIR__ . '/../..' . '/inc/class-factory-exception.php',
-        'BackWPup_Factory_Interface' => __DIR__ . '/../..' . '/inc/class-factory-interface.php',
-        'BackWPup_File' => __DIR__ . '/../..' . '/inc/class-file.php',
-        'BackWPup_Help' => __DIR__ . '/../..' . '/inc/class-help.php',
-        'BackWPup_Install' => __DIR__ . '/../..' . '/inc/class-install.php',
-        'BackWPup_Job' => __DIR__ . '/../..' . '/inc/class-job.php',
-        'BackWPup_JobType_DBCheck' => __DIR__ . '/../..' . '/inc/class-jobtype-dbcheck.php',
-        'BackWPup_JobType_DBDump' => __DIR__ . '/../..' . '/inc/class-jobtype-dbdump.php',
-        'BackWPup_JobType_File' => __DIR__ . '/../..' . '/inc/class-jobtype-file.php',
-        'BackWPup_JobType_WPEXP' => __DIR__ . '/../..' . '/inc/class-jobtype-wpexp.php',
-        'BackWPup_JobType_WPPlugin' => __DIR__ . '/../..' . '/inc/class-jobtype-wpplugin.php',
-        'BackWPup_JobTypes' => __DIR__ . '/../..' . '/inc/class-jobtypes.php',
-        'BackWPup_Message_Box' => __DIR__ . '/../..' . '/inc/class-message-box.php',
-        'BackWPup_MySQLDump' => __DIR__ . '/../..' . '/inc/class-mysqldump.php',
-        'BackWPup_MySQLDump_Exception' => __DIR__ . '/../..' . '/inc/class-mysqldump.php',
-        'BackWPup_Option' => __DIR__ . '/../..' . '/inc/class-option.php',
-        'BackWPup_Page_About' => __DIR__ . '/../..' . '/inc/class-page-about.php',
-        'BackWPup_Page_BackWPup' => __DIR__ . '/../..' . '/inc/class-page-backwpup.php',
-        'BackWPup_Page_Backups' => __DIR__ . '/../..' . '/inc/class-page-backups.php',
-        'BackWPup_Page_Editjob' => __DIR__ . '/../..' . '/inc/class-page-editjob.php',
-        'BackWPup_Page_Jobs' => __DIR__ . '/../..' . '/inc/class-page-jobs.php',
-        'BackWPup_Page_Logs' => __DIR__ . '/../..' . '/inc/class-page-logs.php',
-        'BackWPup_Page_Settings' => __DIR__ . '/../..' . '/inc/class-page-settings.php',
-        'BackWPup_Path_Fixer' => __DIR__ . '/../..' . '/inc/class-path-fixer.php',
-        'BackWPup_Recursive_Directory' => __DIR__ . '/../..' . '/inc/class-recursive-directory.php',
-        'BackWPup_Sanitize_Path' => __DIR__ . '/../..' . '/inc/class-sanitize-path.php',
-        'BackWPup_System_Requirements' => __DIR__ . '/../..' . '/inc/class-system-requirements.php',
-        'BackWPup_System_Tests' => __DIR__ . '/../..' . '/inc/class-system-tests.php',
-        'BackWPup_System_Tests_Runner' => __DIR__ . '/../..' . '/inc/class-system-tests-runner.php',
-        'BackWPup_WP_CLI' => __DIR__ . '/../..' . '/inc/class-wp-cli.php',
         'Base32\\Base32' => __DIR__ . '/..' . '/christian-riesen/base32/src/Base32.php',
         'Console_Getopt' => __DIR__ . '/..' . '/pear/console_getopt/Console/Getopt.php',
         'Firebase\\JWT\\BeforeValidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/BeforeValidException.php',
@@ -1673,26 +1600,6 @@ class ComposerStaticInit60d0ebfd52f1976313219c1674abb3d8
         'HTTP_Request2_ResponseTest' => __DIR__ . '/..' . '/pear/http_request2/tests/Request2/ResponseTest.php',
         'HTTP_Request2_SOCKS5' => __DIR__ . '/..' . '/pear/http_request2/HTTP/Request2/SOCKS5.php',
         'HTTP_Request2_SocketWrapper' => __DIR__ . '/..' . '/pear/http_request2/HTTP/Request2/SocketWrapper.php',
-        'Inpsyde\\BackWPup\\Tests\\BackWPupTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/PluginAutoloader.php',
-        'Inpsyde\\BackWPup\\Tests\\BackWPupTestCase' => __DIR__ . '/../..' . '/tests/php/BackWPupTestCase.php',
-        'Inpsyde\\BackWPup\\Tests\\BackWPup_Create_ArchiveTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/BackWPup_Create_ArchiveTest.php',
-        'Inpsyde\\BackWPup\\Tests\\BackWPup_Destination_Downloader_FactoryTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/BackWPup_Destination_Downloader_FactoryTest.php',
-        'Inpsyde\\BackWPup\\Tests\\BackWPup_Destination_DropboxTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/BackWPup_Destination_DropboxTest.php',
-        'Inpsyde\\BackWPup\\Tests\\BackWPup_Download_FileTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/BackWPup_Download_FileTest.php',
-        'Inpsyde\\BackWPup\\Tests\\BackWPup_FileTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/BackWPup_FileTest.php',
-        'Inpsyde\\BackWPup\\Tests\\BackWPup_ProTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/pro/BackWPup_ProTest.php',
-        'Inpsyde\\BackWPup\\Tests\\BackWPup_Pro_Destination_FolderTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/pro/BackWPup_Pro_Destination_FolderTest.php',
-        'Inpsyde\\BackWPup\\Tests\\BackWPup_System_TestingTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/BackWPup_System_TestingTest.php',
-        'Inpsyde\\BackWPup\\Tests\\CleanJsonRequestStringTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/CleanJsonRequestStringTest.php',
-        'Inpsyde\\BackWPup\\Tests\\Create_Archive_TarBz2_Test' => __DIR__ . '/../..' . '/tests/php/unit/Create_Archive_TarBz2_Test.php',
-        'Inpsyde\\BackWPup\\Tests\\IsJsonTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/IsJsonTest.php',
-        'Inpsyde\\BackWPup\\Tests\\NotificatorTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/pro/restore/NotificatorTest.php',
-        'Inpsyde\\BackWPup\\Tests\\RestoreContainerTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/pro/restore/functions/RestoreContainerTest.php',
-        'Inpsyde\\BackWPup\\Tests\\RestoreRegistryContainerTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/pro/restore/functions/RestoreRegistryContainerTest.php',
-        'Inpsyde\\BackWPup\\Tests\\SanitizePathTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/SanitizePathTest.php',
-        'Inpsyde\\BackWPup\\Tests\\StringToBoolAndBoolToStringTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/StringToBoolAndBoolToStringTest.php',
-        'Inpsyde\\BackWPup\\Tests\\TemplateLoaderTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/pro/restore/TemplateLoaderTest.php',
-        'Inpsyde\\BackWPup\\Tests\\unit\\inc\\BackWPup_Encryption_OpenSSLTest' => __DIR__ . '/../..' . '/tests/php/unit/inc/BackWPup_Encryption_OpenSSLTest.php',
         'Inpsyde_PhoneHome_ActionController' => __DIR__ . '/..' . '/inpsyde/phone-home-client/src/ActionController.php',
         'Inpsyde_PhoneHome_Configuration' => __DIR__ . '/..' . '/inpsyde/phone-home-client/src/Configuration.php',
         'Inpsyde_PhoneHome_Consent' => __DIR__ . '/..' . '/inpsyde/phone-home-client/src/Consent/Consent.php',
@@ -2583,11 +2490,11 @@ class ComposerStaticInit60d0ebfd52f1976313219c1674abb3d8
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit60d0ebfd52f1976313219c1674abb3d8::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit60d0ebfd52f1976313219c1674abb3d8::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit60d0ebfd52f1976313219c1674abb3d8::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInit60d0ebfd52f1976313219c1674abb3d8::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInit60d0ebfd52f1976313219c1674abb3d8::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit37cb09134d372658514673099c06afe0::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit37cb09134d372658514673099c06afe0::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit37cb09134d372658514673099c06afe0::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInit37cb09134d372658514673099c06afe0::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInit37cb09134d372658514673099c06afe0::$classMap;
 
         }, null, ClassLoader::class);
     }

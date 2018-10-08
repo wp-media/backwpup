@@ -128,7 +128,7 @@ class BackWPup_Download_File implements BackWPup_Download_File_Interface {
 	public function check_filename() {
 
 		// Sanitize filename, avoid wrong files.
-		$filename = backwpup_sanitize_file_name( basename( $this->filename ) );
+		$filename = sanitize_file_name( basename( $this->filename ) );
 
 		// Die if filename contains invalid characters.
 		if ( $filename !== $this->filename ) {
