@@ -1,6 +1,13 @@
 == Changelog ==
+= Version 3.6.2 =
+Release Date: Oct 17, 2018
+
+* Fixed: Not recognized file extensions get an additional underscore in the file name in zip file
+* Fixed: Backup archive file have dot folder contains all web root files
+* Fixed: Ftp destination downloader repetitively open a new handler for the source file causing corrupted backup.
+
 = Version 3.6.1 =
-Release Date: Oct 08, 2018
+Release Date: Sep 25, 2018
 
 * Fixed: Backup doesn't handle special characters correctly
 * Fixed: Use of function that doesn't exists prior to 4.9

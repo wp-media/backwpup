@@ -95,6 +95,10 @@ final class BackWPup_Destination_Ftp_Downloader implements BackWPup_Destination_
 	 */
 	private function source_file_handler( $start_byte ) {
 
+		if ( is_resource( $this->source_file_handler ) ) {
+			return;
+		}
+
 		$ctx = stream_context_create( array( 'ftp' => array( 'resume_pos' => $start_byte ) ) );
 		$url = $this->ftp_resource->getURL( $this->data->source_file_path(), false, $ctx );
 

@@ -10,8 +10,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2018-10-01T13:43:10+00:00\n"
-"PO-Revision-Date: 2018-10-01T13:43:10+00:00\n"
+"POT-Creation-Date: 2018-10-16T13:15:01+00:00\n"
+"PO-Revision-Date: 2018-10-16T13:15:01+00:00\n"
 "X-Domain: backwpup\n"
 
 #: inc/class-adminbar.php:51
@@ -712,18 +712,18 @@ msgstr ""
 
 #: inc/class-destination-ftp-downloader.php:72
 #: inc/class-destination-dropbox-downloader.php:72
-#: inc/class-destination-s3-downloader.php:78
+#: inc/class-destination-s3-downloader.php:83
 msgid "Could not write data to file."
 msgstr ""
 
-#: inc/class-destination-ftp-downloader.php:104
+#: inc/class-destination-ftp-downloader.php:108
 msgid "Cannot open FTP file for download."
 msgstr ""
 
-#: inc/class-destination-ftp-downloader.php:122
+#: inc/class-destination-ftp-downloader.php:126
 #: inc/class-destination-folder-downloader.php:137
 #: inc/class-destination-dropbox-downloader.php:104
-#: inc/class-destination-s3-downloader.php:107
+#: inc/class-destination-s3-downloader.php:112
 msgid "File could not be opened for writing."
 msgstr ""
 
@@ -1541,7 +1541,7 @@ msgstr ""
 
 #. translators: The $1 is the tecnical error string from pclzip.
 #: inc/class-create-archive.php:233
-#: inc/class-create-archive.php:524
+#: inc/class-create-archive.php:514
 msgid "PclZip archive add error: %s"
 msgstr ""
 
@@ -1555,76 +1555,76 @@ msgctxt "File to add to archive"
 msgid "File %s does not exist or is not readable"
 msgstr ""
 
-#: inc/class-create-archive.php:357
-#: inc/class-create-archive.php:384
-#: inc/class-create-archive.php:588
-#: inc/class-create-archive.php:597
+#: inc/class-create-archive.php:347
+#: inc/class-create-archive.php:374
+#: inc/class-create-archive.php:578
+#: inc/class-create-archive.php:587
 msgid "This archive method can only add one file"
 msgstr ""
 
-#: inc/class-create-archive.php:452
+#: inc/class-create-archive.php:442
 msgid "ZIP archive cannot be closed correctly"
 msgstr ""
 
 #. translators: the $1 is the name of the archive.
 #. translators: $1 is the name of the archive.
-#: inc/class-create-archive.php:483
-#: inc/class-create-archive.php:500
-#: inc/class-create-archive.php:617
+#: inc/class-create-archive.php:473
+#: inc/class-create-archive.php:490
+#: inc/class-create-archive.php:607
 msgid "Cannot add \"%s\" to zip archive!"
 msgstr ""
 
-#: inc/class-create-archive.php:554
+#: inc/class-create-archive.php:544
 msgid "Folder name cannot be empty"
 msgstr ""
 
 #. translators: $1 is the folder name
-#: inc/class-create-archive.php:565
+#: inc/class-create-archive.php:555
 msgctxt "Folder path to add to archive"
 msgid "Folder %s does not exist or is not readable"
 msgstr ""
 
 #. translators. $1 is the status returned by a call to a ZipArchive method.
-#: inc/class-create-archive.php:649
+#: inc/class-create-archive.php:639
 msgctxt "Text of ZipArchive status Message"
 msgid "ZipArchive returns status: %s"
 msgstr ""
 
 #. translators: $1 is the file name.
-#: inc/class-create-archive.php:697
+#: inc/class-create-archive.php:687
 msgid "File name \"%1$s\" is too long to be saved correctly in %2$s archive!"
 msgstr ""
 
 #. translators: $1 is the file name to use in the archive.
-#: inc/class-create-archive.php:709
+#: inc/class-create-archive.php:699
 msgid "File path \"%1$s\" is too long to be saved correctly in %2$s archive!"
 msgstr ""
 
-#: inc/class-create-archive.php:751
+#: inc/class-create-archive.php:741
 msgid "Cannot open source file %s for archiving. Writing an empty file."
 msgstr ""
 
 #. translators: $1 is the name of the folder. $2 is the archive name.
-#: inc/class-create-archive.php:813
+#: inc/class-create-archive.php:803
 msgid "Folder name \"%1$s\" is too long to be saved correctly in %2$s archive!"
 msgstr ""
 
 #. translators: $1 is the name of the folder. $2 is the archive name.
-#: inc/class-create-archive.php:828
+#: inc/class-create-archive.php:818
 msgid "Folder path \"%1$s\" is too long to be saved correctly in %2$s archive!"
 msgstr ""
 
-#: inc/class-create-archive.php:896
+#: inc/class-create-archive.php:886
 msgid "If %s will be added to your backup archive, the archive will be too large for operations with this PHP Version. You might want to consider splitting the backup job in multiple jobs with less files each."
 msgstr ""
 
-#: inc/class-create-archive.php:974
-#: inc/class-create-archive.php:975
+#: inc/class-create-archive.php:964
+#: inc/class-create-archive.php:965
 msgid "Unknown"
 msgstr ""
 
 #. translators: $1 is the filename to add into the archive.
-#: inc/class-create-archive.php:1006
+#: inc/class-create-archive.php:996
 msgid "Cannot open source file %s."
 msgstr ""
 
@@ -2720,7 +2720,7 @@ msgid "One backup file deleted"
 msgid_plural "%d backup files deleted"
 msgstr[0] ""
 
-#: inc/class-destination-s3-downloader.php:71
+#: inc/class-destination-s3-downloader.php:76
 msgid "Could not write data to file. Empty source file."
 msgstr ""
 

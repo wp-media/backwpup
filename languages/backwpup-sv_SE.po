@@ -341,7 +341,7 @@ msgstr "Kan ej öppna arkivfil"
 #: inc/class-create-archive.php:155
 #: inc/class-create-archive.php:349
 #: inc/class-create-archive.php:233
-#: inc/class-create-archive.php:524
+#: inc/class-create-archive.php:514
 msgid "PclZip archive add error: %s"
 msgstr "Fel vid lägg till i PclZip-arkiv: %s"
 
@@ -356,15 +356,15 @@ msgstr "Fil %s existerar ej eller är ej läsbar"
 #: inc/class-create-archive.php:258
 #: inc/class-create-archive.php:392
 #: inc/class-create-archive.php:396
-#: inc/class-create-archive.php:357
-#: inc/class-create-archive.php:384
-#: inc/class-create-archive.php:588
-#: inc/class-create-archive.php:597
+#: inc/class-create-archive.php:347
+#: inc/class-create-archive.php:374
+#: inc/class-create-archive.php:578
+#: inc/class-create-archive.php:587
 msgid "This archive method can only add one file"
 msgstr "Denna arkiveringsmetod kan endast lägga till en fil"
 
 #: inc/class-create-archive.php:311
-#: inc/class-create-archive.php:452
+#: inc/class-create-archive.php:442
 msgid "ZIP archive cannot be closed correctly"
 msgstr ""
 
@@ -373,40 +373,40 @@ msgstr ""
 #: inc/class-create-archive.php:329
 #: inc/class-create-archive.php:338
 #: inc/class-create-archive.php:407
-#: inc/class-create-archive.php:483
-#: inc/class-create-archive.php:500
-#: inc/class-create-archive.php:617
+#: inc/class-create-archive.php:473
+#: inc/class-create-archive.php:490
+#: inc/class-create-archive.php:607
 msgid "Cannot add \"%s\" to zip archive!"
 msgstr "Kan ej lägga till \"%s\" till ZIP-arkiv!"
 
 #: inc/class-create-archive.php:374
-#: inc/class-create-archive.php:554
+#: inc/class-create-archive.php:544
 msgid "Folder name cannot be empty"
 msgstr "Mappnamn får ej vara blankt"
 
 #. translators: $1 is the folder name
 #: inc/class-create-archive.php:379
-#: inc/class-create-archive.php:565
+#: inc/class-create-archive.php:555
 msgctxt "Folder path to add to archive"
 msgid "Folder %s does not exist or is not readable"
 msgstr "Mapp %s existerar ej eller är ej läsbar"
 
 #. translators. $1 is the status returned by a call to a ZipArchive method.
 #: inc/class-create-archive.php:429
-#: inc/class-create-archive.php:649
+#: inc/class-create-archive.php:639
 msgctxt "Text of ZipArchive status Message"
 msgid "ZipArchive returns status: %s"
 msgstr "ZipArchive returnerar status: %s"
 
 #. translators: $1 is the file name.
 #: inc/class-create-archive.php:459
-#: inc/class-create-archive.php:697
+#: inc/class-create-archive.php:687
 msgid "File name \"%1$s\" is too long to be saved correctly in %2$s archive!"
 msgstr "Filnamn \"%1$s\" är för långt för att sparas korrekt i arkiv %2$s!"
 
 #. translators: $1 is the file name to use in the archive.
 #: inc/class-create-archive.php:462
-#: inc/class-create-archive.php:709
+#: inc/class-create-archive.php:699
 msgid "File path \"%1$s\" is too long to be saved correctly in %2$s archive!"
 msgstr "Filsökväg \"%1$s\" är för lång för att sparas korrekt i arkiv %2$s!"
 
@@ -414,25 +414,25 @@ msgstr "Filsökväg \"%1$s\" är för lång för att sparas korrekt i arkiv %2$s
 #: inc/class-create-archive.php:480
 #: inc/class-create-archive.php:579
 #: inc/class-create-archive.php:580
-#: inc/class-create-archive.php:974
-#: inc/class-create-archive.php:975
+#: inc/class-create-archive.php:964
+#: inc/class-create-archive.php:965
 msgid "Unknown"
 msgstr "Okänt"
 
 #. translators: $1 is the name of the folder. $2 is the archive name.
 #: inc/class-create-archive.php:570
-#: inc/class-create-archive.php:813
+#: inc/class-create-archive.php:803
 msgid "Folder name \"%1$s\" is too long to be saved correctly in %2$s archive!"
 msgstr "Mappnamn \"%1$s\" är för långt för att sparas korrekt i arkiv %2$s!"
 
 #. translators: $1 is the name of the folder. $2 is the archive name.
 #: inc/class-create-archive.php:573
-#: inc/class-create-archive.php:828
+#: inc/class-create-archive.php:818
 msgid "Folder path \"%1$s\" is too long to be saved correctly in %2$s archive!"
 msgstr "Mappsökväg \"%1$s\" är för lång för att sparas korrekt i arkiv %2$s!"
 
 #: inc/class-create-archive.php:654
-#: inc/class-create-archive.php:896
+#: inc/class-create-archive.php:886
 msgid "If %s will be added to your backup archive, the archive will be too large for operations with this PHP Version. You might want to consider splitting the backup job in multiple jobs with less files each."
 msgstr ""
 
@@ -5069,15 +5069,15 @@ msgstr ""
 #: inc/Pro/class-destination-gdrive-downloader.php:74
 #: inc/class-destination-ftp-downloader.php:72
 #: inc/class-destination-dropbox-downloader.php:72
-#: inc/class-destination-s3-downloader.php:78
+#: inc/class-destination-s3-downloader.php:83
 msgid "Could not write data to file."
 msgstr ""
 
 #: inc/Pro/class-destination-gdrive-downloader.php:102
-#: inc/class-destination-ftp-downloader.php:122
+#: inc/class-destination-ftp-downloader.php:126
 #: inc/class-destination-folder-downloader.php:137
 #: inc/class-destination-dropbox-downloader.php:104
-#: inc/class-destination-s3-downloader.php:107
+#: inc/class-destination-s3-downloader.php:112
 msgid "File could not be opened for writing."
 msgstr ""
 
@@ -5113,7 +5113,7 @@ msgstr ""
 msgid "There are some warnings. BackWPup will work, but with limitations."
 msgstr ""
 
-#: inc/class-destination-ftp-downloader.php:104
+#: inc/class-destination-ftp-downloader.php:108
 msgid "Cannot open FTP file for download."
 msgstr ""
 
@@ -5188,12 +5188,12 @@ msgstr ""
 msgid "File name cannot be empty."
 msgstr ""
 
-#: inc/class-create-archive.php:751
+#: inc/class-create-archive.php:741
 msgid "Cannot open source file %s for archiving. Writing an empty file."
 msgstr ""
 
 #. translators: $1 is the filename to add into the archive.
-#: inc/class-create-archive.php:1006
+#: inc/class-create-archive.php:996
 msgid "Cannot open source file %s."
 msgstr ""
 
@@ -5431,7 +5431,7 @@ msgstr ""
 msgid "Restore from FTP"
 msgstr ""
 
-#: inc/class-destination-s3-downloader.php:71
+#: inc/class-destination-s3-downloader.php:76
 msgid "Could not write data to file. Empty source file."
 msgstr ""
 

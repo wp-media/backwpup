@@ -35,6 +35,11 @@ final class BackWPup_Destination_S3_Downloader implements BackWPup_Destination_D
 	private $s3_client;
 
 	/**
+	 * @var resource
+	 */
+	private $local_file_handler;
+
+	/**
 	 * BackWPup_Destination_S3_Downloader constructor
 	 *
 	 * @param \BackWpUp_Destination_Downloader_Data $data

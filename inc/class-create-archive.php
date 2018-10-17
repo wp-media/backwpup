@@ -336,16 +336,6 @@ class BackWPup_Create_Archive {
 			$name_in_archive = $file_name;
 		}
 
-		// Remove reserved chars.
-		$dirname = dirname( $name_in_archive );
-		// Basename without problems with locale.
-		if ( ! in_array( $dirname, array( '.', '..' ), true ) ) {
-			$name_in_archive = str_replace( $dirname, '', $name_in_archive );
-		}
-
-		$name_in_archive = trim( $name_in_archive, '/' );
-		$name_in_archive = trailingslashit( $dirname ) . sanitize_file_name( $name_in_archive );
-
 		switch ( $this->method ) {
 			case 'gz':
 				if ( ! is_resource( $this->filehandler ) ) {
