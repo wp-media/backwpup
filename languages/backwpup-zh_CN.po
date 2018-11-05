@@ -22,8 +22,8 @@ msgstr ""
 
 #: backwpup.php:339
 #: inc/class-page-backups.php:271
-#: inc/class-page-backups.php:243
 #: backwpup.php:286
+#: inc/class-page-backups.php:243
 #: vendor_dist/backwpup.php:286
 msgid "Folder"
 msgstr "文件夹"
@@ -60,24 +60,24 @@ msgstr "备份到 FTP"
 
 #: backwpup.php:387
 #: inc/class-destination-dropbox.php:286
-#: inc/class-destination-dropbox.php:445
 #: backwpup.php:334
+#: inc/class-destination-dropbox.php:445
 #: vendor_dist/backwpup.php:334
 msgid "Dropbox"
 msgstr "Dropbox"
 
 #: backwpup.php:388
 #: inc/class-page-about.php:517
-#: inc/class-page-about.php:519
 #: backwpup.php:335
+#: inc/class-page-about.php:508
 #: vendor_dist/backwpup.php:335
 msgid "Backup to Dropbox"
 msgstr "备份到 Dropbox"
 
 #: backwpup.php:403
 #: inc/class-destination-s3.php:27
-#: inc/class-destination-s3.php:42
 #: backwpup.php:350
+#: inc/class-destination-s3.php:42
 #: vendor_dist/backwpup.php:350
 msgid "S3 Service"
 msgstr "S3 服务"
@@ -108,8 +108,8 @@ msgstr "RSC"
 
 #: backwpup.php:439
 #: inc/class-page-about.php:522
-#: inc/class-page-about.php:524
 #: backwpup.php:388
+#: inc/class-page-about.php:513
 #: vendor_dist/backwpup.php:388
 msgid "Backup to Rackspace Cloud Files"
 msgstr "备份到Rackspace云文件"
@@ -122,8 +122,8 @@ msgstr "SugarSync"
 
 #: backwpup.php:457
 #: inc/class-page-about.php:537
-#: inc/class-page-about.php:539
 #: backwpup.php:408
+#: inc/class-page-about.php:528
 #: vendor_dist/backwpup.php:408
 msgid "Backup to SugarSync"
 msgstr "备份到 SugarSync"
@@ -191,8 +191,8 @@ msgstr "添加新作业"
 #: inc/class-page-logs.php:328
 #: inc/class-page-settings.php:119
 #: inc/class-admin.php:355
-#: inc/class-page-settings.php:219
 #: inc/class-page-logs.php:377
+#: inc/class-page-settings.php:219
 msgid "Logs"
 msgstr "日志"
 
@@ -242,14 +242,17 @@ msgstr "<a class=\"backwpup-get-pro\" href=\"%s\">现在得到BackWPup Pro。</a
 #: inc/pro/class-wizard-job.php:17
 #: inc/pro/class-wizard-jobimport.php:16
 #: inc/pro/class-wizard-systemtest.php:16
-#: inc/Pro/class-wizard-jobimport.php:16
-#: inc/Pro/class-wizard-job.php:17
-#: inc/Pro/class-wizard-systemtest.php:27
 #: inc/class-admin.php:510
 #: inc/class-admin.php:531
+#: inc/class-job.php:459
+#: inc/class-page-about.php:365
+#: inc/class-page-about.php:375
+#: inc/class-page-about.php:660
+#: inc/class-page-backwpup.php:254
 #: inc/class-page-settings.php:1123
-#: inc/class-page-about.php:651
-#: inc/class-job.php:412
+#: inc/Pro/class-wizard-job.php:17
+#: inc/Pro/class-wizard-jobimport.php:16
+#: inc/Pro/class-wizard-systemtest.php:27
 msgid "http://backwpup.com"
 msgstr ""
 
@@ -484,16 +487,16 @@ msgstr "不能打开路径:%s"
 #: inc/class-destination-dropbox.php:36
 #: inc/class-destination-dropbox.php:337
 #: inc/pro/class-destination-dropbox.php:252
-#: inc/Pro/class-destination-dropbox.php:405
 #: inc/class-destination-dropbox.php:55
 #: inc/class-destination-dropbox.php:458
+#: inc/Pro/class-destination-dropbox.php:405
 msgid "Dropbox API: %s"
 msgstr "Dropbox-API: %s"
 
 #: inc/class-destination-dropbox.php:50
 #: inc/pro/class-destination-gdrive.php:51
-#: inc/Pro/class-destination-gdrive.php:93
 #: inc/class-destination-dropbox.php:72
+#: inc/Pro/class-destination-gdrive.php:93
 msgid "Login"
 msgstr "登录"
 
@@ -507,16 +510,16 @@ msgstr "认证"
 #: inc/class-destination-dropbox.php:56
 #: inc/pro/class-destination-gdrive.php:57
 #: inc/pro/class-destination-gdrive.php:295
+#: inc/class-destination-dropbox.php:78
 #: inc/Pro/class-destination-gdrive.php:99
 #: inc/Pro/class-destination-gdrive.php:415
-#: inc/class-destination-dropbox.php:78
 msgid "Not authenticated!"
 msgstr "未通过身份验证"
 
 #: inc/class-destination-dropbox.php:58
 #: inc/pro/class-destination-dropbox.php:28
-#: inc/Pro/class-destination-dropbox.php:51
 #: inc/class-destination-dropbox.php:81
+#: inc/Pro/class-destination-dropbox.php:51
 msgid "Create Account"
 msgstr "创建账户"
 
@@ -526,11 +529,11 @@ msgstr "创建账户"
 #: inc/pro/class-destination-gdrive.php:59
 #: inc/pro/class-destination-gdrive.php:300
 #: inc/pro/class-destination-sugarsync.php:31
+#: inc/class-destination-dropbox.php:83
+#: inc/Pro/class-destination-dropbox.php:57
 #: inc/Pro/class-destination-gdrive.php:101
 #: inc/Pro/class-destination-gdrive.php:425
-#: inc/Pro/class-destination-dropbox.php:57
 #: inc/Pro/class-destination-sugarsync.php:31
-#: inc/class-destination-dropbox.php:83
 msgid "Authenticated!"
 msgstr "已认证"
 
@@ -582,10 +585,10 @@ msgstr "BackWPup将会对你的整个Dropbox进行全面的读写访问。你可
 #: inc/class-destination-rsc.php:95
 #: inc/class-destination-sugarsync.php:81
 #: inc/pro/class-destination-gdrive.php:68
-#: inc/Pro/class-destination-gdrive.php:112
 #: inc/class-destination-dropbox.php:141
 #: inc/class-destination-folder.php:27
 #: inc/class-destination-ftp.php:82
+#: inc/Pro/class-destination-gdrive.php:112
 msgid "Backup settings"
 msgstr "Backup 设置"
 
@@ -604,10 +607,10 @@ msgstr "指定存储备份档案的子文件夹。如果你使用上面的应用
 #: inc/class-destination-ftp.php:59
 #: inc/class-destination-sugarsync.php:91
 #: inc/pro/class-destination-gdrive.php:81
-#: inc/Pro/class-destination-gdrive.php:125
 #: inc/class-destination-dropbox.php:162
 #: inc/class-destination-folder.php:40
 #: inc/class-destination-ftp.php:95
+#: inc/Pro/class-destination-gdrive.php:125
 msgid "File Deletion"
 msgstr "文件删除"
 
@@ -625,17 +628,17 @@ msgstr "文件删除"
 #: inc/pro/class-destination-msazure.php:45
 #: inc/pro/class-destination-rsc.php:65
 #: inc/pro/class-destination-s3.php:73
-#: inc/Pro/class-destination-gdrive.php:134
-#: inc/Pro/class-destination-gdrive.php:456
-#: inc/Pro/class-destination-rsc.php:65
-#: inc/Pro/class-destination-msazure.php:45
-#: inc/Pro/class-destination-s3.php:182
-#: inc/Pro/class-destination-dropbox.php:76
-#: inc/Pro/class-destination-folder.php:45
-#: inc/class-destination-s3.php:229
 #: inc/class-destination-dropbox.php:171
 #: inc/class-destination-folder.php:49
 #: inc/class-destination-ftp.php:104
+#: inc/class-destination-s3.php:229
+#: inc/Pro/class-destination-dropbox.php:76
+#: inc/Pro/class-destination-folder.php:45
+#: inc/Pro/class-destination-gdrive.php:134
+#: inc/Pro/class-destination-gdrive.php:456
+#: inc/Pro/class-destination-msazure.php:45
+#: inc/Pro/class-destination-rsc.php:65
+#: inc/Pro/class-destination-s3.php:182
 msgid "Number of files to keep in folder."
 msgstr "存储到文件夹中的文件数"
 
@@ -648,12 +651,12 @@ msgstr "存储到文件夹中的文件数"
 #: inc/class-destination-sugarsync.php:100
 #: inc/pro/class-destination-gdrive.php:92
 #: inc/pro/class-destination-glacier.php:109
-#: inc/Pro/class-destination-gdrive.php:136
-#: inc/Pro/class-destination-glacier.php:109
-#: inc/class-destination-s3.php:232
 #: inc/class-destination-dropbox.php:173
 #: inc/class-destination-folder.php:51
 #: inc/class-destination-ftp.php:106
+#: inc/class-destination-s3.php:232
+#: inc/Pro/class-destination-gdrive.php:136
+#: inc/Pro/class-destination-glacier.php:109
 msgid "<strong>Warning</strong>: Files belonging to this job are now tracked. Old backup archives which are untracked will not be automatically deleted."
 msgstr "<strong>警告</strong>:该作业的文件现在被跟踪。未跟踪的旧备份档案不会自动删除."
 
@@ -673,19 +676,19 @@ msgstr "<strong>警告</strong>:该作业的文件现在被跟踪。未跟踪的
 #: inc/pro/class-destination-rsc.php:70
 #: inc/pro/class-destination-s3.php:78
 #: inc/pro/class-destination-sugarsync.php:65
-#: inc/Pro/class-destination-gdrive.php:148
-#: inc/Pro/class-destination-gdrive.php:462
-#: inc/Pro/class-destination-rsc.php:70
-#: inc/Pro/class-destination-msazure.php:56
-#: inc/Pro/class-destination-s3.php:187
-#: inc/Pro/class-destination-dropbox.php:82
-#: inc/Pro/class-destination-folder.php:51
-#: inc/Pro/class-destination-ftp.php:75
-#: inc/Pro/class-destination-sugarsync.php:65
-#: inc/class-destination-s3.php:245
 #: inc/class-destination-dropbox.php:183
 #: inc/class-destination-folder.php:57
 #: inc/class-destination-ftp.php:118
+#: inc/class-destination-s3.php:245
+#: inc/Pro/class-destination-dropbox.php:82
+#: inc/Pro/class-destination-folder.php:51
+#: inc/Pro/class-destination-ftp.php:75
+#: inc/Pro/class-destination-gdrive.php:148
+#: inc/Pro/class-destination-gdrive.php:462
+#: inc/Pro/class-destination-msazure.php:56
+#: inc/Pro/class-destination-rsc.php:70
+#: inc/Pro/class-destination-s3.php:187
+#: inc/Pro/class-destination-sugarsync.php:65
 msgid "Do not delete files while syncing to destination!"
 msgstr "在同步到目的地时，不要删除文件！"
 
@@ -696,22 +699,22 @@ msgstr "%d. 正在发送备份文件到 Dropbox …"
 
 #: inc/class-destination-dropbox.php:251
 #: inc/pro/class-destination-dropbox.php:125
-#: inc/Pro/class-destination-dropbox.php:209
 #: inc/class-destination-dropbox.php:390
+#: inc/Pro/class-destination-dropbox.php:209
 msgid "Authenticated with Dropbox of user: %s"
 msgstr "认证的用户: %s"
 
 #: inc/class-destination-dropbox.php:257
 #: inc/pro/class-destination-dropbox.php:131
-#: inc/Pro/class-destination-dropbox.php:217
 #: inc/class-destination-dropbox.php:398
+#: inc/Pro/class-destination-dropbox.php:217
 msgid "%s available on your Dropbox"
 msgstr "Dropbox 可用空间剩余 %s "
 
 #: inc/class-destination-dropbox.php:261
 #: inc/pro/class-destination-dropbox.php:135
-#: inc/Pro/class-destination-dropbox.php:223
 #: inc/class-destination-dropbox.php:404
+#: inc/Pro/class-destination-dropbox.php:223
 msgid "Not Authenticated with Dropbox!"
 msgstr "不验证Dropbox !"
 
@@ -724,26 +727,26 @@ msgstr "上传到Dropbox&#160;&hellip;"
 #: inc/class-destination-msazure.php:286
 #: inc/class-destination-sugarsync.php:260
 #: inc/pro/class-destination-gdrive.php:663
-#: inc/Pro/class-destination-gdrive.php:924
-#: inc/class-destination-msazure.php:290
 #: inc/class-destination-dropbox.php:432
+#: inc/class-destination-msazure.php:290
 #: inc/class-destination-sugarsync.php:263
+#: inc/Pro/class-destination-gdrive.php:924
 msgid "Backup transferred to %s"
 msgstr "备份传输进度 %s"
 
 #: inc/class-destination-dropbox.php:280
 #: inc/pro/class-destination-gdrive.php:666
-#: inc/Pro/class-destination-gdrive.php:930
 #: inc/class-destination-dropbox.php:438
+#: inc/Pro/class-destination-gdrive.php:930
 msgid "Uploaded file size and local file size don't match."
 msgstr "上传的文件大小和本地文件大小不匹配。"
 
 #: inc/class-destination-dropbox.php:285
 #: inc/pro/class-destination-gdrive.php:668
 #: inc/pro/class-destination-glacier.php:448
+#: inc/class-destination-dropbox.php:444
 #: inc/Pro/class-destination-gdrive.php:936
 #: inc/Pro/class-destination-glacier.php:450
-#: inc/class-destination-dropbox.php:444
 msgid "Error transfering backup to %s."
 msgstr "错误的备份到磁带 %s。"
 
@@ -771,9 +774,9 @@ msgstr "完成上载会话，并上传了%s"
 #: inc/class-destination-email.php:38
 #: inc/pro/class-destination-email.php:16
 #: inc/pro/class-destination-email.php:18
+#: inc/class-destination-email.php:39
 #: inc/Pro/class-destination-email.php:16
 #: inc/Pro/class-destination-email.php:18
-#: inc/class-destination-email.php:39
 msgid "Email address"
 msgstr "电子邮件地址"
 
@@ -786,10 +789,10 @@ msgstr "电子邮件地址(多个地址用逗号分隔)"
 #: inc/class-destination-email.php:49
 #: inc/pro/class-destination-email.php:29
 #: inc/pro/class-destination-email.php:30
-#: inc/Pro/class-destination-email.php:29
-#: inc/Pro/class-destination-email.php:30
 #: inc/class-destination-email.php:52
 #: inc/class-destination-email.php:56
+#: inc/Pro/class-destination-email.php:29
+#: inc/Pro/class-destination-email.php:30
 msgid "Send test email"
 msgstr "发送测试邮件"
 
@@ -861,9 +864,9 @@ msgstr "SMTP 主机名"
 #: inc/class-destination-email.php:98
 #: inc/class-destination-ftp.php:31
 #: inc/pro/class-destination-ftp.php:21
-#: inc/Pro/class-destination-ftp.php:35
 #: inc/class-destination-email.php:124
 #: inc/class-destination-ftp.php:56
+#: inc/Pro/class-destination-ftp.php:35
 msgid "Port:"
 msgstr "端口:"
 
@@ -882,10 +885,10 @@ msgstr "SMTP 加密连接"
 #: inc/class-page-settings.php:330
 #: inc/pro/class-jobtype-dbdump.php:157
 #: inc/pro/class-jobtype-dbdump.php:205
-#: inc/Pro/class-jobtype-dbdump.php:157
-#: inc/Pro/class-jobtype-dbdump.php:205
 #: inc/class-destination-email.php:141
 #: inc/class-page-settings.php:837
+#: inc/Pro/class-jobtype-dbdump.php:157
+#: inc/Pro/class-jobtype-dbdump.php:205
 msgid "none"
 msgstr "无"
 
@@ -1007,8 +1010,8 @@ msgstr "FTP连接超时"
 
 #: inc/class-destination-ftp.php:87
 #: inc/class-page-logs.php:257
-#: inc/class-page-logs.php:288
 #: inc/class-destination-ftp.php:137
+#: inc/class-page-logs.php:288
 msgid "seconds"
 msgstr "秒"
 
@@ -1163,15 +1166,15 @@ msgstr "备份传送到FTP服务器： %s"
 #: inc/pro/class-destination-glacier.php:468
 #: inc/pro/class-destination-rsc.php:226
 #: inc/pro/class-destination-rsc.php:259
+#: inc/class-destination-ftp.php:673
+#: inc/class-destination-msazure.php:275
 #: inc/class-destination-rsc.php:292
+#: inc/class-destination-s3.php:843
+#: inc/class-destination-s3.php:958
 #: inc/Pro/class-destination-gdrive.php:905
 #: inc/Pro/class-destination-glacier.php:470
 #: inc/Pro/class-destination-rsc.php:228
 #: inc/Pro/class-destination-rsc.php:261
-#: inc/class-destination-msazure.php:275
-#: inc/class-destination-s3.php:843
-#: inc/class-destination-s3.php:958
-#: inc/class-destination-ftp.php:673
 msgid "Can not open source file for transfer."
 msgstr "不能打开源文件进行传输。"
 
@@ -1220,8 +1223,8 @@ msgstr "容器内部文件夹"
 #: inc/class-destination-rsc.php:105
 #: inc/class-destination-s3.php:114
 #: inc/pro/class-destination-glacier.php:96
-#: inc/Pro/class-destination-glacier.php:96
 #: inc/class-destination-s3.php:215
+#: inc/Pro/class-destination-glacier.php:96
 msgid "File deletion"
 msgstr "文件删除"
 
@@ -1244,15 +1247,15 @@ msgstr "%d. 开始发送备份文件到 Microsoft Azure (Blob)…&#160;&hellip;"
 
 #: inc/class-destination-msazure.php:233
 #: inc/pro/class-destination-msazure.php:144
-#: inc/Pro/class-destination-msazure.php:144
 #: inc/class-destination-msazure.php:237
+#: inc/Pro/class-destination-msazure.php:144
 msgid "MS Azure container \"%s\" does not exist!"
 msgstr "MS Azure 容器  \"%s\" 不存在！"
 
 #: inc/class-destination-msazure.php:237
 #: inc/pro/class-destination-msazure.php:148
-#: inc/Pro/class-destination-msazure.php:148
 #: inc/class-destination-msazure.php:241
+#: inc/Pro/class-destination-msazure.php:148
 msgid "Connected to MS Azure container \"%s\"."
 msgstr "已连接到 MS Azure 容器 \"%s\"."
 
@@ -1264,9 +1267,9 @@ msgstr "开始上传文件到 Microsoft Azure …&#160;&hellip;"
 #: inc/class-destination-msazure.php:292
 #: inc/class-destination-msazure.php:348
 #: inc/pro/class-destination-msazure.php:233
-#: inc/Pro/class-destination-msazure.php:233
 #: inc/class-destination-msazure.php:296
 #: inc/class-destination-msazure.php:352
+#: inc/Pro/class-destination-msazure.php:233
 msgid "Microsoft Azure API: %s"
 msgstr "Microsoft Azure API： %s"
 
@@ -1284,9 +1287,9 @@ msgstr "缺少帐户名！"
 #: inc/class-destination-msazure.php:444
 #: inc/class-destination-s3.php:222
 #: inc/pro/class-destination-glacier.php:166
-#: inc/Pro/class-destination-glacier.php:166
 #: inc/class-destination-msazure.php:448
 #: inc/class-destination-s3.php:359
+#: inc/Pro/class-destination-glacier.php:166
 msgid "Missing access key!"
 msgstr "缺少 access key！"
 
@@ -1431,120 +1434,120 @@ msgstr "选择一个 S3 服务器"
 
 #: inc/class-destination-s3.php:33
 #: inc/pro/class-destination-s3.php:18
-#: inc/Pro/class-destination-s3.php:32
 #: inc/class-destination-s3.php:54
+#: inc/Pro/class-destination-s3.php:32
 msgid "Amazon S3 Region"
 msgstr "Amazon S3 地区"
 
 #: inc/class-destination-s3.php:34
 #: inc/pro/class-destination-s3.php:19
-#: inc/Pro/class-destination-s3.php:40
 #: inc/class-destination-s3.php:1118
+#: inc/Pro/class-destination-s3.php:40
 msgid "Amazon S3: US Standard"
 msgstr "Amazon S3: US Standard"
 
 #: inc/class-destination-s3.php:35
 #: inc/pro/class-destination-s3.php:20
-#: inc/Pro/class-destination-s3.php:45
 #: inc/class-destination-s3.php:1122
+#: inc/Pro/class-destination-s3.php:45
 msgid "Amazon S3: US West (Northern California)"
 msgstr "Amazon S3: US West (Northern California)"
 
 #: inc/class-destination-s3.php:36
 #: inc/pro/class-destination-s3.php:21
-#: inc/Pro/class-destination-s3.php:53
 #: inc/class-destination-s3.php:1126
+#: inc/Pro/class-destination-s3.php:53
 msgid "Amazon S3: US West (Oregon)"
 msgstr "Amazon S3: US West (Oregon)"
 
 #: inc/class-destination-s3.php:37
 #: inc/pro/class-destination-s3.php:22
-#: inc/Pro/class-destination-s3.php:58
 #: inc/class-destination-s3.php:1130
+#: inc/Pro/class-destination-s3.php:58
 msgid "Amazon S3: EU (Ireland)"
 msgstr "Amazon S3: EU (Ireland)"
 
 #: inc/class-destination-s3.php:38
 #: inc/pro/class-destination-s3.php:23
-#: inc/Pro/class-destination-s3.php:68
 #: inc/class-destination-s3.php:1138
+#: inc/Pro/class-destination-s3.php:68
 msgid "Amazon S3: EU (Germany)"
 msgstr "Amazon S3:欧盟(德国)"
 
 #: inc/class-destination-s3.php:39
 #: inc/pro/class-destination-s3.php:24
-#: inc/Pro/class-destination-s3.php:73
 #: inc/class-destination-s3.php:1142
+#: inc/Pro/class-destination-s3.php:73
 msgid "Amazon S3: Asia Pacific (Mumbai)"
 msgstr "Amazon S3: 亚太(孟买)"
 
 #: inc/class-destination-s3.php:40
 #: inc/pro/class-destination-s3.php:25
-#: inc/Pro/class-destination-s3.php:78
 #: inc/class-destination-s3.php:1146
+#: inc/Pro/class-destination-s3.php:78
 msgid "Amazon S3: Asia Pacific (Tokyo)"
 msgstr "Amazon S3: Asia Pacific (Tokyo)"
 
 #: inc/class-destination-s3.php:41
 #: inc/pro/class-destination-s3.php:26
-#: inc/Pro/class-destination-s3.php:83
 #: inc/class-destination-s3.php:1150
+#: inc/Pro/class-destination-s3.php:83
 msgid "Amazon S3: Asia Pacific (Seoul)"
 msgstr "Amazon S3:亚太(首尔)"
 
 #: inc/class-destination-s3.php:42
 #: inc/pro/class-destination-s3.php:27
-#: inc/Pro/class-destination-s3.php:88
 #: inc/class-destination-s3.php:1154
+#: inc/Pro/class-destination-s3.php:88
 msgid "Amazon S3: Asia Pacific (Singapore)"
 msgstr "Amazon S3: Asia Pacific (Singapore)"
 
 #: inc/class-destination-s3.php:43
 #: inc/pro/class-destination-s3.php:28
-#: inc/Pro/class-destination-s3.php:93
 #: inc/class-destination-s3.php:1158
+#: inc/Pro/class-destination-s3.php:93
 msgid "Amazon S3: Asia Pacific (Sydney)"
 msgstr "Amazon S3: Asia Pacific (Sydney)"
 
 #: inc/class-destination-s3.php:44
 #: inc/pro/class-destination-s3.php:29
-#: inc/Pro/class-destination-s3.php:98
 #: inc/class-destination-s3.php:1162
+#: inc/Pro/class-destination-s3.php:98
 msgid "Amazon S3: South America (Sao Paulo)"
 msgstr "Amazon S3: South America (Sao Paulo)"
 
 #: inc/class-destination-s3.php:45
 #: inc/pro/class-destination-s3.php:30
-#: inc/Pro/class-destination-s3.php:103
 #: inc/class-destination-s3.php:1166
+#: inc/Pro/class-destination-s3.php:103
 msgid "Amazon S3: China (Beijing)"
 msgstr "Amazon S3: 中国(北京)"
 
 #: inc/class-destination-s3.php:46
 #: inc/pro/class-destination-s3.php:31
-#: inc/Pro/class-destination-s3.php:108
 #: inc/class-destination-s3.php:1170
+#: inc/Pro/class-destination-s3.php:108
 msgid "Google Storage: EU"
 msgstr "Google存储:欧盟"
 
 #: inc/class-destination-s3.php:47
 #: inc/pro/class-destination-s3.php:32
-#: inc/Pro/class-destination-s3.php:113
 #: inc/class-destination-s3.php:1174
+#: inc/Pro/class-destination-s3.php:113
 msgid "Google Storage: USA"
 msgstr "Google存储:美国"
 
 #: inc/class-destination-s3.php:48
 #: inc/pro/class-destination-s3.php:33
-#: inc/Pro/class-destination-s3.php:118
 #: inc/class-destination-s3.php:1178
+#: inc/Pro/class-destination-s3.php:118
 msgid "Google Storage: Asia"
 msgstr "Google存储:亚洲"
 
 #: inc/class-destination-s3.php:49
 #: inc/pro/class-destination-s3.php:34
-#: inc/Pro/class-destination-s3.php:123
 #: inc/class-destination-s3.php:1182
+#: inc/Pro/class-destination-s3.php:123
 msgid "Dream Host Cloud Storage"
 msgstr "Dream Host 云存储"
 
@@ -1560,15 +1563,15 @@ msgstr "S3 Access Keys"
 
 #: inc/class-destination-s3.php:65
 #: inc/pro/class-destination-glacier.php:54
-#: inc/Pro/class-destination-glacier.php:54
 #: inc/class-destination-s3.php:121
+#: inc/Pro/class-destination-glacier.php:54
 msgid "Access Key"
 msgstr "Access Key"
 
 #: inc/class-destination-s3.php:72
 #: inc/pro/class-destination-glacier.php:61
-#: inc/Pro/class-destination-glacier.php:61
 #: inc/class-destination-s3.php:135
+#: inc/Pro/class-destination-glacier.php:61
 msgid "Secret Key"
 msgstr "Secret Key"
 
@@ -1636,8 +1639,8 @@ msgstr "在服务器上加密保存文件（AES256）"
 
 #: inc/class-destination-s3.php:224
 #: inc/pro/class-destination-glacier.php:168
-#: inc/Pro/class-destination-glacier.php:168
 #: inc/class-destination-s3.php:361
+#: inc/Pro/class-destination-glacier.php:168
 msgid "Missing secret access key!"
 msgstr "缺少 secret access key！"
 
@@ -1653,8 +1656,8 @@ msgstr "存储库（Bucket）%1$s已创建"
 
 #: inc/class-destination-s3.php:348
 #: inc/pro/class-destination-s3.php:147
-#: inc/Pro/class-destination-s3.php:285
 #: inc/class-destination-s3.php:520
+#: inc/Pro/class-destination-s3.php:285
 msgid " %s is not a valid bucket name."
 msgstr "%s 不是一个有效的 Bucket 名称"
 
@@ -1664,12 +1667,12 @@ msgstr "%s 不是一个有效的 Bucket 名称"
 #: inc/class-destination-s3.php:610
 #: inc/class-destination-s3.php:670
 #: inc/pro/class-destination-s3.php:337
-#: inc/Pro/class-destination-s3.php:623
 #: inc/class-destination-s3.php:570
 #: inc/class-destination-s3.php:868
 #: inc/class-destination-s3.php:936
 #: inc/class-destination-s3.php:995
 #: inc/class-destination-s3.php:1006
+#: inc/Pro/class-destination-s3.php:623
 msgid "S3 Service API: %s"
 msgstr "S3服务 API：%s"
 
@@ -1680,15 +1683,15 @@ msgstr "%d. 开始发送备份文件到 S3 服务器…"
 
 #: inc/class-destination-s3.php:470
 #: inc/pro/class-destination-s3.php:188
-#: inc/Pro/class-destination-s3.php:383
 #: inc/class-destination-s3.php:803
+#: inc/Pro/class-destination-s3.php:383
 msgid "Connected to S3 Bucket \"%1$s\" in %2$s"
 msgstr "已连接到 S3 Bucket \"%1$s\" in %2$s"
 
 #: inc/class-destination-s3.php:473
 #: inc/pro/class-destination-s3.php:191
-#: inc/Pro/class-destination-s3.php:391
 #: inc/class-destination-s3.php:808
+#: inc/Pro/class-destination-s3.php:391
 msgid "S3 Bucket \"%s\" does not exist!"
 msgstr "S3 Bucket \"%s\" 不存在！"
 
@@ -1709,8 +1712,8 @@ msgstr "开始上传文件到 S3 服务器 …"
 
 #: inc/class-destination-s3.php:601
 #: inc/pro/class-destination-glacier.php:444
-#: inc/Pro/class-destination-glacier.php:446
 #: inc/class-destination-s3.php:972
+#: inc/Pro/class-destination-glacier.php:446
 msgid "Backup transferred to %s."
 msgstr "备份已转移到 %s"
 
@@ -1749,9 +1752,9 @@ msgstr "电子邮件地址:"
 #: inc/pro/class-destination-ftp.php:29
 #: inc/pro/class-destination-sugarsync.php:20
 #: inc/pro/class-jobtype-dbdump.php:126
-#: inc/Pro/class-jobtype-dbdump.php:126
 #: inc/Pro/class-destination-ftp.php:47
 #: inc/Pro/class-destination-sugarsync.php:20
+#: inc/Pro/class-jobtype-dbdump.php:126
 msgid "Password:"
 msgstr "密码："
 
@@ -1928,74 +1931,74 @@ msgid "BackWPup jobs helper"
 msgstr "BackWPup 计划帮助"
 
 #: inc/class-job.php:263
-#: inc/class-job.php:269
+#: inc/class-job.php:297
 msgid "Starting job"
 msgstr "启动计划"
 
 #: inc/class-job.php:278
-#: inc/class-job.php:284
+#: inc/class-job.php:314
 msgid "Job Start"
 msgstr "计划启动"
 
 #: inc/class-job.php:298
-#: inc/class-job.php:304
+#: inc/class-job.php:334
 msgid "Creates manifest file"
 msgstr "创建清单文件"
 
 #: inc/class-job.php:320
-#: inc/class-job.php:326
+#: inc/class-job.php:356
 msgid "Creates archive"
 msgstr "创建存档"
 
 #: inc/class-job.php:360
-#: inc/class-job.php:373
+#: inc/class-job.php:403
 msgid "End of Job"
 msgstr "结束工作"
 
 #: inc/class-job.php:377
-#: inc/class-job.php:395
+#: inc/class-job.php:428
 msgid "BackWPup log for %1$s from %2$s at %3$s"
 msgstr "BackWPup 日志文件 %1$s 来自 %2$s  %3$s"
 
 #: inc/class-job.php:394
-#: inc/class-job.php:412
+#: inc/class-job.php:456
 msgctxt "Plugin name; Plugin Version; plugin url"
 msgid "[INFO] %1$s %2$s; A project of Inpsyde GmbH"
 msgstr "[INFO]%1$s %2$ s;Inpsyde GmbH是一家高水平的企业"
 
 #: inc/class-job.php:395
-#: inc/class-job.php:413
+#: inc/class-job.php:462
 msgctxt "WordPress Version; Blog url"
 msgid "[INFO] WordPress %1$s on %2$s"
 msgstr "[INFO] WordPress %1$s on %2$s"
 
 #: inc/class-job.php:396
-#: inc/class-job.php:414
+#: inc/class-job.php:465
 msgid "Normal"
 msgstr "普通"
 
 #: inc/class-job.php:399
-#: inc/class-job.php:417
+#: inc/class-job.php:468
 msgid "Debug"
 msgstr "调试"
 
 #: inc/class-job.php:402
-#: inc/class-job.php:420
+#: inc/class-job.php:471
 msgid "(translated)"
 msgstr "(翻译)"
 
 #: inc/class-job.php:404
-#: inc/class-job.php:422
+#: inc/class-job.php:474
 msgid "[INFO] Log Level: %1$s %2$s"
 msgstr "[信息]日志级别: %1$s %2$s"
 
 #: inc/class-job.php:409
-#: inc/class-job.php:427
+#: inc/class-job.php:480
 msgid "[INFO] BackWPup job: %1$s"
 msgstr "[INFO] BackWPup 计划: %1$s"
 
 #: inc/class-job.php:412
-#: inc/class-job.php:430
+#: inc/class-job.php:484
 msgid "[INFO] Runs with user: %1$s (%2$d) "
 msgstr "[INFO]与用户一起运行:%1$s(%2$d)"
 
@@ -2003,438 +2006,438 @@ msgstr "[INFO]与用户一起运行:%1$s(%2$d)"
 #: inc/class-page-backwpup.php:323
 #: inc/class-page-jobs.php:282
 #: inc/class-page-jobs.php:291
-#: inc/class-job.php:444
+#: inc/class-job.php:500
 msgid "Not scheduled!"
 msgstr "预定！"
 
 #: inc/class-job.php:430
 #: inc/class-job.php:440
-#: inc/class-job.php:448
-#: inc/class-job.php:458
+#: inc/class-job.php:507
+#: inc/class-job.php:519
 msgid "[INFO] Cron: %s; Next: %s "
 msgstr "[INFO] Cron: %s; 下一个: %s "
 
 #: inc/class-job.php:433
-#: inc/class-job.php:451
+#: inc/class-job.php:511
 msgid "[INFO] BackWPup job start with link is active"
 msgstr "[INFO]BackWPup job start with link是活动的"
 
 #: inc/class-job.php:435
-#: inc/class-job.php:453
+#: inc/class-job.php:513
 msgid "[INFO] BackWPup job start with EasyCron.com"
 msgstr "[INFO]BackWPup job从EasyCron.com开始"
 
 #: inc/class-job.php:443
-#: inc/class-job.php:461
+#: inc/class-job.php:523
 msgid "[INFO] BackWPup no automatic job start configured"
 msgstr "[INFO]BackWPup没有自动开始配置"
 
 #: inc/class-job.php:447
-#: inc/class-job.php:465
+#: inc/class-job.php:527
 msgid "[INFO] BackWPup job started from wp-cron"
 msgstr "[INFO] BackWPup 计划已根据 wp-cron 启动"
 
 #: inc/class-job.php:449
-#: inc/class-job.php:467
+#: inc/class-job.php:529
 msgid "[INFO] BackWPup job started manually"
 msgstr "[INFO] BackWPup 计划已手动启动"
 
 #: inc/class-job.php:451
-#: inc/class-job.php:469
+#: inc/class-job.php:531
 msgid "[INFO] BackWPup job started from external url"
 msgstr "[INFO] BackWPup 计划已从外部 URL 启动"
 
 #: inc/class-job.php:453
-#: inc/class-job.php:471
+#: inc/class-job.php:533
 msgid "[INFO] BackWPup job started form commandline interface"
 msgstr "[INFO] BackWPup 计划已从命令行界面启动"
 
 #: inc/class-job.php:462
-#: inc/class-job.php:480
+#: inc/class-job.php:544
 msgid "[INFO] PHP ver.:"
 msgstr "[INFO] PHP 版本："
 
 #: inc/class-job.php:463
-#: inc/class-job.php:481
+#: inc/class-job.php:548
 msgid "[INFO] Maximum PHP script execution time is %1$d seconds"
 msgstr "[INFO]最大的PHP脚本执行时间是%1$d秒"
 
 #: inc/class-job.php:467
-#: inc/class-job.php:485
+#: inc/class-job.php:555
 msgid "[INFO] Script restart time is configured to %1$d seconds"
 msgstr "[INFO]脚本重启时间配置为%1$d秒"
 
 #: inc/class-job.php:470
-#: inc/class-job.php:488
+#: inc/class-job.php:561
 msgid "[INFO] MySQL ver.: %s"
 msgstr "[INFO] MySQL 版本：%s"
 
 #: inc/class-job.php:472
-#: inc/class-job.php:490
+#: inc/class-job.php:565
 msgid "[INFO] Web Server: %s"
 msgstr "[INFO] 网站服务器: %s"
 
 #: inc/class-job.php:476
-#: inc/class-job.php:494
+#: inc/class-job.php:571
 msgid "[INFO] curl ver.: %1$s; %2$s"
 msgstr "[INFO] curl 版本：%1$s; %2$s"
 
 #: inc/class-job.php:478
-#: inc/class-job.php:496
+#: inc/class-job.php:576
 msgid "[INFO] Temp folder is: %s"
 msgstr "[INFO] 临时文件夹是：%s"
 
 #: inc/class-job.php:485
-#: inc/class-job.php:503
+#: inc/class-job.php:584
 msgid "[INFO] Logfile is: %s"
 msgstr "[INFO]日志文件是:%s"
 
 #: inc/class-job.php:492
-#: inc/class-job.php:510
+#: inc/class-job.php:591
 msgid "[INFO] Backup file is: %s"
 msgstr "[INFO] 备份文件是：%s"
 
 #: inc/class-job.php:494
-#: inc/class-job.php:512
+#: inc/class-job.php:594
 msgid "[INFO] Backup type is: %s"
 msgstr "[INFO] 备份类型是：%s"
 
 #: inc/class-job.php:502
-#: inc/class-job.php:520
+#: inc/class-job.php:603
 msgid "Could not write log file"
 msgstr "不能写日志文件"
 
 #: inc/class-job.php:514
-#: inc/class-job.php:532
+#: inc/class-job.php:616
 msgid "No destination correctly defined for backup! Please correct job settings."
 msgstr "没有正确定义备份的目的地！"
 
 #: inc/class-job.php:644
-#: inc/class-job.php:628
+#: inc/class-job.php:718
 msgid "Cannot write progress to working file. Job will be aborted."
 msgstr "不能将进度写入工作文件。工作将会中止。"
 
 #: inc/class-job.php:716
 #: inc/class-page-jobs.php:786
-#: inc/class-job.php:700
+#: inc/class-job.php:793
 msgid "WARNING:"
 msgstr "警告："
 
 #: inc/class-job.php:725
 #: inc/class-page-jobs.php:784
-#: inc/class-job.php:709
+#: inc/class-job.php:802
 msgid "ERROR:"
 msgstr "错误:"
 
 #: inc/class-job.php:729
-#: inc/class-job.php:713
+#: inc/class-job.php:806
 msgid "DEPRECATED:"
 msgstr "弃用："
 
 #: inc/class-job.php:732
-#: inc/class-job.php:716
+#: inc/class-job.php:809
 msgid "STRICT NOTICE:"
 msgstr "严格注意："
 
 #: inc/class-job.php:737
-#: inc/class-job.php:721
+#: inc/class-job.php:814
 msgid "RECOVERABLE ERROR:"
 msgstr "可恢复的错误："
 
 #: inc/class-job.php:985
-#: inc/class-job.php:972
+#: inc/class-job.php:1091
 msgid "Aborted by user!"
 msgstr "由用户中止！"
 
 #: inc/class-job.php:1019
-#: inc/class-job.php:1005
+#: inc/class-job.php:1129
 msgid "One old log deleted"
 msgid_plural "%d old logs deleted"
 msgstr[0] "%d一个旧的日志删除"
 
 #: inc/class-job.php:1026
 #: inc/class-page-jobs.php:784
-#: inc/class-job.php:1012
+#: inc/class-job.php:1141
 msgid "Job has ended with errors in %s seconds. You must resolve the errors for correct execution."
 msgstr "计划已结束，用时 %s 秒，有错误。为正确执行，请解决这些错误。"
 
 #: inc/class-job.php:1028
-#: inc/class-job.php:1014
+#: inc/class-job.php:1150
 msgid "Job finished with warnings in %s seconds. Please resolve them for correct execution."
 msgstr "在%s秒内完成警告工作。请将其解析为正确执行。"
 
 #: inc/class-job.php:1030
 #: inc/class-page-jobs.php:788
-#: inc/class-job.php:1016
+#: inc/class-job.php:1158
 msgid "Job done in %s seconds."
 msgstr "计划已完成，用时 %s 秒"
 
 #: inc/class-job.php:1074
-#: inc/class-job.php:1060
+#: inc/class-job.php:1212
 msgid "SUCCESSFUL"
 msgstr "成功"
 
 #: inc/class-job.php:1076
-#: inc/class-job.php:1062
+#: inc/class-job.php:1214
 msgid "WARNING"
 msgstr "警告"
 
 #: inc/class-job.php:1079
-#: inc/class-job.php:1065
+#: inc/class-job.php:1217
 msgid "ERROR"
 msgstr "错误"
 
 #: inc/class-job.php:1082
-#: inc/class-job.php:1068
+#: inc/class-job.php:1221
 msgid "[%3$s] BackWPup log %1$s: %2$s"
 msgstr "[%3$s] BackWPup 日志 %1$s: %2$s"
 
 #: inc/class-job.php:1188
-#: inc/class-job.php:1180
+#: inc/class-job.php:1341
 msgid "Restart after %1$d seconds."
 msgstr "在%1$d秒后重启。"
 
 #: inc/class-job.php:1190
-#: inc/class-job.php:1182
+#: inc/class-job.php:1343
 msgid "Restart after getting signal."
 msgstr "重启后得到的信号。"
 
 #: inc/class-job.php:1363
-#: inc/class-job.php:1357
+#: inc/class-job.php:1534
 msgid "Job restarts due to inactivity for more than 5 minutes."
 msgstr "工作重新开始，因为活动时间超过5分钟。"
 
 #: inc/class-job.php:1461
-#: inc/class-job.php:1455
+#: inc/class-job.php:1636
 msgid "Step aborted: too many attempts!"
 msgstr "步骤中止：尝试次数过多！"
 
 #: inc/class-job.php:1532
-#: inc/class-job.php:1528
+#: inc/class-job.php:1716
 msgid "%d. Trying to create backup archive &hellip;"
 msgstr "%d. 正在尝试创建备份存档 …"
 
 #: inc/class-job.php:1540
-#: inc/class-job.php:1536
+#: inc/class-job.php:1729
 msgctxt "Archive compression method"
 msgid "Compressing files as %s. Please be patient, this may take a moment."
 msgstr "压缩文件%s。请耐心点，这可能需要一点时间。"
 
 #: inc/class-job.php:1547
-#: inc/class-job.php:1544
+#: inc/class-job.php:1742
 msgid "Adding Extra files to Archive"
 msgstr "向归档添加额外的文件"
 
 #: inc/class-job.php:1559
 #: inc/class-job.php:1619
-#: inc/class-job.php:1555
-#: inc/class-job.php:1626
+#: inc/class-job.php:1754
+#: inc/class-job.php:1823
 msgid "Cannot create backup archive correctly. Aborting creation."
 msgstr "不能正确创建备份存档。流产的创造。"
 
 #: inc/class-job.php:1575
-#: inc/class-job.php:1571
+#: inc/class-job.php:1772
 msgid "Archiving Folder: %s"
 msgstr "归档文件夹:%s"
 
 #: inc/class-job.php:1629
-#: inc/class-job.php:1636
+#: inc/class-job.php:1834
 msgid "Backup archive created."
 msgstr "备份存档已创建"
 
 #: inc/class-job.php:1643
-#: inc/class-job.php:1650
+#: inc/class-job.php:1849
 msgid "The Backup archive will be too large for file operations with this PHP Version. You might want to consider splitting the backup job in multiple jobs with less files each."
 msgstr "使用这个PHP版本的备份存档文件将会太大。您可能希望考虑将备份作业拆分为多个作业，每个作业的文件较少。"
 
 #: inc/class-job.php:1646
-#: inc/class-job.php:1653
+#: inc/class-job.php:1857
 msgid "Archive size is %s."
 msgstr "存档大小为 %s"
 
 #: inc/class-job.php:1649
-#: inc/class-job.php:1656
+#: inc/class-job.php:1864
 msgid "%1$d Files with %2$s in Archive."
 msgstr "%1$d 文件和 %2$s 在存档中"
 
 #: inc/class-job.php:1698
-#: inc/class-job.php:1831
+#: inc/class-job.php:2059
 msgctxt "Folder name"
 msgid "Folder %s does not exist"
 msgstr "文件夹%s不存在"
 
 #: inc/class-job.php:1703
-#: inc/class-job.php:1837
+#: inc/class-job.php:2067
 msgctxt "Folder name"
 msgid "Folder %s is not readable"
 msgstr "文件夹 \"%s\" 不可读！"
 
 #: inc/class-job.php:1725
-#: inc/class-job.php:1860
+#: inc/class-job.php:2096
 msgid "Link \"%s\" not following."
 msgstr "链接不遵循“%s”。"
 
 #: inc/class-job.php:1727
-#: inc/class-job.php:1862
+#: inc/class-job.php:2100
 msgid "File \"%s\" is not readable!"
 msgstr "文件 \"%s\" 不可读"
 
 #: inc/class-job.php:1731
-#: inc/class-job.php:1866
+#: inc/class-job.php:2107
 msgid "File size of “%s” cannot be retrieved. File might be too large and will not be added to queue."
 msgstr "无法检索“%s”的文件大小。文件可能太大，不能添加到队列中。"
 
 #: inc/class-job.php:1814
-#: inc/class-job.php:1949
+#: inc/class-job.php:2197
 msgid "%d. Trying to generate a manifest file&#160;&hellip;"
 msgstr "%d。试图生成一个清单文件&#160;&hellip;"
 
 #: inc/class-job.php:1870
-#: inc/class-job.php:2005
+#: inc/class-job.php:2264
 msgid "You may have noticed the manifest.json file in this archive."
 msgstr "你可能已经注意到了这个清单。这个存档中的json文件。"
 
 #: inc/class-job.php:1871
-#: inc/class-job.php:2006
+#: inc/class-job.php:2265
 msgid "manifest.json might be needed for later restoring a backup from this archive."
 msgstr "清单。稍后可能需要json来从这个存档中恢复备份。"
 
 #: inc/class-job.php:1872
-#: inc/class-job.php:2007
+#: inc/class-job.php:2268
 msgid "Please leave manifest.json untouched and in place. Otherwise it is safe to be ignored."
 msgstr "请把清单。json未受影响。否则，被忽视是安全的。"
 
 #: inc/class-job.php:1882
-#: inc/class-job.php:2017
+#: inc/class-job.php:2282
 msgid "Added manifest.json file with %1$s to backup file list."
 msgstr "添加清单。带有%1$s到备份文件列表的json文件。"
 
 #: inc/class-job.php:1921
-#: inc/class-job.php:2056
+#: inc/class-job.php:2324
 msgid "Wrong BackWPup JobID"
 msgstr "错误的 BackWPup 计划 ID"
 
 #: inc/class-job.php:1934
-#: inc/class-job.php:2069
+#: inc/class-job.php:2337
 msgid "A BackWPup job is already running"
 msgstr "一个 BackWPup 备份计划已在执行"
 
 #: inc/class-job.php:2302
-#: inc/class-job.php:2482
+#: inc/class-job.php:2752
 msgctxt "SIGHUP: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Hangup detected on controlling terminal or death of controlling process"
 msgstr "在控制终端或控制过程的死亡中被发现"
 
 #: inc/class-job.php:2306
-#: inc/class-job.php:2486
+#: inc/class-job.php:2759
 msgctxt "SIGINT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Interrupt from keyboard"
 msgstr "从键盘中断"
 
 #: inc/class-job.php:2310
-#: inc/class-job.php:2490
+#: inc/class-job.php:2766
 msgctxt "SIGQUIT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Quit from keyboard"
 msgstr "戒烟从键盘"
 
 #: inc/class-job.php:2314
-#: inc/class-job.php:2494
+#: inc/class-job.php:2773
 msgctxt "SIGILL: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Illegal Instruction"
 msgstr "非法指令"
 
 #: inc/class-job.php:2318
-#: inc/class-job.php:2498
+#: inc/class-job.php:2780
 msgctxt "SIGABRT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Abort signal from abort(3)"
 msgstr "中止信号从中止(3)"
 
 #: inc/class-job.php:2322
-#: inc/class-job.php:2502
+#: inc/class-job.php:2787
 msgctxt "SIGBUS: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Bus error (bad memory access)"
 msgstr "总线错误(错误的内存访问)"
 
 #: inc/class-job.php:2326
-#: inc/class-job.php:2506
+#: inc/class-job.php:2794
 msgctxt "SIGFPE: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Floating point exception"
 msgstr "浮点数异常错误"
 
 #: inc/class-job.php:2330
-#: inc/class-job.php:2510
+#: inc/class-job.php:2801
 msgctxt "SIGSEGV: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Invalid memory reference"
 msgstr "无效的内存引用"
 
 #: inc/class-job.php:2334
-#: inc/class-job.php:2514
+#: inc/class-job.php:2808
 msgctxt "SIGTERM: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Termination signal"
 msgstr "终止信号"
 
 #: inc/class-job.php:2338
-#: inc/class-job.php:2518
+#: inc/class-job.php:2815
 msgctxt "SIGSTKFLT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Stack fault on coprocessor"
 msgstr "堆栈断层对协处理器"
 
 #: inc/class-job.php:2342
-#: inc/class-job.php:2522
+#: inc/class-job.php:2822
 msgctxt "SIGUSR1: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "User-defined signal 1"
 msgstr "用户定义的信号1"
 
 #: inc/class-job.php:2346
-#: inc/class-job.php:2526
+#: inc/class-job.php:2829
 msgctxt "SIGUSR2: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "User-defined signal 2"
 msgstr "用户定义的信号2"
 
 #: inc/class-job.php:2350
-#: inc/class-job.php:2530
+#: inc/class-job.php:2836
 msgctxt "SIGURG: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Urgent condition on socket"
 msgstr "紧急条件套接字"
 
 #: inc/class-job.php:2354
-#: inc/class-job.php:2534
+#: inc/class-job.php:2843
 msgctxt "SIGXCPU: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "CPU time limit exceeded"
 msgstr "CPU时间限制超过"
 
 #: inc/class-job.php:2358
-#: inc/class-job.php:2538
+#: inc/class-job.php:2850
 msgctxt "SIGXFSZ: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "File size limit exceeded"
 msgstr "文件大小超过限制"
 
 #: inc/class-job.php:2362
-#: inc/class-job.php:2542
+#: inc/class-job.php:2857
 msgctxt "SIGPWR: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Power failure"
 msgstr "电源故障"
 
 #: inc/class-job.php:2366
-#: inc/class-job.php:2546
+#: inc/class-job.php:2864
 msgctxt "SIGSYS: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Bad argument to routine"
 msgstr "坏参数常规"
 
 #: inc/class-job.php:2373
-#: inc/class-job.php:2553
+#: inc/class-job.php:2876
 msgid "Signal \"%1$s\" (%2$s) is sent to script!"
 msgstr "信号\"%1$s\" (%2$s)被发送到脚本!"
 
 #: inc/class-job.php:2407
 #: inc/class-job.php:2420
-#: inc/class-job.php:2587
-#: inc/class-job.php:2600
+#: inc/class-job.php:2912
+#: inc/class-job.php:2925
 msgid "System: %s"
 msgstr "系统:%s"
 
 #: inc/class-job.php:2435
-#: inc/class-job.php:2615
+#: inc/class-job.php:2942
 msgid "Exception caught in %1$s: %2$s"
 msgstr "异常发生于 %1$s: %2$s"
 
@@ -2455,8 +2458,8 @@ msgstr "检查数据表"
 #: inc/pro/class-wizard-job.php:19
 #: inc/pro/class-wizard-jobimport.php:18
 #: inc/pro/class-wizard-systemtest.php:18
-#: inc/Pro/class-wizard-jobimport.php:18
 #: inc/Pro/class-wizard-job.php:19
+#: inc/Pro/class-wizard-jobimport.php:18
 #: inc/Pro/class-wizard-systemtest.php:29
 msgid "http://inpsyde.com"
 msgstr ""
@@ -2738,7 +2741,7 @@ msgstr "XML 输出"
 
 #: inc/class-jobtype-wpexp.php:14
 #: inc/class-page-about.php:472
-#: inc/class-page-about.php:474
+#: inc/class-page-about.php:463
 msgid "WordPress XML export"
 msgstr "WordPress XML 输出"
 
@@ -2971,280 +2974,273 @@ msgid "New Job"
 msgstr "新计划"
 
 #: inc/class-page-about.php:369
-#: inc/class-page-about.php:371
+#: inc/class-page-about.php:366
 msgid "Welcome to BackWPup Pro"
 msgstr "欢迎升级到 BackWPup 专业版"
 
 #: inc/class-page-about.php:370
 #: inc/class-page-backwpup.php:75
-#: inc/class-page-about.php:372
+#: inc/class-page-about.php:367
 msgid "BackWPup’s job wizards make planning and scheduling your backup jobs a breeze."
 msgstr "BackWPup的工作向导制定计划并安排您的备份工作。"
 
-#: inc/class-page-about.php:371
-#: inc/class-page-about.php:384
-#: inc/class-page-about.php:373
-#: inc/class-page-about.php:386
-msgid "Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server. With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin to restore your database backup files."
-msgstr "使用备份存档保存整个WordPress的安装，包括<code>/wp-content/</code>。如果您不想在同一服务器上保存备份，则将它们推到外部存储服务。使用单个备份存档，您可以恢复安装。使用phpMyAdmin这样的工具来恢复数据库备份文件。"
-
 #: inc/class-page-about.php:372
-#: inc/class-page-about.php:374
+#: inc/class-page-about.php:369
 msgid "Ready to <a href=\"%1$s\">set up a backup job</a>? You can <a href=\"%2$s\">use the wizards</a> or plan your backup in expert mode."
 msgstr "准备好<a href =“%1$s”>设置备份作业</a> ?您可以<a href =“%2$s”>使用向导</a>或在专家模式下计划备份。"
 
 #: inc/class-page-about.php:382
-#: inc/class-page-about.php:384
+#: inc/class-page-about.php:376
 msgid "Welcome to BackWPup"
 msgstr "欢迎使用 BackWPup"
 
 #: inc/class-page-about.php:385
-#: inc/class-page-about.php:387
+#: inc/class-page-about.php:379
 msgid "Ready to set up a backup job? Use one of the wizards to plan what you want to save."
 msgstr "准备好设置备份作业了吗?使用一个向导来计划你想要保存的东西。"
 
 #: inc/class-page-about.php:398
-#: inc/class-page-about.php:400
+#: inc/class-page-about.php:389
 msgid "Save your database"
 msgstr "保存你的数据库"
 
 #: inc/class-page-about.php:401
-#: inc/class-page-about.php:403
+#: inc/class-page-about.php:392
 msgid "Save your database regularly"
 msgstr "定期保存数据库"
 
 #: inc/class-page-about.php:402
-#: inc/class-page-about.php:404
+#: inc/class-page-about.php:393
 msgid "With BackWPup you can schedule the database backup to run automatically. With a single backup file you can restore your database. You should <a href=\"%s\">set up a backup job</a>, so you will never forget it. There is also an option to repair and optimize the database after each backup."
 msgstr "通过 BackWPup，你可以定期自动备份数据库，还可以通过一个简单的备份文件来恢复数据库。你应该 <a href=\"%s\">添加一个备份计划</a>，这样你永远不会忘记它。当然，你还可以在每次备份数据库时修复和优化它。"
 
 #: inc/class-page-about.php:407
 #: inc/class-page-about.php:411
-#: inc/class-page-about.php:409
-#: inc/class-page-about.php:413
+#: inc/class-page-about.php:398
+#: inc/class-page-about.php:402
 msgid "WordPress XML Export"
 msgstr "WordPress XML 输出"
 
 #: inc/class-page-about.php:408
-#: inc/class-page-about.php:410
+#: inc/class-page-about.php:399
 msgid "You can choose the built-in WordPress export format in addition or exclusive to save your data. This works in automated backups too of course. The advantage is: you can import these files into a blog with the regular WordPress importer."
 msgstr "你可以选择内置的 WordPress 导出格式来保存数据。这样做的好处：你可以通过正规的 WordPress 导入接口将这些文件导入网站。 "
 
 #: inc/class-page-about.php:416
-#: inc/class-page-about.php:418
+#: inc/class-page-about.php:407
 msgid "Save all data from the webserver"
 msgstr "从网络服务器中保存所有的数据"
 
 #: inc/class-page-about.php:419
-#: inc/class-page-about.php:421
+#: inc/class-page-about.php:410
 msgid "Save all files"
 msgstr "保存所有文件"
 
 #: inc/class-page-about.php:420
-#: inc/class-page-about.php:422
+#: inc/class-page-about.php:411
 msgid "You can backup all your attachments, also all system files, plugins and themes in a single file. You can <a href=\"%s\">create a job</a> to update a backup copy of your file system only when files are changed."
 msgstr "您可以备份所有的附件，也可以在一个文件中备份所有的系统文件、插件和主题。您可以<a href =\" % s \" >创建一个job </a>，只在文件更改时才更新文件系统的备份副本。"
 
 #: inc/class-page-about.php:425
 #: inc/class-page-about.php:429
-#: inc/class-page-about.php:427
-#: inc/class-page-about.php:431
+#: inc/class-page-about.php:416
+#: inc/class-page-about.php:420
 msgid "Security!"
 msgstr "安全！"
 
 #: inc/class-page-about.php:426
-#: inc/class-page-about.php:428
+#: inc/class-page-about.php:417
 msgid "By default everything is encrypted: connections to external services, local files and access to directories."
 msgstr "默认情况下，一切都是加密进行的：连接到外部服务，访问本地文件和目录。"
 
 #: inc/class-page-about.php:434
 #: inc/class-page-about.php:437
-#: inc/class-page-about.php:436
-#: inc/class-page-about.php:439
+#: inc/class-page-about.php:425
+#: inc/class-page-about.php:428
 msgid "Cloud Support"
 msgstr "云支持"
 
 #: inc/class-page-about.php:438
-#: inc/class-page-about.php:440
+#: inc/class-page-about.php:429
 msgid "BackWPup supports multiple cloud services in parallel. This ensures backups are redundant."
 msgstr "BackWPup 支持多个云服务并行。这可确保备份是多余的。"
 
 #: inc/class-page-about.php:444
-#: inc/class-page-about.php:446
+#: inc/class-page-about.php:435
 msgid "Features / differences between Free and Pro"
 msgstr "免费版和专业版的差异"
 
 #: inc/class-page-about.php:447
-#: inc/class-page-about.php:449
+#: inc/class-page-about.php:438
 msgid "Features"
 msgstr "特点"
 
 #: inc/class-page-about.php:448
-#: inc/class-page-about.php:450
+#: inc/class-page-about.php:439
 msgid "FREE"
 msgstr "免费版"
 
 #: inc/class-page-about.php:449
-#: inc/class-page-about.php:451
+#: inc/class-page-about.php:440
 msgid "PRO"
 msgstr "专业版"
 
 #: inc/class-page-about.php:452
-#: inc/class-page-about.php:454
+#: inc/class-page-about.php:443
 msgid "Complete database backup"
 msgstr "数据库备份"
 
 #: inc/class-page-about.php:457
-#: inc/class-page-about.php:459
+#: inc/class-page-about.php:448
 msgid "Complete file backup"
 msgstr "文件备份"
 
 #: inc/class-page-about.php:462
-#: inc/class-page-about.php:464
+#: inc/class-page-about.php:453
 msgid "Database check"
 msgstr "数据库检查"
 
 #: inc/class-page-about.php:467
-#: inc/class-page-about.php:469
+#: inc/class-page-about.php:458
 msgid "Data compression"
 msgstr "数据压缩"
 
 #: inc/class-page-about.php:477
-#: inc/class-page-about.php:479
+#: inc/class-page-about.php:468
 msgid "List of installed plugins"
 msgstr "已安装的插件列表"
 
 #: inc/class-page-about.php:482
-#: inc/class-page-about.php:484
+#: inc/class-page-about.php:473
 msgid "Backup archives management"
 msgstr "备份存档管理"
 
 #: inc/class-page-about.php:487
-#: inc/class-page-about.php:489
+#: inc/class-page-about.php:478
 msgid "Log file management"
 msgstr "日志文件管理"
 
 #: inc/class-page-about.php:492
-#: inc/class-page-about.php:494
+#: inc/class-page-about.php:483
 msgid "Start jobs per WP-Cron, URL, system, backend or WP-CLI"
 msgstr "根据 WP-Cron, URL, 系统, 后端 或 WP-CLI 启动计划"
 
 #: inc/class-page-about.php:497
-#: inc/class-page-about.php:499
+#: inc/class-page-about.php:488
 msgid "Log report via email"
 msgstr "通过邮件发送日志通告"
 
 #: inc/class-page-about.php:502
-#: inc/class-page-about.php:504
+#: inc/class-page-about.php:493
 msgid "Backup to Microsoft Azure"
 msgstr "备份到 Microsoft Azure"
 
 #: inc/class-page-about.php:507
-#: inc/class-page-about.php:509
+#: inc/class-page-about.php:498
 msgid "Backup as email"
 msgstr "备份到 电子邮件"
 
 #: inc/class-page-about.php:512
-#: inc/class-page-about.php:514
+#: inc/class-page-about.php:503
 msgid "Backup to S3 services (Amazon, Google Storage, Hosteurope and more)"
 msgstr "备份到S3服务(Amazon、谷歌存储、Hosteurope等)"
 
 #: inc/class-page-about.php:527
-#: inc/class-page-about.php:529
+#: inc/class-page-about.php:518
 msgid "Backup to FTP server"
 msgstr "备份到 FTP 服务器"
 
 #: inc/class-page-about.php:532
-#: inc/class-page-about.php:534
+#: inc/class-page-about.php:523
 msgid "Backup to your web space"
 msgstr "备份到你的网站空间"
 
 #: inc/class-page-about.php:542
 #: inc/pro/class-pro.php:115
+#: inc/class-page-about.php:553
 #: inc/Pro/class-pro.php:152
-#: inc/class-page-about.php:544
 msgid "Backup to Google Drive"
 msgstr "备份到Google Drive"
 
 #: inc/class-page-about.php:547
 #: inc/pro/class-pro.php:96
+#: inc/class-page-about.php:558
 #: inc/Pro/class-pro.php:131
-#: inc/class-page-about.php:549
 msgid "Backup to Amazon Glacier"
 msgstr "备份到Amazon Glacier"
 
 #: inc/class-page-about.php:552
-#: inc/class-page-about.php:554
+#: inc/class-page-about.php:563
 msgid "Custom API keys for DropBox and SugarSync"
 msgstr "自定义 DropBox 和 SugarSync 的 API keys"
 
 #: inc/class-page-about.php:557
-#: inc/class-page-about.php:559
+#: inc/class-page-about.php:568
 msgid "XML database backup as PHPMyAdmin schema"
 msgstr "XML 数据库备份为 PHPMyAdmin 架构"
 
 #: inc/class-page-about.php:562
-#: inc/class-page-about.php:564
+#: inc/class-page-about.php:573
 msgid "Database backup as mysqldump per command line"
 msgstr "使用命令行进行 MySQL 数据库转储备份"
 
 #: inc/class-page-about.php:567
-#: inc/class-page-about.php:569
+#: inc/class-page-about.php:578
 msgid "Database backup for additional MySQL databases"
 msgstr "备份其他 MySQL 数据库"
 
 #: inc/class-page-about.php:572
-#: inc/class-page-about.php:574
+#: inc/class-page-about.php:583
 msgid "Import and export job settings as XML"
 msgstr "导入和导出计划设置为 XML 文件"
 
 #: inc/class-page-about.php:577
-#: inc/class-page-about.php:579
+#: inc/class-page-about.php:588
 msgid "Wizard for system tests"
 msgstr "系统测试向导"
 
 #: inc/class-page-about.php:582
-#: inc/class-page-about.php:584
+#: inc/class-page-about.php:593
 msgid "Wizard for scheduled backup jobs"
 msgstr "定时备份计划向导"
 
 #: inc/class-page-about.php:587
-#: inc/class-page-about.php:589
+#: inc/class-page-about.php:598
 msgid "Wizard to import settings and backup jobs"
 msgstr "导入设置和备份计划向导"
 
 #: inc/class-page-about.php:592
-#: inc/class-page-about.php:594
+#: inc/class-page-about.php:603
 msgid "Differential backup of changed directories to Dropbox"
 msgstr "差异备份更改目录到 Dropbox"
 
 #: inc/class-page-about.php:597
-#: inc/class-page-about.php:599
+#: inc/class-page-about.php:608
 msgid "Differential backup of changed directories to Rackspace Cloud Files"
 msgstr "差异备份更改目录到 Rackspace Cloud Files"
 
 #: inc/class-page-about.php:602
-#: inc/class-page-about.php:604
+#: inc/class-page-about.php:613
 msgid "Differential backup of changed directories to S3"
 msgstr "差异备份更改目录到 S3"
 
 #: inc/class-page-about.php:607
-#: inc/class-page-about.php:609
+#: inc/class-page-about.php:618
 msgid "Differential backup of changed directories to MS Azure"
 msgstr "差异备份更改目录到 MS Azure"
 
 #: inc/class-page-about.php:612
-#: inc/class-page-about.php:639
+#: inc/class-page-about.php:648
 msgid "<strong>Premium support</strong>"
 msgstr "<strong>付费支持</strong>"
 
 #: inc/class-page-about.php:617
-#: inc/class-page-about.php:644
+#: inc/class-page-about.php:653
 msgid "<strong>Automatic updates</strong>"
 msgstr "<strong>自动更新</strong>"
 
 #: inc/class-page-about.php:624
-#: inc/class-page-about.php:651
+#: inc/class-page-about.php:660
 msgid "GET PRO"
 msgstr "获取专业版"
 
@@ -3306,9 +3302,9 @@ msgstr ""
 #: inc/class-page-logs.php:206
 #: inc/class-page-backups.php:281
 #: inc/class-page-backups.php:285
+#: inc/class-page-logs.php:234
 #: inc/class-page-settings.php:768
 #: inc/class-page-settings.php:779
-#: inc/class-page-logs.php:234
 msgid "Download"
 msgstr "下载"
 
@@ -3366,11 +3362,6 @@ msgstr ""
 msgctxt "Dashboard heading"
 msgid "Restoring backups"
 msgstr "恢复备份"
-
-#: inc/class-page-backwpup.php:77
-#: inc/class-page-backwpup.php:86
-msgid "With a single backup archive you are able to restore an installation. Use a tool like phpMyAdmin to restore your database backup files."
-msgstr ""
 
 #: inc/class-page-backwpup.php:78
 #: inc/class-page-backwpup.php:87
@@ -3596,8 +3587,8 @@ msgstr "%1$s &rsaquo;作业: %2$s"
 
 #: inc/class-page-editjob.php:328
 #: inc/class-page-settings.php:119
-#: inc/class-page-settings.php:214
 #: inc/class-page-editjob.php:337
+#: inc/class-page-settings.php:214
 msgid "General"
 msgstr "一般"
 
@@ -3631,15 +3622,15 @@ msgstr "计划任务"
 
 #: inc/class-page-editjob.php:391
 #: inc/pro/class-wizard-job.php:254
-#: inc/Pro/class-wizard-job.php:254
 #: inc/class-page-editjob.php:400
+#: inc/Pro/class-wizard-job.php:254
 msgid "This job is a&#160;&hellip;"
 msgstr "计划任务是"
 
 #: inc/class-page-editjob.php:394
 #: inc/pro/class-wizard-job.php:257
-#: inc/Pro/class-wizard-job.php:257
 #: inc/class-page-editjob.php:403
+#: inc/Pro/class-wizard-job.php:257
 msgid "Job tasks"
 msgstr "计划任务"
 
@@ -3652,10 +3643,10 @@ msgstr "创建备份文件"
 #: inc/class-page-editjob.php:420
 #: inc/pro/class-wizard-job.php:402
 #: inc/pro/class-wizard-job.php:405
-#: inc/Pro/class-wizard-job.php:402
-#: inc/Pro/class-wizard-job.php:405
 #: inc/class-page-editjob.php:426
 #: inc/class-page-editjob.php:429
+#: inc/Pro/class-wizard-job.php:402
+#: inc/Pro/class-wizard-job.php:405
 msgid "Backup type"
 msgstr "备份类型"
 
@@ -3666,8 +3657,8 @@ msgstr "同步文件到目的地"
 
 #: inc/class-page-editjob.php:428
 #: inc/pro/class-wizard-job.php:413
-#: inc/Pro/class-wizard-job.php:413
 #: inc/class-page-editjob.php:437
+#: inc/Pro/class-wizard-job.php:413
 msgid "Create a backup archive"
 msgstr "创建备份存档"
 
@@ -3767,17 +3758,17 @@ msgstr "存档格式"
 #: inc/class-page-editjob.php:476
 #: inc/pro/class-wizard-job.php:426
 #: inc/pro/class-wizard-job.php:429
-#: inc/Pro/class-wizard-job.php:426
-#: inc/Pro/class-wizard-job.php:429
 #: inc/class-page-editjob.php:481
 #: inc/class-page-editjob.php:483
+#: inc/Pro/class-wizard-job.php:426
+#: inc/Pro/class-wizard-job.php:429
 msgid "Zip"
 msgstr "Zip"
 
 #: inc/class-page-editjob.php:479
 #: inc/pro/class-wizard-job.php:433
-#: inc/Pro/class-wizard-job.php:433
 #: inc/class-page-editjob.php:486
+#: inc/Pro/class-wizard-job.php:433
 msgid "Tar"
 msgstr "Tar"
 
@@ -3785,10 +3776,10 @@ msgstr "Tar"
 #: inc/class-page-editjob.php:483
 #: inc/pro/class-wizard-job.php:437
 #: inc/pro/class-wizard-job.php:440
-#: inc/Pro/class-wizard-job.php:437
-#: inc/Pro/class-wizard-job.php:440
 #: inc/class-page-editjob.php:488
 #: inc/class-page-editjob.php:490
+#: inc/Pro/class-wizard-job.php:437
+#: inc/Pro/class-wizard-job.php:440
 msgid "Tar GZip"
 msgstr "Tar GZip"
 
@@ -3803,10 +3794,10 @@ msgstr "由于缺少了%s PHP函数而禁用。"
 #: inc/class-page-editjob.php:489
 #: inc/pro/class-wizard-job.php:444
 #: inc/pro/class-wizard-job.php:447
-#: inc/Pro/class-wizard-job.php:444
-#: inc/Pro/class-wizard-job.php:447
 #: inc/class-page-editjob.php:494
 #: inc/class-page-editjob.php:497
+#: inc/Pro/class-wizard-job.php:444
+#: inc/Pro/class-wizard-job.php:447
 msgid "Tar BZip2"
 msgstr "Tar BZip2"
 
@@ -3934,9 +3925,9 @@ msgstr "高级"
 #: inc/class-page-editjob.php:650
 #: inc/class-page-editjob.php:718
 #: inc/pro/class-wizard-job.php:320
-#: inc/Pro/class-wizard-job.php:320
 #: inc/class-page-editjob.php:686
 #: inc/class-page-editjob.php:754
+#: inc/Pro/class-wizard-job.php:320
 msgid "Scheduler"
 msgstr "设定时间"
 
@@ -3944,121 +3935,121 @@ msgstr "设定时间"
 #: inc/class-page-jobs.php:126
 #: inc/class-page-logs.php:139
 #: inc/pro/class-wizard-job.php:324
-#: inc/Pro/class-wizard-job.php:324
-#: inc/class-page-logs.php:166
 #: inc/class-page-editjob.php:691
+#: inc/class-page-logs.php:166
+#: inc/Pro/class-wizard-job.php:324
 msgid "Type"
 msgstr "类型"
 
 #: inc/class-page-editjob.php:660
 #: inc/pro/class-wizard-job.php:330
-#: inc/Pro/class-wizard-job.php:330
 #: inc/class-page-editjob.php:696
+#: inc/Pro/class-wizard-job.php:330
 msgid "Hour"
 msgstr "小时"
 
 #: inc/class-page-editjob.php:663
 #: inc/pro/class-wizard-job.php:333
-#: inc/Pro/class-wizard-job.php:333
 #: inc/class-page-editjob.php:699
+#: inc/Pro/class-wizard-job.php:333
 msgid "Minute"
 msgstr "分钟"
 
 #: inc/class-page-editjob.php:667
 #: inc/pro/class-wizard-job.php:337
-#: inc/Pro/class-wizard-job.php:337
 #: inc/class-page-editjob.php:703
+#: inc/Pro/class-wizard-job.php:337
 msgid "monthly"
 msgstr "每个月一次"
 
 #: inc/class-page-editjob.php:669
 #: inc/pro/class-wizard-job.php:339
-#: inc/Pro/class-wizard-job.php:339
 #: inc/class-page-editjob.php:705
+#: inc/Pro/class-wizard-job.php:339
 msgid "on"
 msgstr "在"
 
 #: inc/class-page-editjob.php:679
 #: inc/pro/class-wizard-job.php:349
-#: inc/Pro/class-wizard-job.php:349
 #: inc/class-page-editjob.php:715
+#: inc/Pro/class-wizard-job.php:349
 msgid "weekly"
 msgstr "每周一次"
 
 #: inc/class-page-editjob.php:681
 #: inc/class-page-editjob.php:788
 #: inc/pro/class-wizard-job.php:351
-#: inc/Pro/class-wizard-job.php:351
 #: inc/class-page-editjob.php:717
 #: inc/class-page-editjob.php:824
+#: inc/Pro/class-wizard-job.php:351
 msgid "Sunday"
 msgstr "星期天"
 
 #: inc/class-page-editjob.php:682
 #: inc/class-page-editjob.php:789
 #: inc/pro/class-wizard-job.php:352
-#: inc/Pro/class-wizard-job.php:352
 #: inc/class-page-editjob.php:718
 #: inc/class-page-editjob.php:825
+#: inc/Pro/class-wizard-job.php:352
 msgid "Monday"
 msgstr "星期一"
 
 #: inc/class-page-editjob.php:683
 #: inc/class-page-editjob.php:790
 #: inc/pro/class-wizard-job.php:353
-#: inc/Pro/class-wizard-job.php:353
 #: inc/class-page-editjob.php:719
 #: inc/class-page-editjob.php:826
+#: inc/Pro/class-wizard-job.php:353
 msgid "Tuesday"
 msgstr "星期二"
 
 #: inc/class-page-editjob.php:684
 #: inc/class-page-editjob.php:791
 #: inc/pro/class-wizard-job.php:354
-#: inc/Pro/class-wizard-job.php:354
 #: inc/class-page-editjob.php:720
 #: inc/class-page-editjob.php:827
+#: inc/Pro/class-wizard-job.php:354
 msgid "Wednesday"
 msgstr "星期三"
 
 #: inc/class-page-editjob.php:685
 #: inc/class-page-editjob.php:792
 #: inc/pro/class-wizard-job.php:355
-#: inc/Pro/class-wizard-job.php:355
 #: inc/class-page-editjob.php:721
 #: inc/class-page-editjob.php:828
+#: inc/Pro/class-wizard-job.php:355
 msgid "Thursday"
 msgstr "星期四"
 
 #: inc/class-page-editjob.php:686
 #: inc/class-page-editjob.php:793
 #: inc/pro/class-wizard-job.php:356
-#: inc/Pro/class-wizard-job.php:356
 #: inc/class-page-editjob.php:722
 #: inc/class-page-editjob.php:829
+#: inc/Pro/class-wizard-job.php:356
 msgid "Friday"
 msgstr "星期五"
 
 #: inc/class-page-editjob.php:687
 #: inc/class-page-editjob.php:794
 #: inc/pro/class-wizard-job.php:357
-#: inc/Pro/class-wizard-job.php:357
 #: inc/class-page-editjob.php:723
 #: inc/class-page-editjob.php:830
+#: inc/Pro/class-wizard-job.php:357
 msgid "Saturday"
 msgstr "星期六"
 
 #: inc/class-page-editjob.php:697
 #: inc/pro/class-wizard-job.php:367
-#: inc/Pro/class-wizard-job.php:367
 #: inc/class-page-editjob.php:733
+#: inc/Pro/class-wizard-job.php:367
 msgid "daily"
 msgstr "每天一次"
 
 #: inc/class-page-editjob.php:707
 #: inc/pro/class-wizard-job.php:377
-#: inc/Pro/class-wizard-job.php:377
 #: inc/class-page-editjob.php:743
+#: inc/Pro/class-wizard-job.php:377
 msgid "hourly"
 msgstr "每小时一次"
 
@@ -4207,8 +4198,8 @@ msgstr "最近执行"
 #: inc/class-page-jobs.php:172
 #: inc/class-page-logs.php:200
 #: inc/pro/class-page-support.php:221
-#: inc/Pro/class-page-support.php:221
 #: inc/class-page-logs.php:228
+#: inc/Pro/class-page-support.php:221
 msgid "Job ID: %d"
 msgstr "作业ID:%d"
 
@@ -5102,55 +5093,53 @@ msgstr ""
 msgid "There are errors. Please correct them, or BackWPup cannot work."
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive-downloader.php:74
-#: inc/class-destination-ftp-downloader.php:72
+#: backwpup.php:573
+#: vendor_dist/backwpup.php:573
+msgid "BackWPup requires PHP version %$1s with spl extension or greater and WordPress %$2s or greater."
+msgstr ""
+
+#: inc/class-create-archive.php:114
+msgid "Functions for bz2 compression not available."
+msgstr ""
+
+#: inc/class-create-archive.php:311
+msgid "File name cannot be empty."
+msgstr ""
+
+#: inc/class-create-archive.php:741
+msgid "Cannot open source file %s for archiving. Writing an empty file."
+msgstr ""
+
+#. translators: $1 is the filename to add into the archive.
+#: inc/class-create-archive.php:996
+msgid "Cannot open source file %s."
+msgstr ""
+
+#: inc/class-decrypter.php:56
+msgid "Cannot open the archive for reading."
+msgstr ""
+
+#: inc/class-decrypter.php:82
+msgid "Cannot write the encrypted archive."
+msgstr ""
+
+#: inc/class-decrypter.php:162
+msgid "Private key invalid."
+msgstr ""
+
 #: inc/class-destination-dropbox-downloader.php:72
+#: inc/class-destination-ftp-downloader.php:72
 #: inc/class-destination-s3-downloader.php:83
+#: inc/Pro/class-destination-gdrive-downloader.php:74
 msgid "Could not write data to file."
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive-downloader.php:102
-#: inc/class-destination-ftp-downloader.php:126
-#: inc/class-destination-folder-downloader.php:137
 #: inc/class-destination-dropbox-downloader.php:104
+#: inc/class-destination-folder-downloader.php:137
+#: inc/class-destination-ftp-downloader.php:126
 #: inc/class-destination-s3-downloader.php:112
+#: inc/Pro/class-destination-gdrive-downloader.php:102
 msgid "File could not be opened for writing."
-msgstr ""
-
-#: inc/Pro/class-destination-s3.php:63
-#: inc/class-destination-s3.php:1134
-msgid "Amazon S3: EU (London)"
-msgstr ""
-
-#: inc/Pro/class-pro.php:285
-#: inc/Pro/class-pro.php:286
-#: inc/class-page-backups.php:293
-#: views/pro/restore/steps/step4_top.php:2
-msgid "Restore"
-msgstr ""
-
-#: inc/class-system-tests-runner.php:77
-msgid "You must run WordPress version %1$s or higher to use this plugin. You are using version %2$s now."
-msgstr ""
-
-#: inc/class-system-tests-runner.php:88
-msgid "We recommend to run a PHP version above %1$s to get the full plugin functionality. You are using version %2$s now."
-msgstr ""
-
-#: inc/class-system-tests-runner.php:100
-msgid "You must have the MySQLi extension installed and a MySQL server version of %1$s or higher to use this plugin. You are using version %2$s now."
-msgstr ""
-
-#: inc/class-system-tests-runner.php:193
-msgid "Yeah!"
-msgstr ""
-
-#: inc/class-system-tests-runner.php:261
-msgid "There are some warnings. BackWPup will work, but with limitations."
-msgstr ""
-
-#: inc/class-destination-ftp-downloader.php:108
-msgid "Cannot open FTP file for download."
 msgstr ""
 
 #: inc/class-destination-folder-downloader.php:64
@@ -5170,8 +5159,131 @@ msgstr ""
 msgid "%s is a directory not a file."
 msgstr ""
 
+#: inc/class-destination-ftp-downloader.php:108
+msgid "Cannot open FTP file for download."
+msgstr ""
+
+#: inc/class-destination-ftp.php:321
+msgid "Could not log in to FTP server."
+msgstr ""
+
+#: inc/class-destination-ftp.php:735
+msgid "FTP Folder \"%s\" cannot be created! Parent directory may be not writable."
+msgstr ""
+
+#: inc/class-destination-s3-downloader.php:76
+msgid "Could not write data to file. Empty source file."
+msgstr ""
+
 #: inc/class-destination-s3.php:102
 msgid "Multipart splits file into multiple chunks while uploading.<br />This is necessary for displaying the upload process and to transfer bigger files.<br />Don't work with Google or Dreamhost."
+msgstr ""
+
+#: inc/class-destination-s3.php:1134
+#: inc/Pro/class-destination-s3.php:63
+msgid "Amazon S3: EU (London)"
+msgstr ""
+
+#: inc/class-download-file.php:135
+msgid "Invalid file name, seems file include invalid characters."
+msgstr ""
+
+#: inc/class-job.php:362
+msgid "Encrypts the archive"
+msgstr ""
+
+#: inc/class-job.php:1902
+msgid "No encryption key was provided. Aborting encryption."
+msgstr ""
+
+#: inc/class-job.php:1912
+msgid "%d. Trying to encrypt archive &hellip;"
+msgstr ""
+
+#: inc/class-job.php:1925
+msgid "Cannot open the archive for reading. Aborting encryption."
+msgstr ""
+
+#: inc/class-job.php:1932
+msgid "Cannot write the encrypted archive. Aborting encryption."
+msgstr ""
+
+#: inc/class-job.php:1991
+msgid "Encrypted %s of data."
+msgstr ""
+
+#: inc/class-job.php:1996
+msgid "Unable to delete unencrypted archive."
+msgstr ""
+
+#: inc/class-job.php:2003
+msgid "Unable to rename encrypted archive."
+msgstr ""
+
+#: inc/class-job.php:2009
+msgid "Archive has been successfully encrypted."
+msgstr ""
+
+#: inc/class-job.php:2719
+msgid "exec command is not active."
+msgstr ""
+
+#: inc/class-job.php:2725
+msgid "mysqldump binary not found."
+msgstr ""
+
+#: inc/class-page-about.php:365
+#: inc/class-page-about.php:375
+#: inc/class-page-backwpup.php:254
+msgid "BackWPup banner"
+msgstr ""
+
+#: inc/class-page-about.php:368
+#: inc/class-page-about.php:378
+msgid "Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server. With a single backup archive you are able to restore an installation. Use the integrated restore feature to restore your site directly from your WordPress backend or the Restore Standalone App in case your site is destroyed completely."
+msgstr ""
+
+#: inc/class-page-about.php:533
+msgid "Restore manually uploaded Backup Archives"
+msgstr ""
+
+#: inc/class-page-about.php:538
+msgid "Standalone Restore App"
+msgstr ""
+
+#: inc/class-page-about.php:543
+msgid "Encrypt Backup Archives"
+msgstr ""
+
+#: inc/class-page-about.php:548
+msgid "Restore Encrypted Backups"
+msgstr ""
+
+#: inc/class-page-about.php:623
+msgid "Restore from Folder"
+msgstr ""
+
+#: inc/class-page-about.php:628
+msgid "Restore from Google Drive"
+msgstr ""
+
+#: inc/class-page-about.php:633
+msgid "Restore from Amazon S3"
+msgstr ""
+
+#: inc/class-page-about.php:638
+msgid "Restore from Dropbox"
+msgstr ""
+
+#: inc/class-page-about.php:643
+msgid "Restore from FTP"
+msgstr ""
+
+#: inc/class-page-backups.php:293
+#: inc/Pro/class-pro.php:285
+#: inc/Pro/class-pro.php:286
+#: views/pro/restore/steps/step4_top.php:2
+msgid "Restore"
 msgstr ""
 
 #: inc/class-page-backups.php:408
@@ -5216,21 +5328,35 @@ msgstr ""
 msgid "Seems is not possible to store your private key, be sure the directory %s is writable."
 msgstr ""
 
-#: inc/class-create-archive.php:114
-msgid "Functions for bz2 compression not available."
+#: inc/class-page-backwpup.php:77
+#: inc/class-page-backwpup.php:86
+msgid "With a single backup archive you are able to restore an installation. Use our restore feature, which is integrated in BackWPup Pro to restore your website directly from your WordPress backend. We also provide a restore standalone app with the Pro version to restore your site in case it is destroyed completely."
 msgstr ""
 
-#: inc/class-create-archive.php:311
-msgid "File name cannot be empty."
+#: inc/class-page-editjob.php:448
+msgid "<em>Note</em>: In order for backup file tracking to work, %hash% must be included anywhere in the archive name."
 msgstr ""
 
-#: inc/class-create-archive.php:741
-msgid "Cannot open source file %s for archiving. Writing an empty file."
+#: inc/class-page-editjob.php:452
+msgid "Preview: "
 msgstr ""
 
-#. translators: $1 is the filename to add into the archive.
-#: inc/class-create-archive.php:996
-msgid "Cannot open source file %s."
+#: inc/class-page-editjob.php:484
+msgid "ZipArchive PHP class is missing, so BackWPUp will use PclZip instead."
+msgstr ""
+
+#: inc/class-page-editjob.php:495
+msgid "Not supported <b>yet</b> by the <b>automatic</b> restore functionality"
+msgstr ""
+
+#: inc/class-page-editjob.php:506
+#: inc/class-page-editjob.php:511
+#: inc/class-page-editjob.php:520
+msgid "Encrypt Archive"
+msgstr ""
+
+#: inc/class-page-editjob.php:524
+msgid "You must generate your encryption key in BackWPup Settings before you can enable this option."
 msgstr ""
 
 #: inc/class-page-settings.php:39
@@ -5366,127 +5492,24 @@ msgstr ""
 msgid "BackWPup maximum script execution time"
 msgstr ""
 
-#: inc/class-download-file.php:135
-msgid "Invalid file name, seems file include invalid characters."
+#: inc/class-system-tests-runner.php:77
+msgid "You must run WordPress version %1$s or higher to use this plugin. You are using version %2$s now."
 msgstr ""
 
-#: inc/class-page-about.php:614
-msgid "Restore from Folder"
+#: inc/class-system-tests-runner.php:88
+msgid "We recommend to run a PHP version above %1$s to get the full plugin functionality. You are using version %2$s now."
 msgstr ""
 
-#: inc/class-page-about.php:619
-msgid "Restore from Google Drive"
+#: inc/class-system-tests-runner.php:100
+msgid "You must have the MySQLi extension installed and a MySQL server version of %1$s or higher to use this plugin. You are using version %2$s now."
 msgstr ""
 
-#: inc/class-page-about.php:624
-msgid "Restore from Amazon S3"
+#: inc/class-system-tests-runner.php:193
+msgid "Yeah!"
 msgstr ""
 
-#: inc/class-page-about.php:629
-msgid "Restore from Dropbox"
-msgstr ""
-
-#: inc/class-page-about.php:634
-msgid "Restore from FTP"
-msgstr ""
-
-#: inc/class-destination-s3-downloader.php:76
-msgid "Could not write data to file. Empty source file."
-msgstr ""
-
-#: inc/class-job.php:332
-msgid "Encrypts the archive"
-msgstr ""
-
-#: inc/class-job.php:1689
-msgid "No encryption key was provided. Aborting encryption."
-msgstr ""
-
-#: inc/class-job.php:1696
-msgid "%d. Trying to encrypt archive &hellip;"
-msgstr ""
-
-#: inc/class-job.php:1706
-msgid "Cannot open the archive for reading. Aborting encryption."
-msgstr ""
-
-#: inc/class-job.php:1712
-msgid "Cannot write the encrypted archive. Aborting encryption."
-msgstr ""
-
-#: inc/class-job.php:1769
-msgid "Encrypted %s of data."
-msgstr ""
-
-#: inc/class-job.php:1773
-msgid "Unable to delete unencrypted archive."
-msgstr ""
-
-#: inc/class-job.php:1777
-msgid "Unable to rename encrypted archive."
-msgstr ""
-
-#: inc/class-job.php:1782
-msgid "Archive has been successfully encrypted."
-msgstr ""
-
-#: inc/class-job.php:2451
-msgid "exec command is not active."
-msgstr ""
-
-#: inc/class-job.php:2456
-msgid "mysqldump binary not found."
-msgstr ""
-
-#: inc/class-page-editjob.php:448
-msgid "<em>Note</em>: In order for backup file tracking to work, %hash% must be included anywhere in the archive name."
-msgstr ""
-
-#: inc/class-page-editjob.php:452
-msgid "Preview: "
-msgstr ""
-
-#: inc/class-page-editjob.php:484
-msgid "ZipArchive PHP class is missing, so BackWPUp will use PclZip instead."
-msgstr ""
-
-#: inc/class-page-editjob.php:495
-msgid "Not supported <b>yet</b> by the <b>automatic</b> restore functionality"
-msgstr ""
-
-#: inc/class-page-editjob.php:506
-#: inc/class-page-editjob.php:511
-#: inc/class-page-editjob.php:520
-msgid "Encrypt Archive"
-msgstr ""
-
-#: inc/class-page-editjob.php:524
-msgid "You must generate your encryption key in BackWPup Settings before you can enable this option."
-msgstr ""
-
-#: inc/class-decrypter.php:56
-msgid "Cannot open the archive for reading."
-msgstr ""
-
-#: inc/class-decrypter.php:82
-msgid "Cannot write the encrypted archive."
-msgstr ""
-
-#: inc/class-decrypter.php:162
-msgid "Private key invalid."
-msgstr ""
-
-#: inc/class-destination-ftp.php:321
-msgid "Could not log in to FTP server."
-msgstr ""
-
-#: inc/class-destination-ftp.php:735
-msgid "FTP Folder \"%s\" cannot be created! Parent directory may be not writable."
-msgstr ""
-
-#: backwpup.php:573
-#: vendor_dist/backwpup.php:573
-msgid "BackWPup requires PHP version %$1s with spl extension or greater and WordPress %$2s or greater."
+#: inc/class-system-tests-runner.php:261
+msgid "There are some warnings. BackWPup will work, but with limitations."
 msgstr ""
 
 #: vendor/inpsyde/backwpup-restore-shared/inc/localize-restore-api.php:7

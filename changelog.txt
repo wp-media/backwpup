@@ -1,10 +1,17 @@
 == Changelog ==
+= Version 3.6.3 =
+Release Date: Nov, 5, 2018
+
+* Fixed: "Failed to restore file": file restore progress stop working and jump directly to database restore step
+* Fixed: Restore progress stuck on "restoring database" with archive backup contains files only
+* Fixed: All config.php files are not in backup archive
+
 = Version 3.6.2 =
-Release Date: Oct 17, 2018
+Release Date: Oct, 17, 2018
 
 * Fixed: Not recognized file extensions get an additional underscore in the file name in zip file
 * Fixed: Backup archive file have dot folder contains all web root files
-* Fixed: Ftp destination downloader repetitively open a new handler for the source file causing corrupted backup.
+* Fixed: Ftp destination downloader repetitively open a new handler for the source file causing corrupted backup
 
 = Version 3.6.1 =
 Release Date: Sep 25, 2018
