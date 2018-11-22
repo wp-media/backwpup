@@ -13,9 +13,9 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 	public function __construct() {
 
 		parent::__construct( array(
-			'plural'   => 'backups',
+			'plural' => 'backups',
 			'singular' => 'backup',
-			'ajax'     => true,
+			'ajax' => true,
 		) );
 
 		$this->destinations = BackWPup::get_registered_destinations();
@@ -47,8 +47,8 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 			if ( empty( $jobdests ) ) {
 				$jobdests = array( '_' );
 			}
-			$jobdest                    = $jobdests[0];
-			$_GET['jobdest-top']        = $jobdests[0];
+			$jobdest = $jobdests[0];
+			$_GET['jobdest-top'] = $jobdests[0];
 			$_GET['jobdets-button-top'] = 'empty';
 		}
 
@@ -67,9 +67,9 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 		}
 
 		// Sorting.
-		$order   = filter_input( INPUT_GET, 'order', FILTER_SANITIZE_STRING ) ?: 'desc';
+		$order = filter_input( INPUT_GET, 'order', FILTER_SANITIZE_STRING ) ?: 'desc';
 		$orderby = filter_input( INPUT_GET, 'orderby', FILTER_SANITIZE_STRING ) ?: 'time';
-		$tmp     = array();
+		$tmp = array();
 
 		if ( $orderby === 'time' ) {
 			if ( $order === 'asc' ) {
@@ -123,20 +123,20 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 
 		$this->set_pagination_args( array(
 			'total_items' => count( $this->items ),
-			'per_page'    => $per_page,
-			'jobdest'     => $jobdest,
-			'orderby'     => $orderby,
-			'order'       => $order,
+			'per_page' => $per_page,
+			'jobdest' => $jobdest,
+			'orderby' => $orderby,
+			'order' => $order,
 		) );
 
 		// Only display items on page.
 		$start = intval( ( $this->get_pagenum() - 1 ) * $per_page );
-		$end   = $start + $per_page;
+		$end = $start + $per_page;
 		if ( $end > count( $this->items ) ) {
 			$end = count( $this->items );
 		}
 
-		$i           = - 1;
+		$i = - 1;
 		$paged_items = array();
 		foreach ( $this->items as $item ) {
 			$i ++;
@@ -164,7 +164,7 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 			return array();
 		}
 
-		$actions           = array();
+		$actions = array();
 		$actions['delete'] = __( 'Delete', 'backwpup' );
 
 		return $actions;
@@ -209,10 +209,37 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 		<?php
 	}
 
+	public function get_columns() {
+
+		$posts_columns = array();
+		$posts_columns['cb'] = '<input type="checkbox" />';
+		$posts_columns['time'] = __( 'Time', 'backwpup' );
+		$posts_columns['file'] = __( 'File', 'backwpup' );
+		$posts_columns['folder'] = __( 'Folder', 'backwpup' );
+		$posts_columns['size'] = __( 'Size', 'backwpup' );
+
+		return $posts_columns;
+	}
+
+	public function get_sortable_columns() {
+
+		return array(
+			'file' => array( 'file', false ),
+			'folder' => 'folder',
+			'size' => 'size',
+			'time' => array( 'time', false ),
+		);
+	}
+
+	public function column_cb( $item ) {
+
+		return '<input type="checkbox" name="backupfiles[]" value="' . esc_attr( $item['file'] ) . '" />';
+	}
+
 	public function get_destinations_list() {
 
 		$jobdest = array();
-		$jobids  = BackWPup_Option::get_job_ids();
+		$jobids = BackWPup_Option::get_job_ids();
 
 		foreach ( $jobids as $jobid ) {
 			if ( BackWPup_Option::get( $jobid, 'backuptype' ) === 'sync' ) {
@@ -223,7 +250,7 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 				if ( ! $this->destinations[ $dest ]['class'] ) {
 					continue;
 				}
-				$dest_class  = BackWPup::get_destination( $dest );
+				$dest_class = BackWPup::get_destination( $dest );
 				$can_do_dest = $dest_class->file_get_list( $jobid . '_' . $dest );
 				if ( ! empty( $can_do_dest ) ) {
 					$jobdest[] = $jobid . '_' . $dest;
@@ -234,63 +261,46 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 		return $jobdest;
 	}
 
-	public function get_columns() {
-
-		$posts_columns           = array();
-		$posts_columns['cb']     = '<input type="checkbox" />';
-		$posts_columns['time']   = __( 'Time', 'backwpup' );
-		$posts_columns['file']   = __( 'File', 'backwpup' );
-		$posts_columns['folder'] = __( 'Folder', 'backwpup' );
-		$posts_columns['size']   = __( 'Size', 'backwpup' );
-
-		return $posts_columns;
-	}
-
-	public function get_sortable_columns() {
-
-		return array(
-			'file'   => array( 'file', false ),
-			'folder' => 'folder',
-			'size'   => 'size',
-			'time'   => array( 'time', false ),
-		);
-	}
-
-	public function column_cb( $item ) {
-
-		return '<input type="checkbox" name="backupfiles[]" value="' . esc_attr( $item['file'] ) . '" />';
-	}
-
 	public function column_file( $item ) {
+
+		$actions = array();
 
 		$r = '<strong>' . esc_attr( $item['filename'] ) . '</strong><br />';
 		if ( ! empty( $item['info'] ) ) {
 			$r .= esc_attr( $item['info'] ) . '<br />';
 		}
-		$actions = array();
+
 		if ( current_user_can( 'backwpup_backups_delete' ) ) {
-			$actions['delete'] = "<a class=\"submitdelete\" href=\"" . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=delete&jobdest-top=' . $this->jobid . '_' . $this->dest . '&paged=' . $this->get_pagenum() . '&backupfiles[]=' . esc_attr( $item['file'] ),
-					'bulk-backups' ) . "\" onclick=\"if ( confirm('" . esc_js( __( "You are about to delete this backup archive. \n  'Cancel' to stop, 'OK' to delete.",
-					"backwpup" ) ) . "') ) { return true;}return false;\">" . __( 'Delete', 'backwpup' ) . "</a>";
+			$actions['delete'] = $this->delete_item_action( $item );
 		}
-		if ( current_user_can( 'backwpup_backups_download' ) && ! empty( $item['downloadurl'] ) ) {
-			// Check if downloader class exists
+
+		if ( ! empty( $item['downloadurl'] ) && current_user_can( 'backwpup_backups_download' ) ) {
 			try {
-				// If we're still here, the downloader exists
-				$actions['download'] = "<a href=\"#TB_inline?height=440&width=630&inlineId=tb-download-file\" data-jobid=\"" . $this->jobid . "\" data-destination=\"" . esc_attr( $this->dest ) . "\" data-file=\"" . esc_attr( $item['file'] ) . "\" data-local-file=\"" . esc_attr( $item['filename'] ) . "\" data-nonce=\"" . wp_create_nonce( 'download-backup_' . $this->jobid ) . "\" data-url=\"" . wp_nonce_url( $item['downloadurl'],
-						'download-backup_' . $this->jobid ) . "\" class=\"backup-download-link thickbox\">" . __( 'Download',
-						'backwpup' ) . "</a>";
+				$actions['download'] = $this->download_item_action( $item );
 			} catch ( BackWPup_Factory_Exception $e ) {
-				$actions['download'] = "<a href=\"" . wp_nonce_url( $item['downloadurl'],
-						'download-backup_' . $this->jobid ) . "\">" . __( 'Download', 'backwpup' ) . "</a>";
+				$actions['download'] = sprintf(
+					'<a href="%1$s">%2$s</a>',
+					wp_nonce_url( $item['downloadurl'], 'backwpup_action_nonce' ),
+					__( 'Download', 'backwpup' )
+				);
 			}
 		}
 
 		// Add restore url to link list
 		if ( current_user_can( 'backwpup_restore' ) && ! empty( $item['restoreurl'] ) ) {
-			$item['restoreurl'] = add_query_arg( array( 'step' => 1, 'trigger_download' => 1 ), $item['restoreurl'] );
-			$actions['restore'] = "<a href=\"" . wp_nonce_url( $item['restoreurl'],
-					'restore-backup_' . $this->jobid ) . "\">" . __( 'Restore', 'backwpup' ) . "</a>";
+
+			$item['restoreurl'] = add_query_arg(
+				array(
+					'step' => 1,
+					'trigger_download' => 1,
+				),
+				$item['restoreurl']
+			);
+			$actions['restore'] = sprintf(
+				'<a href="%1$s">%2$s</a>',
+				wp_nonce_url( $item['restoreurl'], 'restore-backup_' . $this->jobid ),
+				__( 'Restore', 'backwpup' )
+			);
 		}
 
 		$r .= $this->row_actions( $actions );
@@ -339,7 +349,7 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 					$jobdest = sanitize_text_field( $_GET['jobdest-top'] );
 				}
 
-				$_GET['jobdest-top']        = $jobdest;
+				$_GET['jobdest-top'] = $jobdest;
 				$_GET['jobdets-button-top'] = 'submit';
 
 				if ( $jobdest === '' ) {
@@ -349,7 +359,7 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 				list( $jobid, $dest ) = explode( '_', $jobdest );
 				/** @var BackWPup_Destinations $dest_class */
 				$dest_class = BackWPup::get_destination( $dest );
-				$files      = $dest_class->file_get_list( $jobdest );
+				$files = $dest_class->file_get_list( $jobdest );
 				foreach ( $_GET['backupfiles'] as $backupfile ) {
 					foreach ( $files as $file ) {
 						if ( is_array( $file ) && $file['file'] == $backupfile ) {
@@ -368,13 +378,12 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 					if ( ! current_user_can( 'backwpup_backups_download' ) ) {
 						wp_die( __( 'Sorry, you don\'t have permissions to do that.', 'backwpup' ) );
 					}
-					check_admin_referer( 'download-backup_' . $jobid );
+					check_admin_referer( 'backwpup_action_nonce' );
 
 					$filename = untrailingslashit( BackWPup::get_plugin_data( 'temp' ) ) . '/' . basename( isset( $_GET['local_file'] ) ? $_GET['local_file'] : $_GET['file'] );
 					if ( file_exists( $filename ) ) {
 						$downloader = new BackWPup_Download_File(
 							$filename,
-							mime_content_type( $filename ),
 							function ( \BackWPup_Download_File_Interface $obj ) use ( $filename ) {
 
 								$obj->clean_ob()
@@ -430,9 +439,9 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 
 		add_screen_option( 'per_page',
 			array(
-				'label'   => __( 'Backup Files', 'backwpup' ),
+				'label' => __( 'Backup Files', 'backwpup' ),
 				'default' => 20,
-				'option'  => 'backwpupbackups_per_page',
+				'option' => 'backwpupbackups_per_page',
 			) );
 
 		self::$listtable->prepare_items();
@@ -461,24 +470,30 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 
 	public static function admin_print_scripts() {
 
-		wp_enqueue_script( 'backwpupgeneral' );
+		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		$plugin_url = BackWPup::get_plugin_data( 'url' );
+		$plugin_dir = BackWPup::get_plugin_data( 'plugindir' );
+		$plugin_scripts_url = "{$plugin_url}/assets/js";
+		$plugin_scripts_dir = "{$plugin_dir}/assets/js";
 
-		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-			wp_enqueue_script(
-				'backwpuppagebackups',
-				BackWPup::get_plugin_data( 'URL' ) . '/assets/js/page_backups.js',
-				array( 'jquery' ),
-				time(),
-				true
-			);
-		} else {
-			wp_enqueue_script(
-				'backwpuppagebackups',
-				BackWPup::get_plugin_data( 'URL' ) . '/assets/js/page_backups.min.js',
-				array( 'jquery' ),
-				BackWPup::get_plugin_data( 'Version' ),
-				true
-			);
+		$dependencies = array(
+			'jquery',
+			'underscore',
+			'backwpupgeneral',
+		);
+		if ( \BackWPup::is_pro() ) {
+			$dependencies[] = 'decrypter';
+		}
+		wp_enqueue_script(
+			'backwpup-backup-downloader',
+			"{$plugin_scripts_url}/backup-downloader{$suffix}.js",
+			$dependencies,
+			filemtime( "{$plugin_scripts_dir}/backup-downloader{$suffix}.js" ),
+			true
+		);
+
+		if ( \BackWPup::is_pro() ) {
+			self::admin_print_pro_scripts( $suffix, $plugin_url, $plugin_dir );
 		}
 	}
 
@@ -496,93 +511,115 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 			</form>
 		</div>
 
-		<div id="tb-download-file" style="display: none;">
-			<div id="download-file-waiting" style="display: none;">
-				<p><?php esc_html_e( 'Please wait &hellip;', 'backwpup' ) ?></p>
-			</div>
-			<div id="download-file-generating" style="display: none;">
-				<p><?php esc_html_e( 'Your download is being generated &hellip;', 'backwpup' ) ?></p>
-				<div class="progressbar">
+		<div id="tb_download_file" style="display: none;">
+			<div id="tb_container">
+				<p id="download-file-waiting">
+					<?php esc_html_e( 'Please wait &hellip;', 'backwpup' ) ?>
+				</p>
+				<p id="download-file-success" style="display: none;">
+					<?php esc_html_e(
+						'Your download has been generated. It should begin downloading momentarily.',
+						'backwpup'
+					) ?>
+				</p>
+				<div class="progressbar" style="display: none;">
 					<div id="progresssteps" class="bwpu-progress" style="width:0%;">0%</div>
 				</div>
-			</div>
-			<div id="download-file-private-key" style="display: none;">
-				<p><?php esc_html_e( 'Please enter your private key to decrypt your backup.', 'backwpup' ) ?></p>
-				<p id="download-file-private-key-invalid" class="error" style="display: none;">
-					<?php esc_html_e( 'The private key you entered was invalid. Please try again.', 'backwpup' ) ?>
-				</p>
-				<label for="download-file-private-key-input">
-					<?php esc_html_e( 'Private Key', 'backwpup' ) ?>
-				</label>
-				<br/>
-				<textarea id="download-file-private-key-input" rows="8"
-				          style="width: 100%; overflow: scroll;"></textarea>
-				<p>
-					<button id="download-file-private-key-button" class="button button-primary">
-						<?php esc_html_e( 'Submit', 'backwpup' ) ?>
-					</button>
-				</p>
-			</div>
-			<div id="download-file-done" style="display: none;">
-				<p><?php esc_html_e( 'Your download has been generated. It should begin downloading momentarily.',
-						'backwpup' ) ?></p>
+				<?php
+				if ( \BackWPup::is_pro() ) {
+					$view = new \Inpsyde\Restore\ViewLoader(
+						\Inpsyde\BackWPup\Pro\Restore\Functions\restore_container( 'translation' )
+					);
+					$view->decrypt_key_input();
+				}
+				?>
 			</div>
 		</div>
 		<?php
 	}
 
-	public static function ajax_download_file() {
+	private static function admin_print_pro_scripts( $suffix, $plugin_url, $plugin_dir ) {
 
-		set_time_limit( 0 );
-		// Set up eventsource headers
-		header( 'Content-Type: text/event-stream' );
-		header( 'Cache-Control: no-cache' );
-		header( 'X-Accel-Buffering: no' );
-		header( 'Content-Encoding: none' );
+		$restore_scripts_path = "{$plugin_url}/vendor/inpsyde/backwpup-restore-shared/resources/js";
+		$restore_scripts_dir = "{$plugin_dir}/vendor/inpsyde/backwpup-restore-shared/resources/js";
 
-		// 2KB padding for IE
-		echo ':' . str_repeat( ' ', 2048 ) . "\n\n"; // phpcs:ignore
-
-		// Ensure we're not buffered.
-		wp_ob_end_flush_all();
-		flush();
-
-		$dest       = strtoupper( $_GET['destination'] );
-		$dest_class = BackWPup::get_destination( $dest );
-
-		$dest_class->file_download(
-			$_GET['jobid'],
-			trim( sanitize_text_field( $_GET['file'] ) ),
-			trim( sanitize_text_field( $_GET['local_file'] ) )
+		wp_register_script(
+			'restore_functions',
+			"{$restore_scripts_path}/functions{$suffix}.js",
+			array( 'underscore', 'jquery' ),
+			filemtime( "{$restore_scripts_dir}/functions{$suffix}.js" ),
+			true
+		);
+		wp_register_script(
+			'states',
+			"{$restore_scripts_path}/states{$suffix}.js",
+			array(
+				'restore_functions',
+			),
+			filemtime( "{$restore_scripts_dir}/states{$suffix}.js" ),
+			true
+		);
+		wp_register_script(
+			'decrypter',
+			"{$restore_scripts_path}/decrypter{$suffix}.js",
+			array(
+				'underscore',
+				'jquery',
+				'states',
+				'restore_functions',
+			),
+			filemtime( "{$restore_scripts_dir}/decrypter{$suffix}.js" ),
+			true
 		);
 	}
 
-	public static function ajax_send_private_key() {
+	private function delete_item_action( $item ) {
 
-		$private_key = (string) filter_input( INPUT_POST, 'privatekey', FILTER_SANITIZE_STRING );
+		$query = sprintf(
+			'?page=backwpupbackups&action=delete&jobdest-top=%1$s&paged=%2$s&backupfiles[]=%3$s',
+			$this->jobid . '_' . $this->dest,
+			$this->get_pagenum(),
+			esc_attr( $item['file'] )
+		);
+		$url = wp_nonce_url( network_admin_url( 'admin.php' ) . $query, 'bulk-backups' );
+		$js = sprintf(
+			'if ( confirm(\'%s\') ) { return true; } return false;',
+			esc_js(
+				__(
+					'You are about to delete this backup archive. \'Cancel\' to stop, \'OK\' to delete.',
+					"backwpup"
+				)
+			)
+		);
 
-		if ( ! $private_key ) {
-			return;
-		}
+		return sprintf(
+			'<a class="submitdelete" href="%1$s" onclick="%2$s">%3$s</a>',
+			$url,
+			$js,
+			__( 'Delete', 'backwpup' )
+		);
+	}
 
-		$temporary_file_path  = untrailingslashit( BackWPup::get_plugin_data( 'temp' ) );
-		$private_key_filename = $temporary_file_path . '/' . BackWPup_Decrypter::PRIVATE_RSA_ID_FILE;
-		$saved                = file_put_contents( $private_key_filename, $private_key );
+	private function download_item_action( $item ) {
 
-		if ( ! $saved ) {
-			wp_send_json_error( array(
-				'message' => sprintf(
-					__(
-						'Seems is not possible to store your private key, be sure the directory %s is writable.',
-						'backwpup'
-					),
-					dirname( $private_key_filename )
-				),
-			) );
-		}
+		$local_file = untrailingslashit( BackWPup::get_plugin_data( 'TEMP' ) ) . "/{$item['filename']}";
 
-		wp_send_json_success( array(
-			'message' => __( 'The key has been succesfull stored.' ),
-		) );
+		return sprintf(
+			'<a href="#TB_inline?height=300&width=630&inlineId=tb_download_file" 
+				class="backup-download-link thickbox" 
+				data-jobid="%1$s" 
+				data-destination="%2$s" 
+				data-file="%3$s" 
+				data-local-file="%4$s" 
+				data-nonce="%5$s" 
+				data-url="%6$s">%7$s</a>',
+			intval( $this->jobid ),
+			esc_attr( $this->dest ),
+			esc_attr( $item['file'] ),
+			esc_attr( $local_file ),
+			wp_create_nonce( 'backwpup_action_nonce' ),
+			wp_nonce_url( $item['downloadurl'], 'backwpup_action_nonce' ),
+			__( 'Download', 'backwpup' )
+		);
 	}
 }

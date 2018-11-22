@@ -36,17 +36,17 @@ class BackWpup_Download_Handler {
 	/**
 	 * DownloadLogHandler constructor
 	 *
-	 * @param \BackWPup_Download_File_Interface $downloader   The instance used to download the file.
-	 * @param  string                           $nonce_action The nonce to verify.
-	 * @param  string                           $capability   The capability needed to download the file.
-	 * @param  string                           $action       The action to perform.
+	 * @param \BackWPup_Download_File_Interface $downloader The instance used to download the file.
+	 * @param  string $nonce_action The nonce to verify.
+	 * @param  string $capability The capability needed to download the file.
+	 * @param  string $action The action to perform.
 	 */
 	public function __construct( \BackWPup_Download_File_Interface $downloader, $nonce_action, $capability, $action ) {
 
-		$this->downloader   = $downloader;
+		$this->downloader = $downloader;
 		$this->nonce_action = $nonce_action;
-		$this->capability   = $capability;
-		$this->action       = $action;
+		$this->capability = $capability;
+		$this->action = $action;
 	}
 
 	/**
@@ -75,7 +75,7 @@ class BackWpup_Download_Handler {
 			return false;
 		}
 
-		check_admin_referer( $this->nonce_action );
+		check_admin_referer( $this->nonce_action, $this->nonce_action );
 
 		if ( ! current_user_can( $this->capability ) ) {
 			wp_die( 'Cheating Uh?' );

@@ -3,6 +3,8 @@
 // http://www.windowsazure.com/en-us/develop/php/
 // https://github.com/WindowsAzure/azure-sdk-for-php
 
+use Inpsyde\BackWPup\Helper;
+
 /**
  * Documentation: http://www.windowsazure.com/en-us/develop/php/how-to-guides/blob-service/
  */
@@ -180,7 +182,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 			@set_time_limit( 300 );
 			nocache_headers();
 			header( 'Content-Description: File Transfer' );
-			header( 'Content-Type: ' . BackWPup_Job::get_mime_type( $get_file ) );
+			header( 'Content-Type: ' . Helper\MimeType::from_file_path( $get_file ) );
 			header( 'Content-Disposition: attachment; filename="' . basename( $get_file ) . '"' );
 			header( 'Content-Transfer-Encoding: binary' );
 			header( 'Content-Length: ' . $blob->getProperties()->getContentLength() );

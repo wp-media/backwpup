@@ -3,6 +3,8 @@
 // http://www.rackspace.com/cloud/files/
 // https://github.com/rackspace/php-opencloud
 
+use Inpsyde\BackWPup\Helper;
+
 /**
  *
  */
@@ -226,7 +228,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			@set_time_limit( 300 );
 			nocache_headers();
 			header( 'Content-Description: File Transfer' );
-			header( 'Content-Type: ' . BackWPup_Job::get_mime_type( $get_file ) );
+			header( 'Content-Type: ' . Helper\MimeType::from_file_path( $get_file ) );
 			header( 'Content-Disposition: attachment; filename="' . basename( $get_file ) . '"' );
 			header( 'Content-Transfer-Encoding: binary' );
 			header( 'Content-Length: ' . $backupfile->getContentLength() );

@@ -33,11 +33,4 @@ interface BackWPup_Download_File_Interface {
 	 * @return string The file path to download
 	 */
 	public function filepath();
-
-	/**
-	 * Check File Name
-	 *
-	 * @return $this For concatenation
-	 */
-	public function check_filename();
 }

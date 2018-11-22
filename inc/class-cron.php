@@ -1,7 +1,5 @@
 <?php
 
-use Base32\Base32;
-
 /**
  * Class for BackWPup cron methods
  */
@@ -50,7 +48,7 @@ class BackWPup_Cron {
 
 		//start job
 		self::cron_active( array(
-			'run'   => 'cronrun',
+			'run' => 'cronrun',
 			'jobid' => $arg,
 		) );
 
@@ -131,53 +129,6 @@ class BackWPup_Cron {
 	}
 
 	/**
-	 * Update the backend message.
-	 *
-	 * @return void
-	 */
-	public static function update_message() {
-
-		// Fetch message from API
-		$api_request  = esc_url( 'http://backwpup.com/wp-json/inpsyde-messages/v1/message/' );
-		$api_response = wp_remote_get( $api_request ); // phpcs:ignore
-		$api_data     = json_decode( wp_remote_retrieve_body( $api_response ), true );
-
-		if ( is_wp_error( $api_response ) ) {
-			return;
-		}
-		if ( 200 !== $api_response['response']['code'] ) {
-			return;
-		}
-
-		// Add messages to options
-		foreach ( $api_data as $lang => $value ) {
-			$content = $value['content'];
-			$button  = $value['button-text'];
-			$url     = $value['url'];
-
-			// Calculate ID based on button text and URL
-			$id = "$button|$url";
-
-			// Pad to nearest 5 bytes for base32
-			$pad = strlen( $id );
-
-			if ( $pad % 5 > 0 ) {
-				$pad += 5 - ( $pad % 5 );
-				$id  = str_pad( $id, $pad, '|' );
-			}
-
-			// Encode $id so it will be unique
-			$id = Base32::encode( $id );
-
-			// Save in site options
-			update_site_option( "backwpup_message_id_$lang", $id );
-			update_site_option( "backwpup_message_content_$lang", $content );
-			update_site_option( "backwpup_message_button_text_$lang", $button );
-			update_site_option( "backwpup_message_url_$lang", $url );
-		}
-	}
-
-	/**
 	 * Start job if in cron and run query args are set.
 	 */
 	public static function cron_active( $args = array() ) {
@@ -204,7 +155,7 @@ class BackWPup_Cron {
 		}
 
 		$args = array_merge( array(
-			'run'   => '',
+			'run' => '',
 			'nonce' => '',
 			'jobid' => 0,
 		),
@@ -260,7 +211,7 @@ class BackWPup_Cron {
 
 		//check runext is allowed for job
 		if ( $args['run'] === 'runext' ) {
-			$jobids_link     = BackWPup_Option::get_job_ids( 'activetype', 'link' );
+			$jobids_link = BackWPup_Option::get_job_ids( 'activetype', 'link' );
 			$jobids_easycron = BackWPup_Option::get_job_ids( 'activetype', 'easycron' );
 			$jobids_external = array_merge( $jobids_link, $jobids_easycron );
 			if ( ! in_array( $args['jobid'], $jobids_external, true ) ) {
@@ -282,7 +233,7 @@ class BackWPup_Cron {
 	 */
 	public static function cron_next( $cronstring ) {
 
-		$cron      = array();
+		$cron = array();
 		$cronarray = array();
 		//Cron string
 		list( $cronstr['minutes'], $cronstr['hours'], $cronstr['mday'], $cronstr['mon'], $cronstr['wday'] ) = explode( ' ',
@@ -397,5 +348,4 @@ class BackWPup_Cron {
 
 		return PHP_INT_MAX;
 	}
-
 }

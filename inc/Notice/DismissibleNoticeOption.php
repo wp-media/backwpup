@@ -1,9 +1,8 @@
 <?php
 
-/**
- *
- */
-class BackWPup_Dismissible_Notice_Option {
+namespace Inpsyde\BackWPup\Notice;
+
+class DismissibleNoticeOption {
 
 	const OPTION_PREFIX = 'backwpup_dinotopt_';
 	const FOR_GOOD_ACTION = 'dismiss_admin_notice_for_good';
@@ -11,9 +10,16 @@ class BackWPup_Dismissible_Notice_Option {
 	const FOR_USER_FOR_GOOD_ACTION = 'dismiss_admin_notice_for_good_user';
 	const SKIP = 'skip_action';
 
-	private static $setup = array( 'sitewide' => array(), 'blog' => array() );
+	private static $setup = array(
+		'sitewide' => array(),
+		'blog' => array(),
+	);
 
-	private static $all_actions = array( self::FOR_GOOD_ACTION, self::FOR_NOW_ACTION, self::FOR_USER_FOR_GOOD_ACTION );
+	private static $all_actions = array(
+		self::FOR_GOOD_ACTION,
+		self::FOR_NOW_ACTION,
+		self::FOR_USER_FOR_GOOD_ACTION,
+	);
 
 	/**
 	 * @var bool
@@ -21,7 +27,7 @@ class BackWPup_Dismissible_Notice_Option {
 	private $sitewide;
 
 	/**
-	 * @param bool   $sitewide
+	 * @param bool $sitewide
 	 * @param string $notice_id
 	 * @param string $capability
 	 */
@@ -40,7 +46,7 @@ class BackWPup_Dismissible_Notice_Option {
 		}
 
 		if ( self::$setup[ $key ] === array() ) {
-			$option = new BackWPup_Dismissible_Notice_Option( $sitewide );
+			$option = new self( $sitewide );
 			add_action( 'admin_post_' . self::FOR_GOOD_ACTION, array( $option, 'dismiss' ) );
 			add_action( 'admin_post_' . self::FOR_NOW_ACTION, array( $option, 'dismiss' ) );
 			add_action( 'admin_post_' . self::FOR_USER_FOR_GOOD_ACTION, array( $option, 'dismiss' ) );
@@ -63,8 +69,8 @@ class BackWPup_Dismissible_Notice_Option {
 			array(
 				'action' => $action,
 				'notice' => $notice_id,
-				'blog'   => get_current_blog_id(),
-				$action  => wp_create_nonce( $action ),
+				'blog' => get_current_blog_id(),
+				$action => wp_create_nonce( $action ),
 			),
 			admin_url( 'admin-post.php' )
 		);
@@ -74,6 +80,7 @@ class BackWPup_Dismissible_Notice_Option {
 	 * @param bool $sitewide
 	 */
 	public function __construct( $sitewide = false ) {
+
 		$this->sitewide = $sitewide;
 	}
 
@@ -101,7 +108,7 @@ class BackWPup_Dismissible_Notice_Option {
 
 		// Dismissed for now for user?
 		$transient_name = self::OPTION_PREFIX . $notice_id . get_current_user_id();
-		$transient      = $this->sitewide ? get_site_transient( $transient_name ) : get_transient( $transient_name );
+		$transient = $this->sitewide ? get_site_transient( $transient_name ) : get_transient( $transient_name );
 
 		return (bool) $transient;
 	}
@@ -116,16 +123,16 @@ class BackWPup_Dismissible_Notice_Option {
 		$end_request = true;
 
 		switch ( $action ) {
-			case self::FOR_GOOD_ACTION :
+			case self::FOR_GOOD_ACTION:
 				$this->dismiss_for_good( $notice_id );
 				break;
-			case self::FOR_USER_FOR_GOOD_ACTION :
+			case self::FOR_USER_FOR_GOOD_ACTION:
 				$this->dismiss_for_user_for_good( $notice_id );
 				break;
-			case self::FOR_NOW_ACTION :
+			case self::FOR_NOW_ACTION:
 				$this->dismiss_for_now( $notice_id );
 				break;
-			case self::SKIP :
+			case self::SKIP:
 				$end_request = false;
 				break;
 		}
@@ -170,7 +177,7 @@ class BackWPup_Dismissible_Notice_Option {
 	private function dismiss_for_now( $notice_id ) {
 
 		$transient_name = self::OPTION_PREFIX . $notice_id . get_current_user_id();
-		$expiration     = 12 * HOUR_IN_SECONDS;
+		$expiration = 12 * HOUR_IN_SECONDS;
 
 		$this->sitewide
 			? set_site_transient( $transient_name, 1, $expiration )
@@ -209,7 +216,7 @@ class BackWPup_Dismissible_Notice_Option {
 		$definition = array(
 			'action' => FILTER_SANITIZE_STRING,
 			'notice' => FILTER_SANITIZE_STRING,
-			'blog'   => FILTER_SANITIZE_NUMBER_INT,
+			'blog' => FILTER_SANITIZE_NUMBER_INT,
 			'isAjax' => FILTER_VALIDATE_BOOLEAN,
 		);
 
@@ -218,9 +225,9 @@ class BackWPup_Dismissible_Notice_Option {
 			array_filter( (array) filter_input_array( INPUT_POST, $definition ) )
 		);
 
-		$is_ajax = ! empty( $data[ 'isAjax' ] );
-		$action  = empty( $data[ 'action' ] ) ? '' : $data[ 'action' ];
-		$notice  = empty( $data[ 'notice' ] ) ? '' : $data[ 'notice' ];
+		$is_ajax = ! empty( $data['isAjax'] );
+		$action = empty( $data['action'] ) ? '' : $data['action'];
+		$notice = empty( $data['notice'] ) ? '' : $data['notice'];
 
 		if (
 			! $action
@@ -231,8 +238,8 @@ class BackWPup_Dismissible_Notice_Option {
 			$this->end_request( $is_ajax );
 		}
 
-		$key        = $this->sitewide ? 'sitewide' : 'blog';
-		$swap_key   = $this->sitewide ? 'blog' : 'sitewide';
+		$key = $this->sitewide ? 'sitewide' : 'blog';
+		$swap_key = $this->sitewide ? 'blog' : 'sitewide';
 		$capability = empty( self::$setup[ $key ][ $notice ] ) ? '' : self::$setup[ $key ][ $notice ];
 
 		if ( ! $capability && ! empty( self::$setup[ $swap_key ][ $notice ] ) ) {
@@ -252,7 +259,7 @@ class BackWPup_Dismissible_Notice_Option {
 
 		if (
 			! $this->sitewide
-			&& ( empty( $data[ 'blog' ] ) || (int) get_current_blog_id() !== (int) $data[ 'blog' ] )
+			&& ( empty( $data['blog'] ) || get_current_blog_id() !== (int) $data['blog'] )
 		) {
 			$this->end_request( $is_ajax );
 		}

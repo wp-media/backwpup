@@ -31,9 +31,9 @@ class BackWPup_Destination_Downloader_Factory {
 	 */
 	public function create( $service_name, $job_id, $source_file_path, $local_file_path, $base_url = '' ) {
 
-		$destination  = null;
+		$destination = null;
 		$service_name = ucwords( $service_name );
-		$class        = self::CLASS_PREFIX . $service_name . self::CLASS_SUFFIX;
+		$class = self::CLASS_PREFIX . $service_name . self::CLASS_SUFFIX;
 
 		// If class doesn't exists, try within the Pro directory.
 		if ( BackWPup::is_pro() && ! class_exists( $class ) ) {
@@ -57,7 +57,9 @@ class BackWPup_Destination_Downloader_Factory {
 		}
 
 		/** @var \BackWPup_Destination_Downloader_Interface $destination */
-		! $destination and $destination = new $class( $data );
+		if ( ! $destination ) {
+			$destination = new $class( $data );
+		}
 
 		return new BackWPup_Destination_Downloader( $data, $destination );
 	}

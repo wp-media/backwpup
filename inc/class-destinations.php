@@ -3,10 +3,8 @@
 /**
  * Base class for adding BackWPup destinations.
  *
- * @package    BackWPup
- * @subpackage BackWPup_Destinations
- * @since      3.0.0
- * @access     private
+ * @package BackWPup
+ * @since 3.0.0
  */
 abstract class BackWPup_Destinations {
 
@@ -117,18 +115,17 @@ abstract class BackWPup_Destinations {
 	public function file_download( $jobid, $file_path, $local_file_path = null ) {
 
 		$capability = 'backwpup_backups_download';
-		$filename   = untrailingslashit( BackWPup::get_plugin_data( 'temp' ) ) . '/' . basename( $local_file_path ?: $file_path );
-		$job_id     = filter_var( $_GET['jobid'], FILTER_SANITIZE_NUMBER_INT );
+		$filename = untrailingslashit( BackWPup::get_plugin_data( 'temp' ) ) . '/' . basename( $local_file_path ?: $file_path );
+		$job_id = filter_var( $_GET['jobid'], FILTER_SANITIZE_NUMBER_INT );
 
 		// Dynamically get downloader class
-		$class_name  = get_class( $this );
-		$parts       = explode( '_', $class_name );
+		$class_name = get_class( $this );
+		$parts = explode( '_', $class_name );
 		$destination = array_pop( $parts );
 
 		$downloader = new BackWpup_Download_Handler(
 			new BackWPup_Download_File(
 				$filename,
-				mime_content_type( $filename ),
 				function ( \BackWPup_Download_File_Interface $obj ) use (
 					$filename,
 					$file_path,
@@ -137,7 +134,7 @@ abstract class BackWPup_Destinations {
 				) {
 
 					// Setup Destination service and download file.
-					$factory    = new BackWPup_Destination_Downloader_Factory();
+					$factory = new BackWPup_Destination_Downloader_Factory();
 					$downloader = $factory->create(
 						$destination,
 						$job_id,
@@ -149,9 +146,9 @@ abstract class BackWPup_Destinations {
 				},
 				$capability
 			),
-			"download-backup_{$job_id}",
+			'backwpup_action_nonce',
 			$capability,
-			'download_file'
+			'download_backup_file'
 		);
 
 		// Download the file.
@@ -214,12 +211,11 @@ abstract class BackWPup_Destinations {
 
 		$extensions = array(
 			'.tar.gz',
-			'.tar.bz2',
 			'.tar',
 			'.zip',
 		);
 
-		$file     = trim( basename( $file ) );
+		$file = trim( basename( $file ) );
 		$filename = '';
 
 		foreach ( $extensions as $extension ) {
@@ -254,7 +250,7 @@ abstract class BackWPup_Destinations {
 		$data = array();
 		if ( substr( $file, 0, 8 ) == 'backwpup' ) {
 			$parts = explode( '_', $file );
-			$data  = BackWPup_Option::decode_hash( $parts[1] );
+			$data = BackWPup_Option::decode_hash( $parts[1] );
 			if ( ! $data ) {
 				return false;
 			}

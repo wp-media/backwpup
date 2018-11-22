@@ -1,16 +1,11 @@
 <?php
 
+use Inpsyde\BackWPup\Helper;
+
 /**
  * Class BackWPup_Download_File
  */
-class BackWPup_Download_File implements BackWPup_Download_File_Interface {
-
-	/**
-	 * Type
-	 *
-	 * @var string The mime file type
-	 */
-	private $type;
+final class BackWPup_Download_File implements BackWPup_Download_File_Interface {
 
 	/**
 	 * The file path
@@ -61,12 +56,11 @@ class BackWPup_Download_File implements BackWPup_Download_File_Interface {
 	 *
 	 * @throws \InvalidArgumentException In case the callback is not a valid callback.
 	 *
-	 * @param string   $filepath   The path of the file to download.
-	 * @param string   $type       The mime file type.
-	 * @param callable $callback   The callback to call that will perform the download action.
-	 * @param string   $capability The capability needed to download the file.
+	 * @param string $filepath The path of the file to download.
+	 * @param callable $callback The callback to call that will perform the download action.
+	 * @param string $capability The capability needed to download the file.
 	 */
-	public function __construct( $filepath, $type, $callback, $capability ) {
+	public function __construct( $filepath, $callback, $capability ) {
 
 		if ( ! is_callable( $callback ) ) {
 			throw new \InvalidArgumentException(
@@ -74,15 +68,10 @@ class BackWPup_Download_File implements BackWPup_Download_File_Interface {
 			);
 		}
 
-		$this->type     = $type;
 		$this->filepath = $filepath;
 		$this->filename = basename( $filepath );
 		$this->callback = $callback;
-
-		// Calculate the length of the file.
 		$this->length = file_exists( $filepath ) ? filesize( $filepath ) : 0;
-
-		// Set the capability.
 		$this->capability = $capability;
 	}
 
@@ -95,8 +84,7 @@ class BackWPup_Download_File implements BackWPup_Download_File_Interface {
 			wp_die( 'Cheating Uh?' );
 		}
 
-		$this->check_filename()
-		     ->perform_download_callback();
+		$this->perform_download_callback();
 	}
 
 	/**
@@ -106,7 +94,7 @@ class BackWPup_Download_File implements BackWPup_Download_File_Interface {
 
 		$level = ob_get_level();
 		if ( $level ) {
-			for ( $i = 0; $i < $level; $i++ ) {
+			for ( $i = 0; $i < $level; $i ++ ) {
 				ob_end_clean();
 			}
 		}
@@ -125,27 +113,13 @@ class BackWPup_Download_File implements BackWPup_Download_File_Interface {
 	/**
 	 * @inheritdoc
 	 */
-	public function check_filename() {
-
-		// Sanitize filename, avoid wrong files.
-		$filename = sanitize_file_name( basename( $this->filename ) );
-
-		// Die if filename contains invalid characters.
-		if ( $filename !== $this->filename ) {
-			wp_die( esc_html__( 'Invalid file name, seems file include invalid characters.', 'backwpup' ) );
-		}
-
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
 	public function headers() {
+
+		$mime = Helper\MimeType::from_file_path( $this->filepath );
 
 		$level = ob_get_level();
 		if ( $level ) {
-			for ( $i = 0; $i < $level; $i++ ) {
+			for ( $i = 0; $i < $level; $i ++ ) {
 				ob_end_clean();
 			}
 		}
@@ -156,7 +130,7 @@ class BackWPup_Download_File implements BackWPup_Download_File_Interface {
 
 		// Set headers.
 		header( 'Content-Description: File Transfer' );
-		header( "Content-Type: {$this->type}" );
+		header( "Content-Type: {$mime}" );
 		header( "Content-Disposition: attachment; filename={$this->filename}" );
 		header( 'Content-Transfer-Encoding: ' . self::$encoding );
 		header( "Content-Length: {$this->length}" );

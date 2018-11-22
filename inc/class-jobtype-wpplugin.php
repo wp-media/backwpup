@@ -60,11 +60,6 @@ class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes {
 						} else {
 							echo '<label for="idpluginlistfilecompression-gz"><input class="radio" type="radio"' . checked( '.gz', BackWPup_Option::get( $jobid, 'pluginlistfilecompression' ), FALSE ) . ' name="pluginlistfilecompression" id="idpluginlistfilecompression-gz" value=".gz" disabled="disabled" /> ' . esc_html__( 'GZip', 'backwpup' ). '</label><br />';
 						}
-						if ( function_exists( 'bzopen' ) ) {
-							echo '<label for="idpluginlistfilecompression-bz2"><input class="radio" type="radio"' . checked( '.bz2', BackWPup_Option::get( $jobid, 'pluginlistfilecompression' ), FALSE ) . ' name="pluginlistfilecompression" id="idpluginlistfilecompression-bz2" value=".bz2" /> ' . esc_html__( 'BZip2', 'backwpup' ). '</label><br />';
-						} else {
-							echo '<label for="idpluginlistfilecompression-bz2"><input class="radio" type="radio"' . checked( '.bz2', BackWPup_Option::get( $jobid, 'pluginlistfilecompression' ), FALSE ) . ' name="pluginlistfilecompression" id="idpluginlistfilecompression-bz2" value=".bz2" disabled="disabled" /> ' . esc_html__( 'BZip2', 'backwpup' ). '</label><br />';
-						}
 						?>
 					</fieldset>
 				</td>
@@ -100,8 +95,6 @@ class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes {
 
 		if ( $job_object->job[ 'pluginlistfilecompression' ] == '.gz' )
 			$handle = fopen( 'compress.zlib://' . BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'pluginlistfile' ], 'w' );
-		elseif ( $job_object->job[ 'pluginlistfilecompression' ] == '.bz2' )
-			$handle = fopen( 'compress.bzip2://' . BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'pluginlistfile' ], 'w' );
 		else
 			$handle = fopen( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp[ 'pluginlistfile' ], 'w' );
 

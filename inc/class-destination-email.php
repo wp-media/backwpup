@@ -3,6 +3,8 @@
 // http://swiftmailer.org/
 // https://github.com/swiftmailer/swiftmailer
 
+use Inpsyde\BackWPup\Helper;
+
 /**
  *
  */
@@ -334,7 +336,7 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 			$message->setFrom( array( $job_object->job['emailsndemail'] => $job_object->job['emailsndemailname'] ) );
 			$message->setTo( $this->get_email_array( $job_object->job['emailaddress'] ) );
 			$message->setBody( sprintf( __( 'Backup archive: %s', 'backwpup' ), $job_object->backup_file ), 'text/plain', strtolower( get_bloginfo( 'charset' ) ) );
-			$message->attach( Swift_Attachment::fromPath( $job_object->backup_folder . $job_object->backup_file, $job_object->get_mime_type( $job_object->backup_folder . $job_object->backup_file ) ) );
+			$message->attach( Swift_Attachment::fromPath( $job_object->backup_folder . $job_object->backup_file, Helper\MimeType::from_file_path( $job_object->backup_folder . $job_object->backup_file ) ) );
 			// Send the message
 			$result = $emailer->send( $message );
 		} catch ( Exception $e ) {

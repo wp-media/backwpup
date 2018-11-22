@@ -231,7 +231,7 @@ class BackWPup_Page_Logs extends WP_List_Table {
 		if ( current_user_can( 'backwpup_logs_delete' ) ) {
 			$actions['delete'] = "<a class=\"submitdelete\" href=\"" . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpuplogs&action=delete&paged=' . $this->get_pagenum() . '&logfiles[]=' . $item['file'], 'bulk-logs' ) . "\" onclick=\"return showNotice.warn();\">" . __( 'Delete', 'backwpup' ) . "</a>";
 		}
-		$actions['download'] = "<a href=\"" . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpuplogs&action=download&file=' . $item['file'], 'download-log_' . $item['file'] ) . "\">" . __( 'Download', 'backwpup' ) . "</a>";
+		$actions['download'] = "<a href=\"" . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpuplogs&action=download&file=' . $item['file'], 'download_backwpup_logs', 'download_backwpup_logs' ) . "\">" . __( 'Download', 'backwpup' ) . "</a>";
 		$r                   .= $this->row_actions( $actions );
 
 		return $r;
@@ -334,7 +334,6 @@ class BackWPup_Page_Logs extends WP_List_Table {
 				$download_handler = new BackWpup_Download_Handler(
 					new BackWPup_Download_File(
 						$log_file,
-						BackWPup_Job::get_mime_type( $log_file ),
 						function ( \BackWPup_Download_File_Interface $obj ) {
 
 							$obj->clean_ob()
@@ -346,7 +345,7 @@ class BackWPup_Page_Logs extends WP_List_Table {
 						},
 						$capability
 					),
-					'download-log_' . trim( $_GET['file'] ),
+					'download_backwpup_logs',
 					$capability,
 					'download'
 				);

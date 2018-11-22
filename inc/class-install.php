@@ -65,11 +65,6 @@ class BackWPup_Install {
 			wp_schedule_event( time(), 'twicedaily', 'backwpup_check_cleanup' );
 		}
 
-		// Add schedule to update backend message
-		if ( ! wp_next_scheduled( 'backwpup_update_message' ) ) {
-    		wp_schedule_event( time(), 'twicedaily', 'backwpup_update_message' );
-		}
-
 		//add capabilities to administrator role
 		$role = get_role( 'administrator' );
 		if ( is_object( $role ) && method_exists( $role, 'add_cap' ) ) {
@@ -324,7 +319,6 @@ class BackWPup_Install {
 			}
 		}
 		wp_clear_scheduled_hook( 'backwpup_check_cleanup' );
-		wp_clear_scheduled_hook( 'backwpup_update_message' );
 
 		$activejobs = BackWPup_Option::get_job_ids( 'activetype', 'easycron' );
 		if ( ! empty( $activejobs ) ) {

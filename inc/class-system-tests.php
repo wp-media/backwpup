@@ -100,16 +100,6 @@ class BackWPup_System_Tests {
 	}
 
 	/**
-	 * Test if BZIP2 is supported
-	 *
-	 * @return bool True if supported, false otherwise
-	 */
-	public function support_bzip2() {
-
-		return function_exists( 'bzopen' );
-	}
-
-	/**
 	 * Check if save mode is active
 	 *
 	 * @return bool Return true if active, false otherwise

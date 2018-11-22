@@ -4,6 +4,8 @@
 // https://github.com/aws/aws-sdk-php
 // http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region
 
+use Inpsyde\BackWPup\Helper;
+
 /**
  * Documentation: http://docs.amazonwebservices.com/aws-sdk-php-2/latest/class-Aws.S3.S3Client.html
  */
@@ -591,7 +593,6 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 		$downloader = new BackWpup_Download_Handler(
 			new BackWPup_Download_File(
 				$filename,
-				mime_content_type( $filename ),
 				function ( \BackWPup_Download_File_Interface $obj ) use ( $self, $filename, $file_path, $job_id ) {
 
 					$base_url = $self->get_s3_base_url(
@@ -612,9 +613,9 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				},
 				$capability
 			),
-			"download-backup_{$job_id}",
+			'backwpup_action_nonce',
 			$capability,
-			'download_file'
+			'download_backup_file'
 		);
 
 		// Download the file.
@@ -859,7 +860,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 
 				$create_args['Body']        = $up_file_handle;
 				$create_args['Key']         = $job_object->job['s3dir'] . $job_object->backup_file;
-				$create_args['ContentType'] = $job_object->get_mime_type( $job_object->backup_folder . $job_object->backup_file );
+				$create_args['ContentType'] = Helper\MimeType::from_file_path( $job_object->backup_folder . $job_object->backup_file );
 
 				try {
 					$s3->putObject( $create_args );
@@ -882,7 +883,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 							$args = array(
 								'ACL'         => 'private',
 								'Bucket'      => $job_object->job['s3bucket'],
-								'ContentType' => $job_object->get_mime_type( $job_object->backup_folder . $job_object->backup_file ),
+								'ContentType' => Helper\MimeType::from_file_path( $job_object->backup_folder . $job_object->backup_file ),
 								'Key'         => $job_object->job['s3dir'] . $job_object->backup_file,
 							);
 							if ( ! empty( $job_object->job['s3ssencrypt'] ) ) {

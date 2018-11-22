@@ -18,7 +18,7 @@ class BackWPup_Create_Archive {
 	/**
 	 * Compression method
 	 *
-	 * @var string Method off compression Methods are ZipArchive, PclZip, Tar, TarGz, TarBz2, gz, bz2
+	 * @var string Method off compression Methods are ZipArchive, PclZip, Tar, TarGz, gz
 	 */
 	private $method = '';
 
@@ -95,7 +95,10 @@ class BackWPup_Create_Archive {
 		$this->file = trim( $file );
 
 		// TAR.GZ
-		if ( ! $this->filehandler && '.tar.gz' === strtolower( substr( $this->file, - 7 ) ) ) {
+		if (
+			(! $this->filehandler && '.tar.gz' === strtolower( substr( $this->file, - 7 ) ))
+		    || ( ! $this->filehandler && '.tar.bz2' === strtolower( substr( $this->file, - 8 ) ) )
+		) {
 			if ( ! function_exists( 'gzencode' ) ) {
 				throw new BackWPup_Create_Archive_Exception(
 					__( 'Functions for gz compression not available', 'backwpup' )
@@ -104,19 +107,6 @@ class BackWPup_Create_Archive {
 
 			$this->method      = 'TarGz';
 			$this->handlertype = 'gz';
-			$this->filehandler = $this->fopen( $this->file, 'ab' );
-		}
-
-		// TAR.BZ2
-		if ( ! $this->filehandler && '.tar.bz2' === strtolower( substr( $this->file, - 8 ) ) ) {
-			if ( ! function_exists( 'bzcompress' ) ) {
-				throw new BackWPup_Create_Archive_Exception(
-					esc_html__( 'Functions for bz2 compression not available.', 'backwpup' )
-				);
-			}
-
-			$this->method      = 'TarBz2';
-			$this->handlertype = 'bz';
 			$this->filehandler = $this->fopen( $this->file, 'ab' );
 		}
 
@@ -176,7 +166,10 @@ class BackWPup_Create_Archive {
 		}
 
 		// .GZ
-		if ( ! $this->filehandler && '.gz' === strtolower( substr( $this->file, - 3 ) ) ) {
+		if (
+		    ( ! $this->filehandler && '.gz' === strtolower( substr( $this->file, - 3 ) ) )
+		    || ( ! $this->filehandler && '.bz2' === strtolower( substr( $this->file, - 4 ) ) )
+		) {
 			if ( ! function_exists( 'gzencode' ) ) {
 				throw new BackWPup_Create_Archive_Exception(
 					__( 'Functions for gz compression not available', 'backwpup' )
@@ -185,19 +178,6 @@ class BackWPup_Create_Archive {
 
 			$this->method      = 'gz';
 			$this->handlertype = 'gz';
-			$this->filehandler = $this->fopen( $this->file, 'w' );
-		}
-
-		// .BZ2
-		if ( ! $this->filehandler && '.bz2' === strtolower( substr( $this->file, - 4 ) ) ) {
-			if ( ! function_exists( 'bzcompress' ) ) {
-				throw new BackWPup_Create_Archive_Exception(
-					__( 'Functions for bz2 compression not available', 'backwpup' )
-				);
-			}
-
-			$this->method      = 'bz2';
-			$this->handlertype = 'bz';
 			$this->filehandler = $this->fopen( $this->file, 'w' );
 		}
 
@@ -275,7 +255,7 @@ class BackWPup_Create_Archive {
 		}
 
 		// Write tar file end.
-		if ( in_array( $this->method, array( 'Tar', 'TarGz', 'TarBz2' ), true ) ) {
+		if ( in_array( $this->method, array( 'Tar', 'TarGz' ), true ) ) {
 			$this->fwrite( pack( 'a1024', '' ) );
 		}
 
@@ -364,36 +344,8 @@ class BackWPup_Create_Archive {
 				$this->file_count ++;
 				break;
 
-			case 'bz2':
-				if ( ! is_resource( $this->filehandler ) ) {
-					return false;
-				}
-
-				if ( $this->file_count > 0 ) {
-					trigger_error(
-						esc_html__( 'This archive method can only add one file', 'backwpup' ),
-						E_USER_WARNING
-					);
-
-					return false;
-				}
-
-				$fd = fopen( $file_name, 'rb' ); // phpcs:ignore
-				if ( ! $fd ) {
-					return false;
-				}
-
-				while ( ! feof( $fd ) ) {
-					$this->fwrite( fread( $fd, 8192 ) ); // phpcs:ignore
-				}
-				fclose( $fd ); // phpcs:ignore
-
-				$this->file_count ++;
-				break;
-
 			case 'Tar':
 			case 'TarGz':
-			case 'TarBz2':
 				// Convert chars for archives file names
 				if ( function_exists( 'iconv' ) && stripos( PHP_OS, 'win' ) === 0 ) {
 					$test = @iconv( 'ISO-8859-1', 'UTF-8', $name_in_archive );
@@ -582,18 +534,8 @@ class BackWPup_Create_Archive {
 				return false;
 				break;
 
-			case 'bz2':
-				trigger_error(
-					esc_html__( 'This archive method can only add one file', 'backwpup' ),
-					E_USER_ERROR
-				);
-
-				return false;
-				break;
-
 			case 'Tar':
 			case 'TarGz':
-			case 'TarBz2':
 				$this->tar_empty_folder( $folder_name, $name_in_archive );
 
 				return false;

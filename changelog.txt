@@ -1,4 +1,19 @@
 == Changelog ==
+= Version 3.6.4 =
+Release Date: Nov, 22, 2018
+
+* Fixed: Encrypted backup must force users to download the encryption keys
+* Fixed: Warning mime type when a backup is going to be downloaded
+* Fixed: Admin Notice in free version is sometimes empty
+* Fixed: Random restore error about SQL syntax when restoring a database
+* Fixed: Exclude restore directories to be copied during a restore phase
+* Fixed: Standalone App has no encryption support
+* Fixed: Open basedir, backup dir is not within the allowed path
+* Fixed: Unable to download backup file because of mime_content_type function missing in some enviroment
+* Tweak: Encryption Settings UI
+* Tweak: Minor translations issues
+* Tweak: Remove languages files from the free version, the plugin will use translation.wordpress.org
+
 = Version 3.6.3 =
 Release Date: Nov, 5, 2018
 

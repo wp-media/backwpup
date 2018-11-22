@@ -124,11 +124,6 @@ class BackWPup_System_Tests_Runner {
 			$this->warnings[] = $this->message( sprintf( $extension_rec, 'PHP GZ', '.tar.gz' ), 'warning' );
 		}
 
-		// Bzip2.
-		if ( ! $this->system_tests->support_bzip2() ) {
-			$this->warnings[] = $this->message( sprintf( $extension_rec, 'PHP bzip2', '.tar.bz2' ), 'warning' );
-		}
-
 		// Safe mode.
 		if ( $this->system_tests->is_save_mode_activated() ) {
 			$this->errors[] = $this->message(
