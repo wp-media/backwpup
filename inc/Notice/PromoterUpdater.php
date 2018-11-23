@@ -14,7 +14,7 @@ class PromoterUpdater {
 	 */
 	public function update() {
 
-		$api_response = wp_remote_get( self::URL );
+		$api_response = wp_remote_get( self::URL, array( 'timeout' => 3 ) );
 		if ( is_wp_error( $api_response ) ) {
 			return array();
 		}
@@ -22,11 +22,13 @@ class PromoterUpdater {
 			return array();
 		}
 
-		$messages = json_decode( wp_remote_retrieve_body( $api_response ), true );
+		$json = $this->clean_json( wp_remote_retrieve_body( $api_response ) );
+		$messages = json_decode( $json, true );
 		if ( json_last_error() !== JSON_ERROR_NONE ) {
 			return array();
 		}
 
+		$data = array();
 		foreach ( $messages as $language => $remote_data ) {
 			$data[ $language ] = wp_parse_args(
 				$remote_data,
@@ -34,16 +36,36 @@ class PromoterUpdater {
 			);
 		}
 
+		$expiration_time = DAY_IN_SECONDS / 2;
+
 		is_multisite() ?
 			set_site_transient(
 				Promoter::OPTION_NAME,
 				$data,
-				DAY_IN_SECONDS
+				$expiration_time
 			) :
 			set_transient(
 				Promoter::OPTION_NAME,
 				$data,
-				DAY_IN_SECONDS
+				$expiration_time
 			);
+
+		return $data;
+	}
+
+	/**
+	 * @param $json
+	 *
+	 * @return mixed
+	 */
+	private function clean_json( $json ) {
+
+		$json = str_replace(
+			array( "\n", "\t", "\r" ),
+			'',
+			$json
+		);
+
+		return str_replace( '},}', '}}', $json );
 	}
 }

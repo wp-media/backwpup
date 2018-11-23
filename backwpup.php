@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.6.4
+ * Version: 3.6.5
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -117,11 +117,22 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 			}
 
 			if ( ! self::$is_pro ) {
+				$promoter_updater = new \Inpsyde\BackWPup\Notice\PromoterUpdater();
 				$promoter = new \Inpsyde\BackWPup\Notice\Promoter(
-					new \Inpsyde\BackWPup\Notice\PromoterUpdater(),
+					$promoter_updater,
 					new \Inpsyde\BackWPup\Notice\PromoterView()
 				);
 				$promoter->init();
+				add_action( 'upgrader_process_complete', array( $promoter_updater, 'update' ) );
+				add_filter(
+					'pre_set_site_transient_update_plugins',
+					function ( $value ) use ( $promoter_updater ) {
+
+						$promoter_updater->update();
+
+						return $value;
+					}
+				);
 
 				$this->home_phone_client_init();
 			}

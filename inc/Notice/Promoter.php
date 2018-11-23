@@ -119,10 +119,8 @@ class Promoter {
 			? get_site_transient( self::OPTION_NAME )
 			: get_transient( self::OPTION_NAME );
 
-		$data_message = array_filter( (array) $data_message );
-
-		if ( ! $data_message ) {
-			add_action( 'shutdown', array( $this->updater, 'update' ) );
+		if ( false === $data_message ) {
+			$data_message = $this->updater->update();
 		}
 
 		if ( isset( $data_message[ $locale_code ] ) ) {

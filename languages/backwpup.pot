@@ -10,8 +10,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2018-11-14T12:29:29+00:00\n"
-"PO-Revision-Date: 2018-11-14T12:29:29+00:00\n"
+"POT-Creation-Date: 2018-11-23T14:39:13+00:00\n"
+"PO-Revision-Date: 2018-11-23T14:39:13+00:00\n"
 "X-Domain: backwpup\n"
 
 #: inc/class-adminbar.php:51
@@ -921,8 +921,8 @@ msgid "Added XML export \"%1$s\" with %2$s to backup file list."
 msgstr ""
 
 #: inc/class-destination-s3.php:44
-#: dist/backwpup.php:357
-#: backwpup.php:357
+#: dist/backwpup.php:368
+#: backwpup.php:368
 msgid "S3 Service"
 msgstr ""
 
@@ -1298,8 +1298,8 @@ msgid "File"
 msgstr ""
 
 #: inc/class-page-backups.php:218
-#: dist/backwpup.php:293
-#: backwpup.php:293
+#: dist/backwpup.php:304
+#: backwpup.php:304
 msgid "Folder"
 msgstr ""
 
@@ -1675,8 +1675,8 @@ msgid "Error transfering backup to %s."
 msgstr ""
 
 #: inc/class-destination-dropbox.php:445
-#: dist/backwpup.php:341
-#: backwpup.php:341
+#: dist/backwpup.php:352
+#: backwpup.php:352
 msgid "Dropbox"
 msgstr ""
 
@@ -2383,14 +2383,14 @@ msgid "Backup to S3 services (Amazon, Google Storage, Hosteurope and more)"
 msgstr ""
 
 #: inc/class-page-about.php:508
-#: dist/backwpup.php:342
-#: backwpup.php:342
+#: dist/backwpup.php:353
+#: backwpup.php:353
 msgid "Backup to Dropbox"
 msgstr ""
 
 #: inc/class-page-about.php:513
-#: dist/backwpup.php:395
-#: backwpup.php:395
+#: dist/backwpup.php:406
+#: backwpup.php:406
 msgid "Backup to Rackspace Cloud Files"
 msgstr ""
 
@@ -2403,8 +2403,8 @@ msgid "Backup to your web space"
 msgstr ""
 
 #: inc/class-page-about.php:528
-#: dist/backwpup.php:415
-#: backwpup.php:415
+#: dist/backwpup.php:426
+#: backwpup.php:426
 msgid "Backup to SugarSync"
 msgstr ""
 
@@ -4101,73 +4101,73 @@ msgstr[0] ""
 msgid "SugarSync API: %s"
 msgstr ""
 
-#: dist/backwpup.php:294
-#: backwpup.php:294
+#: dist/backwpup.php:305
+#: backwpup.php:305
 msgid "Backup to Folder"
 msgstr ""
 
-#: dist/backwpup.php:309
-#: backwpup.php:309
+#: dist/backwpup.php:320
+#: backwpup.php:320
 msgid "Email"
 msgstr ""
 
-#: dist/backwpup.php:310
-#: backwpup.php:310
+#: dist/backwpup.php:321
+#: backwpup.php:321
 msgid "Backup sent via email"
 msgstr ""
 
-#: dist/backwpup.php:325
-#: backwpup.php:325
+#: dist/backwpup.php:336
+#: backwpup.php:336
 msgid "FTP"
 msgstr ""
 
-#: dist/backwpup.php:326
-#: backwpup.php:326
+#: dist/backwpup.php:337
+#: backwpup.php:337
 msgid "Backup to FTP"
 msgstr ""
 
-#: dist/backwpup.php:358
-#: backwpup.php:358
+#: dist/backwpup.php:369
+#: backwpup.php:369
 msgid "Backup to an S3 Service"
 msgstr ""
 
-#: dist/backwpup.php:378
-#: backwpup.php:378
+#: dist/backwpup.php:389
+#: backwpup.php:389
 msgid "MS Azure"
 msgstr ""
 
-#: dist/backwpup.php:379
-#: backwpup.php:379
+#: dist/backwpup.php:390
+#: backwpup.php:390
 msgid "Backup to Microsoft Azure (Blob)"
 msgstr ""
 
-#: dist/backwpup.php:394
-#: backwpup.php:394
+#: dist/backwpup.php:405
+#: backwpup.php:405
 msgid "RSC"
 msgstr ""
 
-#: dist/backwpup.php:414
-#: backwpup.php:414
+#: dist/backwpup.php:425
+#: backwpup.php:425
 msgid "SugarSync"
 msgstr ""
 
-#: dist/backwpup.php:443
-#: backwpup.php:443
+#: dist/backwpup.php:454
+#: backwpup.php:454
 msgid "PHP Version %1$s is to low, you need Version %2$s or above."
 msgstr ""
 
-#: dist/backwpup.php:455
-#: backwpup.php:455
+#: dist/backwpup.php:466
+#: backwpup.php:466
 msgid "Missing function \"%s\"."
 msgstr ""
 
-#: dist/backwpup.php:468
-#: backwpup.php:468
+#: dist/backwpup.php:479
+#: backwpup.php:479
 msgid "Missing class \"%s\"."
 msgstr ""
 
-#: dist/backwpup.php:589
-#: backwpup.php:589
+#: dist/backwpup.php:600
+#: backwpup.php:600
 msgid "BackWPup requires PHP version %$1s with spl extension or greater and WordPress %$2s or greater."
 msgstr ""
 
