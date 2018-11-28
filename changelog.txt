@@ -1,11 +1,16 @@
 == Changelog ==
-= Version 3.6.5 = 
+= Version 3.6.6 =
+Release Date: Nov 28, 2018
+
+* Fixed: Files could be excluded from the backup because of incorrect string comparison
+
+= Version 3.6.5 =
 Release Date: Nov 23, 2018
 
 * Fixed: Admin notice won’t update correctly
 
 = Version 3.6.4 =
-Release Date: Nov, 22, 2018
+Release Date: Nov 22, 2018
 
 * Fixed: Encrypted backup must force users to download the encryption keys
 * Fixed: Warning mime type when a backup is going to be downloaded
@@ -14,20 +19,20 @@ Release Date: Nov, 22, 2018
 * Fixed: Exclude restore directories to be copied during a restore phase
 * Fixed: Standalone App has no encryption support
 * Fixed: Open basedir, backup dir is not within the allowed path
-* Fixed: Unable to download backup file because of mime_content_type function missing in some enviroment
+* Fixed: Unable to download backup file because of mime_content_type function missing in some environment
 * Tweak: Encryption Settings UI
 * Tweak: Minor translations issues
 * Tweak: Remove languages files from the free version, the plugin will use translation.wordpress.org
 
 = Version 3.6.3 =
-Release Date: Nov, 5, 2018
+Release Date: Nov 5, 2018
 
 * Fixed: "Failed to restore file": file restore progress stop working and jump directly to database restore step
 * Fixed: Restore progress stuck on "restoring database" with archive backup contains files only
 * Fixed: All config.php files are not in backup archive
 
 = Version 3.6.2 =
-Release Date: Oct, 17, 2018
+Release Date: Oct 17, 2018
 
 * Fixed: Not recognized file extensions get an additional underscore in the file name in zip file
 * Fixed: Backup archive file have dot folder contains all web root files

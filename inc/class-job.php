@@ -1677,17 +1677,6 @@ final class BackWPup_Job {
 						continue;
 					}
 
-					// Check if the file matches a filename in $this->additional_files_to_backup
-					// This prevents .sql files from being overwritten,
-					// as well as manifest.json, etc.
-					$alreadyAdded = count( array_filter( $this->additional_files_to_backup,
-							function ( $value ) use ( $file ) {
-
-								return strstr( $value, basename( $file ) );
-							} ) ) > 0;
-					if ( $alreadyAdded ) {
-						continue;
-					}
 					$this->steps_data[ $this->step_working ]['on_file'] = $file;
 					//restart if needed
 					$restart_time = $this->get_restart_time();

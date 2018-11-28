@@ -12,7 +12,7 @@ BackWPup Free is the number 1 backup-plugin for WordPress with nearly 1.000.000 
 * Optimize Database
 * Check and repair Database
 * File backup
-* Backups in zip, tar, tar.gz, tar.bz2 format *(needs gz, bz2, ZipArchive)*
+* Backups in zip, tar, tar.gz format *(needs gz, ZipArchive)*
 * Store backup to directory
 * Store backup to FTP server *(needs ftp)*
 * Store backup to Dropbox *(needs curl)*
