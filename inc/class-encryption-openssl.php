@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Encrypt / decrypt data using Open SSL.
  *
@@ -11,14 +12,27 @@
  */
 class BackWPup_Encryption_OpenSSL {
 
+	/**
+	 * Prefix
+	 *
+	 * @var string
+	 */
 	const PREFIX = 'OSSL$';
 
+	/**
+	 * Cipher Method
+	 *
+	 * @var string
+	 */
 	private static $cipher_method;
 
 	/**
+	 * Supported
+	 *
 	 * @return bool
 	 */
 	public static function supported() {
+
 		return
 			version_compare( PHP_VERSION, '5.3.0', '>=' )
 			&& function_exists( 'openssl_get_cipher_methods' )
@@ -26,49 +40,21 @@ class BackWPup_Encryption_OpenSSL {
 	}
 
 	/**
-	 * @return string
-	 */
-	private static function cipher_method() {
-
-		if ( is_string( self::$cipher_method ) ) {
-			return self::$cipher_method;
-		}
-
-		$all_methods = openssl_get_cipher_methods();
-		if ( ! $all_methods ) {
-			self::$cipher_method = '';
-
-			return '';
-		}
-
-		$preferred = array( 'AES-256-CTR', 'AES-128-CTR', 'AES-192-CTR' );
-		foreach( $preferred as $method ) {
-			if ( in_array( $method, $all_methods, true ) ) {
-				self::$cipher_method = $method;
-
-				return $method;
-			}
-		}
-
-		self::$cipher_method = reset( $all_methods );
-
-		return self::$cipher_method;
-	}
-
-	/**
+	 * BackWPup_Encryption_OpenSSL constructor
+	 *
 	 * @param string $enc_key
 	 * @param string $key_type
 	 */
 	public function __construct( $enc_key, $key_type ) {
+
 		$this->key      = md5( (string) $enc_key );
 		$this->key_type = (string) $key_type;
 	}
 
 	/**
-	 *
 	 * Encrypt a string using Open SSL lib with  AES-256-CTR cypher
 	 *
-	 * @param string $string value to encrypt
+	 * @param string $string value to encrypt.
 	 *
 	 * @return string encrypted string
 	 */
@@ -78,24 +64,21 @@ class BackWPup_Encryption_OpenSSL {
 			return '';
 		}
 
-		$nonce = openssl_random_pseudo_bytes( openssl_cipher_iv_length( self::cipher_method() ) );
+		$nonce            = openssl_random_pseudo_bytes( openssl_cipher_iv_length( self::cipher_method() ) );
+		$openssl_raw_data = defined( 'OPENSSL_RAW_DATA' ) ? OPENSSL_RAW_DATA : true; // phpcs:ignore
 
-		$encrypted = openssl_encrypt(
-			$string,
-			self::cipher_method(),
-			$this->key,
-			OPENSSL_RAW_DATA,
-			$nonce
-		);
+		// $vi parameter was introduced in 5.3.3.
+		$encrypted = version_compare( PHP_VERSION, '5.3.3', '>=' )
+			? openssl_encrypt( $string, self::cipher_method(), $this->key, $openssl_raw_data, $nonce )
+			: openssl_encrypt( $string, self::cipher_method(), $this->key, $openssl_raw_data );
 
 		return BackWPup_Encryption::PREFIX . self::PREFIX . $this->key_type . base64_encode( $nonce . $encrypted );
 	}
 
 	/**
-	 *
 	 * Decrypt a string using Open SSL lib with  AES-256-CTR cypher
 	 *
-	 * @param string $string value to decrypt
+	 * @param string $string value to decrypt.
 	 *
 	 * @return string decrypted string
 	 */
@@ -116,16 +99,47 @@ class BackWPup_Encryption_OpenSSL {
 			return '';
 		}
 
-		$nonce_size = openssl_cipher_iv_length( self::cipher_method() );
-		$nonce      = substr( $encrypted, 0, $nonce_size );
-		$to_decrypt = substr( $encrypted, $nonce_size );
+		$nonce_size       = openssl_cipher_iv_length( self::cipher_method() );
+		$nonce            = substr( $encrypted, 0, $nonce_size );
+		$to_decrypt       = substr( $encrypted, $nonce_size );
+		$openssl_raw_data = defined( 'OPENSSL_RAW_DATA' ) ? OPENSSL_RAW_DATA : true; // phpcs:ignore
 
-		return openssl_decrypt(
-			$to_decrypt,
-			self::cipher_method(),
-			$this->key,
-			OPENSSL_RAW_DATA,
-			$nonce
-		);
+		$decrypted = version_compare( PHP_VERSION, '5.3.3', '>=' )
+			? openssl_decrypt( $to_decrypt, self::cipher_method(), $this->key, $openssl_raw_data, $nonce )
+			: openssl_decrypt( $to_decrypt, self::cipher_method(), $this->key, $openssl_raw_data );
+
+		return $decrypted;
+	}
+
+	/**
+	 * Cipher Method
+	 *
+	 * @return string
+	 */
+	private static function cipher_method() {
+
+		if ( is_string( self::$cipher_method ) ) {
+			return self::$cipher_method;
+		}
+
+		$all_methods = openssl_get_cipher_methods();
+		if ( ! $all_methods ) {
+			self::$cipher_method = '';
+
+			return '';
+		}
+
+		$preferred = array( 'AES-256-CTR', 'AES-128-CTR', 'AES-192-CTR' );
+		foreach ( $preferred as $method ) {
+			if ( in_array( $method, $all_methods, true ) ) {
+				self::$cipher_method = $method;
+
+				return $method;
+			}
+		}
+
+		self::$cipher_method = reset( $all_methods );
+
+		return self::$cipher_method;
 	}
 }

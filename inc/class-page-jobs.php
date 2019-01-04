@@ -10,11 +10,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	private $job_types = NULL;
 	private $destinations = NULL;
 
-
-	/**
-	 *
-	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct( array(
 								  'plural'   => 'jobs',
 								  'singular' => 'job',
@@ -22,11 +18,10 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 							 ) );
 	}
 
-
 	/**
 	 * @return bool|void
 	 */
-	function ajax_user_can() {
+	public function ajax_user_can() {
 
 		return current_user_can( 'backwpup' );
 	}
@@ -34,7 +29,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	/**
 	 *
 	 */
-	function prepare_items() {
+	public function prepare_items() {
 
 		$this->items        = BackWPup_Option::get_job_ids();
 		$this->job_object   = BackWPup_Job::get_working_data();
@@ -95,7 +90,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	/**
 	 *
 	 */
-	function no_items() {
+	public function no_items() {
 
 		_e( 'No Jobs.', 'backwpup' );
 	}
@@ -103,7 +98,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	/**
 	 * @return array
 	 */
-	function get_bulk_actions() {
+	public function get_bulk_actions() {
 
 		if ( ! $this->has_items() ) {
 			return array();
@@ -118,7 +113,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	/**
 	 * @return array
 	 */
-	function get_columns() {
+	public function get_columns() {
 
 		$jobs_columns              = array();
 		$jobs_columns[ 'cb' ]      = '<input type="checkbox" />';
@@ -134,7 +129,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	/**
 	 * @return array
 	 */
-	function get_sortable_columns() {
+	public function get_sortable_columns() {
 
 		return array(
 			'jobname'   => 'jobname',
@@ -151,7 +146,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	 * @param $item
 	 * @return string
 	 */
-	function column_cb( $item ) {
+	public function column_cb( $item ) {
 
 		return '<input type="checkbox" name="jobs[]" value="' . esc_attr( $item ) . '" />';
 	}
@@ -162,7 +157,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	 * @param $item
 	 * @return string
 	 */
-	function column_jobname( $item ) {
+	public function column_jobname( $item ) {
 
 		$job_normal_hide ='';
 		if ( is_object( $this->job_object ) ) {
@@ -205,7 +200,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	 * @param $item
 	 * @return string
 	 */
-	function column_type( $item ) {
+	public function column_type( $item ) {
 
 		$r = '';
 		if ( $types = BackWPup_Option::get( $item, 'type' ) ) {
@@ -228,7 +223,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	 * @param $item
 	 * @return string
 	 */
-	function column_dest( $item ) {
+	public function column_dest( $item ) {
 
 		$r = '';
 		$backup_to = FALSE;
@@ -260,7 +255,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	 * @param $item
 	 * @return string
 	 */
-	function column_next( $item ) {
+	public function column_next( $item ) {
 
 		$r = '';
 
@@ -309,7 +304,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 	 * @param $item
 	 * @return string
 	 */
-	function column_last( $item ) {
+	public function column_last( $item ) {
 
 		$r = '';
 
@@ -327,7 +322,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 		if ( current_user_can( 'backwpup_backups_download' ) ) {
 		    $download_url = BackWPup_Option::get( $item, 'lastbackupdownloadurl' );
             if ( ! empty( $download_url ) ) {
-			    $r .= "<a  href=\"" . wp_nonce_url( $download_url, 'download-backup_' . $item ). "\" title=\"" . esc_attr( __( 'Download last backup', 'backwpup' ) ) . "\">" . esc_html__( 'Download', 'backwpup' ) . "</a> | ";
+			    $r .= "<a  href=\"" . wp_nonce_url( $download_url, 'backwpup_action_nonce' ). "\" title=\"" . esc_attr( __( 'Download last backup', 'backwpup' ) ) . "\">" . esc_html__( 'Download', 'backwpup' ) . "</a> | ";
 		    }
 		}
 		if ( current_user_can( 'backwpup_logs' ) && BackWPup_Option::get( $item, 'logfile' ) ) {
@@ -343,7 +338,6 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 
 		return $r;
 	}
-
 
 	/**
 	 *
@@ -732,7 +726,6 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 		<?php }
 	}
 
-
 	/**
 	 *
 	 * Function to generate json data
@@ -834,6 +827,5 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 							   'job_done'		 => $done
 						  ) );
 	}
-
 }
 

@@ -1,6 +1,8 @@
 <?php
 /**
  * Class for methods for file/folder related things
+ *
+ * @todo Please split this logic into two separated classes. One for File and another for dir.
  */
 class BackWPup_File {
 
