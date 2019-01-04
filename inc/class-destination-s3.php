@@ -53,12 +53,12 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				<td>
 					<select name="s3region"
 					        id="s3region"
-					        title="<?php esc_attr_e( 'Amazon S3 Region', 'backwpup' ); ?>">
-						<?php foreach ( $this->destinations_options_list( $jobid ) as $option ) : ?>
-							<option value="<?php echo esc_attr( $option['value'] ); ?>"
-								<?php selected( $option['value'], $current_destination, true ); ?>
+					        title="<?php esc_attr_e( 'S3 Region', 'backwpup' ); ?>">
+						<?php foreach ( $this->destinations_options_list() as $destination ) : ?>
+							<option value="<?php echo esc_attr( $destination['region'] ); ?>"
+								<?php selected( $destination['region'], $current_destination, true ); ?>
 							>
-								<?php echo esc_html( $option['label'] ); ?>
+								<?php echo esc_html( $destination['label'] ); ?>
 							</option>
 						<?php endforeach; ?>
 					</select>
@@ -386,7 +386,10 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $s3region
+	 * Return the base URL for a given region.
+	 *
+	 * @param string $s3region
+	 * @param string $s3base_url
 	 *
 	 * @return string
 	 */
@@ -396,44 +399,13 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			return $s3base_url;
 		}
 
-		switch ( $s3region ) {
-			case 'us-east-1':
-				return 'https://s3.amazonaws.com';
-			case 'us-west-1':
-				return 'https://s3-us-west-1.amazonaws.com';
-			case 'us-west-2':
-				return 'https://s3-us-west-2.amazonaws.com';
-			case 'eu-west-1':
-				return 'https://s3-eu-west-1.amazonaws.com';
-			case 'eu-west-2':
-				return 'https://s3-eu-west-2.amazonaws.com';
-			case 'eu-central-1':
-				return 'https://s3-eu-central-1.amazonaws.com';
-			case 'ap-south-1':
-				return 'https://s3-ap-south-1.amazonaws.com';
-			case 'ap-northeast-1':
-				return 'https://s3-ap-northeast-1.amazonaws.com';
-			case 'ap-northeast-2':
-				return 'https://s3-ap-northeast-2.amazonaws.com';
-			case 'ap-southeast-1':
-				return 'https://s3-ap-southeast-1.amazonaws.com';
-			case 'ap-southeast-2':
-				return 'https://s3-ap-southeast-2.amazonaws.com';
-			case 'sa-east-1':
-				return 'https://s3-sa-east-1.amazonaws.com';
-			case 'cn-north-1':
-				return 'https://cn-north-1.amazonaws.com';
-			case 'google-storage':
-				return 'https://storage.googleapis.com';
-			case 'google-storage-us':
-				return 'https://storage.googleapis.com';
-			case 'google-storage-asia':
-				return 'https://storage.googleapis.com';
-			case 'dreamhost':
-				return 'https://objects-us-west-1.dream.io';
-			default:
-				return '';
+		foreach ($this->destinations_options_list() as $destination) {
+			if (isset($destination['base_url'], $destination['region']) && $destination['region'] === $s3region) {
+				return $destination['base_url'];
+			}
 		}
+
+		return '';
 	}
 
 	/**
@@ -1108,81 +1080,100 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $jobid
+	 * Get list of S3 destinations.
+	 *
+	 * This list can be extended by using the `backwpup_s3_destinations` filter.
 	 *
 	 * @return array
 	 */
 	private function destinations_options_list() {
 
-		return array(
-			array(
-				'label' => __( 'Amazon S3: US Standard', 'backwpup' ),
-				'value' => 'us-east-1',
-			),
-			array(
-				'label' => __( 'Amazon S3: US West (Northern California)', 'backwpup' ),
-				'value' => 'us-west-1',
-			),
-			array(
-				'label' => __( 'Amazon S3: US West (Oregon)', 'backwpup' ),
-				'value' => 'us-west-2',
-			),
-			array(
-				'label' => __( 'Amazon S3: EU (Ireland)', 'backwpup' ),
-				'value' => 'eu-west-1',
-			),
-			array(
-				'label' => __( 'Amazon S3: EU (London)', 'backwpup' ),
-				'value' => 'eu-west-2',
-			),
-			array(
-				'label' => __( 'Amazon S3: EU (Germany)', 'backwpup' ),
-				'value' => 'eu-central-1',
-			),
-			array(
-				'label' => __( 'Amazon S3: Asia Pacific (Mumbai)', 'backwpup' ),
-				'value' => 'ap-south-1',
-			),
-			array(
-				'label' => __( 'Amazon S3: Asia Pacific (Tokyo)', 'backwpup' ),
-				'value' => 'ap-northeast-1',
-			),
-			array(
-				'label' => __( 'Amazon S3: Asia Pacific (Seoul)', 'backwpup' ),
-				'value' => 'ap-northeast-2',
-			),
-			array(
-				'label' => __( 'Amazon S3: Asia Pacific (Singapore)', 'backwpup' ),
-				'value' => 'ap-southeast-1',
-			),
-			array(
-				'label' => __( 'Amazon S3: Asia Pacific (Sydney)', 'backwpup' ),
-				'value' => 'ap-southeast-2',
-			),
-			array(
-				'label' => __( 'Amazon S3: South America (Sao Paulo)', 'backwpup' ),
-				'value' => 'sa-east-1',
-			),
-			array(
-				'label' => __( 'Amazon S3: China (Beijing)', 'backwpup' ),
-				'value' => 'cn-north-1',
-			),
-			array(
-				'label' => __( 'Google Storage: EU', 'backwpup' ),
-				'value' => 'google-storage',
-			),
-			array(
-				'label' => __( 'Google Storage: USA', 'backwpup' ),
-				'value' => 'google-storage-us',
-			),
-			array(
-				'label' => __( 'Google Storage: Asia', 'backwpup' ),
-				'value' => 'google-storage-asia',
-			),
-			array(
-				'label' => __( 'Dream Host Cloud Storage', 'backwpup' ),
-				'value' => 'dreamhost',
-			),
-		);
+		return apply_filters( 'backwpup_s3_destinations', [
+			[
+				'label'    => __( 'Amazon S3: US Standard', 'backwpup' ),
+				'region'   => 'us-east-1',
+				'base_url' => 'https://s3.amazonaws.com',
+			],
+			[
+				'label'    => __( 'Amazon S3: US West (Northern California)', 'backwpup' ),
+				'region'   => 'us-west-1',
+				'base_url' => 'https://s3-us-west-1.amazonaws.com',
+			],
+			[
+				'label'    => __( 'Amazon S3: US West (Oregon)', 'backwpup' ),
+				'region'   => 'us-west-2',
+				'base_url' => 'https://s3-us-west-2.amazonaws.com',
+			],
+			[
+				'label'    => __( 'Amazon S3: EU (Ireland)', 'backwpup' ),
+				'region'   => 'eu-west-1',
+				'base_url' => 'https://s3-eu-west-1.amazonaws.com',
+			],
+			[
+				'label'    => __( 'Amazon S3: EU (London)', 'backwpup' ),
+				'region'   => 'eu-west-2',
+				'base_url' => 'https://s3-eu-west-2.amazonaws.com',
+			],
+			[
+				'label'    => __( 'Amazon S3: EU (Germany)', 'backwpup' ),
+				'region'   => 'eu-central-1',
+				'base_url' => 'https://s3-eu-central-1.amazonaws.com',
+			],
+			[
+				'label'    => __( 'Amazon S3: Asia Pacific (Mumbai)', 'backwpup' ),
+				'region'   => 'ap-south-1',
+				'base_url' => 'https://s3-ap-south-1.amazonaws.com',
+			],
+			[
+				'label'    => __( 'Amazon S3: Asia Pacific (Tokyo)', 'backwpup' ),
+				'region'   => 'ap-northeast-1',
+				'base_url' => 'https://s3-ap-northeast-1.amazonaws.com',
+			],
+			[
+				'label'    => __( 'Amazon S3: Asia Pacific (Seoul)', 'backwpup' ),
+				'region'   => 'ap-northeast-2',
+				'base_url' => 'https://s3-ap-northeast-2.amazonaws.com',
+			],
+			[
+				'label'    => __( 'Amazon S3: Asia Pacific (Singapore)', 'backwpup' ),
+				'region'   => 'ap-southeast-1',
+				'base_url' => 'https://s3-ap-southeast-1.amazonaws.com',
+			],
+			[
+				'label'    => __( 'Amazon S3: Asia Pacific (Sydney)', 'backwpup' ),
+				'region'   => 'ap-southeast-2',
+				'base_url' => 'https://s3-ap-southeast-2.amazonaws.com',
+			],
+			[
+				'label'    => __( 'Amazon S3: South America (Sao Paulo)', 'backwpup' ),
+				'region'   => 'sa-east-1',
+				'base_url' => 'https://s3-sa-east-1.amazonaws.com',
+			],
+			[
+				'label'    => __( 'Amazon S3: China (Beijing)', 'backwpup' ),
+				'region'   => 'cn-north-1',
+				'base_url' => 'https://cn-north-1.amazonaws.com',
+			],
+			[
+				'label'    => __( 'Google Storage: EU', 'backwpup' ),
+				'region'   => 'google-storage',
+				'base_url' => 'https://storage.googleapis.com',
+			],
+			[
+				'label'    => __( 'Google Storage: USA', 'backwpup' ),
+				'region'   => 'google-storage-us',
+				'base_url' => 'https://storage.googleapis.com',
+			],
+			[
+				'label'    => __( 'Google Storage: Asia', 'backwpup' ),
+				'region'   => 'google-storage-asia',
+				'base_url' => 'https://storage.googleapis.com',
+			],
+			[
+				'label'    => __( 'Dream Host Cloud Storage', 'backwpup' ),
+				'region'   => 'dreamhost',
+				'base_url' => 'https://objects-us-west-1.dream.io',
+			],
+		] );
 	}
 }
