@@ -1088,92 +1088,92 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 	 */
 	private function destinations_options_list() {
 
-		return apply_filters( 'backwpup_s3_destinations', [
-			[
+		return apply_filters( 'backwpup_s3_destinations', array(
+			array(
 				'label'    => __( 'Amazon S3: US Standard', 'backwpup' ),
 				'region'   => 'us-east-1',
 				'base_url' => 'https://s3.amazonaws.com',
-			],
-			[
+			),
+			array(
 				'label'    => __( 'Amazon S3: US West (Northern California)', 'backwpup' ),
 				'region'   => 'us-west-1',
 				'base_url' => 'https://s3-us-west-1.amazonaws.com',
-			],
-			[
+			),
+			array(
 				'label'    => __( 'Amazon S3: US West (Oregon)', 'backwpup' ),
 				'region'   => 'us-west-2',
 				'base_url' => 'https://s3-us-west-2.amazonaws.com',
-			],
-			[
+			),
+			array(
 				'label'    => __( 'Amazon S3: EU (Ireland)', 'backwpup' ),
 				'region'   => 'eu-west-1',
 				'base_url' => 'https://s3-eu-west-1.amazonaws.com',
-			],
-			[
+			),
+			array(
 				'label'    => __( 'Amazon S3: EU (London)', 'backwpup' ),
 				'region'   => 'eu-west-2',
 				'base_url' => 'https://s3-eu-west-2.amazonaws.com',
-			],
-			[
+			),
+			array(
 				'label'    => __( 'Amazon S3: EU (Germany)', 'backwpup' ),
 				'region'   => 'eu-central-1',
 				'base_url' => 'https://s3-eu-central-1.amazonaws.com',
-			],
-			[
+			),
+			array(
 				'label'    => __( 'Amazon S3: Asia Pacific (Mumbai)', 'backwpup' ),
 				'region'   => 'ap-south-1',
 				'base_url' => 'https://s3-ap-south-1.amazonaws.com',
-			],
-			[
+			),
+			array(
 				'label'    => __( 'Amazon S3: Asia Pacific (Tokyo)', 'backwpup' ),
 				'region'   => 'ap-northeast-1',
 				'base_url' => 'https://s3-ap-northeast-1.amazonaws.com',
-			],
-			[
+			),
+			array(
 				'label'    => __( 'Amazon S3: Asia Pacific (Seoul)', 'backwpup' ),
 				'region'   => 'ap-northeast-2',
 				'base_url' => 'https://s3-ap-northeast-2.amazonaws.com',
-			],
-			[
+			),
+			array(
 				'label'    => __( 'Amazon S3: Asia Pacific (Singapore)', 'backwpup' ),
 				'region'   => 'ap-southeast-1',
 				'base_url' => 'https://s3-ap-southeast-1.amazonaws.com',
-			],
-			[
+			),
+			array(
 				'label'    => __( 'Amazon S3: Asia Pacific (Sydney)', 'backwpup' ),
 				'region'   => 'ap-southeast-2',
 				'base_url' => 'https://s3-ap-southeast-2.amazonaws.com',
-			],
-			[
+			),
+			array(
 				'label'    => __( 'Amazon S3: South America (Sao Paulo)', 'backwpup' ),
 				'region'   => 'sa-east-1',
 				'base_url' => 'https://s3-sa-east-1.amazonaws.com',
-			],
-			[
+			),
+			array(
 				'label'    => __( 'Amazon S3: China (Beijing)', 'backwpup' ),
 				'region'   => 'cn-north-1',
 				'base_url' => 'https://cn-north-1.amazonaws.com',
-			],
-			[
+			),
+			array(
 				'label'    => __( 'Google Storage: EU', 'backwpup' ),
 				'region'   => 'google-storage',
 				'base_url' => 'https://storage.googleapis.com',
-			],
-			[
+			),
+			array(
 				'label'    => __( 'Google Storage: USA', 'backwpup' ),
 				'region'   => 'google-storage-us',
 				'base_url' => 'https://storage.googleapis.com',
-			],
-			[
+			),
+			array(
 				'label'    => __( 'Google Storage: Asia', 'backwpup' ),
 				'region'   => 'google-storage-asia',
 				'base_url' => 'https://storage.googleapis.com',
-			],
-			[
+			),
+			array(
 				'label'    => __( 'Dream Host Cloud Storage', 'backwpup' ),
 				'region'   => 'dreamhost',
 				'base_url' => 'https://objects-us-west-1.dream.io',
-			],
-		] );
+			),
+		) );
 	}
 }
