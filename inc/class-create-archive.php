@@ -295,9 +295,7 @@ class BackWPup_Create_Archive {
 			return false;
 		}
 
-		if ( version_compare( PHP_VERSION, '5.3', '>=' ) ) {
-			clearstatcache( true, $file_name );
-		}
+		clearstatcache( true, $file_name );
 
 		if ( ! is_readable( $file_name ) ) {
 			trigger_error(

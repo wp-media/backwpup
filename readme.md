@@ -1,4 +1,4 @@
-# BackWPup Pro - WordPress Backup Plugin
+# BackWPup Free - WordPress Backup Plugin
 Schedule complete automatic backups of your WordPress installation. Decide which content will be stored (Dropbox, S3…). This is the free version
 
 ## Description
@@ -17,10 +17,10 @@ BackWPup Free is the number 1 backup-plugin for WordPress with nearly 1.000.000 
 * Store backup to FTP server *(needs ftp)*
 * Store backup to Dropbox *(needs curl)*
 * Store backup to S3 services *(needs curl)*
-* Store backup to Microsoft Azure (Blob) *(needs PHP 5.3.2, curl)*
-* Store backup to RackSpaceCloud *(needs PHP 5.3.2, curl)*
+* Store backup to Microsoft Azure (Blob) *(needs curl)*
+* Store backup to RackSpaceCloud *(needs PHP curl)*
 * Store backup to SugarSync *(needs curl)*
-* Store backup to Amazon Glacier *(needs PHP 5.3.2, curl)*
+* Store backup to Amazon Glacier *(needs PHP curl)*
 * Store backup to Google Drive *(needs curl)*
 * Send logs and backups by email
 * Multi-site support only as network admin
@@ -38,8 +38,8 @@ BackWPup Free is the number 1 backup-plugin for WordPress with nearly 1.000.000 
 * simplified chinese (zh_CN)
 
 ## Requirements
-* WordPress 3.8 and PHP 5.2.6 required!
-* To use the Plugin with full functionality PHP 5.3.3 with mysqli, FTP,gz, bz2, ZipArchive and curl is needed.
+* WordPress 3.9 and PHP 5.3.3 required!
+* To use the Plugin with full functionality PHP 5.3.3 with mysqli, FTP,gz, ZipArchive and curl is needed.
 * Plugin functions that don't work because of your server settings, will not be displayed in admin area.
 
 

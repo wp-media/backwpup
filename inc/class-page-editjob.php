@@ -495,7 +495,7 @@ class BackWPup_Page_Editjob {
 							</td>
 						</tr>
 						<?php if ( class_exists( 'BackWPup_Pro', false ) ): ?>
-							<tr>
+							<tr class="nosync">
 								<th scope="row">
 									<?php esc_html_e( 'Encrypt Archive', 'backwpup' ) ?>
 								</th>

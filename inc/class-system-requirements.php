@@ -15,7 +15,7 @@ class BackWPup_System_Requirements {
 	 *
 	 * @var string The minimum version required by the plugin
 	 */
-	private static $php_minimum_version = '5.3.2';
+	private static $php_minimum_version = '5.3.3';
 
 	/**
 	 * Mysql Minimum version required by the plugin

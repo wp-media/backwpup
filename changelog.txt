@@ -1,4 +1,17 @@
 == Changelog ==
+= Version 3.6.7 =
+Release Date: Jan 23, 2019
+
+* Fixed: More margin to dashboard footer to avoid save button unclickable
+* Fixed: On folder sync destination folder is not created
+* Fixed: Encryption option should not be displayed for syncing job
+* Fixed: Restore stuck on file restore step because of file permission issue
+* Fixed: "Do not delete files while syncing to destination!" not working
+* Tweak: Increase PHP Version from 5.3.2 to 5.3.3
+* Tweak: Encryption Settings description and ui improvements
+* Tweak: On restore error, include `restore.dat` file along with the log when user download the restore log file
+* Tweak: Lock server to execute same task multiple time when one is already in progress
+
 = Version 3.6.6 =
 Release Date: Nov 28, 2018
 

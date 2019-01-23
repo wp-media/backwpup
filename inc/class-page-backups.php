@@ -470,16 +470,37 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 
 	public static function admin_print_scripts() {
 
-		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-		$plugin_url = BackWPup::get_plugin_data( 'url' );
-		$plugin_dir = BackWPup::get_plugin_data( 'plugindir' );
-		$plugin_scripts_url = "{$plugin_url}/assets/js";
-		$plugin_scripts_dir = "{$plugin_dir}/assets/js";
+        $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+        $plugin_url = BackWPup::get_plugin_data( 'url' );
+        $plugin_dir = BackWPup::get_plugin_data( 'plugindir' );
+        $plugin_scripts_url = "{$plugin_url}/assets/js";
+        $plugin_scripts_dir = "{$plugin_dir}/assets/js";
+        $shared_scripts_path = "{$plugin_url}/vendor/inpsyde/backwpup-shared/resources/js";
+        $shared_scripts_dir = "{$plugin_dir}/vendor/inpsyde/backwpup-shared/resources/js";
+
+        wp_register_script(
+            'backwpup_functions',
+            "{$shared_scripts_path}/functions{$suffix}.js",
+            array('underscore', 'jquery'),
+            filemtime("{$shared_scripts_dir}/functions{$suffix}.js"),
+            true
+        );
+        wp_register_script(
+            'backwpup_states',
+            "{$shared_scripts_path}/states{$suffix}.js",
+            array(
+                'backwpup_functions',
+            ),
+            filemtime("{$shared_scripts_dir}/states{$suffix}.js"),
+            true
+        );
 
 		$dependencies = array(
 			'jquery',
 			'underscore',
 			'backwpupgeneral',
+            'backwpup_functions',
+            'backwpup_states',
 		);
 		if ( \BackWPup::is_pro() ) {
 			$dependencies[] = 'decrypter';
@@ -538,40 +559,24 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 		<?php
 	}
 
-	private static function admin_print_pro_scripts( $suffix, $plugin_url, $plugin_dir ) {
+    private static function admin_print_pro_scripts($suffix, $plugin_url, $plugin_dir)
+    {
+        $restore_scripts_path = "{$plugin_url}/vendor/inpsyde/backwpup-restore-shared/resources/js";
+        $restore_scripts_dir = "{$plugin_dir}/vendor/inpsyde/backwpup-restore-shared/resources/js";
 
-		$restore_scripts_path = "{$plugin_url}/vendor/inpsyde/backwpup-restore-shared/resources/js";
-		$restore_scripts_dir = "{$plugin_dir}/vendor/inpsyde/backwpup-restore-shared/resources/js";
-
-		wp_register_script(
-			'restore_functions',
-			"{$restore_scripts_path}/functions{$suffix}.js",
-			array( 'underscore', 'jquery' ),
-			filemtime( "{$restore_scripts_dir}/functions{$suffix}.js" ),
-			true
-		);
-		wp_register_script(
-			'states',
-			"{$restore_scripts_path}/states{$suffix}.js",
-			array(
-				'restore_functions',
-			),
-			filemtime( "{$restore_scripts_dir}/states{$suffix}.js" ),
-			true
-		);
-		wp_register_script(
-			'decrypter',
-			"{$restore_scripts_path}/decrypter{$suffix}.js",
-			array(
-				'underscore',
-				'jquery',
-				'states',
-				'restore_functions',
-			),
-			filemtime( "{$restore_scripts_dir}/decrypter{$suffix}.js" ),
-			true
-		);
-	}
+        wp_register_script(
+            'decrypter',
+            "{$restore_scripts_path}/decrypter{$suffix}.js",
+            array(
+                'underscore',
+                'jquery',
+                'backwpup_states',
+                'backwpup_functions',
+            ),
+            filemtime("{$restore_scripts_dir}/decrypter{$suffix}.js"),
+            true
+        );
+    }
 
 	private function delete_item_action( $item ) {
 
