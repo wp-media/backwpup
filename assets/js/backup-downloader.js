@@ -6,114 +6,6 @@ window.BWU = window.BWU || {};
     var decrypter;
     var Downloader;
 
-    BWU.Restore = BWU.Restore || {};
-    BWU.Restore.Functions = BWU.Restore.Functions || {
-
-        /**
-         * Remove previously printed messages
-         */
-        removeMessages: function ()
-        {
-            $( document.body )
-                .find( '#bwu_response' )
-                .remove();
-        },
-
-        /**
-         * Print Error Messages
-         *
-         * @param {string} message The message to print.
-         *
-         * @return {void}
-         */
-        printMessageError: function ( message, container )
-        {
-
-            var $container = $( container );
-
-            if ( !message ) {
-                return;
-            }
-
-            this.removeMessages();
-
-            $container
-                .append( '<p id="bwu_response" class="response response-error">' + message + '</p>' );
-        },
-
-        /**
-         * Print Success Messages
-         *
-         * @param {string} message The message to print.
-         *
-         * @return {void}
-         */
-        printMessageSuccess: function ( message, container )
-        {
-            var $container = $( container );
-
-            if ( !message ) {
-                return;
-            }
-
-            this.removeMessages();
-
-            $container
-                .append( '<p id="bwu_response" class="response response-success">' + message + '</p>' );
-        },
-
-        /**
-         * Load Site
-         *
-         * @param {number} id The step to point to.
-         * @param {string} nonce The value for the nonce.
-         */
-        loadNextStep: function ( id, nonce )
-        {
-            var search = 'step=' + id;
-            location.replace(
-                location.origin + location.pathname + '?' + search + '&page=backwpuprestore&backwpup_action_nonce=' + nonce );
-        },
-
-        /**
-         * Calculate Percentage
-         *
-         * @param {number} index The current index of the file extracted.
-         * @param {number} total The total count of files to extract.
-         *
-         * @returns {number} The percentage value
-         */
-        calculatePercentage: function ( index, total )
-        {
-            var value = index / total;
-
-            return Math.round( value * 100 );
-        },
-
-        /**
-         * Create a constant property
-         * @param value
-         * @returns {{value: *, writable: boolean, configurable: boolean, enumerable: boolean}}
-         */
-        makeConstant: function ( value )
-        {
-            return {
-                value: value,
-                writable: false,
-                configurable: false,
-                enumerable: false
-            };
-        }
-    };
-    BWU.States = BWU.States || Object.create( {}, {
-
-        DONE: BWU.Restore.Functions.makeConstant( 'done' ),
-
-        DOWNLOADING: BWU.Restore.Functions.makeConstant( 'downloading' ),
-
-        NEED_DECRYPTION_KEY: BWU.Restore.Functions.makeConstant( 'need_decryption_key' )
-    } );
-
     if ( !ajaxurl ) {
         // eslint-disable-line
         console.warn( 'Missing ajaxurl value.' );
@@ -181,7 +73,7 @@ window.BWU = window.BWU || {};
 
         hideNotice: function ()
         {
-            BWU.Restore.Functions.removeMessages( this.containerUi );
+            BWU.Functions.removeMessages( this.containerUi );
         },
 
         hideSuccessMsg: function ()
@@ -230,7 +122,7 @@ window.BWU = window.BWU || {};
                         break;
                 }
             } catch ( exc ) {
-                BWU.Restore.Functions.printMessageError(
+                BWU.Functions.printMessageError(
                     exc.message,
                     this.containerUi
                 );
@@ -250,7 +142,7 @@ window.BWU = window.BWU || {};
                     this.decrypter && this.decrypter.needDecryption( data.status );
                     break;
                 default:
-                    BWU.Restore.Functions.printMessageError( data.message, this.containerUi );
+                    BWU.Functions.printMessageError( data.message, this.containerUi );
                     destruct.call( this );
                     break;
             }
