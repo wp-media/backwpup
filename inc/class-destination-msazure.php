@@ -3,6 +3,8 @@
 // http://www.windowsazure.com/en-us/develop/php/
 // https://github.com/WindowsAzure/azure-sdk-for-php
 
+use Inpsyde\BackWPup\Helper;
+
 /**
  * Documentation: http://www.windowsazure.com/en-us/develop/php/how-to-guides/blob-service/
  */
@@ -165,8 +167,9 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 	/**
 	 * @param $jobid
 	 * @param $get_file
+	 * @param $local_file_path
 	 */
-	public function file_download( $jobid, $get_file ) {
+	public function file_download( $jobid, $get_file, $local_file_path = null ) {
 		try {
 			set_include_path( get_include_path() . PATH_SEPARATOR . BackWPup::get_plugin_data( 'plugindir' ) .'/vendor/PEAR/');
 			$blobRestProxy = WindowsAzure\Common\ServicesBuilder::getInstance()->createBlobService( 'DefaultEndpointsProtocol=https;AccountName=' . BackWPup_Option::get( $jobid, 'msazureaccname' ) . ';AccountKey=' . BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 'msazurekey' ) ) );
@@ -179,7 +182,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 			@set_time_limit( 300 );
 			nocache_headers();
 			header( 'Content-Description: File Transfer' );
-			header( 'Content-Type: ' . BackWPup_Job::get_mime_type( $get_file ) );
+			header( 'Content-Type: ' . Helper\MimeType::from_file_path( $get_file ) );
 			header( 'Content-Disposition: attachment; filename="' . basename( $get_file ) . '"' );
 			header( 'Content-Transfer-Encoding: binary' );
 			header( 'Content-Length: ' . $blob->getProperties()->getContentLength() );
@@ -192,11 +195,14 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $jobdest
-	 * @return mixed
+	 * @inheritdoc
 	 */
 	public function file_get_list( $jobdest ) {
-		return get_site_transient( 'backwpup_' . $jobdest );
+
+		$list = (array) get_site_transient( 'backwpup_' . strtolower( $jobdest ) );
+		$list = array_filter( $list );
+
+		return $list;
 	}
 
 	/**
@@ -311,7 +317,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 			if ( is_array( $blobs ) ) {
 				foreach ( $blobs as $blob ) {
 					$file = basename( $blob->getName() );
-					if ( $job_object->is_backup_archive( $file ) && $job_object->owns_backup_archive( $file ) == true )
+					if ( $this->is_backup_archive( $file ) && $this->is_backup_owned_by_job( $file, $job_object->job['jobid'] ) == true )
 						$backupfilelist[ $blob->getProperties()->getLastModified()->getTimestamp() ] = $file;
 					$files[ $filecounter ][ 'folder' ]      = $job_object->steps_data[ $job_object->step_working ][ 'container_url' ] . "/" . dirname( $blob->getName() ) . "/";
 					$files[ $filecounter ][ 'file' ]        = $blob->getName();

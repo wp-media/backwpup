@@ -75,10 +75,6 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 							echo '<label for="idwpexportfilecompression-gz"><input class="radio" type="radio"' . checked( '.gz', BackWPup_Option::get( $jobid, 'wpexportfilecompression' ), FALSE ) . ' name="wpexportfilecompression" id="idwpexportfilecompression-gz" value=".gz" /> ' . esc_html__( 'GZip', 'backwpup' ). '</label><br />';
 						else
 							echo '<label for="idwpexportfilecompression-gz"><input class="radio" type="radio"' . checked( '.gz', BackWPup_Option::get( $jobid, 'wpexportfilecompression' ), FALSE ) . ' name="wpexportfilecompression" id="idwpexportfilecompression-gz" value=".gz" disabled="disabled" /> ' . esc_html__( 'GZip', 'backwpup' ). '</label><br />';
-						if ( function_exists( 'bzopen' ) )
-							echo '<label for="idwpexportfilecompression-bz2"><input class="radio" type="radio"' . checked( '.bz2', BackWPup_Option::get( $jobid, 'wpexportfilecompression' ), FALSE ) . ' name="wpexportfilecompression" id="idwpexportfilecompression-bz2" value=".bz2" /> ' . esc_html__( 'BZip2', 'backwpup' ). '</label><br />';
-						else
-							echo '<label for="idwpexportfilecompression-bz2"><input class="radio" type="radio"' . checked( '.bz2', BackWPup_Option::get( $jobid, 'wpexportfilecompression' ), FALSE ) . ' name="wpexportfilecompression" id="idwpexportfilecompression-bz2" value=".bz2" disabled="disabled" /> ' . esc_html__( 'BZip2', 'backwpup' ). '</label><br />';
 						?>
 					</fieldset>
 				</td>
@@ -408,7 +404,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 				$old_value = NULL;
 				if ( function_exists( 'libxml_disable_entity_loader' ) )
 					$old_value = libxml_disable_entity_loader( TRUE );
-				$success = $dom->loadXML( file_get_contents( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] ) );
+				$success = $dom->loadXML( file_get_contents( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] ), LIBXML_PARSEHUGE );
 				if ( ! is_null( $old_value ) )
 					libxml_disable_entity_loader( $old_value );
 

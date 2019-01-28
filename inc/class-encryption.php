@@ -126,7 +126,7 @@ class BackWPup_Encryption {
 		/** @var BackWPup_Encryption_OpenSSL|BackWPup_Encryption_Mcrypt|BackWPup_Encryption_Fallback $cypher */
 		$cypher = new $cypher_class( $key, $key_type );
 
-		return trim( $cypher->decrypt( $string ), "\0" );
+		return trim( stripslashes( $cypher->decrypt( $string ) ), "\0" );
 	}
 
 	/**

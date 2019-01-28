@@ -117,12 +117,12 @@ class BackWPup_Page_Editjob {
 				$archiveformat = in_array( $_POST['archiveformat'], array(
 					'.zip',
 					'.tar',
-					'.tar.gz',
-					'.tar.bz2'
+					'.tar.gz'
 				), true ) ? $_POST['archiveformat'] : '.zip';
 				BackWPup_Option::update( $jobid, 'archiveformat', $archiveformat );
+				BackWPup_Option::update( $jobid, 'archiveencryption', ! empty( $_POST['archiveencryption'] ) );
 
-				BackWPup_Option::update( $jobid, 'archivename', BackWPup_Job::sanitize_file_name( BackWPup_Option::normalize_archive_name( $_POST['archivename'], $jobid ) ) );
+				BackWPup_Option::update( $jobid, 'archivename', BackWPup_Job::sanitize_file_name( BackWPup_Option::normalize_archive_name( $_POST['archivename'], $jobid, false ) ) );
 				break;
 			case 'cron':
 				$activetype = in_array( $_POST['activetype'], array(
@@ -319,6 +319,15 @@ class BackWPup_Page_Editjob {
 		$destinations = BackWPup::get_registered_destinations();
 		$job_types    = BackWPup::get_job_types();
 
+		// Is encryption disabled?
+		$disable_encryption = true;
+		if ( (get_site_option( 'backwpup_cfg_encryption' ) === 'symmetric' && get_site_option( 'backwpup_cfg_encryptionkey' ))
+		     || (get_site_option( 'backwpup_cfg_encryption' ) === 'asymmetric' && get_site_option( 'backwpup_cfg_publickey' ))
+		) {
+			$disable_encryption = false;
+		}
+
+		$archive_format_option = BackWPup_Option::get( $jobid, 'archiveformat' );
 		?>
     <div class="wrap" id="backwpup-page">
 		<?php
@@ -435,14 +444,12 @@ class BackWPup_Page_Editjob {
 						<tr class="nosync">
 							<th scope="row"><label for="archivename"><?php esc_html_e( 'Archive name', 'backwpup' ) ?></label></th>
 							<td>
-								<input name="archivename" type="text" id="archivename" placeholder="%Y-%m-%d_%H-%i-%s" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'archivename' ) );?>" class="regular-text code" />
-								<p><?php printf( __( '<em>Note</em>: In order for backup file tracking to work, the archive name must begin with %s.', 'backwpup' ), BackWPup_Option::get_archive_name_prefix( $jobid ) ) ?></p>
+								<input name="archivename" type="text" id="archivename" placeholder="%Y-%m-%d_%H-%i-%s_%hash%" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'archivenamenohash' ) );?>" class="regular-text code" />
+								<p><?php _e( '<em>Note</em>: In order for backup file tracking to work, %hash% must be included anywhere in the archive name.', 'backwpup' ) ?></p>
 								<?php
-								$current_time = current_time( 'timestamp' );
-								$datevars    = array( '%d', '%j', '%m', '%n', '%Y', '%y', '%a', '%A', '%B', '%g', '%G', '%h', '%H', '%i', '%s' );
-								$datevalues  = array( date( 'd', $current_time ), date( 'j', $current_time ), date( 'm', $current_time ), date( 'n', $current_time ), date( 'Y', $current_time ), date( 'y', $current_time ), date( 'a', $current_time ), date( 'A', $current_time ), date( 'B', $current_time ), date( 'g', $current_time ), date( 'G', $current_time ), date( 'h', $current_time ), date( 'H', $current_time ), date( 'i', $current_time ), date( 's', $current_time ) );
-								$archivename = str_replace( $datevars, $datevalues, BackWPup_Job::sanitize_file_name( BackWPup_Option::get( $jobid, 'archivename' ) ) );
-								echo '<p>Preview: <code><span id="archivefilename">' . esc_attr( $archivename ) . '</span><span id="archiveformat">' . esc_attr( BackWPup_Option::get( $jobid, 'archiveformat' ) ) . '</span></code></p>';
+								$archivename = BackWPup_Option::substitute_date_vars(
+									BackWPup_Option::get( $jobid, 'archivenamenohash' ) );
+								echo '<p>' . esc_html__( 'Preview: ', 'backwpup' ) . '<code><span id="archivefilename">' . esc_attr( $archivename ) . '</span><span id="archiveformat">' . esc_attr( $archive_format_option ) . '</span></code></p>';
 								echo '<p class="description">';
 								echo "<strong>" . esc_attr__( 'Replacement patterns:', 'backwpup' ) . "</strong><br />";
 								echo esc_attr__( '%d = Two digit day of the month, with leading zeros', 'backwpup' ) . '<br />';
@@ -471,27 +478,50 @@ class BackWPup_Page_Editjob {
 									<legend class="screen-reader-text"><span><?php esc_html_e( 'Archive Format', 'backwpup' ) ?></span></legend>
 									<?php
 									if ( class_exists( 'ZipArchive' ) ) {
-										echo '<p><label for="idarchiveformat-zip"><input class="radio" type="radio"' . checked( '.zip', BackWPup_Option::get( $jobid, 'archiveformat' ), FALSE ) . ' name="archiveformat" id="idarchiveformat-zip" value=".zip" /> ' . esc_html__( 'Zip', 'backwpup' ) . '</label></p>';
+										echo '<p><label for="idarchiveformat-zip"><input class="radio" type="radio"' . checked( '.zip', $archive_format_option, FALSE ) . ' name="archiveformat" id="idarchiveformat-zip" value=".zip" /> ' . esc_html__( 'Zip', 'backwpup' ) . '</label></p>';
 									} else {
-										echo '<p><label for="idarchiveformat-zip"><input class="radio" type="radio"' . checked( '.zip', BackWPup_Option::get( $jobid, 'archiveformat' ), FALSE ) . ' name="archiveformat" id="idarchiveformat-zip" value=".zip" disabled="disabled" /> ' . esc_html__( 'Zip', 'backwpup' ) . '</label>';
-										echo '<br /><span class="description">' . esc_html(sprintf( __( 'Disabled due to missing %s PHP class.', 'backwpup' ), 'ZipArchive' )) . '</span></p>';
+										echo '<p><label for="idarchiveformat-zip"><input class="radio" type="radio"' . checked( '.zip', $archive_format_option, FALSE ) . ' name="archiveformat" id="idarchiveformat-zip" value=".zip" disabled="disabled" /> ' . esc_html__( 'Zip', 'backwpup' ) . '</label>';
+										echo '<br /><span class="description">' . esc_html(__( 'ZipArchive PHP class is missing, so BackWPUp will use PclZip instead.', 'backwpup' )) . '</span></p>';
 									}
-									echo '<p><label for="idarchiveformat-tar"><input class="radio" type="radio"' . checked( '.tar', BackWPup_Option::get( $jobid, 'archiveformat' ), FALSE ) . ' name="archiveformat" id="idarchiveformat-tar" value=".tar" /> ' . esc_html__( 'Tar', 'backwpup' )  . '</label></p>';
+									echo '<p><label for="idarchiveformat-tar"><input class="radio" type="radio"' . checked( '.tar', $archive_format_option, FALSE ) . ' name="archiveformat" id="idarchiveformat-tar" value=".tar" /> ' . esc_html__( 'Tar', 'backwpup' )  . '</label></p>';
 									if ( function_exists( 'gzopen' ) ) {
-										echo '<p><label for="idarchiveformat-targz"><input class="radio" type="radio"' . checked( '.tar.gz', BackWPup_Option::get( $jobid, 'archiveformat' ), FALSE ) . ' name="archiveformat" id="idarchiveformat-targz" value=".tar.gz" /> ' . esc_html__( 'Tar GZip', 'backwpup' ) .  '</label></p>';
+										echo '<p><label for="idarchiveformat-targz"><input class="radio" type="radio"' . checked( '.tar.gz', $archive_format_option, FALSE ) . ' name="archiveformat" id="idarchiveformat-targz" value=".tar.gz" /> ' . esc_html__( 'Tar GZip', 'backwpup' ) .  '</label></p>';
 									} else {
-										echo '<p><label for="idarchiveformat-targz"><input class="radio" type="radio"' . checked( '.tar.gz', BackWPup_Option::get( $jobid, 'archiveformat' ), FALSE ) . ' name="archiveformat" id="idarchiveformat-targz" value=".tar.gz" disabled="disabled" /> ' . esc_html__( 'Tar GZip', 'backwpup' ) . '</label>';
+										echo '<p><label for="idarchiveformat-targz"><input class="radio" type="radio"' . checked( '.tar.gz', $archive_format_option, FALSE ) . ' name="archiveformat" id="idarchiveformat-targz" value=".tar.gz" disabled="disabled" /> ' . esc_html__( 'Tar GZip', 'backwpup' ) . '</label>';
 										echo '<br /><span class="description">' . esc_html(sprintf( __( 'Disabled due to missing %s PHP function.', 'backwpup' ), 'gzopen()' )) . '</span></p>';
 									}
-									if ( function_exists( 'bzopen' ) ) {
-										echo '<p><label for="idarchiveformat-tarbz2"><input class="radio" type="radio"' . checked( '.tar.bz2', BackWPup_Option::get( $jobid, 'archiveformat' ), FALSE ) . ' name="archiveformat" id="idarchiveformat-tarbz2" value=".tar.bz2" /> ' . esc_html__( 'Tar BZip2', 'backwpup' ) . '</label></p>';
-									} else {
-										echo '<p><label for="idarchiveformat-tarbz2"><input class="radio" type="radio"' . checked( '.tar.bz2', BackWPup_Option::get( $jobid, 'archiveformat' ), FALSE ) . ' name="archiveformat" id="idarchiveformat-tarbz2" value=".tar.bz2" disabled="disabled" /> ' . esc_html__( 'Tar BZip2', 'backwpup' ) . '</label>';
-										echo '<br /><span class="description">' . esc_html(sprintf( __( 'Disabled due to missing %s PHP function.', 'backwpup' ), 'bzopen()' )) . '</span></p>';
-									}
-									?></fieldset>
+									?>
+								</fieldset>
 							</td>
 						</tr>
+						<?php if ( class_exists( 'BackWPup_Pro', false ) ): ?>
+							<tr class="nosync">
+								<th scope="row">
+									<?php esc_html_e( 'Encrypt Archive', 'backwpup' ) ?>
+								</th>
+								<td>
+									<fieldset>
+										<legend class="screen-reader-text">
+										<span><?php esc_html_e( 'Encrypt Archive', 'backwpup' ) ?></span>
+										</legend>
+										<?php
+										?>
+										<label for="archiveencryption">
+											<input type="checkbox" name="archiveencryption"
+												id="archiveencryption" value="1"<?php if ( $disable_encryption ):
+												?> disabled="disabled"<?php
+													else: checked( BackWPup_Option::get( $jobid, 'archiveencryption' ) ); endif ?> />
+											<?php _e( 'Encrypt Archive', 'backwpup' ) ?>
+										</label>
+										<?php if ( $disable_encryption ): ?>
+											<p class="description">
+												<?php _e( 'You must generate your encryption key in BackWPup Settings before you can enable this option.', 'backwpup' ) ?>
+											</p>
+										<?php endif ?>
+									</fieldset>
+								</td>
+							</tr>
+						<?php endif ?>
 					</table>
 
 					<h3 class="title hasdests"><?php esc_html_e( 'Job Destination', 'backwpup' ) ?></h3>

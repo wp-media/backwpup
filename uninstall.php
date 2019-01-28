@@ -11,11 +11,11 @@ global $wpdb;
 if (!class_exists('BackWPup')) {
 
     //delete plugin options
-    if (is_multisite()) {
-        $wpdb->query("DELETE FROM " . $wpdb->sitemeta . " WHERE meta_key LIKE '%backwpup_%' ");
-    } else {
-        $wpdb->query("DELETE FROM " . $wpdb->options . " WHERE option_name LIKE '%backwpup_%' ");
-    }
+	if ( is_multisite() )
+		$wpdb->query( "DELETE FROM " . $wpdb->sitemeta . " WHERE meta_key LIKE '%backwpup_%' " );
+	else
+		$wpdb->query( "DELETE FROM " . $wpdb->options . " WHERE option_name LIKE '%backwpup_%' " );
+
     
     //delete Backwpup user roles 
     $backWPUpRoles = array(
