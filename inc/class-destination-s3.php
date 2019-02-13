@@ -37,8 +37,8 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 	 */
 	public function edit_tab( $jobid ) {
 
-		$current_destination = BackWPup_Option::get( $jobid, 's3region' );
-		preg_match( '/^google|dreamhost/', $current_destination, $destination_doesnt_allow_multipart_upload );
+		$current_destination = $this->get_selected_destination( $jobid );
+
 		?>
 		<h3 class="title">
 			<?php esc_html_e( 'S3 Service', 'backwpup' ); ?>
@@ -55,10 +55,10 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 					        id="s3region"
 					        title="<?php esc_attr_e( 'S3 Region', 'backwpup' ); ?>">
 						<?php foreach ( $this->destinations_options_list() as $destination ) : ?>
-							<option value="<?php echo esc_attr( $destination['region'] ); ?>"
-								<?php selected( $destination['region'], $current_destination, true ); ?>
-							>
-								<?php echo esc_html( $destination['label'] ); ?>
+							<option value="<?php echo esc_attr( $destination->region ); ?>"
+								<?php selected( $destination->region, $current_destination->region, true ); ?>
+							data-base_url="<?php echo esc_attr($destination->base_url); ?>">
+								<?php echo esc_html( $destination->label ); ?>
 							</option>
 						<?php endforeach; ?>
 					</select>
@@ -93,7 +93,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 							       value="1"
 							       type="checkbox"
 								<?php checked( BackWPup_Option::get( $jobid, 's3multipart' ), true ); ?>
-								<?php echo $destination_doesnt_allow_multipart_upload ? 'disabled="disabled"' : '' ?>
+								<?php echo $current_destination->allows_multipart ? '' : 'disabled="disabled"' ?>
 								   name="s3multipart"
 								   id="ids3multipart"
 							/>
@@ -399,9 +399,9 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			return $s3base_url;
 		}
 
-		foreach ($this->destinations_options_list() as $destination) {
-			if (isset($destination['base_url'], $destination['region']) && $destination['region'] === $s3region) {
-				return $destination['base_url'];
+		foreach ( $this->destinations_options_list() as $destination ) {
+			if ( isset( $destination->base_url, $destination->region ) && $destination->region === $s3region ) {
+				return $destination->base_url;
 			}
 		}
 
@@ -472,6 +472,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 					'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ),
 				) );
 				// set bucket creation region
+				// todo: replace this with correct base_url and region selection
 				if ( $_POST['s3region'] === 'google-storage' ) {
 					$region = 'EU';
 				} elseif ( $_POST['s3region'] === 'google-storage-us' ) {
@@ -730,15 +731,15 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 	}
 
 	/**
-	 * @param $job_object BAckWPup_Job
+	 * @param $job_object BackWPup_Job
 	 *
 	 * @return bool
 	 */
 	public function job_run_archive( BackWPup_Job $job_object ) {
 
-		// Backward Compatibility, in case the user has this option set for google and dreamhost regions.
-		preg_match( '/^google|dreamhost/', $job_object->job['s3region'], $destination_doesnt_allow_multipart_upload );
-		if ( $destination_doesnt_allow_multipart_upload ) {
+		// Backward Compatibility, in case the user has this option set for regions that don't allow multipart.
+		$current_destination = $this->get_selected_destination( $job_object->job['jobid'] );
+		if ( ! $current_destination->allows_multipart ) {
 			$job_object->job['s3multipart'] = false;
 		}
 
@@ -1043,11 +1044,22 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 						return;
 					}
 
-					var regExp   = new RegExp( /^google|dreamhost|.*google.*|.*dreamhost.*/, 'g' );
-					var disabled = null !== regExp.exec( select.value );
-					var input    = document.querySelector( '#ids3multipart' );
+					<?php
+					$multipart_disallowed = array_unique( array_filter( array_map( function ( $destination ) {
+						if ( ! $destination->allow_multipart ) {
+							return $destination->base_url;
+						}
+						return null;
+					}, $this->destinations_options_list() ) ) );
+					?>
 
-					disabled = disabled || null !== regExp.exec( baseUrl.value );
+					var multipart_disallowed = ['<?php echo implode( "', '", $multipart_disallowed); ?>'];
+					var selected_base_url = select.options[select.selectedIndex].getAttribute('data-base_url');
+					var disabled = (baseUrl.value === '')
+						? (-1 !== multipart_disallowed.indexOf(selected_base_url))
+						: (-1 !== multipart_disallowed.indexOf(baseUrl.value))
+					;
+					var input    = document.querySelector( '#ids3multipart' );
 
 					input.disabled = disabled;
 
@@ -1080,100 +1092,51 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 	}
 
 	/**
+	 * Get the S3 destination of the passed job ID.
+	 *
+	 * @param int $jobid
+	 *
+	 * @return \BackWPup_S3_Destination
+	 */
+	public function get_selected_destination( $jobid ) {
+		$base_url = BackWPup_Option::get( $jobid, 's3base_url' );
+		$region   = BackWPup_Option::get( $jobid, 's3region' );
+		foreach ( $this->destinations_options_list() as $destination ) {
+			if ( $destination->base_url === $base_url && $destination->region === $region ) {
+				return $destination;
+			}
+		}
+
+		return new BackWPup_S3_Destination( __( 'Custom S3 destination', 'backwpup' ), $base_url, $region);
+	}
+
+	/**
 	 * Get list of S3 destinations.
 	 *
 	 * This list can be extended by using the `backwpup_s3_destinations` filter.
 	 *
-	 * @return array
+	 * @return \BackWPup_S3_Destination[]
 	 */
 	private function destinations_options_list() {
 
 		return apply_filters( 'backwpup_s3_destinations', array(
-			array(
-				'label'    => __( 'Amazon S3: US Standard', 'backwpup' ),
-				'region'   => 'us-east-1',
-				'base_url' => 'https://s3.amazonaws.com',
-			),
-			array(
-				'label'    => __( 'Amazon S3: US West (Northern California)', 'backwpup' ),
-				'region'   => 'us-west-1',
-				'base_url' => 'https://s3-us-west-1.amazonaws.com',
-			),
-			array(
-				'label'    => __( 'Amazon S3: US West (Oregon)', 'backwpup' ),
-				'region'   => 'us-west-2',
-				'base_url' => 'https://s3-us-west-2.amazonaws.com',
-			),
-			array(
-				'label'    => __( 'Amazon S3: EU (Ireland)', 'backwpup' ),
-				'region'   => 'eu-west-1',
-				'base_url' => 'https://s3-eu-west-1.amazonaws.com',
-			),
-			array(
-				'label'    => __( 'Amazon S3: EU (London)', 'backwpup' ),
-				'region'   => 'eu-west-2',
-				'base_url' => 'https://s3-eu-west-2.amazonaws.com',
-			),
-			array(
-				'label'    => __( 'Amazon S3: EU (Germany)', 'backwpup' ),
-				'region'   => 'eu-central-1',
-				'base_url' => 'https://s3-eu-central-1.amazonaws.com',
-			),
-			array(
-				'label'    => __( 'Amazon S3: Asia Pacific (Mumbai)', 'backwpup' ),
-				'region'   => 'ap-south-1',
-				'base_url' => 'https://s3-ap-south-1.amazonaws.com',
-			),
-			array(
-				'label'    => __( 'Amazon S3: Asia Pacific (Tokyo)', 'backwpup' ),
-				'region'   => 'ap-northeast-1',
-				'base_url' => 'https://s3-ap-northeast-1.amazonaws.com',
-			),
-			array(
-				'label'    => __( 'Amazon S3: Asia Pacific (Seoul)', 'backwpup' ),
-				'region'   => 'ap-northeast-2',
-				'base_url' => 'https://s3-ap-northeast-2.amazonaws.com',
-			),
-			array(
-				'label'    => __( 'Amazon S3: Asia Pacific (Singapore)', 'backwpup' ),
-				'region'   => 'ap-southeast-1',
-				'base_url' => 'https://s3-ap-southeast-1.amazonaws.com',
-			),
-			array(
-				'label'    => __( 'Amazon S3: Asia Pacific (Sydney)', 'backwpup' ),
-				'region'   => 'ap-southeast-2',
-				'base_url' => 'https://s3-ap-southeast-2.amazonaws.com',
-			),
-			array(
-				'label'    => __( 'Amazon S3: South America (Sao Paulo)', 'backwpup' ),
-				'region'   => 'sa-east-1',
-				'base_url' => 'https://s3-sa-east-1.amazonaws.com',
-			),
-			array(
-				'label'    => __( 'Amazon S3: China (Beijing)', 'backwpup' ),
-				'region'   => 'cn-north-1',
-				'base_url' => 'https://cn-north-1.amazonaws.com',
-			),
-			array(
-				'label'    => __( 'Google Storage: EU', 'backwpup' ),
-				'region'   => 'google-storage',
-				'base_url' => 'https://storage.googleapis.com',
-			),
-			array(
-				'label'    => __( 'Google Storage: USA', 'backwpup' ),
-				'region'   => 'google-storage-us',
-				'base_url' => 'https://storage.googleapis.com',
-			),
-			array(
-				'label'    => __( 'Google Storage: Asia', 'backwpup' ),
-				'region'   => 'google-storage-asia',
-				'base_url' => 'https://storage.googleapis.com',
-			),
-			array(
-				'label'    => __( 'Dream Host Cloud Storage', 'backwpup' ),
-				'region'   => 'dreamhost',
-				'base_url' => 'https://objects-us-west-1.dream.io',
-			),
+			new BackWPup_S3_Destination( __( 'Amazon S3: US Standard', 'backwpup' ), 'https://s3.amazonaws.com', 'us-east-1' ),
+			new BackWPup_S3_Destination( __( 'Amazon S3: US West (Northern California)', 'backwpup' ), 'https://s3-us-west-1.amazonaws.com', 'us-west-1' ),
+			new BackWPup_S3_Destination( __( 'Amazon S3: US West (Oregon)', 'backwpup' ), 'https://s3-us-west-2.amazonaws.com', 'us-west-2' ),
+			new BackWPup_S3_Destination( __( 'Amazon S3: EU (Ireland)', 'backwpup' ), 'https://s3-eu-west-1.amazonaws.com', 'eu-west-1' ),
+			new BackWPup_S3_Destination( __( 'Amazon S3: EU (London)', 'backwpup' ), 'https://s3-eu-west-2.amazonaws.com', 'eu-west-2' ),
+			new BackWPup_S3_Destination( __( 'Amazon S3: EU (Germany)', 'backwpup' ), 'https://s3-eu-central-1.amazonaws.com', 'eu-central-1' ),
+			new BackWPup_S3_Destination( __( 'Amazon S3: Asia Pacific (Mumbai)', 'backwpup' ), 'https://s3-ap-south-1.amazonaws.com', 'ap-south-1' ),
+			new BackWPup_S3_Destination( __( 'Amazon S3: Asia Pacific (Tokyo)', 'backwpup' ), 'https://s3-ap-northeast-1.amazonaws.com', 'ap-northeast-1' ),
+			new BackWPup_S3_Destination( __( 'Amazon S3: Asia Pacific (Seoul)', 'backwpup' ), 'https://s3-ap-northeast-2.amazonaws.com', 'ap-northeast-2' ),
+			new BackWPup_S3_Destination( __( 'Amazon S3: Asia Pacific (Singapore)', 'backwpup' ), 'https://s3-ap-southeast-1.amazonaws.com', 'ap-southeast-1' ),
+			new BackWPup_S3_Destination( __( 'Amazon S3: Asia Pacific (Sydney)', 'backwpup' ), 'https://s3-ap-southeast-2.amazonaws.com', 'ap-southeast-2' ),
+			new BackWPup_S3_Destination( __( 'Amazon S3: South America (Sao Paulo)', 'backwpup' ), 'https://s3-sa-east-1.amazonaws.com', 'sa-east-1' ),
+			new BackWPup_S3_Destination( __( 'Amazon S3: China (Beijing)', 'backwpup' ), 'https://cn-north-1.amazonaws.com', 'cn-north-1' ),
+			new BackWPup_S3_Destination( __( 'Google Storage: EU', 'backwpup' ), 'https://storage.googleapis.com', 'google-storage', false ),
+			new BackWPup_S3_Destination( __( 'Google Storage: USA', 'backwpup' ), 'https://storage.googleapis.com', 'google-storage-us', false ),
+			new BackWPup_S3_Destination( __( 'Google Storage: Asia', 'backwpup' ), 'https://storage.googleapis.com', 'google-storage-asia', false ),
+			new BackWPup_S3_Destination( __( 'Dream Host Cloud Storage', 'backwpup' ), 'https://objects-us-west-1.dream.io', 'dreamhost', false ),
 		) );
 	}
 }
