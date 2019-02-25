@@ -692,7 +692,7 @@ class BackWPup_Page_Settings {
 									</label>
 									<p class="description">
 										<?php esc_html_e(
-											'Debug log has much more informations than normal logs. It is for support and should be handled carefully. For support is the best to use a not translated log file. Usage of not translated logs can reduce the PHP memory usage too.',
+											'Debug log has much more information than normal logs. It is for support and should be handled carefully. For support is the best to use a not translated log file. Usage of not translated logs can reduce the PHP memory usage too.',
 											'backwpup'
 										); ?>
 									</p>
@@ -829,7 +829,7 @@ class BackWPup_Page_Settings {
 									</label>
 									<p class="description">
 										<?php esc_html_e(
-											'This do an empty output on job working. This can help in some situations or can brake the working. You must test it.',
+											'This do an empty output on job working. This can help in some situations or can break the working. You must test it.',
 											'backwpup'
 										); ?>
 									</p>

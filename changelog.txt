@@ -1,6 +1,12 @@
 == Changelog ==
+= Version 3.6.8 =
+Release Date: Feb 25, 2019
+
+* Fixed: Typos in settings job page
+* Fixed: Rest API admin note language doesn't change when changing user language
+
 = Version 3.6.7 =
-Release Date: Jan 23, 2019
+Release Date: Jan 22, 2019
 
 * Fixed: More margin to dashboard footer to avoid save button unclickable
 * Fixed: On folder sync destination folder is not created

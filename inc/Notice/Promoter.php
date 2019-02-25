@@ -104,6 +104,11 @@ class Promoter {
 	 */
 	private function locale_code() {
 
+		$user = wp_get_current_user();
+		if ( $user && isset($user->ID) ) {
+			return substr( get_user_locale($user->ID), 0, 2 );
+		}
+
 		return substr( get_locale(), 0, 2 );
 	}
 
