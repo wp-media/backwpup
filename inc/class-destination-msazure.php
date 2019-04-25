@@ -15,7 +15,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 	 */
 	public function option_defaults() {
 
-		return array( 'msazureaccname' => '', 'msazurekey' => '', 'msazurecontainer' => '', 'msazuredir' => trailingslashit( sanitize_file_name( get_bloginfo( 'name' ) ) ), 'msazuremaxbackups' => 15, 'msazuresyncnodelete' => TRUE );
+		return array( 'msazureaccname' => '', 'msazurekey' => '', 'msazureprotocol' => 'http', 'msazurecontainer' => '', 'msazuredir' => trailingslashit( sanitize_file_name( get_bloginfo( 'name' ) ) ), 'msazuremaxbackups' => 15, 'msazuresyncnodelete' => TRUE );
 	}
 
 
@@ -39,6 +39,22 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 				<td>
 					<input id="msazurekey" name="msazurekey" type="password"
 						   value="<?php echo esc_attr( BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 'msazurekey' ) ) );?>" class="regular-text" autocomplete="off" />
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="msazureprotocol"><?php esc_html_e( 'Encryption Protocol', 'backwpup' ); ?></label></th>
+				<td>
+				<?php
+				$msazure_protocols = array(
+					'http', 
+					'https'
+				);
+				?>
+				<select name="msazureprotocol" id="msazureprotocol">
+				<?php foreach ( $msazure_protocols as $msazure_protocol ) : ?>
+				<?php echo "<option " . selected( strtolower( BackWPup_Option::get( $jobid, 'msazureprotocol' ) ), strtolower( $msazure_protocol ) ) . " value='" . esc_attr( $msazure_protocol ) . "'>" . esc_html( $msazure_protocol ) . "</option>"; ?>
+				<?php endforeach; ?>
+				</select>
 				</td>
 			</tr>
 		</table>
@@ -107,6 +123,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 		BackWPup_Option::update( $jobid, 'msazureaccname', sanitize_text_field( $_POST[ 'msazureaccname' ] ) );
 		BackWPup_Option::update( $jobid, 'msazurekey', sanitize_text_field( $_POST[ 'msazurekey' ] ) );
 		BackWPup_Option::update( $jobid, 'msazurecontainer', sanitize_text_field( $_POST[ 'msazurecontainer' ] ) );
+		BackWPup_Option::update( $jobid, 'msazureprotocol', sanitize_text_field( $_POST[ 'msazureprotocol' ] ) );
 
 		$_POST[ 'msazuredir' ] = trailingslashit( str_replace( '//', '/', str_replace( '\\', '/', trim( sanitize_text_field( $_POST[ 'msazuredir' ] ) ) ) ) );
 		if ( substr( $_POST[ 'msazuredir' ], 0, 1 ) == '/' )
@@ -219,7 +236,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 		try {
 			set_include_path( get_include_path() . PATH_SEPARATOR . BackWPup::get_plugin_data( 'plugindir' ) .'/vendor/PEAR/');
 			/* @var $blobRestProxy   WindowsAzure\Blob\BlobRestProxy */ //https causes an error SSL: Connection reset by peer that is why http
-			$blobRestProxy = WindowsAzure\Common\ServicesBuilder::getInstance()->createBlobService('DefaultEndpointsProtocol=http;AccountName=' . $job_object->job[ 'msazureaccname' ] . ';AccountKey=' . BackWPup_Encryption::decrypt( $job_object->job[ 'msazurekey' ] ) );
+			$blobRestProxy = WindowsAzure\Common\ServicesBuilder::getInstance()->createBlobService('DefaultEndpointsProtocol=' . $job_object->job[ 'msazureprotocol' ] . ';AccountName=' . $job_object->job[ 'msazureaccname' ] . ';AccountKey=' . BackWPup_Encryption::decrypt( $job_object->job[ 'msazurekey' ] ) );
 
 
 			if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] != $job_object->steps_data[ $job_object->step_working ][ 'STEP_TRY' ] ) {
