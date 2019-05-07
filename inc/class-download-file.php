@@ -1,6 +1,6 @@
 <?php
 
-use Inpsyde\BackWPup\Helper;
+use \Inpsyde\BackWPupShared\File\MimeTypeExtractor;
 
 /**
  * Class BackWPup_Download_File
@@ -115,7 +115,7 @@ final class BackWPup_Download_File implements BackWPup_Download_File_Interface {
 	 */
 	public function headers() {
 
-		$mime = Helper\MimeType::from_file_path( $this->filepath );
+		$mime = MimeTypeExtractor::fromFilePath( $this->filepath );
 
 		$level = ob_get_level();
 		if ( $level ) {

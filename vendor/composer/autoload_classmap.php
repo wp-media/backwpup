@@ -1414,6 +1414,7 @@ return array(
     'HTTP_Request2_ResponseTest' => $vendorDir . '/pear/http_request2/tests/Request2/ResponseTest.php',
     'HTTP_Request2_SOCKS5' => $vendorDir . '/pear/http_request2/HTTP/Request2/SOCKS5.php',
     'HTTP_Request2_SocketWrapper' => $vendorDir . '/pear/http_request2/HTTP/Request2/SocketWrapper.php',
+    'Inpsyde\\BackWPupShared\\File\\MimeTypeExtractor' => $vendorDir . '/inpsyde/backwpup-shared/src/File/MimeTypeExtractor.php',
     'Inpsyde_PhoneHome_ActionController' => $vendorDir . '/inpsyde/phone-home-client/src/ActionController.php',
     'Inpsyde_PhoneHome_Configuration' => $vendorDir . '/inpsyde/phone-home-client/src/Configuration.php',
     'Inpsyde_PhoneHome_Consent' => $vendorDir . '/inpsyde/phone-home-client/src/Consent/Consent.php',

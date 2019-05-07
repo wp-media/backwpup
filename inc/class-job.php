@@ -268,7 +268,7 @@ final class BackWPup_Job {
 		//set Logfile
 		$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
 		$log_folder = BackWPup_File::get_absolute_path( $log_folder );
-		$this->logfile = $log_folder . 'backwpup_log_' . BackWPup::get_plugin_data( 'hash' ) . '_' . date( 'Y-m-d_H-i-s',
+		$this->logfile = $log_folder . 'backwpup_log_' . BackWPup::get_generated_hash( 6 ) . '_' . date( 'Y-m-d_H-i-s',
 				current_time( 'timestamp' ) ) . '.html';
 		//write settings to job
 		BackWPup_Option::update( $this->job['jobid'], 'lastrun', $this->start_time );
@@ -2078,8 +2078,21 @@ final class BackWPup_Job {
 		$manifest['blog_info']['plugins']['baseurl'] = WP_PLUGIN_URL;
 		$manifest['blog_info']['themes']['basedir'] = get_theme_root();
 		$manifest['blog_info']['themes']['baseurl'] = get_theme_root_uri();
-		// add job settings
-		$manifest['job_settings'] = $this->job;
+
+        // Add job settings
+        $manifest['job_settings'] = array(
+            'dbdumptype' => $this->job['dbdumptype'],
+            'dbdumpfile' => $this->job['dbdumpfile'],
+            'dbdumpfilecompression' => $this->job['dbdumpfilecompression'],
+            'dbdumpdbcharset' => $this->job['dbdumpdbcharset'],
+            'type' => $this->job['type'],
+            'destinations' => $this->job['destinations'],
+            'backuptype' => $this->job['backuptype'],
+            'archiveformat' => $this->job['archiveformat'],
+            'dbdumpexclude' => $this->job['dbdumpexclude'],
+
+        );
+
 		// add archive info
 		foreach ( $this->additional_files_to_backup as $file ) {
 			$manifest['archive']['extra_files'][] = basename( $file );

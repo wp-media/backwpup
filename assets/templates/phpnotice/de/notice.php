@@ -29,7 +29,7 @@ if ( ! $plugin_name || ! $more_info_url ) {
 
 	</p>
 	<p class="notice-links">
-		<?= $buttons->agree_button() ?>
-		<?= $buttons->more_info_button( $more_info_url ) ?>
+		<?php echo $buttons->agree_button() ?>
+		<?php echo $buttons->more_info_button( $more_info_url ) ?>
 	</p>
 </div>

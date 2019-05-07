@@ -4,7 +4,7 @@
 // https://github.com/aws/aws-sdk-php
 // http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region
 
-use Inpsyde\BackWPup\Helper;
+use \Inpsyde\BackWPupShared\File\MimeTypeExtractor;
 
 /**
  * Documentation: http://docs.amazonwebservices.com/aws-sdk-php-2/latest/class-Aws.S3.S3Client.html
@@ -305,16 +305,15 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 	}
 
 	/**
-	 * @param string $args
+	 * @param array $args
 	 */
-	public function edit_ajax( $args = '' ) {
+	public function edit_ajax( $args = array() ) {
 
 		$error        = '';
 		$buckets_list = array();
+		$ajax = false;
 
-		if ( is_array( $args ) ) {
-			$ajax = false;
-		} else {
+		if ( isset($_POST['s3accesskey']) || isset($_POST['s3secretkey']) ) {
 			if ( ! current_user_can( 'backwpup_jobs_edit' ) ) {
 				wp_die( - 1 );
 			}
@@ -860,7 +859,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 
 				$create_args['Body']        = $up_file_handle;
 				$create_args['Key']         = $job_object->job['s3dir'] . $job_object->backup_file;
-				$create_args['ContentType'] = Helper\MimeType::from_file_path( $job_object->backup_folder . $job_object->backup_file );
+				$create_args['ContentType'] = MimeTypeExtractor::fromFilePath( $job_object->backup_folder . $job_object->backup_file );
 
 				try {
 					$s3->putObject( $create_args );
@@ -883,7 +882,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 							$args = array(
 								'ACL'         => 'private',
 								'Bucket'      => $job_object->job['s3bucket'],
-								'ContentType' => Helper\MimeType::from_file_path( $job_object->backup_folder . $job_object->backup_file ),
+								'ContentType' => MimeTypeExtractor::fromFilePath( $job_object->backup_folder . $job_object->backup_file ),
 								'Key'         => $job_object->job['s3dir'] . $job_object->backup_file,
 							);
 							if ( ! empty( $job_object->job['s3ssencrypt'] ) ) {

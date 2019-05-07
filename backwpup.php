@@ -5,30 +5,11 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.6.8
+ * Version: 3.6.9
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
- * License: GPLv3
- * License URI: http://www.gnu.org/licenses/gpl-3.0
- */
-
-/**
- *    Copyright (C) 2012-2016 Inpsyde GmbH (email: info@inpsyde.com)
- *
- *    This program is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU General Public License
- *    as published by the Free Software Foundation; either version 2
- *    of the License, or (at your option) any later version.
- *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with this program; if not, write to the Free Software
- *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * License: GPLv2+
  */
 
 if ( ! class_exists( 'BackWPup', false ) ) {
@@ -206,7 +187,7 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 				     || strlen(
 					        self::$plugin_data['hash']
 				        ) > 12 ) {
-					self::$plugin_data['hash'] = substr( md5( md5( __FILE__ ) ), 14, 6 );
+					self::$plugin_data['hash'] = self::get_generated_hash(6);
 					update_site_option( 'backwpup_cfg_hash', self::$plugin_data['hash'] );
 				}
 				if ( defined( 'WP_TEMP_DIR' ) && is_dir( WP_TEMP_DIR ) ) {
@@ -243,6 +224,25 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 				return self::$plugin_data;
 			}
 		}
+
+        /**
+         * Generates a random hash
+         *
+         * @param int $length
+         *
+         * @return string
+         */
+		public static function get_generated_hash( $length = 6 ) {
+
+		    $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+            $hash = '';
+            for ( $i = 0; $i < 254; $i++ ) {
+                $hash .= $chars[mt_rand(0, 61)];
+            }
+
+            return substr(md5($hash), mt_rand(0, 31 - $length), $length);
+        }
 
 		/**
 		 * Load Plugin Translation

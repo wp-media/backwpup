@@ -1,6 +1,6 @@
 <?php
 
-use Inpsyde\BackWPup\Helper;
+use \Inpsyde\BackWPupShared\File\MimeTypeExtractor;
 
 /**
  *
@@ -203,7 +203,7 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 			@set_time_limit( 300 );
 			nocache_headers();
 			header( 'Content-Description: File Transfer' );
-			header( 'Content-Type: ' . Helper\MimeType::from_file_path( (string) $response->displayName ) );
+			header( 'Content-Type: ' . MimeTypeExtractor::fromFilePath( (string) $response->displayName ) );
 			header( 'Content-Disposition: attachment; filename="' . (string) $response->displayName . '"' );
 			header( 'Content-Transfer-Encoding: binary' );
 			header( 'Content-Length: ' . (int) $response->size );
@@ -855,7 +855,7 @@ class BackWPup_Destination_SugarSync_API {
 			$name = basename( $file );
 		}
 
-		$content_type = Helper\MimeType::from_file_path( $file );
+		$content_type = MimeTypeExtractor::fromFilePath( $file );
 
 		$xmlrequest = '<?xml version="1.0" encoding="UTF-8"?>';
 		$xmlrequest .= '<file>';

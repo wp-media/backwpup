@@ -17,6 +17,7 @@ return array(
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'Inpsyde\\BackWPup\\' => array($baseDir . '/inc'),
+    'Inpsyde\\BackWPupShared\\' => array($vendorDir . '/inpsyde/backwpup-shared/src'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'Base32\\' => array($vendorDir . '/christian-riesen/base32/src'),
 );

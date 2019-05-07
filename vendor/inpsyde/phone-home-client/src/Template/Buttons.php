@@ -23,9 +23,9 @@ class Inpsyde_PhoneHome_Template_Buttons {
 		$action = Inpsyde_PhoneHome_ActionController::ACTION_AGREE;
 		?>
 		<a
-			href="<?= esc_url( Inpsyde_PhoneHome_ActionController::url_for_action( $action ) ) ?>"
+			href="<?php echo esc_url( Inpsyde_PhoneHome_ActionController::url_for_action( $action ) ) ?>"
 			class="button button-primary">
-			<?= esc_html__( 'Yes, I agree.', 'inpsyde-phone-home' ) ?>
+			<?php echo esc_html__( 'Yes, I agree.', 'inpsyde-phone-home' ) ?>
 		</a>
 		<?php
 
@@ -40,9 +40,9 @@ class Inpsyde_PhoneHome_Template_Buttons {
 		$action = Inpsyde_PhoneHome_ActionController::ACTION_MAYBE;
 		?>
 		<a
-			href="<?= esc_url( Inpsyde_PhoneHome_ActionController::url_for_action( $action ) ) ?>"
+			href="<?php echo esc_url( Inpsyde_PhoneHome_ActionController::url_for_action( $action ) ) ?>"
 			class="button">
-			<?= esc_html__( 'I have to think about that, ask me later.', 'inpsyde-phone-home' ) ?>
+			<?php echo esc_html__( 'I have to think about that, ask me later.', 'inpsyde-phone-home' ) ?>
 		</a>
 		<?php
 
@@ -57,9 +57,9 @@ class Inpsyde_PhoneHome_Template_Buttons {
 		$action = Inpsyde_PhoneHome_ActionController::ACTION_DISAGREE;
 		?>
 		<a
-			href="<?= esc_url( Inpsyde_PhoneHome_ActionController::url_for_action( $action ) ) ?>"
+			href="<?php echo esc_url( Inpsyde_PhoneHome_ActionController::url_for_action( $action ) ) ?>"
 			class="button">
-			<?= esc_html__( 'Please no. Don\'t ask me again.', 'inpsyde-phone-home' ) ?>
+			<?php echo esc_html__( 'Please no. Don\'t ask me again.', 'inpsyde-phone-home' ) ?>
 		</a>
 		<?php
 
@@ -79,9 +79,9 @@ class Inpsyde_PhoneHome_Template_Buttons {
 		ob_start();
 		?>
 		<a
-			href="<?= esc_url( $more_info_url ) ?>"
+			href="<?php echo esc_url( $more_info_url ) ?>"
 			class="button button-secondary">
-			<?= esc_html__( 'More info', 'inpsyde-phone-home' ) ?>
+			<?php echo esc_html__( 'More info', 'inpsyde-phone-home' ) ?>
 		</a>
 		<?php
 

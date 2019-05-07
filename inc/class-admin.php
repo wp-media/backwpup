@@ -257,7 +257,7 @@ final class BackWPup_Admin {
 					array(
 						BackWPup::get_destination( $id ),
 						'edit_ajax',
-					)
+					), 10, 0
 				);
 			}
 		}

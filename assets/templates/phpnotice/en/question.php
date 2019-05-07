@@ -57,9 +57,9 @@ if ( ! $plugin_name || ! $title ) {
 		</p>
 
 		<p class="page-links">
-			<?= $buttons->agree_button() ?>
-			<?= $buttons->maybe_button() ?>
-			<?= $buttons->disagree_button() ?>
+			<?php echo $buttons->agree_button() ?>
+			<?php echo $buttons->maybe_button() ?>
+			<?php echo $buttons->disagree_button() ?>
 		</p>
 
 	</div>

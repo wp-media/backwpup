@@ -56,21 +56,21 @@ final class BackWPup_Destination_Dropbox_API {
 	 */
 	public function __construct( $boxtype = 'dropbox', BackWPup_Job $job_object = null ) {
 
-		if ( $boxtype == 'dropbox' ) {
+		if ( $boxtype === 'dropbox' ) {
 			$this->oauth_app_key    = get_site_option(
 				'backwpup_cfg_dropboxappkey',
-				base64_decode( "dHZkcjk1MnRhZnM1NmZ2" )
+				base64_decode( 'NXdtdXl0cm5qZzB5aHhw' )
 			);
 			$this->oauth_app_secret = BackWPup_Encryption::decrypt(
-				get_site_option( 'backwpup_cfg_dropboxappsecret', base64_decode( "OWV2bDR5MHJvZ2RlYmx1" ) )
+				get_site_option( 'backwpup_cfg_dropboxappsecret', base64_decode( 'cXYzZmp2N2IxcG1rbWxy' ) )
 			);
 		} else {
 			$this->oauth_app_key    = get_site_option(
 				'backwpup_cfg_dropboxsandboxappkey',
-				base64_decode( "cHVrZmp1a3JoZHR5OTFk" )
+				base64_decode( 'a3RqeTJwdXFwZWVydW92' )
 			);
 			$this->oauth_app_secret = BackWPup_Encryption::decrypt(
-				get_site_option( 'backwpup_cfg_dropboxsandboxappsecret', base64_decode( "eGNoYzhxdTk5eHE0eWdq" ) )
+				get_site_option( 'backwpup_cfg_dropboxsandboxappsecret', base64_decode( 'aXJ1eDF3Ym9mMHM5eGp6' ) )
 			);
 		}
 

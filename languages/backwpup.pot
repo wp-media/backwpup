@@ -10,8 +10,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2019-02-20T11:24:25+00:00\n"
-"PO-Revision-Date: 2019-02-20T11:24:25+00:00\n"
+"POT-Creation-Date: 2019-05-07T07:47:55+00:00\n"
+"PO-Revision-Date: 2019-05-07T07:47:55+00:00\n"
 "X-Domain: backwpup\n"
 
 #: backwpup.php:304
@@ -536,7 +536,7 @@ msgid "Uploading to Dropbox&#160;&hellip;"
 msgstr ""
 
 #: inc/class-destination-dropbox.php:432
-#: inc/class-destination-msazure.php:292
+#: inc/class-destination-msazure.php:288
 #: inc/class-destination-sugarsync.php:266
 msgid "Backup transferred to %s"
 msgstr ""
@@ -865,10 +865,10 @@ msgid "Backup transferred to FTP server: %s"
 msgstr ""
 
 #: inc/class-destination-ftp.php:673
-#: inc/class-destination-msazure.php:277
+#: inc/class-destination-msazure.php:273
 #: inc/class-destination-rsc.php:294
-#: inc/class-destination-s3.php:844
-#: inc/class-destination-s3.php:959
+#: inc/class-destination-s3.php:843
+#: inc/class-destination-s3.php:958
 msgid "Can not open source file for transfer."
 msgstr ""
 
@@ -920,50 +920,50 @@ msgstr ""
 msgid "File deletion"
 msgstr ""
 
-#: inc/class-destination-msazure.php:130
+#: inc/class-destination-msazure.php:129
 msgid "MS Azure container \"%s\" created."
 msgstr ""
 
-#: inc/class-destination-msazure.php:133
+#: inc/class-destination-msazure.php:132
 msgid "MS Azure container create: %s"
 msgstr ""
 
-#: inc/class-destination-msazure.php:217
+#: inc/class-destination-msazure.php:214
 msgid "%d. Try sending backup to a Microsoft Azure (Blob)&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-msazure.php:239
+#: inc/class-destination-msazure.php:235
 msgid "MS Azure container \"%s\" does not exist!"
 msgstr ""
 
-#: inc/class-destination-msazure.php:243
+#: inc/class-destination-msazure.php:239
 msgid "Connected to MS Azure container \"%s\"."
 msgstr ""
 
-#: inc/class-destination-msazure.php:246
+#: inc/class-destination-msazure.php:242
 msgid "Starting upload to MS Azure&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-msazure.php:298
-#: inc/class-destination-msazure.php:354
+#: inc/class-destination-msazure.php:294
+#: inc/class-destination-msazure.php:350
 msgid "Microsoft Azure API: %s"
 msgstr ""
 
-#: inc/class-destination-msazure.php:347
+#: inc/class-destination-msazure.php:343
 msgid "One file deleted on Microsoft Azure container."
 msgid_plural "%d files deleted on Microsoft Azure container."
 msgstr[0] ""
 
-#: inc/class-destination-msazure.php:448
+#: inc/class-destination-msazure.php:441
 msgid "Missing account name!"
 msgstr ""
 
-#: inc/class-destination-msazure.php:450
-#: inc/class-destination-s3.php:361
+#: inc/class-destination-msazure.php:443
+#: inc/class-destination-s3.php:360
 msgid "Missing access key!"
 msgstr ""
 
-#: inc/class-destination-msazure.php:454
+#: inc/class-destination-msazure.php:447
 msgid "No container found!"
 msgstr ""
 
@@ -1049,15 +1049,15 @@ msgid "One file deleted on Rackspace cloud container."
 msgid_plural "%d files deleted on Rackspace cloud container."
 msgstr[0] ""
 
-#: inc/class-destination-rsc.php:471
+#: inc/class-destination-rsc.php:470
 msgid "Missing username!"
 msgstr ""
 
-#: inc/class-destination-rsc.php:473
+#: inc/class-destination-rsc.php:472
 msgid "Missing API Key!"
 msgstr ""
 
-#: inc/class-destination-rsc.php:477
+#: inc/class-destination-rsc.php:476
 msgid "A container could not be found!"
 msgstr ""
 
@@ -1142,140 +1142,140 @@ msgstr ""
 msgid "Save files encrypted (AES256) on server."
 msgstr ""
 
-#: inc/class-destination-s3.php:363
+#: inc/class-destination-s3.php:362
 msgid "Missing secret access key!"
 msgstr ""
 
-#: inc/class-destination-s3.php:369
+#: inc/class-destination-s3.php:368
 msgid "No bucket found!"
 msgstr ""
 
-#: inc/class-destination-s3.php:519
+#: inc/class-destination-s3.php:518
 msgid "Bucket %1$s created."
 msgstr ""
 
-#: inc/class-destination-s3.php:522
+#: inc/class-destination-s3.php:521
 msgid " %s is not a valid bucket name."
 msgstr ""
 
-#: inc/class-destination-s3.php:572
-#: inc/class-destination-s3.php:869
-#: inc/class-destination-s3.php:937
-#: inc/class-destination-s3.php:996
-#: inc/class-destination-s3.php:1007
+#: inc/class-destination-s3.php:571
+#: inc/class-destination-s3.php:868
+#: inc/class-destination-s3.php:936
+#: inc/class-destination-s3.php:995
+#: inc/class-destination-s3.php:1006
 msgid "S3 Service API: %s"
 msgstr ""
 
-#: inc/class-destination-s3.php:700
+#: inc/class-destination-s3.php:699
 msgid "Storage Class: %s"
 msgstr ""
 
-#: inc/class-destination-s3.php:735
+#: inc/class-destination-s3.php:734
 msgid "Cannot delete backup from %s."
 msgstr ""
 
-#: inc/class-destination-s3.php:747
+#: inc/class-destination-s3.php:746
 msgid "One file deleted on S3 Bucket."
 msgid_plural "%d files deleted on S3 Bucket"
 msgstr[0] ""
 
-#: inc/class-destination-s3.php:778
+#: inc/class-destination-s3.php:777
 msgid "%d. Trying to send backup file to S3 Service&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-s3.php:804
+#: inc/class-destination-s3.php:803
 msgid "Connected to S3 Bucket \"%1$s\" in %2$s"
 msgstr ""
 
-#: inc/class-destination-s3.php:809
+#: inc/class-destination-s3.php:808
 msgid "S3 Bucket \"%s\" does not exist!"
 msgstr ""
 
-#: inc/class-destination-s3.php:818
+#: inc/class-destination-s3.php:817
 msgid "Checking for not aborted multipart Uploads&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-s3.php:831
+#: inc/class-destination-s3.php:830
 msgid "Upload for %s aborted."
 msgstr ""
 
-#: inc/class-destination-s3.php:837
+#: inc/class-destination-s3.php:836
 msgid "Starting upload to S3 Service&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-s3.php:973
+#: inc/class-destination-s3.php:972
 msgid "Backup transferred to %s."
 msgstr ""
 
-#: inc/class-destination-s3.php:989
+#: inc/class-destination-s3.php:988
 msgid "Cannot transfer backup to S3! (%1$d) %2$s"
 msgstr ""
 
-#: inc/class-destination-s3.php:1119
+#: inc/class-destination-s3.php:1118
 msgid "Amazon S3: US Standard"
 msgstr ""
 
-#: inc/class-destination-s3.php:1123
+#: inc/class-destination-s3.php:1122
 msgid "Amazon S3: US West (Northern California)"
 msgstr ""
 
-#: inc/class-destination-s3.php:1127
+#: inc/class-destination-s3.php:1126
 msgid "Amazon S3: US West (Oregon)"
 msgstr ""
 
-#: inc/class-destination-s3.php:1131
+#: inc/class-destination-s3.php:1130
 msgid "Amazon S3: EU (Ireland)"
 msgstr ""
 
-#: inc/class-destination-s3.php:1135
+#: inc/class-destination-s3.php:1134
 msgid "Amazon S3: EU (London)"
 msgstr ""
 
-#: inc/class-destination-s3.php:1139
+#: inc/class-destination-s3.php:1138
 msgid "Amazon S3: EU (Germany)"
 msgstr ""
 
-#: inc/class-destination-s3.php:1143
+#: inc/class-destination-s3.php:1142
 msgid "Amazon S3: Asia Pacific (Mumbai)"
 msgstr ""
 
-#: inc/class-destination-s3.php:1147
+#: inc/class-destination-s3.php:1146
 msgid "Amazon S3: Asia Pacific (Tokyo)"
 msgstr ""
 
-#: inc/class-destination-s3.php:1151
+#: inc/class-destination-s3.php:1150
 msgid "Amazon S3: Asia Pacific (Seoul)"
 msgstr ""
 
-#: inc/class-destination-s3.php:1155
+#: inc/class-destination-s3.php:1154
 msgid "Amazon S3: Asia Pacific (Singapore)"
 msgstr ""
 
-#: inc/class-destination-s3.php:1159
+#: inc/class-destination-s3.php:1158
 msgid "Amazon S3: Asia Pacific (Sydney)"
 msgstr ""
 
-#: inc/class-destination-s3.php:1163
+#: inc/class-destination-s3.php:1162
 msgid "Amazon S3: South America (Sao Paulo)"
 msgstr ""
 
-#: inc/class-destination-s3.php:1167
+#: inc/class-destination-s3.php:1166
 msgid "Amazon S3: China (Beijing)"
 msgstr ""
 
-#: inc/class-destination-s3.php:1171
+#: inc/class-destination-s3.php:1170
 msgid "Google Storage: EU"
 msgstr ""
 
-#: inc/class-destination-s3.php:1175
+#: inc/class-destination-s3.php:1174
 msgid "Google Storage: USA"
 msgstr ""
 
-#: inc/class-destination-s3.php:1179
+#: inc/class-destination-s3.php:1178
 msgid "Google Storage: Asia"
 msgstr ""
 
-#: inc/class-destination-s3.php:1183
+#: inc/class-destination-s3.php:1182
 msgid "Dream Host Cloud Storage"
 msgstr ""
 
@@ -1764,133 +1764,133 @@ msgstr ""
 msgid "%d. Trying to generate a manifest file&#160;&hellip;"
 msgstr ""
 
-#: inc/class-job.php:2111
+#: inc/class-job.php:2124
 msgid "You may have noticed the manifest.json file in this archive."
 msgstr ""
 
-#: inc/class-job.php:2112
+#: inc/class-job.php:2125
 msgid "manifest.json might be needed for later restoring a backup from this archive."
 msgstr ""
 
-#: inc/class-job.php:2114
+#: inc/class-job.php:2127
 msgid "Please leave manifest.json untouched and in place. Otherwise it is safe to be ignored."
 msgstr ""
 
-#: inc/class-job.php:2125
+#: inc/class-job.php:2138
 msgid "Added manifest.json file with %1$s to backup file list."
 msgstr ""
 
-#: inc/class-job.php:2165
+#: inc/class-job.php:2178
 msgid "Wrong BackWPup JobID"
 msgstr ""
 
-#: inc/class-job.php:2178
+#: inc/class-job.php:2191
 msgid "A BackWPup job is already running"
 msgstr ""
 
-#: inc/class-job.php:2340
+#: inc/class-job.php:2353
 msgid "exec command is not active."
 msgstr ""
 
-#: inc/class-job.php:2346
+#: inc/class-job.php:2359
 msgid "mysqldump binary not found."
 msgstr ""
 
-#: inc/class-job.php:2373
+#: inc/class-job.php:2386
 msgctxt "SIGHUP: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Hangup detected on controlling terminal or death of controlling process"
 msgstr ""
 
-#: inc/class-job.php:2379
+#: inc/class-job.php:2392
 msgctxt "SIGINT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Interrupt from keyboard"
 msgstr ""
 
-#: inc/class-job.php:2385
+#: inc/class-job.php:2398
 msgctxt "SIGQUIT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Quit from keyboard"
 msgstr ""
 
-#: inc/class-job.php:2391
+#: inc/class-job.php:2404
 msgctxt "SIGILL: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Illegal Instruction"
 msgstr ""
 
-#: inc/class-job.php:2397
+#: inc/class-job.php:2410
 msgctxt "SIGABRT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Abort signal from abort(3)"
 msgstr ""
 
-#: inc/class-job.php:2403
+#: inc/class-job.php:2416
 msgctxt "SIGBUS: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Bus error (bad memory access)"
 msgstr ""
 
-#: inc/class-job.php:2409
+#: inc/class-job.php:2422
 msgctxt "SIGFPE: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Floating point exception"
 msgstr ""
 
-#: inc/class-job.php:2415
+#: inc/class-job.php:2428
 msgctxt "SIGSEGV: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Invalid memory reference"
 msgstr ""
 
-#: inc/class-job.php:2421
+#: inc/class-job.php:2434
 msgctxt "SIGTERM: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Termination signal"
 msgstr ""
 
-#: inc/class-job.php:2427
+#: inc/class-job.php:2440
 msgctxt "SIGSTKFLT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Stack fault on coprocessor"
 msgstr ""
 
-#: inc/class-job.php:2433
+#: inc/class-job.php:2446
 msgctxt "SIGUSR1: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "User-defined signal 1"
 msgstr ""
 
-#: inc/class-job.php:2439
+#: inc/class-job.php:2452
 msgctxt "SIGUSR2: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "User-defined signal 2"
 msgstr ""
 
-#: inc/class-job.php:2445
+#: inc/class-job.php:2458
 msgctxt "SIGURG: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Urgent condition on socket"
 msgstr ""
 
-#: inc/class-job.php:2451
+#: inc/class-job.php:2464
 msgctxt "SIGXCPU: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "CPU time limit exceeded"
 msgstr ""
 
-#: inc/class-job.php:2457
+#: inc/class-job.php:2470
 msgctxt "SIGXFSZ: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "File size limit exceeded"
 msgstr ""
 
-#: inc/class-job.php:2463
+#: inc/class-job.php:2476
 msgctxt "SIGPWR: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Power failure"
 msgstr ""
 
-#: inc/class-job.php:2469
+#: inc/class-job.php:2482
 msgctxt "SIGSYS: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Bad argument to routine"
 msgstr ""
 
-#: inc/class-job.php:2478
+#: inc/class-job.php:2491
 msgid "Signal \"%1$s\" (%2$s) is sent to script!"
 msgstr ""
 
-#: inc/class-job.php:2515
 #: inc/class-job.php:2528
+#: inc/class-job.php:2541
 msgid "System: %s"
 msgstr ""
 
-#: inc/class-job.php:2543
+#: inc/class-job.php:2556
 msgid "Exception caught in %1$s: %2$s"
 msgstr ""
 

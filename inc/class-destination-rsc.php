@@ -3,7 +3,7 @@
 // http://www.rackspace.com/cloud/files/
 // https://github.com/rackspace/php-opencloud
 
-use Inpsyde\BackWPup\Helper;
+use \Inpsyde\BackWPupShared\File\MimeTypeExtractor;
 
 /**
  *
@@ -228,7 +228,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			@set_time_limit( 300 );
 			nocache_headers();
 			header( 'Content-Description: File Transfer' );
-			header( 'Content-Type: ' . Helper\MimeType::from_file_path( $get_file ) );
+			header( 'Content-Type: ' . MimeTypeExtractor::fromFilePath( $get_file ) );
 			header( 'Content-Disposition: attachment; filename="' . basename( $get_file ) . '"' );
 			header( 'Content-Transfer-Encoding: binary' );
 			header( 'Content-Length: ' . $backupfile->getContentLength() );
@@ -426,15 +426,14 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 	}
 
 	/**
-	 * @param string $args
+	 * @param array $args
 	 */
-	public function edit_ajax( $args = '' ) {
+	public function edit_ajax( $args = array() ) {
 
 		$error = '';
+		$ajax = FALSE;
 
-		if ( is_array( $args ) ) {
-			$ajax = FALSE;
-		} else {
+		if ( isset($_POST[ 'rscusername' ]) || isset($_POST[ 'rscapikey' ]) ) {
 			if ( ! current_user_can( 'backwpup_jobs_edit' ) )
 				wp_die( -1 );
 			check_ajax_referer( 'backwpup_ajax_nonce' );

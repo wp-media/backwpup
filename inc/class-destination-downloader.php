@@ -7,7 +7,7 @@
  */
 
 use Inpsyde\Restore\Api\Controller\DecryptController;
-use Inpsyde\Restore\Api\Exception\DecryptException;
+use Inpsyde\Restore\Api\Module\Decryption\Exception\DecryptException;
 
 /**
  * Class BackWPup_Destination_Downloader
