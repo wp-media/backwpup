@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: BackWPup 
+ * Plugin Name: BackWPup
  * Plugin URI: http://backwpup.com
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.6.9
+ * Version: 3.6.10
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -48,7 +48,7 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 
 			$this->set_autoloader();
 
-			self::$is_pro = class_exists( 'BackWPup_Pro', true );
+            self::$is_pro = file_exists(__DIR__ . '/inc/Pro/class-pro.php');
 
 			// Start upgrade if needed
 			if ( get_site_option( 'backwpup_version' ) !== self::get_plugin_data( 'Version' )
@@ -57,10 +57,11 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 				BackWPup_Install::activate();
 			}
 
-			// Load pro features
-			if ( self::$is_pro ) {
-				BackWPup_Pro::get_instance();
-			}
+            // Load pro features
+            if (self::$is_pro) {
+                require_once untrailingslashit(__DIR__) . '/inc/Pro/autoupdate.php';
+                BackWPup_Pro::get_instance();
+            }
 
 			// WP-Cron
 			if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
@@ -370,16 +371,11 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 				),
 				'can_sync' => false,
 				'needed' => array(
-					'php_version' => '',
+					'php_version' => '5.5.0',
 					'functions' => array( 'curl_exec' ),
 					'classes' => array( 'XMLWriter' ),
 				),
-				'autoload' => array(
-					'Aws\\Common' => dirname( __FILE__ ) . '/vendor',
-					'Aws\\S3' => dirname( __FILE__ ) . '/vendor',
-					'Symfony\\Component\\EventDispatcher' => dirname( __FILE__ ) . '/vendor',
-					'Guzzle' => dirname( __FILE__ ) . '/vendor',
-				),
+				'autoload' => array(),
 			);
 			// backup to MS Azure
 			self::$registered_destinations['MSAZURE'] = array(

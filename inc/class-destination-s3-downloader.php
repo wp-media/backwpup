@@ -122,18 +122,14 @@ final class BackWPup_Destination_S3_Downloader implements BackWPup_Destination_D
 			return;
 		}
 
-		$secret_key = BackWPup_Option::get( $this->data->job_id(), self::OPTION_SECRET_KEY );
-
-		$this->s3_client = Aws\S3\S3Client::factory(
-			array(
-				'signature'                 => 'v4',
-				'key'                       => BackWPup_Option::get( $this->data->job_id(), self::OPTION_ACCESS_KEY ),
-				'secret'                    => BackWPup_Encryption::decrypt( $secret_key ),
-				'region'                    => BackWPup_Option::get( $this->data->job_id(), self::OPTION_REGION ),
-				'base_url'                  => $this->base_url,
-				'scheme'                    => 'https',
-				'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ),
-			)
-		);
+		$region = $this->base_url;
+        if (!$region) {
+            $region = BackWPup_Option::get($this->data->job_id(), self::OPTION_REGION);
+        }
+        $aws_destination = BackWPup_S3_Destination::fromOption($region);
+        $this->s3_client = $aws_destination->client(
+            BackWPup_Option::get($this->data->job_id(), self::OPTION_ACCESS_KEY),
+            BackWPup_Option::get($this->data->job_id(), self::OPTION_SECRET_KEY)
+        );
 	}
 }

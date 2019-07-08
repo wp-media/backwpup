@@ -16,7 +16,6 @@ return array(
     'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
     'Console' => array($vendorDir . '/pear/console_getopt'),
     'BackWPup_' => array($baseDir . '/inc'),
-    'Aws' => array($vendorDir . '/aws/aws-sdk-php/src'),
     'Archive_Tar' => array($vendorDir . '/pear/archive_tar'),
     '' => array($vendorDir . '/pear/pear-core-minimal/src'),
 );

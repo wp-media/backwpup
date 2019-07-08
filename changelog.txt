@@ -1,4 +1,14 @@
-== Changelog ==
+= Changelog ==
+= Version 3.6.10 =
+Release Date: Jul, 8, 2019
+
+* Fixed: Azure Supports https on uploading
+* Fixed: Auto remove old backup files not working when archive file name have prefix "backwpup"
+* Added: Filter to extend list of S3 destinations
+* Removed: S3 multipart upload checkbox, now in destination definition
+* Updated: Amazon AWS SDK for S3 services, now PHP 5.5+ is needed
+* Added: Filter to extend list of Glacier destinations (Pro version)
+* Updated: Amazon AWS SDK for Glacier, now PHP 5.5+ is needed (Pro version)
 
 = Version 3.6.9 =
 Release Date: May 7, 2019

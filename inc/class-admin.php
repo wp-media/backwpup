@@ -96,21 +96,21 @@ final class BackWPup_Admin {
 		return self::$instance;
 	}
 
-	/**
-	 * Admin init function
-	 */
-	public static function admin_css() {
+    /**
+     * Admin init function
+     */
+    public static function admin_css()
+    {
+        $isDebug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG);
 
-		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-
-		wp_enqueue_style(
-			'backwpup',
-			BackWPup::get_plugin_data( 'URL' ) . "/assets/css/main{$suffix}.css",
-			array(),
-			( $suffix ? BackWPup::get_plugin_data( 'Version' ) : time() ),
-			'screen'
-		);
-	}
+        wp_enqueue_style(
+            'backwpup',
+            BackWPup::get_plugin_data('URL') . '/assets/css/main.min.css',
+            array(),
+            ($isDebug ? BackWPup::get_plugin_data('Version') : time()),
+            'screen'
+        );
+    }
 
 	/**
 	 * Load for all BackWPup pages

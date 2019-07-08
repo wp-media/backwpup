@@ -5,82 +5,79 @@
  * file that was distributed with this source code.
  */
 
-window.BWU = window.BWU || {};
+window.BWU = window.BWU || {}
 window.BWU.Functions = window.BWU.Functions || {};
 
 (
-    function iife(BWU, $) {
-        'use strict';
+  function iife (BWU, $) {
+    'use strict'
 
-        BWU.Functions = {
+    BWU.Functions = {
 
-            /**
-             * Remove previously printed messages
-             */
-            removeMessages: function () {
-                $(document.body)
-                    .find('#bwu_response')
-                    .remove();
-            },
+      /**
+       * Remove previously printed messages
+       */
+      removeMessages: function () {
+        $(document.body).find('#bwu_response').remove()
+      },
 
-            /**
-             * Print Error Messages
-             *
-             * @param {string} message The message to print.
-             *
-             * @return {void}
-             */
-            printMessageError: function (message, container) {
+      /**
+       * Print Error Messages
+       *
+       * @param {string} message The message to print.
+       *
+       * @return {void}
+       */
+      printMessageError: function (message, container) {
+        var $container = $(container)
 
-                var $container = $(container);
+        if (!message) {
+          return
+        }
 
-                if (!message) {
-                    return;
-                }
+        this.removeMessages()
 
-                this.removeMessages();
+        $container.append(
+          '<p id="bwu_response" class="response response-error">' + message +
+          '</p>')
+      },
 
-                $container
-                    .append(
-                        '<p id="bwu_response" class="response response-error">' + message + '</p>');
-            },
+      /**
+       * Print Success Messages
+       *
+       * @param {string} message The message to print.
+       *
+       * @return {void}
+       */
+      printMessageSuccess: function (message, container) {
+        var $container = $(container)
 
-            /**
-             * Print Success Messages
-             *
-             * @param {string} message The message to print.
-             *
-             * @return {void}
-             */
-            printMessageSuccess: function (message, container) {
-                var $container = $(container);
+        if (!message) {
+          return
+        }
 
-                if (!message) {
-                    return;
-                }
+        this.removeMessages()
 
-                this.removeMessages();
+        $container.append(
+          '<p id="bwu_response" class="response response-success">' + message +
+          '</p>')
+      },
 
-                $container
-                    .append(
-                        '<p id="bwu_response" class="response response-success">' + message + '</p>');
-            },
+      /**
+       * Create a constant property
+       * @param value
+       * @returns {{value: *, writable: boolean, configurable: boolean, enumerable: boolean}}
+       */
+      makeConstant: function (value) {
+        return {
+          value: value,
+          writable: false,
+          configurable: false,
+          enumerable: false,
+        }
+      },
+    }
 
-            /**
-             * Create a constant property
-             * @param value
-             * @returns {{value: *, writable: boolean, configurable: boolean, enumerable: boolean}}
-             */
-            makeConstant: function (value) {
-                return {
-                    value: value,
-                    writable: false,
-                    configurable: false,
-                    enumerable: false
-                };
-            }
-        };
-
-        Object.freeze(BWU.Functions);
-    }(window.BWU, window.jQuery)
-);
+    Object.freeze(BWU.Functions)
+  }(window.BWU, window.jQuery)
+)

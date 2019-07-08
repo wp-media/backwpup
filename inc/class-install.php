@@ -112,7 +112,7 @@ class BackWPup_Install {
 			'backwpup_restore' => FALSE,
 	    ) );
 
-		add_role( 'backwpup_helper', __( 'BackWPup jobs helper', 'backwpup' ), array(
+		add_role( 'backwpup_helper', __( 'BackWPup jobs functions', 'backwpup' ), array(
 			'read' => TRUE,
 			'backwpup' => TRUE,
 		    'backwpup_jobs' => TRUE,

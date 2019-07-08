@@ -5,18 +5,18 @@
  * file that was distributed with this source code.
  */
 
-window.BWU = window.BWU || {};
+window.BWU = window.BWU || {}
 window.BWU.States = window.BWU.States || {};
 
 (function (BWU) {
 
-    var makeConstant = BWU.Functions.makeConstant;
+  var makeConstant = BWU.Functions.makeConstant
 
-    BWU.States = Object.create({}, {
-        DONE: makeConstant('done'),
-        DOWNLOADING: makeConstant('downloading'),
-        NEED_DECRYPTION_KEY: makeConstant('need_decryption_key')
-    });
+  BWU.States = Object.create({}, {
+    DONE: makeConstant('done'),
+    DOWNLOADING: makeConstant('downloading'),
+    NEED_DECRYPTION_KEY: makeConstant('need_decryption_key'),
+  })
 
-    Object.freeze(BWU.States);
-}(BWU));
+  Object.freeze(BWU.States)
+}(BWU))

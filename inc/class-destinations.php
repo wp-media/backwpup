@@ -231,65 +231,73 @@ abstract class BackWPup_Destinations {
 		return true;
 	}
 
-	/**
-	 * Is Backup Owned by Job
-	 *
-	 * Checks if the given archive belongs to the given job.
-	 *
-	 * @param string $file
-	 * @param int    $jobid
-	 *
-	 * @return bool
-	 */
-	public function is_backup_owned_by_job( $file, $jobid ) {
+    /**
+     * Checks if the given archive belongs to the given job.
+     *
+     * @param string $file
+     * @param int $jobid
+     *
+     * @return bool
+     */
+    public function is_backup_owned_by_job($file, $jobid)
+    {
 
-		$info = pathinfo( $file );
-		$file = basename( $file, '.' . $info['extension'] );
+        $info = pathinfo($file);
+        $file = basename($file, '.' . $info['extension']);
 
-		// If starts with backwpup, then old-style hash
-		$data = array();
-		if ( substr( $file, 0, 8 ) == 'backwpup' ) {
-			$parts = explode( '_', $file );
-			$data = BackWPup_Option::decode_hash( $parts[1] );
-			if ( ! $data ) {
-				return false;
-			}
-		} else {
-			// New style, must parse
-			// Start at end of file since that's where it is by default
+        // Try 10-character chunks first for base 32 and most of base 36
+        $data = $this->getDecodedHashAndJobId($file, 10);
 
-			// Try 10-character chunks first for base 32 and most of base 36
-			for ( $i = strlen( $file ) - 10; $i >= 0; $i -- ) {
-				$data = BackWPup_Option::decode_hash( substr( $file, $i, 10 ) );
-				if ( $data ) {
-					break;
-				}
-			}
+        // Try 9-character chunks for any left-over base 36
+        if (!$data) {
+            $data = $this->getDecodedHashAndJobId($file, 9);
+        }
 
-			// Try 9-character chunks for any left-over base 36
-			if ( ! $data ) {
-				for ( $i = strlen( $file ) - 9; $i >= 0; $i -- ) {
-					$data = BackWPup_Option::decode_hash( substr( $file, $i, 9 ) );
-					if ( $data ) {
-						break;
-					}
-				}
-			}
+        if (!$data || !$this->dataContainsCorrectValues($data, $jobid)) {
+            return false;
+        }
 
-			if ( ! $data ) {
-				return false;
-			}
-		}
+        return true;
+    }
 
-		if ( $data[0] != BackWPup::get_plugin_data( 'hash' ) ) {
-			return false;
-		}
+    /**
+     * @param string $file
+     * @param int $numberOfCharacters
+     *
+     * @return array|bool
+     */
+    protected function getDecodedHashAndJobId($file, $numberOfCharacters)
+    {
 
-		if ( $data[1] != $jobid ) {
-			return false;
-		}
+        $data = array();
 
-		return true;
-	}
+        for ($i = strlen($file) - $numberOfCharacters; $i >= 0; $i--) {
+            $data = BackWPup_Option::decode_hash(substr($file, $i, $numberOfCharacters));
+            if ($data) {
+                break;
+            }
+        }
 
+        return $data;
+    }
+
+    /**
+     * @param array $data
+     * @param int $jobid
+     *
+     * @return bool
+     */
+    protected function dataContainsCorrectValues($data, $jobid)
+    {
+
+        if ($data[0] !== BackWPup::get_plugin_data('hash')) {
+            return false;
+        }
+
+        if ($data[1] !== $jobid) {
+            return false;
+        }
+
+        return true;
+    }
 }
