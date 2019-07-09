@@ -1539,60 +1539,6 @@
         ]
     },
     {
-        "name": "psr/cache",
-        "version": "1.0.1",
-        "version_normalized": "1.0.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/php-fig/cache.git",
-            "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/php-fig/cache/zipball/d11b50ad223250cf17b86e38383413f5a6764bf8",
-            "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "time": "2016-08-06T20:24:11+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Psr\\Cache\\": "src/"
-            }
-        },
-        "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "PHP-FIG",
-                "homepage": "http://www.php-fig.org/"
-            }
-        ],
-        "description": "Common interface for caching libraries",
-        "keywords": [
-            "cache",
-            "psr",
-            "psr-6"
-        ]
-    },
-    {
         "name": "psr/container",
         "version": "1.0.0",
         "version_normalized": "1.0.0.0",
@@ -1938,103 +1884,18 @@
         ]
     },
     {
-        "name": "symfony/contracts",
-        "version": "v1.1.5",
-        "version_normalized": "1.1.5.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/contracts.git",
-            "reference": "3f3f796d5f24a098a9da62828b8daa1b11494c1b"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/contracts/zipball/3f3f796d5f24a098a9da62828b8daa1b11494c1b",
-            "reference": "3f3f796d5f24a098a9da62828b8daa1b11494c1b",
-            "shasum": "",
-            "mirrors": [
-                {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
-                    "preferred": true
-                }
-            ]
-        },
-        "require": {
-            "php": "^7.1.3",
-            "psr/cache": "^1.0",
-            "psr/container": "^1.0"
-        },
-        "replace": {
-            "symfony/cache-contracts": "self.version",
-            "symfony/event-dispatcher-contracts": "self.version",
-            "symfony/http-client-contracts": "self.version",
-            "symfony/service-contracts": "self.version",
-            "symfony/translation-contracts": "self.version"
-        },
-        "require-dev": {
-            "symfony/polyfill-intl-idn": "^1.10"
-        },
-        "suggest": {
-            "psr/event-dispatcher": "When using the EventDispatcher contracts",
-            "symfony/cache-implementation": "",
-            "symfony/event-dispatcher-implementation": "",
-            "symfony/http-client-implementation": "",
-            "symfony/service-implementation": "",
-            "symfony/translation-implementation": ""
-        },
-        "time": "2019-06-20T06:46:26+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.1-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Contracts\\": ""
-            },
-            "exclude-from-classmap": [
-                "**/Tests/"
-            ]
-        },
-        "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Nicolas Grekas",
-                "email": "p@tchwork.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "A set of abstractions extracted out of the Symfony components",
-        "homepage": "https://symfony.com",
-        "keywords": [
-            "abstractions",
-            "contracts",
-            "decoupling",
-            "interfaces",
-            "interoperability",
-            "standards"
-        ]
-    },
-    {
         "name": "symfony/event-dispatcher",
-        "version": "v4.3.2",
-        "version_normalized": "4.3.2.0",
+        "version": "v3.4.29",
+        "version_normalized": "3.4.29.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/event-dispatcher.git",
-            "reference": "d257021c1ab28d48d24a16de79dfab445ce93398"
+            "reference": "f18fdd6cc7006441865e698420cee26bac94741f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/d257021c1ab28d48d24a16de79dfab445ce93398",
-            "reference": "d257021c1ab28d48d24a16de79dfab445ce93398",
+            "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/f18fdd6cc7006441865e698420cee26bac94741f",
+            "reference": "f18fdd6cc7006441865e698420cee26bac94741f",
             "shasum": "",
             "mirrors": [
                 {
@@ -2044,34 +1905,27 @@
             ]
         },
         "require": {
-            "php": "^7.1.3",
-            "symfony/event-dispatcher-contracts": "^1.1"
+            "php": "^5.5.9|>=7.0.8"
         },
         "conflict": {
-            "symfony/dependency-injection": "<3.4"
-        },
-        "provide": {
-            "psr/event-dispatcher-implementation": "1.0",
-            "symfony/event-dispatcher-implementation": "1.1"
+            "symfony/dependency-injection": "<3.3"
         },
         "require-dev": {
             "psr/log": "~1.0",
-            "symfony/config": "~3.4|~4.0",
-            "symfony/dependency-injection": "~3.4|~4.0",
-            "symfony/expression-language": "~3.4|~4.0",
-            "symfony/http-foundation": "^3.4|^4.0",
-            "symfony/service-contracts": "^1.1",
-            "symfony/stopwatch": "~3.4|~4.0"
+            "symfony/config": "~2.8|~3.0|~4.0",
+            "symfony/dependency-injection": "~3.3|~4.0",
+            "symfony/expression-language": "~2.8|~3.0|~4.0",
+            "symfony/stopwatch": "~2.8|~3.0|~4.0"
         },
         "suggest": {
             "symfony/dependency-injection": "",
             "symfony/http-kernel": ""
         },
-        "time": "2019-06-13T11:03:18+00:00",
+        "time": "2019-06-25T07:45:31+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "4.3-dev"
+                "dev-master": "3.4-dev"
             }
         },
         "installation-source": "dist",
