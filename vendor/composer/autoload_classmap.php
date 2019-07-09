@@ -1545,6 +1545,7 @@ return array(
     'Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface' => $vendorDir . '/symfony/contracts/EventDispatcher/EventDispatcherInterface.php',
     'Symfony\\Contracts\\HttpClient\\ChunkInterface' => $vendorDir . '/symfony/contracts/HttpClient/ChunkInterface.php',
     'Symfony\\Contracts\\HttpClient\\Exception\\ClientExceptionInterface' => $vendorDir . '/symfony/contracts/HttpClient/Exception/ClientExceptionInterface.php',
+    'Symfony\\Contracts\\HttpClient\\Exception\\DecodingExceptionInterface' => $vendorDir . '/symfony/contracts/HttpClient/Exception/DecodingExceptionInterface.php',
     'Symfony\\Contracts\\HttpClient\\Exception\\ExceptionInterface' => $vendorDir . '/symfony/contracts/HttpClient/Exception/ExceptionInterface.php',
     'Symfony\\Contracts\\HttpClient\\Exception\\HttpExceptionInterface' => $vendorDir . '/symfony/contracts/HttpClient/Exception/HttpExceptionInterface.php',
     'Symfony\\Contracts\\HttpClient\\Exception\\RedirectionExceptionInterface' => $vendorDir . '/symfony/contracts/HttpClient/Exception/RedirectionExceptionInterface.php',

@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: BackWPup
+ * Plugin Name: BackWPup 
  * Plugin URI: http://backwpup.com
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH

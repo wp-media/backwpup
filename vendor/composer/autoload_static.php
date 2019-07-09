@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitc9f7b86b1c086ecf52332ddc55a58712
+class ComposerStaticInit836b2c649ddbd33df6db3befbc871170
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -1775,6 +1775,7 @@ class ComposerStaticInitc9f7b86b1c086ecf52332ddc55a58712
         'Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface' => __DIR__ . '/..' . '/symfony/contracts/EventDispatcher/EventDispatcherInterface.php',
         'Symfony\\Contracts\\HttpClient\\ChunkInterface' => __DIR__ . '/..' . '/symfony/contracts/HttpClient/ChunkInterface.php',
         'Symfony\\Contracts\\HttpClient\\Exception\\ClientExceptionInterface' => __DIR__ . '/..' . '/symfony/contracts/HttpClient/Exception/ClientExceptionInterface.php',
+        'Symfony\\Contracts\\HttpClient\\Exception\\DecodingExceptionInterface' => __DIR__ . '/..' . '/symfony/contracts/HttpClient/Exception/DecodingExceptionInterface.php',
         'Symfony\\Contracts\\HttpClient\\Exception\\ExceptionInterface' => __DIR__ . '/..' . '/symfony/contracts/HttpClient/Exception/ExceptionInterface.php',
         'Symfony\\Contracts\\HttpClient\\Exception\\HttpExceptionInterface' => __DIR__ . '/..' . '/symfony/contracts/HttpClient/Exception/HttpExceptionInterface.php',
         'Symfony\\Contracts\\HttpClient\\Exception\\RedirectionExceptionInterface' => __DIR__ . '/..' . '/symfony/contracts/HttpClient/Exception/RedirectionExceptionInterface.php',
@@ -2171,11 +2172,11 @@ class ComposerStaticInitc9f7b86b1c086ecf52332ddc55a58712
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitc9f7b86b1c086ecf52332ddc55a58712::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitc9f7b86b1c086ecf52332ddc55a58712::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitc9f7b86b1c086ecf52332ddc55a58712::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInitc9f7b86b1c086ecf52332ddc55a58712::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInitc9f7b86b1c086ecf52332ddc55a58712::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit836b2c649ddbd33df6db3befbc871170::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit836b2c649ddbd33df6db3befbc871170::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit836b2c649ddbd33df6db3befbc871170::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInit836b2c649ddbd33df6db3befbc871170::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInit836b2c649ddbd33df6db3befbc871170::$classMap;
 
         }, null, ClassLoader::class);
     }
