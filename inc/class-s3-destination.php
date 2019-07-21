@@ -156,13 +156,35 @@ class BackWPup_S3_Destination
                     'label' => __('Dream Host Cloud Storage', 'backwpup'),
                     'endpoint' => 'https://objects-us-west-1.dream.io',
                 ),
+                'digital-ocean-sfo2' => array(
+                    'label' => __('DigitalOcean: SFO2', 'backwpup'),
+                    'endpoint' => 'https://sfo2.digitaloceanspaces.com',
+                ),
+                'digital-ocean-nyc3' => array(
+                    'label' => __('DigitalOcean: NYC3', 'backwpup'),
+                    'endpoint' => 'https://nyc3.digitaloceanspaces.com',
+                ),
                 'digital-ocean-ams3' => array(
                     'label' => __('DigitalOcean: AMS3', 'backwpup'),
                     'endpoint' => 'https://ams3.digitaloceanspaces.com',
                 ),
+                'digital-ocean-sgp1' => array(
+                    'label' => __('DigitalOcean: SGP1', 'backwpup'),
+                    'endpoint' => 'https://sgp1.digitaloceanspaces.com',
+                ),
+                'digital-ocean-fra1' => array(
+                    'label' => __('DigitalOcean: FRA1', 'backwpup'),
+                    'endpoint' => 'https://fra1.digitaloceanspaces.com',
+                ),
                 'scaleway-ams' => array(
                     'label' => __('Scaleway: AMS', 'backwpup'),
+                    'region' => 'nl-ams',
                     'endpoint' => 'https://s3.nl-ams.scw.cloud',
+                ),
+                'scaleway-par' => array(
+                    'label' => __('Scaleway: PAR', 'backwpup'),
+                    'region' => 'fr-par',
+                    'endpoint' => 'https://s3.fr-par.scw.cloud',
                 ),
             )
         );
