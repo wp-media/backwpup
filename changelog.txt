@@ -1,6 +1,18 @@
-= Changelog ==
+== Changelog ==
+= Version 3.7.0 =
+Release Date: Nov 27, 2019
+
+* Updated: Raise the minimum PHP version required by BWU to 5.6
+* Updated: Microsoft Azure Storage Blob PHP Client Library
+* Fixed: S3 custom url not used for bucket selection
+* Fixed: S3 malformed error message when authentication credentials are wrong
+* Fixed: S3 selecting an invalid service raise no error
+* Fixed: Rackspace uses old cacert.pem file
+* Fixed: Log page not correcty sorted
+* Added: Option to enable or disable the phone home client
+
 = Version 3.6.10 =
-Release Date: Jul, 8, 2019
+Release Date: Jul 8, 2019
 
 * Fixed: Azure Supports https on uploading
 * Fixed: Auto remove old backup files not working when archive file name have prefix "backwpup"

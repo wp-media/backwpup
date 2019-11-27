@@ -757,7 +757,7 @@ final class BackWPup_Destination_Dropbox_API {
 				$message,
 				$code,
 				null,
-				isset( $output['error'] ) ? $output['error'] : null
+                isset($output['error']) ? $output['error'] : ['.tag' => 'other']
 			);
 		} else {
 			curl_close( $ch );

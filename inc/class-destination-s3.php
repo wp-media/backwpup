@@ -278,10 +278,9 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 
 		$error        = '';
 		$buckets_list = array();
+		$ajax         = false;
 
-		if ( is_array( $args ) ) {
-			$ajax = false;
-		} else {
+		if ( ! $args ) {
 			if ( ! current_user_can( 'backwpup_jobs_edit' ) ) {
 				wp_die( - 1 );
 			}
@@ -293,10 +292,12 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			$args['s3base_url']       = esc_url_raw( $_POST['s3base_url'] );
 			$args['s3region']         = sanitize_text_field( $_POST['s3region'] );
 			$ajax                     = true;
-			if ($args['s3base_url']) {
-			    $args['s3region'] = $args['s3base_url'];
-            }
 		}
+
+		if ($args['s3base_url']) {
+            $args['s3region'] = $args['s3base_url'];
+        }
+
 		echo '<span id="s3bucketerror" style="color:red;">';
 
 		if ( ! empty( $args['s3accesskey'] ) && ! empty( $args['s3secretkey'] ) ) {
@@ -314,8 +315,13 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 						$buckets_list = array_merge( $buckets_list, $buckets['Buckets'] );
 					}
 				}
-			} catch ( Exception $e ) {
-				$error = $e->getMessage();
+			}
+
+			catch ( Exception $e ) {
+			    $error = $e->getMessage();
+			    if ( $e instanceof Aws\Exception\AwsException ) {
+			       $error = $e->getAwsErrorMessage();
+                }
 			}
 		}
 
@@ -458,7 +464,11 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				}
 				unset( $s3 );
 			} catch ( Exception $e ) {
-				BackWPup_Admin::message( sprintf( __( 'S3 Service API: %s', 'backwpup' ), $e->getMessage() ), true );
+			    $errorMessage = $e->getMessage();
+			    if ( $e instanceof Aws\Exception\AwsException ) {
+			       $errorMessage = $e->getAwsErrorMessage();
+                }
+				BackWPup_Admin::message( sprintf( __( 'S3 Service API: %s', 'backwpup' ), $errorMessage ), true );
 			}
 		}
 
@@ -719,8 +729,12 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				try {
 					$s3->putObject( $create_args );
 				} catch ( Exception $e ) {
+				    $errorMessage = $e->getMessage();
+                    if ( $e instanceof Aws\Exception\AwsException ) {
+                       $errorMessage = $e->getAwsErrorMessage();
+                    }
 					$job_object->log( E_USER_ERROR,
-						sprintf( __( 'S3 Service API: %s', 'backwpup' ), $e->getMessage() ),
+						sprintf( __( 'S3 Service API: %s', 'backwpup' ), $errorMessage ),
 						$e->getFile(),
 						$e->getLine() );
 
@@ -794,8 +808,12 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 						) );
 
 					} catch ( Exception $e ) {
+					    $errorMessage = $e->getMessage();
+                        if ( $e instanceof Aws\Exception\AwsException ) {
+                           $errorMessage = $e->getAwsErrorMessage();
+                        }
 						$job_object->log( E_USER_ERROR,
-							sprintf( __( 'S3 Service API: %s', 'backwpup' ), $e->getMessage() ),
+							sprintf( __( 'S3 Service API: %s', 'backwpup' ), $errorMessage ),
 							$e->getFile(),
 							$e->getLine() );
 						if ( ! empty( $job_object->steps_data[ $job_object->step_working ]['uploadId'] ) ) {
@@ -849,8 +867,12 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 					E_USER_ERROR );
 			}
 		} catch ( Exception $e ) {
+            $errorMessage = $e->getMessage();
+            if ( $e instanceof Aws\Exception\AwsException ) {
+               $errorMessage = $e->getAwsErrorMessage();
+            }
 			$job_object->log( E_USER_ERROR,
-				sprintf( __( 'S3 Service API: %s', 'backwpup' ), $e->getMessage() ),
+				sprintf( __( 'S3 Service API: %s', 'backwpup' ), $errorMessage ),
 				$e->getFile(),
 				$e->getLine() );
 
@@ -860,8 +882,12 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 		try {
 			$this->file_update_list( $job_object, true );
 		} catch ( Exception $e ) {
+		    $errorMessage = $e->getMessage();
+            if ( $e instanceof Aws\Exception\AwsException ) {
+               $errorMessage = $e->getAwsErrorMessage();
+            }
 			$job_object->log( E_USER_ERROR,
-				sprintf( __( 'S3 Service API: %s', 'backwpup' ), $e->getMessage() ),
+				sprintf( __( 'S3 Service API: %s', 'backwpup' ), $errorMessage ),
 				$e->getFile(),
 				$e->getLine() );
 
@@ -915,14 +941,10 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 					} );
 				}
 
-
-				$( 'input[name="s3accesskey"]' ).backwpupDelayKeyup( function () {
+				$( 'select[name="s3region"]' ).change( function () {
 					awsgetbucket();
 				} );
-				$( 'input[name="s3secretkey"]' ).backwpupDelayKeyup( function () {
-					awsgetbucket();
-				} );
-				$( 'input[name="s3base_url"]' ).backwpupDelayKeyup( function () {
+				$( 'input[name="s3accesskey"], input[name="s3secretkey"], input[name="s3base_url"]' ).backwpupDelayKeyup( function () {
 					awsgetbucket();
 				} );
 

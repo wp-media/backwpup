@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.6.10
+ * Version: 3.7.0
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -42,11 +42,10 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 				return;
 			}
 
-			if ( file_exists( dirname( __FILE__ ) . '/inc/functions.php' ) ) {
-				require_once dirname( __FILE__ ) . '/inc/functions.php';
-			}
-
-			$this->set_autoloader();
+			require_once __DIR__ . '/inc/functions.php';
+			if (file_exists( __DIR__ . '/vendor/autoload.php')) {
+                require_once __DIR__ . '/vendor/autoload.php';
+            }
 
             self::$is_pro = file_exists(__DIR__ . '/inc/Pro/class-pro.php');
 
@@ -59,7 +58,7 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 
             // Load pro features
             if (self::$is_pro) {
-                require_once untrailingslashit(__DIR__) . '/inc/Pro/autoupdate.php';
+                require __DIR__ . '/inc/Pro/autoupdate.php';
                 BackWPup_Pro::get_instance();
             }
 
@@ -98,7 +97,7 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 				WP_CLI::add_command( 'backwpup', 'BackWPup_WP_CLI' );
 			}
 
-			if ( ! self::$is_pro ) {
+			if ( ! self::is_pro() ) {
 				$promoter_updater = new \Inpsyde\BackWPup\Notice\PromoterUpdater();
 				$promoter = new \Inpsyde\BackWPup\Notice\Promoter(
 					$promoter_updater,
@@ -116,7 +115,8 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 					}
 				);
 
-				$this->home_phone_client_init();
+                $isPHCActive = (bool)get_site_option('backwpup_cfg_phone_home_client', true);
+                $isPHCActive and $this->home_phone_client_init();
 			}
 		}
 
@@ -180,9 +180,9 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 				);
 				self::$plugin_data['name'] = trim( self::$plugin_data['name'] );
 				//set some extra vars
-				self::$plugin_data['basename'] = plugin_basename( dirname( __FILE__ ) );
+				self::$plugin_data['basename'] = plugin_basename( __DIR__ );
 				self::$plugin_data['mainfile'] = __FILE__;
-				self::$plugin_data['plugindir'] = untrailingslashit( dirname( __FILE__ ) );
+				self::$plugin_data['plugindir'] = untrailingslashit( __DIR__ );
 				self::$plugin_data['hash'] = get_site_option( 'backwpup_cfg_hash' );
 				if ( empty( self::$plugin_data['hash'] ) || strlen( self::$plugin_data['hash'] ) < 6
 				     || strlen(
@@ -311,7 +311,6 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 					'functions' => array(),
 					'classes' => array(),
 				),
-				'autoload' => array(),
 			);
 			// backup with mail
 			self::$registered_destinations['EMAIL'] = array(
@@ -327,7 +326,6 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 					'functions' => array(),
 					'classes' => array(),
 				),
-				'autoload' => array(),
 			);
 			// backup to ftp
 			self::$registered_destinations['FTP'] = array(
@@ -343,7 +341,6 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 					'functions' => array( 'ftp_nb_fput' ),
 					'classes' => array(),
 				),
-				'autoload' => array(),
 			);
 			// backup to dropbox
 			self::$registered_destinations['DROPBOX'] = array(
@@ -359,7 +356,6 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 					'functions' => array( 'curl_exec' ),
 					'classes' => array(),
 				),
-				'autoload' => array(),
 			);
 			// Backup to S3
 			self::$registered_destinations['S3'] = array(
@@ -371,11 +367,10 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 				),
 				'can_sync' => false,
 				'needed' => array(
-					'php_version' => '5.5.0',
+					'php_version' => '',
 					'functions' => array( 'curl_exec' ),
 					'classes' => array( 'XMLWriter' ),
 				),
-				'autoload' => array(),
 			);
 			// backup to MS Azure
 			self::$registered_destinations['MSAZURE'] = array(
@@ -387,11 +382,10 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 				),
 				'can_sync' => false,
 				'needed' => array(
-					'php_version' => '',
+					'php_version' => '5.6.0',
 					'functions' => array(),
 					'classes' => array(),
 				),
-				'autoload' => array( 'WindowsAzure' => dirname( __FILE__ ) . '/vendor' ),
 			);
 			// backup to Rackspace Cloud
 			self::$registered_destinations['RSC'] = array(
@@ -403,14 +397,9 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 				),
 				'can_sync' => false,
 				'needed' => array(
-					'php_version' => '5.4',
+					'php_version' => '',
 					'functions' => array( 'curl_exec' ),
 					'classes' => array(),
-				),
-				'autoload' => array(
-					'OpenCloud' => dirname( __FILE__ ) . '/vendor',
-					'Guzzle' => dirname( __FILE__ ) . '/vendor',
-					'Psr' => dirname( __FILE__ ) . '/vendor',
 				),
 			);
 			// backup to Sugarsync
@@ -427,7 +416,6 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 					'functions' => array( 'curl_exec' ),
 					'classes' => array(),
 				),
-				'autoload' => array(),
 			);
 
 			//Hook for adding Destinations like above
@@ -539,24 +527,6 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 		}
 
 		/**
-		 * Set autoloader
-		 *
-		 * @return void
-		 */
-		private function set_autoloader() {
-
-			// Composer Autoloader
-			$autoloader = untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . '/vendor/autoload.php';
-			if ( file_exists( $autoloader ) ) {
-				require_once $autoloader;
-			}
-
-			// BackWPup Autoloader
-			require_once self::get_plugin_data( 'plugindir' ) . '/inc/class-autoload.php';
-			spl_autoload_register( array( new BackWPup_Autoload(), 'autoloader' ) );
-		}
-
-		/**
 		 * Initialize Home Phone Client
 		 *
 		 * @return void
@@ -569,7 +539,7 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 
 			Inpsyde_PhoneHome_FrontController::initialize_for_network(
 				'BackWPup',
-				dirname( __FILE__ ) . '/assets/templates/phpnotice',
+				__DIR__ . '/assets/templates/phpnotice',
 				'backwpup',
 				array(
 					Inpsyde_PhoneHome_Configuration::ANONYMIZE => true,
@@ -594,7 +564,7 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 		die(
 		sprintf(
 			esc_html__(
-				'BackWPup requires PHP version %$1s with spl extension or greater and WordPress %$2s or greater.',
+				'BackWPup requires PHP version %1$s with spl extension or greater and WordPress %2$s or greater.',
 				'backwpup'
 			),
 			$system_requirements->php_minimum_version(),

@@ -73,7 +73,7 @@ class BackWPup_Page_Logs extends WP_List_Table {
 			$dir = new BackWPup_Directory( $this->log_folder );
 			foreach ( $dir as $file ) {
 				if ( $file->isFile() && $file->isReadable() && strpos( $file->getFilename(), 'backwpup_log_' ) !== false && strpos( $file->getFilename(), '.html' ) !== false ) {
-					$logfiles[] = $file->getFilename();
+					$logfiles[$file->getMTime()] = $file->getFilename();
 				}
 			}
 		}
@@ -84,9 +84,9 @@ class BackWPup_Page_Logs extends WP_List_Table {
 
 		if ( $orderby == 'time' ) {
 			if ( $order == 'asc' ) {
-				sort( $logfiles );
+				ksort( $logfiles );
 			} else {
-				rsort( $logfiles );
+				krsort( $logfiles );
 			}
 		}
 

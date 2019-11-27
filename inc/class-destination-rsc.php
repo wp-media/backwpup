@@ -153,7 +153,11 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 					array(
 						 'username' => $_POST[ 'rscusername' ],
 						 'apiKey' => $_POST[ 'rscapikey' ]
-					));
+					),
+                    array(
+					     'ssl.certificate_authority' => BackWPup::get_plugin_data('cacert')
+                    )
+                );
 				$ostore = $conn->objectStoreService( 'cloudFiles', sanitize_text_field( $_POST[ 'rscregion' ] ), 'publicURL' );
 				$ostore->createContainer( $_POST[ 'newrsccontainer' ] );
 				BackWPup_Option::update( $id, 'rsccontainer', sanitize_text_field( $_POST[ 'newrsccontainer' ] ) );
@@ -182,8 +186,11 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 					array(
 						 'username' =>  BackWPup_Option::get( $jobid, 'rscusername' ),
 						 'apiKey' => BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 'rscapikey' ) )
-					));
-				$conn->
+					),
+                    array(
+					     'ssl.certificate_authority' => BackWPup::get_plugin_data('cacert')
+                    )
+                );
 				$ostore = $conn->objectStoreService( 'cloudFiles' , BackWPup_Option::get( $jobid, 'rscregion' ), 'publicURL');
 				$container = $ostore->getContainer( BackWPup_Option::get( $jobid, 'rsccontainer' ) );
 				$fileobject = $container->getObject( $backupfile );
@@ -216,7 +223,11 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 				array(
 					 'username' =>  BackWPup_Option::get( $jobid, 'rscusername' ),
 					 'apiKey' => BackWPup_Encryption::decrypt( BackWPup_Option::get( $jobid, 'rscapikey' ) )
-				));
+                ),
+                array(
+					 'ssl.certificate_authority' => BackWPup::get_plugin_data('cacert')
+                )
+            );
 			$ostore = $conn->objectStoreService( 'cloudFiles' , BackWPup_Option::get( $jobid, 'rscregion' ), 'publicURL');
 			$container = $ostore->getContainer( BackWPup_Option::get( $jobid, 'rsccontainer' ) );
 			$backupfile = $container->getObject( $get_file );
@@ -268,7 +279,11 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 				array(
 					 'username' => $job_object->job[ 'rscusername' ],
 					 'apiKey' => BackWPup_Encryption::decrypt( $job_object->job[ 'rscapikey' ] )
-				));
+                ),
+                array(
+					 'ssl.certificate_authority' => BackWPup::get_plugin_data('cacert')
+                )
+            );
 			//connect to cloud files
 			$ostore = $conn->objectStoreService( 'cloudFiles' , $job_object->job[ 'rscregion' ], 'publicURL' );
 
@@ -452,9 +467,12 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 					self::get_auth_url_by_region( $args[ 'rscregion' ] ),
 					array(
 						 'username' => $args[ 'rscusername' ],
-						 'apiKey' => BackWPup_Encryption::decrypt( $args[ 'rscapikey' ] )
-					));
-
+						 'apiKey' => BackWPup_Encryption::decrypt( $args[ 'rscapikey' ] ),
+					),
+                    array(
+					     'ssl.certificate_authority' => BackWPup::get_plugin_data('cacert')
+                    )
+                );
 				$ostore = $conn->objectStoreService( 'cloudFiles' , $args[ 'rscregion' ], 'publicURL' );
 				$containerlist = $ostore->listContainers();
 				while( $container = $containerlist->next() ) {
