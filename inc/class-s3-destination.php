@@ -162,6 +162,7 @@ class BackWPup_S3_Destination
                 ),
                 'scaleway-ams' => array(
                     'label' => __('Scaleway: AMS', 'backwpup'),
+                    'region' => 'nl-ams',
                     'endpoint' => 'https://s3.nl-ams.scw.cloud',
                 ),
             )
