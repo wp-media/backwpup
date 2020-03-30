@@ -465,7 +465,7 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 			// Send the message
 			$result = $emailer->send( $message );
 		} catch ( Exception $e ) {
-			echo '<span id="emailsendtext" style="color:red;">Swift Mailer: ' . $e->getMessage() . '</span>';
+			echo '<span id="emailsendtext" class="bwu-message-error">Swift Mailer: ' . $e->getMessage() . '</span>';
 		}
 
 		if ( isset( $mbEncoding ) ) {
@@ -473,9 +473,9 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 		}
 
 		if ( ! isset( $result ) || ! $result ) {
-			echo '<span id="emailsendtext" style="color:red;">' . esc_html__( 'Error while sending email!', 'backwpup' ) . '</span>';
+			echo '<span id="emailsendtext" class="bwu-message-error">' . esc_html__( 'Error while sending email!', 'backwpup' ) . '</span>';
 		} else {
-			echo '<span id="emailsendtext" style="color:green;">' . esc_html__( 'Email sent.', 'backwpup' ) . '</span>';
+			echo '<span id="emailsendtext" class="bwu-message-success">' . esc_html__( 'Email sent.', 'backwpup' ) . '</span>';
 		}
 		die();
 	}

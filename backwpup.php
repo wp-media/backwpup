@@ -5,12 +5,22 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.7.0
+ * Version: 3.7.1
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
  * License: GPLv2+
  */
+
+use Inpsyde\BackWPup\Pro\License\Api\LicenseActivation;
+use Inpsyde\BackWPup\Pro\License\Api\LicenseDeactivation;
+use Inpsyde\BackWPup\Pro\License\Api\PluginInformation;
+use Inpsyde\BackWPup\Pro\License\Api\PluginUpdate;
+use Inpsyde\BackWPup\Pro\License\Api\LicenseStatusRequest;
+use Inpsyde\BackWPup\Pro\License\License;
+use \Inpsyde\BackWPup\Pro\Settings;
+use Inpsyde\BackWPup\Pro\License\LicenseSettingsView;
+use Inpsyde\BackWPup\Pro\License\LicenseSettingUpdater;
 
 if ( ! class_exists( 'BackWPup', false ) ) {
 	/**
@@ -56,10 +66,27 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 				BackWPup_Install::activate();
 			}
 
+            $pluginData = [
+                'version' => BackWPup::get_plugin_data('version'),
+                'pluginName' => 'backwpup-pro/backwpup.php',
+                'slug' => 'backwpup',
+            ];
+
             // Load pro features
             if (self::$is_pro) {
-                require __DIR__ . '/inc/Pro/autoupdate.php';
-                BackWPup_Pro::get_instance();
+
+                $license = new License(
+                    get_site_option('license_product_id', ''),
+                    get_site_option('license_api_key', ''),
+                    get_site_option('license_instance_key') ?: wp_generate_password(12, false),
+                    get_site_option('license_status', 'inactive')
+                );
+
+                $pluginUpdate = new PluginUpdate($license, $pluginData);
+                $pluginInformation = new PluginInformation($license, $pluginData);
+
+                $pro = new BackWPup_Pro($pluginUpdate, $pluginInformation);
+                $pro->init();
             }
 
 			// WP-Cron
@@ -89,10 +116,51 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 
 			// Only in backend
 			if ( is_admin() && class_exists( 'BackWPup_Admin' ) ) {
-				BackWPup_Admin::get_instance();
-			}
 
-			// Work with wp-cli
+                $settings_views = [];
+                $settings_updaters = [];
+
+                if (\BackWPup::is_pro()) {
+                    $activate = new LicenseActivation($pluginData);
+                    $deactivate = new LicenseDeactivation($pluginData);
+                    $status = new LicenseStatusRequest();
+
+                    $settings_views = array_merge(
+                        $settings_views,
+                        [
+                            new Settings\EncryptionSettingsView(),
+                            new LicenseSettingsView(
+                                $activate,
+                                $deactivate,
+                                $status
+                            )
+                        ]
+                    );
+                    $settings_updaters = array_merge(
+                        $settings_updaters,
+                        [
+                            new Settings\EncryptionSettingUpdater(),
+                            new LicenseSettingUpdater(
+                                $activate,
+                                $deactivate,
+                                $status
+                            )
+                        ]
+                    );
+                }
+
+                $settings = new BackWPup_Page_Settings(
+                    $settings_views,
+                    $settings_updaters
+                );
+
+                $admin = new BackWPup_Admin($settings);
+                $admin->init();
+
+                new BackWPup_EasyCron();
+            }
+
+            // Work with wp-cli
 			if ( defined( 'WP_CLI' ) && WP_CLI && method_exists( 'WP_CLI', 'add_command' ) ) {
 				WP_CLI::add_command( 'backwpup', 'BackWPup_WP_CLI' );
 			}

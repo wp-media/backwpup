@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit302e967585f569da12bdcf676dace3fa
+class ComposerStaticInit62255943a90401e821a8dea882204ab4
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -791,34 +791,6 @@ class ComposerStaticInit302e967585f569da12bdcf676dace3fa
         'BackWPup_Page_Logs' => __DIR__ . '/../..' . '/inc/class-page-logs.php',
         'BackWPup_Page_Settings' => __DIR__ . '/../..' . '/inc/class-page-settings.php',
         'BackWPup_Path_Fixer' => __DIR__ . '/../..' . '/inc/class-path-fixer.php',
-        'BackWPup_Pro' => __DIR__ . '/../..' . '/inc/Pro/class-pro.php',
-        'BackWPup_Pro_Destination_Dropbox' => __DIR__ . '/../..' . '/inc/Pro/class-destination-dropbox.php',
-        'BackWPup_Pro_Destination_Email' => __DIR__ . '/../..' . '/inc/Pro/class-destination-email.php',
-        'BackWPup_Pro_Destination_Folder' => __DIR__ . '/../..' . '/inc/Pro/class-destination-folder.php',
-        'BackWPup_Pro_Destination_Ftp' => __DIR__ . '/../..' . '/inc/Pro/class-destination-ftp.php',
-        'BackWPup_Pro_Destination_GDrive' => __DIR__ . '/../..' . '/inc/Pro/class-destination-gdrive.php',
-        'BackWPup_Pro_Destination_Gdrive_Downloader' => __DIR__ . '/../..' . '/inc/Pro/class-destination-gdrive-downloader.php',
-        'BackWPup_Pro_Destination_Glacier' => __DIR__ . '/../..' . '/inc/Pro/class-destination-glacier.php',
-        'BackWPup_Pro_Destination_MSAzure' => __DIR__ . '/../..' . '/inc/Pro/class-destination-msazure.php',
-        'BackWPup_Pro_Destination_RSC' => __DIR__ . '/../..' . '/inc/Pro/class-destination-rsc.php',
-        'BackWPup_Pro_Destination_S3' => __DIR__ . '/../..' . '/inc/Pro/class-destination-s3.php',
-        'BackWPup_Pro_Destination_SugarSync' => __DIR__ . '/../..' . '/inc/Pro/class-destination-sugarsync.php',
-        'BackWPup_Pro_Export_Jobs' => __DIR__ . '/../..' . '/inc/Pro/class-export-jobs.php',
-        'BackWPup_Pro_Glacier_Destination' => __DIR__ . '/../..' . '/inc/Pro/class-glacier-destination.php',
-        'BackWPup_Pro_JobType_DBCheck' => __DIR__ . '/../..' . '/inc/Pro/class-jobtype-dbcheck.php',
-        'BackWPup_Pro_JobType_DBDump' => __DIR__ . '/../..' . '/inc/Pro/class-jobtype-dbdump.php',
-        'BackWPup_Pro_JobType_File' => __DIR__ . '/../..' . '/inc/Pro/class-jobtype-file.php',
-        'BackWPup_Pro_JobType_WPEXP' => __DIR__ . '/../..' . '/inc/Pro/class-jobtype-wpexp.php',
-        'BackWPup_Pro_JobType_WPPlugin' => __DIR__ . '/../..' . '/inc/Pro/class-jobtype-wpplugin.php',
-        'BackWPup_Pro_License_Menu' => __DIR__ . '/../..' . '/inc/Pro/class-license-menu.php',
-        'BackWPup_Pro_Page_Restore' => __DIR__ . '/../..' . '/inc/Pro/class-page-restore.php',
-        'BackWPup_Pro_Page_Support' => __DIR__ . '/../..' . '/inc/Pro/class-page-support.php',
-        'BackWPup_Pro_Page_Wizard' => __DIR__ . '/../..' . '/inc/Pro/class-page-wizard.php',
-        'BackWPup_Pro_Settings_APIKeys' => __DIR__ . '/../..' . '/inc/Pro/class-settings-apikeys.php',
-        'BackWPup_Pro_Wizard_Job' => __DIR__ . '/../..' . '/inc/Pro/class-wizard-job.php',
-        'BackWPup_Pro_Wizard_JobImport' => __DIR__ . '/../..' . '/inc/Pro/class-wizard-jobimport.php',
-        'BackWPup_Pro_Wizard_SystemTest' => __DIR__ . '/../..' . '/inc/Pro/class-wizard-systemtest.php',
-        'BackWPup_Pro_Wizards' => __DIR__ . '/../..' . '/inc/Pro/class-wizards.php',
         'BackWPup_Recursive_Directory' => __DIR__ . '/../..' . '/inc/class-recursive-directory.php',
         'BackWPup_S3_Destination' => __DIR__ . '/../..' . '/inc/class-s3-destination.php',
         'BackWPup_Sanitize_Path' => __DIR__ . '/../..' . '/inc/class-sanitize-path.php',
@@ -1140,16 +1112,6 @@ class ComposerStaticInit302e967585f569da12bdcf676dace3fa
         'Inpsyde\\BackWPup\\Notice\\PromoterMessage' => __DIR__ . '/../..' . '/inc/Notice/PromoterMessage.php',
         'Inpsyde\\BackWPup\\Notice\\PromoterUpdater' => __DIR__ . '/../..' . '/inc/Notice/PromoterUpdater.php',
         'Inpsyde\\BackWPup\\Notice\\PromoterView' => __DIR__ . '/../..' . '/inc/Notice/PromoterView.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\LogDownloader\\Downloader' => __DIR__ . '/../..' . '/inc/Pro/Restore/LogDownloader/Downloader.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\LogDownloader\\DownloaderFactory' => __DIR__ . '/../..' . '/inc/Pro/Restore/LogDownloader/DownloaderFactory.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\LogDownloader\\View' => __DIR__ . '/../..' . '/inc/Pro/Restore/LogDownloader/View.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\LogDownloader\\ZipGenerator' => __DIR__ . '/../..' . '/inc/Pro/Restore/LogDownloader/ZipGenerator.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\Notificator' => __DIR__ . '/../..' . '/inc/Pro/Restore/Notificator.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\Restore' => __DIR__ . '/../..' . '/inc/Pro/Restore/Restore.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\TemplateLoader' => __DIR__ . '/../..' . '/inc/Pro/Restore/TemplateLoader.php',
-        'Inpsyde\\BackWPup\\Pro\\Settings\\AjaxEncryptionKeyHandler' => __DIR__ . '/../..' . '/inc/Pro/Settings/AjaxEncryptionKeyHandler.php',
-        'Inpsyde\\BackWPup\\Pro\\Settings\\EncryptionSettingUpdater' => __DIR__ . '/../..' . '/inc/Pro/Settings/EncryptionSettingUpdater.php',
-        'Inpsyde\\BackWPup\\Pro\\Settings\\EncryptionSettingsView' => __DIR__ . '/../..' . '/inc/Pro/Settings/EncryptionSettingsView.php',
         'Inpsyde\\BackWPup\\Settings\\SettingTab' => __DIR__ . '/../..' . '/inc/Settings/SettingTab.php',
         'Inpsyde\\BackWPup\\Settings\\SettingUpdatable' => __DIR__ . '/../..' . '/inc/Settings/SettingUpdatable.php',
         'Inpsyde_PhoneHome_ActionController' => __DIR__ . '/..' . '/inpsyde/phone-home-client/src/ActionController.php',
@@ -1737,7 +1699,7 @@ class ComposerStaticInit302e967585f569da12bdcf676dace3fa
         'Psr\\Log\\LoggerInterface' => __DIR__ . '/..' . '/psr/log/Psr/Log/LoggerInterface.php',
         'Psr\\Log\\LoggerTrait' => __DIR__ . '/..' . '/psr/log/Psr/Log/LoggerTrait.php',
         'Psr\\Log\\NullLogger' => __DIR__ . '/..' . '/psr/log/Psr/Log/NullLogger.php',
-        'Psr\\Log\\Test\\DummyTest' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/LoggerInterfaceTest.php',
+        'Psr\\Log\\Test\\DummyTest' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/DummyTest.php',
         'Psr\\Log\\Test\\LoggerInterfaceTest' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/LoggerInterfaceTest.php',
         'Psr\\Log\\Test\\TestLogger' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/TestLogger.php',
         'Symfony\\Component\\EventDispatcher\\ContainerAwareEventDispatcher' => __DIR__ . '/..' . '/symfony/event-dispatcher/ContainerAwareEventDispatcher.php',
@@ -1837,11 +1799,11 @@ class ComposerStaticInit302e967585f569da12bdcf676dace3fa
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit302e967585f569da12bdcf676dace3fa::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit302e967585f569da12bdcf676dace3fa::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit302e967585f569da12bdcf676dace3fa::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInit302e967585f569da12bdcf676dace3fa::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInit302e967585f569da12bdcf676dace3fa::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit62255943a90401e821a8dea882204ab4::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit62255943a90401e821a8dea882204ab4::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit62255943a90401e821a8dea882204ab4::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInit62255943a90401e821a8dea882204ab4::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInit62255943a90401e821a8dea882204ab4::$classMap;
 
         }, null, ClassLoader::class);
     }

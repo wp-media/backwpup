@@ -458,7 +458,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			$args[ 'rscregion' ] = sanitize_text_field( $_POST[ 'rscregion' ] );
 			$ajax        = TRUE;
 		}
-		echo '<span id="rsccontainererror" style="color:red;">';
+		echo '<span id="rsccontainererror" class="bwu-message-error">';
 
 		$container_list = array();
 		if ( ! empty( $args[ 'rscusername' ] ) && ! empty( $args[ 'rscapikey' ]  )  && ! empty( $args[ 'rscregion' ]  ) ) {

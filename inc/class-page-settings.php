@@ -1,11 +1,20 @@
 <?php
 
+use Inpsyde\BackWPup\Pro\License\Api\LicenseActivation;
+use Inpsyde\BackWPup\Pro\License\Api\LicenseDeactivation;
+use Inpsyde\BackWPup\Pro\License\Api\LicenseStatusRequest;
 use Inpsyde\BackWPup\Settings;
+use Inpsyde\BackWPup\Pro\License\License;
 
 /**
  * Class BackWPup_Page_Settings
  */
-class BackWPup_Page_Settings {
+class BackWPup_Page_Settings
+{
+    const LICENSE_INSTANCE_KEY = 'license_instance_key';
+    const LICENSE_API_KEY = 'license_api_key';
+    const LICENSE_PRODUCT_ID = 'license_product_id';
+    const LICENSE_STATUS = 'license_status';
 
 	/**
 	 * @var array
@@ -16,6 +25,31 @@ class BackWPup_Page_Settings {
 	 * @var array
 	 */
 	private $settings_updaters;
+
+    /**
+     * @param array $settings_views
+     * @param array $settings_updaters
+     */
+    public function __construct(
+        array $settings_views,
+        array $settings_updaters
+    ) {
+
+        $this->settings_views = array_filter(
+            $settings_views,
+            function ($setting) {
+
+                return $setting instanceof Settings\SettingTab;
+            }
+        );
+        $this->settings_updaters = array_filter(
+            $settings_updaters,
+            function ($setting) {
+
+                return $setting instanceof Settings\SettingUpdatable;
+            }
+        );
+    }
 
 	/**
 	 * @return array
@@ -275,30 +309,6 @@ class BackWPup_Page_Settings {
 		return $information;
 	}
 
-	/**
-	 * BackWPup_Page_Settings constructor
-	 *
-	 * @param array $settings_views
-	 * @param array $settings_updaters
-	 */
-	public function __construct( array $settings_views, array $settings_updaters ) {
-
-		$this->settings_views = array_filter(
-			$settings_views,
-			function ( $setting ) {
-
-				return $setting instanceof Settings\SettingTab;
-			}
-		);
-		$this->settings_updaters = array_filter(
-			$settings_updaters,
-			function ( $setting ) {
-
-				return $setting instanceof Settings\SettingUpdatable;
-			}
-		);
-	}
-
 	public function admin_print_scripts() {
 
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
@@ -389,6 +399,11 @@ class BackWPup_Page_Settings {
 				$setting->reset();
 			}
 
+            delete_site_option(self::LICENSE_INSTANCE_KEY);
+            delete_site_option(self::LICENSE_API_KEY);
+            delete_site_option(self::LICENSE_PRODUCT_ID);
+            delete_site_option(self::LICENSE_STATUS);
+
 			BackWPup_Option::default_site_options();
 			BackWPup_Admin::message( __( 'Settings reset to default', 'backwpup' ) );
 
@@ -471,10 +486,10 @@ class BackWPup_Page_Settings {
 
         update_site_option('backwpup_cfg_phone_home_client', !empty($_POST['phone_home_client']));
 
-		do_action( 'backwpup_page_settings_save' );
+        do_action('backwpup_page_settings_save');
 
-		BackWPup_Admin::message( __( 'Settings saved', 'backwpup' ) );
-	}
+        BackWPup_Admin::message(__('Settings saved', 'backwpup'));
+    }
 
 	public function page() {
 
@@ -497,6 +512,9 @@ class BackWPup_Page_Settings {
 			$tabs['net'] = esc_html__( 'Network', 'backwpup' );
 			$tabs['apikey'] = esc_html__( 'API Keys', 'backwpup' );
 			$tabs['information'] = esc_html__( 'Information', 'backwpup' );
+            if (BackWPup::is_pro()) {
+                $tabs['license'] = esc_html__('License', 'backwpup');
+            }
 			$tabs = apply_filters( 'backwpup_page_settings_tab', $tabs );
 			echo '<h2 class="nav-tab-wrapper">';
 			foreach ( $tabs as $id => $name ) {

@@ -45,7 +45,7 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
             <tr>
                 <th scope="row"><label for="idauthbutton"><?php esc_html_e( 'Authentication', 'backwpup' ); ?></label></th>
                 <td>
-					<span style="color:green;"><?php esc_html_e( 'Authenticated!', 'backwpup' ); ?></span>
+					<span class="bwu-message-success"><?php esc_html_e( 'Authenticated!', 'backwpup' ); ?></span>
 					<input type="submit" id="idauthbutton" name="authbutton" class="button-primary" value="<?php esc_html_e( 'Delete Sugarsync authentication!', 'backwpup' ); ?>" />
                 </td>
             </tr>
@@ -64,10 +64,10 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 					$user        = $sugarsync->user();
 					$syncfolders = $sugarsync->get( $user->syncfolders );
 					if ( ! is_object( $syncfolders ) )
-						echo '<span style="color:red;">' . __( 'No Syncfolders found!', 'backwpup' ) . '</span>';
+						echo '<span class="bwu-message-error">' . __( 'No Syncfolders found!', 'backwpup' ) . '</span>';
 				}
 				catch ( Exception $e ) {
-					echo '<span style="color:red;">' . $e->getMessage() . '</span>';
+					echo '<span class="bwu-message-error">' . $e->getMessage() . '</span>';
 				}
 				if ( isset( $syncfolders ) && is_object( $syncfolders ) ) {
 					echo '<select name="sugarroot" id="sugarroot">';

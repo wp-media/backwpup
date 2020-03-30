@@ -493,7 +493,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
             $args['msazureselected'] = $msazureSelected;
             $ajax = true;
 		}
-		echo '<span id="msazurecontainererror" style="color:red;">';
+		echo '<span id="msazurecontainererror" class="bwu-message-error">';
 
 		if ( ! empty( $args[ MsAzureDestinationConfiguration::MSAZURE_ACCNAME ] ) && ! empty( $args[ MsAzureDestinationConfiguration::MSAZURE_KEY ] ) ) {
 			try {

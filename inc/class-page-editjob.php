@@ -941,11 +941,11 @@ class BackWPup_Page_Editjob {
 			$repeatmins = str_replace( '*/', '', $cronstr[ 'minutes' ] );
 			if ( $repeatmins == '*' || empty( $repeatmins ) )
 				$repeatmins = 5;
-			echo '<span style="color:red;">' . sprintf( __( 'ATTENTION: Job runs every %d minutes!', 'backwpup' ), $repeatmins ) . '</span><br />';
+			echo '<span class="bwu-message-error">' . sprintf( __( 'ATTENTION: Job runs every %d minutes!', 'backwpup' ), $repeatmins ) . '</span><br />';
 		}
 		$cron_next = BackWPup_Cron::cron_next( $cronstamp ) + ( get_option( 'gmt_offset' ) * 3600 );
 		if ( PHP_INT_MAX === $cron_next ) {
-			echo '<span style="color:red;">' . __( 'ATTENTION: Can\'t calculate cron!', 'backwpup' ) . '</span><br />';
+			echo '<span class="bwu-message-error">' . __( 'ATTENTION: Can\'t calculate cron!', 'backwpup' ) . '</span><br />';
 		}
 		else {
 			_e( 'Next runtime:', 'backwpup' );

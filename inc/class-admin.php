@@ -7,107 +7,34 @@ use \Inpsyde\BackWPup\Pro\Settings;
  */
 final class BackWPup_Admin {
 
-	private static $instance = null;
+	public $page_hooks = [];
 
-	public $page_hooks = array();
-
+	/** @var BackWPup_Page_Settings */
 	private $settings;
 
-	/**
-	 *
-	 * Set needed filters and actions and load all needed
-	 */
-	public function __construct() {
+    /**
+     * @param BackWPup_Page_Settings $settings
+     */
+	public function __construct(BackWPup_Page_Settings $settings) {
 
-		$settings_views = array();
-		$settings_updaters = array();
+        $this->settings = $settings;
 
-		if ( \BackWPup::is_pro() ) {
-			$settings_views = array_merge(
-				$settings_views,
-				array(
-					new Settings\EncryptionSettingsView(),
-				)
-			);
-			$settings_updaters = array_merge(
-				$settings_updaters,
-				array(
-					new Settings\EncryptionSettingUpdater(),
-				)
-			);
-		}
-
-		$this->settings = new BackWPup_Page_Settings(
-			$settings_views,
-			$settings_updaters
-		);
-
-		//Load text domain
 		BackWPup::load_text_domain();
-
-		//Add menu pages
-		add_filter( 'backwpup_admin_pages', array( $this, 'admin_page_jobs' ), 2 );
-		add_filter( 'backwpup_admin_pages', array( $this, 'admin_page_editjob' ), 3 );
-		add_filter( 'backwpup_admin_pages', array( $this, 'admin_page_logs' ), 4 );
-		add_filter( 'backwpup_admin_pages', array( $this, 'admin_page_backups' ), 5 );
-		add_filter( 'backwpup_admin_pages', array( $this, 'admin_page_settings' ), 6 );
-		add_filter( 'backwpup_admin_pages', array( $this, 'admin_page_about' ), 20 );
-
-		//Add Menu
-		if ( is_multisite() ) {
-			add_action( 'network_admin_menu', array( $this, 'admin_menu' ) );
-		} else {
-			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-		}
-		//add Plugin links
-		add_filter( 'plugin_row_meta', array( $this, 'plugin_links' ), 10, 2 );
-		//add more actions
-		add_action( 'admin_init', array( $this, 'admin_init' ) );
-		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_css' ) );
-		//Save Form posts general
-		add_action( 'admin_post_backwpup', array( $this, 'save_post_form' ) );
-		//Save Form posts wizard
-		add_action( 'admin_post_backwpup_wizard', array( 'BackWPup_Pro_Page_Wizard', 'save_post_form' ) );
-		// Save form posts for support
-		add_action( 'admin_post_backwpup_support', array( 'BackWPup_Pro_Page_Support', 'save_post_form' ) );
-		//Admin Footer Text replacement
-		add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 100 );
-		add_filter( 'update_footer', array( $this, 'update_footer' ), 100 );
-		//User Profile fields
-		add_action( 'show_user_profile', array( $this, 'user_profile_fields' ) );
-		add_action( 'edit_user_profile', array( $this, 'user_profile_fields' ) );
-		add_action( 'profile_update', array( $this, 'save_profile_update' ) );
-		// show "phone home" notices only on plugin pages
-		add_filter( 'inpsyde-phone-home-show_notice', array( $this, 'hide_phone_home_client_notices' ), 10, 2 );
-
-		new BackWPup_EasyCron();
-	}
-
-	/**
-	 * @static
-	 * @return \BackWPup_Admin
-	 */
-	public static function get_instance() {
-
-		if ( null === self::$instance ) {
-			self::$instance = new self;
-		}
-
-		return self::$instance;
-	}
+    }
 
     /**
-     * Admin init function
+     * Enqueues main css file
      */
-    public static function admin_css()
+    public function admin_css()
     {
-        $isDebug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG);
+        $pluginDir = untrailingslashit(BackWPup::get_plugin_data('plugindir'));
+        $filePath = "{$pluginDir}/assets/css/main.min.css";
 
         wp_enqueue_style(
             'backwpup',
             BackWPup::get_plugin_data('URL') . '/assets/css/main.min.css',
             array(),
-            ($isDebug ? BackWPup::get_plugin_data('Version') : time()),
+            filemtime($filePath),
             'screen'
         );
     }
@@ -216,7 +143,7 @@ final class BackWPup_Admin {
 			$message_id = '';
 		}
 		if ( ! empty( $message_error ) ) {
-			$message_error = '<div' . $message_id . ' class="error">' . $message_error . '</div>';
+			$message_error = '<div' . $message_id . ' class="bwu-message-error">' . $message_error . '</div>';
 		}
 
 		if ( $echo ) {
@@ -753,7 +680,47 @@ final class BackWPup_Admin {
 		return $show;
 	}
 
-	private function __clone() {
-	}
+    public function init()
+    {
+        //Add menu pages
+        add_filter('backwpup_admin_pages', [$this, 'admin_page_jobs'], 2);
+        add_filter('backwpup_admin_pages', [$this, 'admin_page_editjob'], 3);
+        add_filter('backwpup_admin_pages', [$this, 'admin_page_logs'], 4);
+        add_filter('backwpup_admin_pages', [$this, 'admin_page_backups'], 5);
+        add_filter('backwpup_admin_pages', [$this, 'admin_page_settings'], 6);
+        add_filter('backwpup_admin_pages', [$this, 'admin_page_about'], 20);
+
+        //Add Menu
+        if (is_multisite()) {
+            add_action('network_admin_menu', [$this, 'admin_menu']);
+        } else {
+            add_action('admin_menu', [$this, 'admin_menu']);
+        }
+        //add Plugin links
+        add_filter('plugin_row_meta', [$this, 'plugin_links'], 10, 2);
+        //add more actions
+        add_action('admin_init', [$this, 'admin_init']);
+        add_action('admin_enqueue_scripts', [$this, 'admin_css']);
+        //Save Form posts general
+        add_action('admin_post_backwpup', [$this, 'save_post_form']);
+        //Save Form posts wizard
+        add_action('admin_post_backwpup_wizard', ['BackWPup_Pro_Page_Wizard', 'save_post_form']);
+        // Save form posts for support
+        add_action('admin_post_backwpup_support', ['BackWPup_Pro_Page_Support', 'save_post_form']);
+        //Admin Footer Text replacement
+        add_filter('admin_footer_text', [$this, 'admin_footer_text'], 100);
+        add_filter('update_footer', [$this, 'update_footer'], 100);
+        //User Profile fields
+        add_action('show_user_profile', [$this, 'user_profile_fields']);
+        add_action('edit_user_profile', [$this, 'user_profile_fields']);
+        add_action('profile_update', [$this, 'save_profile_update']);
+        // show "phone home" notices only on plugin pages
+        add_filter('inpsyde-phone-home-show_notice', [$this, 'hide_phone_home_client_notices'], 10,
+            2);
+    }
+
+    private function __clone()
+    {
+    }
 
 }

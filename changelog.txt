@@ -1,4 +1,10 @@
 == Changelog ==
+= Version 3.7.1 =
+Release Date: March 30, 2020
+
+* Fixed: Error Notices CSS is loaded on all pages and overwrite the color of other plugins notices
+* Updated: (Pro) License system update for premium version
+
 = Version 3.7.0 =
 Release Date: Nov 27, 2019
 

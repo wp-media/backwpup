@@ -774,7 +774,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 			$substep_percent = 100;
 			$onstep			 = '<div class="backwpup-message backwpup-info"><p>' . esc_html__( 'Job completed' , 'backwpup' ) . '</p></div>';
 			if ( $errors > 0 )
-				$lastmsg		 = '<div class="error"><p>' . esc_html__( 'ERROR:', 'backwpup' ) . ' ' .  sprintf( esc_html__( 'Job has ended with errors in %s seconds. You must resolve the errors for correct execution.', 'backwpup' ), $logheader[ 'runtime' ] ) . '</p></div>';
+				$lastmsg		 = '<div class="bwu-message-error"><p>' . esc_html__( 'ERROR:', 'backwpup' ) . ' ' .  sprintf( esc_html__( 'Job has ended with errors in %s seconds. You must resolve the errors for correct execution.', 'backwpup' ), $logheader[ 'runtime' ] ) . '</p></div>';
 			elseif ( $warnings > 0 )
 				$lastmsg		 = '<div class="backwpup-message backwpup-warning"><p>' . esc_html__( 'WARNING:', 'backwpup' ) . ' ' .  sprintf( esc_html__( 'Job has done with warnings in %s seconds. Please resolve them for correct execution.', 'backwpup' ), $logheader[ 'runtime' ] ) . '</p></div>';
 			else

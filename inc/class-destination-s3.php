@@ -298,7 +298,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
             $args['s3region'] = $args['s3base_url'];
         }
 
-		echo '<span id="s3bucketerror" style="color:red;">';
+		echo '<span id="s3bucketerror" class="bwu-message-error">';
 
 		if ( ! empty( $args['s3accesskey'] ) && ! empty( $args['s3secretkey'] ) ) {
 		    $aws_destination = BackWPup_S3_Destination::fromOption($args['s3region']);

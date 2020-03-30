@@ -49,7 +49,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 				$dropbox = $this->get_dropbox ($jobid );
 				$dropbox->authTokenRevoke();
 			} catch ( Exception $e ) {
-				echo '<div id="message" class="error"><p>'
+				echo '<div id="message" class="bwu-message-error"><p>'
 					. sprintf(
 					/* translators: the $1 is the error message */
 						esc_html__( 'Dropbox API: %s', 'backwpup' ),
@@ -75,12 +75,12 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 			<tr>
 				<th scope="row"><?php esc_html_e( 'Authentication', 'backwpup' ); ?></th>
 				<td><?php if ( empty( $dropboxtoken['access_token'] ) ) { ?>
-						<span style="color:red;"><?php esc_html_e( 'Not authenticated!', 'backwpup' ); ?></span>
+						<span class="bwu-message-error"><?php esc_html_e( 'Not authenticated!', 'backwpup' ); ?></span>
 						<br />&nbsp;<br />
 						<a class="button secondary"
 							href="http://db.tt/8irM1vQ0"><?php esc_html_e( 'Create Account', 'backwpup' ); ?></a>
 					<?php } else { ?>
-						<span style="color:green;"><?php esc_html_e( 'Authenticated!', 'backwpup' ); ?></span>
+						<span class="bwu-message-success"><?php esc_html_e( 'Authenticated!', 'backwpup' ); ?></span>
 						<br />&nbsp;<br />
 						<a class="button secondary"
 							href="<?php echo wp_nonce_url(
