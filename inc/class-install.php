@@ -133,10 +133,12 @@ class BackWPup_Install {
 		//update version
 		update_site_option( 'backwpup_version', BackWPup::get_plugin_data( 'Version' ) );
 
-		if ( ! $version_db ) {
+		//only redirect if not in WP CLI environment
+		if ( ! $version_db && ! ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 			wp_redirect( network_admin_url( 'admin.php' ) . '?page=backwpupabout' );
 			die();
 		}
+
 	}
 
 	private static function upgrade_from_version_two() {

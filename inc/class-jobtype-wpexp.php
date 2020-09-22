@@ -89,7 +89,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 	public function edit_form_post_save( $id ) {
 
 		BackWPup_Option::update( $id, 'wpexportcontent', sanitize_text_field( $_POST[ 'wpexportcontent' ] ) );
-		BackWPup_Option::update( $id, 'wpexportfile', sanitize_file_name( $_POST[ 'wpexportfile' ] ) );
+		BackWPup_Option::update( $id, 'wpexportfile', BackWPup_Job::sanitize_file_name( $_POST[ 'wpexportfile' ] ) );
 		if ( $_POST[ 'wpexportfilecompression' ] === '' || $_POST[ 'wpexportfilecompression' ] === '.gz' || $_POST[ 'wpexportfilecompression' ] === '.bz2' ) {
 			BackWPup_Option::update( $id, 'wpexportfilecompression', $_POST[ 'wpexportfilecompression' ] );
 		}

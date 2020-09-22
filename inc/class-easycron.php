@@ -5,15 +5,11 @@
  */
 class BackWPup_EasyCron {
 
-	/**
-	 *
-	 */
 	public function __construct() {
 
 		add_action( 'backwpup_page_settings_tab_apikey', array( $this, 'api_key_form' ), 11 );
 		add_action( 'backwpup_page_settings_save', array( $this, 'api_key_save_form' ), 11 );
 	}
-
 
 	public static function update( $backwpup_jobid ) {
 

@@ -19,6 +19,11 @@ jQuery( document ).ready( function ( $ ) {
 		$( '#default_settings' ).hide();
 	}
 
+	if ( anchor.val() === '#backwpup-tab-license' ) {
+		$( '#submit' ).hide();
+		$( '#default_settings' ).hide();
+	}
+
 	tab_wrapper_a.removeClass( 'nav-tab-active' );
 	tab_wrapper_a.each( function () {
 		if ( $( this ).attr( 'href' ) === anchor.val() ) {
@@ -35,6 +40,9 @@ jQuery( document ).ready( function ( $ ) {
 		$( '#message' ).hide();
 		anchor.val( clickedid );
 		if ( clickedid === '#backwpup-tab-information' ) {
+			$( '#submit' ).hide();
+			$( '#default_settings' ).hide();
+		} else if ( clickedid === '#backwpup-tab-license' ) {
 			$( '#submit' ).hide();
 			$( '#default_settings' ).hide();
 		} else {

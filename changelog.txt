@@ -1,4 +1,20 @@
 == Changelog ==
+= Version 3.8.0 =
+Release Date: September 22, 2020
+
+* Added: OneDrive destination for Pro version
+* Added: HiDrive destination for Pro version
+* Added: WordPress 5.5 compatibility
+* Added: PHP 7.4 compatibility
+* Added: Option to keep BackWPUp data after plugin uninstall
+* Added: More default excluded folders and files for BackWPUp
+* Fixed: Custom S3 destination return error after Amazon library update
+* Fixed: PHP Notice: Undefined index: dbdumpdbcharset
+* Fixed: Cannot use variables for the xml file name
+* Fixed: Deprecated: Non-static method BackWPup_Admin::admin_css() should not be called statically
+* Fixed: Prevent click on overlay disable backup download process
+* Fixed: BackWPUp redirects even in the CLI environment
+
 = Version 3.7.1 =
 Release Date: March 30, 2020
 

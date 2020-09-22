@@ -1,15 +1,9 @@
 <?php
-/**
- *
- */
+
 class BackWPup_Page_Editjob {
 
-	/**
-	 *
-	 */
 	public static function auth() {
 
-		//check $_GET[ 'tab' ]
 		if ( isset($_GET[ 'tab' ] ) ) {
 			$_GET[ 'tab' ] = sanitize_title_with_dashes( $_GET[ 'tab' ] );
 			if ( substr( $_GET[ 'tab' ], 0, 5 ) != 'dest-' && substr( $_GET[ 'tab' ], 0, 8 ) != 'jobtype-'  && ! in_array( $_GET[ 'tab' ], array( 'job','cron' ), true ) )

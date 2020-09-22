@@ -1,10 +1,6 @@
 <?php
 
-use Inpsyde\BackWPup\Pro\License\Api\LicenseActivation;
-use Inpsyde\BackWPup\Pro\License\Api\LicenseDeactivation;
-use Inpsyde\BackWPup\Pro\License\Api\LicenseStatusRequest;
 use Inpsyde\BackWPup\Settings;
-use Inpsyde\BackWPup\Pro\License\License;
 
 /**
  * Class BackWPup_Page_Settings
@@ -394,6 +390,7 @@ class BackWPup_Page_Settings
 			delete_site_option( 'backwpup_cfg_sugarsyncappid' );
 			delete_site_option( 'backwpup_cfg_hash' );
             delete_site_option('backwpup_cfg_phone_home_client');
+            delete_site_option('backwpup_cfg_keepplugindata');
 
 			foreach ( $this->settings_updaters as $setting ) {
 				$setting->reset();
@@ -485,6 +482,8 @@ class BackWPup_Page_Settings
 		delete_site_transient( 'backwpup_cookies' );
 
         update_site_option('backwpup_cfg_phone_home_client', !empty($_POST['phone_home_client']));
+        update_site_option('backwpup_cfg_keepplugindata', !empty($_POST['keepplugindata']));
+
 
         do_action('backwpup_page_settings_save');
 
@@ -611,6 +610,32 @@ class BackWPup_Page_Settings
 						</tr>
 					</table>
 
+                    <table class="form-table">
+                        <tr>
+                            <th scope="row"><?php esc_html_e('Plugin data', 'backwpup'); ?></th>
+                            <td>
+                                <fieldset>
+                                    <legend class="screen-reader-text">
+											<span>
+												<?php esc_html_e('Protect folders', 'backwpup'); ?>
+											</span>
+                                    </legend>
+                                    <label for="keepplugindata">
+                                        <input name="keepplugindata" type="checkbox"
+                                               id="keepplugindata"
+                                               value="1" <?php checked(
+                                            get_site_option('backwpup_cfg_keepplugindata'),
+                                            true
+                                        ); ?> />
+                                        <?php esc_html_e(
+                                            'Keep BackWPup data stored in the database after uninstall',
+                                            'backwpup'
+                                        ); ?>
+                                    </label>
+                                </fieldset>
+                            </td>
+                        </tr>
+                    </table>
                     <?php
                     if (!BackWPup::is_pro()) :
                         $checked = checked(
@@ -1272,6 +1297,6 @@ class BackWPup_Page_Settings
 			</form>
 		</div>
 
-		<?php
-	}
+        <?php
+    }
 }

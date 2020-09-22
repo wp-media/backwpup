@@ -118,18 +118,44 @@ final class BackWPup_Destination_S3_Downloader implements BackWPup_Destination_D
 	 */
 	private function s3_client() {
 
-		if ( $this->s3_client ) {
-			return;
-		}
+        if ($this->s3_client) {
+            return;
+        }
 
-		$region = $this->base_url;
+        $region = $this->base_url;
         if (!$region) {
             $region = BackWPup_Option::get($this->data->job_id(), self::OPTION_REGION);
         }
-        $aws_destination = BackWPup_S3_Destination::fromOption($region);
+
+        if (array_key_exists($region, BackWPup_S3_Destination::options())) {
+            $aws_destination = BackWPup_S3_Destination::fromOption($region);
+        } else {
+            $jobid = $this->data->job_id();
+            $options = [
+                'label' => __('Custom S3 destination', 'backwpup'),
+                'endpoint' => BackWPup_Option::get($jobid, 's3base_url'),
+                'region' => BackWPup_Option::get($jobid, 's3base_region'),
+                'multipart' => !empty(
+                BackWPup_Option::get(
+                    $jobid,
+                    's3base_multipart'
+                )
+                ) ? true : false,
+                'only_path_style_bucket' => !empty(
+                BackWPup_Option::get(
+                    $jobid,
+                    's3base_pathstylebucket'
+                )
+                ) ? true : false,
+                'version' => BackWPup_Option::get($jobid, 's3base_version'),
+                'signature' => BackWPup_Option::get($jobid, 's3base_signature'),
+            ];
+            $aws_destination = BackWPup_S3_Destination::fromOptionArray($options);
+        }
+
         $this->s3_client = $aws_destination->client(
             BackWPup_Option::get($this->data->job_id(), self::OPTION_ACCESS_KEY),
             BackWPup_Option::get($this->data->job_id(), self::OPTION_SECRET_KEY)
         );
-	}
+    }
 }

@@ -240,7 +240,7 @@ window.BWU = window.BWU || {};
 
         addListeners: function ()
         {
-            _.forEach( document.querySelectorAll( '.backup-download-link' ), function ( downloadLink )
+            _.forEach( document.querySelectorAll( '#backup-download-link' ), function ( downloadLink )
             {
                 downloadLink.addEventListener( 'click', this.startDownload );
             }.bind( this ) );

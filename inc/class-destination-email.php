@@ -265,36 +265,31 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 		$emailuser     = '';
 		$emailpass     = '';
 
-		if ( empty( $job_object->job['emailmethod'] ) ) {
-			//do so if i'm the wp_mail to get the settings
-			global $phpmailer;
-			// (Re)create it, if it's gone missing
-			if ( ! is_object( $phpmailer ) || ! $phpmailer instanceof PHPMailer ) {
-				require_once ABSPATH . WPINC . '/class-phpmailer.php';
-				require_once ABSPATH . WPINC . '/class-smtp.php';
-				$phpmailer = new PHPMailer( true );
-			}
-			//only if PHPMailer really used
-			if ( is_object( $phpmailer ) ) {
-				do_action_ref_array( 'phpmailer_init', array( &$phpmailer ) );
-				//get settings from PHPMailer
-				$emailmethod   = $phpmailer->Mailer;
-				$emailsendmail = $phpmailer->Sendmail;
-				$emailhost     = $phpmailer->Host;
-				$emailhostport = $phpmailer->Port;
-				$emailsecure   = $phpmailer->SMTPSecure;
-				$emailuser     = $phpmailer->Username;
-				$emailpass     = $phpmailer->Password;
-			}
-		} else {
-			$emailmethod   = $job_object->job['emailmethod'];
-			$emailsendmail = $job_object->job['emailsendmail'];
-			$emailhost     = $job_object->job['emailhost'];
-			$emailhostport = $job_object->job['emailhostport'];
-			$emailsecure   = $job_object->job['emailsecure'];
-			$emailuser     = $job_object->job['emailuser'];
-			$emailpass     = BackWPup_Encryption::decrypt( $job_object->job['emailpass'] );
-		}
+		if (empty($job_object->job['emailmethod'])) {
+            //do so if i'm the wp_mail to get the settings
+            $phpmailer = $this->getPhpMailer();
+
+            //only if PHPMailer really used
+            if (is_object($phpmailer)) {
+                do_action_ref_array('phpmailer_init', [&$phpmailer]);
+                //get settings from PHPMailer
+                $emailmethod = $phpmailer->Mailer;
+                $emailsendmail = $phpmailer->Sendmail;
+                $emailhost = $phpmailer->Host;
+                $emailhostport = $phpmailer->Port;
+                $emailsecure = $phpmailer->SMTPSecure;
+                $emailuser = $phpmailer->Username;
+                $emailpass = $phpmailer->Password;
+            }
+        } else {
+            $emailmethod = $job_object->job['emailmethod'];
+            $emailsendmail = $job_object->job['emailsendmail'];
+            $emailhost = $job_object->job['emailhost'];
+            $emailhostport = $job_object->job['emailhostport'];
+            $emailsecure = $job_object->job['emailsecure'];
+            $emailuser = $job_object->job['emailuser'];
+            $emailpass = BackWPup_Encryption::decrypt($job_object->job['emailpass']);
+        }
 
 		//Generate mail with Swift Mailer
 		if ( ! class_exists( 'Swift', false ) ) {
@@ -396,13 +391,8 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 
 		if ( empty( $_POST['emailmethod'] ) ) {
 			//do so if i'm the wp_mail to get the settings
-			global $phpmailer;
-			// (Re)create it, if it's gone missing
-			if ( ! is_object( $phpmailer ) || ! $phpmailer instanceof PHPMailer ) {
-				require_once ABSPATH . WPINC . '/class-phpmailer.php';
-				require_once ABSPATH . WPINC . '/class-smtp.php';
-				$phpmailer = new PHPMailer( true );
-			}
+            $phpmailer = $this->getPhpMailer();
+
 			//only if PHPMailer really used
 			if ( is_object( $phpmailer ) ) {
 				do_action_ref_array( 'phpmailer_init', array( &$phpmailer ) );
@@ -501,4 +491,29 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 		return $emails;
 	}
 
+    /**
+     * @return PHPMailer|\PHPMailer\PHPMailer\PHPMailer
+     */
+    private function getPhpMailer()
+    {
+        global $phpmailer;
+        if (!is_object($phpmailer) || !$phpmailer instanceof PHPMailer) {
+
+            global $wp_version;
+            if (version_compare($wp_version, '5.5', '>=')) {
+
+                require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+                require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
+
+                return new PHPMailer\PHPMailer\PHPMailer();
+            }
+
+            require_once ABSPATH . WPINC . '/class-phpmailer.php';
+            require_once ABSPATH . WPINC . '/class-smtp.php';
+
+            return new PHPMailer(true);
+        }
+
+        return $phpmailer;
+    }
 }

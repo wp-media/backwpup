@@ -15,7 +15,7 @@
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -106,7 +106,7 @@
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -169,7 +169,7 @@
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -256,21 +256,21 @@
     },
     {
         "name": "guzzlehttp/guzzle",
-        "version": "6.4.1",
-        "version_normalized": "6.4.1.0",
+        "version": "6.5.5",
+        "version_normalized": "6.5.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/guzzle/guzzle.git",
-            "reference": "0895c932405407fd3a7368b6910c09a24d26db11"
+            "reference": "9d4290de1cfd701f38099ef7e183b64b4b7b0c5e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/guzzle/guzzle/zipball/0895c932405407fd3a7368b6910c09a24d26db11",
-            "reference": "0895c932405407fd3a7368b6910c09a24d26db11",
+            "url": "https://api.github.com/repos/guzzle/guzzle/zipball/9d4290de1cfd701f38099ef7e183b64b4b7b0c5e",
+            "reference": "9d4290de1cfd701f38099ef7e183b64b4b7b0c5e",
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -279,7 +279,8 @@
             "ext-json": "*",
             "guzzlehttp/promises": "^1.0",
             "guzzlehttp/psr7": "^1.6.1",
-            "php": ">=5.5"
+            "php": ">=5.5",
+            "symfony/polyfill-intl-idn": "^1.17.0"
         },
         "require-dev": {
             "ext-curl": "*",
@@ -289,11 +290,11 @@
         "suggest": {
             "psr/log": "Required for using the Log middleware"
         },
-        "time": "2019-10-23T15:58:00+00:00",
+        "time": "2020-06-16T21:01:06+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "6.3-dev"
+                "dev-master": "6.5-dev"
             }
         },
         "installation-source": "dist",
@@ -344,7 +345,7 @@
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -403,7 +404,7 @@
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -472,17 +473,17 @@
         "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
-            "url": "git@bitbucket.org:inpsyde/backwpup-shared.git",
-            "reference": "ae4f14c987fbd84b7dcdcb6592cbcab6cd9090b5"
+            "url": "git@github.com:inpsyde/backwpup-shared.git",
+            "reference": "d4120a0bff3fb0b258fcb44bca322dc88b1b0a1e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://bitbucket.org/inpsyde/backwpup-shared/get/ae4f14c987fbd84b7dcdcb6592cbcab6cd9090b5.zip",
-            "reference": "ae4f14c987fbd84b7dcdcb6592cbcab6cd9090b5",
+            "url": "https://api.github.com/repos/inpsyde/backwpup-shared/zipball/d4120a0bff3fb0b258fcb44bca322dc88b1b0a1e",
+            "reference": "d4120a0bff3fb0b258fcb44bca322dc88b1b0a1e",
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -496,7 +497,7 @@
             "inpsyde/php-coding-standards": "^0.13.0@dev",
             "phpunit/phpunit": "^6"
         },
-        "time": "2019-08-30T06:40:30+00:00",
+        "time": "2020-04-03T14:13:08+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -525,9 +526,9 @@
             }
         ],
         "description": "Shared repository for free, pro and restore",
-        "homepage": "https://bitbucket.org/inpsyde/backwpup-shared",
         "support": {
-            "source": "https://bitbucket.org/inpsyde/backwpup-shared/src/ae4f14c987fbd84b7dcdcb6592cbcab6cd9090b5/?at=master"
+            "source": "https://github.com/inpsyde/backwpup-shared/tree/master",
+            "issues": "https://github.com/inpsyde/backwpup-shared/issues"
         }
     },
     {
@@ -536,17 +537,17 @@
         "version_normalized": "0.1.2.0",
         "source": {
             "type": "git",
-            "url": "git@bitbucket.org:inpsyde/phone-home-client.git",
+            "url": "git@github.com:inpsyde/phone-home-client.git",
             "reference": "041bf5d093b7dcb2574210f09f9d24939d3482a3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://bitbucket.org/inpsyde/phone-home-client/get/041bf5d093b7dcb2574210f09f9d24939d3482a3.zip",
+            "url": "https://api.github.com/repos/inpsyde/phone-home-client/zipball/041bf5d093b7dcb2574210f09f9d24939d3482a3",
             "reference": "041bf5d093b7dcb2574210f09f9d24939d3482a3",
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -585,10 +586,70 @@
             }
         ],
         "description": "A WordPress package to be used by plugins to add a page that ask for phone-home consensus and send data in case user approves.",
-        "homepage": "https://bitbucket.org/inpsyde/phone-home-client",
         "support": {
-            "source": "https://bitbucket.org/inpsyde/phone-home-client/src/041bf5d093b7dcb2574210f09f9d24939d3482a3/?at=0.1.2"
+            "source": "https://github.com/inpsyde/phone-home-client/tree/0.1.2",
+            "issues": "https://github.com/inpsyde/phone-home-client/issues"
         }
+    },
+    {
+        "name": "krizalys/onedrive-php-sdk",
+        "version": "2.6.0",
+        "version_normalized": "2.6.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/krizalys/onedrive-php-sdk.git",
+            "reference": "7e1029547719529f8ddaf8d5ab3ea8f78c3231fc"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/krizalys/onedrive-php-sdk/zipball/7e1029547719529f8ddaf8d5ab3ea8f78c3231fc",
+            "reference": "7e1029547719529f8ddaf8d5ab3ea8f78c3231fc",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "guzzlehttp/guzzle": "^6.3.3",
+            "microsoft/microsoft-graph": "^1.7.0",
+            "php": "^5.6 || ^7.0"
+        },
+        "require-dev": {
+            "mockery/mockery": "^1.0.0-alpha1",
+            "php-webdriver/webdriver": "^1.7.0",
+            "phpunit/phpunit": ">=5.7.13 <8.0.0",
+            "psr/log": "^1.0.2",
+            "symfony/process": "^3.4.1"
+        },
+        "time": "2020-02-02T15:54:44+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Krizalys\\Onedrive\\": "src/"
+            }
+        },
+        "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Christophe Vidal",
+                "homepage": "http://www.krizalys.com/"
+            }
+        ],
+        "description": "OneDrive SDK for PHP.",
+        "homepage": "https://github.com/krizalys/onedrive-php-sdk",
+        "keywords": [
+            "OneDrive",
+            "krizalys",
+            "php",
+            "sdk"
+        ]
     },
     {
         "name": "microsoft/azure-storage-blob",
@@ -606,7 +667,7 @@
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -644,21 +705,21 @@
     },
     {
         "name": "microsoft/azure-storage-common",
-        "version": "1.4.0",
-        "version_normalized": "1.4.0.0",
+        "version": "1.4.1",
+        "version_normalized": "1.4.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Azure/azure-storage-common-php.git",
-            "reference": "435adf4d09f0b34375f899b5627d2926bfe317e6"
+            "reference": "be4df800761d0d0fa91a9460c7f42517197d57a0"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Azure/azure-storage-common-php/zipball/435adf4d09f0b34375f899b5627d2926bfe317e6",
-            "reference": "435adf4d09f0b34375f899b5627d2926bfe317e6",
+            "url": "https://api.github.com/repos/Azure/azure-storage-common-php/zipball/be4df800761d0d0fa91a9460c7f42517197d57a0",
+            "reference": "be4df800761d0d0fa91a9460c7f42517197d57a0",
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -667,7 +728,7 @@
             "guzzlehttp/guzzle": "~6.0",
             "php": ">=5.6.0"
         },
-        "time": "2019-04-26T15:02:17+00:00",
+        "time": "2020-01-02T07:15:54+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -695,6 +756,59 @@
         ]
     },
     {
+        "name": "microsoft/microsoft-graph",
+        "version": "1.12.0",
+        "version_normalized": "1.12.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/microsoftgraph/msgraph-sdk-php.git",
+            "reference": "8bcd1c3ebcb6dbd65713a180d85432eedb3faeed"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/microsoftgraph/msgraph-sdk-php/zipball/8bcd1c3ebcb6dbd65713a180d85432eedb3faeed",
+            "reference": "8bcd1c3ebcb6dbd65713a180d85432eedb3faeed",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "guzzlehttp/guzzle": "^6.2",
+            "php": "^5.6 || ^7.0"
+        },
+        "require-dev": {
+            "mikey179/vfsstream": "^1.2",
+            "phpdocumentor/phpdocumentor": "^2.9",
+            "phpunit/phpunit": "^5.5"
+        },
+        "time": "2019-10-29T21:37:52+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Microsoft\\Graph\\": "src/",
+                "Microsoft\\Graph\\Test\\": "tests/Functional/"
+            }
+        },
+        "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Michael Mainer",
+                "email": "mmainer@microsoft.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "The Microsoft Graph SDK for PHP",
+        "homepage": "https://graph.microsoft.io/en-us/"
+    },
+    {
         "name": "mikemccabe/json-patch-php",
         "version": "0.1.0",
         "version_normalized": "0.1.0.0",
@@ -710,7 +824,7 @@
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -745,7 +859,7 @@
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -817,39 +931,41 @@
     },
     {
         "name": "mtdowling/jmespath.php",
-        "version": "2.4.0",
-        "version_normalized": "2.4.0.0",
+        "version": "2.6.0",
+        "version_normalized": "2.6.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/jmespath/jmespath.php.git",
-            "reference": "adcc9531682cf87dfda21e1fd5d0e7a41d292fac"
+            "reference": "42dae2cbd13154083ca6d70099692fef8ca84bfb"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/jmespath/jmespath.php/zipball/adcc9531682cf87dfda21e1fd5d0e7a41d292fac",
-            "reference": "adcc9531682cf87dfda21e1fd5d0e7a41d292fac",
+            "url": "https://api.github.com/repos/jmespath/jmespath.php/zipball/42dae2cbd13154083ca6d70099692fef8ca84bfb",
+            "reference": "42dae2cbd13154083ca6d70099692fef8ca84bfb",
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
         },
         "require": {
-            "php": ">=5.4.0"
+            "php": "^5.4 || ^7.0 || ^8.0",
+            "symfony/polyfill-mbstring": "^1.17"
         },
         "require-dev": {
-            "phpunit/phpunit": "~4.0"
+            "composer/xdebug-handler": "^1.4",
+            "phpunit/phpunit": "^4.8.36 || ^7.5.15"
         },
-        "time": "2016-12-03T22:08:25+00:00",
+        "time": "2020-07-31T21:01:56+00:00",
         "bin": [
             "bin/jp.php"
         ],
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "2.0-dev"
+                "dev-master": "2.6-dev"
             }
         },
         "installation-source": "dist",
@@ -879,22 +995,79 @@
         ]
     },
     {
-        "name": "pear/archive_tar",
-        "version": "1.4.3",
-        "version_normalized": "1.4.3.0",
+        "name": "paragonie/random_compat",
+        "version": "v2.0.18",
+        "version_normalized": "2.0.18.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/pear/Archive_Tar.git",
-            "reference": "43455c960da70e655c6bdf8ea2bc8cc1a6034afb"
+            "url": "https://github.com/paragonie/random_compat.git",
+            "reference": "0a58ef6e3146256cc3dc7cc393927bcc7d1b72db"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/pear/Archive_Tar/zipball/43455c960da70e655c6bdf8ea2bc8cc1a6034afb",
-            "reference": "43455c960da70e655c6bdf8ea2bc8cc1a6034afb",
+            "url": "https://api.github.com/repos/paragonie/random_compat/zipball/0a58ef6e3146256cc3dc7cc393927bcc7d1b72db",
+            "reference": "0a58ef6e3146256cc3dc7cc393927bcc7d1b72db",
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "php": ">=5.2.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "4.*|5.*"
+        },
+        "suggest": {
+            "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
+        },
+        "time": "2019-01-03T20:59:08+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "lib/random.php"
+            ]
+        },
+        "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Paragon Initiative Enterprises",
+                "email": "security@paragonie.com",
+                "homepage": "https://paragonie.com"
+            }
+        ],
+        "description": "PHP 5.x polyfill for random_bytes() and random_int() from PHP 7",
+        "keywords": [
+            "csprng",
+            "polyfill",
+            "pseudorandom",
+            "random"
+        ]
+    },
+    {
+        "name": "pear/archive_tar",
+        "version": "1.4.4",
+        "version_normalized": "1.4.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pear/Archive_Tar.git",
+            "reference": "b005152d4ed8f23bcc93637611fa94f39ef5b904"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/pear/Archive_Tar/zipball/b005152d4ed8f23bcc93637611fa94f39ef5b904",
+            "reference": "b005152d4ed8f23bcc93637611fa94f39ef5b904",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -907,11 +1080,11 @@
             "phpunit/phpunit": "*"
         },
         "suggest": {
-            "ext-bz2": "bz2 compression support.",
-            "ext-xz": "lzma2 compression support.",
+            "ext-bz2": "Bz2 compression support.",
+            "ext-xz": "Lzma2 compression support.",
             "ext-zlib": "Gzip compression support."
         },
-        "time": "2017-06-11T17:28:11+00:00",
+        "time": "2018-12-20T20:47:24+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -945,7 +1118,7 @@
                 "email": "mrook@php.net"
             }
         ],
-        "description": "Tar file management class",
+        "description": "Tar file management class with compression support (gzip, bzip2, lzma2)",
         "homepage": "https://github.com/pear/Archive_Tar",
         "keywords": [
             "archive",
@@ -954,26 +1127,26 @@
     },
     {
         "name": "pear/console_getopt",
-        "version": "v1.4.2",
-        "version_normalized": "1.4.2.0",
+        "version": "v1.4.3",
+        "version_normalized": "1.4.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/pear/Console_Getopt.git",
-            "reference": "6c77aeb625b32bd752e89ee17972d103588b90c0"
+            "reference": "a41f8d3e668987609178c7c4a9fe48fecac53fa0"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/pear/Console_Getopt/zipball/6c77aeb625b32bd752e89ee17972d103588b90c0",
-            "reference": "6c77aeb625b32bd752e89ee17972d103588b90c0",
+            "url": "https://api.github.com/repos/pear/Console_Getopt/zipball/a41f8d3e668987609178c7c4a9fe48fecac53fa0",
+            "reference": "a41f8d3e668987609178c7c4a9fe48fecac53fa0",
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
         },
-        "time": "2019-02-06T16:52:33+00:00",
+        "time": "2019-11-20T18:27:48+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -990,11 +1163,6 @@
         ],
         "authors": [
             {
-                "name": "Greg Beaver",
-                "email": "cellog@php.net",
-                "role": "Helper"
-            },
-            {
                 "name": "Andrei Zmievski",
                 "email": "andrei@php.net",
                 "role": "Lead"
@@ -1003,27 +1171,32 @@
                 "name": "Stig Bakken",
                 "email": "stig@php.net",
                 "role": "Developer"
+            },
+            {
+                "name": "Greg Beaver",
+                "email": "cellog@php.net",
+                "role": "Helper"
             }
         ],
         "description": "More info available on: http://pear.php.net/package/Console_Getopt"
     },
     {
         "name": "pear/pear-core-minimal",
-        "version": "v1.10.9",
-        "version_normalized": "1.10.9.0",
+        "version": "v1.10.10",
+        "version_normalized": "1.10.10.0",
         "source": {
             "type": "git",
             "url": "https://github.com/pear/pear-core-minimal.git",
-            "reference": "742be8dd68c746a01e4b0a422258e9c9cae1c37f"
+            "reference": "625a3c429d9b2c1546438679074cac1b089116a7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/742be8dd68c746a01e4b0a422258e9c9cae1c37f",
-            "reference": "742be8dd68c746a01e4b0a422258e9c9cae1c37f",
+            "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/625a3c429d9b2c1546438679074cac1b089116a7",
+            "reference": "625a3c429d9b2c1546438679074cac1b089116a7",
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -1035,7 +1208,7 @@
         "replace": {
             "rsky/pear-core-min": "self.version"
         },
-        "time": "2019-03-13T18:15:44+00:00",
+        "time": "2019-11-19T19:00:24+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1061,21 +1234,21 @@
     },
     {
         "name": "pear/pear_exception",
-        "version": "v1.0.0",
-        "version_normalized": "1.0.0.0",
+        "version": "v1.0.1",
+        "version_normalized": "1.0.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/pear/PEAR_Exception.git",
-            "reference": "8c18719fdae000b690e3912be401c76e406dd13b"
+            "reference": "dbb42a5a0e45f3adcf99babfb2a1ba77b8ac36a7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/pear/PEAR_Exception/zipball/8c18719fdae000b690e3912be401c76e406dd13b",
-            "reference": "8c18719fdae000b690e3912be401c76e406dd13b",
+            "url": "https://api.github.com/repos/pear/PEAR_Exception/zipball/dbb42a5a0e45f3adcf99babfb2a1ba77b8ac36a7",
+            "reference": "dbb42a5a0e45f3adcf99babfb2a1ba77b8ac36a7",
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -1086,7 +1259,7 @@
         "require-dev": {
             "phpunit/phpunit": "*"
         },
-        "time": "2015-02-10T20:07:52+00:00",
+        "time": "2019-12-10T10:24:42+00:00",
         "type": "class",
         "extra": {
             "branch-alias": {
@@ -1095,9 +1268,9 @@
         },
         "installation-source": "dist",
         "autoload": {
-            "psr-0": {
-                "PEAR": ""
-            }
+            "classmap": [
+                "PEAR/"
+            ]
         },
         "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
         "include-path": [
@@ -1138,7 +1311,7 @@
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -1238,7 +1411,7 @@
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -1296,7 +1469,7 @@
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -1353,7 +1526,7 @@
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -1411,7 +1584,7 @@
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -1466,7 +1639,7 @@
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -1531,7 +1704,7 @@
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -1579,7 +1752,7 @@
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -1627,21 +1800,21 @@
     },
     {
         "name": "symfony/event-dispatcher",
-        "version": "v3.4.33",
-        "version_normalized": "3.4.33.0",
+        "version": "v3.4.43",
+        "version_normalized": "3.4.43.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/event-dispatcher.git",
-            "reference": "f9031c22ec127d4a2450760f81a8677fe8a10177"
+            "reference": "14d978f8e8555f2de719c00eb65376be7d2e9081"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/f9031c22ec127d4a2450760f81a8677fe8a10177",
-            "reference": "f9031c22ec127d4a2450760f81a8677fe8a10177",
+            "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/14d978f8e8555f2de719c00eb65376be7d2e9081",
+            "reference": "14d978f8e8555f2de719c00eb65376be7d2e9081",
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -1663,7 +1836,7 @@
             "symfony/dependency-injection": "",
             "symfony/http-kernel": ""
         },
-        "time": "2019-10-24T15:33:53+00:00",
+        "time": "2020-05-05T15:06:23+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1697,22 +1870,176 @@
         "homepage": "https://symfony.com"
     },
     {
-        "name": "symfony/polyfill-mbstring",
-        "version": "v1.12.0",
-        "version_normalized": "1.12.0.0",
+        "name": "symfony/polyfill-intl-idn",
+        "version": "v1.18.1",
+        "version_normalized": "1.18.1.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/symfony/polyfill-mbstring.git",
-            "reference": "b42a2f66e8f1b15ccf25652c3424265923eb4f17"
+            "url": "https://github.com/symfony/polyfill-intl-idn.git",
+            "reference": "5dcab1bc7146cf8c1beaa4502a3d9be344334251"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/b42a2f66e8f1b15ccf25652c3424265923eb4f17",
-            "reference": "b42a2f66e8f1b15ccf25652c3424265923eb4f17",
+            "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/5dcab1bc7146cf8c1beaa4502a3d9be344334251",
+            "reference": "5dcab1bc7146cf8c1beaa4502a3d9be344334251",
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "php": ">=5.3.3",
+            "symfony/polyfill-intl-normalizer": "^1.10",
+            "symfony/polyfill-php70": "^1.10",
+            "symfony/polyfill-php72": "^1.10"
+        },
+        "suggest": {
+            "ext-intl": "For best performance"
+        },
+        "time": "2020-08-04T06:02:08+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.18-dev"
+            },
+            "thanks": {
+                "name": "symfony/polyfill",
+                "url": "https://github.com/symfony/polyfill"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Polyfill\\Intl\\Idn\\": ""
+            },
+            "files": [
+                "bootstrap.php"
+            ]
+        },
+        "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Laurent Bassin",
+                "email": "laurent@bassin.info"
+            },
+            {
+                "name": "Trevor Rowbotham",
+                "email": "trevor.rowbotham@pm.me"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony polyfill for intl's idn_to_ascii and idn_to_utf8 functions",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "compatibility",
+            "idn",
+            "intl",
+            "polyfill",
+            "portable",
+            "shim"
+        ]
+    },
+    {
+        "name": "symfony/polyfill-intl-normalizer",
+        "version": "v1.18.1",
+        "version_normalized": "1.18.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/polyfill-intl-normalizer.git",
+            "reference": "37078a8dd4a2a1e9ab0231af7c6cb671b2ed5a7e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/polyfill-intl-normalizer/zipball/37078a8dd4a2a1e9ab0231af7c6cb671b2ed5a7e",
+            "reference": "37078a8dd4a2a1e9ab0231af7c6cb671b2ed5a7e",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "suggest": {
+            "ext-intl": "For best performance"
+        },
+        "time": "2020-07-14T12:35:20+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.18-dev"
+            },
+            "thanks": {
+                "name": "symfony/polyfill",
+                "url": "https://github.com/symfony/polyfill"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Polyfill\\Intl\\Normalizer\\": ""
+            },
+            "files": [
+                "bootstrap.php"
+            ],
+            "classmap": [
+                "Resources/stubs"
+            ]
+        },
+        "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nicolas Grekas",
+                "email": "p@tchwork.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony polyfill for intl's Normalizer class and related functions",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "compatibility",
+            "intl",
+            "normalizer",
+            "polyfill",
+            "portable",
+            "shim"
+        ]
+    },
+    {
+        "name": "symfony/polyfill-mbstring",
+        "version": "v1.18.1",
+        "version_normalized": "1.18.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/polyfill-mbstring.git",
+            "reference": "a6977d63bf9a0ad4c65cd352709e230876f9904a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/a6977d63bf9a0ad4c65cd352709e230876f9904a",
+            "reference": "a6977d63bf9a0ad4c65cd352709e230876f9904a",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]
@@ -1723,11 +2050,15 @@
         "suggest": {
             "ext-mbstring": "For best performance"
         },
-        "time": "2019-08-06T08:03:45+00:00",
+        "time": "2020-07-14T12:35:20+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.12-dev"
+                "dev-master": "1.18-dev"
+            },
+            "thanks": {
+                "name": "symfony/polyfill",
+                "url": "https://github.com/symfony/polyfill"
             }
         },
         "installation-source": "dist",
@@ -1764,6 +2095,144 @@
         ]
     },
     {
+        "name": "symfony/polyfill-php70",
+        "version": "v1.18.1",
+        "version_normalized": "1.18.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/polyfill-php70.git",
+            "reference": "0dd93f2c578bdc9c72697eaa5f1dd25644e618d3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/polyfill-php70/zipball/0dd93f2c578bdc9c72697eaa5f1dd25644e618d3",
+            "reference": "0dd93f2c578bdc9c72697eaa5f1dd25644e618d3",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "paragonie/random_compat": "~1.0|~2.0|~9.99",
+            "php": ">=5.3.3"
+        },
+        "time": "2020-07-14T12:35:20+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.18-dev"
+            },
+            "thanks": {
+                "name": "symfony/polyfill",
+                "url": "https://github.com/symfony/polyfill"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Polyfill\\Php70\\": ""
+            },
+            "files": [
+                "bootstrap.php"
+            ],
+            "classmap": [
+                "Resources/stubs"
+            ]
+        },
+        "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nicolas Grekas",
+                "email": "p@tchwork.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony polyfill backporting some PHP 7.0+ features to lower PHP versions",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "compatibility",
+            "polyfill",
+            "portable",
+            "shim"
+        ]
+    },
+    {
+        "name": "symfony/polyfill-php72",
+        "version": "v1.18.1",
+        "version_normalized": "1.18.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/polyfill-php72.git",
+            "reference": "639447d008615574653fb3bc60d1986d7172eaae"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/639447d008615574653fb3bc60d1986d7172eaae",
+            "reference": "639447d008615574653fb3bc60d1986d7172eaae",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "time": "2020-07-14T12:35:20+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.18-dev"
+            },
+            "thanks": {
+                "name": "symfony/polyfill",
+                "url": "https://github.com/symfony/polyfill"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Polyfill\\Php72\\": ""
+            },
+            "files": [
+                "bootstrap.php"
+            ]
+        },
+        "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nicolas Grekas",
+                "email": "p@tchwork.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony polyfill backporting some PHP 7.2+ features to lower PHP versions",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "compatibility",
+            "polyfill",
+            "portable",
+            "shim"
+        ]
+    },
+    {
         "name": "symfony/translation",
         "version": "v2.8.44",
         "version_normalized": "2.8.44.0",
@@ -1779,7 +2248,7 @@
             "shasum": "",
             "mirrors": [
                 {
-                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                     "preferred": true
                 }
             ]

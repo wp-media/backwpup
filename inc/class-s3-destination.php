@@ -22,7 +22,7 @@ class BackWPup_S3_Destination
             'label' => __('Custom S3 destination', 'backwpup'),
             'endpoint' => '',
             'region' => '',
-            'multipart' => false,
+            'multipart' => true,
             'only_path_style_bucket' => false,
             'version' => 'latest',
             'signature' => 'v4',
@@ -178,11 +178,19 @@ class BackWPup_S3_Destination
     public static function fromOption($idOrUrl)
     {
         $destinations = self::options();
-        if (array_key_exists($idOrUrl, $destinations)) {
-            return new self($destinations[$idOrUrl]);
-        }
+        return new self($destinations[$idOrUrl]);
+    }
 
-        return new self(array('endpoint' => $idOrUrl));
+    /**
+     * Get the AWS destination class from options array
+     *
+     * @param array $optionsArr S3 options
+     *
+     * @return self
+     */
+    public static function fromOptionArray($optionsArr)
+    {
+        return new self($optionsArr);
     }
 
     /**

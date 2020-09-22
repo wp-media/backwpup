@@ -6,7 +6,8 @@
  <description>This class provides handling of tar files in PHP.
 It supports creating, listing, extracting and adding to tar files.
 Gzip support is available if PHP has the zlib extension built-in or
-loaded. Bz2 compression is also supported with the bz2 extension loaded.</description>
+loaded. Bz2 compression is also supported with the bz2 extension loaded.
+Also Lzma2 compressed archives are supported with xz extension.</description>
  <lead>
   <name>Vincent Blavet</name>
   <user>vblavet</user>
@@ -31,10 +32,10 @@ loaded. Bz2 compression is also supported with the bz2 extension loaded.</descri
   <email>stig@php.net</email>
   <active>no</active>
  </helper>
- <date>2017-06-11</date>
- <time>17:31:00</time>
+ <date>2018-12-20</date>
+ <time>20:42:18</time>
  <version>
-  <release>1.4.3</release>
+  <release>1.4.4</release>
   <api>1.4.0</api>
  </version>
  <stability>
@@ -43,8 +44,8 @@ loaded. Bz2 compression is also supported with the bz2 extension loaded.</descri
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
  <notes>
-* Fix Bug #21218: Cannot use result of built-in function in write context in PHP
-   7.2.0alpha1 [mrook]
+* Fix Bug #21058: Long symlinks are not supported [mrook]
+ * Fix Bug #23782: Prevent phar:// files from being extracted [mrook]
  </notes>
  <contents>
   <dir name="/">
@@ -74,6 +75,22 @@ loaded. Bz2 compression is also supported with the bz2 extension loaded.</descri
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.4.3</release>
+    <api>1.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2017-06-11</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
+   <notes>
+* Fix Bug #21218: Cannot use result of built-in function in write context in PHP
+   7.2.0alpha1 [mrook]
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.4.2</release>

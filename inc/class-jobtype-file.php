@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  */
@@ -39,22 +40,60 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 		return TRUE;
 	}
 
-	/**
-	 * @return array
-	 */
-	public function option_defaults() {
+    /**
+     * @return array
+     */
+    public function option_defaults()
+    {
 
-		$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
-		$log_folder = BackWPup_File::get_absolute_path( $log_folder );
+        $log_folder = get_site_option('backwpup_cfg_logfolder');
+        $log_folder = BackWPup_File::get_absolute_path($log_folder);
 
-		return array(
-			'backupexcludethumbs'   => FALSE, 'backupspecialfiles' => TRUE,
-			'backuproot'            => TRUE, 'backupcontent' => TRUE, 'backupplugins' => TRUE, 'backupthemes' => TRUE, 'backupuploads' => TRUE,
-			'backuprootexcludedirs' => array( 'logs', 'usage' ), 'backupcontentexcludedirs' => array( 'cache', 'upgrade', 'w3tc' ), 'backuppluginsexcludedirs' => array( 'backwpup', 'backwpup-pro' ), 'backupthemesexcludedirs' => array(), 'backupuploadsexcludedirs' => array( basename( $log_folder ) ),
-			'fileexclude'           => '.tmp,.svn,.git,desktop.ini,.DS_Store,/node_modules/', 'dirinclude' => '',
-			'backupabsfolderup'    => FALSE
-		);
-	}
+        return [
+            'backupexcludethumbs' => false,
+            'backupspecialfiles' => true,
+            'backuproot' => true,
+            'backupcontent' => true,
+            'backupplugins' => true,
+            'backupthemes' => true,
+            'backupuploads' => true,
+            'backuprootexcludedirs' => apply_filters(
+                'backwpup_root_exclude_dirs',
+                ['logs', 'usage', 'restore', 'restore_temp']
+            ),
+            'backupcontentexcludedirs' => apply_filters(
+                'backwpup_content_exclude_dirs',
+                [
+                    'cache',
+                    'wflogs',
+                    'logs',
+                    'upgrade',
+                    'w3tc',
+                    'updraft',
+                    'ai1wm-backups',
+                    'snapshots',
+                    'wp-clone',
+                    'ithemes-security',
+                    'backwpup-restore',
+                ]
+            ),
+            'backuppluginsexcludedirs' => apply_filters(
+                'backwpup_plugins_exclude_dirs',
+                ['backwpup', 'backwpup-pro']
+            ),
+            'backupthemesexcludedirs' => apply_filters('backwpup_themes_exclude_dirs', []),
+            'backupuploadsexcludedirs' => apply_filters(
+                'backwpup_upload_exclude_dirs',
+                [basename($log_folder)]
+            ),
+            'fileexclude' => apply_filters(
+                'backwpup_file_exclude',
+                '.tmp,.svn,.git,desktop.ini,.DS_Store,/node_modules/'
+            ),
+            'dirinclude' => apply_filters('backwpup_dir_include', ''),
+            'backupabsfolderup' => false,
+        ];
+    }
 
 	/**
 	 * @param $main

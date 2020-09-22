@@ -1,3 +1,5 @@
+![Continuous Integration](https://github.com/inpsyde/backwpup-pro/workflows/Continuous%20Integration/badge.svg)
+
 # BackWPup Free - WordPress Backup Plugin
 Schedule complete automatic backups of your WordPress installation. Decide which content will be stored (Dropbox, S3…). This is the free version
 

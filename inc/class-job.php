@@ -3,7 +3,7 @@
 /**
  * Class in that the BackWPup job runs
  */
-final class BackWPup_Job {
+class BackWPup_Job {
 
 	const ENCRYPTION_SYMMETRIC = 'symmetric';
 	const ENCRYPTION_ASYMMETRIC = 'asymmetric';
@@ -2084,7 +2084,7 @@ final class BackWPup_Job {
             'dbdumptype' => $this->job['dbdumptype'],
             'dbdumpfile' => $this->job['dbdumpfile'],
             'dbdumpfilecompression' => $this->job['dbdumpfilecompression'],
-            'dbdumpdbcharset' => $this->job['dbdumpdbcharset'],
+            'dbdumpdbcharset' => !empty($this->job['dbdumpdbcharset']) ? $this->job['dbdumpdbcharset'] : '',
             'type' => $this->job['type'],
             'destinations' => $this->job['destinations'],
             'backuptype' => $this->job['backuptype'],

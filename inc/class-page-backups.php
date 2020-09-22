@@ -276,14 +276,34 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 
 		if ( ! empty( $item['downloadurl'] ) && current_user_can( 'backwpup_backups_download' ) ) {
 			try {
-				$actions['download'] = $this->download_item_action( $item );
-			} catch ( BackWPup_Factory_Exception $e ) {
-				$actions['download'] = sprintf(
-					'<a href="%1$s">%2$s</a>',
-					wp_nonce_url( $item['downloadurl'], 'backwpup_action_nonce' ),
-					__( 'Download', 'backwpup' )
-				);
-			}
+                $actions['download'] = $this->download_item_action($item);
+
+                if ($this->dest === 'HIDRIVE') {
+
+                    $downloadUrl = wp_nonce_url($item['downloadurl'], 'backwpup_action_nonce');
+
+                    if ($item['filesize'] > 10485760) { // 10 MB
+                        $request = new BackWPup_Pro_Destination_HiDrive_Request();
+                        $authorization = new BackWPup_Pro_Destination_HiDrive_Authorization($request);
+                        $api = new BackWPup_Pro_Destination_HiDrive_Api($request, $authorization);
+                        $response = $api->temporalDownloadUrl($this->jobid, $item['file']);
+                        $responsBody = json_decode($response['body']);
+
+                        if (isset($responsBody->url)) {
+                            $downloadUrl = $responsBody->url;
+                        }
+                    }
+
+                    $actions['download'] = '<a href="' . $downloadUrl . '" class="backup-download-link">Download</a>';
+                }
+
+            } catch (BackWPup_Factory_Exception $e) {
+                $actions['download'] = sprintf(
+                    '<a href="%1$s">%2$s</a>',
+                    wp_nonce_url($item['downloadurl'], 'backwpup_action_nonce'),
+                    __('Download', 'backwpup')
+                );
+            }
 		}
 
 		// Add restore url to link list
@@ -612,6 +632,7 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 		return sprintf(
 			'<a href="#TB_inline?height=300&width=630&inlineId=tb_download_file" 
 				class="backup-download-link thickbox" 
+				id="backup-download-link"
 				data-jobid="%1$s" 
 				data-destination="%2$s" 
 				data-file="%3$s" 

@@ -405,7 +405,7 @@ final class BackWPup_Option {
 
 				// Decode hash part if hash not found (from 3.4.2)
 				if ( strpos( $parts[1], $hash ) === false ) {
-					$parts[1] = base_convert( $parts[1], 36, 16 );
+                    $parts[1] = is_numeric($parts[1]) ? base_convert( $parts[1], 36, 16 ) : $parts[1];
 				}
 
 				// Search again
@@ -470,7 +470,7 @@ final class BackWPup_Option {
 		}
 
 		// Try base 36
-		$decoded = base_convert( $code, 36, 16 );
+        $decoded = is_numeric($code)  ? base_convert( $code, 36, 16 ) : $code;
 		if ( substr( $decoded, 2, 6 ) == $hash ) {
 			return array( substr( $decoded, 2, 6 ), intval( substr( $decoded, - 2 ) ) );
 		}

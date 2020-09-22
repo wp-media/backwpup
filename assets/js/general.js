@@ -20,7 +20,7 @@ jQuery(document).ready(function ($) {
         if ( $('body.admin-bar').length )
             adminbar_height = 28;
 
-        if ( tbWindow.size() ) {
+        if ( tbWindow.length > 0 ) {
             tbWindow.width( W - 50 ).height( H - 45 - adminbar_height );
             $('#TB_iframeContent').width( W - 50 ).height( H - 75 - adminbar_height );
             tbWindow.css({'margin-left': '-' + parseInt((( W - 50 ) / 2),10) + 'px'});
