@@ -971,8 +971,11 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 
 					try {
 						$result = $uploader->upload();
-					} catch ( Aws\Exception\MultipartUploadException $e ) {
-                        $errorMessage = $e->getAwsErrorMessage();
+					} catch ( Exception $e ) {
+						$errorMessage = $e->getMessage();
+						if ( $e instanceof Aws\Exception\AwsException ) {
+						   $errorMessage = $e->getAwsErrorMessage();
+						}
 						$job_object->log( E_USER_ERROR,
 							sprintf( __( 'S3 Service API: %s', 'backwpup' ), $errorMessage ),
 							$e->getFile(),
