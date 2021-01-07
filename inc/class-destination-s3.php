@@ -963,98 +963,24 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 				}
 			} else {
 				// Prepare Upload
-				if ( $file_handle = fopen( $job_object->backup_folder . $job_object->backup_file, 'rb' ) ) {
-					fseek( $file_handle, $job_object->substeps_done );
+				if ( is_readable( $job_object->backup_folder . $job_object->backup_file ) ) {
+					$uploader = new Aws\S3\MultipartUploader($s3, $job_object->backup_folder . $job_object->backup_file, [
+						'bucket' => $job_object->job['s3bucket'],
+						'key'    => $job_object->job['s3dir'] . $job_object->backup_file,
+					]);
 
 					try {
-
-						if ( empty ( $job_object->steps_data[ $job_object->step_working ]['UploadId'] ) ) {
-							$args = array(
-								'ACL'         => 'private',
-								'Bucket'      => $job_object->job['s3bucket'],
-								'ContentType' => MimeTypeExtractor::fromFilePath( $job_object->backup_folder . $job_object->backup_file ),
-								'Key'         => $job_object->job['s3dir'] . $job_object->backup_file,
-							);
-							if ( ! empty( $job_object->job['s3ssencrypt'] ) ) {
-								$args['ServerSideEncryption'] = $job_object->job['s3ssencrypt'];
-							}
-							if ( ! empty( $job_object->job['s3storageclass'] ) ) {
-								$args['StorageClass'] = empty( $job_object->job['s3storageclass'] ) ? '' : $job_object->job['s3storageclass'];
-							}
-
-							$upload = $s3->createMultipartUpload( $args );
-
-							$job_object->steps_data[ $job_object->step_working ]['UploadId'] = $upload->get( 'UploadId' );
-							$job_object->steps_data[ $job_object->step_working ]['Parts']    = array();
-							$job_object->steps_data[ $job_object->step_working ]['Part']     = 1;
-						}
-
-						while ( ! feof( $file_handle ) ) {
-							$chunk_upload_start  = microtime( true );
-							$part_data  = fread( $file_handle, 1048576 * 5 ); //5MB Minimum part size
-							$part = $s3->uploadPart( array(
-								'Bucket'     => $job_object->job['s3bucket'],
-								'UploadId'   => $job_object->steps_data[ $job_object->step_working ]['UploadId'],
-								'Key'        => $job_object->job['s3dir'] . $job_object->backup_file,
-								'PartNumber' => $job_object->steps_data[ $job_object->step_working ]['Part'],
-								'Body'       => $part_data,
-							) );
-							$chunk_upload_time                                              = microtime( true ) - $chunk_upload_start;
-							$job_object->substeps_done                                      = $job_object->substeps_done + strlen( $part_data );
-							$job_object->steps_data[ $job_object->step_working ]['Parts'][] = array(
-								'ETag'       => $part->get( 'ETag' ),
-								'PartNumber' => $job_object->steps_data[ $job_object->step_working ]['Part'],
-							);
-							$job_object->steps_data[ $job_object->step_working ]['Part'] ++;
-							$time_remaining = $job_object->do_restart_time();
-							if ( $time_remaining < $chunk_upload_time ) {
-								$job_object->do_restart_time( true );
-							}
-							$job_object->update_working_data();
-						}
-
-						$parts = $s3->listParts(array(
-                            'Bucket' => $job_object->job['s3bucket'],
-                            'Key'       => $job_object->job['s3dir'] . $job_object->backup_file,
-                            'UploadId'  => $job_object->steps_data[ $job_object->step_working ]['UploadId']
-                        ));
-
-						$s3->completeMultipartUpload( array(
-							'Bucket'   => $job_object->job['s3bucket'],
-							'UploadId' => $job_object->steps_data[ $job_object->step_working ]['UploadId'],
-							'MultipartUpload' => array(
-                                'Parts' => $parts['Parts'],
-                            ),
-							'Key'      => $job_object->job['s3dir'] . $job_object->backup_file,
-						) );
-
+						$result = $uploader->upload();
 					} catch ( Exception $e ) {
-					    $errorMessage = $e->getMessage();
-                        if ( $e instanceof Aws\Exception\AwsException ) {
-                           $errorMessage = $e->getAwsErrorMessage();
-                        }
+						$errorMessage = $e->getMessage();
+						if ( $e instanceof Aws\Exception\AwsException ) {
+						   $errorMessage = $e->getAwsErrorMessage();
+						}
 						$job_object->log( E_USER_ERROR,
 							sprintf( __( 'S3 Service API: %s', 'backwpup' ), $errorMessage ),
 							$e->getFile(),
 							$e->getLine() );
-						if ( ! empty( $job_object->steps_data[ $job_object->step_working ]['uploadId'] ) ) {
-							$s3->abortMultipartUpload( array(
-								'Bucket'   => $job_object->job['s3bucket'],
-								'UploadId' => $job_object->steps_data[ $job_object->step_working ]['uploadId'],
-								'Key'      => $job_object->job['s3dir'] . $job_object->backup_file,
-							) );
-						}
-						unset( $job_object->steps_data[ $job_object->step_working ]['UploadId'] );
-						unset( $job_object->steps_data[ $job_object->step_working ]['Parts'] );
-						unset( $job_object->steps_data[ $job_object->step_working ]['Part'] );
-						$job_object->substeps_done = 0;
-						if ( is_resource( $file_handle ) ) {
-							fclose( $file_handle );
-						}
-
-						return false;
 					}
-					fclose( $file_handle );
 				} else {
 					$job_object->log( __( 'Can not open source file for transfer.', 'backwpup' ), E_USER_ERROR );
 
