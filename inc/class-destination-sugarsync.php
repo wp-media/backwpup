@@ -2,9 +2,6 @@
 
 use \Inpsyde\BackWPupShared\File\MimeTypeExtractor;
 
-/**
- *
- */
 class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 
 	public static $backwpup_job_object = NULL;
@@ -336,9 +333,6 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 	}
 }
 
-/**
- *
- */
 class BackWPup_Destination_SugarSync_API {
 
 	/**

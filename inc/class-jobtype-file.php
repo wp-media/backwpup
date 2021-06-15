@@ -1,13 +1,7 @@
 <?php
 
-/**
- *
- */
 class BackWPup_JobType_File extends BackWPup_JobTypes {
 
-	/**
-	 *
-	 */
 	public function __construct() {
 
 		$this->info[ 'ID' ]          = 'FILE';
@@ -20,9 +14,6 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 
 	}
 
-	/**
-	 *
-	 */
 	public function admin_print_scripts() {
 
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {

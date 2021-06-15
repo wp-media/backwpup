@@ -1,12 +1,6 @@
 <?php
-/**
- *
- */
 class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes {
 
-	/**
-	 *
-	 */
 	public function __construct() {
 
 		$this->info[ 'ID' ]          = 'WPPLUGIN';

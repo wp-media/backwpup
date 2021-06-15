@@ -72,7 +72,6 @@ jQuery(document).ready(function ($) {
             dbhost:$('#dbdumpdbhost').val(),
             dbuser:$('#dbdumpdbuser').val(),
             dbpassword:$('#dbdumpdbpassword').val(),
-            dbname:$('input[name="dbselected"]').val(),
 			wpdbsettings:$('#dbdumpwpdbsettings:checked').val(),
             _ajax_nonce:$('#backwpupajaxnonce').val()
 

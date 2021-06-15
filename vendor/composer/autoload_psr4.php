@@ -25,6 +25,7 @@ return array(
     'MicrosoftAzure\\Storage\\Blob\\' => array($vendorDir . '/microsoft/azure-storage-blob/src/Blob'),
     'Krizalys\\Onedrive\\' => array($vendorDir . '/krizalys/onedrive-php-sdk/src'),
     'JmesPath\\' => array($vendorDir . '/mtdowling/jmespath.php/src'),
+    'Inpsyde\\EnvironmentChecker\\' => array($vendorDir . '/inpsyde/plugin-environment-checker/src'),
     'Inpsyde\\BackWPupShared\\' => array($vendorDir . '/inpsyde/backwpup-shared/src'),
     'GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),
     'GuzzleHttp\\Promise\\' => array($vendorDir . '/guzzlehttp/promises/src'),

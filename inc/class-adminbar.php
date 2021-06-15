@@ -4,44 +4,32 @@
  */
 class BackWPup_Adminbar {
 
-	private static $instance = NULL;
+    /**
+     * @var BackWPup_Admin
+     */
+    private $admin;
 
-	/**
-	 *
-	 */
-	private function __construct() {
+    public function __construct(BackWPup_Admin $admin) {
 
-		//Load text domain
-		BackWPup::load_text_domain();
+        $this->admin = $admin;
+    }
 
-		//add admin bar. Works only in init
-		add_action( 'admin_bar_menu', array( $this, 'adminbar' ), 100 );
+	public function init()
+    {
+        BackWPup::load_text_domain();
 
-		//admin css
-		add_action( 'wp_head', array( 'BackWPup_Admin', 'admin_css' ) );
-	}
-
-	/**
-	 * @static
-	 * @return \BackWPup_Adminbar
-	 */
-	public static function get_instance() {
-
-		if ( NULL === self::$instance && ! is_admin_bar_showing() || ! current_user_can( 'backwpup' ) || ! get_site_option( 'backwpup_cfg_showadminbar' ) ) {
-			return NULL;
-		}
-
-		if ( NULL === self::$instance ) {
-			self::$instance = new self;
-		}
-
-		return self::$instance;
-	}
+        add_action('admin_bar_menu', [$this, 'adminbar'], 100);
+        add_action('wp_head', [$this->admin, 'admin_css']);
+    }
 
 	/**
 	 * @global $wp_admin_bar WP_Admin_Bar
 	 */
 	public function adminbar() {
+        if (!is_admin_bar_showing()) {
+            return;
+        }
+
 		global $wp_admin_bar;
 		/* @var WP_Admin_Bar $wp_admin_bar */
 
@@ -131,6 +119,4 @@ class BackWPup_Adminbar {
 			}
 		}
 	}
-
-	private function __clone() {}
 }

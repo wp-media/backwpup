@@ -16,7 +16,7 @@ class BackWPup_Cron {
 
 		if ( $arg === 'restart' ) {
 			//reschedule restart
-			wp_schedule_single_event( time() + 60, 'backwpup_cron', array( 'id' => 'restart' ) );
+			wp_schedule_single_event( time() + 60, 'backwpup_cron', array( 'arg' => 'restart' ) );
 			//restart job if not working or a restart imitated
 			self::cron_active( array( 'run' => 'restart' ) );
 
@@ -37,14 +37,14 @@ class BackWPup_Cron {
 		//delay other job start for 5 minutes if already one is running
 		$job_object = BackWPup_Job::get_working_data();
 		if ( $job_object ) {
-			wp_schedule_single_event( time() + 300, 'backwpup_cron', array( 'id' => $arg ) );
+			wp_schedule_single_event( time() + 300, 'backwpup_cron', array( 'arg' => $arg ) );
 
 			return;
 		}
 
 		//reschedule next job run
 		$cron_next = self::cron_next( BackWPup_Option::get( $arg, 'cron' ) );
-		wp_schedule_single_event( $cron_next, 'backwpup_cron', array( 'id' => $arg ) );
+		wp_schedule_single_event( $cron_next, 'backwpup_cron', array( 'arg' => $arg ) );
 
 		//start job
 		self::cron_active( array(
@@ -110,7 +110,7 @@ class BackWPup_Cron {
 		//Jobs cleanings
 		if ( ! $job_object ) {
 			//remove restart cron
-			wp_clear_scheduled_hook( 'backwpup_cron', array( 'id' => 'restart' ) );
+			wp_clear_scheduled_hook( 'backwpup_cron', array( 'arg' => 'restart' ) );
 			//temp cleanup
 			BackWPup_Job::clean_temp_folder();
 		}
@@ -118,11 +118,11 @@ class BackWPup_Cron {
 		//check scheduling jobs that not found will removed because there are single scheduled
 		$activejobs = BackWPup_Option::get_job_ids( 'activetype', 'wpcron' );
 		foreach ( $activejobs as $jobid ) {
-			$cron_next = wp_next_scheduled( 'backwpup_cron', array( 'id' => $jobid ) );
+			$cron_next = wp_next_scheduled( 'backwpup_cron', array( 'arg' => $jobid ) );
 			if ( ! $cron_next || $cron_next < time() ) {
-				wp_unschedule_event( $cron_next, 'backwpup_cron', array( 'id' => $jobid ) );
+				wp_unschedule_event( $cron_next, 'backwpup_cron', array( 'arg' => $jobid ) );
 				$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $jobid, 'cron' ) );
-				wp_schedule_single_event( $cron_next, 'backwpup_cron', array( 'id' => $jobid ) );
+				wp_schedule_single_event( $cron_next, 'backwpup_cron', array( 'arg' => $jobid ) );
 			}
 		}
 

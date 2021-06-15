@@ -1,12 +1,6 @@
 <?php
-/**
- *
- */
 class BackWPup_Help {
 
-	/**
-	 *
-	 */
 	public static function help() {
 
 		if ( method_exists( get_current_screen(), 'add_help_tab' ) ) {

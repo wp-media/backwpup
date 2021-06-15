@@ -69,7 +69,7 @@ class BackWPup_Page_BackWPup {
 
 			BackWPup_Admin::display_messages();
 
-			if ( class_exists( 'BackWPup_Pro', FALSE ) ) { ?>
+			if ( BackWPup::is_pro() ) { ?>
 				<div class="backwpup-welcome backwpup-max-width">
 					<h3><?php _ex( 'Planning backups', 'Dashboard heading', 'backwpup' ); ?></h3>
 					<p><?php _e('BackWPup’s job wizards make planning and scheduling your backup jobs a breeze.','backwpup' ); echo ' '; _e('Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server.','backwpup'); ?></p>
@@ -96,7 +96,7 @@ class BackWPup_Page_BackWPup {
 					<h3 class="hndle"><span><?php  _e( 'First Steps', 'backwpup' ); ?></span></h3>
 					<div class="inside">
 						<ul>
-							<?php if ( class_exists( 'BackWPup_Pro', FALSE ) ) { ?>
+							<?php if ( BackWPup::is_pro() ) { ?>
 								<li type="1"><a href="<?php echo wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupwizard&wizard_start=SYSTEMTEST', 'wizard' ); ?>"><?php  _e( 'Test the installation', 'backwpup' ); ?></a></li>
 								<li type="1"><a href="<?php echo wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupwizard&wizard_start=JOB', 'wizard' ); ?>"><?php  _e( 'Create a Job', 'backwpup' ); ?></a></li>
 							<?php } else { ?>
@@ -184,7 +184,7 @@ class BackWPup_Page_BackWPup {
 			</div>
 
 			<?php
-			if ( class_exists( 'BackWPup_Pro', FALSE ) ) {
+			if ( BackWPup::is_pro() ) {
 				/* @var BackWPup_Pro_Wizards $wizard_class */
 
 				foreach ( $wizards as $wizard_class ) {
@@ -247,11 +247,11 @@ class BackWPup_Page_BackWPup {
 				</div>
 			</div>
 
-			<?php if ( ! class_exists( 'BackWPup_Pro', FALSE ) ) { ?>
+			<?php if ( ! BackWPup::is_pro() ) { ?>
 			<div id="backwpup-thank-you" class="metabox-holder postbox backwpup-cleared-postbox backwpup-max-width">
 				<h3 class="hndle"><span><?php  _ex( 'Thank you for using BackWPup!', 'Pro teaser box', 'backwpup' ); ?></span></h3>
 				<div class="inside">
-                    <p><a href="<?php esc_html_e( 'http://backwpup.com', 'backwpup' ); ?>"><img class="backwpup-banner-img" src="https://images.inpsyde.com/backwpup/banner.jpg" alt="<?php esc_html_e( 'BackWPup banner', 'backwpup' ); ?>" /></a></p>
+                    <p><a href="<?php esc_html_e( 'http://backwpup.com', 'backwpup' ); ?>"><img class="backwpup-banner-img" src="<?php echo BackWPup::get_plugin_data( 'URL' ) ?>/assets/images/banner.jpg" alt="<?php esc_html_e( 'BackWPup banner', 'backwpup' ); ?>" /></a></p>
 					<h3 class="backwpup-text-center"><?php _ex( 'Get access to:', 'Pro teaser box', 'backwpup' ); ?></h3>
 					<ul class="backwpup-text-center">
 						<li><?php _ex( 'First-class <strong>dedicated support</strong> at backwpup.com.', 'Pro teaser box', 'backwpup' ); ?></li>
@@ -317,7 +317,7 @@ class BackWPup_Page_BackWPup {
 						echo '<tr class="alternate">';
 						$alternate = FALSE;
 					}
-					if ( $nextrun = wp_next_scheduled( 'backwpup_cron', array( 'id' => $jobid ) ) + ( get_option( 'gmt_offset' ) * 3600 ) )
+					if ( $nextrun = wp_next_scheduled( 'backwpup_cron', array( 'arg' => $jobid ) ) + ( get_option( 'gmt_offset' ) * 3600 ) )
 						echo '<td>' . sprintf( __( '%1$s at %2$s', 'backwpup' ), date_i18n( get_option( 'date_format' ), $nextrun, TRUE ), date_i18n( get_option( 'time_format' ), $nextrun, TRUE ) ) . '</td>';
 					else
 						echo '<td><em>' . esc_html__( 'Not scheduled!', 'backwpup' ) . '</em></td>';

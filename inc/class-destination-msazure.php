@@ -426,9 +426,6 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 		return TRUE;
 	}
 
-	/**
-	 *
-	 */
 	public function edit_inline_js() {
 		?>
 		<script type="text/javascript">

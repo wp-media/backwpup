@@ -146,9 +146,6 @@ class BackWPup_Job {
 	 */
 	private $signal = 0;
 
-	/**
-	 *
-	 */
 	public static function start_http( $starttype, $jobid = 0 ) {
 
 		//load text domain
@@ -201,7 +198,7 @@ class BackWPup_Job {
 		$starttype_exists = in_array( $starttype, array( 'runnow', 'runnowalt', 'runext', 'cronrun' ), true );
 		if ( ! $backwpup_job_object && $starttype_exists && $jobid ) {
 			// Schedule restart event.
-			wp_schedule_single_event( time() + 60, 'backwpup_cron', array( 'id' => 'restart' ) );
+			wp_schedule_single_event( time() + 60, 'backwpup_cron', array( 'arg' => 'restart' ) );
 			// Sstart job.
 			$backwpup_job_object = new self();
 			$backwpup_job_object->create( $starttype, $jobid );
@@ -444,12 +441,12 @@ class BackWPup_Job {
 		}
 		if ( $this->job['activetype'] === 'wpcron' ) {
 			//check next run
-			$cron_next = wp_next_scheduled( 'backwpup_cron', array( 'id' => $this->job['jobid'] ) );
+			$cron_next = wp_next_scheduled( 'backwpup_cron', array( 'arg' => $this->job['jobid'] ) );
 			if ( ! $cron_next || $cron_next < time() ) {
-				wp_unschedule_event( $cron_next, 'backwpup_cron', array( 'id' => $this->job['jobid'] ) );
+				wp_unschedule_event( $cron_next, 'backwpup_cron', array( 'arg' => $this->job['jobid'] ) );
 				$cron_next = BackWPup_Cron::cron_next( $this->job['cron'] );
-				wp_schedule_single_event( $cron_next, 'backwpup_cron', array( 'id' => $this->job['jobid'] ) );
-				$cron_next = wp_next_scheduled( 'backwpup_cron', array( 'id' => $this->job['jobid'] ) );
+				wp_schedule_single_event( $cron_next, 'backwpup_cron', array( 'arg' => $this->job['jobid'] ) );
+				$cron_next = wp_next_scheduled( 'backwpup_cron', array( 'arg' => $this->job['jobid'] ) );
 			}
 			//output scheduling
 			if ( $this->is_debug() ) {
@@ -1258,8 +1255,8 @@ class BackWPup_Job {
 		$this->write_running_file();
 		remove_action( 'shutdown', array( $this, 'shutdown' ) );
 		//do restart
-		wp_clear_scheduled_hook( 'backwpup_cron', array( 'id' => 'restart' ) );
-		wp_schedule_single_event( time() + 5, 'backwpup_cron', array( 'id' => 'restart' ) );
+		wp_clear_scheduled_hook( 'backwpup_cron', array( 'arg' => 'restart' ) );
+		wp_schedule_single_event( time() + 5, 'backwpup_cron', array( 'arg' => 'restart' ) );
 		self::get_jobrun_url( 'restart' );
 
 		exit();

@@ -1,6 +1,32 @@
 == Changelog ==
+= Version 3.9.0 =
+Release Date: June 14, 2021
+
+* Added (pro): Migrate website to another URL
+* Added (pro): Validation for database credentials on restore
+* Added: PHP notice for outdated PHP versions less than 7.2
+* Fixed (pro): License deactivated on settings save
+* Fixed (pro): Corrupted path name in Google Drive destination
+* Fixed (pro): Unable to download backup from Google Drive
+* Fixed: Unable to connect to custom S3 endpoints
+* Fixed: Intermittent error selecting restore strategy
+* Fixed: Memory leaks when uploading to S3
+* Fixed: PHP 7.4 Deprecation notices
+* Fixed: PHP 8 compatibility issues
+* Fixed: Remove BackWPup user roles on uninstall in multisite
+* Fixed: Correctly handle relative upload paths
+* Fixed: Display welcome page even after consent dialog clicked
+* Fixed: Exclude non backup files from the backups page
+* Fixed: Format dates as ISO-formatted dates instead of binary hex in MySQL backup
+* Fixed: Don't pre-fill database credentials when backing up non-WordPress database
+* Fixed: Description of replacement patterns for archive name
+* Fixed: Added missing destinations to destination list in about page
+* Fixed: Made BackWPup banner local
+* Removed: Phone home client
+* Removed: Remote admin notices
+
 = Version 3.8.0 =
-Release Date: September 22, 2020
+Release Date: September 21, 2020
 
 * Added: OneDrive destination for Pro version
 * Added: HiDrive destination for Pro version

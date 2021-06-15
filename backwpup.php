@@ -5,7 +5,9 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.8.0
+ * Version: 3.9.0
+ * Requires at least: 3.9
+ * Requires PHP: 5.6
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -21,6 +23,7 @@ use Inpsyde\BackWPup\Pro\License\License;
 use \Inpsyde\BackWPup\Pro\Settings;
 use Inpsyde\BackWPup\Pro\License\LicenseSettingsView;
 use Inpsyde\BackWPup\Pro\License\LicenseSettingUpdater;
+use Inpsyde\BackWPup\Notice;
 
 if ( ! class_exists( 'BackWPup', false ) ) {
 	/**
@@ -109,11 +112,6 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 			// Deactivation hook
 			register_deactivation_hook( __FILE__, array( 'BackWPup_Install', 'deactivate' ) );
 
-			// Admin bar
-			if ( get_site_option( 'backwpup_cfg_showadminbar' ) ) {
-				add_action( 'init', array( 'BackWPup_Adminbar', 'get_instance' ) );
-			}
-
 			// Only in backend
 			if ( is_admin() && class_exists( 'BackWPup_Admin' ) ) {
 
@@ -157,6 +155,11 @@ if ( ! class_exists( 'BackWPup', false ) ) {
                 $admin = new BackWPup_Admin($settings);
                 $admin->init();
 
+                if (get_site_option('backwpup_cfg_showadminbar')) {
+                    $adminBar = new BackWPup_Adminbar($admin);
+                    add_action('init', [$adminBar, 'init']);
+                }
+
                 new BackWPup_EasyCron();
             }
 
@@ -165,26 +168,18 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 				WP_CLI::add_command( 'backwpup', 'BackWPup_WP_CLI' );
 			}
 
-			if ( ! self::is_pro() ) {
-				$promoter_updater = new \Inpsyde\BackWPup\Notice\PromoterUpdater();
-				$promoter = new \Inpsyde\BackWPup\Notice\Promoter(
-					$promoter_updater,
-					new \Inpsyde\BackWPup\Notice\PromoterView()
+			if ( ! defined( 'DOING_AJAX' ) || ( defined( 'DOING_AJAX' ) && ! DOING_AJAX ) ) {
+				// Show notice if PHP < 7.2
+				$phpNotice = new Notice\PhpNotice(
+					new Notice\NoticeView( Notice\PhpNotice::ID )
 				);
-				$promoter->init();
-				add_action( 'upgrader_process_complete', array( $promoter_updater, 'update' ) );
-				add_filter(
-					'pre_set_site_transient_update_plugins',
-					function ( $value ) use ( $promoter_updater ) {
+				$phpNotice->init( Notice\PhpNotice::TYPE_ADMIN );
 
-						$promoter_updater->update();
-
-						return $value;
-					}
+				// Show notice if WordPress < 5.0
+				$wpNotice = new Notice\WordPressNotice(
+					new Notice\NoticeView( Notice\WordPressNotice::ID )
 				);
-
-                $isPHCActive = (bool)get_site_option('backwpup_cfg_phone_home_client', true);
-                $isPHCActive and $this->home_phone_client_init();
+				$wpNotice->init( Notice\WordPressNotice::TYPE_ADMIN );
 			}
 		}
 
@@ -592,31 +587,6 @@ if ( ! class_exists( 'BackWPup', false ) ) {
 
 			return self::$wizards;
 
-		}
-
-		/**
-		 * Initialize Home Phone Client
-		 *
-		 * @return void
-		 */
-		private function home_phone_client_init() {
-
-			if ( ! class_exists( 'Inpsyde_PhoneHome_FrontController' ) ) {
-				return;
-			}
-
-			Inpsyde_PhoneHome_FrontController::initialize_for_network(
-				'BackWPup',
-				__DIR__ . '/assets/templates/phpnotice',
-				'backwpup',
-				array(
-					Inpsyde_PhoneHome_Configuration::ANONYMIZE => true,
-					Inpsyde_PhoneHome_Configuration::MINIMUM_CAPABILITY => 'manage_options',
-					Inpsyde_PhoneHome_Configuration::COLLECT_PHP => true,
-					Inpsyde_PhoneHome_Configuration::COLLECT_WP => true,
-					Inpsyde_PhoneHome_Configuration::SERVER_ADDRESS => 'https://backwpup.com/wp-json',
-				)
-			);
 		}
 	}
 

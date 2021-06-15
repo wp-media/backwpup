@@ -1,14 +1,8 @@
 <?php
-/**
- *
- */
 abstract class BackWPup_JobTypes {
 
 	public $info = array();
 
-	/**
-	 *
-	 */
 	abstract public function __construct();
 
 	/**
@@ -35,37 +29,22 @@ abstract class BackWPup_JobTypes {
 
 	}
 
-	/**
-	 *
-	 */
 	public function edit_inline_js() {
 
 	}
 
-	/**
-	 *
-	 */
 	public function edit_ajax() {
 
 	}
 
-	/**
-	 *
-	 */
 	public function wizard_admin_print_styles() {
 
 	}
 
-	/**
-	 *
-	 */
 	public function wizard_admin_print_scripts() {
 
 	}
 
-	/**
-	 *
-	 */
 	public function wizard_inline_js() {
 
 	}
@@ -87,9 +66,6 @@ abstract class BackWPup_JobTypes {
 		return $job_settings;
 	}
 
-	/**
-	 *
-	 */
 	public function admin_print_styles() {
 
 	}

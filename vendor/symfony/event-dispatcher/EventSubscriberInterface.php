@@ -12,7 +12,7 @@
 namespace Symfony\Component\EventDispatcher;
 
 /**
- * An EventSubscriber knows itself what events it is interested in.
+ * An EventSubscriber knows himself what events he is interested in.
  * If an EventSubscriber is added to an EventDispatcherInterface, the manager invokes
  * {@link getSubscribedEvents} and registers the subscriber as a listener for all
  * returned events.
@@ -36,12 +36,9 @@ interface EventSubscriberInterface
      *
      * For instance:
      *
-     *  * ['eventName' => 'methodName']
-     *  * ['eventName' => ['methodName', $priority]]
-     *  * ['eventName' => [['methodName1', $priority], ['methodName2']]]
-     *
-     * The code must not depend on runtime state as it will only be called at compile time.
-     * All logic depending on runtime state must be put into the individual methods handling the events.
+     *  * array('eventName' => 'methodName')
+     *  * array('eventName' => array('methodName', $priority))
+     *  * array('eventName' => array(array('methodName1', $priority), array('methodName2')))
      *
      * @return array The event names to listen to
      */

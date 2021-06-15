@@ -112,6 +112,8 @@ return $files_size;
 			$path =  $content_path . $path;
 		}
 
+		$path = self::resolve_path( $path );
+
 		return $path;
 	}
 
@@ -127,11 +129,11 @@ return $files_size;
 	 */
 	public static function check_folder( $folder, $donotbackup = FALSE ) {
 
-		$folder = BackWPup_File::get_absolute_path( $folder );
+		$folder = self::get_absolute_path( $folder );
 		$folder = untrailingslashit( $folder );
 
 		//check that is not home of WP
-		$uploads = BackWPup_File::get_upload_dir();
+		$uploads = self::get_upload_dir();
 		if ( $folder === untrailingslashit( str_replace( '\\', '/', ABSPATH ) )
 		     || $folder === untrailingslashit( str_replace( '\\', '/', dirname( ABSPATH ) ) )
 		     || $folder === untrailingslashit( str_replace( '\\', '/', WP_PLUGIN_DIR ) )
@@ -143,7 +145,7 @@ return $files_size;
 		}
 
 		//open base dir check
-		if ( ! BackWPup_File::is_in_open_basedir( $folder ) ) {
+		if ( ! self::is_in_open_basedir( $folder ) ) {
 			return sprintf( __( 'Folder %1$s is not in open basedir, please use another folder.', 'backwpup' ), $folder );
 		}
 
@@ -196,5 +198,34 @@ return $files_size;
 		}
 
 		return '';
+	}
+
+	/**
+	 * Resolve internal .. within a path
+	 *
+	 * @param string $path The path to resolve
+	 *
+	 * @return string The resolved path
+	 */
+	protected static function resolve_path( $path ) {
+
+		$search = explode( '/', $path );
+		$append = array();
+		// If last element of $search is blank, this means trailing slash is present.
+		// realpath() will remove trailing slash, so append to $append to preserve.
+		if ( empty( $search[ count( $search ) - 1 ] ) ) {
+			array_unshift( $append, array_pop( $search ) );
+		}
+
+		while ( realpath( implode( '/', $search ) ) === false ) {
+			array_unshift( $append, array_pop( $search ) );
+		}
+
+		$path = realpath( implode( '/', $search ) );
+		if ( ! empty( $append ) ) {
+			$path .= '/' . implode( '/', $append );
+		}
+
+		return $path;
 	}
 }

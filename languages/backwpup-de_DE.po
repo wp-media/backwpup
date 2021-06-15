@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the BackWPup Pro package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2020-03-24 13:27:59+0000\n"
+"PO-Revision-Date: 2021-01-14 15:15:13+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -44,36 +44,36 @@ msgstr "Lizenz deaktivieren"
 
 #: inc/class-destination-msazure-downloader.php:60
 msgid "Could not write data to file %s."
-msgstr ""
+msgstr "Daten konnten nicht in Datei %s geschrieben werden."
 
 #: inc/class-destination-msazure.php:695
 msgid "Could not extract job id from destination %s."
-msgstr ""
+msgstr "Job-ID konnte nicht aus Ziel %s extrahiert werden."
 
 #: inc/class-destination-msazure.php:120
 #: inc/Pro/class-destination-msazure.php:82
 msgid "Microsoft Azure Configuration: "
-msgstr ""
+msgstr "Microsoft Azure Konfiguration:"
 
 #: inc/class-page-settings.php:622
 msgid "Phone Home Client"
-msgstr ""
+msgstr "Phone Home Client"
 
 #: inc/class-page-settings.php:625
 msgid "Phone Home Client allows BackWPup to collect data about your system to improve the plugin."
-msgstr ""
+msgstr "Über den Phone Home Client kann BackWPup Daten über Ihr System sammeln, um das Plugin zu verbessern."
 
 #: inc/class-page-settings.php:633
 msgid "Any data is sent anonymously. We don't collect any personal data."
-msgstr ""
+msgstr "Alle Daten werden anonym gesendet. Wir sammeln keine personenbezogenen Daten."
 
 #: inc/class-page-settings.php:643 inc/class-page-settings.php:649
 msgid "Enable Phone Home Client"
-msgstr ""
+msgstr "Phone Home Client aktivieren"
 
 #: inc/class-page-settings.php:663
 msgid "Enable Phone Home"
-msgstr ""
+msgstr "Phone Home aktivieren"
 
 #: inc/class-install.php:115
 msgid "BackWPup jobs functions"
@@ -81,44 +81,44 @@ msgstr "BackWPup Jobs Funktionen"
 
 #: inc/Pro/class-destination-rsc.php:273
 msgid "Extra file %s uploaded to Rackspace Cloud."
-msgstr ""
+msgstr "Zusätzliche Datei %s in Rackspace Cloud hochgeladen."
 
 #: inc/Pro/class-destination-rsc.php:286
 msgid "Delete nonexistent files on Rackspace Cloud."
-msgstr ""
+msgstr "Nicht vorhandene Dateien in der Rackspace Cloud löschen."
 
 #: inc/Pro/class-destination-rsc.php:290
 msgid "File %s deleted from Rackspace Cloud."
-msgstr ""
+msgstr "Datei %s aus Rackspace Cloud gelöscht."
 
 #: inc/Pro/class-pro.php:102
 msgid "GDrive"
-msgstr ""
+msgstr "GDrive"
 
 #: inc/Pro/class-pro.php:172 inc/Pro/class-pro.php:173
 #: inc/Pro/class-pro.php:288
 msgid "Wizards"
-msgstr ""
+msgstr "Einrichtungs-Assistenten"
 
 #: inc/Pro/class-pro.php:208
 msgid "Support"
-msgstr ""
+msgstr "Support"
 
 #: inc/Pro/class-pro.php:209
 msgid "Contact Support"
-msgstr ""
+msgstr "Support kontaktieren"
 
 #: inc/Pro/class-pro.php:323
 msgid "If you are experiencing issues, the debug information shown below can help us to better investigate and solve it for you."
-msgstr ""
+msgstr "Wenn Probleme auftreten, können wir anhand der unten aufgeführten Debug-Informationen diese besser untersuchen und lösen."
 
 #: inc/Pro/class-pro.php:329
 msgid "If you already have a support ticket open with BackWPup, then you can simply click the copy button below to copy the debug information, and paste it into a response to your ticket."
-msgstr ""
+msgstr "Wenn du bereits ein Support-Ticket mit BackWPup eröffnet  hast, kannst du einfach auf die Schaltfläche \"Kopieren\" unten klicken, um die Debug-Informationen zu kopieren und in eine Antwort auf dein Ticket einzufügen."
 
 #: inc/Pro/class-pro.php:336
 msgid "If you have not yet opened a ticket, you may contact us directly by <a href=\"%s\">clicking here</a>."
-msgstr ""
+msgstr "Wenn du noch kein Ticket eröffnet hast, kannst du uns direkt kontaktieren, indem du <a href=\"%s\"> hier klickst</a>."
 
 #: inc/Pro/class-jobtype-dbcheck.php:16 inc/class-jobtype-dbcheck.php:35
 msgid "Settings for database check"
@@ -126,7 +126,7 @@ msgstr "Einstellungen für den Datenbank Check"
 
 #: inc/Pro/class-jobtype-dbcheck.php:27
 msgid "Check only WordPress Database tables"
-msgstr ""
+msgstr "Nur WordPress-Datenbanktabellen prüfen"
 
 #: inc/Pro/class-jobtype-dbcheck.php:38 inc/class-jobtype-dbcheck.php:54
 msgid "Try to repair defect table"
@@ -134,7 +134,7 @@ msgstr "Versuche, definierte Tabellen zu reparieren"
 
 #: inc/Pro/class-jobtype-wpexp.php:17
 msgid "Items to export:"
-msgstr ""
+msgstr "Elemente zu exportieren:"
 
 #: inc/Pro/class-jobtype-wpexp.php:28 inc/class-jobtype-wpexp.php:49
 msgid "All content"
@@ -150,19 +150,19 @@ msgstr "Seiten"
 
 #: inc/Pro/class-glacier-destination.php:22
 msgid "Custom Glacier destination"
-msgstr ""
+msgstr "Benutzerdefiniertes Glacier-Ziel"
 
 #: inc/Pro/Restore/LogDownloader/DownloaderFactory.php:82
 msgid "Download Log"
-msgstr ""
+msgstr "Download-Protokoll"
 
 #: inc/Pro/class-destination-dropbox.php:40
 msgid "Auth Code:"
-msgstr ""
+msgstr "Authentifizierungs-Code"
 
 #: inc/Pro/class-destination-dropbox.php:49
 msgid "Get auth code"
-msgstr ""
+msgstr "Authentifizierungs-Code beziehen"
 
 #: inc/Pro/class-destination-dropbox.php:51
 #: inc/class-destination-dropbox.php:81
@@ -171,7 +171,7 @@ msgstr "Konto erstellen"
 
 #: inc/Pro/class-destination-dropbox.php:190
 msgid "%d. Try to sync files to Dropbox&#160;&hellip;"
-msgstr ""
+msgstr "%d. Versuche, Dateien mit Dropbox zu synchronisieren&#160;&hellip;"
 
 #: inc/Pro/class-destination-dropbox.php:209
 #: inc/class-destination-dropbox.php:390
@@ -190,27 +190,27 @@ msgstr "Nicht mit Dropbox authentifiziert!"
 
 #: inc/Pro/class-destination-dropbox.php:234
 msgid "Retrieving file list from Dropbox"
-msgstr ""
+msgstr "Empfange Dateiliste von Dropbox"
 
 #: inc/Pro/class-destination-dropbox.php:250
 msgid "Upload changed files to Dropbox"
-msgstr ""
+msgstr "Lade veränderte Dateien auf Dropbox"
 
 #: inc/Pro/class-destination-dropbox.php:303
 msgid "File %s uploaded to Dropbox"
-msgstr ""
+msgstr "Datei %s auf Dropbox geladen"
 
 #: inc/Pro/class-destination-dropbox.php:342
 msgid "Extra file %s uploaded to Dropbox"
-msgstr ""
+msgstr "Extra-Datei %s auf Dropbox geladen"
 
 #: inc/Pro/class-destination-dropbox.php:368
 msgid "Folder %s deleted from Dropbox"
-msgstr ""
+msgstr "Ordner %s von Dropbox gelöscht"
 
 #: inc/Pro/class-destination-dropbox.php:392
 msgid "File %s deleted from Dropbox"
-msgstr ""
+msgstr "Datei %s von Dropbox gelöscht"
 
 #. translators: the $1 is the error message
 #: inc/Pro/class-destination-dropbox.php:406
@@ -1267,34 +1267,34 @@ msgstr "Kein laufender Auftrag"
 #: inc/Pro/class-destination-sugarsync.php:24
 #: inc/Pro/class-destination-sugarsync.php:82
 msgid "Sugarsync authenticate!"
-msgstr ""
+msgstr "Sugarsync authentifizieren!"
 
 #: inc/Pro/class-destination-sugarsync.php:30
 #: inc/Pro/class-destination-gdrive.php:410
 #: inc/Pro/class-destination-gdrive.php:420
 #: inc/Pro/class-destination-dropbox.php:56
 msgid "Login:"
-msgstr ""
+msgstr "Login:"
 
 #: inc/Pro/class-destination-sugarsync.php:34
 msgid "Root:"
-msgstr ""
+msgstr "Root:"
 
 #: inc/Pro/class-destination-sugarsync.php:56
 #: inc/Pro/class-destination-gdrive.php:432
 #: inc/Pro/class-destination-dropbox.php:60
 msgid "Folder:"
-msgstr ""
+msgstr "Ordner:"
 
 #: inc/Pro/class-destination-sugarsync.php:60
 #: inc/Pro/class-destination-ftp.php:70
 msgid "Maximum number of backup files to keep in folder:"
-msgstr ""
+msgstr "Maximale Anzahl von Backup-Dateien, die im Ordner behalten werden sollen: "
 
 #: inc/Pro/class-destination-gdrive.php:77
 #: inc/Pro/class-destination-gdrive.php:391
 msgid "Looks like you haven’t set up any API keys yet. Head over to <a href=\"%s\">Settings | API-Keys</a> and get Google Drive all set up, then come back here."
-msgstr ""
+msgstr "Sieht aus als hättest du bisher keine API-Schlüssel eingestellt. Gehe zu <a href=\"%s\">Einstellungen | API-Schlüssel</a> und mache alle Einstellungen auf Google Drive. Kehre anschließend hieher zurück. "
 
 #: inc/Pro/class-destination-gdrive.php:94 inc/class-destination-dropbox.php:72
 msgid "Login"
@@ -1303,7 +1303,7 @@ msgstr "Anmelden"
 #: inc/Pro/class-destination-gdrive.php:98
 #: inc/Pro/class-destination-gdrive.php:415
 msgid "Authenticate"
-msgstr ""
+msgstr "Authentifizieren"
 
 #: inc/Pro/class-destination-gdrive.php:100
 #: inc/Pro/class-destination-gdrive.php:411
@@ -1314,68 +1314,68 @@ msgstr "Nicht authentifiziert!"
 #: inc/Pro/class-destination-gdrive.php:107
 #: inc/Pro/class-destination-gdrive.php:425
 msgid "Reauthenticate"
-msgstr ""
+msgstr "Erneut authentifizieren"
 
 #: inc/Pro/class-destination-gdrive.php:118
 msgid "Folder in Google Drive"
-msgstr ""
+msgstr "Ordner auf Google Drive"
 
 #: inc/Pro/class-destination-gdrive.php:161
 msgid "Consider using trash to delete files. If trash is not enabled, files will be deleted permanently."
-msgstr ""
+msgstr "Erwäge die Verwendung des Papierkorbs zum Löschen von Dateien. Wenn der Papierkorb nicht aktiviert ist, werden die Dateien dauerhaft gelöscht."
 
 #: inc/Pro/class-destination-gdrive.php:222
 #: inc/Pro/class-destination-gdrive.php:265
 msgid "GDrive: Authenticated."
-msgstr ""
+msgstr "GDrive: Authentifiziert. "
 
 #: inc/Pro/class-destination-gdrive.php:227
 #: inc/Pro/class-destination-gdrive.php:270
 msgid "GDrive: No refresh token received. Try to Authenticate again!"
-msgstr ""
+msgstr "GDrive: Kein Refresh-Token erhalten. Versuche, erneut zu authentifizieren!"
 
 #: inc/Pro/class-destination-gdrive.php:241
 #: inc/Pro/class-destination-gdrive.php:280
 #: inc/Pro/class-destination-gdrive.php:303
 #: inc/Pro/class-destination-gdrive.php:330
 msgid "GDrive API: %s"
-msgstr ""
+msgstr "GDrive-API: %s"
 
 #: inc/Pro/class-destination-gdrive.php:447
 #: inc/Pro/class-destination-folder.php:43
 msgid "Oldest files will be deleted first."
-msgstr ""
+msgstr "Älteste Dateien werden zuerst gelöscht."
 
 #: inc/Pro/class-destination-gdrive.php:653
 msgid "One file deleted from Google Drive"
 msgid_plural "%d files deleted on Google Drive"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Eine Datei von Google Drive gelöscht"
+msgstr[1] " %d Dateien von Google Drive gelöscht"
 
 #: inc/Pro/class-destination-gdrive.php:680
 msgid "%d. Try to send backup file to Google Drive&#160;&hellip;"
-msgstr ""
+msgstr "%d. Versuche, Backup-Datei an Google Drive zu senden&#160;&hellip;"
 
 #: inc/Pro/class-destination-gdrive.php:697
 msgid "Uploading to Google Drive&#160;&hellip;"
-msgstr ""
+msgstr "Hochladen nach Google Drive&#160;&hellip;"
 
 #: inc/Pro/class-destination-gdrive.php:765
 msgid "Could not create resumable file transfer to Google Drive"
-msgstr ""
+msgstr "Konnte keine wiederaufnehmbare Dateiübertragung zu Google Drive erstellen"
 
 #: inc/Pro/class-destination-gdrive.php:816
 msgid "Can not resume transfer backup to Google Drive!"
-msgstr ""
+msgstr "Konnte Übertragung des Backups zu Google Drive nicht wiederaufnehmen!"
 
 #: inc/Pro/class-destination-gdrive.php:888
 msgid "Error transfering file chunks to %s."
-msgstr ""
+msgstr "Fehler bei der Übermittlung von Datei-Chunks nach %s."
 
 #: inc/Pro/class-destination-gdrive.php:889
 #: inc/Pro/class-destination-gdrive.php:933
 msgid "Google Drive"
-msgstr ""
+msgstr "Google Drive"
 
 #: inc/Pro/class-destination-gdrive.php:926
 #: inc/class-destination-dropbox.php:438
@@ -1391,43 +1391,43 @@ msgstr "Fehler beim Übertragen des Backups zu %s."
 #: inc/Pro/class-destination-gdrive.php:946
 #: inc/Pro/class-destination-gdrive.php:1306
 msgid "Google Drive API: %s"
-msgstr ""
+msgstr "Google Drive API: %s"
 
 #: inc/Pro/class-destination-gdrive.php:1085
 msgid "%d. Try to sync files to Google Drive&#160;&hellip;"
-msgstr ""
+msgstr "%d. Versuche, Dateien mit Google Drive zu synchronisieren&#160;&hellip;"
 
 #: inc/Pro/class-destination-gdrive.php:1099
 msgid "Syncing changed files to Google Drive"
-msgstr ""
+msgstr "Synchronisiere veränderte Dateien mit Google Drive"
 
 #: inc/Pro/class-destination-gdrive.php:1142
 msgid "File %s updated on Google Drive"
-msgstr ""
+msgstr "Datei %s auf Google Drive aktualisiert"
 
 #: inc/Pro/class-destination-gdrive.php:1168
 msgid "File %s uploaded to Google Drive"
-msgstr ""
+msgstr "Datei %s auf Google Drive geladen"
 
 #: inc/Pro/class-destination-gdrive.php:1192
 msgid "File %s moved to trash in Google Drive"
-msgstr ""
+msgstr "Datei %s in den Papierkorb auf Google Drive geschoben"
 
 #: inc/Pro/class-destination-gdrive.php:1200
 msgid "File %s deleted permanently in Google Drive"
-msgstr ""
+msgstr "Datei %s endgültig von Google Drive gelöscht"
 
 #: inc/Pro/class-destination-gdrive.php:1261
 msgid "Extra file %s updated on Google Drive"
-msgstr ""
+msgstr "Extra-Datei %s auf Google Drive aktualisiert"
 
 #: inc/Pro/class-destination-gdrive.php:1291
 msgid "Extra file %s uploaded to Google Drive"
-msgstr ""
+msgstr "Extra-Datei %s auf Google Drive geladen"
 
 #: inc/Pro/class-destination-s3.php:31
 msgid "Select a S3 service:"
-msgstr ""
+msgstr "Wähle einen S3-Service:"
 
 #: inc/Pro/class-destination-s3.php:32
 msgid "Amazon S3 Region"
@@ -1437,453 +1437,453 @@ msgstr "Amazon S3 Region"
 #: inc/Pro/class-destination-glacier.php:232
 #: inc/Pro/class-destination-msazure.php:24
 msgid "Access Key:"
-msgstr ""
+msgstr "Zugangsschlüssel:"
 
 #: inc/Pro/class-destination-s3.php:48
 #: inc/Pro/class-destination-glacier.php:234
 msgid "Secret Key:"
-msgstr ""
+msgstr "Geheimschlüssel:"
 
 #: inc/Pro/class-destination-s3.php:56
 msgid "Bucket:"
-msgstr ""
+msgstr "Bucket:"
 
 #: inc/Pro/class-destination-s3.php:74
 msgid "New Bucket:"
-msgstr ""
+msgstr "Neuer Bucket:"
 
 #: inc/Pro/class-destination-s3.php:77
 msgid "Folder in bucket:"
-msgstr ""
+msgstr "Ordner im Bucket:"
 
 #: inc/Pro/class-destination-s3.php:170
 msgid "Bucket %1$s created in %2$s."
-msgstr ""
+msgstr "Bucket %1$s erstellt in %2$s."
 
 #: inc/Pro/class-destination-s3.php:236
 msgid "%d. Trying to sync files to S3 Service&#160;&hellip;"
-msgstr ""
+msgstr "%d. Versuche, Dateien auf S3-Service zu synchronisieren&#160;&hellip;"
 
 #: inc/Pro/class-destination-s3.php:283
 msgid "Retrieving file list from S3."
-msgstr ""
+msgstr "Beziehe Dateiliste von S3."
 
 #: inc/Pro/class-destination-s3.php:345
 msgid "Upload changed files to S3."
-msgstr ""
+msgstr "Lade veränderte Dateien zu S3 hoch."
 
 #: inc/Pro/class-destination-s3.php:384
 msgid "File %s uploaded to S3."
-msgstr ""
+msgstr "Datei %s zu S3 hochgeladen."
 
 #: inc/Pro/class-destination-s3.php:429
 msgid "Extra file %s uploaded to S3."
-msgstr ""
+msgstr "Extra-Datei %s nach S3 hochgeladen"
 
 #: inc/Pro/class-destination-s3.php:448
 msgid "Delete nonexistent files on S3"
-msgstr ""
+msgstr "Lösche nicht existente Dateien auf S3"
 
 #: inc/Pro/class-destination-s3.php:461
 msgid "File %s deleted from S3."
-msgstr ""
+msgstr "Datei %s von S3 gelöscht."
 
 #: inc/Pro/class-jobtype-wpplugin.php:13
 msgid "Nothing to configure"
-msgstr ""
+msgstr "Nichts zu konfigurieren"
 
 #: inc/Pro/class-settings-apikeys.php:53
 msgid "Hash key"
-msgstr ""
+msgstr "Hash Key"
 
 #: inc/Pro/class-settings-apikeys.php:54
 msgid "Hash Key for BackWPup. It will be used to have hashes in folder and file names. It must at least 6 chars long."
-msgstr ""
+msgstr "Hash Key für BackWPup. Wird für Hashes in Ordner- und Dateinamen genutzt. Muss mindestens 6 Zeichen lang sein. "
 
 #: inc/Pro/class-settings-apikeys.php:58
 msgid "Hash key:"
-msgstr ""
+msgstr "Hash Key:"
 
 #: inc/Pro/class-settings-apikeys.php:83
 msgid "Dropbox API Keys"
-msgstr ""
+msgstr "Dropbox-API-Schlüssel"
 
 #: inc/Pro/class-settings-apikeys.php:84
 msgid "If you want to set your own Dropbox API Keys, you can do it here. Leave empty for default."
-msgstr ""
+msgstr "Wenn du eigene Dropbox-API-Schlüssel setzen willst, kannst du das hier tun. Für Standard-Einstellungen leer lassen."
 
 #: inc/Pro/class-settings-apikeys.php:88
 msgid "Full Dropbox App key:"
-msgstr ""
+msgstr "Vollständiger Dropbox-API-Schlüssel"
 
 #: inc/Pro/class-settings-apikeys.php:100
 msgid "Full Dropbox App secret:"
-msgstr ""
+msgstr "Vollständiges Dropbox-App-Geheimnis:"
 
 #: inc/Pro/class-settings-apikeys.php:113
 msgid "Sandbox App key:"
-msgstr ""
+msgstr "Sandbox-App-Schlüssel:"
 
 #: inc/Pro/class-settings-apikeys.php:125
 msgid "Sandbox App secret:"
-msgstr ""
+msgstr "Sandbox-App-Geheimnis:"
 
 #: inc/Pro/class-settings-apikeys.php:147
 msgid "SugarSync API Keys"
-msgstr ""
+msgstr "SugarSync-API-Schlüssel"
 
 #: inc/Pro/class-settings-apikeys.php:148
 msgid "If you want to set your own SugarSync API keys you can do that here. Leave empty for default."
-msgstr ""
+msgstr "Wenn du eigene SugarSync-API-Schlüssel setzen willst, kannst du das hier tun. Für Standard-Einstellungen leer lassen."
 
 #: inc/Pro/class-settings-apikeys.php:152
 msgid "Access Key ID:"
-msgstr ""
+msgstr "Zugangsschlüssel-ID:"
 
 #: inc/Pro/class-settings-apikeys.php:161
 msgid "Private Access Key:"
-msgstr ""
+msgstr "Privater Zugangsschlüssel:"
 
 #: inc/Pro/class-settings-apikeys.php:173
 msgid "App ID:"
-msgstr ""
+msgstr "App-ID"
 
 #: inc/Pro/class-settings-apikeys.php:195
 msgid "Google API Keys"
-msgstr ""
+msgstr "Google-API-Schlüssel"
 
 #: inc/Pro/class-settings-apikeys.php:199
 msgid "Client ID:"
-msgstr ""
+msgstr "Client-ID"
 
 #: inc/Pro/class-settings-apikeys.php:212
 msgid "Client secret:"
-msgstr ""
+msgstr "Client-Geheimnis"
 
 #: inc/Pro/class-settings-apikeys.php:224
 msgid "Redirect URIs:"
-msgstr ""
+msgstr "Umleitungs-URIs:"
 
 #: inc/Pro/class-settings-apikeys.php:229
 msgid "Add this URI in a new line to the field."
-msgstr ""
+msgstr "Füge diese URI in einer neuen Zeile zum Feld hinzu."
 
 #: inc/Pro/class-page-wizard.php:150
 msgid "No BackWPup Wizard Session found!"
-msgstr ""
+msgstr "Keine BackWPup-Wizard-Sitzung gefunden!"
 
 #: inc/Pro/class-page-wizard.php:163 inc/Pro/class-page-wizard.php:423
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: inc/Pro/class-page-wizard.php:200 inc/Pro/class-page-wizard.php:418
 #: inc/Pro/class-page-wizard.php:451
 msgid "Next ›"
-msgstr ""
+msgstr "Weiter ›"
 
 #: inc/Pro/class-page-wizard.php:216 inc/Pro/class-page-wizard.php:414
 msgid "‹ Previous"
-msgstr ""
+msgstr "‹ Zurück"
 
 #: inc/Pro/class-page-wizard.php:307
 msgctxt "Plugin Name"
 msgid "%s &rsaquo; Wizards"
-msgstr ""
+msgstr "%s &rsaquo; Wizards"
 
 #: inc/Pro/class-page-wizard.php:346
 msgctxt "Plugin Name"
 msgid "%s Wizard:"
-msgstr ""
+msgstr "%s Wizard:"
 
 #: inc/Pro/class-page-wizard.php:426
 msgid "Back to overview"
-msgstr ""
+msgstr "Zurück zur Übersicht"
 
 #: inc/Pro/class-export-jobs.php:12 inc/Pro/class-export-jobs.php:23
 msgid "Export"
-msgstr ""
+msgstr "Export"
 
 #: inc/Pro/class-jobtype-file.php:19
 msgid "Backup WordPress main files"
-msgstr ""
+msgstr "Backup der WordPress-Hauptdateien"
 
 #: inc/Pro/class-jobtype-file.php:23
 msgid "Backup blog content folder"
-msgstr ""
+msgstr "Backup des Blog-Content-Ordners"
 
 #: inc/Pro/class-jobtype-file.php:27
 msgid "Backup blog plugins"
-msgstr ""
+msgstr "Backup der Blog-Plugins"
 
 #: inc/Pro/class-jobtype-file.php:31
 msgid "Backup blog themes"
-msgstr ""
+msgstr "Backup der Blog-Themes"
 
 #: inc/Pro/class-jobtype-file.php:35
 msgid "Backup blog uploads folder"
-msgstr ""
+msgstr "Backup des Blog-Upload-Ordners"
 
 #: inc/Pro/class-wizard-job.php:15
 msgid "Create a job"
-msgstr ""
+msgstr "Auftrag erstellen"
 
 #: inc/Pro/class-wizard-job.php:16
 msgid "Choose a job"
-msgstr ""
+msgstr "Auftrag wählen"
 
 #: inc/Pro/class-wizard-job.php:34
 msgid "Job Types"
-msgstr ""
+msgstr "Auftragstypen"
 
 #: inc/Pro/class-wizard-job.php:35
 msgid "Select a task for your job."
-msgstr ""
+msgstr "Wähle eine Aufgabe für deinen Auftrag."
 
 #: inc/Pro/class-wizard-job.php:59
 msgid "Archive Settings"
-msgstr ""
+msgstr "Archiv-Einstellungen"
 
 #: inc/Pro/class-wizard-job.php:60
 msgid "Settings for the Backup Archive"
-msgstr ""
+msgstr "Einstellungen für das Backup-Archiv"
 
 #: inc/Pro/class-wizard-job.php:67
 msgid "Where would you like to store the backup file?"
-msgstr ""
+msgstr "Wo möchtest du die Backup-Datei sichern?"
 
 #: inc/Pro/class-wizard-job.php:92 inc/Pro/class-wizard-job.php:289
 msgid "Scheduling"
-msgstr ""
+msgstr "Planen"
 
 #: inc/Pro/class-wizard-job.php:93
 msgid "When would you like to start the job?"
-msgstr ""
+msgstr "Wann möchtest du den Auftrag starten?"
 
 #: inc/Pro/class-wizard-job.php:232
 msgid "Select one or more tasks for your backup job."
-msgstr ""
+msgstr "Wähle eine oder mehrer Aufgaben für deinen Backup-Auftrag"
 
 #: inc/Pro/class-wizard-job.php:293
 msgid "Activate scheduling"
-msgstr ""
+msgstr "Aktiviere Planung"
 
 #: inc/Pro/class-wizard-job.php:440
 msgid "Sync file by file to destination"
-msgstr ""
+msgstr "Synchronisiere Datei durch Datei nach Ziel"
 
 #: inc/Pro/class-wizard-job.php:455
 msgid "Select a compression type for the backup archive"
-msgstr ""
+msgstr "Wähle eine Kompressionsart für das Backup-Archiv"
 
 #: inc/Pro/class-wizard-job.php:459
 msgid "Archive compression type"
-msgstr ""
+msgstr "Archiv-Kompressionstyp"
 
 #: inc/Pro/class-wizard-job.php:467
 msgid "PHP Zip functions will be used if available (memory lees). Else PCLZip Class will used."
-msgstr ""
+msgstr "PHP-Zip-Funktionen werden genutzt, wenn vorhanden (weniger Speicher). Andernfalls wird PCLZip-Klasse genutzt."
 
 #: inc/Pro/class-wizard-job.php:474 inc/Pro/class-wizard-job.php:497
 #: inc/Pro/class-wizard-job.php:500
 msgid "Disabled because missing PHP function."
-msgstr ""
+msgstr "Deaktiviert wegen fehlender PHP-Funktion."
 
 #: inc/Pro/class-wizard-job.php:480 inc/Pro/class-wizard-job.php:482
 msgid "Tar (fast and memory less) uncompressed"
-msgstr ""
+msgstr "Tar (schnell und weniger Speicher) dekomprimiert"
 
 #: inc/Pro/class-wizard-job.php:488 inc/Pro/class-wizard-job.php:490
 msgid "A tared and GZipped archive (fast and memory less)"
-msgstr ""
+msgstr "Ein mit Tar und GZip komprimiertes Archiv (schnell und weniger Speicher)"
 
 #: inc/Pro/class-wizard-job.php:516
 msgid "Where to store the files"
-msgstr ""
+msgstr "Wo die Dateien gespeichert werden sollen"
 
 #: inc/Pro/class-wizard-job.php:691
 msgid "Wizard: %1$s"
-msgstr ""
+msgstr "Wizard: %1$s"
 
 #: inc/Pro/class-wizard-job.php:713
 msgid "New job %s generated."
-msgstr ""
+msgstr "Neuer Auftrag %s erstellt."
 
 #: inc/Pro/class-wizard-job.php:721
 msgid "Create Job"
-msgstr ""
+msgstr "Auftrag erstellen"
 
 #: inc/Pro/class-wizard-job.php:735 inc/Pro/class-wizard-job.php:736
 msgid "Database Backup and XML Export (Daily)"
-msgstr ""
+msgstr "Datenbank-Backup und XML-Export (Täglich)"
 
 #: inc/Pro/class-wizard-job.php:754 inc/Pro/class-wizard-job.php:755
 msgid "Database Check (Weekly)"
-msgstr ""
+msgstr "Datenbank-Check (Wöchentlich)"
 
 #: inc/Pro/class-wizard-job.php:779 inc/Pro/class-wizard-job.php:780
 msgid "Backup all files"
-msgstr ""
+msgstr "Backup aller Dateien"
 
 #: inc/Pro/class-wizard-job.php:794
 msgid "Essential files + list of plugins"
-msgstr ""
+msgstr "Essentielle Dateien + Liste der Plugins"
 
 #: inc/Pro/class-wizard-job.php:795
 msgid "Backup essential files and folders, plus a list of installed plugins."
-msgstr ""
+msgstr "Backup essentieller Dateien und Ordner und eine Liste installierter Plugins."
 
 #: inc/Pro/class-wizard-job.php:811 inc/Pro/class-wizard-job.php:812
 msgid "Custom configuration"
-msgstr ""
+msgstr "Benutzerdefinierte Konfiguration"
 
 #: inc/Pro/class-destination-folder.php:21
 msgid "Absolute path to folder for backup files:"
-msgstr ""
+msgstr "Absoluter Pfad zum Ordner für Backup-Dateien"
 
 #: inc/Pro/class-destination-folder.php:108
 msgid "%d. Try to sync files to folder&#160;&hellip;"
-msgstr ""
+msgstr "%d. Versuche, Dateien nach Ordner zu synchronisieren&#160;&hellip;"
 
 #: inc/Pro/class-destination-folder.php:117
 msgid "Retrieving file list from folder"
-msgstr ""
+msgstr "Beziehe Datei-Liste von Ordner"
 
 #: inc/Pro/class-destination-folder.php:124
 msgid "Backup folder %s can not created"
-msgstr ""
+msgstr "Backup-Ordner %s  kann nicht erstellt werden"
 
 #: inc/Pro/class-destination-folder.php:134
 msgid "Copy changed files to folder"
-msgstr ""
+msgstr "Kopiere veränderte Dateien in Ordner"
 
 #: inc/Pro/class-destination-folder.php:158
 msgid "File %s copied"
-msgstr ""
+msgstr "Datei %s kopiert"
 
 #: inc/Pro/class-destination-folder.php:172
 msgid "Delete not existing files from folder"
-msgstr ""
+msgstr "Lösche nicht existente Dateien aus Ordner"
 
 #: inc/Pro/class-destination-folder.php:185
 msgid "Extra file %s copied"
-msgstr ""
+msgstr "Extra-Datei %s kopiert"
 
 #: inc/Pro/class-destination-folder.php:209
 msgid "File %s deleted from folder"
-msgstr ""
+msgstr "Datei %s von Ordner gelöscht"
 
 #: inc/Pro/class-destination-folder.php:321
 msgid "Empty folder %s deleted"
-msgstr ""
+msgstr "Leerer Ordner %s gelöscht"
 
 #: inc/Pro/class-jobtype-dbdump.php:92
 msgid "Backup only WordPress Database tables"
-msgstr ""
+msgstr "Backup von ausschließlich WordPress-Datenbanktabellen erstellen"
 
 #: inc/Pro/class-jobtype-dbdump.php:112
 msgid "Database connection"
-msgstr ""
+msgstr "Datenbank-Verbindung"
 
 #: inc/Pro/class-jobtype-dbdump.php:116
 msgid "Use WordPress database connection."
-msgstr ""
+msgstr "Nutze WordPress-Datenbank-Verbindung"
 
 #: inc/Pro/class-jobtype-dbdump.php:120
 msgid "Host:"
-msgstr ""
+msgstr "Host:"
 
 #: inc/Pro/class-jobtype-dbdump.php:123
 msgid "User:"
-msgstr ""
+msgstr "User:"
 
 #: inc/Pro/class-jobtype-dbdump.php:130
 msgid "Charset:"
-msgstr ""
+msgstr "Charset:"
 
 #: inc/Pro/class-jobtype-dbdump.php:141
 msgid "Database:"
-msgstr ""
+msgstr "Datenbank:"
 
 #: inc/Pro/class-jobtype-dbdump.php:169
 msgid "Database Backup type"
-msgstr ""
+msgstr "Datenbank-Backup-Typ"
 
 #: inc/Pro/class-jobtype-dbdump.php:173
 msgid "SQL File (with mysqli)"
-msgstr ""
+msgstr "SQL-Datei (mit mysqli)"
 
 #: inc/Pro/class-jobtype-dbdump.php:174
 msgid "SQL File (with mysqldump) "
-msgstr ""
+msgstr "SQL-Datei (mit mysqldump)"
 
 #: inc/Pro/class-jobtype-dbdump.php:175
 msgid "XML File (phpMyAdmin schema)"
-msgstr ""
+msgstr "XML-Datei (phpMyAdmin-Schema)"
 
 #: inc/Pro/class-jobtype-dbdump.php:181
 msgid "Path to <em>mysqldump</em> file"
-msgstr ""
+msgstr "Pfad zu <em>mysqldump</em>-Datei"
 
 #: inc/Pro/class-jobtype-dbdump.php:190
 msgid "Path to mysqldump file, so a backup can be made with it. If it is correct and <em>shell_exec</em> is active, the backup will be generated with a system command. If <em>shell_exec</em> ist not active, this is disabled"
-msgstr ""
+msgstr "Pfad zu mysqldump-Datei, um damit ein Backup erstellen zu können. Wenn er korrekt ist, ist <em>shell_exec</em> aktiv. Wenn <em>shell_exec</em> nicht aktiv ist, ist diese Funktion deaktiviert"
 
 #: inc/Pro/class-jobtype-dbdump.php:579
 msgid "Added database backup \"%1$s\" with %2$s to backup file list"
-msgstr ""
+msgstr "Datenbank-Backup \"%1$s\" mit %2$s zu Backup-Datei-Liste hinzugefügt"
 
 #: inc/Pro/class-jobtype-dbdump.php:600
 msgid "%d. Try to backup MySQL system&#160;&hellip;"
-msgstr ""
+msgstr "%d. Versuche, ein Backup des MySQL-Systems zu erstellen&#160;&hellip;"
 
 #: inc/Pro/class-jobtype-dbdump.php:607
 msgid "Executing of system commands not allowed. Please use backup with mysqli."
-msgstr ""
+msgstr "Ausführung von System-Kommandos nicht erlaubt. Bitte nutze Backup mit mysqli."
 
 #: inc/Pro/class-jobtype-dbdump.php:612
 msgid "%s file not in open basedir of PHP."
-msgstr ""
+msgstr "Datei %s nicht in open basedir von PHP."
 
 #: inc/Pro/class-jobtype-dbdump.php:617
 msgid "%s file not found. Please correct the path for the mysqldump file."
-msgstr ""
+msgstr "Datei %s nicht gefunden. Bitte korrigiere den Pfad für die mysqldump-Datei"
 
 #: inc/Pro/class-jobtype-dbdump.php:701
 msgctxt "Executed exec() command"
 msgid "CLI Exec: %s"
-msgstr ""
+msgstr "CLI Exec: %s"
 
 #: inc/Pro/class-jobtype-dbdump.php:711
 msgid "Usage error."
-msgstr ""
+msgstr "Anwendungsfehler."
 
 #: inc/Pro/class-jobtype-dbdump.php:712
 msgid "MySQL Server Error. This could be an issue with permissions. Try using database backup with mysqli."
-msgstr ""
+msgstr "MySQL Server Error. Es könnte ein Problem mit Berechtigungen vorliegen. Versuche ein Datenbank-Backup mit mysqli."
 
 #: inc/Pro/class-jobtype-dbdump.php:713
 msgid "Error during consistency checks."
-msgstr ""
+msgstr "Fehler bei Konsistenzprüfungen."
 
 #: inc/Pro/class-jobtype-dbdump.php:714
 msgid "Not enough memory."
-msgstr ""
+msgstr "Nicht genug Speicher."
 
 #: inc/Pro/class-jobtype-dbdump.php:715
 msgid "Error during writing of SQL backup file."
-msgstr ""
+msgstr "Fehler während des Schreibens der SQL-Backup-Datei."
 
 #: inc/Pro/class-jobtype-dbdump.php:716
 msgid "Illegal table"
-msgstr ""
+msgstr "Unzulässige Tabelle"
 
 #: inc/Pro/class-jobtype-dbdump.php:721
 msgid "mysqldump returned: (%d) %s"
-msgstr ""
+msgstr "mysqldump gab zurück: (%d) %s"
 
 #: inc/Pro/class-jobtype-dbdump.php:734
 msgid "Can not create mysql backup with mysqldump command"
-msgstr ""
+msgstr "Kann kein mysql-Backup mit mysqldump-Kommando erstellen"
 
 #: inc/Pro/class-jobtype-dbdump.php:740 inc/class-jobtype-wpexp.php:470
 msgid "Compressing file&#160;&hellip;"
@@ -1895,572 +1895,572 @@ msgstr "Komprimierung erledigt."
 
 #: inc/Pro/class-jobtype-dbdump.php:781
 msgid "%d. Try to backup database as XML&#160;&hellip;"
-msgstr ""
+msgstr "%d. Versuche, Datenbank als XML zu sichern&#160;&hellip;"
 
 #: inc/Pro/class-jobtype-dbdump.php:851
 msgctxt "Database Charset"
 msgid "Cannot set DB charset to %s"
-msgstr ""
+msgstr "Kann DB-Charset nicht zu %s setzen"
 
 #: inc/Pro/class-jobtype-dbdump.php:880
 msgid "No tables for XML backup"
-msgstr ""
+msgstr "Keine Tabellen für XML-Backup"
 
 #: inc/Pro/class-jobtype-dbdump.php:916
 msgid "Dump database create view \"%s\""
-msgstr ""
+msgstr "Dump-Datenbank Ansicht erstellen \"%s\""
 
 #: inc/Pro/class-jobtype-dbdump.php:934
 msgid "Backup database structure \"%s\" to XML"
-msgstr ""
+msgstr "Erstelle Backup für Datenbankstruktur \"%s\" nach XML"
 
 #: inc/Pro/class-jobtype-dbdump.php:976
 msgid "Backup table \"%s\" data to XML"
-msgstr ""
+msgstr "Erstelle Backup für Datenbanktabelle \"%s\" nach XML"
 
 #: inc/Pro/class-jobtype-dbdump.php:1044
 msgid "Added database XML dump \"%1$s\" with %2$s to backup file list"
-msgstr ""
+msgstr "Datenbank-XML-Dump \"%1$s\" mit %2$s zu Backup-Datei-Liste hinzugefügt"
 
 #: inc/Pro/class-jobtype-dbdump.php:1047
 msgid "Database XML backup done!"
-msgstr ""
+msgstr "Datenbank-XML-Backup abgeschlossen!"
 
 #: inc/Pro/class-destination-glacier.php:26
 msgid "Amazon Glacier"
-msgstr ""
+msgstr "Amazon Glacier"
 
 #: inc/Pro/class-destination-glacier.php:30
 msgid "Select a region:"
-msgstr ""
+msgstr "Wähle eine Region:"
 
 #: inc/Pro/class-destination-glacier.php:32
 #: inc/Pro/class-destination-glacier.php:223
 msgid "Amazon Glacier Region"
-msgstr ""
+msgstr "Amazon Glacier-Region"
 
 #: inc/Pro/class-destination-glacier.php:45
 msgid "Amazon Access Keys"
-msgstr ""
+msgstr "Amazon-Zugangsschlüssel"
 
 #: inc/Pro/class-destination-glacier.php:64
 msgid "Vault"
-msgstr ""
+msgstr "Vault"
 
 #: inc/Pro/class-destination-glacier.php:68
 msgid "Vault selection"
-msgstr ""
+msgstr "Vault-Auswahl"
 
 #: inc/Pro/class-destination-glacier.php:80
 msgid "Create a new vault"
-msgstr ""
+msgstr "Erstelle einen neuen Vault"
 
 #: inc/Pro/class-destination-glacier.php:87
 msgid "Glacier Backup settings"
-msgstr ""
+msgstr "Glacier-Backup-Einstellungen"
 
 #: inc/Pro/class-destination-glacier.php:103
 #: inc/Pro/class-destination-glacier.php:248
 msgid "Number of files to keep in folder. (Archives deleted before 3 months after they have been stored may cause extra costs when deleted.)"
-msgstr ""
+msgstr "Anzahl der Dateien, die im Ordner behalten werden sollen. (Archive, die vor Ablauf von 3 Monaten nach Speicherung gelöscht werden, können beim Löschen zusätzliche Kosten verursachen)."
 
 #: inc/Pro/class-destination-glacier.php:161
 msgid "No vault found!"
-msgstr ""
+msgstr "Kein Vault gefunden!"
 
 #: inc/Pro/class-destination-glacier.php:199
 #: inc/Pro/class-destination-glacier.php:281
 msgid "Vault %1$s created."
-msgstr ""
+msgstr "Vault %1$s erstellt."
 
 #: inc/Pro/class-destination-glacier.php:201
 #: inc/Pro/class-destination-glacier.php:283
 msgid "Vault %s could not be created."
-msgstr ""
+msgstr "Vault %s konnte nicht erstellt werden."
 
 #: inc/Pro/class-destination-glacier.php:222
 msgid "Select an Amazon Glacier region:"
-msgstr ""
+msgstr "Amazon Glacier-Region auswählen:"
 
 #: inc/Pro/class-destination-glacier.php:236
 msgid "Vault:"
-msgstr ""
+msgstr "Vault:"
 
 #: inc/Pro/class-destination-glacier.php:245
 msgid "New Vault:"
-msgstr ""
+msgstr "Neuer Vault:"
 
 #: inc/Pro/class-destination-glacier.php:330
 #: inc/Pro/class-destination-glacier.php:462
 #: inc/Pro/class-destination-glacier.php:479
 #: inc/Pro/class-destination-glacier.php:523
 msgid "AWS API: %s"
-msgstr ""
+msgstr "AWS-API: %s"
 
 #: inc/Pro/class-destination-glacier.php:355
 msgid "%d. Trying to send backup file to Amazon Glacier&#160;&hellip;"
-msgstr ""
+msgstr "%d. Versuche, Backup-Datei nach Amazon Glacier zu senden&#160;&hellip;"
 
 #: inc/Pro/class-destination-glacier.php:368
 msgid "Connected to Glacier vault \"%1$s\" with %2$d archives and size of %3$d"
-msgstr ""
+msgstr "Mit Glacier-Vault \"%1$s\" mit %2$d Archiven und Größe von %3$d verbunden"
 
 #: inc/Pro/class-destination-glacier.php:370
 msgid "Glacier vault \"%s\" does not exist!"
-msgstr ""
+msgstr "Glacier-Vault \"%s\" existiert nicht!"
 
 #: inc/Pro/class-destination-glacier.php:376
 msgid "Starting upload to Amazon Glacier&#160;&hellip;"
-msgstr ""
+msgstr "Beginne Upload auf Amazon Glacier&#160;&hellip;"
 
 #: inc/Pro/class-destination-glacier.php:444
 msgid "Archive ID: %s"
-msgstr ""
+msgstr "Archive-ID: %s"
 
 #: inc/Pro/class-destination-glacier.php:455 inc/Pro/class-pro.php:87
 msgid "Glacier"
-msgstr ""
+msgstr "Glacier"
 
 #: inc/Pro/class-destination-glacier.php:513
 msgid "Cannot delete archive from %s."
-msgstr ""
+msgstr "Kann Archiv nicht aus %s löschen."
 
 #: inc/Pro/class-destination-glacier.php:517
 msgid "One file deleted on vault."
 msgid_plural "%d files deleted on vault"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Eine Datei aus Vault gelöscht."
+msgstr[1] "%d Dateien aus Vault gelöscht."
 
 #: inc/Pro/class-wizard-jobimport.php:15
 msgid "XML job import"
-msgstr ""
+msgstr "XML-Auftrags-Import"
 
 #: inc/Pro/class-wizard-jobimport.php:16
 msgid "Wizard for importing BackWPup jobs from an XML file"
-msgstr ""
+msgstr "Wizard für den Import von BackWPup-Aufträgen aus einer XML-Datei"
 
 #: inc/Pro/class-wizard-jobimport.php:27 inc/Pro/class-wizard-jobimport.php:97
 msgid "Import"
-msgstr ""
+msgstr "Importieren"
 
 #: inc/Pro/class-wizard-jobimport.php:35
 msgid "Import File"
-msgstr ""
+msgstr "Datei importieren"
 
 #: inc/Pro/class-wizard-jobimport.php:36
 msgid "Upload XML job file for import"
-msgstr ""
+msgstr "Hochladen der XML-Auftragsdatei für den Import"
 
 #: inc/Pro/class-wizard-jobimport.php:40
 msgid "Select items to import"
-msgstr ""
+msgstr "Elemente für den Import auswählen"
 
 #: inc/Pro/class-wizard-jobimport.php:41
 msgid "Select which job should be imported or overwritten."
-msgstr ""
+msgstr "Wähle, welche Aufträge importiert oder überschrieben werden sollen."
 
 #: inc/Pro/class-wizard-jobimport.php:58
 msgid "Please upload your BackWPup job XML export file and we&#8217;ll import the jobs into BackWPup."
-msgstr ""
+msgstr "Bitte lade deine BackWPup-Auftrags-Exportdatei hoch und wir werden die Aufträge in BackWPup importieren. "
 
 #: inc/Pro/class-wizard-jobimport.php:61
 msgid "Choose a file from your computer:"
-msgstr ""
+msgstr "Wähle eine Datei von deinem Computer:"
 
 #: inc/Pro/class-wizard-jobimport.php:62
 msgid "Maximum size: %s"
-msgstr ""
+msgstr "Maximale Größe: %s"
 
 #: inc/Pro/class-wizard-jobimport.php:86
 msgid "Import Jobs"
-msgstr ""
+msgstr "Importiere Aufträge"
 
 #: inc/Pro/class-wizard-jobimport.php:89
 msgid "Import Type"
-msgstr ""
+msgstr "Import-Typ"
 
 #: inc/Pro/class-wizard-jobimport.php:90
 msgid "No Import"
-msgstr ""
+msgstr "Kein Import"
 
 #: inc/Pro/class-wizard-jobimport.php:93
 msgid "Overwrite"
-msgstr ""
+msgstr "Überschreiben"
 
 #: inc/Pro/class-wizard-jobimport.php:94
 msgid "Append"
-msgstr ""
+msgstr "Anhängen"
 
 #: inc/Pro/class-wizard-jobimport.php:110
 msgid "Import Config"
-msgstr ""
+msgstr "Importiere Config"
 
 #: inc/Pro/class-wizard-jobimport.php:113
 msgid "Import BackWPup configuration"
-msgstr ""
+msgstr "Importiere BackWPup-Konfiguration"
 
 #: inc/Pro/class-wizard-jobimport.php:132
 msgid "File is empty. Please upload something more substantial. This error could also caused by uploads being disabled in your php.ini or by post_max_size being defined as smaller than upload_max_filesize in php.ini."
-msgstr ""
+msgstr "Die Datei ist leer. Bitte lade etwas mit mehr Inhalt hoch. Dieser Fehler kann auch dadurch verursacht werden, dass Uploads in deiner php.ini deaktiviert sind oder dass post_max_size in der php.ini kleiner als upload_max_filesize definiert ist."
 
 #: inc/Pro/class-wizard-jobimport.php:147
 msgid "The export file could not be found at <code>%s</code>. This is likely due to an issue with permissions."
-msgstr ""
+msgstr "Die Exportdatei konnte nicht auf <code>%s</code> gefunden werden. Es liegt vermutlich ein Problem mit Berechtigungen vor. "
 
 #: inc/Pro/class-wizard-jobimport.php:157
 msgid "Sorry, there has been a phrase error."
-msgstr ""
+msgstr "Entschuldige, es gab einen Phrase-Error."
 
 #: inc/Pro/class-wizard-jobimport.php:164
 msgid "This Export file (version %s) may not be supported by this version of the importer."
-msgstr ""
+msgstr "Diese Exportdatei (Version %s) wird möglicherweise von dieser Version des Importers nicht unterstützt."
 
 #: inc/Pro/class-wizard-jobimport.php:173
 msgid "This is not a BackWPup XML file"
-msgstr ""
+msgstr "Dies ist keine BackWPup-XML-Datei"
 
 #: inc/Pro/class-wizard-jobimport.php:264
 msgid "Job %1$s with id %2$d imported"
-msgstr ""
+msgstr "Auftrag %1$s mit ID %2$d importiert"
 
 #: inc/Pro/class-wizard-jobimport.php:279
 msgid "BackWPup config imported"
-msgstr ""
+msgstr "BackWPup-Config importiert"
 
 #: inc/Pro/class-page-support.php:27
 msgid "E-mail address is required."
-msgstr ""
+msgstr "E-Mail-Adresse erforderlich."
 
 #: inc/Pro/class-page-support.php:43
 msgid "support@backwpup.com"
-msgstr ""
+msgstr "support@backwpup.com"
 
 #: inc/Pro/class-page-support.php:51
 msgid "Message has been sent to support. We will get back to you shortly."
-msgstr ""
+msgstr "Die Nachricht wurde an den Support gesendet. Wir werden uns bald bei dir melden. "
 
 #: inc/Pro/class-page-support.php:84
 msgid "Contact BackWPup Support"
-msgstr ""
+msgstr "BackWPup-Support kontaktieren"
 
 #: inc/Pro/class-page-support.php:86
 msgid "Fill out the form below to contact BackWPup support. We will get back to you as soon as possible."
-msgstr ""
+msgstr "Fülle das Formular unten aus, um den BackWPup-Support zu kontaktieren. Wir werden uns so schnell wie möglich bei dir melden."
 
 #: inc/Pro/class-page-support.php:94
 msgid "Name:"
-msgstr ""
+msgstr "Name:"
 
 #: inc/Pro/class-page-support.php:112
 msgid "E-mail adress:"
-msgstr ""
+msgstr "E-mail-Adresse:"
 
 #: inc/Pro/class-page-support.php:122
 msgid "Subject:"
-msgstr ""
+msgstr "Betreff:"
 
 #: inc/Pro/class-page-support.php:131
 msgid "Message:"
-msgstr ""
+msgstr "Nachricht:"
 
 #: inc/Pro/class-page-support.php:140
 msgid "Send debug info:"
-msgstr ""
+msgstr "Sende Debug-Information:"
 
 #: inc/Pro/class-page-support.php:149
 msgid "Select log to attach"
-msgstr ""
+msgstr "Wähle Log zum Anhängen"
 
 #: inc/Pro/class-page-support.php:178
 msgid "No logs could be found. If you want to attach a log, please <a href=\"%s\">run a job first</a>."
-msgstr ""
+msgstr "Es konnten keine Logs gefunden werden. Wenn du ein Log anhängen möchtest, <a href=\"%s\">führe bitte zuerst einen Job aus</a>."
 
 #: inc/Pro/class-page-support.php:184
 msgid "Log folder not readable."
-msgstr ""
+msgstr "Log-Ordner nicht lesbar."
 
 #: inc/Pro/class-page-support.php:191
 msgid "Send Message"
-msgstr ""
+msgstr "Nachricht senden"
 
 #: inc/Pro/class-page-support.php:227
 msgid "1 error"
 msgid_plural "%d errors"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "1 Fehler"
+msgstr[1] "%d Fehler"
 
 #: inc/Pro/class-page-support.php:233
 msgctxt "1 error and 1 warning"
 msgid "and"
-msgstr ""
+msgstr "und"
 
 #: inc/Pro/class-page-support.php:236
 msgid "1 warning"
 msgid_plural "%d warnings"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "1 Warnung"
+msgstr[1] "%d Warnungen"
 
 #: inc/Pro/class-page-support.php:241
 msgid "no errors"
-msgstr ""
+msgstr "Keine Fehler"
 
 #. Translators: $1 is the name of the plugin
 #: inc/Pro/class-page-restore.php:211
 msgid "%s &rsaquo; Restore"
-msgstr ""
+msgstr "%s &rsaquo; Wiederherstellen"
 
 #: inc/Pro/class-destination-ftp.php:29
 msgid "Hostname:"
-msgstr ""
+msgstr "Host-Name:"
 
 #: inc/Pro/class-destination-ftp.php:41 inc/Pro/class-destination-rsc.php:23
 msgid "Username:"
-msgstr ""
+msgstr "Username:"
 
 #: inc/Pro/class-destination-ftp.php:53
 msgid "Folder on server:"
-msgstr ""
+msgstr "Ordner auf Server:"
 
 #: inc/Pro/Settings/AjaxEncryptionKeyHandler.php:88
 msgid "Your Symmetric key has been successful generated."
-msgstr ""
+msgstr "Dein symmetrischer Schlüssel wurde erfolgreich generiert. "
 
 #: inc/Pro/Settings/AjaxEncryptionKeyHandler.php:97
 msgid "There was a problem during the generation of symmetric key."
-msgstr ""
+msgstr "Es gab ein Problem bei der Generierung des symmetrischen Schlüssels. "
 
 #: inc/Pro/Settings/AjaxEncryptionKeyHandler.php:117
 msgid "There was a problem during the generation of asymmetric keys."
-msgstr ""
+msgstr "Es gab ein Problem bei der Generierung des asymmetrischen Schlüssels."
 
 #: inc/Pro/Settings/AjaxEncryptionKeyHandler.php:132
 msgid "Your Asymmetric key have been successful generated."
-msgstr ""
+msgstr "Dein asymmetrischer Schlüssel wurde erfolgreich generiert. "
 
 #: inc/Pro/Settings/AjaxEncryptionKeyHandler.php:151
 msgid "No public or private key provided. Cannot validate the encryption keys."
-msgstr ""
+msgstr "Kein öffentlicher oder privater Schlüssel bereitgestellt. Kann die Encryption-Schlüssel nicht validieren."
 
 #: inc/Pro/Settings/AjaxEncryptionKeyHandler.php:168
 msgid "Validate asymmetric keys failed."
-msgstr ""
+msgstr "Validierung der asymmetrischen Schlüssel fehlgeschlagen"
 
 #: inc/Pro/Settings/AjaxEncryptionKeyHandler.php:174
 msgid "Validate asymmetric keys passed."
-msgstr ""
+msgstr "Validierung der asymmetrischen Schlüssel erfolgreich. "
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:25
 msgid "Encryption Type"
-msgstr ""
+msgstr "Verschlüsselungstyp"
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:33
 msgid "Encryption Key"
-msgstr ""
+msgstr "Encryption-Schlüssel"
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:60
 msgid "Symmetric (public key only)"
-msgstr ""
+msgstr "Symmetrisch (nur öffentlicher Schlüssel)"
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:66
 msgid "Generate a single unique 256-bit key. This is a one time option, key cannot be changed and new keys cannot be created."
-msgstr ""
+msgstr "Generiere einen einzelnen, einzigartigen 265-bit-Schlüssel. Dies ist eine einmalige Option, der Schlüssel kann nicht geändert werden und neue Schlüssel können nicht erstellt werden."
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:77
 msgid "Note: Download the encryption key to be able to restore the backups using the standalone application."
-msgstr ""
+msgstr "Hinweis: Lade den Encryption-Schlüssel herunter, um die Backups durch die Standalone-Anwendung wiederherstellen zu können."
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:96
 msgid "Asymmetric (public and private key)"
-msgstr ""
+msgstr "Asymmetrisch (öffentlicher und privater Schlüssel)"
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:100
 msgid "Generate a RSA public/private key pair (more secure)."
-msgstr ""
+msgstr "Generiere ein öffentliches/privates RSA-Schlüsselpaar (sicherer). "
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:104
 msgid "You can create as many key pairs as you want, but they will override the previous one.”"
-msgstr ""
+msgstr "Du kannst so viele Schlüsselpaare erstellen, wie du möchtest, aber sie überschreiben die vorherigen."
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:114
 msgid "Note: You will be asked to download the keys for safe storage. The plugin does not keep a copy of the private key, so if you lose this, your data cannot be decrypted!"
-msgstr ""
+msgstr "Hinweis: Du wirst aufgefordert werden, die Schlüssel zur sicheren Aufbewahrung herunterzuladen. Das Plugin bewahrt keine Kopie des privaten Schlüssels auf. Wenn du diesen also verlierst, können deine Daten nicht entschlüsselt werden!"
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:126
 msgid "You can also <strong>Validate</strong> that you have the correct private key for the given public key."
-msgstr ""
+msgstr "Du kannst auch <strong>Validieren</strong>, dass du den richtigen privaten Schlüssel für den angegebenen öffentlichen Schlüssel hast."
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:162
 msgid "Generate Key"
-msgstr ""
+msgstr "Schlüssel generieren"
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:171
 msgid "Download Key"
-msgstr ""
+msgstr "Schlüssel herunterladen"
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:191
 msgid "Generate Key Pair"
-msgstr ""
+msgstr "Schlüsselpaar generieren"
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:198
 #: inc/Pro/Settings/EncryptionSettingsView.php:232
 msgid "Validate"
-msgstr ""
+msgstr "Validieren"
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:213
 msgid "Enter your private key below to verify it will work with the provided public key."
-msgstr ""
+msgstr "Gib deinen privaten Schlüssel unten an, um sicherzustellen, dass er mit dem bereitgestellten öffentlichen Schlüssel funktioniert. "
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:219
 msgid "The private key will not be stored, so you must still securely store it yourself."
-msgstr ""
+msgstr "Der private Schlüssel wird nicht gespeichert, du musst ihn also selbst sicher aufbewahren."
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:227
 #: inc/Pro/Settings/EncryptionSettingsView.php:263
 msgid "Private Key"
-msgstr ""
+msgstr "Privater Schlüssel"
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:245
 msgid "Your keys are being generated. Please hold on &hellip;"
-msgstr ""
+msgstr "Alle Schlüssel werden generiert. Bitte warten &hellip;"
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:251
 msgid "Public Key"
-msgstr ""
+msgstr "Öffentlicher Schlüssel"
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:258
 msgid "Download Public Key"
-msgstr ""
+msgstr "Öffentlichen Schlüssel herunterladen"
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:270
 msgid "Download Private Key"
-msgstr ""
+msgstr "Privaten Schlüssel herunterladen"
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:277
 msgid "Please download at least the private key you entered above. The plugin will not store this key, and without it your backups cannot be decrypted."
-msgstr ""
+msgstr "Bitte lade mindestens den privaten Schlüssel herunter, den du oben eingegeben hast. Das Plugin speichert diesen Schlüssel nicht, und ohne ihn können deine Backups nicht entschlüsselt werden."
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:284
 msgid "Click the button below to use the generated keys."
-msgstr ""
+msgstr "Klicke den Button unten, um die generierten Schlüssel zu nutzen. "
 
 #: inc/Pro/Settings/EncryptionSettingsView.php:288
 msgid "Use These Keys"
-msgstr ""
+msgstr "Diese Schlüssel nutzen"
 
 #: inc/Pro/class-wizard-systemtest.php:18
 msgid "System Test"
-msgstr ""
+msgstr "Systemtest"
 
 #: inc/Pro/class-wizard-systemtest.php:19
 msgid "Wizard to test if BackWPup can work properly"
-msgstr ""
+msgstr "Wizard zum Testen, ob BackWPup ordnungsgemäß funktionieren kann"
 
 #: inc/Pro/class-wizard-systemtest.php:30
 msgid "Run tests"
-msgstr ""
+msgstr "Tests durchführen"
 
 #: inc/Pro/class-wizard-systemtest.php:38
 msgid "Environment"
-msgstr ""
+msgstr "Umgebung"
 
 #: inc/Pro/class-wizard-systemtest.php:39
 msgid "System Environment"
-msgstr ""
+msgstr "Systemumgebung"
 
 #: inc/Pro/class-wizard-systemtest.php:49
 msgid "Test if BackWPup can work without problems."
-msgstr ""
+msgstr "Testen, ob BackWPup ohne Probleme funktionieren kann"
 
 #: inc/Pro/class-destination-msazure.php:22
 msgid "Account Name:"
-msgstr ""
+msgstr "Account-Name:"
 
 #: inc/Pro/class-destination-msazure.php:26
 #: inc/Pro/class-destination-rsc.php:38
 msgid "Container:"
-msgstr ""
+msgstr "Container:"
 
 #: inc/Pro/class-destination-msazure.php:33
 #: inc/Pro/class-destination-rsc.php:47
 msgid "Create container:"
-msgstr ""
+msgstr "Erstelle Container:"
 
 #: inc/Pro/class-destination-msazure.php:35
 #: inc/Pro/class-destination-rsc.php:49
 msgid "Folder in container:"
-msgstr ""
+msgstr "Ordner im Container:"
 
 #: inc/Pro/class-destination-msazure.php:178
 msgid "%d. Trying to sync files with Microsoft Azure (Blob) &hellip;"
-msgstr ""
+msgstr "%d. Versuche, Dateien mit Microsoft Azure (Blob) zu synchronisieren &hellip;"
 
 #: inc/Pro/class-destination-msazure.php:214
 msgid "Retrieving file list from MS Azure."
-msgstr ""
+msgstr "Beziehe Dateiliste von Microsoft Azure."
 
 #: inc/Pro/class-destination-msazure.php:237
 msgid "Upload changed files to MS Azure."
-msgstr ""
+msgstr "Lade veränderte Dateien zu MS Azure hoch."
 
 #: inc/Pro/class-destination-msazure.php:249
 msgid "File %s uploaded to MS Azure."
-msgstr ""
+msgstr "Datei %s zu MS Azure hochgeladen."
 
 #: inc/Pro/class-destination-msazure.php:275
 msgid "Extra file %s uploaded to MS Azure."
-msgstr ""
+msgstr "Extra-Datei %s zu MS Azure hochgeladen."
 
 #: inc/Pro/class-destination-msazure.php:288
 msgid "Delete nonexistent files on MS Azure."
-msgstr ""
+msgstr "Lösche nicht existente Dateien von MS Azure."
 
 #: inc/Pro/class-destination-msazure.php:296
 msgid "File %s deleted from MS Azure."
-msgstr ""
+msgstr "Datei %s von Microsoft Azure gelöscht."
 
 #: inc/Pro/class-destination-rsc.php:26
 msgid "API Key:"
-msgstr ""
+msgstr "API-Schlüssel:"
 
 #: inc/Pro/class-destination-rsc.php:29
 msgid "Select region:"
-msgstr ""
+msgstr "Region auswählen:"
 
 #: inc/Pro/class-destination-rsc.php:153
 msgid "%d. Trying to sync files to Rackspace cloud&#160;&hellip;"
-msgstr ""
+msgstr "%d. Versuche, Dateien mit Rackspace Cloud zu synchronisieren&#160;&hellip;"
 
 #: inc/Pro/class-destination-rsc.php:177
 msgid "Connected to Rackspace cloud files container %s."
-msgstr ""
+msgstr "Verbindung zu Rackspace Cloud Datei-Container hersgestellt %s."
 
 #: inc/Pro/class-destination-rsc.php:191
 msgid "Retrieving files list from Rackspace Cloud."
-msgstr ""
+msgstr "Beziehe Dateiliste von RackSpace-Cloud."
 
 #: inc/Pro/class-destination-rsc.php:222
 msgid "Upload changed files to Rackspace Cloud."
-msgstr ""
+msgstr "Lade veränderte Dateien zu Rackspace Cloud hoch."
 
 #: inc/Pro/class-destination-rsc.php:240
 msgid "File %s uploaded to Rackspace Cloud."
-msgstr ""
+msgstr "Datei %s zu Rackspace Cloud hochgeladen."
 
 #: views/pro/restore/steps/step3_action.php:18
 msgid "Database Name"
-msgstr ""
+msgstr "Datenbank-Name"
 
 #: views/pro/restore/steps/step3_action.php:24
 msgid "Database User"
-msgstr ""
+msgstr "Datenbank-User:"
 
 #: views/pro/restore/steps/step3_action.php:30
 msgid "Database Password"
-msgstr ""
+msgstr "Datenbank-Passwort:"
 
 #: views/pro/restore/steps/step3_action.php:38
 msgid "Database Charset"
-msgstr ""
+msgstr "Datenbank-Charset:"
 
 #: views/pro/restore/steps/step3_action.php:44 inc/class-page-jobs.php:170
 msgid "Edit"
@@ -2468,93 +2468,93 @@ msgstr "Bearbeiten"
 
 #: views/pro/restore/steps/step3_action.php:48
 msgid "Test Connection"
-msgstr ""
+msgstr "Tesverbindung"
 
 #: views/pro/restore/steps/step3_action.php:53
 msgid "Continue"
-msgstr ""
+msgstr "Fortfahren"
 
 #: views/pro/restore/steps/step2_action.php:18
 #: views/pro/restore/steps/step2_top.php:6
 msgid "Full Restore"
-msgstr ""
+msgstr "Vollständige Wiederherstellung"
 
 #: views/pro/restore/steps/step2_action.php:24
 #: views/pro/restore/steps/step2_top.php:16
 msgid "Database Only"
-msgstr ""
+msgstr "Nur Datenbank"
 
 #: views/pro/restore/steps/step2_action.php:28
 msgid "Restore Database."
-msgstr ""
+msgstr "Datenbank wiederherstellen."
 
 #: views/pro/restore/steps/step2_action.php:40
 msgid "There seems to be a problem with the archive. It is neither an archive nor a SQL file. Try again and repeat the upload."
-msgstr ""
+msgstr "Es scheint ein Problem mit dem Archiv zu geben. Es ist weder ein Archiv noch eine SQL-Datei. Versuche es erneut und wiederhole den Upload."
 
 #: views/pro/restore/steps/step1_top.php:2
 msgid "Backup Upload"
-msgstr ""
+msgstr "Backup-Upload"
 
 #: views/pro/restore/steps/step1_top.php:5
 msgid "Welcome to BackWPup Restore. This tool helps you to restore a backup of your WordPress installation. Each step of the restore process will be explained in this box to get you quickly running."
-msgstr ""
+msgstr "Willkommen zur BackWPup-Wiederherstellung. Dieses Tool hilft dir dabei, deine WordPress-Installation wiederherzustellen. Jeder Schritt des Wiederherstellungsprozesses wird in dieser Box erklärt, um dir die Arbeit zu erleichtern. "
 
 #: views/pro/restore/steps/step1_top.php:10
 msgid "The first step is to upload a backup file. You can simply drag'n'drop a ZIP file of your backup into the box below or click on the `Select Archive` button and select the file using the file explorer."
-msgstr ""
+msgstr "Der erste Schritt besteht darin, eine Backup-Datei hochzuladen. Du kannst einfach eine ZIP-Datei deines Backups per Drag'n'Drop in das Feld unten ziehen oder auf die Schaltfläche `Archiv auswählen` klicken und die Datei über den Datei-Explorer auswählen."
 
 #: views/pro/restore/steps/step1_top.php:14
 msgid "The upload of the file should start automatically and you will be lead to the next step."
-msgstr ""
+msgstr "Der Upload der Datei sollte automatisch starten und du wirst zum nächsten Schritt weitergeleitet."
 
 #: views/pro/restore/steps/step1_top.php:17
 msgid "Note: Only backups done with BackWPup can be restored."
-msgstr ""
+msgstr "Hinweis: Nur Backups, die mit BackWPup erstellt wurden, können wiederhergestellt werden."
 
 #: views/pro/restore/steps/step4_action.php:8
 msgid "Restore Progress."
-msgstr ""
+msgstr "Wiederherstellungs-Fortschritt."
 
 #: views/pro/restore/steps/step4_action.php:19
 msgid "Start"
-msgstr ""
+msgstr "Starten"
 
 #: views/pro/restore/steps/step2_top.php:2
 msgid "Select Strategy"
-msgstr ""
+msgstr "Strategie auswählen"
 
 #: views/pro/restore/steps/step2_top.php:4
 msgid "This page provides two options you can choose from. Your decision affects the behavior of the restore process and decides which files are going to be restored."
-msgstr ""
+msgstr "Auf dieser Seite stehen dir zwei Optionen zur Verfügung. Deine Entscheidung beeinflusst das Verhalten des Wiederherstellungsprozesses und entscheidet, welche Dateien wiederhergestellt werden."
 
 #: views/pro/restore/steps/step2_top.php:10
 msgid "This option restores everything. Your database as well as all files within the backup are restored. The backup usually holds files from your <code>wp-content/</code> directory."
-msgstr ""
+msgstr "Diese Option stellt alles wieder her. Deine Datenbank sowie alle Dateien innerhalb des Backups werden wiederhergestellt. Das Backup enthält normalerweise Dateien aus deinem <code>wp-content/</code>-Verzeichnis."
 
 #: views/pro/restore/steps/step2_top.php:17
 msgid "The second option is a database only restore. Choosing this option will restore only the database dump. No files will be restored."
-msgstr ""
+msgstr "Die zweite Option ist eine reine Datenbankwiederherstellung. Wenn du diese Option wählst, wird nur der Datenbank-Dump wiederhergestellt. Es werden keine Dateien wiederhergestellt."
 
 #: views/pro/restore/steps/step2_top.php:20
 msgid "Note: Only <strong>Full Restore</strong> can be done, if everything is also included in the zip file. If your zip file is only including a database, then only a <strong>Database only</strong> restore can be made."
-msgstr ""
+msgstr "Es kann nur eine <strong>Vollständige Wiederherstellung</strong> durchgeführt werden, wenn auch alles in der Zip-Datei enthalten ist. Wenn deine Zip-Datei nur eine Datenbank enthält, dann kann <strong>nur die Datenbank</strong> wiederhergestellt werden."
 
 #: views/pro/restore/steps/step1_action.php:27
 msgid "Select Archive"
-msgstr ""
+msgstr "Archiv auswählen"
 
 #: views/pro/restore/steps/step1_action.php:28
 msgid "or"
-msgstr ""
+msgstr "oder"
 
 #: views/pro/restore/steps/step1_action.php:29
 msgid "Drop file here"
-msgstr ""
+msgstr "Datei hierhin ziehen"
 
 #: views/pro/restore/steps/step1_action.php:32
 msgid "Supported archive format zip,tar,tar.gz"
-msgstr ""
+msgstr "Unterstütztes Dateiformat zip,tar,tar.gz"
 
 #: views/pro/restore/steps/step4_top.php:2 inc/class-page-backups.php:302
 #: inc/Pro/class-pro.php:240 inc/Pro/class-pro.php:241
@@ -2563,42 +2563,42 @@ msgstr "Restore"
 
 #: views/pro/restore/steps/step4_top.php:5
 msgid "You reached the last step. Now you're ready to restore the data. Simply press the <strong>Start</strong> button and the restore starts."
-msgstr ""
+msgstr "Du hast den letzten Schritt erreicht. Jetzt bist du bereit, die Daten wiederherzustellen. Drücke einfach die Taste <strong>Starten</strong> und die Wiederherstellung beginnt."
 
 #: views/pro/restore/steps/step3_top.php:2
 msgid "Database Settings"
-msgstr ""
+msgstr "Datenbank-Einstellungen"
 
 #: views/pro/restore/steps/step3_top.php:4
 msgid "Before the actually restore can take place you need to tell us some information about your database. Probably, these information are the same as your WordPress database. The restore will overwrite all information within this database. So make sure you choose the correct database."
-msgstr ""
+msgstr "Bevor die eigentliche Wiederherstellung stattfinden kann, musst du uns einige Informationen zu deiner Datenbank geben. Wahrscheinlich sind diese Informationen die gleichen wie in deiner WordPress-Datenbank. Bei der Wiederherstellung werden alle Informationen innerhalb dieser Datenbank überschrieben. Stellen also sicher, dass du die richtige Datenbank auswählst."
 
 #: views/pro/restore/steps/step3_top.php:6
 msgid ""
 "You can use the <strong>Test Connection</strong> button below to test, you guessed it, your connection to the database.\n"
 "\t\t\t\tIf everything is fine a green message box will appear. Otherwise, a red message box will tell you more about the problem.\n"
 "\t\t\t\tYou can only continue when a working connection to the database could be established."
-msgstr ""
+msgstr "Du kannst die Schaltfläche <strong>Verbindung testen</strong> unten verwenden, um die Verbindung zur Datenbank zu testen. Wenn alles in Ordnung ist, wird eine grüne Meldung angezeigt. Andernfalls informiert eine rote Meldung über bestehende Probleme. Du kannst erst fortfahren, wenn eine funktionierende Verbindung zur Datenbank hergestellt werden konnte."
 
 #: views/pro/restore/steps/step3_top.php:13
 msgid "Having trouble getting your database connection settings? <a href=\"https://backwpup.com/docs/restore-database-connection-settings/\" target=\"_blank\">Go to documentation</a> to get more information."
-msgstr ""
+msgstr "Du hast Probleme mit den Einstellungen für deine Datenbankverbindung? <a href=\"https://backwpup.de/doku/restore-zugangsdaten-datenbankverbindung/\" target=\"_blank\">Sieh dir dieses Tutorial an</a>, um weitere Informationen zu erhalten."
 
 #: views/pro/restore/steps/step5_top.php:4
 msgid "Success"
-msgstr ""
+msgstr "Erfolg"
 
 #: views/pro/restore/steps/step5_top.php:9
 msgid "Your restore was successful and everything should be back to normal."
-msgstr ""
+msgstr "Die Wiederherstellung war erfolgreich und alles sollte nun wieder wie gewohnt funktionieren."
 
 #: views/pro/restore/steps/step5_top.php:22
 msgid "Restore Report"
-msgstr ""
+msgstr "Wiederherstellungs-Report"
 
 #: views/pro/restore/steps/step5_top.php:27
 msgid "Seems there was some error during the restore that need manual action."
-msgstr ""
+msgstr "Es scheint, dass bei der Wiederherstellung ein Fehler aufgetreten ist, der einen manuellen Eingriff erfordert."
 
 #: inc/Notice/PromoterView.php:40
 msgid "Don't show again"
@@ -5446,7 +5446,7 @@ msgstr "FEHLER"
 
 #. Plugin Name of the plugin
 msgid "BackWPup {{%TYPE%}}"
-msgstr ""
+msgstr "BackWPup {{%TYPE%}}"
 
 #. Plugin URI of the plugin
 #: inc/class-jobtype-wpplugin.php:15 inc/class-page-about.php:365
@@ -5560,8 +5560,8 @@ msgstr "BackWPup benötigt PHP Version %$1s oder höher mit spl Erweiterung und 
 
 #: views/pro/restore/steps/step3_action.php:6
 msgid "Database Connection Settings."
-msgstr ""
+msgstr "Einstellungen der Datenbankverbindnung"
 
 #: views/pro/restore/steps/step3_action.php:12
 msgid "Database Host"
-msgstr ""
+msgstr "Datenbank-Host"

@@ -1,12 +1,6 @@
 <?php
-/**
- *
- */
 class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 
-	/**
-	 *
-	 */
 	public function __construct() {
 
 		$this->info[ 'ID' ]          = 'DBDUMP';
@@ -111,7 +105,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 				</td>
 			</tr>
         </table>
-		<?php
+<?php
 	}
 
 
@@ -262,9 +256,6 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 		return TRUE;
 	}
 
-	/**
-	 *
-	 */
 	public function admin_print_scripts() {
 
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {

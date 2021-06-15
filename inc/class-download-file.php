@@ -64,7 +64,7 @@ final class BackWPup_Download_File implements BackWPup_Download_File_Interface {
 
 		if ( ! is_callable( $callback ) ) {
 			throw new \InvalidArgumentException(
-				sprintf( 'Invalid callback passed to %s. Callback parameter must be callable.', __CLASS__ )
+				sprintf( 'Invalid callback passed to %s. Callback parameter must be callable.', self::class )
 			);
 		}
 

@@ -26,9 +26,6 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 		return current_user_can( 'backwpup' );
 	}
 
-	/**
-	 *
-	 */
 	public function prepare_items() {
 
 		$this->items        = BackWPup_Option::get_job_ids();
@@ -69,7 +66,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 			}
 			$job_configs[ $i ][ 'type' ]    = array_shift( $job_configs[ $i ][ 'type' ] );
 			$job_configs[ $i ][ 'dest' ]    = array_shift( $job_configs[ $i ][ 'dest' ] );
-			$job_configs[ $i ][ 'next' ]    = (int) wp_next_scheduled( 'backwpup_cron', array( 'id' => $item ) );
+			$job_configs[ $i ][ 'next' ]    = (int) wp_next_scheduled( 'backwpup_cron', array( 'arg' => $item ) );
 			$job_configs[ $i ][ 'last' ]    = BackWPup_Option::get( $item, 'lastrun' );
 			$i++;
 		}
@@ -87,9 +84,6 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 
 	}
 
-	/**
-	 *
-	 */
 	public function no_items() {
 
 		_e( 'No Jobs.', 'backwpup' );
@@ -271,7 +265,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 			$r .='<div class="job-normal"' . $job_normal_hide . '>';
 		}
 		if ( BackWPup_Option::get( $item, 'activetype' ) == 'wpcron' ) {
-			if ( $nextrun = wp_next_scheduled( 'backwpup_cron', array( 'id' => $item ) ) + ( get_option( 'gmt_offset' ) * 3600 )  ) {
+			if ( $nextrun = wp_next_scheduled( 'backwpup_cron', array( 'arg' => $item ) ) + ( get_option( 'gmt_offset' ) * 3600 )  ) {
 				$r .= '<span title="' . sprintf( esc_html__( 'Cron: %s','backwpup'),BackWPup_Option::get( $item, 'cron' ) ). '">' . sprintf( __( '%1$s at %2$s by WP-Cron', 'backwpup' ) , date_i18n( get_option( 'date_format' ), $nextrun, TRUE ) , date_i18n( get_option( 'time_format' ), $nextrun, TRUE ) ) . '</span><br />';
 			} else {
 				$r .= __( 'Not scheduled!', 'backwpup' ) . '<br />';
@@ -339,9 +333,6 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 		return $r;
 	}
 
-	/**
-	 *
-	 */
 	public static function load() {
 
 		//Create Table
@@ -355,7 +346,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 				if ( is_array( $_GET[ 'jobs' ] ) ) {
 					check_admin_referer( 'bulk-jobs' );
 					foreach ( $_GET[ 'jobs' ] as $jobid ) {
-						wp_clear_scheduled_hook( 'backwpup_cron', array( 'id' => absint( $jobid ) ) );
+						wp_clear_scheduled_hook( 'backwpup_cron', array( 'arg' => absint( $jobid ) ) );
 						BackWPup_Option::delete_job( absint( $jobid ) );
 					}
 				}
@@ -472,9 +463,6 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 		self::$listtable->prepare_items();
 	}
 
-	/**
-	 *
-	 */
 	public static function admin_print_styles() {
 
 		?>
@@ -561,17 +549,11 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 		<?php
 	}
 
-	/**
-	 *
-	 */
 	public static function admin_print_scripts() {
 
 		wp_enqueue_script( 'backwpupgeneral' );
 	}
 
-	/**
-	 *
-	 */
 	public static function page() {
 
 		echo '<div class="wrap" id="backwpup-page">';

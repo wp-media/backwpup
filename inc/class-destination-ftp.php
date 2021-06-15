@@ -1,8 +1,5 @@
 <?php
 
-/**
- *
- */
 class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 
 	/**

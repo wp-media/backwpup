@@ -186,10 +186,10 @@ class BackWPup_Page_Editjob {
 				}
 				//reschedule
 				$activetype = BackWPup_Option::get( $jobid, 'activetype' );
-				wp_clear_scheduled_hook( 'backwpup_cron', array( 'id' => $jobid ) );
+				wp_clear_scheduled_hook( 'backwpup_cron', array( 'arg' => $jobid ) );
 				if ( $activetype === 'wpcron' ) {
 					$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $jobid, 'cron' ) );
-					wp_schedule_single_event( $cron_next, 'backwpup_cron', array( 'id' => $jobid ) );
+					wp_schedule_single_event( $cron_next, 'backwpup_cron', array( 'arg' => $jobid ) );
 				}
 				$easy_cron_job_id = BackWPup_Option::get( $jobid, 'easycronjobid' );
 				if ( $activetype === 'easycron' ) {
@@ -297,9 +297,6 @@ class BackWPup_Page_Editjob {
 		}
 	}
 
-	/**
-	 *
-	 */
 	public static function page() {
 
 		if ( ! empty( $_GET[ 'jobid' ] ) ) {
@@ -448,17 +445,17 @@ class BackWPup_Page_Editjob {
 								echo "<strong>" . esc_attr__( 'Replacement patterns:', 'backwpup' ) . "</strong><br />";
 								echo esc_attr__( '%d = Two digit day of the month, with leading zeros', 'backwpup' ) . '<br />';
 								echo esc_attr__( '%j = Day of the month, without leading zeros', 'backwpup' ) . '<br />';
-								echo esc_attr__( '%m = Day of the month, with leading zeros', 'backwpup' ) . '<br />';
+								echo esc_attr__( '%m = Two-digit representation of the month, with leading zeros', 'backwpup' ) . '<br />';
 								echo esc_attr__( '%n = Representation of the month (without leading zeros)', 'backwpup' ) . '<br />';
-								echo esc_attr__( '%Y = Four digit representation for the year', 'backwpup' ) . '<br />';
+								echo esc_attr__( '%Y = Four digit representation of the year', 'backwpup' ) . '<br />';
 								echo esc_attr__( '%y = Two digit representation of the year', 'backwpup' ) . '<br />';
 								echo esc_attr__( '%a = Lowercase ante meridiem (am) and post meridiem (pm)', 'backwpup' ) . '<br />';
 								echo esc_attr__( '%A = Uppercase ante meridiem (AM) and post meridiem (PM)', 'backwpup' ) . '<br />';
 								echo esc_attr__( '%B = Swatch Internet Time', 'backwpup' ) . '<br />';
 								echo esc_attr__( '%g = Hour in 12-hour format, without leading zeros', 'backwpup' ) . '<br />';
 								echo esc_attr__( '%G = Hour in 24-hour format, without leading zeros', 'backwpup' ) . '<br />';
-								echo esc_attr__( '%h = Hour in 12-hour format, with leading zeros', 'backwpup' ) . '<br />';
-								echo esc_attr__( '%H = Hour in 24-hour format, with leading zeros', 'backwpup' ) . '<br />';
+								echo esc_attr__( '%h = Two-digit hour in 12-hour format, with leading zeros', 'backwpup' ) . '<br />';
+								echo esc_attr__( '%H = Two-digit hour in 24-hour format, with leading zeros', 'backwpup' ) . '<br />';
 								echo esc_attr__( '%i = Two digit representation of the minute', 'backwpup' ) . '<br />';
 								echo esc_attr__( '%s = Two digit representation of the second', 'backwpup' ) . '<br />';
 								echo '</p>';

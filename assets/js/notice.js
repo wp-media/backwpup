@@ -1,18 +1,18 @@
 ( function ( _, $, adminpage ) {
 
-	var PromoterNotice = {
+	var Notice = {
 
 		dismiss: function ( evt ) {
 			evt.preventDefault();
 			evt.stopImmediatePropagation();
 
 			$.post( $( evt.target ).attr( 'href' ), { isAjax: 1 } );
-			this.container.remove();
+			$( evt.target ).closest( '.notice-inpsyde' ).remove();
 		},
 
 		construct: function () {
 
-			var container;
+			var $container;
 
 			_.bindAll(
 				this,
@@ -21,22 +21,20 @@
 				'addListeners'
 			);
 
-			container = document.querySelector( '#backwpup_notice_promoter_notice', {
-				useCapture: true
-			} );
+			$container = $( '.notice-inpsyde' );
 
-			if ( !container ) {
+			if ( $container.length === 0 ) {
 				return false;
 			}
 
-			this.container = container;
+			this.$container = $container;
 
 			return this;
 		},
 
 		addListeners: function () {
-			var dismisser = this.container.querySelector( '#backwpup_notice_promoter_dismiss' );
-			dismisser && dismisser.addEventListener( 'click', this.dismiss );
+			var $dismisser = this.$container.find( '.dismiss-button' );
+			$dismisser.length > 0 && $dismisser.on( 'click', this.dismiss );
 		},
 
 		init: function () {
@@ -47,7 +45,7 @@
 	};
 
 	if ( adminpage === 'toplevel_page_backwpup' ) {
-		var promoterNotice = Object.create( PromoterNotice );
-		promoterNotice.construct() && promoterNotice.init();
+		var notice = Object.create( Notice );
+		notice.construct() && notice.init();
 	}
 }( window._, window.jQuery, window.adminpage ) );

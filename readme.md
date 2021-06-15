@@ -24,6 +24,8 @@ BackWPup Free is the number 1 backup-plugin for WordPress with nearly 1.000.000 
 * Store backup to SugarSync *(needs curl)*
 * Store backup to Amazon Glacier *(needs PHP curl)*
 * Store backup to Google Drive *(needs curl)*
+* Store backup to OneDrive *(needs curl)*
+* Store backup to HiDrive *(needs curl)*
 * Send logs and backups by email
 * Multi-site support only as network admin
 

@@ -36,6 +36,9 @@ class BackWPup_Install {
 
 		delete_site_option( 'backwpup_cfg_jobziparchivemethod' );
 
+		// Delete option for Phone Home Client
+		delete_site_option( 'backwpup_cfg_phone_home_client' );
+
 		//create new options
 		if ( is_multisite() ) {
 			add_site_option( 'backwpup_jobs', array() );
@@ -50,7 +53,7 @@ class BackWPup_Install {
 		if ( ! empty( $activejobs ) ) {
 			foreach ( $activejobs as $id ) {
 				$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $id, 'cron') );
-				wp_schedule_single_event( $cron_next, 'backwpup_cron', array( 'id' => $id ) );
+				wp_schedule_single_event( $cron_next, 'backwpup_cron', array( 'arg' => $id ) );
 			}
 		}
 		$activejobs = BackWPup_Option::get_job_ids( 'activetype', 'easycron' );
@@ -135,7 +138,7 @@ class BackWPup_Install {
 
 		//only redirect if not in WP CLI environment
 		if ( ! $version_db && ! ( defined( 'WP_CLI' ) && WP_CLI ) ) {
-			wp_redirect( network_admin_url( 'admin.php' ) . '?page=backwpupabout' );
+			wp_redirect( network_admin_url( 'admin.php' ) . '?page=backwpupabout&welcome=1' );
 			die();
 		}
 
@@ -317,7 +320,7 @@ class BackWPup_Install {
 		$activejobs = BackWPup_Option::get_job_ids( 'activetype', 'wpcron' );
 		if ( ! empty( $activejobs ) ) {
 			foreach ( $activejobs as $id ) {
-				wp_clear_scheduled_hook( 'backwpup_cron', array( 'id' => $id ) );
+				wp_clear_scheduled_hook( 'backwpup_cron', array( 'arg' => $id ) );
 			}
 		}
 		wp_clear_scheduled_hook( 'backwpup_check_cleanup' );
@@ -327,27 +330,6 @@ class BackWPup_Install {
 			foreach ( $activejobs as $id ) {
 				BackWPup_EasyCron::delete( $id );
 			}
-		}
-
-		//remove roles
-		remove_role( 'backwpup_admin' );
-		remove_role( 'backwpup_helper' );
-		remove_role( 'backwpup_check' );
-
-		//remove capabilities to administrator role
-		$role = get_role( 'administrator' );
-		if ( is_object( $role ) && method_exists( $role, 'remove_cap' ) ) {
-			$role->remove_cap( 'backwpup' );
-			$role->remove_cap( 'backwpup_jobs' );
-			$role->remove_cap( 'backwpup_jobs_edit' );
-			$role->remove_cap( 'backwpup_jobs_start' );
-			$role->remove_cap( 'backwpup_backups' );
-			$role->remove_cap( 'backwpup_backups_download' );
-			$role->remove_cap( 'backwpup_backups_delete' );
-			$role->remove_cap( 'backwpup_logs' );
-			$role->remove_cap( 'backwpup_logs_delete' );
-			$role->remove_cap( 'backwpup_settings' );
-			$role->remove_cap( 'backwpup_restore' );
 		}
 
 	}

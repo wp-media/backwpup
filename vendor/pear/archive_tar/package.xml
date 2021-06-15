@@ -32,10 +32,10 @@ Also Lzma2 compressed archives are supported with xz extension.</description>
   <email>stig@php.net</email>
   <active>no</active>
  </helper>
- <date>2018-12-20</date>
- <time>20:42:18</time>
+ <date>2021-02-16</date>
+ <time>10:49:28</time>
  <version>
-  <release>1.4.4</release>
+  <release>1.4.13</release>
   <api>1.4.0</api>
  </version>
  <stability>
@@ -44,8 +44,7 @@ Also Lzma2 compressed archives are supported with xz extension.</description>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
  <notes>
-* Fix Bug #21058: Long symlinks are not supported [mrook]
- * Fix Bug #23782: Prevent phar:// files from being extracted [mrook]
+* Fix Bug #27010: Relative symlinks failing (out-of path file extraction) [mrook]
  </notes>
  <contents>
   <dir name="/">
@@ -75,6 +74,143 @@ Also Lzma2 compressed archives are supported with xz extension.</description>
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.4.12</release>
+    <api>1.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2021-01-18</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
+   <notes>
+* Fix Bug #27008: Symlink out-of-path write vulnerability (CVE-2020-36193) [mrook]
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.4.11</release>
+    <api>1.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2020-11-19</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
+   <notes>
+* Fix Bug #27002: Filename manipulation vulnerabilities (CVE-2020-28948 / CVE-2020-28949) [mrook]
+   </notes>
+  </release>
+  <release>
+    <version>
+     <release>1.4.10</release>
+     <api>1.4.0</api>
+    </version>
+    <stability>
+     <release>stable</release>
+     <api>stable</api>
+    </stability>
+    <date>2020-09-15</date>
+    <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
+    <notes>
+ * Fix block padding when the file buffer length is a multiple of 512 and smaller than Archive_Tar buffer length
+ * Don&apos;t try to copy username/groupname in chroot jail
+    </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.4.9</release>
+    <api>1.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2019-12-04</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
+   <notes>
+* Implement Feature #23861: Add option to disallow symlinks [mrook]
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.4.8</release>
+    <api>1.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2019-10-21</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
+   <notes>
+* Fix Bug #23852: PHP 7.4 - Archive_Tar-&gt;_readHeader throws deprecation [mrook]
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.4.7</release>
+    <api>1.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2019-04-08</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
+   <notes>
+* Improved performance by increasing read buffer size
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.4.6</release>
+    <api>1.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2019-02-01</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
+   <notes>
+* Improve path traversal detection for forward and backward slashes
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.4.5</release>
+    <api>1.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2019-01-02</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
+   <notes>
+* Fix Bug #23788: Relative symlinks are broken [mrook]
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.4.4</release>
+    <api>1.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2018-12-20</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
+   <notes>
+* Fix Bug #21058: Long symlinks are not supported [mrook]
+ * Fix Bug #23782: Prevent phar:// files from being extracted [mrook]
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.4.3</release>

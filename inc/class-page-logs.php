@@ -130,9 +130,6 @@ class BackWPup_Page_Logs extends WP_List_Table {
 		);
 	}
 
-	/**
-	 *
-	 */
 	function no_items() {
 
 		_e( 'No Logs.', 'backwpup' );

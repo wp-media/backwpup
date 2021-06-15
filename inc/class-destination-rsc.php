@@ -5,9 +5,6 @@
 
 use \Inpsyde\BackWPupShared\File\MimeTypeExtractor;
 
-/**
- *
- */
 class BackWPup_Destination_RSC extends BackWPup_Destinations {
 
 
@@ -403,9 +400,6 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 		return TRUE;
 	}
 
-	/**
-	 *
-	 */
 	public function edit_inline_js() {
 		?>
 		<script type="text/javascript">

@@ -22,6 +22,7 @@ jQuery( document ).ready( function ( $ ) {
 	if ( anchor.val() === '#backwpup-tab-license' ) {
 		$( '#submit' ).hide();
 		$( '#default_settings' ).hide();
+		$( 'input[name="license_submit"]' ).attr( 'type', 'submit' );
 	}
 
 	tab_wrapper_a.removeClass( 'nav-tab-active' );
@@ -45,9 +46,11 @@ jQuery( document ).ready( function ( $ ) {
 		} else if ( clickedid === '#backwpup-tab-license' ) {
 			$( '#submit' ).hide();
 			$( '#default_settings' ).hide();
+			$( 'input[name="license_submit"]' ).attr( 'type', 'submit' );
 		} else {
 			$( '#submit' ).show();
 			$( '#default_settings' ).show();
+			$( 'input[name="license_submit"]' ).attr( 'type', 'button' );
 		}
 		window.location.hash = clickedid;
 		window.scrollTo( 0, 0 );

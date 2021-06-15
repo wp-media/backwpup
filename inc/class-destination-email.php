@@ -5,9 +5,6 @@
 
 use \Inpsyde\BackWPupShared\File\MimeTypeExtractor;
 
-/**
- *
- */
 class BackWPup_Destination_Email extends BackWPup_Destinations {
 
 	/**

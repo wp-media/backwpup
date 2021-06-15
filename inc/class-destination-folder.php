@@ -146,7 +146,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 		);
 
 		if ( is_dir( $backup_folder ) ) {
-			$dir = new BackWPup_Directory( $backup_folder );
+			$dir = $this->get_backwpup_directory( $backup_folder );
 
 			foreach ( $dir as $file ) {
 				if (
@@ -154,6 +154,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 					|| $file->isDir()
 					|| $file->isLink()
 					|| in_array( $file->getFilename(), $not_allowed_files, true )
+					|| ! $this->is_backup_archive( $file->getFilename() )
 				) {
 					continue;
 				}
@@ -280,6 +281,16 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 		}
 
 		return true;
+	}
+    /**
+     * Returns new instance of BackWPup_Directory.
+     *
+     * @param string $dir  The directory to iterate.
+     *
+     * @return BackWPup_Directory
+     */
+	protected function get_backwpup_directory( $dir ) {
+		return new BackWPup_Directory( $dir );
 	}
 
 }

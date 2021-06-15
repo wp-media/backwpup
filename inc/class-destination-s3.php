@@ -455,7 +455,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
             $args['s3secretkey'] = sanitize_text_field($_POST['s3secretkey']);
             $args['s3bucketselected'] = sanitize_text_field($_POST['s3bucketselected']);
             $args['s3region'] = sanitize_text_field($_POST['s3region']);
-            $args['s3base_url'] = esc_url_raw($_POST['s3base_url']);
+            $args['s3base_url'] = backwpup_esc_url_default_secure($_POST['s3base_url'], ['http', 'https']);
             $args['s3base_region'] = sanitize_text_field($_POST['s3base_region']);
             $args['s3base_multipart'] = sanitize_text_field($_POST['s3base_multipart']);
             $args['s3base_pathstylebucket'] = sanitize_text_field($_POST['s3base_pathstylebucket']);
@@ -484,7 +484,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
                     'version' => $args['s3base_version'],
                     'signature' => $args['s3base_signature'],
                 ];
-                $aws_destination = $this->get_custom_S3_destination_object($options);
+                $aws_destination = BackWPup_S3_Destination::fromOptionArray($options);
             }
 
 			try {
@@ -557,7 +557,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			$jobid,
 			's3base_url',
 			isset( $_POST['s3base_url'] )
-				? esc_url_raw( $_POST['s3base_url'] )
+				? backwpup_esc_url_default_secure( $_POST['s3base_url'], [ 'http', 'https' ] )
 				: ''
 		);
         BackWPup_Option::update(
@@ -623,7 +623,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			        $region = BackWPup_Option::get($jobid, 's3region');
                     $aws_destination = BackWPup_S3_Destination::fromOption($region);
                 }else{
-                    $aws_destination = $this->get_custom_S3_destination_object($jobid);
+                    $aws_destination = BackWPup_S3_Destination::fromJobId($jobid);
                 }
 
 			    $s3 = $aws_destination->client(
@@ -665,7 +665,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 			        $region = BackWPup_Option::get($jobid, 's3region');
                     $aws_destination = BackWPup_S3_Destination::fromOption($region);
                 }else{
-                    $aws_destination = $this->get_custom_S3_destination_object($jobid);
+                    $aws_destination = BackWPup_S3_Destination::fromJobId($jobid);
                 }
 
 				$s3 = $aws_destination->client(
@@ -694,47 +694,6 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 		}
 
 		set_site_transient( 'backwpup_' . strtolower( $jobdest ), $files, YEAR_IN_SECONDS );
-	}
-
-	/**
-	 * Download
-	 *
-	 * @param int    $jobid
-	 * @param string $file_path
-	 * @param string $local_file_path
-	 */
-	public function file_download( $jobid, $file_path, $local_file_path = null ) {
-
-		$capability = 'backwpup_backups_download';
-		$filename   = untrailingslashit( BackWPup::get_plugin_data( 'temp' ) ) . '/' . basename( $file_path );
-		$job_id     = filter_var( $_GET['jobid'], FILTER_SANITIZE_NUMBER_INT );
-
-		$downloader = new BackWpup_Download_Handler(
-			new BackWPup_Download_File(
-				$filename,
-				function ( \BackWPup_Download_File_Interface $obj ) use ( $filename, $file_path, $job_id ) {
-
-					$factory = new BackWPup_Destination_Downloader_Factory();
-					$downloader = $factory->create(
-						'S3',
-						$job_id,
-						$file_path,
-						$filename,
-						BackWPup_Option::get( $job_id, 's3base_url' )
-					);
-					$downloader->download_by_chunks();
-
-					die();
-				},
-				$capability
-			),
-			'backwpup_action_nonce',
-			$capability,
-			'download_backup_file'
-		);
-
-		// Download the file.
-		$downloader->handle();
 	}
 
 	/**
@@ -769,7 +728,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
         if ( empty($job_object->job['s3base_url']) ) {
             $aws_destination = BackWPup_S3_Destination::fromOption($job_object->job['s3region']);
         }else{
-            $aws_destination = $this->get_custom_S3_destination_object($job_object->job['jobid']);
+            $aws_destination = BackWPup_S3_Destination::fromJobId($job_object->job['jobid']);
         }
         $s3 = $aws_destination->client(
             BackWPup_Option::get($jobid, 's3accesskey'),
@@ -877,7 +836,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
             if ( empty($job_object->job['s3base_url']) ) {
                 $aws_destination = BackWPup_S3_Destination::fromOption($job_object->job['s3region']);
             }else{
-                $aws_destination = $this->get_custom_S3_destination_object($job_object->job['jobid']);
+                $aws_destination = BackWPup_S3_Destination::fromJobId($job_object->job['jobid']);
             }
 
             $s3 = $aws_destination->client(
@@ -1011,6 +970,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 								$job_object->do_restart_time( true );
 							}
 							$job_object->update_working_data();
+                            gc_collect_cycles();
 						}
 
 						$parts = $s3->listParts(array(
@@ -1137,9 +1097,6 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 		return true;
 	}
 
-	/**
-	 *
-	 */
 	public function edit_inline_js() {
 
 		?>
@@ -1153,6 +1110,11 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 						s3bucketselected: $( 'input[name="s3bucketselected"]' ).val(),
 						s3base_url      : $( 'input[name="s3base_url"]' ).val(),
 						s3region        : $( '#s3region' ).val(),
+						s3base_region      : $( 'input[name="s3base_region"]' ).val(),
+						s3base_version      : $( 'input[name="s3base_version"]' ).val(),
+						s3base_signature      : $( 'input[name="s3base_signature"]' ).val(),
+						s3base_multipart      : $( 'input[name="s3base_multipart"]' ).is(':checked'),
+						s3base_pathstyle      : $( 'input[name="s3base_pathstyle"]' ).is(':checked'),
 						_ajax_nonce     : $( '#backwpupajaxnonce' ).val()
 					};
 					$.post( ajaxurl, data, function ( response ) {
@@ -1173,30 +1135,4 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations {
 		</script>
 		<?php
 	}
-
-    /**
-     * Get BackWPup_S3_Destination object for custom s3
-     * @param $jobIdOrOptionArr
-     * @return BackWPup_S3_Destination
-     */
-    public function get_custom_S3_destination_object($jobIdOrOptionArr)
-    {
-
-        $options = !is_array($jobIdOrOptionArr) ? [
-            'label' => __('Custom S3 destination', 'backwpup'),
-            'endpoint' => BackWPup_Option::get($jobIdOrOptionArr, 's3base_url'),
-            'region' => BackWPup_Option::get($jobIdOrOptionArr, 's3base_region'),
-            'multipart' => !empty(BackWPup_Option::get($jobIdOrOptionArr, 's3base_multipart')) ? true : false,
-            'only_path_style_bucket' => !empty(
-            BackWPup_Option::get(
-                $jobIdOrOptionArr,
-                's3base_pathstylebucket'
-            )
-            ) ? true : false,
-            'version' => BackWPup_Option::get($jobIdOrOptionArr, 's3base_version'),
-            'signature' => BackWPup_Option::get($jobIdOrOptionArr, 's3base_signature'),
-        ] : $jobIdOrOptionArr;
-
-        return BackWPup_S3_Destination::fromOptionArray($options);
-    }
 }

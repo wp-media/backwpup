@@ -18,7 +18,7 @@ class BackWPup_S3_Destination
      */
     private function __construct(array $options)
     {
-        $defaults = array(
+        $defaults = [
             'label' => __('Custom S3 destination', 'backwpup'),
             'endpoint' => '',
             'region' => '',
@@ -26,7 +26,7 @@ class BackWPup_S3_Destination
             'only_path_style_bucket' => false,
             'version' => 'latest',
             'signature' => 'v4',
-        );
+        ];
 
         $this->options = array_merge($defaults, $options);
     }
@@ -40,131 +40,132 @@ class BackWPup_S3_Destination
      */
     public static function options()
     {
-        return apply_filters('backwpup_s3_destination',
-            array(
-                'us-east-1' => array(
+        return apply_filters(
+            'backwpup_s3_destination',
+            [
+                'us-east-1' => [
                     'label' => __('Amazon S3: US Ost (Nord-Virginia)', 'backwpup'),
                     'region' => 'us-east-1',
                     'multipart' => true,
-                ),
-                'us-east-2' => array(
+                ],
+                'us-east-2' => [
                     'label' => __('Amazon S3: US Ost (Ohio)', 'backwpup'),
                     'region' => 'us-east-2',
                     'multipart' => true,
-                ),
-                'us-west-1' => array(
+                ],
+                'us-west-1' => [
                     'label' => __('Amazon S3: US West (Northern California)', 'backwpup'),
                     'region' => 'us-west-1',
                     'multipart' => true,
-                ),
-                'us-west-2' => array(
+                ],
+                'us-west-2' => [
                     'label' => __('Amazon S3: US West (Oregon)', 'backwpup'),
                     'region' => 'us-west-2',
                     'multipart' => true,
-                ),
-                'ca-central-1' => array(
+                ],
+                'ca-central-1' => [
                     'label' => __('Amazon S3: Canada (Zentral)', 'backwpup'),
                     'region' => 'ca-central-1',
                     'multipart' => true,
-                ),
-                'eu-west-1' => array(
+                ],
+                'eu-west-1' => [
                     'label' => __('Amazon S3: EU (Ireland)', 'backwpup'),
                     'region' => 'eu-west-1',
                     'multipart' => true,
-                ),
-                'eu-west-2' => array(
+                ],
+                'eu-west-2' => [
                     'label' => __('Amazon S3: EU (London)', 'backwpup'),
                     'region' => 'eu-west-2',
                     'multipart' => true,
-                ),
-                'eu-west-3' => array(
+                ],
+                'eu-west-3' => [
                     'label' => __('Amazon S3: EU (Paris)', 'backwpup'),
                     'region' => 'eu-west-1',
                     'multipart' => true,
-                ),
-                'eu-central-1' => array(
+                ],
+                'eu-central-1' => [
                     'label' => __('Amazon S3: EU (Germany)', 'backwpup'),
                     'region' => 'eu-central-1',
                     'multipart' => true,
-                ),
-                'eu-north-1' => array(
+                ],
+                'eu-north-1' => [
                     'label' => __('Amazon S3: EU (Stockholm)', 'backwpup'),
                     'region' => 'eu-north-1',
                     'multipart' => true,
-                ),
-                'ap-south-1' => array(
+                ],
+                'ap-south-1' => [
                     'label' => __('Amazon S3: Asia Pacific (Mumbai)', 'backwpup'),
                     'region' => 'ap-south-1',
                     'multipart' => true,
-                ),
-                'ap-northeast-1' => array(
+                ],
+                'ap-northeast-1' => [
                     'label' => __('Amazon S3: Asia Pacific (Tokyo)', 'backwpup'),
                     'region' => 'ap-northeast-1',
                     'multipart' => true,
-                ),
-                'ap-northeast-2' => array(
+                ],
+                'ap-northeast-2' => [
                     'label' => __('Amazon S3: Asia Pacific (Seoul)', 'backwpup'),
                     'region' => 'ap-northeast-2',
                     'multipart' => true,
-                ),
-                'ap-east-1' => array(
+                ],
+                'ap-east-1' => [
                     'label' => __('Amazon S3: Asia Pacific (Hongkong)', 'backwpup'),
                     'region' => 'ap-east-1',
                     'multipart' => true,
-                ),
-                'ap-southeast-1' => array(
+                ],
+                'ap-southeast-1' => [
                     'label' => __('Amazon S3: Asia Pacific (Singapore)', 'backwpup'),
                     'region' => 'ap-southeast-1',
                     'multipart' => true,
-                ),
-                'ap-southeast-2' => array(
+                ],
+                'ap-southeast-2' => [
                     'label' => __('Amazon S3: Asia Pacific (Sydney)', 'backwpup'),
                     'region' => 'ap-southeast-2',
                     'multipart' => true,
-                ),
-                'sa-east-1' => array(
+                ],
+                'sa-east-1' => [
                     'label' => __('Amazon S3: South America (Sao Paulo)', 'backwpup'),
                     'region' => 'sa-east-1',
                     'multipart' => true,
-                ),
-                'cn-north-1' => array(
+                ],
+                'cn-north-1' => [
                     'label' => __('Amazon S3: China (Beijing)', 'backwpup'),
                     'region' => 'cn-north-1',
                     'multipart' => true,
-                ),
-                'cn-northwest-1' => array(
+                ],
+                'cn-northwest-1' => [
                     'label' => __('Amazon S3: China (Ningxia)', 'backwpup'),
                     'region' => 'cn-northwest-1',
                     'multipart' => true,
-                ),
-                'google-storage' => array(
+                ],
+                'google-storage' => [
                     'label' => __('Google Storage: EU (Multi-Regional)', 'backwpup'),
                     'region' => 'EU',
                     'endpoint' => 'https://storage.googleapis.com',
-                ),
-                'google-storage-us' => array(
+                ],
+                'google-storage-us' => [
                     'label' => __('Google Storage: USA (Multi-Regional)', 'backwpup'),
                     'region' => 'US',
                     'endpoint' => 'https://storage.googleapis.com',
-                ),
-                'google-storage-asia' => array(
+                ],
+                'google-storage-asia' => [
                     'label' => __('Google Storage: Asia (Multi-Regional)', 'backwpup'),
                     'region' => 'ASIA',
                     'endpoint' => 'https://storage.googleapis.com',
-                ),
-                'dreamhost' => array(
+                ],
+                'dreamhost' => [
                     'label' => __('Dream Host Cloud Storage', 'backwpup'),
                     'endpoint' => 'https://objects-us-west-1.dream.io',
-                ),
-                'digital-ocean-ams3' => array(
+                ],
+                'digital-ocean-ams3' => [
                     'label' => __('DigitalOcean: AMS3', 'backwpup'),
                     'endpoint' => 'https://ams3.digitaloceanspaces.com',
-                ),
-                'scaleway-ams' => array(
+                ],
+                'scaleway-ams' => [
                     'label' => __('Scaleway: AMS', 'backwpup'),
                     'endpoint' => 'https://s3.nl-ams.scw.cloud',
-                ),
-            )
+                ],
+            ]
         );
     }
 
@@ -194,6 +195,28 @@ class BackWPup_S3_Destination
     }
 
     /**
+     * Get the AWS destination class from job ID
+     *
+     * @param int $jobId The job ID to get options from
+     *
+     * @return self
+     */
+    public static function fromJobId($jobId)
+    {
+        $options = [
+            'label' => __('Custom S3 destination', 'backwpup'),
+            'endpoint' => BackWPup_Option::get($jobId, 's3base_url'),
+            'region' => BackWPup_Option::get($jobId, 's3base_region'),
+            'multipart' => !empty(BackWPup_Option::get($jobId, 's3base_multipart')) ? true : false,
+            'only_path_style_bucket' => !empty(BackWPup_Option::get($jobId, 's3base_pathstylebucket')) ? true : false,
+            'version' => BackWPup_Option::get($jobId, 's3base_version'),
+            'signature' => BackWPup_Option::get($jobId, 's3base_signature'),
+        ];
+
+        return self::fromOptionArray($options);
+    }
+
+    /**
      * Get the Amazon S3 Client
      *
      * @param $accessKey
@@ -203,23 +226,22 @@ class BackWPup_S3_Destination
      */
     public function client($accessKey, $secretKey)
     {
-
-        $s3Options = array(
+        $s3Options = [
             'signature' => $this->signature(),
-            'credentials' => array(
+            'credentials' => [
                 'key' => $accessKey,
                 'secret' => BackWPup_Encryption::decrypt($secretKey),
-            ),
+            ],
             'region' => $this->region(),
-            'http' => array(
+            'http' => [
                 'verify' => BackWPup::get_plugin_data('cacert'),
-            ),
+            ],
             'version' => $this->version(),
-        );
+        ];
 
         if ($this->endpoint()) {
             $s3Options['endpoint'] = $this->endpoint();
-            if ( ! $this->region()) {
+            if (! $this->region()) {
                 $s3Options['bucket_endpoint'] = true;
             }
         }

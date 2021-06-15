@@ -475,29 +475,25 @@ class BackWPup_MySQLDump {
 	 */
 	public function dump_table( $table, $start = 0, $length = 0 ) {
 
-		if ( ! is_numeric( $start ) ) {
+		if ( ! is_numeric( $start ) || $start < 0 ) {
 			throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Start for table backup is not correctly set: %1$s', 'backwpup' ), $start ) );
 		}
 
-		if ( ! is_numeric( $length ) ) {
+		if ( ! is_numeric( $length ) || $length < 0 ) {
 			throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Length for table backup is not correctly set: %1$s', 'backwpup' ), $length ) );
 		}
 
 		$done_records = 0;
 
-		if ( $this->table_types[ $table ] == 'VIEW' ) {
+		if ( $this->get_table_type_for( $table ) === 'VIEW' ) {
 			return $done_records;
 		}
 
 		//get data from table
-		if ( $length == 0 && $start == 0 ) {
-			$res = $this->mysqli->query( "SELECT * FROM `" . $table . "` ", MYSQLI_USE_RESULT );
-		} else {
-			$res = $this->mysqli->query( "SELECT * FROM `" . $table . "` LIMIT " . $start . ", " . $length, MYSQLI_USE_RESULT );
-		}
-		$GLOBALS[ 'wpdb' ]->num_queries ++;
-		if ( $this->mysqli->error ) {
-			trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SELECT * FROM `" . $table . "`" ), E_USER_WARNING );
+		try {
+			$res = $this->do_table_query( $table, $start, $length );
+		} catch ( BackWPup_MySQLDump_Exception $e ) {
+			trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $e->getMessage(), "SELECT * FROM `" . $table . "`" ), E_USER_WARNING );
 			return 0;
 		}
 
@@ -505,9 +501,9 @@ class BackWPup_MySQLDump {
 		$fieldinfo   = array();
 		$fields      = $res->fetch_fields();
 		$i = 0;
-		foreach ( $fields as $filed ) {
-			$fieldsarray[ $i ]               = $filed->orgname;
-			$fieldinfo[ $fieldsarray[ $i ] ] = $filed;
+		foreach ( $fields as $field ) {
+			$fieldsarray[ $i ]               = $field->orgname;
+			$fieldinfo[ $fieldsarray[ $i ] ] = $field;
 			$i ++;
 		}
 		$dump = '';
@@ -516,13 +512,15 @@ class BackWPup_MySQLDump {
 			foreach ( $data as $key => $value ) {
 				if ( is_null( $value ) || ! isset( $value ) ) { // Make Value NULL to string NULL
 					$value = "NULL";
-				} elseif ( in_array( (int) $fieldinfo[ $key ]->type, array( MYSQLI_TYPE_DECIMAL, MYSQLI_TYPE_TINY, MYSQLI_TYPE_SHORT, MYSQLI_TYPE_LONG,  MYSQLI_TYPE_FLOAT, MYSQLI_TYPE_DOUBLE, MYSQLI_TYPE_LONGLONG, MYSQLI_TYPE_INT24 ), true ) ) {//is value numeric no esc
+				} elseif ( in_array( (int) $fieldinfo[ $key ]->type, array( MYSQLI_TYPE_DECIMAL, MYSQLI_TYPE_NEWDECIMAL, MYSQLI_TYPE_BIT, MYSQLI_TYPE_TINY, MYSQLI_TYPE_SHORT, MYSQLI_TYPE_LONG, MYSQLI_TYPE_FLOAT, MYSQLI_TYPE_DOUBLE, MYSQLI_TYPE_LONGLONG, MYSQLI_TYPE_INT24, MYSQLI_TYPE_YEAR ), true ) ) {//is value numeric no esc
 					$value = empty( $value ) ? 0 : $value;
+				} elseif ( in_array( (int) $fieldinfo[ $key ]->type, array( MYSQLI_TYPE_TIMESTAMP, MYSQLI_TYPE_DATE, MYSQLI_TYPE_TIME, MYSQLI_TYPE_DATETIME, MYSQLI_TYPE_NEWDATE ), true ) ) {//date/time types
+					$value = "'$value'";
 				} elseif ( $fieldinfo[ $key ]->flags & MYSQLI_BINARY_FLAG ) {//is value binary
 					$hex = unpack( 'H*', $value );
 					$value = empty( $value ) ? "''" : "0x$hex[1]";
 				} else {
-					$value = "'" . $this->mysqli->real_escape_string( $value ) . "'";
+					$value = "'" . $this->escapeString( $value ) . "'";
 				}
 				$values[ ] = $value;
 			}
@@ -539,6 +537,7 @@ class BackWPup_MySQLDump {
 			$done_records ++;
 		}
 		if ( ! empty( $dump ) ) {
+			// Remove trailing , and newline.
 			$dump = substr( $dump, 0, -2 ) . ";\n" ;
 			$this->write( $dump );
 		}
@@ -553,7 +552,7 @@ class BackWPup_MySQLDump {
 	 * @param $data string to write
 	 * @throws BackWPup_MySQLDump_Exception
 	 */
-	private function write( $data ) {
+	protected function write( $data ) {
 
 		$written = fwrite( $this->handle, $data );
 
@@ -567,10 +566,64 @@ class BackWPup_MySQLDump {
 	public function __destruct() {
 
 		//close MySQL connection
-		$this->mysqli->close();
+		if ($this->mysqli !== null) {
+			$this->mysqli->close();
+		}
 		//close file handle
 		if ( is_resource( $this->handle ) )
 			fclose( $this->handle );
+	}
+
+	/**
+	 * Get table type for given table
+	 *
+	 * @param string $table The table to look up the type for.
+	 *
+	 * @return string The table type if found
+	 */
+	protected function get_table_type_for( $table ) {
+
+		if ( isset( $this->table_types[ $table ] ) ) {
+			return $this->table_types[ $table ];
+		}
+
+		return null;
+	}
+
+	/**
+	 * Perform query to fetch table rows
+	 *
+	 * @param string $table The table on which to perform the query
+	 * @param int $start The record to start at
+	 @param int $length How many records to fetch
+	 *
+	 * @return \mysqli_result The resulting query
+	 * @throws \BackWPup_MySQLDump_Exception In case of mysql error
+	 */
+	protected function do_table_query( $table, $start, $length ) {
+
+		if ( $length == 0 && $start == 0 ) {
+			$res = $this->mysqli->query( "SELECT * FROM `" . $table . "` ", MYSQLI_USE_RESULT );
+		} else {
+			$res = $this->mysqli->query( "SELECT * FROM `" . $table . "` LIMIT " . $start . ", " . $length, MYSQLI_USE_RESULT );
+		}
+		$GLOBALS[ 'wpdb' ]->num_queries ++;
+		if ( $this->mysqli->error ) {
+			throw new BackWPup_MySQLDump_Exception( $this->mysqli->error );
+		}
+
+		return $res;
+	}
+
+	/**
+	 * Escapes a string for MySQL
+	 *
+	 * @param string $value The value to escape
+	 *
+	 * @return string The escaped string
+	 */
+	protected function escapeString( $value ) {
+		return $this->mysqli->real_escape_string( $value );
 	}
 
 }

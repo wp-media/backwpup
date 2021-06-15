@@ -22,16 +22,46 @@ if (!class_exists('BackWPup')) {
     }
 
 	//delete Backwpup user roles
-	$backWPUpRoles = array(
-		"backwpup_admin",
-		"backwpup_check",
-		"backwpup_helper"
-	);
+	// Special handling for multisite when network-activated.
+	if ( is_multisite() ) {
+		$sites = get_sites( array(
+			'fields' => 'ids',
+		) );
+		$current_site = get_current_blog_id();
 
-	foreach ( $backWPUpRoles as $backWPUpRole ) {
-		if ( get_role( $backWPUpRole ) ) {
-			remove_role( $backWPUpRole );
+		foreach ( $sites as $site ) {
+			switch_to_blog( $site );
+			backwpup_remove_roles();
 		}
+
+		switch_to_blog( $current_site );
+	} else {
+		backwpup_remove_roles();
 	}
 
+}
+
+/**
+ * Removes BackWPup roles and capabilities.
+ */
+function backwpup_remove_roles() {
+	remove_role( 'backwpup_admin' );
+ 	remove_role( 'backwpup_helper' );
+	remove_role( 'backwpup_check' );
+
+	//remove capabilities to administrator role
+	$role = get_role( 'administrator' );
+	if ( is_object( $role ) && method_exists( $role, 'remove_cap' ) ) {
+		$role->remove_cap( 'backwpup' );
+		$role->remove_cap( 'backwpup_jobs' );
+		$role->remove_cap( 'backwpup_jobs_edit' );
+		$role->remove_cap( 'backwpup_jobs_start' );
+		$role->remove_cap( 'backwpup_backups' );
+		$role->remove_cap( 'backwpup_backups_download' );
+		$role->remove_cap( 'backwpup_backups_delete' );
+		$role->remove_cap( 'backwpup_logs' );
+		$role->remove_cap( 'backwpup_logs_delete' );
+		$role->remove_cap( 'backwpup_settings' );
+		$role->remove_cap( 'backwpup_restore' );
+	}
 }
