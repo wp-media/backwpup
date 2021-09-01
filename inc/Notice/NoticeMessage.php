@@ -13,59 +13,58 @@ class NoticeMessage
 {
 
     /**
-     * @var string
+     * Array of message data
+     *
+     * @var array
      */
-    private $content;
-
-    /**
-     * @var string
-     */
-    private $button_label;
-
-    /**
-     * @var string
-     */
-    private $cta_url;
-
-    /**
-     * @return array
-     */
-    public static function defaults()
-    {
-        return [
-            'content' => '',
-            'button-text' => '',
-            'url' => '',
-        ];
-    }
+    private $data;
 
     /**
      * NoticeMessage constructor
      *
-     * @see defaults()
-     * @param array $data
+     * @param string $template The notice template
      */
-    public function __construct(array $data)
+    public function __construct($template, $buttonLabel = null, $buttonUrl = null)
     {
-        $data = wp_parse_args($data, self::defaults());
-
-        $this->content = $data['content'];
-        $this->button_label = $data['button-text'];
-        $this->cta_url = $data['url'];
+        $this->data['template'] = "/notice/$template.php";
+        $this->data['buttonLabel'] = $buttonLabel;
+        $this->data['buttonUrl'] = $buttonUrl;
     }
 
     /**
-     * @param $name
-     * @param $args
+     * Get a message variable
      *
-     * @return string
+     * @param string $name
+     *
+     * @return mixed
      */
-    public function __call($name, $args)
+    public function __get($name)
     {
-        if (!property_exists($this, $name)) {
-            return '';
+        if (!isset($this->data[$name])) {
+            return null;
         }
 
-        return $this->$name;
+        return $this->data[$name];
+    }
+
+    /**
+     * Sets a variable for the message
+     *
+     * @param string $name The variable to set
+     * @param mixed $value The value to set
+     */
+    public function __set($name, $value)
+    {
+        $this->data[$name] = $value;
+    }
+
+    /**
+     * Check if variable is set
+     *
+     * @param string $name The variable to check
+     */
+    public function __isset($name)
+    {
+        return isset($this->data[$name]);
     }
 }

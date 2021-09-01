@@ -18,7 +18,7 @@ class PhpNotice extends EnvironmentNotice
     /**
      * {@inheritdoc}
      */
-    protected function get_constraints()
+    protected function getConstraints()
     {
         return [
             new Constraints\PhpConstraint('7.2'),
@@ -30,11 +30,6 @@ class PhpNotice extends EnvironmentNotice
      */
     protected function message()
     {
-        return new NoticeMessage([
-            'content' => [
-                __("BackWPup is dropping support for PHP versions less than 7.2. As such, using outdated and unsupported versions of PHP may expose your site to security vulnerabilities. Please update PHP to the latest version. Ask your hoster if you don't know how.", 'backwpup'),
-                __("For further information <a href=\"https://backwpup.com/docs/php-7-2-update/\" target=\"_blank\">see here</a>, and if any questions remain contact our support team.", 'backwpup'),
-            ],
-        ]);
+        return new NoticeMessage('php');
     }
 }

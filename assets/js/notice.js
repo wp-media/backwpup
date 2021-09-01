@@ -44,8 +44,6 @@
 		},
 	};
 
-	if ( adminpage === 'toplevel_page_backwpup' ) {
-		var notice = Object.create( Notice );
-		notice.construct() && notice.init();
-	}
+	var notice = Object.create( Notice );
+	notice.construct() && notice.init();
 }( window._, window.jQuery, window.adminpage ) );

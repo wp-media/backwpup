@@ -66,7 +66,17 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 					<input id="idemailefilesize" name="emailefilesize" type="number" min="0" step="1"
 					       value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'emailefilesize' ) ); ?>"
 					       class="small-text"/><?php esc_html_e( 'MB', 'backwpup' ); ?>
-					<p class="description"><?php esc_attr_e( 'Maximum file size to be included in an email. 0 = unlimited', 'backwpup' ); ?></p>
+                    <p class="description">
+                        <?php esc_html_e(
+                            'Maximum file size to be included in an email. 0 = unlimited',
+                            'backwpup'
+                        ); ?><br/>
+                        <strong><?php esc_html_e( 'Note', 'backwpup' ); ?></strong>: <?php esc_html_e(
+                            'Every email provider has different allowed attachment file sizes. If the backup archive exceeds this limit, the email will not be sent.',
+                            'backwpup'
+                        ); ?><br/>
+                        <?php esc_html_e( 'The recommended value is 20 MB.', 'backwpup' ); ?>
+                    </p>
 				</td>
 			</tr>
 			<tr>

@@ -1,4 +1,8 @@
 <?php
+use Inpsyde\BackWPup\Xml\Exception\InvalidWxrFileException;
+use Inpsyde\BackWPup\Xml\Exception\InvalidXmlException;
+use Inpsyde\BackWPup\Xml\WxrValidator;
+
 class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 
 	public function __construct() {
@@ -387,24 +391,17 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 		remove_filter( 'backwpup_wxr_export_skip_postmeta', array( $this, 'wxr_filter_postmeta' ), 10 );
 
 		if ( $job_object->steps_data[ $job_object->step_working ]['substep'] == 'check' ) {
-
-			if ( extension_loaded( 'simplexml' ) && class_exists( 'DOMDocument' ) ) {
+			if ( class_exists( 'DOMDocument' ) ) {
 				$job_object->log( __( 'Check WP Export file&#160;&hellip;', 'backwpup' ) );
 				$job_object->need_free_memory( filesize( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] ) * 2 );
-				$valid = TRUE;
 
-				$internal_errors = libxml_use_internal_errors( TRUE );
-				$dom = new DOMDocument;
-				$old_value = NULL;
-				if ( function_exists( 'libxml_disable_entity_loader' ) )
-					$old_value = libxml_disable_entity_loader( TRUE );
-				$success = $dom->loadXML( file_get_contents( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] ), LIBXML_PARSEHUGE );
-				if ( ! is_null( $old_value ) )
-					libxml_disable_entity_loader( $old_value );
+				try {
+					$validator = new WxrValidator( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] );
+					$validator->validateWxr();
 
-				if ( ! $success || isset( $dom->doctype ) ) {
-					$errors = libxml_get_errors();
-					$valid = FALSE;
+					$job_object->log( __( 'WP Export file is a valid WXR file.', 'backwpup' ) );
+				} catch (InvalidXmlException $e) {
+					$errors = $e->getErrors();
 
 					foreach ( $errors as $error ) {
 						switch ( $error->level ) {
@@ -419,35 +416,9 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 								break;
 						}
 					}
-				} else {
-					$xml = simplexml_import_dom( $dom );
-					unset( $dom );
-
-					// halt if loading produces an error
-					if ( ! $xml ) {
-						$job_object->log( __( 'There was an error when reading this WXR file', 'backwpup' ), E_USER_ERROR );
-						$valid = FALSE;
-					} else {
-
-						$wxr_version = $xml->xpath('/rss/channel/wp:wxr_version');
-						if ( ! $wxr_version ) {
-							$job_object->log( __( 'This does not appear to be a WXR file, missing/invalid WXR version number', 'backwpup' ), E_USER_ERROR );
-							$valid = FALSE;
-						}
-
-						$wxr_version = (string) trim( $wxr_version[0] );
-						// confirm that we are dealing with the correct file format
-						if ( ! preg_match( '/^\d+\.\d+$/', $wxr_version ) ) {
-							$job_object->log( __( 'This does not appear to be a WXR file, missing/invalid WXR version number', 'backwpup' ), E_USER_ERROR );
-							$valid = FALSE;
-						}
-					}
+				} catch (InvalidWxrFileException $e) {
+					$job_object->log( $e->getMessage(), E_USER_ERROR );
 				}
-
-				libxml_use_internal_errors( $internal_errors );
-
-				if ( $valid )
-					$job_object->log( __( 'WP Export file is a valid WXR file.', 'backwpup' ) );
 			} else {
 				$job_object->log( __( 'WP Export file can not be checked, because no XML extension is loaded, to ensure the file verification.', 'backwpup' ) );
 			}
@@ -705,7 +676,4 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 			$return_me = true;
 		return $return_me;
 	}
-
-
-
 }

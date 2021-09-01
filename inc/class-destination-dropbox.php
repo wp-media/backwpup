@@ -74,7 +74,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 		<table class="form-table">
 			<tr>
 				<th scope="row"><?php esc_html_e( 'Authentication', 'backwpup' ); ?></th>
-				<td><?php if ( empty( $dropboxtoken['access_token'] ) ) { ?>
+				<td><?php if ( empty( $dropboxtoken['refresh_token'] ) ) { ?>
 						<span class="bwu-message-error"><?php esc_html_e( 'Not authenticated!', 'backwpup' ); ?></span>
 						<br />&nbsp;<br />
 						<a class="button secondary"
@@ -97,7 +97,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 				</td>
 			</tr>
 
-			<?php if ( empty( $dropboxtoken['access_token'] ) ) { ?>
+			<?php if ( empty( $dropboxtoken['refresh_token'] ) ) { ?>
 				<tr>
 					<th scope="row"><label for="id_sandbox_code"><?php esc_html_e(
 								'App Access to Dropbox',
@@ -496,11 +496,17 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 		if ( ! $this->dropbox ) {
 			if ( $job instanceof BackWPup_Job ) {
 				$this->dropbox = new BackWPup_Destination_Dropbox_API( $job->job['dropboxroot'], $job );
-				$this->dropbox->setOAuthTokens( $job->job['dropboxtoken'] );
+				$jobid = $job->job['jobid'];
+				$token = $job->job['dropboxtoken'];
 			} else {
 				$this->dropbox = new BackWPup_Destination_Dropbox_API( BackWPup_Option::get( $job, 'dropboxroot' ) );
-				$this->dropbox->setOAuthTokens( BackWPup_Option::get( $job, 'dropboxtoken' ) );
+				$jobid = $job;
+				$token = BackWPup_Option::get( $job, 'dropboxtoken' );
 			}
+
+			$this->dropbox->setOAuthTokens( $token, function ( $token ) use ( $jobid ) {
+				BackWPup_Option::update( $jobid, 'dropboxtoken', $token );
+			} );
 		}
 
 		return $this->dropbox;

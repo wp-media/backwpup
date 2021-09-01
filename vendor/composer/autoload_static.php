@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit558cb5d04b84cb8954ad6ada7fb5c029
+class ComposerStaticInitb94ec8a90bfc66a789b4b4653621f111
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -40,6 +40,7 @@ class ComposerStaticInit558cb5d04b84cb8954ad6ada7fb5c029
             'Symfony\\Polyfill\\Intl\\Normalizer\\' => 33,
             'Symfony\\Polyfill\\Intl\\Idn\\' => 26,
             'Symfony\\Component\\Translation\\' => 30,
+            'Symfony\\Component\\OptionsResolver\\' => 34,
             'Symfony\\Component\\EventDispatcher\\' => 34,
         ),
         'P' => 
@@ -67,6 +68,7 @@ class ComposerStaticInit558cb5d04b84cb8954ad6ada7fb5c029
         'I' => 
         array (
             'Inpsyde\\EnvironmentChecker\\' => 27,
+            'Inpsyde\\BackWPup\\' => 17,
             'Inpsyde\\BackWPupShared\\' => 23,
         ),
         'G' => 
@@ -118,6 +120,10 @@ class ComposerStaticInit558cb5d04b84cb8954ad6ada7fb5c029
         array (
             0 => __DIR__ . '/..' . '/symfony/translation',
         ),
+        'Symfony\\Component\\OptionsResolver\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/options-resolver',
+        ),
         'Symfony\\Component\\EventDispatcher\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/event-dispatcher',
@@ -165,6 +171,10 @@ class ComposerStaticInit558cb5d04b84cb8954ad6ada7fb5c029
         'Inpsyde\\EnvironmentChecker\\' => 
         array (
             0 => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src',
+        ),
+        'Inpsyde\\BackWPup\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
         ),
         'Inpsyde\\BackWPupShared\\' => 
         array (
@@ -1199,8 +1209,28 @@ class ComposerStaticInit558cb5d04b84cb8954ad6ada7fb5c029
         'Guzzle\\Stream\\StreamInterface' => __DIR__ . '/..' . '/guzzle/guzzle/src/Guzzle/Stream/StreamInterface.php',
         'Guzzle\\Stream\\StreamRequestFactoryInterface' => __DIR__ . '/..' . '/guzzle/guzzle/src/Guzzle/Stream/StreamRequestFactoryInterface.php',
         'Inpsyde\\BackWPupShared\\File\\MimeTypeExtractor' => __DIR__ . '/..' . '/inpsyde/backwpup-shared/src/File/MimeTypeExtractor.php',
+        'Inpsyde\\BackWPup\\Http\\Client\\ClientExceptionInterface' => __DIR__ . '/../..' . '/src/Http/Client/ClientExceptionInterface.php',
+        'Inpsyde\\BackWPup\\Http\\Client\\ClientInterface' => __DIR__ . '/../..' . '/src/Http/Client/ClientInterface.php',
+        'Inpsyde\\BackWPup\\Http\\Client\\Exception\\NetworkException' => __DIR__ . '/../..' . '/src/Http/Client/Exception/NetworkException.php',
+        'Inpsyde\\BackWPup\\Http\\Client\\Exception\\RequestAwareTrait' => __DIR__ . '/../..' . '/src/Http/Client/Exception/RequestAwareTrait.php',
+        'Inpsyde\\BackWPup\\Http\\Client\\Exception\\RequestException' => __DIR__ . '/../..' . '/src/Http/Client/Exception/RequestException.php',
+        'Inpsyde\\BackWPup\\Http\\Client\\NetworkExceptionInterface' => __DIR__ . '/../..' . '/src/Http/Client/NetworkExceptionInterface.php',
+        'Inpsyde\\BackWPup\\Http\\Client\\RequestExceptionInterface' => __DIR__ . '/../..' . '/src/Http/Client/RequestExceptionInterface.php',
+        'Inpsyde\\BackWPup\\Http\\Client\\WpHttpClient' => __DIR__ . '/../..' . '/src/Http/Client/WpHttpClient.php',
+        'Inpsyde\\BackWPup\\Http\\Message\\Decorator\\AuthorizationRequest' => __DIR__ . '/../..' . '/src/Http/Message/Decorator/AuthorizationRequest.php',
+        'Inpsyde\\BackWPup\\Http\\Message\\Decorator\\FormRequest' => __DIR__ . '/../..' . '/src/Http/Message/Decorator/FormRequest.php',
+        'Inpsyde\\BackWPup\\Http\\Message\\Decorator\\JsonRequest' => __DIR__ . '/../..' . '/src/Http/Message/Decorator/JsonRequest.php',
+        'Inpsyde\\BackWPup\\Http\\Message\\Decorator\\RequestDecorator' => __DIR__ . '/../..' . '/src/Http/Message/Decorator/RequestDecorator.php',
+        'Inpsyde\\BackWPup\\Http\\Message\\Decorator\\StreamRequestTrait' => __DIR__ . '/../..' . '/src/Http/Message/Decorator/StreamRequestTrait.php',
+        'Inpsyde\\BackWPup\\Http\\Message\\RequestFactory' => __DIR__ . '/../..' . '/src/Http/Message/RequestFactory.php',
+        'Inpsyde\\BackWPup\\Http\\Message\\RequestFactoryInterface' => __DIR__ . '/../..' . '/src/Http/Message/RequestFactoryInterface.php',
+        'Inpsyde\\BackWPup\\Http\\Message\\ResponseFactory' => __DIR__ . '/../..' . '/src/Http/Message/ResponseFactory.php',
+        'Inpsyde\\BackWPup\\Http\\Message\\ResponseFactoryInterface' => __DIR__ . '/../..' . '/src/Http/Message/ResponseFactoryInterface.php',
+        'Inpsyde\\BackWPup\\Http\\Message\\StreamFactory' => __DIR__ . '/../..' . '/src/Http/Message/StreamFactory.php',
+        'Inpsyde\\BackWPup\\Http\\Message\\StreamFactoryInterface' => __DIR__ . '/../..' . '/src/Http/Message/StreamFactoryInterface.php',
         'Inpsyde\\BackWPup\\MsAzureDestinationConfiguration' => __DIR__ . '/../..' . '/inc/class-msazure-destination-configuration.php',
         'Inpsyde\\BackWPup\\Notice\\DismissibleNoticeOption' => __DIR__ . '/../..' . '/inc/Notice/DismissibleNoticeOption.php',
+        'Inpsyde\\BackWPup\\Notice\\DropboxNotice' => __DIR__ . '/../..' . '/inc/Notice/DropboxNotice.php',
         'Inpsyde\\BackWPup\\Notice\\EnvironmentNotice' => __DIR__ . '/../..' . '/inc/Notice/EnvironmentNotice.php',
         'Inpsyde\\BackWPup\\Notice\\Notice' => __DIR__ . '/../..' . '/inc/Notice/Notice.php',
         'Inpsyde\\BackWPup\\Notice\\NoticeMessage' => __DIR__ . '/../..' . '/inc/Notice/NoticeMessage.php',
@@ -1232,6 +1262,9 @@ class ComposerStaticInit558cb5d04b84cb8954ad6ada7fb5c029
         'Inpsyde\\BackWPup\\Pro\\Settings\\EncryptionSettingsView' => __DIR__ . '/../..' . '/inc/Pro/Settings/EncryptionSettingsView.php',
         'Inpsyde\\BackWPup\\Settings\\SettingTab' => __DIR__ . '/../..' . '/inc/Settings/SettingTab.php',
         'Inpsyde\\BackWPup\\Settings\\SettingUpdatable' => __DIR__ . '/../..' . '/inc/Settings/SettingUpdatable.php',
+        'Inpsyde\\BackWPup\\Xml\\Exception\\InvalidWxrFileException' => __DIR__ . '/../..' . '/src/Xml/Exception/InvalidWxrFileException.php',
+        'Inpsyde\\BackWPup\\Xml\\Exception\\InvalidXmlException' => __DIR__ . '/../..' . '/src/Xml/Exception/InvalidXmlException.php',
+        'Inpsyde\\BackWPup\\Xml\\WxrValidator' => __DIR__ . '/../..' . '/src/Xml/WxrValidator.php',
         'Inpsyde\\EnvironmentChecker\\ConstraintsCollectionFactory' => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src/ConstraintsCollectionFactory.php',
         'Inpsyde\\EnvironmentChecker\\ConstraintsCollectionFactoryInterface' => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src/ConstraintsCollectionFactoryInterface.php',
         'Inpsyde\\EnvironmentChecker\\Constraints\\AbstractVersionConstraint' => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src/Constraints/AbstractVersionConstraint.php',
@@ -2752,6 +2785,18 @@ class ComposerStaticInit558cb5d04b84cb8954ad6ada7fb5c029
         'Symfony\\Component\\EventDispatcher\\EventSubscriberInterface' => __DIR__ . '/..' . '/symfony/event-dispatcher/EventSubscriberInterface.php',
         'Symfony\\Component\\EventDispatcher\\GenericEvent' => __DIR__ . '/..' . '/symfony/event-dispatcher/GenericEvent.php',
         'Symfony\\Component\\EventDispatcher\\ImmutableEventDispatcher' => __DIR__ . '/..' . '/symfony/event-dispatcher/ImmutableEventDispatcher.php',
+        'Symfony\\Component\\OptionsResolver\\Debug\\OptionsResolverIntrospector' => __DIR__ . '/..' . '/symfony/options-resolver/Debug/OptionsResolverIntrospector.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\AccessException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/AccessException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\ExceptionInterface' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/ExceptionInterface.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/InvalidArgumentException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\InvalidOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/InvalidOptionsException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\MissingOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/MissingOptionsException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\NoConfigurationException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/NoConfigurationException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\NoSuchOptionException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/NoSuchOptionException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\OptionDefinitionException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/OptionDefinitionException.php',
+        'Symfony\\Component\\OptionsResolver\\Exception\\UndefinedOptionsException' => __DIR__ . '/..' . '/symfony/options-resolver/Exception/UndefinedOptionsException.php',
+        'Symfony\\Component\\OptionsResolver\\Options' => __DIR__ . '/..' . '/symfony/options-resolver/Options.php',
+        'Symfony\\Component\\OptionsResolver\\OptionsResolver' => __DIR__ . '/..' . '/symfony/options-resolver/OptionsResolver.php',
         'Symfony\\Component\\Translation\\Catalogue\\AbstractOperation' => __DIR__ . '/..' . '/symfony/translation/Catalogue/AbstractOperation.php',
         'Symfony\\Component\\Translation\\Catalogue\\DiffOperation' => __DIR__ . '/..' . '/symfony/translation/Catalogue/DiffOperation.php',
         'Symfony\\Component\\Translation\\Catalogue\\MergeOperation' => __DIR__ . '/..' . '/symfony/translation/Catalogue/MergeOperation.php',
@@ -2845,11 +2890,11 @@ class ComposerStaticInit558cb5d04b84cb8954ad6ada7fb5c029
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit558cb5d04b84cb8954ad6ada7fb5c029::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit558cb5d04b84cb8954ad6ada7fb5c029::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit558cb5d04b84cb8954ad6ada7fb5c029::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInit558cb5d04b84cb8954ad6ada7fb5c029::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInit558cb5d04b84cb8954ad6ada7fb5c029::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitb94ec8a90bfc66a789b4b4653621f111::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitb94ec8a90bfc66a789b4b4653621f111::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitb94ec8a90bfc66a789b4b4653621f111::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInitb94ec8a90bfc66a789b4b4653621f111::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInitb94ec8a90bfc66a789b4b4653621f111::$classMap;
 
         }, null, ClassLoader::class);
     }

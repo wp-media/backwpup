@@ -1,13 +1,29 @@
 <?php
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+
 /**
  * Class to create a MYSQL dump with mysqli as sql file
  */
-class BackWPup_MySQLDump {
+class BackWPup_MySQLDump
+{
+
+	// Compression flags
+	const COMPRESS_NONE = '';
+	const COMPRESS_GZ = 'gz';
 
 	/**
-	 * Holder for mysqli recourse
+	 * Holder for mysqli resource
 	 */
 	private $mysqli = NULL;
+
+	/**
+	 * Whether we are connected to the database
+	 *
+	 * @var bool
+	 */
+	private $connected = false;
 
 	/**
 	 * Holder for dump file handle
@@ -56,85 +72,39 @@ class BackWPup_MySQLDump {
 	 */
 	public function __construct( $args = array() ) {
 
-		if ( ! class_exists( 'mysqli' ) )
+		if ( ! class_exists( 'mysqli' ) ) {
 			throw new BackWPup_MySQLDump_Exception( __( 'No MySQLi extension found. Please install it.', 'backwpup' ) );
-
-		$default_args = array(
-			'dbhost' 	    => DB_HOST,
-			'dbname' 	    => DB_NAME,
-			'dbuser' 	    => DB_USER,
-			'dbpassword'    => DB_PASSWORD,
-			'dbcharset'     => defined( 'DB_CHARSET' ) ? DB_CHARSET : '',
-			'dumpfilehandle' => fopen( 'php://output', 'wb' ),
-			'dumpfile' 	    => NULL,
-			'dbclientflags' => defined( 'MYSQL_CLIENT_FLAGS' ) ? MYSQL_CLIENT_FLAGS : 0,
-			'compression'   => ''
-		);
-
-		$args = wp_parse_args( $args , $default_args );
-
-		//set empty host to localhost
-		if ( empty( $args[ 'dbhost' ] ) ) {
-			$args[ 'dbhost' ] = NULL;
 		}
 
-		//check if port or socket in hostname and set port and socket
-		$args[ 'dbport' ]   = NULL;
-		$args[ 'dbsocket' ] = NULL;
-		if ( strstr( $args[ 'dbhost' ], ':' ) ) {
-			$hostparts = explode( ':', $args[ 'dbhost' ], 2 );
-			$hostparts[ 0 ] = trim( $hostparts[ 0 ] );
-			$hostparts[ 1 ] = trim( $hostparts[ 1 ] );
-			if ( empty( $hostparts[ 0 ] ) )
-				$args[ 'dbhost' ] = NULL;
-			else
-				$args[ 'dbhost' ] = $hostparts[ 0 ];
-			if ( is_numeric( $hostparts[ 1 ] ) )
-				$args[ 'dbport' ] = (int) $hostparts[ 1 ];
-			else
-				$args[ 'dbsocket' ] = $hostparts[ 1 ];
-		}
+		$resolver = new OptionsResolver();
+		$this->configureOptions($resolver);
+		$args = $resolver->resolve($args);
 
-		$this->mysqli = mysqli_init();
-		if ( ! $this->mysqli ) {
-			throw new BackWPup_MySQLDump_Exception( __( 'Cannot init MySQLi database connection', 'backwpup' ) );
-		}
+		$driver = new mysqli_driver();
+		$mode = $driver->report_mode;
+		$driver->report_mode = MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
 
+		$this->connect($args);
 
-		if ( ! $this->mysqli->options( MYSQLI_OPT_CONNECT_TIMEOUT, 5 ) ) {
-			trigger_error( __( 'Setting of MySQLi connection timeout failed', 'backwpup' ) );
-		}
-
-		//connect to Database
-		if ( ! $this->mysqli->real_connect( $args[ 'dbhost' ], $args[ 'dbuser' ], $args[ 'dbpassword' ], $args[ 'dbname' ], $args[ 'dbport' ], $args[ 'dbsocket' ], $args[ 'dbclientflags' ] ) ) {
-			throw new BackWPup_MySQLDump_Exception( sprintf( __( 'Cannot connect to MySQL database %1$d: %2$s', 'backwpup' ), mysqli_connect_errno(), mysqli_connect_error() ) );
-		}
+		$driver->report_mode = $mode;
 
 		//set charset
-		if ( ! empty( $args[ 'dbcharset' ] ) && method_exists( $this->mysqli, 'set_charset' ) ) {
-			$res = $this->mysqli->set_charset( $args[ 'dbcharset' ] );
-			if ( ! $res ) {
-				trigger_error( sprintf( _x( 'Cannot set DB charset to %s error: %s','Database Charset', 'backwpup' ), $args[ 'dbcharset' ], $this->mysqli->error ), E_USER_WARNING );
-			}
+		if ( ! empty( $args[ 'dbcharset' ] ) ) {
+			$this->setCharset( $args[ 'dbcharset' ] );
 		}
-
-		//set db name
-		$this->dbname = $args[ 'dbname' ];
 
 		//set compression
-		if ( ! empty( $args[ 'compression' ] ) && $args[ 'compression' ] === 'gz' ) {
-			$this->compression = $args[ 'compression' ];
-		}
+		$this->compression = $args[ 'compression' ];
 
 		//open file if set
 		if ( $args[ 'dumpfile' ] ) {
-			if ( substr( strtolower( $args[ 'dumpfile' ] ), -3 ) === '.gz' ) {
-				if ( ! function_exists( 'gzencode' ) )
+			if ( $args['compression'] === self::COMPRESS_GZ ) {
+				if ( ! function_exists( 'gzencode' ) ) {
 					throw new BackWPup_MySQLDump_Exception( __( 'Functions for gz compression not available', 'backwpup' ) );
-				$this->compression = 'gz';
+				}
+
 				$this->handle = fopen( 'compress.zlib://' . $args[ 'dumpfile' ], 'ab' );
 			}  else {
-				$this->compression = '';
 				$this->handle = fopen( $args[ 'dumpfile' ], 'ab' );
 			}
 		} else {
@@ -175,6 +145,222 @@ class BackWPup_MySQLDump {
 			$res->close();
 		}
 
+	}
+
+	/**
+	 * Configure options
+	 *
+	 * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
+	 */
+	protected function configureOptions(OptionsResolver $resolver)
+	{
+		$resolver->setDefaults([
+			'dbhost' => DB_HOST,
+			'dbport' => null,
+			'dbsocket' => null,
+			'dbname' => DB_NAME,
+			'dbuser' => DB_USER,
+			'dbpassword' => DB_PASSWORD,
+			'dbcharset' => defined('DB_CHARSET') ? DB_CHARSET : 'utf8mb4',
+			'dumpfilehandle' => fopen('php://output', 'wb'),
+			'dumpfile' => null,
+			'dbclientflags' => defined('MYSQL_CLIENT_FLAGS') ? MYSQL_CLIENT_FLAGS : 0,
+			'compression' => function (Options $options) {
+				if ($options['dumpfile'] !== null
+					&& substr(strtolower($options['dumpfile']), -3) === '.gz') {
+					return self::COMPRESS_GZ;
+				}
+
+					return self::COMPRESS_NONE;
+			},
+		]);
+
+		$port = $socket = null;
+
+		$resolver->setNormalizer('dbhost', function (Options $options, $value) use (&$port, &$socket) {
+			if (strpos($value, ':') !== false) {
+				list($value, $part) = array_map('trim', explode(':', $value, 2));
+				if (is_numeric($part)) {
+					$port = intval($part);
+				} elseif (!empty($part)) {
+					$socket = $part;
+				}
+			}
+
+			return $value ?: 'localhost';
+		});
+
+		$resolver->setDefault('dbport', function (Options $options) use (&$port) {
+			return $port;
+		});
+
+		$resolver->setDefault('dbsocket', function (Options $options) use (&$socket) {
+			return $socket;
+		});
+
+		$resolver->setAllowedValues('dumpfilehandle', function ($value) {
+			// Ensure handle is writable
+			$metadata = stream_get_meta_data($value);
+			if ($metadata['mode'][0] === 'r' && strpos($metadata['mode'], '+') === false) {
+				return false;
+			}
+
+			return true;
+		});
+
+		$resolver->setAllowedValues('compression', [self::COMPRESS_NONE, self::COMPRESS_GZ]);
+
+		$resolver->setAllowedTypes('dbhost', 'string');
+		$resolver->setAllowedTypes('dbport', ['null', 'int']);
+		$resolver->setAllowedTypes('dbsocket', ['null', 'string']);
+		$resolver->setAllowedTypes('dbname', 'string');
+		$resolver->setAllowedTypes('dbuser', 'string');
+		$resolver->setAllowedTypes('dbpassword', 'string');
+		$resolver->setAllowedTypes('dbcharset', ['null', 'string']);
+		$resolver->setAllowedTypes('dumpfilehandle', 'resource');
+		$resolver->setAllowedTypes('dumpfile', ['null', 'string']);
+		$resolver->setAllowedTypes('dbclientflags', 'int');
+	}
+
+	/**
+	 * Set the best available database charset
+	 *
+	 * @param string $charset The charset to try setting
+	 *
+	 * @return string The set charset
+	 */
+	public function setCharset($charset)
+	{
+		if ($charset === 'utf8' && $this->getConnection()->set_charset('utf8mb4') === true) {
+			return 'utf8mb4';
+		} elseif ($this->getConnection()->set_charset($charset) === true) {
+			return $charset;
+		} elseif ($charset === 'utf8mb4' && $this->getConnection()->set_charset('utf8') === true) {
+			return 'utf8';
+		}
+
+		trigger_error(
+			sprintf(
+				__('Cannot set DB charset to %s', 'backwpup'),
+				$charset
+			),
+			E_USER_WARNING
+		);
+
+		return false;
+	}
+
+	/**
+	 * Get the database connection
+	 *
+	 * @return \mysqli
+	 */
+	protected function getConnection()
+	{
+		if ($this->mysqli === null) {
+			$this->mysqli = mysqli_init();
+		}
+
+		return $this->mysqli;
+	}
+
+	/**
+	 * Whether the database is connected
+	 *
+	 * @return bool
+	 */
+	public function isConnected()
+	{
+		return $this->connected === true;
+	}
+
+	/**
+	 * Connect to the database
+	 *
+	 * @param array $args Connection parameters
+	 */
+	protected function connect(array $args)
+	{
+		if ($this->isConnected()) {
+			return;
+		}
+
+		$mysqli = $this->getConnection();
+
+		if (!$mysqli->options(MYSQLI_OPT_CONNECT_TIMEOUT, 5)) {
+			trigger_error(__('Setting of MySQLi connection timeout failed', 'backwpup'), E_USER_WARNING); // phpcs:ignore
+		}
+
+		//connect to Database
+		try {
+			$mysqli->real_connect(
+				$args['dbhost'],
+				$args['dbuser'],
+				$args['dbpassword'],
+				$args['dbname'],
+				$args['dbport'],
+				$args['dbsocket'],
+				$args['dbclientflags']
+			);
+		} catch (\mysqli_sql_exception $e) {
+			throw new BackWPup_MySQLDump_Exception(
+				sprintf(
+					__('Cannot connect to MySQL database (%1$d: %2$s)', 'backwpup'),
+					$e->getCode(),
+					$e->getMessage()
+				)
+			);
+		}
+
+		//set db name
+		$this->dbname = $args['dbname'];
+
+		// We are now connected
+		$this->connected = true;
+	}
+
+	/**
+	 * Get the name of the database
+	 *
+	 * @return string
+	 */
+	protected function getDbName()
+	{
+		return $this->dbname;
+	}
+
+	/**
+	 * Report a query error
+	 *
+	 * @param \mysqli_sql_exception $exception The thrown exception
+	 * @param string $query The query that caused the error
+	 */
+	protected function logQueryError(\mysqli_sql_exception $exception, $query)
+	{
+		// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_trigger_error, WordPress.XSS.EscapeOutput.OutputNotEscaped
+		trigger_error(
+			sprintf(
+				__('Database error: %1$s. Query: %2$s', 'backwpup'),
+				$exception->getMessage(),
+				$query
+			),
+			E_USER_WARNING
+		);
+		// phpcs:enable WordPress.PHP.DevelopmentFunctions.error_log_trigger_error. WordPress.XSS.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * Send a query to the database
+	 *
+	 * @param string $query The query to execute
+	 * @return mixed The result of the query
+	 */
+	protected function query($sql)
+	{
+		$result = $this->getConnection()->query($sql);
+		backwpup_wpdb()->num_queries++;
+
+		return $result;
 	}
 
 	/**
@@ -250,90 +436,25 @@ class BackWPup_MySQLDump {
 		}
 
 		//dump procedures and functions
-		$this->write( "\n--\n-- Backup routines for database '" . $this->dbname . "'\n--\n" );
+		$this->write("\n--\n-- Backup routines for database '" . $this->dbname . "'\n--\n");
 
-		//dump Functions
-		$res = $this->mysqli->query( "SHOW FUNCTION STATUS" );
-		$GLOBALS[ 'wpdb' ]->num_queries ++;
-		if ( $this->mysqli->error ) {
-			trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SHOW FUNCTION STATUS" ), E_USER_WARNING );
-		} else {
-			while ( $function_status = $res->fetch_assoc() ) {
-				if ( $this->dbname != $function_status[ 'Db' ] ) {
-					continue;
-				}
-				$res2 = $this->mysqli->query( "SHOW CREATE FUNCTION `" .  $function_status[ 'Db' ] . "`.`" . $function_status[ 'Name' ] . "`" );
-				$GLOBALS[ 'wpdb' ]->num_queries ++;
-				if ( $this->mysqli->error ) {
-					trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SHOW CREATE FUNCTION `" .  $function_status[ 'Db' ] . "`.`" . $function_status[ 'Name' ] . "`" ), E_USER_WARNING );
-				} else {
-					$create_function = $res2->fetch_assoc();
-					$res2->close();
-					$create = "\n--\n-- Function structure for " . $function_status[ 'Name' ] . "\n--\n\n";
-					$create .= "DROP FUNCTION IF EXISTS `" . $function_status[ 'Name' ] . "`;\n";
-					$create .= "/*!40101 SET @saved_cs_client     = @@character_set_client */;\n";
-					$create .= "/*!40101 SET character_set_client = '" . $this->mysqli->character_set_name() . "' */;\n";
-					$create .= $create_function[ 'Create Function' ] . ";\n";
-					$create .= "/*!40101 SET character_set_client = @saved_cs_client */;\n";
-					$this->write( $create );
-				}
-			}
-			$res->close();
-		}
+		// Temporarily set mysqli to throw exceptions
+		$driver = new \mysqli_driver();
+		$mode = $driver->report_mode;
+		$driver->report_mode = MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
 
-		//dump Procedures
-		$res = $this->mysqli->query( "SHOW PROCEDURE STATUS" );
-		$GLOBALS[ 'wpdb' ]->num_queries ++;
-		if ( $this->mysqli->error ) {
-			trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SHOW PROCEDURE STATUS" ), E_USER_WARNING );
-		} else {
-			while ( $procedure_status = $res->fetch_assoc() ) {
-				if ( $this->dbname != $procedure_status[ 'Db' ] ) {
-					continue;
-				}
-				$res2 = $this->mysqli->query( "SHOW CREATE PROCEDURE `" . $procedure_status[ 'Db' ] . "`.`" . $procedure_status[ 'Name' ] . "`" );
-				$GLOBALS[ 'wpdb' ]->num_queries ++;
-				if ( $this->mysqli->error ) {
-					trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SHOW CREATE PROCEDURE `" . $procedure_status[ 'Db' ] . "`.`" . $procedure_status[ 'Name' ] . "`" ), E_USER_WARNING );
-				} else {
-					$create_procedure = $res2->fetch_assoc();
-					$res2->close();
-					$create = "\n--\n-- Procedure structure for " . $procedure_status[ 'Name' ] . "\n--\n\n";
-					$create .= "DROP PROCEDURE IF EXISTS `" . $procedure_status[ 'Name' ] . "`;\n";
-					$create .= "/*!40101 SET @saved_cs_client     = @@character_set_client */;\n";
-					$create .= "/*!40101 SET character_set_client = '" . $this->mysqli->character_set_name() . "' */;\n";
-					$create .= $create_procedure[ 'Create Procedure' ] . ";\n";
-					$create .= "/*!40101 SET character_set_client = @saved_cs_client */;\n";
-					$this->write( $create );
-				}
-			}
-			$res->close();
-		}
+		// Dump Functions
+		$this->dump_functions();
 
-		//dump Trigger
-		$res = $this->mysqli->query( "SHOW TRIGGERS FROM `" . $this->dbname . "`" );
-		$GLOBALS[ 'wpdb' ]->num_queries ++;
-		if ( $this->mysqli->error ) {
-			trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SHOW TRIGGERS" ), E_USER_WARNING );
-		} else {
-			while ( $triggers = $res->fetch_assoc() ) {
-				$res2 = $this->mysqli->query( "SHOW CREATE TRIGGER `" . $this->dbname . "`.`" . $triggers[ 'Trigger' ] . "`" );
-				$GLOBALS[ 'wpdb' ]->num_queries ++;
-				if ( $this->mysqli->error ) {
-					trigger_error( sprintf( __( 'Database error %1$s for query %2$s', 'backwpup' ), $this->mysqli->error, "SHOW CREATE TRIGGER `" . $this->dbname . "`.`" . $triggers[ 'Trigger' ] . "`" ), E_USER_WARNING );
-				} else {
-					$create_trigger = $res2->fetch_assoc();
-					$res2->close();
-					$create = "\n--\n-- Trigger structure for " . $triggers[ 'Trigger' ] . "\n--\n\n";
-					$create .= "DROP TRIGGER IF EXISTS `" . $triggers[ 'Trigger' ] . "`;\n";
-					$create .= "DELIMITER //\n";
-					$create .= $create_trigger[ 'SQL Original Statement' ] . ";\n";
-					$create .= "//\nDELIMITER ;\n";
-					$this->write( $create );
-				}
-			}
-			$res->close();
-		}
+		// Dump Procedures
+		$this->dump_procedures();
+
+		// Dump Triggers
+		$this->dump_triggers();
+
+		// Restore report mode for other methods that do not support exceptions yet
+		// This should be changed ASAP to support SQL exceptions globally
+		$driver->report_mode = $mode;
 
 		//for better import with mysql client
 		$dbdumpfooter  = "\n/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;\n";
@@ -547,6 +668,211 @@ class BackWPup_MySQLDump {
 	}
 
 	/**
+	 * Dump functions
+	 *
+	 * Dumps all functions found in the database.
+	 */
+	protected function dump_functions()
+	{
+		try {
+			$statusResult = $this->query("SHOW FUNCTION STATUS");
+		} catch (\mysqli_sql_exception $e) {
+			$this->logQueryError($e, 'SHOW FUNCTION STATUS');
+			return;
+		}
+
+		while ($function = $statusResult->fetch_assoc()) {
+			if ($this->getDbName() !== $function['Db']) {
+				continue;
+			}
+
+			$query = sprintf(
+				'SHOW CREATE FUNCTION `%1$s`.`%2$s`',
+				$function['Db'],
+				$function['Name']
+			);
+
+			try {
+				$createResult = $this->query($query);
+				$createFunction = $createResult->fetch_assoc();
+				$createResult->close();
+
+				if ($createFunction === null) {
+					continue;
+				}
+
+				$sql = sprintf(
+					"\n--\n" .
+					"-- Function structure for %1\$s\n" .
+					"--\n\n" .
+					"/*!50003 DROP FUNCTION IF EXISTS `%1\$s` */;\n" .
+					"/*!50003 SET @saved_cs_client      = @@character_set_client */ ;\n" .
+					"/*!50003 SET @saved_cs_results     = @@character_set_results */ ;\n" .
+					"/*!50003 SET @saved_col_connection = @@collation_connection */ ;\n" .
+					"/*!50003 SET character_set_client  = %2\$s */ ;\n" .
+					"/*!50003 SET character_set_results = %2\$s */ ;\n" .
+					"/*!50003 SET collation_connection  = %3\$s */ ;\n" .
+					"/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;\n" .
+					"/*!50003 SET sql_mode              = '%4\$s' */ ;\n" .
+					"DELIMITER ;;\n" .
+					"%5\$s ;;\n" .
+					"DELIMITER ;\n" .
+					"/*!50003 SET sql_mode              = @saved_sql_mode */ ;\n" .
+					"/*!50003 SET character_set_client  = @saved_cs_client */ ;\n" .
+					"/*!50003 SET character_set_results = @saved_cs_results */ ;\n" .
+					"/*!50003 SET collation_connection  = @saved_col_connection */ ;\n",
+					$createFunction['Function'],
+					$createFunction['character_set_client'],
+					$createFunction['collation_connection'],
+					$createFunction['sql_mode'],
+					$createFunction['Create Function']
+				);
+				$this->write($sql);
+			} catch (\mysqli_sql_exception $e) {
+				$this->logQueryError($e, $query);
+			}
+		}
+
+		$statusResult->close();
+	}
+
+	/**
+	 * Dump procedures
+	 *
+	 * Dumps all stored procedures found in the database.
+	 */
+	protected function dump_procedures()
+	{
+		try {
+			$statusResult = $this->query('SHOW PROCEDURE STATUS');
+		} catch (mysqli_sql_exception $e) {
+			$this->logQueryError($e, 'SHOW PROCEDURE STATUS');
+			return;
+		}
+
+		while ($procedure = $statusResult->fetch_assoc()) {
+			if ($this->getDbName() !== $procedure['Db']) {
+				continue;
+			}
+
+			$query = sprintf(
+				'SHOW CREATE PROCEDURE `%1$s`.`%2$s`',
+				$procedure['Db'],
+				$procedure['Name']
+			);
+
+			try {
+				$createResult = $this->query($query);
+				$createProcedure = $createResult->fetch_assoc();
+				$createResult->close();
+
+				if ($createProcedure === null) {
+					continue;
+				}
+
+				$sql = sprintf(
+					"\n--\n" .
+					"-- Procedure structure for %1\$s\n" .
+					"--\n\n" .
+					"/*!50003 DROP PROCEDURE IF EXISTS `%1\$s` */;\n" .
+					"/*!50003 SET @saved_cs_client      = @@character_set_client */ ;\n" .
+					"/*!50003 SET @saved_cs_results     = @@character_set_results */ ;\n" .
+					"/*!50003 SET @saved_col_connection = @@collation_connection */ ;\n" .
+					"/*!50003 SET character_set_client  = %2\$s */ ;\n" .
+					"/*!50003 SET character_set_results = %2\$s */ ;\n" .
+					"/*!50003 SET collation_connection  = %3\$s */ ;\n" .
+					"/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;\n" .
+					"/*!50003 SET sql_mode              = '%4\$s' */ ;\n" .
+					"DELIMITER ;;\n" .
+					"%5\$s ;;\n" .
+					"DELIMITER ;\n" .
+					"/*!50003 SET sql_mode              = @saved_sql_mode */ ;\n" .
+					"/*!50003 SET character_set_client  = @saved_cs_client */ ;\n" .
+					"/*!50003 SET character_set_results = @saved_cs_results */ ;\n" .
+					"/*!50003 SET collation_connection  = @saved_col_connection */ ;\n",
+					$createProcedure['Procedure'],
+					$createProcedure['character_set_client'],
+					$createProcedure['collation_connection'],
+					$createProcedure['sql_mode'],
+					$createProcedure['Create Procedure']
+				);
+				$this->write($sql);
+			} catch (mysqli_sql_exception $e) {
+				$this->logQueryError($e, $query);
+			}
+		}
+
+		$statusResult->close();
+	}
+
+	/**
+	 * Dump triggers
+	 *
+	 * Dumps all triggers found in the database.
+	 */
+	protected function dump_triggers()
+	{
+		$query = sprintf('SHOW TRIGGERS FROM `%1$s`', $this->getDbName());
+
+		try {
+			$statusResult = $this->query($query);
+		} catch (\mysqli_sql_exception $e) {
+			$this->logQueryError($e, $query);
+			return;
+		}
+
+		while ($trigger = $statusResult->fetch_assoc()) {
+			$query = sprintf(
+				'SHOW CREATE TRIGGER `%1$s`.`%2$s`',
+				$this->getDbName(),
+				$trigger['Trigger']
+			);
+
+			try {
+				$createResult = $this->query($query);
+				$createTrigger = $createResult->fetch_assoc();
+				$createResult->close();
+
+				if ($createTrigger === null) {
+					continue;
+				}
+
+				$sql = sprintf(
+					"\n--\n" .
+					"-- Trigger structure for %1\$s\n" .
+					"--\n\n" .
+					"/*!50032 DROP TRIGGER IF EXISTS `%1\$s` */;\n" .
+					"/*!50003 SET @saved_cs_client      = @@character_set_client */ ;\n" .
+					"/*!50003 SET @saved_cs_results     = @@character_set_results */ ;\n" .
+					"/*!50003 SET @saved_col_connection = @@collation_connection */ ;\n" .
+					"/*!50003 SET character_set_client  = %2\$s */ ;\n" .
+					"/*!50003 SET character_set_results = %2\$s */ ;\n" .
+					"/*!50003 SET collation_connection  = %3\$s */ ;\n" .
+					"/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;\n" .
+					"/*!50003 SET sql_mode              = '%4\$s' */ ;\n" .
+					"DELIMITER ;;\n" .
+					"/*!50003 %5\$s */;;\n" .
+					"DELIMITER ;\n" .
+					"/*!50003 SET sql_mode              = @saved_sql_mode */ ;\n" .
+					"/*!50003 SET character_set_client  = @saved_cs_client */ ;\n" .
+					"/*!50003 SET character_set_results = @saved_cs_results */ ;\n" .
+					"/*!50003 SET collation_connection  = @saved_col_connection */ ;\n",
+					$createTrigger['Trigger'],
+					$createTrigger['character_set_client'],
+					$createTrigger['collation_connection'],
+					$createTrigger['sql_mode'],
+					$createTrigger['SQL Original Statement']
+				);
+				$this->write($sql);
+			} catch (\mysqli_sql_exception $e) {
+				$this->logQueryError($e, $query);
+			}
+		}
+
+		$statusResult->close();
+	}
+
+	/**
 	 * Writes data to handle and compress
 	 *
 	 * @param $data string to write
@@ -625,7 +951,6 @@ class BackWPup_MySQLDump {
 	protected function escapeString( $value ) {
 		return $this->mysqli->real_escape_string( $value );
 	}
-
 }
 
 /**

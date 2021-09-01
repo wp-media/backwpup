@@ -1,4 +1,16 @@
 == Changelog ==
+= Version 3.10.0 =
+Release Date: September 1, 2021
+
+* Added: Support for Dropbox short-lived access tokens
+* Fixed (pro): Prevent out of memory error on HiDrive backups
+* Fixed (pro): Small files uploaded twice to HiDrive
+* Fixed (pro): Fatal error on plugin update if $transient is null
+* Fixed (pro): Restore of stored functions, procedures, and triggers
+* Fixed: Export of stored functions, procedures, and triggers including delimiters
+* Fixed: Support emojis and other 4-byte characters in database dump
+* Fixed: PHP 8 deprecation notice in XML export
+
 = Version 3.9.0 =
 Release Date: June 14, 2021
 

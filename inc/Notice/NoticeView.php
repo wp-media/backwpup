@@ -2,6 +2,8 @@
 
 namespace Inpsyde\BackWPup\Notice;
 
+use function backwpup_template;
+
 /**
  * Class NoticeView
  */
@@ -36,47 +38,13 @@ class NoticeView
      *
      * @return false|string
      */
-    public function notice(NoticeMessage $message, $dismiss_action_url, $type = null)
+    public function notice(NoticeMessage $message, $dismissActionUrl = null, $type = null)
     {
-        ?>
+        $message->id = $this->id;
+        $message->dismissActionUrl = $dismissActionUrl;
+        $message->type = $type;
 
-        <div
-            class="notice<?php echo $type ? ' ' . esc_attr($type) : '' ?> notice-inpsyde"
-            id="<?php echo esc_attr($this->id) ?>_notice"
-            data-notice-id="<?php echo esc_attr($this->id) ?>"
-        >
-            <?php if (is_array($message->content())) { ?>
-                <div class="notice-inpsyde__content">
-                    <?php foreach ($message->content() as $paragraph) { ?>
-                        <p><?php echo wp_kses_post($paragraph) ?></p>
-                    <?php } ?>
-                </div>
-            <?php } else { ?>
-                <p class="notice-inpsyde__content">
-                    <?php echo wp_kses_post($message->content()) ?>
-                </p>
-            <?php } ?>
-            <p class="notice-inpsyde-actions">
-                <?php if (!empty($message->cta_url())) { ?>
-                    <a
-                        class="button button--inpsyde"
-                        href="<?php echo esc_url($message->cta_url()) ?>"
-                        target="_blank"
-                    >
-                        <?php echo esc_html($message->button_label()) ?>
-                    </a>
-
-                <?php } ?>
-                <a
-                    class="button dismiss-button"
-                    id="<?php echo esc_attr($this->id) ?>_dismiss"
-                    href="<?php echo esc_url($dismiss_action_url) ?>"
-                >
-                    <?php echo esc_html_e('Don\'t show again', 'backwpup') ?>
-                </a>
-            </p>
-        </div>
-        <?php
+        backwpup_template($message, '/notice/notice.php');
     }
 
     /**
@@ -86,10 +54,19 @@ class NoticeView
      */
     public function __call($name, $args)
     {
-        if (count($args) !== 2) {
+        if (count($args) === 0) {
             throw new \BadMethodCallException(
                 sprintf(
-                    __('Method %1$s::%2$s() requires 2 arguments; %3$d given', 'backwpup'),
+                    __('Method %1$s::%2$s() requires at least 1 argument; %3$d given', 'backwpup'),
+                    __CLASS__,
+                    $name,
+                    count($args)
+                )
+            );
+        } elseif (count($args) > 2) {
+            throw new \BadMethodCallException(
+                sprintf(
+                    __('Method %1$s::%2$s() takes at most 2 arguments; %3$d given', 'backwpup'),
                     __CLASS__,
                     $name,
                     count($args)

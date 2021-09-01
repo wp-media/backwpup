@@ -331,17 +331,17 @@
     },
     {
         "name": "guzzlehttp/promises",
-        "version": "1.4.0",
-        "version_normalized": "1.4.0.0",
+        "version": "1.4.1",
+        "version_normalized": "1.4.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/guzzle/promises.git",
-            "reference": "60d379c243457e073cff02bc323a2a86cb355631"
+            "reference": "8e7d04f1f6450fef59366c399cfad4b9383aa30d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/guzzle/promises/zipball/60d379c243457e073cff02bc323a2a86cb355631",
-            "reference": "60d379c243457e073cff02bc323a2a86cb355631",
+            "url": "https://api.github.com/repos/guzzle/promises/zipball/8e7d04f1f6450fef59366c399cfad4b9383aa30d",
+            "reference": "8e7d04f1f6450fef59366c399cfad4b9383aa30d",
             "shasum": "",
             "mirrors": [
                 {
@@ -356,7 +356,7 @@
         "require-dev": {
             "symfony/phpunit-bridge": "^4.4 || ^5.1"
         },
-        "time": "2020-09-30T07:37:28+00:00",
+        "time": "2021-03-07T09:25:29+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -389,22 +389,22 @@
         ],
         "support": {
             "issues": "https://github.com/guzzle/promises/issues",
-            "source": "https://github.com/guzzle/promises/tree/1.4.0"
+            "source": "https://github.com/guzzle/promises/tree/1.4.1"
         }
     },
     {
         "name": "guzzlehttp/psr7",
-        "version": "1.7.0",
-        "version_normalized": "1.7.0.0",
+        "version": "1.8.2",
+        "version_normalized": "1.8.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/guzzle/psr7.git",
-            "reference": "53330f47520498c0ae1f61f7e2c90f55690c06a3"
+            "reference": "dc960a912984efb74d0a90222870c72c87f10c91"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/guzzle/psr7/zipball/53330f47520498c0ae1f61f7e2c90f55690c06a3",
-            "reference": "53330f47520498c0ae1f61f7e2c90f55690c06a3",
+            "url": "https://api.github.com/repos/guzzle/psr7/zipball/dc960a912984efb74d0a90222870c72c87f10c91",
+            "reference": "dc960a912984efb74d0a90222870c72c87f10c91",
             "shasum": "",
             "mirrors": [
                 {
@@ -428,7 +428,7 @@
         "suggest": {
             "laminas/laminas-httphandlerrunner": "Emit PSR-7 responses"
         },
-        "time": "2020-09-30T07:37:11+00:00",
+        "time": "2021-04-26T09:17:50+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -472,7 +472,7 @@
         ],
         "support": {
             "issues": "https://github.com/guzzle/psr7/issues",
-            "source": "https://github.com/guzzle/psr7/tree/1.7.0"
+            "source": "https://github.com/guzzle/psr7/tree/1.8.2"
         }
     },
     {
@@ -1012,17 +1012,17 @@
     },
     {
         "name": "paragonie/random_compat",
-        "version": "v2.0.19",
-        "version_normalized": "2.0.19.0",
+        "version": "v2.0.20",
+        "version_normalized": "2.0.20.0",
         "source": {
             "type": "git",
             "url": "https://github.com/paragonie/random_compat.git",
-            "reference": "446fc9faa5c2a9ddf65eb7121c0af7e857295241"
+            "reference": "0f1f60250fccffeaf5dda91eea1c018aed1adc2a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/paragonie/random_compat/zipball/446fc9faa5c2a9ddf65eb7121c0af7e857295241",
-            "reference": "446fc9faa5c2a9ddf65eb7121c0af7e857295241",
+            "url": "https://api.github.com/repos/paragonie/random_compat/zipball/0f1f60250fccffeaf5dda91eea1c018aed1adc2a",
+            "reference": "0f1f60250fccffeaf5dda91eea1c018aed1adc2a",
             "shasum": "",
             "mirrors": [
                 {
@@ -1040,7 +1040,7 @@
         "suggest": {
             "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
         },
-        "time": "2020-10-15T10:06:57+00:00",
+        "time": "2021-04-17T09:33:01+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1148,17 +1148,7 @@
         "support": {
             "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Archive_Tar",
             "source": "https://github.com/pear/Archive_Tar"
-        },
-        "funding": [
-            {
-                "url": "https://github.com/mrook",
-                "type": "github"
-            },
-            {
-                "url": "https://www.patreon.com/michielrook",
-                "type": "patreon"
-            }
-        ]
+        }
     },
     {
         "name": "pear/console_getopt",
@@ -1431,21 +1421,7 @@
         "support": {
             "issues": "https://github.com/phpseclib/phpseclib/issues",
             "source": "https://github.com/phpseclib/phpseclib/tree/2.0.31"
-        },
-        "funding": [
-            {
-                "url": "https://github.com/terrafrost",
-                "type": "github"
-            },
-            {
-                "url": "https://www.patreon.com/phpseclib",
-                "type": "patreon"
-            },
-            {
-                "url": "https://tidelift.com/funding/github/packagist/phpseclib/phpseclib",
-                "type": "tidelift"
-            }
-        ]
+        }
     },
     {
         "name": "pimple/pimple",
@@ -1922,6 +1898,66 @@
         "homepage": "https://symfony.com"
     },
     {
+        "name": "symfony/options-resolver",
+        "version": "v3.4.47",
+        "version_normalized": "3.4.47.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/options-resolver.git",
+            "reference": "c7efc97a47b2ebaabc19d5b6c6b50f5c37c92744"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/c7efc97a47b2ebaabc19d5b6c6b50f5c37c92744",
+            "reference": "c7efc97a47b2ebaabc19d5b6c6b50f5c37c92744",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "php": "^5.5.9|>=7.0.8"
+        },
+        "time": "2020-10-24T10:57:07+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\OptionsResolver\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony OptionsResolver Component",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "config",
+            "configuration",
+            "options"
+        ],
+        "support": {
+            "source": "https://github.com/symfony/options-resolver/tree/v3.4.47"
+        }
+    },
+    {
         "name": "symfony/polyfill-intl-idn",
         "version": "v1.19.0",
         "version_normalized": "1.19.0.0",
@@ -2001,21 +2037,7 @@
         ],
         "support": {
             "source": "https://github.com/symfony/polyfill-intl-idn/tree/v1.19.0"
-        },
-        "funding": [
-            {
-                "url": "https://symfony.com/sponsor",
-                "type": "custom"
-            },
-            {
-                "url": "https://github.com/fabpot",
-                "type": "github"
-            },
-            {
-                "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                "type": "tidelift"
-            }
-        ]
+        }
     },
     {
         "name": "symfony/polyfill-intl-normalizer",
@@ -2093,21 +2115,7 @@
         ],
         "support": {
             "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.19.0"
-        },
-        "funding": [
-            {
-                "url": "https://symfony.com/sponsor",
-                "type": "custom"
-            },
-            {
-                "url": "https://github.com/fabpot",
-                "type": "github"
-            },
-            {
-                "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                "type": "tidelift"
-            }
-        ]
+        }
     },
     {
         "name": "symfony/polyfill-mbstring",
@@ -2181,21 +2189,7 @@
         ],
         "support": {
             "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.19.0"
-        },
-        "funding": [
-            {
-                "url": "https://symfony.com/sponsor",
-                "type": "custom"
-            },
-            {
-                "url": "https://github.com/fabpot",
-                "type": "github"
-            },
-            {
-                "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                "type": "tidelift"
-            }
-        ]
+        }
     },
     {
         "name": "symfony/polyfill-php70",
@@ -2269,21 +2263,7 @@
         ],
         "support": {
             "source": "https://github.com/symfony/polyfill-php70/tree/v1.19.0"
-        },
-        "funding": [
-            {
-                "url": "https://symfony.com/sponsor",
-                "type": "custom"
-            },
-            {
-                "url": "https://github.com/fabpot",
-                "type": "github"
-            },
-            {
-                "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                "type": "tidelift"
-            }
-        ]
+        }
     },
     {
         "name": "symfony/polyfill-php72",
@@ -2353,21 +2333,7 @@
         ],
         "support": {
             "source": "https://github.com/symfony/polyfill-php72/tree/v1.19.0"
-        },
-        "funding": [
-            {
-                "url": "https://symfony.com/sponsor",
-                "type": "custom"
-            },
-            {
-                "url": "https://github.com/fabpot",
-                "type": "github"
-            },
-            {
-                "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                "type": "tidelift"
-            }
-        ]
+        }
     },
     {
         "name": "symfony/translation",

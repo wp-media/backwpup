@@ -17,13 +17,13 @@ abstract class EnvironmentNotice extends Notice
      */
     protected function render(NoticeMessage $message)
     {
-        $this->view->warning($message, $this->get_dismiss_action_url());
+        $this->view->warning($message, $this->getDismissActionUrl());
     }
 
 /**
  * {@inheritdoc}
  */
-    protected function is_screen_allowed()
+    protected function isScreenAllowed()
     {
         return true;
     }
@@ -31,12 +31,10 @@ abstract class EnvironmentNotice extends Notice
     /**
      * {@inheritdoc}
      */
-    protected function should_display()
+    protected function shouldDisplay()
     {
-        $option = new DismissibleNoticeOption(true);
-
-        if ((bool)$option->is_dismissed(static::ID) === false) {
-            $checker = new EnvironmentChecker($this->get_constraints());
+        if (parent::shouldDisplay()) {
+            $checker = new EnvironmentChecker($this->getConstraints());
 
             try {
                 $checker->check();
@@ -56,5 +54,5 @@ abstract class EnvironmentNotice extends Notice
      *
      * @return array The list of constraints
      */
-    abstract protected function get_constraints();
+    abstract protected function getConstraints();
 }

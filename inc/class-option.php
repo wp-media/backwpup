@@ -22,7 +22,6 @@ final class BackWPup_Option {
 		add_site_option( 'backwpup_cfg_showadminbar', false );
 		add_site_option( 'backwpup_cfg_showfoldersize', false );
 		add_site_option( 'backwpup_cfg_protectfolders', true );
-        add_site_option('backwpup_cfg_phone_home_client', true);
 		//job
 		add_site_option( 'backwpup_cfg_jobmaxexecutiontime', 30 );
 		add_site_option( 'backwpup_cfg_jobstepretry', 3 );

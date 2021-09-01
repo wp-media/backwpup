@@ -1,6 +1,7 @@
 <?php
 
-use \Inpsyde\BackWPup\Pro\Settings;
+use Inpsyde\BackWPup\Pro\Settings;
+use Inpsyde\BackWPup\Notice;
 
 /**
  * BackWPup_Admin
@@ -162,6 +163,10 @@ final class BackWPup_Admin {
 			return;
 		}
 		if ( ! defined( 'DOING_AJAX' ) || ( defined( 'DOING_AJAX' ) && ! DOING_AJAX ) ) {
+			// Only init notices if this is not an AJAX request
+			$this->init_notices();
+
+			// Everything after this point applies to AJAX
 			return;
 		}
 
@@ -201,6 +206,27 @@ final class BackWPup_Admin {
 		);
 
 		add_action( 'wp_ajax_encrypt_key_handler', array( $ajax_encryption_key_handler, 'handle' ) );
+	}
+
+	private function init_notices() {
+		// Show notice if PHP < 7.2
+		$phpNotice = new Notice\PhpNotice(
+			new Notice\NoticeView( Notice\PhpNotice::ID )
+		);
+		$phpNotice->init( Notice\PhpNotice::TYPE_ADMIN );
+
+		// Show notice if WordPress < 5.0
+		$wpNotice = new Notice\WordPressNotice(
+			new Notice\NoticeView( Notice\WordPressNotice::ID )
+		);
+		$wpNotice->init( Notice\WordPressNotice::TYPE_ADMIN );
+
+		// Show notice if Dropbox needs to be reauthenticated
+		$dropboxNotice = new Notice\DropboxNotice(
+			new Notice\NoticeView( Notice\DropboxNotice::ID ),
+			false // Not dismissible
+		);
+		$dropboxNotice->init( Notice\DropboxNotice::TYPE_ADMIN );
 	}
 
 	/**
@@ -665,21 +691,6 @@ final class BackWPup_Admin {
 		return;
 	}
 
-	/**
-	 * @param bool $show
-	 * @param null|WP_Screen $screen
-	 *
-	 * @return bool
-	 */
-	public function hide_phone_home_client_notices( $show = true, $screen = null ) {
-
-		if ( $screen instanceof WP_Screen ) {
-			return $screen->id === 'toplevel_page_backwpup' || strpos( $screen->id, 'backwpup' ) === 0;
-		}
-
-		return $show;
-	}
-
     public function init()
     {
         //Add menu pages
@@ -714,9 +725,6 @@ final class BackWPup_Admin {
         add_action('show_user_profile', [$this, 'user_profile_fields']);
         add_action('edit_user_profile', [$this, 'user_profile_fields']);
         add_action('profile_update', [$this, 'save_profile_update']);
-        // show "phone home" notices only on plugin pages
-        add_filter('inpsyde-phone-home-show_notice', [$this, 'hide_phone_home_client_notices'], 10,
-            2);
     }
 
     private function __clone()

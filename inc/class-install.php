@@ -36,9 +36,6 @@ class BackWPup_Install {
 
 		delete_site_option( 'backwpup_cfg_jobziparchivemethod' );
 
-		// Delete option for Phone Home Client
-		delete_site_option( 'backwpup_cfg_phone_home_client' );
-
 		//create new options
 		if ( is_multisite() ) {
 			add_site_option( 'backwpup_jobs', array() );

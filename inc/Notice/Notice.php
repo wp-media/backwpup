@@ -1,4 +1,4 @@
-<?php # -*- coding: utf-8 -*-
+<?php
 
 namespace Inpsyde\BackWPup\Notice;
 
@@ -33,13 +33,21 @@ abstract class Notice
     protected $view;
 
     /**
+     * Whether this notice should be dismissible
+     *
+     * @var bool
+     */
+    protected $dismissible;
+
+    /**
      * Notice constructor
      *
      * @param \Inpsyde\BackWPup\Notice\NoticeView $view
      */
-    public function __construct(NoticeView $view)
+    public function __construct(NoticeView $view, $dismissible = true)
     {
         $this->view = $view;
+        $this->dismissible = $dismissible;
     }
 
     /**
@@ -65,14 +73,16 @@ abstract class Notice
             );
         }
 
-        add_action('admin_enqueue_scripts', [ $this, 'enqueue_scripts' ]);
-        DismissibleNoticeOption::setup_actions(true, static::ID, static::CAPABILITY);
+        if ($this->dismissible === true) {
+            add_action('admin_enqueue_scripts', [ $this, 'enqueueScripts' ]);
+            DismissibleNoticeOption::setup_actions(true, static::ID, static::CAPABILITY);
+        }
     }
 
     /**
      * Enqueue Scripts
      */
-    public function enqueue_scripts()
+    public function enqueueScripts()
     {
         $suffix = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
@@ -90,12 +100,12 @@ abstract class Notice
      */
     public function notice()
     {
-        if (!$this->is_screen_allowed() || !$this->should_display()) {
+        if (!$this->isScreenAllowed() || !$this->shouldDisplay()) {
             return;
         }
 
         $message = $this->message();
-        if (!$message->content()) {
+        if ($message === null) {
             return;
         }
 
@@ -112,7 +122,7 @@ abstract class Notice
      */
     protected function render(NoticeMessage $message)
     {
-        $this->view->notice($message, $this->get_dismiss_action_url());
+        $this->view->notice($message, $this->getDismissActionUrl());
     }
 
     /**
@@ -120,12 +130,14 @@ abstract class Notice
      *
      * @return string The URL to dismiss the notice
      */
-    protected function get_dismiss_action_url()
+    protected function getDismissActionUrl()
     {
-        return DismissibleNoticeOption::dismiss_action_url(
-            static::ID,
-            DismissibleNoticeOption::FOR_USER_FOR_GOOD_ACTION
-        );
+        if ($this->dismissible === true) {
+            return DismissibleNoticeOption::dismiss_action_url(
+                static::ID,
+                DismissibleNoticeOption::FOR_USER_FOR_GOOD_ACTION
+            );
+        }
     }
 
     /**
@@ -140,7 +152,7 @@ abstract class Notice
      *
      * @return bool True if the notice should be displayed
      */
-    protected function is_screen_allowed()
+    protected function isScreenAllowed()
     {
         $screen_id = get_current_screen()->id;
         return in_array($screen_id, static::$main_admin_page_ids, true);
@@ -151,10 +163,13 @@ abstract class Notice
      *
      * @return bool True if the notice should be displayed, false otherwise
      */
-    protected function should_display()
+    protected function shouldDisplay()
     {
-        $option = new DismissibleNoticeOption(true);
+        if ($this->dismissible === true) {
+            $option = new DismissibleNoticeOption(true);
+            return (bool)$option->is_dismissed(static::ID) === false;
+        }
 
-        return (bool)$option->is_dismissed(static::ID) === false;
+        return true;
     }
 }

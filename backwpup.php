@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: Inpsyde GmbH
  * Author URI: http://inpsyde.com
- * Version: 3.9.0
+ * Version: 3.10.0
  * Requires at least: 3.9
  * Requires PHP: 5.6
  * Text Domain: backwpup
@@ -23,7 +23,6 @@ use Inpsyde\BackWPup\Pro\License\License;
 use \Inpsyde\BackWPup\Pro\Settings;
 use Inpsyde\BackWPup\Pro\License\LicenseSettingsView;
 use Inpsyde\BackWPup\Pro\License\LicenseSettingUpdater;
-use Inpsyde\BackWPup\Notice;
 
 if ( ! class_exists( 'BackWPup', false ) ) {
 	/**
@@ -166,20 +165,6 @@ if ( ! class_exists( 'BackWPup', false ) ) {
             // Work with wp-cli
 			if ( defined( 'WP_CLI' ) && WP_CLI && method_exists( 'WP_CLI', 'add_command' ) ) {
 				WP_CLI::add_command( 'backwpup', 'BackWPup_WP_CLI' );
-			}
-
-			if ( ! defined( 'DOING_AJAX' ) || ( defined( 'DOING_AJAX' ) && ! DOING_AJAX ) ) {
-				// Show notice if PHP < 7.2
-				$phpNotice = new Notice\PhpNotice(
-					new Notice\NoticeView( Notice\PhpNotice::ID )
-				);
-				$phpNotice->init( Notice\PhpNotice::TYPE_ADMIN );
-
-				// Show notice if WordPress < 5.0
-				$wpNotice = new Notice\WordPressNotice(
-					new Notice\NoticeView( Notice\WordPressNotice::ID )
-				);
-				$wpNotice->init( Notice\WordPressNotice::TYPE_ADMIN );
 			}
 		}
 
