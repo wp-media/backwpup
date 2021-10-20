@@ -165,6 +165,9 @@ class BackWPup_S3_Destination
                     'label' => __('Scaleway: AMS', 'backwpup'),
                     'endpoint' => 'https://s3.nl-ams.scw.cloud',
                 ],
+                'custom' => [
+                    'label' => __('Custom S3 destination', 'backwpup'),
+                ],
             ]
         );
     }
@@ -237,6 +240,7 @@ class BackWPup_S3_Destination
                 'verify' => BackWPup::get_plugin_data('cacert'),
             ],
             'version' => $this->version(),
+            'use_path_style_endpoint' => $this->onlyPathStyleBucket(),
         ];
 
         if ($this->endpoint()) {
