@@ -165,9 +165,6 @@ class BackWPup_S3_Destination
                     'label' => __('Scaleway: AMS', 'backwpup'),
                     'endpoint' => 'https://s3.nl-ams.scw.cloud',
                 ],
-                'custom' => [
-                    'label' => __('Custom S3 destination', 'backwpup'),
-                ],
             ]
         );
     }
