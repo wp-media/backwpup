@@ -237,6 +237,7 @@ class BackWPup_S3_Destination
                 'verify' => BackWPup::get_plugin_data('cacert'),
             ],
             'version' => $this->version(),
+            'use_path_style_endpoint' => $this->onlyPathStyleBucket(),
         ];
 
         if ($this->endpoint()) {
