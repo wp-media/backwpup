@@ -28,6 +28,7 @@ use MicrosoftAzure\Storage\Blob\Models as BlobModels;
 use MicrosoftAzure\Storage\Common\Models\ServiceOptions;
 use MicrosoftAzure\Storage\Common\Models\ServiceProperties;
 use MicrosoftAzure\Storage\Common\Models\Range;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * This interface has all REST APIs provided by Windows Azure for Blob service.
@@ -1126,6 +1127,82 @@ interface IBlob
         BlobModels\BlobServiceOptions $options = null
     );
 
+    /**
+     * Downloads a blob to a file, the result contains its metadata and
+     * properties. The result will not contain a stream pointing to the
+     * content of the file.
+     *
+     * @param string                    $path      The path and name of the file
+     * @param string                    $container name of the container
+     * @param string                    $blob      name of the blob
+     * @param BlobModels\GetBlobOptions $options   optional parameters
+     *
+     * @return BlobModels\GetBlobResult
+     *
+     * @see http://msdn.microsoft.com/en-us/library/windowsazure/dd179440.aspx
+     */
+    public function saveBlobToFile(
+        $path,
+        $container,
+        $blob,
+        BlobModels\GetBlobOptions $options = null
+    );
+
+    /**
+     * Creates promise to download a blob to a file, the result contains its
+     * metadata and properties. The result will not contain a stream pointing
+     * to the content of the file.
+     *
+     * @param string                    $path      The path and name of the file
+     * @param string                    $container name of the container
+     * @param string                    $blob      name of the blob
+     * @param BlobModels\GetBlobOptions $options   optional parameters
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \Exception
+     * @see http://msdn.microsoft.com/en-us/library/windowsazure/dd179440.aspx
+     */
+    public function saveBlobToFileAsync(
+        $path,
+        $container,
+        $blob,
+        BlobModels\GetBlobOptions $options = null
+    );
+
+    /**
+     * Undeletes a blob.
+     *
+     * @param string                          $container name of the container
+     * @param string                          $blob      name of the blob
+     * @param BlobModels\UndeleteBlobOptions  $options   optional parameters
+     *
+     * @return void
+     *
+     * @see https://docs.microsoft.com/en-us/rest/api/storageservices/undelete-blob
+     */
+    public function undeleteBlob(
+        $container,
+        $blob,
+        BlobModels\UndeleteBlobOptions $options = null
+    );
+    
+    /**
+     * Undeletes a blob.
+     *
+     * @param string                          $container name of the container
+     * @param string                          $blob      name of the blob
+     * @param BlobModels\UndeleteBlobOptions  $options   optional parameters
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     *
+     * @see https://docs.microsoft.com/en-us/rest/api/storageservices/undelete-blob
+     */
+    public function undeleteBlobAsync(
+        $container,
+        $blob,
+        BlobModels\UndeleteBlobOptions $options = null
+    );
+    
     /**
     * Reads or downloads a blob from the system, including its metadata and
     * properties.

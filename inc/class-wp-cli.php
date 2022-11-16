@@ -1,139 +1,137 @@
 <?php
+
+use WP_CLI\Formatter;
+
 /**
- * Class for WP-CLI commands
+ * Class for WP-CLI commands.
  */
-class BackWPup_WP_CLI extends WP_CLI_Command {
+class BackWPup_WP_CLI extends WP_CLI_Command
+{
+    /**
+     * Start a BackWPup job.
+     *
+     * # EXAMPLES
+     *
+     *   backwpup start 13
+     *   backwpup start --jobid=13 (deprecated)
+     *
+     * @param $args
+     * @param $assoc_args
+     */
+    public function start($args, $assoc_args)
+    {
+        $jobid = 0;
 
-	/**
-	 * Start a BackWPup job
-	 *
-	 * # EXAMPLES
-	 *
-	 *   backwpup start 13
-	 *   backwpup start --jobid=13 (deprecated)
-	 *
-	 * @param $args
-	 * @param $assoc_args
-	 */
-	public function start( $args, $assoc_args ) {
+        if (file_exists(BackWPup::get_plugin_data('running_file'))) {
+            WP_CLI::error(__('A job is already running.', 'backwpup'));
+        }
 
-		$jobid = 0;
+        if (isset($assoc_args['jobid'])) {
+            $jobid = (int) $assoc_args['jobid'];
+        }
 
-		if ( file_exists( BackWPup::get_plugin_data( 'running_file' ) ) ) {
-			WP_CLI::error( __( 'A job is already running.', 'backwpup' ) );
-		}
+        if (!empty($args[0])) {
+            $jobid = (int) $args[0];
+        }
 
-		if ( isset( $assoc_args['jobid'] ) ) {
-			$jobid = (int) $assoc_args[ 'jobid' ];
-		}
+        if (empty($jobid)) {
+            WP_CLI::error(__('No job ID specified!', 'backwpup'));
+        }
 
-		if ( ! empty( $args[ 0 ] ) ) {
-			$jobid = (int) $args[ 0 ];
-		}
+        $jobids = BackWPup_Option::get_job_ids();
+        if (!in_array($jobid, $jobids, true)) {
+            WP_CLI::error(__('Job ID does not exist!', 'backwpup'));
+        }
 
-		if ( empty( $jobid ) ) {
-			WP_CLI::error( __( 'No job ID specified!', 'backwpup' ) );
-		}
+        BackWPup_Job::start_cli($jobid);
+    }
 
+    /**
+     *  Abort a working BackWPup Job.
+     */
+    public function abort($args, $assoc_args)
+    {
+        if (!file_exists(BackWPup::get_plugin_data('running_file'))) {
+            WP_CLI::error(__('Nothing to abort!', 'backwpup'));
+        }
 
-		$jobids = BackWPup_Option::get_job_ids();
-		if ( ! in_array( $jobid, $jobids, true ) ) {
-			WP_CLI::error( __( 'Job ID does not exist!', 'backwpup' ) );
-		}
+        //abort
+        BackWPup_Job::user_abort();
+        WP_CLI::success(__('Job will be terminated.', 'backwpup'));
+    }
 
-		BackWPup_Job::start_cli( $jobid );
-	}
+    /**
+     * Display a List of Jobs.
+     */
+    public function jobs($args, $assoc_args)
+    {
+        $formatter_args = [
+            'format' => 'table',
+            'fields' => [
+                'Job ID',
+                'Name',
+            ],
+            'field' => null,
+        ];
 
-	/**
-	 *  Abort a working BackWPup Job
-	 *
-	 */
-	public function abort( $args, $assoc_args ) {
+        $items = [];
 
-		if ( ! file_exists( BackWPup::get_plugin_data( 'running_file' ) ) ) {
-			WP_CLI::error( __( 'Nothing to abort!', 'backwpup' ) );
-		}
+        $formatter = new Formatter($formatter_args);
 
-		//abort
-		BackWPup_Job::user_abort();
-		WP_CLI::success( __( 'Job will be terminated.', 'backwpup' ) ) ;
-	}
+        $jobids = BackWPup_Option::get_job_ids();
 
+        foreach ($jobids as $jobid) {
+            $items[] = [
+                'Job ID' => $jobid,
+                'Name' => BackWPup_Option::get($jobid, 'name'),
+            ];
+        }
 
-	/**
-	 * Display a List of Jobs
-	 *
-	 */
-	public function jobs( $args, $assoc_args ) {
+        $formatter->display_items($items);
+    }
 
-		$formatter_args = array(
-			'format' => 'table',
-			'fields' => array(
-				'Job ID',
-				'Name'
-			),
-			'field' => NULL
-		);
+    /**
+     * See Status of a working job.
+     *
+     * @param $args
+     * @param $assoc_args
+     */
+    public function working($args, $assoc_args)
+    {
+        $job_object = BackWPup_Job::get_working_data();
 
-		$items = array();
+        if (!is_object($job_object)) {
+            WP_CLI::error(__('No job running', 'backwpup'));
+        }
 
-		$formatter = new WP_CLI\Formatter( $formatter_args );
+        $formatter_args = [
+            'format' => 'table',
+            'fields' => [
+                'JobID',
+                'Name',
+                'Warnings',
+                'Errors',
+                'On Step',
+                'Done',
+            ],
+            'field' => null,
+        ];
 
-		$jobids = BackWPup_Option::get_job_ids();
+        $formatter = new Formatter($formatter_args);
 
-		foreach ($jobids as $jobid ) {
-			$items[] = array(
-				'Job ID' => $jobid,
-				'Name'  => BackWPup_Option::get( $jobid, 'name' )
-			);
-		}
+        $items = [];
+        $items[] = [
+            'JobID' => $job_object->job['jobid'],
+            'Name' => $job_object->job['name'],
+            'Warnings' => $job_object->warnings,
+            'Errors' => $job_object->errors,
+            'On Step' => $job_object->steps_data[$job_object->step_working]['NAME'],
+            'Done' => $job_object->step_percent . ' / ' . $job_object->substep_percent,
+            'Last message' => str_replace('&hellip;', '...', strip_tags($job_object->lastmsg)),
+        ];
 
-		$formatter->display_items( $items );
-	}
+        $formatter->display_items($items);
 
-	/**
-	 * See Status of a working job
-	 *
-	 * @param $args
-	 * @param $assoc_args
-	 */
-	public function working( $args, $assoc_args ) {
-
-		$job_object = BackWPup_Job::get_working_data();
-
-		if ( ! is_object( $job_object ) ) {
-			WP_CLI::error( __( 'No job running', 'backwpup' ) );
-		}
-
-		$formatter_args = array(
-			'format' => 'table',
-			'fields' => array(
-				'JobID',
-				'Name',
-				'Warnings',
-				'Errors',
-				'On Step',
-				'Done',
-			),
-			'field' => NULL
-		);
-
-		$formatter = new WP_CLI\Formatter( $formatter_args );
-
-		$items = array();
-		$items[] = array(
-			'JobID' => $job_object->job[ 'jobid' ],
-			'Name' => $job_object->job[ 'name' ],
-			'Warnings' => $job_object->warnings,
-			'Errors' => $job_object->errors,
-			'On Step' => $job_object->steps_data[ $job_object->step_working ][ 'NAME' ],
-			'Done' => $job_object->step_percent . ' / ' . $job_object->substep_percent,
-			'Last message' => str_replace( '&hellip;', '...', strip_tags( $job_object->lastmsg ) )
-		);
-
-		$formatter->display_items( $items );
-
-		WP_CLI::log( 'Last Message: ' . str_replace( '&hellip;', '...', strip_tags( $job_object->lastmsg ) ) );
-	}
-
+        WP_CLI::log('Last Message: ' . str_replace('&hellip;', '...', strip_tags($job_object->lastmsg)));
+    }
 }

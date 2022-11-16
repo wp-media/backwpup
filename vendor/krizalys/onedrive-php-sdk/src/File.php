@@ -7,7 +7,7 @@
  * that was distributed with this source code.
  *
  * @author    Christophe Vidal
- * @copyright 2008-2019 Christophe Vidal (http://www.krizalys.com)
+ * @copyright 2008-2021 Christophe Vidal (http://www.krizalys.com)
  * @license   https://opensource.org/licenses/BSD-3-Clause 3-Clause BSD License
  * @link      https://github.com/krizalys/onedrive-php-sdk
  */
@@ -44,9 +44,18 @@ class File extends DriveItem
      *        The options. See DriveItem::__construct() for supported options.
      *
      * @since 1.0.0
+     *
+     * @deprecated 2.7.0 Superseded by \Krizalys\Onedrive\Proxy\FileProxy.
      */
     public function __construct(Client $client, $id, $options = [])
     {
+        $message = sprintf(
+            '%s() is deprecated and will be removed in version 3;'
+                . ' use \Krizalys\Onedrive\Proxy\FileProxy instead',
+            __METHOD__
+        );
+
+        @trigger_error($message, E_USER_DEPRECATED);
         parent::__construct($client, $id, $options);
     }
 
@@ -71,7 +80,7 @@ class File extends DriveItem
      */
     public function fetchContent(array $options = [])
     {
-        $client = $this->_client;
+        $client = $this->client;
 
         $message = sprintf(
             '%s() is deprecated and will be removed in version 3;'
@@ -82,7 +91,7 @@ class File extends DriveItem
 
         @trigger_error($message, E_USER_DEPRECATED);
         $drive = $client->getMyDrive();
-        $item  = $client->getDriveItemById($drive->id, $this->_id);
+        $item  = $client->getDriveItemById($drive->id, $this->id);
 
         return (string) $item->content;
     }
@@ -107,7 +116,7 @@ class File extends DriveItem
      */
     public function copy($destinationId = null)
     {
-        $client = $this->_client;
+        $client = $this->client;
 
         $message = sprintf(
             '%s() is deprecated and will be removed in version 3;'
@@ -118,7 +127,7 @@ class File extends DriveItem
 
         @trigger_error($message, E_USER_DEPRECATED);
         $drive           = $client->getMyDrive();
-        $item            = $client->getDriveItemById($drive->id, $this->_id);
+        $item            = $client->getDriveItemById($drive->id, $this->id);
         $destinationItem = $client->getDriveItemById($drive->id, $destinationId);
 
         return $item->copy($destinationItem);

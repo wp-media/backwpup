@@ -1,13 +1,15 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
+// -*- coding: utf-8 -*-
 
 namespace Inpsyde\BackWPup\Settings;
 
 /**
- * Class SettingsUpdatable
+ * Class SettingsUpdatable.
  */
-interface SettingUpdatable {
+interface SettingUpdatable
+{
+    public function update();
 
-	public function update();
-
-	public function reset();
+    public function reset();
 }

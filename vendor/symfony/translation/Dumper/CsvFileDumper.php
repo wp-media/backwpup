@@ -26,22 +26,12 @@ class CsvFileDumper extends FileDumper
     /**
      * {@inheritdoc}
      */
-    public function format(MessageCatalogue $messages, $domain = 'messages')
+    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = [])
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since Symfony 2.8 and will be removed in 3.0. Use the formatCatalogue() method instead.', E_USER_DEPRECATED);
-
-        return $this->formatCatalogue($messages, $domain);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = array())
-    {
-        $handle = fopen('php://memory', 'rb+');
+        $handle = fopen('php://memory', 'r+');
 
         foreach ($messages->all($domain) as $source => $target) {
-            fputcsv($handle, array($source, $target), $this->delimiter, $this->enclosure);
+            fputcsv($handle, [$source, $target], $this->delimiter, $this->enclosure);
         }
 
         rewind($handle);

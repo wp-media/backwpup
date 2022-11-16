@@ -1,149 +1,146 @@
 <?php
 /**
- * BackWPup_Destination_Ftp_Downloader
+ * BackWPup_Destination_Ftp_Downloader.
  *
  * @since   3.5.0
- * @package Inpsyde\BackWPup
  */
 
 /**
- * Class BackWPup_Destination_Ftp_Downloader
+ * Class BackWPup_Destination_Ftp_Downloader.
  *
  * @since   3.5.0
- * @package Inpsyde\BackWPup
  */
-final class BackWPup_Destination_Ftp_Downloader implements BackWPup_Destination_Downloader_Interface {
+final class BackWPup_Destination_Ftp_Downloader implements BackWPup_Destination_Downloader_Interface
+{
+    /**
+     * @var \BackWpUp_Destination_Downloader_Data
+     */
+    private $data;
 
-	/**
-	 * @var \BackWpUp_Destination_Downloader_Data
-	 */
-	private $data;
+    /**
+     * @var resource
+     */
+    private $source_file_handler;
 
-	/**
-	 * @var resource
-	 */
-	private $source_file_handler;
+    /**
+     * @var resource
+     */
+    private $local_file_handler;
 
-	/**
-	 * @var resource
-	 */
-	private $local_file_handler;
+    /**
+     * @var BackWPup_Destination_Ftp_Connect
+     */
+    private $ftp_resource;
 
-	/**
-	 * @var BackWPup_Destination_Ftp_Connect
-	 */
-	private $ftp_resource;
+    /**
+     * BackWPup_Destination_Ftp_Downloader constructor.
+     */
+    public function __construct(BackWpUp_Destination_Downloader_Data $data)
+    {
+        $this->data = $data;
 
-	/**
-	 * BackWPup_Destination_Ftp_Downloader constructor
-	 */
-	public function __construct( BackWpUp_Destination_Downloader_Data $data ) {
+        $this->ftp_resource();
+    }
 
-		$this->data = $data;
+    /**
+     * Clean up things.
+     */
+    public function __destruct()
+    {
+        fclose($this->source_file_handler);
+        fclose($this->local_file_handler);
+    }
 
-		$this->ftp_resource();
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function download_chunk($start_byte, $end_byte)
+    {
+        $this->source_file_handler($start_byte);
+        $this->local_file_handler($start_byte);
 
-	/**
-	 * Clean up things
-	 */
-	public function __destruct() {
+        $bytes = (int) stream_copy_to_stream(
+            $this->source_file_handler,
+            $this->local_file_handler,
+            $end_byte - $start_byte + 1,
+            0
+        );
 
-		fclose( $this->source_file_handler );
-		fclose( $this->local_file_handler );
-	}
+        if ($bytes === 0) {
+            throw new \RuntimeException(__('Could not write data to file.', 'backwpup'));
+        }
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function download_chunk( $start_byte, $end_byte ) {
+    /**
+     * {@inheritdoc}
+     */
+    public function calculate_size()
+    {
+        $resource = $this->ftp_resource
+            ->connect()
+            ->resource()
+        ;
 
-		$this->source_file_handler( $start_byte );
-		$this->local_file_handler( $start_byte );
+        $size = ftp_size($resource, $this->data->source_file_path());
+        ftp_close($resource);
 
-		$bytes = (int) stream_copy_to_stream(
-			$this->source_file_handler,
-			$this->local_file_handler,
-			$end_byte - $start_byte + 1,
-			0
-		);
+        return $size;
+    }
 
-		if ( $bytes === 0 ) {
-			throw new \RuntimeException( __( 'Could not write data to file.', 'backwpup' ) );
-		}
-	}
+    /**
+     * Set the source file handler.
+     *
+     * @param int $start_byte
+     */
+    private function source_file_handler($start_byte)
+    {
+        if (is_resource($this->source_file_handler)) {
+            return;
+        }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function calculate_size() {
+        $ctx = stream_context_create([\ftp::class => ['resume_pos' => $start_byte]]);
+        $url = $this->ftp_resource->getURL($this->data->source_file_path(), false, $ctx);
 
-		$resource = $this->ftp_resource
-			->connect()
-			->resource();
+        $this->source_file_handler = fopen($url, 'r');
 
-		$size = ftp_size( $resource, $this->data->source_file_path() );
-		ftp_close( $resource );
+        if (!is_resource($this->source_file_handler)) {
+            throw new \RuntimeException(__('Cannot open FTP file for download.', 'backwpup'));
+        }
+    }
 
-		return $size;
-	}
+    /**
+     * Set the local file handler.
+     *
+     * @param int $start_byte
+     */
+    private function local_file_handler($start_byte)
+    {
+        if (is_resource($this->local_file_handler)) {
+            return;
+        }
 
-	/**
-	 * Set the source file handler
-	 *
-	 * @param int $start_byte
-	 */
-	private function source_file_handler( $start_byte ) {
+        $this->local_file_handler = fopen($this->data->local_file_path(), $start_byte === 0 ? 'wb' : 'ab');
 
-		if ( is_resource( $this->source_file_handler ) ) {
-			return;
-		}
+        if (!is_resource($this->local_file_handler)) {
+            throw new \RuntimeException(__('File could not be opened for writing.', 'backwpup'));
+        }
+    }
 
-		$ctx = stream_context_create( array( 'ftp' => array( 'resume_pos' => $start_byte ) ) );
-		$url = $this->ftp_resource->getURL( $this->data->source_file_path(), false, $ctx );
+    /**
+     * Set the Ftp resource.
+     */
+    private function ftp_resource()
+    {
+        $opts = (object) BackWPup_Option::get_job($this->data->job_id());
 
-		$this->source_file_handler = fopen( $url, 'r' );
-
-		if ( ! is_resource( $this->source_file_handler ) ) {
-			throw new \RuntimeException( __( 'Cannot open FTP file for download.', 'backwpup' ) );
-		}
-	}
-
-	/**
-	 * Set the local file handler
-	 *
-	 * @param int $start_byte
-	 */
-	private function local_file_handler( $start_byte ) {
-
-		if ( is_resource( $this->local_file_handler ) ) {
-			return;
-		}
-
-		$this->local_file_handler = fopen( $this->data->local_file_path(), $start_byte === 0 ? 'wb' : 'ab' );
-
-		if ( ! is_resource( $this->local_file_handler ) ) {
-			throw new \RuntimeException( __( 'File could not be opened for writing.', 'backwpup' ) );
-		}
-	}
-
-	/**
-	 * Set the Ftp resource
-	 *
-	 * @return void
-	 */
-	private function ftp_resource() {
-
-		$opts = (object) BackWPup_Option::get_job( $this->data->job_id() );
-
-		$this->ftp_resource = new BackWPup_Destination_Ftp_Connect(
-			$opts->ftphost,
-			$opts->ftpuser,
-			BackWPup_Encryption::decrypt( $opts->ftppass ),
-			$opts->ftphostport,
-			$opts->ftptimeout,
-			$opts->ftpssl,
-			$opts->ftppasv
-		);
-	}
+        $this->ftp_resource = new BackWPup_Destination_Ftp_Connect(
+            $opts->ftphost,
+            $opts->ftpuser,
+            BackWPup_Encryption::decrypt($opts->ftppass),
+            $opts->ftphostport,
+            $opts->ftptimeout,
+            $opts->ftpssl,
+            $opts->ftppasv
+        );
+    }
 }

@@ -1,351 +1,371 @@
 <?php
 
 /**
- * Class for BackWPup cron methods
+ * Class for BackWPup cron methods.
  */
-class BackWPup_Cron {
+class BackWPup_Cron
+{
+    /**
+     * @param string $arg
+     */
+    public static function run($arg = 'restart')
+    {
+        if (!is_main_site(get_current_blog_id())) {
+            return;
+        }
 
-	/**
-	 * @param string $arg
-	 */
-	public static function run( $arg = 'restart' ) {
+        if ($arg === 'restart') {
+            //reschedule restart
+            wp_schedule_single_event(time() + 60, 'backwpup_cron', ['arg' => 'restart']);
+            //restart job if not working or a restart imitated
+            self::cron_active(['run' => 'restart']);
 
-		if ( ! is_main_site( get_current_blog_id() ) ) {
-			return;
-		}
+            return;
+        }
 
-		if ( $arg === 'restart' ) {
-			//reschedule restart
-			wp_schedule_single_event( time() + 60, 'backwpup_cron', array( 'arg' => 'restart' ) );
-			//restart job if not working or a restart imitated
-			self::cron_active( array( 'run' => 'restart' ) );
+        $arg = is_numeric($arg) ? abs((int) $arg) : 0;
+        if (!$arg) {
+            return;
+        }
 
-			return;
-		}
+        //check that job exits
+        $jobids = BackWPup_Option::get_job_ids('activetype', 'wpcron');
+        if (!in_array($arg, $jobids, true)) {
+            return;
+        }
 
-		$arg = is_numeric( $arg ) ? abs( (int) $arg ) : 0;
-		if ( ! $arg ) {
-			return;
-		}
+        //delay other job start for 5 minutes if already one is running
+        $job_object = BackWPup_Job::get_working_data();
+        if ($job_object) {
+            wp_schedule_single_event(time() + 300, 'backwpup_cron', ['arg' => $arg]);
 
-		//check that job exits
-		$jobids = BackWPup_Option::get_job_ids( 'activetype', 'wpcron' );
-		if ( ! in_array( $arg, $jobids, true ) ) {
-			return;
-		}
+            return;
+        }
 
-		//delay other job start for 5 minutes if already one is running
-		$job_object = BackWPup_Job::get_working_data();
-		if ( $job_object ) {
-			wp_schedule_single_event( time() + 300, 'backwpup_cron', array( 'arg' => $arg ) );
+        //reschedule next job run
+        $cron_next = self::cron_next(BackWPup_Option::get($arg, 'cron'));
+        wp_schedule_single_event($cron_next, 'backwpup_cron', ['arg' => $arg]);
 
-			return;
-		}
+        //start job
+        self::cron_active([
+            'run' => 'cronrun',
+            'jobid' => $arg,
+        ]);
+    }
 
-		//reschedule next job run
-		$cron_next = self::cron_next( BackWPup_Option::get( $arg, 'cron' ) );
-		wp_schedule_single_event( $cron_next, 'backwpup_cron', array( 'arg' => $arg ) );
+    /**
+     * Check Jobs worked and Cleanup logs and so on.
+     */
+    public static function check_cleanup()
+    {
+        $job_object = BackWPup_Job::get_working_data();
+        $log_folder = get_site_option('backwpup_cfg_logfolder');
+        $log_folder = BackWPup_File::get_absolute_path($log_folder);
 
-		//start job
-		self::cron_active( array(
-			'run' => 'cronrun',
-			'jobid' => $arg,
-		) );
+        // check aborted jobs for longer than a tow hours, abort them courtly and send mail
+        if (is_object($job_object) && !empty($job_object->logfile)) {
+            $not_worked_time = microtime(true) - $job_object->timestamp_last_update;
+            if ($not_worked_time > 3600) {
+                $job_object->log(
+                    E_USER_ERROR,
+                    __('Aborted, because no progress for one hour!', 'backwpup'),
+                    __FILE__,
+                    __LINE__
+                );
+                unlink(BackWPup::get_plugin_data('running_file'));
+                $job_object->update_working_data();
+            }
+        }
 
-	}
+        //Compress not compressed logs
+        if (is_readable($log_folder) && function_exists('gzopen')
+             && get_site_option('backwpup_cfg_gzlogs') && !is_object($job_object)) {
+            //Compress old not compressed logs
+            try {
+                $dir = new BackWPup_Directory($log_folder);
 
-	/**
-	 * Check Jobs worked and Cleanup logs and so on
-	 */
-	public static function check_cleanup() {
+                $jobids = BackWPup_Option::get_job_ids();
 
-		$job_object = BackWPup_Job::get_working_data();
-		$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
-		$log_folder = BackWPup_File::get_absolute_path( $log_folder );
+                foreach ($dir as $file) {
+                    if ($file->isWritable() && '.html' == substr($file->getFilename(), -5)) {
+                        $compress = new BackWPup_Create_Archive($file->getPathname() . '.gz');
+                        if ($compress->add_file($file->getPathname())) {
+                            unlink($file->getPathname());
+                            //change last logfile in jobs
+                            foreach ($jobids as $jobid) {
+                                $job_logfile = BackWPup_Option::get($jobid, 'logfile');
+                                if (!empty($job_logfile) && $job_logfile === $file->getPathname()) {
+                                    BackWPup_Option::update($jobid, 'logfile', $file->getPathname() . '.gz');
+                                }
+                            }
+                        }
+                        $compress->close();
+                        unset($compress);
+                    }
+                }
+            } catch (UnexpectedValueException $e) {
+                $job_object->log(
+                    sprintf(__('Could not open path: %s', 'backwpup'), $e->getMessage()),
+                    E_USER_WARNING
+                );
+            }
+        }
 
-		// check aborted jobs for longer than a tow hours, abort them courtly and send mail
-		if ( is_object( $job_object ) && ! empty( $job_object->logfile ) ) {
-			$not_worked_time = microtime( true ) - $job_object->timestamp_last_update;
-			if ( $not_worked_time > 3600 ) {
-				$job_object->log( E_USER_ERROR,
-					__( 'Aborted, because no progress for one hour!', 'backwpup' ),
-					__FILE__,
-					__LINE__ );
-				unlink( BackWPup::get_plugin_data( 'running_file' ) );
-				$job_object->update_working_data();
-			}
-		}
+        //Jobs cleanings
+        if (!$job_object) {
+            //remove restart cron
+            wp_clear_scheduled_hook('backwpup_cron', ['arg' => 'restart']);
+            //temp cleanup
+            BackWPup_Job::clean_temp_folder();
+        }
 
-		//Compress not compressed logs
-		if ( is_readable( $log_folder ) && function_exists( 'gzopen' )
-		     && get_site_option( 'backwpup_cfg_gzlogs' ) && ! is_object( $job_object ) ) {
-			//Compress old not compressed logs
-			try {
-				$dir = new BackWPup_Directory( $log_folder );
+        //check scheduling jobs that not found will removed because there are single scheduled
+        $activejobs = BackWPup_Option::get_job_ids('activetype', 'wpcron');
 
-				$jobids = BackWPup_Option::get_job_ids();
-				foreach ( $dir as $file ) {
-					if ( $file->isWritable() && '.html' == substr( $file->getFilename(), - 5 ) ) {
-						$compress = new BackWPup_Create_Archive( $file->getPathname() . '.gz' );
-						if ( $compress->add_file( $file->getPathname() ) ) {
-							unlink( $file->getPathname() );
-							//change last logfile in jobs
-							foreach ( $jobids as $jobid ) {
-								$job_logfile = BackWPup_Option::get( $jobid, 'logfile' );
-								if ( ! empty( $job_logfile ) && $job_logfile === $file->getPathname() ) {
-									BackWPup_Option::update( $jobid, 'logfile', $file->getPathname() . '.gz' );
-								}
-							}
-						}
-						$compress->close();
-						unset( $compress );
-					}
-				}
-			} catch ( UnexpectedValueException $e ) {
-				$job_object->log( sprintf( __( "Could not open path: %s", 'backwpup' ), $e->getMessage() ),
-					E_USER_WARNING );
-			}
-		}
+        foreach ($activejobs as $jobid) {
+            $cron_next = wp_next_scheduled('backwpup_cron', ['arg' => $jobid]);
+            if (!$cron_next || $cron_next < time()) {
+                wp_unschedule_event($cron_next, 'backwpup_cron', ['arg' => $jobid]);
+                $cron_next = BackWPup_Cron::cron_next(BackWPup_Option::get($jobid, 'cron'));
+                wp_schedule_single_event($cron_next, 'backwpup_cron', ['arg' => $jobid]);
+            }
+        }
+    }
 
-		//Jobs cleanings
-		if ( ! $job_object ) {
-			//remove restart cron
-			wp_clear_scheduled_hook( 'backwpup_cron', array( 'arg' => 'restart' ) );
-			//temp cleanup
-			BackWPup_Job::clean_temp_folder();
-		}
+    /**
+     * Start job if in cron and run query args are set.
+     */
+    public static function cron_active($args = [])
+    {
+        //only if cron active
+        if (!defined('DOING_CRON') || !DOING_CRON) {
+            return;
+        }
 
-		//check scheduling jobs that not found will removed because there are single scheduled
-		$activejobs = BackWPup_Option::get_job_ids( 'activetype', 'wpcron' );
-		foreach ( $activejobs as $jobid ) {
-			$cron_next = wp_next_scheduled( 'backwpup_cron', array( 'arg' => $jobid ) );
-			if ( ! $cron_next || $cron_next < time() ) {
-				wp_unschedule_event( $cron_next, 'backwpup_cron', array( 'arg' => $jobid ) );
-				$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $jobid, 'cron' ) );
-				wp_schedule_single_event( $cron_next, 'backwpup_cron', array( 'arg' => $jobid ) );
-			}
-		}
+        if (!is_array($args)) {
+            $args = [];
+        }
 
-	}
+        if (isset($_GET['backwpup_run'])) {
+            $args['run'] = sanitize_text_field($_GET['backwpup_run']);
+        }
 
-	/**
-	 * Start job if in cron and run query args are set.
-	 */
-	public static function cron_active( $args = array() ) {
+        if (isset($_GET['_nonce'])) {
+            $args['nonce'] = sanitize_text_field($_GET['_nonce']);
+        }
 
-		//only if cron active
-		if ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) {
-			return;
-		}
+        if (isset($_GET['jobid'])) {
+            $args['jobid'] = absint($_GET['jobid']);
+        }
 
-		if ( ! is_array( $args ) ) {
-			$args = array();
-		}
+        $args = array_merge(
+            [
+                'run' => '',
+                'nonce' => '',
+                'jobid' => 0,
+            ],
+            $args
+        );
 
-		if ( isset( $_GET['backwpup_run'] ) ) {
-			$args['run'] = sanitize_text_field( $_GET['backwpup_run'] );
-		}
+        if (!in_array(
+            $args['run'],
+            ['test', 'restart', 'runnow', 'runnowalt', 'runext', 'cronrun'],
+            true
+        )) {
+            return;
+        }
 
-		if ( isset( $_GET['_nonce'] ) ) {
-			$args['nonce'] = sanitize_text_field( $_GET['_nonce'] );
-		}
+        //special header
+        @session_write_close();
+        @header('Content-Type: text/html; charset=' . get_bloginfo('charset'), true);
+        @header('X-Robots-Tag: noindex, nofollow', true);
+        nocache_headers();
 
-		if ( isset( $_GET['jobid'] ) ) {
-			$args['jobid'] = absint( $_GET['jobid'] );
-		}
+        //on test die for fast feedback
+        if ($args['run'] === 'test') {
+            exit('BackWPup test request');
+        }
 
-		$args = array_merge( array(
-			'run' => '',
-			'nonce' => '',
-			'jobid' => 0,
-		),
-			$args );
+        if ($args['run'] === 'restart') {
+            $job_object = BackWPup_Job::get_working_data();
+            // Restart if cannot find job
+            if (!$job_object) {
+                BackWPup_Job::start_http('restart');
 
-		if ( ! in_array( $args['run'],
-			array( 'test', 'restart', 'runnow', 'runnowalt', 'runext', 'cronrun' ),
-			true ) ) {
-			return;
-		}
+                return;
+            }
+            //restart job if not working or a restart wished
+            $not_worked_time = microtime(true) - $job_object->timestamp_last_update;
+            if (!$job_object->pid || $not_worked_time > 300) {
+                BackWPup_Job::start_http('restart');
 
-		//special header
-		@session_write_close();
-		@header( 'Content-Type: text/html; charset=' . get_bloginfo( 'charset' ), true );
-		@header( 'X-Robots-Tag: noindex, nofollow', true );
-		nocache_headers();
+                return;
+            }
+        }
 
-		//on test die for fast feedback
-		if ( $args['run'] === 'test' ) {
-			die( 'BackWPup test request' );
-		}
+        // generate normal nonce
+        $nonce = substr(wp_hash(wp_nonce_tick() . 'backwpup_job_run-' . $args['run'], 'nonce'), -12, 10);
+        //special nonce on external start
+        if ($args['run'] === 'runext') {
+            $nonce = get_site_option('backwpup_cfg_jobrunauthkey');
+        }
+        if ($args['run'] === 'cronrun') {
+            $nonce = '';
+        }
+        // check nonce
+        if ($nonce !== $args['nonce']) {
+            return;
+        }
 
-		if ( $args['run'] === 'restart' ) {
-			$job_object = BackWPup_Job::get_working_data();
-			// Restart if cannot find job
-			if ( ! $job_object ) {
-				BackWPup_Job::start_http( 'restart' );
+        //check runext is allowed for job
+        if ($args['run'] === 'runext') {
+            $jobids_link = BackWPup_Option::get_job_ids('activetype', 'link');
+            $jobids_easycron = BackWPup_Option::get_job_ids('activetype', 'easycron');
+            $jobids_external = array_merge($jobids_link, $jobids_easycron);
+            if (!in_array($args['jobid'], $jobids_external, true)) {
+                return;
+            }
+        }
 
-				return;
-			}
-			//restart job if not working or a restart wished
-			$not_worked_time = microtime( true ) - $job_object->timestamp_last_update;
-			if ( ! $job_object->pid || $not_worked_time > 300 ) {
-				BackWPup_Job::start_http( 'restart' );
+        //run BackWPup job
+        BackWPup_Job::start_http($args['run'], $args['jobid']);
+    }
 
-				return;
-			}
-		}
+    /**
+     * Get the local time timestamp of the next cron execution.
+     *
+     * @param string $cronstring cron (* * * * *)
+     *
+     * @return int Timestamp
+     */
+    public static function cron_next($cronstring)
+    {
+        $cronstr = [];
+        $cron = [];
+        $cronarray = [];
+        //Cron string
+        [$cronstr['minutes'], $cronstr['hours'], $cronstr['mday'], $cronstr['mon'], $cronstr['wday']] = explode(
+            ' ',
+            trim($cronstring),
+            5
+        );
 
-		// generate normal nonce
-		$nonce = substr( wp_hash( wp_nonce_tick() . 'backwpup_job_run-' . $args['run'], 'nonce' ), - 12, 10 );
-		//special nonce on external start
-		if ( $args['run'] === 'runext' ) {
-			$nonce = get_site_option( 'backwpup_cfg_jobrunauthkey' );
-		}
-		if ( $args['run'] === 'cronrun' ) {
-			$nonce = '';
-		}
-		// check nonce
-		if ( $nonce !== $args['nonce'] ) {
-			return;
-		}
+        //make arrays form string
+        foreach ($cronstr as $key => $value) {
+            if (strstr($value, ',')) {
+                $cronarray[$key] = explode(',', $value);
+            } else {
+                $cronarray[$key] = [0 => $value];
+            }
+        }
 
-		//check runext is allowed for job
-		if ( $args['run'] === 'runext' ) {
-			$jobids_link = BackWPup_Option::get_job_ids( 'activetype', 'link' );
-			$jobids_easycron = BackWPup_Option::get_job_ids( 'activetype', 'easycron' );
-			$jobids_external = array_merge( $jobids_link, $jobids_easycron );
-			if ( ! in_array( $args['jobid'], $jobids_external, true ) ) {
-				return;
-			}
-		}
+        //make arrays complete with ranges and steps
+        foreach ($cronarray as $cronarraykey => $cronarrayvalue) {
+            $cron[$cronarraykey] = [];
 
-		//run BackWPup job
-		BackWPup_Job::start_http( $args['run'], $args['jobid'] );
-	}
+            foreach ($cronarrayvalue as $value) {
+                //steps
+                $step = 1;
+                if (strstr($value, '/')) {
+                    [$value, $step] = explode('/', $value, 2);
+                }
+                //replace weekday 7 with 0 for sundays
+                if ($cronarraykey === 'wday') {
+                    $value = str_replace('7', '0', $value);
+                }
+                //ranges
+                if (strstr($value, '-')) {
+                    [$first, $last] = explode('-', $value, 2);
+                    if (!is_numeric($first) || !is_numeric($last) || $last > 60 || $first > 60) { //check
+                        return PHP_INT_MAX;
+                    }
+                    if ($cronarraykey === 'minutes' && $step < 5) { //set step minimum to 5 min.
+                        $step = 5;
+                    }
+                    $range = [];
 
-	/**
-	 *
-	 * Get the local time timestamp of the next cron execution
-	 *
-	 * @param string $cronstring cron (* * * * *).
-	 *
-	 * @return int Timestamp
-	 */
-	public static function cron_next( $cronstring ) {
+                    for ($i = $first; $i <= $last; $i = $i + $step) {
+                        $range[] = $i;
+                    }
+                    $cron[$cronarraykey] = array_merge($cron[$cronarraykey], $range);
+                } elseif ($value === '*') {
+                    $range = [];
+                    if ($cronarraykey === 'minutes') {
+                        if ($step < 10) { //set step minimum to 5 min.
+                            $step = 10;
+                        }
 
-		$cron = array();
-		$cronarray = array();
-		//Cron string
-		list( $cronstr['minutes'], $cronstr['hours'], $cronstr['mday'], $cronstr['mon'], $cronstr['wday'] ) = explode( ' ',
-			trim( $cronstring ),
-			5 );
+                        for ($i = 0; $i <= 59; $i = $i + $step) {
+                            $range[] = $i;
+                        }
+                    }
+                    if ($cronarraykey === 'hours') {
+                        for ($i = 0; $i <= 23; $i = $i + $step) {
+                            $range[] = $i;
+                        }
+                    }
+                    if ($cronarraykey === 'mday') {
+                        for ($i = $step; $i <= 31; $i = $i + $step) {
+                            $range[] = $i;
+                        }
+                    }
+                    if ($cronarraykey === 'mon') {
+                        for ($i = $step; $i <= 12; $i = $i + $step) {
+                            $range[] = $i;
+                        }
+                    }
+                    if ($cronarraykey === 'wday') {
+                        for ($i = 0; $i <= 6; $i = $i + $step) {
+                            $range[] = $i;
+                        }
+                    }
+                    $cron[$cronarraykey] = array_merge($cron[$cronarraykey], $range);
+                } else {
+                    if (!is_numeric($value) || (int) $value > 60) {
+                        return PHP_INT_MAX;
+                    }
+                    $cron[$cronarraykey] = array_merge($cron[$cronarraykey], [0 => absint($value)]);
+                }
+            }
+        }
 
-		//make arrays form string
-		foreach ( $cronstr as $key => $value ) {
-			if ( strstr( $value, ',' ) ) {
-				$cronarray[ $key ] = explode( ',', $value );
-			} else {
-				$cronarray[ $key ] = array( 0 => $value );
-			}
-		}
+        //generate years
+        $year = (int) gmdate('Y');
 
-		//make arrays complete with ranges and steps
-		foreach ( $cronarray as $cronarraykey => $cronarrayvalue ) {
-			$cron[ $cronarraykey ] = array();
-			foreach ( $cronarrayvalue as $value ) {
-				//steps
-				$step = 1;
-				if ( strstr( $value, '/' ) ) {
-					list( $value, $step ) = explode( '/', $value, 2 );
-				}
-				//replace weekday 7 with 0 for sundays
-				if ( $cronarraykey === 'wday' ) {
-					$value = str_replace( '7', '0', $value );
-				}
-				//ranges
-				if ( strstr( $value, '-' ) ) {
-					list( $first, $last ) = explode( '-', $value, 2 );
-					if ( ! is_numeric( $first ) || ! is_numeric( $last ) || $last > 60 || $first > 60 ) { //check
-						return PHP_INT_MAX;
-					}
-					if ( $cronarraykey === 'minutes' && $step < 5 ) { //set step minimum to 5 min.
-						$step = 5;
-					}
-					$range = array();
-					for ( $i = $first; $i <= $last; $i = $i + $step ) {
-						$range[] = $i;
-					}
-					$cron[ $cronarraykey ] = array_merge( $cron[ $cronarraykey ], $range );
-				} elseif ( $value === '*' ) {
-					$range = array();
-					if ( $cronarraykey === 'minutes' ) {
-						if ( $step < 10 ) { //set step minimum to 5 min.
-							$step = 10;
-						}
-						for ( $i = 0; $i <= 59; $i = $i + $step ) {
-							$range[] = $i;
-						}
-					}
-					if ( $cronarraykey === 'hours' ) {
-						for ( $i = 0; $i <= 23; $i = $i + $step ) {
-							$range[] = $i;
-						}
-					}
-					if ( $cronarraykey === 'mday' ) {
-						for ( $i = $step; $i <= 31; $i = $i + $step ) {
-							$range[] = $i;
-						}
-					}
-					if ( $cronarraykey === 'mon' ) {
-						for ( $i = $step; $i <= 12; $i = $i + $step ) {
-							$range[] = $i;
-						}
-					}
-					if ( $cronarraykey === 'wday' ) {
-						for ( $i = 0; $i <= 6; $i = $i + $step ) {
-							$range[] = $i;
-						}
-					}
-					$cron[ $cronarraykey ] = array_merge( $cron[ $cronarraykey ], $range );
-				} else {
-					if ( ! is_numeric( $value ) || (int) $value > 60 ) {
-						return PHP_INT_MAX;
-					}
-					$cron[ $cronarraykey ] = array_merge( $cron[ $cronarraykey ], array( 0 => absint( $value ) ) );
-				}
-			}
-		}
+        for ($i = $year; $i < $year + 100; ++$i) {
+            $cron['year'][] = $i;
+        }
 
-		//generate years
-		$year = (int) gmdate( 'Y' );
-		for ( $i = $year; $i < $year + 100; $i ++ ) {
-			$cron['year'][] = $i;
-		}
+        //calc next timestamp
+        $current_timestamp = (int) current_time('timestamp');
 
-		//calc next timestamp
-		$current_timestamp = (int) current_time( 'timestamp' );
-		foreach ( $cron['year'] as $year ) {
-			foreach ( $cron['mon'] as $mon ) {
-				foreach ( $cron['mday'] as $mday ) {
-					if ( ! checkdate( $mon, $mday, $year ) ) {
-						continue;
-					}
-					foreach ( $cron['hours'] as $hours ) {
-						foreach ( $cron['minutes'] as $minutes ) {
-							$timestamp = gmmktime( $hours, $minutes, 0, $mon, $mday, $year );
-							if ( $timestamp && in_array( (int) gmdate( 'j', $timestamp ),
-									$cron['mday'],
-									true ) && in_array( (int) gmdate( 'w', $timestamp ),
-									$cron['wday'],
-									true ) && $timestamp > $current_timestamp ) {
-								return $timestamp - ( (int) get_option( 'gmt_offset' ) * 3600 );
-							}
-						}
-					}
-				}
-			}
-		}
+        foreach ($cron['year'] as $year) {
+            foreach ($cron['mon'] as $mon) {
+                foreach ($cron['mday'] as $mday) {
+                    if (!checkdate($mon, $mday, $year)) {
+                        continue;
+                    }
 
-		return PHP_INT_MAX;
-	}
+                    foreach ($cron['hours'] as $hours) {
+                        foreach ($cron['minutes'] as $minutes) {
+                            $timestamp = gmmktime($hours, $minutes, 0, $mon, $mday, $year);
+                            if ($timestamp && in_array(
+                                (int) gmdate('j', $timestamp),
+                                $cron['mday'],
+                                true
+                            ) && in_array(
+                                (int) gmdate('w', $timestamp),
+                                $cron['wday'],
+                                true
+                            ) && $timestamp > $current_timestamp) {
+                                return $timestamp - ((int) get_option('gmt_offset') * 3600);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return PHP_INT_MAX;
+    }
 }

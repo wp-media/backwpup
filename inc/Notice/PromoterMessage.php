@@ -1,7 +1,13 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
+// -*- coding: utf-8 -*-
 
 namespace Inpsyde\BackWPup\Notice;
 
-class PromoterMessage {
-    public function defaults() { return [];}
+class PromoterMessage
+{
+    public function defaults()
+    {
+        return [];
+    }
 }

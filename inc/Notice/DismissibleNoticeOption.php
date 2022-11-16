@@ -4,35 +4,58 @@ namespace Inpsyde\BackWPup\Notice;
 
 class DismissibleNoticeOption
 {
+    /**
+     * @var string
+     */
+    public const OPTION_PREFIX = 'backwpup_dinotopt_';
+    /**
+     * @var string
+     */
+    public const FOR_GOOD_ACTION = 'dismiss_admin_notice_for_good';
+    /**
+     * @var string
+     */
+    public const FOR_NOW_ACTION = 'dismiss_admin_notice_for_now';
+    /**
+     * @var string
+     */
+    public const FOR_USER_FOR_GOOD_ACTION = 'dismiss_admin_notice_for_good_user';
+    /**
+     * @var string
+     */
+    public const SKIP = 'skip_action';
 
-    const OPTION_PREFIX = 'backwpup_dinotopt_';
-    const FOR_GOOD_ACTION = 'dismiss_admin_notice_for_good';
-    const FOR_NOW_ACTION = 'dismiss_admin_notice_for_now';
-    const FOR_USER_FOR_GOOD_ACTION = 'dismiss_admin_notice_for_good_user';
-    const SKIP = 'skip_action';
-
-    private static $setup = [
-        'sitewide' => [],
-        'blog' => [],
-    ];
-
-    private static $all_actions = [
+    /**
+     * @var string[]
+     */
+    private const ALL_ACTIONS = [
         self::FOR_GOOD_ACTION,
         self::FOR_NOW_ACTION,
         self::FOR_USER_FOR_GOOD_ACTION,
     ];
 
     /**
-     * @var bool
+     * @phpstan-var array{
+     *     sitewide: array<string, string>,
+     *     blog: array<string, string>,
+     * }
      */
-    private $sitewide;
+    private static $setup = [
+        'sitewide' => [],
+        'blog' => [],
+    ];
 
     /**
-     * @param bool $sitewide
-     * @param string $notice_id
-     * @param string $capability
+     * @var bool
      */
-    public static function setup_actions($sitewide, $notice_id, $capability = 'read')
+    private $sitewide = false;
+
+    public function __construct(bool $sitewide = false)
+    {
+        $this->sitewide = $sitewide;
+    }
+
+    public static function setup_actions(bool $sitewide, string $notice_id, string $capability = 'read'): void
     {
         if (!is_string($notice_id)) {
             return;
@@ -48,9 +71,15 @@ class DismissibleNoticeOption
 
         if (self::$setup[$key] === []) {
             $option = new self($sitewide);
-            add_action('admin_post_' . self::FOR_GOOD_ACTION, [$option, 'dismiss']);
-            add_action('admin_post_' . self::FOR_NOW_ACTION, [$option, 'dismiss']);
-            add_action('admin_post_' . self::FOR_USER_FOR_GOOD_ACTION, [$option, 'dismiss']);
+            add_action('admin_post_' . self::FOR_GOOD_ACTION, function () use ($option): void {
+                $option->dismiss();
+            });
+            add_action('admin_post_' . self::FOR_NOW_ACTION, function () use ($option): void {
+                $option->dismiss();
+            });
+            add_action('admin_post_' . self::FOR_USER_FOR_GOOD_ACTION, function () use ($option): void {
+                $option->dismiss();
+            });
         }
 
         self::$setup[$key][$notice_id] = $capability;
@@ -58,13 +87,8 @@ class DismissibleNoticeOption
 
     /**
      * Returns the URL that can be used to dismiss a given notice for good or temporarily according to given action.
-     *
-     * @param string $notice_id
-     * @param string $action
-     *
-     * @return string
      */
-    public static function dismiss_action_url($notice_id, $action)
+    public static function dismiss_action_url(string $notice_id, string $action): string
     {
         return add_query_arg(
             [
@@ -78,21 +102,9 @@ class DismissibleNoticeOption
     }
 
     /**
-     * @param bool $sitewide
-     */
-    public function __construct($sitewide = false)
-    {
-        $this->sitewide = $sitewide;
-    }
-
-    /**
      * Returns true when given notice is dismissed for good or temporarily for current user.
-     *
-     * @param $notice_id
-     *
-     * @return bool
      */
-    public function is_dismissed($notice_id)
+    public function is_dismissed(string $notice_id): bool
     {
         $option_name = self::OPTION_PREFIX . $notice_id;
 
@@ -111,15 +123,15 @@ class DismissibleNoticeOption
         $transient_name = self::OPTION_PREFIX . $notice_id . get_current_user_id();
         $transient = $this->sitewide ? get_site_transient($transient_name) : get_transient($transient_name);
 
-        return (bool)$transient;
+        return (bool) $transient;
     }
 
     /**
      * Action callback to dismiss an action for good.
      */
-    public function dismiss()
+    public function dismiss(): void
     {
-        list($action, $notice_id, $is_ajax) = $this->assert_allowed();
+        [$action, $notice_id, $is_ajax] = $this->assert_allowed();
 
         $end_request = true;
 
@@ -127,26 +139,29 @@ class DismissibleNoticeOption
             case self::FOR_GOOD_ACTION:
                 $this->dismiss_for_good($notice_id);
                 break;
+
             case self::FOR_USER_FOR_GOOD_ACTION:
                 $this->dismiss_for_user_for_good($notice_id);
                 break;
+
             case self::FOR_NOW_ACTION:
                 $this->dismiss_for_now($notice_id);
                 break;
+
             case self::SKIP:
                 $end_request = false;
                 break;
         }
 
-        $end_request and $this->end_request($is_ajax);
+        if ($end_request) {
+            $this->end_request($is_ajax);
+        }
     }
 
     /**
      * Action callback to dismiss an action for good.
-     *
-     * @param string $notice_id
      */
-    private function dismiss_for_good($notice_id)
+    private function dismiss_for_good(string $notice_id): void
     {
         $option_name = self::OPTION_PREFIX . $notice_id;
 
@@ -157,10 +172,8 @@ class DismissibleNoticeOption
 
     /**
      * Action callback to dismiss an action definitively for current user.
-     *
-     * @param string $notice_id
      */
-    private function dismiss_for_user_for_good($notice_id)
+    private function dismiss_for_user_for_good(string $notice_id): void
     {
         update_user_option(
             get_current_user_id(),
@@ -172,10 +185,8 @@ class DismissibleNoticeOption
 
     /**
      * Action callback to dismiss an action temporarily for current user.
-     *
-     * @param string $notice_id
      */
-    private function dismiss_for_now($notice_id)
+    private function dismiss_for_now(string $notice_id): void
     {
         $transient_name = self::OPTION_PREFIX . $notice_id . get_current_user_id();
         $expiration = 12 * HOUR_IN_SECONDS;
@@ -187,10 +198,8 @@ class DismissibleNoticeOption
 
     /**
      * Ends a request redirecting to referer page.
-     *
-     * @param bool $no_redirect
      */
-    private function end_request($no_redirect = false)
+    private function end_request(bool $no_redirect = false): void
     {
         if ($no_redirect) {
             exit();
@@ -202,13 +211,14 @@ class DismissibleNoticeOption
         }
 
         wp_safe_redirect($referer);
+
         exit();
     }
 
     /**
-     * @return array
+     * @phpstan-return array{string, string, bool}
      */
-    private function assert_allowed()
+    private function assert_allowed(): array
     {
         if (!is_admin()) {
             $this->end_request();
@@ -222,8 +232,8 @@ class DismissibleNoticeOption
         ];
 
         $data = array_merge(
-            array_filter((array)filter_input_array(INPUT_GET, $definition)),
-            array_filter((array)filter_input_array(INPUT_POST, $definition))
+            array_filter((array) filter_input_array(INPUT_GET, $definition)),
+            array_filter((array) filter_input_array(INPUT_POST, $definition))
         );
 
         $is_ajax = !empty($data['isAjax']);
@@ -233,7 +243,7 @@ class DismissibleNoticeOption
         if (!$action
             || !$notice
             || !is_string($notice)
-            || !in_array($action, self::$all_actions, true)
+            || !in_array($action, self::ALL_ACTIONS, true)
         ) {
             $this->end_request($is_ajax);
         }
@@ -249,16 +259,15 @@ class DismissibleNoticeOption
         if (!$capability || !current_user_can($capability)) {
             $this->end_request($is_ajax);
         }
+        $nonce = filter_input(INPUT_POST, $action, FILTER_SANITIZE_STRING)
+            ?: filter_input(INPUT_GET, $action, FILTER_SANITIZE_STRING);
 
-        $nonce = filter_input(INPUT_POST, $action, FILTER_SANITIZE_STRING);
-        $nonce or $nonce = filter_input(INPUT_GET, $action, FILTER_SANITIZE_STRING);
-
-        if (!$nonce || !wp_verify_nonce($nonce, $action)) {
+        if (!is_string($nonce) || !wp_verify_nonce($nonce, $action)) {
             $this->end_request($is_ajax);
         }
 
         if (!$this->sitewide
-            && (empty($data['blog']) || get_current_blog_id() !== (int)$data['blog'])
+            && (empty($data['blog']) || get_current_blog_id() !== (int) $data['blog'])
         ) {
             $this->end_request($is_ajax);
         }

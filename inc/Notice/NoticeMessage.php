@@ -1,42 +1,38 @@
-<?php # -*- coding: utf-8 -*-
+<?php
 
 namespace Inpsyde\BackWPup\Notice;
 
 /**
- * Class NoticeMessage
- *
- * @method content()
- * @method button_label()
- * @method cta_url()
+ *@property string $id
+ *@property string|null $buttonLabel
+ *@property string|null $buttonUrl
+ * @property string|null $dismissActionUrl
+ *@property string|null $type
+ * @property string                  $template
+ * @property array<int, string>|null $jobs
  */
-class NoticeMessage
+final class NoticeMessage
 {
-
     /**
-     * Array of message data
+     * Array of message data.
      *
-     * @var array
+     * @var array<string, string|array<int, string>|null>
      */
-    private $data;
+    private $data = [];
 
-    /**
-     * NoticeMessage constructor
-     *
-     * @param string $template The notice template
-     */
-    public function __construct($template, $buttonLabel = null, $buttonUrl = null)
+    public function __construct(string $template, ?string $buttonLabel = null, ?string $buttonUrl = null)
     {
-        $this->data['template'] = "/notice/$template.php";
+        $this->data['template'] = sprintf('/notice/%s.php', $template);
         $this->data['buttonLabel'] = $buttonLabel;
         $this->data['buttonUrl'] = $buttonUrl;
     }
 
     /**
-     * Get a message variable
+     * Get a message variable.
      *
      * @param string $name
      *
-     * @return mixed
+     * @return string|array<int, string>|null
      */
     public function __get($name)
     {
@@ -48,18 +44,18 @@ class NoticeMessage
     }
 
     /**
-     * Sets a variable for the message
+     * Sets a variable for the message.
      *
-     * @param string $name The variable to set
-     * @param mixed $value The value to set
+     * @param string                    $name  The variable to set
+     * @param string|array<int, string> $value The value to set
      */
-    public function __set($name, $value)
+    public function __set($name, $value): void
     {
         $this->data[$name] = $value;
     }
 
     /**
-     * Check if variable is set
+     * Check if variable is set.
      *
      * @param string $name The variable to check
      */

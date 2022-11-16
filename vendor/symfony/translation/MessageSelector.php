@@ -11,11 +11,17 @@
 
 namespace Symfony\Component\Translation;
 
+@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.2, use IdentityTranslator instead.', MessageSelector::class), \E_USER_DEPRECATED);
+
+use Symfony\Component\Translation\Exception\InvalidArgumentException;
+
 /**
  * MessageSelector.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Bernhard Schussek <bschussek@gmail.com>
+ *
+ * @deprecated since Symfony 4.2, use IdentityTranslator instead.
  */
 class MessageSelector
 {
@@ -37,21 +43,27 @@ class MessageSelector
      * The two methods can also be mixed:
      *     {0} There are no apples|one: There is one apple|more: There are %count% apples
      *
-     * @param string $message The message being translated
-     * @param int    $number  The number of items represented for the message
-     * @param string $locale  The locale to use for choosing
+     * @param string    $message The message being translated
+     * @param int|float $number  The number of items represented for the message
+     * @param string    $locale  The locale to use for choosing
      *
      * @return string
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function choose($message, $number, $locale)
     {
-        $parts = explode('|', $message);
-        $explicitRules = array();
-        $standardRules = array();
+        $parts = [];
+        if (preg_match('/^\|++$/', $message)) {
+            $parts = explode('|', $message);
+        } elseif (preg_match_all('/(?:\|\||[^\|])++/', $message, $matches)) {
+            $parts = $matches[0];
+        }
+
+        $explicitRules = [];
+        $standardRules = [];
         foreach ($parts as $part) {
-            $part = trim($part);
+            $part = trim(str_replace('||', '|', $part));
 
             if (preg_match('/^(?P<interval>'.Interval::getIntervalRegexp().')\s*(?P<message>.*?)$/xs', $part, $matches)) {
                 $explicitRules[$matches['interval']] = $matches['message'];
@@ -78,7 +90,7 @@ class MessageSelector
                 return $standardRules[0];
             }
 
-            throw new \InvalidArgumentException(sprintf('Unable to choose a translation for "%s" with locale "%s" for value "%d". Double check that this translation has the correct plural options (e.g. "There is one apple|There are %%count%% apples").', $message, $locale, $number));
+            throw new InvalidArgumentException(sprintf('Unable to choose a translation for "%s" with locale "%s" for value "%d". Double check that this translation has the correct plural options (e.g. "There is one apple|There are %%count%% apples").', $message, $locale, $number));
         }
 
         return $standardRules[$position];

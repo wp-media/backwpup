@@ -1,34 +1,34 @@
-<?php # -*- coding: utf-8 -*-
+<?php
 
 namespace Inpsyde\BackWPup\Notice;
 
-use Inpsyde\EnvironmentChecker\Constraints;
+use Inpsyde\EnvironmentChecker\Constraints\WordPressConstraint;
 
-/**
- * Class WordPressNotice
- *
- * @package Inpsyde\BackWPup\Notice
- */
 class WordPressNotice extends EnvironmentNotice
 {
-
-    const OPTION_NAME = 'backwpup_notice_wordpress_version';
-    const ID = self::OPTION_NAME;
+    /**
+     * @var string
+     */
+    public const OPTION_NAME = 'backwpup_notice_wordpress_version';
+    /**
+     * @var string
+     */
+    public const ID = self::OPTION_NAME;
 
     /**
      * {@inheritdoc}
      */
-    protected function getConstraints()
+    protected function getConstraints(): array
     {
         return [
-            new Constraints\WordPressConstraint('5.0'),
+            new WordPressConstraint('5.0'),
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function message()
+    protected function message(): NoticeMessage
     {
         return new NoticeMessage('wordpress');
     }

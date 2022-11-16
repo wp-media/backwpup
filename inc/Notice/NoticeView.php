@@ -1,19 +1,33 @@
-<?php # -*- coding: utf-8 -*-
+<?php
 
 namespace Inpsyde\BackWPup\Notice;
 
 use function backwpup_template;
 
 /**
- * Class NoticeView
+ * @method void success(NoticeMessage $string, string|null $dismissActionUrl)
+ * @method void error(NoticeMessage $string, string|null $dismissActionUrl)
+ * @method void warning(NoticeMessage $string, string|null $dismissActionUrl)
+ * @method void info(NoticeMessage $string, string|null $dismissActionUrl)
  */
-class NoticeView
+final class NoticeView
 {
-
-    const SUCCESS = 'notice-success';
-    const ERROR = 'notice-error';
-    const WARNING = 'notice-warning';
-    const INFO = 'notice-info';
+    /**
+     * @var string
+     */
+    public const SUCCESS = 'notice-success';
+    /**
+     * @var string
+     */
+    public const ERROR = 'notice-error';
+    /**
+     * @var string
+     */
+    public const WARNING = 'notice-warning';
+    /**
+     * @var string
+     */
+    public const INFO = 'notice-info';
 
     /**
      * @var string The ID of the notice
@@ -21,24 +35,20 @@ class NoticeView
     private $id;
 
     /**
-     * NoticeView constructor
-     *
      * @param string $id The ID of the notice
      */
-    public function __construct($id)
+    public function __construct(string $id)
     {
         $this->id = $id;
     }
 
     /**
-     * @param \Inpsyde\BackWPup\Notice\NoticeMessage $message The contents of the notice
-     * @param string $dismiss_action_url The URL for dismissing the notice
-     * @param string $type The type of notice: one of NoticeView::SUCCESS,
-     *                     NoticeView::ERROR, NoticeView::WARNING, or NoticeView::INFO
-     *
-     * @return false|string
+     * @param NoticeMessage $message          The contents of the notice
+     * @param string|null   $dismissActionUrl The URL for dismissing the notice
+     * @param self::*|null  $type             The type of notice: one of NoticeView::SUCCESS,
+     *                                        NoticeView::ERROR, NoticeView::WARNING, or NoticeView::INFO
      */
-    public function notice(NoticeMessage $message, $dismissActionUrl = null, $type = null)
+    public function notice(NoticeMessage $message, ?string $dismissActionUrl = null, ?string $type = null): void
     {
         $message->id = $this->id;
         $message->dismissActionUrl = $dismissActionUrl;
@@ -50,30 +60,11 @@ class NoticeView
     /**
      * Call notice() with the appropriate notice type.
      *
-     * @throws BadMethodCallException If 2 arguments not given, or called with invalid notice type
+     * @param 'success'|'error'|'warning'|'info'       $name
+     * @param array{0: NoticeMessage, 1?: string|null} $args
      */
-    public function __call($name, $args)
+    public function __call(string $name, array $args): void
     {
-        if (count($args) === 0) {
-            throw new \BadMethodCallException(
-                sprintf(
-                    __('Method %1$s::%2$s() requires at least 1 argument; %3$d given', 'backwpup'),
-                    __CLASS__,
-                    $name,
-                    count($args)
-                )
-            );
-        } elseif (count($args) > 2) {
-            throw new \BadMethodCallException(
-                sprintf(
-                    __('Method %1$s::%2$s() takes at most 2 arguments; %3$d given', 'backwpup'),
-                    __CLASS__,
-                    $name,
-                    count($args)
-                )
-            );
-        }
-
         switch ($name) {
             case 'success':
                 $args[] = self::SUCCESS;
@@ -95,7 +86,7 @@ class NoticeView
                 throw new \BadMethodCallException(
                     sprintf(
                         __('Call to undefined method %1$s::%2$s()', 'backwpup'),
-                        __CLASS__,
+                        self::class,
                         $name
                     )
                 );

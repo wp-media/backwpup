@@ -5,6 +5,7 @@ use Aws;
 use Aws\CommandInterface;
 use Aws\Exception\AwsException;
 use GuzzleHttp\Promise;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Promise\PromisorInterface;
 use Iterator;
 
@@ -32,7 +33,8 @@ class Transfer implements PromisorInterface
      * the path to a directory on disk to upload, an s3 scheme URI that contains
      * the bucket and key (e.g., "s3://bucket/key"), or an \Iterator object
      * that yields strings containing filenames that are the path to a file on
-     * disk or an s3 scheme URI. The "/key" portion of an s3 URI is optional.
+     * disk or an s3 scheme URI. The bucket portion of the s3 URI may be an S3
+     * access point ARN. The "/key" portion of an s3 URI is optional.
      *
      * When providing an iterator for the $source argument, you must also
      * provide a 'base_dir' key value pair in the $options argument.
@@ -128,12 +130,16 @@ class Transfer implements PromisorInterface
             if ($options['debug'] === true) {
                 $options['debug'] = fopen('php://output', 'w');
             }
-            $this->addDebugToBefore($options['debug']);
+            if (is_resource($options['debug'])) {
+                $this->addDebugToBefore($options['debug']);
+            }
         }
     }
 
     /**
      * Transfers the files.
+     *
+     * @return PromiseInterface
      */
     public function promise()
     {
@@ -222,6 +228,10 @@ class Transfer implements PromisorInterface
             }
             if ($section === '..') {
                 array_pop($resolved);
+                $destinationDirname = explode('/', $this->destination['path']);
+                if (end($resolved) === end($destinationDirname)) {
+                    array_pop($resolved);
+                }
             } else {
                 $resolved []= $section;
             }
@@ -257,7 +267,7 @@ class Transfer implements PromisorInterface
 
             if (strpos(
                     $this->resolveUri($resolveSink),
-                    $this->destination['path']
+                    $this->destination['path'] . '/'
                 ) !== 0
             ) {
                 throw new AwsException(
@@ -297,7 +307,7 @@ class Transfer implements PromisorInterface
 
         // Create an EachPromise, that will concurrently handle the upload
         // operations' yielded promises from the iterator.
-        return Promise\each_limit_all($files, $this->concurrency);
+        return Promise\Each::ofLimitAll($files, $this->concurrency);
     }
 
     /** @return Iterator */
@@ -352,6 +362,7 @@ class Transfer implements PromisorInterface
     {
         $args = $this->s3Args;
         $args['Key'] = $this->createS3Key($filename);
+        $filename = $filename instanceof \SplFileInfo ? $filename->getPathname() : $filename;
 
         return (new MultipartUploader($this->client, $filename, [
             'bucket'          => $args['Bucket'],

@@ -433,7 +433,7 @@ class Utilities
 
         $cloned = clone $value;
         $cloned->setTimezone(new \DateTimeZone('UTC'));
-        return str_replace('+0000', 'Z', $cloned->format("Y-m-d\TH:i:s.u0O"));
+        return str_replace('+00:00', 'Z', $cloned->format("Y-m-d\TH:i:s.u0P"));
     }
 
     /**
@@ -562,7 +562,7 @@ class Utilities
             mt_rand(0, 64) + 128,       // 8 bits  for "clock_seq_hi", with
                                         // the most significant 2 bits being 10,
                                         // required by version 4 GUIDs.
-            mt_rand(0, 256),            // 8 bits  for "clock_seq_low"
+            mt_rand(0, 255),            // 8 bits  for "clock_seq_low"
             mt_rand(0, 65535),          // 16 bits for "node 0" and "node 1"
             mt_rand(0, 65535),          // 16 bits for "node 2" and "node 3"
             mt_rand(0, 65535)           // 16 bits for "node 4" and "node 5"

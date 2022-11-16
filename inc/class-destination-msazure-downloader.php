@@ -1,10 +1,9 @@
 <?php
 
 use Inpsyde\BackWPup\MsAzureDestinationConfiguration;
-use Inpsyde\BackWPupShared\File\MimeTypeExtractor;
+use MicrosoftAzure\Storage\Blob\BlobRestProxy;
 use MicrosoftAzure\Storage\Blob\Models\GetBlobOptions;
 use MicrosoftAzure\Storage\Common\Models\Range;
-use MicrosoftAzure\Storage\Blob\BlobRestProxy;
 
 class BackWPup_Destination_MSAzure_Downloader implements BackWPup_Destination_Downloader_Interface
 {
@@ -18,16 +17,13 @@ class BackWPup_Destination_MSAzure_Downloader implements BackWPup_Destination_Do
      */
     private $local_file_handler;
 
-    /**
-     * @param BackWpUp_Destination_Downloader_Data $data
-     */
     public function __construct(BackWpUp_Destination_Downloader_Data $data)
     {
         $this->data = $data;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function download_chunk($start_byte, $end_byte)
     {
@@ -54,7 +50,7 @@ class BackWPup_Destination_MSAzure_Downloader implements BackWPup_Destination_Do
 
         $this->setLocalFileHandler($start_byte);
 
-        $bytes = (int)fwrite($this->local_file_handler, stream_get_contents($blob->getContentStream()));
+        $bytes = (int) fwrite($this->local_file_handler, stream_get_contents($blob->getContentStream()));
         if ($bytes === 0) {
             throw new RuntimeException(
                 sprintf(__('Could not write data to file %s.', 'backwpup'), $this->data->source_file_path())
@@ -63,13 +59,13 @@ class BackWPup_Destination_MSAzure_Downloader implements BackWPup_Destination_Do
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function calculate_size()
     {
         $client = $this->getBlobClient();
 
-        $blob = $client->getBlob(
+        $blobProperties = $client->getBlobProperties(
             BackWPup_Option::get(
                 $this->data->job_id(),
                 MsAzureDestinationConfiguration::MSAZURE_CONTAINER
@@ -77,12 +73,14 @@ class BackWPup_Destination_MSAzure_Downloader implements BackWPup_Destination_Do
             $this->data->source_file_path()
         );
 
-        return $blob->getProperties()->getContentLength();
+        return $blobProperties->getProperties()->getContentLength();
     }
 
     /**
      * Sets local_file_handler property by opening the current chunk of the resource.
+     *
      * @param int $start_byte
+     *
      * @throws RuntimeException
      */
     private function setLocalFileHandler($start_byte)
@@ -103,6 +101,7 @@ class BackWPup_Destination_MSAzure_Downloader implements BackWPup_Destination_Do
 
     /**
      * Retrieves the service used to access the blob.
+     *
      * @return BlobRestProxy
      */
     private function getBlobClient()

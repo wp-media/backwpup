@@ -2,28 +2,24 @@
 
 namespace Inpsyde\BackWPup\Notice;
 
+use Inpsyde\EnvironmentChecker\Constraints\AbstractVersionConstraint;
 use Inpsyde\EnvironmentChecker\EnvironmentChecker;
-use Inpsyde\EnvironmentChecker\Exception\ConstraintFailedException;
+use Inpsyde\EnvironmentChecker\Exception\ConstraintFailedExceptionInterface;
 
-/**
- * Class EnvironmentNotice
- *
- * @package Inpsyde\BackWPup\Notice
- */
 abstract class EnvironmentNotice extends Notice
 {
     /**
      * {@inheritdoc}
      */
-    protected function render(NoticeMessage $message)
+    protected function render(NoticeMessage $message): void
     {
         $this->view->warning($message, $this->getDismissActionUrl());
     }
 
-/**
- * {@inheritdoc}
- */
-    protected function isScreenAllowed()
+    /**
+     * {@inheritdoc}
+     */
+    protected function isScreenAllowed(): bool
     {
         return true;
     }
@@ -31,7 +27,7 @@ abstract class EnvironmentNotice extends Notice
     /**
      * {@inheritdoc}
      */
-    protected function shouldDisplay()
+    protected function shouldDisplay(): bool
     {
         if (parent::shouldDisplay()) {
             $checker = new EnvironmentChecker($this->getConstraints());
@@ -41,7 +37,7 @@ abstract class EnvironmentNotice extends Notice
 
                 // Passed constraints, so do not display
                 return false;
-            } catch (ConstraintFailedException $e) {
+            } catch (ConstraintFailedExceptionInterface|\RuntimeException $e) {
                 return true;
             }
         }
@@ -50,9 +46,9 @@ abstract class EnvironmentNotice extends Notice
     }
 
     /**
-     * Returns list of constraints to check
+     * Returns list of constraints to check.
      *
-     * @return array The list of constraints
+     * @return AbstractVersionConstraint[] The list of constraints
      */
-    abstract protected function getConstraints();
+    abstract protected function getConstraints(): array;
 }

@@ -9,29 +9,30 @@
  *
  * @since 3.4.0
  */
-class BackWPup_Path_Fixer {
+class BackWPup_Path_Fixer
+{
+    /**
+     * Fix the path if necessary.
+     *
+     * @param string $path
+     *
+     * @return string the fixed path
+     */
+    public static function fix_path($path)
+    {
+        if (get_site_option('backwpup_cfg_windows')) {
+            $path = trailingslashit($path);
 
-	/**
-	 * Fix the path if necessary.
-	 *
-	 * @param string $path
-	 *
-	 * @return string The fixed path.
-	 */
-	public static function fix_path( $path ) {
-		if ( get_site_option( 'backwpup_cfg_windows' ) ) {
-			$path = trailingslashit( $path );
+            if (is_dir($path . 'wp-content')) {
+                return $path . 'wp-content/..';
+            }
+        }
 
-			if ( is_dir( $path . 'wp-content' ) ) {
-				return $path . 'wp-content/..';
-			}
-		}
+        return $path;
+    }
 
-		return $path;
-	}
-	
-	public static function slashify( $path ) {
-		return str_replace( '\\', '/', $path );
-	}
-
+    public static function slashify($path)
+    {
+        return str_replace('\\', '/', $path);
+    }
 }

@@ -1,34 +1,34 @@
-<?php # -*- coding: utf-8 -*-
+<?php
 
 namespace Inpsyde\BackWPup\Notice;
 
-use Inpsyde\EnvironmentChecker\Constraints;
+use Inpsyde\EnvironmentChecker\Constraints\PhpConstraint;
 
-/**
- * Class PhpNotice
- *
- * @package Inpsyde\BackWPup\Notice
- */
 class PhpNotice extends EnvironmentNotice
 {
-
-    const OPTION_NAME = 'backwpup_notice_php_version';
-    const ID = self::OPTION_NAME;
+    /**
+     * @var string
+     */
+    public const OPTION_NAME = 'backwpup_notice_php_version';
+    /**
+     * @var string
+     */
+    public const ID = self::OPTION_NAME;
 
     /**
      * {@inheritdoc}
      */
-    protected function getConstraints()
+    protected function getConstraints(): array
     {
         return [
-            new Constraints\PhpConstraint('7.2'),
+            new PhpConstraint('7.2'),
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function message()
+    protected function message(): NoticeMessage
     {
         return new NoticeMessage('php');
     }

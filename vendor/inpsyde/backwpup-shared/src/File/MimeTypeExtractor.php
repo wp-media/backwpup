@@ -1,4 +1,6 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
+declare(strict_types=1);
 
 namespace Inpsyde\BackWPupShared\File;
 
@@ -7,14 +9,14 @@ namespace Inpsyde\BackWPupShared\File;
  */
 class MimeTypeExtractor
 {
-    const DEFAULT_MIME_TYPE = 'application/octet-stream';
+    public const DEFAULT_MIME_TYPE = 'application/octet-stream';
 
     /**
      * Mime Type List
      *
      * @var array
      */
-    private static $mimeTypeList = array(
+    private static $mimeTypeList = [
         'zip' => 'application/zip',
         'gz' => 'application/gzip',
         'bz2' => 'application/x-bzip',
@@ -192,13 +194,13 @@ class MimeTypeExtractor
         'xul' => 'application/vnd.mozilla.xul+xml',
         'xwd' => 'image/x-xwindowdump',
         'xyz' => 'chemical/x-xyz',
-    );
+    ];
 
     /**
      * @param string $file
      * @return string
      */
-    public static function fromFilePath($file)
+    public static function fromFilePath(string $file): string
     {
         if (!is_readable($file) || is_dir($file) || is_link($file)) {
             return self::DEFAULT_MIME_TYPE;

@@ -46,6 +46,7 @@ use MicrosoftAzure\Storage\Blob\Models\CreateBlobSnapshotOptions;
 use MicrosoftAzure\Storage\Blob\Models\CreateBlobSnapshotResult;
 use MicrosoftAzure\Storage\Blob\Models\CreateContainerOptions;
 use MicrosoftAzure\Storage\Blob\Models\CreatePageBlobOptions;
+use MicrosoftAzure\Storage\Blob\Models\UndeleteBlobOptions;
 use MicrosoftAzure\Storage\Blob\Models\DeleteBlobOptions;
 use MicrosoftAzure\Storage\Blob\Models\GetBlobMetadataOptions;
 use MicrosoftAzure\Storage\Blob\Models\GetBlobMetadataResult;
@@ -88,6 +89,7 @@ use MicrosoftAzure\Storage\Common\LocationMode;
 use MicrosoftAzure\Storage\Common\Models\Range;
 use MicrosoftAzure\Storage\Common\SharedAccessSignatureHelper;
 use Psr\Http\Message\StreamInterface;
+use GuzzleHttp\Psr7\Utils;
 
 /**
  * This class constructs HTTP requests and receive HTTP responses for blob
@@ -758,7 +760,7 @@ class BlobRestProxy extends ServiceRestProxy implements IBlob
                 get_class(new Range(0))
             )
         );
-        $body = Psr7\stream_for($content);
+        $body = Utils::streamFor($content);
 
         $method      = Resources::HTTP_PUT;
         $headers     = array();
@@ -863,17 +865,17 @@ class BlobRestProxy extends ServiceRestProxy implements IBlob
         );
         $this->addOptionalQueryParam(
             $queryParams,
-            Resources::QP_PREFIX,
+            Resources::QP_PREFIX_LOWERCASE,
             $options->getPrefix()
         );
         $this->addOptionalQueryParam(
             $queryParams,
-            Resources::QP_MARKER,
+            Resources::QP_MARKER_LOWERCASE,
             $options->getNextMarker()
         );
         $this->addOptionalQueryParam(
             $queryParams,
-            Resources::QP_MAX_RESULTS,
+            Resources::QP_MAX_RESULTS_LOWERCASE,
             $options->getMaxResults()
         );
         $isInclude = $options->getIncludeMetadata();
@@ -1521,12 +1523,12 @@ class BlobRestProxy extends ServiceRestProxy implements IBlob
         );
         $this->addOptionalQueryParam(
             $queryParams,
-            Resources::QP_PREFIX,
+            Resources::QP_PREFIX_LOWERCASE,
             str_replace('\\', '/', $options->getPrefix())
         );
         $this->addOptionalQueryParam(
             $queryParams,
-            Resources::QP_MARKER,
+            Resources::QP_MARKER_LOWERCASE,
             $options->getNextMarker()
         );
         $this->addOptionalQueryParam(
@@ -1536,7 +1538,7 @@ class BlobRestProxy extends ServiceRestProxy implements IBlob
         );
         $this->addOptionalQueryParam(
             $queryParams,
-            Resources::QP_MAX_RESULTS,
+            Resources::QP_MAX_RESULTS_LOWERCASE,
             $options->getMaxResults()
         );
 
@@ -1544,13 +1546,15 @@ class BlobRestProxy extends ServiceRestProxy implements IBlob
         $includeSnapshots        = $options->getIncludeSnapshots();
         $includeUncommittedBlobs = $options->getIncludeUncommittedBlobs();
         $includecopy             = $options->getIncludeCopy();
+        $includeDeleted          = $options->getIncludeDeleted();
 
         $includeValue = static::groupQueryValues(
             array(
                 $includeMetadata ? 'metadata' : null,
                 $includeSnapshots ? 'snapshots' : null,
                 $includeUncommittedBlobs ? 'uncommittedblobs' : null,
-                $includecopy ? 'copy' : null
+                $includecopy ? 'copy' : null,
+                $includeDeleted ? 'deleted' : null,
             )
         );
 
@@ -1831,7 +1835,7 @@ class BlobRestProxy extends ServiceRestProxy implements IBlob
         $content,
         Models\CreateBlockBlobOptions $options = null
     ) {
-        $body = Psr7\stream_for($content);
+        $body = Utils::streamFor($content);
 
         //If the size of the stream is not seekable or larger than the single
         //upload threshold then call concurrent upload. Otherwise call putBlob.
@@ -1912,7 +1916,7 @@ class BlobRestProxy extends ServiceRestProxy implements IBlob
         $content,
         Models\CreatePageBlobFromContentOptions $options = null
     ) {
-        $body = Psr7\stream_for($content);
+        $body = Utils::streamFor($content);
         $self = $this;
 
         if (is_null($options)) {
@@ -2414,7 +2418,7 @@ class BlobRestProxy extends ServiceRestProxy implements IBlob
         $content,
         Models\CreateBlobPagesOptions $options = null
     ) {
-        $contentStream = Psr7\stream_for($content);
+        $contentStream = Utils::streamFor($content);
         //because the content is at most 4MB long, can retrieve all the data
         //here at once.
         $body = $contentStream->getContents();
@@ -2513,7 +2517,7 @@ class BlobRestProxy extends ServiceRestProxy implements IBlob
         $postParams     = array();
         $queryParams    = $this->createBlobBlockQueryParams($options, $blockId);
         $path           = $this->createPath($container, $blob);
-        $contentStream  = Psr7\stream_for($content);
+        $contentStream  = Utils::streamFor($content);
         $body           = $contentStream->getContents();
 
         $options->setLocationMode(LocationMode::PRIMARY_ONLY);
@@ -2594,7 +2598,7 @@ class BlobRestProxy extends ServiceRestProxy implements IBlob
         $queryParams    = array();
         $path           = $this->createPath($container, $blob);
 
-        $contentStream  = Psr7\stream_for($content);
+        $contentStream  = Utils::streamFor($content);
         $length         = $contentStream->getSize();
         $body           = $contentStream->getContents();
 
@@ -3787,6 +3791,84 @@ class BlobRestProxy extends ServiceRestProxy implements IBlob
                 $metadata
             );
         });
+    }
+
+    /**
+     * Undeletes a blob.
+     *
+     * @param string                      $container name of the container
+     * @param string                      $blob      name of the blob
+     * @param Models\UndeleteBlobOptions  $options   optional parameters
+     *
+     * @return void
+     *
+     * @see https://docs.microsoft.com/en-us/rest/api/storageservices/undelete-blob
+     */
+    public function undeleteBlob(
+        $container,
+        $blob,
+        Models\UndeleteBlobOptions $options = null
+    ) {
+        $this->undeleteBlobAsync($container, $blob, $options)->wait();
+    }
+
+    /**
+     * Undeletes a blob.
+     *
+     * @param string                      $container name of the container
+     * @param string                      $blob      name of the blob
+     * @param Models\UndeleteBlobOptions  $options   optional parameters
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     *
+     * @see https://docs.microsoft.com/en-us/rest/api/storageservices/undelete-blob
+     */
+    public function undeleteBlobAsync(
+        $container,
+        $blob,
+        Models\UndeleteBlobOptions $options = null
+    ) {
+        Validate::canCastAsString($container, 'container');
+        Validate::canCastAsString($blob, 'blob');
+        Validate::notNullOrEmpty($blob, 'blob');
+
+        $method      = Resources::HTTP_PUT;
+        $headers     = array();
+        $postParams  = array();
+        $queryParams = array();
+        $path        = $this->createPath($container, $blob);
+
+        if (is_null($options)) {
+            $options = new UndeleteBlobOptions();
+        }
+
+        $leaseId = $options->getLeaseId();
+
+        $headers = $this->addOptionalAccessConditionHeader(
+            $headers,
+            $options->getAccessConditions()
+        );
+
+        $this->addOptionalHeader(
+            $headers,
+            Resources::X_MS_LEASE_ID,
+            $leaseId
+        );
+
+        $this->addOptionalQueryParam($queryParams, Resources::QP_COMP, 'undelete');
+
+        $options->setLocationMode(LocationMode::PRIMARY_ONLY);
+
+        return $this->sendAsync(
+            $method,
+            $headers,
+            $queryParams,
+            $postParams,
+            $path,
+            Resources::STATUS_OK,
+            Resources::EMPTY_STRING,
+            $options
+        );
     }
 
     /**

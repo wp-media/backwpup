@@ -1,8 +1,29 @@
+2021.09 - version 1.5.3
+* Upgraded dependency for `azure-storage-common` to version 1.5.2.
+* Resolved some interface inconsistency between `IBlob`/`BlobRestProxy`.
+* Imported `Psr\Http\Message\StreamInterface` in `IBlob`.
+
+2020.12 - version 1.5.2
+* Resolved an issue where access condition does not work for large block blob uploads.
+* Guzzle version is now updated to support both 6.x and 7.x.
+
+2020.08 - version 1.5.1
+* Lower case query parameter names.
+
+2020.01 - version 1.5.0
+
+* Added support to include deleted in blob list.
+* Added support to undelete a blob.
+* Fixed the issue in SAS token where special characters were not correctly encoded.
+* Samples no longer uses ‘BlobRestProxy’ directly, instead, ‘ServicesBuilder’ is used.
+
 2019.04 - version 1.4.0
+
 * Added support for OAuth authentication.
 * Resolved some issues on Linux platform.
 
 2019.03 - version 1.3.0
+
 * Fixed a bug where blob name '0' cannot be created.
 * Documentation refinement.
 * `ListContainer` now can have ETag more robustly fetched from response header.

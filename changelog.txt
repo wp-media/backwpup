@@ -1,4 +1,29 @@
 == Changelog ==
+= 4.0.0 =
+Release Date: November 16, 2022
+
+* Added: Support for additional S3 storage classes
+* Added: Support for Glacier Instant Retrieval
+* Added: Created backwpup_ftp_use_passive_address filter for when FTP is behind NAT
+* Added: Support for object lock in S3 by adding Content-MD5 header
+* Added (pro): Include unique IV when encrypting archives
+* Added (pro): Default character set fetched from alternative database credentials
+* Changed: Upgraded minimum version to PHP 7.2
+* Changed (pro): Upgraded Google Drive SDK to V3
+* Fixed: Better support for PHP 8
+* Fixed: PHP warning when backing up to S3 destination
+* Fixed: Unable to download from S3 when using predefined region
+* Fixed: Unable to download from SugarSync
+* Fixed: Backups downloaded twice from MS Azure
+* Fixed: wp-config.php backed up twice when parent folder is included in backup
+* Fixed: Text fields too long on SugarSync destination settings
+* Fixed: Dropbox runs out of memory when more than 50 files in folder
+* Fixed (pro): Authentication of OneDrive when HTTP_REFERER not set.
+* Fixed (pro): Displayed creation date of OneDrive backups was incorrect
+* Fixed (pro): Disabled mysqldump radio button when binary cannot be found
+* Fixed (pro): HiDrive does not detect when refresh token expires
+* Removed: Unnecessary AWS and Google library files to save on package size.
+
 = Version 3.10.0 =
 Release Date: September 1, 2021
 

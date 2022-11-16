@@ -7,7 +7,7 @@
  * that was distributed with this source code.
  *
  * @author    Christophe Vidal
- * @copyright 2008-2019 Christophe Vidal (http://www.krizalys.com)
+ * @copyright 2008-2021 Christophe Vidal (http://www.krizalys.com)
  * @license   https://opensource.org/licenses/BSD-3-Clause 3-Clause BSD License
  * @link      https://github.com/krizalys/onedrive-php-sdk
  */
@@ -42,56 +42,56 @@ abstract class DriveItem
      * @var \Krizalys\Onedrive\Client
      *      The owning Client instance.
      */
-    protected $_client;
+    protected $client;
 
     /**
      * @var string
      *      The unique ID assigned by OneDrive to this drive item.
      */
-    protected $_id;
+    protected $id;
 
     /**
      * @var string
      *      The unique ID assigned by OneDrive to the parent folder of this
      *      drive item.
      */
-    private $_parentId;
+    private $parentId;
 
     /**
      * @var string
      *      The name of this drive item.
      */
-    private $_name;
+    private $name;
 
     /**
      * @var string
      *      The description of this drive item.
      */
-    private $_description;
+    private $description;
 
     /**
      * @var int
      *      The size of this drive item, in bytes.
      */
-    private $_size;
+    private $size;
 
     /**
      * @var string
      *      The source link of this drive item.
      */
-    private $_source;
+    private $source;
 
     /**
      * @var int
      *      The creation time, in seconds since UNIX epoch.
      */
-    private $_createdTime;
+    private $createdTime;
 
     /**
      * @var int
      *      The last modification time, in seconds since UNIX epoch.
      */
-    private $_updatedTime;
+    private $updatedTime;
 
     /**
      * Constructor.
@@ -116,32 +116,42 @@ abstract class DriveItem
      *            RFC date/time.
      *
      * @since 2.0.0
+     *
+     * @deprecated 2.7.0 Superseded by \Krizalys\Onedrive\Proxy\DriveItemProxy.
      */
     public function __construct(Client $client, $id, $options = [])
     {
-        $options       = (object) $options;
-        $this->_client = $client;
-        $this->_id     = $id !== null ? (string) $id : null;
+        $message = sprintf(
+            '%s() is deprecated and will be removed in version 3;'
+                . ' use \Krizalys\Onedrive\Proxy\DriveItemProxy instead',
+            __METHOD__
+        );
 
-        $this->_parentId = property_exists($options, 'parent_id') ?
+        @trigger_error($message, E_USER_DEPRECATED);
+
+        $options      = (object) $options;
+        $this->client = $client;
+        $this->id     = $id !== null ? (string) $id : null;
+
+        $this->parentId = property_exists($options, 'parent_id') ?
             (string) $options->parent_id : null;
 
-        $this->_name = property_exists($options, 'name') ?
+        $this->name = property_exists($options, 'name') ?
             (string) $options->name : null;
 
-        $this->_description = property_exists($options, 'description') ?
+        $this->description = property_exists($options, 'description') ?
             (string) $options->description : null;
 
-        $this->_size = property_exists($options, 'size') ?
+        $this->size = property_exists($options, 'size') ?
             (int) $options->size : null;
 
-        $this->_source = property_exists($options, 'source') ?
+        $this->source = property_exists($options, 'source') ?
             (string) $options->source : null;
 
-        $this->_createdTime = property_exists($options, 'created_time') ?
+        $this->createdTime = property_exists($options, 'created_time') ?
             strtotime($options->created_time) : null;
 
-        $this->_updatedTime = property_exists($options, 'updated_time') ?
+        $this->updatedTime = property_exists($options, 'updated_time') ?
             strtotime($options->updated_time) : null;
     }
 
@@ -154,9 +164,20 @@ abstract class DriveItem
      *         instance is a folder, `false` otherwise.
      *
      * @since 1.0.0
+     *
+     * @deprecated 2.7.0 Superseded by
+     *             \Krizalys\Onedrive\Proxy\DriveItemProxy::folder.
      */
     public function isFolder()
     {
+        $message = sprintf(
+            '%s() is deprecated and will be removed in version 3;'
+                . ' use \Krizalys\Onedrive\Proxy\DriveItemProxy::folder instead',
+            __METHOD__
+        );
+
+        @trigger_error($message, E_USER_DEPRECATED);
+
         return false;
     }
 
@@ -171,27 +192,35 @@ abstract class DriveItem
      *         `DriveItem` instance.
      *
      * @since 2.0.0
+     *
+     * @deprecated 2.7.0 Deprecated dependency.
      */
     public function fetchProperties()
     {
-        $result = $this->_client->fetchProperties($this->_id);
+        $message = sprintf(
+            '%s() is deprecated and will be removed in version 3',
+            __METHOD__
+        );
 
-        $this->_parentId = property_exists($result, 'parent_id') ?
+        @trigger_error($message, E_USER_DEPRECATED);
+        $result = $this->client->fetchProperties($this->id);
+
+        $this->parentId = property_exists($result, 'parent_id') ?
             (string) $result->parent_id : null;
 
-        $this->_name = $result->name;
+        $this->name = $result->name;
 
-        $this->_description = property_exists($result, 'description') ?
+        $this->description = property_exists($result, 'description') ?
             (string) $result->description : null;
 
-        $this->_size = (int) $result->size;
+        $this->size = (int) $result->size;
 
         /** @todo Handle volatile existence (eg. present only for files). */
-        $this->_source = property_exists($result, 'source') ?
+        $this->source = property_exists($result, 'source') ?
             (string) $result->source : null;
 
-        $this->_createdTime = strtotime($result->created_time);
-        $this->_updatedTime = strtotime($result->updated_time);
+        $this->createdTime = strtotime($result->created_time);
+        $this->updatedTime = strtotime($result->updated_time);
 
         return $result;
     }
@@ -205,10 +234,21 @@ abstract class DriveItem
      *         `DriveItem` instance.
      *
      * @since 2.0.0
+     *
+     * @deprecated 2.7.0 Superseded by
+     *             \Krizalys\Onedrive\Proxy\EntityProxy::id.
      */
     public function getId()
     {
-        return $this->_id;
+        $message = sprintf(
+            '%s() is deprecated and will be removed in version 3;'
+                . ' use \Krizalys\Onedrive\Proxy\DriveItemProxy::id instead',
+            __METHOD__
+        );
+
+        @trigger_error($message, E_USER_DEPRECATED);
+
+        return $this->id;
     }
 
     /**
@@ -220,14 +260,26 @@ abstract class DriveItem
      *         referenced by this `DriveItem` instance.
      *
      * @since 2.0.0
+     *
+     * @deprecated 2.7.0 Superseded by
+     *             \Krizalys\Onedrive\Proxy\DriveItemProxy::parentReference.
      */
     public function getParentId()
     {
-        if ($this->_parentId === null) {
+        $message = sprintf(
+            '%s() is deprecated and will be removed in version 3;'
+                . ' use \Krizalys\Onedrive\Proxy\DriveItemProxy::parentReference'
+                . ' instead',
+            __METHOD__
+        );
+
+        @trigger_error($message, E_USER_DEPRECATED);
+
+        if ($this->parentId === null) {
             $this->fetchProperties();
         }
 
-        return $this->_parentId;
+        return $this->parentId;
     }
 
     /**
@@ -239,14 +291,25 @@ abstract class DriveItem
      *         `DriveItem` instance.
      *
      * @since 2.0.0
+     *
+     * @deprecated 2.7.0 Superseded by
+     *             \Krizalys\Onedrive\Proxy\BaseItemProxy::name.
      */
     public function getName()
     {
-        if ($this->_name === null) {
+        $message = sprintf(
+            '%s() is deprecated and will be removed in version 3;'
+                . ' use \Krizalys\Onedrive\Proxy\BaseItemProxy::name instead',
+            __METHOD__
+        );
+
+        @trigger_error($message, E_USER_DEPRECATED);
+
+        if ($this->name === null) {
             $this->fetchProperties();
         }
 
-        return $this->_name;
+        return $this->name;
     }
 
     /**
@@ -258,14 +321,25 @@ abstract class DriveItem
      *         `DriveItem` instance.
      *
      * @since 2.0.0
+     *
+     * @deprecated 2.7.0 Superseded by
+     *             \Krizalys\Onedrive\Proxy\BaseItemProxy::description.
      */
     public function getDescription()
     {
-        if ($this->_description === null) {
+        $message = sprintf(
+            '%s() is deprecated and will be removed in version 3;'
+                . ' use \Krizalys\Onedrive\Proxy\BaseItemProxy::description',
+            __METHOD__
+        );
+
+        @trigger_error($message, E_USER_DEPRECATED);
+
+        if ($this->description === null) {
             $this->fetchProperties();
         }
 
-        return $this->_description;
+        return $this->description;
     }
 
     /**
@@ -277,14 +351,25 @@ abstract class DriveItem
      *         `DriveItem` instance.
      *
      * @since 2.0.0
+     *
+     * @deprecated 2.7.0 Superseded by
+     *             \Krizalys\Onedrive\Proxy\DriveItemProxy::size.
      */
     public function getSize()
     {
-        if ($this->_size === null) {
+        $message = sprintf(
+            '%s() is deprecated and will be removed in version 3;'
+                . ' use \Krizalys\Onedrive\Proxy\DriveItemProxy::size instead',
+            __METHOD__
+        );
+
+        @trigger_error($message, E_USER_DEPRECATED);
+
+        if ($this->size === null) {
             $this->fetchProperties();
         }
 
-        return $this->_size;
+        return $this->size;
     }
 
     /**
@@ -296,14 +381,23 @@ abstract class DriveItem
      *         `DriveItem` instance.
      *
      * @since 2.0.0
+     *
+     * @deprecated 2.7.0
      */
     public function getSource()
     {
-        if ($this->_source === null) {
+        $message = sprintf(
+            '%s() is deprecated and will be removed in version 3',
+            __METHOD__
+        );
+
+        @trigger_error($message, E_USER_DEPRECATED);
+
+        if ($this->source === null) {
             $this->fetchProperties();
         }
 
-        return $this->_source;
+        return $this->source;
     }
 
     /**
@@ -315,14 +409,26 @@ abstract class DriveItem
      *         `DriveItem` instance, in seconds since UNIX epoch.
      *
      * @since 2.0.0
+     *
+     * @deprecated 2.7.0 Superseded by
+     *             \Krizalys\Onedrive\Proxy\BaseItemProxy::createdDateTime.
      */
     public function getCreatedTime()
     {
-        if ($this->_createdTime === null) {
+        $message = sprintf(
+            '%s() is deprecated and will be removed in version 3;'
+                . ' use \Krizalys\Onedrive\Proxy\BaseItemProxy::createdDateTime'
+                . ' instead',
+            __METHOD__
+        );
+
+        @trigger_error($message, E_USER_DEPRECATED);
+
+        if ($this->createdTime === null) {
             $this->fetchProperties();
         }
 
-        return $this->_createdTime;
+        return $this->createdTime;
     }
 
     /**
@@ -334,14 +440,26 @@ abstract class DriveItem
      *         `DriveItem` instance, in seconds since UNIX epoch.
      *
      * @since 2.0.0
+     *
+     * @deprecated 2.7.0 Superseded by
+     *             \Krizalys\Onedrive\Proxy\BaseItemProxy::lastModifiedDateTime.
      */
     public function getUpdatedTime()
     {
-        if ($this->_updatedTime === null) {
+        $message = sprintf(
+            '%s() is deprecated and will be removed in version 3;'
+                . ' use \Krizalys\Onedrive\Proxy\BaseItemProxy::lastModifiedDateTime'
+                . ' instead',
+            __METHOD__
+        );
+
+        @trigger_error($message, E_USER_DEPRECATED);
+
+        if ($this->updatedTime === null) {
             $this->fetchProperties();
         }
 
-        return $this->_updatedTime;
+        return $this->updatedTime;
     }
 
     /**
@@ -364,7 +482,7 @@ abstract class DriveItem
      */
     public function move($destinationId = null)
     {
-        $client = $this->_client;
+        $client = $this->client;
 
         $message = sprintf(
             '%s() is deprecated and will be removed in version 3;'
@@ -375,7 +493,7 @@ abstract class DriveItem
 
         @trigger_error($message, E_USER_DEPRECATED);
         $drive           = $client->getMyDrive();
-        $item            = $client->getDriveItemById($drive->id, $this->_id);
+        $item            = $client->getDriveItemById($drive->id, $this->id);
         $destinationItem = $client->getDriveItemById($drive->id, $destinationId);
 
         return $item->move($destinationItem);
