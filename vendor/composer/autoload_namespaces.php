@@ -6,12 +6,8 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'org\\bovigo\\vfs\\' => array($vendorDir . '/mikey179/vfsstream/src/main/php'),
     'Pimple' => array($vendorDir . '/pimple/pimple/src'),
     'OpenCloud' => array($vendorDir . '/rackspace/php-opencloud/lib'),
-    'Mockery' => array($vendorDir . '/mockery/mockery/library'),
-    'LSS' => array($vendorDir . '/openlss/lib-array2xml'),
-    'JsonMapper' => array($vendorDir . '/netresearch/jsonmapper/src'),
     'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
     'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
     'Console' => array($vendorDir . '/pear/console_getopt'),

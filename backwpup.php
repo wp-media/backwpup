@@ -7,7 +7,7 @@
  * Author URI: http://inpsyde.com
  * Version: 4.0.0
  * Requires at least: 3.9
- * Requires PHP: 5.6
+ * Requires PHP: 7.2
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
