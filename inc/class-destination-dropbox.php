@@ -42,6 +42,8 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
     public function edit_tab(int $jobid): void
     {
         if (!empty($_GET['deleteauth'])) { // phpcs:ignore
+            check_admin_referer('edit-job');
+
             // Disable token on dropbox.
             try {
                 $dropbox = $this->get_dropbox($jobid);
@@ -302,16 +304,16 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
             if ($data['.tag'] == 'file' && $this->is_backup_owned_by_job($data['name'], $jobid) == true) {
                 $file = $data['name'];
                 if ($this->is_backup_archive($file)) {
-                    $backupfilelist[strtotime($data['server_modified'])] = $file;
+                    $backupfilelist[strtotime((string) $data['server_modified'])] = $file;
                 }
-                $files[$filecounter]['folder'] = dirname($data['path_display']);
+                $files[$filecounter]['folder'] = dirname((string) $data['path_display']);
                 $files[$filecounter]['file'] = $data['path_display'];
                 $files[$filecounter]['filename'] = $data['name'];
                 $files[$filecounter]['downloadurl'] = network_admin_url(
                     'admin.php?page=backwpupbackups&action=downloaddropbox&file=' . $data['path_display'] . '&local_file=' . $data['name'] . '&jobid=' . $jobid
                 );
                 $files[$filecounter]['filesize'] = $data['size'];
-                $files[$filecounter]['time'] = strtotime($data['server_modified']) + (get_option(
+                $files[$filecounter]['time'] = strtotime((string) $data['server_modified']) + (get_option(
                     'gmt_offset'
                 ) * 3600);
                 ++$filecounter;
@@ -415,7 +417,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
                             network_admin_url(
                                 'admin.php'
                             ) . '?page=backwpupbackups&action=downloaddropbox&file=' . ltrim(
-                                $response['path_display'],
+                                (string) $response['path_display'],
                                 '/'
                             ) . '&jobid=' . $job_object->job['jobid']
                         );

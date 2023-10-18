@@ -225,8 +225,8 @@ class DismissibleNoticeOption
         }
 
         $definition = [
-            'action' => FILTER_SANITIZE_STRING,
-            'notice' => FILTER_SANITIZE_STRING,
+            'action' => FILTER_DEFAULT,
+            'notice' => FILTER_DEFAULT,
             'blog' => FILTER_SANITIZE_NUMBER_INT,
             'isAjax' => FILTER_VALIDATE_BOOLEAN,
         ];
@@ -259,8 +259,8 @@ class DismissibleNoticeOption
         if (!$capability || !current_user_can($capability)) {
             $this->end_request($is_ajax);
         }
-        $nonce = filter_input(INPUT_POST, $action, FILTER_SANITIZE_STRING)
-            ?: filter_input(INPUT_GET, $action, FILTER_SANITIZE_STRING);
+        $nonce = filter_input(INPUT_POST, $action)
+            ?: filter_input(INPUT_GET, $action);
 
         if (!is_string($nonce) || !wp_verify_nonce($nonce, $action)) {
             $this->end_request($is_ajax);

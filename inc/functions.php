@@ -115,7 +115,7 @@ function backwpup_clean_json_from_request($json)
 
     if (backwpup_is_json($slashed_json)) {
         // phpcs:ignore
-        $json = filter_var($slashed_json, FILTER_SANITIZE_STRING);
+        $json = filter_var($slashed_json);
         $json = html_entity_decode($json);
     }
 

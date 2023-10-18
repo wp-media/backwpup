@@ -91,7 +91,7 @@ class BackWPup_Page_Editjob
                 sort($destinations_post);
                 BackWPup_Option::update($jobid, 'destinations', $destinations_post);
 
-                $name = sanitize_text_field(trim($_POST['name']));
+                $name = sanitize_text_field(trim((string) $_POST['name']));
                 if (!$name || $name === __('New Job', 'backwpup')) {
                     $name = sprintf(__('Job with ID %d', 'backwpup'), $jobid);
                 }
@@ -108,7 +108,7 @@ class BackWPup_Page_Editjob
                 $mailaddresslog = implode(', ', $emails);
                 BackWPup_Option::update($jobid, 'mailaddresslog', $mailaddresslog);
 
-                $mailaddresssenderlog = trim($_POST['mailaddresssenderlog']);
+                $mailaddresssenderlog = trim((string) $_POST['mailaddresssenderlog']);
                 BackWPup_Option::update($jobid, 'mailaddresssenderlog', $mailaddresssenderlog);
 
                 BackWPup_Option::update($jobid, 'mailerroronly', !empty($_POST['mailerroronly']));
@@ -206,12 +206,12 @@ class BackWPup_Page_Editjob
                 break;
 
             default:
-                if (strstr($tab, 'dest-')) {
-                    $dest_class = BackWPup::get_destination(str_replace('dest-', '', $tab));
+                if (strstr((string) $tab, 'dest-')) {
+                    $dest_class = BackWPup::get_destination(str_replace('dest-', '', (string) $tab));
                     $dest_class->edit_form_post_save($jobid);
                 }
-                if (strstr($tab, 'jobtype-')) {
-                    $id = strtoupper(str_replace('jobtype-', '', $tab));
+                if (strstr((string) $tab, 'jobtype-')) {
+                    $id = strtoupper(str_replace('jobtype-', '', (string) $tab));
                     $job_types[$id]->edit_form_post_save($jobid);
                 }
         }
@@ -253,12 +253,12 @@ class BackWPup_Page_Editjob
 		</style>
 		<?php
         //add css for all other tabs
-        if (substr($_GET['tab'], 0, 5) == 'dest-') {
-            $dest_object = BackWPup::get_destination(str_replace('dest-', '', $_GET['tab']));
+        if (substr((string) $_GET['tab'], 0, 5) == 'dest-') {
+            $dest_object = BackWPup::get_destination(str_replace('dest-', '', (string) $_GET['tab']));
             $dest_object->admin_print_styles();
-        } elseif (substr($_GET['tab'], 0, 8) == 'jobtype-') {
+        } elseif (substr((string) $_GET['tab'], 0, 8) == 'jobtype-') {
             $job_type = BackWPup::get_job_types();
-            $id = strtoupper(str_replace('jobtype-', '', $_GET['tab']));
+            $id = strtoupper(str_replace('jobtype-', '', (string) $_GET['tab']));
             $job_type[$id]->admin_print_styles();
         }
     }
@@ -285,12 +285,12 @@ class BackWPup_Page_Editjob
             }
         }
         //add js for all other tabs
-        elseif (strstr($_GET['tab'], 'dest-')) {
-            $dest_object = BackWPup::get_destination(str_replace('dest-', '', $_GET['tab']));
+        elseif (strstr((string) $_GET['tab'], 'dest-')) {
+            $dest_object = BackWPup::get_destination(str_replace('dest-', '', (string) $_GET['tab']));
             $dest_object->admin_print_scripts();
-        } elseif (strstr($_GET['tab'], 'jobtype-')) {
+        } elseif (strstr((string) $_GET['tab'], 'jobtype-')) {
             $job_type = BackWPup::get_job_types();
-            $id = strtoupper(str_replace('jobtype-', '', $_GET['tab']));
+            $id = strtoupper(str_replace('jobtype-', '', (string) $_GET['tab']));
             $job_type[$id]->admin_print_scripts();
         }
     }
@@ -650,7 +650,7 @@ class BackWPup_Page_Editjob
 						<?php
 
                         $cronstr = [];
-                        [$cronstr['minutes'], $cronstr['hours'], $cronstr['mday'], $cronstr['mon'], $cronstr['wday']] = explode(' ', BackWPup_Option::get($jobid, 'cron'), 5);
+                        [$cronstr['minutes'], $cronstr['hours'], $cronstr['mday'], $cronstr['mon'], $cronstr['wday']] = explode(' ', (string) BackWPup_Option::get($jobid, 'cron'), 5);
                         if (strstr($cronstr['minutes'], '*/')) {
                             $minutes = explode('/', $cronstr['minutes']);
                         } else {
@@ -840,12 +840,12 @@ class BackWPup_Page_Editjob
 
             default:
                 echo '<div class="table" id="info-tab-' . $_GET['tab'] . '">';
-                if (strstr($_GET['tab'], 'dest-')) {
-                    $dest_object = BackWPup::get_destination(str_replace('dest-', '', $_GET['tab']));
+                if (strstr((string) $_GET['tab'], 'dest-')) {
+                    $dest_object = BackWPup::get_destination(str_replace('dest-', '', (string) $_GET['tab']));
                     $dest_object->edit_tab($jobid);
                 }
-                if (strstr($_GET['tab'], 'jobtype-')) {
-                    $id = strtoupper(str_replace('jobtype-', '', $_GET['tab']));
+                if (strstr((string) $_GET['tab'], 'jobtype-')) {
+                    $id = strtoupper(str_replace('jobtype-', '', (string) $_GET['tab']));
                     $job_types[$id]->edit_tab($jobid);
                 }
                 echo '</div>';
@@ -873,11 +873,11 @@ class BackWPup_Page_Editjob
     </script>
 		<?php
         //add inline js
-        if (strstr($_GET['tab'], 'dest-')) {
+        if (strstr((string) $_GET['tab'], 'dest-')) {
             $dest_object = BackWPup::get_destination(str_replace('dest-', '', sanitize_text_field($_GET['tab'])));
             $dest_object->edit_inline_js();
         }
-        if (strstr($_GET['tab'], 'jobtype-')) {
+        if (strstr((string) $_GET['tab'], 'jobtype-')) {
             $id = strtoupper(str_replace('jobtype-', '', sanitize_text_field($_GET['tab'])));
             $job_types[$id]->edit_inline_js();
         }

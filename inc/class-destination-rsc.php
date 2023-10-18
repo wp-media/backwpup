@@ -316,18 +316,18 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations
             $objlist = $container->objectList(['prefix' => $job_object->job['rscdir']]);
 
             while ($object = $objlist->next()) {
-                $file = basename($object->getName());
+                $file = basename((string) $object->getName());
                 if ($job_object->job['rscdir'] . $file == $object->getName()) { //only in the folder and not in complete bucket
                     if ($this->is_backup_archive($file) && $this->is_backup_owned_by_job($file, $job_object->job['jobid']) == true) {
-                        $backupfilelist[strtotime($object->getLastModified())] = $object;
+                        $backupfilelist[strtotime((string) $object->getLastModified())] = $object;
                     }
                 }
-                $files[$filecounter]['folder'] = 'RSC://' . $job_object->job['rsccontainer'] . '/' . dirname($object->getName()) . '/';
+                $files[$filecounter]['folder'] = 'RSC://' . $job_object->job['rsccontainer'] . '/' . dirname((string) $object->getName()) . '/';
                 $files[$filecounter]['file'] = $object->getName();
-                $files[$filecounter]['filename'] = basename($object->getName());
+                $files[$filecounter]['filename'] = basename((string) $object->getName());
                 $files[$filecounter]['downloadurl'] = network_admin_url('admin.php') . '?page=backwpupbackups&action=downloadrsc&file=' . $object->getName() . '&jobid=' . $job_object->job['jobid'];
                 $files[$filecounter]['filesize'] = $object->getContentLength();
-                $files[$filecounter]['time'] = strtotime($object->getLastModified());
+                $files[$filecounter]['time'] = strtotime((string) $object->getLastModified());
                 ++$filecounter;
             }
             if (!empty($job_object->job['rscmaxbackups']) && $job_object->job['rscmaxbackups'] > 0) { //Delete old backups
@@ -472,7 +472,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations
             echo '<select name="rsccontainer" id="rsccontainer">';
 
             foreach ($container_list as $container_name) {
-                echo '<option ' . selected(strtolower($args['rscselected']), strtolower($container_name), false) . '>' . $container_name . '</option>';
+                echo '<option ' . selected(strtolower((string) $args['rscselected']), strtolower((string) $container_name), false) . '>' . $container_name . '</option>';
             }
             echo '</select>';
         }

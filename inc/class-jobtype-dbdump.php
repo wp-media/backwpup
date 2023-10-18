@@ -7,8 +7,8 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
         $this->info['name'] = __('DB Backup', 'backwpup');
         $this->info['description'] = __('Database backup', 'backwpup');
         $this->info['URI'] = __('http://backwpup.com', 'backwpup');
-        $this->info['author'] = 'Inpsyde GmbH';
-        $this->info['authorURI'] = __('http://inpsyde.com', 'backwpup');
+        $this->info['author'] = 'WP Media';
+        $this->info['authorURI'] = 'https://wp-media.me';
         $this->info['version'] = BackWPup::get_plugin_data('Version');
     }
 
@@ -35,7 +35,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
         $dbtables = $wpdb->get_results('SHOW TABLES FROM `' . DB_NAME . '`', ARRAY_N);
 
         foreach ($dbtables as $dbtable) {
-            if ($wpdb->prefix != substr($dbtable[0], 0, strlen($wpdb->prefix))) {
+            if ($wpdb->prefix != substr((string) $dbtable[0], 0, strlen($wpdb->prefix))) {
                 $defaults['dbdumpexclude'][] = $dbtable[0];
             }
         }

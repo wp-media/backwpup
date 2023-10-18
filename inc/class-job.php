@@ -153,7 +153,7 @@ class BackWPup_Job
     {
         //load text domain
         $log_level = get_site_option('backwpup_cfg_loglevel', 'normal_translated');
-        if (strstr($log_level, 'translated')) {
+        if (strstr((string) $log_level, 'translated')) {
             BackWPup::load_text_domain();
         } else {
             add_filter('override_load_textdomain', '__return_true');
@@ -290,7 +290,7 @@ class BackWPup_Job
         BackWPup_Option::update($this->job['jobid'], 'lastbackupdownloadurl', '');
         //Set needed job values
         $this->timestamp_last_update = microtime(true);
-        $this->exclude_from_backup = explode(',', trim($this->job['fileexclude']));
+        $this->exclude_from_backup = explode(',', trim((string) $this->job['fileexclude']));
         $this->exclude_from_backup = array_unique($this->exclude_from_backup);
         //setup job steps
         $this->steps_data['CREATE']['CALLBACK'] = '';
@@ -411,13 +411,13 @@ class BackWPup_Job
         $head .= '<meta charset="' . get_bloginfo('charset') . '" />' . PHP_EOL;
         $head .= '<title>' . sprintf(
             __('BackWPup log for %1$s from %2$s at %3$s', 'backwpup'),
-            $this->job['name'],
+            esc_attr($this->job['name']),
             date_i18n(get_option('date_format')),
             date_i18n(get_option('time_format'))
         ) . '</title>' . PHP_EOL;
         $head .= '<meta name="robots" content="noindex, nofollow" />' . PHP_EOL;
-        $head .= '<meta name="copyright" content="Copyright &copy; 2012 - ' . date('Y') . ' Inpsyde GmbH" />' . PHP_EOL;
-        $head .= '<meta name="author" content="Inpsyde GmbH" />' . PHP_EOL;
+        $head .= '<meta name="copyright" content="Copyright &copy; 2012 - ' . date('Y') . ' WP Media, Inc." />' . PHP_EOL;
+        $head .= '<meta name="author" content="WP Media" />' . PHP_EOL;
         $head .= '<meta name="generator" content="BackWPup ' . BackWPup::get_plugin_data('Version') . '" />' . PHP_EOL;
         $head .= '<meta http-equiv="cache-control" content="no-cache" />' . PHP_EOL;
         $head .= '<meta http-equiv="pragma" content="no-cache" />' . PHP_EOL;
@@ -426,14 +426,14 @@ class BackWPup_Job
         $head .= str_pad('<meta name="backwpup_warnings" content="0" />', 100) . PHP_EOL;
         $head .= '<meta name="backwpup_jobid" content="' . $this->job['jobid'] . '" />' . PHP_EOL;
         $head .= '<meta name="backwpup_jobname" content="' . esc_attr($this->job['name']) . '" />' . PHP_EOL;
-        $head .= '<meta name="backwpup_jobtype" content="' . implode('+', $this->job['type']) . '" />' . PHP_EOL;
+        $head .= '<meta name="backwpup_jobtype" content="' . esc_attr(implode('+', $this->job['type'])) . '" />' . PHP_EOL;
         $head .= str_pad('<meta name="backwpup_backupfilesize" content="0" />', 100) . PHP_EOL;
         $head .= str_pad('<meta name="backwpup_jobruntime" content="0" />', 100) . PHP_EOL;
         $head .= '</head>' . PHP_EOL;
         $head .= '<body style="margin:0;padding:3px;font-family:monospace;font-size:12px;line-height:15px;background-color:black;color:#c0c0c0;white-space:nowrap;">' . PHP_EOL;
         $info .= sprintf(
             _x(
-                '[INFO] %1$s %2$s; A project of Inpsyde GmbH',
+                '[INFO] %1$s %2$s; A project of WP Media',
                 'Plugin name; Plugin Version; plugin url',
                 'backwpup'
             ),
@@ -587,7 +587,7 @@ class BackWPup_Job
         } else {
             $info .= sprintf(
                 __('[INFO] Backup type is: %s', 'backwpup'),
-                $this->job['backuptype']
+                esc_attr($this->job['backuptype'])
             ) . '<br />' . PHP_EOL;
         }
         //output info on cli
@@ -603,7 +603,7 @@ class BackWPup_Job
             $desttest = false;
 
             foreach ($this->steps_todo as $deststeptest) {
-                if (substr($deststeptest, 0, 5) == 'DEST_') {
+                if (substr((string) $deststeptest, 0, 5) == 'DEST_') {
                     $desttest = true;
                     break;
                 }
@@ -663,7 +663,7 @@ class BackWPup_Job
      */
     public static function sanitize_file_name($filename)
     {
-        $filename = trim($filename);
+        $filename = trim((string) $filename);
 
         $special_chars = [
             '?',
@@ -953,7 +953,7 @@ class BackWPup_Job
         }
         $abs_path = trailingslashit(str_replace('\\', '/', $abs_path));
 
-        $path = str_replace(['\\', $abs_path], '/', $path);
+        $path = str_replace(['\\', $abs_path], '/', (string) $path);
 
         //replace the colon from windows drive letters with so they will not be problems with them in archives or on copying to directory
         if (0 === stripos(PHP_OS, 'WIN') && 1 === strpos($path, ':/')) {
@@ -1066,7 +1066,7 @@ class BackWPup_Job
      */
     public static function convert_hr_to_bytes($size)
     {
-        $size = strtolower($size);
+        $size = strtolower((string) $size);
         $bytes = (int) $size;
         if (strpos($size, 'k') !== false) {
             $bytes = intval($size) * 1024;
@@ -1243,7 +1243,7 @@ class BackWPup_Job
                             '<',
                             '>',
                         ],
-                        $this->job['mailaddresssenderlog']
+                        (string) $this->job['mailaddresssenderlog']
                     );
 
                     $bracket_pos = strpos($this->job['mailaddresssenderlog'], '<');
@@ -1416,7 +1416,7 @@ class BackWPup_Job
 
         if (!empty($authentication['basic_user']) && !empty($authentication['basic_password']) && $authentication['method'] == 'basic') {
             $header['Authorization'] = 'Basic ' . base64_encode($authentication['basic_user'] . ':' . BackWPup_Encryption::decrypt($authentication['basic_password']));
-            $authurl = urlencode($authentication['basic_user']) . ':' . urlencode(BackWPup_Encryption::decrypt($authentication['basic_password'])) . '@';
+            $authurl = urlencode((string) $authentication['basic_user']) . ':' . urlencode(BackWPup_Encryption::decrypt($authentication['basic_password'])) . '@';
         }
 
         if (!empty($authentication['query_arg']) && $authentication['method'] == 'query_arg') {
@@ -1671,14 +1671,14 @@ class BackWPup_Job
                 } elseif ($this->step_working == 'END') {
                     $this->end();
                     break 2;
-                } elseif (strstr($this->step_working, 'JOB_')) {
-                    $done = $job_types[str_replace('JOB_', '', $this->step_working)]->job_run($this);
-                } elseif (strstr($this->step_working, 'DEST_SYNC_')) {
-                    $done = BackWPup::get_destination(str_replace('DEST_SYNC_', '', $this->step_working))
+                } elseif (strstr((string) $this->step_working, 'JOB_')) {
+                    $done = $job_types[str_replace('JOB_', '', (string) $this->step_working)]->job_run($this);
+                } elseif (strstr((string) $this->step_working, 'DEST_SYNC_')) {
+                    $done = BackWPup::get_destination(str_replace('DEST_SYNC_', '', (string) $this->step_working))
                         ->job_run_sync($this)
                     ;
-                } elseif (strstr($this->step_working, 'DEST_')) {
-                    $done = BackWPup::get_destination(str_replace('DEST_', '', $this->step_working))
+                } elseif (strstr((string) $this->step_working, 'DEST_')) {
+                    $done = BackWPup::get_destination(str_replace('DEST_', '', (string) $this->step_working))
                         ->job_run_archive($this)
                     ;
                 } elseif (!empty($this->steps_data[$this->step_working]['CALLBACK'])) {
@@ -2045,7 +2045,7 @@ class BackWPup_Job
         $file_data = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
         foreach ($file_data as $folder) {
-            $folder = trim(str_replace(['<?php', '//'], '', $folder));
+            $folder = trim(str_replace(['<?php', '//'], '', (string) $folder));
             if (!empty($folder) && is_dir($folder)) {
                 $folders[] = $folder;
             }
@@ -2098,8 +2098,8 @@ class BackWPup_Job
                 $path = BackWPup_Path_Fixer::slashify($file->getPathname());
 
                 foreach ($this->exclude_from_backup as $exclusion) { //exclude files
-                    $exclusion = trim($exclusion);
-                    if (stripos($path, $exclusion) !== false && !empty($exclusion)) {
+                    $exclusion = trim((string) $exclusion);
+                    if (stripos((string) $path, $exclusion) !== false && !empty($exclusion)) {
                         continue 2;
                     }
                 }
@@ -2108,7 +2108,7 @@ class BackWPup_Job
                     $folder,
                     BackWPup_File::get_upload_dir()
                 ) !== false && preg_match(
-                    '/\\-[0-9]{1,4}x[0-9]{1,4}.+\\.(jpg|png|gif)$/i',
+                    '/\\-[0-9]{1,4}x[0-9]{1,4}.+\\.(jpg|png|gif|webp)$/i',
                     $file->getFilename()
                 )) {
                     continue;
@@ -2335,7 +2335,7 @@ class BackWPup_Job
 
         //load text domain
         $log_level = get_site_option('backwpup_cfg_loglevel', 'normal_translated');
-        if (strstr($log_level, 'translated')) {
+        if (strstr((string) $log_level, 'translated')) {
             BackWPup::load_text_domain();
         } else {
             add_filter('override_load_textdomain', '__return_true');
@@ -2433,7 +2433,7 @@ class BackWPup_Job
 
         //convert date
         if (isset($metas['date'])) {
-            $joddata['logtime'] = strtotime($metas['date']) + (get_option('gmt_offset') * 3600);
+            $joddata['logtime'] = strtotime((string) $metas['date']) + (get_option('gmt_offset') * 3600);
         }
 
         //use file create date if none
@@ -2722,7 +2722,7 @@ class BackWPup_Job
             return $data;
         }
 
-        $length = (is_numeric($read_count)) ? $read_count : strlen($read_count);
+        $length = (is_numeric($read_count)) ? $read_count : strlen((string) $read_count);
         $this->substeps_done = $this->substeps_done + $length;
         $this->update_working_data();
 
@@ -2803,6 +2803,6 @@ class BackWPup_Job
             $file_name . '.xml',
         ];
 
-        return in_array(basename($file), $dump_files, true);
+        return in_array(basename((string) $file), $dump_files, true);
     }
 }

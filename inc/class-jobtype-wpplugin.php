@@ -7,8 +7,8 @@ class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes
         $this->info['name'] = __('Plugins', 'backwpup');
         $this->info['description'] = __('Installed plugins list', 'backwpup');
         $this->info['URI'] = __('http://backwpup.com', 'backwpup');
-        $this->info['author'] = 'Inpsyde GmbH';
-        $this->info['authorURI'] = __('http://inpsyde.com', 'backwpup');
+        $this->info['author'] = 'WP Media';
+        $this->info['authorURI'] = 'https://wp-media.me';
         $this->info['version'] = BackWPup::get_plugin_data('Version');
     }
 

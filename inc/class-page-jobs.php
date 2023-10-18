@@ -39,16 +39,16 @@ class BackWPup_Page_Jobs extends WP_List_Table
             return;
         }
 
-        if (strtolower($_GET['order']) === 'asc') {
+        if (strtolower((string) $_GET['order']) === 'asc') {
             $order = SORT_ASC;
         } else {
             $order = SORT_DESC;
         }
 
-        if (empty($_GET['orderby']) || !in_array(strtolower($_GET['orderby']), ['jobname', 'type', 'dest', 'next', 'last'], true)) {
+        if (empty($_GET['orderby']) || !in_array(strtolower((string) $_GET['orderby']), ['jobname', 'type', 'dest', 'next', 'last'], true)) {
             $orderby = 'jobname';
         } else {
-            $orderby = strtolower($_GET['orderby']);
+            $orderby = strtolower((string) $_GET['orderby']);
         }
 
         //sorting
@@ -176,9 +176,9 @@ class BackWPup_Page_Jobs extends WP_List_Table
             $actions['runnow'] = '<a href="' . esc_attr($url['url']) . '">' . esc_html__('Run now', 'backwpup') . '</a>';
         }
         if (current_user_can('backwpup_logs') && BackWPup_Option::get($item, 'logfile')) {
-            $logfile = basename(BackWPup_Option::get($item, 'logfile'));
+            $logfile = basename((string) BackWPup_Option::get($item, 'logfile'));
             if (is_object($this->job_object) && $this->job_object->job['jobid'] == $item) {
-                $logfile = basename($this->job_object->logfile);
+                $logfile = basename((string) $this->job_object->logfile);
             }
             $log_name = str_replace(['.html', '.gz'], '', basename($logfile));
             $actions['lastlog'] = '<a href="' . admin_url('admin-ajax.php') . '?&action=backwpup_view_log&log=' . $log_name . '&_ajax_nonce=' . wp_create_nonce('view-log_' . $log_name) . '&amp;TB_iframe=true&amp;width=640&amp;height=440\" title="' . esc_attr($logfile) . '" class="thickbox">' . __('Last log', 'backwpup') . '</a>';
@@ -326,9 +326,9 @@ class BackWPup_Page_Jobs extends WP_List_Table
             }
         }
         if (current_user_can('backwpup_logs') && BackWPup_Option::get($item, 'logfile')) {
-            $logfile = basename(BackWPup_Option::get($item, 'logfile'));
+            $logfile = basename((string) BackWPup_Option::get($item, 'logfile'));
             if (is_object($this->job_object) && $this->job_object->job['jobid'] == $item) {
-                $logfile = basename($this->job_object->logfile);
+                $logfile = basename((string) $this->job_object->logfile);
             }
             $log_name = str_replace(['.html', '.gz'], '', basename($logfile));
             $r .= '<a class="thickbox" href="' . admin_url('admin-ajax.php') . '?&action=backwpup_view_log&log=' . $log_name . '&_ajax_nonce=' . wp_create_nonce('view-log_' . $log_name) . '&amp;TB_iframe=true&amp;width=640&amp;height=440" title="' . esc_attr($logfile) . '">' . esc_html__('Log', 'backwpup') . '</a>';
@@ -381,7 +381,7 @@ class BackWPup_Page_Jobs extends WP_List_Table
                         $option = '';
                     }
                     if ($key === 'archivename') {
-                        $option = str_replace($old_job_id, $newjobid, $option);
+                        $option = str_replace($old_job_id, $newjobid, (string) $option);
                     }
                     if ($key === 'logfile' || $key === 'lastbackupdownloadurl' || $key === 'lastruntime' || $key === 'lastrun') {
                         continue;
@@ -642,7 +642,7 @@ class BackWPup_Page_Jobs extends WP_List_Table
                         data:{
                             action: 'backwpup_working',
                             logpos: $('#logpos').val(),
-							logfile: '<?php echo basename($job_object->logfile); ?>',
+							logfile: '<?php echo basename((string) $job_object->logfile); ?>',
                             _ajax_nonce: '<?php echo wp_create_nonce('backwpupworking_ajax_nonce'); ?>'
                         },
                         dataType: 'json',
@@ -741,7 +741,14 @@ class BackWPup_Page_Jobs extends WP_List_Table
 
         $log_folder = get_site_option('backwpup_cfg_logfolder');
         $log_folder = BackWPup_File::get_absolute_path($log_folder);
-        $logfile = isset($_GET['logfile']) ? $log_folder . basename(trim($_GET['logfile'])) : null;
+
+        try {
+            $logfile = self::get_logfile_path($log_folder, $_GET['logfile'] ?? null);
+        } catch (\InvalidArgumentException $e) {
+            // Logfile either not passed or is invalid.
+            exit(0);
+        }
+
         $logpos = isset($_GET['logpos']) ? absint($_GET['logpos']) : 0;
         $restart_url = '';
 
@@ -750,7 +757,7 @@ class BackWPup_Page_Jobs extends WP_List_Table
             $logfile .= '.gz';
         }
 
-        if (!is_readable($logfile) || strstr($_GET['logfile'], 'backwpup_log_') === false) {
+        if (!is_readable($logfile)) {
             exit('0');
         }
 
@@ -830,5 +837,21 @@ class BackWPup_Page_Jobs extends WP_List_Table
             'restart_url' => $restart_url,
             'job_done' => $done,
         ]);
+    }
+
+    private static function get_logfile_path(string $folder, ?string $filename): string
+    {
+        if (!$filename) {
+            throw new \InvalidArgumentException('Log file cannot be null.');
+        }
+
+        $filename = basename(trim($filename));
+
+        if (preg_match('/^[a-zA-Z0-9_-]+\.[a-zA-Z0-9]{1,5}$/', $filename) === 0
+            || strpos($filename, 'backwpup_log_') === false) {
+            throw new \InvalidArgumentException('Invalidly formatted log filename passed.');
+        }
+
+        return $folder . $filename;
     }
 }

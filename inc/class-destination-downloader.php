@@ -53,7 +53,7 @@ class BackWPup_Destination_Downloader
      */
     public static function download_by_ajax()
     {
-        $dest = (string) filter_input(INPUT_GET, 'destination', FILTER_SANITIZE_STRING);
+        $dest = (string) filter_input(INPUT_GET, 'destination');
         if (!$dest) {
             return;
         }
@@ -63,8 +63,8 @@ class BackWPup_Destination_Downloader
             return;
         }
 
-        $file = (string) filter_input(INPUT_GET, 'file', FILTER_SANITIZE_STRING);
-        $file_local = (string) filter_input(INPUT_GET, 'local_file', FILTER_SANITIZE_STRING);
+        $file = (string) filter_input(INPUT_GET, 'file');
+        $file_local = (string) filter_input(INPUT_GET, 'local_file');
         if (!$file || !$file_local) {
             return;
         }

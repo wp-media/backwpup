@@ -353,7 +353,7 @@ class BackWPup_Page_About
                     <?php if (BackWPup::is_pro()) { ?>
                     <div class="welcometxt">
                         <div class="backwpup-welcome">
-                            <a href="<?php esc_html_e('http://backwpup.com', 'backwpup'); ?>"><img class="backwpup-banner-img" src="<?php echo BackWPup::get_plugin_data('URL'); ?>/assets/images/banner.jpg" alt="<?php esc_html_e('BackWPup banner', 'backwpup'); ?>" /></a>
+                            <a href="<?php esc_html_e('http://backwpup.com', 'backwpup'); ?>"><img class="backwpup-banner-img" src="<?php echo BackWPup::get_plugin_data('URL'); ?>/assets/images/banner.png" alt="<?php esc_html_e('BackWPup banner', 'backwpup'); ?>" /></a>
                             <h1><?php esc_html_e('Welcome to BackWPup Pro', 'backwpup'); ?></h1>
                             <p><?php esc_html_e('BackWPup’s job wizards make planning and scheduling your backup jobs a breeze.', 'backwpup'); echo ' ';
 _e('Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server. With a single backup archive you are able to restore an installation. Use the integrated restore feature to restore your site directly from your WordPress backend or the Restore Standalone App in case your site is destroyed completely.', 'backwpup'); ?></p>
@@ -363,7 +363,7 @@ _e('Use your backup archives to save your entire WordPress installation includin
                     <?php } else {?>
                     <div class="welcometxt">
                         <div class="backwpup-welcome">
-                            <a href="<?php esc_html_e('http://backwpup.com', 'backwpup'); ?>"><img class="backwpup-banner-img" src="<?php echo BackWPup::get_plugin_data('URL'); ?>/assets/images/banner.jpg" alt="<?php esc_html_e('BackWPup banner', 'backwpup'); ?>" /></a>
+                            <a href="<?php esc_html_e('http://backwpup.com', 'backwpup'); ?>"><img class="backwpup-banner-img" src="<?php echo BackWPup::get_plugin_data('URL'); ?>/assets/images/banner.png" alt="<?php esc_html_e('BackWPup banner', 'backwpup'); ?>" /></a>
                             <h1><?php esc_html_e('Welcome to BackWPup', 'backwpup'); ?></h1>
                             <p><?php
 _e('Use your backup archives to save your entire WordPress installation including <code>/wp-content/</code>. Push them to an external storage service if you don’t want to save the backups on the same server. With a single backup archive you are able to restore an installation. Use the integrated restore feature to restore your site directly from your WordPress backend or the Restore Standalone App in case your site is destroyed completely.', 'backwpup'); ?></p>

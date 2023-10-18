@@ -69,7 +69,7 @@ class BackWpup_Download_Handler
     private function verify_request()
     {
         // phpcs:ignore
-        if (!isset($_GET['action']) || $this->action !== filter_var($_GET['action'], FILTER_SANITIZE_STRING)) {
+        if (!isset($_GET['action']) || $this->action !== filter_var($_GET['action'])) {
             return false;
         }
 

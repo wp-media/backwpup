@@ -11,8 +11,8 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
         $this->info['name'] = __('XML export', 'backwpup');
         $this->info['description'] = __('WordPress XML export', 'backwpup');
         $this->info['URI'] = __('http://backwpup.com', 'backwpup');
-        $this->info['author'] = 'Inpsyde GmbH';
-        $this->info['authorURI'] = __('http://inpsyde.com', 'backwpup');
+        $this->info['author'] = 'WP Media';
+        $this->info['authorURI'] = 'https://wp-media.me';
         $this->info['version'] = BackWPup::get_plugin_data('Version');
     }
 
@@ -466,7 +466,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
             if (is_readable($job_object->steps_data[$job_object->step_working]['wpexportfile'])) {
                 $job_object->additional_files_to_backup[] = $job_object->steps_data[$job_object->step_working]['wpexportfile'];
                 $filesize = filesize($job_object->steps_data[$job_object->step_working]['wpexportfile']);
-                $job_object->log(sprintf(__('Added XML export "%1$s" with %2$s to backup file list.', 'backwpup'), basename($job_object->steps_data[$job_object->step_working]['wpexportfile']), size_format($filesize, 2)));
+                $job_object->log(sprintf(__('Added XML export "%1$s" with %2$s to backup file list.', 'backwpup'), basename((string) $job_object->steps_data[$job_object->step_working]['wpexportfile']), size_format($filesize, 2)));
             }
             ++$job_object->substeps_done;
             $job_object->update_working_data();

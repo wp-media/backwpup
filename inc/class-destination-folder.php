@@ -7,14 +7,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations
 {
     public function option_defaults(): array
     {
-        $upload_dir = wp_upload_dir(null, false, true);
-        $backups_dir = trailingslashit(str_replace(
-            '\\',
-            '/',
-            $upload_dir['basedir']
-        )) . 'backwpup-' . BackWPup::get_plugin_data('hash') . '-backups/';
-        $content_path = trailingslashit(str_replace('\\', '/', WP_CONTENT_DIR));
-        $backups_dir = str_replace($content_path, '', $backups_dir);
+        $backups_dir = self::getDefaultBackupsDirectory();
 
         return ['maxbackups' => 15, 'backupdir' => $backups_dir, 'backupsyncnodelete' => true];
     }
@@ -95,12 +88,17 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations
      */
     public function edit_form_post_save(int $jobid): void
     {
-        $to_replace = ['//', '\\'];
         $backup_dir = trim(sanitize_text_field($_POST['backupdir']));
-        $_POST['backupdir'] = trailingslashit(str_replace($to_replace, '/', $backup_dir));
+
+        try {
+            $backup_dir = trailingslashit(self::normalizePath(BackWPup_Path_Fixer::slashify($backup_dir)));
+        } catch (\InvalidArgumentException $e) {
+            $backup_dir = self::getDefaultBackupsDirectory();
+        }
+
         $max_backups = isset($_POST['maxbackups']) ? absint($_POST['maxbackups']) : 0;
 
-        BackWPup_Option::update($jobid, 'backupdir', $_POST['backupdir']);
+        BackWPup_Option::update($jobid, 'backupdir', $backup_dir);
         BackWPup_Option::update($jobid, 'maxbackups', $max_backups);
         BackWPup_Option::update($jobid, 'backupsyncnodelete', !empty($_POST['backupsyncnodelete']));
     }
@@ -287,5 +285,43 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations
     protected function get_backwpup_directory(string $dir): BackWPup_Directory
     {
         return new BackWPup_Directory($dir);
+    }
+
+    private static function getDefaultBackupsDirectory()
+    {
+        $upload_dir = wp_upload_dir(null, false, true);
+        $backups_dir = trailingslashit(
+            str_replace(
+                '\\',
+                '/',
+                $upload_dir['basedir']
+            )
+        ) . 'backwpup-' . BackWPup::get_plugin_data('hash') . '-backups/';
+        $content_path = trailingslashit(BackWPup_Path_Fixer::slashify((string) WP_CONTENT_DIR));
+
+        return str_replace($content_path, '', $backups_dir);
+    }
+
+    private static function normalizePath($path)
+    {
+        $parts = explode('/', $path);
+        $normalized = [];
+
+        foreach ($parts as $part) {
+            if ($part === '..') {
+                if (empty($normalized)) {
+                    throw new InvalidArgumentException('Invalid path: Attempting to navigate above the root directory.');
+                }
+                array_pop($normalized);
+            } elseif ($part !== '.' && $part !== '') {
+                $normalized[] = $part;
+            }
+        }
+
+        if (empty($normalized)) {
+            throw new \InvalidArgumentException('The path resolves to an empty path.');
+        }
+
+        return implode('/', $normalized);
     }
 }

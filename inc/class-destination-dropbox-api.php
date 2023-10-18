@@ -189,7 +189,7 @@ class BackWPup_Destination_Dropbox_API
      */
     public function multipartUpload($file, $path = '', $overwrite = true)
     {
-        $file = str_replace('\\', '/', $file);
+        $file = str_replace('\\', '/', (string) $file);
 
         if (!is_readable($file)) {
             throw new BackWPup_Destination_Dropbox_API_Exception(
@@ -773,7 +773,7 @@ class BackWPup_Destination_Dropbox_API
         $message = "Call to {$endpoint}";
 
         if (isset($args['contents'])) {
-            $message .= ' with ' . size_format(strlen($args['contents'])) . ' of data,';
+            $message .= ' with ' . size_format(strlen((string) $args['contents'])) . ' of data,';
             unset($args['contents']);
         }
 

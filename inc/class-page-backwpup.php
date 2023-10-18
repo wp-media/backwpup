@@ -30,7 +30,7 @@ class BackWPup_Page_BackWPup
                 $sql_dump = new BackWPup_MySQLDump();
 
                 foreach ($sql_dump->tables_to_dump as $key => $table) {
-                    if ($wpdb->prefix != substr($table, 0, strlen($wpdb->prefix))) {
+                    if ($wpdb->prefix != substr((string) $table, 0, strlen((string) $wpdb->prefix))) {
                         unset($sql_dump->tables_to_dump[$key]);
                     }
                 }
@@ -136,16 +136,16 @@ class BackWPup_Page_BackWPup
             foreach ($rss->get_items(0, 4) as $item) {
                 $link = $item->get_link();
 
-                while (stristr($link, 'http') != $link) {
-                    $link = substr($link, 1);
+                while (stristr((string) $link, 'http') != $link) {
+                    $link = substr((string) $link, 1);
                 }
-                $link = esc_url(strip_tags($link));
-                $title = esc_attr(strip_tags($item->get_title()));
+                $link = esc_url(strip_tags((string) $link));
+                $title = esc_attr(strip_tags((string) $item->get_title()));
                 if (empty($title)) {
                     $title = __('Untitled', 'backwpup');
                 }
 
-                $desc = str_replace(["\n", "\r"], ' ', esc_attr(strip_tags(@html_entity_decode($item->get_description(), ENT_QUOTES, get_option('blog_charset')))));
+                $desc = str_replace(["\n", "\r"], ' ', esc_attr(strip_tags(@html_entity_decode((string) $item->get_description(), ENT_QUOTES, get_option('blog_charset')))));
                 $excerpt = wp_html_excerpt($desc, 360);
 
                 // Append ellipsis. Change existing [...] to [&hellip;].
@@ -191,7 +191,7 @@ class BackWPup_Page_BackWPup
                         continue;
                     }
                     //get info of wizard
-                    echo '<div id="wizard-' . strtolower($wizard_class->info['ID']) . '" class="wizardbox post-box backwpup-floated-postbox"><form method="get" action="' . network_admin_url('admin.php') . '">';
+                    echo '<div id="wizard-' . strtolower((string) $wizard_class->info['ID']) . '" class="wizardbox post-box backwpup-floated-postbox"><form method="get" action="' . network_admin_url('admin.php') . '">';
                     echo '<h3 class="wizardbox_name">' . $wizard_class->info['name'] . '</h3>';
                     echo '<p class="wizardbox_description">' . $wizard_class->info['description'] . '</p>';
                     $conf_names = $wizard_class->get_pre_configurations();
@@ -250,7 +250,7 @@ class BackWPup_Page_BackWPup
 			<div id="backwpup-thank-you" class="metabox-holder postbox backwpup-cleared-postbox backwpup-max-width">
 				<h3 class="hndle"><span><?php _ex('Thank you for using BackWPup!', 'Pro teaser box', 'backwpup'); ?></span></h3>
 				<div class="inside">
-                    <p><a href="<?php esc_html_e('http://backwpup.com', 'backwpup'); ?>"><img class="backwpup-banner-img" src="<?php echo BackWPup::get_plugin_data('URL'); ?>/assets/images/banner.jpg" alt="<?php esc_html_e('BackWPup banner', 'backwpup'); ?>" /></a></p>
+                    <p><a href="<?php esc_html_e('http://backwpup.com', 'backwpup'); ?>"><img class="backwpup-banner-img" src="<?php echo BackWPup::get_plugin_data('URL'); ?>/assets/images/banner.png" alt="<?php esc_html_e('BackWPup banner', 'backwpup'); ?>" /></a></p>
 					<h3 class="backwpup-text-center"><?php _ex('Get access to:', 'Pro teaser box', 'backwpup'); ?></h3>
 					<ul class="backwpup-text-center">
 						<li><?php _ex('First-class <strong>dedicated support</strong> at backwpup.com.', 'Pro teaser box', 'backwpup'); ?></li>

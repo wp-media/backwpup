@@ -54,7 +54,7 @@ final class BackWPup_Page_Backups extends WP_List_Table
             $_GET['jobdets-button-top'] = 'empty';
         }
 
-        [$this->jobid, $this->dest] = explode('_', $jobdest);
+        [$this->jobid, $this->dest] = explode('_', (string) $jobdest);
 
         if (!empty($this->destinations[$this->dest]['class'])) {
             /** @var BackWPup_Destinations $dest_object */
@@ -69,8 +69,8 @@ final class BackWPup_Page_Backups extends WP_List_Table
         }
 
         // Sorting.
-        $order = filter_input(INPUT_GET, 'order', FILTER_SANITIZE_STRING) ?: 'desc';
-        $orderby = filter_input(INPUT_GET, 'orderby', FILTER_SANITIZE_STRING) ?: 'time';
+        $order = filter_input(INPUT_GET, 'order') ?: 'desc';
+        $orderby = filter_input(INPUT_GET, 'orderby') ?: 'time';
         $tmp = [];
 
         if ($orderby === 'time') {
@@ -191,7 +191,7 @@ final class BackWPup_Page_Backups extends WP_List_Table
 				        id="jobdest-<?php echo esc_attr($which); ?>">
 					<?php
                     foreach ($destinations_list as $jobdest) {
-                        [$jobid, $dest] = explode('_', $jobdest);
+                        [$jobid, $dest] = explode('_', (string) $jobdest);
                         echo "\t<option value=\"" . $jobdest . '" ' . selected(
                             $this->jobid . '_' . $this->dest,
                             $jobdest,
@@ -292,7 +292,7 @@ final class BackWPup_Page_Backups extends WP_List_Table
                         $authorization = new BackWPup_Pro_Destination_HiDrive_Authorization($request);
                         $api = new BackWPup_Pro_Destination_HiDrive_Api($request, $authorization);
                         $response = $api->temporalDownloadUrl($this->jobid, $item['file']);
-                        $responsBody = json_decode($response['body']);
+                        $responsBody = json_decode((string) $response['body']);
 
                         if (isset($responsBody->url)) {
                             $downloadUrl = $responsBody->url;

@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit8359adb121634a4efaafa4bf4ac5ffc3
+class ComposerStaticInitb41b69934afb0924a29b3c92307fcdd6
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -2861,6 +2861,7 @@ class ComposerStaticInit8359adb121634a4efaafa4bf4ac5ffc3
         'Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface' => __DIR__ . '/..' . '/symfony/event-dispatcher-contracts/EventDispatcherInterface.php',
         'Symfony\\Contracts\\Translation\\LocaleAwareInterface' => __DIR__ . '/..' . '/symfony/translation-contracts/LocaleAwareInterface.php',
         'Symfony\\Contracts\\Translation\\Test\\TranslatorTest' => __DIR__ . '/..' . '/symfony/translation-contracts/Test/TranslatorTest.php',
+        'Symfony\\Contracts\\Translation\\TranslatableInterface' => __DIR__ . '/..' . '/symfony/translation-contracts/TranslatableInterface.php',
         'Symfony\\Contracts\\Translation\\TranslatorInterface' => __DIR__ . '/..' . '/symfony/translation-contracts/TranslatorInterface.php',
         'Symfony\\Contracts\\Translation\\TranslatorTrait' => __DIR__ . '/..' . '/symfony/translation-contracts/TranslatorTrait.php',
         'Symfony\\Polyfill\\Intl\\Idn\\Idn' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/Idn.php',
@@ -3216,11 +3217,11 @@ class ComposerStaticInit8359adb121634a4efaafa4bf4ac5ffc3
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit8359adb121634a4efaafa4bf4ac5ffc3::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit8359adb121634a4efaafa4bf4ac5ffc3::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit8359adb121634a4efaafa4bf4ac5ffc3::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInit8359adb121634a4efaafa4bf4ac5ffc3::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInit8359adb121634a4efaafa4bf4ac5ffc3::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitb41b69934afb0924a29b3c92307fcdd6::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitb41b69934afb0924a29b3c92307fcdd6::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitb41b69934afb0924a29b3c92307fcdd6::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInitb41b69934afb0924a29b3c92307fcdd6::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInitb41b69934afb0924a29b3c92307fcdd6::$classMap;
 
         }, null, ClassLoader::class);
     }

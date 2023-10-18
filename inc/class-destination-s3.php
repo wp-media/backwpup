@@ -753,16 +753,16 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
 
         if (is_object($objects)) {
             foreach ($objects as $object) {
-                $file = basename($object['Key']);
-                $changetime = strtotime($object['LastModified']) + (get_option('gmt_offset') * 3600);
+                $file = basename((string) $object['Key']);
+                $changetime = strtotime((string) $object['LastModified']) + (get_option('gmt_offset') * 3600);
 
                 if ($this->is_backup_archive($file) && $this->is_backup_owned_by_job($file, $jobid)) {
                     $backupfilelist[$changetime] = $file;
                 }
 
-                $files[$filecounter]['folder'] = $s3->getObjectUrl(BackWPup_Option::get($jobid, 's3bucket'), dirname($object['Key']));
+                $files[$filecounter]['folder'] = $s3->getObjectUrl(BackWPup_Option::get($jobid, 's3bucket'), dirname((string) $object['Key']));
                 $files[$filecounter]['file'] = $object['Key'];
-                $files[$filecounter]['filename'] = basename($object['Key']);
+                $files[$filecounter]['filename'] = basename((string) $object['Key']);
 
                 if (!empty($object['StorageClass'])) {
                     $files[$filecounter]['info'] = sprintf(
@@ -771,7 +771,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
                     );
                 }
 
-                $files[$filecounter]['downloadurl'] = network_admin_url('admin.php') . '?page=backwpupbackups&action=downloads3&file=' . $object['Key'] . '&local_file=' . basename($object['Key']) . '&jobid=' . $jobid;
+                $files[$filecounter]['downloadurl'] = network_admin_url('admin.php') . '?page=backwpupbackups&action=downloads3&file=' . $object['Key'] . '&local_file=' . basename((string) $object['Key']) . '&jobid=' . $jobid;
                 $files[$filecounter]['filesize'] = (int) $object['Size'];
                 $files[$filecounter]['time'] = $changetime;
 

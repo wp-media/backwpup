@@ -311,6 +311,10 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
                     $transport->setEncryption('tls');
                 }
             } elseif ($emailmethod == 'sendmail') {
+                // Verify command
+                if (preg_match('/^[a-zA-Z0-9-_.\/\\\'" ]+$/', $emailsendmail) === 0) {
+                $job_object->log('The sendmail command has invalid characters.', E_USER_ERROR);
+                }
                 $transport = Swift_SendmailTransport::newInstance($emailsendmail);
             } else {
                 $job_object->need_free_memory($job_object->backup_filesize * 8);
@@ -360,6 +364,10 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
      */
     public function edit_ajax(): void
     {
+        if (!current_user_can('backwpup_jobs_edit')) {
+            wp_die(-1);
+        }
+
         check_ajax_referer('backwpup_ajax_nonce');
 
         //get mail settings

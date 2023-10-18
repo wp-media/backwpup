@@ -8,8 +8,8 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
         $this->info['name'] = __('Files', 'backwpup');
         $this->info['description'] = __('File backup', 'backwpup');
         $this->info['URI'] = __('http://backwpup.com', 'backwpup');
-        $this->info['author'] = 'Inpsyde GmbH';
-        $this->info['authorURI'] = __('http://inpsyde.com', 'backwpup');
+        $this->info['author'] = 'WP Media';
+        $this->info['authorURI'] = __('https://wp-media.me', 'backwpup');
         $this->info['version'] = BackWPup::get_plugin_data('Version');
     }
 
@@ -357,7 +357,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
         if ($job_object->substeps_done === 5) {
             //include dirs
             if ($job_object->job['dirinclude']) {
-                $dirinclude = explode(',', $job_object->job['dirinclude']);
+                $dirinclude = explode(',', (string) $job_object->job['dirinclude']);
                 $dirinclude = array_unique($dirinclude);
                 //Crate file list for includes
                 foreach ($dirinclude as $dirincludevalue) {
@@ -386,9 +386,9 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
             if (is_readable(ABSPATH . 'wp-config.php')) {
                 $job_object->additional_files_to_backup[] = str_replace('\\', '/', ABSPATH . 'wp-config.php');
                 $job_object->log(sprintf(__('Added "%s" to backup file list', 'backwpup'), 'wp-config.php'));
-            } elseif (BackWPup_File::is_in_open_basedir(dirname(ABSPATH) . '/wp-config.php')) {
-                if (is_readable(dirname(ABSPATH) . '/wp-config.php') && !is_readable(dirname(ABSPATH) . '/wp-settings.php')) {
-                    $job_object->additional_files_to_backup[] = str_replace('\\', '/', dirname(ABSPATH) . '/wp-config.php');
+            } elseif (BackWPup_File::is_in_open_basedir(dirname((string) ABSPATH) . '/wp-config.php')) {
+                if (is_readable(dirname((string) ABSPATH) . '/wp-config.php') && !is_readable(dirname((string) ABSPATH) . '/wp-settings.php')) {
+                    $job_object->additional_files_to_backup[] = str_replace('\\', '/', dirname((string) ABSPATH) . '/wp-config.php');
                     $job_object->log(sprintf(__('Added "%s" to backup file list', 'backwpup'), 'wp-config.php'));
                 }
             }
@@ -448,7 +448,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
                 $path = str_replace('\\', '/', realpath($file->getPathname()));
 
                 foreach ($job_object->exclude_from_backup as $exclusion) { //exclude files
-                    $exclusion = trim($exclusion);
+                    $exclusion = trim((string) $exclusion);
                     if (stripos($path, $exclusion) !== false && !empty($exclusion)) {
                         continue 2;
                     }

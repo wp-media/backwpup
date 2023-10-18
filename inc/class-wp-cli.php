@@ -127,11 +127,11 @@ class BackWPup_WP_CLI extends WP_CLI_Command
             'Errors' => $job_object->errors,
             'On Step' => $job_object->steps_data[$job_object->step_working]['NAME'],
             'Done' => $job_object->step_percent . ' / ' . $job_object->substep_percent,
-            'Last message' => str_replace('&hellip;', '...', strip_tags($job_object->lastmsg)),
+            'Last message' => str_replace('&hellip;', '...', strip_tags((string) $job_object->lastmsg)),
         ];
 
         $formatter->display_items($items);
 
-        WP_CLI::log('Last Message: ' . str_replace('&hellip;', '...', strip_tags($job_object->lastmsg)));
+        WP_CLI::log('Last Message: ' . str_replace('&hellip;', '...', strip_tags((string) $job_object->lastmsg)));
     }
 }

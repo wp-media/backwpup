@@ -33,6 +33,6 @@ class BackWPup_Path_Fixer
 
     public static function slashify($path)
     {
-        return str_replace('\\', '/', $path);
+        return str_replace('\\', '/', (string) $path);
     }
 }

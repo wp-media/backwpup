@@ -70,7 +70,7 @@ class BackWPup_Encryption_Mcrypt
             ? @mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $this->key, $string, MCRYPT_MODE_CBC, md5($this->key))
             : mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $this->key, $string, MCRYPT_MODE_CBC, md5($this->key));
 
-        return BackWPup_Encryption::PREFIX . self::PREFIX . $this->key_type . base64_encode($encrypted);
+        return BackWPup_Encryption::PREFIX . self::PREFIX . $this->key_type . base64_encode((string) $encrypted);
     }
 
     /**

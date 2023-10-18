@@ -21,7 +21,7 @@ class BackWPup_Install
             $upload_dir = wp_upload_dir(null, false, true);
             $logfolder = get_site_option('backwpup_cfg_logfolder');
             if (empty($logfolder)) {
-                $old_log_folder = trailingslashit(str_replace('\\', '/', $upload_dir['basedir'])) . 'backwpup-' . substr(md5(md5(SECURE_AUTH_KEY)), 9, 5) . '-logs/';
+                $old_log_folder = trailingslashit(str_replace('\\', '/', $upload_dir['basedir'])) . 'backwpup-' . substr(md5(md5((string) SECURE_AUTH_KEY)), 9, 5) . '-logs/';
                 update_site_option('backwpup_cfg_logfolder', $old_log_folder);
             }
         }
@@ -161,7 +161,7 @@ class BackWPup_Install
             $cfg['logfolder'] = $cfg['dirlogs'];
         }
         if (!empty($cfg['httpauthpassword'])) {
-            if (preg_match('%^[a-zA-Z0-9/+]*={0,2}$%', $cfg['httpauthpassword'])) {
+            if (preg_match('%^[a-zA-Z0-9/+]*={0,2}$%', (string) $cfg['httpauthpassword'])) {
                 $cfg['httpauthpassword'] = base64_decode($cfg['httpauthpassword']);
             }
             $cfg['httpauthpassword'] = BackWPup_Encryption::encrypt($cfg['httpauthpassword']);
@@ -190,7 +190,7 @@ class BackWPup_Install
                 $jobvalue['cronselect'] = 'advanced';
             }
             $jobvalue['backuptype'] = 'archive';
-            $jobvalue['type'] = explode('+', $jobvalue['type']); //save as array
+            $jobvalue['type'] = explode('+', (string) $jobvalue['type']); //save as array
 
             foreach ($jobvalue['type'] as $key => $type) {
                 if ($type == 'DB') {
@@ -269,12 +269,12 @@ class BackWPup_Install
             $jobvalue['msazurecontainer'] = $jobvalue['msazureContainer'];
             unset($jobvalue['msazureHost'], $jobvalue['msazureAccName'], $jobvalue['msazureKey'], $jobvalue['msazureContainer']);
             //convert FTP
-            if (preg_match('%^[a-zA-Z0-9/+]*={0,2}$%', $jobvalue['ftppass'])) {
+            if (preg_match('%^[a-zA-Z0-9/+]*={0,2}$%', (string) $jobvalue['ftppass'])) {
                 $jobvalue['ftppass'] = base64_decode($jobvalue['ftppass']);
             }
             $jobvalue['ftppass'] = BackWPup_Encryption::encrypt($jobvalue['ftppass']);
-            if (!empty($jobvalue['ftphost']) && strstr($jobvalue['ftphost'], ':')) {
-                [$jobvalue['ftphost'], $jobvalue['ftphostport']] = explode(':', $jobvalue['ftphost'], 2);
+            if (!empty($jobvalue['ftphost']) && strstr((string) $jobvalue['ftphost'], ':')) {
+                [$jobvalue['ftphost'], $jobvalue['ftphostport']] = explode(':', (string) $jobvalue['ftphost'], 2);
             }
             //convert Sugarsync
             //convert Mail
@@ -296,31 +296,31 @@ class BackWPup_Install
             $excludes = [];
 
             foreach ($jobvalue['backuprootexcludedirs'] as $folder) {
-                $excludes[] = basename($folder);
+                $excludes[] = basename((string) $folder);
             }
             $jobvalue['backuprootexcludedirs'] = $excludes;
             $excludes = [];
 
             foreach ($jobvalue['backupcontentexcludedirs'] as $folder) {
-                $excludes[] = basename($folder);
+                $excludes[] = basename((string) $folder);
             }
             $jobvalue['backupcontentexcludedirs'] = $excludes;
             $excludes = [];
 
             foreach ($jobvalue['backuppluginsexcludedirs'] as $folder) {
-                $excludes[] = basename($folder);
+                $excludes[] = basename((string) $folder);
             }
             $jobvalue['backuppluginsexcludedirs'] = $excludes;
             $excludes = [];
 
             foreach ($jobvalue['backupthemesexcludedirs'] as $folder) {
-                $excludes[] = basename($folder);
+                $excludes[] = basename((string) $folder);
             }
             $jobvalue['backupthemesexcludedirs'] = $excludes;
             $excludes = [];
 
             foreach ($jobvalue['backupuploadsexcludedirs'] as $folder) {
-                $excludes[] = basename($folder);
+                $excludes[] = basename((string) $folder);
             }
             $jobvalue['backupuploadsexcludedirs'] = $excludes;
             //delete not longer needed

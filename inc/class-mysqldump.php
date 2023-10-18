@@ -165,7 +165,7 @@ class BackWPup_MySQLDump
             'dbclientflags' => defined('MYSQL_CLIENT_FLAGS') ? MYSQL_CLIENT_FLAGS : 0,
             'compression' => function (Options $options) {
                 if ($options['dumpfile'] !== null
-                    && substr(strtolower($options['dumpfile']), -3) === '.gz') {
+                    && substr(strtolower((string) $options['dumpfile']), -3) === '.gz') {
                     return self::COMPRESS_GZ;
                 }
 
@@ -401,7 +401,7 @@ class BackWPup_MySQLDump
         if ($wp_info) {
             $dbdumpheader .= '-- Blog Name: ' . get_bloginfo('name') . "\n";
             $dbdumpheader .= '-- Blog URL: ' . trailingslashit(get_bloginfo('url')) . "\n";
-            $dbdumpheader .= '-- Blog ABSPATH: ' . trailingslashit(str_replace('\\', '/', ABSPATH)) . "\n";
+            $dbdumpheader .= '-- Blog ABSPATH: ' . trailingslashit(str_replace('\\', '/', (string) ABSPATH)) . "\n";
             $dbdumpheader .= '-- Blog Charset: ' . get_bloginfo('charset') . "\n";
             $dbdumpheader .= '-- Table Prefix: ' . $GLOBALS[\wpdb::class]->prefix . "\n";
         }
@@ -889,7 +889,7 @@ class BackWPup_MySQLDump
      */
     protected function write($data)
     {
-        $written = fwrite($this->handle, $data);
+        $written = fwrite($this->handle, (string) $data);
 
         if (!$written) {
             throw new BackWPup_MySQLDump_Exception(__('Error while writing file!', 'backwpup'));

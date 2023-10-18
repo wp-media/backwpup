@@ -168,7 +168,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations
         BackWPup_Option::update(
             $jobid,
             self::MSAZURESYNCNODELETE,
-            filter_input(INPUT_POST, self::MSAZURESYNCNODELETE, FILTER_SANITIZE_STRING) ?: ''
+            filter_input(INPUT_POST, self::MSAZURESYNCNODELETE) ?: ''
         );
     }
 
@@ -441,18 +441,15 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations
 
         $msazureName = filter_input(
             INPUT_POST,
-            MsAzureDestinationConfiguration::MSAZURE_ACCNAME,
-            FILTER_SANITIZE_STRING
+            MsAzureDestinationConfiguration::MSAZURE_ACCNAME
         ) ?: '';
         $msazureKey = filter_input(
             INPUT_POST,
-            MsAzureDestinationConfiguration::MSAZURE_KEY,
-            FILTER_SANITIZE_STRING
+            MsAzureDestinationConfiguration::MSAZURE_KEY
         ) ?: '';
         $msazureSelected = filter_input(
             INPUT_POST,
-            'msazureselected',
-            FILTER_SANITIZE_STRING
+            'msazureselected'
         ) ?: '';
 
         if ($msazureName || $msazureKey) {
@@ -497,7 +494,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations
             echo '<select name="msazurecontainer" id="msazurecontainer">';
 
             foreach ($containers as $container) {
-                echo '<option ' . selected(strtolower($args['msazureselected']), strtolower($container->getName()), false) . '>' . esc_html($container->getName()) . '</option>';
+                echo '<option ' . selected(strtolower((string) $args['msazureselected']), strtolower($container->getName()), false) . '>' . esc_html($container->getName()) . '</option>';
             }
             echo '</select>';
         }
@@ -519,19 +516,17 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations
 
     protected function msazureConfiguration(): MsAzureDestinationConfiguration
     {
-        $msazureaccname = filter_input(INPUT_POST, MsAzureDestinationConfiguration::MSAZURE_ACCNAME, FILTER_SANITIZE_STRING);
-        $msazurekey = filter_input(INPUT_POST, MsAzureDestinationConfiguration::MSAZURE_KEY, FILTER_SANITIZE_STRING);
+        $msazureaccname = filter_input(INPUT_POST, MsAzureDestinationConfiguration::MSAZURE_ACCNAME);
+        $msazurekey = filter_input(INPUT_POST, MsAzureDestinationConfiguration::MSAZURE_KEY);
         $msazurecontainer = filter_input(
             INPUT_POST,
-            MsAzureDestinationConfiguration::MSAZURE_CONTAINER,
-            FILTER_SANITIZE_STRING
+            MsAzureDestinationConfiguration::MSAZURE_CONTAINER
         );
 
         if (!$msazurecontainer) {
             $newmsazurecontainer = filter_input(
                 INPUT_POST,
-                self::NEWMSAZURECONTAINER,
-                FILTER_SANITIZE_STRING
+                self::NEWMSAZURECONTAINER
             );
 
             return MsAzureDestinationConfiguration::withNewContainer(
@@ -616,7 +611,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations
                     '\\',
                     '/',
                     trim(
-                        filter_input(INPUT_POST, self::MSAZUREDIR, FILTER_SANITIZE_STRING) ?: ''
+                        filter_input(INPUT_POST, self::MSAZUREDIR) ?: ''
                     )
                 )
             )

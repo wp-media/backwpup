@@ -65,7 +65,7 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations
             echo '<select name="sugarroot" id="sugarroot">';
 
             foreach ($syncfolders->collection as $roots) {
-                echo '<option ' . selected(strtolower(BackWPup_Option::get($jobid, 'sugarroot')), strtolower($roots->ref), false) . ' value="' . $roots->ref . '">' . $roots->displayName . '</option>';
+                echo '<option ' . selected(strtolower((string) BackWPup_Option::get($jobid, 'sugarroot')), strtolower($roots->ref), false) . ' value="' . $roots->ref . '">' . $roots->displayName . '</option>';
             }
             echo '</select>';
         } ?>

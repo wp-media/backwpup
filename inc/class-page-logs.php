@@ -196,7 +196,7 @@ class BackWPup_Page_Logs extends WP_List_Table
     public function column_type($item)
     {
         $r = '';
-        if ($types = explode('+', $item['type'])) {
+        if ($types = explode('+', (string) $item['type'])) {
             foreach ($types as $type) {
                 if (isset($this->job_types[$type])) {
                     $r .= $this->job_types[$type]->info['name'] . '<br />';
@@ -218,7 +218,7 @@ class BackWPup_Page_Logs extends WP_List_Table
      */
     public function column_job($item)
     {
-        $log_name = str_replace(['.html', '.gz'], '', basename($item['file']));
+        $log_name = str_replace(['.html', '.gz'], '', basename((string) $item['file']));
         $r = '<strong><a class="thickbox" href="' . admin_url('admin-ajax.php') . '?&action=backwpup_view_log&log=' . $log_name . '&_ajax_nonce=' . wp_create_nonce('view-log_' . $log_name) . '&amp;TB_iframe=true&amp;width=640&amp;height=440" title="' . esc_attr($item['file']) . "\n" . sprintf(__('Job ID: %d', 'backwpup'), $item['jobid']) . '">' . esc_html(!empty($item['name']) ? $item['name'] : $item['file']) . '</a></strong>';
         $actions = [];
         $actions['view'] = '<a class="thickbox" href="' . admin_url('admin-ajax.php') . '?&action=backwpup_view_log&log=' . $log_name . '&_ajax_nonce=' . wp_create_nonce('view-log_' . $log_name) . '&amp;TB_iframe=true&amp;width=640&amp;height=440" title="' . $item['file'] . '">' . __('View', 'backwpup') . '</a>';
@@ -302,7 +302,7 @@ class BackWPup_Page_Logs extends WP_List_Table
                     check_admin_referer('bulk-logs');
 
                     foreach ($_GET['logfiles'] as $logfile) {
-                        $logfile = basename($logfile);
+                        $logfile = basename((string) $logfile);
                         if (is_writeable(self::$listtable->log_folder . '/' . $logfile) && !is_dir(self::$listtable->log_folder . '/' . $logfile) && !is_link(self::$listtable->log_folder . '/' . $logfile)) {
                             unlink(self::$listtable->log_folder . '/' . $logfile);
                         }
@@ -311,7 +311,7 @@ class BackWPup_Page_Logs extends WP_List_Table
                 break;
             // Download Log
             case 'download':
-                $log_file = trailingslashit(self::$listtable->log_folder) . basename(trim($_GET['file']));
+                $log_file = trailingslashit(self::$listtable->log_folder) . basename(trim((string) $_GET['file']));
                 $log_file = realpath(BackWPup_Sanitize_Path::sanitize_path($log_file));
 
                 if (!$log_file
@@ -440,7 +440,7 @@ class BackWPup_Page_Logs extends WP_List_Table
      */
     public static function ajax_view_log()
     {
-        if (!current_user_can('backwpup_logs') || !isset($_GET['log']) || strstr($_GET['log'], 'backwpup_log_') === false) {
+        if (!current_user_can('backwpup_logs') || !isset($_GET['log']) || strstr((string) $_GET['log'], 'backwpup_log_') === false) {
             exit('-1');
         }
 
@@ -448,7 +448,7 @@ class BackWPup_Page_Logs extends WP_List_Table
 
         $log_folder = get_site_option('backwpup_cfg_logfolder');
         $log_folder = BackWPup_File::get_absolute_path($log_folder);
-        $log_file = $log_folder . basename(trim($_GET['log']));
+        $log_file = $log_folder . basename(trim((string) $_GET['log']));
 
         if (file_exists($log_file . '.html') && is_readable($log_file . '.html')) {
             echo file_get_contents($log_file . '.html', false);

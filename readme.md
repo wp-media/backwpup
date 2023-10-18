@@ -31,7 +31,7 @@ BackWPup Free is the number 1 backup-plugin for WordPress with nearly 1.000.000 
 
 **Remember: The most expensive backup is the one you never did! And please test your backups!**
 
-**Made by [Inpsyde](http://inpsyde.com) &middot; We love WordPress**
+**Made by [WP Media](https://wp-media.me) &middot; We love WordPress**
 
 
 ## Available languages

@@ -37,7 +37,7 @@ final class BackWPup_Option
             '/',
             $upload_dir['basedir']
         )) . 'backwpup-' . BackWPup::get_plugin_data('hash') . '-logs/';
-        $content_path = trailingslashit(str_replace('\\', '/', WP_CONTENT_DIR));
+        $content_path = trailingslashit(str_replace('\\', '/', (string) WP_CONTENT_DIR));
         $logs_dir = str_replace($content_path, '', $logs_dir);
         add_site_option('backwpup_cfg_logfolder', $logs_dir);
         //Network Auth
@@ -325,7 +325,7 @@ final class BackWPup_Option
      */
     public static function get_job_ids($key = null, $value = false)
     {
-        $key = sanitize_key(trim($key));
+        $key = sanitize_key(trim((string) $key));
         $jobs_options = self::jobs_options(false);
 
         if (empty($jobs_options)) {

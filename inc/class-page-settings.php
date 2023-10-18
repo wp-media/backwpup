@@ -441,7 +441,7 @@ class BackWPup_Page_Settings
         update_site_option('backwpup_cfg_gzlogs', !empty($_POST['gzlogs']));
         update_site_option('backwpup_cfg_protectfolders', !empty($_POST['protectfolders']));
 
-        $_POST['jobrunauthkey'] = preg_replace('/[^a-zA-Z0-9]/', '', trim($_POST['jobrunauthkey']));
+        $_POST['jobrunauthkey'] = preg_replace('/[^a-zA-Z0-9]/', '', trim((string) $_POST['jobrunauthkey']));
 
         update_site_option('backwpup_cfg_jobrunauthkey', $_POST['jobrunauthkey']);
 
@@ -665,7 +665,7 @@ class BackWPup_Page_Settings
                 ['code' => []]
             ),
             '<code>' . trailingslashit(
-                str_replace('\\', '/', WP_CONTENT_DIR)
+                str_replace('\\', '/', (string) WP_CONTENT_DIR)
             ) . '</code>'
         ); ?>
 								</p>

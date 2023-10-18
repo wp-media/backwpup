@@ -64,7 +64,7 @@ final class BackWPup_Destination_Dropbox_Downloader implements BackWPup_Destinat
                 $end_byte
             );
 
-            $bytes = (int) fwrite($this->local_file_handler, $data);
+            $bytes = (int) fwrite($this->local_file_handler, (string) $data);
             if ($bytes === 0) {
                 throw new \RuntimeException(__('Could not write data to file.', 'backwpup'));
             }
