@@ -91,7 +91,9 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations
         $backup_dir = trim(sanitize_text_field($_POST['backupdir']));
 
         try {
-            $backup_dir = trailingslashit(self::normalizePath(BackWPup_Path_Fixer::slashify($backup_dir)));
+            $backup_dir = trailingslashit(
+                BackWPup_File::normalize_path(BackWPup_Path_Fixer::slashify($backup_dir))
+            );
         } catch (\InvalidArgumentException $e) {
             $backup_dir = self::getDefaultBackupsDirectory();
         }
@@ -300,28 +302,5 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations
         $content_path = trailingslashit(BackWPup_Path_Fixer::slashify((string) WP_CONTENT_DIR));
 
         return str_replace($content_path, '', $backups_dir);
-    }
-
-    private static function normalizePath($path)
-    {
-        $parts = explode('/', $path);
-        $normalized = [];
-
-        foreach ($parts as $part) {
-            if ($part === '..') {
-                if (empty($normalized)) {
-                    throw new InvalidArgumentException('Invalid path: Attempting to navigate above the root directory.');
-                }
-                array_pop($normalized);
-            } elseif ($part !== '.' && $part !== '') {
-                $normalized[] = $part;
-            }
-        }
-
-        if (empty($normalized)) {
-            throw new \InvalidArgumentException('The path resolves to an empty path.');
-        }
-
-        return implode('/', $normalized);
     }
 }

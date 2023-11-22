@@ -3,9 +3,9 @@
  * Plugin Name: BackWPup 
  * Plugin URI: http://backwpup.com
  * Description: WordPress Backup Plugin
- * Author: WP Media
- * Author URI: https://wp-media.me
- * Version: 4.0.1
+ * Author: WP MEDIA SAS
+ * Author URI: https://wp-media.me/
+ * Version: 4.0.2
  * Requires at least: 3.9
  * Requires PHP: 7.2
  * Text Domain: backwpup

@@ -201,6 +201,40 @@ class BackWPup_File
     }
 
     /**
+     * @throws InvalidArgumentException If path is absolute or attempts to navigate above root
+     *
+     * @return string[]
+     */
+    public static function normalize_path(string $path): string
+    {
+        if (strpos($path, '/') === 0) {
+            throw new InvalidArgumentException('Absolute paths are not allowed.');
+        }
+
+        $parts = explode('/', $path);
+        $normalized = [];
+
+        foreach ($parts as $part) {
+            if ($part === '..') {
+                if (empty($normalized)) {
+                    throw new InvalidArgumentException(
+                        'Invalid path: Attempting to navigate above the root directory.'
+                    );
+                }
+                array_pop($normalized);
+            } elseif ($part !== '.' && $part !== '') {
+                $normalized[] = $part;
+            }
+        }
+
+        if (empty($normalized)) {
+            throw new InvalidArgumentException('The path resolves to an empty path.');
+        }
+
+        return implode('/', $normalized);
+    }
+
+    /**
      * Resolve internal .. within a path.
      *
      * @param string $path The path to resolve

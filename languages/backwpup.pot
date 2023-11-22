@@ -26,11 +26,11 @@ msgid "WordPress Backup Plugin"
 msgstr ""
 
 #: backwpup.php:6
-msgid "WP Media"
+msgid "WP MEDIA SAS"
 msgstr ""
 
-#: backwpup.php:7, inc/class-jobtype-file.php:12, inc/Pro/class-wizard-job.php:19, inc/Pro/class-wizard-jobimport.php:16, inc/Pro/class-wizard-systemtest.php:24
-msgid "https://wp-media.me"
+#: backwpup.php:7
+msgid "https://wp-media.me/"
 msgstr ""
 
 #: backwpup.php:353, inc/class-page-backups.php:223
@@ -129,7 +129,7 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-#: inc/class-admin.php:307, inc/class-admin.php:308, inc/class-adminbar.php:72, inc/class-page-settings.php:504
+#: inc/class-admin.php:307, inc/class-admin.php:308, inc/class-adminbar.php:72, inc/class-page-settings.php:503
 msgid "Jobs"
 msgstr ""
 
@@ -137,7 +137,7 @@ msgstr ""
 msgid "Add new job"
 msgstr ""
 
-#: inc/class-admin.php:383, inc/class-admin.php:384, inc/class-adminbar.php:90, inc/class-page-logs.php:368, inc/class-page-settings.php:508
+#: inc/class-admin.php:383, inc/class-admin.php:384, inc/class-adminbar.php:90, inc/class-page-logs.php:368, inc/class-page-settings.php:507
 msgid "Logs"
 msgstr ""
 
@@ -308,7 +308,7 @@ msgstr ""
 msgid "Aborted, because no progress for one hour!"
 msgstr ""
 
-#: inc/class-cron.php:108, inc/class-destination-folder.php:228, inc/class-jobtype-file.php:475
+#: inc/class-cron.php:108, inc/class-destination-folder.php:230, inc/class-jobtype-file.php:475
 msgid "Could not open path: %s"
 msgstr ""
 
@@ -591,7 +591,7 @@ msgstr ""
 msgid "SMTP secure connection"
 msgstr ""
 
-#: inc/class-destination-email.php:142, inc/class-jobtype-dbdump.php:61, inc/class-jobtype-dbdump.php:97, inc/class-jobtype-wpexp.php:73, inc/class-jobtype-wpplugin.php:51, inc/class-page-backwpup.php:330, inc/class-page-backwpup.php:404, inc/class-page-settings.php:961, inc/Pro/class-jobtype-dbdump.php:157, inc/Pro/class-jobtype-dbdump.php:209
+#: inc/class-destination-email.php:142, inc/class-jobtype-dbdump.php:61, inc/class-jobtype-dbdump.php:97, inc/class-jobtype-wpexp.php:73, inc/class-jobtype-wpplugin.php:51, inc/class-page-backwpup.php:330, inc/class-page-backwpup.php:404, inc/class-page-settings.php:960, inc/Pro/class-jobtype-dbdump.php:157, inc/Pro/class-jobtype-dbdump.php:209
 msgid "none"
 msgstr ""
 
@@ -668,7 +668,7 @@ msgstr ""
 msgid "Folder to store backups in"
 msgstr ""
 
-#: inc/class-destination-folder.php:258
+#: inc/class-destination-folder.php:260
 msgid "One backup file deleted"
 msgid_plural "%d backup files deleted"
 msgstr[0] ""
@@ -1934,6 +1934,10 @@ msgstr ""
 msgid "File backup"
 msgstr ""
 
+#: inc/class-jobtype-file.php:12, inc/Pro/class-wizard-job.php:19, inc/Pro/class-wizard-jobimport.php:16, inc/Pro/class-wizard-systemtest.php:24
+msgid "https://wp-media.me"
+msgstr ""
+
 #: inc/class-jobtype-file.php:98
 msgid "Folders to backup"
 msgstr ""
@@ -2778,7 +2782,7 @@ msgstr ""
 msgid "%1$s &rsaquo; Job: %2$s"
 msgstr ""
 
-#: inc/class-page-editjob.php:324, inc/class-page-settings.php:503
+#: inc/class-page-editjob.php:324, inc/class-page-settings.php:502
 msgid "General"
 msgstr ""
 
@@ -3602,311 +3606,311 @@ msgstr ""
 msgid "Settings reset to default"
 msgstr ""
 
-#: inc/class-page-settings.php:488
+#: inc/class-page-settings.php:487
 msgid "Settings saved"
 msgstr ""
 
-#: inc/class-page-settings.php:497
+#: inc/class-page-settings.php:496
 msgid "%s &rsaquo; Settings"
 msgstr ""
 
-#: inc/class-page-settings.php:506
+#: inc/class-page-settings.php:505
 msgid "Encryption"
 msgstr ""
 
-#: inc/class-page-settings.php:509
+#: inc/class-page-settings.php:508
 msgid "Network"
 msgstr ""
 
-#: inc/class-page-settings.php:510
+#: inc/class-page-settings.php:509
 msgid "API Keys"
 msgstr ""
 
-#: inc/class-page-settings.php:511
+#: inc/class-page-settings.php:510
 msgid "Information"
 msgstr ""
 
-#: inc/class-page-settings.php:513
+#: inc/class-page-settings.php:512
 msgid "License"
 msgstr ""
 
-#: inc/class-page-settings.php:533
+#: inc/class-page-settings.php:532
 msgid "Display Settings"
 msgstr ""
 
-#: inc/class-page-settings.php:534
+#: inc/class-page-settings.php:533
 msgid "Do you want to see BackWPup in the WordPress admin bar?"
 msgstr ""
 
-#: inc/class-page-settings.php:537
+#: inc/class-page-settings.php:536
 msgid "Admin bar"
 msgstr ""
 
-#: inc/class-page-settings.php:542
+#: inc/class-page-settings.php:541
 msgid "Admin Bar"
 msgstr ""
 
-#: inc/class-page-settings.php:551
+#: inc/class-page-settings.php:550
 msgid "Show BackWPup links in admin bar."
 msgstr ""
 
-#: inc/class-page-settings.php:557, inc/class-page-settings.php:562
+#: inc/class-page-settings.php:556, inc/class-page-settings.php:561
 msgid "Folder sizes"
 msgstr ""
 
-#: inc/class-page-settings.php:571
+#: inc/class-page-settings.php:570
 msgid "Display folder sizes in the files tab when editing a job. (Might increase loading time of files tab.)"
 msgstr ""
 
-#: inc/class-page-settings.php:580
+#: inc/class-page-settings.php:579
 msgid "Security"
 msgstr ""
 
-#: inc/class-page-settings.php:581
+#: inc/class-page-settings.php:580
 msgid "Security option for BackWPup"
 msgstr ""
 
-#: inc/class-page-settings.php:584, inc/class-page-settings.php:589
+#: inc/class-page-settings.php:583, inc/class-page-settings.php:588
 msgid "Protect folders"
 msgstr ""
 
-#: inc/class-page-settings.php:599
+#: inc/class-page-settings.php:598
 msgid "Protect BackWPup folders ( Temp, Log and Backups ) with <code>.htaccess</code> and <code>index.php</code>"
 msgstr ""
 
-#: inc/class-page-settings.php:613
+#: inc/class-page-settings.php:612
 msgid "Plugin data"
 msgstr ""
 
-#: inc/class-page-settings.php:618
+#: inc/class-page-settings.php:617
 msgid "Keep plugin data"
 msgstr ""
 
-#: inc/class-page-settings.php:628
+#: inc/class-page-settings.php:627
 msgid "Keep BackWPup data stored in the database after uninstall"
 msgstr ""
 
-#: inc/class-page-settings.php:642
+#: inc/class-page-settings.php:641
 msgid "Every time BackWPup runs a backup job, a log file is being generated. Choose where to store your log files and how many of them."
 msgstr ""
 
-#: inc/class-page-settings.php:651
+#: inc/class-page-settings.php:650
 msgid "Log file folder"
 msgstr ""
 
-#: inc/class-page-settings.php:661
+#: inc/class-page-settings.php:660
 msgid "You can use absolute or relative path! Relative path is relative to %s."
 msgstr ""
 
-#: inc/class-page-settings.php:677
+#: inc/class-page-settings.php:676
 msgid "Maximum log files"
 msgstr ""
 
-#: inc/class-page-settings.php:685
+#: inc/class-page-settings.php:684
 msgid "Maximum log files in folder."
 msgstr ""
 
-#: inc/class-page-settings.php:689, inc/class-page-settings.php:692
+#: inc/class-page-settings.php:688, inc/class-page-settings.php:691
 msgid "Compression"
 msgstr ""
 
-#: inc/class-page-settings.php:703
+#: inc/class-page-settings.php:702
 msgid "Compress log files with GZip."
 msgstr ""
 
-#: inc/class-page-settings.php:709, inc/class-page-settings.php:714
+#: inc/class-page-settings.php:708, inc/class-page-settings.php:713
 msgid "Logging Level"
 msgstr ""
 
-#: inc/class-page-settings.php:722
+#: inc/class-page-settings.php:721
 msgid "Normal (translated)"
 msgstr ""
 
-#: inc/class-page-settings.php:726
+#: inc/class-page-settings.php:725
 msgid "Normal (not translated)"
 msgstr ""
 
-#: inc/class-page-settings.php:730
+#: inc/class-page-settings.php:729
 msgid "Debug (translated)"
 msgstr ""
 
-#: inc/class-page-settings.php:734
+#: inc/class-page-settings.php:733
 msgid "Debug (not translated)"
 msgstr ""
 
-#: inc/class-page-settings.php:738
+#: inc/class-page-settings.php:737
 msgid "Debug log has much more information than normal logs. It is for support and should be handled carefully. For support is the best to use a not translated log file. Usage of not translated logs can reduce the PHP memory usage too."
 msgstr ""
 
-#: inc/class-page-settings.php:751
+#: inc/class-page-settings.php:750
 msgid "There are a couple of general options for backup jobs. Set them here."
 msgstr ""
 
-#: inc/class-page-settings.php:759
+#: inc/class-page-settings.php:758
 msgid "Maximum number of retries for job steps"
 msgstr ""
 
-#: inc/class-page-settings.php:768
+#: inc/class-page-settings.php:767
 msgid "Maximum script execution time"
 msgstr ""
 
-#: inc/class-page-settings.php:773
+#: inc/class-page-settings.php:772
 msgid "Maximum PHP Script execution time"
 msgstr ""
 
-#: inc/class-page-settings.php:779
+#: inc/class-page-settings.php:778
 msgid "seconds."
 msgstr ""
 
-#: inc/class-page-settings.php:782
+#: inc/class-page-settings.php:781
 msgid "Job will restart before hitting maximum execution time. Restarts will be disabled on CLI usage. If <code>ALTERNATE_WP_CRON</code> has been defined, WordPress Cron will be used for restarts, so it can take a while. 0 means no maximum."
 msgstr ""
 
-#: inc/class-page-settings.php:796
+#: inc/class-page-settings.php:795
 msgid "Key to start jobs externally with an URL"
 msgstr ""
 
-#: inc/class-page-settings.php:804
+#: inc/class-page-settings.php:803
 msgid "Will be used to protect job starts from unauthorized person."
 msgstr ""
 
-#: inc/class-page-settings.php:812, inc/class-page-settings.php:817
+#: inc/class-page-settings.php:811, inc/class-page-settings.php:816
 msgid "Reduce server load"
 msgstr ""
 
-#: inc/class-page-settings.php:825
+#: inc/class-page-settings.php:824
 msgid "disabled"
 msgstr ""
 
-#: inc/class-page-settings.php:829
+#: inc/class-page-settings.php:828
 msgid "minimum"
 msgstr ""
 
-#: inc/class-page-settings.php:833
+#: inc/class-page-settings.php:832
 msgid "medium"
 msgstr ""
 
-#: inc/class-page-settings.php:837
+#: inc/class-page-settings.php:836
 msgid "maximum"
 msgstr ""
 
-#: inc/class-page-settings.php:841
+#: inc/class-page-settings.php:840
 msgid "This adds short pauses to the process. Can be used to reduce the CPU load."
 msgstr ""
 
-#: inc/class-page-settings.php:850
+#: inc/class-page-settings.php:849
 msgid "Empty output on working"
 msgstr ""
 
-#: inc/class-page-settings.php:855, inc/class-page-settings.php:867
+#: inc/class-page-settings.php:854, inc/class-page-settings.php:866
 msgid "Enable an empty Output on backup working."
 msgstr ""
 
-#: inc/class-page-settings.php:870
+#: inc/class-page-settings.php:869
 msgid "This do an empty output on job working. This can help in some situations or can break the working. You must test it."
 msgstr ""
 
-#: inc/class-page-settings.php:879
+#: inc/class-page-settings.php:878
 msgid "Windows IIS compatibility"
 msgstr ""
 
-#: inc/class-page-settings.php:884, inc/class-page-settings.php:895
+#: inc/class-page-settings.php:883, inc/class-page-settings.php:894
 msgid "Enable compatibility with IIS on Windows."
 msgstr ""
 
-#: inc/class-page-settings.php:899
+#: inc/class-page-settings.php:898
 msgid "There is a PHP bug (<a href=\"https://bugs.php.net/43817\">bug #43817</a>), which is triggered on some versions of Windows and IIS. Checking this box will enable a workaround for that bug. Only enable if you are getting errors about &ldquo;Permission denied&rdquo; in your logs."
 msgstr ""
 
-#: inc/class-page-settings.php:923
+#: inc/class-page-settings.php:922
 msgid "Authentication for <code>%s</code>"
 msgstr ""
 
-#: inc/class-page-settings.php:930
+#: inc/class-page-settings.php:929
 msgid "If you protected your blog with HTTP basic authentication (.htaccess), or you use a Plugin to secure wp-cron.php, then use the authentication methods below."
 msgstr ""
 
-#: inc/class-page-settings.php:948, inc/class-page-settings.php:953
+#: inc/class-page-settings.php:947, inc/class-page-settings.php:952
 msgid "Authentication method"
 msgstr ""
 
-#: inc/class-page-settings.php:965
+#: inc/class-page-settings.php:964
 msgid "Basic auth"
 msgstr ""
 
-#: inc/class-page-settings.php:969
+#: inc/class-page-settings.php:968
 msgid "WordPress User"
 msgstr ""
 
-#: inc/class-page-settings.php:973
+#: inc/class-page-settings.php:972
 msgid "Query argument"
 msgstr ""
 
-#: inc/class-page-settings.php:984
+#: inc/class-page-settings.php:983
 msgid "Basic Auth Username:"
 msgstr ""
 
-#: inc/class-page-settings.php:1002
+#: inc/class-page-settings.php:1001
 msgid "Basic Auth Password:"
 msgstr ""
 
-#: inc/class-page-settings.php:1017, inc/class-page-settings.php:1020
+#: inc/class-page-settings.php:1016, inc/class-page-settings.php:1019
 msgid "Select WordPress User"
 msgstr ""
 
-#: inc/class-page-settings.php:1053
+#: inc/class-page-settings.php:1052
 msgid "Query arg key=value:"
 msgstr ""
 
-#: inc/class-page-settings.php:1080
+#: inc/class-page-settings.php:1079
 msgid "Experiencing an issue and need to contact BackWPup support? Click the link below to get debug information you can send to us."
 msgstr ""
 
-#: inc/class-page-settings.php:1087
+#: inc/class-page-settings.php:1086
 msgid "Debug Info"
 msgstr ""
 
-#: inc/class-page-settings.php:1091
+#: inc/class-page-settings.php:1090
 msgid "Get Debug Info"
 msgstr ""
 
-#: inc/class-page-settings.php:1098
+#: inc/class-page-settings.php:1097
 msgid "You will find debug information below. Click the button to copy the debug info to send to support."
 msgstr ""
 
-#: inc/class-page-settings.php:1113
+#: inc/class-page-settings.php:1112
 msgid "https://backwpup.com"
 msgstr ""
 
-#: inc/class-page-settings.php:1114
+#: inc/class-page-settings.php:1113
 msgid "Get Pro"
 msgstr ""
 
-#: inc/class-page-settings.php:1125
+#: inc/class-page-settings.php:1124
 msgid "Copy Debug Info"
 msgstr ""
 
-#: inc/class-page-settings.php:1130
+#: inc/class-page-settings.php:1129
 msgid "Debug info copied to clipboard."
 msgstr ""
 
-#: inc/class-page-settings.php:1138
+#: inc/class-page-settings.php:1137
 msgid "Could not copy debug info. You can simply press ctrl+C to copy it."
 msgstr ""
 
-#: inc/class-page-settings.php:1197, inc/class-page-settings.php:1201
+#: inc/class-page-settings.php:1196, inc/class-page-settings.php:1200
 msgid "Setting"
 msgstr ""
 
-#: inc/class-page-settings.php:1197, inc/class-page-settings.php:1201
+#: inc/class-page-settings.php:1196, inc/class-page-settings.php:1200
 msgid "Value"
 msgstr ""
 
-#: inc/class-page-settings.php:1220
+#: inc/class-page-settings.php:1219
 msgid "Save Changes"
 msgstr ""
 
-#: inc/class-page-settings.php:1226
+#: inc/class-page-settings.php:1225
 msgid "Reset all settings to default"
 msgstr ""
 

@@ -1,4 +1,9 @@
 == Changelog ==
+= 4.0.2 =
+Release date: November 22, 2023
+
+* Fixed: Disallow backups or logs directories from being outside of wp-content directory for security purposes
+
 = 4.0.1 =
 Release date: October 18, 2023
 
