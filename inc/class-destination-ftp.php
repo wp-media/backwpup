@@ -636,9 +636,11 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations
                     BackWPup_Option::update(
                         $job_object->job['jobid'],
                         'lastbackupdownloadurl',
-                        'ftp://' . $job_object->job['ftpuser'] . ':' . BackWPup_Encryption::decrypt(
-                            $job_object->job['ftppass']
-                        ) . '@' . $job_object->job['ftphost'] . ':' . $job_object->job['ftphostport'] . $current_ftp_dir . $job_object->backup_file
+                        network_admin_url(
+                            'admin.php?page=backwpupbackups&action=downloadftp&file=' .
+                            $current_ftp_dir . $job_object->backup_file . '&local_file=' .
+                            $job_object->backup_file . '&jobid=' . $job_object->job['jobid']
+                        )
                     );
                 }
 

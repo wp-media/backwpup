@@ -1,4 +1,9 @@
 == Changelog ==
+= 4.0.3 =
+Release date: February 22, 2024
+
+* Fixed: Security issue where FTP passwords were stored in the database in plaintext.
+
 = 4.0.2 =
 Release date: November 22, 2023
 

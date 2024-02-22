@@ -1,4 +1,4 @@
-# Copyright (C) 2023 WordPress Backup Plugin
+# Copyright (C) 2024 WordPress Backup Plugin
 # This file is distributed under the same license as the WordPress Backup Plugin package.
 msgid ""
 msgstr ""
@@ -185,7 +185,7 @@ msgstr ""
 msgid "Abort!"
 msgstr ""
 
-#: inc/class-adminbar.php:81, inc/class-page-jobs.php:582
+#: inc/class-adminbar.php:81, inc/class-page-jobs.php:688
 msgid "Add new"
 msgstr ""
 
@@ -804,7 +804,7 @@ msgstr ""
 msgid "Starting upload to FTP &#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-ftp.php:647, inc/class-destination-msazure.php:297, inc/class-destination-rsc.php:282, inc/class-destination-s3.php:947, inc/class-destination-s3.php:902, inc/Pro/class-destination-gdrive.php:703, inc/Pro/class-destination-glacier.php:467, inc/Pro/class-destination-rsc.php:228, inc/Pro/class-destination-rsc.php:264
+#: inc/class-destination-ftp.php:649, inc/class-destination-msazure.php:297, inc/class-destination-rsc.php:282, inc/class-destination-s3.php:947, inc/class-destination-s3.php:902, inc/Pro/class-destination-gdrive.php:703, inc/Pro/class-destination-glacier.php:467, inc/Pro/class-destination-rsc.php:228, inc/Pro/class-destination-rsc.php:264
 msgid "Can not open source file for transfer."
 msgstr ""
 
@@ -816,15 +816,15 @@ msgstr ""
 msgid "Backup transferred to FTP server: %s"
 msgstr ""
 
-#: inc/class-destination-ftp.php:694
+#: inc/class-destination-ftp.php:696
 msgid "FTP Folder \"%s\" cannot be created! Parent directory may be not writable."
 msgstr ""
 
-#: inc/class-destination-ftp.php:712
+#: inc/class-destination-ftp.php:714
 msgid "FTP Folder \"%s\" cannot be created!"
 msgstr ""
 
-#: inc/class-destination-ftp.php:724
+#: inc/class-destination-ftp.php:726
 msgid "FTP Folder \"%s\" created!"
 msgstr ""
 
@@ -1444,7 +1444,7 @@ msgstr ""
 msgid "[INFO] BackWPup job start with link is active"
 msgstr ""
 
-#: inc/class-job.php:483, inc/class-page-backwpup.php:323, inc/class-page-jobs.php:287, inc/class-page-jobs.php:279
+#: inc/class-job.php:483, inc/class-page-backwpup.php:323, inc/class-page-jobs.php:291, inc/class-page-jobs.php:283
 msgid "Not scheduled!"
 msgstr ""
 
@@ -1516,11 +1516,11 @@ msgstr ""
 msgid "Cannot write progress to working file. Job will be aborted."
 msgstr ""
 
-#: inc/class-job.php:790, inc/class-page-jobs.php:786
+#: inc/class-job.php:790, inc/class-page-jobs.php:917
 msgid "WARNING:"
 msgstr ""
 
-#: inc/class-job.php:800, inc/class-page-jobs.php:784
+#: inc/class-job.php:800, inc/class-page-jobs.php:915
 msgid "ERROR:"
 msgstr ""
 
@@ -1546,7 +1546,7 @@ msgid_plural "%d old logs deleted"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/class-job.php:1166, inc/class-page-jobs.php:788
+#: inc/class-job.php:1166, inc/class-page-jobs.php:919
 msgid "Job done in %s seconds."
 msgstr ""
 
@@ -1554,7 +1554,7 @@ msgstr ""
 msgid "Job finished with warnings in %s seconds. Please resolve them for correct execution."
 msgstr ""
 
-#: inc/class-job.php:1145, inc/class-page-jobs.php:784
+#: inc/class-job.php:1145, inc/class-page-jobs.php:915
 msgid "Job has ended with errors in %s seconds. You must resolve the errors for correct execution."
 msgstr ""
 
@@ -2486,7 +2486,7 @@ msgstr ""
 msgid "No files could be found. (List will be generated during next backup.)"
 msgstr ""
 
-#: inc/class-page-backups.php:170, inc/class-page-backups.php:640, inc/class-page-jobs.php:106, inc/class-page-jobs.php:172, inc/class-page-logs.php:147, inc/class-page-logs.php:226
+#: inc/class-page-backups.php:170, inc/class-page-backups.php:640, inc/class-page-jobs.php:110, inc/class-page-jobs.php:176, inc/class-page-logs.php:147, inc/class-page-logs.php:226
 msgid "Delete"
 msgstr ""
 
@@ -2506,7 +2506,7 @@ msgstr ""
 msgid "Size"
 msgstr ""
 
-#: inc/class-page-backups.php:308, inc/class-page-backups.php:664, inc/class-page-jobs.php:325, inc/class-page-logs.php:228
+#: inc/class-page-backups.php:308, inc/class-page-backups.php:664, inc/class-page-jobs.php:331, inc/class-page-jobs.php:377, inc/class-page-logs.php:228
 msgid "Download"
 msgstr ""
 
@@ -2518,11 +2518,11 @@ msgstr ""
 msgid "?"
 msgstr ""
 
-#: inc/class-page-backups.php:351, inc/class-page-backwpup.php:321, inc/class-page-backwpup.php:384, inc/class-page-jobs.php:314, inc/class-page-logs.php:186
+#: inc/class-page-backups.php:351, inc/class-page-backwpup.php:321, inc/class-page-backwpup.php:384, inc/class-page-jobs.php:318, inc/class-page-logs.php:186
 msgid "%1$s at %2$s"
 msgstr ""
 
-#: inc/class-page-backups.php:368, inc/class-page-backups.php:408, inc/class-page-editjob.php:30, inc/class-page-jobs.php:397
+#: inc/class-page-backups.php:368, inc/class-page-backups.php:408, inc/class-page-editjob.php:30, inc/class-page-jobs.php:437
 msgid "Sorry, you don't have permissions to do that."
 msgstr ""
 
@@ -2538,11 +2538,11 @@ msgstr ""
 msgid "%s &rsaquo; Manage Backup Archives"
 msgstr ""
 
-#: inc/class-page-backups.php:575
+#: inc/class-page-backups.php:575, inc/class-page-jobs.php:740
 msgid "Please wait &hellip;"
 msgstr ""
 
-#: inc/class-page-backups.php:578
+#: inc/class-page-backups.php:578, inc/class-page-jobs.php:743
 msgid "Your download has been generated. It should begin downloading momentarily."
 msgstr ""
 
@@ -2730,7 +2730,7 @@ msgstr ""
 msgid "working since %d seconds"
 msgstr ""
 
-#: inc/class-page-backwpup.php:310, inc/class-page-jobs.php:605
+#: inc/class-page-backwpup.php:310, inc/class-page-jobs.php:711
 msgid "Abort"
 msgstr ""
 
@@ -2774,7 +2774,7 @@ msgstr ""
 msgid "Jobs overview"
 msgstr ""
 
-#: inc/class-page-editjob.php:223, inc/class-page-jobs.php:176
+#: inc/class-page-editjob.php:223, inc/class-page-jobs.php:180
 msgid "Run now"
 msgstr ""
 
@@ -2794,7 +2794,7 @@ msgstr ""
 msgid "To: %s"
 msgstr ""
 
-#: inc/class-page-editjob.php:378, inc/class-page-editjob.php:383, inc/class-page-jobs.php:118
+#: inc/class-page-editjob.php:378, inc/class-page-editjob.php:383, inc/class-page-jobs.php:122
 msgid "Job Name"
 msgstr ""
 
@@ -3034,7 +3034,7 @@ msgstr ""
 msgid "Scheduler"
 msgstr ""
 
-#: inc/class-page-editjob.php:688, inc/class-page-jobs.php:119, inc/class-page-logs.php:162, inc/Pro/class-wizard-job.php:320
+#: inc/class-page-editjob.php:688, inc/class-page-jobs.php:123, inc/class-page-logs.php:162, inc/Pro/class-wizard-job.php:320
 msgid "Type"
 msgstr ""
 
@@ -3186,143 +3186,143 @@ msgstr ""
 msgid "ATTENTION: Can't calculate cron!"
 msgstr ""
 
-#: inc/class-page-jobs.php:93
+#: inc/class-page-jobs.php:97
 msgid "No Jobs."
 msgstr ""
 
-#: inc/class-page-jobs.php:120, inc/Pro/class-wizard-job.php:67, inc/Pro/class-wizard-job.php:639
+#: inc/class-page-jobs.php:124, inc/Pro/class-wizard-job.php:67, inc/Pro/class-wizard-job.php:639
 msgid "Destinations"
 msgstr ""
 
-#: inc/class-page-jobs.php:121
+#: inc/class-page-jobs.php:125
 msgid "Next Run"
 msgstr ""
 
-#: inc/class-page-jobs.php:122
+#: inc/class-page-jobs.php:126
 msgid "Last Run"
 msgstr ""
 
-#: inc/class-page-jobs.php:167, inc/class-page-logs.php:222, inc/Pro/class-page-support.php:217
+#: inc/class-page-jobs.php:171, inc/class-page-logs.php:222, inc/Pro/class-page-support.php:217
 msgid "Job ID: %d"
 msgstr ""
 
-#: inc/class-page-jobs.php:170, views/pro/restore/steps/step3_action.php:45
+#: inc/class-page-jobs.php:174, views/pro/restore/steps/step3_action.php:45
 msgid "Edit"
 msgstr ""
 
-#: inc/class-page-jobs.php:171
+#: inc/class-page-jobs.php:175
 msgid "Copy"
 msgstr ""
 
-#: inc/class-page-jobs.php:184
+#: inc/class-page-jobs.php:188
 msgid "Last log"
 msgstr ""
 
-#: inc/class-page-jobs.php:247
+#: inc/class-page-jobs.php:251
 msgid "Not needed or set"
 msgstr ""
 
-#: inc/class-page-jobs.php:270
+#: inc/class-page-jobs.php:274
 msgid "Running for: %s seconds"
 msgstr ""
 
-#: inc/class-page-jobs.php:292
+#: inc/class-page-jobs.php:296
 msgid "Inactive"
 msgstr ""
 
-#: inc/class-page-jobs.php:290
+#: inc/class-page-jobs.php:294
 msgid "External link"
 msgstr ""
 
-#: inc/class-page-jobs.php:285, inc/class-page-jobs.php:277
+#: inc/class-page-jobs.php:289, inc/class-page-jobs.php:281
 msgid "Cron: %s"
 msgstr ""
 
-#: inc/class-page-jobs.php:285
+#: inc/class-page-jobs.php:289
 msgid "%1$s at %2$s by EasyCron"
 msgstr ""
 
-#: inc/class-page-jobs.php:277
+#: inc/class-page-jobs.php:281
 msgid "%1$s at %2$s by WP-Cron"
 msgstr ""
 
-#: inc/class-page-jobs.php:319
+#: inc/class-page-jobs.php:323
 msgid "not yet"
 msgstr ""
 
-#: inc/class-page-jobs.php:316
+#: inc/class-page-jobs.php:320
 msgid "Runtime: %d seconds"
 msgstr ""
 
-#: inc/class-page-jobs.php:325
+#: inc/class-page-jobs.php:331
 msgid "Download last backup"
 msgstr ""
 
-#: inc/class-page-jobs.php:334
+#: inc/class-page-jobs.php:343
 msgid "Log"
 msgstr ""
 
-#: inc/class-page-jobs.php:378
+#: inc/class-page-jobs.php:418
 msgid "Copy of"
 msgstr ""
 
-#: inc/class-page-jobs.php:433
-msgid "The job \"%s\" destination \"%s\" is not configured properly"
+#: inc/class-page-jobs.php:473
+msgid "The job \"%1$s\" destination \"%2$s\" is not configured properly"
 msgstr ""
 
-#: inc/class-page-jobs.php:438
+#: inc/class-page-jobs.php:478
 msgid "The job \"%s\" needs properly configured destinations to run!"
 msgstr ""
 
-#: inc/class-page-jobs.php:457
-msgid "Job \"%s\" has started, but not responded for 10 seconds. Please check <a href=\"%s\">information</a>."
+#: inc/class-page-jobs.php:497
+msgid "Job \"%1$s\" has started, but not responded for 10 seconds. Please check <a href=\"%2$s\">information</a>."
 msgstr ""
 
-#: inc/class-page-jobs.php:462
+#: inc/class-page-jobs.php:502
 msgid "Job \"%s\" started."
 msgstr ""
 
-#: inc/class-page-jobs.php:477, inc/class-wp-cli.php:60
+#: inc/class-page-jobs.php:517, inc/class-wp-cli.php:60
 msgid "Job will be terminated."
 msgstr ""
 
-#: inc/class-page-jobs.php:582
+#: inc/class-page-jobs.php:688
 msgid "%s &rsaquo; Jobs"
 msgstr ""
 
-#: inc/class-page-jobs.php:601
+#: inc/class-page-jobs.php:707
 msgid "Job currently running: %s"
 msgstr ""
 
-#: inc/class-page-jobs.php:602
+#: inc/class-page-jobs.php:708
 msgid "Warnings:"
 msgstr ""
 
-#: inc/class-page-jobs.php:603
+#: inc/class-page-jobs.php:709
 msgid "Errors:"
 msgstr ""
 
-#: inc/class-page-jobs.php:604
+#: inc/class-page-jobs.php:710
 msgid "Log of running job"
 msgstr ""
 
-#: inc/class-page-jobs.php:604
+#: inc/class-page-jobs.php:710
 msgid "Display working log"
 msgstr ""
 
-#: inc/class-page-jobs.php:606
+#: inc/class-page-jobs.php:712
 msgid "Close working screen"
 msgstr ""
 
-#: inc/class-page-jobs.php:606
+#: inc/class-page-jobs.php:712
 msgid "Close"
 msgstr ""
 
-#: inc/class-page-jobs.php:782
+#: inc/class-page-jobs.php:913
 msgid "Job completed"
 msgstr ""
 
-#: inc/class-page-jobs.php:786
+#: inc/class-page-jobs.php:917
 msgid "Job has done with warnings in %s seconds. Please resolve them for correct execution."
 msgstr ""
 
