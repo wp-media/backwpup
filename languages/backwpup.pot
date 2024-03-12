@@ -1317,15 +1317,15 @@ msgstr ""
 msgid "Folder %1$s is not in open basedir, please use another folder."
 msgstr ""
 
-#: inc/class-file.php:153
+#: inc/class-file.php:162
 msgid "Cannot create folder: %1$s"
 msgstr ""
 
-#: inc/class-file.php:159
+#: inc/class-file.php:166
 msgid "Folder \"%1$s\" is not writable"
 msgstr ""
 
-#: inc/class-file.php:197
+#: inc/class-file.php:289
 msgid "BackWPup will not backup folders and its sub folders when this file is inside."
 msgstr ""
 

@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: WP MEDIA SAS
  * Author URI: https://wp-media.me/
- * Version: 4.0.3
+ * Version: 4.0.4
  * Requires at least: 3.9
  * Requires PHP: 7.2
  * Text Domain: backwpup
@@ -243,14 +243,14 @@ if (!class_exists(\BackWPup::class, false)) {
                         '\\',
                         '/',
                         get_temp_dir()
-                    ) . 'backwpup-' . self::$plugin_data['hash'] . '/';
+                    ) . 'backwpup/' . self::$plugin_data['hash'] . '/';
                 } else {
                     $upload_dir = wp_upload_dir();
                     self::$plugin_data['temp'] = str_replace(
                         '\\',
                         '/',
                         $upload_dir['basedir']
-                    ) . '/backwpup-' . self::$plugin_data['hash'] . '-temp/';
+                    ) . '/backwpup/' . self::$plugin_data['hash'] . '/temp/';
                 }
                 self::$plugin_data['running_file'] = self::$plugin_data['temp'] . 'backwpup-working.php';
                 self::$plugin_data['url'] = plugins_url('', __FILE__);

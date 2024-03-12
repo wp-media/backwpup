@@ -298,7 +298,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations
                 '/',
                 $upload_dir['basedir']
             )
-        ) . 'backwpup-' . BackWPup::get_plugin_data('hash') . '-backups/';
+        ) . 'backwpup/' . BackWPup::get_plugin_data('hash') . '/backups/';
         $content_path = trailingslashit(BackWPup_Path_Fixer::slashify((string) WP_CONTENT_DIR));
 
         return str_replace($content_path, '', $backups_dir);

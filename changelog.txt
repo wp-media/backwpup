@@ -1,4 +1,9 @@
 == Changelog ==
+= 4.0.4 =
+Release date: March 12, 2024
+
+* Fixed: Changed directory structure of BackWPup temporary files to prevent unauthorized access of database backup.
+
 = 4.0.3 =
 Release date: February 22, 2024
 
