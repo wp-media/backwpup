@@ -527,9 +527,9 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
             try {
                 $dir = new BackWPup_Directory($folder);
                 $excludes = BackWPup_Option::get($jobid, 'backup' . $id . 'excludedirs');
-
                 foreach ($dir as $file) {
-                    if (!$file->isDot() && $file->isDir() && !in_array(trailingslashit($file->getPathname()), $this->get_exclude_dirs($folder), true)) {
+                    // List only the folders without thoses listed by auto exclude
+                    if (!$file->isDot() && $file->isDir() && !in_array(trailingslashit($file->getPathname()), $this->get_exclude_dirs($folder, $dir::get_auto_exclusion_plugins_folders()), true)) {
                         $donotbackup = file_exists($file->getPathname() . '/.donotbackup');
                         $folder_size = (get_site_option('backwpup_cfg_showfoldersize')) ? ' (' . size_format(BackWPup_File::get_folder_size($file->getPathname()), 2) . ')' : '';
                         $title = '';
