@@ -165,6 +165,9 @@ if (!class_exists(\BackWPup::class, false)) {
             if (defined(\WP_CLI::class) && WP_CLI && method_exists(\WP_CLI::class, 'add_command')) {
                 WP_CLI::add_command('backwpup', \BackWPup_WP_CLI::class);
             }
+            // Register the third parties
+	        require_once(__DIR__.DIRECTORY_SEPARATOR.'inc'.DIRECTORY_SEPARATOR.'class-thirdparties.php');
+            BackWPup_ThirdParties::register();
         }
 
         /**
