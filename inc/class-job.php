@@ -1902,7 +1902,7 @@ class BackWPup_Job
         $encryptionType = get_site_option('backwpup_cfg_encryption');
         // Substeps is number of 128 KB chunks
         $blockSize = 128 * 1024;
-        $this->substeps_todo = ceil($this->backup_filesize / $blockSize);
+        $this->substeps_todo = $this->backup_filesize;
 
         if (!isset($this->steps_data[$this->step_working]['encrypted_filename'])) {
             $this->steps_data[$this->step_working]['encrypted_filename'] = $this->backup_folder . $this->backup_file . '.encrypted';
@@ -1912,13 +1912,15 @@ class BackWPup_Job
         }
 
         if (!isset($this->steps_data[$this->step_working]['key'])) {
+            $this->steps_data[$this->step_working]['OutFilePos'] = 0;
+            $this->steps_data[$this->step_working]['aesIv'] = \phpseclib3\Crypt\Random::string(16);
             switch ($encryptionType) {
                 case self::ENCRYPTION_SYMMETRIC:
                     $this->steps_data[$this->step_working]['key'] = pack('H*', get_site_option('backwpup_cfg_encryptionkey'));
                     break;
 
                 case self::ENCRYPTION_ASYMMETRIC:
-                    $this->steps_data[$this->step_working]['key'] = get_site_option('backwpup_cfg_publickey');
+                    $this->steps_data[$this->step_working]['key'] = \phpseclib3\Crypt\Random::string(32);
                     break;
             }
 
@@ -1928,8 +1930,6 @@ class BackWPup_Job
                 return false;
             }
         }
-
-        $key = $this->steps_data[$this->step_working]['key'];
 
         if ($this->steps_data[$this->step_working]['SAVE_STEP_TRY'] != $this->steps_data[$this->step_working]['STEP_TRY']) {
             // Show initial log message
@@ -1959,16 +1959,19 @@ class BackWPup_Job
         }
 
         $encryptor = null;
+        $key = $this->steps_data[$this->step_working]['key'];
+        $aesIv = $this->steps_data[$this->step_working]['aesIv'];
 
         switch ($encryptionType) {
-                case self::ENCRYPTION_SYMMETRIC:
-                    $encryptor = EncryptionStream::fromSymmetric($key, Utils::streamFor($fileOut));
-                    break;
+            case self::ENCRYPTION_SYMMETRIC:
+                $encryptor = new EncryptionStream($aesIv, $key, Utils::streamFor($fileOut));
+                break;
 
-                case self::ENCRYPTION_ASYMMETRIC:
-                    $encryptor = EncryptionStream::fromAsymmetric($key, Utils::streamFor($fileOut));
-                    break;
-            }
+            case self::ENCRYPTION_ASYMMETRIC:
+                $rsaPubKey = get_site_option('backwpup_cfg_publickey');
+                $encryptor = new EncryptionStream($aesIv, $key, Utils::streamFor($fileOut), $rsaPubKey);
+                break;
+        }
 
         if ($encryptor === null) {
             $this->log(__('Could not initialize encryptor.', 'backwpup'), E_USER_ERROR);
@@ -1976,33 +1979,28 @@ class BackWPup_Job
             return false;
         }
 
-        $bytesRead = $this->substeps_done * $blockSize;
-        $fileIn->seek($bytesRead);
+        $fileIn->seek($this->substeps_done);
+        $encryptor->seek($this->steps_data[$this->step_working]['OutFilePos']);
 
-        while ($bytesRead < $this->backup_filesize) {
+        while (!$fileIn->eof()) {
             $data = $fileIn->read($blockSize);
-            $encryptor->write($data);
-
-            ++$this->substeps_done;
-            $bytesRead += strlen($data);
+            $outBytes = $encryptor->write($data);
+            $this->substeps_done += $blockSize;
+            $this->steps_data[$this->step_working]['OutFilePos'] += $outBytes;
             $this->update_working_data();
-
             // Should we restart?
             $restartTime = $this->get_restart_time();
             if ($restartTime <= 0) {
-                $this->do_restart_time(true);
                 $fileIn->close();
                 $encryptor->close();
-
-                return false;
+                $this->do_restart_time(true);
             }
         }
-
         $fileIn->close();
         $encryptor->close();
 
         $this->log(
-            sprintf(__('Encrypted %s of data.', 'backwpup'), size_format($bytesRead, 2)),
+            sprintf(__('Encrypted %s of data.', 'backwpup'), size_format($this->substeps_done, 2)),
             E_USER_NOTICE
         );
 

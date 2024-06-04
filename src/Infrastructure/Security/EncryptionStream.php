@@ -7,7 +7,6 @@ namespace Inpsyde\BackWPup\Infrastructure\Security;
 use GuzzleHttp\Psr7\StreamDecoratorTrait;
 use phpseclib3\Crypt\AES;
 use phpseclib3\Crypt\PublicKeyLoader;
-use phpseclib3\Crypt\Random;
 use phpseclib3\Crypt\RSA;
 use Psr\Http\Message\StreamInterface;
 
@@ -15,10 +14,10 @@ final class EncryptionStream implements StreamInterface
 {
     use StreamDecoratorTrait;
 
+    public const TYPE_SYMMETRIC = 1;
+    public const TYPE_ASYMMETRIC = 2;
     private const HEADER = "\x42\x41\x43\x4b\x57\x50\x55\x50";
     private const VERSION = 2;
-    private const TYPE_SYMMETRIC = 1;
-    private const TYPE_ASYMMETRIC = 2;
     private const BLOCK_SIZE = 16;
 
     /**
@@ -39,7 +38,12 @@ final class EncryptionStream implements StreamInterface
     /**
      * @var string
      */
-    private $iv;
+    private $aesIv;
+
+    /**
+     * @var string
+     */
+    private $key;
 
     /**
      * @var StreamInterface
@@ -51,61 +55,35 @@ final class EncryptionStream implements StreamInterface
      *
      * @throws \RuntimeException If the IV cannot be generated
      */
-    private function __construct(int $type, string $key, StreamInterface $output)
+    public function __construct(string $aesIv, string $key, StreamInterface $output, string $rsaPubKey = '')
     {
-        $this->type = $type;
-        $this->iv = Random::string(self::BLOCK_SIZE);
+        $this->type = self::TYPE_SYMMETRIC;
+        if ($rsaPubKey) {
+            $this->type = self::TYPE_ASYMMETRIC;
+        }
+        if (!$aesIv && strlen($aesIv) !== 16) {
+            throw new \InvalidArgumentException('Expected an IV with 16 chars for AES encryption');
+        }
+        $this->aesIv = $aesIv;
         $this->stream = $output;
-
         $this->aesEncryptor = new AES('CBC');
         $this->aesEncryptor->enableContinuousBuffer();
         $this->aesEncryptor->disablePadding();
-        $this->aesEncryptor->setIV($this->iv);
+        $this->aesEncryptor->setIV($this->aesIv);
+        if (!$key && strlen($key) !== 32) {
+            throw new \InvalidArgumentException('Expected an Key with min. 32 chars for AES encryption ');
+        }
+        $this->key = $key;
+        $this->aesEncryptor->setKey($this->key);
 
-        if ($type === self::TYPE_SYMMETRIC) {
-            $this->aesEncryptor->setKey($key);
-        } else {
-            $rsa = PublicKeyLoader::load($key);
+        if ($rsaPubKey) {
+            $rsa = PublicKeyLoader::load($rsaPubKey);
             if (!($rsa instanceof RSA\PublicKey)) {
                 throw new \InvalidArgumentException('Expected an RSA public key');
             }
 
             $this->rsaEncryptor = $rsa;
         }
-    }
-
-    /**
-     * Initializes the class with an AES key.
-     *
-     * The key will be used to encrypt the data written to the output stream.
-     *
-     * A random initialization vector is also generated.
-     *
-     * @param string          $key    An AES key for encrypting data
-     * @param StreamInterface $output The output stream to write the data
-     *
-     * @throws \RuntimeException If the IV cannot be generated
-     */
-    public static function fromSymmetric(string $key, StreamInterface $output): self
-    {
-        return new self(self::TYPE_SYMMETRIC, $key, $output);
-    }
-
-    /**
-     * Initializes the class with an RSA public key.
-     *
-     * The key is used to encrypt a generated AES key, which is what is actually used to encrypt the data.
-     *
-     * A random initialization vector is also generated.
-     *
-     * @param string          $key    An RSA public key
-     * @param StreamInterface $output The output stream to write the data
-     *
-     * @throws \RuntimeException If the IV cannot be generated
-     */
-    public static function fromAsymmetric(string $key, StreamInterface $output): self
-    {
-        return new self(self::TYPE_ASYMMETRIC, $key, $output);
     }
 
     /**
@@ -170,21 +148,21 @@ final class EncryptionStream implements StreamInterface
         $prefix = self::HEADER . \chr(self::VERSION) . \chr($this->type);
 
         if ($this->type === self::TYPE_SYMMETRIC) {
-            return $this->stream->write($prefix . $this->iv);
+            return $this->stream->write($prefix . $this->aesIv);
         }
 
-        // Otherwise, RSA
-        \assert($this->rsaEncryptor !== null);
+        if ($this->rsaEncryptor === null) {
+            throw new \RuntimeException('RSA encrypter not set');
+        }
 
-        $key = Random::string(32);
-        $this->aesEncryptor->setKey($key);
-        $encryptedKey = $this->rsaEncryptor->encrypt($key);
+        $this->aesEncryptor->setKey($this->key);
+        $encryptedKey = $this->rsaEncryptor->encrypt($this->key);
         if (!\is_string($encryptedKey)) {
             throw new \RuntimeException('Could not encrypt key');
         }
 
         return $this->stream->write(
-            $prefix . pack('n', \strlen($encryptedKey)) . $encryptedKey . $this->iv
+            $prefix . pack('n', \strlen($encryptedKey)) . $encryptedKey . $this->aesIv
         );
     }
 

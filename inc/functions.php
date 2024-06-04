@@ -127,7 +127,7 @@ function backwpup_clean_json_from_request($json)
  *
  * @since 3.5.0
  *
- * @return mixed an instance of WP_Filesystem_* depending on the method set
+ * @return WP_Filesystem_Base an instance of WP_Filesystem_* depending on the method set
  */
 function backwpup_wpfilesystem()
 {

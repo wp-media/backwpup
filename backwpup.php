@@ -1,11 +1,11 @@
 <?php
 /*
- * Plugin Name: BackWPup
+ * Plugin Name: BackWPup 
  * Plugin URI: http://backwpup.com
  * Description: WordPress Backup Plugin
  * Author: WP MEDIA SAS
  * Author URI: https://wp-media.me/
- * Version: 4.0.4
+ * Version: 4.1.0
  * Requires at least: 3.9
  * Requires PHP: 7.2
  * Text Domain: backwpup

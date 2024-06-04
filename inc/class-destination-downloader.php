@@ -1,6 +1,6 @@
 <?php
 
-use function Inpsyde\BackWPup\Pro\Restore\Functions\restore_container;
+use function Inpsyde\BackWPup\Infrastructure\Restore\restore_container;
 /**
  * BackWPup_Destination_Downloader.
  *

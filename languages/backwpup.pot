@@ -17,7 +17,7 @@ msgstr ""
 msgid "BackWPup {{%TYPE%}}"
 msgstr ""
 
-#: backwpup.php:4, inc/class-admin.php:605, inc/class-admin.php:627, inc/class-help.php:11, inc/class-help.php:16, inc/class-job.php:442, inc/class-jobtype-dbcheck.php:9, inc/class-jobtype-dbdump.php:9, inc/class-jobtype-file.php:10, inc/class-jobtype-wpexp.php:13, inc/class-jobtype-wpplugin.php:9, inc/class-page-about.php:366, inc/class-page-about.php:356, inc/class-page-about.php:676, inc/class-page-backwpup.php:253, inc/class-page-backwpup.php:259, inc/class-page-backwpup.php:261, inc/class-page-settings.php:63, inc/Pro/class-wizard-job.php:17, inc/Pro/class-wizard-jobimport.php:14, inc/Pro/class-wizard-systemtest.php:22
+#: backwpup.php:4, inc/class-admin.php:649, inc/class-admin.php:671, inc/class-help.php:11, inc/class-help.php:16, inc/class-job.php:442, inc/class-jobtype-dbcheck.php:9, inc/class-jobtype-dbdump.php:9, inc/class-jobtype-file.php:10, inc/class-jobtype-wpexp.php:13, inc/class-jobtype-wpplugin.php:9, inc/class-page-about.php:366, inc/class-page-about.php:356, inc/class-page-about.php:676, inc/class-page-backwpup.php:253, inc/class-page-backwpup.php:259, inc/class-page-backwpup.php:261, inc/class-page-settings.php:63, inc/Pro/class-wizard-job.php:17, inc/Pro/class-wizard-jobimport.php:14, inc/Pro/class-wizard-systemtest.php:22
 msgid "http://backwpup.com"
 msgstr ""
 
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Dropbox"
 msgstr ""
 
-#: backwpup.php:399, inc/class-page-about.php:499
+#: backwpup.php:399, inc/class-page-about.php:504
 msgid "Backup to Dropbox"
 msgstr ""
 
@@ -85,7 +85,7 @@ msgstr ""
 msgid "RSC"
 msgstr ""
 
-#: backwpup.php:444, inc/class-page-about.php:504
+#: backwpup.php:444, inc/class-page-about.php:509
 msgid "Backup to Rackspace Cloud Files"
 msgstr ""
 
@@ -93,7 +93,7 @@ msgstr ""
 msgid "SugarSync"
 msgstr ""
 
-#: backwpup.php:459, inc/class-page-about.php:519
+#: backwpup.php:459, inc/class-page-about.php:524
 msgid "Backup to SugarSync"
 msgstr ""
 
@@ -113,63 +113,67 @@ msgstr ""
 msgid "BackWPup requires PHP version %1$s with spl extension or greater and WordPress %2$s or greater."
 msgstr ""
 
-#: inc/class-admin.php:248, inc/class-help.php:18
+#: inc/class-admin.php:249, inc/class-help.php:18
 msgid "https://backwpup.com/docs/"
 msgstr ""
 
-#: inc/class-admin.php:248
+#: inc/class-admin.php:249
 msgid "Documentation"
 msgstr ""
 
-#: inc/class-admin.php:275
+#: inc/class-admin.php:276
 msgid "BackWPup Dashboard"
 msgstr ""
 
-#: inc/class-admin.php:276
+#: inc/class-admin.php:277
 msgid "Dashboard"
 msgstr ""
 
-#: inc/class-admin.php:307, inc/class-admin.php:308, inc/class-adminbar.php:72, inc/class-page-settings.php:503
+#: inc/class-admin.php:308, inc/class-admin.php:309, inc/class-adminbar.php:72, inc/class-page-settings.php:503
 msgid "Jobs"
 msgstr ""
 
-#: inc/class-admin.php:345, inc/class-admin.php:346
+#: inc/class-admin.php:346, inc/class-admin.php:347
 msgid "Add new job"
 msgstr ""
 
-#: inc/class-admin.php:383, inc/class-admin.php:384, inc/class-adminbar.php:90, inc/class-page-logs.php:368, inc/class-page-settings.php:507
+#: inc/class-admin.php:384, inc/class-admin.php:385, inc/class-adminbar.php:90, inc/class-page-logs.php:368, inc/class-page-settings.php:507
 msgid "Logs"
 msgstr ""
 
-#: inc/class-admin.php:421, inc/class-admin.php:422, inc/class-adminbar.php:99
+#: inc/class-admin.php:422, inc/class-admin.php:423, inc/class-adminbar.php:99
 msgid "Backups"
 msgstr ""
 
-#: inc/class-admin.php:459, inc/class-admin.php:460
+#: inc/class-admin.php:460, inc/class-admin.php:461
 msgid "Settings"
 msgstr ""
 
-#: inc/class-admin.php:483, inc/class-admin.php:484
+#: inc/class-admin.php:486, inc/class-admin.php:487, inc/class-page-backups.php:325, views/restore/steps/step5_top.php:2
+msgid "Restore"
+msgstr ""
+
+#: inc/class-admin.php:527, inc/class-admin.php:528
 msgid "About"
 msgstr ""
 
-#: inc/class-admin.php:523, inc/class-admin.php:530
+#: inc/class-admin.php:567, inc/class-admin.php:574
 msgid "Cheating, huh?"
 msgstr ""
 
-#: inc/class-admin.php:601
+#: inc/class-admin.php:645
 msgid "<a class=\"backwpup-get-pro\" href=\"%s\">Get BackWPup Pro now.</a>"
 msgstr ""
 
-#: inc/class-admin.php:631
+#: inc/class-admin.php:675
 msgid "version %s"
 msgstr ""
 
-#: inc/class-admin.php:680
+#: inc/class-admin.php:724
 msgid "Add BackWPup Role"
 msgstr ""
 
-#: inc/class-admin.php:685
+#: inc/class-admin.php:729
 msgid "&mdash; No additional role for BackWPup &mdash;"
 msgstr ""
 
@@ -385,7 +389,7 @@ msgid "File could not be opened for writing."
 msgstr ""
 
 #. translators: the $1 is the error message
-#: inc/class-destination-dropbox.php:55, inc/class-destination-dropbox.php:453, inc/Pro/class-destination-dropbox.php:381
+#: inc/class-destination-dropbox.php:55, inc/class-destination-dropbox.php:453, inc/Pro/class-destination-dropbox.php:380
 msgid "Dropbox API: %s"
 msgstr ""
 
@@ -397,7 +401,7 @@ msgstr ""
 msgid "Authentication"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:82, inc/class-destination-sugarsync.php:40, inc/Pro/class-destination-dropbox.php:49, inc/Pro/class-destination-gdrive.php:99, inc/Pro/class-destination-gdrive.php:422, inc/Pro/class-destination-hidrive.php:61, inc/Pro/class-destination-onedrive.php:53, inc/Pro/class-destination-sugarsync.php:25
+#: inc/class-destination-dropbox.php:82, inc/class-destination-sugarsync.php:40, inc/Pro/class-destination-dropbox.php:48, inc/Pro/class-destination-gdrive.php:99, inc/Pro/class-destination-gdrive.php:411, inc/Pro/class-destination-hidrive.php:61, inc/Pro/class-destination-onedrive.php:53, inc/Pro/class-destination-sugarsync.php:25
 msgid "Authenticated!"
 msgstr ""
 
@@ -405,11 +409,11 @@ msgstr ""
 msgid "Delete Dropbox Authentication"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:77, inc/Pro/class-destination-gdrive.php:97, inc/Pro/class-destination-gdrive.php:412, inc/Pro/class-destination-hidrive.php:59, inc/Pro/class-destination-onedrive.php:48
+#: inc/class-destination-dropbox.php:77, inc/Pro/class-destination-gdrive.php:97, inc/Pro/class-destination-gdrive.php:404, inc/Pro/class-destination-hidrive.php:59, inc/Pro/class-destination-onedrive.php:48
 msgid "Not authenticated!"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:80, inc/Pro/class-destination-dropbox.php:43
+#: inc/class-destination-dropbox.php:80, inc/Pro/class-destination-dropbox.php:42
 msgid "Create Account"
 msgstr ""
 
@@ -457,11 +461,11 @@ msgstr ""
 msgid "File Deletion"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:183, inc/class-destination-folder.php:73, inc/class-destination-ftp.php:106, inc/class-destination-msazure.php:106, inc/class-destination-rsc.php:114, inc/class-destination-s3.php:378, inc/class-destination-sugarsync.php:100, inc/Pro/class-destination-dropbox.php:75, inc/Pro/class-destination-folder.php:46, inc/Pro/class-destination-ftp.php:66, inc/Pro/class-destination-gdrive.php:151, inc/Pro/class-destination-gdrive.php:461, inc/Pro/class-destination-hidrive.php:157, inc/Pro/class-destination-msazure.php:61, inc/Pro/class-destination-onedrive.php:118, inc/Pro/class-destination-rsc.php:69, inc/Pro/class-destination-s3.php:103, inc/Pro/class-destination-sugarsync.php:62
+#: inc/class-destination-dropbox.php:183, inc/class-destination-folder.php:73, inc/class-destination-ftp.php:106, inc/class-destination-msazure.php:106, inc/class-destination-rsc.php:114, inc/class-destination-s3.php:378, inc/class-destination-sugarsync.php:100, inc/Pro/class-destination-dropbox.php:74, inc/Pro/class-destination-folder.php:45, inc/Pro/class-destination-ftp.php:65, inc/Pro/class-destination-gdrive.php:151, inc/Pro/class-destination-gdrive.php:449, inc/Pro/class-destination-hidrive.php:157, inc/Pro/class-destination-msazure.php:60, inc/Pro/class-destination-onedrive.php:118, inc/Pro/class-destination-rsc.php:69, inc/Pro/class-destination-s3.php:102, inc/Pro/class-destination-sugarsync.php:62
 msgid "Do not delete files while syncing to destination!"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:170, inc/class-destination-folder.php:52, inc/class-destination-ftp.php:91, inc/class-destination-msazure.php:96, inc/class-destination-rsc.php:107, inc/class-destination-s3.php:361, inc/class-destination-sugarsync.php:93, inc/Pro/class-destination-dropbox.php:69, inc/Pro/class-destination-folder.php:40, inc/Pro/class-destination-gdrive.php:136, inc/Pro/class-destination-gdrive.php:453, inc/Pro/class-destination-hidrive.php:137, inc/Pro/class-destination-msazure.php:49, inc/Pro/class-destination-onedrive.php:103, inc/Pro/class-destination-rsc.php:63, inc/Pro/class-destination-s3.php:97
+#: inc/class-destination-dropbox.php:170, inc/class-destination-folder.php:52, inc/class-destination-ftp.php:91, inc/class-destination-msazure.php:96, inc/class-destination-rsc.php:107, inc/class-destination-s3.php:361, inc/class-destination-sugarsync.php:93, inc/Pro/class-destination-dropbox.php:68, inc/Pro/class-destination-folder.php:39, inc/Pro/class-destination-gdrive.php:136, inc/Pro/class-destination-gdrive.php:441, inc/Pro/class-destination-hidrive.php:137, inc/Pro/class-destination-msazure.php:48, inc/Pro/class-destination-onedrive.php:103, inc/Pro/class-destination-rsc.php:63, inc/Pro/class-destination-s3.php:96
 msgid "Number of files to keep in folder."
 msgstr ""
 
@@ -479,15 +483,15 @@ msgstr[1] ""
 msgid "%d. Try to send backup file to Dropbox&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:399, inc/Pro/class-destination-dropbox.php:193
+#: inc/class-destination-dropbox.php:399, inc/Pro/class-destination-dropbox.php:192
 msgid "Not Authenticated with Dropbox!"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:385, inc/Pro/class-destination-dropbox.php:179
+#: inc/class-destination-dropbox.php:385, inc/Pro/class-destination-dropbox.php:178
 msgid "Authenticated with Dropbox of user: %s"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:393, inc/Pro/class-destination-dropbox.php:187
+#: inc/class-destination-dropbox.php:393, inc/Pro/class-destination-dropbox.php:186
 msgid "%s available on your Dropbox"
 msgstr ""
 
@@ -495,7 +499,7 @@ msgstr ""
 msgid "Uploading to Dropbox&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:439, inc/Pro/class-destination-gdrive.php:774, inc/Pro/class-destination-glacier.php:448
+#: inc/class-destination-dropbox.php:439, inc/Pro/class-destination-gdrive.php:762, inc/Pro/class-destination-glacier.php:448
 msgid "Error transfering backup to %s."
 msgstr ""
 
@@ -503,7 +507,7 @@ msgstr ""
 msgid "Uploaded file size and local file size don't match."
 msgstr ""
 
-#: inc/class-destination-dropbox.php:427, inc/class-destination-msazure.php:313, inc/class-destination-sugarsync.php:261, inc/Pro/class-destination-gdrive.php:794
+#: inc/class-destination-dropbox.php:427, inc/class-destination-msazure.php:313, inc/class-destination-sugarsync.php:261, inc/Pro/class-destination-gdrive.php:782
 msgid "Backup transferred to %s"
 msgstr ""
 
@@ -583,7 +587,7 @@ msgstr ""
 msgid "SMTP host name"
 msgstr ""
 
-#: inc/class-destination-email.php:125, inc/class-destination-ftp.php:43, inc/Pro/class-destination-ftp.php:27
+#: inc/class-destination-email.php:125, inc/class-destination-ftp.php:43, inc/Pro/class-destination-ftp.php:26
 msgid "Port:"
 msgstr ""
 
@@ -804,7 +808,7 @@ msgstr ""
 msgid "Starting upload to FTP &#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-ftp.php:649, inc/class-destination-msazure.php:297, inc/class-destination-rsc.php:282, inc/class-destination-s3.php:947, inc/class-destination-s3.php:902, inc/Pro/class-destination-gdrive.php:703, inc/Pro/class-destination-glacier.php:467, inc/Pro/class-destination-rsc.php:228, inc/Pro/class-destination-rsc.php:264
+#: inc/class-destination-ftp.php:649, inc/class-destination-msazure.php:297, inc/class-destination-rsc.php:282, inc/class-destination-s3.php:947, inc/class-destination-s3.php:902, inc/Pro/class-destination-gdrive.php:691, inc/Pro/class-destination-glacier.php:467, inc/Pro/class-destination-rsc.php:228, inc/Pro/class-destination-rsc.php:264
 msgid "Can not open source file for transfer."
 msgstr ""
 
@@ -868,15 +872,15 @@ msgstr ""
 msgid "File deletion"
 msgstr ""
 
-#: inc/class-destination-msazure.php:120, inc/Pro/class-destination-msazure.php:77
+#: inc/class-destination-msazure.php:120, inc/Pro/class-destination-msazure.php:76
 msgid "Microsoft Azure Configuration: "
 msgstr ""
 
-#: inc/class-destination-msazure.php:131, inc/Pro/class-destination-msazure.php:115
+#: inc/class-destination-msazure.php:131, inc/Pro/class-destination-msazure.php:114
 msgid "MS Azure container \"%s\" created."
 msgstr ""
 
-#: inc/class-destination-msazure.php:136, inc/Pro/class-destination-msazure.php:120
+#: inc/class-destination-msazure.php:136, inc/Pro/class-destination-msazure.php:119
 msgid "MS Azure container create: %s"
 msgstr ""
 
@@ -884,11 +888,11 @@ msgstr ""
 msgid "%d. Try sending backup to a Microsoft Azure (Blob)&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-msazure.php:252, inc/Pro/class-destination-msazure.php:194
+#: inc/class-destination-msazure.php:252, inc/Pro/class-destination-msazure.php:193
 msgid "MS Azure container \"%s\" does not exist!"
 msgstr ""
 
-#: inc/class-destination-msazure.php:256, inc/Pro/class-destination-msazure.php:198
+#: inc/class-destination-msazure.php:256, inc/Pro/class-destination-msazure.php:197
 msgid "Connected to MS Azure container \"%s\"."
 msgstr ""
 
@@ -896,7 +900,7 @@ msgstr ""
 msgid "Starting upload to MS Azure&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-msazure.php:318, inc/class-destination-msazure.php:383, inc/Pro/class-destination-msazure.php:300
+#: inc/class-destination-msazure.php:318, inc/class-destination-msazure.php:383, inc/Pro/class-destination-msazure.php:299
 msgid "Microsoft Azure API: %s"
 msgstr ""
 
@@ -1156,7 +1160,7 @@ msgstr ""
 msgid "Bucket %1$s created."
 msgstr ""
 
-#: inc/class-destination-s3.php:700, inc/class-destination-s3.php:1030, inc/class-destination-s3.php:933, inc/class-destination-s3.php:1091, inc/class-destination-s3.php:1108, inc/Pro/class-destination-s3.php:463
+#: inc/class-destination-s3.php:700, inc/class-destination-s3.php:1030, inc/class-destination-s3.php:933, inc/class-destination-s3.php:1091, inc/class-destination-s3.php:1108, inc/Pro/class-destination-s3.php:462
 msgid "S3 Service API: %s"
 msgstr ""
 
@@ -1178,11 +1182,11 @@ msgstr[1] ""
 msgid "%d. Trying to send backup file to S3 Service&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-s3.php:868, inc/Pro/class-destination-s3.php:253
+#: inc/class-destination-s3.php:868, inc/Pro/class-destination-s3.php:252
 msgid "S3 Bucket \"%s\" does not exist!"
 msgstr ""
 
-#: inc/class-destination-s3.php:861, inc/Pro/class-destination-s3.php:246
+#: inc/class-destination-s3.php:861, inc/Pro/class-destination-s3.php:245
 msgid "Connected to S3 Bucket \"%1$s\" in %2$s"
 msgstr ""
 
@@ -1218,7 +1222,7 @@ msgstr ""
 msgid "Email address:"
 msgstr ""
 
-#: inc/class-destination-sugarsync.php:28, inc/Pro/class-destination-ftp.php:39, inc/Pro/class-destination-sugarsync.php:15, inc/Pro/class-jobtype-dbdump.php:128
+#: inc/class-destination-sugarsync.php:28, inc/Pro/class-destination-ftp.php:38, inc/Pro/class-destination-sugarsync.php:15, inc/Pro/class-jobtype-dbdump.php:128
 msgid "Password:"
 msgstr ""
 
@@ -1627,7 +1631,7 @@ msgstr ""
 msgid "%1$d Files with %2$s in Archive."
 msgstr ""
 
-#: inc/class-job.php:1926
+#: inc/class-job.php:1928
 msgid "No encryption key was provided. Aborting encryption."
 msgstr ""
 
@@ -1635,178 +1639,178 @@ msgstr ""
 msgid "%d. Trying to encrypt archive &hellip;"
 msgstr ""
 
-#: inc/class-job.php:1948
+#: inc/class-job.php:1948, inc/class-wp-cli.php:246
 msgid "Cannot open the archive for reading. Aborting encryption."
 msgstr ""
 
-#: inc/class-job.php:1956
+#: inc/class-job.php:1956, inc/class-wp-cli.php:252
 msgid "Cannot write the encrypted archive. Aborting encryption."
 msgstr ""
 
-#: inc/class-job.php:1974
+#: inc/class-job.php:1977, inc/class-wp-cli.php:263
 msgid "Could not initialize encryptor."
 msgstr ""
 
-#: inc/class-job.php:2005
+#: inc/class-job.php:2003
 msgid "Encrypted %s of data."
 msgstr ""
 
-#: inc/class-job.php:2011
+#: inc/class-job.php:2009, inc/class-wp-cli.php:275
 msgid "Unable to delete unencrypted archive."
 msgstr ""
 
-#: inc/class-job.php:2019
+#: inc/class-job.php:2017, inc/class-wp-cli.php:278
 msgid "Unable to rename encrypted archive."
 msgstr ""
 
-#: inc/class-job.php:2025
+#: inc/class-job.php:2023, inc/class-wp-cli.php:280
 msgid "Archive has been successfully encrypted."
 msgstr ""
 
-#: inc/class-job.php:2074
+#: inc/class-job.php:2072
 msgctxt "Folder name"
 msgid "Folder %s does not exist"
 msgstr ""
 
-#: inc/class-job.php:2083
+#: inc/class-job.php:2081
 msgctxt "Folder name"
 msgid "Folder %s is not readable"
 msgstr ""
 
-#: inc/class-job.php:2132
+#: inc/class-job.php:2130
 msgid "File size of “%s” cannot be retrieved. File might be too large and will not be added to queue."
 msgstr ""
 
-#: inc/class-job.php:2124
+#: inc/class-job.php:2122
 msgid "File \"%s\" is not readable!"
 msgstr ""
 
-#: inc/class-job.php:2119
+#: inc/class-job.php:2117
 msgid "Link \"%s\" not following."
 msgstr ""
 
-#: inc/class-job.php:2224
+#: inc/class-job.php:2222
 msgid "%d. Trying to generate a manifest file&#160;&hellip;"
 msgstr ""
 
-#: inc/class-job.php:2294
+#: inc/class-job.php:2292
 msgid "You may have noticed the manifest.json file in this archive."
 msgstr ""
 
-#: inc/class-job.php:2295
+#: inc/class-job.php:2293
 msgid "manifest.json might be needed for later restoring a backup from this archive."
 msgstr ""
 
-#: inc/class-job.php:2299
+#: inc/class-job.php:2297
 msgid "Please leave manifest.json untouched and in place. Otherwise it is safe to be ignored."
 msgstr ""
 
-#: inc/class-job.php:2313
+#: inc/class-job.php:2311
 msgid "Added manifest.json file with %1$s to backup file list."
 msgstr ""
 
-#: inc/class-job.php:2354
+#: inc/class-job.php:2352
 msgid "Wrong BackWPup JobID"
 msgstr ""
 
-#: inc/class-job.php:2367
+#: inc/class-job.php:2365
 msgid "A BackWPup job is already running"
 msgstr ""
 
-#: inc/class-job.php:2485
+#: inc/class-job.php:2483
 msgctxt "SIGHUP: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Hangup detected on controlling terminal or death of controlling process"
 msgstr ""
 
-#: inc/class-job.php:2493
+#: inc/class-job.php:2491
 msgctxt "SIGINT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Interrupt from keyboard"
 msgstr ""
 
-#: inc/class-job.php:2501
+#: inc/class-job.php:2499
 msgctxt "SIGQUIT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Quit from keyboard"
 msgstr ""
 
-#: inc/class-job.php:2509
+#: inc/class-job.php:2507
 msgctxt "SIGILL: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Illegal Instruction"
 msgstr ""
 
-#: inc/class-job.php:2517
+#: inc/class-job.php:2515
 msgctxt "SIGABRT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Abort signal from abort(3)"
 msgstr ""
 
-#: inc/class-job.php:2525
+#: inc/class-job.php:2523
 msgctxt "SIGBUS: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Bus error (bad memory access)"
 msgstr ""
 
-#: inc/class-job.php:2533
+#: inc/class-job.php:2531
 msgctxt "SIGFPE: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Floating point exception"
 msgstr ""
 
-#: inc/class-job.php:2541
+#: inc/class-job.php:2539
 msgctxt "SIGSEGV: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Invalid memory reference"
 msgstr ""
 
-#: inc/class-job.php:2549
+#: inc/class-job.php:2547
 msgctxt "SIGTERM: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Termination signal"
 msgstr ""
 
-#: inc/class-job.php:2557
+#: inc/class-job.php:2555
 msgctxt "SIGSTKFLT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Stack fault on coprocessor"
 msgstr ""
 
-#: inc/class-job.php:2565
+#: inc/class-job.php:2563
 msgctxt "SIGUSR1: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "User-defined signal 1"
 msgstr ""
 
-#: inc/class-job.php:2573
+#: inc/class-job.php:2571
 msgctxt "SIGUSR2: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "User-defined signal 2"
 msgstr ""
 
-#: inc/class-job.php:2581
+#: inc/class-job.php:2579
 msgctxt "SIGURG: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Urgent condition on socket"
 msgstr ""
 
-#: inc/class-job.php:2589
+#: inc/class-job.php:2587
 msgctxt "SIGXCPU: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "CPU time limit exceeded"
 msgstr ""
 
-#: inc/class-job.php:2597
+#: inc/class-job.php:2595
 msgctxt "SIGXFSZ: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "File size limit exceeded"
 msgstr ""
 
-#: inc/class-job.php:2605
+#: inc/class-job.php:2603
 msgctxt "SIGPWR: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Power failure"
 msgstr ""
 
-#: inc/class-job.php:2613
+#: inc/class-job.php:2611
 msgctxt "SIGSYS: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Bad argument to routine"
 msgstr ""
 
-#: inc/class-job.php:2626
+#: inc/class-job.php:2624
 msgid "Signal \"%1$s\" (%2$s) is sent to script!"
 msgstr ""
 
-#: inc/class-job.php:2663, inc/class-job.php:2676
+#: inc/class-job.php:2661, inc/class-job.php:2674
 msgid "System: %s"
 msgstr ""
 
-#: inc/class-job.php:2692
+#: inc/class-job.php:2690
 msgid "Exception caught in %1$s: %2$s"
 msgstr ""
 
@@ -2327,55 +2331,55 @@ msgid "Backup archives management"
 msgstr ""
 
 #: inc/class-page-about.php:469
-msgid "Log file management"
+msgid "Restore manually uploaded Backup Archives"
 msgstr ""
 
 #: inc/class-page-about.php:474
-msgid "Start jobs per WP-Cron, URL, system, backend or WP-CLI"
+msgid "Log file management"
 msgstr ""
 
 #: inc/class-page-about.php:479
-msgid "Log report via email"
+msgid "Start jobs per WP-Cron, URL, system, backend or WP-CLI"
 msgstr ""
 
 #: inc/class-page-about.php:484
-msgid "Backup to Microsoft Azure"
+msgid "Log report via email"
 msgstr ""
 
 #: inc/class-page-about.php:489
-msgid "Backup as email"
+msgid "Backup to Microsoft Azure"
 msgstr ""
 
 #: inc/class-page-about.php:494
+msgid "Backup as email"
+msgstr ""
+
+#: inc/class-page-about.php:499
 msgid "Backup to S3 services (Amazon, Google Storage, Hosteurope and more)"
 msgstr ""
 
-#: inc/class-page-about.php:509
+#: inc/class-page-about.php:514
 msgid "Backup to FTP server"
 msgstr ""
 
-#: inc/class-page-about.php:514
+#: inc/class-page-about.php:519
 msgid "Backup to your web space"
 msgstr ""
 
-#: inc/class-page-about.php:524, inc/Pro/class-pro.php:97
+#: inc/class-page-about.php:529, inc/Pro/class-pro.php:93
 msgid "Backup to Google Drive"
 msgstr ""
 
-#: inc/class-page-about.php:529, inc/Pro/class-pro.php:82
+#: inc/class-page-about.php:534, inc/Pro/class-pro.php:78
 msgid "Backup to Amazon Glacier"
 msgstr ""
 
-#: inc/class-page-about.php:534
+#: inc/class-page-about.php:539
 msgid "Backup to OneDrive"
 msgstr ""
 
-#: inc/class-page-about.php:539, inc/Pro/class-pro.php:126
+#: inc/class-page-about.php:544, inc/Pro/class-pro.php:122
 msgid "Backup to HiDrive"
-msgstr ""
-
-#: inc/class-page-about.php:544
-msgid "Restore manually uploaded Backup Archives"
 msgstr ""
 
 #: inc/class-page-about.php:549
@@ -2508,10 +2512,6 @@ msgstr ""
 
 #: inc/class-page-backups.php:308, inc/class-page-backups.php:664, inc/class-page-jobs.php:331, inc/class-page-jobs.php:377, inc/class-page-logs.php:228
 msgid "Download"
-msgstr ""
-
-#: inc/class-page-backups.php:325, inc/Pro/class-pro.php:263, inc/Pro/class-pro.php:264, views/pro/restore/steps/step5_top.php:2
-msgid "Restore"
 msgstr ""
 
 #: inc/class-page-backups.php:345
@@ -3206,7 +3206,7 @@ msgstr ""
 msgid "Job ID: %d"
 msgstr ""
 
-#: inc/class-page-jobs.php:174, views/pro/restore/steps/step3_action.php:45
+#: inc/class-page-jobs.php:174, views/restore/steps/step3_action.php:45
 msgid "Edit"
 msgstr ""
 
@@ -3368,6 +3368,11 @@ msgstr ""
 
 #: inc/class-page-logs.php:458
 msgid "Logfile not found!"
+msgstr ""
+
+#. translators: $1 is the name of the plugin
+#: inc/class-page-restore.php:218
+msgid "%s &rsaquo; Restore"
 msgstr ""
 
 #: inc/class-page-settings.php:55
@@ -4132,6 +4137,42 @@ msgstr ""
 msgid "No job running"
 msgstr ""
 
+#: inc/class-wp-cli.php:167
+msgid "No Key provided or stored in settings for decryption!"
+msgstr ""
+
+#: inc/class-wp-cli.php:173
+msgid "Archive file that should be decrypted can't be found!"
+msgstr ""
+
+#: inc/class-wp-cli.php:179
+msgid "Archive not needs decryption."
+msgstr ""
+
+#: inc/class-wp-cli.php:185
+msgid "Cannot decrypt: %s"
+msgstr ""
+
+#: inc/class-wp-cli.php:188
+msgid "Archive has been successfully decrypted."
+msgstr ""
+
+#: inc/class-wp-cli.php:228
+msgid "No Key provided or stored in settings for encryption!"
+msgstr ""
+
+#: inc/class-wp-cli.php:234
+msgid "Archive file that should be encrypted can't be found!"
+msgstr ""
+
+#: inc/class-wp-cli.php:240
+msgid "Asymmetric encryption will be used for the archive."
+msgstr ""
+
+#: inc/class-wp-cli.php:238
+msgid "Symmetric encryption will be used for the archive."
+msgstr ""
+
 #: inc/Notice/Notice.php:85
 msgid "Invalid notice type specified"
 msgstr ""
@@ -4140,111 +4181,111 @@ msgstr ""
 msgid "Call to undefined method %1$s::%2$s()"
 msgstr ""
 
-#: inc/Pro/class-destination-dropbox.php:48, inc/Pro/class-destination-gdrive.php:421, inc/Pro/class-destination-gdrive.php:411, inc/Pro/class-destination-sugarsync.php:24
+#: inc/Pro/class-destination-dropbox.php:47, inc/Pro/class-destination-gdrive.php:410, inc/Pro/class-destination-gdrive.php:403, inc/Pro/class-destination-sugarsync.php:24
 msgid "Login:"
 msgstr ""
 
-#: inc/Pro/class-destination-dropbox.php:32
+#: inc/Pro/class-destination-dropbox.php:31
 msgid "Auth Code:"
 msgstr ""
 
-#: inc/Pro/class-destination-dropbox.php:41
+#: inc/Pro/class-destination-dropbox.php:40
 msgid "Get auth code"
 msgstr ""
 
-#: inc/Pro/class-destination-dropbox.php:53, inc/Pro/class-destination-gdrive.php:433, inc/Pro/class-destination-sugarsync.php:53
+#: inc/Pro/class-destination-dropbox.php:52, inc/Pro/class-destination-gdrive.php:421, inc/Pro/class-destination-sugarsync.php:53
 msgid "Folder:"
 msgstr ""
 
-#: inc/Pro/class-destination-dropbox.php:160
+#: inc/Pro/class-destination-dropbox.php:159
 msgid "%d. Try to sync files to Dropbox&#160;&hellip;"
 msgstr ""
 
-#: inc/Pro/class-destination-dropbox.php:204
+#: inc/Pro/class-destination-dropbox.php:203
 msgid "Retrieving file list from Dropbox"
 msgstr ""
 
-#: inc/Pro/class-destination-dropbox.php:221
+#: inc/Pro/class-destination-dropbox.php:220
 msgid "Upload changed files to Dropbox"
 msgstr ""
 
-#: inc/Pro/class-destination-dropbox.php:277
+#: inc/Pro/class-destination-dropbox.php:276
 msgid "File %s uploaded to Dropbox"
 msgstr ""
 
-#: inc/Pro/class-destination-dropbox.php:317
+#: inc/Pro/class-destination-dropbox.php:316
 msgid "Extra file %s uploaded to Dropbox"
 msgstr ""
 
-#: inc/Pro/class-destination-dropbox.php:329
+#: inc/Pro/class-destination-dropbox.php:328
 msgid "Delete not existing files from Dropbox"
 msgstr ""
 
-#: inc/Pro/class-destination-dropbox.php:343
+#: inc/Pro/class-destination-dropbox.php:342
 msgid "Folder %s deleted from Dropbox"
 msgstr ""
 
-#: inc/Pro/class-destination-dropbox.php:368
+#: inc/Pro/class-destination-dropbox.php:367
 msgid "File %s deleted from Dropbox"
 msgstr ""
 
-#: inc/Pro/class-destination-folder.php:16
+#: inc/Pro/class-destination-folder.php:15
 msgid "Absolute path to folder for backup files:"
 msgstr ""
 
-#: inc/Pro/class-destination-folder.php:38, inc/Pro/class-destination-gdrive.php:448
+#: inc/Pro/class-destination-folder.php:37, inc/Pro/class-destination-gdrive.php:436
 msgid "Oldest files will be deleted first."
 msgstr ""
 
-#: inc/Pro/class-destination-folder.php:93
+#: inc/Pro/class-destination-folder.php:92
 msgid "%d. Try to sync files to folder&#160;&hellip;"
 msgstr ""
 
-#: inc/Pro/class-destination-folder.php:102
+#: inc/Pro/class-destination-folder.php:101
 msgid "Retrieving file list from folder"
 msgstr ""
 
-#: inc/Pro/class-destination-folder.php:109
+#: inc/Pro/class-destination-folder.php:108
 msgid "Backup folder %s can not created"
 msgstr ""
 
-#: inc/Pro/class-destination-folder.php:119
+#: inc/Pro/class-destination-folder.php:118
 msgid "Copy changed files to folder"
 msgstr ""
 
-#: inc/Pro/class-destination-folder.php:144
+#: inc/Pro/class-destination-folder.php:143
 msgid "File %s copied"
 msgstr ""
 
-#: inc/Pro/class-destination-folder.php:158
+#: inc/Pro/class-destination-folder.php:157
 msgid "Delete not existing files from folder"
 msgstr ""
 
-#: inc/Pro/class-destination-folder.php:173
+#: inc/Pro/class-destination-folder.php:172
 msgid "Extra file %s copied"
 msgstr ""
 
-#: inc/Pro/class-destination-folder.php:198
+#: inc/Pro/class-destination-folder.php:197
 msgid "File %s deleted from folder"
 msgstr ""
 
-#: inc/Pro/class-destination-folder.php:283
+#: inc/Pro/class-destination-folder.php:282
 msgid "Empty folder %s deleted"
 msgstr ""
 
-#: inc/Pro/class-destination-ftp.php:21
+#: inc/Pro/class-destination-ftp.php:20
 msgid "Hostname:"
 msgstr ""
 
-#: inc/Pro/class-destination-ftp.php:33, inc/Pro/class-destination-rsc.php:19
+#: inc/Pro/class-destination-ftp.php:32, inc/Pro/class-destination-rsc.php:19
 msgid "Username:"
 msgstr ""
 
-#: inc/Pro/class-destination-ftp.php:45
+#: inc/Pro/class-destination-ftp.php:44
 msgid "Folder on server:"
 msgstr ""
 
-#: inc/Pro/class-destination-ftp.php:61, inc/Pro/class-destination-sugarsync.php:57
+#: inc/Pro/class-destination-ftp.php:60, inc/Pro/class-destination-sugarsync.php:57
 msgid "Maximum number of backup files to keep in folder:"
 msgstr ""
 
@@ -4256,15 +4297,15 @@ msgstr ""
 msgid "Could not get file %s from Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:66, inc/Pro/class-destination-gdrive.php:392
+#: inc/Pro/class-destination-gdrive.php:66, inc/Pro/class-destination-gdrive.php:384
 msgid "Looks like you haven’t set up any API keys yet. Head over to <a href=\"%s\">Settings | API-Keys</a> and get Google Drive all set up, then come back here."
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:95, inc/Pro/class-destination-gdrive.php:416, inc/Pro/class-destination-onedrive.php:46
+#: inc/Pro/class-destination-gdrive.php:95, inc/Pro/class-destination-gdrive.php:408, inc/Pro/class-destination-onedrive.php:46
 msgid "Authenticate"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:108, inc/Pro/class-destination-gdrive.php:426, inc/Pro/class-destination-onedrive.php:65
+#: inc/Pro/class-destination-gdrive.php:108, inc/Pro/class-destination-gdrive.php:414, inc/Pro/class-destination-onedrive.php:65
 msgid "Reauthenticate"
 msgstr ""
 
@@ -4276,81 +4317,81 @@ msgstr ""
 msgid "Consider using trash to delete files. If trash is not enabled, files will be deleted permanently."
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:305, inc/Pro/class-destination-gdrive.php:333, inc/Pro/class-destination-gdrive.php:241, inc/Pro/class-destination-gdrive.php:282
-msgid "GDrive API: %s"
-msgstr ""
-
-#: inc/Pro/class-destination-gdrive.php:228, inc/Pro/class-destination-gdrive.php:271
+#: inc/Pro/class-destination-gdrive.php:225, inc/Pro/class-destination-gdrive.php:268
 msgid "GDrive: No refresh token received. Try to Authenticate again!"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:220, inc/Pro/class-destination-gdrive.php:263
+#: inc/Pro/class-destination-gdrive.php:217, inc/Pro/class-destination-gdrive.php:260
 msgid "GDrive: Authenticated."
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:665
+#: inc/Pro/class-destination-gdrive.php:238, inc/Pro/class-destination-gdrive.php:273, inc/Pro/class-destination-gdrive.php:299, inc/Pro/class-destination-gdrive.php:326
+msgid "GDrive API: %s"
+msgstr ""
+
+#: inc/Pro/class-destination-gdrive.php:653
 msgid "%d file deleted from Google Drive"
 msgid_plural "%d files deleted from Google Drive"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Pro/class-destination-gdrive.php:690
+#: inc/Pro/class-destination-gdrive.php:678
 msgid "%d. Try to send backup file to Google Drive&#160;&hellip;"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:698
+#: inc/Pro/class-destination-gdrive.php:686
 msgid "Uploading to Google Drive&#160;&hellip;"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:747
+#: inc/Pro/class-destination-gdrive.php:735
 msgid "Can not resume transfer backup to Google Drive!"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:732
+#: inc/Pro/class-destination-gdrive.php:720
 msgid "Could not create resumable file transfer to Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:760
+#: inc/Pro/class-destination-gdrive.php:748
 msgid "Error transfering file chunks to %s."
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:761, inc/Pro/class-destination-gdrive.php:775
+#: inc/Pro/class-destination-gdrive.php:749, inc/Pro/class-destination-gdrive.php:763
 msgid "Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:803, inc/Pro/class-destination-gdrive.php:906
+#: inc/Pro/class-destination-gdrive.php:791, inc/Pro/class-destination-gdrive.php:894
 msgid "Google Drive API: %s"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:835
+#: inc/Pro/class-destination-gdrive.php:823
 msgid "%d. Try to sync files to Google Drive&#160;&hellip;"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:843
+#: inc/Pro/class-destination-gdrive.php:831
 msgid "Syncing changed files to Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:1091
+#: inc/Pro/class-destination-gdrive.php:1079
 msgid "File %s updated on Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:1108
+#: inc/Pro/class-destination-gdrive.php:1096
 msgid "File %s uploaded to Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:1161
+#: inc/Pro/class-destination-gdrive.php:1149
 msgid "File %s deleted permanently in Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:1153
+#: inc/Pro/class-destination-gdrive.php:1141
 msgid "File %s moved to trash in Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:1211
+#: inc/Pro/class-destination-gdrive.php:1199
 msgid "Extra file %s updated on Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:1235
+#: inc/Pro/class-destination-gdrive.php:1223
 msgid "Extra file %s uploaded to Google Drive"
 msgstr ""
 
@@ -4406,11 +4447,11 @@ msgstr ""
 msgid "Select an Amazon Glacier region:"
 msgstr ""
 
-#: inc/Pro/class-destination-glacier.php:229, inc/Pro/class-destination-msazure.php:21, inc/Pro/class-destination-s3.php:42
+#: inc/Pro/class-destination-glacier.php:229, inc/Pro/class-destination-msazure.php:20, inc/Pro/class-destination-s3.php:41
 msgid "Access Key:"
 msgstr ""
 
-#: inc/Pro/class-destination-glacier.php:231, inc/Pro/class-destination-s3.php:47
+#: inc/Pro/class-destination-glacier.php:231, inc/Pro/class-destination-s3.php:46
 msgid "Secret Key:"
 msgstr ""
 
@@ -4442,7 +4483,7 @@ msgstr ""
 msgid "Starting upload to Amazon Glacier&#160;&hellip;"
 msgstr ""
 
-#: inc/Pro/class-destination-glacier.php:449, inc/Pro/class-pro.php:81
+#: inc/Pro/class-destination-glacier.php:449, inc/Pro/class-pro.php:77
 msgid "Glacier"
 msgstr ""
 
@@ -4486,47 +4527,47 @@ msgstr[1] ""
 msgid "%d. Try to send backup file to HiDrive&#160;&hellip;"
 msgstr ""
 
-#: inc/Pro/class-destination-msazure.php:19
+#: inc/Pro/class-destination-msazure.php:18
 msgid "Account Name:"
 msgstr ""
 
-#: inc/Pro/class-destination-msazure.php:23, inc/Pro/class-destination-rsc.php:34
+#: inc/Pro/class-destination-msazure.php:22, inc/Pro/class-destination-rsc.php:34
 msgid "Container:"
 msgstr ""
 
-#: inc/Pro/class-destination-msazure.php:32, inc/Pro/class-destination-rsc.php:45
+#: inc/Pro/class-destination-msazure.php:31, inc/Pro/class-destination-rsc.php:45
 msgid "Create container:"
 msgstr ""
 
-#: inc/Pro/class-destination-msazure.php:34, inc/Pro/class-destination-rsc.php:47
+#: inc/Pro/class-destination-msazure.php:33, inc/Pro/class-destination-rsc.php:47
 msgid "Folder in container:"
 msgstr ""
 
-#: inc/Pro/class-destination-msazure.php:167
+#: inc/Pro/class-destination-msazure.php:166
 msgid "%d. Trying to sync files with Microsoft Azure (Blob) &hellip;"
 msgstr ""
 
-#: inc/Pro/class-destination-msazure.php:203
+#: inc/Pro/class-destination-msazure.php:202
 msgid "Retrieving file list from MS Azure."
 msgstr ""
 
-#: inc/Pro/class-destination-msazure.php:226
+#: inc/Pro/class-destination-msazure.php:225
 msgid "Upload changed files to MS Azure."
 msgstr ""
 
-#: inc/Pro/class-destination-msazure.php:241
+#: inc/Pro/class-destination-msazure.php:240
 msgid "File %s uploaded to MS Azure."
 msgstr ""
 
-#: inc/Pro/class-destination-msazure.php:269
+#: inc/Pro/class-destination-msazure.php:268
 msgid "Extra file %s uploaded to MS Azure."
 msgstr ""
 
-#: inc/Pro/class-destination-msazure.php:283
+#: inc/Pro/class-destination-msazure.php:282
 msgid "Delete nonexistent files on MS Azure."
 msgstr ""
 
-#: inc/Pro/class-destination-msazure.php:293
+#: inc/Pro/class-destination-msazure.php:292
 msgid "File %s deleted from MS Azure."
 msgstr ""
 
@@ -4588,55 +4629,55 @@ msgstr ""
 msgid "File %s deleted from Rackspace Cloud."
 msgstr ""
 
-#: inc/Pro/class-destination-s3.php:31
+#: inc/Pro/class-destination-s3.php:30
 msgid "Select a S3 service:"
 msgstr ""
 
-#: inc/Pro/class-destination-s3.php:32
+#: inc/Pro/class-destination-s3.php:31
 msgid "Amazon S3 Region"
 msgstr ""
 
-#: inc/Pro/class-destination-s3.php:55
+#: inc/Pro/class-destination-s3.php:54
 msgid "Bucket:"
 msgstr ""
 
-#: inc/Pro/class-destination-s3.php:73
+#: inc/Pro/class-destination-s3.php:72
 msgid "New Bucket:"
 msgstr ""
 
-#: inc/Pro/class-destination-s3.php:76
+#: inc/Pro/class-destination-s3.php:75
 msgid "Folder in bucket:"
 msgstr ""
 
-#: inc/Pro/class-destination-s3.php:166
+#: inc/Pro/class-destination-s3.php:165
 msgid "Bucket %1$s created in %2$s."
 msgstr ""
 
-#: inc/Pro/class-destination-s3.php:221
+#: inc/Pro/class-destination-s3.php:220
 msgid "%d. Trying to sync files to S3 Service&#160;&hellip;"
 msgstr ""
 
-#: inc/Pro/class-destination-s3.php:265
+#: inc/Pro/class-destination-s3.php:264
 msgid "Retrieving file list from S3."
 msgstr ""
 
-#: inc/Pro/class-destination-s3.php:327
+#: inc/Pro/class-destination-s3.php:326
 msgid "Upload changed files to S3."
 msgstr ""
 
-#: inc/Pro/class-destination-s3.php:372
+#: inc/Pro/class-destination-s3.php:371
 msgid "File %s uploaded to S3."
 msgstr ""
 
-#: inc/Pro/class-destination-s3.php:417
+#: inc/Pro/class-destination-s3.php:416
 msgid "Extra file %s uploaded to S3."
 msgstr ""
 
-#: inc/Pro/class-destination-s3.php:436
+#: inc/Pro/class-destination-s3.php:435
 msgid "Delete nonexistent files on S3"
 msgstr ""
 
-#: inc/Pro/class-destination-s3.php:450
+#: inc/Pro/class-destination-s3.php:449
 msgid "File %s deleted from S3."
 msgstr ""
 
@@ -4859,11 +4900,6 @@ msgstr ""
 msgid "Nothing to configure"
 msgstr ""
 
-#. translators: $1 is the name of the plugin
-#: inc/Pro/class-page-restore.php:218
-msgid "%s &rsaquo; Restore"
-msgstr ""
-
 #: inc/Pro/class-page-support.php:28
 msgid "E-mail address is required."
 msgstr ""
@@ -4967,43 +5003,43 @@ msgctxt "Plugin Name"
 msgid "%s &rsaquo; Wizards"
 msgstr ""
 
-#: inc/Pro/class-pro.php:96
+#: inc/Pro/class-pro.php:92
 msgid "GDrive"
 msgstr ""
 
-#: inc/Pro/class-pro.php:110
+#: inc/Pro/class-pro.php:106
 msgid "OneDrive"
 msgstr ""
 
-#: inc/Pro/class-pro.php:111
+#: inc/Pro/class-pro.php:107
 msgid "Backup to Microsoft OneDrive"
 msgstr ""
 
-#: inc/Pro/class-pro.php:125
+#: inc/Pro/class-pro.php:121
 msgid "HiDrive"
 msgstr ""
 
-#: inc/Pro/class-pro.php:195, inc/Pro/class-pro.php:196, inc/Pro/class-pro.php:310
+#: inc/Pro/class-pro.php:191, inc/Pro/class-pro.php:192, inc/Pro/class-pro.php:266
 msgid "Wizards"
 msgstr ""
 
-#: inc/Pro/class-pro.php:231
+#: inc/Pro/class-pro.php:227
 msgid "Support"
 msgstr ""
 
-#: inc/Pro/class-pro.php:232
+#: inc/Pro/class-pro.php:228
 msgid "Contact Support"
 msgstr ""
 
-#: inc/Pro/class-pro.php:343
+#: inc/Pro/class-pro.php:299
 msgid "If you are experiencing issues, the debug information shown below can help us to better investigate and solve it for you."
 msgstr ""
 
-#: inc/Pro/class-pro.php:349
+#: inc/Pro/class-pro.php:305
 msgid "If you already have a support ticket open with BackWPup, then you can simply click the copy button below to copy the debug information, and paste it into a response to your ticket."
 msgstr ""
 
-#: inc/Pro/class-pro.php:356
+#: inc/Pro/class-pro.php:312
 msgid "If you have not yet opened a ticket, you may contact us directly by <a href=\"%s\">clicking here</a>."
 msgstr ""
 
@@ -5515,185 +5551,181 @@ msgstr ""
 msgid "Use These Keys"
 msgstr ""
 
-#: inc/Pro/Restore/LogDownloader/DownloaderFactory.php:84
-msgid "Download Log"
-msgstr ""
-
-#: views/pro/restore/steps/step1_action.php:28
+#: views/restore/steps/step1_action.php:28
 msgid "Select Archive"
 msgstr ""
 
-#: views/pro/restore/steps/step1_action.php:29
+#: views/restore/steps/step1_action.php:29
 msgid "or"
 msgstr ""
 
-#: views/pro/restore/steps/step1_action.php:30
+#: views/restore/steps/step1_action.php:30
 msgid "Drop file here"
 msgstr ""
 
-#: views/pro/restore/steps/step1_action.php:33
+#: views/restore/steps/step1_action.php:33
 msgid "Supported archive format zip,tar,tar.gz"
 msgstr ""
 
-#: views/pro/restore/steps/step1_top.php:2
+#: views/restore/steps/step1_top.php:2
 msgid "Backup Upload"
 msgstr ""
 
-#: views/pro/restore/steps/step1_top.php:5
+#: views/restore/steps/step1_top.php:5
 msgid "Welcome to BackWPup Restore. This tool helps you to restore a backup of your WordPress installation. Each step of the restore process will be explained in this box to get you quickly running."
 msgstr ""
 
-#: views/pro/restore/steps/step1_top.php:12
+#: views/restore/steps/step1_top.php:12
 msgid "The first step is to upload a backup file. You can simply drag'n'drop a ZIP file of your backup into the box below or click on the `Select Archive` button and select the file using the file explorer."
 msgstr ""
 
-#: views/pro/restore/steps/step1_top.php:18
+#: views/restore/steps/step1_top.php:18
 msgid "The upload of the file should start automatically and you will be lead to the next step."
 msgstr ""
 
-#: views/pro/restore/steps/step1_top.php:23
+#: views/restore/steps/step1_top.php:23
 msgid "Note: Only backups done with BackWPup can be restored."
 msgstr ""
 
-#: views/pro/restore/steps/step2_action.php:41
+#: views/restore/steps/step2_action.php:41
 msgid "There seems to be a problem with the archive. It is neither an archive nor a SQL file. Try again and repeat the upload."
 msgstr ""
 
-#: views/pro/restore/steps/step2_action.php:29
+#: views/restore/steps/step2_action.php:29
 msgid "Restore Database."
 msgstr ""
 
-#: views/pro/restore/steps/step2_action.php:11
+#: views/restore/steps/step2_action.php:11
 msgid "Choose your restore strategy."
 msgstr ""
 
-#: views/pro/restore/steps/step2_action.php:19, views/pro/restore/steps/step2_top.php:6
+#: views/restore/steps/step2_action.php:19, views/restore/steps/step2_top.php:6
 msgid "Full Restore"
 msgstr ""
 
-#: views/pro/restore/steps/step2_action.php:25, views/pro/restore/steps/step2_top.php:18
+#: views/restore/steps/step2_action.php:25, views/restore/steps/step2_top.php:18
 msgid "Database Only"
 msgstr ""
 
-#: views/pro/restore/steps/step2_top.php:2
+#: views/restore/steps/step2_top.php:2
 msgid "Select Strategy"
 msgstr ""
 
-#: views/pro/restore/steps/step2_top.php:4
+#: views/restore/steps/step2_top.php:4
 msgid "This page provides two options you can choose from. Your decision affects the behavior of the restore process and decides which files are going to be restored."
 msgstr ""
 
-#: views/pro/restore/steps/step2_top.php:10
+#: views/restore/steps/step2_top.php:10
 msgid "This option restores everything. Your database as well as all files within the backup are restored. The backup usually holds files from your <code>wp-content/</code> directory."
 msgstr ""
 
-#: views/pro/restore/steps/step2_top.php:19
+#: views/restore/steps/step2_top.php:19
 msgid "The second option is a database only restore. Choosing this option will restore only the database dump. No files will be restored."
 msgstr ""
 
-#: views/pro/restore/steps/step2_top.php:23
+#: views/restore/steps/step2_top.php:23
 msgid "Note: <strong>Full Restore</strong> can only be done if everything is included in the zip file. If your zip file only includes a database export, then only a <strong>Database only</strong> restore can be performed."
 msgstr ""
 
-#: views/pro/restore/steps/step3_action.php:7
+#: views/restore/steps/step3_action.php:7
 msgid "Database Connection Settings."
 msgstr ""
 
-#: views/pro/restore/steps/step3_action.php:13
+#: views/restore/steps/step3_action.php:13
 msgid "Database Host"
 msgstr ""
 
-#: views/pro/restore/steps/step3_action.php:19
+#: views/restore/steps/step3_action.php:19
 msgid "Database Name"
 msgstr ""
 
-#: views/pro/restore/steps/step3_action.php:25
+#: views/restore/steps/step3_action.php:25
 msgid "Database User"
 msgstr ""
 
-#: views/pro/restore/steps/step3_action.php:31
+#: views/restore/steps/step3_action.php:31
 msgid "Database Password"
 msgstr ""
 
-#: views/pro/restore/steps/step3_action.php:39
+#: views/restore/steps/step3_action.php:39
 msgid "Database Charset"
 msgstr ""
 
-#: views/pro/restore/steps/step3_action.php:49
+#: views/restore/steps/step3_action.php:49
 msgid "Test Connection"
 msgstr ""
 
-#: views/pro/restore/steps/step3_action.php:54, views/pro/restore/steps/step4_action.php:34
+#: views/restore/steps/step3_action.php:54, views/restore/steps/step4_action.php:34
 msgid "Continue"
 msgstr ""
 
-#: views/pro/restore/steps/step3_top.php:2
+#: views/restore/steps/step3_top.php:2
 msgid "Database Settings"
 msgstr ""
 
-#: views/pro/restore/steps/step3_top.php:4
+#: views/restore/steps/step3_top.php:4
 msgid "Before the actually restore can take place you need to tell us some information about your database. Probably, these information are the same as your WordPress database. The restore will overwrite all information within this database. So make sure you choose the correct database."
 msgstr ""
 
-#: views/pro/restore/steps/step3_top.php:6
+#: views/restore/steps/step3_top.php:6
 msgid ""
 "You can use the <strong>Test Connection</strong> button below to test, you guessed it, your connection to the database.\n"
 "				If everything is fine a green message box will appear. Otherwise, a red message box will tell you more about the problem.\n"
 "				You can only continue when a working connection to the database could be established."
 msgstr ""
 
-#: views/pro/restore/steps/step3_top.php:16
+#: views/restore/steps/step3_top.php:16
 msgid "Having trouble getting your database connection settings? <a href=\"https://backwpup.com/docs/restore-database-connection-settings/\" target=\"_blank\">Go to documentation</a> to get more information."
 msgstr ""
 
-#: views/pro/restore/steps/step4_action.php:7
+#: views/restore/steps/step4_action.php:7
 msgid "Migration Settings"
 msgstr ""
 
-#: views/pro/restore/steps/step4_action.php:13
+#: views/restore/steps/step4_action.php:13
 msgid "Migrate URL"
 msgstr ""
 
-#: views/pro/restore/steps/step4_action.php:19
+#: views/restore/steps/step4_action.php:19
 msgid "Old URL"
 msgstr ""
 
-#: views/pro/restore/steps/step4_action.php:25
+#: views/restore/steps/step4_action.php:25
 msgid "New URL"
 msgstr ""
 
-#: views/pro/restore/steps/step4_top.php:2
+#: views/restore/steps/step4_top.php:2
 msgid "Website Migration"
 msgstr ""
 
-#: views/pro/restore/steps/step4_top.php:4
+#: views/restore/steps/step4_top.php:4
 msgid "If you would like to migrate your website to a new URL, enable the Migrate URL option below and enter the new URL."
 msgstr ""
 
-#: views/pro/restore/steps/step5_action.php:9
+#: views/restore/steps/step5_action.php:9
 msgid "Restore Progress."
 msgstr ""
 
-#: views/pro/restore/steps/step5_action.php:20
+#: views/restore/steps/step5_action.php:20
 msgid "Start"
 msgstr ""
 
-#: views/pro/restore/steps/step5_top.php:5
+#: views/restore/steps/step5_top.php:5
 msgid "You reached the last step. Now you're ready to restore the data. Simply press the <strong>Start</strong> button and the restore starts."
 msgstr ""
 
-#: views/pro/restore/steps/step6_top.php:6
+#: views/restore/steps/step6_top.php:6
 msgid "Success"
 msgstr ""
 
-#: views/pro/restore/steps/step6_top.php:11
+#: views/restore/steps/step6_top.php:11
 msgid "Your restore was successful and everything should be back to normal."
 msgstr ""
 
-#: views/pro/restore/steps/step6_top.php:24
+#: views/restore/steps/step6_top.php:24
 msgid "Restore Report"
 msgstr ""
 
-#: views/pro/restore/steps/step6_top.php:29
+#: views/restore/steps/step6_top.php:29
 msgid "Seems there was some error during the restore that need manual action."
 msgstr ""

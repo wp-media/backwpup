@@ -1,0 +1,27 @@
+includes:
+    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+
+parameters:
+    level: max
+    phpVersion: 70200
+    checkExplicitMixed: true
+    checkTooWideReturnTypesInProtectedAndPublicMethods: true
+    checkInternalClassCaseSensitivity: true
+    paths:
+        - src
+        - tests
+        - views
+    excludePaths:
+        - tests/_*
+    bootstrapFiles:
+        - tests/bootstrap.php
+    stubFiles:
+        - stubs/Archive_Tar.stub
+        - stubs/CurrentExtractInfo.stub
+    typeAliases:
+        DbPos: 'array{pos: int, line_cache: string[]}'
+        TarFile: 'array{filename: string, mode: int, uid: int, guid: int, size: int, mtime: int, typeflag: string, link: string, checksum: int}'
+        EventData: 'array{state?: string, message?: string}'
+        PathInfo: 'array{dirname: string, basename: string, filename: string, extension?: string}'
+        Notification: 'array{level: string, msg: string}'
+        DecompressionState: 'array<string, int|string>'

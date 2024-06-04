@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit302766cabed9741b63e4470141d39506
+class ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -17,8 +17,8 @@ class ComposerStaticInit302766cabed9741b63e4470141d39506
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
-        '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
+        '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
     );
 
@@ -74,9 +74,12 @@ class ComposerStaticInit302766cabed9741b63e4470141d39506
         ),
         'I' => 
         array (
+            'Inpsyde\\Restore\\' => 16,
             'Inpsyde\\EnvironmentChecker\\' => 27,
+            'Inpsyde\\BackWPup\\Archiver\\' => 26,
             'Inpsyde\\BackWPup\\' => 17,
             'Inpsyde\\BackWPupShared\\' => 23,
+            'Inpsyde\\Assert\\' => 15,
         ),
         'G' => 
         array (
@@ -196,9 +199,17 @@ class ComposerStaticInit302766cabed9741b63e4470141d39506
         array (
             0 => __DIR__ . '/..' . '/mtdowling/jmespath.php/src',
         ),
+        'Inpsyde\\Restore\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src',
+        ),
         'Inpsyde\\EnvironmentChecker\\' => 
         array (
             0 => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src',
+        ),
+        'Inpsyde\\BackWPup\\Archiver\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/inpsyde/backwpup-archiver/src',
         ),
         'Inpsyde\\BackWPup\\' => 
         array (
@@ -207,6 +218,10 @@ class ComposerStaticInit302766cabed9741b63e4470141d39506
         'Inpsyde\\BackWPupShared\\' => 
         array (
             0 => __DIR__ . '/..' . '/inpsyde/backwpup-shared/src',
+        ),
+        'Inpsyde\\Assert\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/inpsyde/assert/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
@@ -623,6 +638,7 @@ class ComposerStaticInit302766cabed9741b63e4470141d39506
         'BackWPup_Page_Editjob' => __DIR__ . '/../..' . '/inc/class-page-editjob.php',
         'BackWPup_Page_Jobs' => __DIR__ . '/../..' . '/inc/class-page-jobs.php',
         'BackWPup_Page_Logs' => __DIR__ . '/../..' . '/inc/class-page-logs.php',
+        'BackWPup_Page_Restore' => __DIR__ . '/../..' . '/inc/class-page-restore.php',
         'BackWPup_Page_Settings' => __DIR__ . '/../..' . '/inc/class-page-settings.php',
         'BackWPup_Path_Fixer' => __DIR__ . '/../..' . '/inc/class-path-fixer.php',
         'BackWPup_Pro' => __DIR__ . '/../..' . '/inc/Pro/class-pro.php',
@@ -652,7 +668,6 @@ class ComposerStaticInit302766cabed9741b63e4470141d39506
         'BackWPup_Pro_JobType_File' => __DIR__ . '/../..' . '/inc/Pro/class-jobtype-file.php',
         'BackWPup_Pro_JobType_WPEXP' => __DIR__ . '/../..' . '/inc/Pro/class-jobtype-wpexp.php',
         'BackWPup_Pro_JobType_WPPlugin' => __DIR__ . '/../..' . '/inc/Pro/class-jobtype-wpplugin.php',
-        'BackWPup_Pro_Page_Restore' => __DIR__ . '/../..' . '/inc/Pro/class-page-restore.php',
         'BackWPup_Pro_Page_Support' => __DIR__ . '/../..' . '/inc/Pro/class-page-support.php',
         'BackWPup_Pro_Page_Wizard' => __DIR__ . '/../..' . '/inc/Pro/class-page-wizard.php',
         'BackWPup_Pro_Settings_APIKeys' => __DIR__ . '/../..' . '/inc/Pro/class-settings-apikeys.php',
@@ -1139,7 +1154,19 @@ class ComposerStaticInit302766cabed9741b63e4470141d39506
         'Guzzle\\Tests\\Service\\Resource\\ResourceIteratorTest' => __DIR__ . '/..' . '/guzzle/guzzle/tests/Guzzle/Tests/Service/Resource/ResourceIteratorTest.php',
         'Guzzle\\Tests\\Stream\\PhpStreamRequestFactoryTest' => __DIR__ . '/..' . '/guzzle/guzzle/tests/Guzzle/Tests/Stream/PhpStreamRequestFactoryTest.php',
         'Guzzle\\Tests\\Stream\\StreamTest' => __DIR__ . '/..' . '/guzzle/guzzle/tests/Guzzle/Tests/Stream/StreamTest.php',
+        'Inpsyde\\Assert\\Assert' => __DIR__ . '/..' . '/inpsyde/assert/src/Assert.php',
         'Inpsyde\\BackWPupShared\\File\\MimeTypeExtractor' => __DIR__ . '/..' . '/inpsyde/backwpup-shared/src/File/MimeTypeExtractor.php',
+        'Inpsyde\\BackWPup\\Archiver\\Archive' => __DIR__ . '/..' . '/inpsyde/backwpup-archiver/src/Archive.php',
+        'Inpsyde\\BackWPup\\Archiver\\ArchiveException' => __DIR__ . '/..' . '/inpsyde/backwpup-archiver/src/ArchiveException.php',
+        'Inpsyde\\BackWPup\\Archiver\\ArchiveFileOperator' => __DIR__ . '/..' . '/inpsyde/backwpup-archiver/src/ArchiveFileOperator.php',
+        'Inpsyde\\BackWPup\\Archiver\\ArchiveQueryable' => __DIR__ . '/..' . '/inpsyde/backwpup-archiver/src/ArchiveQueryable.php',
+        'Inpsyde\\BackWPup\\Archiver\\Closable' => __DIR__ . '/..' . '/inpsyde/backwpup-archiver/src/Closable.php',
+        'Inpsyde\\BackWPup\\Archiver\\CurrentExtractInfo' => __DIR__ . '/..' . '/inpsyde/backwpup-archiver/src/CurrentExtractInfo.php',
+        'Inpsyde\\BackWPup\\Archiver\\Extractor' => __DIR__ . '/..' . '/inpsyde/backwpup-archiver/src/Extractor.php',
+        'Inpsyde\\BackWPup\\Archiver\\Factory' => __DIR__ . '/..' . '/inpsyde/backwpup-archiver/src/Factory.php',
+        'Inpsyde\\BackWPup\\Archiver\\FallBackZip' => __DIR__ . '/..' . '/inpsyde/backwpup-archiver/src/FallBackZip.php',
+        'Inpsyde\\BackWPup\\Archiver\\FileException' => __DIR__ . '/..' . '/inpsyde/backwpup-archiver/src/FileException.php',
+        'Inpsyde\\BackWPup\\Archiver\\Zip' => __DIR__ . '/..' . '/inpsyde/backwpup-archiver/src/Zip.php',
         'Inpsyde\\BackWPup\\Common\\PathUtils' => __DIR__ . '/../..' . '/src/Common/PathUtils.php',
         'Inpsyde\\BackWPup\\Infrastructure\\Destinations\\GoogleDrive\\Exception\\CouldNotCreateFolder' => __DIR__ . '/../..' . '/src/Infrastructure/Destinations/GoogleDrive/Exception/CouldNotCreateFolder.php',
         'Inpsyde\\BackWPup\\Infrastructure\\Destinations\\GoogleDrive\\Exception\\CouldNotDownloadFile' => __DIR__ . '/../..' . '/src/Infrastructure/Destinations/GoogleDrive/Exception/CouldNotDownloadFile.php',
@@ -1167,6 +1194,13 @@ class ComposerStaticInit302766cabed9741b63e4470141d39506
         'Inpsyde\\BackWPup\\Infrastructure\\Http\\Message\\RequestFactory' => __DIR__ . '/../..' . '/src/Infrastructure/Http/Message/RequestFactory.php',
         'Inpsyde\\BackWPup\\Infrastructure\\Http\\Message\\ResponseFactory' => __DIR__ . '/../..' . '/src/Infrastructure/Http/Message/ResponseFactory.php',
         'Inpsyde\\BackWPup\\Infrastructure\\Http\\Message\\StreamFactory' => __DIR__ . '/../..' . '/src/Infrastructure/Http/Message/StreamFactory.php',
+        'Inpsyde\\BackWPup\\Infrastructure\\Restore\\LogDownloader\\Downloader' => __DIR__ . '/../..' . '/src/Infrastructure/Restore/LogDownloader/Downloader.php',
+        'Inpsyde\\BackWPup\\Infrastructure\\Restore\\LogDownloader\\DownloaderFactory' => __DIR__ . '/../..' . '/src/Infrastructure/Restore/LogDownloader/DownloaderFactory.php',
+        'Inpsyde\\BackWPup\\Infrastructure\\Restore\\LogDownloader\\View' => __DIR__ . '/../..' . '/src/Infrastructure/Restore/LogDownloader/View.php',
+        'Inpsyde\\BackWPup\\Infrastructure\\Restore\\LogDownloader\\ZipGenerator' => __DIR__ . '/../..' . '/src/Infrastructure/Restore/LogDownloader/ZipGenerator.php',
+        'Inpsyde\\BackWPup\\Infrastructure\\Restore\\Notificator' => __DIR__ . '/../..' . '/src/Infrastructure/Restore/Notificator.php',
+        'Inpsyde\\BackWPup\\Infrastructure\\Restore\\Restore' => __DIR__ . '/../..' . '/src/Infrastructure/Restore/Restore.php',
+        'Inpsyde\\BackWPup\\Infrastructure\\Restore\\TemplateLoader' => __DIR__ . '/../..' . '/src/Infrastructure/Restore/TemplateLoader.php',
         'Inpsyde\\BackWPup\\Infrastructure\\Security\\EncryptionStream' => __DIR__ . '/../..' . '/src/Infrastructure/Security/EncryptionStream.php',
         'Inpsyde\\BackWPup\\Infrastructure\\Xml\\Exception\\InvalidWxrFileException' => __DIR__ . '/../..' . '/src/Infrastructure/Xml/Exception/InvalidWxrFileException.php',
         'Inpsyde\\BackWPup\\Infrastructure\\Xml\\Exception\\InvalidXmlException' => __DIR__ . '/../..' . '/src/Infrastructure/Xml/Exception/InvalidXmlException.php',
@@ -1193,13 +1227,6 @@ class ComposerStaticInit302766cabed9741b63e4470141d39506
         'Inpsyde\\BackWPup\\Pro\\License\\LicenseSettingUpdater' => __DIR__ . '/../..' . '/inc/Pro/License/LicenseSettingUpdater.php',
         'Inpsyde\\BackWPup\\Pro\\License\\LicenseSettingsView' => __DIR__ . '/../..' . '/inc/Pro/License/LicenseSettingsView.php',
         'Inpsyde\\BackWPup\\Pro\\License\\RequestHandler' => __DIR__ . '/../..' . '/inc/Pro/License/RequestHandler.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\LogDownloader\\Downloader' => __DIR__ . '/../..' . '/inc/Pro/Restore/LogDownloader/Downloader.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\LogDownloader\\DownloaderFactory' => __DIR__ . '/../..' . '/inc/Pro/Restore/LogDownloader/DownloaderFactory.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\LogDownloader\\View' => __DIR__ . '/../..' . '/inc/Pro/Restore/LogDownloader/View.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\LogDownloader\\ZipGenerator' => __DIR__ . '/../..' . '/inc/Pro/Restore/LogDownloader/ZipGenerator.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\Notificator' => __DIR__ . '/../..' . '/inc/Pro/Restore/Notificator.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\Restore' => __DIR__ . '/../..' . '/inc/Pro/Restore/Restore.php',
-        'Inpsyde\\BackWPup\\Pro\\Restore\\TemplateLoader' => __DIR__ . '/../..' . '/inc/Pro/Restore/TemplateLoader.php',
         'Inpsyde\\BackWPup\\Pro\\Settings\\AjaxEncryptionKeyHandler' => __DIR__ . '/../..' . '/inc/Pro/Settings/AjaxEncryptionKeyHandler.php',
         'Inpsyde\\BackWPup\\Pro\\Settings\\EncryptionSettingUpdater' => __DIR__ . '/../..' . '/inc/Pro/Settings/EncryptionSettingUpdater.php',
         'Inpsyde\\BackWPup\\Pro\\Settings\\EncryptionSettingsView' => __DIR__ . '/../..' . '/inc/Pro/Settings/EncryptionSettingsView.php',
@@ -1217,6 +1244,66 @@ class ComposerStaticInit302766cabed9741b63e4470141d39506
         'Inpsyde\\EnvironmentChecker\\EnvironmentChecker' => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src/EnvironmentChecker.php',
         'Inpsyde\\EnvironmentChecker\\Exception\\ConstraintFailedException' => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src/Exception/ConstraintFailedException.php',
         'Inpsyde\\EnvironmentChecker\\Exception\\ConstraintFailedExceptionInterface' => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src/Exception/ConstraintFailedExceptionInterface.php',
+        'Inpsyde\\Restore\\AjaxHandler' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/AjaxHandler.php',
+        'Inpsyde\\Restore\\Api\\Controller\\DecryptController' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Controller/DecryptController.php',
+        'Inpsyde\\Restore\\Api\\Controller\\JobController' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Controller/JobController.php',
+        'Inpsyde\\Restore\\Api\\Controller\\LanguageController' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Controller/LanguageController.php',
+        'Inpsyde\\Restore\\Api\\Error\\ErrorHandler' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Error/ErrorHandler.php',
+        'Inpsyde\\Restore\\Api\\Exception\\ExceptionHandler' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Exception/ExceptionHandler.php',
+        'Inpsyde\\Restore\\Api\\Exception\\ExceptionLinkHelper' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Exception/ExceptionLinkHelper.php',
+        'Inpsyde\\Restore\\Api\\Exception\\FileSystemException' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Exception/FileSystemException.php',
+        'Inpsyde\\Restore\\Api\\Exception\\RestoreExceptionInterface' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Exception/RestoreExceptionInterface.php',
+        'Inpsyde\\Restore\\Api\\Module\\Database\\DatabaseInterface' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Database/DatabaseInterface.php',
+        'Inpsyde\\Restore\\Api\\Module\\Database\\DatabaseTypeFactory' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Database/DatabaseTypeFactory.php',
+        'Inpsyde\\Restore\\Api\\Module\\Database\\Exception\\DatabaseConnectionException' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Database/Exception/DatabaseConnectionException.php',
+        'Inpsyde\\Restore\\Api\\Module\\Database\\Exception\\DatabaseFileException' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Database/Exception/DatabaseFileException.php',
+        'Inpsyde\\Restore\\Api\\Module\\Database\\Exception\\DatabaseQueryException' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Database/Exception/DatabaseQueryException.php',
+        'Inpsyde\\Restore\\Api\\Module\\Database\\Exception\\SqlException' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Database/Exception/SqlException.php',
+        'Inpsyde\\Restore\\Api\\Module\\Database\\ImportFileFactory' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Database/ImportFileFactory.php',
+        'Inpsyde\\Restore\\Api\\Module\\Database\\ImportFileInterface' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Database/ImportFileInterface.php',
+        'Inpsyde\\Restore\\Api\\Module\\Database\\ImportModel' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Database/ImportModel.php',
+        'Inpsyde\\Restore\\Api\\Module\\Database\\MysqliDatabaseType' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Database/MysqliDatabaseType.php',
+        'Inpsyde\\Restore\\Api\\Module\\Database\\SqlFileImport' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Database/SqlFileImport.php',
+        'Inpsyde\\Restore\\Api\\Module\\Decompress\\Decompressor' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Decompress/Decompressor.php',
+        'Inpsyde\\Restore\\Api\\Module\\Decompress\\Exception\\DecompressException' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Decompress/Exception/DecompressException.php',
+        'Inpsyde\\Restore\\Api\\Module\\Decompress\\State' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Decompress/State.php',
+        'Inpsyde\\Restore\\Api\\Module\\Decompress\\StateUpdater' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Decompress/StateUpdater.php',
+        'Inpsyde\\Restore\\Api\\Module\\Decryption\\Decrypter' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Decryption/Decrypter.php',
+        'Inpsyde\\Restore\\Api\\Module\\Decryption\\Exception\\DecryptException' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Decryption/Exception/DecryptException.php',
+        'Inpsyde\\Restore\\Api\\Module\\Download\\Exception\\DownloadException' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Download/Exception/DownloadException.php',
+        'Inpsyde\\Restore\\Api\\Module\\ImportInterface' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/ImportInterface.php',
+        'Inpsyde\\Restore\\Api\\Module\\Manifest\\Exception\\ManifestFileException' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Manifest/Exception/ManifestFileException.php',
+        'Inpsyde\\Restore\\Api\\Module\\Manifest\\ManifestFile' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Manifest/ManifestFile.php',
+        'Inpsyde\\Restore\\Api\\Module\\Registry' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Registry.php',
+        'Inpsyde\\Restore\\Api\\Module\\RegistryException' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/RegistryException.php',
+        'Inpsyde\\Restore\\Api\\Module\\Restore\\ConfigRewriterInterface' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Restore/ConfigRewriterInterface.php',
+        'Inpsyde\\Restore\\Api\\Module\\Restore\\Exception\\ConfigFileException' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Restore/Exception/ConfigFileException.php',
+        'Inpsyde\\Restore\\Api\\Module\\Restore\\Exception\\ConfigFileNotFoundException' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Restore/Exception/ConfigFileNotFoundException.php',
+        'Inpsyde\\Restore\\Api\\Module\\Restore\\Exception\\RestorePathException' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Restore/Exception/RestorePathException.php',
+        'Inpsyde\\Restore\\Api\\Module\\Restore\\RestoreFiles' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Restore/RestoreFiles.php',
+        'Inpsyde\\Restore\\Api\\Module\\Restore\\RestoreInterface' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Restore/RestoreInterface.php',
+        'Inpsyde\\Restore\\Api\\Module\\Session\\NotificableStorableSessionInterface' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Session/NotificableStorableSessionInterface.php',
+        'Inpsyde\\Restore\\Api\\Module\\Session\\NotificationInterface' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Session/NotificationInterface.php',
+        'Inpsyde\\Restore\\Api\\Module\\Session\\Session' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Session/Session.php',
+        'Inpsyde\\Restore\\Api\\Module\\Translation\\RestoreTranslation' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Translation/RestoreTranslation.php',
+        'Inpsyde\\Restore\\Api\\Module\\Translation\\TranslationInterface' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Translation/TranslationInterface.php',
+        'Inpsyde\\Restore\\Api\\Module\\Upload\\BackupUpload' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Upload/BackupUpload.php',
+        'Inpsyde\\Restore\\Api\\Module\\Upload\\FileUploadInterface' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Upload/FileUploadInterface.php',
+        'Inpsyde\\Restore\\Api\\Module\\Upload\\UploadException' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Module/Upload/UploadException.php',
+        'Inpsyde\\Restore\\DestinationFactory' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/DestinationFactory.php',
+        'Inpsyde\\Restore\\EventSource' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/EventSource.php',
+        'Inpsyde\\Restore\\Infrastructure\\EventSourceTrait' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Infrastructure/EventSourceTrait.php',
+        'Inpsyde\\Restore\\LocalizeScripts' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/LocalizeScripts.php',
+        'Inpsyde\\Restore\\Log\\FileReader' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Log/FileReader.php',
+        'Inpsyde\\Restore\\Log\\LevelExtractor' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Log/LevelExtractor.php',
+        'Inpsyde\\Restore\\Log\\LevelExtractorFactory' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Log/LevelExtractorFactory.php',
+        'Inpsyde\\Restore\\Log\\Log' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Log/Log.php',
+        'Inpsyde\\Restore\\Log\\LogData' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Log/LogData.php',
+        'Inpsyde\\Restore\\Log\\LogLineParser' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Log/LogLineParser.php',
+        'Inpsyde\\Restore\\Log\\NullLogData' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Log/NullLogData.php',
+        'Inpsyde\\Restore\\StorageInterface' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/StorageInterface.php',
+        'Inpsyde\\Restore\\Utils\\SanitizePath' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Utils/SanitizePath.php',
+        'Inpsyde\\Restore\\ViewLoader' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/ViewLoader.php',
         'JmesPath\\AstRuntime' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/AstRuntime.php',
         'JmesPath\\CompilerRuntime' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/CompilerRuntime.php',
         'JmesPath\\DebugRuntime' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/DebugRuntime.php',
@@ -3217,11 +3304,11 @@ class ComposerStaticInit302766cabed9741b63e4470141d39506
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit302766cabed9741b63e4470141d39506::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit302766cabed9741b63e4470141d39506::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit302766cabed9741b63e4470141d39506::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInit302766cabed9741b63e4470141d39506::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInit302766cabed9741b63e4470141d39506::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9::$classMap;
 
         }, null, ClassLoader::class);
     }

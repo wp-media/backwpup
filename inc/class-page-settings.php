@@ -325,14 +325,14 @@ class BackWPup_Page_Settings
         if (\BackWPup::is_pro()) {
             wp_enqueue_script(
                 'backwpuppagesettings-encryption',
-                untrailingslashit(BackWPup::get_plugin_data('URL')) . "/assets/js/pro/settings-encryption{$suffix}.js",
+                untrailingslashit(BackWPup::get_plugin_data('URL')) . "/assets/js/settings-encryption{$suffix}.js",
                 [
                     'underscore',
                     'jquery',
                     'backwpuppagesettings',
                     'thickbox',
                 ],
-                filemtime(untrailingslashit(BackWPup::get_plugin_data('plugindir')) . "/assets/js/pro/settings-encryption{$suffix}.js"),
+                filemtime(untrailingslashit(BackWPup::get_plugin_data('plugindir')) . "/assets/js/settings-encryption{$suffix}.js"),
                 true
             );
 

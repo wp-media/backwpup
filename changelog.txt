@@ -1,4 +1,17 @@
 == Changelog ==
+= 4.1.0 =
+Release date: Jun 4, 2024
+
+* Changed: Add Restore to the free version
+* Fixed: Improved checking of encrypted archives
+* Added (pro): decryption and encryption with WP-CLI of archives
+* Fixed (pro): Problems with Asymmetric encryption on restarts
+
+= 4.0.5 =
+Release date: May 21, 2024
+
+* Fixed (pro): Gdrive oAuth authentication flow
+
 = 4.0.4 =
 Release date: March 12, 2024
 

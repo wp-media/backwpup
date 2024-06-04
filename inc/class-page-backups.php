@@ -1,6 +1,6 @@
 <?php
 
-use function Inpsyde\BackWPup\Pro\Restore\Functions\restore_container;
+use function Inpsyde\BackWPup\Infrastructure\Restore\restore_container;
 use Inpsyde\Restore\ViewLoader;
 
 final class BackWPup_Page_Backups extends WP_List_Table
