@@ -519,9 +519,9 @@ class BackWPup_MySQLDump
         ++$GLOBALS[\wpdb::class]->num_queries;
         if ($this->mysqli->error) {
             trigger_error(sprintf(__('Database error %1$s for query %2$s', 'backwpup'), $this->mysqli->error, 'SHOW CREATE TABLE `' . $table . '`'), E_USER_WARNING);
-        } else {
-            $createtable = $res->fetch_assoc();
-            $res->close();
+		} else {
+			$createtable = str_replace( '"', '`', $res->fetch_assoc() );
+			$res->close();
             $tablecreate .= $createtable['Create Table'] . ";\n";
             $tablecreate .= "/*!40101 SET character_set_client = @saved_cs_client */;\n";
             $this->write($tablecreate);

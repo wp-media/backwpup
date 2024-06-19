@@ -17,8 +17,8 @@ msgstr ""
 msgid "BackWPup {{%TYPE%}}"
 msgstr ""
 
-#: backwpup.php:4, inc/class-admin.php:649, inc/class-admin.php:671, inc/class-help.php:11, inc/class-help.php:16, inc/class-job.php:442, inc/class-jobtype-dbcheck.php:9, inc/class-jobtype-dbdump.php:9, inc/class-jobtype-file.php:10, inc/class-jobtype-wpexp.php:13, inc/class-jobtype-wpplugin.php:9, inc/class-page-about.php:366, inc/class-page-about.php:356, inc/class-page-about.php:676, inc/class-page-backwpup.php:253, inc/class-page-backwpup.php:259, inc/class-page-backwpup.php:261, inc/class-page-settings.php:63, inc/Pro/class-wizard-job.php:17, inc/Pro/class-wizard-jobimport.php:14, inc/Pro/class-wizard-systemtest.php:22
-msgid "http://backwpup.com"
+#: backwpup.php:4
+msgid "https://backwpup.com/"
 msgstr ""
 
 #: backwpup.php:5
@@ -26,154 +26,158 @@ msgid "WordPress Backup Plugin"
 msgstr ""
 
 #: backwpup.php:6
-msgid "WP MEDIA SAS"
+msgid "BackWPup – WordPress Backup & Restore Plugin"
 msgstr ""
 
-#: backwpup.php:7
-msgid "https://wp-media.me/"
+#: backwpup.php:7, inc/class-page-settings.php:1114
+msgid "https://backwpup.com"
 msgstr ""
 
-#: backwpup.php:353, inc/class-page-backups.php:223
+#: backwpup.php:358, inc/class-page-backups.php:223
 msgid "Folder"
 msgstr ""
 
-#: backwpup.php:354
+#: backwpup.php:359
 msgid "Backup to Folder"
 msgstr ""
 
-#: backwpup.php:368
+#: backwpup.php:373
 msgid "Email"
 msgstr ""
 
-#: backwpup.php:369
+#: backwpup.php:374
 msgid "Backup sent via email"
 msgstr ""
 
-#: backwpup.php:383
+#: backwpup.php:388
 msgid "FTP"
 msgstr ""
 
-#: backwpup.php:384
+#: backwpup.php:389
 msgid "Backup to FTP"
 msgstr ""
 
-#: backwpup.php:398, inc/class-destination-dropbox.php:440
+#: backwpup.php:403, inc/class-destination-dropbox.php:440
 msgid "Dropbox"
 msgstr ""
 
-#: backwpup.php:399, inc/class-page-about.php:504
+#: backwpup.php:404, inc/class-page-about.php:504
 msgid "Backup to Dropbox"
 msgstr ""
 
-#: backwpup.php:413, inc/class-destination-s3.php:40
+#: backwpup.php:418, inc/class-destination-s3.php:40
 msgid "S3 Service"
 msgstr ""
 
-#: backwpup.php:414
+#: backwpup.php:419
 msgid "Backup to an S3 Service"
 msgstr ""
 
-#: backwpup.php:428
+#: backwpup.php:433
 msgid "MS Azure"
 msgstr ""
 
-#: backwpup.php:429
+#: backwpup.php:434
 msgid "Backup to Microsoft Azure (Blob)"
 msgstr ""
 
-#: backwpup.php:443
+#: backwpup.php:448
 msgid "RSC"
 msgstr ""
 
-#: backwpup.php:444, inc/class-page-about.php:509
+#: backwpup.php:449, inc/class-page-about.php:509
 msgid "Backup to Rackspace Cloud Files"
 msgstr ""
 
-#: backwpup.php:458
+#: backwpup.php:463
 msgid "SugarSync"
 msgstr ""
 
-#: backwpup.php:459, inc/class-page-about.php:524
+#: backwpup.php:464, inc/class-page-about.php:524
 msgid "Backup to SugarSync"
 msgstr ""
 
-#: backwpup.php:486
+#: backwpup.php:491
 msgid "PHP Version %1$s is to low, you need Version %2$s or above."
 msgstr ""
 
-#: backwpup.php:500
+#: backwpup.php:505
 msgid "Missing function \"%s\"."
 msgstr ""
 
-#: backwpup.php:515
+#: backwpup.php:520
 msgid "Missing class \"%s\"."
 msgstr ""
 
-#: backwpup.php:596
+#: backwpup.php:601
 msgid "BackWPup requires PHP version %1$s with spl extension or greater and WordPress %2$s or greater."
 msgstr ""
 
-#: inc/class-admin.php:249, inc/class-help.php:18
+#: inc/class-admin.php:253, inc/class-help.php:18
 msgid "https://backwpup.com/docs/"
 msgstr ""
 
-#: inc/class-admin.php:249
+#: inc/class-admin.php:253
 msgid "Documentation"
 msgstr ""
 
-#: inc/class-admin.php:276
+#: inc/class-admin.php:280
 msgid "BackWPup Dashboard"
 msgstr ""
 
-#: inc/class-admin.php:277
+#: inc/class-admin.php:281
 msgid "Dashboard"
 msgstr ""
 
-#: inc/class-admin.php:308, inc/class-admin.php:309, inc/class-adminbar.php:72, inc/class-page-settings.php:503
+#: inc/class-admin.php:312, inc/class-admin.php:313, inc/class-adminbar.php:72, inc/class-page-settings.php:503
 msgid "Jobs"
 msgstr ""
 
-#: inc/class-admin.php:346, inc/class-admin.php:347
+#: inc/class-admin.php:350, inc/class-admin.php:351
 msgid "Add new job"
 msgstr ""
 
-#: inc/class-admin.php:384, inc/class-admin.php:385, inc/class-adminbar.php:90, inc/class-page-logs.php:368, inc/class-page-settings.php:507
+#: inc/class-admin.php:388, inc/class-admin.php:389, inc/class-adminbar.php:90, inc/class-page-logs.php:368, inc/class-page-settings.php:507
 msgid "Logs"
 msgstr ""
 
-#: inc/class-admin.php:422, inc/class-admin.php:423, inc/class-adminbar.php:99
+#: inc/class-admin.php:426, inc/class-admin.php:427, inc/class-adminbar.php:99
 msgid "Backups"
 msgstr ""
 
-#: inc/class-admin.php:460, inc/class-admin.php:461
+#: inc/class-admin.php:464, inc/class-admin.php:465
 msgid "Settings"
 msgstr ""
 
-#: inc/class-admin.php:486, inc/class-admin.php:487, inc/class-page-backups.php:325, views/restore/steps/step5_top.php:2
+#: inc/class-admin.php:489, inc/class-admin.php:490, inc/class-page-backups.php:325, views/restore/steps/step5_top.php:2
 msgid "Restore"
 msgstr ""
 
-#: inc/class-admin.php:527, inc/class-admin.php:528
+#: inc/class-admin.php:530, inc/class-admin.php:531
 msgid "About"
 msgstr ""
 
-#: inc/class-admin.php:567, inc/class-admin.php:574
+#: inc/class-admin.php:570, inc/class-admin.php:577
 msgid "Cheating, huh?"
 msgstr ""
 
-#: inc/class-admin.php:645
+#: inc/class-admin.php:648
 msgid "<a class=\"backwpup-get-pro\" href=\"%s\">Get BackWPup Pro now.</a>"
 msgstr ""
 
-#: inc/class-admin.php:675
+#: inc/class-admin.php:652, inc/class-admin.php:674, inc/class-help.php:11, inc/class-help.php:16, inc/class-job.php:442, inc/class-jobtype-dbcheck.php:9, inc/class-jobtype-dbdump.php:9, inc/class-jobtype-file.php:10, inc/class-jobtype-wpexp.php:13, inc/class-jobtype-wpplugin.php:9, inc/class-page-about.php:366, inc/class-page-about.php:356, inc/class-page-about.php:676, inc/class-page-backwpup.php:253, inc/class-page-backwpup.php:259, inc/class-page-backwpup.php:261, inc/class-page-settings.php:63, inc/Pro/class-wizard-job.php:17, inc/Pro/class-wizard-jobimport.php:14, inc/Pro/class-wizard-systemtest.php:22
+msgid "http://backwpup.com"
+msgstr ""
+
+#: inc/class-admin.php:678
 msgid "version %s"
 msgstr ""
 
-#: inc/class-admin.php:724
+#: inc/class-admin.php:727
 msgid "Add BackWPup Role"
 msgstr ""
 
-#: inc/class-admin.php:729
+#: inc/class-admin.php:732
 msgid "&mdash; No additional role for BackWPup &mdash;"
 msgstr ""
 
@@ -595,7 +599,7 @@ msgstr ""
 msgid "SMTP secure connection"
 msgstr ""
 
-#: inc/class-destination-email.php:142, inc/class-jobtype-dbdump.php:61, inc/class-jobtype-dbdump.php:97, inc/class-jobtype-wpexp.php:73, inc/class-jobtype-wpplugin.php:51, inc/class-page-backwpup.php:330, inc/class-page-backwpup.php:404, inc/class-page-settings.php:960, inc/Pro/class-jobtype-dbdump.php:157, inc/Pro/class-jobtype-dbdump.php:209
+#: inc/class-destination-email.php:142, inc/class-jobtype-dbdump.php:61, inc/class-jobtype-dbdump.php:97, inc/class-jobtype-wpexp.php:73, inc/class-jobtype-wpplugin.php:51, inc/class-page-backwpup.php:330, inc/class-page-backwpup.php:404, inc/class-page-settings.php:961, inc/Pro/class-jobtype-dbdump.php:157, inc/Pro/class-jobtype-dbdump.php:209
 msgid "none"
 msgstr ""
 
@@ -1639,15 +1643,15 @@ msgstr ""
 msgid "%d. Trying to encrypt archive &hellip;"
 msgstr ""
 
-#: inc/class-job.php:1948, inc/class-wp-cli.php:246
+#: inc/class-job.php:1948, inc/class-wp-cli.php:244
 msgid "Cannot open the archive for reading. Aborting encryption."
 msgstr ""
 
-#: inc/class-job.php:1956, inc/class-wp-cli.php:252
+#: inc/class-job.php:1956, inc/class-wp-cli.php:250
 msgid "Cannot write the encrypted archive. Aborting encryption."
 msgstr ""
 
-#: inc/class-job.php:1977, inc/class-wp-cli.php:263
+#: inc/class-job.php:1977, inc/class-wp-cli.php:261
 msgid "Could not initialize encryptor."
 msgstr ""
 
@@ -1655,15 +1659,15 @@ msgstr ""
 msgid "Encrypted %s of data."
 msgstr ""
 
-#: inc/class-job.php:2009, inc/class-wp-cli.php:275
+#: inc/class-job.php:2009, inc/class-wp-cli.php:273
 msgid "Unable to delete unencrypted archive."
 msgstr ""
 
-#: inc/class-job.php:2017, inc/class-wp-cli.php:278
+#: inc/class-job.php:2017, inc/class-wp-cli.php:276
 msgid "Unable to rename encrypted archive."
 msgstr ""
 
-#: inc/class-job.php:2023, inc/class-wp-cli.php:280
+#: inc/class-job.php:2023, inc/class-wp-cli.php:278
 msgid "Archive has been successfully encrypted."
 msgstr ""
 
@@ -1922,11 +1926,11 @@ msgstr ""
 msgid "MySQL backup file not created"
 msgstr ""
 
-#: inc/class-jobtype-dbdump.php:255, inc/Pro/class-jobtype-dbdump.php:947
+#: inc/class-jobtype-dbdump.php:255, inc/Pro/class-jobtype-dbdump.php:949
 msgid "Added database dump \"%1$s\" with %2$s to backup file list"
 msgstr ""
 
-#: inc/class-jobtype-dbdump.php:260, inc/Pro/class-jobtype-dbdump.php:758, inc/Pro/class-jobtype-dbdump.php:950
+#: inc/class-jobtype-dbdump.php:260, inc/Pro/class-jobtype-dbdump.php:758, inc/Pro/class-jobtype-dbdump.php:952
 msgid "Database backup done!"
 msgstr ""
 
@@ -2042,7 +2046,7 @@ msgstr ""
 msgid "Exclude:"
 msgstr ""
 
-#: inc/class-jobtype-file.php:538
+#: inc/class-jobtype-file.php:539
 msgid "Excluded by .donotbackup file!"
 msgstr ""
 
@@ -2114,11 +2118,11 @@ msgstr ""
 msgid "XML ERROR (%s): %s"
 msgstr ""
 
-#: inc/class-jobtype-wpexp.php:442, inc/Pro/class-jobtype-dbdump.php:923
+#: inc/class-jobtype-wpexp.php:442, inc/Pro/class-jobtype-dbdump.php:925
 msgid "Compressing file&#160;&hellip;"
 msgstr ""
 
-#: inc/class-jobtype-wpexp.php:450, inc/Pro/class-jobtype-dbdump.php:931
+#: inc/class-jobtype-wpexp.php:450, inc/Pro/class-jobtype-dbdump.php:933
 msgid "Compressing done."
 msgstr ""
 
@@ -2142,7 +2146,7 @@ msgstr ""
 msgid "%d. Trying to generate a file with installed plugin names&#160;&hellip;"
 msgstr ""
 
-#: inc/class-jobtype-wpplugin.php:134, inc/Pro/class-jobtype-dbdump.php:1030
+#: inc/class-jobtype-wpplugin.php:134, inc/Pro/class-jobtype-dbdump.php:1032
 msgid "Can not open target file for writing."
 msgstr ""
 
@@ -2178,7 +2182,7 @@ msgstr ""
 msgid "Cannot open SQL backup file"
 msgstr ""
 
-#: inc/class-mysqldump.php:124, inc/class-mysqldump.php:136, inc/class-mysqldump.php:487, inc/class-mysqldump.php:521, inc/class-mysqldump.php:557, inc/class-mysqldump.php:617, inc/Pro/class-jobtype-dbdump.php:1095, inc/Pro/class-jobtype-dbdump.php:1112, inc/Pro/class-jobtype-dbdump.php:1179, inc/Pro/class-jobtype-dbdump.php:1161, inc/Pro/class-jobtype-dbdump.php:1221
+#: inc/class-mysqldump.php:124, inc/class-mysqldump.php:136, inc/class-mysqldump.php:487, inc/class-mysqldump.php:521, inc/class-mysqldump.php:557, inc/class-mysqldump.php:617, inc/Pro/class-jobtype-dbdump.php:1097, inc/Pro/class-jobtype-dbdump.php:1114, inc/Pro/class-jobtype-dbdump.php:1181, inc/Pro/class-jobtype-dbdump.php:1163, inc/Pro/class-jobtype-dbdump.php:1223
 msgid "Database error %1$s for query %2$s"
 msgstr ""
 
@@ -2186,7 +2190,7 @@ msgstr ""
 msgid "Cannot set DB charset to %s"
 msgstr ""
 
-#: inc/class-mysqldump.php:288, inc/Pro/class-jobtype-dbdump.php:1070
+#: inc/class-mysqldump.php:288, inc/Pro/class-jobtype-dbdump.php:1072
 msgid "Setting of MySQLi connection timeout failed"
 msgstr ""
 
@@ -3371,7 +3375,7 @@ msgid "Logfile not found!"
 msgstr ""
 
 #. translators: $1 is the name of the plugin
-#: inc/class-page-restore.php:218
+#: inc/class-page-restore.php:215
 msgid "%s &rsaquo; Restore"
 msgstr ""
 
@@ -3639,283 +3643,279 @@ msgstr ""
 msgid "License"
 msgstr ""
 
-#: inc/class-page-settings.php:532
+#: inc/class-page-settings.php:533
 msgid "Display Settings"
 msgstr ""
 
-#: inc/class-page-settings.php:533
+#: inc/class-page-settings.php:534
 msgid "Do you want to see BackWPup in the WordPress admin bar?"
 msgstr ""
 
-#: inc/class-page-settings.php:536
+#: inc/class-page-settings.php:537
 msgid "Admin bar"
 msgstr ""
 
-#: inc/class-page-settings.php:541
+#: inc/class-page-settings.php:542
 msgid "Admin Bar"
 msgstr ""
 
-#: inc/class-page-settings.php:550
+#: inc/class-page-settings.php:551
 msgid "Show BackWPup links in admin bar."
 msgstr ""
 
-#: inc/class-page-settings.php:556, inc/class-page-settings.php:561
+#: inc/class-page-settings.php:557, inc/class-page-settings.php:562
 msgid "Folder sizes"
 msgstr ""
 
-#: inc/class-page-settings.php:570
+#: inc/class-page-settings.php:571
 msgid "Display folder sizes in the files tab when editing a job. (Might increase loading time of files tab.)"
 msgstr ""
 
-#: inc/class-page-settings.php:579
+#: inc/class-page-settings.php:580
 msgid "Security"
 msgstr ""
 
-#: inc/class-page-settings.php:580
+#: inc/class-page-settings.php:581
 msgid "Security option for BackWPup"
 msgstr ""
 
-#: inc/class-page-settings.php:583, inc/class-page-settings.php:588
+#: inc/class-page-settings.php:584, inc/class-page-settings.php:589
 msgid "Protect folders"
 msgstr ""
 
-#: inc/class-page-settings.php:598
+#: inc/class-page-settings.php:599
 msgid "Protect BackWPup folders ( Temp, Log and Backups ) with <code>.htaccess</code> and <code>index.php</code>"
 msgstr ""
 
-#: inc/class-page-settings.php:612
+#: inc/class-page-settings.php:613
 msgid "Plugin data"
 msgstr ""
 
-#: inc/class-page-settings.php:617
+#: inc/class-page-settings.php:618
 msgid "Keep plugin data"
 msgstr ""
 
-#: inc/class-page-settings.php:627
+#: inc/class-page-settings.php:628
 msgid "Keep BackWPup data stored in the database after uninstall"
 msgstr ""
 
-#: inc/class-page-settings.php:641
+#: inc/class-page-settings.php:642
 msgid "Every time BackWPup runs a backup job, a log file is being generated. Choose where to store your log files and how many of them."
 msgstr ""
 
-#: inc/class-page-settings.php:650
+#: inc/class-page-settings.php:651
 msgid "Log file folder"
 msgstr ""
 
-#: inc/class-page-settings.php:660
+#: inc/class-page-settings.php:661
 msgid "You can use absolute or relative path! Relative path is relative to %s."
 msgstr ""
 
-#: inc/class-page-settings.php:676
+#: inc/class-page-settings.php:677
 msgid "Maximum log files"
 msgstr ""
 
-#: inc/class-page-settings.php:684
+#: inc/class-page-settings.php:685
 msgid "Maximum log files in folder."
 msgstr ""
 
-#: inc/class-page-settings.php:688, inc/class-page-settings.php:691
+#: inc/class-page-settings.php:689, inc/class-page-settings.php:692
 msgid "Compression"
 msgstr ""
 
-#: inc/class-page-settings.php:702
+#: inc/class-page-settings.php:703
 msgid "Compress log files with GZip."
 msgstr ""
 
-#: inc/class-page-settings.php:708, inc/class-page-settings.php:713
+#: inc/class-page-settings.php:709, inc/class-page-settings.php:714
 msgid "Logging Level"
 msgstr ""
 
-#: inc/class-page-settings.php:721
+#: inc/class-page-settings.php:722
 msgid "Normal (translated)"
 msgstr ""
 
-#: inc/class-page-settings.php:725
+#: inc/class-page-settings.php:726
 msgid "Normal (not translated)"
 msgstr ""
 
-#: inc/class-page-settings.php:729
+#: inc/class-page-settings.php:730
 msgid "Debug (translated)"
 msgstr ""
 
-#: inc/class-page-settings.php:733
+#: inc/class-page-settings.php:734
 msgid "Debug (not translated)"
 msgstr ""
 
-#: inc/class-page-settings.php:737
+#: inc/class-page-settings.php:738
 msgid "Debug log has much more information than normal logs. It is for support and should be handled carefully. For support is the best to use a not translated log file. Usage of not translated logs can reduce the PHP memory usage too."
 msgstr ""
 
-#: inc/class-page-settings.php:750
+#: inc/class-page-settings.php:751
 msgid "There are a couple of general options for backup jobs. Set them here."
 msgstr ""
 
-#: inc/class-page-settings.php:758
+#: inc/class-page-settings.php:759
 msgid "Maximum number of retries for job steps"
 msgstr ""
 
-#: inc/class-page-settings.php:767
+#: inc/class-page-settings.php:768
 msgid "Maximum script execution time"
 msgstr ""
 
-#: inc/class-page-settings.php:772
+#: inc/class-page-settings.php:773
 msgid "Maximum PHP Script execution time"
 msgstr ""
 
-#: inc/class-page-settings.php:778
+#: inc/class-page-settings.php:779
 msgid "seconds."
 msgstr ""
 
-#: inc/class-page-settings.php:781
+#: inc/class-page-settings.php:782
 msgid "Job will restart before hitting maximum execution time. Restarts will be disabled on CLI usage. If <code>ALTERNATE_WP_CRON</code> has been defined, WordPress Cron will be used for restarts, so it can take a while. 0 means no maximum."
 msgstr ""
 
-#: inc/class-page-settings.php:795
+#: inc/class-page-settings.php:796
 msgid "Key to start jobs externally with an URL"
 msgstr ""
 
-#: inc/class-page-settings.php:803
+#: inc/class-page-settings.php:804
 msgid "Will be used to protect job starts from unauthorized person."
 msgstr ""
 
-#: inc/class-page-settings.php:811, inc/class-page-settings.php:816
+#: inc/class-page-settings.php:812, inc/class-page-settings.php:817
 msgid "Reduce server load"
 msgstr ""
 
-#: inc/class-page-settings.php:824
+#: inc/class-page-settings.php:825
 msgid "disabled"
 msgstr ""
 
-#: inc/class-page-settings.php:828
+#: inc/class-page-settings.php:829
 msgid "minimum"
 msgstr ""
 
-#: inc/class-page-settings.php:832
+#: inc/class-page-settings.php:833
 msgid "medium"
 msgstr ""
 
-#: inc/class-page-settings.php:836
+#: inc/class-page-settings.php:837
 msgid "maximum"
 msgstr ""
 
-#: inc/class-page-settings.php:840
+#: inc/class-page-settings.php:841
 msgid "This adds short pauses to the process. Can be used to reduce the CPU load."
 msgstr ""
 
-#: inc/class-page-settings.php:849
+#: inc/class-page-settings.php:850
 msgid "Empty output on working"
 msgstr ""
 
-#: inc/class-page-settings.php:854, inc/class-page-settings.php:866
+#: inc/class-page-settings.php:855, inc/class-page-settings.php:867
 msgid "Enable an empty Output on backup working."
 msgstr ""
 
-#: inc/class-page-settings.php:869
+#: inc/class-page-settings.php:870
 msgid "This do an empty output on job working. This can help in some situations or can break the working. You must test it."
 msgstr ""
 
-#: inc/class-page-settings.php:878
+#: inc/class-page-settings.php:879
 msgid "Windows IIS compatibility"
 msgstr ""
 
-#: inc/class-page-settings.php:883, inc/class-page-settings.php:894
+#: inc/class-page-settings.php:884, inc/class-page-settings.php:895
 msgid "Enable compatibility with IIS on Windows."
 msgstr ""
 
-#: inc/class-page-settings.php:898
+#: inc/class-page-settings.php:899
 msgid "There is a PHP bug (<a href=\"https://bugs.php.net/43817\">bug #43817</a>), which is triggered on some versions of Windows and IIS. Checking this box will enable a workaround for that bug. Only enable if you are getting errors about &ldquo;Permission denied&rdquo; in your logs."
 msgstr ""
 
-#: inc/class-page-settings.php:922
+#: inc/class-page-settings.php:923
 msgid "Authentication for <code>%s</code>"
 msgstr ""
 
-#: inc/class-page-settings.php:929
+#: inc/class-page-settings.php:930
 msgid "If you protected your blog with HTTP basic authentication (.htaccess), or you use a Plugin to secure wp-cron.php, then use the authentication methods below."
 msgstr ""
 
-#: inc/class-page-settings.php:947, inc/class-page-settings.php:952
+#: inc/class-page-settings.php:948, inc/class-page-settings.php:953
 msgid "Authentication method"
 msgstr ""
 
-#: inc/class-page-settings.php:964
+#: inc/class-page-settings.php:965
 msgid "Basic auth"
 msgstr ""
 
-#: inc/class-page-settings.php:968
+#: inc/class-page-settings.php:969
 msgid "WordPress User"
 msgstr ""
 
-#: inc/class-page-settings.php:972
+#: inc/class-page-settings.php:973
 msgid "Query argument"
 msgstr ""
 
-#: inc/class-page-settings.php:983
+#: inc/class-page-settings.php:984
 msgid "Basic Auth Username:"
 msgstr ""
 
-#: inc/class-page-settings.php:1001
+#: inc/class-page-settings.php:1002
 msgid "Basic Auth Password:"
 msgstr ""
 
-#: inc/class-page-settings.php:1016, inc/class-page-settings.php:1019
+#: inc/class-page-settings.php:1017, inc/class-page-settings.php:1020
 msgid "Select WordPress User"
 msgstr ""
 
-#: inc/class-page-settings.php:1052
+#: inc/class-page-settings.php:1054
 msgid "Query arg key=value:"
 msgstr ""
 
-#: inc/class-page-settings.php:1079
+#: inc/class-page-settings.php:1081
 msgid "Experiencing an issue and need to contact BackWPup support? Click the link below to get debug information you can send to us."
 msgstr ""
 
-#: inc/class-page-settings.php:1086
+#: inc/class-page-settings.php:1088
 msgid "Debug Info"
 msgstr ""
 
-#: inc/class-page-settings.php:1090
+#: inc/class-page-settings.php:1092
 msgid "Get Debug Info"
 msgstr ""
 
-#: inc/class-page-settings.php:1097
+#: inc/class-page-settings.php:1099
 msgid "You will find debug information below. Click the button to copy the debug info to send to support."
 msgstr ""
 
-#: inc/class-page-settings.php:1112
-msgid "https://backwpup.com"
-msgstr ""
-
-#: inc/class-page-settings.php:1113
+#: inc/class-page-settings.php:1115
 msgid "Get Pro"
 msgstr ""
 
-#: inc/class-page-settings.php:1124
+#: inc/class-page-settings.php:1126
 msgid "Copy Debug Info"
 msgstr ""
 
-#: inc/class-page-settings.php:1129
+#: inc/class-page-settings.php:1131
 msgid "Debug info copied to clipboard."
 msgstr ""
 
-#: inc/class-page-settings.php:1137
+#: inc/class-page-settings.php:1139
 msgid "Could not copy debug info. You can simply press ctrl+C to copy it."
 msgstr ""
 
-#: inc/class-page-settings.php:1196, inc/class-page-settings.php:1200
+#: inc/class-page-settings.php:1201, inc/class-page-settings.php:1205
 msgid "Setting"
 msgstr ""
 
-#: inc/class-page-settings.php:1196, inc/class-page-settings.php:1200
+#: inc/class-page-settings.php:1201, inc/class-page-settings.php:1205
 msgid "Value"
 msgstr ""
 
-#: inc/class-page-settings.php:1219
+#: inc/class-page-settings.php:1225
 msgid "Save Changes"
 msgstr ""
 
-#: inc/class-page-settings.php:1225
+#: inc/class-page-settings.php:1231
 msgid "Reset all settings to default"
 msgstr ""
 
@@ -4137,39 +4137,39 @@ msgstr ""
 msgid "No job running"
 msgstr ""
 
-#: inc/class-wp-cli.php:167
+#: inc/class-wp-cli.php:166
 msgid "No Key provided or stored in settings for decryption!"
 msgstr ""
 
-#: inc/class-wp-cli.php:173
+#: inc/class-wp-cli.php:172
 msgid "Archive file that should be decrypted can't be found!"
 msgstr ""
 
-#: inc/class-wp-cli.php:179
+#: inc/class-wp-cli.php:178
 msgid "Archive not needs decryption."
 msgstr ""
 
-#: inc/class-wp-cli.php:185
+#: inc/class-wp-cli.php:184
 msgid "Cannot decrypt: %s"
 msgstr ""
 
-#: inc/class-wp-cli.php:188
+#: inc/class-wp-cli.php:187
 msgid "Archive has been successfully decrypted."
 msgstr ""
 
-#: inc/class-wp-cli.php:228
+#: inc/class-wp-cli.php:226
 msgid "No Key provided or stored in settings for encryption!"
 msgstr ""
 
-#: inc/class-wp-cli.php:234
+#: inc/class-wp-cli.php:232
 msgid "Archive file that should be encrypted can't be found!"
 msgstr ""
 
-#: inc/class-wp-cli.php:240
+#: inc/class-wp-cli.php:238
 msgid "Asymmetric encryption will be used for the archive."
 msgstr ""
 
-#: inc/class-wp-cli.php:238
+#: inc/class-wp-cli.php:236
 msgid "Symmetric encryption will be used for the archive."
 msgstr ""
 
@@ -4781,94 +4781,94 @@ msgstr ""
 msgid "%s file not found. Please correct the path for the mysqldump file."
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:877
+#: inc/Pro/class-jobtype-dbdump.php:879
 msgctxt "Executed exec() command"
 msgid "CLI Exec: %s"
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:891
+#: inc/Pro/class-jobtype-dbdump.php:893
 msgid "Usage error."
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:892
+#: inc/Pro/class-jobtype-dbdump.php:894
 msgid "MySQL Server Error. This could be an issue with permissions. Try using database backup with mysqli."
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:893
+#: inc/Pro/class-jobtype-dbdump.php:895
 msgid "Error during consistency checks."
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:894
+#: inc/Pro/class-jobtype-dbdump.php:896
 msgid "Not enough memory."
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:895
+#: inc/Pro/class-jobtype-dbdump.php:897
 msgid "Error during writing of SQL backup file."
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:896
+#: inc/Pro/class-jobtype-dbdump.php:898
 msgid "Illegal table"
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:901
+#: inc/Pro/class-jobtype-dbdump.php:903
 msgid "mysqldump returned: (%1$d) %2$s"
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:916
+#: inc/Pro/class-jobtype-dbdump.php:918
 msgid "Can not create mysql backup with mysqldump command"
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:967
+#: inc/Pro/class-jobtype-dbdump.php:969
 msgid "exec command is not active."
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:974
+#: inc/Pro/class-jobtype-dbdump.php:976
 msgid "mysqldump binary not found."
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:975
+#: inc/Pro/class-jobtype-dbdump.php:977
 msgctxt "Fix path to mysqldump binary"
 msgid "fix"
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:1012
+#: inc/Pro/class-jobtype-dbdump.php:1014
 msgid "%d. Try to backup database as XML&#160;&hellip;"
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:1064
+#: inc/Pro/class-jobtype-dbdump.php:1066
 msgid "Cannot init MySQLi database connection"
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:1077
+#: inc/Pro/class-jobtype-dbdump.php:1079
 msgid "Cannot connect to MySQL database %1$d: %2$s"
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:1086
+#: inc/Pro/class-jobtype-dbdump.php:1088
 msgctxt "Database Charset"
 msgid "Cannot set DB charset to %s"
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:1121
+#: inc/Pro/class-jobtype-dbdump.php:1123
 msgid "No tables for XML backup"
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:1173
+#: inc/Pro/class-jobtype-dbdump.php:1175
 msgid "Backup database structure \"%s\" to XML"
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:1156
+#: inc/Pro/class-jobtype-dbdump.php:1158
 msgid "Dump database create view \"%s\""
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:1214
+#: inc/Pro/class-jobtype-dbdump.php:1216
 msgid "Backup table \"%s\" data to XML"
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:1284
+#: inc/Pro/class-jobtype-dbdump.php:1286
 msgid "Added database XML dump \"%1$s\" with %2$s to backup file list"
 msgstr ""
 
-#: inc/Pro/class-jobtype-dbdump.php:1287
+#: inc/Pro/class-jobtype-dbdump.php:1289
 msgid "Database XML backup done!"
 msgstr ""
 
@@ -5571,39 +5571,39 @@ msgstr ""
 msgid "Backup Upload"
 msgstr ""
 
-#: views/restore/steps/step1_top.php:5
+#: views/restore/steps/step1_top.php:6
 msgid "Welcome to BackWPup Restore. This tool helps you to restore a backup of your WordPress installation. Each step of the restore process will be explained in this box to get you quickly running."
 msgstr ""
 
-#: views/restore/steps/step1_top.php:12
+#: views/restore/steps/step1_top.php:15
 msgid "The first step is to upload a backup file. You can simply drag'n'drop a ZIP file of your backup into the box below or click on the `Select Archive` button and select the file using the file explorer."
 msgstr ""
 
-#: views/restore/steps/step1_top.php:18
+#: views/restore/steps/step1_top.php:23
 msgid "The upload of the file should start automatically and you will be lead to the next step."
 msgstr ""
 
-#: views/restore/steps/step1_top.php:23
+#: views/restore/steps/step1_top.php:29
 msgid "Note: Only backups done with BackWPup can be restored."
 msgstr ""
 
-#: views/restore/steps/step2_action.php:41
+#: views/restore/steps/step2_action.php:42
 msgid "There seems to be a problem with the archive. It is neither an archive nor a SQL file. Try again and repeat the upload."
 msgstr ""
 
-#: views/restore/steps/step2_action.php:29
+#: views/restore/steps/step2_action.php:30
 msgid "Restore Database."
 msgstr ""
 
-#: views/restore/steps/step2_action.php:11
+#: views/restore/steps/step2_action.php:12
 msgid "Choose your restore strategy."
 msgstr ""
 
-#: views/restore/steps/step2_action.php:19, views/restore/steps/step2_top.php:6
+#: views/restore/steps/step2_action.php:20, views/restore/steps/step2_top.php:6
 msgid "Full Restore"
 msgstr ""
 
-#: views/restore/steps/step2_action.php:25, views/restore/steps/step2_top.php:18
+#: views/restore/steps/step2_action.php:26, views/restore/steps/step2_top.php:19
 msgid "Database Only"
 msgstr ""
 
@@ -5619,11 +5619,11 @@ msgstr ""
 msgid "This option restores everything. Your database as well as all files within the backup are restored. The backup usually holds files from your <code>wp-content/</code> directory."
 msgstr ""
 
-#: views/restore/steps/step2_top.php:19
+#: views/restore/steps/step2_top.php:20
 msgid "The second option is a database only restore. Choosing this option will restore only the database dump. No files will be restored."
 msgstr ""
 
-#: views/restore/steps/step2_top.php:23
+#: views/restore/steps/step2_top.php:26
 msgid "Note: <strong>Full Restore</strong> can only be done if everything is included in the zip file. If your zip file only includes a database export, then only a <strong>Database only</strong> restore can be performed."
 msgstr ""
 
@@ -5667,14 +5667,14 @@ msgstr ""
 msgid "Before the actually restore can take place you need to tell us some information about your database. Probably, these information are the same as your WordPress database. The restore will overwrite all information within this database. So make sure you choose the correct database."
 msgstr ""
 
-#: views/restore/steps/step3_top.php:6
+#: views/restore/steps/step3_top.php:8
 msgid ""
 "You can use the <strong>Test Connection</strong> button below to test, you guessed it, your connection to the database.\n"
 "				If everything is fine a green message box will appear. Otherwise, a red message box will tell you more about the problem.\n"
 "				You can only continue when a working connection to the database could be established."
 msgstr ""
 
-#: views/restore/steps/step3_top.php:16
+#: views/restore/steps/step3_top.php:21
 msgid "Having trouble getting your database connection settings? <a href=\"https://backwpup.com/docs/restore-database-connection-settings/\" target=\"_blank\">Go to documentation</a> to get more information."
 msgstr ""
 
@@ -5710,11 +5710,11 @@ msgstr ""
 msgid "Start"
 msgstr ""
 
-#: views/restore/steps/step5_top.php:5
+#: views/restore/steps/step5_top.php:6
 msgid "You reached the last step. Now you're ready to restore the data. Simply press the <strong>Start</strong> button and the restore starts."
 msgstr ""
 
-#: views/restore/steps/step6_top.php:6
+#: views/restore/steps/step6_top.php:5
 msgid "Success"
 msgstr ""
 
@@ -5722,10 +5722,10 @@ msgstr ""
 msgid "Your restore was successful and everything should be back to normal."
 msgstr ""
 
-#: views/restore/steps/step6_top.php:24
+#: views/restore/steps/step6_top.php:25
 msgid "Restore Report"
 msgstr ""
 
-#: views/restore/steps/step6_top.php:29
+#: views/restore/steps/step6_top.php:30
 msgid "Seems there was some error during the restore that need manual action."
 msgstr ""

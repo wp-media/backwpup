@@ -215,6 +215,10 @@ final class BackWPup_Admin
 
     private function init_notices()
     {
+        $evaluateNotice = new WordPressNotice(
+            new NoticeView(25)
+        );
+        $evaluateNotice->init(WordPressNotice::TYPE_ADMIN);
         // Show notice if PHP < 7.2
         $phpNotice = new PhpNotice(
             new NoticeView(PhpNotice::ID)
@@ -472,43 +476,42 @@ final class BackWPup_Admin
         return $page_hooks;
     }
 
-    /**
-     * Admin Page Restore.
-     *
-     * @param array $page_hooks the page hooks list
-     *
-     * @return array $page_hooks
-     */
-    public function admin_page_restore($page_hooks)
-    {
-        $this->page_hooks['backwpuprestore'] = add_submenu_page(
-            'backwpup',
-            esc_html__('Restore', 'backwpup'),
-            esc_html__('Restore', 'backwpup'),
-            'backwpup_restore',
-            'backwpuprestore',
-            [
-                \BackWPup_Page_Restore::class,
-                'page',
+	/**
+	 * Admin Page Restore.
+	 *
+	 * @param array $page_hooks the page hooks list
+	 *
+	 * @return array $page_hooks
+	 */
+	public function admin_page_restore( $page_hooks ) {
+		$this->page_hooks['backwpuprestore'] = add_submenu_page(
+			'backwpup',
+			esc_html__( 'Restore', 'backwpup' ),
+			esc_html__( 'Restore', 'backwpup' ),
+			'backwpup_restore',
+			'backwpuprestore',
+			[
+				\BackWPup_Page_Restore::class,
+				'page',
             ]
         );
 
-        // Register the submenu page (WP take care of capability) but prevent other stuffs to be executed if user
-        // doesn't have correct privileges.
-        if (!current_user_can('backwpup_restore')) {
-            return $page_hooks;
-        }
+		// Register the submenu page (WP take care of capability) but prevent other stuffs to be executed if user
+		// doesn't have correct privileges.
+		if ( ! current_user_can( 'backwpup_restore' ) ) {
+			return $page_hooks;
+		}
 
-        add_action('load-' . $this->page_hooks['backwpuprestore'], [\BackWPup_Admin::class, 'init_general']);
-        add_action(
-            'load-' . $this->page_hooks['backwpuprestore'],
-            [\BackWPup_Page_Restore::class, 'load']
-        );
-        add_action(
-            'admin_print_scripts-' . $this->page_hooks['backwpuprestore'],
-            [
-                \BackWPup_Page_Restore::class,
-                'admin_print_scripts',
+		add_action( 'load-' . $this->page_hooks['backwpuprestore'], [ self::class, 'init_general' ] );
+		add_action(
+			'load-' . $this->page_hooks['backwpuprestore'],
+			[ \BackWPup_Page_Restore::class, 'load' ]
+		);
+		add_action(
+			'admin_print_scripts-' . $this->page_hooks['backwpuprestore'],
+			[
+				\BackWPup_Page_Restore::class,
+				'admin_print_scripts',
             ]
         );
 
@@ -803,19 +806,18 @@ EOT;
         }
     }
 
-    public function init()
-    {
-        $restore = new Restore();
-        $restore->set_hooks()->init();
+	public function init() {
+		$restore = new Restore();
+		$restore->set_hooks()->init();
 
-        //Add menu pages
-        add_filter('backwpup_admin_pages', [$this, 'admin_page_jobs'], 2);
-        add_filter('backwpup_admin_pages', [$this, 'admin_page_editjob'], 3);
-        add_filter('backwpup_admin_pages', [$this, 'admin_page_logs'], 4);
-        add_filter('backwpup_admin_pages', [$this, 'admin_page_backups'], 5);
-        add_filter('backwpup_admin_pages', [$this, 'admin_page_settings'], 6);
-        add_filter('backwpup_admin_pages', [$this, 'admin_page_restore'], 7);
-        add_filter('backwpup_admin_pages', [$this, 'admin_page_about'], 20);
+		// Add menu pages
+		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_jobs' ], 2 );
+		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_editjob' ], 3 );
+		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_logs' ], 4 );
+		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_backups' ], 5 );
+		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_settings' ], 6 );
+		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_restore' ], 7 );
+		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_about' ], 20 );
 
         //Add Menu
         if (is_multisite()) {

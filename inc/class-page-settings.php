@@ -324,16 +324,16 @@ class BackWPup_Page_Settings
 
         if (\BackWPup::is_pro()) {
             wp_enqueue_script(
-                'backwpuppagesettings-encryption',
-                untrailingslashit(BackWPup::get_plugin_data('URL')) . "/assets/js/settings-encryption{$suffix}.js",
-                [
+				'backwpuppagesettings-encryption',
+				untrailingslashit( BackWPup::get_plugin_data( 'URL' ) ) . "/assets/js/settings-encryption{$suffix}.js",
+				[
                     'underscore',
                     'jquery',
                     'backwpuppagesettings',
                     'thickbox',
-                ],
-                filemtime(untrailingslashit(BackWPup::get_plugin_data('plugindir')) . "/assets/js/settings-encryption{$suffix}.js"),
-                true
+				],
+				filemtime( untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . "/assets/js/settings-encryption{$suffix}.js" ),
+				true
             );
 
             wp_localize_script(
@@ -498,27 +498,28 @@ class BackWPup_Page_Settings
         ); ?>
 			</h1>
 			<?php
-            $tabs = [];
-        $tabs['general'] = esc_html__('General', 'backwpup');
-        $tabs['job'] = esc_html__('Jobs', 'backwpup');
-        if (BackWPup::is_pro()) {
-            $tabs['encryption'] = esc_html__('Encryption', 'backwpup');
-        }
-        $tabs['log'] = esc_html__('Logs', 'backwpup');
-        $tabs['net'] = esc_html__('Network', 'backwpup');
-        $tabs['apikey'] = esc_html__('API Keys', 'backwpup');
-        $tabs['information'] = esc_html__('Information', 'backwpup');
-        if (BackWPup::is_pro()) {
-            $tabs['license'] = esc_html__('License', 'backwpup');
-        }
-        $tabs = apply_filters('backwpup_page_settings_tab', $tabs);
-        echo '<h2 class="nav-tab-wrapper">';
+			$tabs            = [];
+			$tabs['general'] = esc_html__( 'General', 'backwpup' );
+			$tabs['job']     = esc_html__( 'Jobs', 'backwpup' );
+			if ( BackWPup::is_pro() ) {
+				$tabs['encryption'] = esc_html__( 'Encryption', 'backwpup' );
+			}
+			$tabs['log']         = esc_html__( 'Logs', 'backwpup' );
+			$tabs['net']         = esc_html__( 'Network', 'backwpup' );
+			$tabs['apikey']      = esc_html__( 'API Keys', 'backwpup' );
+			$tabs['information'] = esc_html__( 'Information', 'backwpup' );
+			if ( BackWPup::is_pro() ) {
+				$tabs['license'] = esc_html__( 'License', 'backwpup' );
+			}
+			$tabs = apply_filters( 'backwpup_page_settings_tab', $tabs );
+			echo '<h2 class="nav-tab-wrapper">';
 
-        foreach ($tabs as $id => $name) {
-            echo '<a href="#backwpup-tab-' . esc_attr($id) . '" class="nav-tab">' . esc_attr($name) . '</a>';
-        }
-        echo '</h2>';
-        BackWPup_Admin::display_messages(); ?>
+			foreach ( $tabs as $id => $name ) {
+				echo '<a href="#backwpup-tab-' . esc_attr( $id ) . '" class="nav-tab">' . esc_attr( $name ) . '</a>';
+			}
+			echo '</h2>';
+			BackWPup_Admin::display_messages();
+			?>
 
 			<form id="settingsform" action="<?php echo admin_url('admin-post.php'); ?>" method="post">
 				<?php wp_nonce_field('backwpupsettings_page'); ?>
@@ -1032,13 +1033,14 @@ class BackWPup_Page_Settings
                     ]
                 );
 
-        foreach ($users as $user) {
-            echo '<option value="' . $user->ID . '" ' . selected(
-                $authentication['user_id'],
-                $user->ID,
-                false
-            ) . '>' . esc_attr($user->display_name) . '</option>';
-        } ?>
+											foreach ( $users as $user ) {
+												echo '<option value="' . $user->ID . '" ' . selected(
+													$authentication['user_id'],
+													$user->ID,
+													false
+																					) . '>' . esc_attr( $user->display_name ) . '</option>';
+											}
+											?>
 										</select>
 									</label>
 								</fieldset>
@@ -1142,10 +1144,13 @@ class BackWPup_Page_Settings
 						</div>
 
 						<textarea id="backwpup-debug-info" readonly="readonly"
-						          style="width: 100%;height: 100%;overflow: scroll;"><?php
-                            foreach ($information as $item) {
-                                echo esc_html($item['label']) . ': ' . esc_html($item['value']) . "\n";
-                            } ?></textarea>
+									style="width: 100%;height: 100%;overflow: scroll;">
+									<?php
+									foreach ( $information as $item ) {
+										echo esc_html( $item['label'] ) . ': ' . esc_html( $item['value'] ) . "\n";
+									}
+									?>
+							</textarea>
 					</div>
 
 					<script type="text/javascript">
@@ -1202,15 +1207,16 @@ class BackWPup_Page_Settings
             'backwpup'
         ) . '</th></tr></tfoot>';
 
-        foreach ($information as $item) {
-            echo "<tr>\n" .
-                             '<td>' . $item['label'] . "</td>\n" .
-                             '<td>' .
-                             ($item['html'] ?? esc_html($item['value'])) .
-                             "</td>\n" .
-                             "</tr>\n";
-        }
-        echo '</table>'; ?>
+					foreach ( $information as $item ) {
+						echo "<tr>\n" .
+							'<td>' . $item['label'] . "</td>\n" .
+							'<td>' .
+							( $item['html'] ?? esc_html( $item['value'] ) ) .
+							"</td>\n" .
+							"</tr>\n";
+					}
+					echo '</table>';
+					?>
 				</div>
 
 				<?php do_action('backwpup_page_settings_tab_content'); ?>

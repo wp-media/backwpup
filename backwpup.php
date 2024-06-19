@@ -1,11 +1,11 @@
 <?php
 /*
  * Plugin Name: BackWPup 
- * Plugin URI: http://backwpup.com
+ * Plugin URI: https://backwpup.com/
  * Description: WordPress Backup Plugin
- * Author: WP MEDIA SAS
- * Author URI: https://wp-media.me/
- * Version: 4.1.0
+ * Author: BackWPup – WordPress Backup & Restore Plugin
+ * Author URI: https://backwpup.com
+ * Version: 4.1.1
  * Requires at least: 3.9
  * Requires PHP: 7.2
  * Text Domain: backwpup
@@ -74,6 +74,9 @@ if (!class_exists(\BackWPup::class, false)) {
                 'pluginName' => 'backwpup-pro/backwpup.php',
                 'slug' => 'backwpup',
             ];
+
+			// Register the third party services.
+			BackWPup_ThirdParties::register();
 
             // Load pro features
             if (self::$is_pro) {
@@ -164,8 +167,8 @@ if (!class_exists(\BackWPup::class, false)) {
             // Work with wp-cli
             if (defined(\WP_CLI::class) && WP_CLI && method_exists(\WP_CLI::class, 'add_command')) {
                 WP_CLI::add_command('backwpup', \BackWPup_WP_CLI::class);
-            }
-        }
+			}
+		}
 
         /**
          * @return self
@@ -224,20 +227,22 @@ if (!class_exists(\BackWPup::class, false)) {
                         'version' => 'Version',
                     ],
                     'plugin'
-                );
-                self::$plugin_data['name'] = trim(self::$plugin_data['name']);
-                //set some extra vars
-                self::$plugin_data['basename'] = plugin_basename(__DIR__);
-                self::$plugin_data['mainfile'] = __FILE__;
-                self::$plugin_data['plugindir'] = untrailingslashit(__DIR__);
-                self::$plugin_data['hash'] = get_site_option('backwpup_cfg_hash');
-                if (empty(self::$plugin_data['hash']) || strlen(self::$plugin_data['hash']) < 6
-                     || strlen(
-                         self::$plugin_data['hash']
-                     ) > 12) {
-                    self::$plugin_data['hash'] = self::get_generated_hash(6);
-                    update_site_option('backwpup_cfg_hash', self::$plugin_data['hash']);
-                }
+				);
+				self::$plugin_data['name'] = trim( self::$plugin_data['name'] );
+				// set some extra vars.
+				self::$plugin_data['basename']          = plugin_basename( __DIR__ );
+				self::$plugin_data['mainfile']          = __FILE__;
+				self::$plugin_data['plugindir']         = untrailingslashit( __DIR__ );
+				self::$plugin_data['pluginincdir']      = untrailingslashit( self::$plugin_data['plugindir'] . '/inc' );
+				self::$plugin_data['plugin3rdpartydir'] = untrailingslashit( self::$plugin_data['pluginincdir'] . '/ThirdParty' );
+				self::$plugin_data['hash']              = get_site_option( 'backwpup_cfg_hash' );
+				if ( empty( self::$plugin_data['hash'] ) || strlen( self::$plugin_data['hash'] ) < 6
+					|| strlen(
+						self::$plugin_data['hash']
+					) > 12 ) {
+					self::$plugin_data['hash'] = self::get_generated_hash( 6 );
+					update_site_option( 'backwpup_cfg_hash', self::$plugin_data['hash'] );
+				}
                 if (defined('WP_TEMP_DIR') && is_dir(WP_TEMP_DIR)) {
                     self::$plugin_data['temp'] = str_replace(
                         '\\',

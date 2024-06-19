@@ -4,22 +4,22 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9
+class ComposerStaticInit16b5eea59a53455a986e831cc56b99ed
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
-        'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
-        'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
         '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
+        'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -75,7 +75,6 @@ class ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9
         'I' => 
         array (
             'Inpsyde\\Restore\\' => 16,
-            'Inpsyde\\EnvironmentChecker\\' => 27,
             'Inpsyde\\BackWPup\\Archiver\\' => 26,
             'Inpsyde\\BackWPup\\' => 17,
             'Inpsyde\\BackWPupShared\\' => 23,
@@ -202,10 +201,6 @@ class ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9
         'Inpsyde\\Restore\\' => 
         array (
             0 => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src',
-        ),
-        'Inpsyde\\EnvironmentChecker\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src',
         ),
         'Inpsyde\\BackWPup\\Archiver\\' => 
         array (
@@ -578,6 +573,16 @@ class ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9
         'Aws\\Waiter' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Waiter.php',
         'Aws\\WrappedHttpHandler' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/WrappedHttpHandler.php',
         'BackWPup' => __DIR__ . '/../..' . '/backwpup.php',
+        'BackWPup\\ThirdParty\\Autoptimize' => __DIR__ . '/../..' . '/inc/ThirdParty/Autoptimize.php',
+        'BackWPup\\ThirdParty\\Breeze' => __DIR__ . '/../..' . '/inc/ThirdParty/Breeze.php',
+        'BackWPup\\ThirdParty\\HummingbirdPerformance' => __DIR__ . '/../..' . '/inc/ThirdParty/HummingbirdPerformance.php',
+        'BackWPup\\ThirdParty\\SGCachepress' => __DIR__ . '/../..' . '/inc/ThirdParty/SGCachepress.php',
+        'BackWPup\\ThirdParty\\ThirdPartyInterface' => __DIR__ . '/../..' . '/inc/ThirdParty/thirdPartyInterface.php',
+        'BackWPup\\ThirdParty\\W3TotalCache' => __DIR__ . '/../..' . '/inc/ThirdParty/W3TotalCache.php',
+        'BackWPup\\ThirdParty\\WPFastestCache' => __DIR__ . '/../..' . '/inc/ThirdParty/WPFastestCache.php',
+        'BackWPup\\ThirdParty\\WPOptimize' => __DIR__ . '/../..' . '/inc/ThirdParty/WPOptimize.php',
+        'BackWPup\\ThirdParty\\WPRocket' => __DIR__ . '/../..' . '/inc/ThirdParty/WPRocket.php',
+        'BackWPup\\ThirdParty\\WPSuperCache' => __DIR__ . '/../..' . '/inc/ThirdParty/WPSuperCache.php',
         'BackWPup_Admin' => __DIR__ . '/../..' . '/inc/class-admin.php',
         'BackWPup_Adminbar' => __DIR__ . '/../..' . '/inc/class-adminbar.php',
         'BackWPup_Create_Archive' => __DIR__ . '/../..' . '/inc/class-create-archive.php',
@@ -681,6 +686,7 @@ class ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9
         'BackWPup_System_Requirements' => __DIR__ . '/../..' . '/inc/class-system-requirements.php',
         'BackWPup_System_Tests' => __DIR__ . '/../..' . '/inc/class-system-tests.php',
         'BackWPup_System_Tests_Runner' => __DIR__ . '/../..' . '/inc/class-system-tests-runner.php',
+        'BackWPup_ThirdParties' => __DIR__ . '/../..' . '/inc/class-thirdparties.php',
         'BackWPup_WP_CLI' => __DIR__ . '/../..' . '/inc/class-wp-cli.php',
         'BackWpUp_Destination_Downloader_Data' => __DIR__ . '/../..' . '/inc/class-destination-downloader-data.php',
         'BackWpup_Download_Handler' => __DIR__ . '/../..' . '/inc/class-download-handler.php',
@@ -1232,18 +1238,18 @@ class ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9
         'Inpsyde\\BackWPup\\Pro\\Settings\\EncryptionSettingsView' => __DIR__ . '/../..' . '/inc/Pro/Settings/EncryptionSettingsView.php',
         'Inpsyde\\BackWPup\\Settings\\SettingTab' => __DIR__ . '/../..' . '/inc/Settings/SettingTab.php',
         'Inpsyde\\BackWPup\\Settings\\SettingUpdatable' => __DIR__ . '/../..' . '/inc/Settings/SettingUpdatable.php',
-        'Inpsyde\\EnvironmentChecker\\ConstraintsCollectionFactory' => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src/ConstraintsCollectionFactory.php',
-        'Inpsyde\\EnvironmentChecker\\ConstraintsCollectionFactoryInterface' => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src/ConstraintsCollectionFactoryInterface.php',
-        'Inpsyde\\EnvironmentChecker\\Constraints\\AbstractVersionConstraint' => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src/Constraints/AbstractVersionConstraint.php',
-        'Inpsyde\\EnvironmentChecker\\Constraints\\ConstraintInterface' => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src/Constraints/ConstraintInterface.php',
-        'Inpsyde\\EnvironmentChecker\\Constraints\\ConstraintsCollection' => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src/Constraints/ConstraintsCollection.php',
-        'Inpsyde\\EnvironmentChecker\\Constraints\\ExtensionConstraint' => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src/Constraints/ExtensionConstraint.php',
-        'Inpsyde\\EnvironmentChecker\\Constraints\\PhpConstraint' => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src/Constraints/PhpConstraint.php',
-        'Inpsyde\\EnvironmentChecker\\Constraints\\PluginConstraint' => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src/Constraints/PluginConstraint.php',
-        'Inpsyde\\EnvironmentChecker\\Constraints\\WordPressConstraint' => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src/Constraints/WordPressConstraint.php',
-        'Inpsyde\\EnvironmentChecker\\EnvironmentChecker' => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src/EnvironmentChecker.php',
-        'Inpsyde\\EnvironmentChecker\\Exception\\ConstraintFailedException' => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src/Exception/ConstraintFailedException.php',
-        'Inpsyde\\EnvironmentChecker\\Exception\\ConstraintFailedExceptionInterface' => __DIR__ . '/..' . '/inpsyde/plugin-environment-checker/src/Exception/ConstraintFailedExceptionInterface.php',
+        'Inpsyde\\EnvironmentChecker\\ConstraintsCollectionFactory' => __DIR__ . '/../..' . '/inc/dependencies/inpsyde/plugin-environment-checker/src/ConstraintsCollectionFactory.php',
+        'Inpsyde\\EnvironmentChecker\\ConstraintsCollectionFactoryInterface' => __DIR__ . '/../..' . '/inc/dependencies/inpsyde/plugin-environment-checker/src/ConstraintsCollectionFactoryInterface.php',
+        'Inpsyde\\EnvironmentChecker\\Constraints\\AbstractVersionConstraint' => __DIR__ . '/../..' . '/inc/dependencies/inpsyde/plugin-environment-checker/src/Constraints/AbstractVersionConstraint.php',
+        'Inpsyde\\EnvironmentChecker\\Constraints\\ConstraintInterface' => __DIR__ . '/../..' . '/inc/dependencies/inpsyde/plugin-environment-checker/src/Constraints/ConstraintInterface.php',
+        'Inpsyde\\EnvironmentChecker\\Constraints\\ConstraintsCollection' => __DIR__ . '/../..' . '/inc/dependencies/inpsyde/plugin-environment-checker/src/Constraints/ConstraintsCollection.php',
+        'Inpsyde\\EnvironmentChecker\\Constraints\\ExtensionConstraint' => __DIR__ . '/../..' . '/inc/dependencies/inpsyde/plugin-environment-checker/src/Constraints/ExtensionConstraint.php',
+        'Inpsyde\\EnvironmentChecker\\Constraints\\PhpConstraint' => __DIR__ . '/../..' . '/inc/dependencies/inpsyde/plugin-environment-checker/src/Constraints/PhpConstraint.php',
+        'Inpsyde\\EnvironmentChecker\\Constraints\\PluginConstraint' => __DIR__ . '/../..' . '/inc/dependencies/inpsyde/plugin-environment-checker/src/Constraints/PluginConstraint.php',
+        'Inpsyde\\EnvironmentChecker\\Constraints\\WordPressConstraint' => __DIR__ . '/../..' . '/inc/dependencies/inpsyde/plugin-environment-checker/src/Constraints/WordPressConstraint.php',
+        'Inpsyde\\EnvironmentChecker\\EnvironmentChecker' => __DIR__ . '/../..' . '/inc/dependencies/inpsyde/plugin-environment-checker/src/EnvironmentChecker.php',
+        'Inpsyde\\EnvironmentChecker\\Exception\\ConstraintFailedException' => __DIR__ . '/../..' . '/inc/dependencies/inpsyde/plugin-environment-checker/src/Exception/ConstraintFailedException.php',
+        'Inpsyde\\EnvironmentChecker\\Exception\\ConstraintFailedExceptionInterface' => __DIR__ . '/../..' . '/inc/dependencies/inpsyde/plugin-environment-checker/src/Exception/ConstraintFailedExceptionInterface.php',
         'Inpsyde\\Restore\\AjaxHandler' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/AjaxHandler.php',
         'Inpsyde\\Restore\\Api\\Controller\\DecryptController' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Controller/DecryptController.php',
         'Inpsyde\\Restore\\Api\\Controller\\JobController' => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src/Api/Controller/JobController.php',
@@ -3094,6 +3100,7 @@ class ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9
         'phpseclib3\\Crypt\\EC\\Formats\\Keys\\XML' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/EC/Formats/Keys/XML.php',
         'phpseclib3\\Crypt\\EC\\Formats\\Keys\\libsodium' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/EC/Formats/Keys/libsodium.php',
         'phpseclib3\\Crypt\\EC\\Formats\\Signature\\ASN1' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/EC/Formats/Signature/ASN1.php',
+        'phpseclib3\\Crypt\\EC\\Formats\\Signature\\IEEE' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/EC/Formats/Signature/IEEE.php',
         'phpseclib3\\Crypt\\EC\\Formats\\Signature\\Raw' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/EC/Formats/Signature/Raw.php',
         'phpseclib3\\Crypt\\EC\\Formats\\Signature\\SSH2' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/EC/Formats/Signature/SSH2.php',
         'phpseclib3\\Crypt\\EC\\Parameters' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/EC/Parameters.php',
@@ -3127,6 +3134,7 @@ class ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9
         'phpseclib3\\Exception\\FileNotFoundException' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Exception/FileNotFoundException.php',
         'phpseclib3\\Exception\\InconsistentSetupException' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Exception/InconsistentSetupException.php',
         'phpseclib3\\Exception\\InsufficientSetupException' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Exception/InsufficientSetupException.php',
+        'phpseclib3\\Exception\\InvalidPacketLengthException' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Exception/InvalidPacketLengthException.php',
         'phpseclib3\\Exception\\NoKeyLoadedException' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Exception/NoKeyLoadedException.php',
         'phpseclib3\\Exception\\NoSupportedAlgorithmsException' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Exception/NoSupportedAlgorithmsException.php',
         'phpseclib3\\Exception\\UnableToConnectException' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Exception/UnableToConnectException.php',
@@ -3304,11 +3312,11 @@ class ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInitb6b2c0dbc49472e9a437d19039e3f1b9::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit16b5eea59a53455a986e831cc56b99ed::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit16b5eea59a53455a986e831cc56b99ed::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit16b5eea59a53455a986e831cc56b99ed::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInit16b5eea59a53455a986e831cc56b99ed::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInit16b5eea59a53455a986e831cc56b99ed::$classMap;
 
         }, null, ClassLoader::class);
     }

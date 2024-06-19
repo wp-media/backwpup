@@ -1,4 +1,11 @@
 == Changelog ==
+= 4.1.1 =
+Release date: Jun 18, 2024
+
+* Changed: AutoExclude the cache plugin folders from the backup
+* Fixed: Problems with the sql dump of the database
+* Fixed: Update phpseclib library to fix issues in Windows environment.
+
 = 4.1.0 =
 Release date: Jun 4, 2024
 
