@@ -4,7 +4,7 @@ Tags: backup, restore, cloud backup, database backup, wordpress backup
 Requires at least: 3.9
 Tested up to: 6.5.3
 Requires PHP: 7.2
-Stable tag: 4.1.1
+Stable tag: 4.1.0
 License: GPLv2+
 
 Create a complete WordPress backup easily. Schedule automatic backups, store securely, and restore effortlessly with the best WordPress backup plugin!
