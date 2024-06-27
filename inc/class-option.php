@@ -35,15 +35,17 @@ final class BackWPup_Option
         $logs_dir = trailingslashit(str_replace(
             '\\',
             '/',
-            $upload_dir['basedir']
-        )) . 'backwpup/' . BackWPup::get_plugin_data('hash') . '/logs/';
-        $content_path = trailingslashit(str_replace('\\', '/', (string) WP_CONTENT_DIR));
-        $logs_dir = str_replace($content_path, '', $logs_dir);
-        add_site_option('backwpup_cfg_logfolder', $logs_dir);
-        //Network Auth
-        add_site_option('backwpup_cfg_httpauthuser', '');
-        add_site_option('backwpup_cfg_httpauthpassword', '');
-    }
+			$upload_dir['basedir']
+		)) . 'backwpup/' . BackWPup::get_plugin_data( 'hash' ) . '/logs/';
+		$content_path = trailingslashit( str_replace( '\\', '/', (string) WP_CONTENT_DIR ) );
+		$logs_dir     = str_replace( $content_path, '', $logs_dir );
+		add_site_option( 'backwpup_cfg_logfolder', $logs_dir );
+		// Network Auth.
+		add_site_option( 'backwpup_cfg_httpauthuser', '' );
+		add_site_option( 'backwpup_cfg_httpauthpassword', '' );
+		// Network plugin activation time.
+		add_site_option( 'backwpup_activation_time', time() );
+	}
 
     /**
      * Update a BackWPup option.

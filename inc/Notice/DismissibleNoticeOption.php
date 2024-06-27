@@ -2,10 +2,18 @@
 
 namespace Inpsyde\BackWPup\Notice;
 
-class DismissibleNoticeOption
-{
-    /**
-     * @var string
+class DismissibleNoticeOption {
+
+	/**
+	 * The default expiration time in hours.
+	 *
+	 * @var int
+	 */
+	public const DEFAULT_EXPIRATION = 12;
+	/**
+	 * The option prefix.
+	 *
+	 * @var string
      */
     public const OPTION_PREFIX = 'backwpup_dinotopt_';
     /**
@@ -87,16 +95,16 @@ class DismissibleNoticeOption
 
     /**
      * Returns the URL that can be used to dismiss a given notice for good or temporarily according to given action.
-     */
-    public static function dismiss_action_url(string $notice_id, string $action): string
-    {
-        return add_query_arg(
-            [
-                'action' => $action,
-                'notice' => $notice_id,
-                'blog' => get_current_blog_id(),
-                $action => wp_create_nonce($action),
-            ],
+	 */
+	public static function dismiss_action_url( string $notice_id, string $action, ?int $expiration = null ): string {
+		return add_query_arg(
+			[
+				'action'     => $action,
+				'notice'     => $notice_id,
+				'blog'       => get_current_blog_id(),
+				'expiration' => $expiration,
+				$action      => wp_create_nonce( $action ),
+			],
             admin_url('admin-post.php')
         );
     }
@@ -106,9 +114,8 @@ class DismissibleNoticeOption
      */
     public function is_dismissed(string $notice_id): bool
     {
-        $option_name = self::OPTION_PREFIX . $notice_id;
-
-        // Dismissed for good?
+		$option_name = self::OPTION_PREFIX . $notice_id;
+		// Dismissed for good?
         $option = $this->sitewide ? get_site_option($option_name) : get_option($option_name);
         if ($option) {
             return true;
@@ -120,20 +127,17 @@ class DismissibleNoticeOption
         }
 
         // Dismissed for now for user?
-        $transient_name = self::OPTION_PREFIX . $notice_id . get_current_user_id();
-        $transient = $this->sitewide ? get_site_transient($transient_name) : get_transient($transient_name);
-
-        return (bool) $transient;
+		$transient_name = self::OPTION_PREFIX . $notice_id . get_current_user_id();
+		$transient      = $this->sitewide ? get_site_transient( $transient_name ) : get_transient( $transient_name );
+		return (bool) $transient;
     }
 
     /**
      * Action callback to dismiss an action for good.
-     */
-    public function dismiss(): void
-    {
-        [$action, $notice_id, $is_ajax] = $this->assert_allowed();
-
-        $end_request = true;
+	 */
+	public function dismiss(): void {
+		[$action, $notice_id, $is_ajax, $expiration] = $this->assert_allowed();
+		$end_request                                 = true;
 
         switch ($action) {
             case self::FOR_GOOD_ACTION:
@@ -144,9 +148,9 @@ class DismissibleNoticeOption
                 $this->dismiss_for_user_for_good($notice_id);
                 break;
 
-            case self::FOR_NOW_ACTION:
-                $this->dismiss_for_now($notice_id);
-                break;
+			case self::FOR_NOW_ACTION:
+				$this->dismiss_for_now( $notice_id, $expiration );
+				break;
 
             case self::SKIP:
                 $end_request = false;
@@ -183,13 +187,17 @@ class DismissibleNoticeOption
         );
     }
 
-    /**
-     * Action callback to dismiss an action temporarily for current user.
-     */
-    private function dismiss_for_now(string $notice_id): void
-    {
-        $transient_name = self::OPTION_PREFIX . $notice_id . get_current_user_id();
-        $expiration = 12 * HOUR_IN_SECONDS;
+	/**
+	 * Action callback to dismiss an action temporarily for current user.
+	 *
+	 * @param string $notice_id
+	 * @param int    $delay Hours to dismiss the notice.
+	 *
+	 * @return void
+	 */
+	private function dismiss_for_now( string $notice_id, int $delay ): void {
+		$transient_name = self::OPTION_PREFIX . $notice_id . get_current_user_id();
+		$expiration     = $delay * HOUR_IN_SECONDS;
 
         $this->sitewide
             ? set_site_transient($transient_name, 1, $expiration)
@@ -224,21 +232,23 @@ class DismissibleNoticeOption
             $this->end_request();
         }
 
-        $definition = [
-            'action' => FILTER_DEFAULT,
-            'notice' => FILTER_DEFAULT,
-            'blog' => FILTER_SANITIZE_NUMBER_INT,
-            'isAjax' => FILTER_VALIDATE_BOOLEAN,
-        ];
+		$definition = [
+			'action'     => FILTER_DEFAULT,
+			'notice'     => FILTER_DEFAULT,
+			'blog'       => FILTER_SANITIZE_NUMBER_INT,
+			'isAjax'     => FILTER_VALIDATE_BOOLEAN,
+			'expiration' => FILTER_SANITIZE_NUMBER_INT,
+		];
 
         $data = array_merge(
             array_filter((array) filter_input_array(INPUT_GET, $definition)),
             array_filter((array) filter_input_array(INPUT_POST, $definition))
         );
 
-        $is_ajax = !empty($data['isAjax']);
-        $action = empty($data['action']) ? '' : $data['action'];
-        $notice = empty($data['notice']) ? '' : $data['notice'];
+		$is_ajax    = ! empty( $data['isAjax'] );
+		$action     = empty( $data['action'] ) ? '' : $data['action'];
+		$notice     = empty( $data['notice'] ) ? '' : $data['notice'];
+		$expiration = empty( $data['expiration'] ) ? self::DEFAULT_EXPIRATION : $data['expiration'];
 
         if (!$action
             || !$notice
@@ -272,6 +282,6 @@ class DismissibleNoticeOption
             $this->end_request($is_ajax);
         }
 
-        return [$action, $notice, $is_ajax];
-    }
+		return [ $action, $notice, $is_ajax, $expiration ];
+	}
 }

@@ -8,6 +8,7 @@ use Inpsyde\BackWPup\Notice\PhpNotice;
 use Inpsyde\BackWPup\Notice\WordPressNotice;
 use Inpsyde\BackWPup\Pro\Settings;
 use Inpsyde\BackWPup\Pro\Settings\AjaxEncryptionKeyHandler;
+use Inpsyde\BackWPup\Notice\EvaluateNotice;
 
 /**
  * BackWPup_Admin.
@@ -215,10 +216,6 @@ final class BackWPup_Admin
 
     private function init_notices()
     {
-        $evaluateNotice = new WordPressNotice(
-            new NoticeView(25)
-        );
-        $evaluateNotice->init(WordPressNotice::TYPE_ADMIN);
         // Show notice if PHP < 7.2
         $phpNotice = new PhpNotice(
             new NoticeView(PhpNotice::ID)
@@ -231,13 +228,18 @@ final class BackWPup_Admin
         );
         $wpNotice->init(WordPressNotice::TYPE_ADMIN);
 
-        // Show notice if Dropbox needs to be reauthenticated
-        $dropboxNotice = new DropboxNotice(
-            new NoticeView(DropboxNotice::ID),
-            false // Not dismissible
-        );
-        $dropboxNotice->init(DropboxNotice::TYPE_ADMIN);
-    }
+		// Show notice if Dropbox needs to be reauthenticated.
+		$dropbox_notice = new DropboxNotice(
+			new NoticeView( DropboxNotice::ID ),
+			false // Not dismissible.
+		);
+		$dropbox_notice->init( DropboxNotice::TYPE_ADMIN );
+
+		$evaluate_notice = new EvaluateNotice(
+			new NoticeView( EvaluateNotice::ID )
+		);
+		$evaluate_notice->init( EvaluateNotice::TYPE_ADMIN );
+	}
 
     /**
      * Add Links in Plugins Menu to BackWPup.

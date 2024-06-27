@@ -934,6 +934,7 @@ return array(
     'Inpsyde\\BackWPup\\Notice\\DismissibleNoticeOption' => $baseDir . '/inc/Notice/DismissibleNoticeOption.php',
     'Inpsyde\\BackWPup\\Notice\\DropboxNotice' => $baseDir . '/inc/Notice/DropboxNotice.php',
     'Inpsyde\\BackWPup\\Notice\\EnvironmentNotice' => $baseDir . '/inc/Notice/EnvironmentNotice.php',
+    'Inpsyde\\BackWPup\\Notice\\EvaluateNotice' => $baseDir . '/inc/Notice/EvaluateNotice.php',
     'Inpsyde\\BackWPup\\Notice\\Notice' => $baseDir . '/inc/Notice/Notice.php',
     'Inpsyde\\BackWPup\\Notice\\NoticeMessage' => $baseDir . '/inc/Notice/NoticeMessage.php',
     'Inpsyde\\BackWPup\\Notice\\NoticeView' => $baseDir . '/inc/Notice/NoticeView.php',

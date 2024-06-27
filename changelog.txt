@@ -1,4 +1,10 @@
 == Changelog ==
+= 4.1.2 =
+Release date: Jun 27, 2024
+
+* Fixed: Open_basedir restriction on some servers
+* Added: Notice to ask users their experience with BackWpUp
+
 = 4.1.1 =
 Release date: Jun 18, 2024
 

@@ -41,7 +41,7 @@ class BackWPup_Directory extends DirectoryIterator {
 	 */
 	public function current(): object {
 		$item = parent::current();
-		if ( $item->isDir() && in_array( trailingslashit( $item->getPathname() ), self::get_auto_exclusion_plugin_cache_folders(), true ) ) {
+		if ( ! $item->isDot() && $item->isDir() && in_array( trailingslashit( $item->getPathname() ), self::get_auto_exclusion_plugin_cache_folders(), true ) ) {
 			$this->next();
 			return $this->current();
 		}

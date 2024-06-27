@@ -47,3 +47,32 @@
 	var notice = Object.create( Notice );
 	notice.construct() && notice.init();
 }( window._, window.jQuery, window.adminpage ) );
+
+jQuery(document).ready(function ($) {
+	$('#backwpup_notice_evaluate_step_review').hide();
+	$('#backwpup_notice_evaluate_step_issue').hide();
+	$('#backwpup_notice_evaluate_step_thanks').hide();
+
+	$('.doubleLink').on('click', function(event) {
+		event.preventDefault();
+		window.open(this.href, '_blank');
+		$.ajax({
+			type : "get",
+			datatype : "html",
+			url : $(this).attr('hrefbis')
+		})
+		$('#backwpup_notice_evaluate_step_review').hide();
+		$('#backwpup_notice_evaluate_step_issue').hide();
+		$('#backwpup_notice_evaluate_step_thanks').show();
+	});
+
+	$('#backwpup_notice_evaluate_working').on('click', function(event) {
+		$('#backwpup_notice_evaluate_step1').hide();
+		$('#backwpup_notice_evaluate_step_review').show();
+	});
+
+	$('#backwpup_notice_evaluate_issues').on('click', function(event) {
+		$('#backwpup_notice_evaluate_step1').hide();
+		$('#backwpup_notice_evaluate_step_issue').show();
+	});
+});

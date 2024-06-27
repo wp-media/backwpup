@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: BackWPup – WordPress Backup & Restore Plugin
  * Author URI: https://backwpup.com
- * Version: 4.1.1
+ * Version: 4.1.2
  * Requires at least: 3.9
  * Requires PHP: 7.2
  * Text Domain: backwpup
@@ -268,8 +268,14 @@ if (!class_exists(\BackWPup::class, false)) {
                 /** @var string $wp_version */
                 self::$plugin_data['wp_version'] = $wp_version;
                 //Build User Agent
-                self::$plugin_data['user-agent'] = self::$plugin_data['name'] . '/' . self::$plugin_data['version'] . '; WordPress/' . self::$plugin_data['wp_version'] . '; ' . home_url();
-            }
+				self::$plugin_data['user-agent'] = self::$plugin_data['name'] . '/' . self::$plugin_data['version'] . '; WordPress/' . self::$plugin_data['wp_version'] . '; ' . home_url();
+
+				$activation_time = get_site_option( 'backwpup_activation_time' );
+				if ( ! $activation_time ) {
+					update_site_option( 'backwpup_activation_time', time() );
+				}
+				self::$plugin_data['activation_time'] = $activation_time;
+			}
 
             if (!empty($name)) {
                 return self::$plugin_data[$name];

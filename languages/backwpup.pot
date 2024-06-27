@@ -33,151 +33,151 @@ msgstr ""
 msgid "https://backwpup.com"
 msgstr ""
 
-#: backwpup.php:358, inc/class-page-backups.php:223
+#: backwpup.php:364, inc/class-page-backups.php:223
 msgid "Folder"
 msgstr ""
 
-#: backwpup.php:359
+#: backwpup.php:365
 msgid "Backup to Folder"
 msgstr ""
 
-#: backwpup.php:373
+#: backwpup.php:379
 msgid "Email"
 msgstr ""
 
-#: backwpup.php:374
+#: backwpup.php:380
 msgid "Backup sent via email"
 msgstr ""
 
-#: backwpup.php:388
+#: backwpup.php:394
 msgid "FTP"
 msgstr ""
 
-#: backwpup.php:389
+#: backwpup.php:395
 msgid "Backup to FTP"
 msgstr ""
 
-#: backwpup.php:403, inc/class-destination-dropbox.php:440
+#: backwpup.php:409, inc/class-destination-dropbox.php:440
 msgid "Dropbox"
 msgstr ""
 
-#: backwpup.php:404, inc/class-page-about.php:504
+#: backwpup.php:410, inc/class-page-about.php:504
 msgid "Backup to Dropbox"
 msgstr ""
 
-#: backwpup.php:418, inc/class-destination-s3.php:40
+#: backwpup.php:424, inc/class-destination-s3.php:40
 msgid "S3 Service"
 msgstr ""
 
-#: backwpup.php:419
+#: backwpup.php:425
 msgid "Backup to an S3 Service"
 msgstr ""
 
-#: backwpup.php:433
+#: backwpup.php:439
 msgid "MS Azure"
 msgstr ""
 
-#: backwpup.php:434
+#: backwpup.php:440
 msgid "Backup to Microsoft Azure (Blob)"
 msgstr ""
 
-#: backwpup.php:448
+#: backwpup.php:454
 msgid "RSC"
 msgstr ""
 
-#: backwpup.php:449, inc/class-page-about.php:509
+#: backwpup.php:455, inc/class-page-about.php:509
 msgid "Backup to Rackspace Cloud Files"
 msgstr ""
 
-#: backwpup.php:463
+#: backwpup.php:469
 msgid "SugarSync"
 msgstr ""
 
-#: backwpup.php:464, inc/class-page-about.php:524
+#: backwpup.php:470, inc/class-page-about.php:524
 msgid "Backup to SugarSync"
 msgstr ""
 
-#: backwpup.php:491
+#: backwpup.php:497
 msgid "PHP Version %1$s is to low, you need Version %2$s or above."
 msgstr ""
 
-#: backwpup.php:505
+#: backwpup.php:511
 msgid "Missing function \"%s\"."
 msgstr ""
 
-#: backwpup.php:520
+#: backwpup.php:526
 msgid "Missing class \"%s\"."
 msgstr ""
 
-#: backwpup.php:601
+#: backwpup.php:607
 msgid "BackWPup requires PHP version %1$s with spl extension or greater and WordPress %2$s or greater."
 msgstr ""
 
-#: inc/class-admin.php:253, inc/class-help.php:18
+#: inc/class-admin.php:255, inc/class-help.php:18
 msgid "https://backwpup.com/docs/"
 msgstr ""
 
-#: inc/class-admin.php:253
+#: inc/class-admin.php:255
 msgid "Documentation"
 msgstr ""
 
-#: inc/class-admin.php:280
+#: inc/class-admin.php:282
 msgid "BackWPup Dashboard"
 msgstr ""
 
-#: inc/class-admin.php:281
+#: inc/class-admin.php:283
 msgid "Dashboard"
 msgstr ""
 
-#: inc/class-admin.php:312, inc/class-admin.php:313, inc/class-adminbar.php:72, inc/class-page-settings.php:503
+#: inc/class-admin.php:314, inc/class-admin.php:315, inc/class-adminbar.php:72, inc/class-page-settings.php:503
 msgid "Jobs"
 msgstr ""
 
-#: inc/class-admin.php:350, inc/class-admin.php:351
+#: inc/class-admin.php:352, inc/class-admin.php:353
 msgid "Add new job"
 msgstr ""
 
-#: inc/class-admin.php:388, inc/class-admin.php:389, inc/class-adminbar.php:90, inc/class-page-logs.php:368, inc/class-page-settings.php:507
+#: inc/class-admin.php:390, inc/class-admin.php:391, inc/class-adminbar.php:90, inc/class-page-logs.php:368, inc/class-page-settings.php:507
 msgid "Logs"
 msgstr ""
 
-#: inc/class-admin.php:426, inc/class-admin.php:427, inc/class-adminbar.php:99
+#: inc/class-admin.php:428, inc/class-admin.php:429, inc/class-adminbar.php:99
 msgid "Backups"
 msgstr ""
 
-#: inc/class-admin.php:464, inc/class-admin.php:465
+#: inc/class-admin.php:466, inc/class-admin.php:467
 msgid "Settings"
 msgstr ""
 
-#: inc/class-admin.php:489, inc/class-admin.php:490, inc/class-page-backups.php:325, views/restore/steps/step5_top.php:2
+#: inc/class-admin.php:491, inc/class-admin.php:492, inc/class-page-backups.php:325, views/restore/steps/step5_top.php:2
 msgid "Restore"
 msgstr ""
 
-#: inc/class-admin.php:530, inc/class-admin.php:531
+#: inc/class-admin.php:532, inc/class-admin.php:533
 msgid "About"
 msgstr ""
 
-#: inc/class-admin.php:570, inc/class-admin.php:577
+#: inc/class-admin.php:572, inc/class-admin.php:579
 msgid "Cheating, huh?"
 msgstr ""
 
-#: inc/class-admin.php:648
+#: inc/class-admin.php:650
 msgid "<a class=\"backwpup-get-pro\" href=\"%s\">Get BackWPup Pro now.</a>"
 msgstr ""
 
-#: inc/class-admin.php:652, inc/class-admin.php:674, inc/class-help.php:11, inc/class-help.php:16, inc/class-job.php:442, inc/class-jobtype-dbcheck.php:9, inc/class-jobtype-dbdump.php:9, inc/class-jobtype-file.php:10, inc/class-jobtype-wpexp.php:13, inc/class-jobtype-wpplugin.php:9, inc/class-page-about.php:366, inc/class-page-about.php:356, inc/class-page-about.php:676, inc/class-page-backwpup.php:253, inc/class-page-backwpup.php:259, inc/class-page-backwpup.php:261, inc/class-page-settings.php:63, inc/Pro/class-wizard-job.php:17, inc/Pro/class-wizard-jobimport.php:14, inc/Pro/class-wizard-systemtest.php:22
+#: inc/class-admin.php:654, inc/class-admin.php:676, inc/class-help.php:11, inc/class-help.php:16, inc/class-job.php:442, inc/class-jobtype-dbcheck.php:9, inc/class-jobtype-dbdump.php:9, inc/class-jobtype-file.php:10, inc/class-jobtype-wpexp.php:13, inc/class-jobtype-wpplugin.php:9, inc/class-page-about.php:366, inc/class-page-about.php:356, inc/class-page-about.php:676, inc/class-page-backwpup.php:253, inc/class-page-backwpup.php:259, inc/class-page-backwpup.php:261, inc/class-page-settings.php:63, inc/Pro/class-wizard-job.php:17, inc/Pro/class-wizard-jobimport.php:14, inc/Pro/class-wizard-systemtest.php:22
 msgid "http://backwpup.com"
 msgstr ""
 
-#: inc/class-admin.php:678
+#: inc/class-admin.php:680
 msgid "version %s"
 msgstr ""
 
-#: inc/class-admin.php:727
+#: inc/class-admin.php:729
 msgid "Add BackWPup Role"
 msgstr ""
 
-#: inc/class-admin.php:732
+#: inc/class-admin.php:734
 msgid "&mdash; No additional role for BackWPup &mdash;"
 msgstr ""
 
@@ -2214,7 +2214,7 @@ msgstr ""
 msgid "Error while writing file!"
 msgstr ""
 
-#: inc/class-option.php:198, inc/class-page-editjob.php:383
+#: inc/class-option.php:200, inc/class-page-editjob.php:383
 msgid "New Job"
 msgstr ""
 
@@ -5373,6 +5373,50 @@ msgstr ""
 
 #: views/notice/dropbox.php:4
 msgid "Please visit each job below and reauthenticate your Dropbox connection."
+msgstr ""
+
+#: views/notice/evaluate.php:13
+msgid "How is your experience with BackWPup?"
+msgstr ""
+
+#: views/notice/evaluate.php:16
+msgid "Everything is working perfectly!"
+msgstr ""
+
+#: views/notice/evaluate.php:20
+msgid "I've encountered some issues."
+msgstr ""
+
+#: views/notice/evaluate.php:25
+msgid "Fantastic! If you’re enjoying our plugin, could you take a moment to leave us a review? Your positive feedback motivates our team and helps us continue providing great service."
+msgstr ""
+
+#: views/notice/evaluate.php:28
+msgid "Sure, happy to!"
+msgstr ""
+
+#: views/notice/evaluate.php:31
+msgid "Nope, maybe later"
+msgstr ""
+
+#: views/notice/evaluate.php:36
+msgid "We’re sorry to hear that. How can we assist you in resolving these issues?"
+msgstr ""
+
+#: views/notice/evaluate.php:39
+msgid "I need your help!"
+msgstr ""
+
+#: views/notice/evaluate.php:42
+msgid "I have feedback"
+msgstr ""
+
+#: views/notice/evaluate.php:45
+msgid "Not now, thanks"
+msgstr ""
+
+#: views/notice/evaluate.php:50
+msgid "Thanks for your rating! We appreciate your feedback and support."
 msgstr ""
 
 #: views/notice/notice.php:28

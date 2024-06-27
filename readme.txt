@@ -1,10 +1,10 @@
-=== BackWPup – WordPress Backup Plugin | Easy Backup & Restore ===
+=== BackWPup – WordPress Backup & Restore Plugin ===
 Contributors: backwpup, wp_rocket, imagify
 Tags: backup, restore, cloud backup, database backup, wordpress backup
 Requires at least: 3.9
 Tested up to: 6.5.3
 Requires PHP: 7.2
-Stable tag: 4.1.1
+Stable tag: 4.1.2
 License: GPLv2+
 
 Create a complete WordPress backup easily. Schedule automatic backups, store securely, and restore effortlessly with the best WordPress backup plugin!
@@ -12,6 +12,8 @@ Create a complete WordPress backup easily. Schedule automatic backups, store sec
 == Description ==
 
 = The Best WordPress Backup & Restore Plugin =
+
+🆕 The restore option is now included in the free version!
 
 [BackWPup](https://backwpup.com/) is the most comprehensive backup & restore plugin for WordPress.
 
@@ -199,6 +201,12 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 * %s = Two digit representation of the second
 
 == Changelog ==
+
+= 4.1.2 =
+Release date: Jun 27, 2024
+
+* Fixed: Open_basedir restriction on some servers
+* Added: Notice to ask users their experience with BackWpUp
 
 = 4.1.1 =
 Release date: Jun 18, 2024

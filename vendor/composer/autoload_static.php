@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit16b5eea59a53455a986e831cc56b99ed
+class ComposerStaticInit13223faded342e162e8f241c12d72dea
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -1215,6 +1215,7 @@ class ComposerStaticInit16b5eea59a53455a986e831cc56b99ed
         'Inpsyde\\BackWPup\\Notice\\DismissibleNoticeOption' => __DIR__ . '/../..' . '/inc/Notice/DismissibleNoticeOption.php',
         'Inpsyde\\BackWPup\\Notice\\DropboxNotice' => __DIR__ . '/../..' . '/inc/Notice/DropboxNotice.php',
         'Inpsyde\\BackWPup\\Notice\\EnvironmentNotice' => __DIR__ . '/../..' . '/inc/Notice/EnvironmentNotice.php',
+        'Inpsyde\\BackWPup\\Notice\\EvaluateNotice' => __DIR__ . '/../..' . '/inc/Notice/EvaluateNotice.php',
         'Inpsyde\\BackWPup\\Notice\\Notice' => __DIR__ . '/../..' . '/inc/Notice/Notice.php',
         'Inpsyde\\BackWPup\\Notice\\NoticeMessage' => __DIR__ . '/../..' . '/inc/Notice/NoticeMessage.php',
         'Inpsyde\\BackWPup\\Notice\\NoticeView' => __DIR__ . '/../..' . '/inc/Notice/NoticeView.php',
@@ -3312,11 +3313,11 @@ class ComposerStaticInit16b5eea59a53455a986e831cc56b99ed
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit16b5eea59a53455a986e831cc56b99ed::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit16b5eea59a53455a986e831cc56b99ed::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit16b5eea59a53455a986e831cc56b99ed::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInit16b5eea59a53455a986e831cc56b99ed::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInit16b5eea59a53455a986e831cc56b99ed::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit13223faded342e162e8f241c12d72dea::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit13223faded342e162e8f241c12d72dea::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit13223faded342e162e8f241c12d72dea::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInit13223faded342e162e8f241c12d72dea::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInit13223faded342e162e8f241c12d72dea::$classMap;
 
         }, null, ClassLoader::class);
     }
