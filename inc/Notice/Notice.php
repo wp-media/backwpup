@@ -74,13 +74,20 @@ abstract class Notice
         }
         if ($type === self::TYPE_BACKWPUP) {
             add_action('backwpup_admin_messages', function (): void {
-                $this->notice();
-            }, 20);
-        } elseif ($type === static::TYPE_ADMIN) {
-            add_action('admin_notices', function (): void {
-                $this->notice();
-            }, 20);
-        } else {
+				$this->notice();
+			},
+				20
+				);
+		} elseif ( static::TYPE_ADMIN === $type ) {
+			$action_name = is_multisite() ? 'network_admin_notices' : 'admin_notices';
+			add_action(
+				$action_name,
+				function (): void {
+					$this->notice();
+				},
+				20
+				);
+		} else {
             throw new \InvalidArgumentException(
                 __('Invalid notice type specified', 'backwpup')
             );

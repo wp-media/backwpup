@@ -20,9 +20,9 @@ class PhpNotice extends EnvironmentNotice
      */
     protected function getConstraints(): array
     {
-        return [
-            new PhpConstraint('7.2'),
-        ];
+		return [
+			new PhpConstraint( '7.4' ),
+		];
     }
 
     /**

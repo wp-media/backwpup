@@ -9,34 +9,36 @@ final class BackWPup_Option
 {
     /**
      * add filter for Site option defaults.
-     */
-    public static function default_site_options()
-    {
-        //global
-        add_site_option('backwpup_version', '0.0.0');
-        //job default
-        add_site_option('backwpup_jobs', []);
-        //general
-        add_site_option('backwpup_cfg_showadminbar', false);
-        add_site_option('backwpup_cfg_showfoldersize', false);
-        add_site_option('backwpup_cfg_protectfolders', true);
-        //job
-        add_site_option('backwpup_cfg_jobmaxexecutiontime', 30);
-        add_site_option('backwpup_cfg_jobstepretry', 3);
-        add_site_option('backwpup_cfg_jobrunauthkey', BackWPup::get_generated_hash(8));
-        add_site_option('backwpup_cfg_loglevel', 'normal_translated');
-        add_site_option('backwpup_cfg_jobwaittimems', 0);
-        add_site_option('backwpup_cfg_jobdooutput', 0);
-        add_site_option('backwpup_cfg_windows', 0);
-        //Logs
-        add_site_option('backwpup_cfg_maxlogs', 30);
-        add_site_option('backwpup_cfg_gzlogs', 0);
-        $upload_dir = wp_upload_dir(null, false, true);
-        $logs_dir = trailingslashit(str_replace(
-            '\\',
+	 */
+	public static function default_site_options() {
+		// global.
+		add_site_option( 'backwpup_version', '0.0.0' );
+		// job default.
+		add_site_option( 'backwpup_jobs', [] );
+		// general.
+		add_site_option( 'backwpup_cfg_showadminbar', true );
+		add_site_option( 'backwpup_cfg_showfoldersize', false );
+		add_site_option( 'backwpup_cfg_protectfolders', true );
+		add_site_option( 'backwpup_cfg_keepplugindata', false );
+		// job.
+		add_site_option( 'backwpup_cfg_jobmaxexecutiontime', 30 );
+		add_site_option( 'backwpup_cfg_jobstepretry', 3 );
+		add_site_option( 'backwpup_cfg_jobrunauthkey', BackWPup::get_generated_hash( 8 ) );
+		add_site_option( 'backwpup_cfg_loglevel', 'normal_translated' );
+		add_site_option( 'backwpup_cfg_jobwaittimems', 0 );
+		add_site_option( 'backwpup_cfg_jobdooutput', 0 );
+		add_site_option( 'backwpup_cfg_windows', 0 );
+		// Logs.
+		add_site_option( 'backwpup_cfg_maxlogs', 30 );
+		add_site_option( 'backwpup_cfg_gzlogs', 0 );
+		$upload_dir   = wp_upload_dir( null, false, true );
+		$logs_dir     = trailingslashit(
+			str_replace(
+			'\\',
             '/',
 			$upload_dir['basedir']
-		)) . 'backwpup/' . BackWPup::get_plugin_data( 'hash' ) . '/logs/';
+		)
+			) . 'backwpup/' . BackWPup::get_plugin_data( 'hash' ) . '/logs/';
 		$content_path = trailingslashit( str_replace( '\\', '/', (string) WP_CONTENT_DIR ) );
 		$logs_dir     = str_replace( $content_path, '', $logs_dir );
 		add_site_option( 'backwpup_cfg_logfolder', $logs_dir );

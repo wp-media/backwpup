@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit13223faded342e162e8f241c12d72dea
+class ComposerStaticInit3cbcd5704cb2d3a1adeb4ee5c68da2b9
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -646,40 +646,6 @@ class ComposerStaticInit13223faded342e162e8f241c12d72dea
         'BackWPup_Page_Restore' => __DIR__ . '/../..' . '/inc/class-page-restore.php',
         'BackWPup_Page_Settings' => __DIR__ . '/../..' . '/inc/class-page-settings.php',
         'BackWPup_Path_Fixer' => __DIR__ . '/../..' . '/inc/class-path-fixer.php',
-        'BackWPup_Pro' => __DIR__ . '/../..' . '/inc/Pro/class-pro.php',
-        'BackWPup_Pro_Destination_Dropbox' => __DIR__ . '/../..' . '/inc/Pro/class-destination-dropbox.php',
-        'BackWPup_Pro_Destination_Email' => __DIR__ . '/../..' . '/inc/Pro/class-destination-email.php',
-        'BackWPup_Pro_Destination_Folder' => __DIR__ . '/../..' . '/inc/Pro/class-destination-folder.php',
-        'BackWPup_Pro_Destination_Ftp' => __DIR__ . '/../..' . '/inc/Pro/class-destination-ftp.php',
-        'BackWPup_Pro_Destination_GDrive' => __DIR__ . '/../..' . '/inc/Pro/class-destination-gdrive.php',
-        'BackWPup_Pro_Destination_GDrive_Downloader' => __DIR__ . '/../..' . '/inc/Pro/class-destination-gdrive-downloader.php',
-        'BackWPup_Pro_Destination_Glacier' => __DIR__ . '/../..' . '/inc/Pro/class-destination-glacier.php',
-        'BackWPup_Pro_Destination_HiDrive' => __DIR__ . '/../..' . '/inc/Pro/class-destination-hidrive.php',
-        'BackWPup_Pro_Destination_HiDrive_Api' => __DIR__ . '/../..' . '/inc/Pro/class-destination-hidrive-api.php',
-        'BackWPup_Pro_Destination_HiDrive_Authorization' => __DIR__ . '/../..' . '/inc/Pro/class-destination-hidrive-authorization.php',
-        'BackWPup_Pro_Destination_HiDrive_Request' => __DIR__ . '/../..' . '/inc/Pro/class-destination-hidrive-request.php',
-        'BackWPup_Pro_Destination_MSAzure' => __DIR__ . '/../..' . '/inc/Pro/class-destination-msazure.php',
-        'BackWPup_Pro_Destination_OneDrive' => __DIR__ . '/../..' . '/inc/Pro/class-destination-onedrive.php',
-        'BackWPup_Pro_Destination_OneDrive_Api' => __DIR__ . '/../..' . '/inc/Pro/class-destination-onedrive-api.php',
-        'BackWPup_Pro_Destination_OneDrive_Authorization' => __DIR__ . '/../..' . '/inc/Pro/class-destination-onedrive-authorization.php',
-        'BackWPup_Pro_Destination_OneDrive_Downloader' => __DIR__ . '/../..' . '/inc/Pro/class-destination-onedrive-downloader.php',
-        'BackWPup_Pro_Destination_RSC' => __DIR__ . '/../..' . '/inc/Pro/class-destination-rsc.php',
-        'BackWPup_Pro_Destination_S3' => __DIR__ . '/../..' . '/inc/Pro/class-destination-s3.php',
-        'BackWPup_Pro_Destination_SugarSync' => __DIR__ . '/../..' . '/inc/Pro/class-destination-sugarsync.php',
-        'BackWPup_Pro_Export_Jobs' => __DIR__ . '/../..' . '/inc/Pro/class-export-jobs.php',
-        'BackWPup_Pro_Glacier_Destination' => __DIR__ . '/../..' . '/inc/Pro/class-glacier-destination.php',
-        'BackWPup_Pro_JobType_DBCheck' => __DIR__ . '/../..' . '/inc/Pro/class-jobtype-dbcheck.php',
-        'BackWPup_Pro_JobType_DBDump' => __DIR__ . '/../..' . '/inc/Pro/class-jobtype-dbdump.php',
-        'BackWPup_Pro_JobType_File' => __DIR__ . '/../..' . '/inc/Pro/class-jobtype-file.php',
-        'BackWPup_Pro_JobType_WPEXP' => __DIR__ . '/../..' . '/inc/Pro/class-jobtype-wpexp.php',
-        'BackWPup_Pro_JobType_WPPlugin' => __DIR__ . '/../..' . '/inc/Pro/class-jobtype-wpplugin.php',
-        'BackWPup_Pro_Page_Support' => __DIR__ . '/../..' . '/inc/Pro/class-page-support.php',
-        'BackWPup_Pro_Page_Wizard' => __DIR__ . '/../..' . '/inc/Pro/class-page-wizard.php',
-        'BackWPup_Pro_Settings_APIKeys' => __DIR__ . '/../..' . '/inc/Pro/class-settings-apikeys.php',
-        'BackWPup_Pro_Wizard_Job' => __DIR__ . '/../..' . '/inc/Pro/class-wizard-job.php',
-        'BackWPup_Pro_Wizard_JobImport' => __DIR__ . '/../..' . '/inc/Pro/class-wizard-jobimport.php',
-        'BackWPup_Pro_Wizard_SystemTest' => __DIR__ . '/../..' . '/inc/Pro/class-wizard-systemtest.php',
-        'BackWPup_Pro_Wizards' => __DIR__ . '/../..' . '/inc/Pro/class-wizards.php',
         'BackWPup_Recursive_Directory' => __DIR__ . '/../..' . '/inc/class-recursive-directory.php',
         'BackWPup_S3_Destination' => __DIR__ . '/../..' . '/inc/class-s3-destination.php',
         'BackWPup_Sanitize_Path' => __DIR__ . '/../..' . '/inc/class-sanitize-path.php',
@@ -1173,17 +1139,6 @@ class ComposerStaticInit13223faded342e162e8f241c12d72dea
         'Inpsyde\\BackWPup\\Archiver\\FallBackZip' => __DIR__ . '/..' . '/inpsyde/backwpup-archiver/src/FallBackZip.php',
         'Inpsyde\\BackWPup\\Archiver\\FileException' => __DIR__ . '/..' . '/inpsyde/backwpup-archiver/src/FileException.php',
         'Inpsyde\\BackWPup\\Archiver\\Zip' => __DIR__ . '/..' . '/inpsyde/backwpup-archiver/src/Zip.php',
-        'Inpsyde\\BackWPup\\Common\\PathUtils' => __DIR__ . '/../..' . '/src/Common/PathUtils.php',
-        'Inpsyde\\BackWPup\\Infrastructure\\Destinations\\GoogleDrive\\Exception\\CouldNotCreateFolder' => __DIR__ . '/../..' . '/src/Infrastructure/Destinations/GoogleDrive/Exception/CouldNotCreateFolder.php',
-        'Inpsyde\\BackWPup\\Infrastructure\\Destinations\\GoogleDrive\\Exception\\CouldNotDownloadFile' => __DIR__ . '/../..' . '/src/Infrastructure/Destinations/GoogleDrive/Exception/CouldNotDownloadFile.php',
-        'Inpsyde\\BackWPup\\Infrastructure\\Destinations\\GoogleDrive\\Exception\\CouldNotFindFile' => __DIR__ . '/../..' . '/src/Infrastructure/Destinations/GoogleDrive/Exception/CouldNotFindFile.php',
-        'Inpsyde\\BackWPup\\Infrastructure\\Destinations\\GoogleDrive\\Exception\\CouldNotReadStream' => __DIR__ . '/../..' . '/src/Infrastructure/Destinations/GoogleDrive/Exception/CouldNotReadStream.php',
-        'Inpsyde\\BackWPup\\Infrastructure\\Destinations\\GoogleDrive\\Exception\\CouldNotSeekStream' => __DIR__ . '/../..' . '/src/Infrastructure/Destinations/GoogleDrive/Exception/CouldNotSeekStream.php',
-        'Inpsyde\\BackWPup\\Infrastructure\\Destinations\\GoogleDrive\\Exception\\ReceivedUnexpectedResponse' => __DIR__ . '/../..' . '/src/Infrastructure/Destinations/GoogleDrive/Exception/ReceivedUnexpectedResponse.php',
-        'Inpsyde\\BackWPup\\Infrastructure\\Destinations\\GoogleDrive\\GoogleDrive' => __DIR__ . '/../..' . '/src/Infrastructure/Destinations/GoogleDrive/GoogleDrive.php',
-        'Inpsyde\\BackWPup\\Infrastructure\\Destinations\\GoogleDrive\\GoogleDriveDownloader' => __DIR__ . '/../..' . '/src/Infrastructure/Destinations/GoogleDrive/GoogleDriveDownloader.php',
-        'Inpsyde\\BackWPup\\Infrastructure\\Destinations\\GoogleDrive\\GoogleDriveUploader' => __DIR__ . '/../..' . '/src/Infrastructure/Destinations/GoogleDrive/GoogleDriveUploader.php',
-        'Inpsyde\\BackWPup\\Infrastructure\\Destinations\\HiDrive\\Exception\\RefreshTokenExpiredException' => __DIR__ . '/../..' . '/src/Infrastructure/Destinations/HiDrive/Exception/RefreshTokenExpiredException.php',
         'Inpsyde\\BackWPup\\Infrastructure\\Http\\Authentication\\BasicAuthCredentials' => __DIR__ . '/../..' . '/src/Infrastructure/Http/Authentication/BasicAuthCredentials.php',
         'Inpsyde\\BackWPup\\Infrastructure\\Http\\Authentication\\Exception\\CouldNotDecodeBasicAuthenticationToken' => __DIR__ . '/../..' . '/src/Infrastructure/Http/Authentication/Exception/CouldNotDecodeBasicAuthenticationToken.php',
         'Inpsyde\\BackWPup\\Infrastructure\\Http\\Client\\Exception\\NetworkException' => __DIR__ . '/../..' . '/src/Infrastructure/Http/Client/Exception/NetworkException.php',
@@ -1224,19 +1179,6 @@ class ComposerStaticInit13223faded342e162e8f241c12d72dea
         'Inpsyde\\BackWPup\\Notice\\PromoterMessage' => __DIR__ . '/../..' . '/inc/Notice/PromoterMessage.php',
         'Inpsyde\\BackWPup\\Notice\\PromoterUpdater' => __DIR__ . '/../..' . '/inc/Notice/PromoterUpdater.php',
         'Inpsyde\\BackWPup\\Notice\\WordPressNotice' => __DIR__ . '/../..' . '/inc/Notice/WordPressNotice.php',
-        'Inpsyde\\BackWPup\\Pro\\License\\Api\\LicenseActivation' => __DIR__ . '/../..' . '/inc/Pro/License/Api/LicenseActivation.php',
-        'Inpsyde\\BackWPup\\Pro\\License\\Api\\LicenseDeactivation' => __DIR__ . '/../..' . '/inc/Pro/License/Api/LicenseDeactivation.php',
-        'Inpsyde\\BackWPup\\Pro\\License\\Api\\LicenseStatusRequest' => __DIR__ . '/../..' . '/inc/Pro/License/Api/LicenseStatusRequest.php',
-        'Inpsyde\\BackWPup\\Pro\\License\\Api\\PluginInformation' => __DIR__ . '/../..' . '/inc/Pro/License/Api/PluginInformation.php',
-        'Inpsyde\\BackWPup\\Pro\\License\\Api\\PluginUpdate' => __DIR__ . '/../..' . '/inc/Pro/License/Api/PluginUpdate.php',
-        'Inpsyde\\BackWPup\\Pro\\License\\License' => __DIR__ . '/../..' . '/inc/Pro/License/License.php',
-        'Inpsyde\\BackWPup\\Pro\\License\\LicenseInterface' => __DIR__ . '/../..' . '/inc/Pro/License/LicenseInterface.php',
-        'Inpsyde\\BackWPup\\Pro\\License\\LicenseSettingUpdater' => __DIR__ . '/../..' . '/inc/Pro/License/LicenseSettingUpdater.php',
-        'Inpsyde\\BackWPup\\Pro\\License\\LicenseSettingsView' => __DIR__ . '/../..' . '/inc/Pro/License/LicenseSettingsView.php',
-        'Inpsyde\\BackWPup\\Pro\\License\\RequestHandler' => __DIR__ . '/../..' . '/inc/Pro/License/RequestHandler.php',
-        'Inpsyde\\BackWPup\\Pro\\Settings\\AjaxEncryptionKeyHandler' => __DIR__ . '/../..' . '/inc/Pro/Settings/AjaxEncryptionKeyHandler.php',
-        'Inpsyde\\BackWPup\\Pro\\Settings\\EncryptionSettingUpdater' => __DIR__ . '/../..' . '/inc/Pro/Settings/EncryptionSettingUpdater.php',
-        'Inpsyde\\BackWPup\\Pro\\Settings\\EncryptionSettingsView' => __DIR__ . '/../..' . '/inc/Pro/Settings/EncryptionSettingsView.php',
         'Inpsyde\\BackWPup\\Settings\\SettingTab' => __DIR__ . '/../..' . '/inc/Settings/SettingTab.php',
         'Inpsyde\\BackWPup\\Settings\\SettingUpdatable' => __DIR__ . '/../..' . '/inc/Settings/SettingUpdatable.php',
         'Inpsyde\\EnvironmentChecker\\ConstraintsCollectionFactory' => __DIR__ . '/../..' . '/inc/dependencies/inpsyde/plugin-environment-checker/src/ConstraintsCollectionFactory.php',
@@ -3313,11 +3255,11 @@ class ComposerStaticInit13223faded342e162e8f241c12d72dea
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit13223faded342e162e8f241c12d72dea::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit13223faded342e162e8f241c12d72dea::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit13223faded342e162e8f241c12d72dea::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInit13223faded342e162e8f241c12d72dea::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInit13223faded342e162e8f241c12d72dea::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit3cbcd5704cb2d3a1adeb4ee5c68da2b9::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit3cbcd5704cb2d3a1adeb4ee5c68da2b9::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit3cbcd5704cb2d3a1adeb4ee5c68da2b9::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInit3cbcd5704cb2d3a1adeb4ee5c68da2b9::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInit3cbcd5704cb2d3a1adeb4ee5c68da2b9::$classMap;
 
         }, null, ClassLoader::class);
     }

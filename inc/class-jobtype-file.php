@@ -512,11 +512,12 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
     private function show_folder($id, $jobid, $path)
     {
         $folder = realpath(BackWPup_Path_Fixer::fix_path($path));
-        $folder_size = 0;
-        if ($folder) {
-            $folder = untrailingslashit(str_replace('\\', '/', $folder));
-            $folder_size = (get_site_option('backwpup_cfg_showfoldersize')) ? ' (' . size_format(BackWPup_File::get_folder_size($folder), 2) . ')' : '';
-        } ?>
+		$folder_size = 0;
+		if ( $folder ) {
+			$folder          = untrailingslashit( str_replace( '\\', '/', $folder ) );
+				$folder_size = BackWPup_File::get_folder_size( $folder );
+		}
+		?>
 		<input class="checkbox"
 			   type="checkbox"<?php checked(BackWPup_Option::get($jobid, 'backup' . $id)); ?>
 			   name="backup<?php echo esc_attr($id); ?>" id="idbackup<?php echo esc_attr($id); ?>" value="1" /> <code title="<?php echo esc_attr(sprintf(__('Path as set by user (symlink?): %s', 'backwpup'), $path)); ?>"><?php echo esc_attr($folder); ?></code><?php echo esc_html($folder_size); ?>
@@ -532,7 +533,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
 					// List only the folders without thoses listed by auto exclude!
 					if ( ! $file->isDot() && $file->isDir() && ! in_array( trailingslashit( $file->getPathname() ), $this->get_exclude_dirs( $folder, $dir::get_auto_exclusion_plugins_folders() ), true ) ) {
 						$donotbackup = file_exists( $file->getPathname() . '/.donotbackup' );
-						$folder_size = ( get_site_option( 'backwpup_cfg_showfoldersize' ) ) ? ' (' . size_format( BackWPup_File::get_folder_size( $file->getPathname() ), 2 ) . ')' : '';
+						$folder_size = BackWPup_File::get_folder_size( $file->getPathname() );
 						$title       = '';
 						if ( $donotbackup ) {
 							$excludes[] = $file->getFilename();

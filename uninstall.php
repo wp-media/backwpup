@@ -8,12 +8,8 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 /** @var wpdb $wpdb */
 global $wpdb;
 
-//only uninstall if no BackWPup Version active
-if (!class_exists(\BackWPup::class)) {
-    //do nothing if `keep plugin data` enabled
-    if (!empty(get_site_option('backwpup_cfg_keepplugindata'))) {
-        return;
-    }
+// only uninstall if no BackWPup Version active.
+if ( ! class_exists( \BackWPup::class ) ) {
 
     //delete plugin options
     if (is_multisite()) {

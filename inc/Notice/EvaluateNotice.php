@@ -1,6 +1,6 @@
 <?php
 
-namespace Inpsyde\BackWPup\Notice;
+namespace Inpsyde\BackWPup\Notice; // phpcs:ignore
 
 use BackWPup_Option;
 use BackWPup;
@@ -53,7 +53,8 @@ class EvaluateNotice extends Notice {
 	 */
 	protected function shouldDisplay(): bool {
 		// Check if the notice has been dismissed.
-		$option = new DismissibleNoticeOption( false );
+		$site_wide = is_multisite() ? true : false;
+		$option    = new DismissibleNoticeOption( $site_wide );
 		if ( $option->is_dismissed( static::ID ) ) {
 			return false;
 		}

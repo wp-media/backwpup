@@ -214,12 +214,14 @@ final class BackWPup_Admin
         add_action('wp_ajax_encrypt_key_handler', [$ajax_encryption_key_handler, 'handle']);
     }
 
-    private function init_notices()
-    {
-        // Show notice if PHP < 7.2
-        $phpNotice = new PhpNotice(
-            new NoticeView(PhpNotice::ID)
-        );
+	/**
+	 * Init the plugin notices.
+	 */
+	private function init_notices() {
+		// Show notice if PHP < 7.4.
+		$phpNotice = new PhpNotice( //phpcs:ignore
+			new NoticeView( PhpNotice::ID )
+		);
         $phpNotice->init(PhpNotice::TYPE_ADMIN);
 
         // Show notice if WordPress < 5.0

@@ -65,21 +65,31 @@ class BackWPup_File
         return false;
     }
 
-    /**
-     * get size of files in folder.
-     *
-     * @param string $folder the folder to calculate
-     * @param bool   $deep   went thrue suborders
-     *
-     * @return int folder size in byte
-     */
-    public static function get_folder_size($folder)
-    {
-        $files_size = 0;
+	/**
+	 * Get size of files in folder if enabled
+	 *
+	 * @param string $folder the folder to calculate.
+	 *
+	 * @return string folder size formated in human readable format
+	 */
+	public static function get_folder_size( $folder ) {
 
-        if (!is_readable($folder)) {
-            return $files_size;
-        }
+		/**
+		 * Filter whether BackWPup will show the folder size.
+		 *
+		 * @param bool $show_folder_size whether BackWPup will show the folder size or not.
+		 */
+		$show_folder_size = (bool) apply_filters( 'backwpup_show_folder_size', (bool) get_site_option( 'backwpup_cfg_showfoldersize' ) );
+
+		if ( ! $show_folder_size ) {
+			return '';
+		}
+
+		$files_size = 0;
+
+		if ( ! is_readable( $folder ) ) {
+			return self::format_size( $files_size );
+		}
 
         $iterator = new RecursiveIteratorIterator(new BackWPup_Recursive_Directory($folder, FilesystemIterator::SKIP_DOTS));
 
@@ -89,8 +99,19 @@ class BackWPup_File
             }
         }
 
-        return $files_size;
-    }
+		return self::format_size( $files_size );
+	}
+
+	/**
+	 * Format size in human readable format.
+	 *
+	 * @param int $size
+	 *
+	 * @return string
+	 */
+	protected static function format_size( $size ): string {
+		return ' (' . size_format( $size, 2 ) . ')';
+	}
 
     /**
      * Get an absolute path if it is relative.
@@ -166,10 +187,16 @@ class BackWPup_File
                 return sprintf(__('Folder "%1$s" is not writable', 'backwpup'), $childFolder);
             }
 
-            //create files for securing folder
-            if (get_site_option('backwpup_cfg_protectfolders')) {
-                self::protect_folder($childFolder);
-            }
+			// create files for securing folder.
+			/**
+			 * Filter whether BackWPup will protect the folders.
+			 *
+			 * @param bool $protect_folders Whether the folder will be protect or not.
+			 */
+			$protect_folders = (bool) apply_filters( 'backwpup_protect_folders', (bool) get_site_option( 'backwpup_cfg_protectfolders' ) );
+			if ( $protect_folders ) {
+				self::protect_folder( $childFolder ); // phpcs:ignore
+			}
 
             //Create do not backup file for this folder
             if ($donotbackup) {

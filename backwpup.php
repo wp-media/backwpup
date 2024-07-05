@@ -5,9 +5,9 @@
  * Description: WordPress Backup Plugin
  * Author: BackWPup – WordPress Backup & Restore Plugin
  * Author URI: https://backwpup.com
- * Version: 4.1.2
+ * Version: 4.1.3
  * Requires at least: 3.9
- * Requires PHP: 7.2
+ * Requires PHP: 7.4
  * Text Domain: backwpup
  * Domain Path: /languages/
  * Network: true
@@ -156,10 +156,17 @@ if (!class_exists(\BackWPup::class, false)) {
                 $admin = new BackWPup_Admin($settings);
                 $admin->init();
 
-                if (get_site_option('backwpup_cfg_showadminbar')) {
-                    $adminBar = new BackWPup_Adminbar($admin);
-                    add_action('init', [$adminBar, 'init']);
-                }
+				/**
+				 * Filter whether BackWPup will show the plugins in the admin bar or not.
+				 *
+				 * @param bool $is_in_admin_bar Whether the admin link will be shown in the admin bar or not.
+				 */
+				$is_in_admin_bar = (bool) apply_filters( 'backwpup_is_in_admin_bar', (bool) get_site_option( 'backwpup_cfg_showadminbar' ) );
+
+				if ( true === $is_in_admin_bar ) {
+					$admin_bar = new BackWPup_Adminbar( $admin );
+					add_action( 'init', [ $admin_bar, 'init' ] );
+				}
 
                 new BackWPup_EasyCron();
             }

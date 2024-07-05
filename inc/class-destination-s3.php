@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile
 // Amazon S3 SDK v3.93.7
 // http://aws.amazon.com/de/sdkforphp2/
 // https://github.com/aws/aws-sdk-php
@@ -896,7 +897,16 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
                 $job_object->log(__('Starting upload to S3 Service&#160;&hellip;', 'backwpup'));
             }
 
-            if (!$aws_destination->supportsMultipart() || $job_object->backup_filesize < 1048576 * 6) {
+            //Calculate chunk size for S3 uploads. Limits see: https://docs.aws.amazon.com/AmazonS3/latest/userguide/qfacts.html
+            $chunk_size = 1024 * 1024 * 5;
+            if (1000 < ceil($job_object->backup_filesize / $chunk_size)) {
+                $chunk_size = $chunk_size * 2;
+            }
+            if (10000 < ceil($job_object->backup_filesize / $chunk_size)) {
+                $chunk_size = (int) ceil($job_object->backup_filesize / 10000);
+            }
+
+            if (!$aws_destination->supportsMultipart() || $job_object->backup_filesize <= $chunk_size) {
                 // Prepare Upload
                 if (!$up_file_handle = fopen($job_object->backup_folder . $job_object->backup_file, 'rb')) {
                     $job_object->log(__('Can not open source file for transfer.', 'backwpup'), E_USER_ERROR);
@@ -980,24 +990,25 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
                     }
 
                     while (!feof($file_handle)) {
+                        $part_number =  $job_object->steps_data[$job_object->step_working]['Part'];
                         $chunk_upload_start = microtime(true);
-                        $part_data = fread($file_handle, 1048576 * 5); //5MB Minimum part size
+                        $part_data = fread($file_handle, $chunk_size);
                         $part = $s3->uploadPart([
                             'Bucket' => $job_object->job['s3bucket'],
                             'UploadId' => $job_object->steps_data[$job_object->step_working]['UploadId'],
                             'Key' => $job_object->job['s3dir'] . $job_object->backup_file,
-                            'PartNumber' => $job_object->steps_data[$job_object->step_working]['Part'],
+                            'PartNumber' => $part_number,
                             'Body' => $part_data,
                         ]);
                         $chunk_upload_time = microtime(true) - $chunk_upload_start;
                         $job_object->substeps_done = $job_object->substeps_done + strlen(
                             $part_data
                         );
-                        $job_object->steps_data[$job_object->step_working]['Parts'][] = [
+                        $job_object->steps_data[$job_object->step_working]['Parts'][$part_number - 1] = [
                             'ETag' => $part->get('ETag'),
-                            'PartNumber' => $job_object->steps_data[$job_object->step_working]['Part'],
+                            'PartNumber' => $part_number,
                         ];
-                        ++$job_object->steps_data[$job_object->step_working]['Part'];
+                        $job_object->steps_data[$job_object->step_working]['Part']++;
                         $time_remaining = $job_object->do_restart_time();
                         if ($time_remaining < $chunk_upload_time) {
                             $job_object->do_restart_time(true);
@@ -1006,17 +1017,11 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
                         gc_collect_cycles();
                     }
 
-                    $parts = $s3->listParts([
-                        'Bucket' => $job_object->job['s3bucket'],
-                        'Key' => $job_object->job['s3dir'] . $job_object->backup_file,
-                        'UploadId' => $job_object->steps_data[$job_object->step_working]['UploadId'],
-                    ]);
-
                     $s3->completeMultipartUpload([
                         'Bucket' => $job_object->job['s3bucket'],
                         'UploadId' => $job_object->steps_data[$job_object->step_working]['UploadId'],
                         'MultipartUpload' => [
-                            'Parts' => $parts['Parts'],
+                            'Parts' => $job_object->steps_data[$job_object->step_working]['Parts'],
                         ],
                         'Key' => $job_object->job['s3dir'] . $job_object->backup_file,
                     ]);

@@ -498,9 +498,8 @@ class BackWPup_Page_Settings
         ); ?>
 			</h1>
 			<?php
-			$tabs            = [];
-			$tabs['general'] = esc_html__( 'General', 'backwpup' );
-			$tabs['job']     = esc_html__( 'Jobs', 'backwpup' );
+			$tabs        = [];
+			$tabs['job'] = esc_html__( 'Jobs', 'backwpup' );
 			if ( BackWPup::is_pro() ) {
 				$tabs['encryption'] = esc_html__( 'Encryption', 'backwpup' );
 			}
@@ -526,116 +525,7 @@ class BackWPup_Page_Settings
 				<?php wp_nonce_field('backwpup_ajax_nonce', 'backwpupajaxnonce', false); ?>
 				<input type="hidden" name="page" value="backwpupsettings"/>
 				<input type="hidden" name="action" value="backwpup"/>
-				<input type="hidden" name="anchor" value="#backwpup-tab-general"/>
-
-				<div class="table ui-tabs-hide" id="backwpup-tab-general">
-
-					<h3 class="title"><?php esc_html_e('Display Settings', 'backwpup'); ?></h3>
-					<p><?php _e('Do you want to see BackWPup in the WordPress admin bar?', 'backwpup'); ?></p>
-					<table class="form-table">
-						<tr>
-							<th scope="row"><?php esc_html_e('Admin bar', 'backwpup'); ?></th>
-							<td>
-								<fieldset>
-									<legend class="screen-reader-text">
-										<span>
-											<?php esc_html_e('Admin Bar', 'backwpup'); ?>
-										</span>
-									</legend>
-									<label for="showadminbarmenu">
-										<input name="showadminbarmenu" type="checkbox" id="showadminbarmenu"
-										       value="1" <?php checked(
-            get_site_option('backwpup_cfg_showadminbar'),
-            true
-        ); ?> />
-										<?php esc_html_e('Show BackWPup links in admin bar.', 'backwpup'); ?>
-									</label>
-								</fieldset>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row"><?php esc_html_e('Folder sizes', 'backwpup'); ?></th>
-							<td>
-								<fieldset>
-									<legend class="screen-reader-text">
-										<span>
-											<?php esc_html_e('Folder sizes', 'backwpup'); ?>
-										</span>
-									</legend>
-									<label for="showfoldersize">
-										<input name="showfoldersize" type="checkbox" id="showfoldersize"
-										       value="1" <?php checked(
-            get_site_option('backwpup_cfg_showfoldersize'),
-            true
-        ); ?> />
-										<?php esc_html_e(
-            'Display folder sizes in the files tab when editing a job. (Might increase loading time of files tab.)',
-            'backwpup'
-        ); ?>
-									</label>
-								</fieldset>
-							</td>
-						</tr>
-					</table>
-					<h3 class="title"><?php esc_html_e('Security', 'backwpup'); ?></h3>
-					<p><?php _e('Security option for BackWPup', 'backwpup'); ?></p>
-					<table class="form-table">
-						<tr>
-							<th scope="row"><?php esc_html_e('Protect folders', 'backwpup'); ?></th>
-							<td>
-								<fieldset>
-									<legend class="screen-reader-text">
-										<span>
-											<?php esc_html_e('Protect folders', 'backwpup'); ?>
-										</span>
-									</legend>
-									<label for="protectfolders">
-										<input name="protectfolders" type="checkbox" id="protectfolders"
-										       value="1" <?php checked(
-            get_site_option('backwpup_cfg_protectfolders'),
-            true
-        ); ?> />
-										<?php echo wp_kses(
-            __(
-                'Protect BackWPup folders ( Temp, Log and Backups ) with <code>.htaccess</code> and <code>index.php</code>',
-                'backwpup'
-            ),
-            ['code' => []]
-        ); ?>
-									</label>
-								</fieldset>
-							</td>
-						</tr>
-					</table>
-
-                    <table class="form-table">
-                        <tr>
-                            <th scope="row"><?php esc_html_e('Plugin data', 'backwpup'); ?></th>
-                            <td>
-                                <fieldset>
-                                    <legend class="screen-reader-text">
-											<span>
-												<?php esc_html_e('Keep plugin data', 'backwpup'); ?>
-											</span>
-                                    </legend>
-                                    <label for="keepplugindata">
-                                        <input name="keepplugindata" type="checkbox"
-                                               id="keepplugindata"
-                                               value="1" <?php checked(
-            get_site_option('backwpup_cfg_keepplugindata'),
-            true
-        ); ?> />
-                                        <?php esc_html_e(
-            'Keep BackWPup data stored in the database after uninstall',
-            'backwpup'
-        ); ?>
-                                    </label>
-                                </fieldset>
-                            </td>
-                        </tr>
-                    </table>
-					<?php do_action('backwpup_page_settings_tab_generel'); ?>
-				</div>
+				<input type="hidden" name="anchor" value="#backwpup-tab-job"/>
 
 				<div class="table ui-tabs-hide" id="backwpup-tab-log">
 					<p>

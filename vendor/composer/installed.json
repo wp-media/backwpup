@@ -9,12 +9,6 @@
                 "url": "https://github.com/awslabs/aws-crt-php.git",
                 "reference": "3942776a8c99209908ee0b287746263725685732"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/awslabs/aws-crt-php/zipball/3942776a8c99209908ee0b287746263725685732",
-                "reference": "3942776a8c99209908ee0b287746263725685732",
-                "shasum": ""
-            },
             "require": {
                 "php": ">=5.5"
             },
@@ -23,7 +17,7 @@
             },
             "time": "2021-09-03T22:57:30+00:00",
             "type": "library",
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "classmap": [
                     "src/"
@@ -61,12 +55,6 @@
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
                 "reference": "e46b7c5fcb70fadf38079755982cc1d3f0583c41"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/e46b7c5fcb70fadf38079755982cc1d3f0583c41",
-                "reference": "e46b7c5fcb70fadf38079755982cc1d3f0583c41",
-                "shasum": ""
             },
             "require": {
                 "aws/aws-crt-php": "^1.0.2",
@@ -110,7 +98,7 @@
                     "dev-master": "3.0-dev"
                 }
             },
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "files": [
                     "src/functions.php"
@@ -157,12 +145,6 @@
                 "url": "https://github.com/ChristianRiesen/base32.git",
                 "reference": "80ff0e3b2124e61b4b39e2535709452f70bff367"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ChristianRiesen/base32/zipball/80ff0e3b2124e61b4b39e2535709452f70bff367",
-                "reference": "80ff0e3b2124e61b4b39e2535709452f70bff367",
-                "shasum": ""
-            },
             "require": {
                 "php": ">=5.3"
             },
@@ -178,7 +160,7 @@
                     "dev-master": "1.1.x-dev"
                 }
             },
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "Base32\\": "src/"
@@ -920,12 +902,6 @@
                 "url": "https://github.com/krizalys/onedrive-php-sdk.git",
                 "reference": "b8e2fe8aa1bcc7b0eab661d8e63aa93c9ef41e26"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/krizalys/onedrive-php-sdk/zipball/b8e2fe8aa1bcc7b0eab661d8e63aa93c9ef41e26",
-                "reference": "b8e2fe8aa1bcc7b0eab661d8e63aa93c9ef41e26",
-                "shasum": ""
-            },
             "require": {
                 "guzzlehttp/guzzle": "^6.3.3",
                 "microsoft/microsoft-graph": "^1.7.0",
@@ -940,7 +916,7 @@
             },
             "time": "2021-02-12T11:30:34+00:00",
             "type": "library",
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "Krizalys\\Onedrive\\": "src/"
@@ -1032,19 +1008,13 @@
                 "url": "https://github.com/Azure/azure-storage-common-php.git",
                 "reference": "8ca7b1bf4c9ca7c663e75a02a0035b05b37196a0"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Azure/azure-storage-common-php/zipball/8ca7b1bf4c9ca7c663e75a02a0035b05b37196a0",
-                "reference": "8ca7b1bf4c9ca7c663e75a02a0035b05b37196a0",
-                "shasum": ""
-            },
             "require": {
                 "guzzlehttp/guzzle": "~6.0|^7.0",
                 "php": ">=5.6.0"
             },
             "time": "2021-10-09T03:03:47+00:00",
             "type": "library",
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "MicrosoftAzure\\Storage\\Common\\": "src/Common"
@@ -1083,12 +1053,6 @@
                 "url": "https://github.com/microsoftgraph/msgraph-sdk-php.git",
                 "reference": "8bcd1c3ebcb6dbd65713a180d85432eedb3faeed"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/microsoftgraph/msgraph-sdk-php/zipball/8bcd1c3ebcb6dbd65713a180d85432eedb3faeed",
-                "reference": "8bcd1c3ebcb6dbd65713a180d85432eedb3faeed",
-                "shasum": ""
-            },
             "require": {
                 "guzzlehttp/guzzle": "^6.2",
                 "php": "^5.6 || ^7.0"
@@ -1100,7 +1064,7 @@
             },
             "time": "2019-10-29T21:37:52+00:00",
             "type": "library",
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "Microsoft\\Graph\\": "src/",
@@ -1131,15 +1095,9 @@
                 "url": "https://github.com/mikemccabe/json-patch-php.git",
                 "reference": "b3af30a6aec7f6467c773cd49b2d974a70f7c0d4"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mikemccabe/json-patch-php/zipball/b3af30a6aec7f6467c773cd49b2d974a70f7c0d4",
-                "reference": "b3af30a6aec7f6467c773cd49b2d974a70f7c0d4",
-                "shasum": ""
-            },
             "time": "2015-01-05T21:19:54+00:00",
             "type": "library",
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "mikemccabe\\JsonPatch\\": "src"
@@ -1266,12 +1224,6 @@
                 "url": "https://github.com/jmespath/jmespath.php.git",
                 "reference": "9b87907a81b87bc76d19a7fb2d61e61486ee9edb"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jmespath/jmespath.php/zipball/9b87907a81b87bc76d19a7fb2d61e61486ee9edb",
-                "reference": "9b87907a81b87bc76d19a7fb2d61e61486ee9edb",
-                "shasum": ""
-            },
             "require": {
                 "php": "^5.4 || ^7.0 || ^8.0",
                 "symfony/polyfill-mbstring": "^1.17"
@@ -1290,7 +1242,7 @@
                     "dev-master": "2.6-dev"
                 }
             },
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "JmesPath\\": "src/"
@@ -1976,24 +1928,24 @@
         },
         {
             "name": "psr/http-factory",
-            "version": "1.0.1",
-            "version_normalized": "1.0.1.0",
+            "version": "1.1.0",
+            "version_normalized": "1.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-factory.git",
-                "reference": "12ac7fcd07e5b077433f5f2bee95b3a771bf61be"
+                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/12ac7fcd07e5b077433f5f2bee95b3a771bf61be",
-                "reference": "12ac7fcd07e5b077433f5f2bee95b3a771bf61be",
+                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
+                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0.0",
-                "psr/http-message": "^1.0"
+                "php": ">=7.1",
+                "psr/http-message": "^1.0 || ^2.0"
             },
-            "time": "2019-04-30T12:38:16+00:00",
+            "time": "2024-04-15T12:06:14+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -2006,17 +1958,17 @@
                     "Psr\\Http\\Message\\": "src/"
                 }
             },
-            "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
+                    "homepage": "https://www.php-fig.org/"
                 }
             ],
-            "description": "Common interfaces for PSR-7 HTTP message factories",
+            "description": "PSR-17: Common interfaces for PSR-7 HTTP message factories",
             "keywords": [
                 "factory",
                 "http",
@@ -2027,6 +1979,9 @@
                 "request",
                 "response"
             ],
+            "support": {
+                "source": "https://github.com/php-fig/http-factory"
+            },
             "install-path": "../psr/http-factory"
         },
         {
@@ -2147,12 +2102,6 @@
                 "url": "https://github.com/rackspace/php-opencloud.git",
                 "reference": "d6b71feed7f9e7a4b52e0240a79f06473ba69c8c"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rackspace/php-opencloud/zipball/d6b71feed7f9e7a4b52e0240a79f06473ba69c8c",
-                "reference": "d6b71feed7f9e7a4b52e0240a79f06473ba69c8c",
-                "shasum": ""
-            },
             "require": {
                 "guzzle/guzzle": "~3.8",
                 "mikemccabe/json-patch-php": "~0.1",
@@ -2169,7 +2118,7 @@
             },
             "time": "2016-01-29T10:34:57+00:00",
             "type": "library",
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "OpenCloud": [
@@ -2254,12 +2203,6 @@
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
                 "reference": "181b89f18a90f8925ef805f950d47a7190e9b950"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/181b89f18a90f8925ef805f950d47a7190e9b950",
-                "reference": "181b89f18a90f8925ef805f950d47a7190e9b950",
-                "shasum": ""
-            },
             "require": {
                 "php": ">=5.3.3"
             },
@@ -2274,7 +2217,7 @@
                     "dev-master": "5.4-dev"
                 }
             },
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "files": [
                     "lib/swift_required.php"
@@ -2485,19 +2428,13 @@
                 "url": "https://github.com/symfony/options-resolver.git",
                 "reference": "583f56160f716dd435f1cd721fd14b548f4bb510"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/583f56160f716dd435f1cd721fd14b548f4bb510",
-                "reference": "583f56160f716dd435f1cd721fd14b548f4bb510",
-                "shasum": ""
-            },
             "require": {
                 "php": ">=7.1.3",
                 "symfony/polyfill-php80": "^1.16"
             },
             "time": "2022-07-20T09:59:04+00:00",
             "type": "library",
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "Symfony\\Component\\OptionsResolver\\": ""
@@ -2890,28 +2827,25 @@
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.28.0",
-            "version_normalized": "1.28.0.0",
+            "version": "v1.29.0",
+            "version_normalized": "1.29.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "6caa57379c4aec19c0a12a38b59b26487dcfe4b5"
+                "reference": "87b68208d5c1188808dd7839ee1e6c8ec3b02f1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/6caa57379c4aec19c0a12a38b59b26487dcfe4b5",
-                "reference": "6caa57379c4aec19c0a12a38b59b26487dcfe4b5",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/87b68208d5c1188808dd7839ee1e6c8ec3b02f1b",
+                "reference": "87b68208d5c1188808dd7839ee1e6c8ec3b02f1b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
             },
-            "time": "2023-01-26T09:26:14+00:00",
+            "time": "2024-01-29T20:11:03+00:00",
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "1.28-dev"
-                },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
@@ -2956,7 +2890,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.28.0"
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.29.0"
             },
             "funding": [
                 {
