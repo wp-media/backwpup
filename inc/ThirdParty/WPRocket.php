@@ -18,10 +18,16 @@ class WPRocket implements ThirdPartyInterface {
 		) {
 			return $excluded_folders;
 		}
-		if ( ! in_array( WP_ROCKET_PATH, $excluded_folders, true ) ) {
+		if (
+			defined( 'WP_ROCKET_PATH' ) &&
+			! in_array( WP_ROCKET_PATH, $excluded_folders, true )
+		) {
 			$excluded_folders[] = WP_ROCKET_PATH;
 		}
-		if ( ! in_array( WP_ROCKET_CONFIG_PATH, $excluded_folders, true ) ) {
+		if (
+			defined( 'WP_ROCKET_CONFIG_PATH' ) &&
+			! in_array( WP_ROCKET_CONFIG_PATH, $excluded_folders, true )
+		) {
 			$excluded_folders[] = WP_ROCKET_CONFIG_PATH;
 		}
 		return $excluded_folders;
@@ -37,12 +43,16 @@ class WPRocket implements ThirdPartyInterface {
 	public function exclude_cache_folders( $excluded_cache_folders ) {
 		if (
 			! is_array( $excluded_cache_folders ) ||
-			! self::is_active() ||
-			in_array( WP_ROCKET_CACHE_ROOT_PATH, $excluded_cache_folders, true )
+			! self::is_active()
 		) {
 			return $excluded_cache_folders;
 		}
-		$excluded_cache_folders[] = WP_ROCKET_CACHE_ROOT_PATH;
+		if (
+			defined( 'WP_ROCKET_CACHE_ROOT_PATH' ) &&
+			! in_array( WP_ROCKET_CACHE_ROOT_PATH, $excluded_cache_folders, true )
+		) {
+			$excluded_cache_folders[] = WP_ROCKET_CACHE_ROOT_PATH;
+		}
 		return $excluded_cache_folders;
 	}
 

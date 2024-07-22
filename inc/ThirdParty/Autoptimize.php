@@ -14,10 +14,15 @@ class Autoptimize implements ThirdPartyInterface {
 	public function exclude_folders( $excluded_folders ) {
 		if (
 			! is_array( $excluded_folders ) ||
-			! self::is_active() ||
-			in_array( AUTOPTIMIZE_PLUGIN_DIR, $excluded_folders, true )
+			! self::is_active()
 		) {
 			return $excluded_folders;
+		}
+		if (
+			defined( 'AUTOPTIMIZE_PLUGIN_DIR' ) &&
+			! in_array( AUTOPTIMIZE_PLUGIN_DIR, $excluded_folders, true )
+		) {
+			$excluded_folders[] = AUTOPTIMIZE_PLUGIN_DIR;
 		}
 		$excluded_folders[] = AUTOPTIMIZE_PLUGIN_DIR;
 		return $excluded_folders;
@@ -33,12 +38,16 @@ class Autoptimize implements ThirdPartyInterface {
 	public function exclude_cache_folders( $excluded_cache_folders ) {
 		if (
 			! is_array( $excluded_cache_folders ) ||
-			! self::is_active() ||
-			in_array( AUTOPTIMIZE_CACHE_DIR, $excluded_cache_folders, true )
+			! self::is_active()
 		) {
 			return $excluded_cache_folders;
 		}
-		$excluded_cache_folders[] = AUTOPTIMIZE_CACHE_DIR;
+		if (
+			defined( 'AUTOPTIMIZE_CACHE_DIR' ) &&
+			! in_array( AUTOPTIMIZE_CACHE_DIR, $excluded_cache_folders, true )
+		) {
+			$excluded_cache_folders[] = AUTOPTIMIZE_CACHE_DIR;
+		}
 		return $excluded_cache_folders;
 	}
 

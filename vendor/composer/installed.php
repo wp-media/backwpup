@@ -5,7 +5,7 @@
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'd8e0dde3f08cdd3f66e92c58dccaeee837869e59',
+        'reference' => 'ae131d70c9e487912411b8bc296580e6fa459afb',
         'name' => 'inpsyde/backwpup-pro',
         'dev' => false,
     ),
@@ -231,7 +231,7 @@
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'd8e0dde3f08cdd3f66e92c58dccaeee837869e59',
+            'reference' => 'ae131d70c9e487912411b8bc296580e6fa459afb',
             'dev_requirement' => false,
         ),
         'inpsyde/backwpup-restore-shared' => array(

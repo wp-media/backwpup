@@ -77,11 +77,21 @@ class BackWPup_Cron
             }
         }
 
-        //Compress not compressed logs
-        if (is_readable($log_folder) && function_exists('gzopen')
-             && get_site_option('backwpup_cfg_gzlogs') && !is_object($job_object)) {
-            //Compress old not compressed logs
-            try {
+		/**
+		 * Filter whether BackWPup will compress logs or not.
+		 *
+		 * @param bool $log_compress Whether the logs will be compressed or not.
+		 */
+		$log_compress = (bool) apply_filters( 'backwpup_gz_logs', (bool) get_site_option( 'backwpup_cfg_gzlogs' ) );
+		// Compress not compressed logs.
+		if (
+			is_readable( $log_folder ) &&
+			function_exists( 'gzopen' ) &&
+			$log_compress &&
+			! is_object( $job_object )
+		) {
+			// Compress old not compressed logs.
+			try {
                 $dir = new BackWPup_Directory($log_folder);
 
                 $jobids = BackWPup_Option::get_job_ids();

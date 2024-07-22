@@ -8,7 +8,7 @@
 ?>
 
 <p class="notice-titre">BackWpUp</p>
-<span><a class="closeIt" href="<?php echo esc_url( $bind->tempdissmissurl ); ?>">Dismiss</a></span>
+<span><a class="closeIt" href="<?php echo esc_url( $bind->dismissurl ); ?>">Dismiss</a></span>
 <div id="backwpup_notice_evaluate_step1">
 	<p><?php esc_html_e( 'How is your experience with BackWPup?', 'backwpup' ); ?></p>
 	<p class="notice-actions">

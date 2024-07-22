@@ -1,4 +1,14 @@
 == Changelog ==
+= 4.1.4 =
+Release date: jul 22, 2024
+
+* Ehanced: Store the review notice dismiss as an option
+* Fixed: Hide the evaluate notice using css
+* Removed: Remove the "Compression" option in Settings > Logs
+    ** Disabled by default, can be enabled with a filter (backwpup_gz_logs)
+* Fixed: Check if the third parties constants are defined before using them
+
+
 = 4.1.3 =
 Release date: Jul 05, 2024
 

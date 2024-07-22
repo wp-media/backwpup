@@ -14,8 +14,7 @@ class HummingbirdPerformance implements ThirdPartyInterface {
 	public function exclude_folders( $excluded_folders ) {
 		if (
 			! is_array( $excluded_folders ) ||
-			! self::is_active() ||
-			in_array( WPHB_DIR_PATH, $excluded_folders, true )
+			! self::is_active()
 		) {
 			return $excluded_folders;
 		}
@@ -23,7 +22,10 @@ class HummingbirdPerformance implements ThirdPartyInterface {
 		if ( ! in_array( $humming_bird_filesystem->basedir, $excluded_folders, true ) ) {
 			$excluded_folders[] = $humming_bird_filesystem->basedir;
 		}
-		if ( ! in_array( WPHB_DIR_PATH, $excluded_folders, true ) ) {
+		if (
+			defined( 'WPHB_DIR_PATH' ) &&
+			! in_array( WPHB_DIR_PATH, $excluded_folders, true )
+		) {
 			$excluded_folders[] = WPHB_DIR_PATH;
 		}
 		return $excluded_folders;

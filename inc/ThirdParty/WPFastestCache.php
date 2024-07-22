@@ -18,7 +18,10 @@ class WPFastestCache implements ThirdPartyInterface {
 		) {
 			return $excluded_folders;
 		}
-		if ( ! in_array( trailingslashit( WPFC_MAIN_PATH ), $excluded_folders, true ) ) {
+		if (
+			defined( 'WPFC_MAIN_PATH' ) &&
+			! in_array( trailingslashit( WPFC_MAIN_PATH ), $excluded_folders, true )
+		) {
 			$excluded_folders[] = trailingslashit( WPFC_MAIN_PATH );
 		}
 		return $excluded_folders;
@@ -44,7 +47,10 @@ class WPFastestCache implements ThirdPartyInterface {
 				'cachepath' => 'cache',
 			];
 		}
-		if ( ! in_array( trailingslashit( WPFC_WP_CONTENT_DIR . '/' . $wpfc_cache_path['cachepath'] ), $excluded_cache_folders, true ) ) {
+		if (
+			defined( 'WPFC_WP_CONTENT_DIR' ) &&
+			! in_array( trailingslashit( WPFC_WP_CONTENT_DIR . '/' . $wpfc_cache_path['cachepath'] ), $excluded_cache_folders, true )
+		) {
 			$excluded_cache_folders[] = trailingslashit( WPFC_WP_CONTENT_DIR . '/' . $wpfc_cache_path['cachepath'] );
 		}
 		return $excluded_cache_folders;

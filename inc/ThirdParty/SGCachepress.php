@@ -14,12 +14,16 @@ class SGCachepress implements ThirdPartyInterface {
 	public function exclude_folders( $excluded_folders ) {
 		if (
 			! is_array( $excluded_folders ) ||
-			! self::is_active() ||
-			in_array( \SiteGround_Optimizer\DIR, $excluded_folders, true )
+			! self::is_active()
 		) {
 			return $excluded_folders;
 		}
-		$excluded_folders[] = \SiteGround_Optimizer\DIR;
+		if (
+			defined( 'SiteGround_Optimizer\DIR' ) &&
+			! in_array( \SiteGround_Optimizer\DIR, $excluded_folders, true )
+		) {
+			$excluded_folders[] = \SiteGround_Optimizer\DIR;
+		}
 		return $excluded_folders;
 	}
 

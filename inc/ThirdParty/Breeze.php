@@ -17,10 +17,16 @@ class Breeze implements ThirdPartyInterface {
 		) {
 			return $excluded_folders;
 		}
-		if ( ! in_array( BREEZE_PLUGIN_DIR, $excluded_folders, true ) ) {
+		if (
+			defined( 'BREEZE_PLUGIN_DIR' ) &&
+			! in_array( BREEZE_PLUGIN_DIR, $excluded_folders, true )
+		) {
 			$excluded_folders[] = BREEZE_PLUGIN_DIR;
 		}
-		if ( ! in_array( WP_CONTENT_DIR . '/breeze-config', $excluded_folders, true ) ) {
+		if (
+			defined( 'WP_CONTENT_DIR' ) &&
+			! in_array( WP_CONTENT_DIR . '/breeze-config', $excluded_folders, true )
+		) {
 			$excluded_folders[] = WP_CONTENT_DIR . '/breeze-config';
 		}
 		return $excluded_folders;
@@ -40,10 +46,16 @@ class Breeze implements ThirdPartyInterface {
 		) {
 			return $excluded_cache_folders;
 		}
-		if ( ! in_array( BREEZE_MINIFICATION_CACHE, $excluded_cache_folders, true ) ) {
+		if (
+			defined( 'BREEZE_MINIFICATION_CACHE' ) &&
+			! in_array( BREEZE_MINIFICATION_CACHE, $excluded_cache_folders, true )
+		) {
 			$excluded_cache_folders[] = BREEZE_MINIFICATION_CACHE;
 		}
-		if ( ! in_array( BREEZE_MINIFICATION_EXTRA, $excluded_cache_folders, true ) ) {
+		if (
+			defined( 'BREEZE_MINIFICATION_EXTRA' ) &&
+			! in_array( BREEZE_MINIFICATION_EXTRA, $excluded_cache_folders, true )
+		) {
 			$excluded_cache_folders[] = BREEZE_MINIFICATION_EXTRA;
 		}
 		return $excluded_cache_folders;

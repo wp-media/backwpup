@@ -576,26 +576,6 @@ class BackWPup_Page_Settings
 							</td>
 						</tr>
 						<tr>
-							<th scope="row"><?php esc_html_e('Compression', 'backwpup'); ?></th>
-							<td>
-								<fieldset>
-									<legend class="screen-reader-text"><span><?php _e(
-            'Compression',
-            'backwpup'
-        ); ?></span></legend>
-									<label for="gzlogs">
-										<input name="gzlogs" type="checkbox" id="gzlogs" value="1" <?php checked(
-            get_site_option('backwpup_cfg_gzlogs'),
-            true
-        ); ?><?php if (!function_exists('gzopen')) {
-            echo ' disabled="disabled"';
-        } ?> />
-										<?php esc_html_e('Compress log files with GZip.', 'backwpup'); ?>
-									</label>
-								</fieldset>
-							</td>
-						</tr>
-						<tr>
 							<th scope="row"><?php esc_html_e('Logging Level', 'backwpup'); ?></th>
 							<td>
 								<fieldset>

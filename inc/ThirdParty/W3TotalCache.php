@@ -18,10 +18,16 @@ class W3TotalCache implements ThirdPartyInterface {
 		) {
 			return $excluded_folders;
 		}
-		if ( ! in_array( W3TC_DIR, $excluded_folders, true ) ) {
+		if (
+			defined( 'W3TC_DIR' ) &&
+			! in_array( W3TC_DIR, $excluded_folders, true )
+		) {
 			$excluded_folders[] = W3TC_DIR;
 		}
-		if ( ! in_array( W3TC_CONFIG_DIR, $excluded_folders, true ) ) {
+		if (
+			defined( 'W3TC_CONFIG_DIR' ) &&
+			! in_array( W3TC_CONFIG_DIR, $excluded_folders, true )
+		) {
 			$excluded_folders[] = W3TC_CONFIG_DIR;
 		}
 		return $excluded_folders;
@@ -37,12 +43,16 @@ class W3TotalCache implements ThirdPartyInterface {
 	public function exclude_cache_folders( $excluded_cache_folders ) {
 		if (
 			! is_array( $excluded_cache_folders ) ||
-			! self::is_active() ||
-			in_array( W3TC_CACHE_DIR, $excluded_cache_folders, true )
+			! self::is_active()
 		) {
 			return $excluded_cache_folders;
 		}
-		$excluded_cache_folders[] = W3TC_CACHE_DIR;
+		if (
+			defined( 'W3TC_CACHE_DIR' ) &&
+			! in_array( W3TC_CACHE_DIR, $excluded_cache_folders, true )
+		) {
+			$excluded_cache_folders[] = W3TC_CACHE_DIR;
+		}
 		return $excluded_cache_folders;
 	}
 

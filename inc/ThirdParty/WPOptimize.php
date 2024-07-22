@@ -18,10 +18,16 @@ class WPOptimize implements ThirdPartyInterface {
 		) {
 			return $excluded_folders;
 		}
-		if ( ! in_array( WPO_CACHE_FILES_DIR, $excluded_folders, true ) ) {
+		if (
+			defined( 'WPO_CACHE_FILES_DIR' ) &&
+			! in_array( WPO_CACHE_FILES_DIR, $excluded_folders, true )
+		) {
 			$excluded_folders[] = WPO_CACHE_FILES_DIR;
 		}
-		if ( ! in_array( WPO_PLUGIN_MAIN_PATH, $excluded_folders, true ) ) {
+		if (
+			defined( 'WPO_PLUGIN_MAIN_PATH' ) &&
+			! in_array( WPO_PLUGIN_MAIN_PATH, $excluded_folders, true )
+		) {
 			$excluded_folders[] = WPO_PLUGIN_MAIN_PATH;
 		}
 		return $excluded_folders;
@@ -41,10 +47,16 @@ class WPOptimize implements ThirdPartyInterface {
 		) {
 			return $excluded_cache_folders;
 		}
-		if ( ! in_array( WPO_CACHE_FILES_DIR, $excluded_cache_folders, true ) ) {
+		if (
+			defined( 'WPO_CACHE_FILES_DIR' ) &&
+			! in_array( WPO_CACHE_FILES_DIR, $excluded_cache_folders, true )
+		) {
 			$excluded_cache_folders[] = WPO_CACHE_FILES_DIR;
 		}
-		if ( ! in_array( WPO_CACHE_MIN_FILES_DIR, $excluded_cache_folders, true ) ) {
+		if (
+			defined( 'WPO_CACHE_MIN_FILES_DIR' ) &&
+			! in_array( WPO_CACHE_MIN_FILES_DIR, $excluded_cache_folders, true )
+		) {
 			$excluded_cache_folders[] = WPO_CACHE_MIN_FILES_DIR;
 		}
 		return $excluded_cache_folders;

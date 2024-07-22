@@ -14,12 +14,16 @@ class WPSuperCache implements ThirdPartyInterface {
 	public function exclude_folders( $excluded_folders ) {
 		if (
 			! is_array( $excluded_folders ) ||
-			! self::is_active() ||
-			in_array( WPCACHEHOME, $excluded_folders, true )
+			! self::is_active()
 		) {
 			return $excluded_folders;
 		}
-		$excluded_folders[] = WPCACHEHOME;
+		if (
+			defined( 'WPCACHEHOME' ) &&
+			! in_array( WPCACHEHOME, $excluded_folders, true )
+		) {
+			$excluded_folders[] = WPCACHEHOME;
+		}
 		return $excluded_folders;
 	}
 
