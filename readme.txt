@@ -2,9 +2,9 @@
 Contributors: backwpup, wp_rocket, imagify
 Tags: backup, restore, cloud backup, database backup, wordpress backup
 Requires at least: 3.9
-Tested up to: 6.5.5
+Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 4.1.3
+Stable tag: 4.1.4
 License: GPLv2+
 
 Create a complete WordPress backup easily. Schedule automatic backups, store securely, and restore effortlessly with the best WordPress backup plugin!
@@ -201,6 +201,15 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 * %s = Two digit representation of the second
 
 == Changelog ==
+
+= 4.1.4 =
+Release date: jul 22, 2024
+
+* Ehanced: Store the review notice dismiss as an option
+* Fixed: Hide the evaluate notice using css
+* Removed: Remove the "Compression" option in Settings > Logs
+    ** Disabled by default, can be enabled with a filter (backwpup_gz_logs)
+* Fixed: Check if the third parties constants are defined before using them
 
 = 4.1.3 =
 Release date: Jul 05, 2024
