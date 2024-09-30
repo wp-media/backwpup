@@ -15,7 +15,6 @@ namespace Inpsyde\Restore\Api\Controller;
 
 use Inpsyde\Restore\Api\Module\Decryption\Decrypter;
 use Inpsyde\Restore\Api\Module\Decryption\Exception\DecryptException;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class DecryptController.
@@ -32,17 +31,11 @@ class DecryptController
     private $decrypter;
 
     /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
      * DecryptController constructor.
      */
-    public function __construct(Decrypter $decrypter, TranslatorInterface $translator)
+    public function __construct(Decrypter $decrypter)
     {
         $this->decrypter = $decrypter;
-        $this->translator = $translator;
     }
 
     /**
@@ -57,8 +50,9 @@ class DecryptController
             $decrypted = $this->decrypter->decrypt($key, $encrypted_file);
             if (!$decrypted) {
                 throw new DecryptException(
-                    $this->translator->trans(
-                        'Decryption Failed. Probably the key you provided is not correct. Try again with a different key.'
+                    __(
+                        'Decryption Failed. Probably the key you provided is not correct. Try again with a different key.',
+                        'backwpup'
                     )
                 );
             }

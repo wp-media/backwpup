@@ -3,13 +3,30 @@
  * Class for integration of EasyCron.com
  * Documentation: https://www.easycron.com/document.
  */
-class BackWPup_EasyCron
-{
-    public function __construct()
-    {
-        add_action('backwpup_page_settings_tab_apikey', [$this, 'api_key_form'], 11);
-        add_action('backwpup_page_settings_save', [$this, 'api_key_save_form'], 11);
-    }
+class BackWPup_EasyCron {
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+	}
+
+	/**
+	 * Update the job to use EasyCron.
+	 *
+	 * @param int $backwpup_jobid The job ID.
+	 */
+	public static function update_to_wpcron( $backwpup_jobid ) {
+		$id = BackWPup_Option::get( $backwpup_jobid, 'easycronjobid' );
+
+		if ( ! empty( $id ) ) {
+			$message = self::query_api( 'delete', [ 'id' => $id ] );
+			delete_site_transient( 'backwpup_easycron_' . $id );
+		}
+
+		BackWPup_Option::delete( $backwpup_jobid, 'easycronjobid' );
+		BackWPup_Option::update( $backwpup_jobid, 'activetype', 'wpcron' );
+	}
 
     public static function update($backwpup_jobid)
     {

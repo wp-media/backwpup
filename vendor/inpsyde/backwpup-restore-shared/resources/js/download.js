@@ -61,9 +61,10 @@ window.BWU = window.BWU || {};
 
 				if (data.message === BWU.States.NEED_DECRYPTION_KEY) {
 					action = this.ACTION_DOWNLOAD_REQUIRE_DECRYPTION
+				} else {
+					BWU.Functions.printMessageError(data.message, $('#restore_step'))
 				}
 
-				BWU.Functions.printMessageError(data.message, $('#restore_step'))
 				$body.trigger(action, message)
 
 				return this

@@ -17,7 +17,6 @@ use Inpsyde\Restore\AjaxHandler;
 use Inpsyde\Restore\Api\Module\Session\Session;
 use Inpsyde\Restore\LocalizeScripts;
 use Pimple\Exception\FrozenServiceException;
-use Symfony\Component\Translation\Translator;
 
 /**
  * Class Restore.
@@ -81,11 +80,7 @@ final class Restore
             $session = $container['session'];
 
             if ($session->notifications()) {
-                /** @var Translator $translator */
-                $translator = $container['translation'];
-
-                // Notifications.
-                $notificator = new Notificator($session, $translator);
+                $notificator = new Notificator($session);
                 $notificator->load();
             }
 
@@ -110,6 +105,7 @@ final class Restore
     public function ajax_handler(): void
     {
         if (\defined('DOING_AJAX') && DOING_AJAX && \defined('WP_ADMIN') && WP_ADMIN) {
+            restore_boot();
             /** @var AjaxHandler $ajaxHandler */
             $ajaxHandler = restore_container('ajax_handler');
             $ajaxHandler->load();
@@ -181,23 +177,12 @@ final class Restore
             return;
         }
 
-        try {
-            /** @var Translator $translator */
-            $translator = restore_container('translation');
-        } catch (\RuntimeException $e) {
-            throw new \RuntimeException('Could not load the translator');
-        }
-
         // Retrieve the list of the text to translate.
         /** @var string[] $list */
         $list = include \BackWPup::get_plugin_data('plugindir') . '/vendor/inpsyde/backwpup-restore-shared/inc/localize-restore-api.php';
 
-        $localizer = new LocalizeScripts($translator, $list);
-
-        $localizer
-            ->localize()
-            ->output()
-        ;
+        $localizer = new LocalizeScripts($list);
+        $localizer->output();
     }
 
     /**

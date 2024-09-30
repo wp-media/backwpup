@@ -5,8 +5,8 @@
  * Description: WordPress Backup Plugin
  * Author: BackWPup – WordPress Backup & Restore Plugin
  * Author URI: https://backwpup.com
- * Version: 4.1.4
- * Requires at least: 3.9
+ * Version: 4.1.5
+ * Requires at least: 4.9
  * Requires PHP: 7.4
  * Text Domain: backwpup
  * Domain Path: /languages/
@@ -604,9 +604,9 @@ if (!class_exists(\BackWPup::class, false)) {
     $system_requirements = new BackWPup_System_Requirements();
     $system_tests = new BackWPup_System_Tests($system_requirements);
 
-    // Don't activate on anything less than PHP 5.3 or WordPress 3.9
-    if (!$system_tests->is_php_version_compatible() || !$system_tests->is_wp_version_compatible()) {
-        require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	// Don't activate on anything less than PHP 7.4 or WordPress 4.9.
+	if ( ! $system_tests->is_php_version_compatible() || ! $system_tests->is_wp_version_compatible() ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
         deactivate_plugins(__FILE__);
 
         exit(

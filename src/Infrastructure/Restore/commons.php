@@ -30,8 +30,6 @@ use Inpsyde\Restore\Api\Module\Registry;
 use Inpsyde\Restore\Api\Module\Restore;
 use Inpsyde\Restore\Api\Module\Restore\RestoreFiles;
 use Inpsyde\Restore\Api\Module\Session\Session;
-use Inpsyde\Restore\Api\Module\Translation;
-use Inpsyde\Restore\Api\Module\Translation\RestoreTranslation;
 use Inpsyde\Restore\Api\Module\Upload;
 use Inpsyde\Restore\Api\Module\Upload\BackupUpload;
 use Inpsyde\Restore\EventSource;
@@ -40,8 +38,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Pimple\Container;
 use Pimple\Exception\FrozenServiceException;
-use Symfony\Component\Translation\Loader\PoFileLoader;
-use Symfony\Component\Translation\Translator;
+
 
 /**
  * Container.
@@ -100,28 +97,6 @@ function restore_container($name)
             return $registry;
         };
 
-        // Translation.
-        $container['pofileloader'] = static function (): PoFileLoader {
-            return new PoFileLoader();
-        };
-
-        $container['translation'] = static function (Container $container): Translator {
-            $translation = new RestoreTranslation(
-                $container['registry'],
-                $container['logger'],
-                \BackWPup::get_plugin_data(
-                    'plugindir'
-                ) . '/vendor/inpsyde/backwpup-restore-shared/resources/languages'
-            );
-            $translation->set_browser_lang('po');
-
-            return $translation->get_translator(
-                Translator::class,
-                $container['pofileloader'],
-                'po'
-            );
-        };
-
         // Decompressor.
         $container['decompress_state'] = static function (Container $container): State {
             return new State($container['registry']);
@@ -135,7 +110,6 @@ function restore_container($name)
             return new Decompressor(
                 $container['registry'],
                 $container['logger'],
-                $container['translation'],
                 $container['extractor_extractor'],
                 $container['decompress_state'],
                 $container['decompress_state_updater']
@@ -144,31 +118,14 @@ function restore_container($name)
 
         // Error.
         $container['error_handler'] = static function (Container $container): ErrorHandler {
-            $logger = new Logger('errors');
-            $logger->pushHandler(
-                new StreamHandler(
-                    (string) $container['project_temp'] . '/debug.log',
-                    Logger::ERROR
-                )
-            );
-
-            return new ErrorHandler($logger, $container['registry']);
+            return new ErrorHandler($container['logger'], $container['registry']);
         };
 
         // Exception Handler.
         $container['exception_handler'] = static function (Container $container): ExceptionHandler {
-            $logger = new Logger('exceptions');
-            $logger->pushHandler(
-                new StreamHandler(
-                    (string) $container['project_temp'] . '/debug.log',
-                    Logger::WARNING
-                )
-            );
-
             return new ExceptionHandler(
-                $logger,
+                $container['logger'],
                 $container['session'],
-                $container['translation'],
                 $container['registry']
             );
         };
@@ -177,7 +134,6 @@ function restore_container($name)
         $container['job_controller'] = static function (Container $container): JobController {
             return new JobController(
                 $container['registry'],
-                $container['translation'],
                 $container['logger'],
                 $container['decompress'],
                 $container['manifest'],
@@ -196,14 +152,13 @@ function restore_container($name)
 
         $container['decrypt_controller'] = static function (Container $container): DecryptController {
             return new DecryptController(
-                $container['decrypter'],
-                $container['translation']
+                $container['decrypter']
             );
         };
 
         // Upload.
         $container['backup_upload'] = static function (Container $container): BackupUpload {
-            return new BackupUpload($container['registry'], $container['translation']);
+            return new BackupUpload($container['registry']);
         };
 
         // Database.
@@ -211,7 +166,7 @@ function restore_container($name)
             $types = [
                 \mysqli::class => MysqliDatabaseType::class,
             ];
-            $db_factory = new DatabaseTypeFactory($types, $container['registry'], $container['translation']);
+            $db_factory = new DatabaseTypeFactory($types, $container['registry']);
             $db_factory->set_logger($container['logger']);
 
             return $db_factory;
@@ -222,7 +177,7 @@ function restore_container($name)
                 'sql' => SqlFileImport::class,
             ];
 
-            return new ImportFileFactory($types, $container['translation']);
+            return new ImportFileFactory($types);
         };
 
         $container['database_import'] = static function (Container $container): ImportModel {
@@ -230,19 +185,18 @@ function restore_container($name)
                 $container['database_factory'],
                 $container['database_import_file_factory'],
                 $container['registry'],
-                $container['logger'],
-                $container['translation']
+                $container['logger']
             );
         };
 
         // Restore.
         $container['restore_files'] = static function (Container $container): RestoreFiles {
-            return new RestoreFiles($container['registry'], $container['logger'], $container['translation']);
+            return new RestoreFiles($container['registry'], $container['logger']);
         };
 
         // Manifest File.
         $container['manifest'] = static function (Container $container): ManifestFile {
-            return new ManifestFile($container['registry'], $container['translation']);
+            return new ManifestFile($container['registry']);
         };
 
         // Notification.
@@ -253,7 +207,6 @@ function restore_container($name)
         // Decrypt
         $container['decrypter'] = static function (Container $container): Decrypter {
             return new Decrypter(
-                $container['translation'],
                 $container['archivefileoperator_factory']
             );
         };
@@ -269,7 +222,6 @@ function restore_container($name)
                 $container['language_controller'],
                 $container['decrypt_controller'],
                 $container['registry'],
-                $container['translation'],
                 $container['logger'],
                 $container['event_source'],
                 $container['log_file']
@@ -328,14 +280,11 @@ function restore_container($name)
  */
 function restore_registry(): Registry
 {
-    /** @var Registry|null $registry */
-    static $registry;
+    $container = restore_container( null );
+    /** @var Registry $registry */
+    $registry = $container['registry'];
 
-    if (!$registry) {
-        $container = restore_container(null);
-        /** @var Registry $registry */
-        $registry = $container['registry'];
-
+    if (! $registry->project_root) {
         // Save Project Root in Registry.
         $registry->project_root = $container['project_root'];
         $registry->project_temp = $container['project_temp'];
@@ -348,6 +297,7 @@ function restore_registry(): Registry
         if (!file_exists($registry->uploads_folder)) {
             backwpup_wpfilesystem()->mkdir($registry->uploads_folder);
         }
+        $registry->locale = get_locale();
     }
 
     return $registry;
@@ -408,10 +358,9 @@ function restore_boot(): void
     session_start(); // phpcs:ignore
 
     $container = restore_container(null);
+    restore_registry();
 
     create_project_temp_dir($container);
     error_handler_register($container);
     exception_handler_register($container);
-
-    restore_registry();
 }

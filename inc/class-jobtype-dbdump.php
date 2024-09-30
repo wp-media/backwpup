@@ -66,41 +66,20 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
         $next_row = ceil(count($tables) / 3);
         $counter = 0;
 
-        foreach ($tables as $table) {
-            $tabletype = '';
-            if ($table[1] !== 'BASE TABLE') {
-                $tabletype = ' <i>(' . strtolower(esc_html($table[1])) . ')</i>';
-            }
-            echo '<label for="idtabledb-' . esc_html($table[0]) . '""><input class="checkbox" type="checkbox"' . checked(!in_array($table[0], BackWPup_Option::get($jobid, 'dbdumpexclude'), true), true, false) . ' name="tabledb[]" id="idtabledb-' . esc_html($table[0]) . '" value="' . esc_html($table[0]) . '"/> ' . esc_html($table[0]) . $tabletype . '</label><br />';
-            ++$counter;
-            if ($next_row <= $counter) {
-                echo '</div><div style="width: 30%; float:left; min-width: 250px; margin-right: 10px;">';
-                $counter = 0;
-            }
-        }
-        echo '</div></fieldset>'; ?>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row"><label for="iddbdumpfile"><?php _e('Backup file name', 'backwpup'); ?></label></th>
-                <td>
-                    <input id="iddbdumpfile" name="dbdumpfile" type="text"
-                           value="<?php echo esc_attr(BackWPup_Option::get($jobid, 'dbdumpfile')); ?>"
-                           class="medium-text code"/>.sql
-                </td>
-            </tr>
-			<tr>
-				<th scope="row"><?php _e('Backup file compression', 'backwpup'); ?></th>
-				<td>
-					<fieldset>
-						<?php
-                        echo '<label for="iddbdumpfilecompression"><input class="radio" type="radio"' . checked('', BackWPup_Option::get($jobid, 'dbdumpfilecompression'), false) . ' name="dbdumpfilecompression"  id="iddbdumpfilecompression" value="" /> ' . __('none', 'backwpup') . '</label><br />';
-        if (function_exists('gzopen')) {
-            echo '<label for="iddbdumpfilecompression-gz"><input class="radio" type="radio"' . checked('.gz', BackWPup_Option::get($jobid, 'dbdumpfilecompression'), false) . ' name="dbdumpfilecompression" id="iddbdumpfilecompression-gz" value=".gz" /> ' . __('GZip', 'backwpup') . '</label><br />';
-        } else {
-            echo '<label for="iddbdumpfilecompression-gz"><input class="radio" type="radio"' . checked('.gz', BackWPup_Option::get($jobid, 'dbdumpfilecompression'), false) . ' name="dbdumpfilecompression" id="iddbdumpfilecompression-gz" value=".gz" disabled="disabled" /> ' . __('GZip', 'backwpup') . '</label><br />';
-        } ?>
-					</fieldset>
+					foreach ( $tables as $table ) {
+						$tabletype = '';
+						if ( 'BASE TABLE' !== $table[1] ) {
+							$tabletype = ' <i>(' . strtolower( esc_html( $table[1] ) ) . ')</i>';
+						}
+						echo '<label for="idtabledb-' . esc_html( $table[0] ) . '""><input class="checkbox" type="checkbox"' . checked( ! in_array( $table[0], BackWPup_Option::get( $jobid, 'dbdumpexclude' ), true ), true, false ) . ' name="tabledb[]" id="idtabledb-' . esc_html( $table[0] ) . '" value="' . esc_html( $table[0] ) . '"/> ' . esc_html( $table[0] ) . $tabletype . '</label><br />'; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						++$counter;
+						if ( $next_row <= $counter ) {
+							echo '</div><div style="width: 30%; float:left; min-width: 250px; margin-right: 10px;">';
+							$counter = 0;
+						}
+					}
+					echo '</div></fieldset>';
+					?>
 				</td>
 			</tr>
         </table>
@@ -152,10 +131,10 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
             $job_object->log(sprintf(__('%d. Try to backup database&#160;&hellip;', 'backwpup'), $job_object->steps_data[$job_object->step_working]['STEP_TRY']));
         }
 
-        //build filename
-        if (empty($job_object->steps_data[$job_object->step_working]['dbdumpfile'])) {
-            $job_object->steps_data[$job_object->step_working]['dbdumpfile'] = $job_object->generate_filename($job_object->job['dbdumpfile'], 'sql') . $job_object->job['dbdumpfilecompression'];
-        }
+		// build filename.
+		if ( empty( $job_object->steps_data[ $job_object->step_working ]['dbdumpfile'] ) ) {
+			$job_object->steps_data[ $job_object->step_working ]['dbdumpfile'] = $job_object->generate_db_dump_filename( $job_object->job['dbdumpfile'], 'sql' ) . $job_object->job['dbdumpfilecompression'];
+		}
 
         try {
             //Connect to Database

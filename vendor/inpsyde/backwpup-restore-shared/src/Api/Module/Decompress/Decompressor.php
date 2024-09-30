@@ -28,8 +28,6 @@ use Psr\Log\LoggerInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
-use Symfony\Contracts\Translation\LocaleAwareInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use UnexpectedValueException;
 
 /**
@@ -65,11 +63,6 @@ class Decompressor
     private $file_path;
 
     /**
-     * @var TranslatorInterface&LocaleAwareInterface
-     */
-    private $translation;
-
-    /**
      * Context.
      *
      * The context in which the instance operates. Default is `event_source` means
@@ -94,20 +87,15 @@ class Decompressor
      */
     private $decompressionStateUpdater;
 
-    /**
-     * @param TranslatorInterface&LocaleAwareInterface $translation
-     */
     public function __construct(
         Registry $registry,
         LoggerInterface $logger,
-        $translation,
         Extractor $extractor,
         State $decompressionState,
         StateUpdater $decompressionStateUpdater
     ) {
         $this->registry = $registry;
         $this->logger = $logger;
-        $this->translation = $translation;
         // TODO May be can be retrieved by the Decompress\State. See where this is used.
         $this->file_path = $this->registry->uploaded_file;
         $this->extractor = $extractor;
@@ -172,9 +160,8 @@ class Decompressor
         if (!$response) {
             throw new FileSystemException(
                 ExceptionLinkHelper::translateWithAppropiatedLink(
-                    $this->translation,
                     sprintf(
-                        $this->translation->trans('Impossible to set permissions for parent directory %s.'),
+                        __('Impossible to set permissions for parent directory %s.', 'backwpup'),
                         $this->registry->extract_folder
                     ),
                     'DIR_CANNOT_BE_CREATED'
@@ -198,9 +185,9 @@ class Decompressor
         if (!$created) {
             throw new RuntimeException(
                 ExceptionLinkHelper::translateWithAppropiatedLink(
-                    $this->translation,
-                    $this->translation->trans(
-                        'Destination directory does not exist and is not possible to create it.'
+                    __(
+                        'Destination directory does not exist and is not possible to create it.',
+                        'backwpup'
                     ),
                     'DIR_CANNOT_BE_CREATED'
                 )
@@ -283,8 +270,9 @@ class Decompressor
 
         if ($errors) {
             throw new RuntimeException(
-                $this->translation->trans(
-                    'Extracted with errors. Please, see the log for more information.'
+                __(
+                    'Extracted with errors. Please, see the log for more information.',
+                    'backwpup'
                 )
             );
         }
@@ -307,7 +295,7 @@ class Decompressor
         if (!isset($content[$index])) {
             throw new OutOfBoundsException(
                 sprintf(
-                    $this->translation->trans('Impossible to extract file at index %d. Index does not exists'),
+                    __('Impossible to extract file at index %d. Index does not exists', 'backwpup'),
                     $index
                 )
             );
@@ -319,7 +307,7 @@ class Decompressor
         if (!$tar->extractList([$fileName], $this->registry->extract_folder)) {
             throw new DecompressException(
                 sprintf(
-                    $this->translation->trans('Decompress %s failed. You need to copy the file manually.'),
+                    __('Decompress %s failed. You need to copy the file manually.', 'backwpup'),
                     $fileName
                 )
             );
@@ -351,7 +339,7 @@ class Decompressor
         $content = $tar->listContent();
         if (!\is_array($content)) {
             throw new RuntimeException(
-                $this->translation->trans('Could not extract the archive')
+                __('Could not extract the archive', 'backwpup')
             );
         }
         $filesCount = \count($content);
@@ -377,8 +365,9 @@ class Decompressor
 
         if ($errors !== 0) {
             throw new RuntimeException(
-                $this->translation->trans(
-                    'Extracted with error. Please, see the log for more information.'
+                __(
+                    'Extracted with error. Please, see the log for more information.',
+                    'backwpup'
                 )
             );
         }
@@ -397,7 +386,7 @@ class Decompressor
         if (!$file_ext || !\in_array($file_ext, self::$supported_archives, true)) {
             throw new DecompressException(
                 sprintf(
-                    $this->translation->trans('File .%s type not supported.'),
+                    __('File .%s type not supported.', 'backwpup'),
                     ltrim($file_ext, '.')
                 )
             );
@@ -406,7 +395,7 @@ class Decompressor
         // If file doesn't exists, we cannot perform any decompression.
         if (!file_exists($this->file_path)) {
             throw new FileSystemException(
-                $this->translation->trans('File does not exist or access is denied.')
+                __('File does not exist or access is denied.', 'backwpup')
             );
         }
 
@@ -422,10 +411,10 @@ class Decompressor
         if (!is_writable($this->registry->extract_folder)) { // phpcs:ignore
             throw new FileSystemException(
                 ExceptionLinkHelper::translateWithAppropiatedLink(
-                    $this->translation,
                     sprintf(
-                        $this->translation->trans(
-                            'Destination %s is not writable and is not possible to correct the permissions. Please double check it.'
+                        __(
+                            'Destination %s is not writable and is not possible to correct the permissions. Please double check it.',
+                            'backwpup'
                         ),
                         $this->registry->extract_folder
                     ),
@@ -455,9 +444,9 @@ class Decompressor
             case 'bz2':
                 throw new DecompressException(
                     ExceptionLinkHelper::translateWithAppropiatedLink(
-                        $this->translation,
-                        $this->translation->trans(
-                            'Sorry but bzip2 backups cannot be restored. You must convert the file to a .zip one in order to able to restore your backup.'
+                        __(
+                            'Sorry but bzip2 backups cannot be restored. You must convert the file to a .zip one in order to able to restore your backup.',
+                            'backwpup'
                         ),
                         'BZIP2_CANNOT_BE_DECOMPRESSED'
                     )
@@ -488,17 +477,17 @@ class Decompressor
         // Old php versions.
         $self = $this;
         $logger = $this->logger;
-        $translation = $this->translation;
 
         // `mkdir` emit a `E_WARNING` in case it's not possible to create the directory.
         set_error_handler(
-            static function () use ($self, $logger, $translation): bool {
+            static function () use ($self, $logger): bool {
                 // Restore the previous handler and return, avoid possible loops.
                 restore_error_handler();
 
                 $logger->warning(
-                    $translation->trans(
-                        'Error during create decompression directory, trying to set permissions for parent directory.'
+                    __(
+                        'Error during create decompression directory, trying to set permissions for parent directory.',
+                        'backwpup'
                     )
                 );
                 $self->try_set_parent_decompress_dir_permissions();

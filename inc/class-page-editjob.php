@@ -593,21 +593,7 @@ class BackWPup_Page_Editjob
 	                                       type="radio"<?php checked('wpcron', BackWPup_Option::get($jobid, 'activetype'), true); ?>
 	                                       name="activetype" id="idactivetype-wpcron"
 	                                       value="wpcron" /> <?php esc_html_e('with WordPress cron', 'backwpup'); ?></label><br/>
-		                            <?php
-                                    $disabled = '';
-                                    $easycron_api = get_site_option('backwpup_cfg_easycronapikey');
-                                    if (empty($easycron_api)) {
-                                        $disabled = ' disabled="disabled"';
-                                    }
-                                    ?>
-		                            <label for="idactivetype-easycron"><input class="radio" type="radio"<?php checked('easycron', BackWPup_Option::get($jobid, 'activetype'), true); ?> name="activetype" id="idactivetype-easycron"<?php echo $disabled; ?> value="easycron" />
-			                        <?php _e('with <a href="https://www.easycron.com?ref=36673" title="Affiliate Link!">EasyCron.com</a>', 'backwpup');
-                                    if (empty($easycron_api)) {
-                                        echo '&nbsp;-&nbsp;<span class="description">' . sprintf(__('First setup <a href="%s">API Key</a>.', 'backwpup'), network_admin_url('admin.php') . '?page=backwpupsettings#backwpup-tab-apikey') . '</span>';
-                                    }
-                                    ?>
-		                            </label><br/>
-		                            <?php
+									<?php
                                     $url = BackWPup_Job::get_jobrun_url('runext', BackWPup_Option::get($jobid, 'jobid'));
                                     ?>
 	                                <label for="idactivetype-link">

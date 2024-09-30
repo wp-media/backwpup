@@ -748,12 +748,10 @@ class BackWPup_Page_Jobs extends WP_List_Table
                 <div class="progressbar" style="display: none;">
                     <div id="progresssteps" class="bwpu-progress" style="width:0%;">0%</div>
                 </div>
-                <?php
-                if (\BackWPup::is_pro()) {
-                    $view = new ViewLoader(
-                        restore_container('translation')
-                    );
-                    $view->decrypt_key_input();
+				<?php
+				if ( \BackWPup::is_pro() ) {
+					$view = new ViewLoader();
+					$view->decrypt_key_input();
                 } ?>
             </div>
         </div>

@@ -9,6 +9,8 @@ use Inpsyde\BackWPup\Notice\WordPressNotice;
 use Inpsyde\BackWPup\Pro\Settings;
 use Inpsyde\BackWPup\Pro\Settings\AjaxEncryptionKeyHandler;
 use Inpsyde\BackWPup\Notice\EvaluateNotice;
+use Inpsyde\BackWPup\Notice\EasycronUpdateNotice;
+use Inpsyde\BackWPup\Notice\RestoreFeatureInformationNotice;
 
 /**
  * BackWPup_Admin.
@@ -241,6 +243,18 @@ final class BackWPup_Admin
 			new NoticeView( EvaluateNotice::ID )
 		);
 		$evaluate_notice->init( EvaluateNotice::TYPE_ADMIN );
+
+		$easycron_update_notice = new EasycronUpdateNotice(
+		new NoticeView( EasycronUpdateNotice::ID ),
+		true
+		);
+		$easycron_update_notice->init( EasycronUpdateNotice::TYPE_ADMIN );
+
+		$restore_feature_information_notice = new RestoreFeatureInformationNotice(
+		new NoticeView( RestoreFeatureInformationNotice::ID ),
+		true
+		);
+		$restore_feature_information_notice->init( RestoreFeatureInformationNotice::TYPE_ADMIN );
 	}
 
     /**

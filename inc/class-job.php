@@ -283,17 +283,29 @@ class BackWPup_Job
         $this->logfile = $log_folder . 'backwpup_log_' . BackWPup::get_generated_hash(6) . '_' . date(
             'Y-m-d_H-i-s',
             current_time('timestamp')
-        ) . '.html';
-        //write settings to job
-        BackWPup_Option::update($this->job['jobid'], 'lastrun', $this->start_time);
-        BackWPup_Option::update($this->job['jobid'], 'logfile', $this->logfile); //Set current logfile
-        BackWPup_Option::update($this->job['jobid'], 'lastbackupdownloadurl', '');
-        //Set needed job values
-        $this->timestamp_last_update = microtime(true);
-        $this->exclude_from_backup = explode(',', trim((string) $this->job['fileexclude']));
-        $this->exclude_from_backup = array_unique($this->exclude_from_backup);
-        //setup job steps
-        $this->steps_data['CREATE']['CALLBACK'] = '';
+		) . '.html';
+		// write settings to job.
+		BackWPup_Option::update( $this->job['jobid'], 'lastrun', $this->start_time );
+		BackWPup_Option::update( $this->job['jobid'], 'logfile', $this->logfile ); // Set current logfile.
+		BackWPup_Option::update( $this->job['jobid'], 'lastbackupdownloadurl', '' );
+		// Set needed job values.
+		$this->timestamp_last_update = microtime( true );
+		/**
+		 * Filter to exclude files from backup.
+		 *
+		 * @param array $excluded_files List of excluded files.
+		 */
+		$this->exclude_from_backup = (array) apply_filters(
+			'backwpup_file_exclude',
+			explode( ',', trim( (string) $this->job['fileexclude'] ) )
+		);
+		$this->exclude_from_backup = array_merge(
+			$this->exclude_from_backup,
+			[ '.tmp','.svn','.git','desktop.ini','.DS_Store','/node_modules/' ]
+		);
+		$this->exclude_from_backup = array_unique( $this->exclude_from_backup );
+		// setup job steps.
+		$this->steps_data['CREATE']['CALLBACK'] = '';
         $this->steps_data['CREATE']['NAME'] = __('Job Start', 'backwpup');
         $this->steps_data['CREATE']['STEP_TRY'] = 0;
         //ADD Job types file
@@ -653,6 +665,24 @@ class BackWPup_Job
 
         return $name;
     }
+
+	/**
+	 * Generate a filename for a database dump.
+	 *
+	 * @param string $name   The initial filename.
+	 * @param string $suffix The suffix to append to the filename.
+	 *
+	 * @return string The generated filename.
+	 */
+	public function generate_db_dump_filename( $name, $suffix = '' ) {
+		/**
+		 * Filter the db dump filename.
+		 *
+		 * @param bool $name The initial filename.
+		 */
+		$name = (string) apply_filters( 'backwpup_generate_dump_filename', $name );
+		return $this->generate_filename( $name, $suffix );
+	}
 
     /**
      * Sanitizes a filename, replacing whitespace with underscores.

@@ -27,7 +27,6 @@ use InvalidArgumentException;
  * @property DbPos                 $dbdumppos               position where the import at moment
  * @property int                   $dbdumpsize              the size of the database file
  * @property string|null           $locale                  language locale, e.g. de_DE
- * @property string                $lang_dir                path to language directory
  * @property int                   $migration_progress      migration_progress
  * @property string                $restore_strategy        states what strategy is chosen (DB only restore, complete restore)
  * @property string                $project_root            absolute path to project root
@@ -315,7 +314,7 @@ class Registry
      */
     public function reset_registry(): self
     {
-        @copy($this->filePath, "{$this->filePath}.bkp");
+        copy($this->filePath, "{$this->filePath}.bkp");
 
         $this->registry = [];
         $this->save();

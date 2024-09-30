@@ -9,7 +9,6 @@ use Inpsyde\Restore\Api\Module\Database\Exception\DatabaseConnectionException;
 use Inpsyde\Restore\Api\Module\Database\Exception\DatabaseQueryException;
 use Inpsyde\Restore\Api\Module\Registry;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Translation\Translator;
 
 /**
  * Class MysqliDatabaseType.
@@ -22,11 +21,6 @@ final class MysqliDatabaseType implements DatabaseInterface
     private $mysqli;
 
     /**
-     * @var Translator
-     */
-    private $translation;
-
-    /**
      * @var Registry
      */
     private $registry;
@@ -36,10 +30,9 @@ final class MysqliDatabaseType implements DatabaseInterface
      */
     private $logger;
 
-    public function __construct(Registry $registry, Translator $translation)
+    public function __construct(Registry $registry)
     {
         $this->registry = $registry;
-        $this->translation = $translation;
     }
 
     public function __destruct()
@@ -53,7 +46,7 @@ final class MysqliDatabaseType implements DatabaseInterface
 
         if (!$connection) {
             throw new DatabaseConnectionException(
-                $this->translation->trans('Cannot init MySQLi database connection')
+                __('Cannot init MySQLi database connection', 'backwpup')
             );
         }
 
@@ -61,7 +54,7 @@ final class MysqliDatabaseType implements DatabaseInterface
 
         if (!$this->mysqli->options(MYSQLI_OPT_CONNECT_TIMEOUT, 5)) { // phpcs:ignore
             throw new DatabaseConnectionException(
-                $this->translation->trans('Setting of MySQLi connection timeout failed')
+                __('Setting of MySQLi connection timeout failed', 'backwpup')
             );
         }
 
@@ -86,25 +79,28 @@ final class MysqliDatabaseType implements DatabaseInterface
 
         if (!$dbhost) {
             throw new DatabaseConnectionException(
-                $this->translation->trans('No valid connection data. Please check the host is reachable.')
+                __('No valid connection data. Please check the host is reachable.', 'backwpup')
             );
         }
 
         // Connect to Database.
-        $connect = @$this->mysqli->real_connect(
-            $dbhost,
-            $this->registry->dbuser,
-            $this->registry->dbpassword,
-            $this->registry->dbname,
-            $dbport,
-            $dbsocket
-        );
+        try {
+            $connect = @$this->mysqli->real_connect(
+                $dbhost,
+                $this->registry->dbuser,
+                $this->registry->dbpassword,
+                $this->registry->dbname,
+                $dbport,
+                $dbsocket
+            );
+        } catch (\mysqli_sql_exception $exception) {
+            $connect = false;
+        }
         if (!$connect) {
             throw new DatabaseConnectionException(
                 ExceptionLinkHelper::translateWithAppropiatedLink(
-                    $this->translation,
                     sprintf(
-                        $this->translation->trans('Cannot connect to MySQL database %1$d: %2$s'),
+                        __('Cannot connect to MySQL database %1$d: %2$s', 'backwpup'),
                         mysqli_connect_errno(), // phpcs:ignore
                         mysqli_connect_error() ?? '' // phpcs:ignore
                     ),
@@ -113,10 +109,14 @@ final class MysqliDatabaseType implements DatabaseInterface
             );
         }
 
-        if (!$this->mysqli->set_charset($dbcharset)) {
+        try {
+            $set_charset = $this->mysqli->set_charset($dbcharset);
+        } catch (\mysqli_sql_exception $exception) {
+            $set_charset = false;
+        }
+        if (!$set_charset) {
             throw new DatabaseConnectionException(
                 ExceptionLinkHelper::translateWithAppropiatedLink(
-                    $this->translation,
                     $this->mysqli->error,
                     'DATABASE_CONNECTION_PROBLEMS'
                 )
@@ -133,11 +133,15 @@ final class MysqliDatabaseType implements DatabaseInterface
 
     public function query($query): int
     {
-        $res = $this->mysqli->query($query);
+        try {
+            $res = $this->mysqli->query($query);
+        } catch (\mysqli_sql_exception $exception) {
+        }
+
         if ($this->mysqli->error !== '') {
             throw new DatabaseQueryException(
                 sprintf(
-                    $this->translation->trans('Database error %1$s for query %2$s'),
+                    __('Database error %1$s for query %2$s', 'backwpup'),
                     $this->mysqli->error,
                     $query
                 )

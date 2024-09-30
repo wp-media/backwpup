@@ -8,20 +8,11 @@ declare(strict_types=1);
 
 namespace Inpsyde\Restore;
 
-use Symfony\Contracts\Translation\TranslatorInterface;
-
 /**
  * Class LocalizeScripts.
  */
 class LocalizeScripts
 {
-    /**
-     * Translator.
-     *
-     * @var TranslatorInterface The translator instance
-     */
-    private $translator;
-
     /**
      * Strings List.
      *
@@ -32,27 +23,11 @@ class LocalizeScripts
     /**
      * LocalizeScripts constructor.
      *
-     * @param TranslatorInterface $translator The translator instance
      * @param array<string>       $list       the list of the strings to localize
      */
-    public function __construct(TranslatorInterface $translator, array $list)
+    public function __construct(array $list)
     {
-        $this->translator = $translator;
         $this->list = $list;
-    }
-
-    /**
-     * Localize.
-     *
-     * @return $this For concatenation
-     */
-    public function localize(): self
-    {
-        foreach ($this->list as &$item) {
-            $item = $this->translator->trans($item);
-        }
-
-        return $this;
     }
 
     /**

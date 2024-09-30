@@ -6,7 +6,6 @@ namespace Inpsyde\Restore\Api\Module\Database;
 
 use Inpsyde\Restore\Api\Module\Database\Exception\DatabaseFileException;
 use InvalidArgumentException;
-use Symfony\Component\Translation\Translator;
 
 class SqlFileImport implements ImportFileInterface
 {
@@ -14,11 +13,6 @@ class SqlFileImport implements ImportFileInterface
      * @var resource|closed-resource|null
      */
     private $fileHandle;
-
-    /**
-     * @var Translator
-     */
-    private $translation;
 
     /**
      * @var string[] Read line cache
@@ -30,9 +24,8 @@ class SqlFileImport implements ImportFileInterface
      */
     private $delimiter = ';';
 
-    public function __construct(Translator $translation)
+    public function __construct()
     {
-        $this->translation = $translation;
     }
 
     public function __destruct()
@@ -44,13 +37,13 @@ class SqlFileImport implements ImportFileInterface
     {
         if (!is_file($file)) {
             throw new DatabaseFileException(
-                sprintf($this->translation->trans('SQL file %1$s does not exist'), $file)
+                sprintf(__('SQL file %1$s does not exist', 'backwpup'), $file)
             );
         }
 
         if (!is_readable($file)) {
             throw new DatabaseFileException(
-                sprintf($this->translation->trans('SQL file %1$s is not readable'), $file)
+                sprintf(__('SQL file %1$s is not readable', 'backwpup'), $file)
             );
         }
 
@@ -66,7 +59,7 @@ class SqlFileImport implements ImportFileInterface
     {
         if (!$this->is_file_open()) {
             throw new DatabaseFileException(
-                $this->translation->trans('Could not get size of SQL file')
+                __('Could not get size of SQL file', 'backwpup')
             );
         }
 
@@ -80,7 +73,7 @@ class SqlFileImport implements ImportFileInterface
         $size = filesize($filePath);
         if ($size === false) {
             throw new DatabaseFileException(
-                $this->translation->trans('Could not get size of SQL file')
+                __('Could not get size of SQL file', 'backwpup')
             );
         }
 
@@ -90,13 +83,13 @@ class SqlFileImport implements ImportFileInterface
     public function get_position(): array
     {
         if (!$this->is_file_open()) {
-            throw new DatabaseFileException($this->translation->trans('Cannot get SQL file position'));
+            throw new DatabaseFileException(__('Cannot get SQL file position', 'backwpup'));
         }
 
         $pos = ftell($this->fileHandle);
 
         if ($pos === false) {
-            throw new DatabaseFileException($this->translation->trans('Cannot get SQL file position'));
+            throw new DatabaseFileException(__('Cannot get SQL file position', 'backwpup'));
         }
 
         return ['pos' => $pos, 'line_cache' => $this->lineCache];
@@ -106,23 +99,23 @@ class SqlFileImport implements ImportFileInterface
     {
         // @phpstan-ignore-next-line
         if (!isset($position['pos'])) {
-            throw new DatabaseFileException($this->translation->trans('SQL file position not set'));
+            throw new DatabaseFileException(__('SQL file position not set', 'backwpup'));
         }
 
         // @phpstan-ignore-next-line
         if (isset($position['line_cache'])) {
             $this->lineCache = $position['line_cache'];
         } else {
-            throw new DatabaseFileException($this->translation->trans('SQL file line cache not set'));
+            throw new DatabaseFileException(__('SQL file line cache not set', 'backwpup'));
         }
 
         if (!$this->is_file_open()) {
-            throw new DatabaseFileException($this->translation->trans('SQL file is not open'));
+            throw new DatabaseFileException(__('SQL file is not open', 'backwpup'));
         }
 
         $result = fseek($this->fileHandle, $position['pos']);
         if ($result === -1) {
-            throw new DatabaseFileException($this->translation->trans('Cannot set SQL file position'));
+            throw new DatabaseFileException(__('Cannot set SQL file position', 'backwpup'));
         }
 
         return true;
@@ -202,7 +195,7 @@ class SqlFileImport implements ImportFileInterface
     protected function get_line_from_file()
     {
         if (!$this->is_file_open()) {
-            throw new DatabaseFileException($this->translation->trans('SQL file is not open'));
+            throw new DatabaseFileException(__('SQL file is not open', 'backwpup'));
         }
 
         if (!$this->lineCache) {
@@ -250,13 +243,13 @@ class SqlFileImport implements ImportFileInterface
         }
         if (preg_match('/^[^.]+$/', $file) === 1) {
             throw new InvalidArgumentException(
-                $this->translation->trans('Missing SQL file extension')
+                __('Missing SQL file extension', 'backwpup')
             );
         }
 
         throw new InvalidArgumentException(
             sprintf(
-                $this->translation->trans('Invalid SQL file extension .%1$s'),
+                __('Invalid SQL file extension .%1$s', 'backwpup'),
                 pathinfo($file, PATHINFO_EXTENSION)
             )
         );
@@ -273,7 +266,7 @@ class SqlFileImport implements ImportFileInterface
 
         if ($handle === false) {
             throw new DatabaseFileException(
-                sprintf($this->translation->trans('SQL file %1$s could not be opened'), $filename)
+                sprintf(__('SQL file %1$s could not be opened', 'backwpup'), $filename)
             );
         }
 

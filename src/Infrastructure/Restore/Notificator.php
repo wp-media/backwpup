@@ -10,7 +10,6 @@ namespace Inpsyde\BackWPup\Infrastructure\Restore;
 use function add_action;
 use Inpsyde\Restore\Api\Module\Session\NotificableStorableSessionInterface;
 use Inpsyde\Restore\Api\Module\Session\Session;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class Notifications.
@@ -27,13 +26,6 @@ final class Notificator
     private $session;
 
     /**
-     * Translator.
-     *
-     * @var TranslatorInterface The translator for strings
-     */
-    private $translator;
-
-    /**
      * List of notifications.
      *
      * @var array<string, string[]> The container for the notifications message
@@ -47,10 +39,9 @@ final class Notificator
      *                                                        to retrieve the messages
      * @param TranslatorInterface                 $translator the translator for strings
      */
-    public function __construct(NotificableStorableSessionInterface $session, TranslatorInterface $translator)
+    public function __construct(NotificableStorableSessionInterface $session)
     {
         $this->session = $session;
-        $this->translator = $translator;
     }
 
     /**
@@ -96,7 +87,7 @@ final class Notificator
 
             // Set the message and translate it.
             // Don't use WordPress functions here because the text messages come from the shared library.
-            $this->notifications[$note['level']][] = $this->translator->trans($note['msg']);
+            $this->notifications[$note['level']][] = __($note['msg'], 'backwpup');
         }
 
         // Clean the session.

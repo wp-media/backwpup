@@ -6,7 +6,6 @@ namespace Inpsyde\Restore\Api\Module\Upload;
 
 use Inpsyde\Restore\Api\Exception\FileSystemException;
 use Inpsyde\Restore\Api\Module\Registry;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class Upload. Responsible for retrieving a file and save it into upload folder.
@@ -15,7 +14,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *
  * @since   1.0.0
  *
- * @psalm-type PathInfo=array{dirname: string, basename: string, filename: string, extension?: string}
+ * @psalm-type PathInfo=array{
+ *     dirname: string,
+ *     basename: string,
+ *     filename: string,
+ *     extension?: string
+ * }
  */
 final class BackupUpload implements FileUploadInterface
 {
@@ -57,19 +61,11 @@ final class BackupUpload implements FileUploadInterface
     private $registry;
 
     /**
-     * Translator.
-     *
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
      * BackupUpload constructor.
      */
-    public function __construct(Registry $registry, TranslatorInterface $translator)
+    public function __construct(Registry $registry)
     {
         $this->registry = $registry;
-        $this->translator = $translator;
     }
 
     public function run(): void
@@ -77,12 +73,12 @@ final class BackupUpload implements FileUploadInterface
         $tmp_file_name = $_FILES['file']['tmp_name'];
         if (!is_uploaded_file($tmp_file_name)) {
             throw new UploadException(
-                $this->translator->trans('Failed to move uploaded file.')
+                __('Failed to move uploaded file.', 'backwpup')
             );
         }
 
         if (!$this->files_var_exists()) {
-            throw new UploadException($this->translator->trans('Failed to move uploaded file.'));
+            throw new UploadException(__('Failed to move uploaded file.', 'backwpup'));
         }
 
         $chunk = isset($_REQUEST['chunk'])
@@ -99,7 +95,7 @@ final class BackupUpload implements FileUploadInterface
 
         if (!$file_name) {
             throw new UploadException(
-                $this->translator->trans('No File Name Found. Cannot upload.')
+                __('No File Name Found. Cannot upload.', 'backwpup')
             );
         }
 
@@ -111,7 +107,7 @@ final class BackupUpload implements FileUploadInterface
         $out = $this->open_file($file_path);
         if (!\is_resource($out)) {
             throw new FileSystemException(
-                $this->translator->trans('Failed to open output stream during upload.')
+                __('Failed to open output stream during upload.', 'backwpup')
             );
         }
 
@@ -119,7 +115,7 @@ final class BackupUpload implements FileUploadInterface
         $in = @fopen($tmp_file_name, 'r');
         if (!$in) {
             throw new FileSystemException(
-                $this->translator->trans('Failed to open input stream during upload.')
+                __('Failed to open input stream during upload.', 'backwpup')
             );
         }
 
@@ -127,8 +123,8 @@ final class BackupUpload implements FileUploadInterface
             fwrite($out, $buff);
         }
 
-        @fclose($in);
-        @fclose($out);
+        fclose($in);
+        fclose($out);
 
         @unlink($tmp_file_name);
 

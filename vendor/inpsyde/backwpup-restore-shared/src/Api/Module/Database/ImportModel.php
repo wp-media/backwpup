@@ -17,7 +17,6 @@ use Inpsyde\Restore\Api\Module\ImportInterface;
 use Inpsyde\Restore\Api\Module\Registry;
 use Inpsyde\Restore\Infrastructure\EventSourceTrait;
 use Psr\Log\LoggerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Imports an SQL file into the database.
@@ -49,11 +48,6 @@ final class ImportModel implements ImportInterface
     private $logger;
 
     /**
-     * @var TranslatorInterface the translator to use to translate the strings
-     */
-    private $translator;
-
-    /**
      * Context.
      *
      * The context in which the instance operates. Default is `event_source`, which means
@@ -74,14 +68,12 @@ final class ImportModel implements ImportInterface
         DatabaseTypeFactory $db_connection,
         ImportFileFactory $file_import,
         Registry $registry,
-        LoggerInterface $logger,
-        TranslatorInterface $translator
+        LoggerInterface $logger
     ) {
         $this->db_connection = $db_connection;
         $this->file_import = $file_import;
         $this->registry = $registry;
         $this->logger = $logger;
-        $this->translator = $translator;
         $this->replacements = 0;
     }
 
@@ -90,7 +82,7 @@ final class ImportModel implements ImportInterface
         $errors = 0;
         $database = $this->db_connection->database_type();
         if (!$database instanceof DatabaseInterface) {
-            throw new \InvalidArgumentException($this->translator->trans('Could not find a valid database'));
+            throw new \InvalidArgumentException(__('Could not find a valid database', 'backwpup'));
         }
 
         $database->connect();
@@ -102,7 +94,7 @@ final class ImportModel implements ImportInterface
 
         $file = $this->file_import->import_file('sql');
         if (!$file instanceof ImportFileInterface) {
-            throw new \InvalidArgumentException($this->translator->trans('Could not find database file importer'));
+            throw new \InvalidArgumentException(__('Could not find database file importer', 'backwpup'));
         }
 
         $file->set_import_file($this->registry->dbdumpfile);
@@ -166,7 +158,7 @@ final class ImportModel implements ImportInterface
         if ($this->replacements > 0) {
             $this->logger->info(
                 sprintf(
-                    $this->translator->trans('Replacements made: %1$d'),
+                    __('Replacements made: %1$d', 'backwpup'),
                     $this->replacements
                 )
             );
@@ -177,8 +169,8 @@ final class ImportModel implements ImportInterface
 
         if ($this->context === AjaxHandler::EVENT_SOURCE_CONTEXT) {
             $message = $errors !== 0
-                ? $this->translator->trans('Database restored with errors.')
-                : $this->translator->trans('Database restored successfully.');
+                ? __('Database restored with errors.', 'backwpup')
+                : __('Database restored successfully.', 'backwpup');
 
             $this->echoEventData(
                 'message',
@@ -246,8 +238,9 @@ final class ImportModel implements ImportInterface
         } catch (SqlException $e) {
             $this->logger->warning(
                 sprintf(
-                    $this->translator->trans(
-                        'Malformed query encountered; cannot perform replace. Query: %s'
+                    __(
+                        'Malformed query encountered; cannot perform replace. Query: %s',
+                        'backwpup'
                     ),
                     $old_query
                 )

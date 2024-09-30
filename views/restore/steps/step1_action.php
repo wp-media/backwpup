@@ -13,9 +13,7 @@
 	</div>
 
 	<?php
-	$view = new \Inpsyde\Restore\ViewLoader(
-		\Inpsyde\BackWPup\Infrastructure\Restore\restore_container( 'translation' )
-	);
+	$view = new \Inpsyde\Restore\ViewLoader();
 	$view->decrypt_key_input();
 	?>
 

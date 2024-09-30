@@ -10,7 +10,6 @@ use Inpsyde\Restore\Api\Module\Decryption\Exception\DecryptException;
 use phpseclib3\Crypt\AES;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Crypt\RSA\PrivateKey;
-use Symfony\Component\Translation\Translator;
 use Webmozart\Assert\Assert;
 
 /**
@@ -25,11 +24,6 @@ class Decrypter
     private const TYPE_RSA = 2;
     private const NULL_IV = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
     private const BLOCK_SIZE = 16;
-
-    /**
-     * @var Translator
-     */
-    private $translator;
 
     /**
      * @var ArchiveFileOperatorFactory
@@ -49,10 +43,8 @@ class Decrypter
     private $version;
 
     public function __construct(
-        Translator $translator,
         ArchiveFileOperatorFactory $archiveFileOperatorFactory
     ) {
-        $this->translator = $translator;
         $this->archiveFileOperatorFactory = $archiveFileOperatorFactory;
     }
 
@@ -64,7 +56,7 @@ class Decrypter
         $handle = @fopen($backupFile, 'r');
         if ($handle === false) {
             throw new DecryptException(
-                $this->translator->trans('Cannot open the archive for reading.')
+                __('Cannot open the archive for reading.', 'backwpup')
             );
         }
 
@@ -101,13 +93,13 @@ class Decrypter
     public function decrypt(string $key, string $backupFile): bool
     {
         if ($key === '') {
-            throw new DecryptException($this->translator->trans('Private key must be provided.'));
+            throw new DecryptException(__('Private key must be provided.', 'backwpup'));
         }
 
         $sourceHandle = fopen($backupFile, 'r');
         if (!\is_resource($sourceHandle)) {
             throw new DecryptException(
-                $this->translator->trans('Cannot open the archive for reading.')
+                __('Cannot open the archive for reading.', 'backwpup')
             );
         }
 
@@ -124,7 +116,7 @@ class Decrypter
         $targetHandle = fopen($decryptedFilePath, 'a+');
         if (!\is_resource($targetHandle)) {
             throw new DecryptException(
-                $this->translator->trans('Cannot write the decrypted archive.')
+                __('Cannot write the decrypted archive.', 'backwpup')
             );
         }
 
@@ -172,7 +164,7 @@ class Decrypter
             case \chr(0):
                 if (!ctype_xdigit($key)) {
                     throw new DecryptException(
-                        $this->translator->trans('An invalid key was provided')
+                        __('An invalid key was provided', 'backwpup')
                     );
                 }
 
@@ -204,7 +196,10 @@ class Decrypter
         $version = ord(fread($sourceHandle, 1));
         if ($version !== self::VERSION_2) {
             throw new DecryptException(
-                $this->translator->trans("Expected version 2, but got {$this->version}")
+                sprintf(
+                    __("Expected version 2, but got %s", 'backwpup'),
+                    $this->version
+                )
             );
         }
 
@@ -213,7 +208,7 @@ class Decrypter
         $encryptionType = ord(fread($sourceHandle, 1));
         if ($encryptionType === self::TYPE_AES) {
             if (!ctype_xdigit($key)) {
-                throw new DecryptException($this->translator->trans('An invalid key was provided'));
+                throw new DecryptException(__('An invalid key was provided', 'backwpup'));
             }
 
             $this->key = pack('H*', $key);
@@ -239,7 +234,7 @@ class Decrypter
         }
 
         if (empty($encodedLength)) {
-            throw new DecryptException($this->translator->trans('Could not extract RSA key'));
+            throw new DecryptException(__('Could not extract RSA key', 'backwpup'));
         }
 
         $length = $encodedLength[1];
@@ -248,7 +243,7 @@ class Decrypter
 
         $decrypted = $rsa->decrypt($key);
         if (!is_string($decrypted)) {
-            throw new DecryptException($this->translator->trans('Could not extract RSA key'));
+            throw new DecryptException(__('Could not extract RSA key', 'backwpup'));
         }
 
         return $decrypted;

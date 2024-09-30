@@ -42,21 +42,23 @@ class BackWPup_Install
             add_option('backwpup_jobs', [], null, 'no');
         }
 
-        //remove old schedule
-        wp_clear_scheduled_hook('backwpup_cron');
-        //make new schedule
-        $activejobs = BackWPup_Option::get_job_ids('activetype', 'wpcron');
-        if (!empty($activejobs)) {
-            foreach ($activejobs as $id) {
-                $cron_next = BackWPup_Cron::cron_next(BackWPup_Option::get($id, 'cron'));
-                wp_schedule_single_event($cron_next, 'backwpup_cron', ['arg' => $id]);
-            }
-        }
-        $activejobs = BackWPup_Option::get_job_ids('activetype', 'easycron');
-        if (!empty($activejobs)) {
-            foreach ($activejobs as $id) {
-                BackWPup_EasyCron::update($id);
-            }
+		// remove old schedule.
+		wp_clear_scheduled_hook( 'backwpup_cron' );
+		// replace easycron with wpcron.
+		$activejobs = BackWPup_Option::get_job_ids( 'activetype', 'easycron' );
+		if ( ! empty( $activejobs ) ) {
+			update_site_option( 'backwpup_easycron_update', true );
+			foreach ( $activejobs as $id ) {
+				BackWPup_EasyCron::update_to_wpcron( $id );
+			}
+		}
+		// make new schedule.
+		$activejobs = BackWPup_Option::get_job_ids( 'activetype', 'wpcron' );
+		if ( ! empty( $activejobs ) ) {
+			foreach ( $activejobs as $id ) {
+				$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $id, 'cron' ) );
+				wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $id ] );
+			}
         }
 
         //add Cleanup schedule

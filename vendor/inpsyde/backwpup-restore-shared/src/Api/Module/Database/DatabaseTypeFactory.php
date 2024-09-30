@@ -6,18 +6,12 @@ namespace Inpsyde\Restore\Api\Module\Database;
 
 use Inpsyde\Restore\Api\Module\Registry;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Translation\Translator;
 
 /**
  * Class DatabaseTypeFactory.
  */
 class DatabaseTypeFactory
 {
-    /**
-     * @var Translator|null
-     */
-    private $translation;
-
     /**
      * @var Registry
      */
@@ -38,11 +32,10 @@ class DatabaseTypeFactory
      *
      * @param array<string, class-string<DatabaseInterface>> $types
      */
-    public function __construct(array $types, Registry $registry, Translator $translation)
+    public function __construct(array $types, Registry $registry)
     {
         $this->types = $types;
         $this->registry = $registry;
-        $this->translation = $translation;
     }
 
     /**
@@ -54,7 +47,7 @@ class DatabaseTypeFactory
     {
         if (!empty($type)) {
             if (isset($this->types[$type])) {
-                $db = new $this->types[$type]($this->registry, $this->translation);
+                $db = new $this->types[$type]($this->registry);
                 $db->set_logger($this->logger);
 
                 return $db;
@@ -64,7 +57,7 @@ class DatabaseTypeFactory
         }
 
         foreach ($this->types as $type) {
-            $database = new $type($this->registry, $this->translation);
+            $database = new $type($this->registry);
             /** @var DatabaseInterface $database */
             if ($database->can_use()) {
                 $database->set_logger($this->logger);

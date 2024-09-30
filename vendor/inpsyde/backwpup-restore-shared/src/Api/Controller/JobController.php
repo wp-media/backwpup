@@ -26,11 +26,9 @@ use Inpsyde\Restore\Api\Module\Restore\Exception\ConfigFileNotFoundException;
 use Inpsyde\Restore\Api\Module\Restore\Exception\RestorePathException;
 use Inpsyde\Restore\Api\Module\Restore\RestoreInterface;
 use Inpsyde\Restore\Api\Module\Session\NotificableStorableSessionInterface;
-use Inpsyde\Restore\Api\Module\Session\Session;
 use Inpsyde\Restore\Api\Module\Upload\FileUploadInterface;
 use Inpsyde\Restore\DestinationFactory;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Translation\Translator;
 use Webmozart\Assert\Assert;
 
 /**
@@ -46,13 +44,6 @@ class JobController
      * @var Registry Registry object
      */
     private $registry;
-
-    /**
-     * Translator.
-     *
-     * @var Translator Translator object
-     */
-    private $translator;
 
     /**
      * Backup Upload.
@@ -120,7 +111,6 @@ class JobController
      */
     public function __construct(
         Registry $registry,
-        Translator $translator,
         LoggerInterface $logger,
         Decompressor $decompress,
         ManifestFile $manifest,
@@ -134,7 +124,6 @@ class JobController
         Assert::implementsInterface(get_class($restoreFiles), ConfigRewriterInterface::class);
 
         $this->registry = $registry;
-        $this->translator = $translator;
         $this->decompress = $decompress;
         $this->manifest = $manifest;
         $this->session = $session;
@@ -177,7 +166,7 @@ class JobController
     public function download_action(?int $job_id, ?string $service_name, ?string $source_file_path, ?string $local_file_path): void
     {
         if (empty($local_file_path)) {
-            throw new DownloadException($this->translator->trans('Local file path cannot be empty.'));
+            throw new DownloadException(__('Local file path cannot be empty.', 'backwpup'));
         }
 
         // The file may be already into the server and we have an absolute file path.
@@ -186,16 +175,17 @@ class JobController
         }
 
         if (empty($service_name)) {
-            throw new DownloadException($this->translator->trans('Service cannot be empty.'));
+            throw new DownloadException(__('Service cannot be empty.', 'backwpup'));
         }
         if (empty($job_id)) {
-            throw new DownloadException($this->translator->trans('Job ID must not be empty or 0.'));
+            throw new DownloadException(__('Job ID must not be empty or 0.', 'backwpup'));
         }
 
         if (!class_exists('BackWPup_Destination_Downloader_Factory')) {
             throw new DownloadException(
-                $this->translator->trans(
-                    'Errors occurred while downloading. Destination may not be created.'
+                __(
+                    'Errors occurred while downloading. Destination may not be created.',
+                    'backwpup'
                 )
             );
         }
@@ -218,7 +208,8 @@ class JobController
     /**
      * Decompress Upload Action.
      *
-     * @param string $file_path The path of the file to decompress. Optional, default to `uploaded_file` in registry.
+     * @param string $file_path The path of the file to decompress.
+     *                          Optional, default to `uploaded_file` in registry.
      *
      * @throws \RuntimeException In case the file manifest.json doesn't exists.
      * @throws \Exception        if something goes wrong with the decompression
@@ -240,11 +231,11 @@ class JobController
 
         if (!$this->is_manifest_readable()) {
             throw new ManifestFileException(
-                $this->translator->trans('Sorry but only backups made using BackWPup plugin can be restored.')
+                __('Sorry but only backups made using BackWPup plugin can be restored.', 'backwpup')
             );
         }
 
-        $this->session->success($this->translator->trans('Extraction Successful'));
+        $this->session->success(__('Extraction Successful', 'backwpup'));
     }
 
     /**
@@ -267,7 +258,7 @@ class JobController
 
         if ($dumpfile === '') {
             throw new DatabaseException\DatabaseFileException(
-                $this->translator->trans(sprintf('Sql file %1$s does not exist', $dumpfile))
+                sprintf(__('Sql file %1$s does not exist', 'backwpup'), $dumpfile)
             );
         }
 
@@ -292,7 +283,7 @@ class JobController
 
         $db = $this->database_factory->database_type();
         if (!$db instanceof DatabaseInterface) {
-            throw new \InvalidArgumentException($this->translator->trans('No database could be loaded.'));
+            throw new \InvalidArgumentException(__('No database could be loaded.', 'backwpup'));
         }
 
         $db->connect();
@@ -312,7 +303,8 @@ class JobController
     /**
      * Restore Dir.
      *
-     * @throws RestorePathException if the files cannot be restored because destination and source are not set
+     * @throws RestorePathException if the files cannot be restored because
+     *                              destination and source are not set
      * @throws \Exception           if registry cannot be saved
      *
      * @return string The response for the action
@@ -326,8 +318,8 @@ class JobController
         $this->registry->finish_job('file_restore');
 
         return $errors !== 0
-            ? $this->translator->trans('Directories restored with errors.')
-            : $this->translator->trans('Directories restored successfully.');
+            ? __('Directories restored with errors.', 'backwpup')
+            : __('Directories restored successfully.', 'backwpup');
     }
 
     /**
@@ -338,10 +330,8 @@ class JobController
     public function restore_db_action(): string
     {
         if (!file_exists($this->registry->dbdumpfile)) {
-            $message = 'No database dump file found.';
-            $this->logger->warning($message);
-
-            return $this->translator->trans($message);
+            $this->logger->warning('No database dump file found.');
+            return __('No database dump file found.', 'backwpup');
         }
 
         // Restore the db.
@@ -364,7 +354,7 @@ class JobController
         // we have lost the reference to the current user.
         $this->login_user_again();
 
-        return $this->translator->trans('Database restored successfully.');
+        return __('Database restored successfully.', 'backwpup');
     }
 
     /**
@@ -460,8 +450,9 @@ class JobController
         // Remember about two context, upload file and restore from an existing file.
         if ($this->registry->uploaded_file === '') {
             throw new RegistryException(
-                $this->translator->trans(
-                    'Seems the file you are trying to decompress doesn\'t exists. Please see the log file.'
+                __(
+                    'Seems the file you are trying to decompress doesn\'t exists. Please see the log file.',
+                    'backwpup'
                 )
             );
         }
@@ -480,9 +471,9 @@ class JobController
 
             throw new DecompressException(
                 ExceptionLinkHelper::translateWithAppropiatedLink(
-                    $this->translator,
-                    $this->translator->trans(
-                        'Sorry but bzip2 backups cannot be restored. You must convert the file to a .zip one in order to able to restore your backup.'
+                    __(
+                        'Sorry but bzip2 backups cannot be restored. You must convert the file to a .zip one in order to able to restore your backup.',
+                        'backwpup'
                     ),
                     'BZIP2_CANNOT_BE_DECOMPRESSED'
                 )

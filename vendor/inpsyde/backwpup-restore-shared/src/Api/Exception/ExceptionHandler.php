@@ -16,7 +16,6 @@ namespace Inpsyde\Restore\Api\Exception;
 use Inpsyde\Restore\Api\Module\Registry;
 use Inpsyde\Restore\Api\Module\Session\Session;
 use Psr\Log\LoggerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class ExceptionHandler.
@@ -40,13 +39,6 @@ class ExceptionHandler
     private $session;
 
     /**
-     * Translator.
-     *
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
      * @var Registry
      */
     private $registry;
@@ -57,12 +49,10 @@ class ExceptionHandler
     public function __construct(
         LoggerInterface $logger,
         Session $session,
-        TranslatorInterface $translator,
         Registry $registry
     ) {
         $this->logger = $logger;
         $this->session = $session;
-        $this->translator = $translator;
         $this->registry = $registry;
     }
 
@@ -107,8 +97,9 @@ class ExceptionHandler
 
         // Add a message for the user.
         $this->session->warning(
-            $this->translator->trans(
-                'We encountered an error. Please check your log file for more information.'
+            __(
+                'We encountered an error. Please check your log file for more information.',
+                'backwpup'
             )
         );
 

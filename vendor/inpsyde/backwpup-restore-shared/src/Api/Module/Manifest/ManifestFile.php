@@ -6,7 +6,6 @@ namespace Inpsyde\Restore\Api\Module\Manifest;
 
 use Inpsyde\Restore\Api\Module\Manifest\Exception\ManifestFileException;
 use Inpsyde\Restore\Api\Module\Registry;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * ManifestFile Class for handling operations regarding manifest.json in backups.
@@ -24,17 +23,11 @@ class ManifestFile
     private $registry;
 
     /**
-     * @var TranslatorInterface
-     */
-    private $translation;
-
-    /**
      * @param Registry $registry Object holding general information for the app
      */
-    public function __construct(Registry $registry, TranslatorInterface $translation)
+    public function __construct(Registry $registry)
     {
         $this->registry = $registry;
-        $this->translation = $translation;
     }
 
     /**
@@ -47,12 +40,12 @@ class ManifestFile
     public function set_manifest_file(string $file): void
     {
         if (!is_readable($file)) {
-            throw new ManifestFileException($this->translation->trans('Manifest file not readable'));
+            throw new ManifestFileException(__('Manifest file not readable', 'backwpup'));
         }
 
         $manifest = json_decode(file_get_contents($file) ?: '');
         if (!$manifest instanceof \stdClass) {
-            throw new ManifestFileException($this->translation->trans('The manifest file is not formatted properly'));
+            throw new ManifestFileException(__('The manifest file is not formatted properly', 'backwpup'));
         }
 
         $this->manifest = $manifest;
@@ -69,8 +62,9 @@ class ManifestFile
     {
         if ($this->manifest === null) {
             throw new ManifestFileException(
-                $this->translation->trans(
-                    'Manifest file not found. Please check the file exists within the backup and extraction folder.'
+                __(
+                    'Manifest file not found. Please check the file exists within the backup and extraction folder.',
+                    'backwpup'
                 )
             );
         }
@@ -111,7 +105,7 @@ class ManifestFile
         $file = $this->registry->dbdumpfile;
 
         if (empty($file)) {
-            throw new ManifestFileException($this->translation->trans('No DB Dump File found in Registry.'));
+            throw new ManifestFileException(__('No DB Dump File found in Registry.', 'backwpup'));
         }
 
         // Fetch first 1000 chars of sql dump and look for 'SET NAMES'

@@ -262,10 +262,10 @@ final class TemplateLoader
 
                 $bind = [
                     'backupUpload' => $backupUpload,
-                    'upload_is_archive' => $backupUpload::upload_is_archive(
+                    'upload_is_archive' => empty($registry->uploaded_file) ? null : $backupUpload::upload_is_archive(
                         $registry->uploaded_file
                     ),
-                    'upload_is_sql' => $backupUpload::upload_is_sql(
+                    'upload_is_sql' => empty($registry->uploaded_file) ? null : $backupUpload::upload_is_sql(
                         $registry->uploaded_file
                     ),
                 ];

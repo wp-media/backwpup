@@ -14,6 +14,9 @@ class Command implements CommandInterface
     /** @var HandlerList */
     private $handlerList;
 
+    /** @var Array */
+    private $authSchemes;
+
     /**
      * Accepts an associative array of command options, including:
      *
@@ -55,6 +58,51 @@ class Command implements CommandInterface
     public function getHandlerList()
     {
         return $this->handlerList;
+    }
+
+    /**
+     * For overriding auth schemes on a per endpoint basis when using
+     * EndpointV2 provider. Intended for internal use only.
+     *
+     * @param array $authSchemes
+     *
+     * @deprecated In favor of using the @context property bag.
+     *             Auth Schemes are now accessible via the `signature_version` key
+     *             in a Command's context, if applicable. Auth Schemes set using
+     *             This method are no longer consumed.
+     *
+     * @internal
+     */
+    public function setAuthSchemes(array $authSchemes)
+    {
+        trigger_error(__METHOD__ . ' is deprecated.  Auth schemes '
+            . 'resolved using the service `auth` trait or via endpoint resolution '
+            . 'are now set in the command `@context` property.`'
+            , E_USER_WARNING
+        );
+
+        $this->authSchemes = $authSchemes;
+    }
+
+    /**
+     * Get auth schemes added to command as required
+     * for endpoint resolution
+     *
+     * @returns array
+     *
+     * @deprecated In favor of using the @context property bag.
+     *             Auth schemes are now accessible via the `signature_version` key
+     *             in a Command's context, if applicable.
+     */
+    public function getAuthSchemes()
+    {
+        trigger_error(__METHOD__ . ' is deprecated.  Auth schemes '
+        . 'resolved using the service `auth` trait or via endpoint resolution '
+        . 'can now be found in the command `@context` property.`'
+        , E_USER_WARNING
+        );
+
+        return $this->authSchemes ?: [];
     }
 
     /** @deprecated */

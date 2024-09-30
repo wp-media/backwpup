@@ -13,8 +13,6 @@ use Inpsyde\Restore\Api\Module\Restore\Exception\ConfigFileNotFoundException;
 use Inpsyde\Restore\Api\Module\Restore\Exception\RestorePathException;
 use Inpsyde\Restore\Infrastructure\EventSourceTrait;
 use Psr\Log\LoggerInterface;
-use Symfony\Contracts\Translation\LocaleAwareInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class RestoreFiles.
@@ -46,11 +44,6 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
     private $logger;
 
     /**
-     * @var TranslatorInterface&LocaleAwareInterface
-     */
-    private $translation;
-
-    /**
      * Archive Path Length.
      *
      * It's used to remember the current archive path length.
@@ -69,15 +62,10 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
      */
     private $context = AjaxHandler::EVENT_SOURCE_CONTEXT;
 
-    /**
-     * @param TranslatorInterface&LocaleAwareInterface $translation
-     */
     public function __construct(
         Registry $registry,
-        LoggerInterface $logger,
-        $translation
+        LoggerInterface $logger
     ) {
-        $this->translation = $translation;
         $this->registry = $registry;
         $this->logger = $logger;
     }
@@ -106,10 +94,10 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
             if (!$archive_extracted_path || !$restore_path) {
                 throw new RestorePathException(
                     ExceptionLinkHelper::translateWithAppropiatedLink(
-                        $this->translation,
                         sprintf(
-                            $this->translation->trans(
-                                'Archive Path and/or Restore Path is not set; Archive Path: %1$s; Restore Path: %2$s'
+                            __(
+                                'Archive Path and/or Restore Path is not set; Archive Path: %1$s; Restore Path: %2$s',
+                                'backwpup'
                             ),
                             $archive_extracted_path ?: '(empty string)',
                             $restore_path ?: '(empty string)'
@@ -121,7 +109,7 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
 
             $this->logger->info(
                 sprintf(
-                    $this->translation->trans('Restoring: %1$s'),
+                    __('Restoring: %1$s', 'backwpup'),
                     $archive_extracted_path
                 )
             );
@@ -143,7 +131,7 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
         $configPath = $this->registry->extract_folder . DIRECTORY_SEPARATOR . 'wp-config.php';
         $this->logger->info(
             sprintf(
-                $this->translation->trans('Attempting to rewrite config file at %s'),
+                __('Attempting to rewrite config file at %s', 'backwpup'),
                 $configPath
             )
         );
@@ -151,7 +139,7 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
         if (!file_exists($configPath)) {
             throw new ConfigFileNotFoundException(
                 sprintf(
-                    $this->translation->trans('Config file not found at %s'),
+                    __('Config file not found at %s', 'backwpup'),
                     $configPath
                 )
             );
@@ -159,7 +147,7 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
         if (!is_writable($configPath)) {
             throw new FileSystemException(
                 sprintf(
-                    $this->translation->trans('Config file not writable at %s'),
+                    __('Config file not writable at %s', 'backwpup'),
                     $configPath
                 )
             );
@@ -173,11 +161,11 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
             'DB_HOST' => $this->registry->dbhost,
             'DB_CHARSET' => $this->registry->dbcharset,
         ];
-        array_walk($credentials, function ($value, $key): void {
+        array_walk($credentials, static function ($value, $key): void {
             if ($key !== 'DB_CHARSET' && empty($value)) {
                 throw new ConfigFileException(
                     sprintf(
-                        $this->translation->trans('No value found for %s'),
+                        __('No value found for %s', 'backwpup'),
                         $key
                     )
                 );
@@ -203,7 +191,7 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
             if ($count === 0) {
                 throw new ConfigFileException(
                     sprintf(
-                        $this->translation->trans('Could not replace value of %s'),
+                        __('Could not replace value of %s', 'backwpup'),
                         $key
                     )
                 );
@@ -213,7 +201,7 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
         file_put_contents($configPath, $config);
 
         $this->logger->info(
-            $this->translation->trans('Config has been rewritten successfully.')
+            __('Config has been rewritten successfully.', 'backwpup')
         );
     }
 
@@ -292,7 +280,7 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
         if ($files === false) {
             throw new FileSystemException(
                 sprintf(
-                    $this->translation->trans('The directory %1$s cannot be open. Skip this one.'),
+                    __('The directory %1$s cannot be open. Skip this one.', 'backwpup'),
                     $source
                 )
             );
@@ -342,8 +330,9 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
 
                         throw new FileSystemException(
                             sprintf(
-                                $this->translation->trans(
-                                    'File %s cannot be restored because it is not writable or the directory doesn\'t have the right permissions'
+                                __(
+                                    'File %s cannot be restored because it is not writable or the directory doesn\'t have the right permissions',
+                                    'backwpup'
                                 ),
                                 $destinationAbsoluteFilePath
                             )
@@ -360,7 +349,7 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
 
                         throw new FileSystemException(
                             sprintf(
-                                $this->translation->trans('Failed to restore file %1$s.'),
+                                __('Failed to restore file %1$s.', 'backwpup'),
                                 $src_file
                             )
                         );

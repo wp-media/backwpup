@@ -11,7 +11,8 @@ use Inpsyde\Restore\Api\Module\Restore\Exception\ConfigFileNotFoundException;
 /**
  * Interface for rewriting wp-config.php.
  *
- * This is currently part of {@link RestoreFiles} but should probably be separated into its own class eventually.
+ * This is currently part of {@link RestoreFiles} but should probably
+ * be separated into its own class eventually.
  *
  * @author Brandon Olivares <b.olivares@inpsyde.com>
  */

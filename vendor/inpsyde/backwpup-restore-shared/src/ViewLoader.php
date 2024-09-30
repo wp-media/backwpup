@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Inpsyde\Restore;
 
-use Symfony\Contracts\Translation\TranslatorInterface;
-
 class ViewLoader
 {
     private const DECRYPT_KEY_INPUT = 'decrypt-key-input.php';
@@ -29,14 +27,8 @@ class ViewLoader
      */
     private $cache = [];
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    public function __construct(TranslatorInterface $translator)
+    public function __construct()
     {
-        $this->translator = $translator;
         $this->view_directory = \dirname(__DIR__) . '/views';
     }
 
@@ -50,9 +42,6 @@ class ViewLoader
 
     private function load(string $view): void
     {
-        // Make variable available for template
-        $translation = $this->translator;
-
         if (isset($this->cache[$view])) {
             /** @noinspection PhpIncludeInspection */
             include $this->cache[$view];

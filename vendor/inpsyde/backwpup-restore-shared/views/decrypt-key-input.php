@@ -8,20 +8,19 @@
  * file that was distributed with this source code.
  */
 
-/** @var Symfony\Component\Translation\TranslatorInterface $translation */
 ?>
 
 <div id="decrypt_key" style="display: none;">
 	<p>
-		<?php echo $translation->trans('Please enter your decryption key to decrypt your backup.'); ?>
+		<?php esc_html_e('Please enter your decryption key to decrypt your backup.', 'backwpup'); ?>
 	</p>
 	<p>
 		<label for="decryption_key">
-			<?php echo $translation->trans('Decryption Key'); ?>
+			<?php esc_html_e('Decryption Key', 'backwpup'); ?>
 		</label>
 		<textarea id="decryption_key" name="decryption_key" style="width: 100%; overflow: scroll;" rows="8"></textarea>
 	</p>
 	<button id="submit_decrypt_key" class="button button-primary">
-		<?php echo $translation->trans('Submit'); ?>
+		<?php esc_html_e('Submit', 'backwpup'); ?>
 	</button>
 </div>

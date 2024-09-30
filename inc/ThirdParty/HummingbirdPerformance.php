@@ -62,7 +62,7 @@ class HummingbirdPerformance implements ThirdPartyInterface {
 	 * @return bool
 	 */
 	public static function is_active(): bool {
-		return defined( 'WPHB_VERSION' );
+		return ( class_exists( 'Hummingbird\\WP_Hummingbird' ) && defined( 'WPHB_VERSION' ) );
 	}
 
 	/**

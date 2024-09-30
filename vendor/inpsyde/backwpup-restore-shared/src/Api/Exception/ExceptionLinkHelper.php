@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Inpsyde\Restore\Api\Exception;
 
-use Symfony\Contracts\Translation\LocaleAwareInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-
 /**
  * Class ExceptionLinkHelper.
  *
@@ -23,39 +20,22 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class ExceptionLinkHelper
 {
-    /**
-     * @param TranslatorInterface&LocaleAwareInterface $translation
-     */
     public static function translateWithAppropiatedLink(
-        $translation,
         string $message,
         string $message_links
     ): string {
-        $locale = self::region($translation);
         $links_for_messages = self::links_for_messages();
 
-        if (!isset($links_for_messages[$message_links][$locale])) {
+        if (!isset($links_for_messages[$message_links])) {
             return $message;
         }
 
         return $message
-            . ' ' . $translation->trans('see the') . ' '
+            . ' ' . __('See the', 'backwpup') . ' '
             . self::link_markup(
-                $links_for_messages[$message_links][$locale],
-                $translation->trans('documentation')
+                $links_for_messages[$message_links],
+                __('documentation', 'backwpup')
             );
-    }
-
-    private static function region(LocaleAwareInterface $translation): string
-    {
-        $locale = $translation->getLocale();
-        $canonicalized_locale = str_replace('-', '_', $locale);
-        $primary_languageIndex = strpos(
-            $canonicalized_locale,
-            '_'
-        ) ?: \strlen($canonicalized_locale);
-
-        return substr($canonicalized_locale, 0, $primary_languageIndex);
     }
 
     private static function link_markup(string $link, string $label): string
@@ -66,32 +46,33 @@ class ExceptionLinkHelper
     }
 
     /**
-     * @return array<string, array<string, string>>
+     * @return array<string>
      */
     private static function links_for_messages(): array
     {
-        static $message_links = null;
 
-        if ($message_links === null) {
-            $message_links = [
-                'DIR_CANNOT_BE_CREATED' => [
-                    'en' => 'https://backwpup.com/docs/restore-directory-cannot-be-created/',
-                    'de' => 'https://backwpup.de/doku/restore-dekomprimierungsverzeichnis-kann-nicht-erstellt-werden/', // phpcs:ignore
-                ],
-                'ARCHIVE_RESTORE_PATH_CANNOT_BE_SET' => [
-                    'en' => 'https://backwpup.com/docs/archive-path-restore-path-not-set/',
-                    'de' => 'https://backwpup.de/doku/archivpfad-und-oder-restorepfad-ist-nicht-festgelegt/', // phpcs:ignore
-                ],
-                'DATABASE_CONNECTION_PROBLEMS' => [
-                    'en' => 'https://backwpup.com/docs/restore-cannot-connect-mysql-database/',
-                    'de' => 'https://backwpup.de/doku/verbindung-zur-mysql-datenbank-nicht-moeglich-1045-zugriff-verweigert-fuer-benutzer-localhost-mit-passwort-nein/', // phpcs:ignore
-                ],
-                'BZIP2_CANNOT_BE_DECOMPRESSED' => [
-                    'en' => 'https://backwpup.com/docs/convert-bzip2-file-zip/',
-                    'de' => 'https://backwpup.de/doku/bzip2-nach-zip-konvertieren/',
-                ],
-            ];
-        }
+        $message_links = [
+            'DIR_CANNOT_BE_CREATED' => _x(
+                'https://backwpup.com/docs/restore-directory-cannot-be-created/',
+                'Link to documentation page for directory cannot be crated',
+                'backwpup'
+            ),
+            'ARCHIVE_RESTORE_PATH_CANNOT_BE_SET' => _x(
+                'https://backwpup.com/docs/archive-path-restore-path-not-set/',
+                'Link to documentation page for archive restore path cannot be set',
+                'backwpup'
+            ),
+            'DATABASE_CONNECTION_PROBLEMS' => _x(
+                'https://backwpup.com/docs/restore-cannot-connect-mysql-database/',
+                'Link to documentation page for database connection problems',
+                'backwpup'
+            ),
+            'BZIP2_CANNOT_BE_DECOMPRESSED' => _x(
+                'https://backwpup.com/docs/convert-bzip2-file-zip/',
+                'Link to documentation page for bzip2 cannot be decompressed',
+                'backwpup'
+            ),
+        ];
 
         return $message_links;
     }

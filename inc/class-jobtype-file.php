@@ -74,14 +74,11 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
             'backupuploadsexcludedirs' => apply_filters(
                 'backwpup_upload_exclude_dirs',
                 [basename($log_folder)]
-            ),
-            'fileexclude' => apply_filters(
-                'backwpup_file_exclude',
-                '.tmp,.svn,.git,desktop.ini,.DS_Store,/node_modules/'
-            ),
-            'dirinclude' => apply_filters('backwpup_dir_include', ''),
-            'backupabsfolderup' => false,
-        ];
+			),
+			'fileexclude'              => '',
+			'dirinclude'               => apply_filters( 'backwpup_dir_include', '' ),
+			'backupabsfolderup'        => false,
+		];
     }
 
     /**

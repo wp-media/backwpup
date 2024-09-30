@@ -21,7 +21,6 @@ use Inpsyde\Restore\Api\Module\Decryption\Exception\DecryptException;
 use Inpsyde\Restore\Api\Module\Registry;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -75,11 +74,6 @@ class AjaxHandler
     private $registry;
 
     /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -102,7 +96,6 @@ class AjaxHandler
         LanguageController $languageController,
         DecryptController $decryptController,
         Registry $registry,
-        TranslatorInterface $translator,
         LoggerInterface $logger,
         EventSource $eventSource,
         string $logFilePath
@@ -111,7 +104,6 @@ class AjaxHandler
         $this->languageController = $languageController;
         $this->decryptController = $decryptController;
         $this->registry = $registry;
-        $this->translator = $translator;
         $this->logger = $logger;
         $this->eventSource = $eventSource;
         $this->logFilePath = $logFilePath;
@@ -213,7 +205,7 @@ class AjaxHandler
         $callback = [$this->languageController, $action];
         Assert::isCallable($callback);
 
-        $locale = filter_input(INPUT_POST, 'locale');
+        $locale = filter_input(INPUT_POST, 'locale',FILTER_SANITIZE_ADD_SLASHES);
 
         if (is_string($locale)) {
             return $callback($locale);
@@ -233,8 +225,9 @@ class AjaxHandler
 
         if (!isset($_REQUEST['decryption_key'])) {
             throw new DecryptException(
-                $this->translator->trans(
-                    "You tried to decrypt a backup but you didn't sent any decryption key"
+                __(
+                    "You tried to decrypt a backup but you didn't sent any decryption key",
+                    'backwpup'
                 )
             );
         }
@@ -251,13 +244,13 @@ class AjaxHandler
 
         if (!$encrypted_file) {
             throw new DecryptException(
-                $this->translator->trans('Backup cannot be decrypted, file has not been found.')
+                __('Backup cannot be decrypted, file has not been found.', 'backwpup')
             );
         }
 
         $this->decryptController->decrypt($key, $encrypted_file);
 
-        return $this->translator->trans('Backup decrypted successfully.');
+        return __('Backup decrypted successfully.', 'backwpup');
     }
 
     /**
@@ -267,11 +260,11 @@ class AjaxHandler
      */
     public function save_strategy_action(): bool
     {
-        $strategy = filter_input(INPUT_POST, 'strategy');
+        $strategy = filter_input(INPUT_POST, 'strategy', FILTER_SANITIZE_ADD_SLASHES);
 
         if (!is_string($strategy) || $strategy === '') {
             throw new InvalidArgumentException(
-                $this->translator->trans('You have to select one strategy.')
+                __('You have to select one strategy.', 'backwpup')
             );
         }
 
@@ -333,7 +326,7 @@ class AjaxHandler
 
         if ($db_settings !== '') {
             $this->jobController->db_test_action($db_settings);
-            $response['message'] = $this->translator->trans('Connection to Database Successful.');
+            $response['message'] = __('Connection to Database Successful.', 'backwpup');
             $response['charset'] = $this->registry->dbcharset ?: '';
         }
 
@@ -408,34 +401,34 @@ class AjaxHandler
         $old_url = filter_input(INPUT_POST, 'old_url');
         if (!is_string($old_url) || $old_url === '') {
             throw new InvalidArgumentException(
-                $this->translator->trans('Please specify the old URL.')
+                __('Please specify the old URL.', 'backwpup')
             );
         }
 
         $old_url = filter_var($old_url, FILTER_VALIDATE_URL);
         if ($old_url === false || $old_url === '') {
             throw new \InvalidArgumentException(
-                $this->translator->trans('Old URL is not a valid URL.')
+                __('Old URL is not a valid URL.', 'backwpup')
             );
         }
 
         $new_url = filter_input(INPUT_POST, 'new_url');
         if (!is_string($new_url) || $new_url === '') {
             throw new InvalidArgumentException(
-                $this->translator->trans('Please specify the new URL.')
+                __('Please specify the new URL.', 'backwpup')
             );
         }
 
         $new_url = filter_var($new_url, FILTER_VALIDATE_URL);
         if ($new_url === false || $new_url === '') {
             throw new \InvalidArgumentException(
-                $this->translator->trans('New URL is not a valid URL.')
+                __('New URL is not a valid URL.', 'backwpup')
             );
         }
 
         if ($old_url === $new_url) {
             throw new InvalidArgumentException(
-                $this->translator->trans('The old and new URLs cannot match.')
+                __('The old and new URLs cannot match.', 'backwpup')
             );
         }
 
@@ -522,7 +515,15 @@ class AjaxHandler
      */
     private function handle_catch_exception(\Throwable $e): void
     {
-        $this->logger->alert($e->getMessage());
+        $context = [
+            'exception' => get_class($e),
+            'line' => $e->getLine(),
+            'file' => $e->getFile(),
+            'trace' => $e->getTraceAsString(),
+            'GET' => $_GET,
+            'POST' => $_POST,
+        ];
+        $this->logger->alert($e->getMessage(), $context);
 
         if (
             !$e instanceof DecryptException
