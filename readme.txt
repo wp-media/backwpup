@@ -1,10 +1,10 @@
 === BackWPup – WordPress Backup & Restore Plugin ===
 Contributors: backwpup, wp_rocket, imagify
 Tags: backup, restore, cloud backup, database backup, wordpress backup
-Requires at least: 3.9
+Requires at least: 4.9
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 4.1.4
+Stable tag: 4.1.5
 License: GPLv2+
 
 Create a complete WordPress backup easily. Schedule automatic backups, store securely, and restore effortlessly with the best WordPress backup plugin!
@@ -201,6 +201,17 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 * %s = Two digit representation of the second
 
 == Changelog ==
+
+= 4.1.5 =
+Release date: sept 27, 2024
+
+* Added : Restore feature information notice
+* Changed : Upgraded Wordpress minimum version to 4.9
+* Removed : Remove the EasyCron integration and switch it with WPCron.
+* Removed : Remove Database Backup file name & compression options from the UI can be edited via filter (backwpup_generate_dump_filename)
+* Fixed : Conflict with WP Hotel Booking from ThimPress
+* Changed : Add the default exclude files in a filter. (backwpup_file_exclude)
+* Fixed : Use wp translation
 
 = 4.1.4 =
 Release date: jul 22, 2024
