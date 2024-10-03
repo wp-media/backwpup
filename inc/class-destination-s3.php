@@ -523,7 +523,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
             echo '<input type="text" name="s3bucket" id="s3bucket" value="' . esc_attr($args['s3bucketselected']) . '" >';
         } elseif (!empty($error)) {
             echo esc_html($error);
-        } elseif (empty($buckets) || count($buckets['Buckets']) < 1) {
+        } elseif (empty($buckets['Buckets']) || count($buckets['Buckets']) < 1) {
             esc_html_e('No bucket found!', 'backwpup');
         }
         echo '</span>';
