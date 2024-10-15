@@ -308,7 +308,7 @@ msgid "Unknown"
 msgstr ""
 
 #. translators: $1 is the filename to add into the archive.
-#: inc/class-create-archive.php:932
+#: inc/class-create-archive.php:936
 msgid "Cannot open source file %s."
 msgstr ""
 

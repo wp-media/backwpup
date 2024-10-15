@@ -202,22 +202,22 @@ final class BackWPup_Option
         $default['name'] = __('New Job', 'backwpup');
         $default['activetype'] = '';
         $default['logfile'] = '';
-        $default['lastbackupdownloadurl'] = '';
-        $default['cronselect'] = 'basic';
-        $default['cron'] = '0 3 * * *';
-        $default['mailaddresslog'] = sanitize_email(get_bloginfo('admin_email'));
-        $default['mailaddresssenderlog'] = 'BackWPup ' . get_bloginfo('name') . ' <' . sanitize_email(get_bloginfo('admin_email')) . '>';
-        $default['mailerroronly'] = true;
-        $default['backuptype'] = 'archive';
-        $default['archiveformat'] = '.zip';
-        $default['archivename'] = '%Y-%m-%d_%H-%i-%s_%hash%';
-        $default['archivenamenohash'] = '%Y-%m-%d_%H-%i-%s_%hash%';
-        //defaults vor destinations
-        foreach (BackWPup::get_registered_destinations() as $dest_key => $dest) {
-            if (!empty($dest['class'])) {
-                $dest_object = BackWPup::get_destination($dest_key);
-                $default = array_merge($default, $dest_object->option_defaults());
-            }
+		$default['lastbackupdownloadurl'] = '';
+		$default['cronselect']            = 'basic';
+		$default['cron']                  = '0 3 * * *';
+		$default['mailaddresslog']        = sanitize_email( get_bloginfo( 'admin_email' ) );
+		$default['mailaddresssenderlog']  = 'BackWPup ' . get_bloginfo( 'name' ) . ' <' . sanitize_email( get_bloginfo( 'admin_email' ) ) . '>';
+		$default['mailerroronly']         = true;
+		$default['backuptype']            = 'archive';
+		$default['archiveformat']         = '.tar';
+		$default['archivename']           = '%Y-%m-%d_%H-%i-%s_%hash%';
+		$default['archivenamenohash']     = '%Y-%m-%d_%H-%i-%s_%hash%';
+		// defaults vor destinations.
+		foreach ( BackWPup::get_registered_destinations() as $dest_key => $dest ) {
+			if ( ! empty( $dest['class'] ) ) {
+				$dest_object = BackWPup::get_destination( $dest_key );
+				$default     = array_merge( $default, $dest_object->option_defaults() );
+			}
         }
         //defaults vor job types
         foreach (BackWPup::get_job_types() as $job_type) {

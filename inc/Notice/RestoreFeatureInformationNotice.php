@@ -52,4 +52,16 @@ class RestoreFeatureInformationNotice extends Notice {
 		);
 		return $notice_message;
 	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function shouldDisplay(): bool {
+		// Check if the notice has been dismissed.
+		if ( parent::shouldDisplay() ) {
+			// Must only be displayed in the free version.
+			return ! \BackWPup::is_pro();
+		}
+		return false;
+	}
 }

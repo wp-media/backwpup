@@ -900,11 +900,15 @@ class BackWPup_Create_Archive
         $owner = esc_html__('Unknown', 'backwpup');
         $group = esc_html__('Unknown', 'backwpup');
 
-        if (function_exists('posix_getpwuid')) {
-            $info = posix_getpwuid($uid);
-            $owner = $info['name'];
-            $info = posix_getgrgid($gid);
-            $group = $info['name'];
+		if ( function_exists( 'posix_getpwuid' ) ) {
+			$info = posix_getpwuid( $uid );
+			if ( $info ) {
+				$owner = $info['name'];
+			}
+			$info = posix_getgrgid( $gid );
+			if ( $info ) {
+				$group = $info['name'];
+			}
         }
 
         return [
