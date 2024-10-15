@@ -4,7 +4,7 @@ Tags: backup, restore, cloud backup, database backup, wordpress backup
 Requires at least: 4.9
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 4.1.5
+Stable tag: 4.1.6
 License: GPLv2+
 
 Create a complete WordPress backup easily. Schedule automatic backups, store securely, and restore effortlessly with the best WordPress backup plugin!
@@ -201,6 +201,13 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 * %s = Two digit representation of the second
 
 == Changelog ==
+
+= 4.1.6 =
+Release date: oct 15, 2024
+
+* Changed : Show the Restore feature information notice only for free version users
+* Changed : The default format is now .tar
+* Fixed : Warnings on the backup script on PHP 8.x when tar format is used
 
 = 4.1.5 =
 Release date: sept 27, 2024
