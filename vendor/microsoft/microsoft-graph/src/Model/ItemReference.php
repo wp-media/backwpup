@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,18 +17,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class ItemReference extends Entity
 {
     /**
     * Gets the driveId
-    * Unique identifier of the drive instance that contains the item. Read-only.
+    * Unique identifier of the drive instance that contains the driveItem. Only returned if the item is located in a [drive][]. Read-only.
     *
-    * @return string The driveId
+    * @return string|null The driveId
     */
     public function getDriveId()
     {
@@ -42,7 +40,7 @@ class ItemReference extends Entity
 
     /**
     * Sets the driveId
-    * Unique identifier of the drive instance that contains the item. Read-only.
+    * Unique identifier of the drive instance that contains the driveItem. Only returned if the item is located in a [drive][]. Read-only.
     *
     * @param string $val The value of the driveId
     *
@@ -55,9 +53,9 @@ class ItemReference extends Entity
     }
     /**
     * Gets the driveType
-    * Identifies the type of drive. See [drive][] resource for values.
+    * Identifies the type of drive. Only returned if the item is located in a [drive][]. See [drive][] resource for values.
     *
-    * @return string The driveType
+    * @return string|null The driveType
     */
     public function getDriveType()
     {
@@ -70,7 +68,7 @@ class ItemReference extends Entity
 
     /**
     * Sets the driveType
-    * Identifies the type of drive. See [drive][] resource for values.
+    * Identifies the type of drive. Only returned if the item is located in a [drive][]. See [drive][] resource for values.
     *
     * @param string $val The value of the driveType
     *
@@ -83,9 +81,9 @@ class ItemReference extends Entity
     }
     /**
     * Gets the id
-    * Unique identifier of the item in the drive. Read-only.
+    * Unique identifier of the driveItem in the drive or a listItem in a list. Read-only.
     *
-    * @return string The id
+    * @return string|null The id
     */
     public function getId()
     {
@@ -98,7 +96,7 @@ class ItemReference extends Entity
 
     /**
     * Sets the id
-    * Unique identifier of the item in the drive. Read-only.
+    * Unique identifier of the driveItem in the drive or a listItem in a list. Read-only.
     *
     * @param string $val The value of the id
     *
@@ -113,7 +111,7 @@ class ItemReference extends Entity
     * Gets the name
     * The name of the item being referenced. Read-only.
     *
-    * @return string The name
+    * @return string|null The name
     */
     public function getName()
     {
@@ -141,7 +139,7 @@ class ItemReference extends Entity
     * Gets the path
     * Path that can be used to navigate to the item. Read-only.
     *
-    * @return string The path
+    * @return string|null The path
     */
     public function getPath()
     {
@@ -169,7 +167,7 @@ class ItemReference extends Entity
     * Gets the shareId
     * A unique identifier for a shared resource that can be accessed via the [Shares][] API.
     *
-    * @return string The shareId
+    * @return string|null The shareId
     */
     public function getShareId()
     {
@@ -198,12 +196,12 @@ class ItemReference extends Entity
     * Gets the sharepointIds
     * Returns identifiers useful for SharePoint REST compatibility. Read-only.
     *
-    * @return SharepointIds The sharepointIds
+    * @return SharepointIds|null The sharepointIds
     */
     public function getSharepointIds()
     {
         if (array_key_exists("sharepointIds", $this->_propDict)) {
-            if (is_a($this->_propDict["sharepointIds"], "Microsoft\Graph\Model\SharepointIds")) {
+            if (is_a($this->_propDict["sharepointIds"], "\Microsoft\Graph\Model\SharepointIds") || is_null($this->_propDict["sharepointIds"])) {
                 return $this->_propDict["sharepointIds"];
             } else {
                 $this->_propDict["sharepointIds"] = new SharepointIds($this->_propDict["sharepointIds"]);
@@ -228,8 +226,9 @@ class ItemReference extends Entity
     }
     /**
     * Gets the siteId
+    * For OneDrive for Business and SharePoint, this property represents the ID of the site that contains the parent document library of the driveItem resource or the parent list of the listItem resource. The value is the same as the id property of that [site][] resource. It is an opaque string that consists of three identifiers of the site. For OneDrive, this property is not populated.
     *
-    * @return string The siteId
+    * @return string|null The siteId
     */
     public function getSiteId()
     {
@@ -242,6 +241,7 @@ class ItemReference extends Entity
 
     /**
     * Sets the siteId
+    * For OneDrive for Business and SharePoint, this property represents the ID of the site that contains the parent document library of the driveItem resource or the parent list of the listItem resource. The value is the same as the id property of that [site][] resource. It is an opaque string that consists of three identifiers of the site. For OneDrive, this property is not populated.
     *
     * @param string $val The value of the siteId
     *

@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class ChoiceColumn extends Entity
 {
@@ -29,7 +27,7 @@ class ChoiceColumn extends Entity
     * Gets the allowTextEntry
     * If true, allows custom values that aren't in the configured choices.
     *
-    * @return bool The allowTextEntry
+    * @return bool|null The allowTextEntry
     */
     public function getAllowTextEntry()
     {
@@ -57,7 +55,7 @@ class ChoiceColumn extends Entity
     * Gets the choices
     * The list of values available for this column.
     *
-    * @return string The choices
+    * @return string|null The choices
     */
     public function getChoices()
     {
@@ -85,7 +83,7 @@ class ChoiceColumn extends Entity
     * Gets the displayAs
     * How the choices are to be presented in the UX. Must be one of checkBoxes, dropDownMenu, or radioButtons
     *
-    * @return string The displayAs
+    * @return string|null The displayAs
     */
     public function getDisplayAs()
     {

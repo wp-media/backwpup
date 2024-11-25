@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,18 +17,45 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class DeviceDetail extends Entity
 {
     /**
+    * Gets the browser
+    * Indicates the browser information of the used for signing in.
+    *
+    * @return string|null The browser
+    */
+    public function getBrowser()
+    {
+        if (array_key_exists("browser", $this->_propDict)) {
+            return $this->_propDict["browser"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the browser
+    * Indicates the browser information of the used for signing in.
+    *
+    * @param string $val The value of the browser
+    *
+    * @return DeviceDetail
+    */
+    public function setBrowser($val)
+    {
+        $this->_propDict["browser"] = $val;
+        return $this;
+    }
+    /**
     * Gets the deviceId
     * Refers to the UniqueID of the device used for signing in.
     *
-    * @return string The deviceId
+    * @return string|null The deviceId
     */
     public function getDeviceId()
     {
@@ -57,7 +83,7 @@ class DeviceDetail extends Entity
     * Gets the displayName
     * Refers to the name of the device used for signing in.
     *
-    * @return string The displayName
+    * @return string|null The displayName
     */
     public function getDisplayName()
     {
@@ -82,66 +108,10 @@ class DeviceDetail extends Entity
         return $this;
     }
     /**
-    * Gets the operatingSystem
-    * Indicates the operating system name and version used for signing in.
-    *
-    * @return string The operatingSystem
-    */
-    public function getOperatingSystem()
-    {
-        if (array_key_exists("operatingSystem", $this->_propDict)) {
-            return $this->_propDict["operatingSystem"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the operatingSystem
-    * Indicates the operating system name and version used for signing in.
-    *
-    * @param string $val The value of the operatingSystem
-    *
-    * @return DeviceDetail
-    */
-    public function setOperatingSystem($val)
-    {
-        $this->_propDict["operatingSystem"] = $val;
-        return $this;
-    }
-    /**
-    * Gets the browser
-    * Indicates the browser information of the used for signing in.
-    *
-    * @return string The browser
-    */
-    public function getBrowser()
-    {
-        if (array_key_exists("browser", $this->_propDict)) {
-            return $this->_propDict["browser"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the browser
-    * Indicates the browser information of the used for signing in.
-    *
-    * @param string $val The value of the browser
-    *
-    * @return DeviceDetail
-    */
-    public function setBrowser($val)
-    {
-        $this->_propDict["browser"] = $val;
-        return $this;
-    }
-    /**
     * Gets the isCompliant
     * Indicates whether the device is compliant.
     *
-    * @return bool The isCompliant
+    * @return bool|null The isCompliant
     */
     public function getIsCompliant()
     {
@@ -169,7 +139,7 @@ class DeviceDetail extends Entity
     * Gets the isManaged
     * Indicates whether the device is managed.
     *
-    * @return bool The isManaged
+    * @return bool|null The isManaged
     */
     public function getIsManaged()
     {
@@ -194,10 +164,38 @@ class DeviceDetail extends Entity
         return $this;
     }
     /**
+    * Gets the operatingSystem
+    * Indicates the operating system name and version used for signing in.
+    *
+    * @return string|null The operatingSystem
+    */
+    public function getOperatingSystem()
+    {
+        if (array_key_exists("operatingSystem", $this->_propDict)) {
+            return $this->_propDict["operatingSystem"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the operatingSystem
+    * Indicates the operating system name and version used for signing in.
+    *
+    * @param string $val The value of the operatingSystem
+    *
+    * @return DeviceDetail
+    */
+    public function setOperatingSystem($val)
+    {
+        $this->_propDict["operatingSystem"] = $val;
+        return $this;
+    }
+    /**
     * Gets the trustType
     * Provides information about whether the signed-in device is Workplace Joined, AzureAD Joined, Domain Joined.
     *
-    * @return string The trustType
+    * @return string|null The trustType
     */
     public function getTrustType()
     {

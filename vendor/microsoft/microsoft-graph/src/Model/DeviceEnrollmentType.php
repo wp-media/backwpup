@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -21,10 +20,9 @@ use Microsoft\Graph\Core\Enum;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class DeviceEnrollmentType extends Enum
 {
@@ -41,4 +39,7 @@ class DeviceEnrollmentType extends Enum
     const WINDOWS_AUTO_ENROLLMENT = "windowsAutoEnrollment";
     const WINDOWS_BULK_AZURE_DOMAIN_JOIN = "windowsBulkAzureDomainJoin";
     const WINDOWS_CO_MANAGEMENT = "windowsCoManagement";
+    const WINDOWS_AZURE_AD_JOIN_USING_DEVICE_AUTH = "windowsAzureADJoinUsingDeviceAuth";
+    const APPLE_USER_ENROLLMENT = "appleUserEnrollment";
+    const APPLE_USER_ENROLLMENT_WITH_SERVICE_ACCOUNT = "appleUserEnrollmentWithServiceAccount";
 }

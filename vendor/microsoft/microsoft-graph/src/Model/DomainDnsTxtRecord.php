@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class DomainDnsTxtRecord extends DomainDnsRecord
 {
@@ -30,7 +28,7 @@ class DomainDnsTxtRecord extends DomainDnsRecord
     * Gets the text
     * Value used when configuring the text property at the DNS host.
     *
-    * @return string The text
+    * @return string|null The text
     */
     public function getText()
     {
@@ -40,7 +38,7 @@ class DomainDnsTxtRecord extends DomainDnsRecord
             return null;
         }
     }
-    
+
     /**
     * Sets the text
     * Value used when configuring the text property at the DNS host.
@@ -54,5 +52,5 @@ class DomainDnsTxtRecord extends DomainDnsRecord
         $this->_propDict["text"] = $val;
         return $this;
     }
-    
+
 }

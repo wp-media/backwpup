@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,46 +17,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class EducationTeacher extends Entity
 {
     /**
-    * Gets the teacherNumber
-    * Teacher number.
-    *
-    * @return string The teacherNumber
-    */
-    public function getTeacherNumber()
-    {
-        if (array_key_exists("teacherNumber", $this->_propDict)) {
-            return $this->_propDict["teacherNumber"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the teacherNumber
-    * Teacher number.
-    *
-    * @param string $val The value of the teacherNumber
-    *
-    * @return EducationTeacher
-    */
-    public function setTeacherNumber($val)
-    {
-        $this->_propDict["teacherNumber"] = $val;
-        return $this;
-    }
-    /**
     * Gets the externalId
     * ID of the teacher in the source system.
     *
-    * @return string The externalId
+    * @return string|null The externalId
     */
     public function getExternalId()
     {
@@ -79,6 +49,34 @@ class EducationTeacher extends Entity
     public function setExternalId($val)
     {
         $this->_propDict["externalId"] = $val;
+        return $this;
+    }
+    /**
+    * Gets the teacherNumber
+    * Teacher number.
+    *
+    * @return string|null The teacherNumber
+    */
+    public function getTeacherNumber()
+    {
+        if (array_key_exists("teacherNumber", $this->_propDict)) {
+            return $this->_propDict["teacherNumber"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the teacherNumber
+    * Teacher number.
+    *
+    * @param string $val The value of the teacherNumber
+    *
+    * @return EducationTeacher
+    */
+    public function setTeacherNumber($val)
+    {
+        $this->_propDict["teacherNumber"] = $val;
         return $this;
     }
 }

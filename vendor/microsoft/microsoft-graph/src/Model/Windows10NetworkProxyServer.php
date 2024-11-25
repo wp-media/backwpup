@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class Windows10NetworkProxyServer extends Entity
 {
@@ -29,7 +27,7 @@ class Windows10NetworkProxyServer extends Entity
     * Gets the address
     * Address to the proxy server. Specify an address in the format [':']
     *
-    * @return string The address
+    * @return string|null The address
     */
     public function getAddress()
     {
@@ -57,7 +55,7 @@ class Windows10NetworkProxyServer extends Entity
     * Gets the exceptions
     * Addresses that should not use the proxy server. The system will not use the proxy server for addresses beginning with what is specified in this node.
     *
-    * @return string The exceptions
+    * @return string|null The exceptions
     */
     public function getExceptions()
     {
@@ -85,7 +83,7 @@ class Windows10NetworkProxyServer extends Entity
     * Gets the useForLocalAddresses
     * Specifies whether the proxy server should be used for local (intranet) addresses.
     *
-    * @return bool The useForLocalAddresses
+    * @return bool|null The useForLocalAddresses
     */
     public function getUseForLocalAddresses()
     {

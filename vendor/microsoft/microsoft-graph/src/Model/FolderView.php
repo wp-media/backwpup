@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class FolderView extends Entity
 {
@@ -29,7 +27,7 @@ class FolderView extends Entity
     * Gets the sortBy
     * The method by which the folder should be sorted.
     *
-    * @return string The sortBy
+    * @return string|null The sortBy
     */
     public function getSortBy()
     {
@@ -57,7 +55,7 @@ class FolderView extends Entity
     * Gets the sortOrder
     * If true, indicates that items should be sorted in descending order. Otherwise, items should be sorted ascending.
     *
-    * @return string The sortOrder
+    * @return string|null The sortOrder
     */
     public function getSortOrder()
     {
@@ -85,7 +83,7 @@ class FolderView extends Entity
     * Gets the viewType
     * The type of view that should be used to represent the folder.
     *
-    * @return string The viewType
+    * @return string|null The viewType
     */
     public function getViewType()
     {

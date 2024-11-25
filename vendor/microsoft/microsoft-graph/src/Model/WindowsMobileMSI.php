@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class WindowsMobileMSI extends MobileLobApp
 {
@@ -30,7 +28,7 @@ class WindowsMobileMSI extends MobileLobApp
     * Gets the commandLine
     * The command line.
     *
-    * @return string The commandLine
+    * @return string|null The commandLine
     */
     public function getCommandLine()
     {
@@ -40,7 +38,7 @@ class WindowsMobileMSI extends MobileLobApp
             return null;
         }
     }
-    
+
     /**
     * Sets the commandLine
     * The command line.
@@ -54,70 +52,12 @@ class WindowsMobileMSI extends MobileLobApp
         $this->_propDict["commandLine"] = $val;
         return $this;
     }
-    
-    /**
-    * Gets the productCode
-    * The product code.
-    *
-    * @return string The productCode
-    */
-    public function getProductCode()
-    {
-        if (array_key_exists("productCode", $this->_propDict)) {
-            return $this->_propDict["productCode"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the productCode
-    * The product code.
-    *
-    * @param string $val The productCode
-    *
-    * @return WindowsMobileMSI
-    */
-    public function setProductCode($val)
-    {
-        $this->_propDict["productCode"] = $val;
-        return $this;
-    }
-    
-    /**
-    * Gets the productVersion
-    * The product version of Windows Mobile MSI Line of Business (LoB) app.
-    *
-    * @return string The productVersion
-    */
-    public function getProductVersion()
-    {
-        if (array_key_exists("productVersion", $this->_propDict)) {
-            return $this->_propDict["productVersion"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the productVersion
-    * The product version of Windows Mobile MSI Line of Business (LoB) app.
-    *
-    * @param string $val The productVersion
-    *
-    * @return WindowsMobileMSI
-    */
-    public function setProductVersion($val)
-    {
-        $this->_propDict["productVersion"] = $val;
-        return $this;
-    }
-    
+
     /**
     * Gets the ignoreVersionDetection
     * A boolean to control whether the app's version will be used to detect the app after it is installed on a device. Set this to true for Windows Mobile MSI Line of Business (LoB) apps that use a self update feature.
     *
-    * @return bool The ignoreVersionDetection
+    * @return bool|null The ignoreVersionDetection
     */
     public function getIgnoreVersionDetection()
     {
@@ -127,7 +67,7 @@ class WindowsMobileMSI extends MobileLobApp
             return null;
         }
     }
-    
+
     /**
     * Sets the ignoreVersionDetection
     * A boolean to control whether the app's version will be used to detect the app after it is installed on a device. Set this to true for Windows Mobile MSI Line of Business (LoB) apps that use a self update feature.
@@ -141,5 +81,63 @@ class WindowsMobileMSI extends MobileLobApp
         $this->_propDict["ignoreVersionDetection"] = boolval($val);
         return $this;
     }
-    
+
+    /**
+    * Gets the productCode
+    * The product code.
+    *
+    * @return string|null The productCode
+    */
+    public function getProductCode()
+    {
+        if (array_key_exists("productCode", $this->_propDict)) {
+            return $this->_propDict["productCode"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the productCode
+    * The product code.
+    *
+    * @param string $val The productCode
+    *
+    * @return WindowsMobileMSI
+    */
+    public function setProductCode($val)
+    {
+        $this->_propDict["productCode"] = $val;
+        return $this;
+    }
+
+    /**
+    * Gets the productVersion
+    * The product version of Windows Mobile MSI Line of Business (LoB) app.
+    *
+    * @return string|null The productVersion
+    */
+    public function getProductVersion()
+    {
+        if (array_key_exists("productVersion", $this->_propDict)) {
+            return $this->_propDict["productVersion"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the productVersion
+    * The product version of Windows Mobile MSI Line of Business (LoB) app.
+    *
+    * @param string $val The productVersion
+    *
+    * @return WindowsMobileMSI
+    */
+    public function setProductVersion($val)
+    {
+        $this->_propDict["productVersion"] = $val;
+        return $this;
+    }
+
 }

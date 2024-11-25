@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class ItemActionStat extends Entity
 {
@@ -29,7 +27,7 @@ class ItemActionStat extends Entity
     * Gets the actionCount
     * The number of times the action took place. Read-only.
     *
-    * @return int The actionCount
+    * @return int|null The actionCount
     */
     public function getActionCount()
     {
@@ -57,7 +55,7 @@ class ItemActionStat extends Entity
     * Gets the actorCount
     * The number of distinct actors that performed the action. Read-only.
     *
-    * @return int The actorCount
+    * @return int|null The actorCount
     */
     public function getActorCount()
     {

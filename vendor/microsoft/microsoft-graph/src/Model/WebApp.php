@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,18 +18,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class WebApp extends MobileApp
 {
     /**
     * Gets the appUrl
-    * The web app URL.
+    * The web app URL. This property cannot be PATCHed.
     *
-    * @return string The appUrl
+    * @return string|null The appUrl
     */
     public function getAppUrl()
     {
@@ -40,10 +38,10 @@ class WebApp extends MobileApp
             return null;
         }
     }
-    
+
     /**
     * Sets the appUrl
-    * The web app URL.
+    * The web app URL. This property cannot be PATCHed.
     *
     * @param string $val The appUrl
     *
@@ -54,12 +52,12 @@ class WebApp extends MobileApp
         $this->_propDict["appUrl"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the useManagedBrowser
     * Whether or not to use managed browser. This property is only applicable for Android and IOS.
     *
-    * @return bool The useManagedBrowser
+    * @return bool|null The useManagedBrowser
     */
     public function getUseManagedBrowser()
     {
@@ -69,7 +67,7 @@ class WebApp extends MobileApp
             return null;
         }
     }
-    
+
     /**
     * Sets the useManagedBrowser
     * Whether or not to use managed browser. This property is only applicable for Android and IOS.
@@ -83,5 +81,5 @@ class WebApp extends MobileApp
         $this->_propDict["useManagedBrowser"] = boolval($val);
         return $this;
     }
-    
+
 }

@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,18 +18,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class PlannerBucketTaskBoardTaskFormat extends Entity
 {
     /**
     * Gets the orderHint
-    * Hint used to order tasks in the Bucket view of the Task Board. The format is defined as outlined here.
+    * Hint used to order tasks in the bucket view of the task board. For details about the supported format, see Using order hints in Planner.
     *
-    * @return string The orderHint
+    * @return string|null The orderHint
     */
     public function getOrderHint()
     {
@@ -40,10 +38,10 @@ class PlannerBucketTaskBoardTaskFormat extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the orderHint
-    * Hint used to order tasks in the Bucket view of the Task Board. The format is defined as outlined here.
+    * Hint used to order tasks in the bucket view of the task board. For details about the supported format, see Using order hints in Planner.
     *
     * @param string $val The orderHint
     *
@@ -54,5 +52,5 @@ class PlannerBucketTaskBoardTaskFormat extends Entity
         $this->_propDict["orderHint"] = $val;
         return $this;
     }
-    
+
 }

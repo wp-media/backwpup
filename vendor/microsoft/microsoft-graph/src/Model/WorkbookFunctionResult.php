@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,17 +18,16 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class WorkbookFunctionResult extends Entity
 {
     /**
     * Gets the error
     *
-    * @return string The error
+    * @return string|null The error
     */
     public function getError()
     {
@@ -39,7 +37,7 @@ class WorkbookFunctionResult extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the error
     *
@@ -52,11 +50,11 @@ class WorkbookFunctionResult extends Entity
         $this->_propDict["error"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the value
     *
-    * @return string The value
+    * @return string|null The value
     */
     public function getValue()
     {
@@ -66,7 +64,7 @@ class WorkbookFunctionResult extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the value
     *
@@ -79,5 +77,5 @@ class WorkbookFunctionResult extends Entity
         $this->_propDict["value"] = $val;
         return $this;
     }
-    
+
 }

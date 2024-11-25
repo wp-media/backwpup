@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class WorkbookWorksheetProtection extends Entity
 {
@@ -30,12 +28,12 @@ class WorkbookWorksheetProtection extends Entity
     * Gets the options
     * Sheet protection options. Read-only.
     *
-    * @return WorkbookWorksheetProtectionOptions The options
+    * @return WorkbookWorksheetProtectionOptions|null The options
     */
     public function getOptions()
     {
         if (array_key_exists("options", $this->_propDict)) {
-            if (is_a($this->_propDict["options"], "Microsoft\Graph\Model\WorkbookWorksheetProtectionOptions")) {
+            if (is_a($this->_propDict["options"], "\Microsoft\Graph\Model\WorkbookWorksheetProtectionOptions") || is_null($this->_propDict["options"])) {
                 return $this->_propDict["options"];
             } else {
                 $this->_propDict["options"] = new WorkbookWorksheetProtectionOptions($this->_propDict["options"]);
@@ -44,7 +42,7 @@ class WorkbookWorksheetProtection extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the options
     * Sheet protection options. Read-only.
@@ -58,12 +56,12 @@ class WorkbookWorksheetProtection extends Entity
         $this->_propDict["options"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the protected
     * Indicates if the worksheet is protected.  Read-only.
     *
-    * @return bool The protected
+    * @return bool|null The protected
     */
     public function getProtected()
     {
@@ -73,7 +71,7 @@ class WorkbookWorksheetProtection extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the protected
     * Indicates if the worksheet is protected.  Read-only.
@@ -87,5 +85,5 @@ class WorkbookWorksheetProtection extends Entity
         $this->_propDict["protected"] = boolval($val);
         return $this;
     }
-    
+
 }

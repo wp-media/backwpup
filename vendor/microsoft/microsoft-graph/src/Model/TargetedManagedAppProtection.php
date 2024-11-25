@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class TargetedManagedAppProtection extends ManagedAppProtection
 {
@@ -30,7 +28,7 @@ class TargetedManagedAppProtection extends ManagedAppProtection
     * Gets the isAssigned
     * Indicates if the policy is deployed to any inclusion groups or not.
     *
-    * @return bool The isAssigned
+    * @return bool|null The isAssigned
     */
     public function getIsAssigned()
     {
@@ -40,7 +38,7 @@ class TargetedManagedAppProtection extends ManagedAppProtection
             return null;
         }
     }
-    
+
     /**
     * Sets the isAssigned
     * Indicates if the policy is deployed to any inclusion groups or not.
@@ -54,13 +52,13 @@ class TargetedManagedAppProtection extends ManagedAppProtection
         $this->_propDict["isAssigned"] = boolval($val);
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the assignments
     * Navigation property to list of inclusion and exclusion groups to which the policy is deployed.
      *
-     * @return array The assignments
+     * @return array|null The assignments
      */
     public function getAssignments()
     {
@@ -70,19 +68,19 @@ class TargetedManagedAppProtection extends ManagedAppProtection
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the assignments
     * Navigation property to list of inclusion and exclusion groups to which the policy is deployed.
     *
-    * @param TargetedManagedAppPolicyAssignment $val The assignments
+    * @param TargetedManagedAppPolicyAssignment[] $val The assignments
     *
     * @return TargetedManagedAppProtection
     */
     public function setAssignments($val)
     {
-		$this->_propDict["assignments"] = $val;
+        $this->_propDict["assignments"] = $val;
         return $this;
     }
-    
+
 }

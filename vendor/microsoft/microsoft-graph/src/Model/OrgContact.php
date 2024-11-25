@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,18 +18,18 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class OrgContact extends DirectoryObject
 {
 
-     /** 
+     /**
      * Gets the addresses
+    * Postal addresses for this organizational contact. For now a contact can only have one physical address.
      *
-     * @return array The addresses
+     * @return array|null The addresses
      */
     public function getAddresses()
     {
@@ -40,24 +39,26 @@ class OrgContact extends DirectoryObject
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the addresses
+    * Postal addresses for this organizational contact. For now a contact can only have one physical address.
     *
-    * @param PhysicalOfficeAddress $val The addresses
+    * @param PhysicalOfficeAddress[] $val The addresses
     *
     * @return OrgContact
     */
     public function setAddresses($val)
     {
-		$this->_propDict["addresses"] = $val;
+        $this->_propDict["addresses"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the companyName
+    * Name of the company that this organizational contact belongs to.  Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq for null values).
     *
-    * @return string The companyName
+    * @return string|null The companyName
     */
     public function getCompanyName()
     {
@@ -67,9 +68,10 @@ class OrgContact extends DirectoryObject
             return null;
         }
     }
-    
+
     /**
     * Sets the companyName
+    * Name of the company that this organizational contact belongs to.  Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq for null values).
     *
     * @param string $val The companyName
     *
@@ -80,11 +82,12 @@ class OrgContact extends DirectoryObject
         $this->_propDict["companyName"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the department
+    * The name for the department in which the contact works.  Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq for null values).
     *
-    * @return string The department
+    * @return string|null The department
     */
     public function getDepartment()
     {
@@ -94,9 +97,10 @@ class OrgContact extends DirectoryObject
             return null;
         }
     }
-    
+
     /**
     * Sets the department
+    * The name for the department in which the contact works.  Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq for null values).
     *
     * @param string $val The department
     *
@@ -107,11 +111,12 @@ class OrgContact extends DirectoryObject
         $this->_propDict["department"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the displayName
+    * Display name for this organizational contact. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq for null values), $search, and $orderby.
     *
-    * @return string The displayName
+    * @return string|null The displayName
     */
     public function getDisplayName()
     {
@@ -121,9 +126,10 @@ class OrgContact extends DirectoryObject
             return null;
         }
     }
-    
+
     /**
     * Sets the displayName
+    * Display name for this organizational contact. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq for null values), $search, and $orderby.
     *
     * @param string $val The displayName
     *
@@ -134,11 +140,12 @@ class OrgContact extends DirectoryObject
         $this->_propDict["displayName"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the givenName
+    * First name for this organizational contact. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq for null values).
     *
-    * @return string The givenName
+    * @return string|null The givenName
     */
     public function getGivenName()
     {
@@ -148,9 +155,10 @@ class OrgContact extends DirectoryObject
             return null;
         }
     }
-    
+
     /**
     * Sets the givenName
+    * First name for this organizational contact. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq for null values).
     *
     * @param string $val The givenName
     *
@@ -161,11 +169,12 @@ class OrgContact extends DirectoryObject
         $this->_propDict["givenName"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the jobTitle
+    * Job title for this organizational contact. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq for null values).
     *
-    * @return string The jobTitle
+    * @return string|null The jobTitle
     */
     public function getJobTitle()
     {
@@ -175,9 +184,10 @@ class OrgContact extends DirectoryObject
             return null;
         }
     }
-    
+
     /**
     * Sets the jobTitle
+    * Job title for this organizational contact. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq for null values).
     *
     * @param string $val The jobTitle
     *
@@ -188,11 +198,12 @@ class OrgContact extends DirectoryObject
         $this->_propDict["jobTitle"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the mail
+    * The SMTP address for the contact, for example, 'jeff@contoso.onmicrosoft.com'. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq for null values).
     *
-    * @return string The mail
+    * @return string|null The mail
     */
     public function getMail()
     {
@@ -202,9 +213,10 @@ class OrgContact extends DirectoryObject
             return null;
         }
     }
-    
+
     /**
     * Sets the mail
+    * The SMTP address for the contact, for example, 'jeff@contoso.onmicrosoft.com'. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq for null values).
     *
     * @param string $val The mail
     *
@@ -215,11 +227,12 @@ class OrgContact extends DirectoryObject
         $this->_propDict["mail"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the mailNickname
+    * Email alias (portion of email address pre-pending the @ symbol) for this organizational contact. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq for null values).
     *
-    * @return string The mailNickname
+    * @return string|null The mailNickname
     */
     public function getMailNickname()
     {
@@ -229,9 +242,10 @@ class OrgContact extends DirectoryObject
             return null;
         }
     }
-    
+
     /**
     * Sets the mailNickname
+    * Email alias (portion of email address pre-pending the @ symbol) for this organizational contact. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq for null values).
     *
     * @param string $val The mailNickname
     *
@@ -242,43 +256,17 @@ class OrgContact extends DirectoryObject
         $this->_propDict["mailNickname"] = $val;
         return $this;
     }
-    
-    /**
-    * Gets the onPremisesSyncEnabled
-    *
-    * @return bool The onPremisesSyncEnabled
-    */
-    public function getOnPremisesSyncEnabled()
-    {
-        if (array_key_exists("onPremisesSyncEnabled", $this->_propDict)) {
-            return $this->_propDict["onPremisesSyncEnabled"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the onPremisesSyncEnabled
-    *
-    * @param bool $val The onPremisesSyncEnabled
-    *
-    * @return OrgContact
-    */
-    public function setOnPremisesSyncEnabled($val)
-    {
-        $this->_propDict["onPremisesSyncEnabled"] = boolval($val);
-        return $this;
-    }
-    
+
     /**
     * Gets the onPremisesLastSyncDateTime
+    * Date and time when this organizational contact was last synchronized from on-premises AD. This date and time information uses ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Supports $filter (eq, ne, not, ge, le, in).
     *
-    * @return \DateTime The onPremisesLastSyncDateTime
+    * @return \DateTime|null The onPremisesLastSyncDateTime
     */
     public function getOnPremisesLastSyncDateTime()
     {
         if (array_key_exists("onPremisesLastSyncDateTime", $this->_propDict)) {
-            if (is_a($this->_propDict["onPremisesLastSyncDateTime"], "\DateTime")) {
+            if (is_a($this->_propDict["onPremisesLastSyncDateTime"], "\DateTime") || is_null($this->_propDict["onPremisesLastSyncDateTime"])) {
                 return $this->_propDict["onPremisesLastSyncDateTime"];
             } else {
                 $this->_propDict["onPremisesLastSyncDateTime"] = new \DateTime($this->_propDict["onPremisesLastSyncDateTime"]);
@@ -287,9 +275,10 @@ class OrgContact extends DirectoryObject
         }
         return null;
     }
-    
+
     /**
     * Sets the onPremisesLastSyncDateTime
+    * Date and time when this organizational contact was last synchronized from on-premises AD. This date and time information uses ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z. Supports $filter (eq, ne, not, ge, le, in).
     *
     * @param \DateTime $val The onPremisesLastSyncDateTime
     *
@@ -300,12 +289,13 @@ class OrgContact extends DirectoryObject
         $this->_propDict["onPremisesLastSyncDateTime"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the onPremisesProvisioningErrors
+    * List of any synchronization provisioning errors for this organizational contact. Supports $filter (eq, not for category and propertyCausingError), /$count eq 0, /$count ne 0.
      *
-     * @return array The onPremisesProvisioningErrors
+     * @return array|null The onPremisesProvisioningErrors
      */
     public function getOnPremisesProvisioningErrors()
     {
@@ -315,25 +305,56 @@ class OrgContact extends DirectoryObject
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the onPremisesProvisioningErrors
+    * List of any synchronization provisioning errors for this organizational contact. Supports $filter (eq, not for category and propertyCausingError), /$count eq 0, /$count ne 0.
     *
-    * @param OnPremisesProvisioningError $val The onPremisesProvisioningErrors
+    * @param OnPremisesProvisioningError[] $val The onPremisesProvisioningErrors
     *
     * @return OrgContact
     */
     public function setOnPremisesProvisioningErrors($val)
     {
-		$this->_propDict["onPremisesProvisioningErrors"] = $val;
+        $this->_propDict["onPremisesProvisioningErrors"] = $val;
         return $this;
     }
-    
 
-     /** 
+    /**
+    * Gets the onPremisesSyncEnabled
+    * true if this object is synced from an on-premises directory; false if this object was originally synced from an on-premises directory but is no longer synced and now mastered in Exchange; null if this object has never been synced from an on-premises directory (default).   Supports $filter (eq, ne, not, in, and eq for null values).
+    *
+    * @return bool|null The onPremisesSyncEnabled
+    */
+    public function getOnPremisesSyncEnabled()
+    {
+        if (array_key_exists("onPremisesSyncEnabled", $this->_propDict)) {
+            return $this->_propDict["onPremisesSyncEnabled"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the onPremisesSyncEnabled
+    * true if this object is synced from an on-premises directory; false if this object was originally synced from an on-premises directory but is no longer synced and now mastered in Exchange; null if this object has never been synced from an on-premises directory (default).   Supports $filter (eq, ne, not, in, and eq for null values).
+    *
+    * @param bool $val The onPremisesSyncEnabled
+    *
+    * @return OrgContact
+    */
+    public function setOnPremisesSyncEnabled($val)
+    {
+        $this->_propDict["onPremisesSyncEnabled"] = boolval($val);
+        return $this;
+    }
+
+
+     /**
      * Gets the phones
+    * List of phones for this organizational contact. Phone types can be mobile, business, and businessFax. Only one of each type can ever be present in the collection.
      *
-     * @return array The phones
+     * @return array|null The phones
      */
     public function getPhones()
     {
@@ -343,24 +364,26 @@ class OrgContact extends DirectoryObject
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the phones
+    * List of phones for this organizational contact. Phone types can be mobile, business, and businessFax. Only one of each type can ever be present in the collection.
     *
-    * @param Phone $val The phones
+    * @param Phone[] $val The phones
     *
     * @return OrgContact
     */
     public function setPhones($val)
     {
-		$this->_propDict["phones"] = $val;
+        $this->_propDict["phones"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the proxyAddresses
+    * For example: 'SMTP: bob@contoso.com', 'smtp: bob@sales.contoso.com'. The any operator is required for filter expressions on multi-valued properties. Supports $filter (eq, not, ge, le, startsWith, /$count eq 0, /$count ne 0).
     *
-    * @return string The proxyAddresses
+    * @return array|null The proxyAddresses
     */
     public function getProxyAddresses()
     {
@@ -370,11 +393,12 @@ class OrgContact extends DirectoryObject
             return null;
         }
     }
-    
+
     /**
     * Sets the proxyAddresses
+    * For example: 'SMTP: bob@contoso.com', 'smtp: bob@sales.contoso.com'. The any operator is required for filter expressions on multi-valued properties. Supports $filter (eq, not, ge, le, startsWith, /$count eq 0, /$count ne 0).
     *
-    * @param string $val The proxyAddresses
+    * @param string[] $val The proxyAddresses
     *
     * @return OrgContact
     */
@@ -383,11 +407,40 @@ class OrgContact extends DirectoryObject
         $this->_propDict["proxyAddresses"] = $val;
         return $this;
     }
-    
+
+
+     /**
+     * Gets the serviceProvisioningErrors
+     *
+     * @return array|null The serviceProvisioningErrors
+     */
+    public function getServiceProvisioningErrors()
+    {
+        if (array_key_exists("serviceProvisioningErrors", $this->_propDict)) {
+           return $this->_propDict["serviceProvisioningErrors"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the serviceProvisioningErrors
+    *
+    * @param ServiceProvisioningError[] $val The serviceProvisioningErrors
+    *
+    * @return OrgContact
+    */
+    public function setServiceProvisioningErrors($val)
+    {
+        $this->_propDict["serviceProvisioningErrors"] = $val;
+        return $this;
+    }
+
     /**
     * Gets the surname
+    * Last name for this organizational contact. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq for null values).
     *
-    * @return string The surname
+    * @return string|null The surname
     */
     public function getSurname()
     {
@@ -397,9 +450,10 @@ class OrgContact extends DirectoryObject
             return null;
         }
     }
-    
+
     /**
     * Sets the surname
+    * Last name for this organizational contact. Supports $filter (eq, ne, not, ge, le, in, startsWith, and eq for null values).
     *
     * @param string $val The surname
     *
@@ -410,16 +464,47 @@ class OrgContact extends DirectoryObject
         $this->_propDict["surname"] = $val;
         return $this;
     }
-    
+
+
+     /**
+     * Gets the directReports
+    * The contact's direct reports. (The users and contacts that have their manager property set to this contact.)  Read-only. Nullable. Supports $expand.
+     *
+     * @return array|null The directReports
+     */
+    public function getDirectReports()
+    {
+        if (array_key_exists("directReports", $this->_propDict)) {
+           return $this->_propDict["directReports"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the directReports
+    * The contact's direct reports. (The users and contacts that have their manager property set to this contact.)  Read-only. Nullable. Supports $expand.
+    *
+    * @param DirectoryObject[] $val The directReports
+    *
+    * @return OrgContact
+    */
+    public function setDirectReports($val)
+    {
+        $this->_propDict["directReports"] = $val;
+        return $this;
+    }
+
     /**
     * Gets the manager
+    * The user or contact that is this contact's manager. Read-only. Supports $expand and $filter (eq) by id.
     *
-    * @return DirectoryObject The manager
+    * @return DirectoryObject|null The manager
     */
     public function getManager()
     {
         if (array_key_exists("manager", $this->_propDict)) {
-            if (is_a($this->_propDict["manager"], "Microsoft\Graph\Model\DirectoryObject")) {
+            if (is_a($this->_propDict["manager"], "\Microsoft\Graph\Model\DirectoryObject") || is_null($this->_propDict["manager"])) {
                 return $this->_propDict["manager"];
             } else {
                 $this->_propDict["manager"] = new DirectoryObject($this->_propDict["manager"]);
@@ -428,9 +513,10 @@ class OrgContact extends DirectoryObject
         }
         return null;
     }
-    
+
     /**
     * Sets the manager
+    * The user or contact that is this contact's manager. Read-only. Supports $expand and $filter (eq) by id.
     *
     * @param DirectoryObject $val The manager
     *
@@ -441,40 +527,13 @@ class OrgContact extends DirectoryObject
         $this->_propDict["manager"] = $val;
         return $this;
     }
-    
 
-     /** 
-     * Gets the directReports
-     *
-     * @return array The directReports
-     */
-    public function getDirectReports()
-    {
-        if (array_key_exists("directReports", $this->_propDict)) {
-           return $this->_propDict["directReports"];
-        } else {
-            return null;
-        }
-    }
-    
-    /** 
-    * Sets the directReports
-    *
-    * @param DirectoryObject $val The directReports
-    *
-    * @return OrgContact
-    */
-    public function setDirectReports($val)
-    {
-		$this->_propDict["directReports"] = $val;
-        return $this;
-    }
-    
 
-     /** 
+     /**
      * Gets the memberOf
+    * Groups that this contact is a member of. Read-only. Nullable. Supports $expand.
      *
-     * @return array The memberOf
+     * @return array|null The memberOf
      */
     public function getMemberOf()
     {
@@ -484,25 +543,27 @@ class OrgContact extends DirectoryObject
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the memberOf
+    * Groups that this contact is a member of. Read-only. Nullable. Supports $expand.
     *
-    * @param DirectoryObject $val The memberOf
+    * @param DirectoryObject[] $val The memberOf
     *
     * @return OrgContact
     */
     public function setMemberOf($val)
     {
-		$this->_propDict["memberOf"] = $val;
+        $this->_propDict["memberOf"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the transitiveMemberOf
+    * Groups that this contact is a member of, including groups that the contact is nested under. Read-only. Nullable.
      *
-     * @return array The transitiveMemberOf
+     * @return array|null The transitiveMemberOf
      */
     public function getTransitiveMemberOf()
     {
@@ -512,18 +573,19 @@ class OrgContact extends DirectoryObject
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the transitiveMemberOf
+    * Groups that this contact is a member of, including groups that the contact is nested under. Read-only. Nullable.
     *
-    * @param DirectoryObject $val The transitiveMemberOf
+    * @param DirectoryObject[] $val The transitiveMemberOf
     *
     * @return OrgContact
     */
     public function setTransitiveMemberOf($val)
     {
-		$this->_propDict["transitiveMemberOf"] = $val;
+        $this->_propDict["transitiveMemberOf"] = $val;
         return $this;
     }
-    
+
 }

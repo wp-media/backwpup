@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class InternetMessageHeader extends Entity
 {
@@ -29,7 +27,7 @@ class InternetMessageHeader extends Entity
     * Gets the name
     * Represents the key in a key-value pair.
     *
-    * @return string The name
+    * @return string|null The name
     */
     public function getName()
     {
@@ -57,7 +55,7 @@ class InternetMessageHeader extends Entity
     * Gets the value
     * The value in a key-value pair.
     *
-    * @return string The value
+    * @return string|null The value
     */
     public function getValue()
     {

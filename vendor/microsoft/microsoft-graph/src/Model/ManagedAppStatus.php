@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class ManagedAppStatus extends Entity
 {
@@ -30,7 +28,7 @@ class ManagedAppStatus extends Entity
     * Gets the displayName
     * Friendly name of the status report.
     *
-    * @return string The displayName
+    * @return string|null The displayName
     */
     public function getDisplayName()
     {
@@ -40,7 +38,7 @@ class ManagedAppStatus extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the displayName
     * Friendly name of the status report.
@@ -54,12 +52,12 @@ class ManagedAppStatus extends Entity
         $this->_propDict["displayName"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the version
     * Version of the entity.
     *
-    * @return string The version
+    * @return string|null The version
     */
     public function getVersion()
     {
@@ -69,7 +67,7 @@ class ManagedAppStatus extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the version
     * Version of the entity.
@@ -83,5 +81,5 @@ class ManagedAppStatus extends Entity
         $this->_propDict["version"] = $val;
         return $this;
     }
-    
+
 }

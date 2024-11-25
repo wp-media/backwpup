@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,52 +18,22 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class DeviceComplianceActionItem extends Entity
 {
     /**
-    * Gets the gracePeriodHours
-    * Number of hours to wait till the action will be enforced. Valid values 0 to 8760
-    *
-    * @return int The gracePeriodHours
-    */
-    public function getGracePeriodHours()
-    {
-        if (array_key_exists("gracePeriodHours", $this->_propDict)) {
-            return $this->_propDict["gracePeriodHours"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the gracePeriodHours
-    * Number of hours to wait till the action will be enforced. Valid values 0 to 8760
-    *
-    * @param int $val The gracePeriodHours
-    *
-    * @return DeviceComplianceActionItem
-    */
-    public function setGracePeriodHours($val)
-    {
-        $this->_propDict["gracePeriodHours"] = intval($val);
-        return $this;
-    }
-    
-    /**
     * Gets the actionType
     * What action to take. Possible values are: noAction, notification, block, retire, wipe, removeResourceAccessProfiles, pushNotification.
     *
-    * @return DeviceComplianceActionType The actionType
+    * @return DeviceComplianceActionType|null The actionType
     */
     public function getActionType()
     {
         if (array_key_exists("actionType", $this->_propDict)) {
-            if (is_a($this->_propDict["actionType"], "Microsoft\Graph\Model\DeviceComplianceActionType")) {
+            if (is_a($this->_propDict["actionType"], "\Microsoft\Graph\Model\DeviceComplianceActionType") || is_null($this->_propDict["actionType"])) {
                 return $this->_propDict["actionType"];
             } else {
                 $this->_propDict["actionType"] = new DeviceComplianceActionType($this->_propDict["actionType"]);
@@ -73,7 +42,7 @@ class DeviceComplianceActionItem extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the actionType
     * What action to take. Possible values are: noAction, notification, block, retire, wipe, removeResourceAccessProfiles, pushNotification.
@@ -87,12 +56,70 @@ class DeviceComplianceActionItem extends Entity
         $this->_propDict["actionType"] = $val;
         return $this;
     }
-    
+
+    /**
+    * Gets the gracePeriodHours
+    * Number of hours to wait till the action will be enforced. Valid values 0 to 8760
+    *
+    * @return int|null The gracePeriodHours
+    */
+    public function getGracePeriodHours()
+    {
+        if (array_key_exists("gracePeriodHours", $this->_propDict)) {
+            return $this->_propDict["gracePeriodHours"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the gracePeriodHours
+    * Number of hours to wait till the action will be enforced. Valid values 0 to 8760
+    *
+    * @param int $val The gracePeriodHours
+    *
+    * @return DeviceComplianceActionItem
+    */
+    public function setGracePeriodHours($val)
+    {
+        $this->_propDict["gracePeriodHours"] = intval($val);
+        return $this;
+    }
+
+    /**
+    * Gets the notificationMessageCCList
+    * A list of group IDs to speicify who to CC this notification message to.
+    *
+    * @return array|null The notificationMessageCCList
+    */
+    public function getNotificationMessageCCList()
+    {
+        if (array_key_exists("notificationMessageCCList", $this->_propDict)) {
+            return $this->_propDict["notificationMessageCCList"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the notificationMessageCCList
+    * A list of group IDs to speicify who to CC this notification message to.
+    *
+    * @param string[] $val The notificationMessageCCList
+    *
+    * @return DeviceComplianceActionItem
+    */
+    public function setNotificationMessageCCList($val)
+    {
+        $this->_propDict["notificationMessageCCList"] = $val;
+        return $this;
+    }
+
     /**
     * Gets the notificationTemplateId
     * What notification Message template to use
     *
-    * @return string The notificationTemplateId
+    * @return string|null The notificationTemplateId
     */
     public function getNotificationTemplateId()
     {
@@ -102,7 +129,7 @@ class DeviceComplianceActionItem extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the notificationTemplateId
     * What notification Message template to use
@@ -116,34 +143,5 @@ class DeviceComplianceActionItem extends Entity
         $this->_propDict["notificationTemplateId"] = $val;
         return $this;
     }
-    
-    /**
-    * Gets the notificationMessageCCList
-    * A list of group IDs to speicify who to CC this notification message to.
-    *
-    * @return string The notificationMessageCCList
-    */
-    public function getNotificationMessageCCList()
-    {
-        if (array_key_exists("notificationMessageCCList", $this->_propDict)) {
-            return $this->_propDict["notificationMessageCCList"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the notificationMessageCCList
-    * A list of group IDs to speicify who to CC this notification message to.
-    *
-    * @param string $val The notificationMessageCCList
-    *
-    * @return DeviceComplianceActionItem
-    */
-    public function setNotificationMessageCCList($val)
-    {
-        $this->_propDict["notificationMessageCCList"] = $val;
-        return $this;
-    }
-    
+
 }

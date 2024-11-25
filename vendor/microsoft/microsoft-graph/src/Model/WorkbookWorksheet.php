@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class WorkbookWorksheet extends Entity
 {
@@ -30,7 +28,7 @@ class WorkbookWorksheet extends Entity
     * Gets the name
     * The display name of the worksheet.
     *
-    * @return string The name
+    * @return string|null The name
     */
     public function getName()
     {
@@ -40,7 +38,7 @@ class WorkbookWorksheet extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the name
     * The display name of the worksheet.
@@ -54,12 +52,12 @@ class WorkbookWorksheet extends Entity
         $this->_propDict["name"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the position
     * The zero-based position of the worksheet within the workbook.
     *
-    * @return int The position
+    * @return int|null The position
     */
     public function getPosition()
     {
@@ -69,7 +67,7 @@ class WorkbookWorksheet extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the position
     * The zero-based position of the worksheet within the workbook.
@@ -83,12 +81,12 @@ class WorkbookWorksheet extends Entity
         $this->_propDict["position"] = intval($val);
         return $this;
     }
-    
+
     /**
     * Gets the visibility
     * The Visibility of the worksheet. The possible values are: Visible, Hidden, VeryHidden.
     *
-    * @return string The visibility
+    * @return string|null The visibility
     */
     public function getVisibility()
     {
@@ -98,7 +96,7 @@ class WorkbookWorksheet extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the visibility
     * The Visibility of the worksheet. The possible values are: Visible, Hidden, VeryHidden.
@@ -112,13 +110,13 @@ class WorkbookWorksheet extends Entity
         $this->_propDict["visibility"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the charts
     * Returns collection of charts that are part of the worksheet. Read-only.
      *
-     * @return array The charts
+     * @return array|null The charts
      */
     public function getCharts()
     {
@@ -128,27 +126,27 @@ class WorkbookWorksheet extends Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the charts
     * Returns collection of charts that are part of the worksheet. Read-only.
     *
-    * @param WorkbookChart $val The charts
+    * @param WorkbookChart[] $val The charts
     *
     * @return WorkbookWorksheet
     */
     public function setCharts($val)
     {
-		$this->_propDict["charts"] = $val;
+        $this->_propDict["charts"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the names
     * Returns collection of names that are associated with the worksheet. Read-only.
      *
-     * @return array The names
+     * @return array|null The names
      */
     public function getNames()
     {
@@ -158,27 +156,27 @@ class WorkbookWorksheet extends Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the names
     * Returns collection of names that are associated with the worksheet. Read-only.
     *
-    * @param WorkbookNamedItem $val The names
+    * @param WorkbookNamedItem[] $val The names
     *
     * @return WorkbookWorksheet
     */
     public function setNames($val)
     {
-		$this->_propDict["names"] = $val;
+        $this->_propDict["names"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the pivotTables
     * Collection of PivotTables that are part of the worksheet.
      *
-     * @return array The pivotTables
+     * @return array|null The pivotTables
      */
     public function getPivotTables()
     {
@@ -188,31 +186,31 @@ class WorkbookWorksheet extends Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the pivotTables
     * Collection of PivotTables that are part of the worksheet.
     *
-    * @param WorkbookPivotTable $val The pivotTables
+    * @param WorkbookPivotTable[] $val The pivotTables
     *
     * @return WorkbookWorksheet
     */
     public function setPivotTables($val)
     {
-		$this->_propDict["pivotTables"] = $val;
+        $this->_propDict["pivotTables"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the protection
     * Returns sheet protection object for a worksheet. Read-only.
     *
-    * @return WorkbookWorksheetProtection The protection
+    * @return WorkbookWorksheetProtection|null The protection
     */
     public function getProtection()
     {
         if (array_key_exists("protection", $this->_propDict)) {
-            if (is_a($this->_propDict["protection"], "Microsoft\Graph\Model\WorkbookWorksheetProtection")) {
+            if (is_a($this->_propDict["protection"], "\Microsoft\Graph\Model\WorkbookWorksheetProtection") || is_null($this->_propDict["protection"])) {
                 return $this->_propDict["protection"];
             } else {
                 $this->_propDict["protection"] = new WorkbookWorksheetProtection($this->_propDict["protection"]);
@@ -221,7 +219,7 @@ class WorkbookWorksheet extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the protection
     * Returns sheet protection object for a worksheet. Read-only.
@@ -235,13 +233,13 @@ class WorkbookWorksheet extends Entity
         $this->_propDict["protection"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the tables
     * Collection of tables that are part of the worksheet. Read-only.
      *
-     * @return array The tables
+     * @return array|null The tables
      */
     public function getTables()
     {
@@ -251,19 +249,19 @@ class WorkbookWorksheet extends Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the tables
     * Collection of tables that are part of the worksheet. Read-only.
     *
-    * @param WorkbookTable $val The tables
+    * @param WorkbookTable[] $val The tables
     *
     * @return WorkbookWorksheet
     */
     public function setTables($val)
     {
-		$this->_propDict["tables"] = $val;
+        $this->_propDict["tables"] = $val;
         return $this;
     }
-    
+
 }

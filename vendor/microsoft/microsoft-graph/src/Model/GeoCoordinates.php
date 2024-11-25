@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class GeoCoordinates extends Entity
 {
@@ -29,7 +27,7 @@ class GeoCoordinates extends Entity
     * Gets the altitude
     * Optional. The altitude (height), in feet,  above sea level for the item. Read-only.
     *
-    * @return float The altitude
+    * @return float|null The altitude
     */
     public function getAltitude()
     {
@@ -57,7 +55,7 @@ class GeoCoordinates extends Entity
     * Gets the latitude
     * Optional. The latitude, in decimal, for the item. Read-only.
     *
-    * @return float The latitude
+    * @return float|null The latitude
     */
     public function getLatitude()
     {
@@ -85,7 +83,7 @@ class GeoCoordinates extends Entity
     * Gets the longitude
     * Optional. The longitude, in decimal, for the item. Read-only.
     *
-    * @return float The longitude
+    * @return float|null The longitude
     */
     public function getLongitude()
     {

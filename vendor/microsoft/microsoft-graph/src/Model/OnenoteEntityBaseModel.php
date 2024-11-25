@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class OnenoteEntityBaseModel extends Entity
 {
@@ -30,7 +28,7 @@ class OnenoteEntityBaseModel extends Entity
     * Gets the self
     * The endpoint where you can get details about the page. Read-only.
     *
-    * @return string The self
+    * @return string|null The self
     */
     public function getSelf()
     {
@@ -40,7 +38,7 @@ class OnenoteEntityBaseModel extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the self
     * The endpoint where you can get details about the page. Read-only.
@@ -54,5 +52,5 @@ class OnenoteEntityBaseModel extends Entity
         $this->_propDict["self"] = $val;
         return $this;
     }
-    
+
 }

@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,47 +18,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class WindowsInformationProtectionNetworkLearningSummary extends Entity
 {
     /**
-    * Gets the url
-    * Website url
-    *
-    * @return string The url
-    */
-    public function getUrl()
-    {
-        if (array_key_exists("url", $this->_propDict)) {
-            return $this->_propDict["url"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the url
-    * Website url
-    *
-    * @param string $val The url
-    *
-    * @return WindowsInformationProtectionNetworkLearningSummary
-    */
-    public function setUrl($val)
-    {
-        $this->_propDict["url"] = $val;
-        return $this;
-    }
-    
-    /**
     * Gets the deviceCount
     * Device Count
     *
-    * @return int The deviceCount
+    * @return int|null The deviceCount
     */
     public function getDeviceCount()
     {
@@ -69,7 +38,7 @@ class WindowsInformationProtectionNetworkLearningSummary extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the deviceCount
     * Device Count
@@ -83,5 +52,34 @@ class WindowsInformationProtectionNetworkLearningSummary extends Entity
         $this->_propDict["deviceCount"] = intval($val);
         return $this;
     }
-    
+
+    /**
+    * Gets the url
+    * Website url
+    *
+    * @return string|null The url
+    */
+    public function getUrl()
+    {
+        if (array_key_exists("url", $this->_propDict)) {
+            return $this->_propDict["url"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the url
+    * Website url
+    *
+    * @param string $val The url
+    *
+    * @return WindowsInformationProtectionNetworkLearningSummary
+    */
+    public function setUrl($val)
+    {
+        $this->_propDict["url"] = $val;
+        return $this;
+    }
+
 }

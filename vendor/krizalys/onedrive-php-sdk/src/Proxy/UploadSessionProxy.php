@@ -7,10 +7,12 @@
  * that was distributed with this source code.
  *
  * @author    Christophe Vidal
- * @copyright 2008-2021 Christophe Vidal (http://www.krizalys.com)
+ * @copyright 2008-2023 Christophe Vidal (http://www.krizalys.com)
  * @license   https://opensource.org/licenses/BSD-3-Clause 3-Clause BSD License
  * @link      https://github.com/krizalys/onedrive-php-sdk
  */
+
+declare(strict_types=1);
 
 namespace Krizalys\Onedrive\Proxy;
 
@@ -100,13 +102,6 @@ class UploadSessionProxy extends EntityProxy
         ResourceDefinitionInterface $driveItemResourceDefinition,
         array $options = []
     ) {
-        if (array_key_exists('type', $options)) {
-            $message = 'The \'type\' option is deprecated and will be removed'
-                . ' in version 3; omit this option';
-
-            @trigger_error($message, E_USER_DEPRECATED);
-        }
-
         parent::__construct($graph, $uploadSession);
         $this->content                     = $content;
         $this->driveItemResourceDefinition = $driveItemResourceDefinition;
@@ -165,7 +160,7 @@ class UploadSessionProxy extends EntityProxy
     {
         $stream = $this->content instanceof Stream ?
             $this->content
-            : Psr7\stream_for($this->content);
+            : Psr7\Utils::streamFor($this->content);
 
         if ($this->rangeSize !== null) {
             $rangeSize = $this->rangeSize;

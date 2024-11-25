@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,17 +17,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class WorkbookFilterDatetime extends Entity
 {
     /**
     * Gets the date
+    * The date in ISO8601 format used to filter data.
     *
-    * @return string The date
+    * @return string|null The date
     */
     public function getDate()
     {
@@ -41,6 +40,7 @@ class WorkbookFilterDatetime extends Entity
 
     /**
     * Sets the date
+    * The date in ISO8601 format used to filter data.
     *
     * @param string $val The value of the date
     *
@@ -53,8 +53,9 @@ class WorkbookFilterDatetime extends Entity
     }
     /**
     * Gets the specificity
+    * How specific the date should be used to keep data. For example, if the date is 2005-04-02 and the specificity is set to 'month', the filter operation will keep all rows with a date in the month of April 2009. The possible values are: Year, Monday, Day, Hour, Minute, Second.
     *
-    * @return string The specificity
+    * @return string|null The specificity
     */
     public function getSpecificity()
     {
@@ -67,6 +68,7 @@ class WorkbookFilterDatetime extends Entity
 
     /**
     * Sets the specificity
+    * How specific the date should be used to keep data. For example, if the date is 2005-04-02 and the specificity is set to 'month', the filter operation will keep all rows with a date in the month of April 2009. The possible values are: Year, Monday, Day, Hour, Minute, Second.
     *
     * @param string $val The value of the specificity
     *

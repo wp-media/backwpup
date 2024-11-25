@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,135 +17,45 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class DeviceCompliancePolicySettingState extends Entity
 {
     /**
-    * Gets the setting
-    * The setting that is being reported
+    * Gets the currentValue
+    * Current value of setting on device
     *
-    * @return string The setting
+    * @return string|null The currentValue
     */
-    public function getSetting()
+    public function getCurrentValue()
     {
-        if (array_key_exists("setting", $this->_propDict)) {
-            return $this->_propDict["setting"];
+        if (array_key_exists("currentValue", $this->_propDict)) {
+            return $this->_propDict["currentValue"];
         } else {
             return null;
         }
     }
 
     /**
-    * Sets the setting
-    * The setting that is being reported
+    * Sets the currentValue
+    * Current value of setting on device
     *
-    * @param string $val The value of the setting
-    *
-    * @return DeviceCompliancePolicySettingState
-    */
-    public function setSetting($val)
-    {
-        $this->_propDict["setting"] = $val;
-        return $this;
-    }
-    /**
-    * Gets the settingName
-    * Localized/user friendly setting name that is being reported
-    *
-    * @return string The settingName
-    */
-    public function getSettingName()
-    {
-        if (array_key_exists("settingName", $this->_propDict)) {
-            return $this->_propDict["settingName"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the settingName
-    * Localized/user friendly setting name that is being reported
-    *
-    * @param string $val The value of the settingName
+    * @param string $val The value of the currentValue
     *
     * @return DeviceCompliancePolicySettingState
     */
-    public function setSettingName($val)
+    public function setCurrentValue($val)
     {
-        $this->_propDict["settingName"] = $val;
+        $this->_propDict["currentValue"] = $val;
         return $this;
-    }
-    /**
-    * Gets the instanceDisplayName
-    * Name of setting instance that is being reported.
-    *
-    * @return string The instanceDisplayName
-    */
-    public function getInstanceDisplayName()
-    {
-        if (array_key_exists("instanceDisplayName", $this->_propDict)) {
-            return $this->_propDict["instanceDisplayName"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the instanceDisplayName
-    * Name of setting instance that is being reported.
-    *
-    * @param string $val The value of the instanceDisplayName
-    *
-    * @return DeviceCompliancePolicySettingState
-    */
-    public function setInstanceDisplayName($val)
-    {
-        $this->_propDict["instanceDisplayName"] = $val;
-        return $this;
-    }
-
-    /**
-    * Gets the state
-    * The compliance state of the setting. Possible values are: unknown, notApplicable, compliant, remediated, nonCompliant, error, conflict, notAssigned.
-    *
-    * @return ComplianceStatus The state
-    */
-    public function getState()
-    {
-        if (array_key_exists("state", $this->_propDict)) {
-            if (is_a($this->_propDict["state"], "Microsoft\Graph\Model\ComplianceStatus")) {
-                return $this->_propDict["state"];
-            } else {
-                $this->_propDict["state"] = new ComplianceStatus($this->_propDict["state"]);
-                return $this->_propDict["state"];
-            }
-        }
-        return null;
-    }
-
-    /**
-    * Sets the state
-    * The compliance state of the setting. Possible values are: unknown, notApplicable, compliant, remediated, nonCompliant, error, conflict, notAssigned.
-    *
-    * @param ComplianceStatus $val The value to assign to the state
-    *
-    * @return DeviceCompliancePolicySettingState The DeviceCompliancePolicySettingState
-    */
-    public function setState($val)
-    {
-        $this->_propDict["state"] = $val;
-         return $this;
     }
     /**
     * Gets the errorCode
     * Error code for the setting
     *
-    * @return int The errorCode
+    * @return int|null The errorCode
     */
     public function getErrorCode()
     {
@@ -174,7 +83,7 @@ class DeviceCompliancePolicySettingState extends Entity
     * Gets the errorDescription
     * Error description
     *
-    * @return string The errorDescription
+    * @return string|null The errorDescription
     */
     public function getErrorDescription()
     {
@@ -199,10 +108,188 @@ class DeviceCompliancePolicySettingState extends Entity
         return $this;
     }
     /**
+    * Gets the instanceDisplayName
+    * Name of setting instance that is being reported.
+    *
+    * @return string|null The instanceDisplayName
+    */
+    public function getInstanceDisplayName()
+    {
+        if (array_key_exists("instanceDisplayName", $this->_propDict)) {
+            return $this->_propDict["instanceDisplayName"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the instanceDisplayName
+    * Name of setting instance that is being reported.
+    *
+    * @param string $val The value of the instanceDisplayName
+    *
+    * @return DeviceCompliancePolicySettingState
+    */
+    public function setInstanceDisplayName($val)
+    {
+        $this->_propDict["instanceDisplayName"] = $val;
+        return $this;
+    }
+    /**
+    * Gets the setting
+    * The setting that is being reported
+    *
+    * @return string|null The setting
+    */
+    public function getSetting()
+    {
+        if (array_key_exists("setting", $this->_propDict)) {
+            return $this->_propDict["setting"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the setting
+    * The setting that is being reported
+    *
+    * @param string $val The value of the setting
+    *
+    * @return DeviceCompliancePolicySettingState
+    */
+    public function setSetting($val)
+    {
+        $this->_propDict["setting"] = $val;
+        return $this;
+    }
+    /**
+    * Gets the settingName
+    * Localized/user friendly setting name that is being reported
+    *
+    * @return string|null The settingName
+    */
+    public function getSettingName()
+    {
+        if (array_key_exists("settingName", $this->_propDict)) {
+            return $this->_propDict["settingName"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the settingName
+    * Localized/user friendly setting name that is being reported
+    *
+    * @param string $val The value of the settingName
+    *
+    * @return DeviceCompliancePolicySettingState
+    */
+    public function setSettingName($val)
+    {
+        $this->_propDict["settingName"] = $val;
+        return $this;
+    }
+
+    /**
+    * Gets the sources
+    * Contributing policies
+    *
+    * @return SettingSource|null The sources
+    */
+    public function getSources()
+    {
+        if (array_key_exists("sources", $this->_propDict)) {
+            if (is_a($this->_propDict["sources"], "\Microsoft\Graph\Model\SettingSource") || is_null($this->_propDict["sources"])) {
+                return $this->_propDict["sources"];
+            } else {
+                $this->_propDict["sources"] = new SettingSource($this->_propDict["sources"]);
+                return $this->_propDict["sources"];
+            }
+        }
+        return null;
+    }
+
+    /**
+    * Sets the sources
+    * Contributing policies
+    *
+    * @param SettingSource $val The value to assign to the sources
+    *
+    * @return DeviceCompliancePolicySettingState The DeviceCompliancePolicySettingState
+    */
+    public function setSources($val)
+    {
+        $this->_propDict["sources"] = $val;
+         return $this;
+    }
+
+    /**
+    * Gets the state
+    * The compliance state of the setting. Possible values are: unknown, notApplicable, compliant, remediated, nonCompliant, error, conflict, notAssigned.
+    *
+    * @return ComplianceStatus|null The state
+    */
+    public function getState()
+    {
+        if (array_key_exists("state", $this->_propDict)) {
+            if (is_a($this->_propDict["state"], "\Microsoft\Graph\Model\ComplianceStatus") || is_null($this->_propDict["state"])) {
+                return $this->_propDict["state"];
+            } else {
+                $this->_propDict["state"] = new ComplianceStatus($this->_propDict["state"]);
+                return $this->_propDict["state"];
+            }
+        }
+        return null;
+    }
+
+    /**
+    * Sets the state
+    * The compliance state of the setting. Possible values are: unknown, notApplicable, compliant, remediated, nonCompliant, error, conflict, notAssigned.
+    *
+    * @param ComplianceStatus $val The value to assign to the state
+    *
+    * @return DeviceCompliancePolicySettingState The DeviceCompliancePolicySettingState
+    */
+    public function setState($val)
+    {
+        $this->_propDict["state"] = $val;
+         return $this;
+    }
+    /**
+    * Gets the userEmail
+    * UserEmail
+    *
+    * @return string|null The userEmail
+    */
+    public function getUserEmail()
+    {
+        if (array_key_exists("userEmail", $this->_propDict)) {
+            return $this->_propDict["userEmail"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the userEmail
+    * UserEmail
+    *
+    * @param string $val The value of the userEmail
+    *
+    * @return DeviceCompliancePolicySettingState
+    */
+    public function setUserEmail($val)
+    {
+        $this->_propDict["userEmail"] = $val;
+        return $this;
+    }
+    /**
     * Gets the userId
     * UserId
     *
-    * @return string The userId
+    * @return string|null The userId
     */
     public function getUserId()
     {
@@ -230,7 +317,7 @@ class DeviceCompliancePolicySettingState extends Entity
     * Gets the userName
     * UserName
     *
-    * @return string The userName
+    * @return string|null The userName
     */
     public function getUserName()
     {
@@ -255,38 +342,10 @@ class DeviceCompliancePolicySettingState extends Entity
         return $this;
     }
     /**
-    * Gets the userEmail
-    * UserEmail
-    *
-    * @return string The userEmail
-    */
-    public function getUserEmail()
-    {
-        if (array_key_exists("userEmail", $this->_propDict)) {
-            return $this->_propDict["userEmail"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the userEmail
-    * UserEmail
-    *
-    * @param string $val The value of the userEmail
-    *
-    * @return DeviceCompliancePolicySettingState
-    */
-    public function setUserEmail($val)
-    {
-        $this->_propDict["userEmail"] = $val;
-        return $this;
-    }
-    /**
     * Gets the userPrincipalName
     * UserPrincipalName.
     *
-    * @return string The userPrincipalName
+    * @return string|null The userPrincipalName
     */
     public function getUserPrincipalName()
     {
@@ -308,67 +367,6 @@ class DeviceCompliancePolicySettingState extends Entity
     public function setUserPrincipalName($val)
     {
         $this->_propDict["userPrincipalName"] = $val;
-        return $this;
-    }
-
-    /**
-    * Gets the sources
-    * Contributing policies
-    *
-    * @return SettingSource The sources
-    */
-    public function getSources()
-    {
-        if (array_key_exists("sources", $this->_propDict)) {
-            if (is_a($this->_propDict["sources"], "Microsoft\Graph\Model\SettingSource")) {
-                return $this->_propDict["sources"];
-            } else {
-                $this->_propDict["sources"] = new SettingSource($this->_propDict["sources"]);
-                return $this->_propDict["sources"];
-            }
-        }
-        return null;
-    }
-
-    /**
-    * Sets the sources
-    * Contributing policies
-    *
-    * @param SettingSource $val The value to assign to the sources
-    *
-    * @return DeviceCompliancePolicySettingState The DeviceCompliancePolicySettingState
-    */
-    public function setSources($val)
-    {
-        $this->_propDict["sources"] = $val;
-         return $this;
-    }
-    /**
-    * Gets the currentValue
-    * Current value of setting on device
-    *
-    * @return string The currentValue
-    */
-    public function getCurrentValue()
-    {
-        if (array_key_exists("currentValue", $this->_propDict)) {
-            return $this->_propDict["currentValue"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the currentValue
-    * Current value of setting on device
-    *
-    * @param string $val The value of the currentValue
-    *
-    * @return DeviceCompliancePolicySettingState
-    */
-    public function setCurrentValue($val)
-    {
-        $this->_propDict["currentValue"] = $val;
         return $this;
     }
 }

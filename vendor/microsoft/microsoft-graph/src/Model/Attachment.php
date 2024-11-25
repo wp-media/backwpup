@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,80 +18,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class Attachment extends Entity
 {
     /**
-    * Gets the lastModifiedDateTime
-    * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
-    *
-    * @return \DateTime The lastModifiedDateTime
-    */
-    public function getLastModifiedDateTime()
-    {
-        if (array_key_exists("lastModifiedDateTime", $this->_propDict)) {
-            if (is_a($this->_propDict["lastModifiedDateTime"], "\DateTime")) {
-                return $this->_propDict["lastModifiedDateTime"];
-            } else {
-                $this->_propDict["lastModifiedDateTime"] = new \DateTime($this->_propDict["lastModifiedDateTime"]);
-                return $this->_propDict["lastModifiedDateTime"];
-            }
-        }
-        return null;
-    }
-    
-    /**
-    * Sets the lastModifiedDateTime
-    * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
-    *
-    * @param \DateTime $val The lastModifiedDateTime
-    *
-    * @return Attachment
-    */
-    public function setLastModifiedDateTime($val)
-    {
-        $this->_propDict["lastModifiedDateTime"] = $val;
-        return $this;
-    }
-    
-    /**
-    * Gets the name
-    * The attachment's file name.
-    *
-    * @return string The name
-    */
-    public function getName()
-    {
-        if (array_key_exists("name", $this->_propDict)) {
-            return $this->_propDict["name"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the name
-    * The attachment's file name.
-    *
-    * @param string $val The name
-    *
-    * @return Attachment
-    */
-    public function setName($val)
-    {
-        $this->_propDict["name"] = $val;
-        return $this;
-    }
-    
-    /**
     * Gets the contentType
     * The MIME type.
     *
-    * @return string The contentType
+    * @return string|null The contentType
     */
     public function getContentType()
     {
@@ -102,7 +38,7 @@ class Attachment extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the contentType
     * The MIME type.
@@ -116,41 +52,12 @@ class Attachment extends Entity
         $this->_propDict["contentType"] = $val;
         return $this;
     }
-    
-    /**
-    * Gets the size
-    * The length of the attachment in bytes.
-    *
-    * @return int The size
-    */
-    public function getSize()
-    {
-        if (array_key_exists("size", $this->_propDict)) {
-            return $this->_propDict["size"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the size
-    * The length of the attachment in bytes.
-    *
-    * @param int $val The size
-    *
-    * @return Attachment
-    */
-    public function setSize($val)
-    {
-        $this->_propDict["size"] = intval($val);
-        return $this;
-    }
-    
+
     /**
     * Gets the isInline
     * true if the attachment is an inline attachment; otherwise, false.
     *
-    * @return bool The isInline
+    * @return bool|null The isInline
     */
     public function getIsInline()
     {
@@ -160,7 +67,7 @@ class Attachment extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the isInline
     * true if the attachment is an inline attachment; otherwise, false.
@@ -174,5 +81,96 @@ class Attachment extends Entity
         $this->_propDict["isInline"] = boolval($val);
         return $this;
     }
-    
+
+    /**
+    * Gets the lastModifiedDateTime
+    * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
+    *
+    * @return \DateTime|null The lastModifiedDateTime
+    */
+    public function getLastModifiedDateTime()
+    {
+        if (array_key_exists("lastModifiedDateTime", $this->_propDict)) {
+            if (is_a($this->_propDict["lastModifiedDateTime"], "\DateTime") || is_null($this->_propDict["lastModifiedDateTime"])) {
+                return $this->_propDict["lastModifiedDateTime"];
+            } else {
+                $this->_propDict["lastModifiedDateTime"] = new \DateTime($this->_propDict["lastModifiedDateTime"]);
+                return $this->_propDict["lastModifiedDateTime"];
+            }
+        }
+        return null;
+    }
+
+    /**
+    * Sets the lastModifiedDateTime
+    * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
+    *
+    * @param \DateTime $val The lastModifiedDateTime
+    *
+    * @return Attachment
+    */
+    public function setLastModifiedDateTime($val)
+    {
+        $this->_propDict["lastModifiedDateTime"] = $val;
+        return $this;
+    }
+
+    /**
+    * Gets the name
+    * The attachment's file name.
+    *
+    * @return string|null The name
+    */
+    public function getName()
+    {
+        if (array_key_exists("name", $this->_propDict)) {
+            return $this->_propDict["name"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the name
+    * The attachment's file name.
+    *
+    * @param string $val The name
+    *
+    * @return Attachment
+    */
+    public function setName($val)
+    {
+        $this->_propDict["name"] = $val;
+        return $this;
+    }
+
+    /**
+    * Gets the size
+    * The length of the attachment in bytes.
+    *
+    * @return int|null The size
+    */
+    public function getSize()
+    {
+        if (array_key_exists("size", $this->_propDict)) {
+            return $this->_propDict["size"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the size
+    * The length of the attachment in bytes.
+    *
+    * @param int $val The size
+    *
+    * @return Attachment
+    */
+    public function setSize($val)
+    {
+        $this->_propDict["size"] = intval($val);
+        return $this;
+    }
+
 }

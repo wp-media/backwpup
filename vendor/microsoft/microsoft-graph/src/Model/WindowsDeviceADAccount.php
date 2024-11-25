@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class WindowsDeviceADAccount extends WindowsDeviceAccount
 {
@@ -29,7 +27,7 @@ class WindowsDeviceADAccount extends WindowsDeviceAccount
     * Gets the domainName
     * Not yet documented
     *
-    * @return string The domainName
+    * @return string|null The domainName
     */
     public function getDomainName()
     {
@@ -57,7 +55,7 @@ class WindowsDeviceADAccount extends WindowsDeviceAccount
     * Gets the userName
     * Not yet documented
     *
-    * @return string The userName
+    * @return string|null The userName
     */
     public function getUserName()
     {

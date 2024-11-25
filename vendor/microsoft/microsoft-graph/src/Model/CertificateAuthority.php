@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,46 +17,50 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class CertificateAuthority extends Entity
 {
+
     /**
-    * Gets the isRootAuthority
-    * Required. true if the trusted certificate is a root authority, false if the trusted certificate is an intermediate authority.
+    * Gets the certificate
+    * Required. The base64 encoded string representing the public certificate.
     *
-    * @return bool The isRootAuthority
+    * @return \GuzzleHttp\Psr7\Stream|null The certificate
     */
-    public function getIsRootAuthority()
+    public function getCertificate()
     {
-        if (array_key_exists("isRootAuthority", $this->_propDict)) {
-            return $this->_propDict["isRootAuthority"];
-        } else {
-            return null;
+        if (array_key_exists("certificate", $this->_propDict)) {
+            if (is_a($this->_propDict["certificate"], "\GuzzleHttp\Psr7\Stream") || is_null($this->_propDict["certificate"])) {
+                return $this->_propDict["certificate"];
+            } else {
+                $this->_propDict["certificate"] = \GuzzleHttp\Psr7\Utils::streamFor($this->_propDict["certificate"]);
+                return $this->_propDict["certificate"];
+            }
         }
+        return null;
     }
 
     /**
-    * Sets the isRootAuthority
-    * Required. true if the trusted certificate is a root authority, false if the trusted certificate is an intermediate authority.
+    * Sets the certificate
+    * Required. The base64 encoded string representing the public certificate.
     *
-    * @param bool $val The value of the isRootAuthority
+    * @param \GuzzleHttp\Psr7\Stream $val The value to assign to the certificate
     *
-    * @return CertificateAuthority
+    * @return CertificateAuthority The CertificateAuthority
     */
-    public function setIsRootAuthority($val)
+    public function setCertificate($val)
     {
-        $this->_propDict["isRootAuthority"] = $val;
-        return $this;
+        $this->_propDict["certificate"] = $val;
+         return $this;
     }
     /**
     * Gets the certificateRevocationListUrl
     * The URL of the certificate revocation list.
     *
-    * @return string The certificateRevocationListUrl
+    * @return string|null The certificateRevocationListUrl
     */
     public function getCertificateRevocationListUrl()
     {
@@ -85,7 +88,7 @@ class CertificateAuthority extends Entity
     * Gets the deltaCertificateRevocationListUrl
     * The URL contains the list of all revoked certificates since the last time a full certificate revocaton list was created.
     *
-    * @return string The deltaCertificateRevocationListUrl
+    * @return string|null The deltaCertificateRevocationListUrl
     */
     public function getDeltaCertificateRevocationListUrl()
     {
@@ -109,44 +112,39 @@ class CertificateAuthority extends Entity
         $this->_propDict["deltaCertificateRevocationListUrl"] = $val;
         return $this;
     }
-
     /**
-    * Gets the certificate
-    * Required. The base64 encoded string representing the public certificate.
+    * Gets the isRootAuthority
+    * Required. true if the trusted certificate is a root authority, false if the trusted certificate is an intermediate authority.
     *
-    * @return \GuzzleHttp\Psr7\Stream The certificate
+    * @return bool|null The isRootAuthority
     */
-    public function getCertificate()
+    public function getIsRootAuthority()
     {
-        if (array_key_exists("certificate", $this->_propDict)) {
-            if (is_a($this->_propDict["certificate"], "Microsoft\Graph\Model\\GuzzleHttp\Psr7\Stream")) {
-                return $this->_propDict["certificate"];
-            } else {
-                $this->_propDict["certificate"] = \GuzzleHttp\Psr7\stream_for($this->_propDict["certificate"]);
-                return $this->_propDict["certificate"];
-            }
+        if (array_key_exists("isRootAuthority", $this->_propDict)) {
+            return $this->_propDict["isRootAuthority"];
+        } else {
+            return null;
         }
-        return null;
     }
 
     /**
-    * Sets the certificate
-    * Required. The base64 encoded string representing the public certificate.
+    * Sets the isRootAuthority
+    * Required. true if the trusted certificate is a root authority, false if the trusted certificate is an intermediate authority.
     *
-    * @param \GuzzleHttp\Psr7\Stream $val The value to assign to the certificate
+    * @param bool $val The value of the isRootAuthority
     *
-    * @return CertificateAuthority The CertificateAuthority
+    * @return CertificateAuthority
     */
-    public function setCertificate($val)
+    public function setIsRootAuthority($val)
     {
-        $this->_propDict["certificate"] = $val;
-         return $this;
+        $this->_propDict["isRootAuthority"] = $val;
+        return $this;
     }
     /**
     * Gets the issuer
     * The issuer of the certificate, calculated from the certificate value. Read-only.
     *
-    * @return string The issuer
+    * @return string|null The issuer
     */
     public function getIssuer()
     {
@@ -174,7 +172,7 @@ class CertificateAuthority extends Entity
     * Gets the issuerSki
     * The subject key identifier of the certificate, calculated from the certificate value. Read-only.
     *
-    * @return string The issuerSki
+    * @return string|null The issuerSki
     */
     public function getIssuerSki()
     {

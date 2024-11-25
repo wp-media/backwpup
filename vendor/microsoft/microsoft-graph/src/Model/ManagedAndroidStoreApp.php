@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,47 +18,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class ManagedAndroidStoreApp extends ManagedApp
 {
     /**
-    * Gets the packageId
-    * The app's package ID.
-    *
-    * @return string The packageId
-    */
-    public function getPackageId()
-    {
-        if (array_key_exists("packageId", $this->_propDict)) {
-            return $this->_propDict["packageId"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the packageId
-    * The app's package ID.
-    *
-    * @param string $val The packageId
-    *
-    * @return ManagedAndroidStoreApp
-    */
-    public function setPackageId($val)
-    {
-        $this->_propDict["packageId"] = $val;
-        return $this;
-    }
-    
-    /**
     * Gets the appStoreUrl
     * The Android AppStoreUrl.
     *
-    * @return string The appStoreUrl
+    * @return string|null The appStoreUrl
     */
     public function getAppStoreUrl()
     {
@@ -69,7 +38,7 @@ class ManagedAndroidStoreApp extends ManagedApp
             return null;
         }
     }
-    
+
     /**
     * Sets the appStoreUrl
     * The Android AppStoreUrl.
@@ -83,17 +52,17 @@ class ManagedAndroidStoreApp extends ManagedApp
         $this->_propDict["appStoreUrl"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the minimumSupportedOperatingSystem
     * The value for the minimum supported operating system.
     *
-    * @return AndroidMinimumOperatingSystem The minimumSupportedOperatingSystem
+    * @return AndroidMinimumOperatingSystem|null The minimumSupportedOperatingSystem
     */
     public function getMinimumSupportedOperatingSystem()
     {
         if (array_key_exists("minimumSupportedOperatingSystem", $this->_propDict)) {
-            if (is_a($this->_propDict["minimumSupportedOperatingSystem"], "Microsoft\Graph\Model\AndroidMinimumOperatingSystem")) {
+            if (is_a($this->_propDict["minimumSupportedOperatingSystem"], "\Microsoft\Graph\Model\AndroidMinimumOperatingSystem") || is_null($this->_propDict["minimumSupportedOperatingSystem"])) {
                 return $this->_propDict["minimumSupportedOperatingSystem"];
             } else {
                 $this->_propDict["minimumSupportedOperatingSystem"] = new AndroidMinimumOperatingSystem($this->_propDict["minimumSupportedOperatingSystem"]);
@@ -102,7 +71,7 @@ class ManagedAndroidStoreApp extends ManagedApp
         }
         return null;
     }
-    
+
     /**
     * Sets the minimumSupportedOperatingSystem
     * The value for the minimum supported operating system.
@@ -116,5 +85,34 @@ class ManagedAndroidStoreApp extends ManagedApp
         $this->_propDict["minimumSupportedOperatingSystem"] = $val;
         return $this;
     }
-    
+
+    /**
+    * Gets the packageId
+    * The app's package ID.
+    *
+    * @return string|null The packageId
+    */
+    public function getPackageId()
+    {
+        if (array_key_exists("packageId", $this->_propDict)) {
+            return $this->_propDict["packageId"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the packageId
+    * The app's package ID.
+    *
+    * @param string $val The packageId
+    *
+    * @return ManagedAndroidStoreApp
+    */
+    public function setPackageId($val)
+    {
+        $this->_propDict["packageId"] = $val;
+        return $this;
+    }
+
 }

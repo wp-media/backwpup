@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class NumberColumn extends Entity
 {
@@ -29,7 +27,7 @@ class NumberColumn extends Entity
     * Gets the decimalPlaces
     * How many decimal places to display. See below for information about the possible values.
     *
-    * @return string The decimalPlaces
+    * @return string|null The decimalPlaces
     */
     public function getDecimalPlaces()
     {
@@ -57,7 +55,7 @@ class NumberColumn extends Entity
     * Gets the displayAs
     * How the value should be presented in the UX. Must be one of number or percentage. If unspecified, treated as number.
     *
-    * @return string The displayAs
+    * @return string|null The displayAs
     */
     public function getDisplayAs()
     {
@@ -85,7 +83,7 @@ class NumberColumn extends Entity
     * Gets the maximum
     * The maximum permitted value.
     *
-    * @return float The maximum
+    * @return float|null The maximum
     */
     public function getMaximum()
     {
@@ -113,7 +111,7 @@ class NumberColumn extends Entity
     * Gets the minimum
     * The minimum permitted value.
     *
-    * @return float The minimum
+    * @return float|null The minimum
     */
     public function getMinimum()
     {

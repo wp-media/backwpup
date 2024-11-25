@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,76 +18,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class CalendarGroup extends Entity
 {
     /**
-    * Gets the name
-    * The group name.
-    *
-    * @return string The name
-    */
-    public function getName()
-    {
-        if (array_key_exists("name", $this->_propDict)) {
-            return $this->_propDict["name"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the name
-    * The group name.
-    *
-    * @param string $val The name
-    *
-    * @return CalendarGroup
-    */
-    public function setName($val)
-    {
-        $this->_propDict["name"] = $val;
-        return $this;
-    }
-    
-    /**
-    * Gets the classId
-    * The class identifier. Read-only.
-    *
-    * @return string The classId
-    */
-    public function getClassId()
-    {
-        if (array_key_exists("classId", $this->_propDict)) {
-            return $this->_propDict["classId"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the classId
-    * The class identifier. Read-only.
-    *
-    * @param string $val The classId
-    *
-    * @return CalendarGroup
-    */
-    public function setClassId($val)
-    {
-        $this->_propDict["classId"] = $val;
-        return $this;
-    }
-    
-    /**
     * Gets the changeKey
     * Identifies the version of the calendar group. Every time the calendar group is changed, ChangeKey changes as well. This allows Exchange to apply changes to the correct version of the object. Read-only.
     *
-    * @return string The changeKey
+    * @return string|null The changeKey
     */
     public function getChangeKey()
     {
@@ -98,7 +38,7 @@ class CalendarGroup extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the changeKey
     * Identifies the version of the calendar group. Every time the calendar group is changed, ChangeKey changes as well. This allows Exchange to apply changes to the correct version of the object. Read-only.
@@ -112,13 +52,71 @@ class CalendarGroup extends Entity
         $this->_propDict["changeKey"] = $val;
         return $this;
     }
-    
 
-     /** 
+    /**
+    * Gets the classId
+    * The class identifier. Read-only.
+    *
+    * @return string|null The classId
+    */
+    public function getClassId()
+    {
+        if (array_key_exists("classId", $this->_propDict)) {
+            return $this->_propDict["classId"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the classId
+    * The class identifier. Read-only.
+    *
+    * @param string $val The classId
+    *
+    * @return CalendarGroup
+    */
+    public function setClassId($val)
+    {
+        $this->_propDict["classId"] = $val;
+        return $this;
+    }
+
+    /**
+    * Gets the name
+    * The group name.
+    *
+    * @return string|null The name
+    */
+    public function getName()
+    {
+        if (array_key_exists("name", $this->_propDict)) {
+            return $this->_propDict["name"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the name
+    * The group name.
+    *
+    * @param string $val The name
+    *
+    * @return CalendarGroup
+    */
+    public function setName($val)
+    {
+        $this->_propDict["name"] = $val;
+        return $this;
+    }
+
+
+     /**
      * Gets the calendars
     * The calendars in the calendar group. Navigation property. Read-only. Nullable.
      *
-     * @return array The calendars
+     * @return array|null The calendars
      */
     public function getCalendars()
     {
@@ -128,19 +126,19 @@ class CalendarGroup extends Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the calendars
     * The calendars in the calendar group. Navigation property. Read-only. Nullable.
     *
-    * @param Calendar $val The calendars
+    * @param Calendar[] $val The calendars
     *
     * @return CalendarGroup
     */
     public function setCalendars($val)
     {
-		$this->_propDict["calendars"] = $val;
+        $this->_propDict["calendars"] = $val;
         return $this;
     }
-    
+
 }

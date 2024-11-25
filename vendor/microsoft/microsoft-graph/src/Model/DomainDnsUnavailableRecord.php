@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class DomainDnsUnavailableRecord extends DomainDnsRecord
 {
@@ -30,7 +28,7 @@ class DomainDnsUnavailableRecord extends DomainDnsRecord
     * Gets the description
     * Provides the reason why the DomainDnsUnavailableRecord entity is returned.
     *
-    * @return string The description
+    * @return string|null The description
     */
     public function getDescription()
     {
@@ -40,7 +38,7 @@ class DomainDnsUnavailableRecord extends DomainDnsRecord
             return null;
         }
     }
-    
+
     /**
     * Sets the description
     * Provides the reason why the DomainDnsUnavailableRecord entity is returned.
@@ -54,5 +52,5 @@ class DomainDnsUnavailableRecord extends DomainDnsRecord
         $this->_propDict["description"] = $val;
         return $this;
     }
-    
+
 }

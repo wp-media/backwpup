@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class DirectoryRoleTemplate extends DirectoryObject
 {
@@ -30,7 +28,7 @@ class DirectoryRoleTemplate extends DirectoryObject
     * Gets the description
     * The description to set for the directory role. Read-only.
     *
-    * @return string The description
+    * @return string|null The description
     */
     public function getDescription()
     {
@@ -40,7 +38,7 @@ class DirectoryRoleTemplate extends DirectoryObject
             return null;
         }
     }
-    
+
     /**
     * Sets the description
     * The description to set for the directory role. Read-only.
@@ -54,12 +52,12 @@ class DirectoryRoleTemplate extends DirectoryObject
         $this->_propDict["description"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the displayName
     * The display name to set for the directory role. Read-only.
     *
-    * @return string The displayName
+    * @return string|null The displayName
     */
     public function getDisplayName()
     {
@@ -69,7 +67,7 @@ class DirectoryRoleTemplate extends DirectoryObject
             return null;
         }
     }
-    
+
     /**
     * Sets the displayName
     * The display name to set for the directory role. Read-only.
@@ -83,5 +81,5 @@ class DirectoryRoleTemplate extends DirectoryObject
         $this->_propDict["displayName"] = $val;
         return $this;
     }
-    
+
 }

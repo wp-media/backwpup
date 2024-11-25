@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,46 +17,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class PhysicalAddress extends Entity
 {
     /**
-    * Gets the street
-    * The street.
-    *
-    * @return string The street
-    */
-    public function getStreet()
-    {
-        if (array_key_exists("street", $this->_propDict)) {
-            return $this->_propDict["street"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the street
-    * The street.
-    *
-    * @param string $val The value of the street
-    *
-    * @return PhysicalAddress
-    */
-    public function setStreet($val)
-    {
-        $this->_propDict["street"] = $val;
-        return $this;
-    }
-    /**
     * Gets the city
     * The city.
     *
-    * @return string The city
+    * @return string|null The city
     */
     public function getCity()
     {
@@ -82,38 +52,10 @@ class PhysicalAddress extends Entity
         return $this;
     }
     /**
-    * Gets the state
-    * The state.
-    *
-    * @return string The state
-    */
-    public function getState()
-    {
-        if (array_key_exists("state", $this->_propDict)) {
-            return $this->_propDict["state"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the state
-    * The state.
-    *
-    * @param string $val The value of the state
-    *
-    * @return PhysicalAddress
-    */
-    public function setState($val)
-    {
-        $this->_propDict["state"] = $val;
-        return $this;
-    }
-    /**
     * Gets the countryOrRegion
     * The country or region. It's a free-format string value, for example, 'United States'.
     *
-    * @return string The countryOrRegion
+    * @return string|null The countryOrRegion
     */
     public function getCountryOrRegion()
     {
@@ -141,7 +83,7 @@ class PhysicalAddress extends Entity
     * Gets the postalCode
     * The postal code.
     *
-    * @return string The postalCode
+    * @return string|null The postalCode
     */
     public function getPostalCode()
     {
@@ -163,6 +105,62 @@ class PhysicalAddress extends Entity
     public function setPostalCode($val)
     {
         $this->_propDict["postalCode"] = $val;
+        return $this;
+    }
+    /**
+    * Gets the state
+    * The state.
+    *
+    * @return string|null The state
+    */
+    public function getState()
+    {
+        if (array_key_exists("state", $this->_propDict)) {
+            return $this->_propDict["state"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the state
+    * The state.
+    *
+    * @param string $val The value of the state
+    *
+    * @return PhysicalAddress
+    */
+    public function setState($val)
+    {
+        $this->_propDict["state"] = $val;
+        return $this;
+    }
+    /**
+    * Gets the street
+    * The street.
+    *
+    * @return string|null The street
+    */
+    public function getStreet()
+    {
+        if (array_key_exists("street", $this->_propDict)) {
+            return $this->_propDict["street"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the street
+    * The street.
+    *
+    * @param string $val The value of the street
+    *
+    * @return PhysicalAddress
+    */
+    public function setStreet($val)
+    {
+        $this->_propDict["street"] = $val;
         return $this;
     }
 }

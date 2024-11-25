@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,19 +18,18 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class Windows10CustomConfiguration extends DeviceConfiguration
 {
 
-     /** 
+     /**
      * Gets the omaSettings
     * OMA settings. This collection can contain a maximum of 1000 elements.
      *
-     * @return array The omaSettings
+     * @return array|null The omaSettings
      */
     public function getOmaSettings()
     {
@@ -41,19 +39,19 @@ class Windows10CustomConfiguration extends DeviceConfiguration
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the omaSettings
     * OMA settings. This collection can contain a maximum of 1000 elements.
     *
-    * @param OmaSetting $val The omaSettings
+    * @param OmaSetting[] $val The omaSettings
     *
     * @return Windows10CustomConfiguration
     */
     public function setOmaSettings($val)
     {
-		$this->_propDict["omaSettings"] = $val;
+        $this->_propDict["omaSettings"] = $val;
         return $this;
     }
-    
+
 }

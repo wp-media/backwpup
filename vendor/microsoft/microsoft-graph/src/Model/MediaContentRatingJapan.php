@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class MediaContentRatingJapan extends Entity
 {
@@ -30,12 +28,12 @@ class MediaContentRatingJapan extends Entity
     * Gets the movieRating
     * Movies rating selected for Japan. Possible values are: allAllowed, allBlocked, general, parentalGuidance, agesAbove15, agesAbove18.
     *
-    * @return RatingJapanMoviesType The movieRating
+    * @return RatingJapanMoviesType|null The movieRating
     */
     public function getMovieRating()
     {
         if (array_key_exists("movieRating", $this->_propDict)) {
-            if (is_a($this->_propDict["movieRating"], "Microsoft\Graph\Model\RatingJapanMoviesType")) {
+            if (is_a($this->_propDict["movieRating"], "\Microsoft\Graph\Model\RatingJapanMoviesType") || is_null($this->_propDict["movieRating"])) {
                 return $this->_propDict["movieRating"];
             } else {
                 $this->_propDict["movieRating"] = new RatingJapanMoviesType($this->_propDict["movieRating"]);
@@ -63,12 +61,12 @@ class MediaContentRatingJapan extends Entity
     * Gets the tvRating
     * TV rating selected for Japan. Possible values are: allAllowed, allBlocked, explicitAllowed.
     *
-    * @return RatingJapanTelevisionType The tvRating
+    * @return RatingJapanTelevisionType|null The tvRating
     */
     public function getTvRating()
     {
         if (array_key_exists("tvRating", $this->_propDict)) {
-            if (is_a($this->_propDict["tvRating"], "Microsoft\Graph\Model\RatingJapanTelevisionType")) {
+            if (is_a($this->_propDict["tvRating"], "\Microsoft\Graph\Model\RatingJapanTelevisionType") || is_null($this->_propDict["tvRating"])) {
                 return $this->_propDict["tvRating"];
             } else {
                 $this->_propDict["tvRating"] = new RatingJapanTelevisionType($this->_propDict["tvRating"]);

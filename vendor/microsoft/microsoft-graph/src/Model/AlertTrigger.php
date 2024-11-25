@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class AlertTrigger extends Entity
 {
@@ -29,7 +27,7 @@ class AlertTrigger extends Entity
     * Gets the name
     * Name of the property serving as a detection trigger.
     *
-    * @return string The name
+    * @return string|null The name
     */
     public function getName()
     {
@@ -55,9 +53,9 @@ class AlertTrigger extends Entity
     }
     /**
     * Gets the type
-    * Type of the property in the key:value pair for interpretation. For example, String, Boolean, etc.
+    * Type of the property in the key:value pair for interpretation. For example, String, Boolean etc.
     *
-    * @return string The type
+    * @return string|null The type
     */
     public function getType()
     {
@@ -70,7 +68,7 @@ class AlertTrigger extends Entity
 
     /**
     * Sets the type
-    * Type of the property in the key:value pair for interpretation. For example, String, Boolean, etc.
+    * Type of the property in the key:value pair for interpretation. For example, String, Boolean etc.
     *
     * @param string $val The value of the type
     *
@@ -85,7 +83,7 @@ class AlertTrigger extends Entity
     * Gets the value
     * Value of the property serving as a detection trigger.
     *
-    * @return string The value
+    * @return string|null The value
     */
     public function getValue()
     {

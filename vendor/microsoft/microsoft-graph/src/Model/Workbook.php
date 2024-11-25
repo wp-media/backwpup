@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,22 +18,21 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class Workbook extends Entity
 {
     /**
     * Gets the application
     *
-    * @return WorkbookApplication The application
+    * @return WorkbookApplication|null The application
     */
     public function getApplication()
     {
         if (array_key_exists("application", $this->_propDict)) {
-            if (is_a($this->_propDict["application"], "Microsoft\Graph\Model\WorkbookApplication")) {
+            if (is_a($this->_propDict["application"], "\Microsoft\Graph\Model\WorkbookApplication") || is_null($this->_propDict["application"])) {
                 return $this->_propDict["application"];
             } else {
                 $this->_propDict["application"] = new WorkbookApplication($this->_propDict["application"]);
@@ -43,7 +41,7 @@ class Workbook extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the application
     *
@@ -56,102 +54,13 @@ class Workbook extends Entity
         $this->_propDict["application"] = $val;
         return $this;
     }
-    
 
-     /** 
-     * Gets the names
-    * Represents a collection of workbook scoped named items (named ranges and constants). Read-only.
-     *
-     * @return array The names
-     */
-    public function getNames()
-    {
-        if (array_key_exists("names", $this->_propDict)) {
-           return $this->_propDict["names"];
-        } else {
-            return null;
-        }
-    }
-    
-    /** 
-    * Sets the names
-    * Represents a collection of workbook scoped named items (named ranges and constants). Read-only.
-    *
-    * @param WorkbookNamedItem $val The names
-    *
-    * @return Workbook
-    */
-    public function setNames($val)
-    {
-		$this->_propDict["names"] = $val;
-        return $this;
-    }
-    
 
-     /** 
-     * Gets the tables
-    * Represents a collection of tables associated with the workbook. Read-only.
-     *
-     * @return array The tables
-     */
-    public function getTables()
-    {
-        if (array_key_exists("tables", $this->_propDict)) {
-           return $this->_propDict["tables"];
-        } else {
-            return null;
-        }
-    }
-    
-    /** 
-    * Sets the tables
-    * Represents a collection of tables associated with the workbook. Read-only.
-    *
-    * @param WorkbookTable $val The tables
-    *
-    * @return Workbook
-    */
-    public function setTables($val)
-    {
-		$this->_propDict["tables"] = $val;
-        return $this;
-    }
-    
-
-     /** 
-     * Gets the worksheets
-    * Represents a collection of worksheets associated with the workbook. Read-only.
-     *
-     * @return array The worksheets
-     */
-    public function getWorksheets()
-    {
-        if (array_key_exists("worksheets", $this->_propDict)) {
-           return $this->_propDict["worksheets"];
-        } else {
-            return null;
-        }
-    }
-    
-    /** 
-    * Sets the worksheets
-    * Represents a collection of worksheets associated with the workbook. Read-only.
-    *
-    * @param WorkbookWorksheet $val The worksheets
-    *
-    * @return Workbook
-    */
-    public function setWorksheets($val)
-    {
-		$this->_propDict["worksheets"] = $val;
-        return $this;
-    }
-    
-
-     /** 
+     /**
      * Gets the comments
+    * Represents a collection of comments in a workbook.
      *
-     * @return array The comments
+     * @return array|null The comments
      */
     public function getComments()
     {
@@ -161,29 +70,30 @@ class Workbook extends Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the comments
+    * Represents a collection of comments in a workbook.
     *
-    * @param WorkbookComment $val The comments
+    * @param WorkbookComment[] $val The comments
     *
     * @return Workbook
     */
     public function setComments($val)
     {
-		$this->_propDict["comments"] = $val;
+        $this->_propDict["comments"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the functions
     *
-    * @return WorkbookFunctions The functions
+    * @return WorkbookFunctions|null The functions
     */
     public function getFunctions()
     {
         if (array_key_exists("functions", $this->_propDict)) {
-            if (is_a($this->_propDict["functions"], "Microsoft\Graph\Model\WorkbookFunctions")) {
+            if (is_a($this->_propDict["functions"], "\Microsoft\Graph\Model\WorkbookFunctions") || is_null($this->_propDict["functions"])) {
                 return $this->_propDict["functions"];
             } else {
                 $this->_propDict["functions"] = new WorkbookFunctions($this->_propDict["functions"]);
@@ -192,7 +102,7 @@ class Workbook extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the functions
     *
@@ -205,5 +115,125 @@ class Workbook extends Entity
         $this->_propDict["functions"] = $val;
         return $this;
     }
-    
+
+
+     /**
+     * Gets the names
+    * Represents a collection of workbooks scoped named items (named ranges and constants). Read-only.
+     *
+     * @return array|null The names
+     */
+    public function getNames()
+    {
+        if (array_key_exists("names", $this->_propDict)) {
+           return $this->_propDict["names"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the names
+    * Represents a collection of workbooks scoped named items (named ranges and constants). Read-only.
+    *
+    * @param WorkbookNamedItem[] $val The names
+    *
+    * @return Workbook
+    */
+    public function setNames($val)
+    {
+        $this->_propDict["names"] = $val;
+        return $this;
+    }
+
+
+     /**
+     * Gets the operations
+    * The status of workbook operations. Getting an operation collection is not supported, but you can get the status of a long-running operation if the Location header is returned in the response. Read-only.
+     *
+     * @return array|null The operations
+     */
+    public function getOperations()
+    {
+        if (array_key_exists("operations", $this->_propDict)) {
+           return $this->_propDict["operations"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the operations
+    * The status of workbook operations. Getting an operation collection is not supported, but you can get the status of a long-running operation if the Location header is returned in the response. Read-only.
+    *
+    * @param WorkbookOperation[] $val The operations
+    *
+    * @return Workbook
+    */
+    public function setOperations($val)
+    {
+        $this->_propDict["operations"] = $val;
+        return $this;
+    }
+
+
+     /**
+     * Gets the tables
+    * Represents a collection of tables associated with the workbook. Read-only.
+     *
+     * @return array|null The tables
+     */
+    public function getTables()
+    {
+        if (array_key_exists("tables", $this->_propDict)) {
+           return $this->_propDict["tables"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the tables
+    * Represents a collection of tables associated with the workbook. Read-only.
+    *
+    * @param WorkbookTable[] $val The tables
+    *
+    * @return Workbook
+    */
+    public function setTables($val)
+    {
+        $this->_propDict["tables"] = $val;
+        return $this;
+    }
+
+
+     /**
+     * Gets the worksheets
+    * Represents a collection of worksheets associated with the workbook. Read-only.
+     *
+     * @return array|null The worksheets
+     */
+    public function getWorksheets()
+    {
+        if (array_key_exists("worksheets", $this->_propDict)) {
+           return $this->_propDict["worksheets"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the worksheets
+    * Represents a collection of worksheets associated with the workbook. Read-only.
+    *
+    * @param WorkbookWorksheet[] $val The worksheets
+    *
+    * @return Workbook
+    */
+    public function setWorksheets($val)
+    {
+        $this->_propDict["worksheets"] = $val;
+        return $this;
+    }
+
 }

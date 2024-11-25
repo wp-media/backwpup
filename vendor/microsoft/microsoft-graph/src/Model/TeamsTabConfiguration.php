@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,46 +17,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class TeamsTabConfiguration extends Entity
 {
     /**
-    * Gets the entityId
-    * Identifier for the entity hosted by the tab provider.
-    *
-    * @return string The entityId
-    */
-    public function getEntityId()
-    {
-        if (array_key_exists("entityId", $this->_propDict)) {
-            return $this->_propDict["entityId"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the entityId
-    * Identifier for the entity hosted by the tab provider.
-    *
-    * @param string $val The value of the entityId
-    *
-    * @return TeamsTabConfiguration
-    */
-    public function setEntityId($val)
-    {
-        $this->_propDict["entityId"] = $val;
-        return $this;
-    }
-    /**
     * Gets the contentUrl
     * Url used for rendering tab contents in Teams. Required.
     *
-    * @return string The contentUrl
+    * @return string|null The contentUrl
     */
     public function getContentUrl()
     {
@@ -82,10 +52,38 @@ class TeamsTabConfiguration extends Entity
         return $this;
     }
     /**
+    * Gets the entityId
+    * Identifier for the entity hosted by the tab provider.
+    *
+    * @return string|null The entityId
+    */
+    public function getEntityId()
+    {
+        if (array_key_exists("entityId", $this->_propDict)) {
+            return $this->_propDict["entityId"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the entityId
+    * Identifier for the entity hosted by the tab provider.
+    *
+    * @param string $val The value of the entityId
+    *
+    * @return TeamsTabConfiguration
+    */
+    public function setEntityId($val)
+    {
+        $this->_propDict["entityId"] = $val;
+        return $this;
+    }
+    /**
     * Gets the removeUrl
     * Url called by Teams client when a Tab is removed using the Teams Client.
     *
-    * @return string The removeUrl
+    * @return string|null The removeUrl
     */
     public function getRemoveUrl()
     {
@@ -113,7 +111,7 @@ class TeamsTabConfiguration extends Entity
     * Gets the websiteUrl
     * Url for showing tab contents outside of Teams.
     *
-    * @return string The websiteUrl
+    * @return string|null The websiteUrl
     */
     public function getWebsiteUrl()
     {

@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -21,10 +20,9 @@ use Microsoft\Graph\Core\Enum;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class PolicyPlatformType extends Enum
 {
@@ -32,11 +30,11 @@ class PolicyPlatformType extends Enum
     * The Enum PolicyPlatformType
     */
     const ANDROID = "android";
+    const ANDROID_FOR_WORK = "androidForWork";
     const I_OS = "iOS";
     const MAC_OS = "macOS";
     const WINDOWS_PHONE81 = "windowsPhone81";
     const WINDOWS81_AND_LATER = "windows81AndLater";
     const WINDOWS10_AND_LATER = "windows10AndLater";
-    const ANDROID_WORK_PROFILE = "androidWorkProfile";
     const ALL = "all";
 }

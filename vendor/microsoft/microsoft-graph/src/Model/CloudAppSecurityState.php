@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class CloudAppSecurityState extends Entity
 {
@@ -29,7 +27,7 @@ class CloudAppSecurityState extends Entity
     * Gets the destinationServiceIp
     * Destination IP Address of the connection to the cloud application/service.
     *
-    * @return string The destinationServiceIp
+    * @return string|null The destinationServiceIp
     */
     public function getDestinationServiceIp()
     {
@@ -57,7 +55,7 @@ class CloudAppSecurityState extends Entity
     * Gets the destinationServiceName
     * Cloud application/service name (for example 'Salesforce', 'DropBox', etc.).
     *
-    * @return string The destinationServiceName
+    * @return string|null The destinationServiceName
     */
     public function getDestinationServiceName()
     {
@@ -85,7 +83,7 @@ class CloudAppSecurityState extends Entity
     * Gets the riskScore
     * Provider-generated/calculated risk score of the Cloud Application/Service. Recommended value range of 0-1, which equates to a percentage.
     *
-    * @return string The riskScore
+    * @return string|null The riskScore
     */
     public function getRiskScore()
     {

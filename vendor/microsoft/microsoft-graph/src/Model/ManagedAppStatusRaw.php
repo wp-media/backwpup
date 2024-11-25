@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class ManagedAppStatusRaw extends ManagedAppStatus
 {
@@ -30,7 +28,7 @@ class ManagedAppStatusRaw extends ManagedAppStatus
     * Gets the content
     * Status report content.
     *
-    * @return string The content
+    * @return string|null The content
     */
     public function getContent()
     {
@@ -40,7 +38,7 @@ class ManagedAppStatusRaw extends ManagedAppStatus
             return null;
         }
     }
-    
+
     /**
     * Sets the content
     * Status report content.
@@ -54,5 +52,5 @@ class ManagedAppStatusRaw extends ManagedAppStatus
         $this->_propDict["content"] = $val;
         return $this;
     }
-    
+
 }

@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,24 +17,51 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class LocationConstraint extends Entity
 {
+    /**
+    * Gets the isRequired
+    * The client requests the service to include in the response a meeting location for the meeting. If this is true and all the resources are busy, findMeetingTimes won't return any meeting time suggestions. If this is false and all the resources are busy, findMeetingTimes would still look for meeting times without locations.
+    *
+    * @return bool|null The isRequired
+    */
+    public function getIsRequired()
+    {
+        if (array_key_exists("isRequired", $this->_propDict)) {
+            return $this->_propDict["isRequired"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the isRequired
+    * The client requests the service to include in the response a meeting location for the meeting. If this is true and all the resources are busy, findMeetingTimes won't return any meeting time suggestions. If this is false and all the resources are busy, findMeetingTimes would still look for meeting times without locations.
+    *
+    * @param bool $val The value of the isRequired
+    *
+    * @return LocationConstraint
+    */
+    public function setIsRequired($val)
+    {
+        $this->_propDict["isRequired"] = $val;
+        return $this;
+    }
 
     /**
     * Gets the locations
     * Constraint information for one or more locations that the client requests for the meeting.
     *
-    * @return LocationConstraintItem The locations
+    * @return LocationConstraintItem|null The locations
     */
     public function getLocations()
     {
         if (array_key_exists("locations", $this->_propDict)) {
-            if (is_a($this->_propDict["locations"], "Microsoft\Graph\Model\LocationConstraintItem")) {
+            if (is_a($this->_propDict["locations"], "\Microsoft\Graph\Model\LocationConstraintItem") || is_null($this->_propDict["locations"])) {
                 return $this->_propDict["locations"];
             } else {
                 $this->_propDict["locations"] = new LocationConstraintItem($this->_propDict["locations"]);
@@ -59,38 +85,10 @@ class LocationConstraint extends Entity
          return $this;
     }
     /**
-    * Gets the isRequired
-    * The client requests the service to include in the response a meeting location for the meeting. If this is true and all the resources are busy, findMeetingTimes will not return any meeting time suggestions. If this is false and all the resources are busy, findMeetingTimes would still look for meeting times without locations.
-    *
-    * @return bool The isRequired
-    */
-    public function getIsRequired()
-    {
-        if (array_key_exists("isRequired", $this->_propDict)) {
-            return $this->_propDict["isRequired"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the isRequired
-    * The client requests the service to include in the response a meeting location for the meeting. If this is true and all the resources are busy, findMeetingTimes will not return any meeting time suggestions. If this is false and all the resources are busy, findMeetingTimes would still look for meeting times without locations.
-    *
-    * @param bool $val The value of the isRequired
-    *
-    * @return LocationConstraint
-    */
-    public function setIsRequired($val)
-    {
-        $this->_propDict["isRequired"] = $val;
-        return $this;
-    }
-    /**
     * Gets the suggestLocation
     * The client requests the service to suggest one or more meeting locations.
     *
-    * @return bool The suggestLocation
+    * @return bool|null The suggestLocation
     */
     public function getSuggestLocation()
     {

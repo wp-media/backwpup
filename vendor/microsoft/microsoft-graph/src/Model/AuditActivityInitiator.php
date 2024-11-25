@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,57 +17,23 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class AuditActivityInitiator extends Entity
 {
 
     /**
-    * Gets the user
-    * If the resource initiating the activity is a user, this property Indicates all the user related information like userId, Name, UserPrinicpalName.
-    *
-    * @return UserIdentity The user
-    */
-    public function getUser()
-    {
-        if (array_key_exists("user", $this->_propDict)) {
-            if (is_a($this->_propDict["user"], "Microsoft\Graph\Model\UserIdentity")) {
-                return $this->_propDict["user"];
-            } else {
-                $this->_propDict["user"] = new UserIdentity($this->_propDict["user"]);
-                return $this->_propDict["user"];
-            }
-        }
-        return null;
-    }
-
-    /**
-    * Sets the user
-    * If the resource initiating the activity is a user, this property Indicates all the user related information like userId, Name, UserPrinicpalName.
-    *
-    * @param UserIdentity $val The value to assign to the user
-    *
-    * @return AuditActivityInitiator The AuditActivityInitiator
-    */
-    public function setUser($val)
-    {
-        $this->_propDict["user"] = $val;
-         return $this;
-    }
-
-    /**
     * Gets the app
     * If the resource initiating the activity is an app, this property indicates all the app related information like appId, Name, servicePrincipalId, Name.
     *
-    * @return AppIdentity The app
+    * @return AppIdentity|null The app
     */
     public function getApp()
     {
         if (array_key_exists("app", $this->_propDict)) {
-            if (is_a($this->_propDict["app"], "Microsoft\Graph\Model\AppIdentity")) {
+            if (is_a($this->_propDict["app"], "\Microsoft\Graph\Model\AppIdentity") || is_null($this->_propDict["app"])) {
                 return $this->_propDict["app"];
             } else {
                 $this->_propDict["app"] = new AppIdentity($this->_propDict["app"]);
@@ -89,6 +54,39 @@ class AuditActivityInitiator extends Entity
     public function setApp($val)
     {
         $this->_propDict["app"] = $val;
+         return $this;
+    }
+
+    /**
+    * Gets the user
+    * If the resource initiating the activity is a user, this property Indicates all the user related information like userId, Name, UserPrinicpalName.
+    *
+    * @return UserIdentity|null The user
+    */
+    public function getUser()
+    {
+        if (array_key_exists("user", $this->_propDict)) {
+            if (is_a($this->_propDict["user"], "\Microsoft\Graph\Model\UserIdentity") || is_null($this->_propDict["user"])) {
+                return $this->_propDict["user"];
+            } else {
+                $this->_propDict["user"] = new UserIdentity($this->_propDict["user"]);
+                return $this->_propDict["user"];
+            }
+        }
+        return null;
+    }
+
+    /**
+    * Sets the user
+    * If the resource initiating the activity is a user, this property Indicates all the user related information like userId, Name, UserPrinicpalName.
+    *
+    * @param UserIdentity $val The value to assign to the user
+    *
+    * @return AuditActivityInitiator The AuditActivityInitiator
+    */
+    public function setUser($val)
+    {
+        $this->_propDict["user"] = $val;
          return $this;
     }
 }

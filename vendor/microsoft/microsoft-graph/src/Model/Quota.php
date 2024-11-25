@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class Quota extends Entity
 {
@@ -29,7 +27,7 @@ class Quota extends Entity
     * Gets the deleted
     * Total space consumed by files in the recycle bin, in bytes. Read-only.
     *
-    * @return int The deleted
+    * @return int|null The deleted
     */
     public function getDeleted()
     {
@@ -57,7 +55,7 @@ class Quota extends Entity
     * Gets the remaining
     * Total space remaining before reaching the quota limit, in bytes. Read-only.
     *
-    * @return int The remaining
+    * @return int|null The remaining
     */
     public function getRemaining()
     {
@@ -85,7 +83,7 @@ class Quota extends Entity
     * Gets the state
     * Enumeration value that indicates the state of the storage space. Read-only.
     *
-    * @return string The state
+    * @return string|null The state
     */
     public function getState()
     {
@@ -109,11 +107,44 @@ class Quota extends Entity
         $this->_propDict["state"] = $val;
         return $this;
     }
+
+    /**
+    * Gets the storagePlanInformation
+    * Information about the drive's storage quota plans. Only in Personal OneDrive.
+    *
+    * @return StoragePlanInformation|null The storagePlanInformation
+    */
+    public function getStoragePlanInformation()
+    {
+        if (array_key_exists("storagePlanInformation", $this->_propDict)) {
+            if (is_a($this->_propDict["storagePlanInformation"], "\Microsoft\Graph\Model\StoragePlanInformation") || is_null($this->_propDict["storagePlanInformation"])) {
+                return $this->_propDict["storagePlanInformation"];
+            } else {
+                $this->_propDict["storagePlanInformation"] = new StoragePlanInformation($this->_propDict["storagePlanInformation"]);
+                return $this->_propDict["storagePlanInformation"];
+            }
+        }
+        return null;
+    }
+
+    /**
+    * Sets the storagePlanInformation
+    * Information about the drive's storage quota plans. Only in Personal OneDrive.
+    *
+    * @param StoragePlanInformation $val The value to assign to the storagePlanInformation
+    *
+    * @return Quota The Quota
+    */
+    public function setStoragePlanInformation($val)
+    {
+        $this->_propDict["storagePlanInformation"] = $val;
+         return $this;
+    }
     /**
     * Gets the total
     * Total allowed storage space, in bytes. Read-only.
     *
-    * @return int The total
+    * @return int|null The total
     */
     public function getTotal()
     {
@@ -141,7 +172,7 @@ class Quota extends Entity
     * Gets the used
     * Total space used, in bytes. Read-only.
     *
-    * @return int The used
+    * @return int|null The used
     */
     public function getUsed()
     {

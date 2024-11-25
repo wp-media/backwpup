@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class MobileLobApp extends MobileApp
 {
@@ -30,7 +28,7 @@ class MobileLobApp extends MobileApp
     * Gets the committedContentVersion
     * The internal committed content version.
     *
-    * @return string The committedContentVersion
+    * @return string|null The committedContentVersion
     */
     public function getCommittedContentVersion()
     {
@@ -40,7 +38,7 @@ class MobileLobApp extends MobileApp
             return null;
         }
     }
-    
+
     /**
     * Sets the committedContentVersion
     * The internal committed content version.
@@ -54,12 +52,12 @@ class MobileLobApp extends MobileApp
         $this->_propDict["committedContentVersion"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the fileName
     * The name of the main Lob application file.
     *
-    * @return string The fileName
+    * @return string|null The fileName
     */
     public function getFileName()
     {
@@ -69,7 +67,7 @@ class MobileLobApp extends MobileApp
             return null;
         }
     }
-    
+
     /**
     * Sets the fileName
     * The name of the main Lob application file.
@@ -83,12 +81,12 @@ class MobileLobApp extends MobileApp
         $this->_propDict["fileName"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the size
     * The total size, including all uploaded files.
     *
-    * @return int The size
+    * @return int|null The size
     */
     public function getSize()
     {
@@ -98,7 +96,7 @@ class MobileLobApp extends MobileApp
             return null;
         }
     }
-    
+
     /**
     * Sets the size
     * The total size, including all uploaded files.
@@ -112,13 +110,13 @@ class MobileLobApp extends MobileApp
         $this->_propDict["size"] = intval($val);
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the contentVersions
     * The list of content versions for this app.
      *
-     * @return array The contentVersions
+     * @return array|null The contentVersions
      */
     public function getContentVersions()
     {
@@ -128,19 +126,19 @@ class MobileLobApp extends MobileApp
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the contentVersions
     * The list of content versions for this app.
     *
-    * @param MobileAppContent $val The contentVersions
+    * @param MobileAppContent[] $val The contentVersions
     *
     * @return MobileLobApp
     */
     public function setContentVersions($val)
     {
-		$this->_propDict["contentVersions"] = $val;
+        $this->_propDict["contentVersions"] = $val;
         return $this;
     }
-    
+
 }

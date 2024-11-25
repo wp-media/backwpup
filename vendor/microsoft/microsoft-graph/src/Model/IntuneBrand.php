@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,102 +17,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class IntuneBrand extends Entity
 {
     /**
-    * Gets the displayName
-    * Company/organization name that is displayed to end users.
-    *
-    * @return string The displayName
-    */
-    public function getDisplayName()
-    {
-        if (array_key_exists("displayName", $this->_propDict)) {
-            return $this->_propDict["displayName"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the displayName
-    * Company/organization name that is displayed to end users.
-    *
-    * @param string $val The value of the displayName
-    *
-    * @return IntuneBrand
-    */
-    public function setDisplayName($val)
-    {
-        $this->_propDict["displayName"] = $val;
-        return $this;
-    }
-    /**
-    * Gets the contactITName
-    * Name of the person/organization responsible for IT support.
-    *
-    * @return string The contactITName
-    */
-    public function getContactITName()
-    {
-        if (array_key_exists("contactITName", $this->_propDict)) {
-            return $this->_propDict["contactITName"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the contactITName
-    * Name of the person/organization responsible for IT support.
-    *
-    * @param string $val The value of the contactITName
-    *
-    * @return IntuneBrand
-    */
-    public function setContactITName($val)
-    {
-        $this->_propDict["contactITName"] = $val;
-        return $this;
-    }
-    /**
-    * Gets the contactITPhoneNumber
-    * Phone number of the person/organization responsible for IT support.
-    *
-    * @return string The contactITPhoneNumber
-    */
-    public function getContactITPhoneNumber()
-    {
-        if (array_key_exists("contactITPhoneNumber", $this->_propDict)) {
-            return $this->_propDict["contactITPhoneNumber"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the contactITPhoneNumber
-    * Phone number of the person/organization responsible for IT support.
-    *
-    * @param string $val The value of the contactITPhoneNumber
-    *
-    * @return IntuneBrand
-    */
-    public function setContactITPhoneNumber($val)
-    {
-        $this->_propDict["contactITPhoneNumber"] = $val;
-        return $this;
-    }
-    /**
     * Gets the contactITEmailAddress
     * Email address of the person/organization responsible for IT support.
     *
-    * @return string The contactITEmailAddress
+    * @return string|null The contactITEmailAddress
     */
     public function getContactITEmailAddress()
     {
@@ -138,10 +52,38 @@ class IntuneBrand extends Entity
         return $this;
     }
     /**
+    * Gets the contactITName
+    * Name of the person/organization responsible for IT support.
+    *
+    * @return string|null The contactITName
+    */
+    public function getContactITName()
+    {
+        if (array_key_exists("contactITName", $this->_propDict)) {
+            return $this->_propDict["contactITName"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the contactITName
+    * Name of the person/organization responsible for IT support.
+    *
+    * @param string $val The value of the contactITName
+    *
+    * @return IntuneBrand
+    */
+    public function setContactITName($val)
+    {
+        $this->_propDict["contactITName"] = $val;
+        return $this;
+    }
+    /**
     * Gets the contactITNotes
     * Text comments regarding the person/organization responsible for IT support.
     *
-    * @return string The contactITNotes
+    * @return string|null The contactITNotes
     */
     public function getContactITNotes()
     {
@@ -166,38 +108,160 @@ class IntuneBrand extends Entity
         return $this;
     }
     /**
-    * Gets the privacyUrl
-    * URL to the company/organization’s privacy policy.
+    * Gets the contactITPhoneNumber
+    * Phone number of the person/organization responsible for IT support.
     *
-    * @return string The privacyUrl
+    * @return string|null The contactITPhoneNumber
     */
-    public function getPrivacyUrl()
+    public function getContactITPhoneNumber()
     {
-        if (array_key_exists("privacyUrl", $this->_propDict)) {
-            return $this->_propDict["privacyUrl"];
+        if (array_key_exists("contactITPhoneNumber", $this->_propDict)) {
+            return $this->_propDict["contactITPhoneNumber"];
         } else {
             return null;
         }
     }
 
     /**
-    * Sets the privacyUrl
-    * URL to the company/organization’s privacy policy.
+    * Sets the contactITPhoneNumber
+    * Phone number of the person/organization responsible for IT support.
     *
-    * @param string $val The value of the privacyUrl
+    * @param string $val The value of the contactITPhoneNumber
     *
     * @return IntuneBrand
     */
-    public function setPrivacyUrl($val)
+    public function setContactITPhoneNumber($val)
     {
-        $this->_propDict["privacyUrl"] = $val;
+        $this->_propDict["contactITPhoneNumber"] = $val;
+        return $this;
+    }
+
+    /**
+    * Gets the darkBackgroundLogo
+    * Logo image displayed in Company Portal apps which have a dark background behind the logo.
+    *
+    * @return MimeContent|null The darkBackgroundLogo
+    */
+    public function getDarkBackgroundLogo()
+    {
+        if (array_key_exists("darkBackgroundLogo", $this->_propDict)) {
+            if (is_a($this->_propDict["darkBackgroundLogo"], "\Microsoft\Graph\Model\MimeContent") || is_null($this->_propDict["darkBackgroundLogo"])) {
+                return $this->_propDict["darkBackgroundLogo"];
+            } else {
+                $this->_propDict["darkBackgroundLogo"] = new MimeContent($this->_propDict["darkBackgroundLogo"]);
+                return $this->_propDict["darkBackgroundLogo"];
+            }
+        }
+        return null;
+    }
+
+    /**
+    * Sets the darkBackgroundLogo
+    * Logo image displayed in Company Portal apps which have a dark background behind the logo.
+    *
+    * @param MimeContent $val The value to assign to the darkBackgroundLogo
+    *
+    * @return IntuneBrand The IntuneBrand
+    */
+    public function setDarkBackgroundLogo($val)
+    {
+        $this->_propDict["darkBackgroundLogo"] = $val;
+         return $this;
+    }
+    /**
+    * Gets the displayName
+    * Company/organization name that is displayed to end users.
+    *
+    * @return string|null The displayName
+    */
+    public function getDisplayName()
+    {
+        if (array_key_exists("displayName", $this->_propDict)) {
+            return $this->_propDict["displayName"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the displayName
+    * Company/organization name that is displayed to end users.
+    *
+    * @param string $val The value of the displayName
+    *
+    * @return IntuneBrand
+    */
+    public function setDisplayName($val)
+    {
+        $this->_propDict["displayName"] = $val;
+        return $this;
+    }
+
+    /**
+    * Gets the lightBackgroundLogo
+    * Logo image displayed in Company Portal apps which have a light background behind the logo.
+    *
+    * @return MimeContent|null The lightBackgroundLogo
+    */
+    public function getLightBackgroundLogo()
+    {
+        if (array_key_exists("lightBackgroundLogo", $this->_propDict)) {
+            if (is_a($this->_propDict["lightBackgroundLogo"], "\Microsoft\Graph\Model\MimeContent") || is_null($this->_propDict["lightBackgroundLogo"])) {
+                return $this->_propDict["lightBackgroundLogo"];
+            } else {
+                $this->_propDict["lightBackgroundLogo"] = new MimeContent($this->_propDict["lightBackgroundLogo"]);
+                return $this->_propDict["lightBackgroundLogo"];
+            }
+        }
+        return null;
+    }
+
+    /**
+    * Sets the lightBackgroundLogo
+    * Logo image displayed in Company Portal apps which have a light background behind the logo.
+    *
+    * @param MimeContent $val The value to assign to the lightBackgroundLogo
+    *
+    * @return IntuneBrand The IntuneBrand
+    */
+    public function setLightBackgroundLogo($val)
+    {
+        $this->_propDict["lightBackgroundLogo"] = $val;
+         return $this;
+    }
+    /**
+    * Gets the onlineSupportSiteName
+    * Display name of the company/organization’s IT helpdesk site.
+    *
+    * @return string|null The onlineSupportSiteName
+    */
+    public function getOnlineSupportSiteName()
+    {
+        if (array_key_exists("onlineSupportSiteName", $this->_propDict)) {
+            return $this->_propDict["onlineSupportSiteName"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the onlineSupportSiteName
+    * Display name of the company/organization’s IT helpdesk site.
+    *
+    * @param string $val The value of the onlineSupportSiteName
+    *
+    * @return IntuneBrand
+    */
+    public function setOnlineSupportSiteName($val)
+    {
+        $this->_propDict["onlineSupportSiteName"] = $val;
         return $this;
     }
     /**
     * Gets the onlineSupportSiteUrl
     * URL to the company/organization’s IT helpdesk site.
     *
-    * @return string The onlineSupportSiteUrl
+    * @return string|null The onlineSupportSiteUrl
     */
     public function getOnlineSupportSiteUrl()
     {
@@ -222,71 +286,66 @@ class IntuneBrand extends Entity
         return $this;
     }
     /**
-    * Gets the onlineSupportSiteName
-    * Display name of the company/organization’s IT helpdesk site.
+    * Gets the privacyUrl
+    * URL to the company/organization’s privacy policy.
     *
-    * @return string The onlineSupportSiteName
+    * @return string|null The privacyUrl
     */
-    public function getOnlineSupportSiteName()
+    public function getPrivacyUrl()
     {
-        if (array_key_exists("onlineSupportSiteName", $this->_propDict)) {
-            return $this->_propDict["onlineSupportSiteName"];
+        if (array_key_exists("privacyUrl", $this->_propDict)) {
+            return $this->_propDict["privacyUrl"];
         } else {
             return null;
         }
     }
 
     /**
-    * Sets the onlineSupportSiteName
-    * Display name of the company/organization’s IT helpdesk site.
+    * Sets the privacyUrl
+    * URL to the company/organization’s privacy policy.
     *
-    * @param string $val The value of the onlineSupportSiteName
+    * @param string $val The value of the privacyUrl
     *
     * @return IntuneBrand
     */
-    public function setOnlineSupportSiteName($val)
+    public function setPrivacyUrl($val)
     {
-        $this->_propDict["onlineSupportSiteName"] = $val;
+        $this->_propDict["privacyUrl"] = $val;
         return $this;
     }
-
     /**
-    * Gets the themeColor
-    * Primary theme color used in the Company Portal applications and web portal.
+    * Gets the showDisplayNameNextToLogo
+    * Boolean that represents whether the administrator-supplied display name will be shown next to the logo image.
     *
-    * @return RgbColor The themeColor
+    * @return bool|null The showDisplayNameNextToLogo
     */
-    public function getThemeColor()
+    public function getShowDisplayNameNextToLogo()
     {
-        if (array_key_exists("themeColor", $this->_propDict)) {
-            if (is_a($this->_propDict["themeColor"], "Microsoft\Graph\Model\RgbColor")) {
-                return $this->_propDict["themeColor"];
-            } else {
-                $this->_propDict["themeColor"] = new RgbColor($this->_propDict["themeColor"]);
-                return $this->_propDict["themeColor"];
-            }
+        if (array_key_exists("showDisplayNameNextToLogo", $this->_propDict)) {
+            return $this->_propDict["showDisplayNameNextToLogo"];
+        } else {
+            return null;
         }
-        return null;
     }
 
     /**
-    * Sets the themeColor
-    * Primary theme color used in the Company Portal applications and web portal.
+    * Sets the showDisplayNameNextToLogo
+    * Boolean that represents whether the administrator-supplied display name will be shown next to the logo image.
     *
-    * @param RgbColor $val The value to assign to the themeColor
+    * @param bool $val The value of the showDisplayNameNextToLogo
     *
-    * @return IntuneBrand The IntuneBrand
+    * @return IntuneBrand
     */
-    public function setThemeColor($val)
+    public function setShowDisplayNameNextToLogo($val)
     {
-        $this->_propDict["themeColor"] = $val;
-         return $this;
+        $this->_propDict["showDisplayNameNextToLogo"] = $val;
+        return $this;
     }
     /**
     * Gets the showLogo
     * Boolean that represents whether the administrator-supplied logo images are shown or not shown.
     *
-    * @return bool The showLogo
+    * @return bool|null The showLogo
     */
     public function getShowLogo()
     {
@@ -310,77 +369,11 @@ class IntuneBrand extends Entity
         $this->_propDict["showLogo"] = $val;
         return $this;
     }
-
-    /**
-    * Gets the lightBackgroundLogo
-    * Logo image displayed in Company Portal apps which have a light background behind the logo.
-    *
-    * @return MimeContent The lightBackgroundLogo
-    */
-    public function getLightBackgroundLogo()
-    {
-        if (array_key_exists("lightBackgroundLogo", $this->_propDict)) {
-            if (is_a($this->_propDict["lightBackgroundLogo"], "Microsoft\Graph\Model\MimeContent")) {
-                return $this->_propDict["lightBackgroundLogo"];
-            } else {
-                $this->_propDict["lightBackgroundLogo"] = new MimeContent($this->_propDict["lightBackgroundLogo"]);
-                return $this->_propDict["lightBackgroundLogo"];
-            }
-        }
-        return null;
-    }
-
-    /**
-    * Sets the lightBackgroundLogo
-    * Logo image displayed in Company Portal apps which have a light background behind the logo.
-    *
-    * @param MimeContent $val The value to assign to the lightBackgroundLogo
-    *
-    * @return IntuneBrand The IntuneBrand
-    */
-    public function setLightBackgroundLogo($val)
-    {
-        $this->_propDict["lightBackgroundLogo"] = $val;
-         return $this;
-    }
-
-    /**
-    * Gets the darkBackgroundLogo
-    * Logo image displayed in Company Portal apps which have a dark background behind the logo.
-    *
-    * @return MimeContent The darkBackgroundLogo
-    */
-    public function getDarkBackgroundLogo()
-    {
-        if (array_key_exists("darkBackgroundLogo", $this->_propDict)) {
-            if (is_a($this->_propDict["darkBackgroundLogo"], "Microsoft\Graph\Model\MimeContent")) {
-                return $this->_propDict["darkBackgroundLogo"];
-            } else {
-                $this->_propDict["darkBackgroundLogo"] = new MimeContent($this->_propDict["darkBackgroundLogo"]);
-                return $this->_propDict["darkBackgroundLogo"];
-            }
-        }
-        return null;
-    }
-
-    /**
-    * Sets the darkBackgroundLogo
-    * Logo image displayed in Company Portal apps which have a dark background behind the logo.
-    *
-    * @param MimeContent $val The value to assign to the darkBackgroundLogo
-    *
-    * @return IntuneBrand The IntuneBrand
-    */
-    public function setDarkBackgroundLogo($val)
-    {
-        $this->_propDict["darkBackgroundLogo"] = $val;
-         return $this;
-    }
     /**
     * Gets the showNameNextToLogo
     * Boolean that represents whether the administrator-supplied display name will be shown next to the logo image.
     *
-    * @return bool The showNameNextToLogo
+    * @return bool|null The showNameNextToLogo
     */
     public function getShowNameNextToLogo()
     {
@@ -404,32 +397,37 @@ class IntuneBrand extends Entity
         $this->_propDict["showNameNextToLogo"] = $val;
         return $this;
     }
+
     /**
-    * Gets the showDisplayNameNextToLogo
-    * Boolean that represents whether the administrator-supplied display name will be shown next to the logo image.
+    * Gets the themeColor
+    * Primary theme color used in the Company Portal applications and web portal.
     *
-    * @return bool The showDisplayNameNextToLogo
+    * @return RgbColor|null The themeColor
     */
-    public function getShowDisplayNameNextToLogo()
+    public function getThemeColor()
     {
-        if (array_key_exists("showDisplayNameNextToLogo", $this->_propDict)) {
-            return $this->_propDict["showDisplayNameNextToLogo"];
-        } else {
-            return null;
+        if (array_key_exists("themeColor", $this->_propDict)) {
+            if (is_a($this->_propDict["themeColor"], "\Microsoft\Graph\Model\RgbColor") || is_null($this->_propDict["themeColor"])) {
+                return $this->_propDict["themeColor"];
+            } else {
+                $this->_propDict["themeColor"] = new RgbColor($this->_propDict["themeColor"]);
+                return $this->_propDict["themeColor"];
+            }
         }
+        return null;
     }
 
     /**
-    * Sets the showDisplayNameNextToLogo
-    * Boolean that represents whether the administrator-supplied display name will be shown next to the logo image.
+    * Sets the themeColor
+    * Primary theme color used in the Company Portal applications and web portal.
     *
-    * @param bool $val The value of the showDisplayNameNextToLogo
+    * @param RgbColor $val The value to assign to the themeColor
     *
-    * @return IntuneBrand
+    * @return IntuneBrand The IntuneBrand
     */
-    public function setShowDisplayNameNextToLogo($val)
+    public function setThemeColor($val)
     {
-        $this->_propDict["showDisplayNameNextToLogo"] = $val;
-        return $this;
+        $this->_propDict["themeColor"] = $val;
+         return $this;
     }
 }

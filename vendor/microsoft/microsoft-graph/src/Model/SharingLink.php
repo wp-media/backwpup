@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class SharingLink extends Entity
 {
@@ -30,12 +28,12 @@ class SharingLink extends Entity
     * Gets the application
     * The app the link is associated with.
     *
-    * @return Identity The application
+    * @return Identity|null The application
     */
     public function getApplication()
     {
         if (array_key_exists("application", $this->_propDict)) {
-            if (is_a($this->_propDict["application"], "Microsoft\Graph\Model\Identity")) {
+            if (is_a($this->_propDict["application"], "\Microsoft\Graph\Model\Identity") || is_null($this->_propDict["application"])) {
                 return $this->_propDict["application"];
             } else {
                 $this->_propDict["application"] = new Identity($this->_propDict["application"]);
@@ -59,10 +57,38 @@ class SharingLink extends Entity
          return $this;
     }
     /**
+    * Gets the preventsDownload
+    * If true then the user can only use this link to view the item on the web, and cannot use it to download the contents of the item. Only for OneDrive for Business and SharePoint.
+    *
+    * @return bool|null The preventsDownload
+    */
+    public function getPreventsDownload()
+    {
+        if (array_key_exists("preventsDownload", $this->_propDict)) {
+            return $this->_propDict["preventsDownload"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the preventsDownload
+    * If true then the user can only use this link to view the item on the web, and cannot use it to download the contents of the item. Only for OneDrive for Business and SharePoint.
+    *
+    * @param bool $val The value of the preventsDownload
+    *
+    * @return SharingLink
+    */
+    public function setPreventsDownload($val)
+    {
+        $this->_propDict["preventsDownload"] = $val;
+        return $this;
+    }
+    /**
     * Gets the scope
     * The scope of the link represented by this permission. Value anonymous indicates the link is usable by anyone, organization indicates the link is only usable for users signed into the same tenant.
     *
-    * @return string The scope
+    * @return string|null The scope
     */
     public function getScope()
     {
@@ -90,7 +116,7 @@ class SharingLink extends Entity
     * Gets the type
     * The type of the link created.
     *
-    * @return string The type
+    * @return string|null The type
     */
     public function getType()
     {
@@ -115,10 +141,38 @@ class SharingLink extends Entity
         return $this;
     }
     /**
+    * Gets the webHtml
+    * For embed links, this property contains the HTML code for an &amp;lt;iframe&amp;gt; element that will embed the item in a webpage.
+    *
+    * @return string|null The webHtml
+    */
+    public function getWebHtml()
+    {
+        if (array_key_exists("webHtml", $this->_propDict)) {
+            return $this->_propDict["webHtml"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the webHtml
+    * For embed links, this property contains the HTML code for an &amp;lt;iframe&amp;gt; element that will embed the item in a webpage.
+    *
+    * @param string $val The value of the webHtml
+    *
+    * @return SharingLink
+    */
+    public function setWebHtml($val)
+    {
+        $this->_propDict["webHtml"] = $val;
+        return $this;
+    }
+    /**
     * Gets the webUrl
     * A URL that opens the item in the browser on the OneDrive website.
     *
-    * @return string The webUrl
+    * @return string|null The webUrl
     */
     public function getWebUrl()
     {

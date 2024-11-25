@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,18 +17,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class CalculatedColumn extends Entity
 {
     /**
     * Gets the format
-    * For dateTime output types, the format of the value. Must be one of dateOnly or dateTime.
+    * For dateTime output types, the format of the value. Possible values are: dateOnly or dateTime.
     *
-    * @return string The format
+    * @return string|null The format
     */
     public function getFormat()
     {
@@ -42,7 +40,7 @@ class CalculatedColumn extends Entity
 
     /**
     * Sets the format
-    * For dateTime output types, the format of the value. Must be one of dateOnly or dateTime.
+    * For dateTime output types, the format of the value. Possible values are: dateOnly or dateTime.
     *
     * @param string $val The value of the format
     *
@@ -57,7 +55,7 @@ class CalculatedColumn extends Entity
     * Gets the formula
     * The formula used to compute the value for this column.
     *
-    * @return string The formula
+    * @return string|null The formula
     */
     public function getFormula()
     {
@@ -83,9 +81,9 @@ class CalculatedColumn extends Entity
     }
     /**
     * Gets the outputType
-    * The output type used to format values in this column. Must be one of boolean, currency, dateTime, number, or text.
+    * The output type used to format values in this column. Possible values are: boolean, currency, dateTime, number, or text.
     *
-    * @return string The outputType
+    * @return string|null The outputType
     */
     public function getOutputType()
     {
@@ -98,7 +96,7 @@ class CalculatedColumn extends Entity
 
     /**
     * Sets the outputType
-    * The output type used to format values in this column. Must be one of boolean, currency, dateTime, number, or text.
+    * The output type used to format values in this column. Possible values are: boolean, currency, dateTime, number, or text.
     *
     * @param string $val The value of the outputType
     *

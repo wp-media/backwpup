@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class TimeConstraint extends Entity
 {
@@ -30,12 +28,12 @@ class TimeConstraint extends Entity
     * Gets the activityDomain
     * The nature of the activity, optional. The possible values are: work, personal, unrestricted, or unknown.
     *
-    * @return ActivityDomain The activityDomain
+    * @return ActivityDomain|null The activityDomain
     */
     public function getActivityDomain()
     {
         if (array_key_exists("activityDomain", $this->_propDict)) {
-            if (is_a($this->_propDict["activityDomain"], "Microsoft\Graph\Model\ActivityDomain")) {
+            if (is_a($this->_propDict["activityDomain"], "\Microsoft\Graph\Model\ActivityDomain") || is_null($this->_propDict["activityDomain"])) {
                 return $this->_propDict["activityDomain"];
             } else {
                 $this->_propDict["activityDomain"] = new ActivityDomain($this->_propDict["activityDomain"]);
@@ -62,12 +60,12 @@ class TimeConstraint extends Entity
     /**
     * Gets the timeSlots
     *
-    * @return TimeSlot The timeSlots
+    * @return TimeSlot|null The timeSlots
     */
     public function getTimeSlots()
     {
         if (array_key_exists("timeSlots", $this->_propDict)) {
-            if (is_a($this->_propDict["timeSlots"], "Microsoft\Graph\Model\TimeSlot")) {
+            if (is_a($this->_propDict["timeSlots"], "\Microsoft\Graph\Model\TimeSlot") || is_null($this->_propDict["timeSlots"])) {
                 return $this->_propDict["timeSlots"];
             } else {
                 $this->_propDict["timeSlots"] = new TimeSlot($this->_propDict["timeSlots"]);

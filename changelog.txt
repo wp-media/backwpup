@@ -1,4 +1,11 @@
 == Changelog ==
+= 4.1.7 =
+Release date: nov 25, 2024
+* Changed : Update dependencies :
+    ** guzzlehttp/guzzle to 7.0
+    ** onedrive-php-sdk to 3.2.0
+    ** microsoft-graph to 1.7.0
+
 = 4.1.6 =
 Release date: oct 15, 2024
 

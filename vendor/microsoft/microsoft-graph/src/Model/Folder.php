@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class Folder extends Entity
 {
@@ -29,7 +27,7 @@ class Folder extends Entity
     * Gets the childCount
     * Number of children contained immediately within this container.
     *
-    * @return int The childCount
+    * @return int|null The childCount
     */
     public function getChildCount()
     {
@@ -58,12 +56,12 @@ class Folder extends Entity
     * Gets the view
     * A collection of properties defining the recommended view for the folder.
     *
-    * @return FolderView The view
+    * @return FolderView|null The view
     */
     public function getView()
     {
         if (array_key_exists("view", $this->_propDict)) {
-            if (is_a($this->_propDict["view"], "Microsoft\Graph\Model\FolderView")) {
+            if (is_a($this->_propDict["view"], "\Microsoft\Graph\Model\FolderView") || is_null($this->_propDict["view"])) {
                 return $this->_propDict["view"];
             } else {
                 $this->_propDict["view"] = new FolderView($this->_propDict["view"]);

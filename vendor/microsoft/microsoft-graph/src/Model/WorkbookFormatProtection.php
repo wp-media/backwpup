@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class WorkbookFormatProtection extends Entity
 {
@@ -30,7 +28,7 @@ class WorkbookFormatProtection extends Entity
     * Gets the formulaHidden
     * Indicates if Excel hides the formula for the cells in the range. A null value indicates that the entire range doesn't have uniform formula hidden setting.
     *
-    * @return bool The formulaHidden
+    * @return bool|null The formulaHidden
     */
     public function getFormulaHidden()
     {
@@ -40,7 +38,7 @@ class WorkbookFormatProtection extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the formulaHidden
     * Indicates if Excel hides the formula for the cells in the range. A null value indicates that the entire range doesn't have uniform formula hidden setting.
@@ -54,12 +52,12 @@ class WorkbookFormatProtection extends Entity
         $this->_propDict["formulaHidden"] = boolval($val);
         return $this;
     }
-    
+
     /**
     * Gets the locked
     * Indicates if Excel locks the cells in the object. A null value indicates that the entire range doesn't have uniform lock setting.
     *
-    * @return bool The locked
+    * @return bool|null The locked
     */
     public function getLocked()
     {
@@ -69,7 +67,7 @@ class WorkbookFormatProtection extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the locked
     * Indicates if Excel locks the cells in the object. A null value indicates that the entire range doesn't have uniform lock setting.
@@ -83,5 +81,5 @@ class WorkbookFormatProtection extends Entity
         $this->_propDict["locked"] = boolval($val);
         return $this;
     }
-    
+
 }

@@ -7,10 +7,12 @@
  * that was distributed with this source code.
  *
  * @author    Christophe Vidal
- * @copyright 2008-2021 Christophe Vidal (http://www.krizalys.com)
+ * @copyright 2008-2023 Christophe Vidal (http://www.krizalys.com)
  * @license   https://opensource.org/licenses/BSD-3-Clause 3-Clause BSD License
  * @link      https://github.com/krizalys/onedrive-php-sdk
  */
+
+declare(strict_types=1);
 
 namespace Krizalys\Onedrive\Proxy;
 
@@ -527,20 +529,6 @@ class DriveItemProxy extends BaseItemProxy
      */
     public function upload($name, $content, array $options = [])
     {
-        if (array_key_exists('contentType', $options)) {
-            $message = 'The \'contentType\' option is deprecated and will be'
-                . ' removed in version 3; omit this option';
-
-            @trigger_error($message, E_USER_DEPRECATED);
-        }
-
-        if (array_key_exists('Content-Type', $options)) {
-            $message = 'The \'Content-Type\' option is deprecated and will be'
-                . ' removed in version 3; omit this option';
-
-            @trigger_error($message, E_USER_DEPRECATED);
-        }
-
         $opDef = $this->resourceDefinition
             ->getResourceDefinition('content')
             ->getOperationDefinition('put');
@@ -565,7 +553,7 @@ class DriveItemProxy extends BaseItemProxy
 
         $body = $content instanceof Stream ?
             $content
-            : Psr7\stream_for($content);
+            : Psr7\Utils::streamFor($content);
 
         try {
             $response = $this

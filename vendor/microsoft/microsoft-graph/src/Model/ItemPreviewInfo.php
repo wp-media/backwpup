@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,17 +17,16 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class ItemPreviewInfo extends Entity
 {
     /**
     * Gets the getUrl
     *
-    * @return string The getUrl
+    * @return string|null The getUrl
     */
     public function getGetUrl()
     {
@@ -54,7 +52,7 @@ class ItemPreviewInfo extends Entity
     /**
     * Gets the postParameters
     *
-    * @return string The postParameters
+    * @return string|null The postParameters
     */
     public function getPostParameters()
     {
@@ -80,7 +78,7 @@ class ItemPreviewInfo extends Entity
     /**
     * Gets the postUrl
     *
-    * @return string The postUrl
+    * @return string|null The postUrl
     */
     public function getPostUrl()
     {

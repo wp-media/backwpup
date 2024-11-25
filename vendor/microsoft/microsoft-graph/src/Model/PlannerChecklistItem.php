@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class PlannerChecklistItem extends Entity
 {
@@ -29,7 +27,7 @@ class PlannerChecklistItem extends Entity
     * Gets the isChecked
     * Value is true if the item is checked and false otherwise.
     *
-    * @return bool The isChecked
+    * @return bool|null The isChecked
     */
     public function getIsChecked()
     {
@@ -53,73 +51,17 @@ class PlannerChecklistItem extends Entity
         $this->_propDict["isChecked"] = $val;
         return $this;
     }
-    /**
-    * Gets the title
-    * Title of the checklist item
-    *
-    * @return string The title
-    */
-    public function getTitle()
-    {
-        if (array_key_exists("title", $this->_propDict)) {
-            return $this->_propDict["title"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the title
-    * Title of the checklist item
-    *
-    * @param string $val The value of the title
-    *
-    * @return PlannerChecklistItem
-    */
-    public function setTitle($val)
-    {
-        $this->_propDict["title"] = $val;
-        return $this;
-    }
-    /**
-    * Gets the orderHint
-    * Used to set the relative order of items in the checklist. The format is defined as outlined here.
-    *
-    * @return string The orderHint
-    */
-    public function getOrderHint()
-    {
-        if (array_key_exists("orderHint", $this->_propDict)) {
-            return $this->_propDict["orderHint"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the orderHint
-    * Used to set the relative order of items in the checklist. The format is defined as outlined here.
-    *
-    * @param string $val The value of the orderHint
-    *
-    * @return PlannerChecklistItem
-    */
-    public function setOrderHint($val)
-    {
-        $this->_propDict["orderHint"] = $val;
-        return $this;
-    }
 
     /**
     * Gets the lastModifiedBy
     * Read-only. User ID by which this is last modified.
     *
-    * @return IdentitySet The lastModifiedBy
+    * @return IdentitySet|null The lastModifiedBy
     */
     public function getLastModifiedBy()
     {
         if (array_key_exists("lastModifiedBy", $this->_propDict)) {
-            if (is_a($this->_propDict["lastModifiedBy"], "Microsoft\Graph\Model\IdentitySet")) {
+            if (is_a($this->_propDict["lastModifiedBy"], "\Microsoft\Graph\Model\IdentitySet") || is_null($this->_propDict["lastModifiedBy"])) {
                 return $this->_propDict["lastModifiedBy"];
             } else {
                 $this->_propDict["lastModifiedBy"] = new IdentitySet($this->_propDict["lastModifiedBy"]);
@@ -145,14 +87,14 @@ class PlannerChecklistItem extends Entity
 
     /**
     * Gets the lastModifiedDateTime
-    * Read-only. Date and time at which this is last modified. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
+    * Read-only. Date and time at which this is last modified. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
     *
-    * @return \DateTime The lastModifiedDateTime
+    * @return \DateTime|null The lastModifiedDateTime
     */
     public function getLastModifiedDateTime()
     {
         if (array_key_exists("lastModifiedDateTime", $this->_propDict)) {
-            if (is_a($this->_propDict["lastModifiedDateTime"], "Microsoft\Graph\Model\\DateTime")) {
+            if (is_a($this->_propDict["lastModifiedDateTime"], "\DateTime") || is_null($this->_propDict["lastModifiedDateTime"])) {
                 return $this->_propDict["lastModifiedDateTime"];
             } else {
                 $this->_propDict["lastModifiedDateTime"] = new \DateTime($this->_propDict["lastModifiedDateTime"]);
@@ -164,7 +106,7 @@ class PlannerChecklistItem extends Entity
 
     /**
     * Sets the lastModifiedDateTime
-    * Read-only. Date and time at which this is last modified. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
+    * Read-only. Date and time at which this is last modified. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
     *
     * @param \DateTime $val The value to assign to the lastModifiedDateTime
     *
@@ -174,5 +116,61 @@ class PlannerChecklistItem extends Entity
     {
         $this->_propDict["lastModifiedDateTime"] = $val;
          return $this;
+    }
+    /**
+    * Gets the orderHint
+    * Used to set the relative order of items in the checklist. The format is defined as outlined here.
+    *
+    * @return string|null The orderHint
+    */
+    public function getOrderHint()
+    {
+        if (array_key_exists("orderHint", $this->_propDict)) {
+            return $this->_propDict["orderHint"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the orderHint
+    * Used to set the relative order of items in the checklist. The format is defined as outlined here.
+    *
+    * @param string $val The value of the orderHint
+    *
+    * @return PlannerChecklistItem
+    */
+    public function setOrderHint($val)
+    {
+        $this->_propDict["orderHint"] = $val;
+        return $this;
+    }
+    /**
+    * Gets the title
+    * Title of the checklist item
+    *
+    * @return string|null The title
+    */
+    public function getTitle()
+    {
+        if (array_key_exists("title", $this->_propDict)) {
+            return $this->_propDict["title"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the title
+    * Title of the checklist item
+    *
+    * @param string $val The value of the title
+    *
+    * @return PlannerChecklistItem
+    */
+    public function setTitle($val)
+    {
+        $this->_propDict["title"] = $val;
+        return $this;
     }
 }

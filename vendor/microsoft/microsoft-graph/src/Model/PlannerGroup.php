@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,19 +18,18 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class PlannerGroup extends Entity
 {
 
-     /** 
+     /**
      * Gets the plans
     * Read-only. Nullable. Returns the plannerPlans owned by the group.
      *
-     * @return array The plans
+     * @return array|null The plans
      */
     public function getPlans()
     {
@@ -41,19 +39,19 @@ class PlannerGroup extends Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the plans
     * Read-only. Nullable. Returns the plannerPlans owned by the group.
     *
-    * @param PlannerPlan $val The plans
+    * @param PlannerPlan[] $val The plans
     *
     * @return PlannerGroup
     */
     public function setPlans($val)
     {
-		$this->_propDict["plans"] = $val;
+        $this->_propDict["plans"] = $val;
         return $this;
     }
-    
+
 }

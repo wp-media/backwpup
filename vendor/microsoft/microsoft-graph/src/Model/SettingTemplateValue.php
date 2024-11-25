@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,74 +17,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class SettingTemplateValue extends Entity
 {
     /**
-    * Gets the name
-    * Name of the setting.
-    *
-    * @return string The name
-    */
-    public function getName()
-    {
-        if (array_key_exists("name", $this->_propDict)) {
-            return $this->_propDict["name"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the name
-    * Name of the setting.
-    *
-    * @param string $val The value of the name
-    *
-    * @return SettingTemplateValue
-    */
-    public function setName($val)
-    {
-        $this->_propDict["name"] = $val;
-        return $this;
-    }
-    /**
-    * Gets the type
-    * Type of the setting.
-    *
-    * @return string The type
-    */
-    public function getType()
-    {
-        if (array_key_exists("type", $this->_propDict)) {
-            return $this->_propDict["type"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the type
-    * Type of the setting.
-    *
-    * @param string $val The value of the type
-    *
-    * @return SettingTemplateValue
-    */
-    public function setType($val)
-    {
-        $this->_propDict["type"] = $val;
-        return $this;
-    }
-    /**
     * Gets the defaultValue
     * Default value for the setting.
     *
-    * @return string The defaultValue
+    * @return string|null The defaultValue
     */
     public function getDefaultValue()
     {
@@ -113,7 +55,7 @@ class SettingTemplateValue extends Entity
     * Gets the description
     * Description of the setting.
     *
-    * @return string The description
+    * @return string|null The description
     */
     public function getDescription()
     {
@@ -135,6 +77,62 @@ class SettingTemplateValue extends Entity
     public function setDescription($val)
     {
         $this->_propDict["description"] = $val;
+        return $this;
+    }
+    /**
+    * Gets the name
+    * Name of the setting.
+    *
+    * @return string|null The name
+    */
+    public function getName()
+    {
+        if (array_key_exists("name", $this->_propDict)) {
+            return $this->_propDict["name"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the name
+    * Name of the setting.
+    *
+    * @param string $val The value of the name
+    *
+    * @return SettingTemplateValue
+    */
+    public function setName($val)
+    {
+        $this->_propDict["name"] = $val;
+        return $this;
+    }
+    /**
+    * Gets the type
+    * Type of the setting.
+    *
+    * @return string|null The type
+    */
+    public function getType()
+    {
+        if (array_key_exists("type", $this->_propDict)) {
+            return $this->_propDict["type"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the type
+    * Type of the setting.
+    *
+    * @param string $val The value of the type
+    *
+    * @return SettingTemplateValue
+    */
+    public function setType($val)
+    {
+        $this->_propDict["type"] = $val;
         return $this;
     }
 }

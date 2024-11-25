@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,47 +18,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class ManagedAppPolicyDeploymentSummary extends Entity
 {
     /**
-    * Gets the displayName
-    * Not yet documented
-    *
-    * @return string The displayName
-    */
-    public function getDisplayName()
-    {
-        if (array_key_exists("displayName", $this->_propDict)) {
-            return $this->_propDict["displayName"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the displayName
-    * Not yet documented
-    *
-    * @param string $val The displayName
-    *
-    * @return ManagedAppPolicyDeploymentSummary
-    */
-    public function setDisplayName($val)
-    {
-        $this->_propDict["displayName"] = $val;
-        return $this;
-    }
-    
-    /**
     * Gets the configurationDeployedUserCount
     * Not yet documented
     *
-    * @return int The configurationDeployedUserCount
+    * @return int|null The configurationDeployedUserCount
     */
     public function getConfigurationDeployedUserCount()
     {
@@ -69,7 +38,7 @@ class ManagedAppPolicyDeploymentSummary extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the configurationDeployedUserCount
     * Not yet documented
@@ -83,17 +52,76 @@ class ManagedAppPolicyDeploymentSummary extends Entity
         $this->_propDict["configurationDeployedUserCount"] = intval($val);
         return $this;
     }
-    
+
+
+     /**
+     * Gets the configurationDeploymentSummaryPerApp
+    * Not yet documented
+     *
+     * @return array|null The configurationDeploymentSummaryPerApp
+     */
+    public function getConfigurationDeploymentSummaryPerApp()
+    {
+        if (array_key_exists("configurationDeploymentSummaryPerApp", $this->_propDict)) {
+           return $this->_propDict["configurationDeploymentSummaryPerApp"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the configurationDeploymentSummaryPerApp
+    * Not yet documented
+    *
+    * @param ManagedAppPolicyDeploymentSummaryPerApp[] $val The configurationDeploymentSummaryPerApp
+    *
+    * @return ManagedAppPolicyDeploymentSummary
+    */
+    public function setConfigurationDeploymentSummaryPerApp($val)
+    {
+        $this->_propDict["configurationDeploymentSummaryPerApp"] = $val;
+        return $this;
+    }
+
+    /**
+    * Gets the displayName
+    * Not yet documented
+    *
+    * @return string|null The displayName
+    */
+    public function getDisplayName()
+    {
+        if (array_key_exists("displayName", $this->_propDict)) {
+            return $this->_propDict["displayName"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the displayName
+    * Not yet documented
+    *
+    * @param string $val The displayName
+    *
+    * @return ManagedAppPolicyDeploymentSummary
+    */
+    public function setDisplayName($val)
+    {
+        $this->_propDict["displayName"] = $val;
+        return $this;
+    }
+
     /**
     * Gets the lastRefreshTime
     * Not yet documented
     *
-    * @return \DateTime The lastRefreshTime
+    * @return \DateTime|null The lastRefreshTime
     */
     public function getLastRefreshTime()
     {
         if (array_key_exists("lastRefreshTime", $this->_propDict)) {
-            if (is_a($this->_propDict["lastRefreshTime"], "\DateTime")) {
+            if (is_a($this->_propDict["lastRefreshTime"], "\DateTime") || is_null($this->_propDict["lastRefreshTime"])) {
                 return $this->_propDict["lastRefreshTime"];
             } else {
                 $this->_propDict["lastRefreshTime"] = new \DateTime($this->_propDict["lastRefreshTime"]);
@@ -102,7 +130,7 @@ class ManagedAppPolicyDeploymentSummary extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the lastRefreshTime
     * Not yet documented
@@ -116,42 +144,12 @@ class ManagedAppPolicyDeploymentSummary extends Entity
         $this->_propDict["lastRefreshTime"] = $val;
         return $this;
     }
-    
 
-     /** 
-     * Gets the configurationDeploymentSummaryPerApp
-    * Not yet documented
-     *
-     * @return array The configurationDeploymentSummaryPerApp
-     */
-    public function getConfigurationDeploymentSummaryPerApp()
-    {
-        if (array_key_exists("configurationDeploymentSummaryPerApp", $this->_propDict)) {
-           return $this->_propDict["configurationDeploymentSummaryPerApp"];
-        } else {
-            return null;
-        }
-    }
-    
-    /** 
-    * Sets the configurationDeploymentSummaryPerApp
-    * Not yet documented
-    *
-    * @param ManagedAppPolicyDeploymentSummaryPerApp $val The configurationDeploymentSummaryPerApp
-    *
-    * @return ManagedAppPolicyDeploymentSummary
-    */
-    public function setConfigurationDeploymentSummaryPerApp($val)
-    {
-		$this->_propDict["configurationDeploymentSummaryPerApp"] = $val;
-        return $this;
-    }
-    
     /**
     * Gets the version
     * Version of the entity.
     *
-    * @return string The version
+    * @return string|null The version
     */
     public function getVersion()
     {
@@ -161,7 +159,7 @@ class ManagedAppPolicyDeploymentSummary extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the version
     * Version of the entity.
@@ -175,5 +173,5 @@ class ManagedAppPolicyDeploymentSummary extends Entity
         $this->_propDict["version"] = $val;
         return $this;
     }
-    
+
 }

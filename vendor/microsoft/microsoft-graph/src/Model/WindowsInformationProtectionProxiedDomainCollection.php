@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class WindowsInformationProtectionProxiedDomainCollection extends Entity
 {
@@ -29,7 +27,7 @@ class WindowsInformationProtectionProxiedDomainCollection extends Entity
     * Gets the displayName
     * Display name
     *
-    * @return string The displayName
+    * @return string|null The displayName
     */
     public function getDisplayName()
     {
@@ -58,12 +56,12 @@ class WindowsInformationProtectionProxiedDomainCollection extends Entity
     * Gets the proxiedDomains
     * Collection of proxied domains
     *
-    * @return ProxiedDomain The proxiedDomains
+    * @return ProxiedDomain|null The proxiedDomains
     */
     public function getProxiedDomains()
     {
         if (array_key_exists("proxiedDomains", $this->_propDict)) {
-            if (is_a($this->_propDict["proxiedDomains"], "Microsoft\Graph\Model\ProxiedDomain")) {
+            if (is_a($this->_propDict["proxiedDomains"], "\Microsoft\Graph\Model\ProxiedDomain") || is_null($this->_propDict["proxiedDomains"])) {
                 return $this->_propDict["proxiedDomains"];
             } else {
                 $this->_propDict["proxiedDomains"] = new ProxiedDomain($this->_propDict["proxiedDomains"]);

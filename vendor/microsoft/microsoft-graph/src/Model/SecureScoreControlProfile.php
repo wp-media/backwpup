@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class SecureScoreControlProfile extends Entity
 {
@@ -30,7 +28,7 @@ class SecureScoreControlProfile extends Entity
     * Gets the actionType
     * Control action type (Config, Review, Behavior).
     *
-    * @return string The actionType
+    * @return string|null The actionType
     */
     public function getActionType()
     {
@@ -40,7 +38,7 @@ class SecureScoreControlProfile extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the actionType
     * Control action type (Config, Review, Behavior).
@@ -54,12 +52,12 @@ class SecureScoreControlProfile extends Entity
         $this->_propDict["actionType"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the actionUrl
     * URL to where the control can be actioned.
     *
-    * @return string The actionUrl
+    * @return string|null The actionUrl
     */
     public function getActionUrl()
     {
@@ -69,7 +67,7 @@ class SecureScoreControlProfile extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the actionUrl
     * URL to where the control can be actioned.
@@ -83,12 +81,12 @@ class SecureScoreControlProfile extends Entity
         $this->_propDict["actionUrl"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the azureTenantId
     * GUID string for tenant ID.
     *
-    * @return string The azureTenantId
+    * @return string|null The azureTenantId
     */
     public function getAzureTenantId()
     {
@@ -98,7 +96,7 @@ class SecureScoreControlProfile extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the azureTenantId
     * GUID string for tenant ID.
@@ -112,12 +110,13 @@ class SecureScoreControlProfile extends Entity
         $this->_propDict["azureTenantId"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the complianceInformation
+    * The collection of compliance information associated with secure score control
      *
-     * @return array The complianceInformation
+     * @return array|null The complianceInformation
      */
     public function getComplianceInformation()
     {
@@ -127,25 +126,26 @@ class SecureScoreControlProfile extends Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the complianceInformation
+    * The collection of compliance information associated with secure score control
     *
-    * @param ComplianceInformation $val The complianceInformation
+    * @param ComplianceInformation[] $val The complianceInformation
     *
     * @return SecureScoreControlProfile
     */
     public function setComplianceInformation($val)
     {
-		$this->_propDict["complianceInformation"] = $val;
+        $this->_propDict["complianceInformation"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the controlCategory
     * Control action category (Identity, Data, Device, Apps, Infrastructure).
     *
-    * @return string The controlCategory
+    * @return string|null The controlCategory
     */
     public function getControlCategory()
     {
@@ -155,7 +155,7 @@ class SecureScoreControlProfile extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the controlCategory
     * Control action category (Identity, Data, Device, Apps, Infrastructure).
@@ -169,12 +169,13 @@ class SecureScoreControlProfile extends Entity
         $this->_propDict["controlCategory"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the controlStateUpdates
+    * Flag to indicate where the tenant has marked a control (ignored, thirdParty, reviewed) (supports update).
      *
-     * @return array The controlStateUpdates
+     * @return array|null The controlStateUpdates
      */
     public function getControlStateUpdates()
     {
@@ -184,25 +185,26 @@ class SecureScoreControlProfile extends Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the controlStateUpdates
+    * Flag to indicate where the tenant has marked a control (ignored, thirdParty, reviewed) (supports update).
     *
-    * @param SecureScoreControlStateUpdate $val The controlStateUpdates
+    * @param SecureScoreControlStateUpdate[] $val The controlStateUpdates
     *
     * @return SecureScoreControlProfile
     */
     public function setControlStateUpdates($val)
     {
-		$this->_propDict["controlStateUpdates"] = $val;
+        $this->_propDict["controlStateUpdates"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the deprecated
     * Flag to indicate if a control is depreciated.
     *
-    * @return bool The deprecated
+    * @return bool|null The deprecated
     */
     public function getDeprecated()
     {
@@ -212,7 +214,7 @@ class SecureScoreControlProfile extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the deprecated
     * Flag to indicate if a control is depreciated.
@@ -226,12 +228,12 @@ class SecureScoreControlProfile extends Entity
         $this->_propDict["deprecated"] = boolval($val);
         return $this;
     }
-    
+
     /**
     * Gets the implementationCost
     * Resource cost of implemmentating control (low, moderate, high).
     *
-    * @return string The implementationCost
+    * @return string|null The implementationCost
     */
     public function getImplementationCost()
     {
@@ -241,7 +243,7 @@ class SecureScoreControlProfile extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the implementationCost
     * Resource cost of implemmentating control (low, moderate, high).
@@ -255,17 +257,17 @@ class SecureScoreControlProfile extends Entity
         $this->_propDict["implementationCost"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the lastModifiedDateTime
     * Time at which the control profile entity was last modified. The Timestamp type represents date and time
     *
-    * @return \DateTime The lastModifiedDateTime
+    * @return \DateTime|null The lastModifiedDateTime
     */
     public function getLastModifiedDateTime()
     {
         if (array_key_exists("lastModifiedDateTime", $this->_propDict)) {
-            if (is_a($this->_propDict["lastModifiedDateTime"], "\DateTime")) {
+            if (is_a($this->_propDict["lastModifiedDateTime"], "\DateTime") || is_null($this->_propDict["lastModifiedDateTime"])) {
                 return $this->_propDict["lastModifiedDateTime"];
             } else {
                 $this->_propDict["lastModifiedDateTime"] = new \DateTime($this->_propDict["lastModifiedDateTime"]);
@@ -274,7 +276,7 @@ class SecureScoreControlProfile extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the lastModifiedDateTime
     * Time at which the control profile entity was last modified. The Timestamp type represents date and time
@@ -288,12 +290,12 @@ class SecureScoreControlProfile extends Entity
         $this->_propDict["lastModifiedDateTime"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the maxScore
     * max attainable score for the control.
     *
-    * @return float The maxScore
+    * @return float|null The maxScore
     */
     public function getMaxScore()
     {
@@ -303,7 +305,7 @@ class SecureScoreControlProfile extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the maxScore
     * max attainable score for the control.
@@ -314,15 +316,15 @@ class SecureScoreControlProfile extends Entity
     */
     public function setMaxScore($val)
     {
-        $this->_propDict["maxScore"] = $val;
+        $this->_propDict["maxScore"] = floatval($val);
         return $this;
     }
-    
+
     /**
     * Gets the rank
     * Microsoft's stack ranking of control.
     *
-    * @return int The rank
+    * @return int|null The rank
     */
     public function getRank()
     {
@@ -332,7 +334,7 @@ class SecureScoreControlProfile extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the rank
     * Microsoft's stack ranking of control.
@@ -346,12 +348,12 @@ class SecureScoreControlProfile extends Entity
         $this->_propDict["rank"] = intval($val);
         return $this;
     }
-    
+
     /**
     * Gets the remediation
     * Description of what the control will help remediate.
     *
-    * @return string The remediation
+    * @return string|null The remediation
     */
     public function getRemediation()
     {
@@ -361,7 +363,7 @@ class SecureScoreControlProfile extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the remediation
     * Description of what the control will help remediate.
@@ -375,12 +377,12 @@ class SecureScoreControlProfile extends Entity
         $this->_propDict["remediation"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the remediationImpact
     * Description of the impact on users of the remediation.
     *
-    * @return string The remediationImpact
+    * @return string|null The remediationImpact
     */
     public function getRemediationImpact()
     {
@@ -390,7 +392,7 @@ class SecureScoreControlProfile extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the remediationImpact
     * Description of the impact on users of the remediation.
@@ -404,12 +406,12 @@ class SecureScoreControlProfile extends Entity
         $this->_propDict["remediationImpact"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the service
-    * Service that owns the control (Exchange, Sharepoint, Azure AD).
+    * Service that owns the control (Exchange, Sharepoint, Microsoft Entra ID).
     *
-    * @return string The service
+    * @return string|null The service
     */
     public function getService()
     {
@@ -419,10 +421,10 @@ class SecureScoreControlProfile extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the service
-    * Service that owns the control (Exchange, Sharepoint, Azure AD).
+    * Service that owns the control (Exchange, Sharepoint, Microsoft Entra ID).
     *
     * @param string $val The service
     *
@@ -433,12 +435,12 @@ class SecureScoreControlProfile extends Entity
         $this->_propDict["service"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the threats
-    * List of threats the control mitigates (accountBreach,dataDeletion,dataExfiltration,dataSpillage,
+    * List of threats the control mitigates (accountBreach, dataDeletion, dataExfiltration, dataSpillage,
     *
-    * @return string The threats
+    * @return array|null The threats
     */
     public function getThreats()
     {
@@ -448,12 +450,12 @@ class SecureScoreControlProfile extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the threats
-    * List of threats the control mitigates (accountBreach,dataDeletion,dataExfiltration,dataSpillage,
+    * List of threats the control mitigates (accountBreach, dataDeletion, dataExfiltration, dataSpillage,
     *
-    * @param string $val The threats
+    * @param string[] $val The threats
     *
     * @return SecureScoreControlProfile
     */
@@ -462,11 +464,11 @@ class SecureScoreControlProfile extends Entity
         $this->_propDict["threats"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the tier
     *
-    * @return string The tier
+    * @return string|null The tier
     */
     public function getTier()
     {
@@ -476,7 +478,7 @@ class SecureScoreControlProfile extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the tier
     *
@@ -489,12 +491,11 @@ class SecureScoreControlProfile extends Entity
         $this->_propDict["tier"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the title
-    * Title of the control.
     *
-    * @return string The title
+    * @return string|null The title
     */
     public function getTitle()
     {
@@ -504,10 +505,9 @@ class SecureScoreControlProfile extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the title
-    * Title of the control.
     *
     * @param string $val The title
     *
@@ -518,11 +518,11 @@ class SecureScoreControlProfile extends Entity
         $this->_propDict["title"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the userImpact
     *
-    * @return string The userImpact
+    * @return string|null The userImpact
     */
     public function getUserImpact()
     {
@@ -532,7 +532,7 @@ class SecureScoreControlProfile extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the userImpact
     *
@@ -545,16 +545,16 @@ class SecureScoreControlProfile extends Entity
         $this->_propDict["userImpact"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the vendorInformation
     *
-    * @return SecurityVendorInformation The vendorInformation
+    * @return SecurityVendorInformation|null The vendorInformation
     */
     public function getVendorInformation()
     {
         if (array_key_exists("vendorInformation", $this->_propDict)) {
-            if (is_a($this->_propDict["vendorInformation"], "Microsoft\Graph\Model\SecurityVendorInformation")) {
+            if (is_a($this->_propDict["vendorInformation"], "\Microsoft\Graph\Model\SecurityVendorInformation") || is_null($this->_propDict["vendorInformation"])) {
                 return $this->_propDict["vendorInformation"];
             } else {
                 $this->_propDict["vendorInformation"] = new SecurityVendorInformation($this->_propDict["vendorInformation"]);
@@ -563,7 +563,7 @@ class SecureScoreControlProfile extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the vendorInformation
     *
@@ -576,5 +576,5 @@ class SecureScoreControlProfile extends Entity
         $this->_propDict["vendorInformation"] = $val;
         return $this;
     }
-    
+
 }

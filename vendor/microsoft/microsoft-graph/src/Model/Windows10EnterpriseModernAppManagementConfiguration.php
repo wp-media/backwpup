@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class Windows10EnterpriseModernAppManagementConfiguration extends DeviceConfiguration
 {
@@ -30,7 +28,7 @@ class Windows10EnterpriseModernAppManagementConfiguration extends DeviceConfigur
     * Gets the uninstallBuiltInApps
     * Indicates whether or not to uninstall a fixed list of built-in Windows apps.
     *
-    * @return bool The uninstallBuiltInApps
+    * @return bool|null The uninstallBuiltInApps
     */
     public function getUninstallBuiltInApps()
     {
@@ -40,7 +38,7 @@ class Windows10EnterpriseModernAppManagementConfiguration extends DeviceConfigur
             return null;
         }
     }
-    
+
     /**
     * Sets the uninstallBuiltInApps
     * Indicates whether or not to uninstall a fixed list of built-in Windows apps.
@@ -54,5 +52,5 @@ class Windows10EnterpriseModernAppManagementConfiguration extends DeviceConfigur
         $this->_propDict["uninstallBuiltInApps"] = boolval($val);
         return $this;
     }
-    
+
 }

@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class ManagedMobileApp extends Entity
 {
@@ -30,12 +28,12 @@ class ManagedMobileApp extends Entity
     * Gets the mobileAppIdentifier
     * The identifier for an app with it's operating system type.
     *
-    * @return MobileAppIdentifier The mobileAppIdentifier
+    * @return MobileAppIdentifier|null The mobileAppIdentifier
     */
     public function getMobileAppIdentifier()
     {
         if (array_key_exists("mobileAppIdentifier", $this->_propDict)) {
-            if (is_a($this->_propDict["mobileAppIdentifier"], "Microsoft\Graph\Model\MobileAppIdentifier")) {
+            if (is_a($this->_propDict["mobileAppIdentifier"], "\Microsoft\Graph\Model\MobileAppIdentifier") || is_null($this->_propDict["mobileAppIdentifier"])) {
                 return $this->_propDict["mobileAppIdentifier"];
             } else {
                 $this->_propDict["mobileAppIdentifier"] = new MobileAppIdentifier($this->_propDict["mobileAppIdentifier"]);
@@ -44,7 +42,7 @@ class ManagedMobileApp extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the mobileAppIdentifier
     * The identifier for an app with it's operating system type.
@@ -58,12 +56,12 @@ class ManagedMobileApp extends Entity
         $this->_propDict["mobileAppIdentifier"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the version
     * Version of the entity.
     *
-    * @return string The version
+    * @return string|null The version
     */
     public function getVersion()
     {
@@ -73,7 +71,7 @@ class ManagedMobileApp extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the version
     * Version of the entity.
@@ -87,5 +85,5 @@ class ManagedMobileApp extends Entity
         $this->_propDict["version"] = $val;
         return $this;
     }
-    
+
 }

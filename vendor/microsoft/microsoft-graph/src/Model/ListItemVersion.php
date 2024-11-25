@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class ListItemVersion extends BaseItemVersion
 {
@@ -30,12 +28,12 @@ class ListItemVersion extends BaseItemVersion
     * Gets the fields
     * A collection of the fields and values for this version of the list item.
     *
-    * @return FieldValueSet The fields
+    * @return FieldValueSet|null The fields
     */
     public function getFields()
     {
         if (array_key_exists("fields", $this->_propDict)) {
-            if (is_a($this->_propDict["fields"], "Microsoft\Graph\Model\FieldValueSet")) {
+            if (is_a($this->_propDict["fields"], "\Microsoft\Graph\Model\FieldValueSet") || is_null($this->_propDict["fields"])) {
                 return $this->_propDict["fields"];
             } else {
                 $this->_propDict["fields"] = new FieldValueSet($this->_propDict["fields"]);
@@ -44,7 +42,7 @@ class ListItemVersion extends BaseItemVersion
         }
         return null;
     }
-    
+
     /**
     * Sets the fields
     * A collection of the fields and values for this version of the list item.
@@ -58,5 +56,5 @@ class ListItemVersion extends BaseItemVersion
         $this->_propDict["fields"] = $val;
         return $this;
     }
-    
+
 }

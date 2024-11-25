@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class ProfilePhoto extends Entity
 {
@@ -30,7 +28,7 @@ class ProfilePhoto extends Entity
     * Gets the height
     * The height of the photo. Read-only.
     *
-    * @return int The height
+    * @return int|null The height
     */
     public function getHeight()
     {
@@ -40,7 +38,7 @@ class ProfilePhoto extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the height
     * The height of the photo. Read-only.
@@ -54,12 +52,12 @@ class ProfilePhoto extends Entity
         $this->_propDict["height"] = intval($val);
         return $this;
     }
-    
+
     /**
     * Gets the width
     * The width of the photo. Read-only.
     *
-    * @return int The width
+    * @return int|null The width
     */
     public function getWidth()
     {
@@ -69,7 +67,7 @@ class ProfilePhoto extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the width
     * The width of the photo. Read-only.
@@ -83,5 +81,5 @@ class ProfilePhoto extends Entity
         $this->_propDict["width"] = intval($val);
         return $this;
     }
-    
+
 }

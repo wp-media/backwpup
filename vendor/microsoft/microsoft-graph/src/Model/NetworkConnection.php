@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,18 +17,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class NetworkConnection extends Entity
 {
     /**
     * Gets the applicationName
-    * Name of the application managing the network connection (for example, Facebook, SMTP, etc.).
+    * Name of the application managing the network connection (for example, Facebook or SMTP).
     *
-    * @return string The applicationName
+    * @return string|null The applicationName
     */
     public function getApplicationName()
     {
@@ -42,7 +40,7 @@ class NetworkConnection extends Entity
 
     /**
     * Sets the applicationName
-    * Name of the application managing the network connection (for example, Facebook, SMTP, etc.).
+    * Name of the application managing the network connection (for example, Facebook or SMTP).
     *
     * @param string $val The value of the applicationName
     *
@@ -57,7 +55,7 @@ class NetworkConnection extends Entity
     * Gets the destinationAddress
     * Destination IP address (of the network connection).
     *
-    * @return string The destinationAddress
+    * @return string|null The destinationAddress
     */
     public function getDestinationAddress()
     {
@@ -85,7 +83,7 @@ class NetworkConnection extends Entity
     * Gets the destinationDomain
     * Destination domain portion of the destination URL. (for example 'www.contoso.com').
     *
-    * @return string The destinationDomain
+    * @return string|null The destinationDomain
     */
     public function getDestinationDomain()
     {
@@ -110,10 +108,38 @@ class NetworkConnection extends Entity
         return $this;
     }
     /**
+    * Gets the destinationLocation
+    * Location (by IP address mapping) associated with the destination of a network connection.
+    *
+    * @return string|null The destinationLocation
+    */
+    public function getDestinationLocation()
+    {
+        if (array_key_exists("destinationLocation", $this->_propDict)) {
+            return $this->_propDict["destinationLocation"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the destinationLocation
+    * Location (by IP address mapping) associated with the destination of a network connection.
+    *
+    * @param string $val The value of the destinationLocation
+    *
+    * @return NetworkConnection
+    */
+    public function setDestinationLocation($val)
+    {
+        $this->_propDict["destinationLocation"] = $val;
+        return $this;
+    }
+    /**
     * Gets the destinationPort
     * Destination port (of the network connection).
     *
-    * @return string The destinationPort
+    * @return string|null The destinationPort
     */
     public function getDestinationPort()
     {
@@ -141,7 +167,7 @@ class NetworkConnection extends Entity
     * Gets the destinationUrl
     * Network connection URL/URI string - excluding parameters. (for example 'www.contoso.com/products/default.html')
     *
-    * @return string The destinationUrl
+    * @return string|null The destinationUrl
     */
     public function getDestinationUrl()
     {
@@ -170,12 +196,12 @@ class NetworkConnection extends Entity
     * Gets the direction
     * Network connection direction. Possible values are: unknown, inbound, outbound.
     *
-    * @return ConnectionDirection The direction
+    * @return ConnectionDirection|null The direction
     */
     public function getDirection()
     {
         if (array_key_exists("direction", $this->_propDict)) {
-            if (is_a($this->_propDict["direction"], "Microsoft\Graph\Model\ConnectionDirection")) {
+            if (is_a($this->_propDict["direction"], "\Microsoft\Graph\Model\ConnectionDirection") || is_null($this->_propDict["direction"])) {
                 return $this->_propDict["direction"];
             } else {
                 $this->_propDict["direction"] = new ConnectionDirection($this->_propDict["direction"]);
@@ -201,14 +227,14 @@ class NetworkConnection extends Entity
 
     /**
     * Gets the domainRegisteredDateTime
-    * Date when the destination domain was registered. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
+    * Date when the destination domain was registered. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
     *
-    * @return \DateTime The domainRegisteredDateTime
+    * @return \DateTime|null The domainRegisteredDateTime
     */
     public function getDomainRegisteredDateTime()
     {
         if (array_key_exists("domainRegisteredDateTime", $this->_propDict)) {
-            if (is_a($this->_propDict["domainRegisteredDateTime"], "Microsoft\Graph\Model\\DateTime")) {
+            if (is_a($this->_propDict["domainRegisteredDateTime"], "\DateTime") || is_null($this->_propDict["domainRegisteredDateTime"])) {
                 return $this->_propDict["domainRegisteredDateTime"];
             } else {
                 $this->_propDict["domainRegisteredDateTime"] = new \DateTime($this->_propDict["domainRegisteredDateTime"]);
@@ -220,7 +246,7 @@ class NetworkConnection extends Entity
 
     /**
     * Sets the domainRegisteredDateTime
-    * Date when the destination domain was registered. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
+    * Date when the destination domain was registered. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
     *
     * @param \DateTime $val The value to assign to the domainRegisteredDateTime
     *
@@ -235,7 +261,7 @@ class NetworkConnection extends Entity
     * Gets the localDnsName
     * The local DNS name resolution as it appears in the host's local DNS cache (for example, in case the 'hosts' file was tampered with).
     *
-    * @return string The localDnsName
+    * @return string|null The localDnsName
     */
     public function getLocalDnsName()
     {
@@ -263,7 +289,7 @@ class NetworkConnection extends Entity
     * Gets the natDestinationAddress
     * Network Address Translation destination IP address.
     *
-    * @return string The natDestinationAddress
+    * @return string|null The natDestinationAddress
     */
     public function getNatDestinationAddress()
     {
@@ -291,7 +317,7 @@ class NetworkConnection extends Entity
     * Gets the natDestinationPort
     * Network Address Translation destination port.
     *
-    * @return string The natDestinationPort
+    * @return string|null The natDestinationPort
     */
     public function getNatDestinationPort()
     {
@@ -319,7 +345,7 @@ class NetworkConnection extends Entity
     * Gets the natSourceAddress
     * Network Address Translation source IP address.
     *
-    * @return string The natSourceAddress
+    * @return string|null The natSourceAddress
     */
     public function getNatSourceAddress()
     {
@@ -347,7 +373,7 @@ class NetworkConnection extends Entity
     * Gets the natSourcePort
     * Network Address Translation source port.
     *
-    * @return string The natSourcePort
+    * @return string|null The natSourcePort
     */
     public function getNatSourcePort()
     {
@@ -376,12 +402,12 @@ class NetworkConnection extends Entity
     * Gets the protocol
     * Network protocol. Possible values are: unknown, ip, icmp, igmp, ggp, ipv4, tcp, pup, udp, idp, ipv6, ipv6RoutingHeader, ipv6FragmentHeader, ipSecEncapsulatingSecurityPayload, ipSecAuthenticationHeader, icmpV6, ipv6NoNextHeader, ipv6DestinationOptions, nd, raw, ipx, spx, spxII.
     *
-    * @return SecurityNetworkProtocol The protocol
+    * @return SecurityNetworkProtocol|null The protocol
     */
     public function getProtocol()
     {
         if (array_key_exists("protocol", $this->_propDict)) {
-            if (is_a($this->_propDict["protocol"], "Microsoft\Graph\Model\SecurityNetworkProtocol")) {
+            if (is_a($this->_propDict["protocol"], "\Microsoft\Graph\Model\SecurityNetworkProtocol") || is_null($this->_propDict["protocol"])) {
                 return $this->_propDict["protocol"];
             } else {
                 $this->_propDict["protocol"] = new SecurityNetworkProtocol($this->_propDict["protocol"]);
@@ -408,7 +434,7 @@ class NetworkConnection extends Entity
     * Gets the riskScore
     * Provider generated/calculated risk score of the network connection. Recommended value range of 0-1, which equates to a percentage.
     *
-    * @return string The riskScore
+    * @return string|null The riskScore
     */
     public function getRiskScore()
     {
@@ -436,7 +462,7 @@ class NetworkConnection extends Entity
     * Gets the sourceAddress
     * Source (i.e. origin) IP address (of the network connection).
     *
-    * @return string The sourceAddress
+    * @return string|null The sourceAddress
     */
     public function getSourceAddress()
     {
@@ -461,10 +487,38 @@ class NetworkConnection extends Entity
         return $this;
     }
     /**
+    * Gets the sourceLocation
+    * Location (by IP address mapping) associated with the source of a network connection.
+    *
+    * @return string|null The sourceLocation
+    */
+    public function getSourceLocation()
+    {
+        if (array_key_exists("sourceLocation", $this->_propDict)) {
+            return $this->_propDict["sourceLocation"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the sourceLocation
+    * Location (by IP address mapping) associated with the source of a network connection.
+    *
+    * @param string $val The value of the sourceLocation
+    *
+    * @return NetworkConnection
+    */
+    public function setSourceLocation($val)
+    {
+        $this->_propDict["sourceLocation"] = $val;
+        return $this;
+    }
+    /**
     * Gets the sourcePort
     * Source (i.e. origin) IP port (of the network connection).
     *
-    * @return string The sourcePort
+    * @return string|null The sourcePort
     */
     public function getSourcePort()
     {
@@ -493,12 +547,12 @@ class NetworkConnection extends Entity
     * Gets the status
     * Network connection status. Possible values are: unknown, attempted, succeeded, blocked, failed.
     *
-    * @return ConnectionStatus The status
+    * @return ConnectionStatus|null The status
     */
     public function getStatus()
     {
         if (array_key_exists("status", $this->_propDict)) {
-            if (is_a($this->_propDict["status"], "Microsoft\Graph\Model\ConnectionStatus")) {
+            if (is_a($this->_propDict["status"], "\Microsoft\Graph\Model\ConnectionStatus") || is_null($this->_propDict["status"])) {
                 return $this->_propDict["status"];
             } else {
                 $this->_propDict["status"] = new ConnectionStatus($this->_propDict["status"]);
@@ -525,7 +579,7 @@ class NetworkConnection extends Entity
     * Gets the urlParameters
     * Parameters (suffix) of the destination URL.
     *
-    * @return string The urlParameters
+    * @return string|null The urlParameters
     */
     public function getUrlParameters()
     {

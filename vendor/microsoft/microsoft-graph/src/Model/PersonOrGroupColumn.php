@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class PersonOrGroupColumn extends Entity
 {
@@ -29,7 +27,7 @@ class PersonOrGroupColumn extends Entity
     * Gets the allowMultipleSelection
     * Indicates whether multiple values can be selected from the source.
     *
-    * @return bool The allowMultipleSelection
+    * @return bool|null The allowMultipleSelection
     */
     public function getAllowMultipleSelection()
     {
@@ -57,7 +55,7 @@ class PersonOrGroupColumn extends Entity
     * Gets the chooseFromType
     * Whether to allow selection of people only, or people and groups. Must be one of peopleAndGroups or peopleOnly.
     *
-    * @return string The chooseFromType
+    * @return string|null The chooseFromType
     */
     public function getChooseFromType()
     {
@@ -85,7 +83,7 @@ class PersonOrGroupColumn extends Entity
     * Gets the displayAs
     * How to display the information about the person or group chosen. See below.
     *
-    * @return string The displayAs
+    * @return string|null The displayAs
     */
     public function getDisplayAs()
     {

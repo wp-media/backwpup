@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,69 +17,16 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class LicenseAssignmentState extends Entity
 {
     /**
-    * Gets the skuId
-    *
-    * @return string The skuId
-    */
-    public function getSkuId()
-    {
-        if (array_key_exists("skuId", $this->_propDict)) {
-            return $this->_propDict["skuId"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the skuId
-    *
-    * @param string $val The value of the skuId
-    *
-    * @return LicenseAssignmentState
-    */
-    public function setSkuId($val)
-    {
-        $this->_propDict["skuId"] = $val;
-        return $this;
-    }
-    /**
-    * Gets the disabledPlans
-    *
-    * @return string The disabledPlans
-    */
-    public function getDisabledPlans()
-    {
-        if (array_key_exists("disabledPlans", $this->_propDict)) {
-            return $this->_propDict["disabledPlans"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the disabledPlans
-    *
-    * @param string $val The value of the disabledPlans
-    *
-    * @return LicenseAssignmentState
-    */
-    public function setDisabledPlans($val)
-    {
-        $this->_propDict["disabledPlans"] = $val;
-        return $this;
-    }
-    /**
     * Gets the assignedByGroup
     *
-    * @return string The assignedByGroup
+    * @return string|null The assignedByGroup
     */
     public function getAssignedByGroup()
     {
@@ -104,35 +50,35 @@ class LicenseAssignmentState extends Entity
         return $this;
     }
     /**
-    * Gets the state
+    * Gets the disabledPlans
     *
-    * @return string The state
+    * @return string|null The disabledPlans
     */
-    public function getState()
+    public function getDisabledPlans()
     {
-        if (array_key_exists("state", $this->_propDict)) {
-            return $this->_propDict["state"];
+        if (array_key_exists("disabledPlans", $this->_propDict)) {
+            return $this->_propDict["disabledPlans"];
         } else {
             return null;
         }
     }
 
     /**
-    * Sets the state
+    * Sets the disabledPlans
     *
-    * @param string $val The value of the state
+    * @param string $val The value of the disabledPlans
     *
     * @return LicenseAssignmentState
     */
-    public function setState($val)
+    public function setDisabledPlans($val)
     {
-        $this->_propDict["state"] = $val;
+        $this->_propDict["disabledPlans"] = $val;
         return $this;
     }
     /**
     * Gets the error
     *
-    * @return string The error
+    * @return string|null The error
     */
     public function getError()
     {
@@ -153,6 +99,89 @@ class LicenseAssignmentState extends Entity
     public function setError($val)
     {
         $this->_propDict["error"] = $val;
+        return $this;
+    }
+
+    /**
+    * Gets the lastUpdatedDateTime
+    *
+    * @return \DateTime|null The lastUpdatedDateTime
+    */
+    public function getLastUpdatedDateTime()
+    {
+        if (array_key_exists("lastUpdatedDateTime", $this->_propDict)) {
+            if (is_a($this->_propDict["lastUpdatedDateTime"], "\DateTime") || is_null($this->_propDict["lastUpdatedDateTime"])) {
+                return $this->_propDict["lastUpdatedDateTime"];
+            } else {
+                $this->_propDict["lastUpdatedDateTime"] = new \DateTime($this->_propDict["lastUpdatedDateTime"]);
+                return $this->_propDict["lastUpdatedDateTime"];
+            }
+        }
+        return null;
+    }
+
+    /**
+    * Sets the lastUpdatedDateTime
+    *
+    * @param \DateTime $val The value to assign to the lastUpdatedDateTime
+    *
+    * @return LicenseAssignmentState The LicenseAssignmentState
+    */
+    public function setLastUpdatedDateTime($val)
+    {
+        $this->_propDict["lastUpdatedDateTime"] = $val;
+         return $this;
+    }
+    /**
+    * Gets the skuId
+    *
+    * @return string|null The skuId
+    */
+    public function getSkuId()
+    {
+        if (array_key_exists("skuId", $this->_propDict)) {
+            return $this->_propDict["skuId"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the skuId
+    *
+    * @param string $val The value of the skuId
+    *
+    * @return LicenseAssignmentState
+    */
+    public function setSkuId($val)
+    {
+        $this->_propDict["skuId"] = $val;
+        return $this;
+    }
+    /**
+    * Gets the state
+    *
+    * @return string|null The state
+    */
+    public function getState()
+    {
+        if (array_key_exists("state", $this->_propDict)) {
+            return $this->_propDict["state"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the state
+    *
+    * @param string $val The value of the state
+    *
+    * @return LicenseAssignmentState
+    */
+    public function setState($val)
+    {
+        $this->_propDict["state"] = $val;
         return $this;
     }
 }

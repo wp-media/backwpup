@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,18 +17,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class DefaultColumnValue extends Entity
 {
     /**
     * Gets the formula
-    * The formula used to compute the default value for this column.
+    * The formula used to compute the default value for the column.
     *
-    * @return string The formula
+    * @return string|null The formula
     */
     public function getFormula()
     {
@@ -42,7 +40,7 @@ class DefaultColumnValue extends Entity
 
     /**
     * Sets the formula
-    * The formula used to compute the default value for this column.
+    * The formula used to compute the default value for the column.
     *
     * @param string $val The value of the formula
     *
@@ -55,9 +53,9 @@ class DefaultColumnValue extends Entity
     }
     /**
     * Gets the value
-    * The direct value to use as the default value for this column.
+    * The direct value to use as the default value for the column.
     *
-    * @return string The value
+    * @return string|null The value
     */
     public function getValue()
     {
@@ -70,7 +68,7 @@ class DefaultColumnValue extends Entity
 
     /**
     * Sets the value
-    * The direct value to use as the default value for this column.
+    * The direct value to use as the default value for the column.
     *
     * @param string $val The value of the value
     *

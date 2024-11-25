@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,107 +17,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class RecurrencePattern extends Entity
 {
-
-    /**
-    * Gets the type
-    * The recurrence pattern type: daily, weekly, absoluteMonthly, relativeMonthly, absoluteYearly, relativeYearly. Required.
-    *
-    * @return RecurrencePatternType The type
-    */
-    public function getType()
-    {
-        if (array_key_exists("type", $this->_propDict)) {
-            if (is_a($this->_propDict["type"], "Microsoft\Graph\Model\RecurrencePatternType")) {
-                return $this->_propDict["type"];
-            } else {
-                $this->_propDict["type"] = new RecurrencePatternType($this->_propDict["type"]);
-                return $this->_propDict["type"];
-            }
-        }
-        return null;
-    }
-
-    /**
-    * Sets the type
-    * The recurrence pattern type: daily, weekly, absoluteMonthly, relativeMonthly, absoluteYearly, relativeYearly. Required.
-    *
-    * @param RecurrencePatternType $val The value to assign to the type
-    *
-    * @return RecurrencePattern The RecurrencePattern
-    */
-    public function setType($val)
-    {
-        $this->_propDict["type"] = $val;
-         return $this;
-    }
-    /**
-    * Gets the interval
-    * The number of units between occurrences, where units can be in days, weeks, months, or years, depending on the type. Required.
-    *
-    * @return int The interval
-    */
-    public function getInterval()
-    {
-        if (array_key_exists("interval", $this->_propDict)) {
-            return $this->_propDict["interval"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the interval
-    * The number of units between occurrences, where units can be in days, weeks, months, or years, depending on the type. Required.
-    *
-    * @param int $val The value of the interval
-    *
-    * @return RecurrencePattern
-    */
-    public function setInterval($val)
-    {
-        $this->_propDict["interval"] = $val;
-        return $this;
-    }
-    /**
-    * Gets the month
-    * The month in which the event occurs.  This is a number from 1 to 12.
-    *
-    * @return int The month
-    */
-    public function getMonth()
-    {
-        if (array_key_exists("month", $this->_propDict)) {
-            return $this->_propDict["month"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the month
-    * The month in which the event occurs.  This is a number from 1 to 12.
-    *
-    * @param int $val The value of the month
-    *
-    * @return RecurrencePattern
-    */
-    public function setMonth($val)
-    {
-        $this->_propDict["month"] = $val;
-        return $this;
-    }
     /**
     * Gets the dayOfMonth
     * The day of the month on which the event occurs. Required if type is absoluteMonthly or absoluteYearly.
     *
-    * @return int The dayOfMonth
+    * @return int|null The dayOfMonth
     */
     public function getDayOfMonth()
     {
@@ -147,12 +56,12 @@ class RecurrencePattern extends Entity
     * Gets the daysOfWeek
     * A collection of the days of the week on which the event occurs. The possible values are: sunday, monday, tuesday, wednesday, thursday, friday, saturday. If type is relativeMonthly or relativeYearly, and daysOfWeek specifies more than one day, the event falls on the first day that satisfies the pattern.  Required if type is weekly, relativeMonthly, or relativeYearly.
     *
-    * @return DayOfWeek The daysOfWeek
+    * @return DayOfWeek|null The daysOfWeek
     */
     public function getDaysOfWeek()
     {
         if (array_key_exists("daysOfWeek", $this->_propDict)) {
-            if (is_a($this->_propDict["daysOfWeek"], "Microsoft\Graph\Model\DayOfWeek")) {
+            if (is_a($this->_propDict["daysOfWeek"], "\Microsoft\Graph\Model\DayOfWeek") || is_null($this->_propDict["daysOfWeek"])) {
                 return $this->_propDict["daysOfWeek"];
             } else {
                 $this->_propDict["daysOfWeek"] = new DayOfWeek($this->_propDict["daysOfWeek"]);
@@ -180,12 +89,12 @@ class RecurrencePattern extends Entity
     * Gets the firstDayOfWeek
     * The first day of the week. The possible values are: sunday, monday, tuesday, wednesday, thursday, friday, saturday. Default is sunday. Required if type is weekly.
     *
-    * @return DayOfWeek The firstDayOfWeek
+    * @return DayOfWeek|null The firstDayOfWeek
     */
     public function getFirstDayOfWeek()
     {
         if (array_key_exists("firstDayOfWeek", $this->_propDict)) {
-            if (is_a($this->_propDict["firstDayOfWeek"], "Microsoft\Graph\Model\DayOfWeek")) {
+            if (is_a($this->_propDict["firstDayOfWeek"], "\Microsoft\Graph\Model\DayOfWeek") || is_null($this->_propDict["firstDayOfWeek"])) {
                 return $this->_propDict["firstDayOfWeek"];
             } else {
                 $this->_propDict["firstDayOfWeek"] = new DayOfWeek($this->_propDict["firstDayOfWeek"]);
@@ -211,14 +120,14 @@ class RecurrencePattern extends Entity
 
     /**
     * Gets the index
-    * Specifies on which instance of the allowed days specified in daysOfsWeek the event occurs, counted from the first instance in the month. The possible values are: first, second, third, fourth, last. Default is first. Optional and used if type is relativeMonthly or relativeYearly.
+    * Specifies on which instance of the allowed days specified in daysOfWeek the event occurs, counted from the first instance in the month. The possible values are: first, second, third, fourth, last. Default is first. Optional and used if type is relativeMonthly or relativeYearly.
     *
-    * @return WeekIndex The index
+    * @return WeekIndex|null The index
     */
     public function getIndex()
     {
         if (array_key_exists("index", $this->_propDict)) {
-            if (is_a($this->_propDict["index"], "Microsoft\Graph\Model\WeekIndex")) {
+            if (is_a($this->_propDict["index"], "\Microsoft\Graph\Model\WeekIndex") || is_null($this->_propDict["index"])) {
                 return $this->_propDict["index"];
             } else {
                 $this->_propDict["index"] = new WeekIndex($this->_propDict["index"]);
@@ -230,7 +139,7 @@ class RecurrencePattern extends Entity
 
     /**
     * Sets the index
-    * Specifies on which instance of the allowed days specified in daysOfsWeek the event occurs, counted from the first instance in the month. The possible values are: first, second, third, fourth, last. Default is first. Optional and used if type is relativeMonthly or relativeYearly.
+    * Specifies on which instance of the allowed days specified in daysOfWeek the event occurs, counted from the first instance in the month. The possible values are: first, second, third, fourth, last. Default is first. Optional and used if type is relativeMonthly or relativeYearly.
     *
     * @param WeekIndex $val The value to assign to the index
     *
@@ -239,6 +148,95 @@ class RecurrencePattern extends Entity
     public function setIndex($val)
     {
         $this->_propDict["index"] = $val;
+         return $this;
+    }
+    /**
+    * Gets the interval
+    * The number of units between occurrences, where units can be in days, weeks, months, or years, depending on the type. Required.
+    *
+    * @return int|null The interval
+    */
+    public function getInterval()
+    {
+        if (array_key_exists("interval", $this->_propDict)) {
+            return $this->_propDict["interval"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the interval
+    * The number of units between occurrences, where units can be in days, weeks, months, or years, depending on the type. Required.
+    *
+    * @param int $val The value of the interval
+    *
+    * @return RecurrencePattern
+    */
+    public function setInterval($val)
+    {
+        $this->_propDict["interval"] = $val;
+        return $this;
+    }
+    /**
+    * Gets the month
+    * The month in which the event occurs.  This is a number from 1 to 12.
+    *
+    * @return int|null The month
+    */
+    public function getMonth()
+    {
+        if (array_key_exists("month", $this->_propDict)) {
+            return $this->_propDict["month"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the month
+    * The month in which the event occurs.  This is a number from 1 to 12.
+    *
+    * @param int $val The value of the month
+    *
+    * @return RecurrencePattern
+    */
+    public function setMonth($val)
+    {
+        $this->_propDict["month"] = $val;
+        return $this;
+    }
+
+    /**
+    * Gets the type
+    * The recurrence pattern type: daily, weekly, absoluteMonthly, relativeMonthly, absoluteYearly, relativeYearly. Required. For more information, see values of type property.
+    *
+    * @return RecurrencePatternType|null The type
+    */
+    public function getType()
+    {
+        if (array_key_exists("type", $this->_propDict)) {
+            if (is_a($this->_propDict["type"], "\Microsoft\Graph\Model\RecurrencePatternType") || is_null($this->_propDict["type"])) {
+                return $this->_propDict["type"];
+            } else {
+                $this->_propDict["type"] = new RecurrencePatternType($this->_propDict["type"]);
+                return $this->_propDict["type"];
+            }
+        }
+        return null;
+    }
+
+    /**
+    * Sets the type
+    * The recurrence pattern type: daily, weekly, absoluteMonthly, relativeMonthly, absoluteYearly, relativeYearly. Required. For more information, see values of type property.
+    *
+    * @param RecurrencePatternType $val The value to assign to the type
+    *
+    * @return RecurrencePattern The RecurrencePattern
+    */
+    public function setType($val)
+    {
+        $this->_propDict["type"] = $val;
          return $this;
     }
 }

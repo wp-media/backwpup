@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,19 +17,20 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class WindowsInformationProtectionDesktopApp extends WindowsInformationProtectionApp
 {
     /**
     * Set the @odata.type since this type is immediately descended from an abstract
     * type that is referenced as the type in an entity.
+    * @param array $propDict The property dictionary
     */
-    public function __construct()
+    public function __construct($propDict = array())
     {
+        parent::__construct($propDict);
         $this->setODataType("#microsoft.graph.windowsInformationProtectionDesktopApp");
     }
 
@@ -38,7 +38,7 @@ class WindowsInformationProtectionDesktopApp extends WindowsInformationProtectio
     * Gets the binaryName
     * The binary name.
     *
-    * @return string The binaryName
+    * @return string|null The binaryName
     */
     public function getBinaryName()
     {
@@ -63,38 +63,10 @@ class WindowsInformationProtectionDesktopApp extends WindowsInformationProtectio
         return $this;
     }
     /**
-    * Gets the binaryVersionLow
-    * The lower binary version.
-    *
-    * @return string The binaryVersionLow
-    */
-    public function getBinaryVersionLow()
-    {
-        if (array_key_exists("binaryVersionLow", $this->_propDict)) {
-            return $this->_propDict["binaryVersionLow"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the binaryVersionLow
-    * The lower binary version.
-    *
-    * @param string $val The value of the binaryVersionLow
-    *
-    * @return WindowsInformationProtectionDesktopApp
-    */
-    public function setBinaryVersionLow($val)
-    {
-        $this->_propDict["binaryVersionLow"] = $val;
-        return $this;
-    }
-    /**
     * Gets the binaryVersionHigh
     * The high binary version.
     *
-    * @return string The binaryVersionHigh
+    * @return string|null The binaryVersionHigh
     */
     public function getBinaryVersionHigh()
     {
@@ -116,6 +88,34 @@ class WindowsInformationProtectionDesktopApp extends WindowsInformationProtectio
     public function setBinaryVersionHigh($val)
     {
         $this->_propDict["binaryVersionHigh"] = $val;
+        return $this;
+    }
+    /**
+    * Gets the binaryVersionLow
+    * The lower binary version.
+    *
+    * @return string|null The binaryVersionLow
+    */
+    public function getBinaryVersionLow()
+    {
+        if (array_key_exists("binaryVersionLow", $this->_propDict)) {
+            return $this->_propDict["binaryVersionLow"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the binaryVersionLow
+    * The lower binary version.
+    *
+    * @param string $val The value of the binaryVersionLow
+    *
+    * @return WindowsInformationProtectionDesktopApp
+    */
+    public function setBinaryVersionLow($val)
+    {
+        $this->_propDict["binaryVersionLow"] = $val;
         return $this;
     }
 }

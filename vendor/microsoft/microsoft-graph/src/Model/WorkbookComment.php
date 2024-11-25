@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class WorkbookComment extends Entity
 {
@@ -30,7 +28,7 @@ class WorkbookComment extends Entity
     * Gets the content
     * The content of comment.
     *
-    * @return string The content
+    * @return string|null The content
     */
     public function getContent()
     {
@@ -40,7 +38,7 @@ class WorkbookComment extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the content
     * The content of comment.
@@ -54,12 +52,12 @@ class WorkbookComment extends Entity
         $this->_propDict["content"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the contentType
     * Indicates the type for the comment.
     *
-    * @return string The contentType
+    * @return string|null The contentType
     */
     public function getContentType()
     {
@@ -69,7 +67,7 @@ class WorkbookComment extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the contentType
     * Indicates the type for the comment.
@@ -83,13 +81,12 @@ class WorkbookComment extends Entity
         $this->_propDict["contentType"] = $val;
         return $this;
     }
-    
 
-     /** 
+
+     /**
      * Gets the replies
-    * Read-only. Nullable.
      *
-     * @return array The replies
+     * @return array|null The replies
      */
     public function getReplies()
     {
@@ -99,19 +96,18 @@ class WorkbookComment extends Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the replies
-    * Read-only. Nullable.
     *
-    * @param WorkbookCommentReply $val The replies
+    * @param WorkbookCommentReply[] $val The replies
     *
     * @return WorkbookComment
     */
     public function setReplies($val)
     {
-		$this->_propDict["replies"] = $val;
+        $this->_propDict["replies"] = $val;
         return $this;
     }
-    
+
 }

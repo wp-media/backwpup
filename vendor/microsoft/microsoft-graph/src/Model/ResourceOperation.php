@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,47 +18,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class ResourceOperation extends Entity
 {
     /**
-    * Gets the resourceName
-    * Name of the Resource this operation is performed on.
-    *
-    * @return string The resourceName
-    */
-    public function getResourceName()
-    {
-        if (array_key_exists("resourceName", $this->_propDict)) {
-            return $this->_propDict["resourceName"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the resourceName
-    * Name of the Resource this operation is performed on.
-    *
-    * @param string $val The resourceName
-    *
-    * @return ResourceOperation
-    */
-    public function setResourceName($val)
-    {
-        $this->_propDict["resourceName"] = $val;
-        return $this;
-    }
-    
-    /**
     * Gets the actionName
     * Type of action this operation is going to perform. The actionName should be concise and limited to as few words as possible.
     *
-    * @return string The actionName
+    * @return string|null The actionName
     */
     public function getActionName()
     {
@@ -69,7 +38,7 @@ class ResourceOperation extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the actionName
     * Type of action this operation is going to perform. The actionName should be concise and limited to as few words as possible.
@@ -83,12 +52,12 @@ class ResourceOperation extends Entity
         $this->_propDict["actionName"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the description
     * Description of the resource operation. The description is used in mouse-over text for the operation when shown in the Azure Portal.
     *
-    * @return string The description
+    * @return string|null The description
     */
     public function getDescription()
     {
@@ -98,7 +67,7 @@ class ResourceOperation extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the description
     * Description of the resource operation. The description is used in mouse-over text for the operation when shown in the Azure Portal.
@@ -112,5 +81,34 @@ class ResourceOperation extends Entity
         $this->_propDict["description"] = $val;
         return $this;
     }
-    
+
+    /**
+    * Gets the resourceName
+    * Name of the Resource this operation is performed on.
+    *
+    * @return string|null The resourceName
+    */
+    public function getResourceName()
+    {
+        if (array_key_exists("resourceName", $this->_propDict)) {
+            return $this->_propDict["resourceName"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the resourceName
+    * Name of the Resource this operation is performed on.
+    *
+    * @param string $val The resourceName
+    *
+    * @return ResourceOperation
+    */
+    public function setResourceName($val)
+    {
+        $this->_propDict["resourceName"] = $val;
+        return $this;
+    }
+
 }

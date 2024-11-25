@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -21,10 +20,9 @@ use Microsoft\Graph\Core\Enum;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class NotificationTemplateBrandingOptions extends Enum
 {
@@ -35,4 +33,7 @@ class NotificationTemplateBrandingOptions extends Enum
     const INCLUDE_COMPANY_LOGO = "includeCompanyLogo";
     const INCLUDE_COMPANY_NAME = "includeCompanyName";
     const INCLUDE_CONTACT_INFORMATION = "includeContactInformation";
+    const INCLUDE_COMPANY_PORTAL_LINK = "includeCompanyPortalLink";
+    const INCLUDE_DEVICE_DETAILS = "includeDeviceDetails";
+    const UNKNOWN_FUTURE_VALUE = "unknownFutureValue";
 }

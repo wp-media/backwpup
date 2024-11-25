@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class AverageComparativeScore extends Entity
 {
@@ -29,7 +27,7 @@ class AverageComparativeScore extends Entity
     * Gets the averageScore
     * Average score within specified basis.
     *
-    * @return float The averageScore
+    * @return float|null The averageScore
     */
     public function getAverageScore()
     {
@@ -57,7 +55,7 @@ class AverageComparativeScore extends Entity
     * Gets the basis
     * Scope type. The possible values are: AllTenants, TotalSeats, IndustryTypes.
     *
-    * @return string The basis
+    * @return string|null The basis
     */
     public function getBasis()
     {

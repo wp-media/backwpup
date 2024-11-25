@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class WorkbookRangeView extends Entity
 {
@@ -30,7 +28,7 @@ class WorkbookRangeView extends Entity
     * Gets the cellAddresses
     * Represents the cell addresses
     *
-    * @return string The cellAddresses
+    * @return string|null The cellAddresses
     */
     public function getCellAddresses()
     {
@@ -40,7 +38,7 @@ class WorkbookRangeView extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the cellAddresses
     * Represents the cell addresses
@@ -54,12 +52,12 @@ class WorkbookRangeView extends Entity
         $this->_propDict["cellAddresses"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the columnCount
     * Returns the number of visible columns. Read-only.
     *
-    * @return int The columnCount
+    * @return int|null The columnCount
     */
     public function getColumnCount()
     {
@@ -69,7 +67,7 @@ class WorkbookRangeView extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the columnCount
     * Returns the number of visible columns. Read-only.
@@ -83,12 +81,12 @@ class WorkbookRangeView extends Entity
         $this->_propDict["columnCount"] = intval($val);
         return $this;
     }
-    
+
     /**
     * Gets the formulas
     * Represents the formula in A1-style notation.
     *
-    * @return string The formulas
+    * @return string|null The formulas
     */
     public function getFormulas()
     {
@@ -98,7 +96,7 @@ class WorkbookRangeView extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the formulas
     * Represents the formula in A1-style notation.
@@ -112,12 +110,12 @@ class WorkbookRangeView extends Entity
         $this->_propDict["formulas"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the formulasLocal
     * Represents the formula in A1-style notation, in the user's language and number-formatting locale. For example, the English '=SUM(A1, 1.5)' formula would become '=SUMME(A1; 1,5)' in German.
     *
-    * @return string The formulasLocal
+    * @return string|null The formulasLocal
     */
     public function getFormulasLocal()
     {
@@ -127,7 +125,7 @@ class WorkbookRangeView extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the formulasLocal
     * Represents the formula in A1-style notation, in the user's language and number-formatting locale. For example, the English '=SUM(A1, 1.5)' formula would become '=SUMME(A1; 1,5)' in German.
@@ -141,12 +139,12 @@ class WorkbookRangeView extends Entity
         $this->_propDict["formulasLocal"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the formulasR1C1
     * Represents the formula in R1C1-style notation.
     *
-    * @return string The formulasR1C1
+    * @return string|null The formulasR1C1
     */
     public function getFormulasR1C1()
     {
@@ -156,7 +154,7 @@ class WorkbookRangeView extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the formulasR1C1
     * Represents the formula in R1C1-style notation.
@@ -170,12 +168,12 @@ class WorkbookRangeView extends Entity
         $this->_propDict["formulasR1C1"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the index
     * Index of the range.
     *
-    * @return int The index
+    * @return int|null The index
     */
     public function getIndex()
     {
@@ -185,7 +183,7 @@ class WorkbookRangeView extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the index
     * Index of the range.
@@ -199,12 +197,12 @@ class WorkbookRangeView extends Entity
         $this->_propDict["index"] = intval($val);
         return $this;
     }
-    
+
     /**
     * Gets the numberFormat
     * Represents Excel's number format code for the given cell. Read-only.
     *
-    * @return string The numberFormat
+    * @return string|null The numberFormat
     */
     public function getNumberFormat()
     {
@@ -214,7 +212,7 @@ class WorkbookRangeView extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the numberFormat
     * Represents Excel's number format code for the given cell. Read-only.
@@ -228,12 +226,12 @@ class WorkbookRangeView extends Entity
         $this->_propDict["numberFormat"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the rowCount
     * Returns the number of visible rows. Read-only.
     *
-    * @return int The rowCount
+    * @return int|null The rowCount
     */
     public function getRowCount()
     {
@@ -243,7 +241,7 @@ class WorkbookRangeView extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the rowCount
     * Returns the number of visible rows. Read-only.
@@ -257,12 +255,12 @@ class WorkbookRangeView extends Entity
         $this->_propDict["rowCount"] = intval($val);
         return $this;
     }
-    
+
     /**
     * Gets the text
-    * Text values of the specified range. The Text value will not depend on the cell width. The # sign substitution that happens in Excel UI will not affect the text value returned by the API. Read-only.
+    * Text values of the specified range. The Text value won't depend on the cell width. The # sign substitution that happens in Excel UI won't affect the text value returned by the API. Read-only.
     *
-    * @return string The text
+    * @return string|null The text
     */
     public function getText()
     {
@@ -272,10 +270,10 @@ class WorkbookRangeView extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the text
-    * Text values of the specified range. The Text value will not depend on the cell width. The # sign substitution that happens in Excel UI will not affect the text value returned by the API. Read-only.
+    * Text values of the specified range. The Text value won't depend on the cell width. The # sign substitution that happens in Excel UI won't affect the text value returned by the API. Read-only.
     *
     * @param string $val The text
     *
@@ -286,12 +284,41 @@ class WorkbookRangeView extends Entity
         $this->_propDict["text"] = $val;
         return $this;
     }
-    
+
+    /**
+    * Gets the values
+    * Represents the raw values of the specified range view. The data returned could be of type string, number, or a boolean. Cell that contains an error returns the error string.
+    *
+    * @return string|null The values
+    */
+    public function getValues()
+    {
+        if (array_key_exists("values", $this->_propDict)) {
+            return $this->_propDict["values"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the values
+    * Represents the raw values of the specified range view. The data returned could be of type string, number, or a boolean. Cell that contains an error returns the error string.
+    *
+    * @param string $val The values
+    *
+    * @return WorkbookRangeView
+    */
+    public function setValues($val)
+    {
+        $this->_propDict["values"] = $val;
+        return $this;
+    }
+
     /**
     * Gets the valueTypes
     * Represents the type of data of each cell. Read-only. The possible values are: Unknown, Empty, String, Integer, Double, Boolean, Error.
     *
-    * @return string The valueTypes
+    * @return string|null The valueTypes
     */
     public function getValueTypes()
     {
@@ -301,7 +328,7 @@ class WorkbookRangeView extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the valueTypes
     * Represents the type of data of each cell. Read-only. The possible values are: Unknown, Empty, String, Integer, Double, Boolean, Error.
@@ -315,42 +342,13 @@ class WorkbookRangeView extends Entity
         $this->_propDict["valueTypes"] = $val;
         return $this;
     }
-    
-    /**
-    * Gets the values
-    * Represents the raw values of the specified range view. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
-    *
-    * @return string The values
-    */
-    public function getValues()
-    {
-        if (array_key_exists("values", $this->_propDict)) {
-            return $this->_propDict["values"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the values
-    * Represents the raw values of the specified range view. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
-    *
-    * @param string $val The values
-    *
-    * @return WorkbookRangeView
-    */
-    public function setValues($val)
-    {
-        $this->_propDict["values"] = $val;
-        return $this;
-    }
-    
 
-     /** 
+
+     /**
      * Gets the rows
     * Represents a collection of range views associated with the range. Read-only. Read-only.
      *
-     * @return array The rows
+     * @return array|null The rows
      */
     public function getRows()
     {
@@ -360,19 +358,19 @@ class WorkbookRangeView extends Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the rows
     * Represents a collection of range views associated with the range. Read-only. Read-only.
     *
-    * @param WorkbookRangeView $val The rows
+    * @param WorkbookRangeView[] $val The rows
     *
     * @return WorkbookRangeView
     */
     public function setRows($val)
     {
-		$this->_propDict["rows"] = $val;
+        $this->_propDict["rows"] = $val;
         return $this;
     }
-    
+
 }

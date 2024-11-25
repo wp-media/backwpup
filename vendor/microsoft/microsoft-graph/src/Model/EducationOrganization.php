@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,47 +18,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class EducationOrganization extends Entity
 {
     /**
-    * Gets the displayName
-    * Organization display name.
-    *
-    * @return string The displayName
-    */
-    public function getDisplayName()
-    {
-        if (array_key_exists("displayName", $this->_propDict)) {
-            return $this->_propDict["displayName"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the displayName
-    * Organization display name.
-    *
-    * @param string $val The displayName
-    *
-    * @return EducationOrganization
-    */
-    public function setDisplayName($val)
-    {
-        $this->_propDict["displayName"] = $val;
-        return $this;
-    }
-    
-    /**
     * Gets the description
     * Organization description.
     *
-    * @return string The description
+    * @return string|null The description
     */
     public function getDescription()
     {
@@ -69,7 +38,7 @@ class EducationOrganization extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the description
     * Organization description.
@@ -83,17 +52,46 @@ class EducationOrganization extends Entity
         $this->_propDict["description"] = $val;
         return $this;
     }
-    
+
+    /**
+    * Gets the displayName
+    * Organization display name.
+    *
+    * @return string|null The displayName
+    */
+    public function getDisplayName()
+    {
+        if (array_key_exists("displayName", $this->_propDict)) {
+            return $this->_propDict["displayName"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the displayName
+    * Organization display name.
+    *
+    * @param string $val The displayName
+    *
+    * @return EducationOrganization
+    */
+    public function setDisplayName($val)
+    {
+        $this->_propDict["displayName"] = $val;
+        return $this;
+    }
+
     /**
     * Gets the externalSource
-    * Source where this organization was created from. The possible values are: sis, manual, unknownFutureValue.
+    * Source where this organization was created from. Possible values are: sis, manual.
     *
-    * @return EducationExternalSource The externalSource
+    * @return EducationExternalSource|null The externalSource
     */
     public function getExternalSource()
     {
         if (array_key_exists("externalSource", $this->_propDict)) {
-            if (is_a($this->_propDict["externalSource"], "Microsoft\Graph\Model\EducationExternalSource")) {
+            if (is_a($this->_propDict["externalSource"], "\Microsoft\Graph\Model\EducationExternalSource") || is_null($this->_propDict["externalSource"])) {
                 return $this->_propDict["externalSource"];
             } else {
                 $this->_propDict["externalSource"] = new EducationExternalSource($this->_propDict["externalSource"]);
@@ -102,10 +100,10 @@ class EducationOrganization extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the externalSource
-    * Source where this organization was created from. The possible values are: sis, manual, unknownFutureValue.
+    * Source where this organization was created from. Possible values are: sis, manual.
     *
     * @param EducationExternalSource $val The externalSource
     *
@@ -116,5 +114,34 @@ class EducationOrganization extends Entity
         $this->_propDict["externalSource"] = $val;
         return $this;
     }
-    
+
+    /**
+    * Gets the externalSourceDetail
+    * The name of the external source this resource was generated from.
+    *
+    * @return string|null The externalSourceDetail
+    */
+    public function getExternalSourceDetail()
+    {
+        if (array_key_exists("externalSourceDetail", $this->_propDict)) {
+            return $this->_propDict["externalSourceDetail"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the externalSourceDetail
+    * The name of the external source this resource was generated from.
+    *
+    * @param string $val The externalSourceDetail
+    *
+    * @return EducationOrganization
+    */
+    public function setExternalSourceDetail($val)
+    {
+        $this->_propDict["externalSourceDetail"] = $val;
+        return $this;
+    }
+
 }

@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,18 +18,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class DeviceEnrollmentLimitConfiguration extends DeviceEnrollmentConfiguration
 {
     /**
     * Gets the limit
-    * Not yet documented
+    * The maximum number of devices that a user can enroll
     *
-    * @return int The limit
+    * @return int|null The limit
     */
     public function getLimit()
     {
@@ -40,10 +38,10 @@ class DeviceEnrollmentLimitConfiguration extends DeviceEnrollmentConfiguration
             return null;
         }
     }
-    
+
     /**
     * Sets the limit
-    * Not yet documented
+    * The maximum number of devices that a user can enroll
     *
     * @param int $val The limit
     *
@@ -54,5 +52,5 @@ class DeviceEnrollmentLimitConfiguration extends DeviceEnrollmentConfiguration
         $this->_propDict["limit"] = intval($val);
         return $this;
     }
-    
+
 }

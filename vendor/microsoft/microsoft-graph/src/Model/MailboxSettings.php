@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,51 +17,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class MailboxSettings extends Entity
 {
-
-    /**
-    * Gets the automaticRepliesSetting
-    * Configuration settings to automatically notify the sender of an incoming email with a message from the signed-in user.
-    *
-    * @return AutomaticRepliesSetting The automaticRepliesSetting
-    */
-    public function getAutomaticRepliesSetting()
-    {
-        if (array_key_exists("automaticRepliesSetting", $this->_propDict)) {
-            if (is_a($this->_propDict["automaticRepliesSetting"], "Microsoft\Graph\Model\AutomaticRepliesSetting")) {
-                return $this->_propDict["automaticRepliesSetting"];
-            } else {
-                $this->_propDict["automaticRepliesSetting"] = new AutomaticRepliesSetting($this->_propDict["automaticRepliesSetting"]);
-                return $this->_propDict["automaticRepliesSetting"];
-            }
-        }
-        return null;
-    }
-
-    /**
-    * Sets the automaticRepliesSetting
-    * Configuration settings to automatically notify the sender of an incoming email with a message from the signed-in user.
-    *
-    * @param AutomaticRepliesSetting $val The value to assign to the automaticRepliesSetting
-    *
-    * @return MailboxSettings The MailboxSettings
-    */
-    public function setAutomaticRepliesSetting($val)
-    {
-        $this->_propDict["automaticRepliesSetting"] = $val;
-         return $this;
-    }
     /**
     * Gets the archiveFolder
     * Folder ID of an archive folder for the user.
     *
-    * @return string The archiveFolder
+    * @return string|null The archiveFolder
     */
     public function getArchiveFolder()
     {
@@ -86,11 +51,166 @@ class MailboxSettings extends Entity
         $this->_propDict["archiveFolder"] = $val;
         return $this;
     }
+
+    /**
+    * Gets the automaticRepliesSetting
+    * Configuration settings to automatically notify the sender of an incoming email with a message from the signed-in user.
+    *
+    * @return AutomaticRepliesSetting|null The automaticRepliesSetting
+    */
+    public function getAutomaticRepliesSetting()
+    {
+        if (array_key_exists("automaticRepliesSetting", $this->_propDict)) {
+            if (is_a($this->_propDict["automaticRepliesSetting"], "\Microsoft\Graph\Model\AutomaticRepliesSetting") || is_null($this->_propDict["automaticRepliesSetting"])) {
+                return $this->_propDict["automaticRepliesSetting"];
+            } else {
+                $this->_propDict["automaticRepliesSetting"] = new AutomaticRepliesSetting($this->_propDict["automaticRepliesSetting"]);
+                return $this->_propDict["automaticRepliesSetting"];
+            }
+        }
+        return null;
+    }
+
+    /**
+    * Sets the automaticRepliesSetting
+    * Configuration settings to automatically notify the sender of an incoming email with a message from the signed-in user.
+    *
+    * @param AutomaticRepliesSetting $val The value to assign to the automaticRepliesSetting
+    *
+    * @return MailboxSettings The MailboxSettings
+    */
+    public function setAutomaticRepliesSetting($val)
+    {
+        $this->_propDict["automaticRepliesSetting"] = $val;
+         return $this;
+    }
+    /**
+    * Gets the dateFormat
+    * The date format for the user's mailbox.
+    *
+    * @return string|null The dateFormat
+    */
+    public function getDateFormat()
+    {
+        if (array_key_exists("dateFormat", $this->_propDict)) {
+            return $this->_propDict["dateFormat"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the dateFormat
+    * The date format for the user's mailbox.
+    *
+    * @param string $val The value of the dateFormat
+    *
+    * @return MailboxSettings
+    */
+    public function setDateFormat($val)
+    {
+        $this->_propDict["dateFormat"] = $val;
+        return $this;
+    }
+
+    /**
+    * Gets the delegateMeetingMessageDeliveryOptions
+    * If the user has a calendar delegate, this specifies whether the delegate, mailbox owner, or both receive meeting messages and meeting responses. Possible values are: sendToDelegateAndInformationToPrincipal, sendToDelegateAndPrincipal, sendToDelegateOnly.
+    *
+    * @return DelegateMeetingMessageDeliveryOptions|null The delegateMeetingMessageDeliveryOptions
+    */
+    public function getDelegateMeetingMessageDeliveryOptions()
+    {
+        if (array_key_exists("delegateMeetingMessageDeliveryOptions", $this->_propDict)) {
+            if (is_a($this->_propDict["delegateMeetingMessageDeliveryOptions"], "\Microsoft\Graph\Model\DelegateMeetingMessageDeliveryOptions") || is_null($this->_propDict["delegateMeetingMessageDeliveryOptions"])) {
+                return $this->_propDict["delegateMeetingMessageDeliveryOptions"];
+            } else {
+                $this->_propDict["delegateMeetingMessageDeliveryOptions"] = new DelegateMeetingMessageDeliveryOptions($this->_propDict["delegateMeetingMessageDeliveryOptions"]);
+                return $this->_propDict["delegateMeetingMessageDeliveryOptions"];
+            }
+        }
+        return null;
+    }
+
+    /**
+    * Sets the delegateMeetingMessageDeliveryOptions
+    * If the user has a calendar delegate, this specifies whether the delegate, mailbox owner, or both receive meeting messages and meeting responses. Possible values are: sendToDelegateAndInformationToPrincipal, sendToDelegateAndPrincipal, sendToDelegateOnly.
+    *
+    * @param DelegateMeetingMessageDeliveryOptions $val The value to assign to the delegateMeetingMessageDeliveryOptions
+    *
+    * @return MailboxSettings The MailboxSettings
+    */
+    public function setDelegateMeetingMessageDeliveryOptions($val)
+    {
+        $this->_propDict["delegateMeetingMessageDeliveryOptions"] = $val;
+         return $this;
+    }
+
+    /**
+    * Gets the language
+    * The locale information for the user, including the preferred language and country/region.
+    *
+    * @return LocaleInfo|null The language
+    */
+    public function getLanguage()
+    {
+        if (array_key_exists("language", $this->_propDict)) {
+            if (is_a($this->_propDict["language"], "\Microsoft\Graph\Model\LocaleInfo") || is_null($this->_propDict["language"])) {
+                return $this->_propDict["language"];
+            } else {
+                $this->_propDict["language"] = new LocaleInfo($this->_propDict["language"]);
+                return $this->_propDict["language"];
+            }
+        }
+        return null;
+    }
+
+    /**
+    * Sets the language
+    * The locale information for the user, including the preferred language and country/region.
+    *
+    * @param LocaleInfo $val The value to assign to the language
+    *
+    * @return MailboxSettings The MailboxSettings
+    */
+    public function setLanguage($val)
+    {
+        $this->_propDict["language"] = $val;
+         return $this;
+    }
+    /**
+    * Gets the timeFormat
+    * The time format for the user's mailbox.
+    *
+    * @return string|null The timeFormat
+    */
+    public function getTimeFormat()
+    {
+        if (array_key_exists("timeFormat", $this->_propDict)) {
+            return $this->_propDict["timeFormat"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the timeFormat
+    * The time format for the user's mailbox.
+    *
+    * @param string $val The value of the timeFormat
+    *
+    * @return MailboxSettings
+    */
+    public function setTimeFormat($val)
+    {
+        $this->_propDict["timeFormat"] = $val;
+        return $this;
+    }
     /**
     * Gets the timeZone
     * The default time zone for the user's mailbox.
     *
-    * @return string The timeZone
+    * @return string|null The timeZone
     */
     public function getTimeZone()
     {
@@ -116,35 +236,35 @@ class MailboxSettings extends Entity
     }
 
     /**
-    * Gets the language
-    * The locale information for the user, including the preferred language and country/region.
+    * Gets the userPurpose
+    * The purpose of the mailbox. Differentiates a mailbox for a single user from a shared mailbox and equipment mailbox in Exchange Online. Possible values are: user, linked, shared, room, equipment, others, unknownFutureValue. Read-only.
     *
-    * @return LocaleInfo The language
+    * @return UserPurpose|null The userPurpose
     */
-    public function getLanguage()
+    public function getUserPurpose()
     {
-        if (array_key_exists("language", $this->_propDict)) {
-            if (is_a($this->_propDict["language"], "Microsoft\Graph\Model\LocaleInfo")) {
-                return $this->_propDict["language"];
+        if (array_key_exists("userPurpose", $this->_propDict)) {
+            if (is_a($this->_propDict["userPurpose"], "\Microsoft\Graph\Model\UserPurpose") || is_null($this->_propDict["userPurpose"])) {
+                return $this->_propDict["userPurpose"];
             } else {
-                $this->_propDict["language"] = new LocaleInfo($this->_propDict["language"]);
-                return $this->_propDict["language"];
+                $this->_propDict["userPurpose"] = new UserPurpose($this->_propDict["userPurpose"]);
+                return $this->_propDict["userPurpose"];
             }
         }
         return null;
     }
 
     /**
-    * Sets the language
-    * The locale information for the user, including the preferred language and country/region.
+    * Sets the userPurpose
+    * The purpose of the mailbox. Differentiates a mailbox for a single user from a shared mailbox and equipment mailbox in Exchange Online. Possible values are: user, linked, shared, room, equipment, others, unknownFutureValue. Read-only.
     *
-    * @param LocaleInfo $val The value to assign to the language
+    * @param UserPurpose $val The value to assign to the userPurpose
     *
     * @return MailboxSettings The MailboxSettings
     */
-    public function setLanguage($val)
+    public function setUserPurpose($val)
     {
-        $this->_propDict["language"] = $val;
+        $this->_propDict["userPurpose"] = $val;
          return $this;
     }
 
@@ -152,12 +272,12 @@ class MailboxSettings extends Entity
     * Gets the workingHours
     * The days of the week and hours in a specific time zone that the user works.
     *
-    * @return WorkingHours The workingHours
+    * @return WorkingHours|null The workingHours
     */
     public function getWorkingHours()
     {
         if (array_key_exists("workingHours", $this->_propDict)) {
-            if (is_a($this->_propDict["workingHours"], "Microsoft\Graph\Model\WorkingHours")) {
+            if (is_a($this->_propDict["workingHours"], "\Microsoft\Graph\Model\WorkingHours") || is_null($this->_propDict["workingHours"])) {
                 return $this->_propDict["workingHours"];
             } else {
                 $this->_propDict["workingHours"] = new WorkingHours($this->_propDict["workingHours"]);
@@ -179,61 +299,5 @@ class MailboxSettings extends Entity
     {
         $this->_propDict["workingHours"] = $val;
          return $this;
-    }
-    /**
-    * Gets the dateFormat
-    * The date format for the user's mailbox.
-    *
-    * @return string The dateFormat
-    */
-    public function getDateFormat()
-    {
-        if (array_key_exists("dateFormat", $this->_propDict)) {
-            return $this->_propDict["dateFormat"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the dateFormat
-    * The date format for the user's mailbox.
-    *
-    * @param string $val The value of the dateFormat
-    *
-    * @return MailboxSettings
-    */
-    public function setDateFormat($val)
-    {
-        $this->_propDict["dateFormat"] = $val;
-        return $this;
-    }
-    /**
-    * Gets the timeFormat
-    * The time format for the user's mailbox.
-    *
-    * @return string The timeFormat
-    */
-    public function getTimeFormat()
-    {
-        if (array_key_exists("timeFormat", $this->_propDict)) {
-            return $this->_propDict["timeFormat"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the timeFormat
-    * The time format for the user's mailbox.
-    *
-    * @param string $val The value of the timeFormat
-    *
-    * @return MailboxSettings
-    */
-    public function setTimeFormat($val)
-    {
-        $this->_propDict["timeFormat"] = $val;
-        return $this;
     }
 }

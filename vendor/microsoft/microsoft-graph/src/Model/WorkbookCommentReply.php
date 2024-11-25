@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class WorkbookCommentReply extends Entity
 {
@@ -30,7 +28,7 @@ class WorkbookCommentReply extends Entity
     * Gets the content
     * The content of a comment reply.
     *
-    * @return string The content
+    * @return string|null The content
     */
     public function getContent()
     {
@@ -40,7 +38,7 @@ class WorkbookCommentReply extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the content
     * The content of a comment reply.
@@ -54,12 +52,12 @@ class WorkbookCommentReply extends Entity
         $this->_propDict["content"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the contentType
     * Indicates the type for the comment reply.
     *
-    * @return string The contentType
+    * @return string|null The contentType
     */
     public function getContentType()
     {
@@ -69,7 +67,7 @@ class WorkbookCommentReply extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the contentType
     * Indicates the type for the comment reply.
@@ -83,5 +81,5 @@ class WorkbookCommentReply extends Entity
         $this->_propDict["contentType"] = $val;
         return $this;
     }
-    
+
 }

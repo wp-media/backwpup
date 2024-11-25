@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class DomainDnsSrvRecord extends DomainDnsRecord
 {
@@ -30,7 +28,7 @@ class DomainDnsSrvRecord extends DomainDnsRecord
     * Gets the nameTarget
     * Value to use when configuring the Target property of the SRV record at the DNS host.
     *
-    * @return string The nameTarget
+    * @return string|null The nameTarget
     */
     public function getNameTarget()
     {
@@ -40,7 +38,7 @@ class DomainDnsSrvRecord extends DomainDnsRecord
             return null;
         }
     }
-    
+
     /**
     * Sets the nameTarget
     * Value to use when configuring the Target property of the SRV record at the DNS host.
@@ -54,12 +52,12 @@ class DomainDnsSrvRecord extends DomainDnsRecord
         $this->_propDict["nameTarget"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the port
     * Value to use when configuring the port property of the SRV record at the DNS host.
     *
-    * @return int The port
+    * @return int|null The port
     */
     public function getPort()
     {
@@ -69,7 +67,7 @@ class DomainDnsSrvRecord extends DomainDnsRecord
             return null;
         }
     }
-    
+
     /**
     * Sets the port
     * Value to use when configuring the port property of the SRV record at the DNS host.
@@ -83,12 +81,12 @@ class DomainDnsSrvRecord extends DomainDnsRecord
         $this->_propDict["port"] = intval($val);
         return $this;
     }
-    
+
     /**
     * Gets the priority
     * Value to use when configuring the priority property of the SRV record at the DNS host.
     *
-    * @return int The priority
+    * @return int|null The priority
     */
     public function getPriority()
     {
@@ -98,7 +96,7 @@ class DomainDnsSrvRecord extends DomainDnsRecord
             return null;
         }
     }
-    
+
     /**
     * Sets the priority
     * Value to use when configuring the priority property of the SRV record at the DNS host.
@@ -112,12 +110,12 @@ class DomainDnsSrvRecord extends DomainDnsRecord
         $this->_propDict["priority"] = intval($val);
         return $this;
     }
-    
+
     /**
     * Gets the protocol
     * Value to use when configuring the protocol property of the SRV record at the DNS host.
     *
-    * @return string The protocol
+    * @return string|null The protocol
     */
     public function getProtocol()
     {
@@ -127,7 +125,7 @@ class DomainDnsSrvRecord extends DomainDnsRecord
             return null;
         }
     }
-    
+
     /**
     * Sets the protocol
     * Value to use when configuring the protocol property of the SRV record at the DNS host.
@@ -141,12 +139,12 @@ class DomainDnsSrvRecord extends DomainDnsRecord
         $this->_propDict["protocol"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the service
     * Value to use when configuring the service property of the SRV record at the DNS host.
     *
-    * @return string The service
+    * @return string|null The service
     */
     public function getService()
     {
@@ -156,7 +154,7 @@ class DomainDnsSrvRecord extends DomainDnsRecord
             return null;
         }
     }
-    
+
     /**
     * Sets the service
     * Value to use when configuring the service property of the SRV record at the DNS host.
@@ -170,12 +168,12 @@ class DomainDnsSrvRecord extends DomainDnsRecord
         $this->_propDict["service"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the weight
     * Value to use when configuring the weight property of the SRV record at the DNS host.
     *
-    * @return int The weight
+    * @return int|null The weight
     */
     public function getWeight()
     {
@@ -185,7 +183,7 @@ class DomainDnsSrvRecord extends DomainDnsRecord
             return null;
         }
     }
-    
+
     /**
     * Sets the weight
     * Value to use when configuring the weight property of the SRV record at the DNS host.
@@ -199,5 +197,5 @@ class DomainDnsSrvRecord extends DomainDnsRecord
         $this->_propDict["weight"] = intval($val);
         return $this;
     }
-    
+
 }

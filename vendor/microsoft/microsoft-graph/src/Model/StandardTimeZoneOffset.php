@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,51 +17,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class StandardTimeZoneOffset extends Entity
 {
-
-    /**
-    * Gets the time
-    * Represents the time of day when the transition from daylight saving time to standard time occurs.
-    *
-    * @return TimeOfDay The time
-    */
-    public function getTime()
-    {
-        if (array_key_exists("time", $this->_propDict)) {
-            if (is_a($this->_propDict["time"], "Microsoft\Graph\Model\TimeOfDay")) {
-                return $this->_propDict["time"];
-            } else {
-                $this->_propDict["time"] = new TimeOfDay($this->_propDict["time"]);
-                return $this->_propDict["time"];
-            }
-        }
-        return null;
-    }
-
-    /**
-    * Sets the time
-    * Represents the time of day when the transition from daylight saving time to standard time occurs.
-    *
-    * @param TimeOfDay $val The value to assign to the time
-    *
-    * @return StandardTimeZoneOffset The StandardTimeZoneOffset
-    */
-    public function setTime($val)
-    {
-        $this->_propDict["time"] = $val;
-         return $this;
-    }
     /**
     * Gets the dayOccurrence
     * Represents the nth occurrence of the day of week that the transition from daylight saving time to standard time occurs.
     *
-    * @return int The dayOccurrence
+    * @return int|null The dayOccurrence
     */
     public function getDayOccurrence()
     {
@@ -91,12 +56,12 @@ class StandardTimeZoneOffset extends Entity
     * Gets the dayOfWeek
     * Represents the day of the week when the transition from daylight saving time to standard time.
     *
-    * @return DayOfWeek The dayOfWeek
+    * @return DayOfWeek|null The dayOfWeek
     */
     public function getDayOfWeek()
     {
         if (array_key_exists("dayOfWeek", $this->_propDict)) {
-            if (is_a($this->_propDict["dayOfWeek"], "Microsoft\Graph\Model\DayOfWeek")) {
+            if (is_a($this->_propDict["dayOfWeek"], "\Microsoft\Graph\Model\DayOfWeek") || is_null($this->_propDict["dayOfWeek"])) {
                 return $this->_propDict["dayOfWeek"];
             } else {
                 $this->_propDict["dayOfWeek"] = new DayOfWeek($this->_propDict["dayOfWeek"]);
@@ -123,7 +88,7 @@ class StandardTimeZoneOffset extends Entity
     * Gets the month
     * Represents the month of the year when the transition from daylight saving time to standard time occurs.
     *
-    * @return int The month
+    * @return int|null The month
     */
     public function getMonth()
     {
@@ -147,11 +112,44 @@ class StandardTimeZoneOffset extends Entity
         $this->_propDict["month"] = $val;
         return $this;
     }
+
+    /**
+    * Gets the time
+    * Represents the time of day when the transition from daylight saving time to standard time occurs.
+    *
+    * @return TimeOfDay|null The time
+    */
+    public function getTime()
+    {
+        if (array_key_exists("time", $this->_propDict)) {
+            if (is_a($this->_propDict["time"], "\Microsoft\Graph\Model\TimeOfDay") || is_null($this->_propDict["time"])) {
+                return $this->_propDict["time"];
+            } else {
+                $this->_propDict["time"] = new TimeOfDay($this->_propDict["time"]);
+                return $this->_propDict["time"];
+            }
+        }
+        return null;
+    }
+
+    /**
+    * Sets the time
+    * Represents the time of day when the transition from daylight saving time to standard time occurs.
+    *
+    * @param TimeOfDay $val The value to assign to the time
+    *
+    * @return StandardTimeZoneOffset The StandardTimeZoneOffset
+    */
+    public function setTime($val)
+    {
+        $this->_propDict["time"] = $val;
+         return $this;
+    }
     /**
     * Gets the year
     * Represents how frequently in terms of years the change from daylight saving time to standard time occurs. For example, a value of 0 means every year.
     *
-    * @return int The year
+    * @return int|null The year
     */
     public function getYear()
     {

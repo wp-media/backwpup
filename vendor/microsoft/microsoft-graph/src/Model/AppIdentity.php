@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,18 +17,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class AppIdentity extends Entity
 {
     /**
     * Gets the appId
-    * Refers to the Unique GUID representing Application Id in the Azure Active Directory.
+    * Refers to the unique ID representing application in Microsoft Entra ID.
     *
-    * @return string The appId
+    * @return string|null The appId
     */
     public function getAppId()
     {
@@ -42,7 +40,7 @@ class AppIdentity extends Entity
 
     /**
     * Sets the appId
-    * Refers to the Unique GUID representing Application Id in the Azure Active Directory.
+    * Refers to the unique ID representing application in Microsoft Entra ID.
     *
     * @param string $val The value of the appId
     *
@@ -55,9 +53,9 @@ class AppIdentity extends Entity
     }
     /**
     * Gets the displayName
-    * Refers to the Application Name displayed in the Azure Portal.
+    * Refers to the application name displayed in the Microsoft Entra admin center.
     *
-    * @return string The displayName
+    * @return string|null The displayName
     */
     public function getDisplayName()
     {
@@ -70,7 +68,7 @@ class AppIdentity extends Entity
 
     /**
     * Sets the displayName
-    * Refers to the Application Name displayed in the Azure Portal.
+    * Refers to the application name displayed in the Microsoft Entra admin center.
     *
     * @param string $val The value of the displayName
     *
@@ -83,9 +81,9 @@ class AppIdentity extends Entity
     }
     /**
     * Gets the servicePrincipalId
-    * Refers to the Unique GUID indicating Service Principal Id in Azure Active Directory for the corresponding App.
+    * Refers to the unique ID for the service principal in Microsoft Entra ID.
     *
-    * @return string The servicePrincipalId
+    * @return string|null The servicePrincipalId
     */
     public function getServicePrincipalId()
     {
@@ -98,7 +96,7 @@ class AppIdentity extends Entity
 
     /**
     * Sets the servicePrincipalId
-    * Refers to the Unique GUID indicating Service Principal Id in Azure Active Directory for the corresponding App.
+    * Refers to the unique ID for the service principal in Microsoft Entra ID.
     *
     * @param string $val The value of the servicePrincipalId
     *
@@ -113,7 +111,7 @@ class AppIdentity extends Entity
     * Gets the servicePrincipalName
     * Refers to the Service Principal Name is the Application name in the tenant.
     *
-    * @return string The servicePrincipalName
+    * @return string|null The servicePrincipalName
     */
     public function getServicePrincipalName()
     {

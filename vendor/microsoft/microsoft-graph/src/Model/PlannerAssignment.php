@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,24 +17,23 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class PlannerAssignment extends Entity
 {
 
     /**
     * Gets the assignedBy
-    * The identity of the user that performed the assignment of the task, i.e. the assignor.
+    * The identity of the user that performed the assignment of the task, that is, the assignor.
     *
-    * @return IdentitySet The assignedBy
+    * @return IdentitySet|null The assignedBy
     */
     public function getAssignedBy()
     {
         if (array_key_exists("assignedBy", $this->_propDict)) {
-            if (is_a($this->_propDict["assignedBy"], "Microsoft\Graph\Model\IdentitySet")) {
+            if (is_a($this->_propDict["assignedBy"], "\Microsoft\Graph\Model\IdentitySet") || is_null($this->_propDict["assignedBy"])) {
                 return $this->_propDict["assignedBy"];
             } else {
                 $this->_propDict["assignedBy"] = new IdentitySet($this->_propDict["assignedBy"]);
@@ -47,7 +45,7 @@ class PlannerAssignment extends Entity
 
     /**
     * Sets the assignedBy
-    * The identity of the user that performed the assignment of the task, i.e. the assignor.
+    * The identity of the user that performed the assignment of the task, that is, the assignor.
     *
     * @param IdentitySet $val The value to assign to the assignedBy
     *
@@ -61,14 +59,14 @@ class PlannerAssignment extends Entity
 
     /**
     * Gets the assignedDateTime
-    * The time at which the task was assigned. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
+    * The time when the task was assigned. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
     *
-    * @return \DateTime The assignedDateTime
+    * @return \DateTime|null The assignedDateTime
     */
     public function getAssignedDateTime()
     {
         if (array_key_exists("assignedDateTime", $this->_propDict)) {
-            if (is_a($this->_propDict["assignedDateTime"], "Microsoft\Graph\Model\\DateTime")) {
+            if (is_a($this->_propDict["assignedDateTime"], "\DateTime") || is_null($this->_propDict["assignedDateTime"])) {
                 return $this->_propDict["assignedDateTime"];
             } else {
                 $this->_propDict["assignedDateTime"] = new \DateTime($this->_propDict["assignedDateTime"]);
@@ -80,7 +78,7 @@ class PlannerAssignment extends Entity
 
     /**
     * Sets the assignedDateTime
-    * The time at which the task was assigned. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
+    * The time when the task was assigned. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 is 2014-01-01T00:00:00Z
     *
     * @param \DateTime $val The value to assign to the assignedDateTime
     *
@@ -95,7 +93,7 @@ class PlannerAssignment extends Entity
     * Gets the orderHint
     * Hint used to order assignees in a task. The format is defined as outlined here.
     *
-    * @return string The orderHint
+    * @return string|null The orderHint
     */
     public function getOrderHint()
     {

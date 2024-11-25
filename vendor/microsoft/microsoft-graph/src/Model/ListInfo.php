@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class ListInfo extends Entity
 {
@@ -29,7 +27,7 @@ class ListInfo extends Entity
     * Gets the contentTypesEnabled
     * If true, indicates that content types are enabled for this list.
     *
-    * @return bool The contentTypesEnabled
+    * @return bool|null The contentTypesEnabled
     */
     public function getContentTypesEnabled()
     {
@@ -55,9 +53,9 @@ class ListInfo extends Entity
     }
     /**
     * Gets the hidden
-    * If true, indicates that the list is not normally visible in the SharePoint user experience.
+    * If true, indicates that the list isn't normally visible in the SharePoint user experience.
     *
-    * @return bool The hidden
+    * @return bool|null The hidden
     */
     public function getHidden()
     {
@@ -70,7 +68,7 @@ class ListInfo extends Entity
 
     /**
     * Sets the hidden
-    * If true, indicates that the list is not normally visible in the SharePoint user experience.
+    * If true, indicates that the list isn't normally visible in the SharePoint user experience.
     *
     * @param bool $val The value of the hidden
     *
@@ -85,7 +83,7 @@ class ListInfo extends Entity
     * Gets the template
     * An enumerated value that represents the base list template used in creating the list. Possible values include documentLibrary, genericList, task, survey, announcements, contacts, and more.
     *
-    * @return string The template
+    * @return string|null The template
     */
     public function getTemplate()
     {

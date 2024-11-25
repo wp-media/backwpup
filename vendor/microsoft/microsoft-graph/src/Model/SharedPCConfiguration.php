@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class SharedPCConfiguration extends DeviceConfiguration
 {
@@ -30,12 +28,12 @@ class SharedPCConfiguration extends DeviceConfiguration
     * Gets the accountManagerPolicy
     * Specifies how accounts are managed on a shared PC. Only applies when disableAccountManager is false.
     *
-    * @return SharedPCAccountManagerPolicy The accountManagerPolicy
+    * @return SharedPCAccountManagerPolicy|null The accountManagerPolicy
     */
     public function getAccountManagerPolicy()
     {
         if (array_key_exists("accountManagerPolicy", $this->_propDict)) {
-            if (is_a($this->_propDict["accountManagerPolicy"], "Microsoft\Graph\Model\SharedPCAccountManagerPolicy")) {
+            if (is_a($this->_propDict["accountManagerPolicy"], "\Microsoft\Graph\Model\SharedPCAccountManagerPolicy") || is_null($this->_propDict["accountManagerPolicy"])) {
                 return $this->_propDict["accountManagerPolicy"];
             } else {
                 $this->_propDict["accountManagerPolicy"] = new SharedPCAccountManagerPolicy($this->_propDict["accountManagerPolicy"]);
@@ -44,7 +42,7 @@ class SharedPCConfiguration extends DeviceConfiguration
         }
         return null;
     }
-    
+
     /**
     * Sets the accountManagerPolicy
     * Specifies how accounts are managed on a shared PC. Only applies when disableAccountManager is false.
@@ -58,17 +56,17 @@ class SharedPCConfiguration extends DeviceConfiguration
         $this->_propDict["accountManagerPolicy"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the allowedAccounts
     * Indicates which type of accounts are allowed to use on a shared PC. Possible values are: guest, domain.
     *
-    * @return SharedPCAllowedAccountType The allowedAccounts
+    * @return SharedPCAllowedAccountType|null The allowedAccounts
     */
     public function getAllowedAccounts()
     {
         if (array_key_exists("allowedAccounts", $this->_propDict)) {
-            if (is_a($this->_propDict["allowedAccounts"], "Microsoft\Graph\Model\SharedPCAllowedAccountType")) {
+            if (is_a($this->_propDict["allowedAccounts"], "\Microsoft\Graph\Model\SharedPCAllowedAccountType") || is_null($this->_propDict["allowedAccounts"])) {
                 return $this->_propDict["allowedAccounts"];
             } else {
                 $this->_propDict["allowedAccounts"] = new SharedPCAllowedAccountType($this->_propDict["allowedAccounts"]);
@@ -77,7 +75,7 @@ class SharedPCConfiguration extends DeviceConfiguration
         }
         return null;
     }
-    
+
     /**
     * Sets the allowedAccounts
     * Indicates which type of accounts are allowed to use on a shared PC. Possible values are: guest, domain.
@@ -91,12 +89,12 @@ class SharedPCConfiguration extends DeviceConfiguration
         $this->_propDict["allowedAccounts"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the allowLocalStorage
     * Specifies whether local storage is allowed on a shared PC.
     *
-    * @return bool The allowLocalStorage
+    * @return bool|null The allowLocalStorage
     */
     public function getAllowLocalStorage()
     {
@@ -106,7 +104,7 @@ class SharedPCConfiguration extends DeviceConfiguration
             return null;
         }
     }
-    
+
     /**
     * Sets the allowLocalStorage
     * Specifies whether local storage is allowed on a shared PC.
@@ -120,12 +118,12 @@ class SharedPCConfiguration extends DeviceConfiguration
         $this->_propDict["allowLocalStorage"] = boolval($val);
         return $this;
     }
-    
+
     /**
     * Gets the disableAccountManager
     * Disables the account manager for shared PC mode.
     *
-    * @return bool The disableAccountManager
+    * @return bool|null The disableAccountManager
     */
     public function getDisableAccountManager()
     {
@@ -135,7 +133,7 @@ class SharedPCConfiguration extends DeviceConfiguration
             return null;
         }
     }
-    
+
     /**
     * Sets the disableAccountManager
     * Disables the account manager for shared PC mode.
@@ -149,12 +147,12 @@ class SharedPCConfiguration extends DeviceConfiguration
         $this->_propDict["disableAccountManager"] = boolval($val);
         return $this;
     }
-    
+
     /**
     * Gets the disableEduPolicies
     * Specifies whether the default shared PC education environment policies should be disabled. For Windows 10 RS2 and later, this policy will be applied without setting Enabled to true.
     *
-    * @return bool The disableEduPolicies
+    * @return bool|null The disableEduPolicies
     */
     public function getDisableEduPolicies()
     {
@@ -164,7 +162,7 @@ class SharedPCConfiguration extends DeviceConfiguration
             return null;
         }
     }
-    
+
     /**
     * Sets the disableEduPolicies
     * Specifies whether the default shared PC education environment policies should be disabled. For Windows 10 RS2 and later, this policy will be applied without setting Enabled to true.
@@ -178,12 +176,12 @@ class SharedPCConfiguration extends DeviceConfiguration
         $this->_propDict["disableEduPolicies"] = boolval($val);
         return $this;
     }
-    
+
     /**
     * Gets the disablePowerPolicies
     * Specifies whether the default shared PC power policies should be disabled.
     *
-    * @return bool The disablePowerPolicies
+    * @return bool|null The disablePowerPolicies
     */
     public function getDisablePowerPolicies()
     {
@@ -193,7 +191,7 @@ class SharedPCConfiguration extends DeviceConfiguration
             return null;
         }
     }
-    
+
     /**
     * Sets the disablePowerPolicies
     * Specifies whether the default shared PC power policies should be disabled.
@@ -207,12 +205,12 @@ class SharedPCConfiguration extends DeviceConfiguration
         $this->_propDict["disablePowerPolicies"] = boolval($val);
         return $this;
     }
-    
+
     /**
     * Gets the disableSignInOnResume
     * Disables the requirement to sign in whenever the device wakes up from sleep mode.
     *
-    * @return bool The disableSignInOnResume
+    * @return bool|null The disableSignInOnResume
     */
     public function getDisableSignInOnResume()
     {
@@ -222,7 +220,7 @@ class SharedPCConfiguration extends DeviceConfiguration
             return null;
         }
     }
-    
+
     /**
     * Sets the disableSignInOnResume
     * Disables the requirement to sign in whenever the device wakes up from sleep mode.
@@ -236,12 +234,12 @@ class SharedPCConfiguration extends DeviceConfiguration
         $this->_propDict["disableSignInOnResume"] = boolval($val);
         return $this;
     }
-    
+
     /**
     * Gets the enabled
     * Enables shared PC mode and applies the shared pc policies.
     *
-    * @return bool The enabled
+    * @return bool|null The enabled
     */
     public function getEnabled()
     {
@@ -251,7 +249,7 @@ class SharedPCConfiguration extends DeviceConfiguration
             return null;
         }
     }
-    
+
     /**
     * Sets the enabled
     * Enables shared PC mode and applies the shared pc policies.
@@ -265,12 +263,12 @@ class SharedPCConfiguration extends DeviceConfiguration
         $this->_propDict["enabled"] = boolval($val);
         return $this;
     }
-    
+
     /**
     * Gets the idleTimeBeforeSleepInSeconds
     * Specifies the time in seconds that a device must sit idle before the PC goes to sleep. Setting this value to 0 prevents the sleep timeout from occurring.
     *
-    * @return int The idleTimeBeforeSleepInSeconds
+    * @return int|null The idleTimeBeforeSleepInSeconds
     */
     public function getIdleTimeBeforeSleepInSeconds()
     {
@@ -280,7 +278,7 @@ class SharedPCConfiguration extends DeviceConfiguration
             return null;
         }
     }
-    
+
     /**
     * Sets the idleTimeBeforeSleepInSeconds
     * Specifies the time in seconds that a device must sit idle before the PC goes to sleep. Setting this value to 0 prevents the sleep timeout from occurring.
@@ -294,12 +292,12 @@ class SharedPCConfiguration extends DeviceConfiguration
         $this->_propDict["idleTimeBeforeSleepInSeconds"] = intval($val);
         return $this;
     }
-    
+
     /**
     * Gets the kioskAppDisplayName
     * Specifies the display text for the account shown on the sign-in screen which launches the app specified by SetKioskAppUserModelId. Only applies when KioskAppUserModelId is set.
     *
-    * @return string The kioskAppDisplayName
+    * @return string|null The kioskAppDisplayName
     */
     public function getKioskAppDisplayName()
     {
@@ -309,7 +307,7 @@ class SharedPCConfiguration extends DeviceConfiguration
             return null;
         }
     }
-    
+
     /**
     * Sets the kioskAppDisplayName
     * Specifies the display text for the account shown on the sign-in screen which launches the app specified by SetKioskAppUserModelId. Only applies when KioskAppUserModelId is set.
@@ -323,12 +321,12 @@ class SharedPCConfiguration extends DeviceConfiguration
         $this->_propDict["kioskAppDisplayName"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the kioskAppUserModelId
     * Specifies the application user model ID of the app to use with assigned access.
     *
-    * @return string The kioskAppUserModelId
+    * @return string|null The kioskAppUserModelId
     */
     public function getKioskAppUserModelId()
     {
@@ -338,7 +336,7 @@ class SharedPCConfiguration extends DeviceConfiguration
             return null;
         }
     }
-    
+
     /**
     * Sets the kioskAppUserModelId
     * Specifies the application user model ID of the app to use with assigned access.
@@ -352,17 +350,17 @@ class SharedPCConfiguration extends DeviceConfiguration
         $this->_propDict["kioskAppUserModelId"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the maintenanceStartTime
     * Specifies the daily start time of maintenance hour.
     *
-    * @return TimeOfDay The maintenanceStartTime
+    * @return TimeOfDay|null The maintenanceStartTime
     */
     public function getMaintenanceStartTime()
     {
         if (array_key_exists("maintenanceStartTime", $this->_propDict)) {
-            if (is_a($this->_propDict["maintenanceStartTime"], "Microsoft\Graph\Model\TimeOfDay")) {
+            if (is_a($this->_propDict["maintenanceStartTime"], "\Microsoft\Graph\Model\TimeOfDay") || is_null($this->_propDict["maintenanceStartTime"])) {
                 return $this->_propDict["maintenanceStartTime"];
             } else {
                 $this->_propDict["maintenanceStartTime"] = new TimeOfDay($this->_propDict["maintenanceStartTime"]);
@@ -371,7 +369,7 @@ class SharedPCConfiguration extends DeviceConfiguration
         }
         return null;
     }
-    
+
     /**
     * Sets the maintenanceStartTime
     * Specifies the daily start time of maintenance hour.
@@ -385,5 +383,5 @@ class SharedPCConfiguration extends DeviceConfiguration
         $this->_propDict["maintenanceStartTime"] = $val;
         return $this;
     }
-    
+
 }

@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class FreeBusyError extends Entity
 {
@@ -29,7 +27,7 @@ class FreeBusyError extends Entity
     * Gets the message
     * Describes the error.
     *
-    * @return string The message
+    * @return string|null The message
     */
     public function getMessage()
     {
@@ -57,7 +55,7 @@ class FreeBusyError extends Entity
     * Gets the responseCode
     * The response code from querying for the availability of the user, distribution list, or resource.
     *
-    * @return string The responseCode
+    * @return string|null The responseCode
     */
     public function getResponseCode()
     {

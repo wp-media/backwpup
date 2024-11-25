@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,47 +18,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class DeviceConfigurationUserStatus extends Entity
 {
     /**
-    * Gets the userDisplayName
-    * User name of the DevicePolicyStatus.
-    *
-    * @return string The userDisplayName
-    */
-    public function getUserDisplayName()
-    {
-        if (array_key_exists("userDisplayName", $this->_propDict)) {
-            return $this->_propDict["userDisplayName"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the userDisplayName
-    * User name of the DevicePolicyStatus.
-    *
-    * @param string $val The userDisplayName
-    *
-    * @return DeviceConfigurationUserStatus
-    */
-    public function setUserDisplayName($val)
-    {
-        $this->_propDict["userDisplayName"] = $val;
-        return $this;
-    }
-    
-    /**
     * Gets the devicesCount
     * Devices count for that user.
     *
-    * @return int The devicesCount
+    * @return int|null The devicesCount
     */
     public function getDevicesCount()
     {
@@ -69,7 +38,7 @@ class DeviceConfigurationUserStatus extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the devicesCount
     * Devices count for that user.
@@ -83,50 +52,17 @@ class DeviceConfigurationUserStatus extends Entity
         $this->_propDict["devicesCount"] = intval($val);
         return $this;
     }
-    
-    /**
-    * Gets the status
-    * Compliance status of the policy report. Possible values are: unknown, notApplicable, compliant, remediated, nonCompliant, error, conflict, notAssigned.
-    *
-    * @return ComplianceStatus The status
-    */
-    public function getStatus()
-    {
-        if (array_key_exists("status", $this->_propDict)) {
-            if (is_a($this->_propDict["status"], "Microsoft\Graph\Model\ComplianceStatus")) {
-                return $this->_propDict["status"];
-            } else {
-                $this->_propDict["status"] = new ComplianceStatus($this->_propDict["status"]);
-                return $this->_propDict["status"];
-            }
-        }
-        return null;
-    }
-    
-    /**
-    * Sets the status
-    * Compliance status of the policy report. Possible values are: unknown, notApplicable, compliant, remediated, nonCompliant, error, conflict, notAssigned.
-    *
-    * @param ComplianceStatus $val The status
-    *
-    * @return DeviceConfigurationUserStatus
-    */
-    public function setStatus($val)
-    {
-        $this->_propDict["status"] = $val;
-        return $this;
-    }
-    
+
     /**
     * Gets the lastReportedDateTime
     * Last modified date time of the policy report.
     *
-    * @return \DateTime The lastReportedDateTime
+    * @return \DateTime|null The lastReportedDateTime
     */
     public function getLastReportedDateTime()
     {
         if (array_key_exists("lastReportedDateTime", $this->_propDict)) {
-            if (is_a($this->_propDict["lastReportedDateTime"], "\DateTime")) {
+            if (is_a($this->_propDict["lastReportedDateTime"], "\DateTime") || is_null($this->_propDict["lastReportedDateTime"])) {
                 return $this->_propDict["lastReportedDateTime"];
             } else {
                 $this->_propDict["lastReportedDateTime"] = new \DateTime($this->_propDict["lastReportedDateTime"]);
@@ -135,7 +71,7 @@ class DeviceConfigurationUserStatus extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the lastReportedDateTime
     * Last modified date time of the policy report.
@@ -149,12 +85,74 @@ class DeviceConfigurationUserStatus extends Entity
         $this->_propDict["lastReportedDateTime"] = $val;
         return $this;
     }
-    
+
+    /**
+    * Gets the status
+    * Compliance status of the policy report. Possible values are: unknown, notApplicable, compliant, remediated, nonCompliant, error, conflict, notAssigned.
+    *
+    * @return ComplianceStatus|null The status
+    */
+    public function getStatus()
+    {
+        if (array_key_exists("status", $this->_propDict)) {
+            if (is_a($this->_propDict["status"], "\Microsoft\Graph\Model\ComplianceStatus") || is_null($this->_propDict["status"])) {
+                return $this->_propDict["status"];
+            } else {
+                $this->_propDict["status"] = new ComplianceStatus($this->_propDict["status"]);
+                return $this->_propDict["status"];
+            }
+        }
+        return null;
+    }
+
+    /**
+    * Sets the status
+    * Compliance status of the policy report. Possible values are: unknown, notApplicable, compliant, remediated, nonCompliant, error, conflict, notAssigned.
+    *
+    * @param ComplianceStatus $val The status
+    *
+    * @return DeviceConfigurationUserStatus
+    */
+    public function setStatus($val)
+    {
+        $this->_propDict["status"] = $val;
+        return $this;
+    }
+
+    /**
+    * Gets the userDisplayName
+    * User name of the DevicePolicyStatus.
+    *
+    * @return string|null The userDisplayName
+    */
+    public function getUserDisplayName()
+    {
+        if (array_key_exists("userDisplayName", $this->_propDict)) {
+            return $this->_propDict["userDisplayName"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the userDisplayName
+    * User name of the DevicePolicyStatus.
+    *
+    * @param string $val The userDisplayName
+    *
+    * @return DeviceConfigurationUserStatus
+    */
+    public function setUserDisplayName($val)
+    {
+        $this->_propDict["userDisplayName"] = $val;
+        return $this;
+    }
+
     /**
     * Gets the userPrincipalName
     * UserPrincipalName.
     *
-    * @return string The userPrincipalName
+    * @return string|null The userPrincipalName
     */
     public function getUserPrincipalName()
     {
@@ -164,7 +162,7 @@ class DeviceConfigurationUserStatus extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the userPrincipalName
     * UserPrincipalName.
@@ -178,5 +176,5 @@ class DeviceConfigurationUserStatus extends Entity
         $this->_propDict["userPrincipalName"] = $val;
         return $this;
     }
-    
+
 }

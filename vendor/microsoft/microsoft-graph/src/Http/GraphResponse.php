@@ -1,24 +1,23 @@
-<?php 
+<?php
 /**
-* Copyright (c) Microsoft Corporation.  All Rights Reserved.  
-* Licensed under the MIT License.  See License in the project root 
+* Copyright (c) Microsoft Corporation.  All Rights Reserved.
+* Licensed under the MIT License.  See License in the project root
 * for license information.
-* 
+*
 * HttpResponse File
 * PHP version 7
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright 2016 Microsoft Corporation
+* @copyright 2020 Microsoft Corporation
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 0.1.0
+* @version   GIT: 1.13.0
 * @link      https://graph.microsoft.io/
 */
 
 namespace Microsoft\Graph\Http;
 
-use Microsoft\Graph\Exception\GraphException;
-use Microsoft\Graph\Core\GraphConstants;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Class GraphResponse
@@ -33,11 +32,11 @@ class GraphResponse
     /**
     * The body of the response
     *
-    * @var string
+    * @var StreamInterface|null
     */
     private $_body;
     /**
-    * The body of the response, 
+    * The body of the response,
     * decoded into an array
     *
     * @var array(string)
@@ -55,12 +54,14 @@ class GraphResponse
     * @var string
     */
     private $_httpStatusCode;
+    
+    private $_request;
 
     /**
     * Creates a new Graph HTTP response entity
     *
     * @param object $request        The request
-    * @param string $body           The body of the response
+    * @param StreamInterface|null $body           The body of the response
     * @param string $httpStatusCode The returned status code
     * @param array  $headers        The returned headers
     */
@@ -100,7 +101,7 @@ class GraphResponse
     /**
     * Get the undecoded body of the HTTP response
     *
-    * @return array The undecoded body
+    * @return StreamInterface|null The undecoded body
     */
     public function getRawBody()
     {
@@ -110,7 +111,7 @@ class GraphResponse
     /**
     * Get the status of the HTTP response
     *
-    * @return string The HTTP status
+    * @return string|null The HTTP status
     */
     public function getStatus()
     {
@@ -120,7 +121,7 @@ class GraphResponse
     /**
     * Get the headers of the response
     *
-    * @return array The response headers
+    * @return array|null The response headers
     */
     public function getHeaders()
     {
@@ -141,28 +142,26 @@ class GraphResponse
 
         //If more than one object is returned
         if (array_key_exists('value', $result)) {
-            $objArray = array();
             $values = $result['value'];
 
             //Check that this is an object array instead of a value called "value"
-            if ($values && is_array($values)) {
+            if (is_array($values)) {
+                $objArray = array();
                 foreach ($values as $obj) {
                     $objArray[] = new $class($obj);
                 }
-            } else {
-                return new $class($result);
+                return $objArray;
             }
-            return $objArray;
-        } else {
-            return new $class($result);
         }
+
+        return new $class($result);
     }
 
     /**
     * Gets the next link of a response object from OData
     * If the nextLink is null, there are no more pages
     *
-    * @return string nextLink, if provided
+    * @return string|null nextLink, if provided
     */
     public function getNextLink()
     {

@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class MediaContentRatingUnitedKingdom extends Entity
 {
@@ -30,12 +28,12 @@ class MediaContentRatingUnitedKingdom extends Entity
     * Gets the movieRating
     * Movies rating selected for United Kingdom. Possible values are: allAllowed, allBlocked, general, universalChildren, parentalGuidance, agesAbove12Video, agesAbove12Cinema, agesAbove15, adults.
     *
-    * @return RatingUnitedKingdomMoviesType The movieRating
+    * @return RatingUnitedKingdomMoviesType|null The movieRating
     */
     public function getMovieRating()
     {
         if (array_key_exists("movieRating", $this->_propDict)) {
-            if (is_a($this->_propDict["movieRating"], "Microsoft\Graph\Model\RatingUnitedKingdomMoviesType")) {
+            if (is_a($this->_propDict["movieRating"], "\Microsoft\Graph\Model\RatingUnitedKingdomMoviesType") || is_null($this->_propDict["movieRating"])) {
                 return $this->_propDict["movieRating"];
             } else {
                 $this->_propDict["movieRating"] = new RatingUnitedKingdomMoviesType($this->_propDict["movieRating"]);
@@ -63,12 +61,12 @@ class MediaContentRatingUnitedKingdom extends Entity
     * Gets the tvRating
     * TV rating selected for United Kingdom. Possible values are: allAllowed, allBlocked, caution.
     *
-    * @return RatingUnitedKingdomTelevisionType The tvRating
+    * @return RatingUnitedKingdomTelevisionType|null The tvRating
     */
     public function getTvRating()
     {
         if (array_key_exists("tvRating", $this->_propDict)) {
-            if (is_a($this->_propDict["tvRating"], "Microsoft\Graph\Model\RatingUnitedKingdomTelevisionType")) {
+            if (is_a($this->_propDict["tvRating"], "\Microsoft\Graph\Model\RatingUnitedKingdomTelevisionType") || is_null($this->_propDict["tvRating"])) {
                 return $this->_propDict["tvRating"];
             } else {
                 $this->_propDict["tvRating"] = new RatingUnitedKingdomTelevisionType($this->_propDict["tvRating"]);

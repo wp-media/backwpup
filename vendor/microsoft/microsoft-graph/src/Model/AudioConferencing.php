@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,17 +17,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class AudioConferencing extends Entity
 {
     /**
     * Gets the conferenceId
+    * The conference id of the online meeting.
     *
-    * @return string The conferenceId
+    * @return string|null The conferenceId
     */
     public function getConferenceId()
     {
@@ -41,6 +40,7 @@ class AudioConferencing extends Entity
 
     /**
     * Sets the conferenceId
+    * The conference id of the online meeting.
     *
     * @param string $val The value of the conferenceId
     *
@@ -52,35 +52,37 @@ class AudioConferencing extends Entity
         return $this;
     }
     /**
-    * Gets the tollNumber
+    * Gets the dialinUrl
+    * A URL to the externally-accessible web page that contains dial-in information.
     *
-    * @return string The tollNumber
+    * @return string|null The dialinUrl
     */
-    public function getTollNumber()
+    public function getDialinUrl()
     {
-        if (array_key_exists("tollNumber", $this->_propDict)) {
-            return $this->_propDict["tollNumber"];
+        if (array_key_exists("dialinUrl", $this->_propDict)) {
+            return $this->_propDict["dialinUrl"];
         } else {
             return null;
         }
     }
 
     /**
-    * Sets the tollNumber
+    * Sets the dialinUrl
+    * A URL to the externally-accessible web page that contains dial-in information.
     *
-    * @param string $val The value of the tollNumber
+    * @param string $val The value of the dialinUrl
     *
     * @return AudioConferencing
     */
-    public function setTollNumber($val)
+    public function setDialinUrl($val)
     {
-        $this->_propDict["tollNumber"] = $val;
+        $this->_propDict["dialinUrl"] = $val;
         return $this;
     }
     /**
     * Gets the tollFreeNumber
     *
-    * @return string The tollFreeNumber
+    * @return string|null The tollFreeNumber
     */
     public function getTollFreeNumber()
     {
@@ -104,29 +106,85 @@ class AudioConferencing extends Entity
         return $this;
     }
     /**
-    * Gets the dialinUrl
+    * Gets the tollFreeNumbers
+    * List of toll-free numbers that are displayed in the meeting invite.
     *
-    * @return string The dialinUrl
+    * @return string|null The tollFreeNumbers
     */
-    public function getDialinUrl()
+    public function getTollFreeNumbers()
     {
-        if (array_key_exists("dialinUrl", $this->_propDict)) {
-            return $this->_propDict["dialinUrl"];
+        if (array_key_exists("tollFreeNumbers", $this->_propDict)) {
+            return $this->_propDict["tollFreeNumbers"];
         } else {
             return null;
         }
     }
 
     /**
-    * Sets the dialinUrl
+    * Sets the tollFreeNumbers
+    * List of toll-free numbers that are displayed in the meeting invite.
     *
-    * @param string $val The value of the dialinUrl
+    * @param string $val The value of the tollFreeNumbers
     *
     * @return AudioConferencing
     */
-    public function setDialinUrl($val)
+    public function setTollFreeNumbers($val)
     {
-        $this->_propDict["dialinUrl"] = $val;
+        $this->_propDict["tollFreeNumbers"] = $val;
+        return $this;
+    }
+    /**
+    * Gets the tollNumber
+    *
+    * @return string|null The tollNumber
+    */
+    public function getTollNumber()
+    {
+        if (array_key_exists("tollNumber", $this->_propDict)) {
+            return $this->_propDict["tollNumber"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the tollNumber
+    *
+    * @param string $val The value of the tollNumber
+    *
+    * @return AudioConferencing
+    */
+    public function setTollNumber($val)
+    {
+        $this->_propDict["tollNumber"] = $val;
+        return $this;
+    }
+    /**
+    * Gets the tollNumbers
+    * List of toll numbers that are displayed in the meeting invite.
+    *
+    * @return string|null The tollNumbers
+    */
+    public function getTollNumbers()
+    {
+        if (array_key_exists("tollNumbers", $this->_propDict)) {
+            return $this->_propDict["tollNumbers"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the tollNumbers
+    * List of toll numbers that are displayed in the meeting invite.
+    *
+    * @param string $val The value of the tollNumbers
+    *
+    * @return AudioConferencing
+    */
+    public function setTollNumbers($val)
+    {
+        $this->_propDict["tollNumbers"] = $val;
         return $this;
     }
 }

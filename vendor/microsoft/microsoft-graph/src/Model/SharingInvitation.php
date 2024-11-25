@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class SharingInvitation extends Entity
 {
@@ -29,7 +27,7 @@ class SharingInvitation extends Entity
     * Gets the email
     * The email address provided for the recipient of the sharing invitation. Read-only.
     *
-    * @return string The email
+    * @return string|null The email
     */
     public function getEmail()
     {
@@ -58,12 +56,12 @@ class SharingInvitation extends Entity
     * Gets the invitedBy
     * Provides information about who sent the invitation that created this permission, if that information is available. Read-only.
     *
-    * @return IdentitySet The invitedBy
+    * @return IdentitySet|null The invitedBy
     */
     public function getInvitedBy()
     {
         if (array_key_exists("invitedBy", $this->_propDict)) {
-            if (is_a($this->_propDict["invitedBy"], "Microsoft\Graph\Model\IdentitySet")) {
+            if (is_a($this->_propDict["invitedBy"], "\Microsoft\Graph\Model\IdentitySet") || is_null($this->_propDict["invitedBy"])) {
                 return $this->_propDict["invitedBy"];
             } else {
                 $this->_propDict["invitedBy"] = new IdentitySet($this->_propDict["invitedBy"]);
@@ -89,7 +87,7 @@ class SharingInvitation extends Entity
     /**
     * Gets the redeemedBy
     *
-    * @return string The redeemedBy
+    * @return string|null The redeemedBy
     */
     public function getRedeemedBy()
     {
@@ -116,7 +114,7 @@ class SharingInvitation extends Entity
     * Gets the signInRequired
     * If true the recipient of the invitation needs to sign in in order to access the shared item. Read-only.
     *
-    * @return bool The signInRequired
+    * @return bool|null The signInRequired
     */
     public function getSignInRequired()
     {

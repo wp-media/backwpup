@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class PlannerBucket extends Entity
 {
@@ -30,7 +28,7 @@ class PlannerBucket extends Entity
     * Gets the name
     * Name of the bucket.
     *
-    * @return string The name
+    * @return string|null The name
     */
     public function getName()
     {
@@ -40,7 +38,7 @@ class PlannerBucket extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the name
     * Name of the bucket.
@@ -54,12 +52,41 @@ class PlannerBucket extends Entity
         $this->_propDict["name"] = $val;
         return $this;
     }
-    
+
+    /**
+    * Gets the orderHint
+    * Hint used to order items of this type in a list view. For details about the supported format, see Using order hints in Planner.
+    *
+    * @return string|null The orderHint
+    */
+    public function getOrderHint()
+    {
+        if (array_key_exists("orderHint", $this->_propDict)) {
+            return $this->_propDict["orderHint"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the orderHint
+    * Hint used to order items of this type in a list view. For details about the supported format, see Using order hints in Planner.
+    *
+    * @param string $val The orderHint
+    *
+    * @return PlannerBucket
+    */
+    public function setOrderHint($val)
+    {
+        $this->_propDict["orderHint"] = $val;
+        return $this;
+    }
+
     /**
     * Gets the planId
     * Plan ID to which the bucket belongs.
     *
-    * @return string The planId
+    * @return string|null The planId
     */
     public function getPlanId()
     {
@@ -69,7 +96,7 @@ class PlannerBucket extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the planId
     * Plan ID to which the bucket belongs.
@@ -83,42 +110,13 @@ class PlannerBucket extends Entity
         $this->_propDict["planId"] = $val;
         return $this;
     }
-    
-    /**
-    * Gets the orderHint
-    * Hint used to order items of this type in a list view. The format is defined as outlined here.
-    *
-    * @return string The orderHint
-    */
-    public function getOrderHint()
-    {
-        if (array_key_exists("orderHint", $this->_propDict)) {
-            return $this->_propDict["orderHint"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the orderHint
-    * Hint used to order items of this type in a list view. The format is defined as outlined here.
-    *
-    * @param string $val The orderHint
-    *
-    * @return PlannerBucket
-    */
-    public function setOrderHint($val)
-    {
-        $this->_propDict["orderHint"] = $val;
-        return $this;
-    }
-    
 
-     /** 
+
+     /**
      * Gets the tasks
     * Read-only. Nullable. The collection of tasks in the bucket.
      *
-     * @return array The tasks
+     * @return array|null The tasks
      */
     public function getTasks()
     {
@@ -128,19 +126,19 @@ class PlannerBucket extends Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the tasks
     * Read-only. Nullable. The collection of tasks in the bucket.
     *
-    * @param PlannerTask $val The tasks
+    * @param PlannerTask[] $val The tasks
     *
     * @return PlannerBucket
     */
     public function setTasks($val)
     {
-		$this->_propDict["tasks"] = $val;
+        $this->_propDict["tasks"] = $val;
         return $this;
     }
-    
+
 }

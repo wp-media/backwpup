@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class MultiValueLegacyExtendedProperty extends Entity
 {
@@ -30,7 +28,7 @@ class MultiValueLegacyExtendedProperty extends Entity
     * Gets the value
     * A collection of property values.
     *
-    * @return string The value
+    * @return array|null The value
     */
     public function getValue()
     {
@@ -40,12 +38,12 @@ class MultiValueLegacyExtendedProperty extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the value
     * A collection of property values.
     *
-    * @param string $val The value
+    * @param string[] $val The value
     *
     * @return MultiValueLegacyExtendedProperty
     */
@@ -54,5 +52,5 @@ class MultiValueLegacyExtendedProperty extends Entity
         $this->_propDict["value"] = $val;
         return $this;
     }
-    
+
 }

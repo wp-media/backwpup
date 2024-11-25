@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,44 +18,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class RecordOperation extends CommsOperation
 {
     /**
-    * Gets the recordingLocation
-    *
-    * @return string The recordingLocation
-    */
-    public function getRecordingLocation()
-    {
-        if (array_key_exists("recordingLocation", $this->_propDict)) {
-            return $this->_propDict["recordingLocation"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the recordingLocation
-    *
-    * @param string $val The recordingLocation
-    *
-    * @return RecordOperation
-    */
-    public function setRecordingLocation($val)
-    {
-        $this->_propDict["recordingLocation"] = $val;
-        return $this;
-    }
-    
-    /**
     * Gets the recordingAccessToken
+    * The access token required to retrieve the recording.
     *
-    * @return string The recordingAccessToken
+    * @return string|null The recordingAccessToken
     */
     public function getRecordingAccessToken()
     {
@@ -66,9 +38,10 @@ class RecordOperation extends CommsOperation
             return null;
         }
     }
-    
+
     /**
     * Sets the recordingAccessToken
+    * The access token required to retrieve the recording.
     *
     * @param string $val The recordingAccessToken
     *
@@ -79,5 +52,34 @@ class RecordOperation extends CommsOperation
         $this->_propDict["recordingAccessToken"] = $val;
         return $this;
     }
-    
+
+    /**
+    * Gets the recordingLocation
+    * The location where the recording is located.
+    *
+    * @return string|null The recordingLocation
+    */
+    public function getRecordingLocation()
+    {
+        if (array_key_exists("recordingLocation", $this->_propDict)) {
+            return $this->_propDict["recordingLocation"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the recordingLocation
+    * The location where the recording is located.
+    *
+    * @param string $val The recordingLocation
+    *
+    * @return RecordOperation
+    */
+    public function setRecordingLocation($val)
+    {
+        $this->_propDict["recordingLocation"] = $val;
+        return $this;
+    }
+
 }

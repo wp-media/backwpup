@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class WorkbookChartGridlinesFormat extends Entity
 {
@@ -30,12 +28,12 @@ class WorkbookChartGridlinesFormat extends Entity
     * Gets the line
     * Represents chart line formatting. Read-only.
     *
-    * @return WorkbookChartLineFormat The line
+    * @return WorkbookChartLineFormat|null The line
     */
     public function getLine()
     {
         if (array_key_exists("line", $this->_propDict)) {
-            if (is_a($this->_propDict["line"], "Microsoft\Graph\Model\WorkbookChartLineFormat")) {
+            if (is_a($this->_propDict["line"], "\Microsoft\Graph\Model\WorkbookChartLineFormat") || is_null($this->_propDict["line"])) {
                 return $this->_propDict["line"];
             } else {
                 $this->_propDict["line"] = new WorkbookChartLineFormat($this->_propDict["line"]);
@@ -44,7 +42,7 @@ class WorkbookChartGridlinesFormat extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the line
     * Represents chart line formatting. Read-only.
@@ -58,5 +56,5 @@ class WorkbookChartGridlinesFormat extends Entity
         $this->_propDict["line"] = $val;
         return $this;
     }
-    
+
 }

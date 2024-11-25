@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,74 +17,45 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class TeamMessagingSettings extends Entity
 {
     /**
-    * Gets the allowUserEditMessages
-    * If set to true, users can edit their messages.
+    * Gets the allowChannelMentions
+    * If set to true, @channel mentions are allowed.
     *
-    * @return bool The allowUserEditMessages
+    * @return bool|null The allowChannelMentions
     */
-    public function getAllowUserEditMessages()
+    public function getAllowChannelMentions()
     {
-        if (array_key_exists("allowUserEditMessages", $this->_propDict)) {
-            return $this->_propDict["allowUserEditMessages"];
+        if (array_key_exists("allowChannelMentions", $this->_propDict)) {
+            return $this->_propDict["allowChannelMentions"];
         } else {
             return null;
         }
     }
 
     /**
-    * Sets the allowUserEditMessages
-    * If set to true, users can edit their messages.
+    * Sets the allowChannelMentions
+    * If set to true, @channel mentions are allowed.
     *
-    * @param bool $val The value of the allowUserEditMessages
-    *
-    * @return TeamMessagingSettings
-    */
-    public function setAllowUserEditMessages($val)
-    {
-        $this->_propDict["allowUserEditMessages"] = $val;
-        return $this;
-    }
-    /**
-    * Gets the allowUserDeleteMessages
-    * If set to true, users can delete their messages.
-    *
-    * @return bool The allowUserDeleteMessages
-    */
-    public function getAllowUserDeleteMessages()
-    {
-        if (array_key_exists("allowUserDeleteMessages", $this->_propDict)) {
-            return $this->_propDict["allowUserDeleteMessages"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the allowUserDeleteMessages
-    * If set to true, users can delete their messages.
-    *
-    * @param bool $val The value of the allowUserDeleteMessages
+    * @param bool $val The value of the allowChannelMentions
     *
     * @return TeamMessagingSettings
     */
-    public function setAllowUserDeleteMessages($val)
+    public function setAllowChannelMentions($val)
     {
-        $this->_propDict["allowUserDeleteMessages"] = $val;
+        $this->_propDict["allowChannelMentions"] = $val;
         return $this;
     }
     /**
     * Gets the allowOwnerDeleteMessages
     * If set to true, owners can delete any message.
     *
-    * @return bool The allowOwnerDeleteMessages
+    * @return bool|null The allowOwnerDeleteMessages
     */
     public function getAllowOwnerDeleteMessages()
     {
@@ -113,7 +83,7 @@ class TeamMessagingSettings extends Entity
     * Gets the allowTeamMentions
     * If set to true, @team mentions are allowed.
     *
-    * @return bool The allowTeamMentions
+    * @return bool|null The allowTeamMentions
     */
     public function getAllowTeamMentions()
     {
@@ -138,31 +108,59 @@ class TeamMessagingSettings extends Entity
         return $this;
     }
     /**
-    * Gets the allowChannelMentions
-    * If set to true, @channel mentions are allowed.
+    * Gets the allowUserDeleteMessages
+    * If set to true, users can delete their messages.
     *
-    * @return bool The allowChannelMentions
+    * @return bool|null The allowUserDeleteMessages
     */
-    public function getAllowChannelMentions()
+    public function getAllowUserDeleteMessages()
     {
-        if (array_key_exists("allowChannelMentions", $this->_propDict)) {
-            return $this->_propDict["allowChannelMentions"];
+        if (array_key_exists("allowUserDeleteMessages", $this->_propDict)) {
+            return $this->_propDict["allowUserDeleteMessages"];
         } else {
             return null;
         }
     }
 
     /**
-    * Sets the allowChannelMentions
-    * If set to true, @channel mentions are allowed.
+    * Sets the allowUserDeleteMessages
+    * If set to true, users can delete their messages.
     *
-    * @param bool $val The value of the allowChannelMentions
+    * @param bool $val The value of the allowUserDeleteMessages
     *
     * @return TeamMessagingSettings
     */
-    public function setAllowChannelMentions($val)
+    public function setAllowUserDeleteMessages($val)
     {
-        $this->_propDict["allowChannelMentions"] = $val;
+        $this->_propDict["allowUserDeleteMessages"] = $val;
+        return $this;
+    }
+    /**
+    * Gets the allowUserEditMessages
+    * If set to true, users can edit their messages.
+    *
+    * @return bool|null The allowUserEditMessages
+    */
+    public function getAllowUserEditMessages()
+    {
+        if (array_key_exists("allowUserEditMessages", $this->_propDict)) {
+            return $this->_propDict["allowUserEditMessages"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the allowUserEditMessages
+    * If set to true, users can edit their messages.
+    *
+    * @param bool $val The value of the allowUserEditMessages
+    *
+    * @return TeamMessagingSettings
+    */
+    public function setAllowUserEditMessages($val)
+    {
+        $this->_propDict["allowUserEditMessages"] = $val;
         return $this;
     }
 }

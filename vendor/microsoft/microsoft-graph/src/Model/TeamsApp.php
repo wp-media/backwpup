@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,47 +18,17 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class TeamsApp extends Entity
 {
     /**
-    * Gets the externalId
-    * The ID of the catalog provided by the app developer in the Microsoft Teams zip app package.
-    *
-    * @return string The externalId
-    */
-    public function getExternalId()
-    {
-        if (array_key_exists("externalId", $this->_propDict)) {
-            return $this->_propDict["externalId"];
-        } else {
-            return null;
-        }
-    }
-    
-    /**
-    * Sets the externalId
-    * The ID of the catalog provided by the app developer in the Microsoft Teams zip app package.
-    *
-    * @param string $val The externalId
-    *
-    * @return TeamsApp
-    */
-    public function setExternalId($val)
-    {
-        $this->_propDict["externalId"] = $val;
-        return $this;
-    }
-    
-    /**
     * Gets the displayName
     * The name of the catalog app provided by the app developer in the Microsoft Teams zip app package.
     *
-    * @return string The displayName
+    * @return string|null The displayName
     */
     public function getDisplayName()
     {
@@ -69,7 +38,7 @@ class TeamsApp extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the displayName
     * The name of the catalog app provided by the app developer in the Microsoft Teams zip app package.
@@ -83,17 +52,17 @@ class TeamsApp extends Entity
         $this->_propDict["displayName"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the distributionMethod
-    * The method of distribution for the app.
+    * The method of distribution for the app. Read-only.
     *
-    * @return TeamsAppDistributionMethod The distributionMethod
+    * @return TeamsAppDistributionMethod|null The distributionMethod
     */
     public function getDistributionMethod()
     {
         if (array_key_exists("distributionMethod", $this->_propDict)) {
-            if (is_a($this->_propDict["distributionMethod"], "Microsoft\Graph\Model\TeamsAppDistributionMethod")) {
+            if (is_a($this->_propDict["distributionMethod"], "\Microsoft\Graph\Model\TeamsAppDistributionMethod") || is_null($this->_propDict["distributionMethod"])) {
                 return $this->_propDict["distributionMethod"];
             } else {
                 $this->_propDict["distributionMethod"] = new TeamsAppDistributionMethod($this->_propDict["distributionMethod"]);
@@ -102,10 +71,10 @@ class TeamsApp extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the distributionMethod
-    * The method of distribution for the app.
+    * The method of distribution for the app. Read-only.
     *
     * @param TeamsAppDistributionMethod $val The distributionMethod
     *
@@ -116,13 +85,42 @@ class TeamsApp extends Entity
         $this->_propDict["distributionMethod"] = $val;
         return $this;
     }
-    
 
-     /** 
+    /**
+    * Gets the externalId
+    * The ID of the catalog provided by the app developer in the Microsoft Teams zip app package.
+    *
+    * @return string|null The externalId
+    */
+    public function getExternalId()
+    {
+        if (array_key_exists("externalId", $this->_propDict)) {
+            return $this->_propDict["externalId"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the externalId
+    * The ID of the catalog provided by the app developer in the Microsoft Teams zip app package.
+    *
+    * @param string $val The externalId
+    *
+    * @return TeamsApp
+    */
+    public function setExternalId($val)
+    {
+        $this->_propDict["externalId"] = $val;
+        return $this;
+    }
+
+
+     /**
      * Gets the appDefinitions
     * The details for each version of the app.
      *
-     * @return array The appDefinitions
+     * @return array|null The appDefinitions
      */
     public function getAppDefinitions()
     {
@@ -132,19 +130,19 @@ class TeamsApp extends Entity
             return null;
         }
     }
-    
-    /** 
+
+    /**
     * Sets the appDefinitions
     * The details for each version of the app.
     *
-    * @param TeamsAppDefinition $val The appDefinitions
+    * @param TeamsAppDefinition[] $val The appDefinitions
     *
     * @return TeamsApp
     */
     public function setAppDefinitions($val)
     {
-		$this->_propDict["appDefinitions"] = $val;
+        $this->_propDict["appDefinitions"] = $val;
         return $this;
     }
-    
+
 }

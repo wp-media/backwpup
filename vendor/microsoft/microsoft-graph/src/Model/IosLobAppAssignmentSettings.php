@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,27 +17,84 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class IosLobAppAssignmentSettings extends MobileAppAssignmentSettings
 {
     /**
     * Set the @odata.type since this type is immediately descended from an abstract
     * type that is referenced as the type in an entity.
+    * @param array $propDict The property dictionary
     */
-    public function __construct()
+    public function __construct($propDict = array())
     {
+        parent::__construct($propDict);
         $this->setODataType("#microsoft.graph.iosLobAppAssignmentSettings");
     }
 
     /**
-    * Gets the vpnConfigurationId
-    * The VPN Configuration Id to apply for this app.
+    * Gets the isRemovable
+    * When TRUE, indicates that the app can be uninstalled by the user. When FALSE, indicates that the app cannot be uninstalled by the user. By default, this property is set to null which internally is treated as TRUE.
     *
-    * @return string The vpnConfigurationId
+    * @return bool|null The isRemovable
+    */
+    public function getIsRemovable()
+    {
+        if (array_key_exists("isRemovable", $this->_propDict)) {
+            return $this->_propDict["isRemovable"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the isRemovable
+    * When TRUE, indicates that the app can be uninstalled by the user. When FALSE, indicates that the app cannot be uninstalled by the user. By default, this property is set to null which internally is treated as TRUE.
+    *
+    * @param bool $val The value of the isRemovable
+    *
+    * @return IosLobAppAssignmentSettings
+    */
+    public function setIsRemovable($val)
+    {
+        $this->_propDict["isRemovable"] = $val;
+        return $this;
+    }
+    /**
+    * Gets the uninstallOnDeviceRemoval
+    * When TRUE, indicates that the app should be uninstalled when the device is removed from Intune. When FALSE, indicates that the app will not be uninstalled when the device is removed from Intune. By default, property is set to null which internally is treated as TRUE.
+    *
+    * @return bool|null The uninstallOnDeviceRemoval
+    */
+    public function getUninstallOnDeviceRemoval()
+    {
+        if (array_key_exists("uninstallOnDeviceRemoval", $this->_propDict)) {
+            return $this->_propDict["uninstallOnDeviceRemoval"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the uninstallOnDeviceRemoval
+    * When TRUE, indicates that the app should be uninstalled when the device is removed from Intune. When FALSE, indicates that the app will not be uninstalled when the device is removed from Intune. By default, property is set to null which internally is treated as TRUE.
+    *
+    * @param bool $val The value of the uninstallOnDeviceRemoval
+    *
+    * @return IosLobAppAssignmentSettings
+    */
+    public function setUninstallOnDeviceRemoval($val)
+    {
+        $this->_propDict["uninstallOnDeviceRemoval"] = $val;
+        return $this;
+    }
+    /**
+    * Gets the vpnConfigurationId
+    * This is the unique identifier (Id) of the VPN Configuration to apply to the app.
+    *
+    * @return string|null The vpnConfigurationId
     */
     public function getVpnConfigurationId()
     {
@@ -51,7 +107,7 @@ class IosLobAppAssignmentSettings extends MobileAppAssignmentSettings
 
     /**
     * Sets the vpnConfigurationId
-    * The VPN Configuration Id to apply for this app.
+    * This is the unique identifier (Id) of the VPN Configuration to apply to the app.
     *
     * @param string $val The value of the vpnConfigurationId
     *

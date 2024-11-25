@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class PrivacyProfile extends Entity
 {
@@ -29,7 +27,7 @@ class PrivacyProfile extends Entity
     * Gets the contactEmail
     * A valid smtp email address for the privacy statement contact. Not required.
     *
-    * @return string The contactEmail
+    * @return string|null The contactEmail
     */
     public function getContactEmail()
     {
@@ -57,7 +55,7 @@ class PrivacyProfile extends Entity
     * Gets the statementUrl
     * A valid URL format that begins with http:// or https://. Maximum length is 255 characters. The URL that directs to the company's privacy statement. Not required.
     *
-    * @return string The statementUrl
+    * @return string|null The statementUrl
     */
     public function getStatementUrl()
     {

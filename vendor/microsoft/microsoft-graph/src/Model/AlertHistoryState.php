@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,17 +17,16 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class AlertHistoryState extends Entity
 {
     /**
     * Gets the appId
     *
-    * @return string The appId
+    * @return string|null The appId
     */
     public function getAppId()
     {
@@ -54,7 +52,7 @@ class AlertHistoryState extends Entity
     /**
     * Gets the assignedTo
     *
-    * @return string The assignedTo
+    * @return string|null The assignedTo
     */
     public function getAssignedTo()
     {
@@ -80,7 +78,7 @@ class AlertHistoryState extends Entity
     /**
     * Gets the comments
     *
-    * @return string The comments
+    * @return string|null The comments
     */
     public function getComments()
     {
@@ -107,12 +105,12 @@ class AlertHistoryState extends Entity
     /**
     * Gets the feedback
     *
-    * @return AlertFeedback The feedback
+    * @return AlertFeedback|null The feedback
     */
     public function getFeedback()
     {
         if (array_key_exists("feedback", $this->_propDict)) {
-            if (is_a($this->_propDict["feedback"], "Microsoft\Graph\Model\AlertFeedback")) {
+            if (is_a($this->_propDict["feedback"], "\Microsoft\Graph\Model\AlertFeedback") || is_null($this->_propDict["feedback"])) {
                 return $this->_propDict["feedback"];
             } else {
                 $this->_propDict["feedback"] = new AlertFeedback($this->_propDict["feedback"]);
@@ -138,12 +136,12 @@ class AlertHistoryState extends Entity
     /**
     * Gets the status
     *
-    * @return AlertStatus The status
+    * @return AlertStatus|null The status
     */
     public function getStatus()
     {
         if (array_key_exists("status", $this->_propDict)) {
-            if (is_a($this->_propDict["status"], "Microsoft\Graph\Model\AlertStatus")) {
+            if (is_a($this->_propDict["status"], "\Microsoft\Graph\Model\AlertStatus") || is_null($this->_propDict["status"])) {
                 return $this->_propDict["status"];
             } else {
                 $this->_propDict["status"] = new AlertStatus($this->_propDict["status"]);
@@ -169,12 +167,12 @@ class AlertHistoryState extends Entity
     /**
     * Gets the updatedDateTime
     *
-    * @return \DateTime The updatedDateTime
+    * @return \DateTime|null The updatedDateTime
     */
     public function getUpdatedDateTime()
     {
         if (array_key_exists("updatedDateTime", $this->_propDict)) {
-            if (is_a($this->_propDict["updatedDateTime"], "Microsoft\Graph\Model\\DateTime")) {
+            if (is_a($this->_propDict["updatedDateTime"], "\DateTime") || is_null($this->_propDict["updatedDateTime"])) {
                 return $this->_propDict["updatedDateTime"];
             } else {
                 $this->_propDict["updatedDateTime"] = new \DateTime($this->_propDict["updatedDateTime"]);
@@ -199,7 +197,7 @@ class AlertHistoryState extends Entity
     /**
     * Gets the user
     *
-    * @return string The user
+    * @return string|null The user
     */
     public function getUser()
     {

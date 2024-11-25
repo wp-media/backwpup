@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class PersonType extends Entity
 {
@@ -29,7 +27,7 @@ class PersonType extends Entity
     * Gets the class
     * The type of data source, such as Person.
     *
-    * @return string The class
+    * @return string|null The class
     */
     public function getClass()
     {
@@ -57,7 +55,7 @@ class PersonType extends Entity
     * Gets the subclass
     * The secondary type of data source, such as OrganizationUser.
     *
-    * @return string The subclass
+    * @return string|null The subclass
     */
     public function getSubclass()
     {

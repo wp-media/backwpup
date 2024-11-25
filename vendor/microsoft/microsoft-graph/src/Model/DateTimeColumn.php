@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,10 +17,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class DateTimeColumn extends Entity
 {
@@ -29,7 +27,7 @@ class DateTimeColumn extends Entity
     * Gets the displayAs
     * How the value should be presented in the UX. Must be one of default, friendly, or standard. See below for more details. If unspecified, treated as default.
     *
-    * @return string The displayAs
+    * @return string|null The displayAs
     */
     public function getDisplayAs()
     {
@@ -57,7 +55,7 @@ class DateTimeColumn extends Entity
     * Gets the format
     * Indicates whether the value should be presented as a date only or a date and time. Must be one of dateOnly or dateTime
     *
-    * @return string The format
+    * @return string|null The format
     */
     public function getFormat()
     {

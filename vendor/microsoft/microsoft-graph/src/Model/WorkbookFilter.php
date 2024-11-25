@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class WorkbookFilter extends Entity
 {
@@ -30,12 +28,12 @@ class WorkbookFilter extends Entity
     * Gets the criteria
     * The currently applied filter on the given column. Read-only.
     *
-    * @return WorkbookFilterCriteria The criteria
+    * @return WorkbookFilterCriteria|null The criteria
     */
     public function getCriteria()
     {
         if (array_key_exists("criteria", $this->_propDict)) {
-            if (is_a($this->_propDict["criteria"], "Microsoft\Graph\Model\WorkbookFilterCriteria")) {
+            if (is_a($this->_propDict["criteria"], "\Microsoft\Graph\Model\WorkbookFilterCriteria") || is_null($this->_propDict["criteria"])) {
                 return $this->_propDict["criteria"];
             } else {
                 $this->_propDict["criteria"] = new WorkbookFilterCriteria($this->_propDict["criteria"]);
@@ -44,7 +42,7 @@ class WorkbookFilter extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the criteria
     * The currently applied filter on the given column. Read-only.
@@ -58,5 +56,5 @@ class WorkbookFilter extends Entity
         $this->_propDict["criteria"] = $val;
         return $this;
     }
-    
+
 }

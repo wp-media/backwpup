@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,24 +17,23 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class ComplianceInformation extends Entity
 {
 
     /**
     * Gets the certificationControls
-    * Collection of the certification controls associated with certification
+    * Collection of the certification controls associated with the certification.
     *
-    * @return CertificationControl The certificationControls
+    * @return CertificationControl|null The certificationControls
     */
     public function getCertificationControls()
     {
         if (array_key_exists("certificationControls", $this->_propDict)) {
-            if (is_a($this->_propDict["certificationControls"], "Microsoft\Graph\Model\CertificationControl")) {
+            if (is_a($this->_propDict["certificationControls"], "\Microsoft\Graph\Model\CertificationControl") || is_null($this->_propDict["certificationControls"])) {
                 return $this->_propDict["certificationControls"];
             } else {
                 $this->_propDict["certificationControls"] = new CertificationControl($this->_propDict["certificationControls"]);
@@ -47,7 +45,7 @@ class ComplianceInformation extends Entity
 
     /**
     * Sets the certificationControls
-    * Collection of the certification controls associated with certification
+    * Collection of the certification controls associated with the certification.
     *
     * @param CertificationControl $val The value to assign to the certificationControls
     *
@@ -60,9 +58,9 @@ class ComplianceInformation extends Entity
     }
     /**
     * Gets the certificationName
-    * Compliance certification name (for example, ISO 27018:2014, GDPR, FedRAMP, NIST 800-171)
+    * The name of the compliance certification, for example, ISO 27018:2014, GDPR, FedRAMP, and NIST 800-171.
     *
-    * @return string The certificationName
+    * @return string|null The certificationName
     */
     public function getCertificationName()
     {
@@ -75,7 +73,7 @@ class ComplianceInformation extends Entity
 
     /**
     * Sets the certificationName
-    * Compliance certification name (for example, ISO 27018:2014, GDPR, FedRAMP, NIST 800-171)
+    * The name of the compliance certification, for example, ISO 27018:2014, GDPR, FedRAMP, and NIST 800-171.
     *
     * @param string $val The value of the certificationName
     *

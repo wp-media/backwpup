@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 
@@ -19,10 +18,9 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class WorkbookChartTitle extends Entity
 {
@@ -30,7 +28,7 @@ class WorkbookChartTitle extends Entity
     * Gets the overlay
     * Boolean value representing if the chart title will overlay the chart or not.
     *
-    * @return bool The overlay
+    * @return bool|null The overlay
     */
     public function getOverlay()
     {
@@ -40,7 +38,7 @@ class WorkbookChartTitle extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the overlay
     * Boolean value representing if the chart title will overlay the chart or not.
@@ -54,12 +52,12 @@ class WorkbookChartTitle extends Entity
         $this->_propDict["overlay"] = boolval($val);
         return $this;
     }
-    
+
     /**
     * Gets the text
     * Represents the title text of a chart.
     *
-    * @return string The text
+    * @return string|null The text
     */
     public function getText()
     {
@@ -69,7 +67,7 @@ class WorkbookChartTitle extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the text
     * Represents the title text of a chart.
@@ -83,12 +81,12 @@ class WorkbookChartTitle extends Entity
         $this->_propDict["text"] = $val;
         return $this;
     }
-    
+
     /**
     * Gets the visible
-    * A boolean value the represents the visibility of a chart title object.
+    * A boolean value that represents the visibility of a chart title object.
     *
-    * @return bool The visible
+    * @return bool|null The visible
     */
     public function getVisible()
     {
@@ -98,10 +96,10 @@ class WorkbookChartTitle extends Entity
             return null;
         }
     }
-    
+
     /**
     * Sets the visible
-    * A boolean value the represents the visibility of a chart title object.
+    * A boolean value that represents the visibility of a chart title object.
     *
     * @param bool $val The visible
     *
@@ -112,17 +110,17 @@ class WorkbookChartTitle extends Entity
         $this->_propDict["visible"] = boolval($val);
         return $this;
     }
-    
+
     /**
     * Gets the format
     * Represents the formatting of a chart title, which includes fill and font formatting. Read-only.
     *
-    * @return WorkbookChartTitleFormat The format
+    * @return WorkbookChartTitleFormat|null The format
     */
     public function getFormat()
     {
         if (array_key_exists("format", $this->_propDict)) {
-            if (is_a($this->_propDict["format"], "Microsoft\Graph\Model\WorkbookChartTitleFormat")) {
+            if (is_a($this->_propDict["format"], "\Microsoft\Graph\Model\WorkbookChartTitleFormat") || is_null($this->_propDict["format"])) {
                 return $this->_propDict["format"];
             } else {
                 $this->_propDict["format"] = new WorkbookChartTitleFormat($this->_propDict["format"]);
@@ -131,7 +129,7 @@ class WorkbookChartTitle extends Entity
         }
         return null;
     }
-    
+
     /**
     * Sets the format
     * Represents the formatting of a chart title, which includes fill and font formatting. Read-only.
@@ -145,5 +143,5 @@ class WorkbookChartTitle extends Entity
         $this->_propDict["format"] = $val;
         return $this;
     }
-    
+
 }

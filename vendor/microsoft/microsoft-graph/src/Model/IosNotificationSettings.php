@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,46 +17,50 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class IosNotificationSettings extends Entity
 {
+
     /**
-    * Gets the bundleID
-    * Bundle id of app to which to apply these notification settings.
+    * Gets the alertType
+    * Indicates the type of alert for notifications for this app. Possible values are: deviceDefault, banner, modal, none.
     *
-    * @return string The bundleID
+    * @return IosNotificationAlertType|null The alertType
     */
-    public function getBundleID()
+    public function getAlertType()
     {
-        if (array_key_exists("bundleID", $this->_propDict)) {
-            return $this->_propDict["bundleID"];
-        } else {
-            return null;
+        if (array_key_exists("alertType", $this->_propDict)) {
+            if (is_a($this->_propDict["alertType"], "\Microsoft\Graph\Model\IosNotificationAlertType") || is_null($this->_propDict["alertType"])) {
+                return $this->_propDict["alertType"];
+            } else {
+                $this->_propDict["alertType"] = new IosNotificationAlertType($this->_propDict["alertType"]);
+                return $this->_propDict["alertType"];
+            }
         }
+        return null;
     }
 
     /**
-    * Sets the bundleID
-    * Bundle id of app to which to apply these notification settings.
+    * Sets the alertType
+    * Indicates the type of alert for notifications for this app. Possible values are: deviceDefault, banner, modal, none.
     *
-    * @param string $val The value of the bundleID
+    * @param IosNotificationAlertType $val The value to assign to the alertType
     *
-    * @return IosNotificationSettings
+    * @return IosNotificationSettings The IosNotificationSettings
     */
-    public function setBundleID($val)
+    public function setAlertType($val)
     {
-        $this->_propDict["bundleID"] = $val;
-        return $this;
+        $this->_propDict["alertType"] = $val;
+         return $this;
     }
     /**
     * Gets the appName
     * Application name to be associated with the bundleID.
     *
-    * @return string The appName
+    * @return string|null The appName
     */
     public function getAppName()
     {
@@ -82,38 +85,66 @@ class IosNotificationSettings extends Entity
         return $this;
     }
     /**
-    * Gets the publisher
-    * Publisher to be associated with the bundleID.
+    * Gets the badgesEnabled
+    * Indicates whether badges are allowed for this app.
     *
-    * @return string The publisher
+    * @return bool|null The badgesEnabled
     */
-    public function getPublisher()
+    public function getBadgesEnabled()
     {
-        if (array_key_exists("publisher", $this->_propDict)) {
-            return $this->_propDict["publisher"];
+        if (array_key_exists("badgesEnabled", $this->_propDict)) {
+            return $this->_propDict["badgesEnabled"];
         } else {
             return null;
         }
     }
 
     /**
-    * Sets the publisher
-    * Publisher to be associated with the bundleID.
+    * Sets the badgesEnabled
+    * Indicates whether badges are allowed for this app.
     *
-    * @param string $val The value of the publisher
+    * @param bool $val The value of the badgesEnabled
     *
     * @return IosNotificationSettings
     */
-    public function setPublisher($val)
+    public function setBadgesEnabled($val)
     {
-        $this->_propDict["publisher"] = $val;
+        $this->_propDict["badgesEnabled"] = $val;
+        return $this;
+    }
+    /**
+    * Gets the bundleID
+    * Bundle id of app to which to apply these notification settings.
+    *
+    * @return string|null The bundleID
+    */
+    public function getBundleID()
+    {
+        if (array_key_exists("bundleID", $this->_propDict)) {
+            return $this->_propDict["bundleID"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the bundleID
+    * Bundle id of app to which to apply these notification settings.
+    *
+    * @param string $val The value of the bundleID
+    *
+    * @return IosNotificationSettings
+    */
+    public function setBundleID($val)
+    {
+        $this->_propDict["bundleID"] = $val;
         return $this;
     }
     /**
     * Gets the enabled
     * Indicates whether notifications are allowed for this app.
     *
-    * @return bool The enabled
+    * @return bool|null The enabled
     */
     public function getEnabled()
     {
@@ -138,10 +169,38 @@ class IosNotificationSettings extends Entity
         return $this;
     }
     /**
+    * Gets the publisher
+    * Publisher to be associated with the bundleID.
+    *
+    * @return string|null The publisher
+    */
+    public function getPublisher()
+    {
+        if (array_key_exists("publisher", $this->_propDict)) {
+            return $this->_propDict["publisher"];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+    * Sets the publisher
+    * Publisher to be associated with the bundleID.
+    *
+    * @param string $val The value of the publisher
+    *
+    * @return IosNotificationSettings
+    */
+    public function setPublisher($val)
+    {
+        $this->_propDict["publisher"] = $val;
+        return $this;
+    }
+    /**
     * Gets the showInNotificationCenter
     * Indicates whether notifications can be shown in notification center.
     *
-    * @return bool The showInNotificationCenter
+    * @return bool|null The showInNotificationCenter
     */
     public function getShowInNotificationCenter()
     {
@@ -169,7 +228,7 @@ class IosNotificationSettings extends Entity
     * Gets the showOnLockScreen
     * Indicates whether notifications can be shown on the lock screen.
     *
-    * @return bool The showOnLockScreen
+    * @return bool|null The showOnLockScreen
     */
     public function getShowOnLockScreen()
     {
@@ -193,72 +252,11 @@ class IosNotificationSettings extends Entity
         $this->_propDict["showOnLockScreen"] = $val;
         return $this;
     }
-
-    /**
-    * Gets the alertType
-    * Indicates the type of alert for notifications for this app. Possible values are: deviceDefault, banner, modal, none.
-    *
-    * @return IosNotificationAlertType The alertType
-    */
-    public function getAlertType()
-    {
-        if (array_key_exists("alertType", $this->_propDict)) {
-            if (is_a($this->_propDict["alertType"], "Microsoft\Graph\Model\IosNotificationAlertType")) {
-                return $this->_propDict["alertType"];
-            } else {
-                $this->_propDict["alertType"] = new IosNotificationAlertType($this->_propDict["alertType"]);
-                return $this->_propDict["alertType"];
-            }
-        }
-        return null;
-    }
-
-    /**
-    * Sets the alertType
-    * Indicates the type of alert for notifications for this app. Possible values are: deviceDefault, banner, modal, none.
-    *
-    * @param IosNotificationAlertType $val The value to assign to the alertType
-    *
-    * @return IosNotificationSettings The IosNotificationSettings
-    */
-    public function setAlertType($val)
-    {
-        $this->_propDict["alertType"] = $val;
-         return $this;
-    }
-    /**
-    * Gets the badgesEnabled
-    * Indicates whether badges are allowed for this app.
-    *
-    * @return bool The badgesEnabled
-    */
-    public function getBadgesEnabled()
-    {
-        if (array_key_exists("badgesEnabled", $this->_propDict)) {
-            return $this->_propDict["badgesEnabled"];
-        } else {
-            return null;
-        }
-    }
-
-    /**
-    * Sets the badgesEnabled
-    * Indicates whether badges are allowed for this app.
-    *
-    * @param bool $val The value of the badgesEnabled
-    *
-    * @return IosNotificationSettings
-    */
-    public function setBadgesEnabled($val)
-    {
-        $this->_propDict["badgesEnabled"] = $val;
-        return $this;
-    }
     /**
     * Gets the soundsEnabled
     * Indicates whether sounds are allowed for this app.
     *
-    * @return bool The soundsEnabled
+    * @return bool|null The soundsEnabled
     */
     public function getSoundsEnabled()
     {

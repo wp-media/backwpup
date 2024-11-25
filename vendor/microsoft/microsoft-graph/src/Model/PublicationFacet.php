@@ -7,10 +7,9 @@
 *
 * @category  Library
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 namespace Microsoft\Graph\Model;
 /**
@@ -18,18 +17,50 @@ namespace Microsoft\Graph\Model;
 *
 * @category  Model
 * @package   Microsoft.Graph
-* @copyright © Microsoft Corporation. All rights reserved.
+* @copyright (c) Microsoft Corporation. All rights reserved.
 * @license   https://opensource.org/licenses/MIT MIT License
-* @version   Release: 1.4.0
-* @link      https://graph.microsoft.io/
+* @link      https://graph.microsoft.com
 */
 class PublicationFacet extends Entity
 {
+
+    /**
+    * Gets the checkedOutBy
+    * User who has checked out the file.
+    *
+    * @return IdentitySet|null The checkedOutBy
+    */
+    public function getCheckedOutBy()
+    {
+        if (array_key_exists("checkedOutBy", $this->_propDict)) {
+            if (is_a($this->_propDict["checkedOutBy"], "\Microsoft\Graph\Model\IdentitySet") || is_null($this->_propDict["checkedOutBy"])) {
+                return $this->_propDict["checkedOutBy"];
+            } else {
+                $this->_propDict["checkedOutBy"] = new IdentitySet($this->_propDict["checkedOutBy"]);
+                return $this->_propDict["checkedOutBy"];
+            }
+        }
+        return null;
+    }
+
+    /**
+    * Sets the checkedOutBy
+    * User who has checked out the file.
+    *
+    * @param IdentitySet $val The value to assign to the checkedOutBy
+    *
+    * @return PublicationFacet The PublicationFacet
+    */
+    public function setCheckedOutBy($val)
+    {
+        $this->_propDict["checkedOutBy"] = $val;
+         return $this;
+    }
     /**
     * Gets the level
     * The state of publication for this document. Either published or checkout. Read-only.
     *
-    * @return string The level
+    * @return string|null The level
     */
     public function getLevel()
     {
@@ -57,7 +88,7 @@ class PublicationFacet extends Entity
     * Gets the versionId
     * The unique identifier for the version that is visible to the current caller. Read-only.
     *
-    * @return string The versionId
+    * @return string|null The versionId
     */
     public function getVersionId()
     {
