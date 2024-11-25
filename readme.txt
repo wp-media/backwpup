@@ -4,7 +4,7 @@ Tags: backup, restore, cloud backup, database backup, wordpress backup
 Requires at least: 4.9
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 4.1.6
+Stable tag: 4.1.7
 License: GPLv2+
 
 Create a complete WordPress backup easily. Schedule automatic backups, store securely, and restore effortlessly with the best WordPress backup plugin!
@@ -201,6 +201,13 @@ Yes. You need to have writing access to the wp-config.php file (usually residing
 * %s = Two digit representation of the second
 
 == Changelog ==
+
+= 4.1.7 =
+Release date: nov 25, 2024
+* Changed : Update dependencies :
+    ** guzzlehttp/guzzle to 7.0
+    ** onedrive-php-sdk to 3.2.0
+    ** microsoft-graph to 1.7.0
 
 = 4.1.6 =
 Release date: oct 15, 2024
