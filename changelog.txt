@@ -1,4 +1,8 @@
 == Changelog ==
+= 4.1.8 =
+Release date: dec 18, 2024
+* Fixed : One drive is not configured properly message
+
 = 4.1.7 =
 Release date: nov 25, 2024
 * Changed : Update dependencies :

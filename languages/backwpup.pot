@@ -4503,7 +4503,7 @@ msgstr ""
 msgid "Job ID was not provided"
 msgstr ""
 
-#: inc/Pro/class-destination-onedrive.php:325
+#: inc/Pro/class-destination-onedrive.php:330
 msgid "One file deleted from Google Drive"
 msgid_plural "%d files deleted on Google Drive"
 msgstr[0] ""
