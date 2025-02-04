@@ -7,7 +7,6 @@ BackWPupHelpers::component("closable-heading", [
 $database_job_id = get_site_option('backwpup_backup_database_job_id', false);
 $database_job_cron = BackWPup_Option::get($database_job_id, 'cron');
 
-$current = BackWPup_Cron::parse_cron_expression($database_job_cron);
 ?>
 
 <?php BackWPupHelpers::component("containers/scrollable-start", ["gap_size" => "small"]); ?>

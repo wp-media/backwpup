@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-04 09:05+0000\n"
+"POT-Creation-Date: 2025-02-04 13:57+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -4338,19 +4338,19 @@ msgstr ""
 msgid "Files backup scheduled"
 msgstr ""
 
-#: components/onboarding/step2.php:38, components/onboarding/step2.php:78, parts/sidebar/frequency-files.php:31, parts/sidebar/frequency-tables.php:33, pro/parts/sidebar/frequency-files-pro.php:33, pro/parts/sidebar/frequency-tables-pro.php:33
+#: components/onboarding/step2.php:38, components/onboarding/step2.php:78, parts/sidebar/frequency-files.php:31, parts/sidebar/frequency-tables.php:32, pro/parts/sidebar/frequency-files-pro.php:33, pro/parts/sidebar/frequency-tables-pro.php:33
 msgid "Frequency"
 msgstr ""
 
-#: components/onboarding/step2.php:43, components/onboarding/step2.php:83, parts/sidebar/frequency-files.php:35, parts/sidebar/frequency-tables.php:37, pro/parts/sidebar/frequency-files-pro.php:37, pro/parts/sidebar/frequency-tables-pro.php:37
+#: components/onboarding/step2.php:43, components/onboarding/step2.php:83, parts/sidebar/frequency-files.php:35, parts/sidebar/frequency-tables.php:36, pro/parts/sidebar/frequency-files-pro.php:37, pro/parts/sidebar/frequency-tables-pro.php:37
 msgid "Daily"
 msgstr ""
 
-#: components/onboarding/step2.php:44, components/onboarding/step2.php:84, parts/sidebar/frequency-files.php:36, parts/sidebar/frequency-tables.php:38, pro/parts/sidebar/frequency-files-pro.php:38, pro/parts/sidebar/frequency-tables-pro.php:38
+#: components/onboarding/step2.php:44, components/onboarding/step2.php:84, parts/sidebar/frequency-files.php:36, parts/sidebar/frequency-tables.php:37, pro/parts/sidebar/frequency-files-pro.php:38, pro/parts/sidebar/frequency-tables-pro.php:38
 msgid "Weekly"
 msgstr ""
 
-#: components/onboarding/step2.php:45, components/onboarding/step2.php:85, parts/sidebar/frequency-files.php:37, parts/sidebar/frequency-tables.php:39, pro/parts/sidebar/frequency-files-pro.php:39, pro/parts/sidebar/frequency-tables-pro.php:39
+#: components/onboarding/step2.php:45, components/onboarding/step2.php:85, parts/sidebar/frequency-files.php:37, parts/sidebar/frequency-tables.php:38, pro/parts/sidebar/frequency-files-pro.php:39, pro/parts/sidebar/frequency-tables-pro.php:39
 msgid "Monthly"
 msgstr ""
 
@@ -5743,15 +5743,15 @@ msgstr ""
 msgid "Files Scheduled Settings"
 msgstr ""
 
-#: parts/sidebar/frequency-files.php:21, parts/sidebar/frequency-tables.php:22, pro/parts/sidebar/frequency-files-pro.php:21, pro/parts/sidebar/frequency-tables-pro.php:21
+#: parts/sidebar/frequency-files.php:21, parts/sidebar/frequency-tables.php:21, pro/parts/sidebar/frequency-files-pro.php:21, pro/parts/sidebar/frequency-tables-pro.php:21
 msgid "Current cron expression is not supported by this UI."
 msgstr ""
 
-#: parts/sidebar/frequency-files.php:46, parts/sidebar/frequency-tables.php:48, pro/parts/sidebar/frequency-files-pro.php:90, pro/parts/sidebar/frequency-tables-pro.php:90
+#: parts/sidebar/frequency-files.php:46, parts/sidebar/frequency-tables.php:47, pro/parts/sidebar/frequency-files-pro.php:90, pro/parts/sidebar/frequency-tables-pro.php:90
 msgid "Making a copy of your website can slow down your site a bit. We recommend doing this at night to avoid any inconvenience."
 msgstr ""
 
-#: parts/sidebar/frequency-files.php:55, parts/sidebar/frequency-tables.php:57, parts/sidebar/select-files-free.php:35, parts/sidebar/select-files.php:34, parts/sidebar/select-tables.php:82, pro/parts/sidebar/frequency-files-pro.php:99, pro/parts/sidebar/frequency-tables-pro.php:99, pro/parts/sidebar/select-files-pro.php:34
+#: parts/sidebar/frequency-files.php:55, parts/sidebar/frequency-tables.php:56, parts/sidebar/select-files-free.php:35, parts/sidebar/select-files.php:34, parts/sidebar/select-tables.php:82, pro/parts/sidebar/frequency-files-pro.php:99, pro/parts/sidebar/frequency-tables-pro.php:99, pro/parts/sidebar/select-files-pro.php:34
 msgid "Save settings"
 msgstr ""
 
