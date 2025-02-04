@@ -203,6 +203,11 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
 
 == Changelog ==  
+= 5.0.2 =
+Release date: feb 04,2025
+
+* Fixed : Error due to unrecognized cron expression
+
 = 5.0.1 =
 Release date: feb 04, 2025
 
