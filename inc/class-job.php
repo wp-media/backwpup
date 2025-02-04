@@ -343,14 +343,16 @@ class BackWPup_Job
                 //set temp folder to backup folder if not set because we need one
                 if (!$this->backup_folder || $this->backup_folder == '/') {
                     $this->backup_folder = BackWPup::get_plugin_data('TEMP');
-                }
-                //Create backup archive full file name
-                $this->backup_file = $this->generate_filename($this->job['archivename'], $this->job['archiveformat']);
-                //add archive create
-                $this->steps_todo[] = 'CREATE_ARCHIVE';
-                $this->steps_data['CREATE_ARCHIVE']['NAME'] = __('Creates archive', 'backwpup');
-                $this->steps_data['CREATE_ARCHIVE']['STEP_TRY'] = 0;
-                $this->steps_data['CREATE_ARCHIVE']['SAVE_STEP_TRY'] = 0;
+				}
+				// Add job type to the filename.
+				$archive_filename = $this->job['archivename'] . '_' . implode( '-', $this->job['type'] );
+				// Create backup archive full file name.
+				$this->backup_file = $this->generate_filename( $archive_filename, $this->job['archiveformat'] );
+				// add archive create.
+				$this->steps_todo[]                                  = 'CREATE_ARCHIVE';
+				$this->steps_data['CREATE_ARCHIVE']['NAME']          = __( 'Creates archive', 'backwpup' );
+				$this->steps_data['CREATE_ARCHIVE']['STEP_TRY']      = 0;
+				$this->steps_data['CREATE_ARCHIVE']['SAVE_STEP_TRY'] = 0;
                 // Encrypt archive
                 if (BackWPup_Option::get($this->job['jobid'], 'archiveencryption')) {
                     $this->steps_todo[] = 'ENCRYPT_ARCHIVE';
@@ -1310,10 +1312,8 @@ class BackWPup_Job
         //logfile end
         file_put_contents($this->logfile, '</body>' . PHP_EOL . '</html>', FILE_APPEND);
 
-        BackWPup_Cron::check_cleanup();
-
-        exit();
-    }
+		BackWPup_Cron::check_cleanup();
+	}
 
     /**
      * Cleanup Temp Folder.
@@ -2833,4 +2833,109 @@ class BackWPup_Job
 
         return in_array(basename((string) $file), $dump_files, true);
     }
+
+	/**
+	 * Check if a job is enabled.
+	 *
+	 * This function checks if a job with the given ID is enabled by verifying if its 'activetype' option is set to 'wpcron'.
+	 *
+	 * @param int $job_id The ID of the job to check.
+	 * @return bool True if the job is enabled, false otherwise.
+	 */
+	public static function is_job_enabled( $job_id ): bool {
+		return BackWPup_Option::get( $job_id, 'activetype' ) === 'wpcron';
+	}
+
+	/**
+	 * Enables a BackWPup job by updating its activation type to 'wpcron'.
+	 *
+	 * @param int $job_id The ID of the job to enable.
+	 */
+	public static function enable_job( $job_id ): void {
+		BackWPup_Option::update( $job_id, 'activetype', 'wpcron' );
+	}
+
+	/**
+	 * Disables a BackWPup job.
+	 *
+	 * This function updates the job's 'activetype' option to an empty string,
+	 * effectively disabling the job. It also clears any scheduled cron hooks
+	 * associated with the job.
+	 *
+	 * @param int $job_id The ID of the job to disable.
+	 */
+	public static function disable_job( $job_id ): void {
+		BackWPup_Option::update( $job_id, 'activetype', '' );
+		wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $job_id ] );
+	}
+
+	/**
+	 * Schedules a single job event for the given job ID.
+	 *
+	 * This function schedules a single cron event for the specified job ID using the WordPress
+	 * scheduling system. The event will be triggered at the next scheduled time for the job.
+	 *
+	 * @param int $job_id The ID of the job to schedule.
+	 * @return int|false The Unix timestamp of the next scheduled event, or false if an error occurred.
+	 */
+	public static function schedule_job( $job_id ) {
+		$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $job_id, 'cron' ) );
+		wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $job_id ] );
+		return $cron_next;
+	}
+
+	/**
+	 * Renames a BackWPup job.
+	 *
+	 * This function updates the name of a BackWPup job with the given job ID.
+	 *
+	 * @param int    $job_id   The ID of the job to rename.
+	 * @param string $new_name The new name for the job.
+	 */
+	public static function rename_job( $job_id, $new_name ): void {
+		BackWPup_Option::update( $job_id, 'name', $new_name );
+	}
+
+	/**
+	 * Duplicates a job based on the given job ID.
+	 *
+	 * @param int $old_job_id The ID of the job to duplicate.
+	 * @return int|WP_Error The ID of the new duplicated job on success, or a WP_Error object on failure.
+	 */
+	public static function duplicate_job( $old_job_id ) {
+		$newjobid = BackWPup_Option::get_job_ids();
+		sort( $newjobid );
+		$newjobid    = end( $newjobid ) + 1;
+		$old_options = BackWPup_Option::get_job( $old_job_id );
+
+		foreach ( $old_options as $key => $option ) {
+			// Skip keys that should not be updated.
+			if ( in_array( $key, [ 'logfile', 'lastbackupdownloadurl', 'lastruntime', 'lastrun' ], true ) ) {
+				continue;
+			}
+
+			// Update option values based on key.
+			switch ( $key ) {
+				case 'jobid':
+					$option = $newjobid;
+					break;
+
+				case 'name':
+					$option = __( 'Copy of', 'backwpup' ) . ' ' . $option;
+					break;
+
+				case 'activetype':
+					$option = '';
+					break;
+
+				case 'archivename':
+					$option = str_replace( $old_job_id, $newjobid, (string) $option );
+					break;
+			}
+
+			// Save the updated option.
+			BackWPup_Option::update( $newjobid, $key, $option );
+		}
+		return $newjobid;
+	}
 }

@@ -242,7 +242,7 @@ function date(format, timestamp) {
 }
 
 jQuery(document).ready(function ($) {
-    $('input[name="type[]"]').change(function () {
+    $('input[name="type[]"]').on('change', function () {
         if ($('input[name="type[]"]:checked').hasClass('filetype')) {
             $('.hasdests').show();
         } else {
@@ -257,11 +257,11 @@ jQuery(document).ready(function ($) {
         $('.hasdests').hide();
     }
 
-    $('input[name="destinations[]"]').change(function () {
+    $('input[name="destinations[]"]').on('change', function () {
         $( '#tab-dest-' + $(this).val().toLowerCase() ).toggle( );
     });
 
-    $('input[name="name"]').keyup(function () {
+    $('input[name="name"]').on('keyup', function () {
         $('#h2jobtitle').replaceWith('<span id="h2jobtitle">' + backwpup_htmlspecialchars( $(this).val() ) + '</span>');
     });
 
@@ -277,7 +277,7 @@ jQuery(document).ready(function ($) {
 		}
 	});
 
-    $('input[name="backuptype"]').change(function () {
+    $('input[name="backuptype"]').on('change', function () {
         if ($(this).val() == 'sync') {
             $('.nosync').hide();
             $('.sync').show();
@@ -295,7 +295,7 @@ jQuery(document).ready(function ($) {
         $('.sync').hide();
     }
 
-    $('input[name="archivename"]').keyup(function () {
+    $('input[name="archivename"]').on('keyup', function () {
 		var filename = $(this).val();
 		filename = filename.replace( '%hash%', '[hash]' );
 		filename = filename.replace( '%d', date( 'd' ) );
@@ -317,7 +317,7 @@ jQuery(document).ready(function ($) {
         $('#archivefilename').replaceWith('<span id="archivefilename">' + backwpup_htmlspecialchars( filename ) + '</span>');
     });
 
-    $('input[name="archiveformart"]').change(function () {
+    $('input[name="archiveformart"]').on('change', function () {
         $('#archiveformart').replaceWith('<span id="archiveformart">' + $(this).val() + '</span>');
     });
 });

@@ -6,7 +6,7 @@ jQuery(document).ready(function ($) {
 
     $.fn.backwpupDelayKeyup = function(callback){
         var timer = 0;
-        $(this).keyup(function(){
+        $(this).on('keyup', function(){
             clearTimeout (timer);
             timer = setTimeout(callback, 200);
         });
@@ -38,7 +38,7 @@ jQuery(document).ready(function ($) {
         });
     };
 
-    $(window).resize(function(){ backwpup_tb_position(); });
+    $(window).on('resize', function(){ backwpup_tb_position(); });
     backwpup_tb_position();
 
 });

@@ -49,17 +49,17 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
     public function edit_tab($jobid)
     {
         /** @var wpdb $wpdb */
-        global $wpdb; ?>
-        <input name="dbdumpwpony" type="hidden" value="1" />
-        <h3 class="title"><?php _e('Settings for database backup', 'backwpup'); ?></h3>
-        <p></p>
+		global $wpdb; ?>
+		<input readonly disabled name="dbdumpwpony" type="hidden" value="1" />
+		<h3 class="title"><?php esc_html_e( 'Settings for database backup', 'backwpup' ); ?></h3>
+		<p></p>
         <table class="form-table">
             <tr>
                 <th scope="row"><?php _e('Tables to backup', 'backwpup'); ?></th>
-                <td>
-                    <input type="button" class="button-secondary" id="dball" value="<?php esc_attr_e('all', 'backwpup'); ?>">&nbsp;
-					<input type="button" class="button-secondary" id="dbnone" value="<?php esc_attr_e('none', 'backwpup'); ?>">&nbsp;
-                    <input type="button" class="button-secondary" id="dbwp" value="<?php echo esc_attr($wpdb->prefix); ?>">
+				<td>
+					<input readonly disabled type="button" class="button-secondary" id="dball" value="<?php esc_attr_e( 'all', 'backwpup' ); ?>">&nbsp;
+					<input readonly disabled type="button" class="button-secondary" id="dbnone" value="<?php esc_attr_e( 'none', 'backwpup' ); ?>">&nbsp;
+					<input readonly disabled type="button" class="button-secondary" id="dbwp" value="<?php echo esc_attr( $wpdb->prefix ); ?>">
 					<?php
                     $tables = $wpdb->get_results('SHOW FULL TABLES FROM `' . DB_NAME . '`', ARRAY_N);
         echo '<fieldset id="dbtables"><div style="width: 30%; float:left; min-width: 250px; margin-right: 10px;">';
@@ -71,7 +71,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
 						if ( 'BASE TABLE' !== $table[1] ) {
 							$tabletype = ' <i>(' . strtolower( esc_html( $table[1] ) ) . ')</i>';
 						}
-						echo '<label for="idtabledb-' . esc_html( $table[0] ) . '""><input class="checkbox" type="checkbox"' . checked( ! in_array( $table[0], BackWPup_Option::get( $jobid, 'dbdumpexclude' ), true ), true, false ) . ' name="tabledb[]" id="idtabledb-' . esc_html( $table[0] ) . '" value="' . esc_html( $table[0] ) . '"/> ' . esc_html( $table[0] ) . $tabletype . '</label><br />'; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						echo '<label for="idtabledb-' . esc_html( $table[0] ) . '""><input readonly disabled class="checkbox" type="checkbox"' . checked( ! in_array( $table[0], BackWPup_Option::get( $jobid, 'dbdumpexclude' ), true ), true, false ) . ' name="tabledb[]" id="idtabledb-' . esc_html( $table[0] ) . '" value="' . esc_html( $table[0] ) . '"/> ' . esc_html( $table[0] ) . $tabletype . '</label><br />'; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						++$counter;
 						if ( $next_row <= $counter ) {
 							echo '</div><div style="width: 30%; float:left; min-width: 250px; margin-right: 10px;">';

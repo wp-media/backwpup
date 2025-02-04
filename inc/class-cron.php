@@ -378,4 +378,104 @@ class BackWPup_Cron
 
         return PHP_INT_MAX;
     }
+
+	/**
+	 * Get the basic cron expression.
+	 *
+	 * @param string $basic_expression Basic expression.
+	 * @param int    $hours Hours of the cron.
+	 * @param int    $minutes Minutes of the cron.
+	 *
+	 * @return string Cron expression
+	 * @throws InvalidArgumentException If the cron expression is unsupported.
+	 */
+	public static function get_basic_cron_expression( string $basic_expression, int $hours = 0, int $minutes = 0 ): string {
+		$cron = '';
+		switch ( $basic_expression ) {
+			case 'monthly':
+				$cron = implode( ' ', [ $minutes, $hours, '1', '*', '*' ] );
+				break;
+			case 'weekly':
+				$cron = implode( ' ', [ $minutes, $hours, '*', '*', '0' ] );
+				break;
+			case 'daily':
+				$cron = implode( ' ', [ $minutes, $hours, '*', '*', '*' ] );
+				break;
+		}
+		return $cron;
+	}
+
+	/**
+	 * Parse the cron expression to get the frequency and start time.
+	 *
+	 * @param string $cron_expression The cron expression.
+	 *
+	 * @return array An array containing the frequency and start time.
+	 * @throws InvalidArgumentException If the cron expression is invalid or unsupported.
+	 */
+	public static function parse_cron_expression( string $cron_expression ): array {
+		$parts = explode( ' ', $cron_expression );
+		if ( count( $parts ) !== 5 ) {
+			throw new InvalidArgumentException( 'Invalid cron expression' );
+		}
+
+		list($minutes, $hours, $day_of_month, $month, $day_of_week) = $parts;
+
+		$frequency = '';
+		if ( '1' === $day_of_month && '*' === $month && '*' === $day_of_week ) {
+			$frequency = 'monthly';
+		} elseif ( '*' === $day_of_month && '*' === $month && '0' === $day_of_week ) {
+			$frequency = 'weekly';
+		} elseif ( '*' === $day_of_month && '*' === $month && '*' === $day_of_week ) {
+			$frequency = 'daily';
+		} else {
+			throw new InvalidArgumentException( 'Unsupported cron expression' );
+		}
+
+		$start_time = sprintf( '%02d:%02d', $hours, $minutes );
+
+		return [
+			'frequency'  => $frequency,
+			'start_time' => $start_time,
+		];
+	}
+
+
+	/**
+	 * Re-evaluates and reschedules the default BackWPup cron jobs for file and database backups.
+	 *
+	 * This function performs the following steps:
+	 * 1. Retrieves the default job IDs for file and database backups.
+	 * 2. Disables the current scheduled cron for the file backup job.
+	 * 3. If the file backup job is active and uses 'wpcron', it reschedules the job.
+	 * 4. Disables the current scheduled cron for the database backup job.
+	 * 5. If the database backup job is active and uses 'wpcron', it reschedules the job.
+	 *
+	 * @return int|false The timestamp of the next cron job, or false if the job is not active.
+	 */
+	public static function re_evaluate_cron_jobs() {
+		// Retrieve the default job IDs for verification and scheduling.
+		$default_file_job_id     = get_site_option( 'backwpup_backup_files_job_id', false );
+		$default_database_job_id = $default_file_job_id + 1;
+
+		// Disable the default file backup cron.
+		wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $default_file_job_id ] );
+
+		// If the job is active, reschedule it.
+		if ( 'wpcron' === BackWPup_Option::get( $default_file_job_id, 'activetype', '' ) ) {
+			$cron_next = self::cron_next( BackWPup_Option::get( $default_file_job_id, 'cron' ) );
+			wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $default_file_job_id ] );
+		}
+
+		// Disable the default database backup cron.
+		wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $default_database_job_id ] );
+
+		// If the job is active, reschedule it.
+		if ( 'wpcron' === BackWPup_Option::get( $default_database_job_id, 'activetype', '' ) ) {
+			$cron_next = self::cron_next( BackWPup_Option::get( $default_database_job_id, 'cron' ) );
+			wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $default_database_job_id ] );
+		}
+
+		return $cron_next ?? false;
+	}
 }

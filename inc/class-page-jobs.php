@@ -142,6 +142,21 @@ class BackWPup_Page_Jobs extends WP_List_Table
         ];
     }
 
+	/**
+	 * Retrieves the table classes for the job page.
+	 *
+	 * This method constructs an array of CSS classes to be applied to the table
+	 * on the job page. The 'fixed' class is intentionally omitted from the default
+	 * classes.
+	 *
+	 * @return array An array of CSS classes for the table.
+	 */
+	protected function get_table_classes() {
+		// Remove 'fixed' from the default classes.
+		$classes = [ 'widefat', 'striped', $this->_args['plural'] ];
+		return $classes;
+	}
+
     /**
      * The cb Column.
      *
@@ -169,12 +184,12 @@ class BackWPup_Page_Jobs extends WP_List_Table
         }
 
         $r = '<strong title="' . sprintf(__('Job ID: %d', 'backwpup'), $item) . '">' . esc_html(BackWPup_Option::get($item, 'name')) . '</strong>';
-        $actions = [];
-        if (current_user_can('backwpup_jobs_edit')) {
-            $actions['edit'] = '<a href="' . wp_nonce_url(network_admin_url('admin.php') . '?page=backwpupeditjob&jobid=' . $item, 'edit-job') . '">' . esc_html__('Edit', 'backwpup') . '</a>';
-            $actions['copy'] = '<a href="' . wp_nonce_url(network_admin_url('admin.php') . '?page=backwpupjobs&action=copy&jobid=' . $item, 'copy-job_' . $item) . '">' . esc_html__('Copy', 'backwpup') . '</a>';
-            $actions['delete'] = '<a class="submitdelete" href="' . wp_nonce_url(network_admin_url('admin.php') . '?page=backwpupjobs&action=delete&jobs[]=' . $item, 'bulk-jobs') . '" onclick="return showNotice.warn();">' . esc_html__('Delete', 'backwpup') . '</a>';
-        }
+		$actions = [];
+		if ( current_user_can( 'backwpup_jobs_edit' ) ) {
+			$actions['edit'] = '<a href="' . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupeditjob&jobid=' . $item, 'edit-job' ) . '">' . esc_html__( 'Edit', 'backwpup' ) . '</a>';
+			// $actions['copy'] = '<a href="' . wp_nonce_url(network_admin_url('admin.php') . '?page=backwpupjobs&action=copy&jobid=' . $item, 'copy-job_' . $item) . '">' . esc_html__('Copy', 'backwpup') . '</a>';
+			$actions['delete'] = '<a class="submitdelete" href="' . wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpupjobs&action=delete&jobs[]=' . $item, 'bulk-jobs' ) . '" onclick="return showNotice.warn();">' . esc_html__( 'Delete', 'backwpup' ) . '</a>';
+		}
         if (current_user_can('backwpup_jobs_start')) {
             $url = BackWPup_Job::get_jobrun_url('runnowlink', $item);
             $actions['runnow'] = '<a href="' . esc_attr($url['url']) . '">' . esc_html__('Run now', 'backwpup') . '</a>';
@@ -359,8 +374,8 @@ class BackWPup_Page_Jobs extends WP_List_Table
 
         // Construct the link
         return sprintf(
-            '<a href="#TB_inline?height=300&width=630&inlineId=tb_download_file" 
-            class="backup-download-link thickbox" 
+			'<a href="#TB_inline?height=300&width=630&inlineId=tb_download_file" 
+            class="backup-download-link thickbox js-backwpup-download-backup" 
             id="backup-download-link"
             data-jobid="%1$s" 
             data-destination="%2$s" 
@@ -387,14 +402,20 @@ class BackWPup_Page_Jobs extends WP_List_Table
             case 'delete': //Delete Job
                 if (!current_user_can('backwpup_jobs_edit')) {
                     break;
-                }
-                if (is_array($_GET['jobs'])) {
-                    check_admin_referer('bulk-jobs');
+				}
+				$database_job_id = get_site_option( 'backwpup_backup_database_job_id', false );
+				$files_job_id    = get_site_option( 'backwpup_backup_files_job_id', false );
+				if ( isset( $_GET['jobs'] ) && is_array( $_GET['jobs'] ) ) {
+					check_admin_referer( 'bulk-jobs' );
 
-                    foreach ($_GET['jobs'] as $jobid) {
-                        wp_clear_scheduled_hook('backwpup_cron', ['arg' => absint($jobid)]);
-                        BackWPup_Option::delete_job(absint($jobid));
-                    }
+					foreach ( $_GET['jobs'] as $jobid ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+						// Do not delete the database or files job.
+						if ( $jobid === $database_job_id || $jobid === $files_job_id ) {
+							continue;
+						}
+						wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => absint( $jobid ) ] );
+						BackWPup_Option::delete_job( absint( $jobid ) );
+					}
                 }
                 break;
 
@@ -479,28 +500,31 @@ class BackWPup_Page_Jobs extends WP_List_Table
                         }
                     }
 
-                    //only start job if messages empty
-                    $log_messages = BackWPup_Admin::get_messages();
-                    if (empty($log_messages)) {
-                        $old_log_file = BackWPup_Option::get($jobid, 'logfile');
-                        BackWPup_Job::get_jobrun_url('runnow', $jobid);
-                        usleep(250000); //wait a quarter second
-                        $new_log_file = BackWPup_Option::get($jobid, 'logfile', null, false);
-                        //sleep as long as job not started
-                        $i = 0;
+					// only start job if messages empty.
+					$log_messages = BackWPup_Admin::get_messages();
 
-                        while ($old_log_file === $new_log_file) {
-                            usleep(250000); //wait a quarter second for next try
-                            $new_log_file = BackWPup_Option::get($jobid, 'logfile', null, false);
-                            //wait maximal 10 sec.
-                            if ($i >= 40) {
-                                BackWPup_Admin::message(sprintf(__('Job "%1$s" has started, but not responded for 10 seconds. Please check <a href="%2$s">information</a>.', 'backwpup'), esc_attr(BackWPup_Option::get($jobid, 'name')), network_admin_url('admin.php') . '?page=backwpupsettings#backwpup-tab-information'), true);
-                                break 2;
+					if ( empty( $log_messages ) ) {
+						$old_log_file = BackWPup_Option::get( $jobid, 'logfile' );
+						BackWPup_Job::get_jobrun_url( 'runnow', $jobid );
+						usleep( 250000 ); // wait a quarter second.
+						$new_log_file = BackWPup_Option::get( $jobid, 'logfile', null, false );
+						// sleep as long as job not started.
+						$i = 0;
+
+						while ( $old_log_file === $new_log_file ) {
+							usleep( 250000 ); // wait a quarter second for next try.
+							$new_log_file = BackWPup_Option::get( $jobid, 'logfile', null, false );
+							// wait maximal 10 sec.
+							if ( $i >= 40 ) {
+								/* translators: 1: Job name, 2: Information URL */
+								BackWPup_Admin::message( sprintf( __( 'Job "%1$s" has started, but not responded for 10 seconds. Please check <a href="%2$s">information</a>.', 'backwpup' ), esc_attr( BackWPup_Option::get( $jobid, 'name' ) ), network_admin_url( 'admin.php' ) . '?page=backwpupsettings#backwpup-tab-information' ), true );
+								break 2;
                             }
                             ++$i;
-                        }
-                        BackWPup_Admin::message(sprintf(__('Job "%s" started.', 'backwpup'), esc_attr(BackWPup_Option::get($jobid, 'name'))));
-                    }
+						}
+						/* translators: Job name */
+						BackWPup_Admin::message( sprintf( __( 'Job "%s" started.', 'backwpup' ), esc_attr( BackWPup_Option::get( $jobid, 'name' ) ) ) );
+					}
                 }
                 break;
 
@@ -846,9 +870,9 @@ class BackWPup_Page_Jobs extends WP_List_Table
                         timeout: 1
                     });
                 };
-                backwpup_show_working();
-                $('#showworkingclose').click( function() {
-                    $("#runningjob").hide( 'slow' );
+				backwpup_show_working();
+				$('#showworkingclose').on('click',  function() {
+					$("#runningjob").hide( 'slow' );
                     return false;
                 });
             });
@@ -859,27 +883,23 @@ class BackWPup_Page_Jobs extends WP_List_Table
 
     /**
      * Function to generate json data.
-     */
-    public static function ajax_working()
-    {
-        check_ajax_referer('backwpupworking_ajax_nonce');
+	 */
+	public static function ajax_working() {
+		$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
+		$log_folder = BackWPup_File::get_absolute_path( $log_folder );
 
-        if (!current_user_can('backwpup_jobs_start')) {
-            exit('-1');
-        }
+		$job_object = BackWPup_Job::get_working_data();
+		$logfile    = basename( (string) $job_object->logfile );
+		try {
+			$logfile = self::get_logfile_path( $log_folder, $_GET['logfile'] ?? $logfile );        // phpcs:ignore 
+		} catch ( \InvalidArgumentException $e ) {
+			// Logfile either not passed or is invalid.
+			echo 'error';
+			exit( 0 );
+		}
 
-        $log_folder = get_site_option('backwpup_cfg_logfolder');
-        $log_folder = BackWPup_File::get_absolute_path($log_folder);
-
-        try {
-            $logfile = self::get_logfile_path($log_folder, $_GET['logfile'] ?? null);
-        } catch (\InvalidArgumentException $e) {
-            // Logfile either not passed or is invalid.
-            exit(0);
-        }
-
-        $logpos = isset($_GET['logpos']) ? absint($_GET['logpos']) : 0;
-        $restart_url = '';
+        $logpos = isset($_GET['logpos']) ? absint($_GET['logpos']) : 0; // phpcs:ignore
+		$restart_url = '';
 
         //check if logfile renamed
         if (file_exists($logfile . '.gz')) {
@@ -896,26 +916,37 @@ class BackWPup_Page_Jobs extends WP_List_Table
             $warnings = $job_object->warnings;
             $errors = $job_object->errors;
             $step_percent = $job_object->step_percent;
-            $substep_percent = $job_object->substep_percent;
-            $runtime = current_time('timestamp') - $job_object->start_time;
-            $onstep = $job_object->steps_data[$job_object->step_working]['NAME'];
-            $lastmsg = $job_object->lastmsg;
-            $lasterrormsg = $job_object->lasterrormsg;
-        } else {
+			$substep_percent = $job_object->substep_percent;
+			$runtime         = current_time( 'timestamp' ) - $job_object->start_time; // phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
+			$onstep          = $job_object->steps_data[ $job_object->step_working ]['NAME'];
+			$lastmsg         = $job_object->lastmsg;
+			$lasterrormsg    = $job_object->lasterrormsg;
+			$step_done       = count( $job_object->steps_done );
+			$step_todo       = count( $job_object->steps_todo );
+			$substeps_todo   = $job_object->substeps_todo;
+			$substeps_done   = $job_object->substeps_done;
+		} else {
             $logheader = BackWPup_Job::read_logheader($logfile);
             $warnings = $logheader['warnings'];
             $runtime = $logheader['runtime'];
             $errors = $logheader['errors'];
             $step_percent = 100;
-            $substep_percent = 100;
-            $onstep = '<div class="backwpup-message backwpup-info"><p>' . esc_html__('Job completed', 'backwpup') . '</p></div>';
-            if ($errors > 0) {
-                $lastmsg = '<div class="bwu-message-error"><p>' . esc_html__('ERROR:', 'backwpup') . ' ' . sprintf(esc_html__('Job has ended with errors in %s seconds. You must resolve the errors for correct execution.', 'backwpup'), $logheader['runtime']) . '</p></div>';
-            } elseif ($warnings > 0) {
-                $lastmsg = '<div class="backwpup-message backwpup-warning"><p>' . esc_html__('WARNING:', 'backwpup') . ' ' . sprintf(esc_html__('Job has done with warnings in %s seconds. Please resolve them for correct execution.', 'backwpup'), $logheader['runtime']) . '</p></div>';
-            } else {
-                $lastmsg = '<div class="updated"><p>' . sprintf(esc_html__('Job done in %s seconds.', 'backwpup'), $logheader['runtime']) . '</p></div>';
-            }
+			$substep_percent = 100;
+			$step_done       = 100;
+			$step_todo       = 100;
+			$substeps_todo   = 100;
+			$substeps_done   = 100;
+			$onstep          = esc_html__( 'Job completed', 'backwpup' );
+			if ( $errors > 0 ) {
+				// Translators: %s is duration in seconds.
+				$lastmsg = '<div class="bwu-message-error"><p>' . esc_html__( 'ERROR:', 'backwpup' ) . ' ' . sprintf( esc_html__( 'Job has ended with errors in %s seconds. You must resolve the errors for correct execution.', 'backwpup' ), $logheader['runtime'] ) . '</p></div>';
+			} elseif ( $warnings > 0 ) {
+				// Translators: %s is duration in seconds.
+				$lastmsg = '<div class="backwpup-message backwpup-warning"><p>' . esc_html__( 'WARNING:', 'backwpup' ) . ' ' . sprintf( esc_html__( 'Job has done with warnings in %s seconds. Please resolve them for correct execution.', 'backwpup' ), $logheader['runtime'] ) . '</p></div>';
+			} else {
+				// Translators: %s is duration in seconds.
+				$lastmsg = sprintf( esc_html__( 'Job done in %s seconds.', 'backwpup' ), $logheader['runtime'] );
+			}
             $lasterrormsg = '';
             $done = 1;
         }
@@ -952,21 +983,31 @@ class BackWPup_Page_Jobs extends WP_List_Table
             }
         }
 
-        wp_send_json([
-            'log_pos' => strlen($logfiledata) + $logpos,
-            'log_text' => substr($logfiledata, $startpos, $length),
-            'warning_count' => $warnings,
-            'error_count' => $errors,
-            'running_time' => $runtime,
-            'step_percent' => $step_percent,
-            'on_step' => $onstep,
-            'last_msg' => $lastmsg,
-            'last_error_msg' => $lasterrormsg,
-            'sub_step_percent' => $substep_percent,
-            'restart_url' => $restart_url,
-            'job_done' => $done,
-        ]);
-    }
+		$data_ro_return = [
+			'log_pos'          => strlen( $logfiledata ) + $logpos,
+			'log_text'         => substr( $logfiledata, $startpos, $length ),
+			'warning_count'    => $warnings,
+			'error_count'      => $errors,
+			'running_time'     => $runtime,
+			'step_percent'     => $step_percent,
+			'on_step'          => $onstep,
+			'last_msg'         => $lastmsg,
+			'last_error_msg'   => $lasterrormsg,
+			'sub_step_percent' => $substep_percent,
+			'restart_url'      => $restart_url,
+			'job_done'         => $done,
+			'step_done'        => $step_done,
+			'step_todo'        => $step_todo,
+			'substeps_todo'    => $substeps_todo,
+			'substeps_done'    => $substeps_done,
+			'job_id'           => $job_object->job['jobid'],
+		];
+		if ( (string) get_site_option( 'backwpup_backup_database_job_id', false ) !== (string) $job_object->job['jobid'] ) {
+			$data_ro_return['job_next_id'] = get_site_option( 'backwpup_backup_database_job_id', false );
+		}
+
+		wp_send_json( $data_ro_return );
+	}
 
     private static function get_logfile_path(string $folder, ?string $filename): string
     {

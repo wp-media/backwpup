@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: BackWPup – WordPress Backup & Restore Plugin
  * Author URI: https://backwpup.com
- * Version: 4.1.8
+ * Version: 5.0.0
  * Requires at least: 4.9
  * Requires PHP: 7.4
  * Text Domain: backwpup
@@ -60,6 +60,12 @@ if (!class_exists(\BackWPup::class, false)) {
                 require_once __DIR__ . '/vendor/autoload.php';
             }
 
+			$file = untrailingslashit( self::get_plugin_data( 'plugindir' ) )
+					. '/src/Infrastructure/Restore/commons.php';
+			if ( $file ) {
+				require_once $file;
+			}
+
             self::$is_pro = file_exists(__DIR__ . '/inc/Pro/class-pro.php');
 
             // Start upgrade if needed
@@ -77,6 +83,10 @@ if (!class_exists(\BackWPup::class, false)) {
 
 			// Register the third party services.
 			BackWPup_ThirdParties::register();
+
+			// Add Backups Listing Json API.
+			// Hook to register the custom REST API endpoint.
+			$api = new BackWPup_WP_API();
 
             // Load pro features
             if (self::$is_pro) {

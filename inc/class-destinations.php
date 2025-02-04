@@ -18,7 +18,49 @@ abstract class BackWPup_Destinations
         '.tar.gz',
         '.tar',
         '.zip',
-    ];
+	];
+	/**
+	 * The local destination.
+	 *
+	 * @var array
+	 */
+	private static $local_destination = [
+		'local' => [
+			'slug'  => 'FOLDER',
+			'label' => 'Local',
+		],
+	];
+	/**
+	 * The cloud destinations.
+	 *
+	 * @var array
+	 */
+	private static $destinations = [
+		'dropbox'   => [
+			'slug'  => 'DROPBOX',
+			'label' => 'Dropbox',
+		],
+		'sftp'      => [
+			'slug'  => 'FTP',
+			'label' => 'FTP',
+		],
+		'msazure'   => [
+			'slug'  => 'MSAZURE',
+			'label' => 'Microsoft Azure',
+		],
+		's3'        => [
+			'slug'  => 'S3',
+			'label' => 'Amazon S3',
+		],
+		'sugarsync' => [
+			'slug'  => 'SUGARSYNC',
+			'label' => 'Sugar Sync',
+		],
+		'rsc'       => [
+			'slug'  => 'RSC',
+			'label' => 'Rackspace Cloud',
+		],
+	];
 
     abstract public function option_defaults(): array;
 
@@ -28,7 +70,13 @@ abstract class BackWPup_Destinations
     {
     }
 
-    abstract public function edit_form_post_save(int $jobid): void;
+	/**
+	 * Save the form data.
+	 *
+	 * @param int|array $jobid
+	 * @return void
+	 */
+	abstract public function edit_form_post_save( $jobid ): void;
 
     /**
      * use wp_enqueue_script() here to load js for tab.
@@ -195,4 +243,23 @@ abstract class BackWPup_Destinations
 
         return $data[1] === $jobid;
     }
+
+	/**
+	 * Get the storage destinations list.
+	 *
+	 * @param bool $with_array Include the local destination.
+	 * @return array
+	 */
+	public static function get_destinations( bool $with_array = false ): array {
+		$destinations = [];
+		if ( $with_array ) {
+			$destinations = array_merge( self::$local_destination, self::$destinations );
+		} else {
+			$destinations = self::$destinations;
+		}
+		if ( BackWPup::is_pro() ) {
+			$destinations = array_merge( $destinations, BackWPup_Pro_Destinations::get_destinations() );
+		}
+		return $destinations;
+	}
 }

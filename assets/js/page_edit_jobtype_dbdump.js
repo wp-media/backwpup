@@ -1,13 +1,13 @@
 jQuery(document).ready(function ($) {
-  $("#dball").click(function () {
+  $("#dball").on('click', function () {
     $('input[name="tabledb[]"]').prop("checked", true).change();
   });
 
-  $("#dbnone").click(function () {
+  $("#dbnone").on('click', function () {
     $('input[name="tabledb[]"]').prop("checked", false).change();
   });
 
-  $("#dbwp").click(function () {
+  $("#dbwp").on('click', function () {
     $('input[name="tabledb[]"]').prop("checked", false).change();
     $('input[name="tabledb[]"][value^="' + $("#dbwp").val() + '"]')
       .prop("checked", true)
@@ -16,7 +16,7 @@ jQuery(document).ready(function ($) {
 
   var dbdumpwpdbsettings = $('input[name="dbdumpwpdbsettings"]');
   if (dbdumpwpdbsettings.length > 0) {
-    dbdumpwpdbsettings.change(function () {
+    dbdumpwpdbsettings.on('change', function () {
       if (dbdumpwpdbsettings.prop("checked")) {
         $("#dbconnection").hide();
       } else {
@@ -26,7 +26,7 @@ jQuery(document).ready(function ($) {
   }
 
   var trdbdumpmysqlfolder = $("#trdbdumpmysqlfolder");
-  $('input[name="dbdumptype"]').change(function () {
+  $('input[name="dbdumptype"]').on('change', function () {
     if ($("#iddbdumptype-syssql").prop("checked")) {
       trdbdumpmysqlfolder.show();
     } else {
@@ -34,7 +34,7 @@ jQuery(document).ready(function ($) {
     }
   });
 
-  $("a#fix-mysqldump-path").click(function (e) {
+  $("a#fix-mysqldump-path").on('click', function (e) {
     e.preventDefault();
     trdbdumpmysqlfolder.show();
     $("input", trdbdumpmysqlfolder).focus();
@@ -63,10 +63,10 @@ jQuery(document).ready(function ($) {
     });
   }
 
-  $("#dbdumpdbname").change(function () {
+  $("#dbdumpdbname").on('change', function () {
     db_tables();
   });
-  $("#dbdumpwpdbsettings").change(function () {
+  $("#dbdumpwpdbsettings").on('change', function () {
     db_tables();
     db_databases();
     db_charsets();
@@ -85,7 +85,7 @@ jQuery(document).ready(function ($) {
     $.post(ajaxurl, data, function (response) {
       $("#dbdumpdbname").replaceWith(response);
       db_tables();
-      $("#dbdumpdbname").change(function () {
+      $("#dbdumpdbname").on('change', function () {
         db_tables();
       });
     });
@@ -108,15 +108,15 @@ jQuery(document).ready(function ($) {
     });
   }
 
-  $("#dbdumpdbhost").change(function () {
+  $("#dbdumpdbhost").on('change', function () {
     db_databases();
     db_charsets();
   });
-  $("#dbdumpdbuser").change(function () {
+  $("#dbdumpdbuser").on('change', function () {
     db_databases();
     db_charsets();
   });
-  $("#dbdumpdbpassword").change(function () {
+  $("#dbdumpdbpassword").on('change', function () {
     db_databases();
     db_charsets();
   });

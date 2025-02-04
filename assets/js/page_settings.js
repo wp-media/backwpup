@@ -57,7 +57,7 @@ jQuery( document ).ready( function ( $ ) {
 		return false;
 	} );
 
-	$( '#authentication_method' ).change( function () {
+	$( '#authentication_method' ).on('change',  function () {
 		var auth_method = $( '#authentication_method' ).val();
 		if ( '' === auth_method ) {
 			$( '.authentication_basic' ).hide();

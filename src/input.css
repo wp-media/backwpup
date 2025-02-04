@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Register fonts */
+  @font-face {
+    font-family: "Josefin";
+    font-style: normal;
+    font-weight: 100 700;
+    font-display: swap;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    src: url("../fonts/josefin-sans.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "Jost";
+    font-style: normal;
+    font-weight: 100 700;
+    font-display: swap;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    src: url("../fonts/jost.woff2") format("woff2");
+  }
+
+  /* Add a custom height utility to handle WP top admin bar */
+  @media screen and (min-width: 783px) {
+    .min-h-wp {
+      min-height: calc(100vh - 32px);
+    }
+  }
+
+  @media screen and (max-width: 782px) {
+    .min-h-wp {
+      min-height: calc(100vh - 46px);
+    }
+  }
+}
+
+/* Apply some styles on the WP Content area */
+#wpcontent {
+  @apply min-h-wp bg-white p-4 font-body text-primary-darker;
+}
+
+@media screen and (max-width: 782px) {
+  .auto-fold #wpcontent {
+    @apply p-4;
+  }
+}
+
+/* Fix WordPress defaults inside WP Content area */
+#wpbody-content li {
+  @apply mb-0;
+}
+
+/* Remove WP admin styles from inputs, textareas and selects */
+#wpbody-content input,
+#wpbody-content textarea,
+#wpbody-content select {
+  border: none;
+  background: none;
+  box-shadow: none;
+  min-height: auto;
+  font-size: 1rem;
+  line-height: inherit;
+  max-width: 100%;
+}
+
+#wpbody-content select:hover {
+  color: inherit;
+}
+
+#wpbody-content .input-base {
+  @apply px-4 pb-1 pt-6;
+}
+
+#wpbody-content .input-special {
+  @apply px-2 py-[14px];
+}
+
+#wpbody-content .select-transparent {
+  @apply pb-1 pl-4 pr-10 pt-6;
+}
+
+/* input with moving label. */
+#wpbody-content .input-base:placeholder-shown:not(:focus) ~ .input-base-label {
+  @apply top-4 text-base text-grey-500;
+}
+
+/* select with moving label */
+#wpbody-content .select:has(option[value=""]:checked) .select-label {
+  @apply left-4 top-4 text-base text-grey-500;
+}

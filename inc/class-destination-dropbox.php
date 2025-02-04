@@ -193,49 +193,75 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 		<?php
     }
 
-    /**
-     * Save settings.
-     */
-    public function edit_form_post_save(int $jobid): void
-    {
-        // Bet auth.
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @param int|array $jobid the job id.
+	 *
+	 * @throws BackWPup_Destination_Dropbox_API_Exception If the destionation instance cannot be created.
+	 *
+	 * @phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+	 */
+	public function edit_form_post_save( $jobid ): void {
+				$jobids = (array) $jobid;
+		// Bet auth.
         if (!empty($_POST['sandbox_code'])) {
-            try {
-                $dropbox = new BackWPup_Destination_Dropbox_API('sandbox');
-                $dropboxtoken = $dropbox->oAuthToken($_POST['sandbox_code']);
-                BackWPup_Option::update($jobid, 'dropboxtoken', $dropboxtoken);
-                BackWPup_Option::update($jobid, 'dropboxroot', 'sandbox');
-            } catch (Exception $e) {
-                BackWPup_Admin::message('DROPBOX: ' . $e->getMessage(), true);
-            }
+			try {
+				$dropbox      = new BackWPup_Destination_Dropbox_API( 'sandbox' );
+				$dropboxtoken = $dropbox->oAuthToken( $_POST['sandbox_code'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+				foreach ( $jobids as $id ) {
+					BackWPup_Option::update( $id, 'dropboxtoken', $dropboxtoken );
+					BackWPup_Option::update( $id, 'dropboxroot', 'sandbox' );
+				}
+			} catch ( Exception $e ) {
+				BackWPup_Admin::message( 'DROPBOX: ' . $e->getMessage(), true );
+								throw $e;
+			}
         }
 
         if (!empty($_POST['dropbbox_code'])) {
-            try {
-                $dropbox = new BackWPup_Destination_Dropbox_API('dropbox');
-                $dropboxtoken = $dropbox->oAuthToken($_POST['dropbbox_code']);
-                BackWPup_Option::update($jobid, 'dropboxtoken', $dropboxtoken);
-                BackWPup_Option::update($jobid, 'dropboxroot', 'dropbox');
-            } catch (Exception $e) {
-                BackWPup_Admin::message('DROPBOX: ' . $e->getMessage(), true);
-            }
-        }
+			try {
+				$dropbox      = new BackWPup_Destination_Dropbox_API( 'dropbox' );
+				$dropboxtoken = $dropbox->oAuthToken( $_POST['dropbbox_code'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+				foreach ( $jobids as $id ) {
+					BackWPup_Option::update( $jobid, 'dropboxtoken', $dropboxtoken );
+					BackWPup_Option::update( $jobid, 'dropboxroot', 'dropbox' );
+				}
+			} catch ( Exception $e ) {
+				BackWPup_Admin::message( 'DROPBOX: ' . $e->getMessage(), true );
+								throw $e;
+			}
+		}
+				$_POST['dropboxdir'] = trailingslashit(
+					str_replace( '//', '/', str_replace( '\\', '/', trim( sanitize_text_field( $_POST['dropboxdir'] ) ) ) ) // phpcs:ignore WordPress.Security
+				);
+		if ( '/' === $_POST['dropboxdir'] ) {
+			$_POST['dropboxdir'] = '';
+		}
 
-        BackWPup_Option::update($jobid, 'dropboxsyncnodelete', !empty($_POST['dropboxsyncnodelete']));
-        BackWPup_Option::update(
-            $jobid,
-            'dropboxmaxbackups',
-            !empty($_POST['dropboxmaxbackups']) ? absint($_POST['dropboxmaxbackups']) : 0
-        );
+				// Delete auth.
+		if ( ! empty( $_POST['delete_auth'] ) ) {
+			// We only need to revoke the token once.
+				$dropbox = $this->get_dropbox( $jobids[0] );
+				$dropbox->authTokenRevoke();
+			foreach ( $jobids as $id ) {
+					BackWPup_Option::update( $id, 'dropboxtoken', [] );
+					BackWPup_Option::update( $id, 'dropboxroot', 'sandbox' );
+			}
+		}
 
-        $_POST['dropboxdir'] = trailingslashit(
-            str_replace('//', '/', str_replace('\\', '/', trim(sanitize_text_field($_POST['dropboxdir']))))
-        );
-        if ($_POST['dropboxdir'] === '/') {
-            $_POST['dropboxdir'] = '';
-        }
-        BackWPup_Option::update($jobid, 'dropboxdir', $_POST['dropboxdir']);
-    }
+				// Save settings.
+		foreach ( $jobids as $id ) {
+			BackWPup_Option::update( $id, 'dropboxsyncnodelete', ! empty( $_POST['dropboxsyncnodelete'] ) );
+			BackWPup_Option::update(
+				$id,
+				'dropboxmaxbackups',
+				! empty( $_POST['dropboxmaxbackups'] ) ? absint( $_POST['dropboxmaxbackups'] ) : 0
+			);
+			BackWPup_Option::update( $id, 'dropboxdir', $_POST['dropboxdir'] );
+		}
+	}
+	// phpcs:enable
 
     /**
      * Delete File.

@@ -8,6 +8,7 @@ use MicrosoftAzure\Storage\Blob\Models\Container;
 use MicrosoftAzure\Storage\Blob\Models\CreateContainerOptions;
 use MicrosoftAzure\Storage\Blob\Models\ListBlobsOptions;
 use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
+use BackWPup\Utils\BackWPupHelpers;
 
 /**
  * Documentation: http://www.windowsazure.com/en-us/develop/php/how-to-guides/blob-service/.
@@ -112,65 +113,77 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations
 		<?php
     }
 
-    public function edit_form_post_save(int $jobid): void
-    {
-        try {
-            $msazureConfiguration = $this->msazureConfiguration();
-        } catch (\UnexpectedValueException $exception) {
-            BackWPup_Admin::message(__('Microsoft Azure Configuration: ', 'backwpup') . $exception->getMessage(), true);
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @param int|array $jobid The job ID or an array of job IDs.
+	 *
+	 * @throws \UnexpectedValueException If there is an issue with the Microsoft Azure configuration.
+	 * @throws Exception If there is an issue creating the Microsoft Azure container.
+	 *
+	 * @return void
+	 */
+	public function edit_form_post_save( $jobid ): void {
+		try {
+				$msazure_configuration = $this->msazureConfiguration();
+		} catch ( \UnexpectedValueException $exception ) {
+			BackWPup_Admin::message( __( 'Microsoft Azure Configuration: ', 'backwpup' ) . $exception->getMessage(), true );
+			throw $exception;
+		}
 
-            return;
-        }
-
-        if ($msazureConfiguration->isNew()) {
-            try {
-                $this->createContainer($msazureConfiguration);
+		if ( $msazure_configuration->isNew() ) {
+			try {
+				$this->createContainer( $msazure_configuration );
 
                 BackWPup_Admin::message(
-                    sprintf(
-                        __('MS Azure container "%s" created.', 'backwpup'),
-                        esc_html(sanitize_text_field($msazureConfiguration->msazurecontainer()))
-                    )
-                );
-            } catch (Exception $e) {
-                BackWPup_Admin::message(sprintf(__('MS Azure container create: %s', 'backwpup'), $e->getMessage()), true);
-
-                return;
-            }
+					sprintf(
+						// translators: %s is the container name.
+						__( 'MS Azure container "%s" created.', 'backwpup' ),
+						esc_html( sanitize_text_field( $msazure_configuration->msazurecontainer() ) )
+					)
+				);
+			} catch ( Exception $e ) {
+				// translators: %s is the error message.
+				BackWPup_Admin::message( sprintf( __( 'MS Azure container create: %s', 'backwpup' ), $e->getMessage() ), true );
+				throw $e;
+			}
         }
 
-        BackWPup_Option::update(
-            $jobid,
-            MsAzureDestinationConfiguration::MSAZURE_ACCNAME,
-            $msazureConfiguration->msazureaccname()
-        );
-        BackWPup_Option::update(
-            $jobid,
-            MsAzureDestinationConfiguration::MSAZURE_KEY,
-            $msazureConfiguration->msazurekey()
-        );
-        BackWPup_Option::update(
-            $jobid,
-            MsAzureDestinationConfiguration::MSAZURE_CONTAINER,
-            $msazureConfiguration->msazurecontainer()
-        );
+				$msazure_dir = $this->msazureDir();
 
-        $msazureDir = $this->msazureDir();
+				$jobids = (array) $jobid;
+		foreach ( $jobids as $jobid ) {
+				BackWPup_Option::update(
+					$jobid,
+					MsAzureDestinationConfiguration::MSAZURE_ACCNAME,
+					$msazure_configuration->msazureaccname()
+				);
+				BackWPup_Option::update(
+					$jobid,
+					MsAzureDestinationConfiguration::MSAZURE_KEY,
+			$msazure_configuration->msazurekey()
+				);
+				BackWPup_Option::update(
+					$jobid,
+					MsAzureDestinationConfiguration::MSAZURE_CONTAINER,
+			$msazure_configuration->msazurecontainer()
+				);
 
-        BackWPup_Option::update($jobid, self::MSAZUREDIR, $msazureDir);
+				BackWPup_Option::update( $jobid, self::MSAZUREDIR, $msazure_dir );
 
-        BackWPup_Option::update(
-            $jobid,
-            self::MSAZUREMAXBACKUPS,
-            filter_input(INPUT_POST, self::MSAZUREMAXBACKUPS, FILTER_SANITIZE_NUMBER_INT) ?: 0
-        );
+				BackWPup_Option::update(
+					$jobid,
+					self::MSAZUREMAXBACKUPS,
+					filter_input( INPUT_POST, self::MSAZUREMAXBACKUPS, FILTER_SANITIZE_NUMBER_INT ) ?: 0
+				);
 
-        BackWPup_Option::update(
-            $jobid,
-            self::MSAZURESYNCNODELETE,
-            filter_input(INPUT_POST, self::MSAZURESYNCNODELETE) ?: ''
-        );
-    }
+				BackWPup_Option::update(
+					$jobid,
+					self::MSAZURESYNCNODELETE,
+					filter_input( INPUT_POST, self::MSAZURESYNCNODELETE ) ?: ''
+				);
+		}
+	}
 
     public function file_delete(string $jobdest, string $backupfile): void
     {
@@ -413,13 +426,11 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations
 						action: 'backwpup_dest_msazure',
 						msazureaccname: $('#msazureaccname').val(),
 						msazurekey: $('#msazurekey').val(),
-						msazureselected: $('#msazurecontainerselected').val(),
+						msazureselected: $('#msazurecontainer').val(),
 						_ajax_nonce: $('#backwpupajaxnonce').val()
 					};
 					$.post(ajaxurl, data, function (response) {
-						$('#msazurecontainererror').remove();
-						$('#msazurecontainer').remove();
-						$('#msazurecontainerselected').after(response);
+						$('#msazureBucketContainer').html(response);
 					});
 				}
 
@@ -490,14 +501,23 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations
         }
         echo '</span>';
 
-        if (!empty($containers)) {
-            echo '<select name="msazurecontainer" id="msazurecontainer">';
-
-            foreach ($containers as $container) {
-                echo '<option ' . selected(strtolower((string) $args['msazureselected']), strtolower($container->getName()), false) . '>' . esc_html($container->getName()) . '</option>';
-            }
-            echo '</select>';
-        }
+		if ( ! empty( $containers ) ) {
+			$containers_list = [];
+			foreach ( $containers as $container ) {
+				$containers_list[ $container->getName() ] = $container->getName();
+			}
+			echo BackWPupHelpers::component( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				'form/select',
+				[
+					'name'       => 'msazurecontainer',
+					'identifier' => 'msazurecontainer',
+					'label'      => esc_html__( 'Bucket selection', 'backwpup' ),
+					'withEmpty'  => false,
+					'value'      => $args['msazureselected'], // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					'options'    => $containers_list, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				]
+				);
+		}
         if ($ajax) {
             exit();
         }

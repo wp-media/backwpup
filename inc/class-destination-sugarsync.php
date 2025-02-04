@@ -60,16 +60,17 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations
                     }
                 } catch (Exception $e) {
                     echo '<span class="bwu-message-error">' . $e->getMessage() . '</span>';
-                }
-        if (isset($syncfolders) && is_object($syncfolders)) {
-            echo '<select name="sugarroot" id="sugarroot">';
+				}
+				if ( isset( $syncfolders ) && is_object( $syncfolders ) ) {
+					echo '<select name="sugarroot" id="sugarroot">';
 
-            foreach ($syncfolders->collection as $roots) {
-                echo '<option ' . selected(strtolower((string) BackWPup_Option::get($jobid, 'sugarroot')), strtolower($roots->ref), false) . ' value="' . $roots->ref . '">' . $roots->displayName . '</option>';
-            }
-            echo '</select>';
-        } ?>
-                </td>
+					foreach ( $syncfolders->collection as $roots ) {
+						echo '<option ' . selected( strtolower( (string) BackWPup_Option::get( $jobid, 'sugarroot' ) ), strtolower( $roots->ref ), false ) . ' value="' . $roots->ref . '">' . $roots->displayName . '</option>'; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+					}
+					echo '</select>';
+				}
+				?>
+				</td>
             </tr>
         </table>
 
@@ -106,26 +107,40 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations
 	<?php
     }
 
-    public function edit_form_post_save(int $jobid): void
-    {
-        if (!empty($_POST['sugaremail']) && !empty($_POST['sugarpass']) && $_POST['authbutton'] === __('Authenticate with Sugarsync!', 'backwpup')) {
-            try {
-                $sugarsync = new BackWPup_Destination_SugarSync_API();
-                $refresh_token = $sugarsync->get_Refresh_Token(sanitize_email($_POST['sugaremail']), $_POST['sugarpass']);
-                if (!empty($refresh_token)) {
-                    BackWPup_Option::update($jobid, 'sugarrefreshtoken', $refresh_token);
-                }
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @param int|array $jobid
+	 *
+	 * @return void
+	 *
+	 * @phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+	 */
+	public function edit_form_post_save( $jobid ): void {
+				$jobids = (array) $jobid;
+
+		if ( ! empty( $_POST['sugaremail'] ) && ! empty( $_POST['sugarpass'] ) && __( 'Authenticate with Sugarsync!', 'backwpup' ) === $_POST['authbutton'] ) {
+			try {
+				$sugarsync     = new BackWPup_Destination_SugarSync_API();
+				$refresh_token = $sugarsync->get_Refresh_Token( sanitize_email( $_POST['sugaremail'] ), $_POST['sugarpass'] );
+				if ( ! empty( $refresh_token ) ) {
+					foreach ( $jobids as $jobid ) {
+							BackWPup_Option::update( $jobid, 'sugarrefreshtoken', $refresh_token );
+					}
+				}
             } catch (Exception $e) {
                 BackWPup_Admin::message('SUGARSYNC: ' . $e->getMessage(), true);
             }
         }
 
-        if (isset($_POST['authbutton']) && $_POST['authbutton'] === __('Delete Sugarsync authentication!', 'backwpup')) {
-            BackWPup_Option::delete($jobid, 'sugarrefreshtoken');
-        }
+		if ( isset( $_POST['authbutton'] ) && __( 'Delete Sugarsync authentication!', 'backwpup' ) === $_POST['authbutton'] ) {
+			foreach ( $jobids as $jobid ) {
+					BackWPup_Option::delete( $jobid, 'sugarrefreshtoken' );
+			}
+		}
 
-        if (isset($_POST['authbutton']) && $_POST['authbutton'] === __('Create Sugarsync account', 'backwpup')) {
-            try {
+		if ( isset( $_POST['authbutton'] ) && __( 'Create Sugarsync account', 'backwpup' ) === $_POST['authbutton'] ) {
+			try {
                 $sugarsync = new BackWPup_Destination_SugarSync_API();
                 $sugarsync->create_account(sanitize_email($_POST['sugaremail']), $_POST['sugarpass']);
             } catch (Exception $e) {
@@ -139,12 +154,15 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations
         }
         if ($_POST['sugardir'] == '/') {
             $_POST['sugardir'] = '';
-        }
-        BackWPup_Option::update($jobid, 'sugardir', $_POST['sugardir']);
+		}
+		foreach ( $jobids as $jobid ) {
+				BackWPup_Option::update( $jobid, 'sugardir', $_POST['sugardir'] );
 
-        BackWPup_Option::update($jobid, 'sugarroot', isset($_POST['sugarroot']) ? sanitize_text_field($_POST['sugarroot']) : '');
-        BackWPup_Option::update($jobid, 'sugarmaxbackups', isset($_POST['sugarmaxbackups']) ? absint($_POST['sugarmaxbackups']) : 0);
-    }
+				BackWPup_Option::update( $jobid, 'sugarroot', isset( $_POST['sugarroot'] ) ? sanitize_text_field( $_POST['sugarroot'] ) : '' );
+				BackWPup_Option::update( $jobid, 'sugarmaxbackups', isset( $_POST['sugarmaxbackups'] ) ? absint( $_POST['sugarmaxbackups'] ) : 0 );
+		}
+	}
+	// phpcs:enable
 
     public function file_delete(string $jobdest, string $backupfile): void
     {

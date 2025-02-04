@@ -5,6 +5,7 @@
 
 use Inpsyde\BackWPupShared\File\MimeTypeExtractor;
 use OpenCloud\Rackspace;
+use BackWPup\Utils\BackWPupHelpers;
 
 class BackWPup_Destination_RSC extends BackWPup_Destinations
 {
@@ -120,46 +121,63 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations
 		<?php
     }
 
-    public function edit_form_post_save(int $id): void
-    {
-        BackWPup_Option::update($id, 'rscusername', sanitize_text_field($_POST['rscusername']));
-        BackWPup_Option::update($id, 'rscapikey', sanitize_text_field($_POST['rscapikey']));
-        BackWPup_Option::update($id, 'rsccontainer', isset($_POST['rsccontainer']) ? sanitize_text_field($_POST['rsccontainer']) : '');
-        BackWPup_Option::update($id, 'rscregion', !empty($_POST['rscregion']) ? sanitize_text_field($_POST['rscregion']) : 'DFW');
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @param int|array $id Job ID.
+	 * @return void
+	 * @throws Exception When the Rackspace Cloud API throws an exception.
+	 *
+	 * @phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+	 */
+	public function edit_form_post_save( $id ): void {
+				$_POST['rscdir'] = trailingslashit( str_replace( '//', '/', str_replace( '\\', '/', trim( sanitize_text_field( $_POST['rscdir'] ) ) ) ) );
+		if ( substr( $_POST['rscdir'], 0, 1 ) === '/' ) {
+				$_POST['rscdir'] = substr( $_POST['rscdir'], 1 );
+		}
+		if ( '/' === $_POST['rscdir'] ) {
+				$_POST['rscdir'] = '';
+		}
 
-        $_POST['rscdir'] = trailingslashit(str_replace('//', '/', str_replace('\\', '/', trim(sanitize_text_field($_POST['rscdir'])))));
-        if (substr($_POST['rscdir'], 0, 1) === '/') {
-            $_POST['rscdir'] = substr($_POST['rscdir'], 1);
-        }
-        if ($_POST['rscdir'] === '/') {
-            $_POST['rscdir'] = '';
-        }
-        BackWPup_Option::update($id, 'rscdir', $_POST['rscdir']);
+				$newrsccontainer = '';
+		if ( ! empty( $_POST['rscusername'] ) && ! empty( $_POST['rscapikey'] ) && ! empty( $_POST['newrsccontainer'] ) ) {
+			try {
+						$conn   = new Rackspace(
+								self::get_auth_url_by_region( $_POST['rscregion'] ),
+								[
+									'username' => $_POST['rscusername'],
+									'apiKey'   => $_POST['rscapikey'],
+								],
+								[
+									'ssl.certificate_authority' => BackWPup::get_plugin_data( 'cacert' ),
+								]
+						);
+						$ostore = $conn->objectStoreService( 'cloudFiles', sanitize_text_field( $_POST['rscregion'] ), 'publicURL' );
+						$ostore->createContainer( $_POST['newrsccontainer'] );
+						$newrsccontainer = sanitize_text_field( $_POST['newrsccontainer'] );
+						// translators: %s: container name.
+						BackWPup_Admin::message( sprintf( __( 'Rackspace Cloud container "%s" created.', 'backwpup' ), esc_html( sanitize_text_field( $_POST['newrsccontainer'] ) ) ) );
+			} catch ( Exception $e ) {
+							// translators: %s: error message.
+							BackWPup_Admin::message( sprintf( __( 'Rackspace Cloud API: %s', 'backwpup' ), $e->getMessage() ), true );
+			}
+		}
 
-        BackWPup_Option::update($id, 'rscmaxbackups', !empty($_POST['rscmaxbackups']) ? absint($_POST['rscmaxbackups']) : 0);
-        BackWPup_Option::update($id, 'rscsyncnodelete', !empty($_POST['rscsyncnodelete']));
-
-        if (!empty($_POST['rscusername']) && !empty($_POST['rscapikey']) && !empty($_POST['newrsccontainer'])) {
-            try {
-                $conn = new Rackspace(
-                    self::get_auth_url_by_region($_POST['rscregion']),
-                    [
-                        'username' => $_POST['rscusername'],
-                        'apiKey' => $_POST['rscapikey'],
-                    ],
-                    [
-                        'ssl.certificate_authority' => BackWPup::get_plugin_data('cacert'),
-                    ]
-                );
-                $ostore = $conn->objectStoreService('cloudFiles', sanitize_text_field($_POST['rscregion']), 'publicURL');
-                $ostore->createContainer($_POST['newrsccontainer']);
-                BackWPup_Option::update($id, 'rsccontainer', sanitize_text_field($_POST['newrsccontainer']));
-                BackWPup_Admin::message(sprintf(__('Rackspace Cloud container "%s" created.', 'backwpup'), esc_html(sanitize_text_field($_POST['newrsccontainer']))));
-            } catch (Exception $e) {
-                BackWPup_Admin::message(sprintf(__('Rackspace Cloud API: %s', 'backwpup'), $e->getMessage()), true);
-            }
-        }
-    }
+				$jobids = (array) $id;
+		foreach ( $jobids as $id ) {
+				BackWPup_Option::update( $id, 'rscusername', sanitize_text_field( $_POST['rscusername'] ) );
+				BackWPup_Option::update( $id, 'rscapikey', sanitize_text_field( $_POST['rscapikey'] ) );
+				BackWPup_Option::update( $id, 'rsccontainer', isset( $_POST['rsccontainer'] ) ? sanitize_text_field( $_POST['rsccontainer'] ) : '' );
+				BackWPup_Option::update( $id, 'rscregion', ! empty( $_POST['rscregion'] ) ? sanitize_text_field( $_POST['rscregion'] ) : 'DFW' );
+				BackWPup_Option::update( $id, 'rscdir', $_POST['rscdir'] );
+				BackWPup_Option::update( $id, 'rscmaxbackups', ! empty( $_POST['rscmaxbackups'] ) ? absint( $_POST['rscmaxbackups'] ) : 0 );
+				BackWPup_Option::update( $id, 'rscsyncnodelete', ! empty( $_POST['rscsyncnodelete'] ) );
+			if ( ! empty( $newrsccontainer ) ) {
+						BackWPup_Option::update( $id, 'rsccontainer', $newrsccontainer );
+			}
+		}
+	}
+	// phpcs:enable
 
     public function file_delete(string $jobdest, string $backupfile): void
     {
@@ -391,17 +409,15 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations
 						rscusername: $('#rscusername').val(),
 						rscapikey: $('#rscapikey').val(),
 						rscregion: $('#rscregion').val(),
-						rscselected: $('#rsccontainerselected').val(),
+						rscselected: $('#rsccontainer').val(),
 						_ajax_nonce: $('#backwpupajaxnonce').val()
 					};
 					$.post(ajaxurl, data, function (response) {
-						$('#rsccontainererror').remove();
-						$('#rsccontainer').remove();
-						$('#rsccontainerselected').after(response);
+						$('#rscbucketContainer').html(response);
 					});
 				}
 
-				$('#rscregion').change(function () {
+				$('#rscregion').on('change', function () {
 					rscgetcontainer();
 				});
 				$('#rscusername').backwpupDelayKeyup(function () {
@@ -445,12 +461,14 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations
                     [
                         'ssl.certificate_authority' => BackWPup::get_plugin_data('cacert'),
                     ]
-                );
-                $ostore = $conn->objectStoreService('cloudFiles', $args['rscregion'], 'publicURL');
-                $containerlist = $ostore->listContainers();
+				);
+				if ( null !== $conn->getToken() ) {
+					$ostore        = $conn->objectStoreService( 'cloudFiles', $args['rscregion'], 'publicURL' );
+					$containerlist = $ostore->listContainers();
 
-                while ($container = $containerlist->next()) {
-                    $container_list[] = $container->name;
+					while ( $container = $containerlist->next() ) { // phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
+						$container_list[] = $container->name;
+					}
                 }
             } catch (Exception $e) {
                 $error = $e->getMessage();
@@ -468,14 +486,20 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations
         }
         echo '</span>';
 
-        if (!empty($container_list)) {
-            echo '<select name="rsccontainer" id="rsccontainer">';
-
-            foreach ($container_list as $container_name) {
-                echo '<option ' . selected(strtolower((string) $args['rscselected']), strtolower((string) $container_name), false) . '>' . $container_name . '</option>';
-            }
-            echo '</select>';
-        }
+		if ( ! empty( $container_list ) ) {
+			$mapped_containers = array_combine( $container_list, $container_list );
+			echo BackWPupHelpers::component( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				'form/select',
+				[
+					'name'       => 'rsccontainer',
+					'identifier' => 'rsccontainer',
+					'label'      => esc_html__( 'Container selection', 'backwpup' ),
+					'withEmpty'  => false,
+					'value'      => $args['rscselected'], // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					'options'    => $mapped_containers, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				]
+				);
+		}
 
         if ($ajax) {
             exit();

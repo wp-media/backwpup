@@ -1,8 +1,55 @@
 <?php
 
-abstract class BackWPup_JobTypes
-{
-    public $info = [];
+abstract class BackWPup_JobTypes {
+
+	/**
+	 * The type of job for files only backup.
+	 *
+	 * @var array
+	 */
+	public static $type_job_files = [ 'FILE', 'WPPLUGIN' ];
+
+	/**
+	 * The type of job for database only backup.
+	 *
+	 * @var array
+	 */
+	public static $type_job_database = [ 'DBDUMP' ];
+
+	/**
+	 * The type of job for both files and database backup.
+	 *
+	 * @var array
+	 */
+	public static $type_job_both = [ 'FILE', 'DBDUMP', 'WPPLUGIN' ];
+
+	/**
+	 * The name of the job type for file backups.
+	 *
+	 * @var string
+	 */
+	public static $name_job_files = 'Files Backup';
+
+	/**
+	 * The name of the job type for database backup.
+	 *
+	 * @var string
+	 */
+	public static $name_job_database = 'Database Backup';
+
+	/**
+	 *  The name of the job type that includes both files and database backup.
+	 *
+	 * @var string
+	 */
+	public static $name_job_both = 'Files and Database Backup';
+
+	/**
+	 * The info of job type.
+	 *
+	 * @var array
+	 */
+	public $info = [];
 
     abstract public function __construct();
 

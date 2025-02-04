@@ -333,17 +333,6 @@ class BackWPup_Page_Editjob
                 $tabs[$tabid]['display'] = false;
             }
         }
-        //add destinations to tabs
-        $jobdests = BackWPup_Option::get($jobid, 'destinations');
-
-        foreach ($destinations as $destid => $dest) {
-            $tabid = 'dest-' . strtolower($destid);
-            $tabs[$tabid]['name'] = sprintf(__('To: %s', 'backwpup'), $dest['info']['name']);
-            $tabs[$tabid]['display'] = true;
-            if (!in_array($destid, $jobdests, true)) {
-                $tabs[$tabid]['display'] = false;
-            }
-        }
         //display tabs
         echo '<h2 class="nav-tab-wrapper">';
 
@@ -358,18 +347,19 @@ class BackWPup_Page_Editjob
             }
             echo '<a href="' . wp_nonce_url(network_admin_url('admin.php?page=backwpupeditjob&tab=' . $id . '&jobid=' . $jobid), 'edit-job') . '" class="nav-tab' . $addclass . '" id="tab-' . esc_attr($id) . '" data-nexttab="' . esc_attr($id) . '"' . $display . '>' . esc_html($tab['name']) . '</a>';
         }
-        echo '</h2>';
+		echo '</h2>';
+        // phpcs:disable
         //display messages
-        BackWPup_Admin::display_messages();
-        echo '<form name="editjob" id="editjob" method="post" action="' . esc_attr(admin_url('admin-post.php')) . '">';
-        echo '<input type="hidden" id="jobid" name="jobid" value="' . esc_attr($jobid) . '" />';
-        echo '<input type="hidden" name="tab" value="' . esc_attr($_GET['tab']) . '" />';
-        echo '<input type="hidden" name="nexttab" value="' . esc_attr($_GET['tab']) . '" />';
-        echo '<input type="hidden" name="page" value="backwpupeditjob" />';
-        echo '<input type="hidden" name="action" value="backwpup" />';
-        echo '<input type="hidden" name="anchor" value="" />';
-        wp_nonce_field('backwpupeditjob_page');
-        wp_nonce_field('backwpup_ajax_nonce', 'backwpupajaxnonce', false);
+		BackWPup_Admin::display_messages();
+		echo '<form name="editjob" id="editjob" method="post" action="' . esc_attr( admin_url( 'admin-post.php' ) ) . '">';
+		echo '<input readonly disabled type="hidden" id="jobid" name="jobid" value="' . esc_attr( $jobid ) . '" />';
+		echo '<input readonly disabled type="hidden" name="tab" value="' . esc_attr( $_GET['tab'] ) . '" />';
+		echo '<input readonly disabled type="hidden" name="nexttab" value="' . esc_attr( $_GET['tab'] ) . '" />';
+		echo '<input readonly disabled type="hidden" name="page" value="backwpupeditjob" />';
+		echo '<input readonly disabled type="hidden" name="action" value="backwpup" />';
+		echo '<input readonly disabled type="hidden" name="anchor" value="" />';
+		wp_nonce_field( 'backwpupeditjob_page' );
+		wp_nonce_field( 'backwpup_ajax_nonce', 'backwpupajaxnonce', false );
 
         switch ($_GET['tab']) {
             case 'job':
@@ -380,7 +370,7 @@ class BackWPup_Page_Editjob
 						<tr>
 							<th scope="row"><label for="name"><?php esc_html_e('Please name this job.', 'backwpup'); ?></label></th>
 							<td>
-								<input name="name" type="text" id="name" placeholder="<?php esc_attr_e('Job Name', 'backwpup'); ?>" data-empty="<?php esc_attr_e('New Job', 'backwpup'); ?>" value="<?php echo esc_attr(BackWPup_Option::get($jobid, 'name')); ?>" class="regular-text" />
+								<input readonly disabled name="name" type="text" id="name" placeholder="<?php esc_attr_e( 'Job Name', 'backwpup' ); ?>" data-empty="<?php esc_attr_e( 'New Job', 'backwpup' ); ?>" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'name' ) ); ?>" class="regular-text" />
 							</td>
 						</tr>
 					</table>
@@ -397,11 +387,11 @@ class BackWPup_Page_Editjob
                                         $addclass = '';
                                         if ($typeclass->creates_file()) {
                                             $addclass .= ' filetype';
-                                        }
-                                        echo '<p><label for="jobtype-select-' . strtolower($id) . '"><input class="jobtype-select checkbox' . $addclass . '" id="jobtype-select-' . strtolower($id) . '" type="checkbox" ' . checked(true, in_array($id, BackWPup_Option::get($jobid, 'type'), true), false) . ' name="type[]" value="' . esc_attr($id) . '" /> ' . esc_attr($typeclass->info['description']) . '</label>';
-                                        if (!empty($typeclass->info['help'])) {
-                                            echo '<br><span class="description">' . esc_attr($typeclass->info['help']) . '</span>';
-                                        }
+										}
+										echo '<p><label for="jobtype-select-' . strtolower( $id ) . '"><input readonly disabled class="jobtype-select checkbox' . $addclass . '" id="jobtype-select-' . strtolower( $id ) . '" type="checkbox" ' . checked( true, in_array( $id, BackWPup_Option::get( $jobid, 'type' ), true ), false ) . ' name="type[]" value="' . esc_attr( $id ) . '" /> ' . esc_attr( $typeclass->info['description'] ) . '</label>';
+										if ( ! empty( $typeclass->info['help'] ) ) {
+											echo '<br><span class="description">' . esc_attr( $typeclass->info['help'] ) . '</span>';
+										}
                                         echo '</p>';
                                     }
                                     ?></fieldset>
@@ -420,12 +410,12 @@ class BackWPup_Page_Editjob
 									<legend class="screen-reader-text">	<span><?php esc_html_e('Backup type', 'backwpup'); ?></span></legend>
 									<p>
 										<label for="idbackuptype-sync">
-											<input class="radio" type="radio"<?php checked('sync', BackWPup_Option::get($jobid, 'backuptype'), true); ?> name="backuptype" id="idbackuptype-sync" value="sync" /> <?php esc_html_e('Synchronize file by file to destination', 'backwpup'); ?>
+											<input readonly disabled class="radio" type="radio"<?php checked( 'sync', BackWPup_Option::get( $jobid, 'backuptype' ), true ); ?> name="backuptype" id="idbackuptype-sync" value="sync" /> <?php esc_html_e( 'Synchronize file by file to destination', 'backwpup' ); ?>
 										</label>
 									</p>
 									<p>
 										<label for="idbackuptype-archive">
-											<input class="radio" type="radio"<?php checked('archive', BackWPup_Option::get($jobid, 'backuptype'), true); ?> name="backuptype" id="idbackuptype-archive" value="archive" /> <?php esc_html_e('Create a backup archive', 'backwpup'); ?>
+											<input readonly disabled class="radio" type="radio"<?php checked( 'archive', BackWPup_Option::get( $jobid, 'backuptype' ), true ); ?> name="backuptype" id="idbackuptype-archive" value="archive" /> <?php esc_html_e( 'Create a backup archive', 'backwpup' ); ?>
 										</label>
 									</p>
 								</fieldset>
@@ -435,8 +425,8 @@ class BackWPup_Page_Editjob
 						<tr class="nosync">
 							<th scope="row"><label for="archivename"><?php esc_html_e('Archive name', 'backwpup'); ?></label></th>
 							<td>
-								<input name="archivename" type="text" id="archivename" placeholder="%Y-%m-%d_%H-%i-%s_%hash%" value="<?php echo esc_attr(BackWPup_Option::get($jobid, 'archivenamenohash')); ?>" class="regular-text code" />
-								<p><?php _e('<em>Note</em>: In order for backup file tracking to work, %hash% must be included anywhere in the archive name.', 'backwpup'); ?></p>
+								<input readonly disabled name="archivename" type="text" id="archivename" placeholder="%Y-%m-%d_%H-%i-%s_%hash%" value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'archivenamenohash' ) ); ?>" class="regular-text code" />
+								<p><?php _e( '<em>Note</em>: In order for backup file tracking to work, %hash% must be included anywhere in the archive name.', 'backwpup' ); ?></p>
 								<?php
                                 $archivename = BackWPup_Option::substitute_date_vars(
                                         BackWPup_Option::get($jobid, 'archivenamenohash')
@@ -469,19 +459,19 @@ class BackWPup_Page_Editjob
 								<fieldset>
 									<legend class="screen-reader-text"><span><?php esc_html_e('Archive Format', 'backwpup'); ?></span></legend>
 									<?php
-                                    if (class_exists(\ZipArchive::class)) {
-                                        echo '<p><label for="idarchiveformat-zip"><input class="radio" type="radio"' . checked('.zip', $archive_format_option, false) . ' name="archiveformat" id="idarchiveformat-zip" value=".zip" /> ' . esc_html__('Zip', 'backwpup') . '</label></p>';
-                                    } else {
-                                        echo '<p><label for="idarchiveformat-zip"><input class="radio" type="radio"' . checked('.zip', $archive_format_option, false) . ' name="archiveformat" id="idarchiveformat-zip" value=".zip" disabled="disabled" /> ' . esc_html__('Zip', 'backwpup') . '</label>';
-                                        echo '<br /><span class="description">' . esc_html(__('ZipArchive PHP class is missing, so BackWPUp will use PclZip instead.', 'backwpup')) . '</span></p>';
-                                    }
-                                    echo '<p><label for="idarchiveformat-tar"><input class="radio" type="radio"' . checked('.tar', $archive_format_option, false) . ' name="archiveformat" id="idarchiveformat-tar" value=".tar" /> ' . esc_html__('Tar', 'backwpup') . '</label></p>';
-                                    if (function_exists('gzopen')) {
-                                        echo '<p><label for="idarchiveformat-targz"><input class="radio" type="radio"' . checked('.tar.gz', $archive_format_option, false) . ' name="archiveformat" id="idarchiveformat-targz" value=".tar.gz" /> ' . esc_html__('Tar GZip', 'backwpup') . '</label></p>';
-                                    } else {
-                                        echo '<p><label for="idarchiveformat-targz"><input class="radio" type="radio"' . checked('.tar.gz', $archive_format_option, false) . ' name="archiveformat" id="idarchiveformat-targz" value=".tar.gz" disabled="disabled" /> ' . esc_html__('Tar GZip', 'backwpup') . '</label>';
-                                        echo '<br /><span class="description">' . esc_html(sprintf(__('Disabled due to missing %s PHP function.', 'backwpup'), 'gzopen()')) . '</span></p>';
-                                    }
+									if ( class_exists( \ZipArchive::class ) ) {
+										echo '<p><label for="idarchiveformat-zip"><input readonly disabled class="radio" type="radio"' . checked( '.zip', $archive_format_option, false ) . ' name="archiveformat" id="idarchiveformat-zip" value=".zip" /> ' . esc_html__( 'Zip', 'backwpup' ) . '</label></p>';
+									} else {
+										echo '<p><label for="idarchiveformat-zip"><input readonly disabled class="radio" type="radio"' . checked( '.zip', $archive_format_option, false ) . ' name="archiveformat" id="idarchiveformat-zip" value=".zip" disabled="disabled" /> ' . esc_html__( 'Zip', 'backwpup' ) . '</label>';
+										echo '<br /><span class="description">' . esc_html( __( 'ZipArchive PHP class is missing, so BackWPUp will use PclZip instead.', 'backwpup' ) ) . '</span></p>';
+									}
+									echo '<p><label for="idarchiveformat-tar"><input readonly disabled class="radio" type="radio"' . checked( '.tar', $archive_format_option, false ) . ' name="archiveformat" id="idarchiveformat-tar" value=".tar" /> ' . esc_html__( 'Tar', 'backwpup' ) . '</label></p>';
+									if ( function_exists( 'gzopen' ) ) {
+										echo '<p><label for="idarchiveformat-targz"><input readonly disabled class="radio" type="radio"' . checked( '.tar.gz', $archive_format_option, false ) . ' name="archiveformat" id="idarchiveformat-targz" value=".tar.gz" /> ' . esc_html__( 'Tar GZip', 'backwpup' ) . '</label></p>';
+									} else {
+										echo '<p><label for="idarchiveformat-targz"><input readonly disabled class="radio" type="radio"' . checked( '.tar.gz', $archive_format_option, false ) . ' name="archiveformat" id="idarchiveformat-targz" value=".tar.gz" disabled="disabled" /> ' . esc_html__( 'Tar GZip', 'backwpup' ) . '</label>';
+										echo '<br /><span class="description">' . esc_html( sprintf( __( 'Disabled due to missing %s PHP function.', 'backwpup' ), 'gzopen()' ) ) . '</span></p>';
+									}
                                     ?>
 								</fieldset>
 							</td>
@@ -499,13 +489,19 @@ class BackWPup_Page_Editjob
 										<?php
                                         ?>
 										<label for="archiveencryption">
-											<input type="checkbox" name="archiveencryption"
-												id="archiveencryption" value="1"<?php if ($disable_encryption) {
-                                            ?> disabled="disabled"<?php
-                                        } else {
-                                            checked(BackWPup_Option::get($jobid, 'archiveencryption'));
-                                        } ?> />
-											<?php _e('Encrypt Archive', 'backwpup'); ?>
+											<input readonly disabled type="checkbox" name="archiveencryption"
+												id="archiveencryption" value="1"
+												<?php
+												if ( $disable_encryption ) {
+													?>
+											disabled="disabled"
+													<?php
+												} else {
+													checked( BackWPup_Option::get( $jobid, 'archiveencryption' ) );
+												}
+												?>
+										/>
+											<?php _e( 'Encrypt Archive', 'backwpup' ); // @phpcs:ignore?>
 										</label>
 										<?php if ($disable_encryption) { ?>
 											<p class="description">
@@ -531,11 +527,11 @@ class BackWPup_Page_Editjob
                                         $syncclass = '';
                                         if (!$dest['can_sync']) {
                                             $syncclass = 'nosync';
-                                        }
-                                        echo '<p class="' . esc_attr($syncclass) . '"><label for="dest-select-' . strtolower($id) . '"><input class="checkbox" id="dest-select-' . strtolower(esc_attr($id)) . '" type="checkbox" ' . checked(true, in_array($id, BackWPup_Option::get($jobid, 'destinations'), true), false) . ' name="destinations[]" value="' . esc_attr($id) . '" ' . disabled(!empty($dest['error']), true, false) . ' /> ' . esc_attr($dest['info']['description']);
-                                        if (!empty($dest['error'])) {
-                                            echo '<br><span class="description">' . esc_attr($dest['error']) . '</span>';
-                                        }
+										}
+										echo '<p class="' . esc_attr( $syncclass ) . '"><label for="dest-select-' . strtolower( $id ) . '"><input readonly disabled class="checkbox" id="dest-select-' . strtolower( esc_attr( $id ) ) . '" type="checkbox" ' . checked( true, in_array( $id, BackWPup_Option::get( $jobid, 'destinations' ), true ), false ) . ' name="destinations[]" value="' . esc_attr( $id ) . '" ' . disabled( ! empty( $dest['error'] ), true, false ) . ' /> ' . esc_attr( $dest['info']['description'] );
+										if ( ! empty( $dest['error'] ) ) {
+											echo '<br><span class="description">' . esc_attr( $dest['error'] ) . '</span>';
+										}
                                         echo '</label></p>';
                                     }
                                     ?></fieldset>
@@ -549,23 +545,23 @@ class BackWPup_Page_Editjob
 						<tr>
 							<th scope="row"><label for="mailaddresslog"><?php esc_html_e('Send log to email address', 'backwpup'); ?></label></th>
 							<td>
-								<input name="mailaddresslog" type="text" id="mailaddresslog" value="<?php echo esc_html(BackWPup_Option::get($jobid, 'mailaddresslog')); ?>" class="regular-text" />
-								<p class="description"><?php esc_attr_e('Leave empty to not have log sent. Or separate with , for more than one receiver.', 'backwpup'); ?></p>
+								<input readonly disabled name="mailaddresslog" type="text" id="mailaddresslog" value="<?php echo esc_html( BackWPup_Option::get( $jobid, 'mailaddresslog' ) ); ?>" class="regular-text" />
+								<p class="description"><?php esc_attr_e( 'Leave empty to not have log sent. Or separate with , for more than one receiver.', 'backwpup' ); ?></p>
 							</td>
 						</tr>
 						<tr>
 							<th scope="row"><label for="mailaddresssenderlog"><?php esc_html_e('Email FROM field', 'backwpup'); ?></label></th>
 							<td>
-								<input name="mailaddresssenderlog" type="text" id="mailaddresssenderlog" value="<?php echo esc_html(BackWPup_Option::get($jobid, 'mailaddresssenderlog')); ?>" class="regular-text" placeholder="<?php esc_attr_e('Your Name &lt;mail@domain.tld&gt;', 'backwpup'); ?>"/>
+								<input readonly disabled name="mailaddresssenderlog" type="text" id="mailaddresssenderlog" value="<?php echo esc_html( BackWPup_Option::get( $jobid, 'mailaddresssenderlog' ) ); ?>" class="regular-text" placeholder="<?php esc_attr_e( 'Your Name &lt;mail@domain.tld&gt;', 'backwpup' ); ?>"/>
 							</td>
 						</tr>
 						<tr>
 							<th scope="row"><?php esc_html_e('Errors only', 'backwpup'); ?></th>
 							<td>
-	                            <label for="idmailerroronly">
-								<input class="checkbox" value="1" id="idmailerroronly"
-									   type="checkbox" <?php checked(BackWPup_Option::get($jobid, 'mailerroronly'), true); ?>
-									   name="mailerroronly" /> <?php esc_html_e('Send email with log only when errors occur during job execution.', 'backwpup'); ?>
+								<label for="idmailerroronly">
+								<input readonly disabled class="checkbox" value="1" id="idmailerroronly"
+										type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'mailerroronly' ), true ); ?>
+										name="mailerroronly" /> <?php esc_html_e( 'Send email with log only when errors occur during job execution.', 'backwpup' ); ?>
 								</label>
 							</td>
 						</tr>
@@ -583,24 +579,24 @@ class BackWPup_Page_Editjob
 						<tr>
 	                        <th scope="row"><?php esc_html_e('Start job', 'backwpup'); ?></th>
 	                        <td>
-	                            <fieldset>
-	                                <legend class="screen-reader-text"><span><?php esc_html_e('Start job', 'backwpup'); ?></span></legend>
-	                                <label for="idactivetype"><input class="radio"
-	                                       type="radio"<?php checked('', BackWPup_Option::get($jobid, 'activetype'), true); ?>
-	                                       name="activetype" id="idactivetype"
-	                                       value="" /> <?php esc_html_e('manually only', 'backwpup'); ?></label><br/>
-	                                <label for="idactivetype-wpcron"><input class="radio"
-	                                       type="radio"<?php checked('wpcron', BackWPup_Option::get($jobid, 'activetype'), true); ?>
-	                                       name="activetype" id="idactivetype-wpcron"
-	                                       value="wpcron" /> <?php esc_html_e('with WordPress cron', 'backwpup'); ?></label><br/>
+								<fieldset>
+									<legend class="screen-reader-text"><span><?php esc_html_e( 'Start job', 'backwpup' ); ?></span></legend>
+									<label for="idactivetype"><input readonly disabled class="radio"
+											type="radio"<?php checked( '', BackWPup_Option::get( $jobid, 'activetype' ), true ); ?>
+											name="activetype" id="idactivetype"
+											value="" /> <?php esc_html_e( 'manually only', 'backwpup' ); ?></label><br/>
+									<label for="idactivetype-wpcron"><input readonly disabled class="radio"
+											type="radio"<?php checked( 'wpcron', BackWPup_Option::get( $jobid, 'activetype' ), true ); ?>
+											name="activetype" id="idactivetype-wpcron"
+											value="wpcron" /> <?php esc_html_e( 'with WordPress cron', 'backwpup' ); ?></label><br/>
 									<?php
                                     $url = BackWPup_Job::get_jobrun_url('runext', BackWPup_Option::get($jobid, 'jobid'));
                                     ?>
-	                                <label for="idactivetype-link">
-		                                <input class="radio" type="radio"<?php checked('link', BackWPup_Option::get($jobid, 'activetype'), true); ?> name="activetype" id="idactivetype-link" value="link" />
-		                                &nbsp;<?php esc_html_e('with a link', 'backwpup'); ?> <code><a href="<?php echo $url['url']; ?>" target="_blank"><?php echo esc_html($url['url']); ?></a></code><br>
-		                                <span class="description"><?php esc_attr_e('Copy the link for an external start. This option has to be activated to make the link work.', 'backwpup'); ?></span>
-	                                </label>
+									<label for="idactivetype-link">
+										<input readonly disabled class="radio" type="radio"<?php checked( 'link', BackWPup_Option::get( $jobid, 'activetype' ), true ); ?> name="activetype" id="idactivetype-link" value="link" />
+										&nbsp;<?php esc_html_e( 'with a link', 'backwpup' ); ?> <code><a href="<?php echo $url['url']; ?>" target="_blank"><?php echo esc_html( $url['url'] ); ?></a></code><br>
+										<span class="description"><?php esc_attr_e( 'Copy the link for an external start. This option has to be activated to make the link work.', 'backwpup' ); ?></span>
+									</label>
 
 	                            </fieldset>
 	                        </td>
@@ -621,15 +617,15 @@ class BackWPup_Page_Editjob
 							<th scope="row"><?php esc_html_e('Scheduler type', 'backwpup'); ?></th>
 							<td>
 								<fieldset>
-									<legend class="screen-reader-text"><span><?php esc_html_e('Scheduler type', 'backwpup'); ?></span></legend>
-	                                <label for="idcronselect-basic"><input class="radio"
-										   type="radio"<?php checked('basic', BackWPup_Option::get($jobid, 'cronselect'), true); ?>
-										   name="cronselect" id="idcronselect-basic"
-										   value="basic" /> <?php esc_html_e('basic', 'backwpup'); ?></label><br/>
-	                                <label for="idcronselect-advanced"><input class="radio"
-										   type="radio"<?php checked('advanced', BackWPup_Option::get($jobid, 'cronselect'), true); ?>
-										   name="cronselect" id="idcronselect-advanced"
-										   value="advanced" /> <?php esc_html_e('advanced', 'backwpup'); ?></label><br/>
+									<legend class="screen-reader-text"><span><?php esc_html_e( 'Scheduler type', 'backwpup' ); ?></span></legend>
+									<label for="idcronselect-basic"><input readonly disabled class="radio"
+											type="radio"<?php checked( 'basic', BackWPup_Option::get( $jobid, 'cronselect' ), true ); ?>
+											name="cronselect" id="idcronselect-basic"
+											value="basic" /> <?php esc_html_e( 'basic', 'backwpup' ); ?></label><br/>
+									<label for="idcronselect-advanced"><input readonly disabled class="radio"
+											type="radio"<?php checked( 'advanced', BackWPup_Option::get( $jobid, 'cronselect' ), true ); ?>
+											name="cronselect" id="idcronselect-advanced"
+											value="advanced" /> <?php esc_html_e( 'advanced', 'backwpup' ); ?></label><br/>
 								</fieldset>
 							</td>
 						</tr>
@@ -682,21 +678,33 @@ class BackWPup_Page_Editjob
 											<?php _e('Minute', 'backwpup'); ?>
 	                                    </th>
 	                                </tr>
-	                                <tr>
-	                                    <td><label for="idcronbtype-mon"><?php echo '<input class="radio" type="radio"' . checked(true, is_numeric($mday[0]), false) . ' name="cronbtype" id="idcronbtype-mon" value="mon" /> ' . esc_html__('monthly', 'backwpup'); ?></label></td>
-	                                    <td><select name="moncronmday"><?php for ($i = 1; $i <= 31; ++$i) {
-                            echo '<option ' . selected(in_array((string) $i, $mday, true), true, false) . '  value="' . esc_attr($i) . '" />' . esc_html__('on', 'backwpup') . ' ' . esc_html($i) . '</option>';
-                        } ?></select></td>
-	                                    <td><select name="moncronhours"><?php for ($i = 0; $i < 24; ++$i) {
-                            echo '<option ' . selected(in_array((string) $i, $hours, true), true, false) . '  value="' . esc_attr($i) . '" />' . esc_html($i) . '</option>';
-                        } ?></select></td>
-	                                    <td><select name="moncronminutes"><?php for ($i = 0; $i < 60; $i = $i + 5) {
-                            echo '<option ' . selected(in_array((string) $i, $minutes, true), true, false) . '  value="' . esc_attr($i) . '" />' . esc_html($i) . '</option>';
-                        } ?></select></td>
-	                                </tr>
-	                                <tr>
-	                                    <td><label for="idcronbtype-week"><?php echo '<input class="radio" type="radio"' . checked(true, is_numeric($wday[0]), false) . ' name="cronbtype" id="idcronbtype-week" value="week" /> ' . esc_html__('weekly', 'backwpup'); ?></label></td>
-	                                    <td><select name="weekcronwday">
+									<tr>
+										<td><label for="idcronbtype-mon"><?php echo '<input readonly disabled class="radio" type="radio"' . checked( true, is_numeric( $mday[0] ), false ) . ' name="cronbtype" id="idcronbtype-mon" value="mon" /> ' . esc_html__( 'monthly', 'backwpup' ); ?></label></td>
+										<td><select name="moncronmday">
+										<?php
+										for ( $i = 1; $i <= 31; ++$i ) {
+											echo '<option ' . selected( in_array( (string) $i, $mday, true ), true, false ) . '  value="' . esc_attr( $i ) . '" />' . esc_html__( 'on', 'backwpup' ) . ' ' . esc_html( $i ) . '</option>';
+										}
+										?>
+						</select></td>
+										<td><select name="moncronhours">
+										<?php
+										for ( $i = 0; $i < 24; ++$i ) {
+											echo '<option ' . selected( in_array( (string) $i, $hours, true ), true, false ) . '  value="' . esc_attr( $i ) . '" />' . esc_html( $i ) . '</option>';
+										}
+										?>
+						</select></td>
+										<td><select name="moncronminutes">
+										<?php
+										for ( $i = 0; $i < 60; $i = $i + 5 ) {
+											echo '<option ' . selected( in_array( (string) $i, $minutes, true ), true, false ) . '  value="' . esc_attr( $i ) . '" />' . esc_html( $i ) . '</option>';
+										}
+										?>
+						</select></td>
+									</tr>
+									<tr>
+										<td><label for="idcronbtype-week"><?php echo '<input readonly disabled class="radio" type="radio"' . checked( true, is_numeric( $wday[0] ), false ) . ' name="cronbtype" id="idcronbtype-week" value="week" /> ' . esc_html__( 'weekly', 'backwpup' ); ?></label></td>
+										<td><select name="weekcronwday">
 											<?php echo '<option ' . selected(in_array('0', $wday, true), true, false) . '  value="0" />' . esc_html__('Sunday', 'backwpup') . '</option>';
                                             echo '<option ' . selected(in_array('1', $wday, true), true, false) . '  value="1" />' . esc_html__('Monday', 'backwpup') . '</option>';
                                             echo '<option ' . selected(in_array('2', $wday, true), true, false) . '  value="2" />' . esc_html__('Tuesday', 'backwpup') . '</option>';
@@ -712,9 +720,9 @@ class BackWPup_Page_Editjob
                                                 echo '<option ' . selected(in_array((string) $i, $minutes, true), true, false) . '  value="' . esc_attr($i) . '" />' . esc_html($i) . '</option>';
                                             } ?></select></td>
 	                                </tr>
-	                                <tr>
-	                                    <td><label for="idcronbtype-day"><?php echo '<input class="radio" type="radio"' . checked('**', $mday[0] . $wday[0], false) . ' name="cronbtype" id="idcronbtype-day" value="day" /> ' . esc_html__('daily', 'backwpup'); ?></label></td>
-	                                    <td></td>
+									<tr>
+										<td><label for="idcronbtype-day"><?php echo '<input readonly disabled class="radio" type="radio"' . checked( '**', $mday[0] . $wday[0], false ) . ' name="cronbtype" id="idcronbtype-day" value="day" /> ' . esc_html__( 'daily', 'backwpup' ); ?></label></td>
+										<td></td>
 	                                    <td><select name="daycronhours"><?php for ($i = 0; $i < 24; ++$i) {
                                                 echo '<option ' . selected(in_array((string) $i, $hours, true), true, false) . '  value="' . esc_attr($i) . '" />' . esc_html($i) . '</option>';
                                             } ?></select></td>
@@ -722,9 +730,9 @@ class BackWPup_Page_Editjob
                                                 echo '<option ' . selected(in_array((string) $i, $minutes, true), true, false) . '  value="' . esc_attr($i) . '" />' . esc_html($i) . '</option>';
                                             } ?></select></td>
 	                                </tr>
-	                                <tr>
-	                                    <td><label for="idcronbtype-hour"><?php echo '<input class="radio" type="radio"' . checked('*', $hours[0], false) . ' name="cronbtype" id="idcronbtype-hour" value="hour" /> ' . esc_html__('hourly', 'backwpup'); ?></label></td>
-	                                    <td></td>
+									<tr>
+										<td><label for="idcronbtype-hour"><?php echo '<input readonly disabled class="radio" type="radio"' . checked( '*', $hours[0], false ) . ' name="cronbtype" id="idcronbtype-hour" value="hour" /> ' . esc_html__( 'hourly', 'backwpup' ); ?></label></td>
+										<td></td>
 	                                    <td></td>
 	                                    <td><select name="hourcronminutes"><?php for ($i = 0; $i < 60; $i = $i + 5) {
                                                 echo '<option ' . selected(in_array((string) $i, $minutes, true), true, false) . '  value="' . esc_attr($i) . '" />' . esc_html($i) . '</option>';
@@ -741,79 +749,81 @@ class BackWPup_Page_Editjob
 	                            <div id="cron-min-box">
 	                                <b><?php _e('Minutes:', 'backwpup'); ?></b><br/>
 									<?php
-                                    echo '<label for="idcronminutes"><input class="checkbox" type="checkbox"' . checked(in_array('*', $minutes, true), true, false) . ' name="cronminutes[]" id="idcronminutes" value="*" /> ' . __('Any (*)', 'backwpup') . '</label><br />';
-                                    ?>
-	                                <div id="cron-min"><?php
-                                        for ($i = 0; $i < 60; $i = $i + 5) {
-                                            echo '<label for="idcronminutes-' . $i . '"><input class="checkbox" type="checkbox"' . checked(in_array((string) $i, $minutes, true), true, false) . ' name="cronminutes[]" id="idcronminutes-' . esc_attr($i) . '" value="' . esc_attr($i) . '" /> ' . esc_attr($i) . '</label><br />';
-                                        }
-                                        ?>
-	                                </div>
+									echo '<label for="idcronminutes"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '*', $minutes, true ), true, false ) . ' name="cronminutes[]" id="idcronminutes" value="*" /> ' . __( 'Any (*)', 'backwpup' ) . '</label><br />';
+									?>
+									<div id="cron-min">
+									<?php
+									for ( $i = 0; $i < 60; $i = $i + 5 ) {
+										echo '<label for="idcronminutes-' . $i . '"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( (string) $i, $minutes, true ), true, false ) . ' name="cronminutes[]" id="idcronminutes-' . esc_attr( $i ) . '" value="' . esc_attr( $i ) . '" /> ' . esc_attr( $i ) . '</label><br />'; // @phpcs:ignore
+									}
+									?>
+									</div>
 	                            </div>
 	                            <div id="cron-hour-box">
 	                                <b><?php _e('Hours:', 'backwpup'); ?></b><br/>
 									<?php
 
-                                    echo '<label for="idcronhours"><input class="checkbox" type="checkbox"' . checked(in_array('*', $hours, true), true, false) . ' name="cronhours[]" id="idcronhours" value="*" /> ' . __('Any (*)', 'backwpup') . '</label><br />';
-                                    ?>
-	                                <div id="cron-hour"><?php
-                                        for ($i = 0; $i < 24; ++$i) {
-                                            echo '<label for="idcronhours-' . $i . '"><input class="checkbox" type="checkbox"' . checked(in_array((string) $i, $hours, true), true, false) . ' name="cronhours[]" id="idcronhours-' . esc_attr($i) . '" value="' . esc_attr($i) . '" /> ' . esc_html($i) . '</label><br />';
-                                        }
-                                        ?>
-	                                </div>
+									echo '<label for="idcronhours"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '*', $hours, true ), true, false ) . ' name="cronhours[]" id="idcronhours" value="*" /> ' . __( 'Any (*)', 'backwpup' ) . '</label><br />';
+									?>
+									<div id="cron-hour">
+									<?php
+									for ( $i = 0; $i < 24; ++$i ) {
+										echo '<label for="idcronhours-' . $i . '"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( (string) $i, $hours, true ), true, false ) . ' name="cronhours[]" id="idcronhours-' . esc_attr( $i ) . '" value="' . esc_attr( $i ) . '" /> ' . esc_html( $i ) . '</label><br />'; // @phpcs:ignore
+									}
+									?>
+									</div>
 	                            </div>
-	                            <div id="cron-day-box">
-	                                <b><?php _e('Day of Month:', 'backwpup'); ?></b><br/>
-	                                <label for="idcronmday"><input class="checkbox" type="checkbox"<?php checked(in_array('*', $mday, true), true, true); ?>
-	                                       name="cronmday[]" id="idcronmday" value="*"/> <?php _e('Any (*)', 'backwpup'); ?></label>
-	                                <br/>
+								<div id="cron-day-box">
+									<b><?php _e( 'Day of Month:', 'backwpup' ); ?></b><br/>
+									<label for="idcronmday"><input readonly disabled class="checkbox" type="checkbox"<?php checked( in_array( '*', $mday, true ), true, true ); ?>
+											name="cronmday[]" id="idcronmday" value="*"/> <?php _e( 'Any (*)', 'backwpup' ); ?></label>
+									<br/>
 
 	                                <div id="cron-day">
 										<?php
-                                        for ($i = 1; $i <= 31; ++$i) {
-                                            echo '<label for="idcronmday-' . $i . '"><input class="checkbox" type="checkbox"' . checked(in_array((string) $i, $mday, true), true, false) . ' name="cronmday[]" id="idcronmday-' . esc_attr($i) . '" value="' . esc_attr($i) . '" /> ' . esc_html($i) . '</label><br />';
-                                        }
+										for ( $i = 1; $i <= 31; ++$i ) {
+											echo '<label for="idcronmday-' . $i . '"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( (string) $i, $mday, true ), true, false ) . ' name="cronmday[]" id="idcronmday-' . esc_attr( $i ) . '" value="' . esc_attr( $i ) . '" /> ' . esc_html( $i ) . '</label><br />';
+										}
                                         ?>
 	                                </div>
 	                            </div>
 	                            <div id="cron-month-box">
 	                                <b><?php _e('Month:', 'backwpup'); ?></b><br/>
 									<?php
-                                    echo '<label for="idcronmon"><input class="checkbox" type="checkbox"' . checked(in_array('*', $mon, true), true, false) . ' name="cronmon[]" id="idcronmon" value="*" /> ' . esc_html__('Any (*)', 'backwpup') . '</label><br />';
-                                    ?>
+									echo '<label for="idcronmon"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '*', $mon, true ), true, false ) . ' name="cronmon[]" id="idcronmon" value="*" /> ' . esc_html__( 'Any (*)', 'backwpup' ) . '</label><br />';
+									?>
 	                                <div id="cron-month">
 										<?php
-                                        echo '<label for="idcronmon-1"><input class="checkbox" type="checkbox"' . checked(in_array('1', $mon, true), true, false) . ' name="cronmon[]" id="idcronmon-1" value="1" /> ' . esc_html__('January', 'backwpup') . '</label><br />';
-                                        echo '<label for="idcronmon-2"><input class="checkbox" type="checkbox"' . checked(in_array('2', $mon, true), true, false) . ' name="cronmon[]" id="idcronmon-2" value="2" /> ' . esc_html__('February', 'backwpup') . '</label><br />';
-                                        echo '<label for="idcronmon-3"><input class="checkbox" type="checkbox"' . checked(in_array('3', $mon, true), true, false) . ' name="cronmon[]" id="idcronmon-3" value="3" /> ' . esc_html__('March', 'backwpup') . '</label><br />';
-                                        echo '<label for="idcronmon-4"><input class="checkbox" type="checkbox"' . checked(in_array('4', $mon, true), true, false) . ' name="cronmon[]" id="idcronmon-4" value="4" /> ' . esc_html__('April', 'backwpup') . '</label><br />';
-                                        echo '<label for="idcronmon-5"><input class="checkbox" type="checkbox"' . checked(in_array('5', $mon, true), true, false) . ' name="cronmon[]" id="idcronmon-5" value="5" /> ' . esc_html__('May', 'backwpup') . '</label><br />';
-                                        echo '<label for="idcronmon-6"><input class="checkbox" type="checkbox"' . checked(in_array('6', $mon, true), true, false) . ' name="cronmon[]" id="idcronmon-6" value="6" /> ' . esc_html__('June', 'backwpup') . '</label><br />';
-                                        echo '<label for="idcronmon-7"><input class="checkbox" type="checkbox"' . checked(in_array('7', $mon, true), true, false) . ' name="cronmon[]" id="idcronmon-7" value="7" /> ' . esc_html__('July', 'backwpup') . '</label><br />';
-                                        echo '<label for="idcronmon-8"><input class="checkbox" type="checkbox"' . checked(in_array('8', $mon, true), true, false) . ' name="cronmon[]" id="idcronmon-8" value="8" /> ' . esc_html__('August', 'backwpup') . '</label><br />';
-                                        echo '<label for="idcronmon-9"><input class="checkbox" type="checkbox"' . checked(in_array('9', $mon, true), true, false) . ' name="cronmon[]" id="idcronmon-9" value="9" /> ' . esc_html__('September', 'backwpup') . '</label><br />';
-                                        echo '<label for="idcronmon-10"><input class="checkbox" type="checkbox"' . checked(in_array('10', $mon, true), true, false) . ' name="cronmon[]" id="idcronmon-10" value="10" /> ' . esc_html__('October', 'backwpup') . '</label><br />';
-                                        echo '<label for="idcronmon-11"><input class="checkbox" type="checkbox"' . checked(in_array('11', $mon, true), true, false) . ' name="cronmon[]" id="idcronmon-11" value="11" /> ' . esc_html__('November', 'backwpup') . '</label><br />';
-                                        echo '<label for="idcronmon-12"><input class="checkbox" type="checkbox"' . checked(in_array('12', $mon, true), true, false) . ' name="cronmon[]" id="idcronmon-12" value="12" /> ' . esc_html__('December', 'backwpup') . '</label><br />';
-                                        ?>
+										echo '<label for="idcronmon-1"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '1', $mon, true ), true, false ) . ' name="cronmon[]" id="idcronmon-1" value="1" /> ' . esc_html__( 'January', 'backwpup' ) . '</label><br />';
+										echo '<label for="idcronmon-2"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '2', $mon, true ), true, false ) . ' name="cronmon[]" id="idcronmon-2" value="2" /> ' . esc_html__( 'February', 'backwpup' ) . '</label><br />';
+										echo '<label for="idcronmon-3"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '3', $mon, true ), true, false ) . ' name="cronmon[]" id="idcronmon-3" value="3" /> ' . esc_html__( 'March', 'backwpup' ) . '</label><br />';
+										echo '<label for="idcronmon-4"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '4', $mon, true ), true, false ) . ' name="cronmon[]" id="idcronmon-4" value="4" /> ' . esc_html__( 'April', 'backwpup' ) . '</label><br />';
+										echo '<label for="idcronmon-5"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '5', $mon, true ), true, false ) . ' name="cronmon[]" id="idcronmon-5" value="5" /> ' . esc_html__( 'May', 'backwpup' ) . '</label><br />';
+										echo '<label for="idcronmon-6"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '6', $mon, true ), true, false ) . ' name="cronmon[]" id="idcronmon-6" value="6" /> ' . esc_html__( 'June', 'backwpup' ) . '</label><br />';
+										echo '<label for="idcronmon-7"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '7', $mon, true ), true, false ) . ' name="cronmon[]" id="idcronmon-7" value="7" /> ' . esc_html__( 'July', 'backwpup' ) . '</label><br />';
+										echo '<label for="idcronmon-8"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '8', $mon, true ), true, false ) . ' name="cronmon[]" id="idcronmon-8" value="8" /> ' . esc_html__( 'August', 'backwpup' ) . '</label><br />';
+										echo '<label for="idcronmon-9"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '9', $mon, true ), true, false ) . ' name="cronmon[]" id="idcronmon-9" value="9" /> ' . esc_html__( 'September', 'backwpup' ) . '</label><br />';
+										echo '<label for="idcronmon-10"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '10', $mon, true ), true, false ) . ' name="cronmon[]" id="idcronmon-10" value="10" /> ' . esc_html__( 'October', 'backwpup' ) . '</label><br />';
+										echo '<label for="idcronmon-11"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '11', $mon, true ), true, false ) . ' name="cronmon[]" id="idcronmon-11" value="11" /> ' . esc_html__( 'November', 'backwpup' ) . '</label><br />';
+										echo '<label for="idcronmon-12"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '12', $mon, true ), true, false ) . ' name="cronmon[]" id="idcronmon-12" value="12" /> ' . esc_html__( 'December', 'backwpup' ) . '</label><br />';
+										?>
 	                                </div>
 	                            </div>
 	                            <div id="cron-weekday-box">
 	                                <b><?php esc_html_e('Day of Week:', 'backwpup'); ?></b><br/>
 									<?php
-                                    echo '<label for="idcronwday"><input class="checkbox" type="checkbox"' . checked(in_array('*', $wday, true), true, false) . ' name="cronwday[]" id="idcronwday" value="*" /> ' . __('Any (*)', 'backwpup') . '</label><br />';
-                                    ?>
+									echo '<label for="idcronwday"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '*', $wday, true ), true, false ) . ' name="cronwday[]" id="idcronwday" value="*" /> ' . __( 'Any (*)', 'backwpup' ) . '</label><br />';
+									?>
 	                                <div id="cron-weekday">
 										<?php
-                                        echo '<label for="idcronwday-0"><input class="checkbox" type="checkbox"' . checked(in_array('0', $wday, true), true, false) . ' name="cronwday[]" id="idcronwday-0" value="0" /> ' . esc_html__('Sunday', 'backwpup') . '</label><br />';
-                                        echo '<label for="idcronwday-1"><input class="checkbox" type="checkbox"' . checked(in_array('1', $wday, true), true, false) . ' name="cronwday[]" id="idcronwday-1" value="1" /> ' . esc_html__('Monday', 'backwpup') . '</label><br />';
-                                        echo '<label for="idcronwday-2"><input class="checkbox" type="checkbox"' . checked(in_array('2', $wday, true), true, false) . ' name="cronwday[]" id="idcronwday-2" value="2" /> ' . esc_html__('Tuesday', 'backwpup') . '</label><br />';
-                                        echo '<label for="idcronwday-3"><input class="checkbox" type="checkbox"' . checked(in_array('3', $wday, true), true, false) . ' name="cronwday[]" id="idcronwday-3" value="3" /> ' . esc_html__('Wednesday', 'backwpup') . '</label><br />';
-                                        echo '<label for="idcronwday-4"><input class="checkbox" type="checkbox"' . checked(in_array('4', $wday, true), true, false) . ' name="cronwday[]" id="idcronwday-4" value="4" /> ' . esc_html__('Thursday', 'backwpup') . '</label><br />';
-                                        echo '<label for="idcronwday-5"><input class="checkbox" type="checkbox"' . checked(in_array('5', $wday, true), true, false) . ' name="cronwday[]" id="idcronwday-5" value="5" /> ' . esc_html__('Friday', 'backwpup') . '</label><br />';
-                                        echo '<label for="idcronwday-6"><input class="checkbox" type="checkbox"' . checked(in_array('6', $wday, true), true, false) . ' name="cronwday[]" id="idcronwday-6" value="6" /> ' . esc_html__('Saturday', 'backwpup') . '</label><br />';
-                                        ?>
+										echo '<label for="idcronwday-0"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '0', $wday, true ), true, false ) . ' name="cronwday[]" id="idcronwday-0" value="0" /> ' . esc_html__( 'Sunday', 'backwpup' ) . '</label><br />';
+										echo '<label for="idcronwday-1"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '1', $wday, true ), true, false ) . ' name="cronwday[]" id="idcronwday-1" value="1" /> ' . esc_html__( 'Monday', 'backwpup' ) . '</label><br />';
+										echo '<label for="idcronwday-2"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '2', $wday, true ), true, false ) . ' name="cronwday[]" id="idcronwday-2" value="2" /> ' . esc_html__( 'Tuesday', 'backwpup' ) . '</label><br />';
+										echo '<label for="idcronwday-3"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '3', $wday, true ), true, false ) . ' name="cronwday[]" id="idcronwday-3" value="3" /> ' . esc_html__( 'Wednesday', 'backwpup' ) . '</label><br />';
+										echo '<label for="idcronwday-4"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '4', $wday, true ), true, false ) . ' name="cronwday[]" id="idcronwday-4" value="4" /> ' . esc_html__( 'Thursday', 'backwpup' ) . '</label><br />';
+										echo '<label for="idcronwday-5"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '5', $wday, true ), true, false ) . ' name="cronwday[]" id="idcronwday-5" value="5" /> ' . esc_html__( 'Friday', 'backwpup' ) . '</label><br />';
+										echo '<label for="idcronwday-6"><input readonly disabled class="checkbox" type="checkbox"' . checked( in_array( '6', $wday, true ), true, false ) . ' name="cronwday[]" id="idcronwday-6" value="6" /> ' . esc_html__( 'Saturday', 'backwpup' ) . '</label><br />';
+										?>
 	                                </div>
 	                            </div>
 	                            <br class="clear"/>
@@ -825,15 +835,11 @@ class BackWPup_Page_Editjob
                 break;
 
             default:
-                echo '<div class="table" id="info-tab-' . $_GET['tab'] . '">';
-                if (strstr((string) $_GET['tab'], 'dest-')) {
-                    $dest_object = BackWPup::get_destination(str_replace('dest-', '', (string) $_GET['tab']));
-                    $dest_object->edit_tab($jobid);
-                }
-                if (strstr((string) $_GET['tab'], 'jobtype-')) {
-                    $id = strtoupper(str_replace('jobtype-', '', (string) $_GET['tab']));
-                    $job_types[$id]->edit_tab($jobid);
-                }
+				echo '<div class="table" id="info-tab-' . $_GET['tab'] . '">';
+				if ( strstr( (string) $_GET['tab'], 'jobtype-' ) ) {
+					$id = strtoupper( str_replace( 'jobtype-', '', (string) $_GET['tab'] ) );
+					$job_types[ $id ]->edit_tab( $jobid );
+				}
                 echo '</div>';
         }
         echo '<p class="submit">';
@@ -844,11 +850,11 @@ class BackWPup_Page_Editjob
     <script type="text/javascript">
 	    jQuery(document).ready(function ($) {
 	        // auto post if things changed
-	        var changed = false;
-	        $( '#editjob' ).change( function () {
-	            changed = true;
-	        });
-			$( '.nav-tab' ).click( function () {
+			var changed = false;
+			$( '#editjob' ).on('change',  function () {
+				changed = true;
+			});
+			$( '.nav-tab' ).on('click',  function () {
 				if ( changed ) {
 					$( 'input[name="nexttab"]' ).val( $(this).data( "nexttab" ) );
 					$( '#editjob' ).submit();
@@ -867,7 +873,8 @@ class BackWPup_Page_Editjob
             $id = strtoupper(str_replace('jobtype-', '', sanitize_text_field($_GET['tab'])));
             $job_types[$id]->edit_inline_js();
         }
-    }
+        // phpcs:enable
+	}
 
     /**
      * @static

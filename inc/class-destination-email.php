@@ -176,7 +176,7 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
         ?>
 		<script type="text/javascript">
 			jQuery( document ).ready( function ( $ ) {
-				$( '#emailmethod' ).change( function () {
+				$( '#emailmethod' ).on('change',  function () {
 					if ( 'smtp' == $( '#emailmethod' ).val() ) {
 						$( '.emailsmtp' ).show();
 						$( '#emailsendmail' ).hide();
@@ -214,20 +214,31 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
 		<?php
     }
 
-    public function edit_form_post_save(int $jobid): void
-    {
-        BackWPup_Option::update($jobid, 'emailaddress', isset($_POST['emailaddress']) ? implode(', ', $this->get_email_array($_POST['emailaddress'])) : '');
-        BackWPup_Option::update($jobid, 'emailefilesize', !empty($_POST['emailefilesize']) ? absint($_POST['emailefilesize']) : 0);
-        BackWPup_Option::update($jobid, 'emailsndemail', sanitize_email($_POST['emailsndemail']));
-        BackWPup_Option::update($jobid, 'emailmethod', ($_POST['emailmethod'] === '' || $_POST['emailmethod'] === 'mail' || $_POST['emailmethod'] === 'sendmail' || $_POST['emailmethod'] === 'smtp') ? $_POST['emailmethod'] : '');
-        BackWPup_Option::update($jobid, 'emailsendmail', sanitize_text_field($_POST['emailsendmail']));
-        BackWPup_Option::update($jobid, 'emailsndemailname', sanitize_text_field($_POST['emailsndemailname']));
-        BackWPup_Option::update($jobid, 'emailhost', sanitize_text_field($_POST['emailhost']));
-        BackWPup_Option::update($jobid, 'emailhostport', absint($_POST['emailhostport']));
-        BackWPup_Option::update($jobid, 'emailsecure', ($_POST['emailsecure'] === 'ssl' || $_POST['emailsecure'] === 'tls') ? $_POST['emailsecure'] : '');
-        BackWPup_Option::update($jobid, 'emailuser', sanitize_text_field($_POST['emailuser']));
-        BackWPup_Option::update($jobid, 'emailpass', BackWPup_Encryption::encrypt($_POST['emailpass']));
-    }
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @param int|array $jobid
+	 * @return void
+	 *
+	 * @phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+	 */
+	public function edit_form_post_save( $jobid ): void {
+				$jobids = (array) $jobid;
+		foreach ( $jobids as $jobid ) {
+			BackWPup_Option::update( $jobid, 'emailaddress', isset( $_POST['emailaddress'] ) ? implode( ', ', $this->get_email_array( $_POST['emailaddress'] ) ) : '' ); // phpcs:ignore WordPress.Security
+			BackWPup_Option::update( $jobid, 'emailefilesize', ! empty( $_POST['emailefilesize'] ) ? absint( $_POST['emailefilesize'] ) : 0 );  // phpcs:ignore WordPress.Security
+			BackWPup_Option::update( $jobid, 'emailsndemail', sanitize_email( $_POST['emailsndemail'] ) );  // phpcs:ignore WordPress.Security
+			BackWPup_Option::update( $jobid, 'emailmethod', ( '' === $_POST['emailmethod'] || 'mail' === $_POST['emailmethod'] || 'sendmail' === $_POST['emailmethod'] || 'smtp' === $_POST['emailmethod'] ) ? $_POST['emailmethod'] : '' );
+			BackWPup_Option::update( $jobid, 'emailsendmail', sanitize_text_field( $_POST['emailsendmail'] ) );
+			BackWPup_Option::update( $jobid, 'emailsndemailname', sanitize_text_field( $_POST['emailsndemailname'] ) );
+			BackWPup_Option::update( $jobid, 'emailhost', sanitize_text_field( $_POST['emailhost'] ) );
+			BackWPup_Option::update( $jobid, 'emailhostport', absint( $_POST['emailhostport'] ) );
+			BackWPup_Option::update( $jobid, 'emailsecure', ( 'ssl' === $_POST['emailsecure'] || 'tls' === $_POST['emailsecure'] ) ? $_POST['emailsecure'] : '' );
+			BackWPup_Option::update( $jobid, 'emailuser', sanitize_text_field( $_POST['emailuser'] ) );
+			BackWPup_Option::update( $jobid, 'emailpass', BackWPup_Encryption::encrypt( $_POST['emailpass'] ) );
+		}
+	}
+	// phpcs:enable
 
     public function job_run_archive(BackWPup_Job $job_object): bool
     {

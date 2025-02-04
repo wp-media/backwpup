@@ -411,9 +411,6 @@ class BackWPup_Page_Settings
             $setting->update();
         }
 
-        update_site_option('backwpup_cfg_showadminbar', !empty($_POST['showadminbarmenu']));
-        update_site_option('backwpup_cfg_showfoldersize', !empty($_POST['showfoldersize']));
-
         if (empty($_POST['jobstepretry']) || 100 < $_POST['jobstepretry'] || 1 > $_POST['jobstepretry']) {
             $_POST['jobstepretry'] = 3;
         }
@@ -481,6 +478,24 @@ class BackWPup_Page_Settings
         delete_site_transient('backwpup_cookies');
 
         update_site_option('backwpup_cfg_keepplugindata', !empty($_POST['keepplugindata']));
+
+		if ( isset( $_POST['mailaddresslog'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification
+			$emails = explode( ',', sanitize_text_field( wp_unslash( $_POST['mailaddresslog'] ) ) ); //phpcs:ignore WordPress.Security.NonceVerification
+
+			foreach ( $emails as $key => $email ) {
+				$emails[ $key ] = sanitize_email( trim( $email ) );
+				if ( ! is_email( $emails[ $key ] ) ) {
+					unset( $emails[ $key ] );
+				}
+			}
+			$mailaddresslog = implode( ', ', $emails );
+			update_site_option( 'backwpup_cfg_mailaddresslog', $mailaddresslog );
+		}
+		if ( isset( $_POST['mailaddresssenderlog'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification
+			update_site_option( 'backwpup_cfg_mailaddresssenderlog', sanitize_email( wp_unslash( $_POST['mailaddresssenderlog'] ) ) ); //phpcs:ignore WordPress.Security.NonceVerification
+		}
+
+		update_site_option( 'backwpup_cfg_idmailerroronly', ! empty( $_POST['idmailerroronly'] ) ); //phpcs:ignore WordPress.Security.NonceVerification
 
         do_action('backwpup_page_settings_save');
 

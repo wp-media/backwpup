@@ -152,45 +152,53 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations
 		<?php
     }
 
-    public function edit_form_post_save(int $id): void
-    {
-        $_POST['ftphost'] = str_replace(['http://', 'ftp://'], '', sanitize_text_field($_POST['ftphost']));
-        BackWPup_Option::update($id, 'ftphost', $_POST['ftphost'] ?? '');
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @param int|array $id
+	 *
+	 * @return void
+	 *
+	 * @phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+	 */
+	public function edit_form_post_save( $id ): void {
+				$jobids = (array) $id;
 
-        BackWPup_Option::update(
-            $id,
-            'ftphostport',
-            !empty($_POST['ftphostport']) ? absint($_POST['ftphostport']) : 21
-        );
-        BackWPup_Option::update(
-            $id,
-            'ftptimeout',
-            !empty($_POST['ftptimeout']) ? absint($_POST['ftptimeout']) : 90
-        );
-        BackWPup_Option::update($id, 'ftpuser', sanitize_text_field($_POST['ftpuser']));
-        BackWPup_Option::update($id, 'ftppass', BackWPup_Encryption::encrypt($_POST['ftppass']));
-
-        if (!empty($_POST['ftpdir'])) {
-            $_POST['ftpdir'] = trailingslashit(
-                str_replace('//', '/', str_replace('\\', '/', trim(sanitize_text_field($_POST['ftpdir']))))
-            );
-        }
-        BackWPup_Option::update($id, 'ftpdir', $_POST['ftpdir']);
-
-        BackWPup_Option::update(
-            $id,
-            'ftpmaxbackups',
-            !empty($_POST['ftpmaxbackups']) ? absint($_POST['ftpmaxbackups']) : 0
-        );
-
-        if (function_exists('ftp_ssl_connect')) {
-            BackWPup_Option::update($id, 'ftpssl', !empty($_POST['ftpssl']));
-        } else {
-            BackWPup_Option::update($id, 'ftpssl', false);
-        }
-
-        BackWPup_Option::update($id, 'ftppasv', !empty($_POST['ftppasv']));
-    }
+		$_POST['ftphost'] = str_replace( [ 'http://', 'ftp://' ], '', sanitize_text_field( $_POST['ftphost'] ) );
+		if ( ! empty( $_POST['ftpdir'] ) ) {
+				$_POST['ftpdir'] = trailingslashit(
+					str_replace( '//', '/', str_replace( '\\', '/', trim( sanitize_text_field( $_POST['ftpdir'] ) ) ) )
+				);
+		}
+		foreach ( $jobids as $id ) {
+				BackWPup_Option::update( $id, 'ftphost', $_POST['ftphost'] ?? '' );
+				BackWPup_Option::update(
+					$id,
+					'ftphostport',
+					! empty( $_POST['ftphostport'] ) ? absint( $_POST['ftphostport'] ) : 21
+				);
+				BackWPup_Option::update(
+					$id,
+					'ftptimeout',
+					! empty( $_POST['ftptimeout'] ) ? absint( $_POST['ftptimeout'] ) : 90
+				);
+				BackWPup_Option::update( $id, 'ftpuser', sanitize_text_field( $_POST['ftpuser'] ) );
+				BackWPup_Option::update( $id, 'ftppass', BackWPup_Encryption::encrypt( $_POST['ftppass'] ) );
+				BackWPup_Option::update( $id, 'ftpdir', $_POST['ftpdir'] );
+				BackWPup_Option::update(
+					$id,
+					'ftpmaxbackups',
+					! empty( $_POST['ftpmaxbackups'] ) ? absint( $_POST['ftpmaxbackups'] ) : 0
+				);
+			if ( function_exists( 'ftp_ssl_connect' ) ) {
+				BackWPup_Option::update( $id, 'ftpssl', ! empty( $_POST['ftpssl'] ) );
+			} else {
+					BackWPup_Option::update( $id, 'ftpssl', false );
+			}
+				BackWPup_Option::update( $id, 'ftppasv', ! empty( $_POST['ftppasv'] ) );
+		}
+	}
+	// phpcs:enable
 
     public function file_delete(string $jobdest, string $backupfile): void
     {

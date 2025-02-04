@@ -553,45 +553,12 @@ final class BackWPup_Page_Backups extends WP_List_Table
         }
     }
 
-    public static function page()
-    {
-        ?>
-		<div class="wrap" id="backwpup-page">
-			<h1><?php echo esc_html(sprintf(
-            __('%s &rsaquo; Manage Backup Archives', 'backwpup'),
-            BackWPup::get_plugin_data('name')
-        )); ?></h1>
-			<?php BackWPup_Admin::display_messages(); ?>
-			<form id="posts-filter" action="" method="get">
-				<input type="hidden" name="page" value="backwpupbackups"/>
-				<?php self::$listtable->display(); ?>
-				<div id="ajax-response"></div>
-			</form>
-		</div>
-
-		<div id="tb_download_file" style="display: none;">
-			<div id="tb_container">
-				<p id="download-file-waiting">
-					<?php esc_html_e('Please wait &hellip;', 'backwpup'); ?>
-				</p>
-				<p id="download-file-success" style="display: none;">
-					<?php esc_html_e(
-            'Your download has been generated. It should begin downloading momentarily.',
-            'backwpup'
-        ); ?>
-				</p>
-				<div class="progressbar" style="display: none;">
-					<div id="progresssteps" class="bwpu-progress" style="width:0%;">0%</div>
-				</div>
-				<?php
-				if ( \BackWPup::is_pro() ) {
-					$view = new ViewLoader();
-					$view->decrypt_key_input();
-                } ?>
-			</div>
-		</div>
-		<?php
-    }
+	/**
+	 * Display the page content.
+	 */
+	public static function page() {
+		include untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . '/pages/backups.php';
+	}
 
     private static function admin_print_pro_scripts($suffix, $plugin_url, $plugin_dir)
     {

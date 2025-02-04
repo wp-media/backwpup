@@ -11,18 +11,33 @@ use Inpsyde\BackWPup\Pro\Settings\AjaxEncryptionKeyHandler;
 use Inpsyde\BackWPup\Notice\EvaluateNotice;
 use Inpsyde\BackWPup\Notice\EasycronUpdateNotice;
 use Inpsyde\BackWPup\Notice\RestoreFeatureInformationNotice;
+use Inpsyde\BackWPup\Notice\NewUINotice;
 
 /**
  * BackWPup_Admin.
  */
-final class BackWPup_Admin
-{
-    public $page_hooks = [];
+final class BackWPup_Admin {
+
+	const SLUG = 'backwpup';
+
+	/**
+	 * The page hooks list.
+	 *
+	 * @var array
+	 */
+	public $page_hooks = [];
 
     /**
      * @var BackWPup_Page_Settings
      */
     private $settings;
+
+	/**
+	 * The URL to the BackWPup website.
+	 *
+	 * @var string
+	 */
+	private $backwpup_url = 'https://backwpup.com';
 
     public function __construct(BackWPup_Page_Settings $settings)
     {
@@ -48,6 +63,66 @@ final class BackWPup_Admin
         );
     }
 
+	/**
+	 * Enqueues main js file.
+	 */
+	public function enqueue_backup_generation() {
+		$job_object = BackWPup_Job::get_working_data();
+		if ( ! empty( $job_object->logfile ) ) {
+			wp_enqueue_script(
+				'backwpup-generate',
+				BackWPup::get_plugin_data( 'URL' ) . '/assets/js/backwpup-generate.js',
+				[ 'jquery' ],
+				'1.0.0',
+				true
+			);
+			wp_localize_script(
+				'backwpup-generate',
+				'backwpupApi',
+				$this->get_backwpup_api_data( $job_object )
+			);
+
+			wp_localize_script(
+				'backwpup-generate',
+				'backwpup',
+				[
+					'adminUrl' => network_admin_url( 'admin.php?page=backwpup' ),
+				]
+				);
+		}
+	}
+	/**
+	 * Enqueues main css/js file.
+	 */
+	public function enqueue_admin_assets() {
+		// Get the current screen object.
+		$screen = get_current_screen();
+
+		// Check if we're on a BackWPUp page.
+		if ( isset( $screen->id ) && strpos( $screen->id, 'backwpup' ) !== false ) {
+			wp_enqueue_style(
+				'backwpup-admin',
+				BackWPup::get_plugin_data( 'URL' ) . '/assets/css/backwpup-admin.css',
+				[],
+				'1.0.0'
+			);
+		}
+
+		wp_enqueue_script(
+			'backwpup-admin',
+			BackWPup::get_plugin_data( 'URL' ) . '/assets/js/backwpup-admin.js',
+			[ 'jquery' ],
+			'1.0.0',
+			true
+        );
+
+		wp_localize_script(
+			'backwpup-admin',
+			'backwpupApi',
+			$this->get_backwpup_api_data()
+		);
+	}
+
     /**
      * Load for all BackWPup pages.
      */
@@ -72,10 +147,7 @@ final class BackWPup_Admin
             ['jquery'],
             '1.7.1',
             true
-        );
-
-        // Add Help.
-        BackWPup_Help::help();
+		);
     }
 
     /**
@@ -170,16 +242,32 @@ final class BackWPup_Admin
         if (!is_admin()) {
             return;
         }
-        if (!defined('DOING_AJAX') || (defined('DOING_AJAX') && !DOING_AJAX)) {
-            // Only init notices if this is not an AJAX request
-            $this->init_notices();
+
+		$is_onboarding = get_site_option( 'backwpup_onboarding', false );
+		$allowed_pages = [ 'backwpupabout', 'backwpuponboarding', 'backwpupfirstbackup', 'backwpupsupport' ];
+
+		// Redirect only if onboarding is active and the current page is not in the allowed pages.
+		if (
+			$is_onboarding &&
+			( isset( $_GET['page'] ) && false !== strpos( sanitize_text_field( wp_unslash( $_GET['page'] ) ), 'backwpup' ) && ! in_array( $_GET['page'], $allowed_pages, true ) ) // phpcs:ignore WordPress.Security.NonceVerification
+		) {
+			wp_safe_redirect( network_admin_url( 'admin.php?page=backwpuponboarding' ) );
+			exit;
+		}
+
+        if (\BackWPup::is_pro()) {
+            $this->admin_init_pro();
+		}
+
+		if ( ! defined( 'DOING_AJAX' ) || ( defined( 'DOING_AJAX' ) && ! DOING_AJAX ) ) {
+			// Only init notices if this is not an AJAX request.
+			$this->init_notices();
 
             // Everything after this point applies to AJAX
             return;
-        }
-
-        $jobtypes = BackWPup::get_job_types();
-        $destinations = BackWPup::get_registered_destinations();
+		}
+		$jobtypes     = BackWPup::get_job_types();
+		$destinations = BackWPup::get_registered_destinations();
 
         add_action('wp_ajax_backwpup_working', [\BackWPup_Page_Jobs::class, 'ajax_working']);
         add_action('wp_ajax_backwpup_cron_text', [\BackWPup_Page_Editjob::class, 'ajax_cron_text']);
@@ -188,11 +276,10 @@ final class BackWPup_Admin
 
         foreach ($jobtypes as $id => $jobtypeclass) {
             add_action('wp_ajax_backwpup_jobtype_' . strtolower($id), [$jobtypeclass, 'edit_ajax']);
-        }
-
-        foreach ($destinations as $id => $dest) {
-            if (!empty($dest['class'])) {
-                add_action(
+		}
+		foreach ( $destinations as $id => $dest ) {
+			if ( ! empty( $dest['class'] ) ) {
+				add_action(
                     'wp_ajax_backwpup_dest_' . strtolower($id),
                     [
                         BackWPup::get_destination($id),
@@ -202,18 +289,50 @@ final class BackWPup_Admin
                     0
                 );
             }
-        }
-
-        if (\BackWPup::is_pro()) {
-            $this->admin_init_pro();
-        }
+		}
     }
 
     private function admin_init_pro()
     {
         $ajax_encryption_key_handler = new AjaxEncryptionKeyHandler();
 
-        add_action('wp_ajax_encrypt_key_handler', [$ajax_encryption_key_handler, 'handle']);
+		add_action( 'wp_ajax_encrypt_key_handler', [ $ajax_encryption_key_handler, 'handle' ] );
+
+		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+		wp_enqueue_script(
+			'backwpuppagesettings-encryption',
+			untrailingslashit( BackWPup::get_plugin_data( 'URL' ) ) . "/assets/js/settings-encryption{$suffix}.js",
+			[
+				'underscore',
+				'jquery',
+				'thickbox',
+			],
+			filemtime( untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . "/assets/js/settings-encryption{$suffix}.js" ),
+			false
+        );
+
+		wp_localize_script(
+			'backwpuppagesettings-encryption',
+			'settingsEncryptionVariables',
+			[
+				'validPublicKey'           => esc_html__( 'Public key is valid.', 'backwpup' ),
+				'invalidPublicKey'         => esc_html__( 'Public key is invalid.', 'backwpup' ),
+				'privateKeyMissed'         => esc_html__( 'Please enter your private key.', 'backwpup' ),
+				'publicKeyMissed'          => esc_html__(
+					'Please enter a public key first, or generate a key pair.',
+					'backwpup'
+				),
+				'mustDownloadPrivateKey'   => esc_html__(
+					'Please download the private key before continuing. If you do not save it locally, you cannot decrypt your backups later.',
+					'backwpup'
+				),
+				'mustDownloadSymmetricKey' => esc_html__(
+					'Please download the key before continuing. If you do not save it locally, you cannot decrypt your backups later.',
+					'backwpup'
+				),
+			]
+		);
     }
 
 	/**
@@ -221,7 +340,7 @@ final class BackWPup_Admin
 	 */
 	private function init_notices() {
 		// Show notice if PHP < 7.4.
-		$phpNotice = new PhpNotice( //phpcs:ignore
+        $phpNotice = new PhpNotice( //phpcs:ignore
 			new NoticeView( PhpNotice::ID )
 		);
         $phpNotice->init(PhpNotice::TYPE_ADMIN);
@@ -242,19 +361,24 @@ final class BackWPup_Admin
 		$evaluate_notice = new EvaluateNotice(
 			new NoticeView( EvaluateNotice::ID )
 		);
-		$evaluate_notice->init( EvaluateNotice::TYPE_ADMIN );
+		// $evaluate_notice->init( EvaluateNotice::TYPE_ADMIN );
 
 		$easycron_update_notice = new EasycronUpdateNotice(
-		new NoticeView( EasycronUpdateNotice::ID ),
-		true
+			new NoticeView( EasycronUpdateNotice::ID ),
+			true
 		);
 		$easycron_update_notice->init( EasycronUpdateNotice::TYPE_ADMIN );
 
 		$restore_feature_information_notice = new RestoreFeatureInformationNotice(
-		new NoticeView( RestoreFeatureInformationNotice::ID ),
-		true
+			new NoticeView( RestoreFeatureInformationNotice::ID ),
+			true
 		);
-		$restore_feature_information_notice->init( RestoreFeatureInformationNotice::TYPE_ADMIN );
+		// $restore_feature_information_notice->init( RestoreFeatureInformationNotice::TYPE_ADMIN );
+
+		$new_ui_notice = new newUINotice(
+			new NoticeView( newUINotice::ID )
+		);
+		$new_ui_notice->init( newUINotice::TYPE_ADMIN );
 	}
 
     /**
@@ -264,17 +388,51 @@ final class BackWPup_Admin
      * @param $file
      *
      * @return array
-     */
-    public function plugin_links($links, $file)
-    {
-        if ($file == plugin_basename(BackWPup::get_plugin_data('MainFile'))) {
-            $links[] = '<a href="' . esc_attr__('https://backwpup.com/docs/', 'backwpup') . '">' . __(
-                'Documentation',
-                'backwpup'
-            ) . '</a>';
-        }
+	 */
+	public function plugin_links( $links, $file ) {
+		if ( plugin_basename( BackWPup::get_plugin_data( 'MainFile' ) ) === $file ) {
+			$links = array_filter(
+				$links,
+				function ( $link ) {
+					return strpos( $link, 'Visit plugin site' ) === false;
+				}
+				);
+			if ( BackWPup::is_pro() ) {
+				$links[] = '<a href="' . network_admin_url( '/plugin-install.php?tab=plugin-information&plugin=backwpup&TB_iframe=true&width=772&height=610' ) . '" class="thickbox open-plugin-details-modal">' . __( 'View details', 'backwpup' ) . '</a>';
+			}
+		}
 
         return $links;
+    }
+
+	/**
+	 * Adds custom links to the plugin's action links in the Plugins page.
+	 *
+	 * @param array $links An array of the plugin's existing action links.
+	 * @return array Modified array of action links with custom links added.
+	 */
+	public function plugin_name_links( $links ) {
+
+		$is_pro_user   = BackWPup::is_pro();
+		$settings_link = '<a href="' . network_admin_url( 'admin.php?page=backwpup' ) . '">' . __( 'Settings', 'backwpup' ) . '</a>';
+		$faqs_link     = '<a href="' . $this->backwpup_url . '/docs-category/faq/" target="_blank">FAQ</a>';
+		$docs_link     = '<a href="' . $this->backwpup_url . '/docs/" target="_blank">Docs</a>';
+
+		if ( $is_pro_user ) {
+			// Pro user links.
+			$support_link = '<a href="' . $this->backwpup_url . '/support/" target="_blank">Support</a>';
+
+			// Append custom links for pro users.
+			$links = array_merge( [ $settings_link, $faqs_link, $docs_link, $support_link ], $links );
+		} else {
+			// Free user links.
+			$buy_pro_link = '<a href="' . $this->backwpup_url . '/#buy" target="_blank" style="color: #3ac495; font-weight: bold;">Upgrade to Pro</a>';
+
+			// Append custom links for free users.
+			$links = array_merge( [ $buy_pro_link, $settings_link, $faqs_link, $docs_link ], $links );
+		}
+
+		return $links;
     }
 
     /**
@@ -287,35 +445,59 @@ final class BackWPup_Admin
             BackWPup::get_plugin_data('name'),
             'backwpup',
             'backwpup',
-            [
-                \BackWPup_Page_BackWPup::class,
-                'page',
+			[
+                \BackWPup_Page_Backups::class,
+				'page',
             ],
             'div'
-        );
-        $this->page_hooks['backwpup'] = add_submenu_page(
-            'backwpup',
-            __('BackWPup Dashboard', 'backwpup'),
-            __('Dashboard', 'backwpup'),
-            'backwpup',
-            'backwpup',
-            [
-                \BackWPup_Page_BackWPup::class,
-                'page',
-            ]
-        );
-        add_action('load-' . $this->page_hooks['backwpup'], [\BackWPup_Admin::class, 'init_general']);
-        add_action('load-' . $this->page_hooks['backwpup'], [\BackWPup_Page_BackWPup::class, 'load']);
-        add_action(
-            'admin_print_scripts-' . $this->page_hooks['backwpup'],
-            [
-                \BackWPup_Page_BackWPup::class,
-                'admin_print_scripts',
-            ]
-        );
+		);
+		// External menu pages.
+		add_submenu_page(
+			'backwpup',
+			__( 'Docs', 'backwpup' ),
+			__( 'Docs', 'backwpup' ),
+			'backwpup',
+			'docs',
+			'__return_false',
+		);
+		if ( ! BackWPup::is_pro() ) {
+			add_submenu_page(
+				'backwpup',
+				__( 'Upgrade to Pro', 'backwpup' ),
+				__( 'Upgrade to Pro', 'backwpup' ),
+				'backwpup',
+				'buypro',
+				'__return_false',
+			);
+		}
 
-        //Add pages form plugins
-        $this->page_hooks = apply_filters('backwpup_admin_pages', $this->page_hooks);
+		// Add pages form plugins.
+		$this->page_hooks = apply_filters( 'backwpup_admin_pages', $this->page_hooks );
+
+		global $submenu;
+		$submenu['backwpup'][0][0] = __( 'Settings', 'backwpup' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+	}
+
+	/**
+	 * Handle the "First Backup" page.
+	 *
+	 * @param array $page_hooks  The page hooks list.
+	 * @return mixed
+	 */
+	public function admin_page_first_backup( $page_hooks ) {
+		$this->page_hooks['backwpupfirstbackup'] = add_submenu_page(
+			'backwpup_null',
+			__( 'First Backup', 'backwpup' ),
+			__( 'First Backup', 'backwpup' ),
+			'backwpup',
+			'backwpupfirstbackup',
+			[ \BackWPup_Page_First_Backup::class, 'page' ]
+		);
+
+		add_action( 'load-' . $this->page_hooks['backwpupfirstbackup'], [ self::class, 'init_general' ] );
+		add_action( 'load-' . $this->page_hooks['backwpupfirstbackup'], [ \BackWPup_Page_First_Backup::class, 'init' ] );
+
+        return $page_hooks;
     }
 
     /**
@@ -325,11 +507,11 @@ final class BackWPup_Admin
      */
     public function admin_page_jobs($page_hooks)
     {
-        $this->page_hooks['backwpupjobs'] = add_submenu_page(
-            'backwpup',
-            __('Jobs', 'backwpup'),
-            __('Jobs', 'backwpup'),
-            'backwpup_jobs',
+		$this->page_hooks['backwpupjobs'] = add_submenu_page(
+			'backwpup_null',
+			__( 'Jobs', 'backwpup' ),
+			__( 'Jobs', 'backwpup' ),
+			'backwpup_jobs',
             'backwpupjobs',
             [
                 \BackWPup_Page_Jobs::class,
@@ -363,11 +545,11 @@ final class BackWPup_Admin
      */
     public function admin_page_editjob($page_hooks)
     {
-        $this->page_hooks['backwpupeditjob'] = add_submenu_page(
-            'backwpup',
-            __('Add new job', 'backwpup'),
-            __('Add new job', 'backwpup'),
-            'backwpup_jobs_edit',
+		$this->page_hooks['backwpupeditjob'] = add_submenu_page(
+			'backwpup_null',
+			__( 'Add new job', 'backwpup' ),
+			__( 'Add new job', 'backwpup' ),
+			'backwpup_jobs_edit',
             'backwpupeditjob',
             [
                 \BackWPup_Page_Editjob::class,
@@ -401,11 +583,11 @@ final class BackWPup_Admin
      */
     public function admin_page_logs($page_hooks)
     {
-        $this->page_hooks['backwpuplogs'] = add_submenu_page(
-            'backwpup',
-            __('Logs', 'backwpup'),
-            __('Logs', 'backwpup'),
-            'backwpup_logs',
+		$this->page_hooks['backwpuplogs'] = add_submenu_page(
+			'backwpup_null',
+			__( 'Logs', 'backwpup' ),
+			__( 'Logs', 'backwpup' ),
+			'backwpup_logs',
             'backwpuplogs',
             [
                 \BackWPup_Page_Logs::class,
@@ -432,27 +614,52 @@ final class BackWPup_Admin
         return $page_hooks;
     }
 
+	/**
+	 * The onboarding admin page.
+	 *
+	 * @param array $page_hooks  The page hooks list.
+	 *
+     * @return mixed
+	 */
+	public function admin_page_onboarding( $page_hooks ) {
+		if ( false === (bool) get_site_option( 'backwpup_onboarding', false ) ) {
+			return $page_hooks;
+		}
+		$this->page_hooks['backwpupbackups'] = add_submenu_page(
+			'backwpup',
+			__( 'Onboarding', 'backwpup' ),
+			__( 'Onboarding', 'backwpup' ),
+			'backwpup_backups',
+			'backwpuponboarding',
+			[
+				\BackWPup_Page_Onboarding::class,
+				'page',
+            ]
+		);
+		return $page_hooks;
+    }
+
     /**
      * @param $page_hooks
      *
      * @return mixed
-     */
-    public function admin_page_backups($page_hooks)
-    {
-        $this->page_hooks['backwpupbackups'] = add_submenu_page(
-            'backwpup',
-            __('Backups', 'backwpup'),
-            __('Backups', 'backwpup'),
-            'backwpup_backups',
+	 */
+	public function admin_page_backups( $page_hooks ) {
+		$this->page_hooks['backwpupbackups'] = add_submenu_page(
+			'backwpup_null',
+			__( 'Backups', 'backwpup' ),
+			__( 'Backups', 'backwpup' ),
+			'backwpup_backups',
             'backwpupbackups',
             [
                 \BackWPup_Page_Backups::class,
                 'page',
             ]
-        );
-        add_action('load-' . $this->page_hooks['backwpupbackups'], [\BackWPup_Admin::class, 'init_general']);
-        add_action('load-' . $this->page_hooks['backwpupbackups'], [\BackWPup_Page_Backups::class, 'load']);
-        add_action(
+		);
+		add_action( 'load-' . $this->page_hooks['backwpupbackups'], [ self::class, 'init_general' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_backup_generation' ] );
+		add_action( 'load-' . $this->page_hooks['backwpupbackups'], [ \BackWPup_Page_Backups::class, 'load' ] );
+		add_action(
             'admin_print_styles-' . $this->page_hooks['backwpupbackups'],
             [
                 \BackWPup_Page_Backups::class,
@@ -477,11 +684,11 @@ final class BackWPup_Admin
      */
     public function admin_page_settings($page_hooks)
     {
-        $this->page_hooks['backwpupsettings'] = add_submenu_page(
-            'backwpup',
-            esc_html__('Settings', 'backwpup'),
-            esc_html__('Settings', 'backwpup'),
-            'backwpup_settings',
+		$this->page_hooks['backwpupsettings'] = add_submenu_page(
+			'backwpup_null',
+			esc_html__( 'Settings', 'backwpup' ),
+			esc_html__( 'Settings', 'backwpup' ),
+			'backwpup_settings',
             'backwpupsettings',
             [$this->settings, 'page']
         );
@@ -503,7 +710,7 @@ final class BackWPup_Admin
 	 */
 	public function admin_page_restore( $page_hooks ) {
 		$this->page_hooks['backwpuprestore'] = add_submenu_page(
-			'backwpup',
+			'backwpup_null',
 			esc_html__( 'Restore', 'backwpup' ),
 			esc_html__( 'Restore', 'backwpup' ),
 			'backwpup_restore',
@@ -543,11 +750,11 @@ final class BackWPup_Admin
      */
     public function admin_page_about($page_hooks)
     {
-        $this->page_hooks['backwpupabout'] = add_submenu_page(
-            'backwpup',
-            __('About', 'backwpup'),
-            __('About', 'backwpup'),
-            'backwpup',
+		$this->page_hooks['backwpupabout'] = add_submenu_page(
+			'backwpup_null',
+			__( 'About', 'backwpup' ),
+			__( 'About', 'backwpup' ),
+			'backwpup',
             'backwpupabout',
             [
                 \BackWPup_Page_About::class,
@@ -573,58 +780,67 @@ final class BackWPup_Admin
         return $page_hooks;
     }
 
+
     /**
      * Called on save form. Only POST allowed.
-     */
-    public function save_post_form()
-    {
-        $allowed_pages = [
+	 */
+	public function save_post_form() {
+		// TODO delete backwpupsettings option in $allowed_pages.
+		$allowed_pages = [
             'backwpupeditjob',
             'backwpupinformation',
-            'backwpupsettings',
-        ];
+			'backwpupsettings',
+			'backwpup',
+			'backwpupfirstbackup',
+		];
 
-        if (!in_array($_POST['page'], $allowed_pages, true)) {
-            wp_die(esc_html__('Cheating, huh?', 'backwpup'));
-        }
+		// Sanitize $_POST data.
+		$post_page    = isset( $_POST['page'] ) ? sanitize_text_field( wp_unslash( $_POST['page'] ) ) : null;
+		$post_anchor  = isset( $_POST['anchor'] ) ? sanitize_text_field( wp_unslash( $_POST['anchor'] ) ) : null;
+		$post_tab     = isset( $_POST['tab'] ) ? sanitize_text_field( wp_unslash( $_POST['tab'] ) ) : null;
+		$post_nexttab = isset( $_POST['nexttab'] ) ? sanitize_text_field( wp_unslash( $_POST['nexttab'] ) ) : null;
 
-        //nonce check
-        check_admin_referer($_POST['page'] . '_page');
+		if ( isset( $post_page ) && ! in_array( $post_page, $allowed_pages, true ) ) {
+			wp_die( esc_html__( 'Cheating, huh?', 'backwpup' ) );
+		}
 
-        if (!current_user_can('backwpup')) {
-            wp_die(esc_html__('Cheating, huh?', 'backwpup'));
-        }
+		// nonce check.
+		check_admin_referer( $post_page . '_page' );
 
-        //build query for redirect
-        if (!isset($_POST['anchor'])) {
-            $_POST['anchor'] = null;
-        }
-        $query_args = [];
-        if (isset($_POST['page'])) {
-            $query_args['page'] = $_POST['page'];
-        }
-        if (isset($_POST['tab'])) {
-            $query_args['tab'] = $_POST['tab'];
-        }
-        if (isset($_POST['tab'], $_POST['nexttab']) && $_POST['tab'] !== $_POST['nexttab']) {
-            $query_args['tab'] = $_POST['nexttab'];
-        }
+		if ( ! current_user_can( 'backwpup' ) ) {
+			wp_die( esc_html__( 'Cheating, huh?', 'backwpup' ) );
+		}
 
-        $jobid = null;
-        if (isset($_POST['jobid'])) {
-            $jobid = (int) $_POST['jobid'];
-            $query_args['jobid'] = $jobid;
-        }
+		$query_args = [];
+		if ( isset( $post_page ) ) {
+			$query_args['page'] = $post_page;
+		}
+		if ( isset( $post_tab ) ) {
+			$query_args['tab'] = $post_tab;
+		}
+		if ( isset( $post_tab, $post_nexttab ) && $post_tab !== $post_nexttab ) {
+			$query_args['tab'] = $post_nexttab;
+		}
 
-        // Call method to save data
-        if ($_POST['page'] === 'backwpupeditjob') {
-            BackWPup_Page_Editjob::save_post_form($_POST['tab'], $jobid);
-        } elseif ($_POST['page'] === 'backwpupsettings') {
-            $this->settings->save_post_form();
+		$jobid = null;
+		if ( isset( $_POST['jobid'] ) ) {
+			$jobid               = (int) $_POST['jobid'];
+			$query_args['jobid'] = $jobid;
         }
 
-        //Back to topic
-        wp_safe_redirect(add_query_arg($query_args, network_admin_url('admin.php')) . $_POST['anchor']);
+		// Call method to save data.
+		if ( 'backwpupeditjob' === $post_page ) {
+			BackWPup_Page_Editjob::save_post_form( $post_tab, $jobid ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+		} elseif ( 'backwpup' === $post_page ) {
+			if ( isset( $_POST['onboarding'] ) && '1' === $_POST['onboarding'] ) {
+				BackWPup_Page_Onboarding::save_post_form();
+			} else {
+				$this->settings->save_post_form();
+			}
+        }
+
+		// Back to topic.
+		wp_safe_redirect( add_query_arg( $query_args, network_admin_url( 'admin.php' ) ) . $post_anchor );
 
         exit;
     }
@@ -689,16 +905,17 @@ EOT;
         $default_text = $update_footer_text;
 
         if (isset($_REQUEST['page']) && strstr((string) $_REQUEST['page'], 'backwpup')) {
-            $update_footer_text = '<span class="backwpup-update-footer"><a href="' . __(
-                'http://backwpup.com',
-                'backwpup'
-            ) . '">' . BackWPup::get_plugin_data('Name') . '</a> ' . sprintf(
-                __(
-                    'version %s',
-                    'backwpup'
-                ),
-                BackWPup::get_plugin_data('Version')
-            ) . '</span>';
+			$update_footer_text = '<span class="backwpup-update-footer"><a href="' . __(
+					'http://backwpup.com',
+					'backwpup'
+				) . '">' . BackWPup::get_plugin_data( 'Name' ) . '</a> ' . sprintf(
+			// Translators: %s is the version number of the BackWPup plugin.
+			__(
+						'version %s',
+						'backwpup'
+					),
+					BackWPup::get_plugin_data( 'Version' )
+				) . '</span>';
 
             return $update_footer_text . $default_text;
         }
@@ -737,31 +954,36 @@ EOT;
         //only if user has other than backwpup role
         if (!empty($user->roles[0]) && in_array($user->roles[0], array_keys($backwpup_roles), true)) {
             return;
-        } ?>
-		<h3><?php echo BackWPup::get_plugin_data('name'); ?></h3>
+		} ?>
+		<h3><?php echo esc_html__( BackWPup::get_plugin_data( 'name' ), 'backwpup' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText ?></h3>
 		<table class="form-table">
-			<tr>
-				<th>
-					<label for="backwpup_role"><?php _e('Add BackWPup Role', 'backwpup'); ?></label>
-				</th>
-				<td>
-					<select name="backwpup_role" id="backwpup_role" style="display:inline-block; float:none;">
-						<option
-							value=""><?php _e(
-            '&mdash; No additional role for BackWPup &mdash;',
-            'backwpup'
-        ); ?></option>
-						<?php
-                        foreach ($backwpup_roles as $role => $role_value) {
-                            echo '<option value="' . $role . '" ' . selected(
-                                $user->has_cap($role),
-                                true,
-                                false
-                            ) . '>' . $role_value['name'] . '</option>';
-                        } ?>
-					</select>
-				</td>
-			</tr>
+		<tr>
+			<th>
+			<label for="backwpup_role"><?php esc_html_e( 'Add BackWPup Role', 'backwpup' ); ?></label>
+			</th>
+			<td>
+			<select name="backwpup_role" id="backwpup_role" style="display:inline-block; float:none;">
+				<option
+				value="">
+				<?php
+				esc_html_e(
+						'&mdash; No additional role for BackWPup &mdash;',
+						'backwpup'
+						);
+				?>
+					</option>
+				<?php
+				foreach ( $backwpup_roles as $role => $role_value ) {
+					echo '<option value="' . $role . '" ' . selected( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							$user->has_cap( $role ),
+							true,
+							false
+						) . '>' . $role_value['name'] . '</option>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				}
+				?>
+			</select>
+			</td>
+		</tr>
 		</table>
 		<?php
     }
@@ -828,42 +1050,133 @@ EOT;
 		$restore = new Restore();
 		$restore->set_hooks()->init();
 
-		// Add menu pages
-		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_jobs' ], 2 );
-		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_editjob' ], 3 );
-		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_logs' ], 4 );
-		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_backups' ], 5 );
-		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_settings' ], 6 );
-		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_restore' ], 7 );
-		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_about' ], 20 );
+		// Add menu pages.
+		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_onboarding' ], 2 );
+		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_backups' ], 3 );
+		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_jobs' ], 4 );
+		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_about' ], 5 );
 
-        //Add Menu
-        if (is_multisite()) {
-            add_action('network_admin_menu', [$this, 'admin_menu']);
-        } else {
-            add_action('admin_menu', [$this, 'admin_menu']);
-        }
-        //add Plugin links
-        add_filter('plugin_row_meta', [$this, 'plugin_links'], 10, 2);
-        //add more actions
-        add_action('admin_init', [$this, 'admin_init']);
-        add_action('admin_enqueue_scripts', [$this, 'admin_css']);
-        //Save Form posts general
-        add_action('admin_post_backwpup', [$this, 'save_post_form']);
-        //Save Form posts wizard
-        add_action('admin_post_backwpup_wizard', [\BackWPup_Pro_Page_Wizard::class, 'save_post_form']);
-        // Save form posts for support
-        add_action('admin_post_backwpup_support', [\BackWPup_Pro_Page_Support::class, 'save_post_form']);
-        //Admin Footer Text replacement
-        add_filter('admin_footer_text', [$this, 'admin_footer_text'], 100);
-        add_filter('update_footer', [$this, 'update_footer'], 100);
-        //User Profile fields
-        add_action('show_user_profile', [$this, 'user_profile_fields']);
-        add_action('edit_user_profile', [$this, 'user_profile_fields']);
-        add_action('profile_update', [$this, 'save_profile_update']);
-    }
+		// Hidden menu pages.
+		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_restore' ], 19 );
+		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_editjob' ], 20 );
+		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_first_backup' ], 21 );
+
+		// Desactivated menu pages.
+		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_logs' ], 5 );
+		// add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_settings' ], 7 );.
+
+		// Add Menu.
+		if ( is_multisite() ) {
+			add_action( 'network_admin_menu', [ $this, 'admin_menu' ] );
+		} else {
+			add_action( 'admin_menu', [ $this, 'admin_menu' ] );
+		}
+		add_action(
+			'admin_enqueue_scripts',
+			[
+				self::class,
+				'init_general',
+			]
+        );
+		add_action(
+			'admin_enqueue_scripts',
+			[
+                \BackWPup_Page_Backups::class,
+                'admin_print_styles',
+            ]
+        );
+		add_action(
+			'admin_enqueue_scripts',
+			[
+                \BackWPup_Page_Backups::class,
+                'admin_print_scripts',
+            ]
+		);
+		// add Plugin links.
+		add_filter( 'plugin_row_meta', [ $this, 'plugin_links' ], 10, 2 );
+		add_filter( 'plugin_action_links_backwpup/backwpup.php', [ $this, 'plugin_name_links' ], 10, 1 );
+		add_filter( 'plugin_action_links_backwpup-pro/backwpup.php', [ $this, 'plugin_name_links' ], 10, 1 );
+		// add more actions.
+		add_action( 'admin_init', [ $this, 'admin_init' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'admin_css' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_assets' ] );
+		// Save Form posts general.
+		add_action( 'admin_post_backwpup', [ $this, 'save_post_form' ] );
+		// Save Form posts wizard.
+		add_action( 'admin_post_backwpup_wizard', [ \BackWPup_Pro_Page_Wizard::class, 'save_post_form' ] );
+		// Save form posts for support.
+		add_action( 'admin_post_backwpup_support', [ \BackWPup_Pro_Page_Support::class, 'save_post_form' ] );
+		// Admin Footer Text replacement.
+		add_filter( 'admin_footer_text', [ $this, 'admin_footer_text' ], 100 );
+		add_filter( 'update_footer', [ $this, 'update_footer' ], 100 );
+		// User Profile fields.
+		add_action( 'show_user_profile', [ $this, 'user_profile_fields' ] );
+		add_action( 'edit_user_profile', [ $this, 'user_profile_fields' ] );
+		add_action( 'profile_update', [ $this, 'save_profile_update' ] );
+	}
 
     private function __clone()
     {
-    }
+	}
+
+	/**
+	 * Retrieves the BackWPup API data.
+	 *
+	 * This function generates an array of data required for various BackWPup API endpoints,
+	 * including nonces for security and REST URLs for different actions.
+	 *
+	 * @param object|null $job_object Optional. The job object containing the logfile information.
+	 *                                If provided, the logfile basename will be included in the returned data.
+	 *
+	 * @return array An associative array containing the BackWPup API data.
+	 *               - 'nonce_generate' (string): Nonce for BackWPup working AJAX.
+	 *               - 'backupslistings' (string): REST URL for backups listings.
+	 *               - 'backupspagination' (string): REST URL for backups pagination.
+	 *               - 'updatejob' (string): REST URL for updating a job.
+	 *               - 'nonce' (string): Nonce for WP REST API.
+	 *               - 'cloudsaveandtest' (string): REST URL for cloud save and test.
+	 *               - 'storagelistcompact' (string): REST URL for storage list compact.
+	 *               - 'save_database_settings' (string): REST URL for saving database settings.
+	 *               - 'save_files_settings' (string): REST URL for saving files settings.
+	 *               - 'startbackup' (string): REST URL for starting a backup.
+	 *               - 'save_excluded_tables' (string): REST URL for saving excluded tables.
+	 *               - 'backups_bulk_actions' (string): REST URL for processing bulk actions.
+	 *               - 'save_file_exclusions' (string): REST URL for saving file exclusions.
+	 *               - 'cloud_is_authenticated' (string): REST URL for checking cloud authentication.
+	 *               - 'authenticate_cloud' (string): REST URL for authenticating cloud.
+	 *               - 'delete_auth_cloud' (string): REST URL for deleting cloud authentication.
+	 *               - 'getblock' (string): REST URL for getting a block.
+	 *               - 'backupslistingslength' (int): Length of backups listings.
+	 *               - 'logfile' (string): Optional. Basename of the logfile if $job_object is provided.
+	 */
+	private function get_backwpup_api_data( $job_object = null ) {
+		$data = [
+			'nonce_generate'         => wp_create_nonce( 'backwpupworking_ajax_nonce' ),
+			'backupslistings'        => rest_url( 'backwpup/v1/backups' ),
+			'backupspagination'      => rest_url( 'backwpup/v1/pagination' ),
+			'updatejob'              => rest_url( 'backwpup/v1/updatejob' ),
+			'nonce'                  => wp_create_nonce( 'wp_rest' ),
+			'cloudsaveandtest'       => rest_url( 'backwpup/v1/cloudsaveandtest' ),
+			'storagelistcompact'     => rest_url( 'backwpup/v1/storagelistcompact' ),
+			'save_database_settings' => rest_url( 'backwpup/v1/save_database_settings' ),
+			'save_files_settings'    => rest_url( 'backwpup/v1/save_files_settings' ),
+			'startbackup'            => rest_url( 'backwpup/v1/startbackup' ),
+			'save_excluded_tables'   => rest_url( 'backwpup/v1/save_excluded_tables' ),
+			'backups_bulk_actions'   => rest_url( 'backwpup/v1/process_bulk_actions' ),
+			'save_file_exclusions'   => rest_url( 'backwpup/v1/save_files_exclusions' ),
+			'cloud_is_authenticated' => rest_url( 'backwpup/v1/cloud_is_authenticated' ),
+			'authenticate_cloud'     => rest_url( 'backwpup/v1/authenticate_cloud' ),
+			'delete_auth_cloud'      => rest_url( 'backwpup/v1/delete_auth_cloud' ),
+			'getblock'               => rest_url( 'backwpup/v1/getblock' ),
+			'license_update'         => rest_url( 'backwpup/v1/license_update' ),
+			'save_site_option'       => rest_url( 'backwpup/v1/save_site_option' ),
+			'backupslistingslength'  => 10,
+		];
+
+		if ( $job_object ) {
+			$data['logfile'] = basename( (string) $job_object->logfile );
+		}
+
+		return $data;
+	}
 }

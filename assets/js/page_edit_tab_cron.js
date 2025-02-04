@@ -1,5 +1,5 @@
 jQuery(document).ready(function ($) {
-    $('input[name="activetype"]').change(function () {
+    $('input[name="activetype"]').on('change', function () {
         if ( $(this).val() == 'wpcron' || $(this).val() == 'easycron') {
             $('.wpcron').show();
         } else {
@@ -13,7 +13,7 @@ jQuery(document).ready(function ($) {
         $('.wpcron').hide();
     }
 
-    $('input[name="cronselect"]').change(function () {
+    $('input[name="cronselect"]').on('change', function () {
         if ('basic' == $('input[name="cronselect"]:checked').val()) {
             $('.wpcronadvanced').hide();
             $('.wpcronbasic').show();
@@ -60,19 +60,19 @@ jQuery(document).ready(function ($) {
             $('#schedulecron').replaceWith(response);
         });
     }
-    $('input[name="cronminutes[]"]').change(function () {
+    $('input[name="cronminutes[]"]').on('change', function () {
         cronstampadvanced();
     });
-    $('input[name="cronhours[]"]').change(function () {
+    $('input[name="cronhours[]"]').on('change', function () {
         cronstampadvanced();
     });
-    $('input[name="cronmday[]"]').change(function () {
+    $('input[name="cronmday[]"]').on('change', function () {
         cronstampadvanced();
     });
-    $('input[name="cronmon[]"]').change(function () {
+    $('input[name="cronmon[]"]').on('change', function () {
         cronstampadvanced();
     });
-    $('input[name="cronwday[]"]').change(function () {
+    $('input[name="cronwday[]"]').on('change', function () {
         cronstampadvanced();
     });
 
@@ -124,34 +124,34 @@ jQuery(document).ready(function ($) {
             $('#schedulecron').replaceWith(response);
         });
     }
-    $('input[name="cronbtype"]').change(function () {
+    $('input[name="cronbtype"]').on('change', function () {
         cronstampbasic();
     });
-    $('select[name="moncronmday"]').change(function () {
+    $('select[name="moncronmday"]').on('change', function () {
         cronstampbasic();
     });
-    $('select[name="moncronhours"]').change(function () {
+    $('select[name="moncronhours"]').on('change', function () {
         cronstampbasic();
     });
-    $('select[name="moncronminutes"]').change(function () {
+    $('select[name="moncronminutes"]').on('change', function () {
         cronstampbasic();
     });
-    $('select[name="weekcronwday"]').change(function () {
+    $('select[name="weekcronwday"]').on('change', function () {
         cronstampbasic();
     });
-    $('select[name="weekcronhours"]').change(function () {
+    $('select[name="weekcronhours"]').on('change', function () {
         cronstampbasic();
     });
-    $('select[name="weekcronminutes"]').change(function () {
+    $('select[name="weekcronminutes"]').on('change', function () {
         cronstampbasic();
     });
-    $('select[name="daycronhours"]').change(function () {
+    $('select[name="daycronhours"]').on('change', function () {
         cronstampbasic();
     });
-    $('select[name="daycronminutes"]').change(function () {
+    $('select[name="daycronminutes"]').on('change', function () {
         cronstampbasic();
     });
-    $('select[name="hourcronminutes"]').change(function () {
+    $('select[name="hourcronminutes"]').on('change', function () {
         cronstampbasic();
     });
 });

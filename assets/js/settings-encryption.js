@@ -264,25 +264,30 @@
     },
 
     toggleEncryptionType: function (evt) {
-      var type = evt.target.value;
-      var typeToShow;
-      var typeToHide;
+      var type = evt.target.dataset.encryptionType;
+      $(this.tab.querySelector("#encryption")).val(type);
+      var checked = evt.target.checked;
+      var typeToShow = null;
+      var typeToHide = null;
 
-      switch (type) {
+      if (!checked) {
+        $(evt.target).prop("checked", true);
+        return;
+      } else {
+        typeToShow = type;
+      }
+
+      switch (typeToShow) {
         case this.TYPE_SYMMETRIC:
-          typeToShow = "symmetric";
           typeToHide = "asymmetric";
           break;
         case this.TYPE_ASYMMETRIC:
-          typeToShow = "asymmetric";
           typeToHide = "symmetric";
           break;
       }
-
+      $(this.tab.querySelector("#bwu_encryption_" + typeToHide)).prop('checked', false);
       $(this.tab.querySelector("#" + typeToShow + "_key_container")).show();
       $(this.tab.querySelector("#" + typeToHide + "_key_container")).hide();
-
-      this.enableSaveSettings();
     },
 
     currentOption: function currentOption() {
@@ -323,10 +328,14 @@
 
     enableSaveSettings: function () {
       this.keyHasBeenDownloaded = true;
+      $('#encryption_submit').prop('disabled', false);
+      $('input[name="encryption_activated"]').prop('disabled', false);
     },
 
     disableSaveSettings: function () {
       this.keyHasBeenDownloaded = false;
+      $('#encryption_submit').prop('disabled', true);
+      $('input[name="encryption_activated"]').prop('disabled', true);
     },
 
     construct: function () {
@@ -349,17 +358,17 @@
         "init"
       );
 
-      tab = document.querySelector("#backwpup-tab-encryption");
+      tab = document.querySelector("#sidebar-settings-encryption");
       if (!tab) {
         return false;
       }
 
-      encryptionKeyOptions = tab.querySelectorAll(".bwu-encryption-input");
+      encryptionKeyOptions = tab.querySelectorAll(".js-backwpup-bwu-encryption-input");
       if (!encryptionKeyOptions.length) {
         return false;
       }
 
-      this.form = document.querySelector("#settingsform");
+      this.form = document.querySelector("#encryptionsettingsform");
 
       this.tab = tab;
       this.encryptionKeyOptions = encryptionKeyOptions;
@@ -449,8 +458,10 @@
         "click",
         this.validateAsymmetricKey
       );
-
-      this.form.addEventListener("submit", this.ensureDownloadedKeys);
+      
+      $(this.form).on("submit", function(event) {
+        this.ensureDownloadedKeys(event);
+      }.bind(this));
 
       $("body").on("thickbox:removed", this.cleanOnThickBoxClosing);
     },

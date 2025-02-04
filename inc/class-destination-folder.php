@@ -85,10 +85,9 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations
 
     /**
      * {@inheritdoc}
-     */
-    public function edit_form_post_save(int $jobid): void
-    {
-        $backup_dir = trim(sanitize_text_field($_POST['backupdir']));
+	 */
+	public function edit_form_post_save( $jobid ): void {
+		$backup_dir = trim( sanitize_text_field( $_POST['backupdir'] ) ); // phpcs:ignore WordPress.Security
 
         try {
             $backup_dir = trailingslashit(
@@ -98,12 +97,14 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations
             $backup_dir = self::getDefaultBackupsDirectory();
         }
 
-        $max_backups = isset($_POST['maxbackups']) ? absint($_POST['maxbackups']) : 0;
-
-        BackWPup_Option::update($jobid, 'backupdir', $backup_dir);
-        BackWPup_Option::update($jobid, 'maxbackups', $max_backups);
-        BackWPup_Option::update($jobid, 'backupsyncnodelete', !empty($_POST['backupsyncnodelete']));
-    }
+		$max_backups    = isset( $_POST['maxbackups'] ) ? absint( $_POST['maxbackups'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+				$jobids = (array) $jobid;
+		foreach ( $jobids as $jobid ) {
+			BackWPup_Option::update( $jobid, 'backupdir', $backup_dir );
+			BackWPup_Option::update( $jobid, 'maxbackups', $max_backups );
+			BackWPup_Option::update( $jobid, 'backupsyncnodelete', ! empty( $_POST['backupsyncnodelete'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		}
+	}
 
     /**
      * {@inheritdoc}

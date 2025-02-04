@@ -42,6 +42,21 @@ class BackWPup_Page_Logs extends WP_List_Table
         $this->log_folder = untrailingslashit($this->log_folder);
     }
 
+	/**
+	 * Retrieves the table classes for the job page.
+	 *
+	 * This method constructs an array of CSS classes to be applied to the table
+	 * on the job page. The 'fixed' class is intentionally omitted from the default
+	 * classes.
+	 *
+	 * @return array An array of CSS classes for the table.
+	 */
+	protected function get_table_classes() {
+		// Remove 'fixed' from the default classes.
+		$classes = [ 'widefat', 'striped', $this->_args['plural'] ];
+		return $classes;
+	}
+
     /**
      * User can.
      *

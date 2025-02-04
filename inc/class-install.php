@@ -26,6 +26,16 @@ class BackWPup_Install
             }
         }
 
+		// Migration for the new UI.
+		BackWPup_Migrate::migrate();
+
+		$backwpup_backup_files_job_id = get_site_option( 'backwpup_backup_files_job_id', false );
+		if ( false === $backwpup_backup_files_job_id ) {
+			$backwpup_backup_files_job_id = BackWPup_Option::next_job_id();
+			update_site_option( 'backwpup_backup_files_job_id', $backwpup_backup_files_job_id );
+			update_site_option( 'backwpup_backup_database_job_id', $backwpup_backup_files_job_id );
+		}
+
         //changes for 3.2
         $no_translation = get_site_option('backwpup_cfg_jobnotranslate');
         if ($no_translation) {
@@ -134,13 +144,13 @@ class BackWPup_Install
         //update version
         update_site_option('backwpup_version', BackWPup::get_plugin_data('Version'));
 
-        //only redirect if not in WP CLI environment
-        if (!$version_db && !(defined(\WP_CLI::class) && WP_CLI)) {
-            wp_redirect(network_admin_url('admin.php') . '?page=backwpupabout&welcome=1');
+		// only redirect if not in WP CLI environment.
+		if ( ! $version_db && ! ( defined( \WP_CLI::class ) && WP_CLI ) ) {
+			wp_redirect( network_admin_url( 'admin.php' ) . '?page=backwpup' ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
 
             exit();
         }
-    }
+	}
 
     private static function upgrade_from_version_two()
     {

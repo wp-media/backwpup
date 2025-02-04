@@ -67,12 +67,50 @@ final class BackWPup_Option
             return false;
         }
 
-        //Update option
-        $jobs_options = self::jobs_options(false);
-        $jobs_options[$jobid][$option] = $value;
+		// Update option.
+		$jobs_options                      = self::jobs_options( false );
+		$jobs_options[ $jobid ][ $option ] = $value;
+		return self::update_jobs_options( $jobs_options );
+	}
 
-        return self::update_jobs_options($jobs_options);
-    }
+	/**
+	 * Update the job ID for a BackWPup job.
+	 *
+	 * @param int $old_id The existing job ID.
+	 * @param int $new_id The new job ID.
+	 *
+	 * @return bool True if the update was successful, false otherwise.
+	 */
+	public static function update_job_id( $old_id, $new_id ) {
+		$old_id = (int) $old_id;
+		$new_id = (int) $new_id;
+
+		if ( $old_id <= 0 || $new_id <= 0 || $old_id === $new_id ) {
+			return false;
+		}
+
+		// Fetch existing jobs.
+		$jobs_options = self::jobs_options( false );
+
+		if ( ! isset( $jobs_options[ $old_id ] ) ) {
+			return false;
+		}
+
+		if ( isset( $jobs_options[ $new_id ] ) ) {
+			return false;
+		}
+
+		// Update job ID: Move old job options to new ID.
+		$jobs_options[ $new_id ] = $jobs_options[ $old_id ];
+		unset( $jobs_options[ $old_id ] );
+		$jobs_options[ $new_id ]['jobid'] = $new_id;
+		// Save updated jobs options.
+		if ( self::update_jobs_options( $jobs_options ) ) {
+			return true;
+		}
+
+		return false;
+	}
 
     /**
      * Load BackWPup Options.
@@ -195,13 +233,13 @@ final class BackWPup_Option
     {
         $key = sanitize_key(trim($key));
 
-        //set defaults
-        $default = [];
-        $default['type'] = ['DBDUMP', 'FILE', 'WPPLUGIN'];
-        $default['destinations'] = [];
-        $default['name'] = __('New Job', 'backwpup');
-        $default['activetype'] = '';
-        $default['logfile'] = '';
+		// set defaults.
+		$default                          = [];
+		$default['type']                  = [ 'DBDUMP', 'FILE', 'WPPLUGIN' ];
+		$default['destinations']          = [];
+		$default['name']                  = __( 'New Job', 'backwpup' );
+		$default['activetype']            = 'wpcron';
+		$default['logfile']               = '';
 		$default['lastbackupdownloadurl'] = '';
 		$default['cronselect']            = 'basic';
 		$default['cron']                  = '0 3 * * *';
@@ -212,6 +250,7 @@ final class BackWPup_Option
 		$default['archiveformat']         = '.tar';
 		$default['archivename']           = '%Y-%m-%d_%H-%i-%s_%hash%';
 		$default['archivenamenohash']     = '%Y-%m-%d_%H-%i-%s_%hash%';
+		$default['archiveencryption']     = false;
 		// defaults vor destinations.
 		foreach ( BackWPup::get_registered_destinations() as $dest_key => $dest ) {
 			if ( ! empty( $dest['class'] ) ) {
