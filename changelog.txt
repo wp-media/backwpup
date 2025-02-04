@@ -1,8 +1,13 @@
 == Changelog ==
+= 5.0.1 =
+Release date: feb 04, 2025
+
+* Fixed : Css issues with the new UI
+
 = 5.0.0 =
 Release date: feb 04, 2025
 
-* Changed : Redesigned the plugin backend for a mo intuitive user experience
+* Changed : Redesigned the plugin backend for a more intuitive user experience
 
 = 4.1.8 =
 Release date: dec 18, 2024
