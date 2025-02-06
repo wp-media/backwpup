@@ -20,6 +20,10 @@ Create a complete WordPress backup easily. Schedule automatic backups, store sec
 
 = 🆕 Introducing BackWPup 5.0 = 
 
+Rest assured; your backups are still fully operational with the new system. While custom jobs have been replaced by two default jobs—Files Backup and Database Backup—you can still access your old jobs in a read-only mode and manage backups directly from the Settings page ([see documentation](https://backwpup.com/docs/what-to-expect-when-updating-backwpup-to-version-5-0/)). 
+
+If you encounter too many problems with the new version, please revert to version 4.1.7 and contact us directly [here](https://backwpup.com/contact) so we can investigate your case. We are actively working to resolve all issues. Thank you for your patience. 
+
 Experience our most powerful update yet with a completely redesigned interface focused on simplicity and efficiency.  
 
  
