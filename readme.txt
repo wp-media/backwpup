@@ -74,7 +74,7 @@ With BackWPup, you have full control over your backup process. You can back up y
 * Schedule automatic backups to run daily, weekly, or monthly, ensuring that your data is always up-to-date and secure. 
 
 * Store your backup in different locations: 
-> **Free version**: Dropbox, Amazon S3, SFTP, Rackspace Cloud, Microsoft Azure, SugarSync.  
+> **Free version**: Dropbox, Amazon S3, FTP, Rackspace Cloud, Microsoft Azure, SugarSync.  
 > **Pro version**: Additional storage options including Amazon Glacier, Google Drive, OneDrive and HiDrive **[Get BackWPup Pro](https://backwpup.com/#buy)** 
 
 This flexibility makes BackWPup the best choice for WordPress backup. 
@@ -128,7 +128,7 @@ Here’s what our users have to say about us after using BackWPup:
 
 = ❓ Is BackWPup Free? =  
 
- You can use BackWPup for free with all its basic features. The free version includes complete backup, scheduling, support for external storage services (like Dropbox, S3, SFTP, and more) and restore.  
+ You can use BackWPup for free with all its basic features. The free version includes complete backup, scheduling, support for external storage services (like Dropbox, S3, FTP, and more) and restore.  
 
  The pro version offers many additional features including more settings, destinations, and of course access to our premium support. Check out our premium plans: [https://backwpup.com/#buy](https://backwpup.com/#buy)  
 
