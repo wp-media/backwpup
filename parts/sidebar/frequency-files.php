@@ -22,9 +22,11 @@ try {
   ]);
   $current = [
     'frequency' => '',
+    'start_time' => '00:00',
   ];
 }
 ?>
+
 <?php
 BackWPupHelpers::component("form/select", [
   "name" => "frequency",
@@ -36,6 +38,48 @@ BackWPupHelpers::component("form/select", [
     "weekly" => __("Weekly", 'backwpup'),
     "monthly" => __("Monthly", 'backwpup'),
   ],
+]);
+?>
+
+<div class="js-backwpup-frequency-file-show-if-monthly">
+  <?php
+  BackWPupHelpers::component("form/select", [
+    "name" => "day_of_month",
+    "label" => __("Start day", 'backwpup'),
+    "options" => [
+      "first-day" => __("1st day of the month", 'backwpup'),
+      "first-monday" => __("1st Monday of the month", 'backwpup'),
+      "first-sunday" => __("1st Sunday of the month", 'backwpup'),
+    ],
+  ]);
+  ?>
+</div>
+
+<div class="js-backwpup-frequency-file-show-if-weekly">
+  <?php
+  BackWPupHelpers::component("form/select", [
+    "name" => "day_of_week",
+    "label" => __("Start day", 'backwpup'),
+    "options" => [
+      "monday"    => __("Monday", 'backwpup'),
+      "tuesday"   => __("Tuesday", 'backwpup'),
+      "wednesday" => __("Wednesday", 'backwpup'),
+      "thursday"  => __("Thursday", 'backwpup'),
+      "friday"    => __("Friday", 'backwpup'),
+      "saturday"  => __("Saturday", 'backwpup'),
+      "sunday"    => __("Sunday", 'backwpup'),
+    ],
+  ]);
+  ?>
+</div>
+
+<?php
+BackWPupHelpers::component("form/text", [
+  "type" => "time",
+  "name" => "start_time",
+  "label" => __("Start time", 'backwpup'),
+  "value" => $current['start_time'],
+  "required" => true,
 ]);
 ?>
 

@@ -1,4 +1,14 @@
 == Changelog ==
+= 5.0.3 =
+Release date: feb 07, 2025
+
+* Fixed: Backup is running constantly & can’t be stopped.
+* Fixed: Authentication issue for Dropbox, FTP & Azure.
+* Added: Custom scheduling option.
+* Added: Display history of all backups.
+* Added: Custom filter to allow zip and tar.gz compression
+* Changed: Changed plugin noticed Message.
+
 = 5.0.2 =
 Release date: feb 04,2025
 

@@ -346,8 +346,18 @@ class BackWPup_Job
 				}
 				// Add job type to the filename.
 				$archive_filename = $this->job['archivename'] . '_' . implode( '-', $this->job['type'] );
+				$format           = $this->job['archiveformat'];
+				/**
+				 * Filter the backup extension.
+				 *
+				 * @param string $format The initial extension name.
+				 */
+				$format = (string) apply_filters( 'backwpup_generate_archive_extension', $format );
+				if ( ! in_array( $format, [ 'zip', 'tar', 'tar.gz', '.zip', '.tar', '.tar.gz' ], true ) ) {
+					$format = 'tar';
+				}
 				// Create backup archive full file name.
-				$this->backup_file = $this->generate_filename( $archive_filename, $this->job['archiveformat'] );
+				$this->backup_file = $this->generate_filename( $archive_filename, $format );
 				// add archive create.
 				$this->steps_todo[]                                  = 'CREATE_ARCHIVE';
 				$this->steps_data['CREATE_ARCHIVE']['NAME']          = __( 'Creates archive', 'backwpup' );
@@ -657,10 +667,9 @@ class BackWPup_Job
     {
         if ($suffix) {
             $suffix = '.' . trim($suffix, '. ');
-        }
-
-        $name = BackWPup_Option::substitute_date_vars($name);
-        $name .= $suffix;
+		}
+		$name  = BackWPup_Option::substitute_date_vars( $name );
+		$name .= $suffix;
         if ($delete_temp_file && is_writeable(BackWPup::get_plugin_data('TEMP') . $name) && !is_dir(BackWPup::get_plugin_data('TEMP') . $name) && !is_link(BackWPup::get_plugin_data('TEMP') . $name)) {
             unlink(BackWPup::get_plugin_data('TEMP') . $name);
         }

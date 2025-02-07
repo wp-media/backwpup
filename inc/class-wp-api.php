@@ -494,11 +494,8 @@ class BackWPup_WP_API {
 		$backups                 = [];
 		$registered_destinations = BackWPup::get_registered_destinations();
 		foreach ( $jobs_ids as $a_job_id ) {
-			$job   = BackWPup_Option::get_job( $a_job_id );
-			$dests = BackWPup_Option::get( $a_job_id, 'destinations' );
-			if ( ! BackWPup_Job::is_job_enabled( $a_job_id ) ) {
-				continue;
-			}
+			$job      = BackWPup_Option::get_job( $a_job_id );
+			$dests    = BackWPup_Option::get( $a_job_id, 'destinations' );
 			$job_data = [
 				'id'       => $a_job_id,
 				'name'     => $job['name'],
@@ -871,12 +868,20 @@ class BackWPup_WP_API {
 			if ( false === $files_job_id ) {
 				throw new Exception( __( 'Files job not found', 'backwpup' ) );
 			}
-			$jobs = [
+			$jobs                = [
 				$files_job_id,
 				$files_job_id + 1,
 			];
+			$should_be_connected = true;
+			if ( isset( $params['delete_auth'] ) && 'true' === $params['delete_auth'] ) {
+				$should_be_connected = false;
+			}
 			$cloud->edit_form_post_save( $jobs );
-			$return['message'] = __( 'Connection successful', 'backwpup' );
+			if ( $should_be_connected !== $cloud->can_run( BackWPup_Option::get_job( $files_job_id ) ) ) {
+				throw new Exception( __( 'Connection failed', 'backwpup' ) );
+			}
+			$return['message']   = __( 'Connection successful', 'backwpup' );
+			$return['connected'] = $should_be_connected;
 		}
 		catch ( Exception $e ) {
 			$status          = 500;
@@ -902,6 +907,7 @@ class BackWPup_WP_API {
 		} else {
 			$jobid = get_site_option( 'backwpup_backup_files_job_id', false );
 		}
+
 		// check temp folder.
 		$temp_folder_message = BackWPup_File::check_folder( BackWPup::get_plugin_data( 'TEMP' ), true );
 		// check log folder.
@@ -931,11 +937,8 @@ class BackWPup_WP_API {
 			}
 		}
 
-		// only start job if messages empty.
-		$log_messages = BackWPup_Admin::get_messages();
-		if ( empty( $log_messages ) ) {
-			BackWPup_Job::get_jobrun_url( 'runnow', $jobid );
-		}
+		BackWPup_Job::get_jobrun_url( 'runnow', $jobid );
+
 		sleep( 1 ); // Wait for the job to start.
 		return new WP_HTTP_Response(
 			[

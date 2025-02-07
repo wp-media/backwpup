@@ -55,7 +55,11 @@ jQuery(document).ready(function ($) {
               success: function(response) {
                 if ( response.status === 200 ) {
                   setTimeout(function() {
-                      window.location.reload();
+                    newUrl = window.location.href
+                    if (newUrl.indexOf('#') === -1) {
+                      newUrl += '#dbbackup';
+                      window.location.href = newUrl;
+                    }
                   }, 500);
                 }
               },

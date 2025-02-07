@@ -19,15 +19,13 @@ BackWPupHelpers::component("heading", [
       ?>
       <p>
         <?php
-        if (BackWPup::is_pro()) {
           BackWPupHelpers::component("form/button", [
             "type" => "link",
             "class" => "onboarding-files-frequency-settings",
             "label" => __("Advanced settings", 'backwpup'),
             "trigger" => "open-sidebar",
-            "display" => "frequency-files-pro",
+            "display" => "frequency-files",
           ]);
-        }
         ?>
       </p>
     </div>
@@ -60,15 +58,13 @@ BackWPupHelpers::component("heading", [
       ?>
       <p>
         <?php
-        if (BackWPup::is_pro()) {
           BackWPupHelpers::component("form/button", [
             "type" => "link",
             "label" => __("Advanced settings", 'backwpup'),
             "class" => "onboarding-database-frequency-settings",
             "trigger" => "open-sidebar",
-            "display" => "frequency-tables-pro",
+            "display" => "frequency-tables",
           ]);
-        }
         ?>
       </p>
     </div>

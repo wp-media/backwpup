@@ -48,8 +48,6 @@ $frequency_files = 'frequency-files';
 $frequency_database = 'frequency-tables';
 if (BackWPup::is_pro()) {
   $select_files .= '-pro';
-  $frequency_files .= '-pro';
-  $frequency_database .= '-pro';
 }
 ?>
 

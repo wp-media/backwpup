@@ -54,6 +54,49 @@ jQuery(document).ready(function ($) {
     return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space';
   });
 
+  // Function to refresh the storage destinations.
+  window.refresh_storage_destinations= function (destinationName, authenticated) {
+    let checkBox = $('#destination-'+destinationName);
+    checkBox.prop('checked', authenticated);
+
+    const storage_destinations = [""];
+    $('input[name="storage_destinations[]"]').each(function () {
+      if ($(this).is(':checked')) {
+        storage_destinations.push($(this).val());
+      }
+    });
+    requestWPApi(
+      backwpupApi.updatejob,
+      {
+        'storage_destinations': storage_destinations,
+      },
+      function (response) {
+        requestWPApi(
+          backwpupApi.storagelistcompact,
+          {},
+          function (response) {
+            $("#backwpup-storage-list-compact-container").html(response);
+          },
+          "GET",
+          function (request, error) {
+            $("#backwpup-storage-list-compact-container").html(request.responseText);
+          }
+        )
+      },
+      "POST",
+      function (request, error) {
+        $("#backwpup-storage-list-compact-container").html(request.responseJSON.error);
+      }
+    );
+    // Check if there is a storage selected to enable the submit button.
+    const checkedStorageCheckboxes = $('input[type="checkbox"][name^="onboarding_storage"]:checked');
+    if (0 !== checkedStorageCheckboxes.length) {
+      $(".js-backwpup-onboarding-submit-form").prop("disabled", false);
+    } else {
+      $(".js-backwpup-onboarding-submit-form").prop("disabled", true);
+    }
+  }
+
   // Refresh the gdrive authentification block.
   window.gdrive_refresh_authentification = function() {
     requestWPApi(
@@ -288,6 +331,7 @@ jQuery(document).ready(function ($) {
         backwpupApi.delete_auth_cloud,
         data,
         function (response) {
+          refresh_storage_destinations('SUGARSYNC', response.connected);
           $('#sugarsynclogin').html(response);
           initSugarSyncEvents();
         },
@@ -338,12 +382,14 @@ jQuery(document).ready(function ($) {
         backwpupApi.cloudsaveandtest,
         data,
         function (response) {
+          refresh_storage_destinations('DROPBOX', response.connected);
           dropbox_refresh_authentification();
           closeSidebar();
         },
         "POST",
         function (request, error) {
-          alert("Error in cloud configuration");
+          refresh_storage_destinations('DROPBOX', false);
+          alert(request.responseJSON.error);
         }
       );
     });
@@ -356,18 +402,17 @@ jQuery(document).ready(function ($) {
         'dropboxmaxbackups' : $("#dropboxmaxbackups").val(),
         'dropboxdir' : $("#dropboxdir").val(),
       }
-      console.log(data);
       requestWPApi(
         backwpupApi.cloudsaveandtest,
         data,
         function (response) {
+          refresh_storage_destinations('DROPBOX', response.connected);
           dropbox_refresh_authentification();
           closeSidebar();
         },
         "POST",
         function (request, error) {
-          console.log(request);
-          alert("Error in cloud configuration");
+          alert(request.responseJSON.error);
         }
       );
     });
@@ -671,6 +716,7 @@ jQuery(document).ready(function ($) {
   // Test and save S3 storage.
   $(".js-backwpup-test-s3-storage").on('click', function () {
     if ($("#s3bucketerror").html()!="") {
+      refresh_storage_destinations('S3', false);
       alert('Error in Bucket Configurations');
       return;
     }
@@ -702,10 +748,12 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
+        refresh_storage_destinations('S3', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
+        refresh_storage_destinations('S3', false);
         alert("Error in cloud configuration");
       }
     );
@@ -715,6 +763,7 @@ jQuery(document).ready(function ($) {
   // Test and save Glacier storage.
   $('.js-backwpup-test-glacier-storage').on('click', function () {
     if ($("#glacierbucketerror").html()!="") {
+      refresh_storage_destinations('GLACIER', false);
       alert('Error in Bucket Configurations');
       return;
     }
@@ -732,10 +781,12 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
+        refresh_storage_destinations('GLACIER', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
+        refresh_storage_destinations('GLACIER', false);
         alert("Error in cloud configuration");
       }
     );
@@ -752,19 +803,20 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
+        refresh_storage_destinations('FOLDER', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
+        refresh_storage_destinations('FOLDER', false);
         alert("Error in cloud configuration");
       }
     );
   });
   
 
-  // Test and save local folder storage.
+  // Test and save ftp storage.
   $('.js-backwpup-test-ftp-storage').on('click', function () {
-    // TODO Test the connection
     const data = {
       'cloud_name' : 'ftp',
       'ftphost' : $("#ftphost").val(),
@@ -781,10 +833,12 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
+        refresh_storage_destinations('FTP', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
+        refresh_storage_destinations('FTP', false);
         alert("Error in cloud configuration");
       }
     );
@@ -792,7 +846,6 @@ jQuery(document).ready(function ($) {
 
   // Test and save Gdrive storage.
   $('.js-backwpup-test-gdrive-storage').on('click', function () {
-    // TODO Test the connection
     const data = {
       'cloud_name' : 'gdrive',
       'gdriveusetrash' : $("#gdriveusetrash").prop("checked"),
@@ -803,10 +856,12 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
+        refresh_storage_destinations('GDRIVE', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
+        refresh_storage_destinations('GDRIVE', false);
         alert("Error in cloud configuration");
       }
     );
@@ -848,16 +903,18 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
+        refresh_storage_destinations('HIDRIVE', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
+        refresh_storage_destinations('HIDRIVE', false);
         alert("Error in cloud configuration");
       }
     );
   });
 
-  // Test and save OnDrive storage.
+  // Test and save ONEDRIVE storage.
   $('.js-backwpup-test-onedrive-storage').on('click', function () {
     const data = {
       'cloud_name': 'onedrive',
@@ -868,10 +925,12 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
+        refresh_storage_destinations('ONEDRIVE', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
+        refresh_storage_destinations('ONEDRIVE', true);
         alert("Error in cloud configuration");
       }
     );
@@ -890,10 +949,12 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
+        refresh_storage_destinations('SUGARSYNC', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
+        refresh_storage_destinations('SUGARSYNC', false);
         alert("Error in cloud configuration");
       }
     );
@@ -901,7 +962,6 @@ jQuery(document).ready(function ($) {
 
   // Test and save RackSpace storage.
   $('.js-backwpup-test-rackspace-cloud-storage').on('click', function () {
-    // TODO Test the connection.
     const data = {
       'cloud_name' : 'rsc',
       'newrsccontainer' : $("#newrsccontainer").val(),
@@ -915,18 +975,19 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
+        refresh_storage_destinations('RSC', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
+        refresh_storage_destinations('RSC', false);
         alert("Error in cloud configuration");
       }
     );
   });
 
-  // Test and save SugarSync storage.
+  // Test and save MSAZURE storage.
   $('.js-backwpup-test-msazure-storage').click(function () {
-    // TODO Test the connection
     const data = {
       'cloud_name' : 'msazure',
       'msazureaccname' : $("#msazureaccname").val(),
@@ -941,10 +1002,12 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
+        refresh_storage_destinations('MSAZURE', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
+        refresh_storage_destinations('MSAZURE', false);
         alert("Error in cloud configuration");
       }
     );
@@ -1038,57 +1101,8 @@ jQuery(document).ready(function ($) {
 
   // Toggle storages
   $(".js-backwpup-toggle-storage").on('click', function() {
-    const $checkbox = $(this).find("input[type=checkbox]");
-    const isActive = $checkbox.prop("checked");
     const content = $(this).data("content");
-    if (!isActive) {
-      $checkbox.prop("checked", true);
-      openSidebar(content);
-      
-    } else {
-      // check if checkbox is in sidebar
-      $checkbox.prop("checked", false);
-      const inSidebar = $(this).closest("#backwpup-sidebar").length > 0;
-      if (!inSidebar) {
-        closeSidebar();
-      }
-    }
-    const storage_destinations = [""];
-    $('input[name="storage_destinations[]"]').each(function () {
-      if ($(this).is(':checked')) {
-        storage_destinations.push($(this).val());
-      }
-    });
-    requestWPApi(
-      backwpupApi.updatejob,
-      {
-        'storage_destinations': storage_destinations,
-      },
-      function (response) {
-        requestWPApi(
-          backwpupApi.storagelistcompact,
-          {},
-          function (response) {
-            $("#backwpup-storage-list-compact-container").html(response);
-          },
-          "GET",
-          function (request, error) {
-            $("#backwpup-storage-list-compact-container").html(request.responseText);
-          }
-        )
-      },
-      "POST",
-      function (request, error) {
-        $("#backwpup-storage-list-compact-container").html(request.responseJSON.error);
-      }
-    );
-    // Check if there is a storage selected to enable the submit button.
-    const checkedStorageCheckboxes = $('input[type="checkbox"][name^="onboarding_storage"]:checked');
-    if (0 !== checkedStorageCheckboxes.length) {
-      $(".js-backwpup-onboarding-submit-form").prop("disabled", false);
-    } else {
-      $(".js-backwpup-onboarding-submit-form").prop("disabled", true);
-    }
+    openSidebar(content);
   });
 
   // Toggle Gdrive reauthenticate action.
@@ -1245,16 +1259,16 @@ jQuery(document).ready(function ($) {
   });
 
   $(".js-backwpup-onboarding-files-frequency").on('change', function() {
-    if ($("#sidebar-frequency-files-pro")) {
-      let select = $("#sidebar-frequency-files-pro").find("select[name='frequency']");
+    if ($("#sidebar-frequency-files")) {
+      let select = $("#sidebar-frequency-files").find("select[name='frequency']");
       select.val(this.value);
       select.trigger('change');
     }
   });
 
   $(".js-backwpup-onboarding-database-frequency").on('change', function() {
-    if ($("#sidebar-frequency-tables-pro")) {
-      let select = $("#sidebar-frequency-tables-pro").find("select[name='frequency']");
+    if ($("#sidebar-frequency-tables")) {
+      let select = $("#sidebar-frequency-tables").find("select[name='frequency']");
       select.val(this.value);
       select.trigger('change');
     }
@@ -1298,8 +1312,6 @@ jQuery(document).ready(function ($) {
       window.BWU.downloader.init();
       initMenuEvent();
       initModalEvent();
-      initSugarSyncEvents();
-      initDropboxEvents();
   
       // Calculate max pages and refresh the pagination
       let max_pages = Math.ceil(jQuery('input[name="nb_backups"]').val() / data.length);
@@ -1533,7 +1545,9 @@ jQuery(document).ready(function ($) {
       requestWPApi(backwpupApi.startbackup, {}, function(response) {
         if (response.status === 200) {
           setTimeout(function() {
-            window.location.reload();
+            if ('#dbbackup' !== window.location.hash ) {
+              window.location.reload();
+            }
         }, 500);
         }
       }, 'POST');
