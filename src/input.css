@@ -67,7 +67,7 @@
   max-width: 100%;
 }
 
-#wpbody-content select:hover {
+#wpbody-content select:not([disabled]):hover {
   color: inherit;
 }
 

@@ -1,0 +1,13 @@
+<?php
+
+namespace Inpsyde\BackWPup\Archiver;
+
+/**
+ * @property int $remains
+ * @property int $index
+ * @property string $fileName
+ * @property string $destinationPath
+ */
+class CurrentExtractInfo
+{
+}

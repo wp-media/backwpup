@@ -1,0 +1,22 @@
+<?php
+
+class Archive_Tar
+{
+    /**
+     * @param string $p_tarname
+     * @param string|bool $p_compress misreported by Archive_Tar; true if gz
+     * @param int $buffer_length
+     */
+    public function __construct($p_tarname, $p_compress = null, $buffer_length = 512) {}
+
+    /**
+     * @param string[] $p_filelist
+     * @param string $p_path
+     * @param string $p_remove_path
+     * @param bool $p_preserve
+     * @param bool $p_symlinks
+     *
+     * @return bool
+     */
+    public function extractList($p_filelist, $p_path = '', $p_remove_path = '', $p_preserve = false, $p_symlinks = true) {}
+}

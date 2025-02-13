@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-07 11:33+0000\n"
+"POT-Creation-Date: 2025-02-13 14:45+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -138,11 +138,11 @@ msgstr ""
 msgid "Display Logs"
 msgstr ""
 
-#: components/progress-box.php:31, inc/class-page-backwpup.php:310, inc/class-page-jobs.php:735, pages/first-congratulations.php:37
+#: components/progress-box.php:31, inc/class-page-backwpup.php:310, inc/class-page-jobs.php:736, pages/first-congratulations.php:37
 msgid "Abort"
 msgstr ""
 
-#: components/progress-box.php:45, inc/class-page-jobs.php:736, parts/sidebar/advanced-settings.php:77, parts/sidebar/storages.php:49
+#: components/progress-box.php:45, inc/class-page-jobs.php:737, parts/sidebar/advanced-settings.php:77, parts/sidebar/storages.php:49
 msgid "Close"
 msgstr ""
 
@@ -166,7 +166,7 @@ msgstr ""
 msgid "Include your WordPress database in the backup"
 msgstr ""
 
-#: components/storage-list-compact.php:30
+#: components/storage-list-compact.php:37
 msgid "Warning: No storage method is configured. Your backup will not work!"
 msgstr ""
 
@@ -434,63 +434,65 @@ msgstr ""
 msgid "Your download is being generated &hellip;"
 msgstr ""
 
-#: inc/class-destination-dropbox-api.php:208
+#: inc/class-destination-dropbox-api.php:207
 msgid "Beginning new file upload session"
 msgstr ""
 
+#. translators: %s is the size of the data.
 #: inc/class-destination-dropbox-api.php:230
 msgid "Uploading %s of data"
 msgstr ""
 
-#: inc/class-destination-dropbox-api.php:275
+#. translators: %s is the size of the data.
+#: inc/class-destination-dropbox-api.php:276
 msgid "Finishing upload session with a total of %s uploaded"
 msgstr ""
 
-#: inc/class-destination-dropbox-api.php:310
+#: inc/class-destination-dropbox-api.php:311
 msgid "No access token provided"
 msgstr ""
 
-#: inc/class-destination-dropbox-api.php:316
+#: inc/class-destination-dropbox-api.php:317
 msgid "No refresh token provided. You may need to reauthenticate with Dropbox"
 msgstr ""
 
-#: inc/class-destination-dropbox-api.php:347
+#: inc/class-destination-dropbox-api.php:348
 msgid "OAuth tokens have not been set."
 msgstr ""
 
-#: inc/class-destination-dropbox-api.php:958
+#: inc/class-destination-dropbox-api.php:953
 msgid "(%1$s) An unknown error has occurred. Response from server: %2$s"
 msgstr ""
 
-#: inc/class-destination-dropbox-api.php:982
+#: inc/class-destination-dropbox-api.php:977
 msgid "(%1$d) An unexpected server error was encountered. Response from server: %2$s"
 msgstr ""
 
-#: inc/class-destination-dropbox-api.php:1003
+#: inc/class-destination-dropbox-api.php:998
 msgid "(400) Bad input parameter. Response from server: %s"
 msgstr ""
 
-#: inc/class-destination-dropbox-api.php:1027
+#: inc/class-destination-dropbox-api.php:1022
 msgid "(401) Bad or expired token. Response from server: %s"
 msgstr ""
 
-#: inc/class-destination-dropbox-api.php:1052
+#: inc/class-destination-dropbox-api.php:1047
 msgid "(403) You do not have permission to access this endpoint."
 msgstr ""
 
-#: inc/class-destination-dropbox-api.php:1060
+#: inc/class-destination-dropbox-api.php:1055
 msgid "(403) You do not have permission to access this feature."
 msgstr ""
 
-#: inc/class-destination-dropbox-api.php:1071
+#: inc/class-destination-dropbox-api.php:1066
 msgid "(403) You do not have permission to access this resource. Response from server: %s"
 msgstr ""
 
-#: inc/class-destination-dropbox-api.php:1093
+#: inc/class-destination-dropbox-api.php:1088
 msgid "(409) Endpoint-specific error. Response from server: %s"
 msgstr ""
 
-#: inc/class-destination-dropbox-api.php:1118
+#: inc/class-destination-dropbox-api.php:1113
 msgid "(429) Requests are being rate limited. Please try again later."
 msgstr ""
 
@@ -1613,11 +1615,11 @@ msgstr ""
 msgid "Cannot write progress to working file. Job will be aborted."
 msgstr ""
 
-#: inc/class-job.php:831, inc/class-page-jobs.php:945
+#: inc/class-job.php:831, inc/class-page-jobs.php:946
 msgid "WARNING:"
 msgstr ""
 
-#: inc/class-job.php:841, inc/class-page-jobs.php:942
+#: inc/class-job.php:841, inc/class-page-jobs.php:943
 msgid "ERROR:"
 msgstr ""
 
@@ -1644,7 +1646,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s is duration in seconds.
-#: inc/class-job.php:1207, inc/class-page-jobs.php:948
+#: inc/class-job.php:1207, inc/class-page-jobs.php:949
 msgid "Job done in %s seconds."
 msgstr ""
 
@@ -1652,7 +1654,7 @@ msgstr ""
 msgid "Job finished with warnings in %s seconds. Please resolve them for correct execution."
 msgstr ""
 
-#: inc/class-job.php:1186, inc/class-page-jobs.php:942
+#: inc/class-job.php:1186, inc/class-page-jobs.php:943
 msgid "Job has ended with errors in %s seconds. You must resolve the errors for correct execution."
 msgstr ""
 
@@ -3281,7 +3283,7 @@ msgstr ""
 msgid "%1$s at %2$s by EasyCron"
 msgstr ""
 
-#: inc/class-page-jobs.php:296, inc/class-wp-api.php:1002, parts/backups/next-scheduled-backup.php:28, parts/backups/next-scheduled-backup.php:38
+#: inc/class-page-jobs.php:296, inc/class-wp-api.php:1000, parts/backups/next-scheduled-backup.php:28, parts/backups/next-scheduled-backup.php:38
 msgid "%1$s at %2$s by WP-Cron"
 msgstr ""
 
@@ -3315,7 +3317,7 @@ msgid "Job \"%1$s\" has started, but not responded for 10 seconds. Please check 
 msgstr ""
 
 #. translators: Job name
-#: inc/class-page-jobs.php:526, inc/class-wp-api.php:946
+#: inc/class-page-jobs.php:526, inc/class-wp-api.php:944
 msgid "Job \"%s\" started."
 msgstr ""
 
@@ -3323,51 +3325,48 @@ msgstr ""
 msgid "Job will be terminated."
 msgstr ""
 
-#: inc/class-page-jobs.php:712
+#. translators: %s: plugin name.
+#: inc/class-page-jobs.php:713
 msgid "%s &rsaquo; Jobs"
 msgstr ""
 
-#: inc/class-page-jobs.php:712
-msgid "Add new"
-msgstr ""
-
-#: inc/class-page-jobs.php:731
+#: inc/class-page-jobs.php:732
 msgid "Job currently running: %s"
 msgstr ""
 
-#: inc/class-page-jobs.php:732
+#: inc/class-page-jobs.php:733
 msgid "Warnings:"
 msgstr ""
 
-#: inc/class-page-jobs.php:733
+#: inc/class-page-jobs.php:734
 msgid "Errors:"
 msgstr ""
 
-#: inc/class-page-jobs.php:734
+#: inc/class-page-jobs.php:735
 msgid "Log of running job"
 msgstr ""
 
-#: inc/class-page-jobs.php:734
+#: inc/class-page-jobs.php:735
 msgid "Display working log"
 msgstr ""
 
-#: inc/class-page-jobs.php:736
+#: inc/class-page-jobs.php:737
 msgid "Close working screen"
 msgstr ""
 
-#: inc/class-page-jobs.php:764, pages/backups.php:9
+#: inc/class-page-jobs.php:765, pages/backups.php:9
 msgid "Please wait &hellip;"
 msgstr ""
 
-#: inc/class-page-jobs.php:767, pages/backups.php:12
+#: inc/class-page-jobs.php:768, pages/backups.php:12
 msgid "Your download has been generated. It should begin downloading momentarily."
 msgstr ""
 
-#: inc/class-page-jobs.php:939
+#: inc/class-page-jobs.php:940
 msgid "Job completed"
 msgstr ""
 
-#: inc/class-page-jobs.php:945
+#: inc/class-page-jobs.php:946
 msgid "Job has done with warnings in %s seconds. Please resolve them for correct execution."
 msgstr ""
 
@@ -3736,7 +3735,7 @@ msgstr ""
 msgid "Will be used to protect job starts from unauthorized person."
 msgstr ""
 
-#: inc/class-page-settings.php:697, inc/class-page-settings.php:702, parts/sidebar/settings-jobs.php:67
+#: inc/class-page-settings.php:697, inc/class-page-settings.php:702, parts/sidebar/settings-jobs.php:68
 msgid "Reduce server load"
 msgstr ""
 
@@ -3756,7 +3755,7 @@ msgstr ""
 msgid "maximum"
 msgstr ""
 
-#: inc/class-page-settings.php:726, parts/sidebar/settings-jobs.php:76
+#: inc/class-page-settings.php:726, parts/sidebar/settings-jobs.php:77
 msgid "This adds short pauses to the process. Can be used to reduce the CPU load."
 msgstr ""
 
@@ -4070,7 +4069,7 @@ msgstr ""
 msgid "There are some warnings. BackWPup will work, but with limitations."
 msgstr ""
 
-#: inc/class-wp-api.php:245, inc/class-wp-api.php:392, inc/class-wp-api.php:462, inc/class-wp-api.php:678
+#: inc/class-wp-api.php:245, inc/class-wp-api.php:392, inc/class-wp-api.php:462, inc/class-wp-api.php:676
 msgid "No backup jobs set."
 msgstr ""
 
@@ -4086,95 +4085,95 @@ msgstr ""
 msgid "No password set."
 msgstr ""
 
-#: inc/class-wp-api.php:573, parts/modal/restore-backup.php:4
+#: inc/class-wp-api.php:572, parts/modal/restore-backup.php:4
 msgid "Restore Backup"
 msgstr ""
 
-#: inc/class-wp-api.php:559, pages/components.php:720
+#: inc/class-wp-api.php:558, pages/components.php:720
 msgid "Restore Full Backup"
 msgstr ""
 
-#: inc/class-wp-api.php:635
+#: inc/class-wp-api.php:633
 msgid "No backups found."
 msgstr ""
 
-#: inc/class-wp-api.php:663
+#: inc/class-wp-api.php:661
 msgid "No pagination found."
 msgstr ""
 
-#: inc/class-wp-api.php:824, inc/class-wp-api.php:869, inc/class-wp-api.php:1257, inc/Pro/Settings/EncryptionSettingUpdater.php:107
+#: inc/class-wp-api.php:822, inc/class-wp-api.php:867, inc/class-wp-api.php:1255, inc/Pro/Settings/EncryptionSettingUpdater.php:107
 msgid "Files job not found"
 msgstr ""
 
-#: inc/class-wp-api.php:837
+#: inc/class-wp-api.php:835
 msgid "Backup updated."
 msgstr ""
 
-#: inc/class-wp-api.php:816
+#: inc/class-wp-api.php:814
 msgid "Backup scheduled at %1$s by WP-Cron"
 msgstr ""
 
-#: inc/class-wp-api.php:820, parts/backups/next-scheduled-backup.php:18, parts/backups/next-scheduled-backup.php:19
+#: inc/class-wp-api.php:818, parts/backups/next-scheduled-backup.php:18, parts/backups/next-scheduled-backup.php:19
 msgid "No backup scheduled"
 msgstr ""
 
-#: inc/class-wp-api.php:861
+#: inc/class-wp-api.php:859
 msgid "Cloud not set"
 msgstr ""
 
-#: inc/class-wp-api.php:865
+#: inc/class-wp-api.php:863
 msgid "Cloud not found"
 msgstr ""
 
-#: inc/class-wp-api.php:881
+#: inc/class-wp-api.php:879
 msgid "Connection failed"
 msgstr ""
 
-#: inc/class-wp-api.php:883
+#: inc/class-wp-api.php:881
 msgid "Connection successful"
 msgstr ""
 
-#: inc/class-wp-api.php:1077
+#: inc/class-wp-api.php:1075
 msgid "Site option saved successfully."
 msgstr ""
 
-#: inc/class-wp-api.php:1118
+#: inc/class-wp-api.php:1116
 msgid "Bulk action processed."
 msgstr ""
 
-#: inc/class-wp-api.php:1121
+#: inc/class-wp-api.php:1119
 msgid "Invalid action."
 msgstr ""
 
-#: inc/class-wp-api.php:1140
+#: inc/class-wp-api.php:1138
 msgid "Invalid backup data."
 msgstr ""
 
-#: inc/class-wp-api.php:1149
+#: inc/class-wp-api.php:1147
 msgid "Missing required parameters."
 msgstr ""
 
-#: inc/class-wp-api.php:1159
+#: inc/class-wp-api.php:1157
 msgid "Invalid destination class."
 msgstr ""
 
-#: inc/class-wp-api.php:1225
+#: inc/class-wp-api.php:1223
 msgid "Excluded tables saved successfully."
 msgstr ""
 
-#: inc/class-wp-api.php:1265
+#: inc/class-wp-api.php:1263
 msgid "File exclusions saved successfully."
 msgstr ""
 
-#: inc/class-wp-api.php:1290
+#: inc/class-wp-api.php:1288
 msgid "This feature is only available in the Pro version."
 msgstr ""
 
-#: inc/class-wp-api.php:1340
+#: inc/class-wp-api.php:1338
 msgid "No block name set."
 msgstr ""
 
-#: inc/class-wp-api.php:1343
+#: inc/class-wp-api.php:1341
 msgid "Wrong block type set."
 msgstr ""
 
@@ -5643,7 +5642,7 @@ msgstr ""
 msgid "Exclusion Settings"
 msgstr ""
 
-#: parts/modal/exclude-files-core.php:46, parts/modal/exclude-files-plugins.php:38, parts/modal/exclude-files-root.php:32, parts/modal/exclude-files-themes.php:37, parts/modal/exclude-files-uploads.php:48, parts/modal/exclude-files-wp-content.php:37, parts/sidebar/settings-jobs.php:117, parts/sidebar/settings-logs.php:134, parts/sidebar/settings-network.php:108, pro/parts/sidebar/settings-encryption.php:202
+#: parts/modal/exclude-files-core.php:46, parts/modal/exclude-files-plugins.php:38, parts/modal/exclude-files-root.php:32, parts/modal/exclude-files-themes.php:37, parts/modal/exclude-files-uploads.php:48, parts/modal/exclude-files-wp-content.php:37, parts/sidebar/settings-jobs.php:120, parts/sidebar/settings-logs.php:134, parts/sidebar/settings-network.php:108, pro/parts/sidebar/settings-encryption.php:202
 msgid "Save"
 msgstr ""
 
@@ -5827,23 +5826,23 @@ msgstr ""
 msgid "Key to start a job externally with an URL"
 msgstr ""
 
-#: parts/sidebar/settings-jobs.php:85
+#: parts/sidebar/settings-jobs.php:86
 msgid "Enable an empty output on backup working"
 msgstr ""
 
-#: parts/sidebar/settings-jobs.php:86
+#: parts/sidebar/settings-jobs.php:87
 msgid "Allow the backup to complete successfully even if the backup results in an empty output (i.e., no files or data are backed up)"
 msgstr ""
 
-#: parts/sidebar/settings-jobs.php:94
+#: parts/sidebar/settings-jobs.php:96
 msgid "Enable compatibility with IIS on Windows"
 msgstr ""
 
-#: parts/sidebar/settings-jobs.php:95
+#: parts/sidebar/settings-jobs.php:97
 msgid "This ensures the backup will run smoothly on IIS without errors."
 msgstr ""
 
-#: parts/sidebar/settings-jobs.php:102
+#: parts/sidebar/settings-jobs.php:105
 msgid "Access to Jobs"
 msgstr ""
 

@@ -8,10 +8,6 @@ use BackWPup\Utils\BackWPupHelpers;
 # Icon
 $icon = $name ?? 'arrow-right';
 
-if (!file_exists(untrailingslashit(BackWPup::get_plugin_data('plugindir'))."/components/icons/" . $icon . ".php")) {
-  return;
-}
-
 # Sizes
 $sizes = [
   "xs" => 12,
@@ -22,6 +18,14 @@ $sizes = [
 ];
 $size_num = isset($size) && array_key_exists($size, $sizes) ? $sizes[$size] : $sizes["medium"];
 
-BackWPupHelpers::component("icons/$icon", [
-  'size' => $size_num,
-]);
+if (file_exists(untrailingslashit(BackWPup::get_plugin_data('plugindir'))."/components/icons/" . $icon . ".php")) {
+  BackWPupHelpers::component("icons/$icon", [
+    'size' => $size_num,
+  ]);
+} else if (file_exists(untrailingslashit(BackWPup::get_plugin_data('plugindir'))."/assets/img/storage/" . $icon . ".svg")) {
+  include untrailingslashit(BackWPup::get_plugin_data('plugindir'))."/assets/img/storage/" . $icon . ".svg";
+} else {
+  return;
+}
+
+

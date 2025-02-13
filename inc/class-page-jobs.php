@@ -708,9 +708,10 @@ class BackWPup_Page_Jobs extends WP_List_Table
 
     public static function page()
     {
-        echo '<div class="wrap" id="backwpup-page">';
-        echo '<h1>' . esc_html(sprintf(__('%s &rsaquo; Jobs', 'backwpup'), BackWPup::get_plugin_data('name'))) . '&nbsp;<a href="' . wp_nonce_url(network_admin_url('admin.php') . '?page=backwpupeditjob', 'edit-job') . '" class="add-new-h2">' . esc_html__('Add new', 'backwpup') . '</a></h1>';
-        BackWPup_Admin::display_messages();
+		echo '<div class="wrap" id="backwpup-page">';
+		// translators: %s: plugin name.
+		echo '<h1>' . esc_html( sprintf( __( '%s &rsaquo; Jobs', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ) ) . '</h1>';
+		BackWPup_Admin::display_messages();
         $job_object = BackWPup_Job::get_working_data();
         if (current_user_can('backwpup_jobs_start') && is_object($job_object)) {
             //read existing logfile

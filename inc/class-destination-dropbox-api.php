@@ -42,13 +42,13 @@ class BackWPup_Destination_Dropbox_API
      * oAuth vars.
      *
      * @var string
-     */
-    private $oauthAppKey = '';
+	 */
+	private $oauth_app_key = '';
 
     /**
      * @var string
-     */
-    private $oauthAppSecret = '';
+	 */
+	private $oauth_app_secret = '';
 
     /**
      * @var string
@@ -59,8 +59,8 @@ class BackWPup_Destination_Dropbox_API
      * Job object for logging.
      *
      * @var BackWPup_Job
-     */
-    private $jobObject;
+	 */
+	private $job_object;
 
     /**
      * Callback to call when token is refreshed.
@@ -87,33 +87,32 @@ class BackWPup_Destination_Dropbox_API
      * @param string $boxtype
      *
      * @throws BackWPup_Destination_Dropbox_API_Exception
-     */
-    public function __construct($boxtype = 'dropbox', BackWPup_Job $jobObject = null)
-    {
-        if ($boxtype === 'dropbox') {
-            $this->oauthAppKey = get_site_option(
-                'backwpup_cfg_dropboxappkey',
+	 */
+	public function __construct( $boxtype = 'dropbox', ?BackWPup_Job $job_object = null ) {
+		if ( 'dropbox' === $boxtype ) {
+			$this->oauth_app_key    = get_site_option(
+				'backwpup_cfg_dropboxappkey',
                 base64_decode('NXdtdXl0cm5qZzB5aHhw')
-            );
-            $this->oauthAppSecret = BackWPup_Encryption::decrypt(
-                get_site_option('backwpup_cfg_dropboxappsecret', base64_decode('cXYzZmp2N2IxcG1rbWxy'))
-            );
-        } else {
-            $this->oauthAppKey = get_site_option(
-                'backwpup_cfg_dropboxsandboxappkey',
+			);
+			$this->oauth_app_secret = BackWPup_Encryption::decrypt(
+				get_site_option( 'backwpup_cfg_dropboxappsecret', base64_decode( 'cXYzZmp2N2IxcG1rbWxy' ) ) // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
+			);
+		} else {
+			$this->oauth_app_key    = get_site_option(
+				'backwpup_cfg_dropboxsandboxappkey',
                 base64_decode('a3RqeTJwdXFwZWVydW92')
-            );
-            $this->oauthAppSecret = BackWPup_Encryption::decrypt(
-                get_site_option('backwpup_cfg_dropboxsandboxappsecret', base64_decode('aXJ1eDF3Ym9mMHM5eGp6'))
-            );
+			);
+			$this->oauth_app_secret = BackWPup_Encryption::decrypt(
+				get_site_option( 'backwpup_cfg_dropboxsandboxappsecret', base64_decode( 'aXJ1eDF3Ym9mMHM5eGp6' ) ) // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
+			);
         }
 
-        if (empty($this->oauthAppKey) || empty($this->oauthAppSecret)) {
-            throw new BackWPup_Destination_Dropbox_API_Exception('No App key or App Secret specified.');
-        }
+		if ( empty( $this->oauth_app_key ) || empty( $this->oauth_app_secret ) ) {
+			throw new BackWPup_Destination_Dropbox_API_Exception( 'No App key or App Secret specified.' );
+		}
 
-        $this->jobObject = $jobObject;
-    }
+		$this->job_object = $job_object;
+	}
 
     /**
      * List a folder.
@@ -197,92 +196,94 @@ class BackWPup_Destination_Dropbox_API
             );
         }
 
-        $chunkSize = 4194304; //4194304 = 4MB
+		$chunk_size = 4194304; // 4194304 = 4MB
 
-        $fileHandle = fopen($file, 'rb');
-        if (!$fileHandle) {
-            throw new BackWPup_Destination_Dropbox_API_Exception('Can not open source file for transfer.');
-        }
+		$file_handle = fopen( $file, 'rb' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
+		if ( ! $file_handle ) {
+			throw new BackWPup_Destination_Dropbox_API_Exception( 'Can not open source file for transfer.' );
+		}
 
-        if (!isset($this->jobObject->steps_data[$this->jobObject->step_working]['uploadid'])) {
-            $this->jobObject->log(__('Beginning new file upload session', 'backwpup'));
-            $session = $this->filesUploadSessionStart(
-            );
-            $this->jobObject->steps_data[$this->jobObject->step_working]['uploadid'] = $session['session_id'];
-        }
-        if (!isset($this->jobObject->steps_data[$this->jobObject->step_working]['offset'])) {
-            $this->jobObject->steps_data[$this->jobObject->step_working]['offset'] = 0;
-        }
-        if (!isset($this->jobObject->steps_data[$this->jobObject->step_working]['totalread'])) {
-            $this->jobObject->steps_data[$this->jobObject->step_working]['totalread'] = 0;
-        }
+		if ( ! isset( $this->job_object->steps_data[ $this->job_object->step_working ]['uploadid'] ) ) {
+			$this->job_object->log( __( 'Beginning new file upload session', 'backwpup' ) );
+			$session = $this->filesUploadSessionStart(
+			);
+			$this->job_object->steps_data[ $this->job_object->step_working ]['uploadid'] = $session['session_id'];
+		}
+		if ( ! isset( $this->job_object->steps_data[ $this->job_object->step_working ]['offset'] ) ) {
+			$this->job_object->steps_data[ $this->job_object->step_working ]['offset'] = 0;
+		}
+		if ( ! isset( $this->job_object->steps_data[ $this->job_object->step_working ]['totalread'] ) ) {
+			$this->job_object->steps_data[ $this->job_object->step_working ]['totalread'] = 0;
+		}
 
-        //seek to current position
-        if ($this->jobObject->steps_data[$this->jobObject->step_working]['offset'] > 0) {
-            fseek($fileHandle, $this->jobObject->steps_data[$this->jobObject->step_working]['offset']);
-        }
+		// seek to current position.
+		if ( $this->job_object->steps_data[ $this->job_object->step_working ]['offset'] > 0 ) {
+			fseek( $file_handle, $this->job_object->steps_data[ $this->job_object->step_working ]['offset'] );
+		}
 
-        while ($data = fread($fileHandle, $chunkSize)) {
-            $chunkUploadStart = microtime(true);
+        while ($data = fread($file_handle, $chunk_size)) { // phpcs:ignore
+			$chunk_upload_start = microtime( true );
 
-            if ($this->jobObject->is_debug()) {
-                $this->jobObject->log(
-                    sprintf(__('Uploading %s of data', 'backwpup'), size_format(strlen($data)))
-                );
+			if ( $this->job_object->is_debug() ) {
+				$this->job_object->log(
+					// translators: %s is the size of the data.
+					sprintf( __( 'Uploading %s of data', 'backwpup' ), size_format( strlen( $data ) ) )
+				);
             }
 
             $this->filesUploadSessionAppendV2(
                 [
-                    'contents' => $data,
-                    'cursor' => [
-                        'session_id' => $this->jobObject->steps_data[$this->jobObject->step_working]['uploadid'],
-                        'offset' => $this->jobObject->steps_data[$this->jobObject->step_working]['offset'],
-                    ],
+					'contents' => $data,
+					'cursor'   => [
+						'session_id' => $this->job_object->steps_data[ $this->job_object->step_working ]['uploadid'],
+						'offset'     => $this->job_object->steps_data[ $this->job_object->step_working ]['offset'],
+					],
                 ]
-            );
-            $chunkUploadTime = microtime(
-                true
-            ) - $chunkUploadStart;
-            $this->jobObject->steps_data[$this->jobObject->step_working]['totalread'] += strlen($data);
+			);
+			$chunk_upload_time = microtime(
+				true
+			) - $chunk_upload_start;
+			$this->job_object->steps_data[ $this->job_object->step_working ]['totalread'] += strlen( $data );
 
-            //args for next chunk
-            $this->jobObject->steps_data[$this->jobObject->step_working]['offset'] += $chunkSize;
-            if ($this->jobObject->job['backuptype'] === 'archive') {
-                $this->jobObject->substeps_done = $this->jobObject->steps_data[$this->jobObject->step_working]['offset'];
-                if (strlen($data) == $chunkSize) {
-                    $timeRemaining = $this->jobObject->do_restart_time();
-                    //calc next chunk
-                    if ($timeRemaining < $chunkUploadTime) {
-                        $chunkSize = floor($chunkSize / $chunkUploadTime * ($timeRemaining - 3));
-                        if ($chunkSize < 0) {
-                            $chunkSize = 1024;
-                        }
-                        if ($chunkSize > 4194304) {
-                            $chunkSize = 4194304;
-                        }
+			// args for next chunk.
+			$this->job_object->steps_data[ $this->job_object->step_working ]['offset'] += $chunk_size;
+			if ( 'archive' === $this->job_object->job['backuptype'] ) {
+				$this->job_object->substeps_done = $this->job_object->steps_data[ $this->job_object->step_working ]['offset'];
+				if ( strlen( $data ) === $chunk_size ) {
+					$time_remaining = $this->job_object->do_restart_time();
+					// calc next chunk.
+					if ( $time_remaining < $chunk_upload_time ) {
+						$chunk_size = floor( $chunk_size / $chunk_upload_time * ( $time_remaining - 3 ) );
+						if ( $chunk_size < 0 ) {
+							$chunk_size = 1024;
+						}
+						if ( $chunk_size > 4194304 ) {
+							$chunk_size = 4194304;
+						}
                     }
                 }
-            }
-            $this->jobObject->update_working_data();
-            //correct position
-            fseek($fileHandle, $this->jobObject->steps_data[$this->jobObject->step_working]['offset']);
-        }
+			}
+			$this->job_object->update_working_data();
+			// correct position.
+			fseek( $file_handle, $this->job_object->steps_data[ $this->job_object->step_working ]['offset'] );
+		}
 
-        fclose($fileHandle);
+		fclose( $file_handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 
-        $this->jobObject->log(
-            sprintf(
-                __('Finishing upload session with a total of %s uploaded', 'backwpup'),
-                size_format($this->jobObject->steps_data[$this->jobObject->step_working]['totalread'])
-            )
+		$this->job_object->log(
+			sprintf(
+				// translators: %s is the size of the data.
+				__( 'Finishing upload session with a total of %s uploaded', 'backwpup' ),
+				size_format( $this->job_object->steps_data[ $this->job_object->step_working ]['totalread'] )
+			)
         );
 
         $response = $this->filesUploadSessionFinish(
             [
-                'cursor' => [
-                    'session_id' => $this->jobObject->steps_data[$this->jobObject->step_working]['uploadid'],
-                    'offset' => $this->jobObject->steps_data[$this->jobObject->step_working]['totalread'],
-                ],
+				'cursor' => [
+					'session_id' => $this->job_object->steps_data[ $this->job_object->step_working ]['uploadid'],
+					'offset'     => $this->job_object->steps_data[ $this->job_object->step_working ]['totalread'],
+				],
                 'commit' => [
                     'path' => $path,
                     'mode' => ($overwrite) ? 'overwrite' : 'add',
@@ -290,7 +291,7 @@ class BackWPup_Destination_Dropbox_API
             ]
         );
 
-        unset($this->jobObject->steps_data[$this->jobObject->step_working]['uploadid'], $this->jobObject->steps_data[$this->jobObject->step_working]['offset']);
+		unset( $this->job_object->steps_data[ $this->job_object->step_working ]['uploadid'], $this->job_object->steps_data[ $this->job_object->step_working ]['offset'] );
 
         return $response;
     }
@@ -362,11 +363,10 @@ class BackWPup_Destination_Dropbox_API
      * Returns the URL to authorize the user.
      *
      * @return string The authorization URL
-     */
-    public function oAuthAuthorize()
-    {
-        return self::API_WWW_URL . 'oauth2/authorize?response_type=code&client_id=' . $this->oauthAppKey . '&token_access_type=offline';
-    }
+	 */
+	public function oAuthAuthorize() { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid
+		return self::API_WWW_URL . 'oauth2/authorize?response_type=code&client_id=' . $this->oauth_app_key . '&token_access_type=offline';
+	}
 
     /**
      * Takes the oauth code and returns the access token.
@@ -731,13 +731,12 @@ class BackWPup_Destination_Dropbox_API
 
     /**
      * Set the job object.
-     *
-     * @param BackWPup_Job $jobObject The job object to set
-     */
-    public function setJobObject(BackWPup_Job $jobObject)
-    {
-        $this->jobObject = $jobObject;
-    }
+	 *
+	 * @param BackWPup_Job $job_object The job object to set.
+	 */
+	public function setJobObject( BackWPup_Job $job_object ) { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid
+		$this->job_object = $job_object;
+	}
 
     /**
      * Logs a message to the current job.
@@ -746,15 +745,14 @@ class BackWPup_Destination_Dropbox_API
      * @param int    $level   The log level
      *
      * @return bool|null True on success, null if no job object set
-     */
-    protected function log($message, $level = E_USER_NOTICE)
-    {
-        if (!isset($this->jobObject)) {
-            return null;
+	 */
+	protected function log( $message, $level = E_USER_NOTICE ) {
+		if ( ! isset( $this->job_object ) ) {
+			return null;
         }
 
-        return $this->jobObject->log($message, $level);
-    }
+		return $this->job_object->log( $message, $level );
+	}
 
     /**
      * Logs debug info about the current request.
@@ -763,11 +761,10 @@ class BackWPup_Destination_Dropbox_API
      * @param array  $args     The request args
      *
      * @return bool|null True on success, null if no job object set or debug is not enabled
-     */
-    protected function logRequest($endpoint, array $args)
-    {
-        if (!isset($this->jobObject) || !$this->jobObject->is_debug()) {
-            return null;
+	 */
+	protected function logRequest( $endpoint, array $args ) { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid
+		if ( ! isset( $this->job_object ) || ! $this->job_object->is_debug() ) {
+			return null;
         }
 
         $message = "Call to {$endpoint}";
@@ -877,32 +874,30 @@ class BackWPup_Destination_Dropbox_API
             $request = $request->withOAuthToken($this->getTokens()['access_token']);
         }
 
-        $streamFactory = new StreamFactory();
+		$stream_factory = new StreamFactory();
 
         switch ($format) {
             case 'oauth':
                 $request = new AuthorizationRequest(new FormRequest($request));
-                $request = $request
-                    ->withBasicAuth(BasicAuthCredentials::fromUsernameAndPassword($this->oauthAppKey, $this->oauthAppSecret))
-                    ->withFormParams($args, $streamFactory)
-                    ->withHeader('Accept', 'application/json')
-                ;
-                break;
+				$request = $request
+					->withBasicAuth( BasicAuthCredentials::fromUsernameAndPassword( $this->oauth_app_key, $this->oauth_app_secret ) )
+					->withFormParams( $args, $stream_factory )
+					->withHeader( 'Accept', 'application/json' );
+				break;
 
             case 'rpc':
                 $request = new JsonRequest($request);
-                $request = $request
-                    ->withJsonData($args ?: null, $streamFactory)
-                    ->withHeader('Accept', 'application/json')
-                ;
-                break;
+				$request = $request
+					->withJsonData( $args ?: null, $stream_factory )
+					->withHeader( 'Accept', 'application/json' );
+				break;
 
-            case 'upload':
-                if (isset($args['contents'])) {
-                    $stream = $streamFactory->createStream($args['contents']);
-                    $request = $request->withBody($stream);
-                    unset($args['contents']);
-                }
+			case 'upload':
+				if ( isset( $args['contents'] ) ) {
+					$stream  = $stream_factory->createStream( $args['contents'] );
+					$request = $request->withBody( $stream );
+					unset( $args['contents'] );
+				}
 
                 $request = $request
                     ->withHeader('Content-Type', 'application/octet-stream')

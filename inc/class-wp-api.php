@@ -504,7 +504,6 @@ class BackWPup_WP_API {
 				'logfile'  => $job['logfile'],
 				'last_run' => $job['lastrun'] ?? null,
 			];
-			// var_dump($job_data);
 			// Get the backups list for that job.
 			foreach ( $dests as $dest ) {
 				if ( empty( $registered_destinations[ $dest ]['class'] ) ) {
@@ -597,6 +596,7 @@ class BackWPup_WP_API {
 				$backups = array_merge( $backups, $items );
 			}
 		}
+		$unique_backups = [];
 		foreach ( $backups as $item ) {
 			$key = $item['stored_on'] . '|' . $item['filename'];
 			if ( ! isset( $seen[ $key ] ) ) {
@@ -605,8 +605,6 @@ class BackWPup_WP_API {
 			}
 		}
 		$backups = $unique_backups;
-		// var_dump($backups);
-		// exit();
 		// Sort and slice the backups list.
 		usort(
 			$backups,

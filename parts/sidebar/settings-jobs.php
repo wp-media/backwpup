@@ -58,6 +58,7 @@ BackWPupHelpers::component("form/text", [
   "min" => 0,
   "required" => true,
   "tooltip" => __("Will be used to protect job starts from unauthorized person.", 'backwpup'),
+  "tooltip_pos" => "left",
 ]);
 ?>
 
@@ -84,6 +85,7 @@ BackWPupHelpers::component("form/checkbox", [
   "checked" => (bool)get_site_option('backwpup_cfg_jobdooutput'),
   "label" => __("Enable an empty output on backup working", 'backwpup'),
   "tooltip" => __("Allow the backup to complete successfully even if the backup results in an empty output (i.e., no files or data are backed up)", 'backwpup'),
+  "tooltip_pos" => "left",
 ]);
 ?>
 
@@ -93,6 +95,7 @@ BackWPupHelpers::component("form/checkbox", [
   "checked" => (bool)get_site_option('backwpup_cfg_windows'),
   "label" => __("Enable compatibility with IIS on Windows", 'backwpup'),
   "tooltip" => __("This ensures the backup will run smoothly on IIS without errors.", 'backwpup'),
+  "tooltip_pos" => "left",
 ]);
 ?>
 

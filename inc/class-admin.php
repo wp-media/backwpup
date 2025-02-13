@@ -1082,13 +1082,6 @@ EOT;
 			'admin_enqueue_scripts',
 			[
                 \BackWPup_Page_Backups::class,
-                'admin_print_styles',
-            ]
-        );
-		add_action(
-			'admin_enqueue_scripts',
-			[
-                \BackWPup_Page_Backups::class,
                 'admin_print_scripts',
             ]
 		);
