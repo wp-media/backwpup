@@ -66,9 +66,9 @@ class BackWPup_Encryption_Mcrypt
             return '';
         }
 
-        $encrypted = $this->deprecated
-            ? @mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $this->key, $string, MCRYPT_MODE_CBC, md5($this->key))
-            : mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $this->key, $string, MCRYPT_MODE_CBC, md5($this->key));
+		$encrypted = $this->deprecated
+			? @mcrypt_encrypt( MCRYPT_RIJNDAEL_256, $this->key, $string, MCRYPT_MODE_CBC, md5( $this->key ) ) // @phpstan-ignore-line
+			: mcrypt_encrypt( MCRYPT_RIJNDAEL_256, $this->key, $string, MCRYPT_MODE_CBC, md5( $this->key ) ); // @phpstan-ignore-line
 
         return BackWPup_Encryption::PREFIX . self::PREFIX . $this->key_type . base64_encode((string) $encrypted);
     }
@@ -101,9 +101,9 @@ class BackWPup_Encryption_Mcrypt
             return $this->decrypt_deprecated($encrypted);
         }
 
-        $decrypted = $this->deprecated
-            ? @mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $this->key, $encrypted, MCRYPT_MODE_CBC, md5($this->key))
-            : mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $this->key, $encrypted, MCRYPT_MODE_CBC, md5($this->key));
+		$decrypted = $this->deprecated
+			? @mcrypt_decrypt( MCRYPT_RIJNDAEL_256, $this->key, $encrypted, MCRYPT_MODE_CBC, md5( $this->key ) ) // @phpstan-ignore-line
+			: mcrypt_decrypt( MCRYPT_RIJNDAEL_256, $this->key, $encrypted, MCRYPT_MODE_CBC, md5( $this->key ) ); // @phpstan-ignore-line
 
         $skip_deprecated = defined('BACKWPUP_MCRYPT_KEY_MODE') && BACKWPUP_MCRYPT_KEY_MODE === 2;
 
@@ -123,8 +123,8 @@ class BackWPup_Encryption_Mcrypt
     {
         $key = md5($this->key);
 
-        return $this->deprecated
-            ? @mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key, $encrypted, MCRYPT_MODE_CBC, md5($key))
-            : mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key, $encrypted, MCRYPT_MODE_CBC, md5($key));
-    }
+		return $this->deprecated
+			? @mcrypt_decrypt( MCRYPT_RIJNDAEL_256, $key, $encrypted, MCRYPT_MODE_CBC, md5( $key ) ) // @phpstan-ignore-line
+			: mcrypt_decrypt( MCRYPT_RIJNDAEL_256, $key, $encrypted, MCRYPT_MODE_CBC, md5( $key ) ); // @phpstan-ignore-line
+	}
 }

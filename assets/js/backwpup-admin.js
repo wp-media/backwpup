@@ -1354,10 +1354,14 @@ jQuery(document).ready(function ($) {
     const container = $(this).closest("article");
     const frequency = container.find("select[name='frequency']").val();
     const startTime = container.find("input[name='start_time']").val();
+    const day_of_week = container.find("select[name='day_of_week']").val();
+    const day_of_month = container.find("select[name='day_of_month']").val();
 
     const data = {
         frequency: frequency,
         start_time: startTime,
+        day_of_week: day_of_week,
+        day_of_month: day_of_month,
     };
 
     requestWPApi(
@@ -1383,10 +1387,14 @@ jQuery(document).ready(function ($) {
     const container = $(this).closest("article");
     const frequency = container.find("select[name='frequency']").val();
     const startTime = container.find("input[name='start_time']").val();
+    const day_of_week = container.find("select[name='day_of_week']").val();
+    const day_of_month = container.find("select[name='day_of_month']").val();
 
     const data = {
         frequency: frequency,
         start_time: startTime,
+        day_of_week: day_of_week,
+        day_of_month: day_of_month,
     };
 
     requestWPApi(

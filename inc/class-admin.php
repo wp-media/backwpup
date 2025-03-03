@@ -11,7 +11,7 @@ use Inpsyde\BackWPup\Pro\Settings\AjaxEncryptionKeyHandler;
 use Inpsyde\BackWPup\Notice\EvaluateNotice;
 use Inpsyde\BackWPup\Notice\EasycronUpdateNotice;
 use Inpsyde\BackWPup\Notice\RestoreFeatureInformationNotice;
-use Inpsyde\BackWPup\Notice\NewUINotice;
+use Inpsyde\BackWPup\Notice\Informations505Notice;
 
 /**
  * BackWPup_Admin.
@@ -106,48 +106,53 @@ final class BackWPup_Admin {
 				[],
 				'1.0.0'
 			);
+
+			wp_enqueue_script(
+				'backwpup-admin',
+				BackWPup::get_plugin_data( 'URL' ) . '/assets/js/backwpup-admin.js',
+				[ 'jquery' ],
+				'1.0.0',
+				true
+			);
+
+			wp_localize_script(
+				'backwpup-admin',
+				'backwpupApi',
+				$this->get_backwpup_api_data()
+			);
 		}
-
-		wp_enqueue_script(
-			'backwpup-admin',
-			BackWPup::get_plugin_data( 'URL' ) . '/assets/js/backwpup-admin.js',
-			[ 'jquery' ],
-			'1.0.0',
-			true
-        );
-
-		wp_localize_script(
-			'backwpup-admin',
-			'backwpupApi',
-			$this->get_backwpup_api_data()
-		);
 	}
 
     /**
      * Load for all BackWPup pages.
-     */
-    public static function init_general()
-    {
-        add_thickbox();
+	 */
+	public static function init_general() {
+		add_thickbox();
 
-        $suffix = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
+		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-        wp_register_script(
-            'backwpupgeneral',
-            BackWPup::get_plugin_data('URL') . "/assets/js/general{$suffix}.js",
-            ['jquery'],
-            ($suffix ? BackWPup::get_plugin_data('Version') : time()),
-            false
-        );
-
-        // Register clipboard.js script
-        wp_register_script(
-            'backwpup_clipboard',
-            BackWPup::get_plugin_data('URL') . '/assets/js/vendor/clipboard.min.js',
-            ['jquery'],
-            '1.7.1',
-            true
+		wp_register_script(
+			'backwpupgeneral',
+			BackWPup::get_plugin_data( 'URL' ) . "/assets/js/general{$suffix}.js",
+			[ 'jquery' ],
+			( $suffix ? BackWPup::get_plugin_data( 'Version' ) : time() ),
+			false
 		);
+
+		// Get the current screen object.
+		$screen = get_current_screen();
+		// Check if we're on a BackWPUp page.
+		if ( isset( $screen->id ) && strpos( $screen->id, 'backwpup' ) !== false ) {
+
+			// Register clipboard.js script.
+			wp_register_script(
+				'backwpup_clipboard',
+				BackWPup::get_plugin_data( 'URL' ) . '/assets/js/vendor/clipboard.min.js',
+				[ 'jquery' ],
+				'1.7.1',
+				true
+			);
+		}
     }
 
     /**
@@ -294,7 +299,7 @@ final class BackWPup_Admin {
 
     private function admin_init_pro()
     {
-        $ajax_encryption_key_handler = new AjaxEncryptionKeyHandler();
+		$ajax_encryption_key_handler = new AjaxEncryptionKeyHandler();
 
 		add_action( 'wp_ajax_encrypt_key_handler', [ $ajax_encryption_key_handler, 'handle' ] );
 
@@ -310,7 +315,7 @@ final class BackWPup_Admin {
 			],
 			filemtime( untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . "/assets/js/settings-encryption{$suffix}.js" ),
 			false
-        );
+		);
 
 		wp_localize_script(
 			'backwpuppagesettings-encryption',
@@ -375,10 +380,10 @@ final class BackWPup_Admin {
 		);
 		// $restore_feature_information_notice->init( RestoreFeatureInformationNotice::TYPE_ADMIN );
 
-		$new_ui_notice = new newUINotice(
-			new NoticeView( newUINotice::ID )
+		$informations_505_notice = new Informations505Notice(
+			new NoticeView( Informations505Notice::ID )
 		);
-		$new_ui_notice->init( newUINotice::TYPE_ADMIN );
+		$informations_505_notice->init( Informations505Notice::TYPE_ADMIN );
 	}
 
     /**
@@ -475,7 +480,9 @@ final class BackWPup_Admin {
 		$this->page_hooks = apply_filters( 'backwpup_admin_pages', $this->page_hooks );
 
 		global $submenu;
-		$submenu['backwpup'][0][0] = __( 'Settings', 'backwpup' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		if ( isset( $submenu['backwpup'] ) ) {
+			$submenu['backwpup'][0][0] = __( 'Settings', 'backwpup' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		}
 	}
 
 	/**
@@ -782,7 +789,9 @@ final class BackWPup_Admin {
 
 
     /**
-     * Called on save form. Only POST allowed.
+	 * Called on save form. Only POST allowed.
+	 *
+	 * @throws Exception If the files job is not found.
 	 */
 	public function save_post_form() {
 		// TODO delete backwpupsettings option in $allowed_pages.
@@ -795,10 +804,11 @@ final class BackWPup_Admin {
 		];
 
 		// Sanitize $_POST data.
-		$post_page    = isset( $_POST['page'] ) ? sanitize_text_field( wp_unslash( $_POST['page'] ) ) : null;
-		$post_anchor  = isset( $_POST['anchor'] ) ? sanitize_text_field( wp_unslash( $_POST['anchor'] ) ) : null;
-		$post_tab     = isset( $_POST['tab'] ) ? sanitize_text_field( wp_unslash( $_POST['tab'] ) ) : null;
-		$post_nexttab = isset( $_POST['nexttab'] ) ? sanitize_text_field( wp_unslash( $_POST['nexttab'] ) ) : null;
+		$post_page          = isset( $_POST['page'] ) ? sanitize_text_field( wp_unslash( $_POST['page'] ) ) : null;
+		$post_anchor        = isset( $_POST['anchor'] ) ? sanitize_text_field( wp_unslash( $_POST['anchor'] ) ) : null;
+		$post_tab           = isset( $_POST['tab'] ) ? sanitize_text_field( wp_unslash( $_POST['tab'] ) ) : null;
+		$post_nexttab       = isset( $_POST['nexttab'] ) ? sanitize_text_field( wp_unslash( $_POST['nexttab'] ) ) : null;
+		$post_archiveformat = isset( $_POST['archiveformat'] ) ? sanitize_text_field( wp_unslash( $_POST['archiveformat'] ) ) : null;
 
 		if ( isset( $post_page ) && ! in_array( $post_page, $allowed_pages, true ) ) {
 			wp_die( esc_html__( 'Cheating, huh?', 'backwpup' ) );
@@ -827,6 +837,23 @@ final class BackWPup_Admin {
 			$jobid               = (int) $_POST['jobid'];
 			$query_args['jobid'] = $jobid;
         }
+
+		// Update archive format for files and database jobs.
+		$files_job_id = get_site_option( 'backwpup_backup_files_job_id', false );
+		if ( false === $files_job_id ) {
+			throw new Exception( esc_html__( 'Files job not found', 'backwpup' ) );
+		}
+
+		$jobs = [
+			$files_job_id,
+			$files_job_id + 1, // Assumes the database job follows directly.
+		];
+
+		foreach ( $jobs as $job_id ) {
+			if ( $post_archiveformat ) {
+				BackWPup_Option::update( $job_id, 'archiveformat', $post_archiveformat );
+			}
+		}
 
 		// Call method to save data.
 		if ( 'backwpupeditjob' === $post_page ) {

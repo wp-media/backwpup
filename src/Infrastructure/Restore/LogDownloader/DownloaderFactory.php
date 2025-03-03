@@ -122,7 +122,7 @@ final class DownloaderFactory
     private function ensurePclZip(): void
     {
         if (!class_exists(\PclZip::class)) {
-            require_once ABSPATH . '/wp-admin/includes/class-pclzip.php';
+            require_once ABSPATH . '/wp-admin/includes/class-pclzip.php'; // @phpstan-ignore-line
         }
     }
 }

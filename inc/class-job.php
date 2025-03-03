@@ -689,7 +689,7 @@ class BackWPup_Job
 		/**
 		 * Filter the db dump filename.
 		 *
-		 * @param bool $name The initial filename.
+		 * @param string $name The initial filename.
 		 */
 		$name = (string) apply_filters( 'backwpup_generate_dump_filename', $name );
 		return $this->generate_filename( $name, $suffix );

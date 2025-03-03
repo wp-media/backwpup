@@ -108,7 +108,7 @@ final class TemplateLoader
      */
     public function load(): self
     {
-        add_action('backwpup_restore_upload_content', [$this, 'template']);
+        add_action('backwpup_restore_upload_content', [$this, 'template']); // @phpstan-ignore-line
         add_action(
             'backwpup_restore_before_upload_content',
             function (): void {

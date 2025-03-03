@@ -156,7 +156,7 @@ class BackWPup_Create_Archive
                     define('PCLZIP_TEMPORARY_DIR', BackWPup::get_plugin_data('TEMP'));
                 }
 
-                require_once ABSPATH . 'wp-admin/includes/class-pclzip.php';
+				require_once ABSPATH . 'wp-admin/includes/class-pclzip.php'; // @phpstan-ignore-line
 
                 $this->pclzip = new PclZip($this->file);
             }

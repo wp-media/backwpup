@@ -4,13 +4,12 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitbd9daef8d5e05de248b6db9492444827
+class ComposerStaticInit99c624c68ceccf3e44ff7b60a2d0ee9a
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
-        'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -368,6 +367,7 @@ class ComposerStaticInitbd9daef8d5e05de248b6db9492444827
         'Aws\\Credentials\\AssumeRoleCredentialProvider' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Credentials/AssumeRoleCredentialProvider.php',
         'Aws\\Credentials\\AssumeRoleWithWebIdentityCredentialProvider' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Credentials/AssumeRoleWithWebIdentityCredentialProvider.php',
         'Aws\\Credentials\\CredentialProvider' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Credentials/CredentialProvider.php',
+        'Aws\\Credentials\\CredentialSources' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Credentials/CredentialSources.php',
         'Aws\\Credentials\\Credentials' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Credentials/Credentials.php',
         'Aws\\Credentials\\CredentialsInterface' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Credentials/CredentialsInterface.php',
         'Aws\\Credentials\\CredentialsUtils' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Credentials/CredentialsUtils.php',
@@ -479,6 +479,7 @@ class ComposerStaticInitbd9daef8d5e05de248b6db9492444827
         'Aws\\Kms\\Exception\\KmsException' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Kms/Exception/KmsException.php',
         'Aws\\Kms\\KmsClient' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Kms/KmsClient.php',
         'Aws\\LruArrayCache' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/LruArrayCache.php',
+        'Aws\\MetricsBuilder' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/MetricsBuilder.php',
         'Aws\\Middleware' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Middleware.php',
         'Aws\\MockHandler' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/MockHandler.php',
         'Aws\\MonitoringEventsInterface' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/MonitoringEventsInterface.php',
@@ -525,12 +526,17 @@ class ComposerStaticInitbd9daef8d5e05de248b6db9492444827
         'Aws\\S3\\Exception\\PermanentRedirectException' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/S3/Exception/PermanentRedirectException.php',
         'Aws\\S3\\Exception\\S3Exception' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/S3/Exception/S3Exception.php',
         'Aws\\S3\\Exception\\S3MultipartUploadException' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/S3/Exception/S3MultipartUploadException.php',
+        'Aws\\S3\\ExpiresParsingMiddleware' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/S3/ExpiresParsingMiddleware.php',
         'Aws\\S3\\GetBucketLocationParser' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/S3/GetBucketLocationParser.php',
         'Aws\\S3\\MultipartCopy' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/S3/MultipartCopy.php',
         'Aws\\S3\\MultipartUploader' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/S3/MultipartUploader.php',
         'Aws\\S3\\MultipartUploadingTrait' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/S3/MultipartUploadingTrait.php',
         'Aws\\S3\\ObjectCopier' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/S3/ObjectCopier.php',
         'Aws\\S3\\ObjectUploader' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/S3/ObjectUploader.php',
+        'Aws\\S3\\Parser\\GetBucketLocationResultMutator' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/S3/Parser/GetBucketLocationResultMutator.php',
+        'Aws\\S3\\Parser\\S3Parser' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/S3/Parser/S3Parser.php',
+        'Aws\\S3\\Parser\\S3ResultMutator' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/S3/Parser/S3ResultMutator.php',
+        'Aws\\S3\\Parser\\ValidateResponseChecksumResultMutator' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/S3/Parser/ValidateResponseChecksumResultMutator.php',
         'Aws\\S3\\PermanentRedirectMiddleware' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/S3/PermanentRedirectMiddleware.php',
         'Aws\\S3\\PostObject' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/S3/PostObject.php',
         'Aws\\S3\\PostObjectV4' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/S3/PostObjectV4.php',
@@ -584,6 +590,7 @@ class ComposerStaticInitbd9daef8d5e05de248b6db9492444827
         'Aws\\Token\\TokenInterface' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Token/TokenInterface.php',
         'Aws\\Token\\TokenProvider' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Token/TokenProvider.php',
         'Aws\\TraceMiddleware' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/TraceMiddleware.php',
+        'Aws\\UserAgentMiddleware' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/UserAgentMiddleware.php',
         'Aws\\Waiter' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/Waiter.php',
         'Aws\\WrappedHttpHandler' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/WrappedHttpHandler.php',
         'BackWPup' => __DIR__ . '/../..' . '/backwpup.php',
@@ -6347,7 +6354,7 @@ class ComposerStaticInitbd9daef8d5e05de248b6db9492444827
         'Inpsyde\\BackWPup\\Notice\\EasycronUpdateNotice' => __DIR__ . '/../..' . '/inc/Notice/EasycronUpdateNotice.php',
         'Inpsyde\\BackWPup\\Notice\\EnvironmentNotice' => __DIR__ . '/../..' . '/inc/Notice/EnvironmentNotice.php',
         'Inpsyde\\BackWPup\\Notice\\EvaluateNotice' => __DIR__ . '/../..' . '/inc/Notice/EvaluateNotice.php',
-        'Inpsyde\\BackWPup\\Notice\\NewUINotice' => __DIR__ . '/../..' . '/inc/Notice/NewUINotice.php',
+        'Inpsyde\\BackWPup\\Notice\\Informations505Notice' => __DIR__ . '/../..' . '/inc/Notice/Informations505Notice.php',
         'Inpsyde\\BackWPup\\Notice\\Notice' => __DIR__ . '/../..' . '/inc/Notice/Notice.php',
         'Inpsyde\\BackWPup\\Notice\\NoticeMessage' => __DIR__ . '/../..' . '/inc/Notice/NoticeMessage.php',
         'Inpsyde\\BackWPup\\Notice\\NoticeView' => __DIR__ . '/../..' . '/inc/Notice/NoticeView.php',
@@ -9743,6 +9750,7 @@ class ComposerStaticInitbd9daef8d5e05de248b6db9492444827
         'phpseclib3\\Exception\\InvalidPacketLengthException' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Exception/InvalidPacketLengthException.php',
         'phpseclib3\\Exception\\NoKeyLoadedException' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Exception/NoKeyLoadedException.php',
         'phpseclib3\\Exception\\NoSupportedAlgorithmsException' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Exception/NoSupportedAlgorithmsException.php',
+        'phpseclib3\\Exception\\TimeoutException' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Exception/TimeoutException.php',
         'phpseclib3\\Exception\\UnableToConnectException' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Exception/UnableToConnectException.php',
         'phpseclib3\\Exception\\UnsupportedAlgorithmException' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Exception/UnsupportedAlgorithmException.php',
         'phpseclib3\\Exception\\UnsupportedCurveException' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Exception/UnsupportedCurveException.php',
@@ -9918,10 +9926,10 @@ class ComposerStaticInitbd9daef8d5e05de248b6db9492444827
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitbd9daef8d5e05de248b6db9492444827::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitbd9daef8d5e05de248b6db9492444827::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitbd9daef8d5e05de248b6db9492444827::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitbd9daef8d5e05de248b6db9492444827::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit99c624c68ceccf3e44ff7b60a2d0ee9a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit99c624c68ceccf3e44ff7b60a2d0ee9a::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit99c624c68ceccf3e44ff7b60a2d0ee9a::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit99c624c68ceccf3e44ff7b60a2d0ee9a::$classMap;
 
         }, null, ClassLoader::class);
     }

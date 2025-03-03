@@ -516,7 +516,10 @@ class BackWPup_WP_API {
 					function ( &$item ) use ( $job_data, $dest, $page ) {
 						$item = array_merge( $item, $job_data, [ 'stored_on' => $dest ] );
 						// Parse the filename to get the type of backup.
-						$filename_parts = explode( '_', pathinfo( $item['filename'] )['filename'] );
+						$filename = pathinfo( $item['filename'] )['filename'];
+						// Remove reluctant file extensions.
+						$filename       = preg_replace( '/\.[^.]+$/', '', $filename );
+						$filename_parts = explode( '_', $filename );
 						if ( isset( $filename_parts[3] ) ) {
 							$item['data'] = (array) explode( '-', $filename_parts[3] );
 						}
@@ -969,8 +972,10 @@ class BackWPup_WP_API {
 		try {
 			$frequency            = $params['frequency'];
 			$params['start_time'] = isset( $params['start_time'] ) ? $params['start_time'] : '00:00';
+			$day_of_week          = (int) isset( $params['day_of_week'] ) ? $params['day_of_week'] : 0;
+			$day_of_month         = isset( $params['day_of_month'] ) ? $params['day_of_month'] : '';
 			$start_time           = explode( ':', $params['start_time'] );
-			$new_cron_expression  = BackWPup_Cron::get_basic_cron_expression( $frequency, $start_time[0], $start_time[1] );
+			$new_cron_expression  = BackWPup_Cron::get_basic_cron_expression( $frequency, $start_time[0], $start_time[1], $day_of_week, $day_of_month );
 
 			// Map job IDs based on type.
 			$job_ids = [

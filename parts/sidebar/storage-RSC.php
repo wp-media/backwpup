@@ -140,7 +140,6 @@ BackWPupHelpers::component("closable-heading", [
     <?php
     BackWPupHelpers::component("form/text", [
       "name" => "rscmaxbackups",
-      "name" => "rscmaxbackups",
       "type" => "number",
       "min" => 1,
       "label" => __("Max backups to retain", 'backwpup'),

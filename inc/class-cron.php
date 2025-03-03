@@ -385,18 +385,38 @@ class BackWPup_Cron
 	 * @param string $basic_expression Basic expression.
 	 * @param int    $hours Hours of the cron.
 	 * @param int    $minutes Minutes of the cron.
+	 * @param int    $day_of_week Day of the week default = 0.
+	 * @param string $day_of_month Day of the month.
 	 *
 	 * @return string Cron expression
 	 * @throws InvalidArgumentException If the cron expression is unsupported.
 	 */
-	public static function get_basic_cron_expression( string $basic_expression, int $hours = 0, int $minutes = 0 ): string {
+	public static function get_basic_cron_expression( string $basic_expression, int $hours = 0, int $minutes = 0, int $day_of_week = 0, string $day_of_month = '' ): string {
 		$cron = '';
 		switch ( $basic_expression ) {
 			case 'monthly':
-				$cron = implode( ' ', [ $minutes, $hours, '1', '*', '*' ] );
+				switch ( $day_of_month ) {
+					case 'first-day':
+						$day_of_month = '1';
+						$day_of_week  = '*';
+						break;
+					case 'first-monday':
+						$day_of_month = '1-7';
+						$day_of_week  = '1';
+						break;
+					case 'first-sunday':
+						$day_of_month = '1-7';
+						$day_of_week  = '0';
+						break;
+					default:
+						$day_of_month = '1';
+						$day_of_week  = '*';
+						break;
+				}
+				$cron = implode( ' ', [ $minutes, $hours, $day_of_month, '*', $day_of_week ] );
 				break;
 			case 'weekly':
-				$cron = implode( ' ', [ $minutes, $hours, '*', '*', '0' ] );
+				$cron = implode( ' ', [ $minutes, $hours, '*', '*', $day_of_week ] );
 				break;
 			case 'daily':
 				$cron = implode( ' ', [ $minutes, $hours, '*', '*', '*' ] );
@@ -421,11 +441,24 @@ class BackWPup_Cron
 
 		list($minutes, $hours, $day_of_month, $month, $day_of_week) = $parts;
 
-		$frequency = '';
-		if ( '1' === $day_of_month && '*' === $month && '*' === $day_of_week ) {
-			$frequency = 'monthly';
-		} elseif ( '*' === $day_of_month && '*' === $month && '0' === $day_of_week ) {
-			$frequency = 'weekly';
+		$montly_expr = [
+			'1'   => [ '*' => 'first-day' ],
+			'1-7' => [
+				'1' => 'first-monday',
+				'0' => 'first-sunday',
+			],
+		];
+
+		$frequency         = '';
+		$weekly_start_day  = '';
+		$monthly_start_day = '';
+		if ( in_array( $day_of_month, array_keys( $montly_expr ) ) && '*' === $month && in_array( $day_of_week, array_keys( $montly_expr[ $day_of_month ] ) ) // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
+		) {
+			$frequency         = 'monthly';
+			$monthly_start_day = $montly_expr[ $day_of_month ][ $day_of_week ];
+		} elseif ( '*' === $day_of_month && '*' === $month && '*' !== $day_of_week ) {
+			$frequency        = 'weekly';
+			$weekly_start_day = (int) $day_of_week;
 		} elseif ( '*' === $day_of_month && '*' === $month && '*' === $day_of_week ) {
 			$frequency = 'daily';
 		} else {
@@ -435,8 +468,10 @@ class BackWPup_Cron
 		$start_time = sprintf( '%02d:%02d', $hours, $minutes );
 
 		return [
-			'frequency'  => $frequency,
-			'start_time' => $start_time,
+			'frequency'         => $frequency,
+			'start_time'        => $start_time,
+			'monthly_start_day' => $monthly_start_day,
+			'weekly_start_day'  => $weekly_start_day,
 		];
 	}
 

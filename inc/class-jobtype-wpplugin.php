@@ -102,12 +102,12 @@ class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes
             $header .= '  Blog Name: ' . get_bloginfo('name') . PHP_EOL;
             $header .= '  Blog URL: ' . get_bloginfo('url') . PHP_EOL;
             $header .= '  Generated on: ' . date('Y-m-d H:i.s', current_time('timestamp')) . PHP_EOL;
-            $header .= '------------------------------------------------------------' . PHP_EOL . PHP_EOL;
-            fwrite($handle, $header);
-            //get Plugins
-            if (!function_exists('get_plugins')) {
-                require_once ABSPATH . 'wp-admin/includes/plugin.php';
-            }
+			$header .= '------------------------------------------------------------' . PHP_EOL . PHP_EOL;
+			fwrite( $handle, $header ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
+			// get Plugins.
+			if ( ! function_exists( 'get_plugins' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/plugin.php'; // @phpstan-ignore-line
+			}
             $plugins = get_plugins();
             $plugins_active = get_option('active_plugins');
             //write it to file

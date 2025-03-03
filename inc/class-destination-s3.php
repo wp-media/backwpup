@@ -127,7 +127,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
                                         </legend>
                                         <label for="s3base_multipart">
                                             <input name="s3base_multipart" type="checkbox"
-                                                   value="1"<?php echo checked(
+                                                   value="1"<?php checked(
             BackWPup_Option::get(
                                                 $jobid,
                                                 's3base_multipart'
@@ -157,7 +157,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
                                         <label
                                             for="s3base_pathstylebucket">
                                             <input name="s3base_pathstylebucket" type="checkbox"
-                                                   value="1"<?php echo checked(
+                                                   value="1"<?php checked(
                                                 BackWPup_Option::get(
                                                        $jobid,
                                                        's3base_pathstylebucket'

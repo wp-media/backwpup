@@ -4,6 +4,8 @@ BackWPupHelpers::component("closable-heading", [
   'title' => __("Jobs Settings", 'backwpup'),
   'type' => 'sidebar'
 ]);
+$jobid = get_site_option( 'backwpup_backup_files_job_id', false );
+$archiveformat = BackWPup_Option::get($jobid, 'archiveformat', '.tar');
 ?>
 
 <p>
@@ -59,6 +61,20 @@ BackWPupHelpers::component("form/text", [
   "required" => true,
   "tooltip" => __("Will be used to protect job starts from unauthorized person.", 'backwpup'),
   "tooltip_pos" => "left",
+]);
+?>
+
+<?php
+BackWPupHelpers::component("form/select", [
+  "name" => "archiveformat",
+  "label" => __("Archive format", 'backwpup'),
+  "withEmpty" => false,
+  "value" => $archiveformat,
+  "options" => [
+    '.zip' => '.zip',
+    '.tar' => '.tar',
+    '.tar.gz' => '.tar.gz',
+  ],
 ]);
 ?>
 

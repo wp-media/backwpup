@@ -23,6 +23,8 @@ try {
   $current = [
     'frequency' => '',
     'start_time' => '00:00',
+    'monthly_start_day' => "",
+    'weekly_start_day' => "",
   ];
 }
 ?>
@@ -46,6 +48,7 @@ BackWPupHelpers::component("form/select", [
   BackWPupHelpers::component("form/select", [
     "name" => "day_of_month",
     "label" => __("Start day", 'backwpup'),
+    "value" => $current['monthly_start_day'],
     "options" => [
       "first-day" => __("1st day of the month", 'backwpup'),
       "first-monday" => __("1st Monday of the month", 'backwpup'),
@@ -60,14 +63,15 @@ BackWPupHelpers::component("form/select", [
   BackWPupHelpers::component("form/select", [
     "name" => "day_of_week",
     "label" => __("Start day", 'backwpup'),
+    "value" => $current['weekly_start_day'],
     "options" => [
-      "monday"    => __("Monday", 'backwpup'),
-      "tuesday"   => __("Tuesday", 'backwpup'),
-      "wednesday" => __("Wednesday", 'backwpup'),
-      "thursday"  => __("Thursday", 'backwpup'),
-      "friday"    => __("Friday", 'backwpup'),
-      "saturday"  => __("Saturday", 'backwpup'),
-      "sunday"    => __("Sunday", 'backwpup'),
+      "1"    => __("Monday", 'backwpup'),
+      "2"   => __("Tuesday", 'backwpup'),
+      "3" => __("Wednesday", 'backwpup'),
+      "4"  => __("Thursday", 'backwpup'),
+      "5"    => __("Friday", 'backwpup'),
+      "6"  => __("Saturday", 'backwpup'),
+      "0"    => __("Sunday", 'backwpup'),
     ],
   ]);
   ?>

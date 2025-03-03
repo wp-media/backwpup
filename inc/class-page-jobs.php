@@ -752,10 +752,11 @@ class BackWPup_Page_Jobs extends WP_List_Table
         //display jobs Table?>
         <form id="posts-filter" action="" method="get">
         <input type="hidden" name="page" value="backwpupjobs" />
-        <?php
-        echo wp_nonce_field('backwpup_ajax_nonce', 'backwpupajaxnonce', false);
-        self::$listtable->display(); ?>
-        <div id="ajax-response"></div>
+		<?php
+		wp_nonce_field( 'backwpup_ajax_nonce', 'backwpupajaxnonce', false );
+		self::$listtable->display();
+		?>
+		<div id="ajax-response"></div>
         </form>
         </div>
 
