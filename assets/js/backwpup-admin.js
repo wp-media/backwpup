@@ -532,6 +532,8 @@ jQuery(document).ready(function ($) {
       event.stopPropagation();
       const $menu = $(this).find(".js-backwpup-menu-content");
 
+      $(".js-backwpup-menu-content").not($menu).addClass("hidden");
+
       if ($menu.hasClass("hidden")) {
         $menu.removeClass("hidden");
       } else {

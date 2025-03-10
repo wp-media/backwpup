@@ -601,45 +601,6 @@ class BackWPup_Create_Archive
 
         $chunk_size = 1024 * 1024 * 4;
         $filename = $name_in_archive;
-        $filename_prefix = '';
-
-        // Split filename larger than 100 chars
-        if (100 < strlen($name_in_archive)) {
-            $filename_offset = strlen($name_in_archive) - 100;
-            $split_pos = strpos($name_in_archive, '/', $filename_offset);
-
-            if ($split_pos === false) {
-                $split_pos = strrpos($name_in_archive, '/');
-            }
-
-            $filename = substr($name_in_archive, $split_pos + 1);
-            $filename_prefix = substr($name_in_archive, 0, $split_pos);
-
-            if (strlen($filename) > 100) {
-                $filename = substr($filename, -100);
-                trigger_error(
-                    sprintf(
-                    // translators: $1 is the file name.
-                        esc_html__('File name "%1$s" is too long to be saved correctly in %2$s archive!', 'backwpup'),
-                        $name_in_archive,
-                        $this->method
-                    ),
-                    E_USER_WARNING
-                );
-            }
-
-            if (155 < strlen($filename_prefix)) {
-                trigger_error(
-                    sprintf(
-                    // translators: $1 is the file name to use in the archive.
-                        esc_html__('File path "%1$s" is too long to be saved correctly in %2$s archive!', 'backwpup'),
-                        $name_in_archive,
-                        $this->method
-                    ),
-                    E_USER_WARNING
-                );
-            }
-        }
 
         // Get file stat.
         $file_stat = stat($file_name);
@@ -662,10 +623,9 @@ class BackWPup_Create_Archive
             $file_stat['size'],
             $file_stat['mtime'],
             0,
-            $owner,
-            $group,
-            $filename_prefix
-        );
+			$owner,
+			$group
+		);
 
         $fd = false;
         if ($file_stat['size'] > 0) {
@@ -716,52 +676,7 @@ class BackWPup_Create_Archive
 
         $name_in_archive = trailingslashit($name_in_archive);
 
-        $tar_filename = $name_in_archive;
-        $tar_filename_prefix = '';
-
-        // Split filename larger than 100 chars.
-        if (100 < strlen($name_in_archive)) {
-            $filename_offset = strlen($name_in_archive) - 100;
-            $split_pos = strpos($name_in_archive, '/', $filename_offset);
-
-            if ($split_pos === false) {
-                $split_pos = strrpos(untrailingslashit($name_in_archive), '/');
-            }
-
-            $tar_filename = substr($name_in_archive, $split_pos + 1);
-            $tar_filename_prefix = substr($name_in_archive, 0, $split_pos);
-
-            if (strlen($tar_filename) > 100) {
-                $tar_filename = substr($tar_filename, -100);
-                trigger_error(
-                    sprintf(
-                    // translators: $1 is the name of the folder. $2 is the archive name.
-                        esc_html__(
-                            'Folder name "%1$s" is too long to be saved correctly in %2$s archive!',
-                            'backwpup'
-                        ),
-                        $name_in_archive,
-                        $this->method
-                    ),
-                    E_USER_WARNING
-                );
-            }
-
-            if (strlen($tar_filename_prefix) > 155) {
-                trigger_error(
-                    sprintf(
-                    // translators: $1 is the name of the folder. $2 is the archive name.
-                        esc_html__(
-                            'Folder path "%1$s" is too long to be saved correctly in %2$s archive!',
-                            'backwpup'
-                        ),
-                        $name_in_archive,
-                        $this->method
-                    ),
-                    E_USER_WARNING
-                );
-            }
-        }
+		$tar_filename = $name_in_archive;
 
         $file_stat = @stat($folder_name);
         // Retrieve owner and group for the file.
@@ -776,10 +691,9 @@ class BackWPup_Create_Archive
             $file_stat['size'],
             $file_stat['mtime'],
             5,
-            $owner,
-            $group,
-            $tar_filename_prefix
-        );
+			$owner,
+			$group
+		);
 
         $this->fwrite($header);
 
@@ -836,55 +750,101 @@ class BackWPup_Create_Archive
 
     /**
      * Make Tar Headers.
-     *
-     * @param string $name     The name of the file or directory. Known as Item.
-     * @param string $mode     the permissions for the item
-     * @param int    $uid      the owner ID
-     * @param int    $gid      the group ID
-     * @param int    $size     the size of the item
-     * @param int    $mtime    the time of the last modification
-     * @param int    $typeflag The type of the item. 0 for File and 5 for Directory.
-     * @param string $owner    the owner Name
-     * @param string $group    the group Name
-     * @param string $prefix   the item prefix
-     *
+	 *
+	 * @param string $name       The name of the file or directory. Known as Item.
+	 * @param string $mode       the permissions for the item.
+	 * @param int    $uid        the owner ID.
+	 * @param int    $gid        the group ID.
+	 * @param int    $size       the size of the item.
+	 * @param int    $mtime      the time of the last modification.
+	 * @param int    $typeflag   The type of the item. 0 for File and 5 for Directory.
+	 * @param string $owner      the owner Name.
+	 * @param string $group      the group Name.
+	 *
      * @return mixed|string
-     */
-    private function make_tar_headers($name, $mode, $uid, $gid, $size, $mtime, $typeflag, $owner, $group, $prefix)
-    {
-        // Generate the TAR header for this file
-        $chunk = pack(
-            'a100a8a8a8a12a12a8a1a100a6a2a32a32a8a8a155a12',
-            $name, //name of file  100
-            sprintf('%07o', $mode), //file mode  8
-            sprintf('%07o', $uid), //owner user ID  8
-            sprintf('%07o', $gid), //owner group ID  8
-            sprintf('%011o', $size), //length of file in bytes  12
-            sprintf('%011o', $mtime), //modify time of file  12
-            '        ', //checksum for header  8
-            $typeflag, //type of file  0 or null = File, 5=Dir
-            '', //name of linked file  100
-            'ustar', //USTAR indicator  6
-            '00', //USTAR version  2
-            $owner, //owner user name 32
-            $group, //owner group name 32
-            '', //device major number 8
-            '', //device minor number 8
-            $prefix, //prefix for file name 155
-            ''
-        ); //fill block 12
+	 */
+	private function make_tar_headers( $name, $mode, $uid, $gid, $size, $mtime, $typeflag, $owner, $group ) {
+		$headers   = '';
+		$orig_name = $name;
+		$prefix    = '';
 
-        // Computes the unsigned Checksum of a file's header
-        $checksum = 0;
+		// Attempt to split filename larger than 100 chars.
+		if ( 100 < strlen( $name ) ) {
+			$filename_offset = strlen( $name ) - 100;
+			$split_pos       = strpos( $name, '/', $filename_offset );
+
+			if ( false === $split_pos ) {
+				$split_pos = strrpos( $name, '/' );
+			}
+
+			$prefix = substr( $name, 0, $split_pos );
+			$name   = substr( $name, $split_pos + 1 );
+		}
+
+		// Handle long filenames. (gnu tar format)
+		// If the name is longer than 100 or the prefix is longer than 155 we
+		// need to encode the name as a preceeding chunk with a @LongLink
+		// header and truncate the filename in the actual header that we write.
+		if ( strlen( $name ) > 100 || strlen( $prefix ) > 155 ) {
+			$longlink_content = $orig_name . "\0";
+
+			$longlink_header = $this->make_tar_headers(
+				'@LongLink',
+				'0000777',
+				0,
+				0,
+				strlen( $longlink_content ),
+				time(),
+				'L',
+				'root',
+				'root'
+			);
+
+			// Add ending null byte, and pack into binary to a multiple of 512.
+			$chunk_count    = ceil( strlen( $longlink_content ) / 512 );
+			$packed_size    = $chunk_count * 512;
+			$packed_content = pack( 'a' . $packed_size, $longlink_content );
+
+			$headers .= $longlink_header . $packed_content;
+			// Truncate name for actual header.
+			$name   = substr( $orig_name, 0, 100 );
+			$prefix = '';
+		}
+
+		// Generate the TAR header for this file.
+		$chunk = pack(
+			'a100a8a8a8a12a12a8a1a100a6a2a32a32a8a8a155a12',
+			$name, // name of file  100.
+			sprintf( '%07o', $mode ), // file mode  8.
+			sprintf( '%07o', $uid ), // owner user ID  8.
+			sprintf( '%07o', $gid ), // owner group ID  8.
+			sprintf( '%011o', $size ), // length of file in bytes  12.
+			sprintf( '%011o', $mtime ), // modify time of file  12.
+			'        ', // checksum for header  8.
+			$typeflag, // type of file  0 or null = File, 5=Dir.
+			'', // name of linked file  100.
+			'ustar', // USTAR indicator  6.
+			'  ', // USTAR Version (00 for ustar, double-space for gnutar)  2.
+			$owner, // owner user name 32.
+			$group, // owner group name 32.
+			'', // device major number 8.
+			'', // device minor number 8.
+			$prefix, // prefix for file name 155.
+			''
+		); // fill block 12.
+
+		// Computes the unsigned Checksum of a file's header.
+		$checksum = 0;
 
         for ($i = 0; $i < 512; ++$i) {
             $checksum += ord(substr($chunk, $i, 1));
         }
 
-        $checksum = pack('a8', sprintf('%07o', $checksum));
+		$checksum = pack( 'a8', sprintf( '%07o', $checksum ) );
+		$chunk    = substr_replace( $chunk, $checksum, 148, 8 );
 
-        return substr_replace($chunk, $checksum, 148, 8);
-    }
+		return $headers . $chunk;
+	}
 
     /**
      * Posix Get PW ID.

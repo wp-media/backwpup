@@ -1,4 +1,10 @@
 == Changelog ==
+= 5.0.6 =
+Release date: March 10, 2025
+
+* Fixed: Archive file format Tar generation code to handle long file names
+* Fixed: Clicking on actions should close other opened sections in Backup History
+
 = 5.0.5 =
 Release date: March 03, 2025
 

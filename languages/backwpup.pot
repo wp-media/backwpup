@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-03-03 14:01+0000\n"
+"POT-Creation-Date: 2025-03-10 10:19+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -389,40 +389,20 @@ msgctxt "Text of ZipArchive status Message"
 msgid "ZipArchive returns status: %s"
 msgstr ""
 
-#. translators: $1 is the file name.
-#: inc/class-create-archive.php:623
-msgid "File name \"%1$s\" is too long to be saved correctly in %2$s archive!"
-msgstr ""
-
-#. translators: $1 is the file name to use in the archive.
-#: inc/class-create-archive.php:635
-msgid "File path \"%1$s\" is too long to be saved correctly in %2$s archive!"
-msgstr ""
-
-#: inc/class-create-archive.php:677
+#: inc/class-create-archive.php:637
 msgid "Cannot open source file %s for archiving. Writing an empty file."
 msgstr ""
 
-#. translators: $1 is the name of the folder. $2 is the archive name.
-#: inc/class-create-archive.php:739
-msgid "Folder name \"%1$s\" is too long to be saved correctly in %2$s archive!"
-msgstr ""
-
-#. translators: $1 is the name of the folder. $2 is the archive name.
-#: inc/class-create-archive.php:754
-msgid "Folder path \"%1$s\" is too long to be saved correctly in %2$s archive!"
-msgstr ""
-
-#: inc/class-create-archive.php:822
+#: inc/class-create-archive.php:736
 msgid "If %s will be added to your backup archive, the archive will be too large for operations with this PHP Version. You might want to consider splitting the backup job in multiple jobs with less files each."
 msgstr ""
 
-#: inc/class-create-archive.php:900, inc/class-create-archive.php:901
+#: inc/class-create-archive.php:860, inc/class-create-archive.php:861
 msgid "Unknown"
 msgstr ""
 
 #. translators: $1 is the filename to add into the archive.
-#: inc/class-create-archive.php:936
+#: inc/class-create-archive.php:896
 msgid "Cannot open source file %s."
 msgstr ""
 
