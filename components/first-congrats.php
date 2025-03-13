@@ -21,7 +21,4 @@ $display = isset($display) ? $display : true;
 
 	<h2 class="mt-4 mb-2 text-primary-darker text-xl font-semibold"><?php esc_html_e("Congratulations! 🙌", 'backwpup'); ?></h2>
 	<p class="text-xl"><?php esc_html_e("You’ve set up your first backup.", 'backwpup'); ?></p>
-	<p class="mt-6 flex items-center justify-center gap-6">
-		<?= __('You will be redirected to the main dashboard in ') ?><span id="redirect-time">5</span><?= __(' seconds', 'backwpup') ?>
-	</p>
 </div>

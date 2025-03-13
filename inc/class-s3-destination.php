@@ -36,11 +36,11 @@ final class BackWPup_S3_Destination
      * Get list of S3 destinations.
      *
      * This list can be extended by using the `backwpup_s3_destination` filter.
-     */
-    public static function options(): array
-    {
-        return apply_filters(
-            'backwpup_s3_destination',
+	 */
+	public static function options(): array {
+		return wpm_apply_filters_typed(
+			'array',
+			'backwpup_s3_destination',
             [
                 'us-east-2' => [
                     'label' => __('Amazon S3: US East (Ohio)', 'backwpup'),
@@ -259,18 +259,17 @@ final class BackWPup_S3_Destination
 
     /**
      * Get the Amazon S3 Client.
-     *
-     * @param $accessKey
-     * @param $secretKey
-     */
-    public function client($accessKey, $secretKey): S3Client
-    {
-        $s3Options = [
-            'signature' => $this->signature(),
-            'credentials' => [
-                'key' => $accessKey,
-                'secret' => BackWPup_Encryption::decrypt($secretKey),
-            ],
+	 *
+	 * @param string $access_key access key.
+	 * @param string $secret_key secret key.
+	 */
+	public function client( $access_key, $secret_key ): S3Client {
+		$s3_options = [
+			'signature'               => $this->signature(),
+			'credentials'             => [
+				'key'    => $access_key,
+				'secret' => BackWPup_Encryption::decrypt( $secret_key ),
+			],
             'region' => $this->region(),
             'http' => [
                 'verify' => BackWPup::get_plugin_data('cacert'),
@@ -279,17 +278,17 @@ final class BackWPup_S3_Destination
             'use_path_style_endpoint' => $this->onlyPathStyleBucket(),
         ];
 
-        if ($this->endpoint()) {
-            $s3Options['endpoint'] = $this->endpoint();
-            if (!$this->region()) {
-                $s3Options['bucket_endpoint'] = true;
-            }
+		if ( $this->endpoint() ) {
+			$s3_options['endpoint'] = $this->endpoint();
+			if ( ! $this->region() ) {
+				$s3_options['bucket_endpoint'] = true;
+			}
         }
 
-        $s3Options = apply_filters('backwpup_s3_client_options', $s3Options);
+		$s3_options = wpm_apply_filters_typed( 'array', 'backwpup_s3_client_options', $s3_options );
 
-        return new S3Client($s3Options);
-    }
+		return new S3Client( $s3_options );
+	}
 
     /**
      * The label of the destination.

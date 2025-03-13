@@ -317,10 +317,10 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations
             }
             ftp_chdir($ftp_conn_id, $ftp_dir);
 
-            if (BackWPup_Option::get($jobid, 'ftppasv')) {
-                ftp_set_option($ftp_conn_id, FTP_USEPASVADDRESS, apply_filters(self::FILTER_USEPASVADDRESS, true));
-                ftp_pasv($ftp_conn_id, true);
-            } else {
+			if ( BackWPup_Option::get( $jobid, 'ftppasv' ) ) {
+				ftp_set_option( $ftp_conn_id, FTP_USEPASVADDRESS, wpm_apply_filters_typed( 'string', self::FILTER_USEPASVADDRESS, true ) );
+				ftp_pasv( $ftp_conn_id, true );
+			} else {
                 ftp_pasv($ftp_conn_id, false);
             }
         } else {
@@ -579,12 +579,12 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations
             $job_object->substeps_done = 0;
         }
 
-        //PASV
-        $job_object->log(sprintf(__('FTP client command: %s', 'backwpup'), 'PASV'), E_USER_NOTICE);
-        if ($job_object->job['ftppasv']) {
-            ftp_set_option($ftp_conn_id, FTP_USEPASVADDRESS, apply_filters(self::FILTER_USEPASVADDRESS, true));
-            if (ftp_pasv($ftp_conn_id, true)) {
-                $job_object->log(
+		// PASV.
+		$job_object->log( sprintf( __( 'FTP client command: %s', 'backwpup' ), 'PASV' ), E_USER_NOTICE ); // @phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
+		if ( $job_object->job['ftppasv'] ) {
+			ftp_set_option( $ftp_conn_id, FTP_USEPASVADDRESS, wpm_apply_filters_typed( 'string', self::FILTER_USEPASVADDRESS, true ) );
+			if ( ftp_pasv( $ftp_conn_id, true ) ) {
+				$job_object->log(
                     sprintf(__('FTP server reply: %s', 'backwpup'), __('Entering passive mode', 'backwpup')),
                     E_USER_NOTICE
                 );

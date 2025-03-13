@@ -40,7 +40,7 @@ jQuery(document).ready(function ($) {
           $("#abortbutton").remove();
           $('.backupgeneration-progress-box .progress-bar').hide();
           $("#backwpup-adminbar-running").remove();
-          $("#backupgeneration-progress-box-title").html(rundata.on_step +" : "+rundata.last_msg);
+          $("#backupgeneration-progress-box-title").html(rundata.last_msg);
           $('.backupgeneration-progress-box-step').remove();
           if ('' !== $('#next_job_id').val()) {
             $.ajax({
@@ -75,16 +75,6 @@ jQuery(document).ready(function ($) {
           if (window.location.search.includes('backwpupfirstbackup')) {
             $('#info_container_2').hide();
             $('#first-congratulations').show();
-            var countdown = 5
-            var interval = setInterval(function() {
-                countdown--;
-                $('#redirect-time').text(countdown);
-                if (countdown <= 0) {
-                    clearInterval(interval);
-                    // Redirect to the main dashboard
-                    window.location.href = backwpup.adminUrl;
-                }
-            }, 1000);        
           }
         } else {
           if (rundata.restart_url !== '') {
@@ -111,7 +101,12 @@ jQuery(document).ready(function ($) {
   };
   backwpup_show_progress();
   $('#showworkingclose').on('click', function() {
-    $("#runningjob").hide('slow');
+    let redirect_url = $(this).data('bwpup_redirect_url');
+    if ( redirect_url ) {
+      window.location.href = redirect_url;
+    } else {
+      $("#runningjob").hide('slow');
+    }
     return false;
   });
 

@@ -1,5 +1,5 @@
 <p class="notice-titre"><?php esc_html_e( '🎉 Welcome to BackWPup 5.0!', 'backwpup' ); ?></p>
-<span><a class="closeIt" href="<?php echo esc_url( $bind->dismissurl ); // phpcs:ignore ?>"><?php esc_html_e( 'Dismiss', 'backwpup' ); ?></a></span>
+<span><a class="closeIt bwpup-ajax-close" href="<?php echo esc_url( $bind->dismissurl ); // phpcs:ignore ?>" data-bwpu-hide="informations_505_notice_notice"><?php esc_html_e( 'Dismiss', 'backwpup' ); ?></a></span>
 <p>
 <?php
 	printf(

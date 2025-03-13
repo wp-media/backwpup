@@ -2936,6 +2936,53 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "install-path": "../webmozart/assert"
+        },
+        {
+            "name": "wp-media/apply-filters-typed",
+            "version": "v1.2",
+            "version_normalized": "1.2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wp-media/apply-filters-typed.git",
+                "reference": "d8f5bca83e85196d1f01d92283b63ef6f886ac4d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wp-media/apply-filters-typed/zipball/d8f5bca83e85196d1f01d92283b63ef6f886ac4d",
+                "reference": "d8f5bca83e85196d1f01d92283b63ef6f886ac4d",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpcompatibility/phpcompatibility-wp": "^2.0",
+                "phpstan/extension-installer": "^1.4",
+                "szepeviktor/phpstan-wordpress": "^1.3",
+                "wp-coding-standards/wpcs": "^3",
+                "wp-media/phpunit": "^3"
+            },
+            "time": "2024-09-16T12:21:47+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "files": [
+                    "functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "WP Media",
+                    "email": "contact@wp-media.me"
+                }
+            ],
+            "description": "Library for usage of WordPress filters in a safe-type way",
+            "support": {
+                "issues": "https://github.com/wp-media/apply-filters-typed/issues",
+                "source": "https://github.com/wp-media/apply-filters-typed/tree/v1.2"
+            },
+            "install-path": "../wp-media/apply-filters-typed"
         }
     ],
     "dev": false,

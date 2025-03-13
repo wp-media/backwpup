@@ -2,7 +2,7 @@
 use BackWPup\Utils\BackWPupHelpers;
 BackWPupHelpers::component("heading", [
   "level" => 1,
-  "title" => __("Next Scheduled Backup", 'backwpup'),
+  "title" => __("Next Scheduled Backups", 'backwpup'),
   "class" => "max-md:justify-center"
 ]);
 

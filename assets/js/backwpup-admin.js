@@ -479,37 +479,55 @@ jQuery(document).ready(function ($) {
 
   // Frequency fields
   function showFrequencyFilesFields(frequency) {
+    let frequencies = ["daily", "weekly", "monthly"];
+
+    if (frequency === "hourly") {
+      $(".js-backwpup-frequency-file-hide-if-hourly, .js-backwpup-frequency-file-show-if-weekly, .js-backwpup-frequency-file-show-if-monthly").hide();
+    }
+
     if (frequency === "weekly") {
-      $(".js-backwpup-frequency-file-show-if-weekly").show();
-      $(".js-backwpup-frequency-file-show-if-monthly").hide();
+      $(".js-backwpup-frequency-file-show-if-hourly, .js-backwpup-frequency-file-show-if-monthly").hide();
     }
 
     if (frequency === "monthly") {
-      $(".js-backwpup-frequency-file-show-if-weekly").hide();
-      $(".js-backwpup-frequency-file-show-if-monthly").show();
+      $(".js-backwpup-frequency-file-show-if-hourly, js-backwpup-frequency-file-show-if-weekly").hide();
     }
 
     if (frequency === "daily") {
-      $(".js-backwpup-frequency-file-show-if-weekly").hide();
-      $(".js-backwpup-frequency-file-show-if-monthly").hide();
+      $(".js-backwpup-frequency-file-show-if-hourly, .js-backwpup-frequency-file-show-if-weekly, .js-backwpup-frequency-file-show-if-monthly").hide();
     }
+  
+    if ( frequencies.includes(frequency) ) {
+      $(".js-backwpup-frequency-file-hide-if-hourly").show();
+    }
+
+    $(".js-backwpup-frequency-file-show-if-" + frequency).show();
   }
 
   function showFrequencyTablesFields(frequency) {
+    let frequencies = ["daily", "weekly", "monthly"];
+
+    if (frequency === "hourly") {
+      $(".js-backwpup-frequency-table-show-if-weekly, .js-backwpup-frequency-table-show-if-monthly, .js-backwpup-frequency-table-hide-if-hourly").hide();
+    }
+
     if (frequency === "weekly") {
-      $(".js-backwpup-frequency-table-show-if-weekly").show();
-      $(".js-backwpup-frequency-table-show-if-monthly").hide();
+      $(".js-backwpup-frequency-table-show-if-hourly, .js-backwpup-frequency-table-show-if-monthly").hide();
     }
 
     if (frequency === "monthly") {
-      $(".js-backwpup-frequency-table-show-if-weekly").hide();
-      $(".js-backwpup-frequency-table-show-if-monthly").show();
+      $(".js-backwpup-frequency-table-show-if-hourly, .js-backwpup-frequency-table-show-if-weekly").hide();
     }
 
     if (frequency === "daily") {
-      $(".js-backwpup-frequency-table-show-if-weekly").hide();
-      $(".js-backwpup-frequency-table-show-if-monthly").hide();
+      $(".js-backwpup-frequency-table-show-if-hourly, .js-backwpup-frequency-table-show-if-weekly, .js-backwpup-frequency-table-show-if-monthly").hide();
     }
+
+    if ( frequencies.includes(frequency) ) {
+      $(".js-backwpup-frequency-table-hide-if-hourly").show();
+    }
+
+    $(".js-backwpup-frequency-table-show-if-" + frequency).show();
   }
 
   showFrequencyFilesFields($(".js-backwpup-frequency-files").val());
@@ -1356,12 +1374,14 @@ jQuery(document).ready(function ($) {
     const container = $(this).closest("article");
     const frequency = container.find("select[name='frequency']").val();
     const startTime = container.find("input[name='start_time']").val();
+    const hourlyStartTime = container.find("select[name='hourly_start_time']").val();
     const day_of_week = container.find("select[name='day_of_week']").val();
     const day_of_month = container.find("select[name='day_of_month']").val();
 
     const data = {
         frequency: frequency,
         start_time: startTime,
+        hourly_start_time: hourlyStartTime,
         day_of_week: day_of_week,
         day_of_month: day_of_month,
     };
@@ -1389,12 +1409,14 @@ jQuery(document).ready(function ($) {
     const container = $(this).closest("article");
     const frequency = container.find("select[name='frequency']").val();
     const startTime = container.find("input[name='start_time']").val();
+    const hourlyStartTime = container.find("select[name='hourly_start_time']").val();
     const day_of_week = container.find("select[name='day_of_week']").val();
     const day_of_month = container.find("select[name='day_of_month']").val();
 
     const data = {
         frequency: frequency,
         start_time: startTime,
+        hourly_start_time: hourlyStartTime,
         day_of_week: day_of_week,
         day_of_month: day_of_month,
     };
@@ -1550,15 +1572,17 @@ jQuery(document).ready(function ($) {
   }
 
   // Function to start the backup process using requestWPApi
-  function startBackupProcess() {
+  function startBackupProcess( data = {} ) {
     if ( ! isGenerateJsIncluded() ) { 
-      requestWPApi(backwpupApi.startbackup, {}, function(response) {
+      requestWPApi(backwpupApi.startbackup, data, function(response) {
         if (response.status === 200) {
           setTimeout(function() {
             if ('#dbbackup' !== window.location.hash ) {
               window.location.reload();
             }
-        }, 500);
+          }, 500);
+        } else if ( 301 === response.status ) {
+          window.location = response.url;
         }
       }, 'POST');
     } else {
@@ -1571,7 +1595,9 @@ jQuery(document).ready(function ($) {
   
   // Call the functions when the "First Backup" page is loaded
   if (window.location.search.includes('backwpupfirstbackup')) {
-    startBackupProcess();
+    startBackupProcess( {
+      first_backup: 1
+    } );
   }
 
   // Replace the 'Buy Pro' menu item with the correct link.
@@ -1589,6 +1615,26 @@ jQuery(document).ready(function ($) {
     DocsMenuItem.attr('href', 'https://backwpup.com/docs/');
     DocsMenuItem.attr('target', '_blank');
   }
+
+  // Handle bwpup-ajax-close
+  $('.bwpup-ajax-close').click( function(e) {
+    e.preventDefault();
+    let current_close = $(this);
+    let url = current_close.attr( 'href' );
+    if ( ! url ) {
+      return;
+    }
+    let hide_id = current_close.data('bwpu-hide');
+    $('#'+hide_id).fadeTo('slow', '0.2');
+
+    $.ajax({
+      url,
+      success: function(response) {
+        $('#'+hide_id).hide();
+      },
+    });
+  } );
+
 });
 
 // Add a custom 'hide' event when the .hide() function is called

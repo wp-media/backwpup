@@ -1,4 +1,15 @@
 == Changelog ==
+= 5.0.7 =
+Release date: March 13, 2025
+
+* Added: Hourly frequency for backups
+* Added: WPM Apply filters library for better code maintainability
+* Fixed: PHP Warning & auto reset advanced settings issue
+* Fixed: Closing banner cancels the onboarding issue
+* Fixed: Correct the title of Next Schedule Backup
+* Changed: Onboarding backup success page notice & redirection
+* Changed: "Restore Full Backup" string to "Restore Backup"
+
 = 5.0.6 =
 Release date: March 10, 2025
 

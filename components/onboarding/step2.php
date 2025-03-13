@@ -38,6 +38,7 @@ BackWPupHelpers::component("heading", [
       "value" => "monthly",
       "trigger" => "onboarding-files-frequency",
       "options" => [
+        'hourly' => __( 'Hourly', 'backwpup' ),
         "daily" => __("Daily", 'backwpup'),
         "weekly" => __("Weekly", 'backwpup'),
         "monthly" => __("Monthly", 'backwpup'),
@@ -76,6 +77,7 @@ BackWPupHelpers::component("heading", [
       "class" => "onboarding-database-frequency",
       "trigger" => "onboarding-database-frequency",
       "options" => [
+        'hourly' => __( 'Hourly', 'backwpup' ),
         "daily" => __("Daily", 'backwpup'),
         "weekly" => __("Weekly", 'backwpup'),
         "monthly" => __("Monthly", 'backwpup'),

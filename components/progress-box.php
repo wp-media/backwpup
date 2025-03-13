@@ -39,15 +39,23 @@ $abortUrl = $abortUrl ?? "";
     ]);
     ?>
 
-      <?php
-      BackWPupHelpers::component("form/button", [
-          "type" => "secondary",
-          "label" => __("Close", 'backwpup'),
-          "font" => "small",
-          "class" => "max-md:hidden",
-          "identifier" => "showworkingclose",
-      ]);
-      ?>
+    <?php
+    $btn_args = [
+        "type" => "secondary",
+        "label" => __("Close", 'backwpup'),
+        "font" => "small",
+        "class" => "max-md:hidden",
+        "identifier" => "showworkingclose",
+    ];
+    $bwpup_first_backup_redirect_url = 'admin_page_backwpupfirstbackup' === get_current_screen()->id ? network_admin_url( 'admin.php?page=backwpup' ) : '';
+    if ( ! empty( $bwpup_first_backup_redirect_url ) ) {
+        $btn_args['data'] = [
+            "bwpup_redirect_url" => esc_url( $bwpup_first_backup_redirect_url ),
+        ];
+    }
+
+    BackWPupHelpers::component("form/button", $btn_args);
+    ?>
 
   </div>
 

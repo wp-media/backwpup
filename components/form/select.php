@@ -45,7 +45,7 @@ $class = $class ?? "";
       <option value="" <?php if ($value === "") : ?>selected<?php endif; ?>></option>
     <?php endif; ?>
     <?php foreach ($options as $key => $option) : ?>
-      <option value="<?php echo $key; ?>" <?php echo $key === $value ? "selected" : ""; ?>><?php echo $option; ?></option>
+      <option value="<?php echo $key; ?>" <?php selected( $key, $value ); ?>><?php echo $option; ?></option>
     <?php endforeach; ?>
   </select>
   <div class="absolute right-4 top-0 bottom-0 flex items-center pointer-events-none rotate-180">

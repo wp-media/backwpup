@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: BackWPup – WordPress Backup & Restore Plugin
  * Author URI: https://backwpup.com
- * Version: 5.0.6
+ * Version: 5.0.7
  * Requires at least: 4.9
  * Requires PHP: 7.4
  * Text Domain: backwpup
@@ -55,10 +55,7 @@ if (!class_exists(\BackWPup::class, false)) {
                 return;
             }
 
-            require_once __DIR__ . '/inc/functions.php';
-            if (file_exists(__DIR__ . '/vendor/autoload.php')) {
-                require_once __DIR__ . '/vendor/autoload.php';
-            }
+			require_once __DIR__ . '/inc/functions.php';
 
 			$file = untrailingslashit( self::get_plugin_data( 'plugindir' ) )
 					. '/src/Infrastructure/Restore/commons.php';
@@ -171,7 +168,7 @@ if (!class_exists(\BackWPup::class, false)) {
 				 *
 				 * @param bool $is_in_admin_bar Whether the admin link will be shown in the admin bar or not.
 				 */
-				$is_in_admin_bar = (bool) apply_filters( 'backwpup_is_in_admin_bar', (bool) get_site_option( 'backwpup_cfg_showadminbar' ) );
+				$is_in_admin_bar = wpm_apply_filters_typed( 'boolean', 'backwpup_is_in_admin_bar', (bool) get_site_option( 'backwpup_cfg_showadminbar' ) );
 
 				if ( true === $is_in_admin_bar ) {
 					$admin_bar = new BackWPup_Adminbar( $admin );
@@ -274,10 +271,11 @@ if (!class_exists(\BackWPup::class, false)) {
                         $upload_dir['basedir']
                     ) . '/backwpup/' . self::$plugin_data['hash'] . '/temp/';
                 }
-                self::$plugin_data['running_file'] = self::$plugin_data['temp'] . 'backwpup-working.php';
-                self::$plugin_data['url'] = plugins_url('', __FILE__);
-                self::$plugin_data['cacert'] = apply_filters(
-                    'backwpup_cacert_bundle',
+				self::$plugin_data['running_file'] = self::$plugin_data['temp'] . 'backwpup-working.php';
+				self::$plugin_data['url']          = plugins_url( '', __FILE__ );
+				self::$plugin_data['cacert']       = wpm_apply_filters_typed(
+					'string',
+					'backwpup_cacert_bundle',
                     ABSPATH . WPINC . '/certificates/ca-bundle.crt'
                 );
                 //get unmodified WP Versions
@@ -494,9 +492,10 @@ if (!class_exists(\BackWPup::class, false)) {
                 ],
             ];
 
-            //Hook for adding Destinations like above
-            self::$registered_destinations = apply_filters(
-                'backwpup_register_destination',
+			// Hook for adding Destinations like above.
+			self::$registered_destinations = wpm_apply_filters_typed(
+				'array',
+				'backwpup_register_destination',
                 self::$registered_destinations
             );
 
@@ -572,7 +571,7 @@ if (!class_exists(\BackWPup::class, false)) {
             self::$job_types['WPPLUGIN'] = new BackWPup_JobType_WPPlugin();
             self::$job_types['DBCHECK'] = new BackWPup_JobType_DBCheck();
 
-            self::$job_types = apply_filters('backwpup_job_types', self::$job_types);
+			self::$job_types = wpm_apply_filters_typed( 'array', 'backwpup_job_types', self::$job_types );
 
             //remove types can't load
             foreach (self::$job_types as $key => $job_type) {
@@ -595,7 +594,7 @@ if (!class_exists(\BackWPup::class, false)) {
                 return self::$wizards;
             }
 
-            self::$wizards = apply_filters('backwpup_pro_wizards', self::$wizards);
+			self::$wizards = wpm_apply_filters_typed( 'array',  'backwpup_pro_wizards', self::$wizards );
 
             //remove wizards can't load
             foreach (self::$wizards as $key => $wizard) {
@@ -607,6 +606,11 @@ if (!class_exists(\BackWPup::class, false)) {
             return self::$wizards;
         }
     }
+
+	// Include the Composer autoload file.
+	if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+		require_once __DIR__ . '/vendor/autoload.php';
+	}
 
     require_once __DIR__ . '/inc/class-system-requirements.php';
 

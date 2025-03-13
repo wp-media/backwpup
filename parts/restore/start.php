@@ -2,7 +2,7 @@
 use BackWPup\Utils\BackWPupHelpers;
 BackWPupHelpers::component("heading", [
   "level" => 1,
-  "title" => __("Restore full backup from:", 'backwpup') . " " . "March 11, 2024 11:03",
+  "title" => __("Restore backup from:", 'backwpup') . " " . "March 11, 2024 11:03",
 ]);
 ?>
 

@@ -999,10 +999,6 @@ select {
   display: table;
 }
 
-.grid {
-  display: grid;
-}
-
 .hidden {
   display: none;
 }
@@ -1182,10 +1178,6 @@ select {
           user-select: all;
 }
 
-.grid-cols-4 {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
 .flex-col {
   flex-direction: column;
 }
@@ -1220,10 +1212,6 @@ select {
 
 .gap-10 {
   gap: 2.5rem;
-}
-
-.gap-16 {
-  gap: 4rem;
 }
 
 .gap-2 {

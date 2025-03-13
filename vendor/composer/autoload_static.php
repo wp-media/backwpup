@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit99c624c68ceccf3e44ff7b60a2d0ee9a
+class ComposerStaticInit566f46464c149d4511d605fd1295b34d
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -17,6 +17,7 @@ class ComposerStaticInit99c624c68ceccf3e44ff7b60a2d0ee9a
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
         '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
+        '6c592737b91137905268e9a0eb968869' => __DIR__ . '/..' . '/wp-media/apply-filters-typed/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -9926,10 +9927,10 @@ class ComposerStaticInit99c624c68ceccf3e44ff7b60a2d0ee9a
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit99c624c68ceccf3e44ff7b60a2d0ee9a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit99c624c68ceccf3e44ff7b60a2d0ee9a::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit99c624c68ceccf3e44ff7b60a2d0ee9a::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit99c624c68ceccf3e44ff7b60a2d0ee9a::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit566f46464c149d4511d605fd1295b34d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit566f46464c149d4511d605fd1295b34d::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit566f46464c149d4511d605fd1295b34d::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit566f46464c149d4511d605fd1295b34d::$classMap;
 
         }, null, ClassLoader::class);
     }

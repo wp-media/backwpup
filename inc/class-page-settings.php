@@ -360,13 +360,18 @@ class BackWPup_Page_Settings
         }
     }
 
-    public function save_post_form()
-    {
-        if (!current_user_can('backwpup_settings')) {
-            return;
-        }
+	/**
+	 * Save settings from post form.
+	 *
+	 * @return void
+	 */
+	public function save_post_form() {
+        // phpcs:disable WordPress.Security.NonceVerification.Missing
+		if ( ! current_user_can( 'backwpup_settings' ) ) {
+			return;
+		}
 
-        // Set default options if button clicked.
+		// Set default options if button clicked.
         if (isset($_POST['default_settings']) && $_POST['default_settings']) { // phpcs:ignore
             delete_site_option('backwpup_cfg_showadminbar');
             delete_site_option('backwpup_cfg_showfoldersize');
@@ -409,98 +414,128 @@ class BackWPup_Page_Settings
 
         foreach ($this->settings_updaters as $setting) {
             $setting->update();
-        }
+		}
+		// Load current settings.
+		$current_options = [
+			'backwpup_cfg_jobstepretry'         => get_site_option( 'backwpup_cfg_jobstepretry' ),
+			'backwpup_cfg_jobmaxexecutiontime'  => get_site_option( 'backwpup_cfg_jobmaxexecutiontime' ),
+			'backwpup_cfg_loglevel'             => get_site_option( 'backwpup_cfg_loglevel' ),
+			'backwpup_cfg_jobwaittimems'        => get_site_option( 'backwpup_cfg_jobwaittimems' ),
+			'backwpup_cfg_jobdooutput'          => get_site_option( 'backwpup_cfg_jobdooutput' ),
+			'backwpup_cfg_windows'              => get_site_option( 'backwpup_cfg_windows' ),
+			'backwpup_cfg_maxlogs'              => get_site_option( 'backwpup_cfg_maxlogs' ),
+			'backwpup_cfg_gzlogs'               => get_site_option( 'backwpup_cfg_gzlogs' ),
+			'backwpup_cfg_protectfolders'       => get_site_option( 'backwpup_cfg_protectfolders' ),
+			'backwpup_cfg_jobrunauthkey'        => get_site_option( 'backwpup_cfg_jobrunauthkey' ),
+			'backwpup_cfg_logfolder'            => get_site_option( 'backwpup_cfg_logfolder' ),
+			'backwpup_cfg_authentication'       => get_site_option( 'backwpup_cfg_authentication' ),
+			'backwpup_cfg_keepplugindata'       => get_site_option( 'backwpup_cfg_keepplugindata' ),
+			'backwpup_cfg_mailaddresslog'       => get_site_option( 'backwpup_cfg_mailaddresslog' ),
+			'backwpup_cfg_mailaddresssenderlog' => get_site_option( 'backwpup_cfg_mailaddresssenderlog' ),
+			'backwpup_cfg_idmailerroronly'      => get_site_option( 'backwpup_cfg_idmailerroronly' ),
+		];
 
-        if (empty($_POST['jobstepretry']) || 100 < $_POST['jobstepretry'] || 1 > $_POST['jobstepretry']) {
-            $_POST['jobstepretry'] = 3;
-        }
+		// Validate and add new options values.
+		$new_options = [];
 
-        update_site_option('backwpup_cfg_jobstepretry', absint($_POST['jobstepretry']));
+		if ( isset( $_POST['jobstepretry'] ) && is_numeric( $_POST['jobstepretry'] ) && $_POST['jobstepretry'] >= 1 && $_POST['jobstepretry'] <= 100 ) {
+			$new_options['backwpup_cfg_jobstepretry'] = absint( $_POST['jobstepretry'] );
+		}
 
-        if ((int) $_POST['jobmaxexecutiontime'] > 300) {
-            $_POST['jobmaxexecutiontime'] = 300;
-        }
+		if ( isset( $_POST['jobmaxexecutiontime'] ) && is_numeric( $_POST['jobmaxexecutiontime'] ) && $_POST['jobmaxexecutiontime'] <= 300 ) {
+			$new_options['backwpup_cfg_jobmaxexecutiontime'] = absint( $_POST['jobmaxexecutiontime'] );
+		}
 
-        update_site_option('backwpup_cfg_jobmaxexecutiontime', absint($_POST['jobmaxexecutiontime']));
-        update_site_option(
-            'backwpup_cfg_loglevel',
-            in_array(
-                $_POST['loglevel'],
-                ['normal_translated', 'normal', 'debug_translated', 'debug'],
-                true
-            ) ? $_POST['loglevel'] : 'normal_translated'
-        );
-        update_site_option('backwpup_cfg_jobwaittimems', absint($_POST['jobwaittimems']));
-        update_site_option('backwpup_cfg_jobdooutput', !empty($_POST['jobdooutput']));
-        update_site_option('backwpup_cfg_windows', !empty($_POST['windows']));
+		if ( isset( $_POST['loglevel'] ) && in_array( $_POST['loglevel'], [ 'normal_translated', 'normal', 'debug_translated', 'debug' ], true ) ) {
+			$new_options['backwpup_cfg_loglevel'] = sanitize_text_field( wp_unslash( $_POST['loglevel'] ) );
+		}
 
-        update_site_option('backwpup_cfg_maxlogs', absint($_POST['maxlogs']));
-        update_site_option('backwpup_cfg_gzlogs', !empty($_POST['gzlogs']));
-        update_site_option('backwpup_cfg_protectfolders', !empty($_POST['protectfolders']));
+		if ( isset( $_POST['jobwaittimems'] ) && is_numeric( $_POST['jobwaittimems'] ) ) {
+			$new_options['backwpup_cfg_jobwaittimems'] = absint( $_POST['jobwaittimems'] );
+		}
 
-        $_POST['jobrunauthkey'] = preg_replace('/[^a-zA-Z0-9]/', '', trim((string) $_POST['jobrunauthkey']));
+		// as jobdooutput and windows are checkbox we need to check if another field is set to know if they are checked or not.
+		if ( isset( $_POST['jobwaittimems'] ) ) {
+			$new_options['backwpup_cfg_jobdooutput'] = ! empty( $_POST['jobdooutput'] );
+			$new_options['backwpup_cfg_windows']     = ! empty( $_POST['windows'] );
+		}
 
-        update_site_option('backwpup_cfg_jobrunauthkey', $_POST['jobrunauthkey']);
+		if ( isset( $_POST['maxlogs'] ) && is_numeric( $_POST['maxlogs'] ) ) {
+			$new_options['backwpup_cfg_maxlogs'] = absint( $_POST['maxlogs'] );
+		}
 
-        try {
-            $_POST['logfolder'] = trailingslashit(
-                BackWPup_File::normalize_path(BackWPup_Path_Fixer::slashify(sanitize_text_field($_POST['logfolder'])))
-            );
+		$new_options['backwpup_cfg_gzlogs']         = ! empty( $_POST['gzlogs'] );
+		$new_options['backwpup_cfg_protectfolders'] = ! empty( $_POST['protectfolders'] );
 
-            update_site_option('backwpup_cfg_logfolder', $_POST['logfolder']);
-        } catch (InvalidArgumentException $e) {
-            delete_site_option('backwpup_cfg_logfolder');
-            BackWPup_Option::default_site_options();
-        }
+		if ( isset( $_POST['jobrunauthkey'] ) ) {
+			$new_options['backwpup_cfg_jobrunauthkey'] = preg_replace( '/[^a-zA-Z0-9]/', '', trim( (string) sanitize_text_field( wp_unslash( $_POST['jobrunauthkey'] ) ) ) );
+		}
 
-        $authentication = get_site_option(
-            'backwpup_cfg_authentication',
-            [
-                'method' => '',
-                'basic_user' => '',
-                'basic_password' => '',
-                'user_id' => 0,
-                'query_arg' => '',
-            ]
-        );
-        $authentication['method'] = (in_array(
-            $_POST['authentication_method'],
-            ['user', 'basic', 'query_arg'],
-            true
-        )) ? $_POST['authentication_method'] : '';
-        $authentication['basic_user'] = sanitize_text_field($_POST['authentication_basic_user']);
-        $authentication['basic_password'] = BackWPup_Encryption::encrypt(
-            (string) $_POST['authentication_basic_password']
-        );
-        $authentication['query_arg'] = sanitize_text_field($_POST['authentication_query_arg']);
-        $authentication['user_id'] = absint($_POST['authentication_user_id']);
-        update_site_option('backwpup_cfg_authentication', $authentication);
-        delete_site_transient('backwpup_cookies');
+		if ( isset( $_POST['logfolder'] ) ) {
+			try {
+				$new_options['backwpup_cfg_logfolder'] = trailingslashit(
+					BackWPup_File::normalize_path( BackWPup_Path_Fixer::slashify( sanitize_text_field( wp_unslash( $_POST['logfolder'] ) ) ) )
+				);
+			} catch ( InvalidArgumentException $e ) {
+				delete_site_option( 'backwpup_cfg_logfolder' );
+				BackWPup_Option::default_site_options();
+			}
+		}
 
-        update_site_option('backwpup_cfg_keepplugindata', !empty($_POST['keepplugindata']));
+		if ( isset( $_POST['authentication_method'] ) && in_array( $_POST['authentication_method'], [ '', 'user', 'basic', 'query_arg' ], true ) ) {
+			$authentication                             = get_site_option(
+				'backwpup_cfg_authentication',
+				[
+					'method'         => '',
+					'basic_user'     => '',
+					'basic_password' => '',
+					'user_id'        => 0,
+					'query_arg'      => '',
+				]
+			);
+			$authentication['method']                   = sanitize_text_field( wp_unslash( $_POST['authentication_method'] ) );
+			$authentication['basic_user']               = isset( $_POST['authentication_basic_user'] ) ? sanitize_text_field( wp_unslash( $_POST['authentication_basic_user'] ) ) : '';
+			$authentication['basic_password']           = isset( $_POST['authentication_basic_password'] ) ? BackWPup_Encryption::encrypt( (string) sanitize_text_field( wp_unslash( $_POST['authentication_basic_password'] ) ) ) : '';
+			$authentication['query_arg']                = isset( $_POST['authentication_query_arg'] ) ? sanitize_text_field( wp_unslash( $_POST['authentication_query_arg'] ) ) : '';
+			$authentication['user_id']                  = isset( $_POST['authentication_user_id'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['authentication_user_id'] ) ) ) : 0;
+			$new_options['backwpup_cfg_authentication'] = $authentication;
+		}
 
-		if ( isset( $_POST['mailaddresslog'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification
-			$emails = explode( ',', sanitize_text_field( wp_unslash( $_POST['mailaddresslog'] ) ) ); //phpcs:ignore WordPress.Security.NonceVerification
+		$new_options['backwpup_cfg_keepplugindata'] = ! empty( $_POST['keepplugindata'] );
 
+		if ( isset( $_POST['mailaddresslog'] ) ) {
+			$emails = explode( ',', sanitize_text_field( wp_unslash( $_POST['mailaddresslog'] ) ) );
 			foreach ( $emails as $key => $email ) {
 				$emails[ $key ] = sanitize_email( trim( $email ) );
 				if ( ! is_email( $emails[ $key ] ) ) {
 					unset( $emails[ $key ] );
 				}
 			}
-			$mailaddresslog = implode( ', ', $emails );
-			update_site_option( 'backwpup_cfg_mailaddresslog', $mailaddresslog );
-		}
-		if ( isset( $_POST['mailaddresssenderlog'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification
-			update_site_option( 'backwpup_cfg_mailaddresssenderlog', sanitize_email( wp_unslash( $_POST['mailaddresssenderlog'] ) ) ); //phpcs:ignore WordPress.Security.NonceVerification
+			$new_options['backwpup_cfg_mailaddresslog'] = implode( ', ', $emails );
 		}
 
-		update_site_option( 'backwpup_cfg_idmailerroronly', ! empty( $_POST['idmailerroronly'] ) ); //phpcs:ignore WordPress.Security.NonceVerification
+		if ( isset( $_POST['mailaddresssenderlog'] ) ) {
+			$new_options['backwpup_cfg_mailaddresssenderlog'] = sanitize_email( wp_unslash( $_POST['mailaddresssenderlog'] ) );
+		}
+
+		// as idmailerroronly is a checkbox we need to check if another field is set to know if it is checked or not.
+		if ( isset( $_POST['loglevel'] ) ) {
+			$new_options['backwpup_cfg_idmailerroronly'] = ! empty( $_POST['idmailerroronly'] );
+		}
+
+		// Merge actual options with new ones.
+		$merged_options = array_merge( $current_options, $new_options );
+
+		// Update options.
+		foreach ( $merged_options as $option_name => $option_value ) {
+			update_site_option( $option_name, $option_value );
+		}
 
         do_action('backwpup_page_settings_save');
 
-        BackWPup_Admin::message(__('Settings saved', 'backwpup'));
-    }
+		BackWPup_Admin::message( __( 'Settings saved', 'backwpup' ) );
+        // phpcs:enable
+	}
 
     public function page()
     {
@@ -525,7 +560,7 @@ class BackWPup_Page_Settings
 			if ( BackWPup::is_pro() ) {
 				$tabs['license'] = esc_html__( 'License', 'backwpup' );
 			}
-			$tabs = apply_filters( 'backwpup_page_settings_tab', $tabs );
+			$tabs = wpm_apply_filters_typed( 'array', 'backwpup_page_settings_tab', $tabs );
 			echo '<h2 class="nav-tab-wrapper">';
 
 			foreach ( $tabs as $id => $name ) {
@@ -1002,8 +1037,10 @@ class BackWPup_Page_Settings
 						</p>
 
 						<?php
-                        $html = ob_get_clean();
-        echo apply_filters('backwpup_get_debug_info_text', $html); ?>
+						$html = ob_get_clean();
+						// @todo: Find solution to avoid ignoring phpcs error here.
+						echo wpm_apply_filters_typed( 'string', 'backwpup_get_debug_info_text', $html ); // @phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+						?>
 
 						<p>
 							<a href="#" id="backwpup-copy-debug-info" data-clipboard-target="#backwpup-debug-info"

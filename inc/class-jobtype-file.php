@@ -38,20 +38,22 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
         $log_folder = get_site_option('backwpup_cfg_logfolder');
         $log_folder = BackWPup_File::get_absolute_path($log_folder);
 
-        return [
-            'backupexcludethumbs' => false,
-            'backupspecialfiles' => true,
-            'backuproot' => true,
-            'backupcontent' => true,
-            'backupplugins' => true,
-            'backupthemes' => true,
-            'backupuploads' => true,
-            'backuprootexcludedirs' => apply_filters(
-                'backwpup_root_exclude_dirs',
+		return [
+			'backupexcludethumbs'      => false,
+			'backupspecialfiles'       => true,
+			'backuproot'               => true,
+			'backupcontent'            => true,
+			'backupplugins'            => true,
+			'backupthemes'             => true,
+			'backupuploads'            => true,
+			'backuprootexcludedirs'    => wpm_apply_filters_typed(
+				'array',
+				'backwpup_root_exclude_dirs',
                 ['logs', 'usage', 'restore', 'restore_temp']
-            ),
-            'backupcontentexcludedirs' => apply_filters(
-                'backwpup_content_exclude_dirs',
+			),
+			'backupcontentexcludedirs' => wpm_apply_filters_typed(
+				'array',
+				'backwpup_content_exclude_dirs',
                 [
                     'cache',
                     'wflogs',
@@ -65,18 +67,28 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
                     'ithemes-security',
                     'backwpup-restore',
                 ]
-            ),
-            'backuppluginsexcludedirs' => apply_filters(
-                'backwpup_plugins_exclude_dirs',
+			),
+			'backuppluginsexcludedirs' => wpm_apply_filters_typed(
+				'array',
+				'backwpup_plugins_exclude_dirs',
                 ['backwpup', 'backwpup-pro']
-            ),
-            'backupthemesexcludedirs' => apply_filters('backwpup_themes_exclude_dirs', []),
-            'backupuploadsexcludedirs' => apply_filters(
-                'backwpup_upload_exclude_dirs',
+			),
+			'backupthemesexcludedirs'  => wpm_apply_filters_typed(
+				'array',
+				'backwpup_themes_exclude_dirs',
+				[]
+			),
+			'backupuploadsexcludedirs' => wpm_apply_filters_typed(
+				'array',
+				'backwpup_upload_exclude_dirs',
                 [basename($log_folder)]
 			),
 			'fileexclude'              => '',
-			'dirinclude'               => apply_filters( 'backwpup_dir_include', '' ),
+			'dirinclude'               => wpm_apply_filters_typed(
+				'string',
+				'backwpup_dir_include',
+				''
+			),
 			'backupabsfolderup'        => false,
 		];
     }

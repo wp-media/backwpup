@@ -70,12 +70,13 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
 				<td>
 					<fieldset>
 						<?php
-                        echo '<label for="idwpexportfilecompression"><input class="radio" type="radio"' . checked('', BackWPup_Option::get($jobid, 'wpexportfilecompression'), false) . ' name="wpexportfilecompression" id="idwpexportfilecompression" value="" /> ' . esc_html__('none', 'backwpup') . '</label><br />';
-        if (function_exists('gzopen')) {
-            echo '<label for="idwpexportfilecompression-gz"><input class="radio" type="radio"' . checked('.gz', BackWPup_Option::get($jobid, 'wpexportfilecompression'), false) . ' name="wpexportfilecompression" id="idwpexportfilecompression-gz" value=".gz" /> ' . esc_html__('GZip', 'backwpup') . '</label><br />';
-        } else {
-            echo '<label for="idwpexportfilecompression-gz"><input class="radio" type="radio"' . checked('.gz', BackWPup_Option::get($jobid, 'wpexportfilecompression'), false) . ' name="wpexportfilecompression" id="idwpexportfilecompression-gz" value=".gz" disabled="disabled" /> ' . esc_html__('GZip', 'backwpup') . '</label><br />';
-        } ?>
+						echo '<label for="idwpexportfilecompression"><input class="radio" type="radio"' . checked( '', BackWPup_Option::get( $jobid, 'wpexportfilecompression' ), false ) . ' name="wpexportfilecompression" id="idwpexportfilecompression" value="" /> ' . esc_html__( 'none', 'backwpup' ) . '</label><br />';
+						if ( function_exists( 'gzopen' ) ) {
+							echo '<label for="idwpexportfilecompression-gz"><input class="radio" type="radio"' . checked( '.gz', BackWPup_Option::get( $jobid, 'wpexportfilecompression' ), false ) . ' name="wpexportfilecompression" id="idwpexportfilecompression-gz" value=".gz" /> ' . esc_html__( 'GZip', 'backwpup' ) . '</label><br />';
+						} else {
+							echo '<label for="idwpexportfilecompression-gz"><input class="radio" type="radio"' . checked( '.gz', BackWPup_Option::get( $jobid, 'wpexportfilecompression' ), false ) . ' name="wpexportfilecompression" id="idwpexportfilecompression-gz" value=".gz" disabled="disabled" /> ' . esc_html__( 'GZip', 'backwpup' ) . '</label><br />';
+						}
+						?>
 					</fieldset>
 				</td>
 			</tr>
@@ -311,16 +312,16 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
                     foreach ($posts as $post) {
                         $is_sticky = is_sticky($post->ID) ? 1 : 0;
 
-                        $wxr_post .= "\t<item>\n";
-                        $wxr_post .= "\t\t<title>" . apply_filters('the_title_rss', $post->post_title) . "</title>\n";
-                        $wxr_post .= "\t\t<link>" . esc_url(apply_filters('the_permalink_rss', get_permalink($post))) . "</link>\n";
-                        $wxr_post .= "\t\t<pubDate>" . mysql2date('D, d M Y H:i:s +0000', get_post_time('Y-m-d H:i:s', true, $post), false) . "</pubDate>\n";
-                        $wxr_post .= "\t\t<dc:creator>" . $this->wxr_cdata(get_the_author_meta('login', $post->post_author)) . "</dc:creator>\n";
-                        $wxr_post .= "\t\t<guid isPermaLink=\"false\">" . esc_url(get_the_guid($post->ID)) . "</guid>\n";
-                        $wxr_post .= "\t\t<description></description>\n";
-                        $wxr_post .= "\t\t<content:encoded>" . $this->wxr_cdata(apply_filters('the_content_export', $post->post_content)) . "</content:encoded>\n";
-                        $wxr_post .= "\t\t<excerpt:encoded>" . $this->wxr_cdata(apply_filters('the_excerpt_export', $post->post_excerpt)) . "</excerpt:encoded>\n";
-                        $wxr_post .= "\t\t<wp:post_id>" . $post->ID . "</wp:post_id>\n";
+						$wxr_post .= "\t<item>\n";
+						$wxr_post .= "\t\t<title>" . wpm_apply_filters_typed( 'string', 'the_title_rss', $post->post_title ) . "</title>\n";
+						$wxr_post .= "\t\t<link>" . esc_url( wpm_apply_filters_typed( 'string', 'the_permalink_rss', get_permalink( $post ) ) ) . "</link>\n";
+						$wxr_post .= "\t\t<pubDate>" . mysql2date( 'D, d M Y H:i:s +0000', get_post_time( 'Y-m-d H:i:s', true, $post ), false ) . "</pubDate>\n";
+						$wxr_post .= "\t\t<dc:creator>" . $this->wxr_cdata( get_the_author_meta( 'login', $post->post_author ) ) . "</dc:creator>\n";
+						$wxr_post .= "\t\t<guid isPermaLink=\"false\">" . esc_url( get_the_guid( $post->ID ) ) . "</guid>\n";
+						$wxr_post .= "\t\t<description></description>\n";
+						$wxr_post .= "\t\t<content:encoded>" . $this->wxr_cdata( wpm_apply_filters_typed( 'string', 'the_content_export', $post->post_content ) ) . "</content:encoded>\n";
+						$wxr_post .= "\t\t<excerpt:encoded>" . $this->wxr_cdata( wpm_apply_filters_typed( 'string', 'the_excerpt_export', $post->post_excerpt ) ) . "</excerpt:encoded>\n";
+						$wxr_post .= "\t\t<wp:post_id>" . $post->ID . "</wp:post_id>\n";
                         $wxr_post .= "\t\t<wp:post_date>" . $post->post_date . "</wp:post_date>\n";
                         $wxr_post .= "\t\t<wp:post_date_gmt>" . $post->post_date_gmt . "</wp:post_date_gmt>\n";
                         $wxr_post .= "\t\t<wp:comment_status>" . $post->comment_status . "</wp:comment_status>\n";
@@ -339,9 +340,9 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
 
                         $postmeta = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->postmeta} WHERE post_id = %d", $post->ID));
 
-                        foreach ($postmeta as $meta) {
-                            if (apply_filters('backwpup_wxr_export_skip_postmeta', false, $meta->meta_key, $meta)) {
-                                continue;
+						foreach ( $postmeta as $meta ) {
+							if ( wpm_apply_filters_typed( 'boolean', 'backwpup_wxr_export_skip_postmeta', false, $meta->meta_key, $meta ) ) {
+								continue;
                             }
                             $wxr_post .= "\t\t<wp:postmeta>\n\t\t\t<wp:meta_key>" . $meta->meta_key . "</wp:meta_key>\n\t\t\t<wp:meta_value>" . $this->wxr_cdata($meta->meta_value) . "</wp:meta_value>\n\t\t</wp:postmeta>\n";
                         }

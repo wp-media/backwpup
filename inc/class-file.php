@@ -79,7 +79,7 @@ class BackWPup_File
 		 *
 		 * @param bool $show_folder_size whether BackWPup will show the folder size or not.
 		 */
-		$show_folder_size = (bool) apply_filters( 'backwpup_show_folder_size', (bool) get_site_option( 'backwpup_cfg_showfoldersize' ) );
+		$show_folder_size = wpm_apply_filters_typed( 'boolean', 'backwpup_show_folder_size', (bool) get_site_option( 'backwpup_cfg_showfoldersize' ) );
 
 		if ( ! $show_folder_size ) {
 			return '';
@@ -193,7 +193,7 @@ class BackWPup_File
 			 *
 			 * @param bool $protect_folders Whether the folder will be protect or not.
 			 */
-			$protect_folders = (bool) apply_filters( 'backwpup_protect_folders', (bool) get_site_option( 'backwpup_cfg_protectfolders' ) );
+			$protect_folders = wpm_apply_filters_typed( 'boolean', 'backwpup_protect_folders', (bool) get_site_option( 'backwpup_cfg_protectfolders' ) );
 			if ( $protect_folders ) {
 				self::protect_folder( $childFolder ); // phpcs:ignore
 			}

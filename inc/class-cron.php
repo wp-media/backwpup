@@ -82,7 +82,11 @@ class BackWPup_Cron
 		 *
 		 * @param bool $log_compress Whether the logs will be compressed or not.
 		 */
-		$log_compress = (bool) apply_filters( 'backwpup_gz_logs', (bool) get_site_option( 'backwpup_cfg_gzlogs' ) );
+		$log_compress = wpm_apply_filters_typed(
+			'boolean',
+			'backwpup_gz_logs',
+			(bool) get_site_option( 'backwpup_cfg_gzlogs' )
+		);
 		// Compress not compressed logs.
 		if (
 			is_readable( $log_folder ) &&
@@ -382,16 +386,16 @@ class BackWPup_Cron
 	/**
 	 * Get the basic cron expression.
 	 *
-	 * @param string $basic_expression Basic expression.
-	 * @param int    $hours Hours of the cron.
-	 * @param int    $minutes Minutes of the cron.
-	 * @param int    $day_of_week Day of the week default = 0.
-	 * @param string $day_of_month Day of the month.
+	 * @param string     $basic_expression Basic expression.
+	 * @param int|string $hours Hours of the cron.
+	 * @param int        $minutes Minutes of the cron.
+	 * @param int        $day_of_week Day of the week default = 0.
+	 * @param string     $day_of_month Day of the month.
 	 *
 	 * @return string Cron expression
 	 * @throws InvalidArgumentException If the cron expression is unsupported.
 	 */
-	public static function get_basic_cron_expression( string $basic_expression, int $hours = 0, int $minutes = 0, int $day_of_week = 0, string $day_of_month = '' ): string {
+	public static function get_basic_cron_expression( string $basic_expression, $hours = 0, int $minutes = 0, int $day_of_week = 0, string $day_of_month = '' ): string {
 		$cron = '';
 		switch ( $basic_expression ) {
 			case 'monthly':
@@ -420,6 +424,9 @@ class BackWPup_Cron
 				break;
 			case 'daily':
 				$cron = implode( ' ', [ $minutes, $hours, '*', '*', '*' ] );
+				break;
+			case 'hourly':
+				$cron = implode( ' ', [ $minutes, '*', '*', '*', '*' ] );
 				break;
 		}
 		return $cron;
@@ -452,6 +459,8 @@ class BackWPup_Cron
 		$frequency         = '';
 		$weekly_start_day  = '';
 		$monthly_start_day = '';
+		$hourly_start_time = 0;
+
 		if ( in_array( $day_of_month, array_keys( $montly_expr ) ) && '*' === $month && in_array( $day_of_week, array_keys( $montly_expr[ $day_of_month ] ) ) // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 		) {
 			$frequency         = 'monthly';
@@ -459,8 +468,11 @@ class BackWPup_Cron
 		} elseif ( '*' === $day_of_month && '*' === $month && '*' !== $day_of_week ) {
 			$frequency        = 'weekly';
 			$weekly_start_day = (int) $day_of_week;
-		} elseif ( '*' === $day_of_month && '*' === $month && '*' === $day_of_week ) {
+		} elseif ( '*' === $day_of_month && '*' === $month && '*' === $day_of_week && '*' !== $hours ) {
 			$frequency = 'daily';
+		} elseif ( '*' === $day_of_month && '*' === $month && '*' === $day_of_week && '*' === $hours ) {
+			$frequency         = 'hourly';
+			$hourly_start_time = $minutes;
 		} else {
 			throw new InvalidArgumentException( 'Unsupported cron expression' );
 		}
@@ -470,11 +482,11 @@ class BackWPup_Cron
 		return [
 			'frequency'         => $frequency,
 			'start_time'        => $start_time,
+			'hourly_start_time' => $hourly_start_time,
 			'monthly_start_day' => $monthly_start_day,
 			'weekly_start_day'  => $weekly_start_day,
 		];
 	}
-
 
 	/**
 	 * Re-evaluates and reschedules the default BackWPup cron jobs for file and database backups.

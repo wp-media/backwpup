@@ -558,7 +558,7 @@ class BackWPup_WP_API {
 						// If the user can restore, add the restore URL.
 						if ( current_user_can( 'backwpup_restore' ) && ! empty( $item['restoreurl'] ) ) {
 							$item['dataset-restore'] = [
-								'label'    => __( 'Restore Full Backup', 'backwpup' ),
+								'label'    => __( 'Restore Backup', 'backwpup' ),
 								'data-url' => wp_nonce_url(
 									add_query_arg(
 										[
@@ -903,6 +903,21 @@ class BackWPup_WP_API {
 	 */
 	public function start_backup( WP_REST_Request $request ) {
 		$params = $request->get_params();
+
+		if ( ! empty( $params['first_backup'] ) ) {
+			if ( false === get_site_transient( 'backwpup_first_backup' ) ) {
+				set_site_transient( 'backwpup_first_backup', true, HOUR_IN_SECONDS );
+			} else {
+				return new WP_REST_Response(
+					[
+						'status' => 301,
+						'url'    => network_admin_url( 'admin.php?page=backwpup' ),
+					],
+					200
+				);
+			}
+		}
+
 		if ( isset( $params['job_id'] ) ) {
 			$jobid = $params['job_id'];
 		} else {
@@ -970,12 +985,18 @@ class BackWPup_WP_API {
 		$return = [];
 
 		try {
-			$frequency            = $params['frequency'];
-			$params['start_time'] = isset( $params['start_time'] ) ? $params['start_time'] : '00:00';
-			$day_of_week          = (int) isset( $params['day_of_week'] ) ? $params['day_of_week'] : 0;
-			$day_of_month         = isset( $params['day_of_month'] ) ? $params['day_of_month'] : '';
-			$start_time           = explode( ':', $params['start_time'] );
-			$new_cron_expression  = BackWPup_Cron::get_basic_cron_expression( $frequency, $start_time[0], $start_time[1], $day_of_week, $day_of_month );
+			$frequency                   = $params['frequency'];
+			$params['start_time']        = isset( $params['start_time'] ) ? $params['start_time'] : '00:00';
+			$params['hourly_start_time'] = isset( $params['hourly_start_time'] ) ? (int) $params['hourly_start_time'] : 0;
+			$day_of_week                 = (int) isset( $params['day_of_week'] ) ? $params['day_of_week'] : 0;
+			$day_of_month                = isset( $params['day_of_month'] ) ? $params['day_of_month'] : '';
+			$start_time                  = explode( ':', $params['start_time'] );
+
+			if ( 'hourly' === $frequency ) {
+				$start_time = [ '*', $params['hourly_start_time'] ];
+			}
+
+			$new_cron_expression = BackWPup_Cron::get_basic_cron_expression( $frequency, $start_time[0], $start_time[1], $day_of_week, $day_of_month );
 
 			// Map job IDs based on type.
 			$job_ids = [

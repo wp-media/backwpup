@@ -295,7 +295,8 @@ class BackWPup_Job
 		 *
 		 * @param array $excluded_files List of excluded files.
 		 */
-		$this->exclude_from_backup = (array) apply_filters(
+		$this->exclude_from_backup = wpm_apply_filters_typed(
+			'array',
 			'backwpup_file_exclude',
 			explode( ',', trim( (string) $this->job['fileexclude'] ) )
 		);
@@ -352,7 +353,7 @@ class BackWPup_Job
 				 *
 				 * @param string $format The initial extension name.
 				 */
-				$format = (string) apply_filters( 'backwpup_generate_archive_extension', $format );
+				$format = wpm_apply_filters_typed( 'string', 'backwpup_generate_archive_extension', $format );
 				if ( ! in_array( $format, [ 'zip', 'tar', 'tar.gz', '.zip', '.tar', '.tar.gz' ], true ) ) {
 					$format = 'tar';
 				}
@@ -691,7 +692,7 @@ class BackWPup_Job
 		 *
 		 * @param string $name The initial filename.
 		 */
-		$name = (string) apply_filters( 'backwpup_generate_dump_filename', $name );
+		$name = wpm_apply_filters_typed( 'string', 'backwpup_generate_dump_filename', $name );
 		return $this->generate_filename( $name, $suffix );
 	}
 
@@ -1541,7 +1542,11 @@ class BackWPup_Job
             }
         }
 
-        $cron_request = apply_filters('cron_request', $cron_request);
+		$cron_request = wpm_apply_filters_typed(
+			'array',
+			'cron_request',
+			$cron_request
+		);
 
         if ($starttype === 'test') {
             $cron_request['args']['timeout'] = 15;
@@ -1609,14 +1614,21 @@ class BackWPup_Job
         @putenv('TMPDIR=' . BackWPup::get_plugin_data('TEMP'));
         //Write Wordpress DB errors to log
         $wpdb->suppress_errors(false);
-        $wpdb->hide_errors();
-        //set wp max memory limit
-        @ini_set('memory_limit', apply_filters('admin_memory_limit', WP_MAX_MEMORY_LIMIT));
-        //set error handler
-        if (!empty($this->logfile)) {
-            if ($this->is_debug()) {
-                set_error_handler([$this, 'log']);
-            } else {
+		$wpdb->hide_errors();
+		// set wp max memory limit.
+		@ini_set( // @phpcs:ignore
+			'memory_limit',
+			wpm_apply_filters_typed(
+				'string',
+				'admin_memory_limit',
+				WP_MAX_MEMORY_LIMIT
+			)
+		);
+		// set error handler.
+		if ( ! empty( $this->logfile ) ) {
+			if ( $this->is_debug() ) {
+				set_error_handler( [ $this, 'log' ] ); // @phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler
+			} else {
                 set_error_handler([$this, 'log'], E_ALL ^ E_NOTICE);
             }
         }
@@ -1657,8 +1669,8 @@ class BackWPup_Job
                 //'SIGIO', //Term
                 'SIGPWR', //Term
                 'SIGSYS', //Core
-            ];
-            $signals = apply_filters('backwpup_job_signals_to_handel', $signals);
+			];
+			$signals = wpm_apply_filters_typed( 'array', 'backwpup_job_signals_to_handel', $signals );
 
             declare(ticks=1);
             $this->signal = 0;

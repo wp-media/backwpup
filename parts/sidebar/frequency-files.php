@@ -23,6 +23,7 @@ try {
   $current = [
     'frequency' => '',
     'start_time' => '00:00',
+    'hourly_start_time'  => 0,
     'monthly_start_day' => "",
     'weekly_start_day' => "",
   ];
@@ -34,14 +35,39 @@ BackWPupHelpers::component("form/select", [
   "name" => "frequency",
   "label" => __("Frequency", 'backwpup'),
   "trigger" => "frequency-files",
-  "value" => $current['frequency'], // daily, weekly, monthly   
+  "value" => $current['frequency'], // hourly, daily, weekly, monthly   
   "options" => [
+    'hourly' => __('Hourly', 'backwpup'),
     "daily" => __("Daily", 'backwpup'),
     "weekly" => __("Weekly", 'backwpup'),
     "monthly" => __("Monthly", 'backwpup'),
   ],
 ]);
 ?>
+
+<div class="js-backwpup-frequency-file-show-if-hourly">
+  <?php
+  BackWPupHelpers::component( 'form/select', [
+    'name' => 'hourly_start_time',
+    'label' => __( 'Minutes', 'backwpup' ),
+    'value' => $current['hourly_start_time'],
+    'options' => [
+      '0' => 0,
+      '5' => 5,
+      '10' => 10,
+      '15' => 15,
+      '20' => 20,
+      '25' => 25,
+      '30' => 30,
+      '35' => 35,
+      '40' => 40,
+      '45' => 45,
+      '50' => 50,
+      '55' => 55,
+    ],
+  ]);
+  ?>
+</div>
 
 <div class="js-backwpup-frequency-file-show-if-monthly">
   <?php
@@ -77,6 +103,7 @@ BackWPupHelpers::component("form/select", [
   ?>
 </div>
 
+<div class="js-backwpup-frequency-file-hide-if-hourly">
 <?php
 BackWPupHelpers::component("form/text", [
   "type" => "time",
@@ -86,7 +113,9 @@ BackWPupHelpers::component("form/text", [
   "required" => true,
 ]);
 ?>
+</div>
 
+<div class="js-backwpup-frequency-file-hide-if-hourly">
 <?php
 BackWPupHelpers::component("alerts/info", [
   "type" => "alert",
@@ -94,6 +123,17 @@ BackWPupHelpers::component("alerts/info", [
   "content" => __("Making a copy of your website can slow down your site a bit. We recommend doing this at night to avoid any inconvenience.", 'backwpup'),
 ]);
 ?>
+</div>
+
+<div class="js-backwpup-frequency-file-show-if-hourly">
+<?php
+BackWPupHelpers::component( 'alerts/info', [
+  'type'    => 'alert',
+  'font'    => 'small',
+  'content' => __( 'Enable "Reduced server load" in “Advanced Settings > Jobs” to reduce website load and keep your site running smoothly during hourly backups.', 'backwpup' ),
+]);
+?>
+</div>
 
 <?php BackWPupHelpers::component("containers/scrollable-end"); ?>
 

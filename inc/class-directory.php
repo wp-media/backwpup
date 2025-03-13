@@ -84,13 +84,21 @@ class BackWPup_Directory extends DirectoryIterator {
 		 *
 		 * @param array $excluded_folders List of excluded paths.
 		 */
-		$auto_exclusion_plugins_folders = apply_filters( 'backwpup_exclusion_plugins_folders', [] );
+		$auto_exclusion_plugins_folders = wpm_apply_filters_typed(
+			'array',
+			'backwpup_exclusion_plugins_folders',
+			[]
+		);
 		/**
 		 * Filter whether BackWPup will list the cache folders to include in the backup.
 		 *
 		 * @param array $excluded_folders List of excluded paths.
 		 */
-		$auto_exclusion_plugins_cache_folders = apply_filters( 'backwpup_exclusion_plugins_cache_folders', [] );
+		$auto_exclusion_plugins_cache_folders = wpm_apply_filters_typed(
+			'array',
+			'backwpup_exclusion_plugins_cache_folders',
+			[]
+		);
 		$auto_exclusion_plugins_folders       = ( ! is_array( $auto_exclusion_plugins_folders ) ? [] : $auto_exclusion_plugins_folders );
 		$auto_exclusion_plugins_cache_folders = ( ! is_array( $auto_exclusion_plugins_cache_folders ) ? [] : $auto_exclusion_plugins_cache_folders );
 

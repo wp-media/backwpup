@@ -477,7 +477,11 @@ final class BackWPup_Admin {
 		}
 
 		// Add pages form plugins.
-		$this->page_hooks = apply_filters( 'backwpup_admin_pages', $this->page_hooks );
+		$this->page_hooks = wpm_apply_filters_typed(
+			'array',
+			'backwpup_admin_pages',
+			$this->page_hooks
+		);
 
 		global $submenu;
 		if ( isset( $submenu['backwpup'] ) ) {

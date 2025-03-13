@@ -109,8 +109,8 @@ class BackWPup_Page_Jobs extends WP_List_Table
         $actions = [];
         $actions['delete'] = __('Delete', 'backwpup');
 
-        return apply_filters('backwpup_page_jobs_get_bulk_actions', $actions);
-    }
+		return wpm_apply_filters_typed( 'array', 'backwpup_page_jobs_get_bulk_actions', $actions );
+	}
 
     /**
      * @return array
@@ -201,14 +201,14 @@ class BackWPup_Page_Jobs extends WP_List_Table
             }
             $log_name = str_replace(['.html', '.gz'], '', basename($logfile));
             $actions['lastlog'] = '<a href="' . admin_url('admin-ajax.php') . '?&action=backwpup_view_log&log=' . $log_name . '&_ajax_nonce=' . wp_create_nonce('view-log_' . $log_name) . '&amp;TB_iframe=true&amp;width=640&amp;height=440\" title="' . esc_attr($logfile) . '" class="thickbox">' . __('Last log', 'backwpup') . '</a>';
-        }
-        $actions = apply_filters('backwpup_page_jobs_actions', $actions, $item, false);
-        $r .= '<div class="job-normal"' . $job_normal_hide . '>' . $this->row_actions($actions) . '</div>';
-        if (is_object($this->job_object)) {
-            $actionsrun = [];
-            $actionsrun = apply_filters('backwpup_page_jobs_actions', $actionsrun, $item, true);
-            $r .= '<div class="job-run">' . $this->row_actions($actionsrun) . '</div>';
-        }
+		}
+		$actions = wpm_apply_filters_typed( 'array', 'backwpup_page_jobs_actions', $actions, $item, false );
+		$r      .= '<div class="job-normal"' . $job_normal_hide . '>' . $this->row_actions( $actions ) . '</div>';
+		if ( is_object( $this->job_object ) ) {
+			$actionsrun = [];
+			$actionsrun = wpm_apply_filters_typed( 'array', 'backwpup_page_jobs_actions', $actionsrun, $item, true );
+			$r         .= '<div class="job-run">' . $this->row_actions( $actionsrun ) . '</div>';
+		}
 
         return $r;
     }
@@ -944,10 +944,10 @@ class BackWPup_Page_Jobs extends WP_List_Table
 				$lastmsg = '<div class="bwu-message-error"><p>' . esc_html__( 'ERROR:', 'backwpup' ) . ' ' . sprintf( esc_html__( 'Job has ended with errors in %s seconds. You must resolve the errors for correct execution.', 'backwpup' ), $logheader['runtime'] ) . '</p></div>';
 			} elseif ( $warnings > 0 ) {
 				// Translators: %s is duration in seconds.
-				$lastmsg = '<div class="backwpup-message backwpup-warning"><p>' . esc_html__( 'WARNING:', 'backwpup' ) . ' ' . sprintf( esc_html__( 'Job has done with warnings in %s seconds. Please resolve them for correct execution.', 'backwpup' ), $logheader['runtime'] ) . '</p></div>';
+				$lastmsg = '<div class="backwpup-message backwpup-warning"><p>' . esc_html__( 'WARNING:', 'backwpup' ) . ' ' . sprintf( esc_html__( 'backup created with warnings in %s seconds. Please resolve them for correct execution.', 'backwpup' ), $logheader['runtime'] ) . '</p></div>';
 			} else {
 				// Translators: %s is duration in seconds.
-				$lastmsg = sprintf( esc_html__( 'Job done in %s seconds.', 'backwpup' ), $logheader['runtime'] );
+				$lastmsg = sprintf( esc_html__( 'Backup created in %s seconds.', 'backwpup' ), $logheader['runtime'] );
 			}
             $lasterrormsg = '';
             $done = 1;
