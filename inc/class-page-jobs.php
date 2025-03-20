@@ -290,11 +290,12 @@ class BackWPup_Page_Jobs extends WP_List_Table
         }
         if (is_object($this->job_object) && $this->job_object->job['jobid'] == $item) {
             $r .= '<div class="job-normal"' . $job_normal_hide . '>';
-        }
-        if (BackWPup_Option::get($item, 'activetype') == 'wpcron') {
-            if ($nextrun = wp_next_scheduled('backwpup_cron', ['arg' => $item]) + (get_option('gmt_offset') * 3600)) {
-                $r .= '<span title="' . sprintf(esc_html__('Cron: %s', 'backwpup'), BackWPup_Option::get($item, 'cron')) . '">' . sprintf(__('%1$s at %2$s by WP-Cron', 'backwpup'), date_i18n(get_option('date_format'), $nextrun, true), date_i18n(get_option('time_format'), $nextrun, true)) . '</span><br />';
-            } else {
+		}
+		if ( BackWPup_Option::get( $item, 'activetype' ) === 'wpcron' ) {
+			$nextrun = wp_next_scheduled( 'backwpup_cron', [ 'arg' => $item ] ) + ( get_option( 'gmt_offset' ) * 3600 );
+			if ( $nextrun ) {
+				$r .= '<span title="' . sprintf( esc_html__( 'Cron: %s', 'backwpup' ), BackWPup_Option::get( $item, 'cron' ) ) . '">' . sprintf( __( '%1$s at %2$s', 'backwpup' ), date_i18n( get_option( 'date_format' ), $nextrun, true ), date_i18n( get_option( 'time_format' ), $nextrun, true ) ) . '</span><br />'; // @phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
+			} else {
                 $r .= __('Not scheduled!', 'backwpup') . '<br />';
             }
         } elseif (BackWPup_Option::get($item, 'activetype') == 'easycron') {

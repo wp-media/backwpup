@@ -1,5 +1,5 @@
 <p class="notice-titre"><?php esc_html_e( 'You\'re currently using BackWPup version 5.0, featuring a completely redesigned interface.', 'backwpup' ); ?></p>
-<span><a class="closeIt" href="<?php echo esc_url( $bind->dismissurl ); // phpcs:ignore ?>"><?php esc_html_e( 'Dismiss', 'backwpup' ); ?></a></span>
+<a href="<?php echo esc_url( $bind->dismissurl ); // phpcs:ignore ?>" class="closeIt"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss', 'backwpup' ); ?></span></a>
 <p>
 <?php
 	printf(

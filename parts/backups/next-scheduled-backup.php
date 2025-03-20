@@ -25,7 +25,7 @@ if (!empty($file_cron_active) && (in_array($file_cron_type, [BackWPup_JobTypes::
     $file_activate = true;
     $cron_next_file = BackWPup_Cron::cron_next(BackWPup_Option::get($file_job_id, 'cron'));
     $file_next_backup = sprintf(
-        __('%1$s at %2$s by WP-Cron', 'backwpup'),
+        __('%1$s at %2$s', 'backwpup'),
         date_i18n(get_option('date_format'), $cron_next_file, true),
         date_i18n('H:i', $cron_next_file, true)
     );
@@ -35,7 +35,7 @@ if (!empty($database_cron_active) && (in_array($database_cron_type, [BackWPup_Jo
     $database_activate = true;
     $cron_next_database = BackWPup_Cron::cron_next(BackWPup_Option::get($database_job_id, 'cron'));
     $database_next_backup = sprintf(
-        __('%1$s at %2$s by WP-Cron', 'backwpup'),
+        __('%1$s at %2$s', 'backwpup'),
         date_i18n(get_option('date_format'), $cron_next_database, true),
         date_i18n('H:i', $cron_next_database, true)
     );
@@ -72,7 +72,7 @@ if (BackWPup::is_pro()) {
         "name" => "next_backup_files",
         "trigger" => "toggle-files",
         "checked" => $file_activate,
-				"data"		=> ['job-id' => $file_job_id],
+				"data"    => ['job-id' => $file_job_id],
       ]);
       ?>
     </div>
@@ -80,28 +80,36 @@ if (BackWPup::is_pro()) {
     <div class="mt-2 mb-4 flex-auto">
       <p class="text-base label-scheduled"><?php echo $file_next_backup; ?></p>
     </div>
+    
 
     <p class="flex items-center gap-4">
       <?php
-      BackWPupHelpers::component("form/button", [
-        "type" => "link",
-        "label" => __("View settings", 'backwpup'),
-        "trigger" => "open-sidebar",
-        "display" => $frequency_files,
-        "disabled" => !$file_activate,
-      ]);
+        BackWPupHelpers::component("form/button", [
+          "type" => "link",
+          "label" => __("Data", 'backwpup'),
+          "trigger" => "open-sidebar",
+          "display" => $select_files,
+          "data"		=> ['job-id' => $file_job_id],
+          "disabled" => !$file_activate,
+        ]);
       ?>
-
-      <span class="h-5 w-0 border-r border-primary-darker"></span>
-
       <?php
-      BackWPupHelpers::component("form/button", [
-        "type" => "link",
-        "label" => __("Select files", 'backwpup'),
-        "trigger" => "open-sidebar",
-        "display" => $select_files,
-        "disabled" => !$file_activate,
-      ]);
+        BackWPupHelpers::component("form/button", [
+          "type" => "link",
+          "label" => __("Frequency", 'backwpup'),
+          "trigger" => "open-sidebar",
+          "display" => $frequency_files,
+          "disabled" => !$file_activate,
+        ]);
+      ?>
+      <?php
+        BackWPupHelpers::component("form/button", [
+          "type" => "link",
+          "label" => __("Storage", 'backwpup'),
+          "trigger" => "load-and-open-sidebar",
+          "display" => "storages",
+          "data"		=> ['job-id' => $file_job_id, 'block-type' => 'children', 'block-name' => 'sidebar/storages', ],
+        ]);
       ?>
     </p>
   </div>
@@ -124,7 +132,7 @@ if (BackWPup::is_pro()) {
         "name" => "next_backup_database",
         "trigger" => "toggle-database",
         "checked" => $database_activate,
-        "data"		=> ['job-id' => $database_job_id],
+        "data"    => ['job-id' => $database_job_id],
       ]);
       ?>
     </div>
@@ -134,49 +142,33 @@ if (BackWPup::is_pro()) {
     </div>
 
     <p class="flex items-center gap-4">
-      <?php
+    <?php
       BackWPupHelpers::component("form/button", [
         "type" => "link",
-        "label" => __("View settings", 'backwpup'),
-        "trigger" => "open-sidebar",
-        "display" => $frequency_database,
-      ]);
-      ?>
-
-      <span class="h-5 w-0 border-r border-primary-darker"></span>
-
-      <?php
-      BackWPupHelpers::component("form/button", [
-        "type" => "link",
-        "label" => __("Select tables", 'backwpup'),
+        "label" => __("Data", 'backwpup'),
         "trigger" => "open-sidebar",
         "display" => "select-tables",
       ]);
       ?>
-    </p>
-  </div>
-
-  <div class="flex-1 p-8 bg-white rounded-lg flex flex-col">
-    <?php
-    BackWPupHelpers::component("heading", [
-      "level" => 2,
-      "title" => __("Backup will be stored on:", 'backwpup'),
-    ]);
-    ?>
-
-    <div class="mt-2 mb-4 flex-auto" id="backwpup-storage-list-compact-container">
-      <?php BackWPupHelpers::component("storage-list-compact", ["storages" => $storage_destination]); ?>
-    </div>
-
-    <p class="flex items-center gap-4">
       <?php
       BackWPupHelpers::component("form/button", [
         "type" => "link",
-        "label" => __("View settings", 'backwpup'),
+        "label" => __("Frequency", 'backwpup'),
         "trigger" => "open-sidebar",
-        "display" => "storages",
+        "display" => $frequency_database,
       ]);
       ?>
-    </p>
+      <?php
+        BackWPupHelpers::component("form/button", [
+          "type" => "link",
+          "label" => __("Storage", 'backwpup'),
+          "trigger" => "load-and-open-sidebar",
+          "display" => "storages",
+          "data"		=> ['job-id' => $database_job_id, 'block-type' => 'children', 'block-name' => 'sidebar/storages',  ]
+        ]);
+      ?>      
+    </p> 
   </div>
+
+  
 </div>

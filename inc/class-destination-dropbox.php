@@ -289,8 +289,10 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
             BackWPup_Admin::message('DROPBOX: ' . $e->getMessage(), true);
         }
 
-        set_site_transient('backwpup_' . strtolower($jobdest), $files, YEAR_IN_SECONDS);
-    }
+		$key = 'backwpup_' . strtolower( $jobdest );
+
+		wpm_apply_filters_typed( 'null', 'backwpup_update_backup_history', $key, $files );
+	}
 
     /**
      * {@inheritdoc}
@@ -358,10 +360,11 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
                         ['path' => $job_object->job['dropboxdir'] . $file]
                     ); //delete files on Cloud
 
-                    foreach ($files as $key => $filedata) {
-                        if ($filedata['file'] == '/' . $job_object->job['dropboxdir'] . $file) {
-                            unset($files[$key]);
-                        }
+					foreach ( $files as $key => $filedata ) {
+						if ( $filedata['file'] === $job_object->job['dropboxdir'] . $file ) {
+							unset( $files[ $key ] );
+							break;
+						}
                     }
                     ++$numdeltefiles;
                 }
@@ -380,9 +383,11 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
                     );
                 }
             }
-        }
-        set_site_transient('backwpup_' . $jobid . '_dropbox', $files, YEAR_IN_SECONDS);
-    }
+		}
+		$key = 'backwpup_' . $jobid . '_dropbox';
+
+		wpm_apply_filters_typed( 'null', 'backwpup_update_backup_history', $key, $files );
+	}
 
     public function job_run_archive(BackWPup_Job $job_object): bool
     {

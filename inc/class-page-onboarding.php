@@ -17,13 +17,6 @@ class BackWPup_Page_Onboarding {
 	public static $type_job_database = [ 'DBDUMP' ];
 
 	/**
-	 * The type of job for both files and database backup.
-	 *
-	 * @var array
-	 */
-	public static $type_job_both = [ 'FILE', 'DBDUMP', 'WPPLUGIN' ];
-
-	/**
 	 * Save post form.
 	 * TODO Refactor this method using a Job class.
 	 */
@@ -34,151 +27,62 @@ class BackWPup_Page_Onboarding {
 		$job_types               = BackWPup::get_job_types();
 		$job_frequency           = [];
 		$default_id_job_files    = get_site_option( 'backwpup_backup_files_job_id', false );
-		$default_id_job_both     = get_site_option( 'backwpup_backup_files_job_id', false );
-		$default_id_job_database = $default_id_job_both + 1;
-		// Basic frequency.
-		if ( isset( $sanitized_data['files_frequency'] ) && isset( $sanitized_data['database_frequency'] ) ) {
-			if ( $sanitized_data['files_frequency'] === $sanitized_data['database_frequency'] ) {
-				$job_frequency['database'] = [
-					'job_id'    => $default_id_job_database,
-					'frequency' => $sanitized_data['files_frequency'],
-					'type'      => BackWPup_JobTypes::$type_job_database,
-					'activ'     => false,
-				];
-				$job_frequency['both']     = [
-					'job_id'    => $default_id_job_both,
-					'frequency' => $sanitized_data['files_frequency'],
-					'type'      => BackWPup_JobTypes::$type_job_both,
-					'activ'     => true,
-				];
-			} else {
-				$job_frequency['files']    = [
-					'job_id'    => $default_id_job_files,
-					'frequency' => $sanitized_data['files_frequency'],
-					'type'      => BackWPup_JobTypes::$type_job_files,
-					'activ'     => true,
-				];
-				$job_frequency['database'] = [
-					'job_id'    => $default_id_job_database,
-					'frequency' => $sanitized_data['database_frequency'],
-					'type'      => BackWPup_JobTypes::$type_job_database,
-					'activ'     => true,
-				];
-			}
-		} elseif ( isset( $sanitized_data['files_frequency'] ) ) {
-			$job_frequency['files']    = [
+		$default_id_job_database = $default_id_job_files + 1;
+
+		// The 2 base jobs.
+		$job_frequency = [
+			'files'    => [
 				'job_id'    => $default_id_job_files,
-				'frequency' => $sanitized_data['files_frequency'],
+				'frequency' => $sanitized_data['files_frequency'] ?? 'daily',
 				'type'      => BackWPup_JobTypes::$type_job_files,
-				'activ'     => true,
-			];
-			$job_frequency['database'] = [
+				'activ'     => isset( $sanitized_data['files_frequency'] ),
+			],
+			'database' => [
 				'job_id'    => $default_id_job_database,
-				'frequency' => $sanitized_data['files_frequency'],
+				'frequency' => $sanitized_data['database_frequency'] ?? 'daily',
 				'type'      => BackWPup_JobTypes::$type_job_database,
-				'activ'     => false,
-			];
-		} elseif ( isset( $sanitized_data['database_frequency'] ) ) {
-			$job_frequency['files']    = [
-				'job_id'    => $default_id_job_files,
-				'frequency' => $sanitized_data['database_frequency'],
-				'type'      => BackWPup_JobTypes::$type_job_files,
-				'activ'     => false,
-			];
-			$job_frequency['database'] = [
-				'job_id'    => $default_id_job_database,
-				'frequency' => $sanitized_data['database_frequency'],
-				'type'      => BackWPup_JobTypes::$type_job_database,
-				'activ'     => true,
-			];
-		}
-		// /Basic frequency.
-		// Advanced frequency.
-		// TODO
-		// /Advanced frequency.
+				'activ'     => isset( $sanitized_data['database_frequency'] ),
+			],
+		];
+
 		foreach ( $job_frequency as $key => $value ) {
 			// General Part.
-			if ( true === $save ) {
-				switch ( $key ) {
-					case 'both':
-						update_site_option( 'backwpup_backup_files_job_id', $value['job_id'] );
-						update_site_option( 'backwpup_backup_database_job_id', $value['job_id'] );
-						BackWPup_Option::update( $value['job_id'], 'name', BackWPup_JobTypes::$name_job_both );
-						break;
-					case 'files':
-						update_site_option( 'backwpup_backup_files_job_id', $value['job_id'] );
-						BackWPup_Option::update( $value['job_id'], 'name', BackWPup_JobTypes::$name_job_files );
-						break;
-					case 'database':
-						update_site_option( 'backwpup_backup_database_job_id', $value['job_id'] );
-						BackWPup_Option::update( $value['job_id'], 'name', BackWPup_JobTypes::$name_job_database );
-						break;
-				}
-				BackWPup_Option::update( $value['job_id'], 'jobid', (int) $value['job_id'] );
-				BackWPup_Option::update( $value['job_id'], 'backuptype', $default_values['backuptype'] );
-				BackWPup_Option::update( $value['job_id'], 'type', $value['type'] );
+			update_site_option( "backwpup_backup_{$key}_job_id", $value['job_id'] );
+			BackWPup_Option::update( $value['job_id'], 'name', BackWPup_JobTypes::${"name_job_{$key}"} );
+			BackWPup_Option::update( $value['job_id'], 'jobid', (int) $value['job_id'] );
+			BackWPup_Option::update( $value['job_id'], 'backuptype', $default_values['backuptype'] );
+			BackWPup_Option::update( $value['job_id'], 'type', $value['type'] );
+			BackWPup_Option::update( $value['job_id'], 'mailaddresslog', sanitize_email( $default_values['mailaddresslog'] ) );
+			BackWPup_Option::update( $value['job_id'], 'mailaddresssenderlog', $default_values['mailaddresssenderlog'] );
+			BackWPup_Option::update( $value['job_id'], 'mailerroronly', $default_values['mailerroronly'] );
+			BackWPup_Option::update( $value['job_id'], 'archiveencryption', $default_values['archiveencryption'] );
+			BackWPup_Option::update( $value['job_id'], 'archiveformat', $default_values['archiveformat'] );
+			BackWPup_Option::update( $value['job_id'], 'archivename', BackWPup_Job::sanitize_file_name( BackWPup_Option::normalize_archive_name( $default_values['archivename'], $value['job_id'], false ) ) );
 
-				$email_log    = sanitize_email( $default_values['mailaddresslog'] );
-				$email_sender = $default_values['mailaddresssenderlog'];
-				BackWPup_Option::update( $value['job_id'], 'mailaddresslog', $email_log );
-				BackWPup_Option::update( $value['job_id'], 'mailaddresssenderlog', $email_sender );
-				BackWPup_Option::update( $value['job_id'], 'mailerroronly', $default_values['mailerroronly'] );
+			// Cron part.
+			BackWPup_Option::update( $value['job_id'], 'cron', BackWPup_Cron::get_basic_cron_expression( $value['frequency'] ) );
 
-				BackWPup_Option::update( $value['job_id'], 'archiveencryption',  $default_values['archiveencryption'] );
-				BackWPup_Option::update( $value['job_id'], 'archiveformat', $default_values['archiveformat'] );
-				BackWPup_Option::update( $value['job_id'], 'archivename', BackWPup_Job::sanitize_file_name( BackWPup_Option::normalize_archive_name( $default_values['archivename'], $value['job_id'], false ) ) );
-			}
-			// /General Part
-			// Test if job type makes backup.
-			$makes_file = false;
-			foreach ( $job_types as $type_id => $job_type ) {
-				if ( in_array( $type_id, $value['type'], true ) ) {
-					if ( $job_type->creates_file() ) {
-						$makes_file = true;
-						break;
-					}
-				}
+			if ( $value['activ'] ) {
+				BackWPup_Option::update( $value['job_id'], 'activetype', $default_values['activetype'] );
+				$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $value['job_id'], 'cron' ) );
+				wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $value['job_id'] ] );
+				wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $value['job_id'] ] );
+			} else {
+				BackWPup_Option::update( $value['job_id'], 'activetype', '' );
 			}
 
-			// Cron Part.
-			if ( true === $save ) {
-				BackWPup_Option::update( $value['job_id'], 'cron', BackWPup_Cron::get_basic_cron_expression( $value['frequency'] ) );
-				// Decisions not options.
-				if ( true === $value['activ'] ) {
-					// By default we use wpcron.
-					BackWPup_Option::update( $value['job_id'], 'activetype', $default_values['activetype'] );
-					$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $value['job_id'], 'cron' ) );
-					// remove old schedule.
-					wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $value['job_id'] ] );
-					// make new schedule.
-					wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $value['job_id'] ] );
-				} else {
-					// No schedule for inactiv jobs.
-					BackWPup_Option::update( $value['job_id'], 'activetype', '' );
-				}
+			// Save other form parts.
+			if ( 'files' === $key && isset( $sanitized_data['backup_files'] ) && 'on' === $sanitized_data['backup_files'] ) {
+				$job_types['FILE']->edit_form_post_save( $value['job_id'] );
 			}
-			// /Cron Part.
-			// Files Part.
-			if ( isset( $sanitized_data['backup_files'] ) && 'on' === $sanitized_data['backup_files'] ) {
-				if ( true === $save ) {
-					$job_types['FILE']->edit_form_post_save( $value['job_id'] );
-				}
+
+			if ( 'database' === $key && isset( $sanitized_data['backup_database'] ) && 'on' === $sanitized_data['backup_database'] ) {
+				$job_types['DBDUMP']->edit_form_post_save( $value['job_id'] );
 			}
-			// /Files Part.
-			// Databade Part.
-			if ( isset( $sanitized_data['backup_database'] ) && 'on' === $sanitized_data['backup_database'] ) {
-				if ( true === $save ) {
-					$job_types['DBDUMP']->edit_form_post_save( $value['job_id'] );
-				}
-			}
-			// /Database Part.
-			// Destination and storage part.
-			$destinations = BackWPup::get_registered_destinations();
-			if ( true === $save ) {
-				BackWPup_Option::update( $value['job_id'], 'destinations', $sanitized_data['onboarding_storage'] );
-			}
-			// /Destination and storage part.
+
+			BackWPup_Option::update( $value['job_id'], 'destinations', $sanitized_data['onboarding_storage'] );
 		}
+
 		// Onboarding OK.
 		$onboarding_done = true;
 		update_site_option( 'backwpup_onboarding', ! $onboarding_done );

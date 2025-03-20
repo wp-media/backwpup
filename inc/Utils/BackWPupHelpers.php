@@ -48,10 +48,11 @@ class BackWPupHelpers {
 	 *
 	 * @param string $component The name of the component file to include.
 	 * @param bool   $return    Whether to return the HTML instead of echoing it.
+	 * @param array  $args      Variables to pass to the children.
 	 *
 	 * @return string|null HTML content of the component if `$return` is true; otherwise, null.
 	 */
-	public static function children( string $component, bool $return = false ) { // @phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.returnFound
+	public static function children( string $component, bool $return = false, array $args = [] ) { // @phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.returnFound
 		$path = untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . "/parts/{$component}.php";
 		// Check if Pro version is active and try pro path if file not found.
 		if ( ! file_exists( $path ) && BackWPup::is_pro() ) {
@@ -61,6 +62,10 @@ class BackWPupHelpers {
 		if ( ! file_exists( $path ) ) {
 			return;
 		}
+		// Extract the arguments for the component context.
+		// Avoid overwriting built-in variables.
+		extract( $args, EXTR_SKIP ); // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
+
 		// Start output buffering.
 		ob_start();
 		include $path; // Execute the PHP file in the local context of extracted arguments.

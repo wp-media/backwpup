@@ -228,11 +228,10 @@ class BackWPup_Job
             return false;
         }
 
-        if ($job_object = unserialize($file_data)) {
-            if ($job_object instanceof BackWPup_Job) {
-                return $job_object;
-            }
-        }
+		$job_data = json_decode( $file_data, true );
+		if ( ! empty( $job_data ) ) {
+			return self::init( $job_data );
+		}
 
         return false;
     }
@@ -746,8 +745,8 @@ class BackWPup_Job
 
     private function write_running_file()
     {
-        $clone = clone $this;
-        $data = '<?php //' . serialize($clone);
+		$clone = clone $this;
+		$data  = '<?php //' . wp_json_encode( get_object_vars( $clone ) );
 
         $write = file_put_contents(BackWPup::get_plugin_data('running_file'), $data);
         if (!$write || $write < strlen($data)) {
@@ -2958,5 +2957,22 @@ class BackWPup_Job
 			BackWPup_Option::update( $newjobid, $key, $option );
 		}
 		return $newjobid;
+	}
+
+	/**
+	 * Init and instantiate job instance.
+	 *
+	 * @param array $args Job arguments.
+	 * @return self
+	 */
+	public static function init( $args = [] ) {
+		$instance = new self();
+		foreach ( $args as $key => $value ) {
+			if ( ! isset( $instance->$key ) ) {
+				continue;
+			}
+			$instance->$key = $value;
+		}
+		return $instance;
 	}
 }

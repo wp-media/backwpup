@@ -40,7 +40,11 @@
 
 /* Apply some styles on the WP Content area */
 #wpcontent {
-  @apply min-h-wp bg-white p-4 font-body text-primary-darker;
+  @apply min-h-wp bg-white p-4;
+}
+
+.backwpup-typography {
+  @apply font-body text-primary-darker;
 }
 
 @media screen and (max-width: 782px) {

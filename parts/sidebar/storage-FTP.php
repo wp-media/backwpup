@@ -1,12 +1,20 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+$job_id = $job_id ?? null;
 BackWPupHelpers::component("closable-heading", [
   'title' => __("FTP Settings", 'backwpup'),
   'type' => 'sidebar'
 ]);
+if (null === $job_id) {
+  $ftpdir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
+  $ftpmaxbackups = 15;
+} else {
+  $ftpdir = BackWPup_Option::get($job_id, 'ftpdir', trailingslashit(sanitize_title_with_dashes(get_bloginfo('name'))));
+  $ftpmaxbackups = esc_attr(BackWPup_Option::get($job_id, 'ftpmaxbackups', 15));
+}
 ?>
 
-<?php if (isset($is_in_form) && false === $is_in_form) : ?>
+<?php if (isset($is_in_form) && ( false === $is_in_form || 'false' === $is_in_form )) : ?>
   <p>
     <?php
     BackWPupHelpers::component("form/button", [
@@ -14,8 +22,9 @@ BackWPupHelpers::component("closable-heading", [
       "label" => __("Back to Storages", 'backwpup'),
       "icon_name" => "arrow-left",
       "icon_position" => "before",
-      "trigger" => "open-sidebar",
+      "trigger" => "load-and-open-sidebar",
       "display" => "storages",
+      "data"		=> ['job-id' => $job_id, 'block-type' => 'children', 'block-name' => 'sidebar/storages',  ]
     ]);
     ?>
   </p>
@@ -41,7 +50,7 @@ BackWPupHelpers::component("closable-heading", [
           "name" => "ftphost",
           "identifier" => "ftphost",
           "label" => __("FTP Server", 'backwpup'),
-          "value" => esc_attr(BackWPup_Option::get($jobid, 'ftphost')),
+          "value" => esc_attr(BackWPup_Option::get($job_id, 'ftphost')),
           "required" => true,
         ]);
         ?>
@@ -55,7 +64,7 @@ BackWPupHelpers::component("closable-heading", [
           "name" => "ftphostport",
           "identifier" => "ftphostport",
           "label" => __("Port", 'backwpup'),
-          "value" => esc_attr(BackWPup_Option::get($jobid, 'ftphostport', 21)),
+          "value" => esc_attr(BackWPup_Option::get($job_id, 'ftphostport', 21)),
           "required" => true,
         ]);
         ?>
@@ -67,7 +76,7 @@ BackWPupHelpers::component("closable-heading", [
       "name" => "ftpuser",
       "identifier" => "ftpuser",
       "label" => __("Username", 'backwpup'),
-      "value" => esc_attr(BackWPup_Option::get($jobid, 'ftpuser')),
+      "value" => esc_attr(BackWPup_Option::get($job_id, 'ftpuser')),
       "required" => true,
     ]);
     ?>
@@ -79,7 +88,7 @@ BackWPupHelpers::component("closable-heading", [
       "type" => "password",
       "label" => __("Password", 'backwpup'),
       "value" => esc_attr(
-            BackWPup_Encryption::decrypt(BackWPup_Option::get($jobid, 'ftppass'))),
+            BackWPup_Encryption::decrypt(BackWPup_Option::get($job_id, 'ftppass'))),
       "required" => true,
     ]);
     ?>
@@ -92,7 +101,7 @@ BackWPupHelpers::component("closable-heading", [
 			"min" => 1,
 			"max" => 300,
       "label" => __("Timeout for FTP connection (in seconds)", 'backwpup'),
-      "value" => esc_attr(BackWPup_Option::get($jobid, 'ftptimeout', 90)),
+      "value" => esc_attr(BackWPup_Option::get($job_id, 'ftptimeout', 90)),
       "required" => true,
     ]);
     ?>
@@ -102,7 +111,7 @@ BackWPupHelpers::component("closable-heading", [
       "name" => "ftpssl",
       "identifier" => "ftpssl",
 			"disabled" => !function_exists('ftp_ssl_connect'),
-      "checked" => BackWPup_Option::get($jobid, 'ftpssl', false),
+      "checked" => BackWPup_Option::get($job_id, 'ftpssl', false),
       "label" => __("Use explicit SSL-FTP connexion", 'backwpup'),
 			"tooltip" => __("This option is only available if your server supports SSL connections.", 'backwpup'),
     ]);
@@ -112,7 +121,7 @@ BackWPupHelpers::component("closable-heading", [
     BackWPupHelpers::component("form/checkbox", [
       "name" => "ftppasv",
       "identifier" => "ftppasv",
-      "checked" => BackWPup_Option::get($jobid, 'ftppasv', true),
+      "checked" => BackWPup_Option::get($job_id, 'ftppasv', true),
       "label" => __("Use FTP passive mode", 'backwpup'),
     ]);
     ?>
@@ -135,7 +144,7 @@ BackWPupHelpers::component("closable-heading", [
       "name" => "ftpdir",
       "identifier" => "ftpdir",
       "label" => __("Folder to store files in", 'backwpup'),
-      "value" => BackWPup_Option::get($jobid, 'ftpdir', trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')))),
+      "value" => $ftpdir,
       "required" => true,
     ]);
     ?>
@@ -147,7 +156,7 @@ BackWPupHelpers::component("closable-heading", [
       "type" => "number",
       "min" => 1,
       "label" => __("Max backups to retain", 'backwpup'),
-      "value" => esc_attr(BackWPup_Option::get($jobid, 'ftpmaxbackups', 15)),
+      "value" => $ftpmaxbackups,
       "required" => true,
     ]);
     ?>
@@ -178,9 +187,10 @@ BackWPupHelpers::component("closable-heading", [
     "type" => "primary",
     "label" => __("Save & Test connection", 'backwpup'),
     "full_width" => true,
-    "trigger" => "test-ftp-storage",
+    "trigger" => "test-FTP-storage",
     "data" => [
       "storage" => "sftp",
+      "job-id" => $job_id,
     ],
   ]);
   ?>

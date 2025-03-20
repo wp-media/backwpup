@@ -1,16 +1,29 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 use Inpsyde\BackWPup\MsAzureDestinationConfiguration;
-$jobid = get_site_option( 'backwpup_backup_files_job_id', false );
+$job_id = $job_id ?? null;
 $msazure = BackWPup::get_destination("msazure");
 $msazure->edit_inline_js();
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Microsoft Azure Settings", 'backwpup'),
   'type' => 'sidebar'
 ]);
+if (null === $job_id) {
+  $msazuredir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
+  $msazuremaxbackups = 15;
+} else {
+  $msazuredir = esc_attr(BackWPup_Option::get(
+    $job_id,
+    "msazuredir",
+    trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')))));
+  $msazuremaxbackups = esc_attr(BackWPup_Option::get(
+    $job_id,
+    "msazuremaxbackups",
+    3));
+}
 ?>
 
-<?php if (isset($is_in_form) && false === $is_in_form) : ?>
+<?php if (isset($is_in_form) && ( false === $is_in_form || 'false' === $is_in_form )) : ?>
   <p>
     <?php
     BackWPupHelpers::component("form/button", [
@@ -18,8 +31,9 @@ BackWPupHelpers::component("closable-heading", [
       "label" => __("Back to Storages", 'backwpup'),
       "icon_name" => "arrow-left",
       "icon_position" => "before",
-      "trigger" => "open-sidebar",
+      "trigger" => "load-and-open-sidebar",
       "display" => "storages",
+      "data"		=> ['job-id' => $job_id, 'block-type' => 'children', 'block-name' => 'sidebar/storages',  ]
     ]);
     ?>
   </p>
@@ -43,7 +57,7 @@ BackWPupHelpers::component("closable-heading", [
       "name" => "msazureaccname",
       "identifier" => "msazureaccname",
       "label" => __("Account name", 'backwpup'),
-      "value" => esc_attr(BackWPup_Option::get($jobid, MsAzureDestinationConfiguration::MSAZURE_ACCNAME)),
+      "value" => esc_attr(BackWPup_Option::get($job_id, MsAzureDestinationConfiguration::MSAZURE_ACCNAME)),
       "required" => true,
     ]);
     ?>
@@ -53,7 +67,7 @@ BackWPupHelpers::component("closable-heading", [
       "name" => "msazurekey",
       "identifier" => "msazurekey",
       "label" => __("Access key", 'backwpup'),
-      "value" => esc_attr(BackWPup_Encryption::decrypt(BackWPup_Option::get($jobid, MsAzureDestinationConfiguration::MSAZURE_KEY))),
+      "value" => esc_attr(BackWPup_Encryption::decrypt(BackWPup_Option::get($job_id, MsAzureDestinationConfiguration::MSAZURE_KEY))),
       "required" => true,
     ]);
     ?>
@@ -70,12 +84,12 @@ BackWPupHelpers::component("closable-heading", [
   ]);
   ?>
   <div id="msazureBucketContainer">
-    <?php if (BackWPup_Option::get($jobid, MsAzureDestinationConfiguration::MSAZURE_ACCNAME) && BackWPup_Option::get($jobid, MsAzureDestinationConfiguration::MSAZURE_KEY)) : ?>
+    <?php if (BackWPup_Option::get($job_id, MsAzureDestinationConfiguration::MSAZURE_ACCNAME) && BackWPup_Option::get($job_id, MsAzureDestinationConfiguration::MSAZURE_KEY)) : ?>
       <?php
         $msazure->edit_ajax([
-          MsAzureDestinationConfiguration::MSAZURE_ACCNAME => BackWPup_Option::get($jobid, MsAzureDestinationConfiguration::MSAZURE_ACCNAME),
-          MsAzureDestinationConfiguration::MSAZURE_KEY => BackWPup_Encryption::decrypt(BackWPup_Option::get($jobid, MsAzureDestinationConfiguration::MSAZURE_KEY)),
-          'msazureselected' => BackWPup_Option::get($jobid, MsAzureDestinationConfiguration::MSAZURE_CONTAINER),
+          MsAzureDestinationConfiguration::MSAZURE_ACCNAME => BackWPup_Option::get($job_id, MsAzureDestinationConfiguration::MSAZURE_ACCNAME),
+          MsAzureDestinationConfiguration::MSAZURE_KEY => BackWPup_Encryption::decrypt(BackWPup_Option::get($job_id, MsAzureDestinationConfiguration::MSAZURE_KEY)),
+          'msazureselected' => BackWPup_Option::get($job_id, MsAzureDestinationConfiguration::MSAZURE_CONTAINER),
         ]);
       ?>
     <?php else : ?>
@@ -119,10 +133,7 @@ BackWPupHelpers::component("closable-heading", [
       "name" => "msazuredir",
       "identifier" => "msazuredir",
       "label" => __("Folder to store files in", 'backwpup'),
-      "value" => esc_attr(BackWPup_Option::get(
-        $jobid,
-        "msazuredir",
-        "/folder")),
+      "value" => $msazuredir,
       "required" => true,
     ]);
     ?>
@@ -134,10 +145,7 @@ BackWPupHelpers::component("closable-heading", [
       "type" => "number",
       "min" => 1,
       "label" => __("Max backups to retain", 'backwpup'),
-      "value" => esc_attr(BackWPup_Option::get(
-        $jobid,
-        "msazuremaxbackups",
-        3)),
+      "value" => $msazuremaxbackups,
       "required" => true,
     ]);
     ?>
@@ -159,9 +167,10 @@ BackWPupHelpers::component("form/button", [
   "type" => "primary",
   "label" => __("Save & Test connection", 'backwpup'),
   "full_width" => true,
-  "trigger" => "test-msazure-storage",
+  "trigger" => "test-MSAZURE-storage",
   "data" => [
     "storage" => "microsoft-azure",
+    "job-id" => $job_id,
   ],
 ]);
 ?>

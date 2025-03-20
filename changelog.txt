@@ -1,4 +1,13 @@
 == Changelog ==
+= 5.0.8 =
+Release date: March 20, 2025
+
+* New Feature: Allow to choose storage for specific backup job
+* Enhancement: Security enhancements related to unserialize function
+* Enhancement: Remove unnecessary strings in the scheduled backup jobs blocks
+* Enhancement: Improve welcome banner's UI
+* Bugfix: Make sure not to display backups which were removed using UI in the backup history list
+
 = 5.0.7 =
 Release date: March 13, 2025
 

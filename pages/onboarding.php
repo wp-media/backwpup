@@ -9,7 +9,7 @@
     "name" => "onboarding",
     "value" => "1",
 ]); ?>
-<div class="max-w-screen-xl flex flex-col gap-4">
+<div class="max-w-screen-xl flex flex-col gap-4 backwpup-typography">
 
   <?php
   BackWPupHelpers::component("app/header", [

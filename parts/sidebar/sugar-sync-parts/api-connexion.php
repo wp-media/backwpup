@@ -1,8 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
-
-$jobid = get_site_option( 'backwpup_backup_files_job_id', false );
-$token = BackWPup_Option::get($jobid, 'sugarrefreshtoken', false);
+if (null === $job_id) {
+	$token = false;
+} else {
+	$token = BackWPup_Option::get($job_id, 'sugarrefreshtoken', false);
+}
 ?>
 <?php
 BackWPupHelpers::component("heading", [
@@ -42,6 +44,7 @@ BackWPupHelpers::component("heading", [
 			"label" => __("Authenticate with SugarSync", 'backwpup'),
 			"trigger" => "authenticate-sugar-sync",
 			"full_width" => true,
+			"data" => ['job-id' => $job_id],
 		]);
 		?>
 	<?php else : ?>
@@ -51,6 +54,7 @@ BackWPupHelpers::component("heading", [
 			"label" => __("Delete Sugar Sync Authentication", 'backwpup'),
 			"full_width" => true,
 			"trigger" => "delete-sugar-sync-auth",
+			"data" => ['job-id' => $job_id],
 		]);
 		?>
 		<?php

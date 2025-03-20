@@ -55,7 +55,7 @@ jQuery(document).ready(function ($) {
   });
 
   // Function to refresh the storage destinations.
-  window.refresh_storage_destinations= function (destinationName, authenticated) {
+  window.refresh_storage_destinations= function (job_id, destinationName, authenticated) {
     let checkBox = $('#destination-'+destinationName);
     checkBox.prop('checked', authenticated);
 
@@ -68,6 +68,7 @@ jQuery(document).ready(function ($) {
     requestWPApi(
       backwpupApi.updatejob,
       {
+        'job_id': job_id,
         'storage_destinations': storage_destinations,
       },
       function (response) {
@@ -169,7 +170,6 @@ jQuery(document).ready(function ($) {
       backwpupApi.license_update,
       data,
       function(response) {
-        console.log(response);
         requestWPApi(
           backwpupApi.getblock,
           {
@@ -190,13 +190,9 @@ jQuery(document).ready(function ($) {
           }
         );
         backwpup_license_refresh(next_block);
-        if (response.status === 200) {
-          console.log(response);
-        }
       },
       'POST',
       function(request, error) {
-        console.log(request.responseJSON.error);
         requestWPApi(
           backwpupApi.getblock,
           {
@@ -233,7 +229,6 @@ jQuery(document).ready(function ($) {
   */
   window.backwpup_license_refresh = function(activated) {
     let block_name = 'sidebar/license-parts/'+activated;
-    console.log(block_name);
     requestWPApi(
       backwpupApi.getblock,
       {
@@ -245,6 +240,65 @@ jQuery(document).ready(function ($) {
         $('.js-backwpup-license_update').on('click', update_license);
       },
       'POST'
+    );
+  }
+
+  /**
+   * Load and open the storage sidebar using the WordPress API.
+   * 
+   * @param {*} event 
+   */
+  window.load_and_open_storage = function(event) {
+    let that = $(event.currentTarget);
+    let panel = that.data("content");
+    let job_id = that.data("job-id");
+    let storage = that.data("storage");
+    let target = $sidebar.find("#sidebar-" + panel);
+    requestWPApi(
+      backwpupApi.getblock,
+      {
+        'block_name': 'sidebar/' + panel,
+        'block_type': 'children',
+        'block_data': {
+          'job_id': job_id,
+          'is_in_form': false,
+        },
+      },
+      function(response) {
+        target.html(response);
+        $(".js-backwpup-close-sidebar").on('click', closeSidebar);
+        $(".js-backwpup-load-and-open-sidebar").on('click', load_and_open_sidebar);
+        switch (storage) {
+          case 'DROPBOX':
+            initDropboxEvents();
+            break;
+          case 'SUGARSYNC':
+            initSugarSyncEvents();
+            $('.js-backwpup-test-' + storage + '-storage').on('click', window['test_' + storage + '_storage']);
+            break;
+          case 'GDRIVE':
+            initGdriveEvents();
+            $('.js-backwpup-test-GDRIVE-storage').on('click', window['test_GDRIVE_storage']);
+            break;
+          case 'HIDRIVE':
+            initHidriveEvents();
+            break;
+          case 'ONEDRIVE':
+            initOnedriveEvents();
+            $('.js-backwpup-test-ONEDRIVE-storage').on('click', window['test_ONEDRIVE_storage']);
+            break;
+          default:
+            $('.js-backwpup-test-' + storage + '-storage').on('click', window['test_' + storage + '_storage']);
+            break;
+        }
+        
+        openSidebar(panel);
+      },
+      'POST',
+      function(request, error) {
+        console.log(error);
+        console.log(request);
+      }
     );
   }
 
@@ -267,8 +321,46 @@ jQuery(document).ready(function ($) {
     $sidebar.addClass("translate-x-[450px]");
   }
 
+
+  /**
+   * Load and open the sidebar using the WordPress API.
+   * 
+   * @param {*} event 
+   */
+  window.load_and_open_sidebar = function(event) {
+    let that = $(event.currentTarget);
+    let panel = that.data("content"); // Get the panel to open
+    let job_id = that.data("job-id");
+    $sidebar.find("article").hide();
+    let target = $sidebar.find("#sidebar-" + panel);
+    requestWPApi(
+      backwpupApi.getblock,
+      {
+        'block_name': that.data("block-name"),
+        'block_type': that.data("block-type"),
+        'block_data': {
+          'job_id': job_id,
+        },
+      },
+      function(response) {
+        // Fill infos
+        target.html(response);
+        openSidebar(panel);
+        $(".js-backwpup-close-sidebar").on('click', closeSidebar);
+        $(".js-backwpup-toggle-storage").on('click', load_and_open_storage);
+      },
+      'POST',
+      function(request, error) {
+        console.log(error);
+        console.log(request);
+      }
+    );
+  }
+  $(".js-backwpup-load-and-open-sidebar").on('click', load_and_open_sidebar);
+
+
   $(".js-backwpup-open-sidebar").on('click', function () {
-    const panel = $(this).data("content");
+    const panel = $(this).data("content"); // Get the panel to open
     openSidebar(panel);
   });
 
@@ -298,56 +390,17 @@ jQuery(document).ready(function ($) {
     $modal.addClass("hidden").removeClass("flex");
   }
 
-  function initSugarSyncEvents() {
-    // Toggle SugarSync authenticate action.
-    $('.js-backwpup-authenticate-sugar-sync').on('click', function() {
-      let data = {
-        'cloud_name' : 'sugarsync',
-        'sugaremail' : $('#sugaremail').val(),
-        'sugarpass' : $('#sugarpass').val(),
-      };
-
-      requestWPApi(
-        backwpupApi.authenticate_cloud,
-        data,
-        function(response) {
-          $('#sugarsynclogin').html(response);
-          $('#sugarsync_authenticate_infos').html("");
-          initSugarSyncEvents();
-        },
-        "POST",
-        function(request, error) {
-          $('#sugarsync_authenticate_infos').html(request.responseText);
-        }
-      );
-    });
-
-    // Delete Sugar Sync authentication.
-    $('.js-backwpup-delete-sugar-sync-auth').on('click', function() {
-      const data = {
-        'cloud_name' : 'sugarsync',
-      }
-      requestWPApi(
-        backwpupApi.delete_auth_cloud,
-        data,
-        function (response) {
-          refresh_storage_destinations('SUGARSYNC', response.connected);
-          $('#sugarsynclogin').html(response);
-          initSugarSyncEvents();
-        },
-        "POST",
-        function (request, error) {
-          alert("Error in cloud configuration");
-        }
-      );
-    });
-
+  //Refresh the SugarSync root folders.
+  window.refreshSugarSyncRootFolders = function(job_id) {
     // Reload the root folder list.
     requestWPApi(
       backwpupApi.getblock,
       {
         'block_name': 'sidebar/sugar-sync-parts/root-folder',
         'block_type': 'children',
+        'block_data': {
+          'job_id': job_id,
+        },
       },
       function(response) {
         $('#sugarsyncroot').html(response);
@@ -359,13 +412,121 @@ jQuery(document).ready(function ($) {
     );
   }
 
+  function initSugarSyncEvents() {
+    // Toggle SugarSync authenticate action.
+    $('.js-backwpup-authenticate-sugar-sync').on('click', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const page = urlParams.get('page');
+      let job_id = $(this).data("job-id");
+      if (page === 'backwpuponboarding') {
+        job_id = null;
+      }
+      let data = {
+        'job_id': job_id,
+        'cloud_name' : 'sugarsync',
+        'sugaremail' : $('#sugaremail').val(),
+        'sugarpass' : $('#sugarpass').val(),
+      };
+
+      requestWPApi(
+        backwpupApi.authenticate_cloud,
+        data,
+        function(response) {
+          $('#sugarsynclogin').html(response);
+          $('#sugarsync_authenticate_infos').html("");
+          refreshSugarSyncRootFolders(job_id);
+          initSugarSyncEvents();
+        },
+        "POST",
+        function(request, error) {
+          $('#sugarsync_authenticate_infos').html(request.responseText);
+          refreshSugarSyncRootFolders(job_id);
+        }
+      );
+    });
+
+    // Delete Sugar Sync authentication.
+    $('.js-backwpup-delete-sugar-sync-auth').on('click', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const page = urlParams.get('page');
+      let job_id = $(this).data("job-id");
+      if (page === 'backwpuponboarding') {
+        job_id = null;
+      }
+      const data = {
+        'job_id': job_id,
+        'cloud_name' : 'sugarsync',
+      }
+      requestWPApi(
+        backwpupApi.delete_auth_cloud,
+        data,
+        function (response) {
+          refresh_storage_destinations(job_id, 'SUGARSYNC', false);
+          $('#sugarsynclogin').html(response);
+          refreshSugarSyncRootFolders(job_id);
+          initSugarSyncEvents();
+        },
+        "POST",
+        function (request, error) {
+          alert("Error in cloud configuration");
+        }
+      );
+    });
+  }
+
+  // Toggle Google Drive authenticate action.
+  function initGdriveEvents() {
+    // Toggle Gdrive Api connection first step.
+    $('.js-backwpup-gdrive-connect-api').on('click', function() {
+      const details = $(this).closest('details');
+      let data = {
+        'backwpup_cfg_googleclientsecret' : {
+          'value': $('#backwpup_cfg_googleclientsecret').val(),
+          'secure': true,
+        },
+        'backwpup_cfg_googleclientid' : {
+          'value': $('#backwpup_cfg_googleclientid').val(),
+          'secure': false,
+        },
+      }
+
+      requestWPApi(
+        backwpupApi.save_site_option,
+        data,
+        function (response) {
+          $('#gdrive_authenticate_infos').html(response.message);
+          // Remove the 'open' attribute
+          details.removeAttr('open');
+        },
+        "POST",
+        function (request, error) {
+          $('#gdrive_authenticate_infos').html("Error");
+        }
+      )
+    });
+
+    // Toggle Gdrive reauthenticate action.
+    $('.js-backwpup-gdrive-reauthenticate').on('click', function() {
+      openModal('dialog');
+      $('.js-backwpup-refresh-authentification').data('trigger', 'gdrive_refresh_authentification');
+      window.open($(this).data('url'), '_blank');
+    });
+  }
+
 
   // Initialize Dropbox cloud events.
   function initDropboxEvents() {
-    
+    $('.js-backwpup-modal-and-focus').on('click', modal_and_focus);
     // Test and save Dropbox storage.
-    $('.js-backwpup-test-dropbox-storage').on('click', function () {
+    $('.js-backwpup-test-DROPBOX-storage').on('click', function () {
+      let job_id = $(this).data("job-id");
+      const urlParams = new URLSearchParams(window.location.search);
+      const page = urlParams.get('page');
+      if (page === 'backwpuponboarding') {
+        job_id = null;
+      }
       const data = {
+        'job_id': job_id,
         'cloud_name' : 'dropbox',
         'dropboxmaxbackups' : $("#dropboxmaxbackups").val(),
         'dropboxdir' : $("#dropboxdir").val(),
@@ -382,13 +543,13 @@ jQuery(document).ready(function ($) {
         backwpupApi.cloudsaveandtest,
         data,
         function (response) {
-          refresh_storage_destinations('DROPBOX', response.connected);
+          refresh_storage_destinations(job_id, 'DROPBOX', response.connected);
           dropbox_refresh_authentification();
           closeSidebar();
         },
         "POST",
         function (request, error) {
-          refresh_storage_destinations('DROPBOX', false);
+          refresh_storage_destinations(job_id, 'DROPBOX', false);
           alert(request.responseJSON.error);
         }
       );
@@ -396,7 +557,14 @@ jQuery(document).ready(function ($) {
 
     // Delete Dropbox authentication.
     $('.js-backwpup-delete-dropbox-auth').on('click', function() {
+      let job_id = $(this).data("job-id");
+      const urlParams = new URLSearchParams(window.location.search);
+      const page = urlParams.get('page');
+      if (page === 'backwpuponboarding') {
+        job_id = null;
+      }
       const data = {
+        'job_id': job_id,
         'cloud_name' : 'dropbox',
         'delete_auth' : true,
         'dropboxmaxbackups' : $("#dropboxmaxbackups").val(),
@@ -406,7 +574,7 @@ jQuery(document).ready(function ($) {
         backwpupApi.cloudsaveandtest,
         data,
         function (response) {
-          refresh_storage_destinations('DROPBOX', response.connected);
+          refresh_storage_destinations(job_id, 'DROPBOX', response.connected);
           dropbox_refresh_authentification();
           closeSidebar();
         },
@@ -564,7 +732,6 @@ jQuery(document).ready(function ($) {
     $(".js-backwpup-select-backup").on('click', function () {
       // Vérifier si au moins un élément est coché
       const isChecked = $(".js-backwpup-select-backup:checked").length > 0;
-      console.log(isChecked);
       // Activer ou désactiver le bouton en fonction de la vérification
       $("#bulk-actions-apply").prop("disabled", !isChecked);
     });
@@ -734,13 +901,20 @@ jQuery(document).ready(function ($) {
   });
 
   // Test and save S3 storage.
-  $(".js-backwpup-test-s3-storage").on('click', function () {
+  window.test_S3_storage = function (event) {
+    let job_id = $(event.currentTarget).data("job-id");
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page');
+    if (page === 'backwpuponboarding') {
+      job_id = null;
+    }
     if ($("#s3bucketerror").html()!="") {
       refresh_storage_destinations('S3', false);
       alert('Error in Bucket Configurations');
       return;
     }
     const data = {
+      'job_id': job_id,
       'cloud_name' : 's3',
       's3region' : $("#s3region").val(),
       's3base_url' : $("#s3base_url").val(),
@@ -768,26 +942,33 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
-        refresh_storage_destinations('S3', response.connected);
+        refresh_storage_destinations(job_id, 'S3', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
-        refresh_storage_destinations('S3', false);
+        refresh_storage_destinations(job_id, 'S3', false);
         alert("Error in cloud configuration");
       }
     );
-
-  });
+  };
+  $('.js-backwpup-test-S3-storage').on('click', window['test_S3_storage']);
 
   // Test and save Glacier storage.
-  $('.js-backwpup-test-glacier-storage').on('click', function () {
+  window.test_GLACIER_storage = function (event) {
+    let job_id = $(event.currentTarget).data("job-id");
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page');
+    if (page === 'backwpuponboarding') {
+      job_id = null;
+    }
     if ($("#glacierbucketerror").html()!="") {
       refresh_storage_destinations('GLACIER', false);
       alert('Error in Bucket Configurations');
       return;
     }
     const data = {
+      'job_id': job_id,
       'cloud_name' : 'glacier',
       'glacieraccesskey' : $("#glacieraccesskey").val(),
       'glaciersecretkey' : $("#glaciersecretkey").val(),
@@ -801,20 +982,28 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
-        refresh_storage_destinations('GLACIER', response.connected);
+        refresh_storage_destinations(job_id, 'GLACIER', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
-        refresh_storage_destinations('GLACIER', false);
+        refresh_storage_destinations(job_id, 'GLACIER', false);
         alert("Error in cloud configuration");
       }
     );
-  });
+  };
+  $('.js-backwpup-test-GLACIER-storage').on('click', window['test_GLACIER_storage']);
 
   // Test and save local folder storage.
-  $('.js-backwpup-test-folder-storage').on('click', function () {
+  window.test_FOLDER_storage =  function (event) {
+    let job_id = $(event.currentTarget).data("job-id");
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page');
+    if (page === 'backwpuponboarding') {
+      job_id = null;
+    }
     const data = {
+      'job_id': job_id,
       'cloud_name' : 'folder',
       'backupdir' : $("#backupdir").val(),
       'maxbackups' : $("#maxbackups").val(),
@@ -823,21 +1012,29 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
-        refresh_storage_destinations('FOLDER', response.connected);
+        refresh_storage_destinations(job_id, 'FOLDER', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
-        refresh_storage_destinations('FOLDER', false);
+        refresh_storage_destinations(job_id, 'FOLDER', false);
         alert("Error in cloud configuration");
       }
     );
-  });
+  };
+  $('.js-backwpup-test-FOLDER-storage').on('click', window['test_FOLDER_storage']);
   
 
   // Test and save ftp storage.
-  $('.js-backwpup-test-ftp-storage').on('click', function () {
+  window.test_FTP_storage = function (event) {
+    let job_id = $(event.currentTarget).data("job-id");
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page');
+    if (page === 'backwpuponboarding') {
+      job_id = null;
+    }
     const data = {
+      'job_id': job_id,
       'cloud_name' : 'ftp',
       'ftphost' : $("#ftphost").val(),
       'ftphostport' : $("#ftphostport").val(),
@@ -853,20 +1050,28 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
-        refresh_storage_destinations('FTP', response.connected);
+        refresh_storage_destinations(job_id, 'FTP', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
-        refresh_storage_destinations('FTP', false);
+        refresh_storage_destinations(job_id, 'FTP', false);
         alert("Error in cloud configuration");
       }
     );
-  });
+  };
+  $('.js-backwpup-test-FTP-storage').on('click',  window['test_FTP_storage']);
 
   // Test and save Gdrive storage.
-  $('.js-backwpup-test-gdrive-storage').on('click', function () {
+  window.test_GDRIVE_storage = function (event) {
+    let job_id = $(event.currentTarget).data("job-id");
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page');
+    if (page === 'backwpuponboarding') {
+      job_id = null;
+    }
     const data = {
+      'job_id': job_id,
       'cloud_name' : 'gdrive',
       'gdriveusetrash' : $("#gdriveusetrash").prop("checked"),
       'gdrivemaxbackups' : $("#gdrivemaxbackups").val(),
@@ -876,67 +1081,94 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
-        refresh_storage_destinations('GDRIVE', response.connected);
+        refresh_storage_destinations(job_id, 'GDRIVE', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
-        refresh_storage_destinations('GDRIVE', false);
+        refresh_storage_destinations(job_id, 'GDRIVE', false);
         alert("Error in cloud configuration");
       }
     );
-  });
+  };
+  $('.js-backwpup-test-GDRIVE-storage').on('click', window['test_GDRIVE_storage']);
 
-  // Delete Hidrive authentication.
-  $('.js-backwpup-delete-hidrive-auth').on('click', function() {
-    const data = {
-      'cloud_name' : 'hidrive',
-      'hidrive_delete_authorization' : true,
-      'hidrive_max_backups' : $("#hidrive_max_backups").val(),
-      'hidrive_destination_folder' : $("#hidrive_destination_folder").val(),
-    }
-    requestWPApi(
-      backwpupApi.cloudsaveandtest,
-      data,
-      function (response) {
-        closeSidebar();
-      },
-      "POST",
-      function (request, error) {
-        alert("Error in cloud configuration");
+  function initHidriveEvents() {
+    $('.js-backwpup-modal-and-focus').on('click', modal_and_focus);
+    // Delete Hidrive authentication.
+    $('.js-backwpup-delete-hidrive-auth').on('click', function() {
+      let job_id = $(this).data("job_id");
+      const urlParams = new URLSearchParams(window.location.search);
+      const page = urlParams.get('page');
+      if (page === 'backwpuponboarding') {
+        job_id = null;
       }
-    );
-  });
+      const data = {
+        'job_id': job_id,
+        'cloud_name' : 'hidrive',
+        'hidrive_delete_authorization' : true,
+        'hidrive_max_backups' : $("#hidrive_max_backups").val(),
+        'hidrive_destination_folder' : $("#hidrive_destination_folder").val(),
+      }
+      requestWPApi(
+        backwpupApi.cloudsaveandtest,
+        data,
+        function (response) {
+          refresh_storage_destinations(job_id, 'HIDRIVE', false);
+          closeSidebar();
+        },
+        "POST",
+        function (request, error) {
+          refresh_storage_destinations(job_id, 'HIDRIVE', false);
+          alert("Error in cloud configuration");
+        }
+      );
+    });
 
-  // Test and save HiDrive storage.
-  $('.js-backwpup-test-hidrive-storage').on('click', function () {
-    const data = {
-      'cloud_name': 'hidrive',
-      'hidrive_max_backups': $("#hidrive_max_backups").val(),
-      'hidrive_destination_folder': $("#hidrive_destination_folder").val(),
-    }
-    let hidrive_authorization_code = $("#hidrive_authorization_code").val();
-    if (hidrive_authorization_code) {
-      data['hidrive_authorization_code'] = hidrive_authorization_code;
-    }
-    requestWPApi(
-      backwpupApi.cloudsaveandtest,
-      data,
-      function (response) {
-        refresh_storage_destinations('HIDRIVE', response.connected);
-        closeSidebar();
-      },
-      "POST",
-      function (request, error) {
-        refresh_storage_destinations('HIDRIVE', false);
-        alert("Error in cloud configuration");
+    // Test and save HiDrive storage.
+    $('.js-backwpup-test-HIDRIVE-storage').on('click', function () {
+      let job_id = $(this).data("job_id");
+      const urlParams = new URLSearchParams(window.location.search);
+      const page = urlParams.get('page');
+      if (page === 'backwpuponboarding') {
+        job_id = null;
       }
-    );
-  });
+      const data = {
+        'job_id': job_id,
+        'cloud_name': 'hidrive',
+        'hidrive_max_backups': $("#hidrive_max_backups").val(),
+        'hidrive_destination_folder': $("#hidrive_destination_folder").val(),
+      }
+      let hidrive_authorization_code = $("#hidrive_authorization_code").val();
+      if (hidrive_authorization_code) {
+        data['hidrive_authorization_code'] = hidrive_authorization_code;
+      }
+      requestWPApi(
+        backwpupApi.cloudsaveandtest,
+        data,
+        function (response) {
+          refresh_storage_destinations(job_id, 'HIDRIVE', response.connected);
+          closeSidebar();
+        },
+        "POST",
+        function (request, error) {
+          refresh_storage_destinations(job_id, 'HIDRIVE', false);
+          alert("Error in cloud configuration");
+        }
+      );
+    });
+  }
 
   // Test and save ONEDRIVE storage.
-  $('.js-backwpup-test-onedrive-storage').on('click', function () {
+  window.test_ONEDRIVE_storage = function (event) {
+    let job_id = $(event.currentTarget).data("job-id");
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page');
+    if (page === 'backwpuponboarding') {
+      job_id = null;
+    }
     const data = {
+      'job_id': job_id,
       'cloud_name': 'onedrive',
       'onedrivedir': $("#onedrivedir").val(),
       'onedrivemaxbackups': $("#onedrivemaxbackups").val(),
@@ -945,21 +1177,28 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
-        refresh_storage_destinations('ONEDRIVE', response.connected);
+        refresh_storage_destinations(job_id, 'ONEDRIVE', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
-        refresh_storage_destinations('ONEDRIVE', true);
+        refresh_storage_destinations(job_id, 'ONEDRIVE', false);
         alert("Error in cloud configuration");
       }
     );
-  });
+  };
+  $('.js-backwpup-test-ONEDRIVE-storage').on('click', window['test_ONEDRIVE_storage']);
 
   // Test and save SugarSync storage.
-  $('.js-backwpup-test-sugar-sync-storage').on('click', function () {
-    // TODO Test the connection
+  window.test_SUGARSYNC_storage = function (event) {
+    let job_id = $(event.currentTarget).data("job-id");
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page');
+    if (page === 'backwpuponboarding') {
+      job_id = null;
+    }
     const data = {
+      'job_id': job_id,
       'cloud_name' : 'sugarsync',
       'sugardir' : $("#sugardir").val(),
       'sugarmaxbackups' : $("#sugarmaxbackups").val(),
@@ -969,20 +1208,28 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
-        refresh_storage_destinations('SUGARSYNC', response.connected);
+        refresh_storage_destinations(job_id, 'SUGARSYNC', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
-        refresh_storage_destinations('SUGARSYNC', false);
+        refresh_storage_destinations(job_id, 'SUGARSYNC', false);
         alert("Error in cloud configuration");
       }
     );
-  });
+  };
+  $('.js-backwpup-test-SUGARSYNC-storage').on('click', window['test_SUGARSYNC_storage']);
 
   // Test and save RackSpace storage.
-  $('.js-backwpup-test-rackspace-cloud-storage').on('click', function () {
+  window.test_RSC_storage = function (event) {
+    let job_id = $(event.currentTarget).data("job-id");
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page');
+    if (page === 'backwpuponboarding') {
+      job_id = null;
+    }
     const data = {
+      'job_id': job_id,
       'cloud_name' : 'rsc',
       'newrsccontainer' : $("#newrsccontainer").val(),
       'rscdir' : $("#rscdir").val(),
@@ -990,25 +1237,34 @@ jQuery(document).ready(function ($) {
       'rsccontainer' : $("#rsccontainer").val(),
       'rscusername' : $("#rscusername").val(),
       'rscapikey' : $("#rscapikey").val(),
+      'rscregion' : $("#rscregion").val(),
     };
     requestWPApi(
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
-        refresh_storage_destinations('RSC', response.connected);
+        refresh_storage_destinations(job_id, 'RSC', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
-        refresh_storage_destinations('RSC', false);
+        refresh_storage_destinations(job_id, 'RSC', false);
         alert("Error in cloud configuration");
       }
     );
-  });
+  };
+  $('.js-backwpup-test-RSC-storage').on('click', window['test_RSC_storage']);
 
   // Test and save MSAZURE storage.
-  $('.js-backwpup-test-msazure-storage').click(function () {
+  window.test_MSAZURE_storage = function (event) {
+    let job_id = $(event.currentTarget).data("job-id");
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page');
+    if (page === 'backwpuponboarding') {
+      job_id = null;
+    }
     const data = {
+      'job_id': job_id,
       'cloud_name' : 'msazure',
       'msazureaccname' : $("#msazureaccname").val(),
       'msazurekey' : $("#msazurekey").val(),
@@ -1022,16 +1278,17 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
-        refresh_storage_destinations('MSAZURE', response.connected);
+        refresh_storage_destinations(job_id, 'MSAZURE', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
-        refresh_storage_destinations('MSAZURE', false);
+        refresh_storage_destinations(job_id, 'MSAZURE', false);
         alert("Error in cloud configuration");
       }
     );
-  });
+  };
+  $('.js-backwpup-test-MSAZURE-storage').on('click', window['test_MSAZURE_storage']);
 
   // Onboarding steps
   const $onboardingSteps = $("#backwpup-onboarding-steps");
@@ -1125,20 +1382,6 @@ jQuery(document).ready(function ($) {
     openSidebar(content);
   });
 
-  // Toggle Gdrive reauthenticate action.
-  $('.js-backwpup-gdrive-reauthenticate').on('click', function() {
-    openModal('dialog');
-    $('.js-backwpup-refresh-authentification').data('trigger', 'gdrive_refresh_authentification');
-    window.open($(this).data('url'), '_blank');
-  });
-
-  // Toggle OneDrive reauthenticate action.
-  $('.js-backwpup-onedrive-reauthenticate').on('click', function() {
-    openModal('dialog');
-    $('.js-backwpup-refresh-authentification').data('trigger', 'onedrive_refresh_authentification');
-    window.open($(this).data('url'), '_blank');
-  });
-
   $('.js-backwpup-refresh-authentification').on('click', function() {
     let trigger = $(this).data('trigger');
     if (typeof window[trigger] === 'function') {
@@ -1150,69 +1393,51 @@ jQuery(document).ready(function ($) {
   });
 
   // Open a modal to wait for authentication and focus on an input on after
-  $('.js-backwpup-modal-and-focus').on('click', function() {
+  window.modal_and_focus = function (event) {
+    let that = $(event.currentTarget);
     openModal('dialog');
-    const focus = $(this).data('id-focus-after');
+    const focus = that.data('id-focus-after');
     $('.js-backwpup-refresh-authentification').data('trigger', '$("#'+focus+'").focus()');
-    window.open($(this).data('url'), '_blank');
-  });
+    window.open(that.data('url'), '_blank');
+  }
+  $('.js-backwpup-modal-and-focus').on('click', modal_and_focus);
 
-  // Toggle Gdrive Api connection first step.
-  $('.js-backwpup-gdrive-connect-api').on('click', function() {
-    const details = $(this).closest('details');
-    let data = {
-      'backwpup_cfg_googleclientsecret' : {
-        'value': $('#backwpup_cfg_googleclientsecret').val(),
-        'secure': true,
-      },
-      'backwpup_cfg_googleclientid' : {
-        'value': $('#backwpup_cfg_googleclientid').val(),
-        'secure': false,
-      },
-    }
+  function initOnedriveEvents() {
+    // Toggle OneDrive reauthenticate action.
+    $('.js-backwpup-onedrive-reauthenticate').on('click', function() {
+      openModal('dialog');
+      $('.js-backwpup-refresh-authentification').data('trigger', 'onedrive_refresh_authentification');
+      window.open($(this).data('url'), '_blank');
+    });
 
-    requestWPApi(
-      backwpupApi.save_site_option,
-      data,
-      function (response) {
-        $('#gdrive_authenticate_infos').html(response.message);
-        // Remove the 'open' attribute
-        details.removeAttr('open');
-      },
-      "POST",
-      function (request, error) {
-        $('#gdrive_authenticate_infos').html("Error");
+    // Toggle OneDrive Api connection first step
+    $('.js-backwpup-one-drive-connect-api').on('click', function() {
+      const details = $(this).closest('details');
+      let data = {
+        'backwpup_cfg_onedriveclientsecret' : {
+          'value': $('#backwpup_cfg_onedriveclientsecret').val(),
+          'secure': true,
+        },
+        'backwpup_cfg_onedriveclientid' : {
+          'value': $('#backwpup_cfg_onedriveclientid').val(),
+          'secure': false,
+        },
       }
-    )
-  });
-
-  // Toggle OneDrive Api connection first step
-  $('.js-backwpup-one-drive-connect-api').on('click', function() {
-    const details = $(this).closest('details');
-    let data = {
-      'backwpup_cfg_onedriveclientsecret' : {
-        'value': $('#backwpup_cfg_onedriveclientsecret').val(),
-        'secure': true,
-      },
-      'backwpup_cfg_onedriveclientid' : {
-        'value': $('#backwpup_cfg_onedriveclientid').val(),
-        'secure': false,
-      },
-    }
-    requestWPApi(
-      backwpupApi.save_site_option,
-      data,
-      function (response) {
-        $('#onedrive_authenticate_infos').html(response.message);
-        // Remove the 'open' attribute
-        details.removeAttr('open');
-      },
-      "POST",
-      function (request, error) {
-        $('#onedrive_authenticate_infos').html("Error");
-      }
-    )
-  });
+      requestWPApi(
+        backwpupApi.save_site_option,
+        data,
+        function (response) {
+          $('#onedrive_authenticate_infos').html(response.message);
+          // Remove the 'open' attribute
+          details.removeAttr('open');
+        },
+        "POST",
+        function (request, error) {
+          $('#onedrive_authenticate_infos').html("Error");
+        }
+      )
+    });
+  }
 
   // Validate storage.
   $(".js-backwpup-test-storage").on('click', function() {
@@ -1368,6 +1593,9 @@ jQuery(document).ready(function ($) {
   initModalEvent();
   initSugarSyncEvents();
   initDropboxEvents();
+  initOnedriveEvents();
+  initGdriveEvents();
+  initHidriveEvents();
 
   // Handle Save Settings button click
   $(".save_database_settings").on('click', function () {
@@ -1390,11 +1618,11 @@ jQuery(document).ready(function ($) {
       backwpupApi.save_database_settings,
       data,
       function (response) {
-        if (response.status === 200) {
+        if (response.success) {
           $('#backwpup-database-options div p.label-scheduled').html(response.next_backup);
           if ($("#backwpup-onboarding-panes")) {
             let onboarding_select = $("#backwpup-onboarding-panes").find("select[name='database_frequency']");
-            let select = $("#sidebar-frequency-tables-pro").find("select[name='frequency']");
+            let select = $("#sidebar-frequency-tables").find("select[name='frequency']");
             onboarding_select.val(select.val());
           }
           closeSidebar();
@@ -1425,11 +1653,11 @@ jQuery(document).ready(function ($) {
       backwpupApi.save_files_settings,
       data,
       function (response) {
-        if (response.status === 200) {
+        if (response.success) {
           $('#backwpup-files-options div p.label-scheduled').html(response.next_backup);
           if ($("#backwpup-onboarding-panes")) {
             let onboarding_select = $("#backwpup-onboarding-panes").find("select[name='files_frequency']");
-            let select = $("#sidebar-frequency-files-pro").find("select[name='frequency']");
+            let select = $("#sidebar-frequency-files").find("select[name='frequency']");
             onboarding_select.val(select.val());
           }
           closeSidebar();

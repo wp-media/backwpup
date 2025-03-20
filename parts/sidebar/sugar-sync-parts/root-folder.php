@@ -1,8 +1,6 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
-
-$jobid = get_site_option( 'backwpup_backup_files_job_id', false );
-$token = BackWPup_Option::get($jobid, 'sugarrefreshtoken', false);
+$token = BackWPup_Option::get($job_id, 'sugarrefreshtoken', false);
 ?>
 <?php if (!$token) : ?>
 <?php
@@ -39,7 +37,7 @@ $token = BackWPup_Option::get($jobid, 'sugarrefreshtoken', false);
       "identifier" => "sugarroot",
       "label" => __("Bucket selection", 'backwpup'),
       "withEmpty" => false,
-      "value" => BackWPup_Option::get( $jobid, 'sugarroot','' ),
+      "value" => BackWPup_Option::get( $job_id, 'sugarroot','' ),
       "options" => $folders,
   ]);
   ?>

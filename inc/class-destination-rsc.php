@@ -462,6 +462,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations
                         'ssl.certificate_authority' => BackWPup::get_plugin_data('cacert'),
                     ]
 				);
+				$conn->authenticate();
 				if ( null !== $conn->getToken() ) {
 					$ostore        = $conn->objectStoreService( 'cloudFiles', $args['rscregion'], 'publicURL' );
 					$containerlist = $ostore->listContainers();

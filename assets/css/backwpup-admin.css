@@ -1029,10 +1029,6 @@ select {
   height: 10rem;
 }
 
-.h-5 {
-  height: 1.25rem;
-}
-
 .h-6 {
   height: 1.5rem;
 }
@@ -1043,10 +1039,6 @@ select {
 
 .min-h-10 {
   min-height: 2.5rem;
-}
-
-.w-0 {
-  width: 0px;
 }
 
 .w-10 {
@@ -1277,10 +1269,6 @@ select {
 
 .border-b {
   border-bottom-width: 1px;
-}
-
-.border-r {
-  border-right-width: 1px;
 }
 
 .border-danger {
@@ -1698,6 +1686,9 @@ select {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
   padding: 1rem;
+}
+
+.backwpup-typography {
   font-family: Jost, sans-serif;
   --tw-text-opacity: 1;
   color: rgb(4 21 21 / var(--tw-text-opacity, 1));

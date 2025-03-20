@@ -8,7 +8,7 @@ use BackWPup\Utils\BackWPupHelpers;
 $is_in_form = $is_in_form ?? false;
 
 ?>
-<aside id="backwpup-sidebar" class="fixed z-[100000] top-0 right-0 bottom-0 w-[410px] p-6 flex flex-col gap-4 rounded-l-lg bg-white shadow-xl translate-x-[450px] transition-transform duration-500 ease-out">
+<aside id="backwpup-sidebar" class="fixed z-[100000] top-0 right-0 bottom-0 w-[410px] p-6 flex flex-col gap-4 rounded-l-lg bg-white shadow-xl translate-x-[450px] transition-transform duration-500 ease-out backwpup-typography">
   <?php
   # Get all files in the parts/sidebar directory
   $files = glob(untrailingslashit(BackWPup::get_plugin_data('plugindir')) . '/parts/sidebar/*');

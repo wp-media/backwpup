@@ -1,12 +1,11 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
-$jobid = get_site_option( 'backwpup_backup_files_job_id', false );
 $dropbox = new BackWPup_Destination_Dropbox_API('dropbox');
 $dropbox_auth_url = $dropbox->oAuthAuthorize();
 $dropbox = new BackWPup_Destination_Dropbox_API('sandbox');
 $sandbox_auth_url = $dropbox->oAuthAuthorize();
 
-$dropboxtoken = BackWPup_Option::get($jobid, 'dropboxtoken', []);
+$dropboxtoken = BackWPup_Option::get($job_id, 'dropboxtoken', []);
 ?>
 
 <?php
@@ -114,6 +113,9 @@ $dropboxtoken = BackWPup_Option::get($jobid, 'dropboxtoken', []);
 		"label" => __("Delete Dropbox Authentication", 'backwpup'),
 		"full_width" => true,
 		"trigger" => "delete-dropbox-auth",
+    "data" => [
+      "job-id" => $job_id,
+    ],
 	]);
 	?>
 	<p class="mt-2 text-base text-secondary-base"><?php _e("Authenticated", 'backwpup'); ?></p>

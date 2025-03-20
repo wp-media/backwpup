@@ -1,7 +1,7 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 ?>
-<div class="max-w-[800px] flex flex-col gap-4">
+<div class="max-w-[800px] flex flex-col gap-4 backwpup-typography">
 
   <?php BackWPupHelpers::component("app/header", []); ?>
 

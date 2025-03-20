@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: BackWPup – WordPress Backup & Restore Plugin
  * Author URI: https://backwpup.com
- * Version: 5.0.7
+ * Version: 5.0.8
  * Requires at least: 4.9
  * Requires PHP: 7.4
  * Text Domain: backwpup
@@ -14,6 +14,7 @@
  * License: GPLv2+
  */
 
+use WPMedia\BackWPup\Plugin\Plugin;
 use Inpsyde\BackWPup\Pro\License\Api\LicenseActivation;
 use Inpsyde\BackWPup\Pro\License\Api\LicenseDeactivation;
 use Inpsyde\BackWPup\Pro\License\Api\LicenseStatusRequest;
@@ -24,6 +25,7 @@ use Inpsyde\BackWPup\Pro\License\LicenseSettingsView;
 use Inpsyde\BackWPup\Pro\License\LicenseSettingUpdater;
 use Inpsyde\BackWPup\Pro\Settings\EncryptionSettingsView;
 use Inpsyde\BackWPup\Pro\Settings\EncryptionSettingUpdater;
+use WPMedia\BackWPup\Dependencies\League\Container\Container;
 
 if (!class_exists(\BackWPup::class, false)) {
     /**
@@ -192,6 +194,12 @@ if (!class_exists(\BackWPup::class, false)) {
             if (null === self::$instance) {
                 self::$instance = new self();
             }
+
+			$providers = require_once __DIR__ . '/config/providers.php';
+
+			$plugin = new Plugin( new Container() );
+
+			$plugin->init( $providers );
 
             return self::$instance;
         }

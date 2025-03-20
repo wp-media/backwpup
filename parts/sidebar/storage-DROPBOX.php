@@ -1,19 +1,27 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+$job_id = $job_id ?? null;
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Dropbox Settings", 'backwpup'),
   'type' => 'sidebar'
 ]);
-$jobid = get_site_option( 'backwpup_backup_files_job_id', false );
+// if null we are on onboarding so we use the default values.
+if (null === $job_id) {
+  $dropboxdir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
+  $dropboxmaxbackups = 15;
+} else {
+  $dropboxdir = BackWPup_Option::get($job_id, 'dropboxdir', trailingslashit(sanitize_title_with_dashes(get_bloginfo('name'))));
+  $dropboxmaxbackups = BackWPup_Option::get($job_id, 'dropboxmaxbackups', 15);
+}
 $dropbox = new BackWPup_Destination_Dropbox_API('dropbox');
 $dropbox_auth_url = $dropbox->oAuthAuthorize();
 $dropbox = new BackWPup_Destination_Dropbox_API('sandbox');
 $sandbox_auth_url = $dropbox->oAuthAuthorize();
 
-$dropboxtoken = BackWPup_Option::get($jobid, 'dropboxtoken', []);
+$dropboxtoken = BackWPup_Option::get($job_id, 'dropboxtoken', []);
 ?>
 
-<?php if (isset($is_in_form) && false === $is_in_form) : ?>
+<?php if (isset($is_in_form) && ( false === $is_in_form || 'false' === $is_in_form )) : ?>
   <p>
     <?php
     BackWPupHelpers::component("form/button", [
@@ -21,8 +29,9 @@ $dropboxtoken = BackWPup_Option::get($jobid, 'dropboxtoken', []);
       "label" => __("Back to Storages", 'backwpup'),
       "icon_name" => "arrow-left",
       "icon_position" => "before",
-      "trigger" => "open-sidebar",
+      "trigger" => "load-and-open-sidebar",
       "display" => "storages",
+      "data"		=> ['job-id' => $job_id, 'block-type' => 'children', 'block-name' => 'sidebar/storages',  ]
     ]);
     ?>
   </p>
@@ -32,7 +41,7 @@ $dropboxtoken = BackWPup_Option::get($jobid, 'dropboxtoken', []);
 
 <div class="rounded-lg p-4 bg-grey-100" id="drobox_authenticate_infos">
   <?php
-		BackWPupHelpers::children("sidebar/dropbox-parts/api-connexion");
+		BackWPupHelpers::children("sidebar/dropbox-parts/api-connexion", false, ['job_id' => $job_id]);
   ?>
 </div>
 
@@ -52,7 +61,7 @@ $dropboxtoken = BackWPup_Option::get($jobid, 'dropboxtoken', []);
       "name" => "dropboxdir",
       "identifier" => "dropboxdir",
       "label" => __("Folder to store files in", 'backwpup'),
-      "value" => esc_attr(BackWPup_Option::get($jobid, 'dropboxdir','/folder')),
+      "value" => $dropboxdir,
       "required" => true,
     ]);
     ?>
@@ -68,7 +77,7 @@ $dropboxtoken = BackWPup_Option::get($jobid, 'dropboxtoken', []);
       "type" => "number",
       "min" => 1,
       "label" => __("Max backups to retain", 'backwpup'),
-      "value" => esc_attr(BackWPup_Option::get($jobid, 'dropboxmaxbackups', 15)),
+      "value" => $dropboxmaxbackups,
       "required" => true,
     ]);
     ?>
@@ -90,6 +99,10 @@ BackWPupHelpers::component("form/button", [
   "type" => "primary",
   "label" => __("Save & Test connection", 'backwpup'),
   "full_width" => true,
-  "trigger" => "test-dropbox-storage",
+  "trigger" => "test-DROPBOX-storage",
+  "data" => [
+    "storage" => "dropbox",
+    "job-id" => $job_id,
+  ],
 ]);
 ?>

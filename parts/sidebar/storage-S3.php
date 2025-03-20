@@ -1,18 +1,26 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+$job_id = $job_id ?? null;
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Amazon S3 Settings", 'backwpup'),
   'type' => 'sidebar'
 ]);
-$jobid = get_site_option( 'backwpup_backup_files_job_id', false );
+$selectedOptions = null;
+if (null === $job_id) {
+  $s3dir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
+  $s3maxbackups = 3;
+} else {
+  $selectedOptions = BackWPup_S3_Destination::fromJobId($job_id);
+  $s3dir = esc_attr(BackWPup_Option::get($job_id, 's3dir',trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')))));
+  $s3maxbackups = esc_attr(BackWPup_Option::get($job_id, 's3maxbackups',3));
+}
 $s3Options = BackWPup_S3_Destination::options();
 $s3regions =array_combine(array_keys($s3Options), array_column($s3Options, 'label'));
-$selectedOptions = BackWPup_S3_Destination::fromJobId($jobid);
 $s3 = BackWPup::get_destination("s3");
 $s3->edit_inline_js();
 ?>
 
-<?php if (isset($is_in_form) && false === $is_in_form) : ?>
+<?php if (isset($is_in_form) && ( false === $is_in_form || 'false' === $is_in_form )) : ?>
   <p>
     <?php
     BackWPupHelpers::component("form/button", [
@@ -20,8 +28,9 @@ $s3->edit_inline_js();
       "label" => __("Back to Storages", 'backwpup'),
       "icon_name" => "arrow-left",
       "icon_position" => "before",
-      "trigger" => "open-sidebar",
+      "trigger" => "load-and-open-sidebar",
       "display" => "storages",
+      "data"		=> ['job-id' => $job_id, 'block-type' => 'children', 'block-name' => 'sidebar/storages',  ]
     ]);
     ?>
   </p>
@@ -54,7 +63,7 @@ $s3->edit_inline_js();
 			"identifier" => "s3region",
       "label" => "Select Field",
       "withEmpty" => false,
-      "value" => esc_attr(BackWPup_Option::get($jobid, 's3region', "")),
+      "value" => esc_attr(BackWPup_Option::get($job_id, 's3region', "")),
       "options" => $s3regions,
     ]);
     ?>
@@ -76,7 +85,7 @@ $s3->edit_inline_js();
       "label" => __("Endpoint", 'backwpup'),
       "tooltip" => "Leave it empty to use a destination from S3 service list",
 			"value" =>  esc_attr(
-					BackWPup_Option::get($jobid, 's3base_url', "")
+					BackWPup_Option::get($job_id, 's3base_url', "")
 			)
     ]);
     ?>
@@ -88,7 +97,7 @@ $s3->edit_inline_js();
       "label" => __("Region", 'backwpup'),
       "tooltip" => 'Specify S3 region like "us-west-1"',
 			"value" =>  esc_attr(
-				BackWPup_Option::get($jobid, 's3base_region', "")
+				BackWPup_Option::get($job_id, 's3base_region', "")
 			)
     ]);
     ?>
@@ -98,7 +107,7 @@ $s3->edit_inline_js();
       "name" => "s3base_multipart",
       "identifier" => "s3base_multipart",
       "label" => __("Destination supports multipart", 'backwpup'),
-      "checked" => (bool)esc_attr(BackWPup_Option::get($jobid, 's3base_multipart', "1")),
+      "checked" => (bool)esc_attr(BackWPup_Option::get($job_id, 's3base_multipart', "1")),
     ]);
     ?>
 
@@ -107,7 +116,7 @@ $s3->edit_inline_js();
       "name" => "s3base_pathstylebucket",
       "identifier" => "s3base_pathstylebucket",
       "label" => __("Destination provides only Pathstyle buckets", 'backwpup'),
-      "checked" => (bool)esc_attr(BackWPup_Option::get($jobid, 's3base_pathstylebucket', "1")),
+      "checked" => (bool)esc_attr(BackWPup_Option::get($job_id, 's3base_pathstylebucket', "1")),
     ]);
     ?>
 
@@ -118,7 +127,7 @@ $s3->edit_inline_js();
       "label" => __("Version", 'backwpup'),
       "tooltip" => __('The S3 version for the API like "2006-03-01", default "latest"', 'backwpup'),
 			"value" => esc_attr(
-				BackWPup_Option::get($jobid, 's3base_version', "")
+				BackWPup_Option::get($job_id, 's3base_version', "")
 			)
     ]);
     ?>
@@ -129,7 +138,7 @@ $s3->edit_inline_js();
       "identifier" => "s3base_signature",
       "label" => __("Signature", 'backwpup'),
       "tooltip" => __('The S3 signature version like "v4", default "latest"', 'backwpup'),
-			"value" => esc_attr( BackWPup_Option::get($jobid, 's3base_signature', ""))
+			"value" => esc_attr( BackWPup_Option::get($job_id, 's3base_signature', ""))
     ]);
     ?>
 
@@ -152,7 +161,7 @@ $s3->edit_inline_js();
       "name" => "s3accesskey",
       "identifier" => "s3accesskey",
       "label" => __("Access Key", 'backwpup'),
-      "value" => esc_attr(BackWPup_Option::get($jobid, 's3accesskey')),
+      "value" => esc_attr(BackWPup_Option::get($job_id, 's3accesskey')),
       "required" => true,
     ]);
     ?>
@@ -164,7 +173,7 @@ $s3->edit_inline_js();
       "label" => __("Secret Key", 'backwpup'),
 			"type" => "password",
       "value" => esc_attr(BackWPup_Encryption::decrypt(BackWPup_Option::get(
-		  $jobid,
+		  $job_id,
 		  's3secretkey'
 	  ))),
       "required" => true,
@@ -186,23 +195,23 @@ $s3->edit_inline_js();
 	<div id="s3bucketContainer">
 		<?php
 			$s3->edit_ajax([
-				's3accesskey' => BackWPup_Option::get($jobid, 's3accesskey'),
-				's3secretkey' => BackWPup_Option::get($jobid, 's3secretkey'),
-				's3bucketselected' => BackWPup_Option::get($jobid, 's3bucket'),
-				's3region' => BackWPup_Option::get($jobid, 's3region'),
-				's3base_url' => BackWPup_Option::get($jobid, 's3base_url'),
-				's3base_region' => BackWPup_Option::get($jobid, 's3base_region'),
+				's3accesskey' => BackWPup_Option::get($job_id, 's3accesskey'),
+				's3secretkey' => BackWPup_Option::get($job_id, 's3secretkey'),
+				's3bucketselected' => BackWPup_Option::get($job_id, 's3bucket'),
+				's3region' => BackWPup_Option::get($job_id, 's3region'),
+				's3base_url' => BackWPup_Option::get($job_id, 's3base_url'),
+				's3base_region' => BackWPup_Option::get($job_id, 's3base_region'),
 				's3base_multipart' => BackWPup_Option::get(
-					$jobid,
+					$job_id,
 					's3base_multipart'
 				),
 				's3base_pathstylebucket' => BackWPup_Option::get(
-					$jobid,
+					$job_id,
 					's3base_pathstylebucket'
 				),
-				's3base_version' => BackWPup_Option::get($jobid, 's3base_version'),
+				's3base_version' => BackWPup_Option::get($job_id, 's3base_version'),
 				's3base_signature' => BackWPup_Option::get(
-					$jobid,
+					$job_id,
 					's3base_signature'
 				),
 			]);
@@ -239,7 +248,7 @@ $s3->edit_inline_js();
       "name" => "s3dir",
       "identifier" => "s3dir",
       "label" => __("Folder to store files in", 'backwpup'),
-      "value" => esc_attr(BackWPup_Option::get($jobid, 's3dir','/folder')),
+      "value" => $s3dir,
       "required" => true,
     ]);
     ?>
@@ -250,7 +259,7 @@ $s3->edit_inline_js();
       "identifier" => "s3maxbackups",
       "type" => "number",
       "label" => __("Max backups to retain", 'backwpup'),
-			"value" => esc_attr(BackWPup_Option::get($jobid, 's3maxbackups',3)),
+			"value" => $s3maxbackups,
       "required" => true,
     ]);
     ?>
@@ -281,7 +290,7 @@ $s3->edit_inline_js();
       "name" => "s3storageclass",
 			"identifier" => "s3storageclass",
       "label" => __("Amazon: Storage Class", 'backwpup'),
-      "value" => esc_attr(BackWPup_Option::get($jobid, 's3storageclass',"")),
+      "value" => esc_attr(BackWPup_Option::get($job_id, 's3storageclass',"")),
       "options" => [
         "STANDARD" => __('Standard', 'backwpup'),
         "STANDARD_IA" => __('Standard-Infrequent Access', 'backwpup'),
@@ -299,7 +308,7 @@ $s3->edit_inline_js();
       "identifier" => "s3ssencrypt",
       "label" => __("Save files encrypted (AES256) on server", 'backwpup'),
 			"value" => "AES256",
-      "checked" => (bool)esc_attr(BackWPup_Option::get($jobid, 's3ssencrypt', "1")),
+      "checked" => (bool)esc_attr(BackWPup_Option::get($job_id, 's3ssencrypt', "1")),
     ]);
     ?>
   </div>
@@ -312,9 +321,10 @@ BackWPupHelpers::component("form/button", [
   "type" => "primary",
   "label" => __("Save & Test connection", 'backwpup'),
   "full_width" => true,
-  "trigger" => "test-s3-storage",
+  "trigger" => "test-S3-storage",
   "data" => [
     "storage" => "amazon-s3",
+    "job-id" => $job_id,
   ],
 ]);
 ?>

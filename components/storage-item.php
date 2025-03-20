@@ -8,6 +8,7 @@ use BackWPup\Utils\BackWPupHelpers;
  * @var bool    $full_width   Optional. True to make the button full width. Default: false.
  * @var string  $prefix       Optional. The prefix for the input name. Default: "".
  * @var string  $label        Optional. The label for the input. Default: $name.
+ * @var string  $job_id       Optional. The job ID. Default: null.
  */
 
 # Defaults
@@ -30,10 +31,10 @@ $js_trigger_class = "js-backwpup-toggle-storage";
 $content = "storage-$slug";
 
 ?>
-<button class="<?php echo BackWPupHelpers::clsx($js_trigger_class, $base_style, $contextual_style, $full_width_class); ?>" data-content="<?php echo $content; ?>">
-  <input id='<?php echo $identifier; ?>' value="<?=$slug?>" type="checkbox" name="<?php echo $name; ?>" class="sr-only" <?php if ($active): ?>checked<?php endif;?>>
+<button class="<?php echo BackWPupHelpers::clsx($js_trigger_class, $base_style, $contextual_style, $full_width_class); ?>" data-content="<?php echo esc_attr( $content ); ?>" data-job-id="<?php echo esc_attr( $job_id ); ?>" data-storage="<?php echo esc_attr( $slug ); ?>">
+  <input id='<?php echo esc_attr( $identifier ); ?>' value="<?php echo esc_attr( $slug); ?>" type="checkbox" name="<?php echo esc_attr( $name ); ?>" class="sr-only" <?php checked( $active ); ?>>
   <div class="p-2 border border-grey-500 rounded">
     <?php include untrailingslashit(BackWPup::get_plugin_data('plugindir'))."/assets/img/storage/$slug.svg"; ?>
   </div>
-  <p class="text-base font-title"><?php echo $label; ?></p>
+  <p class="text-base font-title"><?php echo esc_html( $label ); ?></p>
 </button>

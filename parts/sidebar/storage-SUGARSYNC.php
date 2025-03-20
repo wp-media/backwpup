@@ -1,7 +1,14 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
-$jobid = get_site_option( 'backwpup_backup_files_job_id', false );
-$token = BackWPup_Option::get($jobid, 'sugarrefreshtoken', false);
+$job_id = $job_id ?? null;
+//The way SugarSync works requires a job_id here to prevent bugs during onboarding.
+// @todo Refactor it.
+if (null === $job_id) {
+  $job_id = get_site_option( 'backwpup_backup_files_job_id', false );
+}
+$sugardir = esc_attr(BackWPup_Option::get($job_id, 'sugardir', trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')))));
+$sugarmaxbackups = esc_attr(BackWPup_Option::get($job_id, 'sugarmaxbackups', 3));
+$token = BackWPup_Option::get($job_id, 'sugarrefreshtoken', false);
 
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Sugar Sync Settings", 'backwpup'),
@@ -9,7 +16,7 @@ BackWPupHelpers::component("closable-heading", [
 ]);
 ?>
 
-<?php if (isset($is_in_form) && false === $is_in_form) : ?>
+<?php if (isset($is_in_form) && ( false === $is_in_form || 'false' === $is_in_form )) : ?>
   <p>
     <?php
     BackWPupHelpers::component("form/button", [
@@ -17,8 +24,9 @@ BackWPupHelpers::component("closable-heading", [
       "label" => __("Back to Storages", 'backwpup'),
       "icon_name" => "arrow-left",
       "icon_position" => "before",
-      "trigger" => "open-sidebar",
+      "trigger" => "load-and-open-sidebar",
       "display" => "storages",
+      "data"		=> ['job-id' => $job_id, 'block-type' => 'children', 'block-name' => 'sidebar/storages',  ]
     ]);
     ?>
   </p>
@@ -28,13 +36,13 @@ BackWPupHelpers::component("closable-heading", [
 
 <div class="rounded-lg p-4 bg-grey-100" id="sugarsynclogin">
 		<?php
-		BackWPupHelpers::children("sidebar/sugar-sync-parts/api-connexion");
+		BackWPupHelpers::children("sidebar/sugar-sync-parts/api-connexion", false, ['job_id' => $job_id]);
 		?>
 </div>
 
 <div class="rounded-lg p-4 bg-grey-100" id="sugarsyncroot">
 		<?php
-		BackWPupHelpers::children("sidebar/sugar-sync-parts/root-folder");
+		BackWPupHelpers::children("sidebar/sugar-sync-parts/root-folder",false, ['job_id' => $job_id]);
 		?>
 </div>
 
@@ -54,7 +62,7 @@ BackWPupHelpers::component("closable-heading", [
       "name" => "sugardir",
       "identifier" => "sugardir",
       "label" => __("Folder to store files in", 'backwpup'),
-      "value" => esc_attr(BackWPup_Option::get($jobid, 'sugardir', "/folder")),
+      "value" => $sugardir,
       "required" => true,
     ]);
     ?>
@@ -66,7 +74,7 @@ BackWPupHelpers::component("closable-heading", [
       "type" => "number",
       "min" => 1,
       "label" => __("Max backups to retain", 'backwpup'),
-      "value" => esc_attr(BackWPup_Option::get($jobid, 'sugarmaxbackups', 3)),
+      "value" => $sugarmaxbackups,
       "required" => true,
     ]);
     ?>
@@ -88,9 +96,10 @@ BackWPupHelpers::component("form/button", [
   "type" => "primary",
   "label" => __("Save & Test connection", 'backwpup'),
   "full_width" => true,
-  "trigger" => "test-sugar-sync-storage",
+  "trigger" => "test-SUGARSYNC-storage",
   "data" => [
     "storage" => "sugar-sync",
+    "job-id" => $job_id,
   ],
 ]);
 ?>

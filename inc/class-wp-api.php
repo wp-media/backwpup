@@ -374,7 +374,7 @@ class BackWPup_WP_API {
 				]
 			);
 		}
-		return new WP_HTTP_Response( $html, $status, [ 'Content-Type' => 'text/html' ] );
+		return rest_ensure_response( $html );
 	}
 
 	/**
@@ -386,19 +386,24 @@ class BackWPup_WP_API {
 	 * @throws Exception If there is no backup job.
 	 */
 	private function delete_auth_sugarsync( WP_REST_Request $request ) {
-		$params       = $request->get_params();
-		$files_job_id = get_site_option( 'backwpup_backup_files_job_id', false );
-		if ( false === $files_job_id ) {
-			throw new Exception( esc_html__( 'No backup jobs set.', 'backwpup' ) );
+		$params = $request->get_params();
+		if ( isset( $params['job_id'] ) ) {
+			$jobids = [ $params['job_id'] ];
+		} else {
+			$files_job_id = get_site_option( 'backwpup_backup_files_job_id', false );
+			if ( false === $files_job_id ) {
+				throw new Exception( esc_html__( 'No backup jobs set.', 'backwpup' ) );
+			}
+			$jobids = [
+				$files_job_id,
+				$files_job_id + 1,
+			];
 		}
-		$jobids = [
-			$files_job_id,
-			$files_job_id + 1,
-		];
+
 		foreach ( $jobids as $jobid ) {
 			BackWPup_Option::delete( $jobid, 'sugarrefreshtoken' );
 		}
-		$html = BackWPupHelpers::children( 'sidebar/sugar-sync-parts/api-connexion' );
+		$html = BackWPupHelpers::children( 'sidebar/sugar-sync-parts/api-connexion', true, [ 'job_id' => $jobids[0] ] );
 		return $html;
 	}
 
@@ -436,7 +441,7 @@ class BackWPup_WP_API {
 				]
 			);
 		}
-		return new WP_HTTP_Response( $html, $status, [ 'Content-Type' => 'text/html' ] );
+		return rest_ensure_response( $html );
 	}
 
 	/**
@@ -457,22 +462,27 @@ class BackWPup_WP_API {
 		if ( ! isset( $params['sugarpass'] ) || '' === $params['sugarpass'] ) {
 			throw new Exception( esc_html__( 'No password set.', 'backwpup' ) );
 		}
-		$files_job_id = get_site_option( 'backwpup_backup_files_job_id', false );
-		if ( false === $files_job_id ) {
-			throw new Exception( esc_html__( 'No backup jobs set.', 'backwpup' ) );
+		if ( isset( $params['job_id'] ) ) {
+			$jobs_ids = [ $params['job_id'] ];
+		} else {
+			$files_job_id = get_site_option( 'backwpup_backup_files_job_id', false );
+			if ( false === $files_job_id ) {
+				throw new Exception( esc_html__( 'No backup jobs set.', 'backwpup' ) );
+			}
+			$jobs_ids = [
+				$files_job_id,
+				$files_job_id + 1,
+			];
 		}
-		$jobids        = [
-			$files_job_id,
-			$files_job_id + 1,
-		];
+
 		$sugarsync     = new BackWPup_Destination_SugarSync_API();
 		$refresh_token = $sugarsync->get_Refresh_Token( sanitize_email( $params['sugaremail'] ), $params['sugarpass'] );
 		if ( ! empty( $refresh_token ) ) {
-			foreach ( $jobids as $jobid ) {
+			foreach ( $jobs_ids as $jobid ) {
 				BackWPup_Option::update( $jobid, 'sugarrefreshtoken', $refresh_token );
 			}
 		}
-		$html = BackWPupHelpers::children( 'sidebar/sugar-sync-parts/api-connexion' );
+		$html = BackWPupHelpers::children( 'sidebar/sugar-sync-parts/api-connexion', true, [ 'job_id' => $jobs_ids[0] ] );
 		return $html;
 	}
 
@@ -814,20 +824,25 @@ class BackWPup_WP_API {
 				// Set response message based on activation status.
 				$return['message'] = $activ
 					? sprintf(
-						__( 'Backup scheduled at %1$s by WP-Cron', 'backwpup' ), // phpcs:ignore
+						__( 'Backup scheduled at %1$s', 'backwpup' ), // phpcs:ignore
 						date_i18n( get_option( 'date_format' ), time(), true ),
 						date_i18n( get_option( 'H:i' ), time(), true )
 						) // If activated, show backup schedule details.
 					: __( 'No backup scheduled', 'backwpup' ); // phpcs:ignore If not activated, show no backup message. 
 			} else {
-				$files_job_id = get_site_option( 'backwpup_backup_files_job_id', false );
-				if ( false === $files_job_id ) {
-					throw new Exception( __( 'Files job not found', 'backwpup' ) );
+				// If there is a job ID and storage destinations, update the storage destinations just for this id.
+				if ( isset( $params['job_id'] ) && isset( $params['storage_destinations'] ) ) {
+					$jobs = [ $params['job_id'] ];
+				} else {
+					$files_job_id = get_site_option( 'backwpup_backup_files_job_id', false );
+					if ( false === $files_job_id ) {
+						throw new Exception( __( 'Files job not found', 'backwpup' ) );
+					}
+					$jobs = [
+						$files_job_id,
+						$files_job_id + 1,
+					];
 				}
-				$jobs = [
-					$files_job_id,
-					$files_job_id + 1,
-				];
 				foreach ( $jobs as $a_job ) {
 					if ( isset( $params['storage_destinations'] ) ) {
 						$params['storage_destinations'] = array_filter( $params['storage_destinations'] );
@@ -865,20 +880,26 @@ class BackWPup_WP_API {
 			if ( null === $cloud ) {
 				throw new Exception( __( 'Cloud not found', 'backwpup' ) );
 			}
-			$files_job_id = get_site_option( 'backwpup_backup_files_job_id', false );
-			if ( false === $files_job_id ) {
-				throw new Exception( __( 'Files job not found', 'backwpup' ) );
+			// If no job ID is set, it's from onboarding so we use the files job and DB job.
+			if ( ! isset( $params['job_id'] ) || '' === $params['job_id'] ) {
+				$files_job_id = get_site_option( 'backwpup_backup_files_job_id', false );
+				if ( false === $files_job_id ) {
+					throw new Exception( __( 'Files job not found', 'backwpup' ) );
+				}
+				$jobs = [
+					$files_job_id,
+					$files_job_id + 1,
+				];
+			} else {
+				$jobs = [ $params['job_id'] ];
 			}
-			$jobs                = [
-				$files_job_id,
-				$files_job_id + 1,
-			];
+
 			$should_be_connected = true;
 			if ( isset( $params['delete_auth'] ) && 'true' === $params['delete_auth'] ) {
 				$should_be_connected = false;
 			}
 			$cloud->edit_form_post_save( $jobs );
-			if ( $should_be_connected !== $cloud->can_run( BackWPup_Option::get_job( $files_job_id ) ) ) {
+			if ( $should_be_connected !== $cloud->can_run( BackWPup_Option::get_job( $jobs[0] ) ) ) {
 				throw new Exception( __( 'Connection failed', 'backwpup' ) );
 			}
 			$return['message']   = __( 'Connection successful', 'backwpup' );
@@ -976,99 +997,54 @@ class BackWPup_WP_API {
 	 * @param WP_REST_Request $request The REST request object containing the parameters.
 	 * @param string          $job_type The type of job (database or files).
 	 *
-	 * @return WP_HTTP_Response The response object containing the status and message.
-	 *
-	 * @throws Exception If an error occurs during the process.
+	 * @return WP_Error|WP_REST_Response The response object containing the status and message.
 	 */
-	private function save_settings( WP_REST_Request $request, string $job_type ): WP_HTTP_Response {
+	private function save_settings( WP_REST_Request $request, string $job_type ) {
 		$params = $request->get_params();
 		$return = [];
 
-		try {
-			$frequency                   = $params['frequency'];
-			$params['start_time']        = isset( $params['start_time'] ) ? $params['start_time'] : '00:00';
-			$params['hourly_start_time'] = isset( $params['hourly_start_time'] ) ? (int) $params['hourly_start_time'] : 0;
-			$day_of_week                 = (int) isset( $params['day_of_week'] ) ? $params['day_of_week'] : 0;
-			$day_of_month                = isset( $params['day_of_month'] ) ? $params['day_of_month'] : '';
-			$start_time                  = explode( ':', $params['start_time'] );
+		$frequency                   = $params['frequency'];
+		$params['start_time']        = isset( $params['start_time'] ) ? $params['start_time'] : '00:00';
+		$params['hourly_start_time'] = isset( $params['hourly_start_time'] ) ? (int) $params['hourly_start_time'] : 0;
+		$day_of_week                 = (int) isset( $params['day_of_week'] ) ? $params['day_of_week'] : 0;
+		$day_of_month                = isset( $params['day_of_month'] ) ? $params['day_of_month'] : '';
+		$start_time                  = explode( ':', $params['start_time'] );
 
-			if ( 'hourly' === $frequency ) {
-				$start_time = [ '*', $params['hourly_start_time'] ];
-			}
-
-			$new_cron_expression = BackWPup_Cron::get_basic_cron_expression( $frequency, $start_time[0], $start_time[1], $day_of_week, $day_of_month );
-
-			// Map job IDs based on type.
-			$job_ids = [
-				'database' => get_site_option( 'backwpup_backup_database_job_id', false ),
-				'files'    => get_site_option( 'backwpup_backup_files_job_id', false ),
-			];
-
-			// Current and other job types.
-			$other_job = $job_ids[ 'database' === $job_type ? 'files' : 'database' ];
-
-			// Get options for the jobs.
-			$other_job_cron = BackWPup_Option::get( $other_job, 'cron' );
-
-			// Determine job behavior based on cron expressions.
-			if ( $new_cron_expression === $other_job_cron ) {
-				$job_ids = $this->set_combined_job( $job_ids );
-			} else {
-				$job_ids = $this->set_separate_jobs( $job_ids );
-			}
-
-			// Update cron and re-evaluate jobs.
-			BackWPup_Option::update( $job_ids[ $job_type ], 'cron', $new_cron_expression );
-			BackWPup_Job::schedule_job( $job_ids[ $job_type ] );
-			$cron_next = BackWPup_Cron::cron_next( $new_cron_expression );
-
-			$return['next_backup'] = sprintf(
-				__( '%1$s at %2$s by WP-Cron', 'backwpup' ), // @phpcs:ignore
-				date_i18n( get_option( 'date_format' ), $cron_next, true ),
-				date_i18n( 'H:i', $cron_next, true )
-			); // @phpcs:ignore
-			$return['status']      = 200;
-			$return['message'] = __(ucfirst($job_type) . ' settings saved successfully.', 'backwpup'); // @phpcs:ignore
-		} catch ( Exception $e ) {
-			$return['status'] = 500;
-			$return['error']  = $e->getMessage();
+		if ( 'hourly' === $frequency ) {
+			$start_time = [ '*', $params['hourly_start_time'] ];
 		}
 
-		return new WP_HTTP_Response( $return, $return['status'], [ 'Content-Type' => 'text/json' ] );
-	}
+		$new_cron_expression = BackWPup_Cron::get_basic_cron_expression( $frequency, $start_time[0], $start_time[1], $day_of_week, $day_of_month );
 
-	/**
-	 * Set the jobs to a "combined" type.
-	 *
-	 * @param array $job_ids         Array of job IDs for reference.
-	 */
-	private function set_combined_job( $job_ids ) {
-		BackWPup_Job::disable_job( $job_ids['database'] ); // Disable the database job.
-		$job_ids['database'] = $job_ids['files']; // Update the database job ID in the array.
+		// Map job IDs based on type.
+		$job_ids = [
+			'database' => get_site_option( 'backwpup_backup_database_job_id', false ),
+			'files'    => get_site_option( 'backwpup_backup_files_job_id', false ),
+		];
 
-		update_site_option( 'backwpup_backup_database_job_id', $job_ids['database'] ); // Update the database job ID to point to the file job.
-		BackWPup_Option::update( $job_ids['files'], 'type', BackWPup_JobTypes::$type_job_both ); // Mark the file job to handle both file and database backups.
-		BackWPup_Job::schedule_job( $job_ids['files'] ); // Schedule the file job.
-		BackWPup_Job::rename_job( $job_ids['files'], BackWPup_JobTypes::$name_job_both ); // Rename the file job.
-
-		return $job_ids;
-	}
-
-	/**
-	 * Set the jobs to a "separate" type.
-	 *
-	 * @param array $job_ids         Array of job IDs for reference.
-	 */
-	private function set_separate_jobs( $job_ids ) {
-		$job_ids['database'] = $job_ids['files'] + 1; // Update the database job ID in the array.
-		update_site_option( 'backwpup_backup_database_job_id', $job_ids['database'] ); // Update the database job ID to point to the file job.
-		BackWPup_Option::update( $job_ids['files'], 'type', BackWPup_JobTypes::$type_job_files ); // Mark the file job to handle only file backups.
-		BackWPup_Job::rename_job( $job_ids['files'], BackWPup_JobTypes::$name_job_files ); // Rename the file job.
-		if ( ! BackWPup_Job::is_job_enabled( $job_ids['database'] ) ) {
-			BackWPup_Job::enable_job( $job_ids['database'] ); // Enable the database job.
-			BackWPup_Job::schedule_job( $job_ids['database'] ); // Schedule the database job.
+		// Update cron and re-evaluate jobs.
+		if ( ! BackWPup_Option::update( $job_ids[ $job_type ], 'cron', $new_cron_expression ) ) {
+			return rest_ensure_response( new WP_Error( 'backwpup_option_update_failed', __( 'Failed to update option.', 'backwpup' ) ) );
 		}
-		return $job_ids;
+
+		if ( ! BackWPup_Job::schedule_job( $job_ids[ $job_type ] ) ) {
+			return rest_ensure_response( new WP_Error( 'backwpup_job_schedule_failed', __( 'Failed to schedule job.', 'backwpup' ) ) );
+		}
+
+		$cron_next = BackWPup_Cron::cron_next( $new_cron_expression );
+
+		$return['success']     = true;
+		$return['next_backup'] = sprintf(
+			// translators: %1$s is the date, %2$s is the time.
+			__( '%1$s at %2$s', 'backwpup' ),
+			date_i18n( get_option( 'date_format' ), $cron_next, true ),
+			date_i18n( 'H:i', $cron_next, true )
+		);
+
+		// translators: %s is the job type.
+		$return['message'] = sprintf( __( '%s settings saved successfully.', 'backwpup' ), ucfirst( $job_type ) );
+
+		return rest_ensure_response( $return );
 	}
 
 	/**
@@ -1367,11 +1343,11 @@ class BackWPup_WP_API {
 				throw new Exception( __( 'Wrong block type set.', 'backwpup' ) );
 			}
 			$method = $params['block_type'];
+			$data   = $params['block_data'] ?? [];
 			if ( 'component' === $method ) {
-				$data = $params['block_data'] ?? [];
 				$html = BackWPupHelpers::$method( $params['block_name'], $data );
 			} else {
-				$html = BackWPupHelpers::$method( $params['block_name'] );
+				$html = BackWPupHelpers::$method( $params['block_name'],  true, $data );
 			}
 		} catch ( Exception $e ) {
 			$status = 500;
@@ -1384,6 +1360,6 @@ class BackWPup_WP_API {
 				]
 			);
 		}
-		return new WP_HTTP_Response( $html, $status, [ 'Content-Type' => 'text/html' ] );
+		return rest_ensure_response( $html );
 	}
 }

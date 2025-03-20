@@ -29,11 +29,29 @@ class BackWPup_Install
 		// Migration for the new UI.
 		BackWPup_Migrate::migrate();
 
-		$backwpup_backup_files_job_id = get_site_option( 'backwpup_backup_files_job_id', false );
+		$backwpup_backup_files_job_id    = get_site_option( 'backwpup_backup_files_job_id', false );
+		$backwpup_backup_database_job_id = get_site_option( 'backwpup_backup_database_job_id', false );
+
 		if ( false === $backwpup_backup_files_job_id ) {
 			$backwpup_backup_files_job_id = BackWPup_Option::next_job_id();
 			update_site_option( 'backwpup_backup_files_job_id', $backwpup_backup_files_job_id );
-			update_site_option( 'backwpup_backup_database_job_id', $backwpup_backup_files_job_id );
+		}
+
+		if ( false === $backwpup_backup_database_job_id ) {
+			$backwpup_backup_database_job_id = BackWPup_Option::next_job_id();
+			update_site_option( 'backwpup_backup_database_job_id', $backwpup_backup_database_job_id );
+		}
+
+		// V5 jobs migration.
+		if ( $backwpup_backup_files_job_id === $backwpup_backup_database_job_id ) {
+			$backwpup_backup_database_job_id = $backwpup_backup_files_job_id + 1;
+			// We should migrate the combined job to two separate jobs.
+			BackWPup_Option::update( $backwpup_backup_files_job_id, 'type', BackWPup_JobTypes::$type_job_files );
+			BackWPup_Option::update( $backwpup_backup_database_job_id, 'type', BackWPup_JobTypes::$type_job_database );
+			update_site_option( 'backwpup_backup_database_job_id', $backwpup_backup_database_job_id );
+			BackWPup_Job::enable_job( $backwpup_backup_database_job_id );
+			$filecron = BackWPup_Option::get( $backwpup_backup_files_job_id, 'cron' );
+			BackWPup_Option::update( $backwpup_backup_database_job_id, 'cron', $filecron );
 		}
 
         //changes for 3.2
@@ -92,21 +110,25 @@ class BackWPup_Install
             $role->add_cap('backwpup_restore');
         }
 
-        //add/overwrite roles
-        add_role('backwpup_admin', __('BackWPup Admin', 'backwpup'), [
-            'read' => true,                         // make it usable for single user
-            'backwpup' => true, 					// BackWPup general accesses (like Dashboard)
-            'backwpup_jobs' => true,				// accesses for job page
-            'backwpup_jobs_edit' => true,			// user can edit/delete/copy/export jobs
-            'backwpup_jobs_start' => true,		    // user can start jobs
-            'backwpup_backups' => true,			    // accesses for backups page
-            'backwpup_backups_download' => true,	// user can download backup files
-            'backwpup_backups_delete' => true,	    // user can delete backup files
-            'backwpup_logs' => true,				// accesses for logs page
-            'backwpup_logs_delete' => true,		    // user can delete log files
-            'backwpup_settings' => true,			// accesses for settings page
-            'backwpup_restore' => true,				// accesses for restore page
-        ]);
+		// add/overwrite roles.
+		add_role(
+			'backwpup_admin',
+			__( 'BackWPup Admin', 'backwpup' ),
+			[
+				'read'                      => true,                         // make it usable for single user.
+				'backwpup'                  => true,           // BackWPup general accesses (like Dashboard).
+				'backwpup_jobs'             => true,        // accesses for job page.
+				'backwpup_jobs_edit'        => true,     // user can edit/delete/copy/export jobs.
+				'backwpup_jobs_start'       => true,        // user can start jobs.
+				'backwpup_backups'          => true,         // accesses for backups page.
+				'backwpup_backups_download' => true,  // user can download backup files.
+				'backwpup_backups_delete'   => true,      // user can delete backup files.
+				'backwpup_logs'             => true,        // accesses for logs page.
+				'backwpup_logs_delete'      => true,       // user can delete log files.
+				'backwpup_settings'         => true,      // accesses for settings page.
+				'backwpup_restore'          => true,       // accesses for restore page.
+			]
+			);
 
         add_role('backwpup_check', __('BackWPup jobs checker', 'backwpup'), [
             'read' => true,

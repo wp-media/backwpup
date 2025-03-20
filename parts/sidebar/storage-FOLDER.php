@@ -1,20 +1,25 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+$job_id = $job_id ?? null;
 # Form Values
-$jobid = get_site_option( 'backwpup_backup_files_job_id', false );
+
 $dest_object = BackWPup::get_destination( "FOLDER" );
 $values = $dest_object->option_defaults();
-$backupdir = BackWPup_Option::get($jobid, 'backupdir', $values['backupdir']);
-$maxbackups = BackWPup_Option::get($jobid, 'maxbackups', $values['maxbackups']);
-
-//ToDo add the values from the database
+// if null we are on onboarding so we use the default values.
+if (null === $job_id) {
+  $backupdir = $values['backupdir'];
+  $maxbackups = $values['maxbackups'];
+} else {
+  $backupdir = BackWPup_Option::get($job_id, 'backupdir', $values['backupdir']);
+  $maxbackups = BackWPup_Option::get($job_id, 'maxbackups', $values['maxbackups']);
+}
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Folder Settings", 'backwpup'),
   'type' => 'sidebar'
 ]);
 ?>
 
-<?php if (isset($is_in_form) && false === $is_in_form) : ?>
+<?php if (isset($is_in_form) && ( false === $is_in_form || 'false' === $is_in_form )) : ?>
   <p>
     <?php
     BackWPupHelpers::component("form/button", [
@@ -22,8 +27,9 @@ BackWPupHelpers::component("closable-heading", [
       "label" => __("Back to Storages", 'backwpup'),
       "icon_name" => "arrow-left",
       "icon_position" => "before",
-      "trigger" => "open-sidebar",
+      "trigger" => "load-and-open-sidebar",
       "display" => "storages",
+      "data"		=> ['job-id' => $job_id, 'block-type' => 'children', 'block-name' => 'sidebar/storages',  ]
     ]);
     ?>
   </p>
@@ -81,9 +87,10 @@ BackWPupHelpers::component("form/button", [
   "type" => "primary",
   "label" => __("Save & Test connection", 'backwpup'),
   "full_width" => true,
-  "trigger" => "test-folder-storage",
+  "trigger" => "test-FOLDER-storage",
   "data" => [
     "storage" => "local",
+    "job-id" => $job_id,
   ],
 ]);
 ?>

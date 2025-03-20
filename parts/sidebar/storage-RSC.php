@@ -1,6 +1,6 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
-$jobid = get_site_option( 'backwpup_backup_files_job_id', false );
+$job_id = $job_id ?? null;
 $regions = [
   "DFW" => __('Dallas (DFW)', 'backwpup'),
   "ORD" => __('Chicago (ORD)', 'backwpup'),
@@ -16,9 +16,16 @@ BackWPupHelpers::component("closable-heading", [
   'title' => __("Rackspace Cloud Settings", 'backwpup'),
   'type' => 'sidebar'
 ]);
+if (null === $job_id) {
+  $rscdir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
+  $rscmaxbackups = 3;
+} else {
+  $rscdir = esc_attr(BackWPup_Option::get($job_id, 'rscdir',trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')))));
+  $rscmaxbackups = esc_attr(BackWPup_Option::get($job_id, 'rscmaxbackups', 3));
+}
 ?>
 
-<?php if (isset($is_in_form) && false === $is_in_form) : ?>
+<?php if (isset($is_in_form) && ( false === $is_in_form || 'false' === $is_in_form )) : ?>
   <p>
     <?php
     BackWPupHelpers::component("form/button", [
@@ -26,8 +33,9 @@ BackWPupHelpers::component("closable-heading", [
       "label" => __("Back to Storages", 'backwpup'),
       "icon_name" => "arrow-left",
       "icon_position" => "before",
-      "trigger" => "open-sidebar",
+      "trigger" => "load-and-open-sidebar",
       "display" => "storages",
+      "data"		=> ['job-id' => $job_id, 'block-type' => 'children', 'block-name' => 'sidebar/storages',  ]
     ]);
     ?>
   </p>
@@ -51,7 +59,7 @@ BackWPupHelpers::component("closable-heading", [
       "name" => "rscusername",
       "identifier" => "rscusername",
       "label" => __("Username", 'backwpup'),
-      "value" => esc_attr(BackWPup_Option::get($jobid, 'rscusername')),
+      "value" => esc_attr(BackWPup_Option::get($job_id, 'rscusername')),
       "required" => true,
     ]);
     ?>
@@ -61,7 +69,7 @@ BackWPupHelpers::component("closable-heading", [
       "name" => "rscapikey",
       "identifier" => "rscapikey",
       "label" => __("API Key", 'backwpup'),
-      "value" => esc_attr(BackWPup_Encryption::decrypt(BackWPup_Option::get($jobid, 'rscapikey'))),
+      "value" => esc_attr(BackWPup_Encryption::decrypt(BackWPup_Option::get($job_id, 'rscapikey'))),
       "required" => true,
     ]);
     ?>
@@ -81,10 +89,10 @@ BackWPupHelpers::component("closable-heading", [
   <div class="flex flex-col gap-2">
     <?php
     BackWPupHelpers::component("form/select", [
-      "name" => "rackspace_cloud_region",
-      "identifier" => "rackspace_cloud_region",
+      "name" => "rscregion",
+      "identifier" => "rscregion",
       "label" => __("Rackspace Cloud Files Region", 'backwpup'),
-      "value" => BackWPup_Option::get($jobid, 'rscregion', ''),
+      "value" => BackWPup_Option::get($job_id, 'rscregion', ''),
       "options" => $regions,
     ]);
     ?>
@@ -92,10 +100,10 @@ BackWPupHelpers::component("closable-heading", [
     <div id="rscbucketContainer">
       <?php
         $rsc->edit_ajax([
-          'rscusername' => BackWPup_Option::get($jobid, 'rscusername'),
-          'rscregion' => BackWPup_Option::get($jobid, 'rscregion'),
-          'rscapikey' => BackWPup_Encryption::decrypt(BackWPup_Option::get($jobid, 'rscapikey')),
-          'rscselected' => BackWPup_Option::get($jobid, 'rsccontainer'),
+          'rscusername' => BackWPup_Option::get($job_id, 'rscusername'),
+          'rscregion' => BackWPup_Option::get($job_id, 'rscregion'),
+          'rscapikey' => BackWPup_Encryption::decrypt(BackWPup_Option::get($job_id, 'rscapikey')),
+          'rscselected' => BackWPup_Option::get($job_id, 'rsccontainer'),
         ]);
       ?>
     </div>
@@ -132,7 +140,7 @@ BackWPupHelpers::component("closable-heading", [
       "name" => "rscdir",
       "identifier" => "rscdir",
       "label" => __("Folder to store files in", 'backwpup'),
-      "value" => esc_attr(BackWPup_Option::get($jobid, 'rscdir',"/folder")),
+      "value" => $rscdir,
       "required" => true,
     ]);
     ?>
@@ -140,10 +148,11 @@ BackWPupHelpers::component("closable-heading", [
     <?php
     BackWPupHelpers::component("form/text", [
       "name" => "rscmaxbackups",
+      "identifier" => "rscmaxbackups",
       "type" => "number",
       "min" => 1,
       "label" => __("Max backups to retain", 'backwpup'),
-      "value" => esc_attr(BackWPup_Option::get($jobid, 'rscmaxbackups', 3)),
+      "value" => $rscmaxbackups,
       "required" => true,
     ]);
     ?>
@@ -165,9 +174,10 @@ BackWPupHelpers::component("form/button", [
   "type" => "primary",
   "label" => __("Save & Test connection", 'backwpup'),
   "full_width" => true,
-  "trigger" => "test-rackspace-cloud-storage",
+  "trigger" => "test-RSC-storage",
   "data" => [
     "storage" => "rackspace-cloud",
+    "job-id" => $job_id,
   ],
 ]);
 ?>

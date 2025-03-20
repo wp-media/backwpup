@@ -2,7 +2,7 @@
   use BackWPup\Utils\BackWPupHelpers;
   use Inpsyde\Restore\ViewLoader;
 ?>
-  <div class="max-w-screen-xl flex flex-col gap-4">
+  <div class="max-w-screen-xl flex flex-col gap-4 backwpup-typography">
     <div id="tb_download_file" style="display: none;">
       <div id="tb_container">
         <p id="download-file-waiting">
