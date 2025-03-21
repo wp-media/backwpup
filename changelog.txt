@@ -1,4 +1,10 @@
 == Changelog ==
+= 5.0.9 =
+Release date: March 21, 2025
+
+* Fixed: Huge package size
+* Fixed: Files and DB jobs are not separated in certain scenario
+
 = 5.0.8 =
 Release date: March 20, 2025
 

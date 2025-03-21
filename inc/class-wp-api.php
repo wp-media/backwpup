@@ -719,106 +719,16 @@ class BackWPup_WP_API {
 			$status = 200;
 			if ( isset( $params['job_id'] ) && isset( $params['activ'] ) ) {
 				// Extract parameters from the request.
-				$file_job_id     = get_site_option( 'backwpup_backup_files_job_id', false ); // Get the ID of the file job.
-				$database_job_id = get_site_option( 'backwpup_backup_database_job_id', false ); // Get the ID of the database job.
-				$activ           = filter_var( $params['activ'], FILTER_VALIDATE_BOOLEAN ); // Determine if the job is being activated or deactivated.
-				$type            = $params['type']; // Get the type of job (either 'files' or 'database').
+				$job_id = (int) $params['job_id']; // The job ID.
+				$activ  = filter_var( $params['activ'], FILTER_VALIDATE_BOOLEAN ); // Determine if the job is being activated or deactivated.
 
-				// CASE 1: Files type job.
-				if ( 'files' === $type ) {
-					if ( $file_job_id === $database_job_id ) {
-						// Case where file job also handles database backups.
-						if ( ! $activ ) {
-							// Disable the file job, enable a new database job to handle the backup.
-							BackWPup_Job::disable_job( $file_job_id );
-							BackWPup_Job::rename_job( $file_job_id, BackWPup_JobTypes::$name_job_files ); // Rename the file job.
-							$new_database_job_id = $file_job_id + 1; // Use the next ID for the database job.
-							BackWPup_Option::update( $file_job_id, 'type', BackWPup_JobTypes::$type_job_files ); // Mark the file job as handling only file backups.
-							BackWPup_Job::enable_job( $new_database_job_id ); // Enable the new database job.
-							update_site_option( 'backwpup_backup_database_job_id', $new_database_job_id ); // Update the stored database job ID.
-							BackWPup_Job::schedule_job( $new_database_job_id ); // Schedule the new database backup job.
-						} elseif ( BackWPup_Job::is_job_enabled( $database_job_id ) ) {
-							BackWPup_Job::disable_job( $database_job_id ); // Disable the database job.
-							update_site_option( 'backwpup_backup_database_job_id', $file_job_id ); // Update the database job ID to point to the file job.
-							BackWPup_Option::update( $file_job_id, 'type', BackWPup_JobTypes::$type_job_both ); // Mark the file job to handle both file and database backups.
-							BackWPup_Job::enable_job( $file_job_id ); // Enable the file job.
-							BackWPup_Job::schedule_job( $file_job_id ); // Schedule the file job.
-							BackWPup_Job::rename_job( $file_job_id, BackWPup_JobTypes::$name_job_both ); // Rename the file job.
-						} else {
-							BackWPup_Job::enable_job( $file_job_id ); // Enable the file job.
-							BackWPup_Job::schedule_job( $file_job_id ); // Schedule the file job.
-						}
-					} else { // @phpcs:ignore
-						// Case where file and database jobs are independent.
-						if ( $activ ) {
-							// Enable file job and disable database job if necessary.
-							if ( BackWPup_Job::is_job_enabled( $database_job_id ) ) {
-								BackWPup_Option::update( $file_job_id, 'type', BackWPup_JobTypes::$type_job_files );
-								if ( BackWPup_Option::get( $file_job_id, 'cron' ) === BackWPup_Option::get( $database_job_id, 'cron' ) ) {
-									// If both jobs share the same cron schedule, update file job to handle both backups.
-									BackWPup_Option::update( $file_job_id, 'type', BackWPup_JobTypes::$type_job_both );
-									update_site_option( 'backwpup_backup_database_job_id', $file_job_id ); // Update the database job ID.
-									BackWPup_Job::rename_job( $file_job_id, BackWPup_JobTypes::$name_job_both ); // Rename the file job.
-									BackWPup_Job::disable_job( $database_job_id ); // Disable the database job.
-								}
-							} else {
-								// If the file job is not yet enabled, just set it to handle both jobs.
-								BackWPup_Option::update( $file_job_id, 'type', BackWPup_JobTypes::$type_job_files );
-							}
-							BackWPup_Job::enable_job( $file_job_id ); // Enable the file job.
-							BackWPup_Job::schedule_job( $file_job_id );
-						} elseif ( ! $activ ) {
-							// Disable file job if not activated.
-							BackWPup_Job::disable_job( $file_job_id );
-						}
-					}
-				}
-
-				// CASE 2: Database type job.
-				elseif ( 'database' === $type ) {
-					BackWPup_Job::rename_job( $file_job_id + 1, BackWPup_JobTypes::$name_job_database ); // Rename the database job.
-					if ( $file_job_id === $database_job_id ) {
-						// Case where file job is also the database job.
-						if ( ! $activ ) {
-							// Disable DB job, make file job only handle file.
-							BackWPup_Option::update( $file_job_id, 'type', BackWPup_JobTypes::$type_job_files );
-							BackWPup_Job::rename_job( $file_job_id, BackWPup_JobTypes::$name_job_files ); // Rename the file job.
-
-						} elseif ( BackWPup_Job::is_job_enabled( $file_job_id ) ) {
-							// Enable DB job, set file to handle both.
-							BackWPup_Option::update( $file_job_id, 'type', BackWPup_JobTypes::$type_job_both );
-							BackWPup_Job::rename_job( $file_job_id, BackWPup_JobTypes::$name_job_both ); // Rename the file job.
-						} else {
-							$new_database_job_id = $file_job_id + 1;
-							BackWPup_Job::enable_job( $new_database_job_id );
-							BackWPup_Job::schedule_job( $new_database_job_id );
-						}
-					} else { // @phpcs:ignore
-						// Case where file and database jobs are independent.
-						if ( $activ ) {
-							if ( BackWPup_Job::is_job_enabled( $file_job_id ) ) {
-								// If file job is enabled, check if both jobs share the same cron schedule.
-								if ( BackWPup_Option::get( $file_job_id, 'cron' ) === BackWPup_Option::get( $database_job_id, 'cron' ) ) {
-									// If they share the same cron, update the file job to handle both backups.
-									BackWPup_Option::update( $file_job_id, 'type', BackWPup_JobTypes::$type_job_both );
-									update_site_option( 'backwpup_backup_database_job_id', $file_job_id ); // Update the database job ID.
-									BackWPup_Job::rename_job( $file_job_id, BackWPup_JobTypes::$name_job_both ); // Rename the file job.
-								} else {
-									// If cron schedules differ, just set the file job to handle both jobs.
-									BackWPup_Option::update( $file_job_id, 'type', BackWPup_JobTypes::$type_job_files );
-									BackWPup_Job::enable_job( $database_job_id );
-									BackWPup_Job::schedule_job( $database_job_id );
-								}
-							} else {
-								// If the file job isn't enabled, ensure that the database job is enabled.
-								BackWPup_Job::enable_job( $database_job_id );
-								BackWPup_Job::schedule_job( $database_job_id );
-							}
-						} elseif ( ! $activ ) {
-							// If not activating the database job, disable it.
-							BackWPup_Job::disable_job( $database_job_id );
-						}
-					}
+				if ( $activ ) {
+					// Enable and schedule the job.
+					BackWPup_Job::enable_job( $job_id );
+					BackWPup_Job::schedule_job( $job_id );
+				} else {
+					// Disable the job.
+					BackWPup_Job::disable_job( $job_id );
 				}
 
 				// Set response message based on activation status.

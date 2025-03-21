@@ -109,6 +109,7 @@ if (BackWPup::is_pro()) {
           "trigger" => "load-and-open-sidebar",
           "display" => "storages",
           "data"		=> ['job-id' => $file_job_id, 'block-type' => 'children', 'block-name' => 'sidebar/storages', ],
+          "disabled" => !$file_activate,
         ]);
       ?>
     </p>
@@ -148,6 +149,7 @@ if (BackWPup::is_pro()) {
         "label" => __("Data", 'backwpup'),
         "trigger" => "open-sidebar",
         "display" => "select-tables",
+        "disabled" => !$database_activate,
       ]);
       ?>
       <?php
@@ -156,6 +158,7 @@ if (BackWPup::is_pro()) {
         "label" => __("Frequency", 'backwpup'),
         "trigger" => "open-sidebar",
         "display" => $frequency_database,
+        "disabled" => !$database_activate,
       ]);
       ?>
       <?php
@@ -164,7 +167,8 @@ if (BackWPup::is_pro()) {
           "label" => __("Storage", 'backwpup'),
           "trigger" => "load-and-open-sidebar",
           "display" => "storages",
-          "data"		=> ['job-id' => $database_job_id, 'block-type' => 'children', 'block-name' => 'sidebar/storages',  ]
+          "data"		=> ['job-id' => $database_job_id, 'block-type' => 'children', 'block-name' => 'sidebar/storages',  ],
+          "disabled" => !$database_activate,
         ]);
       ?>      
     </p> 

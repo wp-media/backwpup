@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-03-20 16:02+0000\n"
+"POT-Creation-Date: 2025-03-21 10:15+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -154,7 +154,7 @@ msgstr ""
 msgid "Advanced settings"
 msgstr ""
 
-#: components/selector-file-db.php:65, parts/backups/next-scheduled-backup.php:125
+#: components/selector-file-db.php:65, parts/backups/next-scheduled-backup.php:126
 msgid "Database"
 msgstr ""
 
@@ -178,7 +178,7 @@ msgstr ""
 msgid "Stored on"
 msgstr ""
 
-#: components/table-backups.php:19, components/table-row-backups.php:81, parts/backups/next-scheduled-backup.php:89, parts/backups/next-scheduled-backup.php:148
+#: components/table-backups.php:19, components/table-row-backups.php:81, parts/backups/next-scheduled-backup.php:89, parts/backups/next-scheduled-backup.php:149
 msgid "Data"
 msgstr ""
 
@@ -270,7 +270,7 @@ msgstr ""
 msgid "Cheating, huh?"
 msgstr ""
 
-#: inc/class-admin.php:848, inc/class-wp-api.php:839, inc/class-wp-api.php:887, inc/class-wp-api.php:1257, inc/Pro/Settings/EncryptionSettingUpdater.php:107
+#: inc/class-admin.php:848, inc/class-wp-api.php:749, inc/class-wp-api.php:797, inc/class-wp-api.php:1167, inc/Pro/Settings/EncryptionSettingUpdater.php:107
 msgid "Files job not found"
 msgstr ""
 
@@ -2575,7 +2575,7 @@ msgid "?"
 msgstr ""
 
 #. translators: %1$s is the date, %2$s is the time.
-#: inc/class-page-backups.php:351, inc/class-page-backwpup.php:321, inc/class-page-backwpup.php:384, inc/class-page-jobs.php:297, inc/class-page-jobs.php:334, inc/class-page-logs.php:201, inc/class-wp-api.php:1039, parts/backups/next-scheduled-backup.php:28, parts/backups/next-scheduled-backup.php:38
+#: inc/class-page-backups.php:351, inc/class-page-backwpup.php:321, inc/class-page-backwpup.php:384, inc/class-page-jobs.php:297, inc/class-page-jobs.php:334, inc/class-page-logs.php:201, inc/class-wp-api.php:949, parts/backups/next-scheduled-backup.php:28, parts/backups/next-scheduled-backup.php:38
 msgid "%1$s at %2$s"
 msgstr ""
 
@@ -3293,7 +3293,7 @@ msgid "Job \"%1$s\" has started, but not responded for 10 seconds. Please check 
 msgstr ""
 
 #. translators: Job name
-#: inc/class-page-jobs.php:527, inc/class-wp-api.php:983
+#: inc/class-page-jobs.php:527, inc/class-wp-api.php:893
 msgid "Job \"%s\" started."
 msgstr ""
 
@@ -4078,88 +4078,88 @@ msgstr ""
 msgid "No pagination found."
 msgstr ""
 
-#: inc/class-wp-api.php:853
+#: inc/class-wp-api.php:763
 msgid "Backup updated."
 msgstr ""
 
-#: inc/class-wp-api.php:827
+#: inc/class-wp-api.php:737
 msgid "Backup scheduled at %1$s"
 msgstr ""
 
-#: inc/class-wp-api.php:831, parts/backups/next-scheduled-backup.php:18, parts/backups/next-scheduled-backup.php:19
+#: inc/class-wp-api.php:741, parts/backups/next-scheduled-backup.php:18, parts/backups/next-scheduled-backup.php:19
 msgid "No backup scheduled"
 msgstr ""
 
-#: inc/class-wp-api.php:877
+#: inc/class-wp-api.php:787
 msgid "Cloud not set"
 msgstr ""
 
-#: inc/class-wp-api.php:881
+#: inc/class-wp-api.php:791
 msgid "Cloud not found"
 msgstr ""
 
-#: inc/class-wp-api.php:903
+#: inc/class-wp-api.php:813
 msgid "Connection failed"
 msgstr ""
 
-#: inc/class-wp-api.php:905
+#: inc/class-wp-api.php:815
 msgid "Connection successful"
 msgstr ""
 
-#: inc/class-wp-api.php:1027
+#: inc/class-wp-api.php:937
 msgid "Failed to update option."
 msgstr ""
 
-#: inc/class-wp-api.php:1031
+#: inc/class-wp-api.php:941
 msgid "Failed to schedule job."
 msgstr ""
 
 #. translators: %s is the job type.
-#: inc/class-wp-api.php:1045
+#: inc/class-wp-api.php:955
 msgid "%s settings saved successfully."
 msgstr ""
 
-#: inc/class-wp-api.php:1077
+#: inc/class-wp-api.php:987
 msgid "Site option saved successfully."
 msgstr ""
 
-#: inc/class-wp-api.php:1118
+#: inc/class-wp-api.php:1028
 msgid "Bulk action processed."
 msgstr ""
 
-#: inc/class-wp-api.php:1121
+#: inc/class-wp-api.php:1031
 msgid "Invalid action."
 msgstr ""
 
-#: inc/class-wp-api.php:1140
+#: inc/class-wp-api.php:1050
 msgid "Invalid backup data."
 msgstr ""
 
-#: inc/class-wp-api.php:1149
+#: inc/class-wp-api.php:1059
 msgid "Missing required parameters."
 msgstr ""
 
-#: inc/class-wp-api.php:1159
+#: inc/class-wp-api.php:1069
 msgid "Invalid destination class."
 msgstr ""
 
-#: inc/class-wp-api.php:1225
+#: inc/class-wp-api.php:1135
 msgid "Excluded tables saved successfully."
 msgstr ""
 
-#: inc/class-wp-api.php:1265
+#: inc/class-wp-api.php:1175
 msgid "File exclusions saved successfully."
 msgstr ""
 
-#: inc/class-wp-api.php:1290
+#: inc/class-wp-api.php:1200
 msgid "This feature is only available in the Pro version."
 msgstr ""
 
-#: inc/class-wp-api.php:1340
+#: inc/class-wp-api.php:1250
 msgid "No block name set."
 msgstr ""
 
-#: inc/class-wp-api.php:1343
+#: inc/class-wp-api.php:1253
 msgid "Wrong block type set."
 msgstr ""
 
@@ -4323,7 +4323,7 @@ msgstr ""
 msgid "Files backup scheduled"
 msgstr ""
 
-#: components/onboarding/step2.php:36, components/onboarding/step2.php:75, parts/backups/next-scheduled-backup.php:99, parts/backups/next-scheduled-backup.php:156, parts/sidebar/frequency-files.php:36, parts/sidebar/frequency-tables.php:35
+#: components/onboarding/step2.php:36, components/onboarding/step2.php:75, parts/backups/next-scheduled-backup.php:99, parts/backups/next-scheduled-backup.php:158, parts/sidebar/frequency-files.php:36, parts/sidebar/frequency-tables.php:35
 msgid "Frequency"
 msgstr ""
 
@@ -5576,7 +5576,7 @@ msgstr ""
 msgid "Next Scheduled Backups"
 msgstr ""
 
-#: parts/backups/next-scheduled-backup.php:108, parts/backups/next-scheduled-backup.php:164
+#: parts/backups/next-scheduled-backup.php:108, parts/backups/next-scheduled-backup.php:167
 msgid "Storage"
 msgstr ""
 
