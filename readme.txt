@@ -20,7 +20,7 @@ Create a complete WordPress backup easily. Schedule automatic backups, store sec
 
 = 🎉 BackWPup 5.1 – New Features & Improvements = 
 
-We're excited to bring you BackWPup 5.1, which combines the redesigned interface of 5.0 with the return of many beloved features from previous versions. We've carefully listened to your feedback to offer a renewed backup experience. Check out our blog post to learn more about these updates. 
+We're excited to bring you BackWPup 5.1, which combines the redesigned interface of 5.0 with the return of many beloved features from previous versions. We've carefully listened to your feedback to offer a renewed backup experience. Check out our [blog post](https://backwpup.com/backwpup-5-1/) to learn more about these updates.
  
 🚀 What’s New in BackWPup 5.1? 
 
@@ -29,7 +29,7 @@ We're excited to bring you BackWPup 5.1, which combines the redesigned interface
 ✅ Edit Backup Title: Customize backup job names for better organization.   
 ✅ Hourly Frequency: Schedule hourly backups for more frequent protection. 
  
-If you happen to experience any issues with the new version, contact us directly here so we can investigate your case. We are committed to resolving any concerns quickly and are actively working to ensure a smooth experience for everyone.  
+If you happen to experience any issues with the new version, contact us directly [here](https://backwpup.com/contact) so we can investigate your case. We are committed to resolving any concerns quickly and are actively working to ensure a smooth experience for everyone.
 
 How It Works: The 3-Step Backup Wizard   
 
