@@ -18,20 +18,28 @@ Create a complete WordPress backup easily. Schedule automatic backups, store sec
 
  
 
-= 🆕 Introducing BackWPup 5.0 = 
+= 🎉 BackWPup 5.1 – New Features & Improvements = 
 
-Experience our most powerful update yet with a completely redesigned interface focused on simplicity and efficiency.  
-
+We're excited to bring you BackWPup 5.1, which combines the redesigned interface of 5.0 with the return of many beloved features from previous versions. We've carefully listened to your feedback to offer a renewed backup experience. Check out our [blog post](https://backwpup.com/backwpup-5-1/) to learn more about these updates.
  
-New 3-Step Backup Wizard: 
+🚀 What’s New in BackWPup 5.1? 
+
+✅ Add a New Backup: Add or remove unlimited backup jobs with a few clicks.  
+✅ Revamped “Backup Now” Flow: One-click to manually back up all your website data.  
+✅ Edit Backup Title: Customize backup job names for better organization.   
+✅ Hourly Frequency: Schedule hourly backups for more frequent protection. 
+ 
+If you happen to experience any issues with the new version, contact us directly [here](https://backwpup.com/contact) so we can investigate your case. We are committed to resolving any concerns quickly and are actively working to ensure a smooth experience for everyone.
+
+How It Works: The 3-Step Backup Wizard   
 
 * **What** - Choose your backup contents through our intuitive setup wizard 
 
-* **When** - Set your backup schedule (daily, weekly, or monthly) 
+* **When** - Set your backup schedule (hourly, daily, weekly, or monthly) 
 
 * **Where** - Select your preferred storage destination(s) 
 
-Create comprehensive backups with fewer clicks than ever before and restore your data with ease! 
+Create comprehensive backups and restore your data with ease! 
 
  
 
@@ -71,7 +79,7 @@ With BackWPup, you have full control over your backup process. You can back up y
 
 * Backup your entire WordPress installation, including the /wp-content/ folder and your database. 
 
-* Schedule automatic backups to run daily, weekly, or monthly, ensuring that your data is always up-to-date and secure. 
+* Schedule automatic backups to run hourly, daily, weekly, or monthly, ensuring your data is always up-to-date and secure. 
 
 * Store your backup in different locations: 
 > **Free version**: Dropbox, Amazon S3, FTP, Rackspace Cloud, Microsoft Azure, SugarSync.  
@@ -103,26 +111,6 @@ Even Google recommends regular backups and database maintenance to ensure the re
 = 😎 Easy Migration =    
 
 BackWPup makes migrating your WordPress site simple. Whether you’re switching hosts or moving to a new server, easily export your files and database, then restore everything with just a few clicks—quick and hassle-free. Available only on the Pro version - **[Get BackWPup Pro](https://backwpup.com/#buy)** 
-
-   
-
-= ❤️ What Do Our Users Think of BackWPup? =  
-
-Here’s what our users have to say about us after using BackWPup:  
-
->"Thanks to the developers for a very handy plugin! I’ve been using it for many years and it has never let me down! Thank you!" — [alexeytrusovru ](https://wordpress.org/support/topic/very-convenient-and-easy-to-configure-plug-ins/) 
-
-   
-
->”Must have for backup. So easy to use and so much feature. You can choose what to backup : files, db, plugin, theme… Then you can choose where to backup like upload to your dropbox.”— [zuriiwest](https://wordpress.org/support/topic/must-have-for-backup/) 
-
-  
-
-> "Using this for 2 years for 30 sites without any issue, worked perfectly for me!" — [hoathuy](https://wordpress.org/support/topic/using-this-for-2-years-for-30-sites-without-any-issue-worked-perfectly-for-me/) 
-
- 
-
-> "My favorite backup plugin – use it on many sites. I manage many sites, and this has been my favorite backup plugin for years. It has a number of features that are not available in the free versions of other backup plugins (or at least, not all in the same plugin)" — [syzygist](https://wordpress.org/support/topic/my-favorite-backup-plugin-use-it-on-many-sites/) 
 
   
 
@@ -193,7 +181,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 == Screenshots == 
 
 1. WHAT - Choose your backup contents through our intuitive setup wizard 
-2. WHEN - Set your backup schedule (daily, weekly, or monthly) 
+2. WHEN - Set your backup schedule (hourly, daily, weekly, or monthly) 
 3. WHERE - Select your preferred storage destination(s) 
 4. Configure all your backup settings 
 5. Backup history, next scheduled backups all in one place 
