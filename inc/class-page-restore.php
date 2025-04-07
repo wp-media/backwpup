@@ -35,7 +35,7 @@ class BackWPup_Page_Restore {
 				'underscore',
 				'jquery',
 			],
-			filemtime( "{$shared_scripts_dir}/functions{$suffix}.js" ),
+			BackWPup::get_plugin_data( 'Version' ),
 			true
 		);
 		wp_register_script(
@@ -44,7 +44,7 @@ class BackWPup_Page_Restore {
 			[
 				'backwpup_functions',
 			],
-			filemtime( "{$shared_scripts_dir}/states{$suffix}.js" ),
+			BackWPup::get_plugin_data( 'Version' ),
 			true
 		);
 		wp_register_script(
@@ -54,7 +54,7 @@ class BackWPup_Page_Restore {
 				'underscore',
 				'jquery',
 			],
-			filemtime( "{$restore_scripts_dir}/restore-functions{$suffix}.js" ),
+			BackWPup::get_plugin_data( 'Version' ),
 			true
 		);
 		wp_register_script(
@@ -67,7 +67,7 @@ class BackWPup_Page_Restore {
 				'restore_functions',
 				'decrypter',
 			],
-			filemtime( "{$restore_scripts_dir}/decompress{$suffix}.js" ),
+			BackWPup::get_plugin_data( 'Version' ),
 			true
 		);
 		wp_register_script(
@@ -80,7 +80,7 @@ class BackWPup_Page_Restore {
 				'restore_functions',
 				'backwpup_states',
 			],
-			filemtime( "{$restore_scripts_dir}/download{$suffix}.js" ),
+			BackWPup::get_plugin_data( 'Version' ),
 			true
 		);
 		wp_register_script(
@@ -92,7 +92,7 @@ class BackWPup_Page_Restore {
 				'backwpup_functions',
 				'restore_functions',
 			],
-			filemtime( "{$restore_scripts_dir}/strategy{$suffix}.js" ),
+			BackWPup::get_plugin_data( 'Version' ),
 			true
 		);
 		wp_register_script(
@@ -104,7 +104,7 @@ class BackWPup_Page_Restore {
 				'backwpup_functions',
 				'restore_functions',
 			],
-			filemtime( "{$restore_scripts_dir}/database{$suffix}.js" ),
+			BackWPup::get_plugin_data( 'Version' ),
 			true
 		);
 		wp_register_script(
@@ -116,7 +116,7 @@ class BackWPup_Page_Restore {
 				'backwpup_functions',
 				'restore_functions',
 			],
-			filemtime( "{$restore_scripts_dir}/database-restore{$suffix}.js" ),
+			BackWPup::get_plugin_data( 'Version' ),
 			true
 		);
 		wp_register_script(
@@ -128,7 +128,7 @@ class BackWPup_Page_Restore {
 				'backwpup_functions',
 				'restore_functions',
 			],
-			filemtime( "{$restore_scripts_dir}/files-restore{$suffix}.js" ),
+			BackWPup::get_plugin_data( 'Version' ),
 			true
 		);
 		wp_register_script(
@@ -140,7 +140,7 @@ class BackWPup_Page_Restore {
 				'backwpup_functions',
 				'restore_functions',
 			],
-			filemtime( "{$restore_scripts_dir}/controller{$suffix}.js" ),
+			BackWPup::get_plugin_data( 'Version' ),
 			true
 		);
 		wp_register_script(
@@ -152,7 +152,7 @@ class BackWPup_Page_Restore {
 				'backwpup_functions',
 				'restore_functions',
 			],
-			filemtime( "{$restore_scripts_dir}/controller{$suffix}.js" ),
+			BackWPup::get_plugin_data( 'Version' ),
 			true
 		);
 		wp_register_script(
@@ -164,11 +164,11 @@ class BackWPup_Page_Restore {
 				'backwpup_functions',
 				'restore_functions',
 			],
-			filemtime( "{$restore_scripts_dir}/strategy{$suffix}.js" ),
+			BackWPup::get_plugin_data( 'Version' ),
 			true
 		);
 
-		wp_enqueue_script( 'backwpupgeneral', [], '', true );
+		wp_enqueue_script( 'backwpupgeneral', [], '', BackWPup::get_plugin_data( 'Version' ), true );
 		wp_enqueue_script(
 			'restore_restore',
 			"{$path_js}/restore{$suffix}.js",
@@ -189,7 +189,7 @@ class BackWPup_Page_Restore {
 				'decrypter',
 				'restore_migrate',
 			],
-			filemtime( "{$dir_js}/restore{$suffix}.js" ),
+			BackWPup::get_plugin_data( 'Version' ),
 			true
 		);
 	}

@@ -1,14 +1,14 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 /**
- * @var string $fileJobId Optional. The main plugin file. Default: null.
+ * @var string $job_id Optional. The main plugin file. Default: null.
  *
  */
 
-#Defaults
-$fileJobId = $fileJobId ?? null;
-
-$excludedFiles = BackWPup_Directory::get_folder_list_to_exclude('uploads',BackWPup_File::get_upload_dir(), $fileJobId);
+if ( ! isset($job_id) ) {
+	return;
+}
+$excludedFiles = BackWPup_Directory::get_folder_list_to_exclude('uploads',BackWPup_File::get_upload_dir(), $job_id);
 
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Uploads", 'backwpup') . " - " . __("Exclusion Settings", 'backwpup'),

@@ -32,14 +32,20 @@ class BackWPup_Install
 		$backwpup_backup_files_job_id    = get_site_option( 'backwpup_backup_files_job_id', false );
 		$backwpup_backup_database_job_id = get_site_option( 'backwpup_backup_database_job_id', false );
 
-		if ( false === $backwpup_backup_files_job_id ) {
+		$jobids = BackWPup_Option::get_job_ids();
+		if ( false === $backwpup_backup_files_job_id && false === $backwpup_backup_database_job_id ) {
 			$backwpup_backup_files_job_id = BackWPup_Option::next_job_id();
 			update_site_option( 'backwpup_backup_files_job_id', $backwpup_backup_files_job_id );
-		}
-
-		if ( false === $backwpup_backup_database_job_id ) {
-			$backwpup_backup_database_job_id = BackWPup_Option::next_job_id();
-			update_site_option( 'backwpup_backup_database_job_id', $backwpup_backup_database_job_id );
+			update_site_option( 'backwpup_backup_database_job_id', $backwpup_backup_files_job_id + 1 );
+			$default_jobs = BackWPup_Option::get_default_jobs();
+			$jobs         = BackWPup_Job::get_jobs();
+			$jobs         = array_merge( $default_jobs, $jobs );
+			update_site_option( 'backwpup_jobs', $jobs );
+		} elseif ( ! in_array( (int) $backwpup_backup_files_job_id, $jobids, true ) && ! in_array( (int) $backwpup_backup_database_job_id, $jobids, true ) ) {
+			$default_jobs = BackWPup_Option::get_default_jobs();
+			$jobs         = BackWPup_Job::get_jobs();
+			$jobs         = array_merge( $default_jobs, $jobs );
+			update_site_option( 'backwpup_jobs', $jobs );
 		}
 
 		// V5 jobs migration.

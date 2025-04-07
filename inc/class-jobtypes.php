@@ -28,14 +28,14 @@ abstract class BackWPup_JobTypes {
 	 *
 	 * @var string
 	 */
-	public static $name_job_files = 'Files Backup';
+	public static $name_job_files = 'Files';
 
 	/**
 	 * The name of the job type for database backup.
 	 *
 	 * @var string
 	 */
-	public static $name_job_database = 'Database Backup';
+	public static $name_job_database = 'Database';
 
 	/**
 	 *  The name of the job type that includes both files and database backup.

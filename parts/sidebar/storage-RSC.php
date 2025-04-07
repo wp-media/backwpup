@@ -16,9 +16,10 @@ BackWPupHelpers::component("closable-heading", [
   'title' => __("Rackspace Cloud Settings", 'backwpup'),
   'type' => 'sidebar'
 ]);
-if (null === $job_id) {
-  $rscdir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
-  $rscmaxbackups = 3;
+if (null === $job_id || empty($job_id) ) {
+	$is_in_form    = true;
+	$rscdir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
+    $rscmaxbackups = 3;
 } else {
   $rscdir = esc_attr(BackWPup_Option::get($job_id, 'rscdir',trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')))));
   $rscmaxbackups = esc_attr(BackWPup_Option::get($job_id, 'rscmaxbackups', 3));

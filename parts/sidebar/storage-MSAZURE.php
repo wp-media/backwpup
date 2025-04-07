@@ -8,9 +8,9 @@ BackWPupHelpers::component("closable-heading", [
   'title' => __("Microsoft Azure Settings", 'backwpup'),
   'type' => 'sidebar'
 ]);
-if (null === $job_id) {
-  $msazuredir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
-  $msazuremaxbackups = 15;
+if (null === $job_id || empty($job_id) ) {
+	$is_in_form    = true;  $msazuredir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
+    $msazuremaxbackups = 15;
 } else {
   $msazuredir = esc_attr(BackWPup_Option::get(
     $job_id,

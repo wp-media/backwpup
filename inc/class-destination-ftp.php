@@ -582,7 +582,7 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations
 		// PASV.
 		$job_object->log( sprintf( __( 'FTP client command: %s', 'backwpup' ), 'PASV' ), E_USER_NOTICE ); // @phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
 		if ( $job_object->job['ftppasv'] ) {
-			ftp_set_option( $ftp_conn_id, FTP_USEPASVADDRESS, wpm_apply_filters_typed( 'string', self::FILTER_USEPASVADDRESS, true ) );
+			ftp_set_option( $ftp_conn_id, FTP_USEPASVADDRESS, wpm_apply_filters_typed( 'boolean', self::FILTER_USEPASVADDRESS, true ) );
 			if ( ftp_pasv( $ftp_conn_id, true ) ) {
 				$job_object->log(
                     sprintf(__('FTP server reply: %s', 'backwpup'), __('Entering passive mode', 'backwpup')),

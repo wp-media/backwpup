@@ -3,6 +3,9 @@
 namespace BackWPup\Utils;
 
 use BackWPup;
+use BackWPup_Pro_Destination_HiDrive_Api;
+use BackWPup_Pro_Destination_HiDrive_Authorization;
+use BackWPup_Pro_Destination_HiDrive_Request;
 
 class BackWPupHelpers {
 
@@ -16,10 +19,12 @@ class BackWPupHelpers {
 	 * @return string|null HTML content of the component if `$return` is true; otherwise, null.
 	 */
 	public static function component( string $component, array $args = [], bool $return = false ) { // @phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.returnFound
-		$path = untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . "/components/{$component}.php";
+		$filename = sanitize_text_field( $component ) . '.php';
+		$filename = str_replace( '../', '', $filename );
+		$path     = untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . '/components/' . $filename;
 		// Check if Pro version is active and try pro path if file not found.
 		if ( ! file_exists( $path ) && BackWPup::is_pro() ) {
-			$path = untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . "/pro/components/{$component}.php";
+			$path = untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . '/pro/components/' . $filename;
 		}
 		if ( ! file_exists( $path ) ) {
 			error_log( "Component file not found: {$path}" ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
@@ -53,10 +58,12 @@ class BackWPupHelpers {
 	 * @return string|null HTML content of the component if `$return` is true; otherwise, null.
 	 */
 	public static function children( string $component, bool $return = false, array $args = [] ) { // @phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.returnFound
-		$path = untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . "/parts/{$component}.php";
+		$filename = sanitize_text_field( $component ) . '.php';
+		$filename = str_replace( '../', '', $filename );
+		$path     = untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . '/parts/' . $filename;
 		// Check if Pro version is active and try pro path if file not found.
 		if ( ! file_exists( $path ) && BackWPup::is_pro() ) {
-			$path = untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . "/pro/parts/{$component}.php";
+			$path = untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . '/pro/parts/' . $filename;
 		}
 
 		if ( ! file_exists( $path ) ) {
@@ -87,5 +94,111 @@ class BackWPupHelpers {
 	 */
 	public static function clsx( ...$classes ) {
 		return implode( ' ', array_filter( $classes ) );
+	}
+
+	/**
+	 * Process backup items.
+	 *
+	 * @param array  $items    The list of backup items.
+	 * @param array  $job_data The job data to merge with each item.
+	 * @param string $dest     The destination of the backup.
+	 * @param int    $page     The current page for pagination.
+	 *
+	 * @return array The processed items.
+	 */
+	public static function process_backup_items( array $items, array $job_data, string $dest, int $page ): array {
+		array_walk(
+			$items,
+			function ( &$item ) use ( $job_data, $dest, $page ) {
+				$item = array_merge( $item, $job_data, [ 'stored_on' => $dest ] );
+
+				// Parse the filename to get the type of backup.
+				$filename       = pathinfo( $item['filename'] )['filename'];
+				$filename       = preg_replace( '/\.[^.]+$/', '', $filename ); // Remove file extensions.
+				$filename_parts = explode( '_', $filename );
+
+				if ( isset( $filename_parts[3] ) ) {
+					$item['data'] = (array) explode( '-', $filename_parts[3] );
+				}
+
+				$local_file      = untrailingslashit( BackWPup::get_plugin_data( 'TEMP' ) ) . "/{$item['filename']}";
+				$downloadhref    = '';
+				$downloadurl     = '';
+				$downloadtrigger = '';
+
+				if ( 'HIDRIVE' === $dest && $item['filesize'] > 10485760 ) {
+					$request       = new BackWPup_Pro_Destination_HiDrive_Request();
+					$authorization = new BackWPup_Pro_Destination_HiDrive_Authorization( $request );
+					$api           = new BackWPup_Pro_Destination_HiDrive_Api( $request, $authorization );
+					$response      = $api->temporalDownloadUrl( $job_data['id'], $item['file'] );
+					$respons_body  = json_decode( (string) $response['body'] );
+
+					if ( isset( $respons_body->url ) ) {
+						$downloadurl     = $respons_body->url;
+						$downloadhref    = $respons_body->url;
+						$downloadtrigger = 'direct-download-backup';
+					}
+				} else {
+					$downloadurl     = wp_nonce_url( $item['downloadurl'], 'backwpup_action_nonce' );
+					$downloadhref    = '#TB_inline?height=300&inlineId=tb_download_file&width=640&height=412';
+					$downloadtrigger = 'download-backup';
+				}
+
+				// Add the download URL and dataset.
+				$item['dataset-download'] = [
+					'data-jobid'       => $job_data['id'],
+					'data-destination' => $dest,
+					'data-file'        => $item['file'],
+					'data-local-file'  => $local_file,
+					'data-nonce'       => wp_create_nonce( 'backwpup_action_nonce' ),
+					'data-url'         => $downloadurl,
+					'data-href'        => $downloadhref,
+				];
+				$item['download-trigger'] = $downloadtrigger;
+
+				// If the user can restore, add the restore URL.
+				if ( current_user_can( 'backwpup_restore' ) && ! empty( $item['restoreurl'] ) ) {
+					$item['dataset-restore'] = [
+						'label'    => __( 'Restore Backup', 'backwpup' ),
+						'data-url' => wp_nonce_url(
+							add_query_arg(
+								[
+									'step'             => 1,
+									'trigger_download' => 1,
+								],
+								$item['restoreurl']
+							),
+							'restore-backup_' . $job_data['id']
+						),
+					];
+				} elseif ( current_user_can( 'backwpup_restore' ) ) {
+					$item['dataset-restore'] = [
+						'label'    => __( 'Restore Backup', 'backwpup' ),
+						'data-url' => network_admin_url( 'admin.php?page=backwpuprestore' ),
+					];
+				}
+
+				// If the user can delete, add the delete URL.
+				if ( current_user_can( 'backwpup_backups_delete' ) ) {
+					$item['dataset-delete'] = [
+						'data-url' => wp_nonce_url(
+							add_query_arg(
+								[
+									'page'          => 'backwpupbackups',
+									'action'        => 'delete',
+									'jobdest-top'   => $job_data['id'] . '_' . $dest,
+									'backupfiles[]' => esc_attr( $item['file'] ),
+									'paged'         => $page,
+								],
+								network_admin_url( 'admin.php' )
+							),
+							'bulk-backups'
+						),
+					];
+				}
+			}
+		);
+
+		return $items;
 	}
 }

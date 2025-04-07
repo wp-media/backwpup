@@ -86,35 +86,57 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
 <?php
     }
 
-    /**
-     * @param $id
-     */
-    public function edit_form_post_save($id)
-    {
-        /** @var wpdb $wpdb */
-        global $wpdb;
+	/**
+	 * Handles saving database dump settings based on provided parameters.
+	 *
+	 * @param int   $id     The job ID.
+	 * @param array $params Optional. The parameters passed to update the database settings.
+	 *                      If empty, the method falls back to using $_POST.
+	 *
+	 * @return void
+	 */
+	public function edit_form_post_save( $id, array $params = [] ) {
+		/**
+		 * DB Object from WP
+		 *
+		 * @var wpdb $wpdb
+		 */
+		global $wpdb;
 
-        if ($_POST['dbdumpfilecompression'] === '' || $_POST['dbdumpfilecompression'] === '.gz') {
-            BackWPup_Option::update($id, 'dbdumpfilecompression', $_POST['dbdumpfilecompression']);
-        }
-        BackWPup_Option::update($id, 'dbdumpfile', BackWPup_Job::sanitize_file_name($_POST['dbdumpfile']));
-        //selected tables
-        $dbdumpexclude = [];
-        $checked_db_tables = [];
-        if (isset($_POST['tabledb'])) {
-            foreach ($_POST['tabledb'] as $dbtable) {
-                $checked_db_tables[] = sanitize_text_field($dbtable);
-            }
-        }
-        $dbtables = $wpdb->get_results('SHOW TABLES FROM `' . DB_NAME . '`', ARRAY_N);
+		// If $params is empty, fallback to $_POST (for backward compatibility).
+		if ( empty( $params ) ) {
+			$params = $_POST; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		}
 
-        foreach ($dbtables as $dbtable) {
-            if (!in_array($dbtable[0], $checked_db_tables, true)) {
-                $dbdumpexclude[] = $dbtable[0];
-            }
-        }
-        BackWPup_Option::update($id, 'dbdumpexclude', $dbdumpexclude);
-    }
+		// Save database dump file compression.
+		if ( isset( $params['dbdumpfilecompression'] ) && ( '' === $params['dbdumpfilecompression'] || '.gz' === $params['dbdumpfilecompression'] ) ) {
+			BackWPup_Option::update( $id, 'dbdumpfilecompression', $params['dbdumpfilecompression'] );
+		}
+
+		// Save database dump file name.
+		if ( ! empty( $params['dbdumpfile'] ) ) {
+			BackWPup_Option::update( $id, 'dbdumpfile', BackWPup_Job::sanitize_file_name( $params['dbdumpfile'] ) );
+		}
+
+		// Selected tables.
+		$dbdumpexclude     = [];
+		$checked_db_tables = isset( $params['tabledb'] ) && is_array( $params['tabledb'] )
+			? array_map( 'sanitize_text_field', $params['tabledb'] )
+			: [];
+
+		// Retrieve all tables from the database.
+		$dbtables = $wpdb->get_results( 'SHOW TABLES FROM `' . DB_NAME . '`', ARRAY_N ); // phpcs:ignore
+
+		// Identify tables to exclude.
+		foreach ( $dbtables as $dbtable ) {
+			if ( ! in_array( $dbtable[0], $checked_db_tables, true ) ) {
+				$dbdumpexclude[] = $dbtable[0];
+			}
+		}
+
+		// Save excluded tables.
+		BackWPup_Option::update( $id, 'dbdumpexclude', $dbdumpexclude );
+	}
 
     /**
      * Dumps the Database.

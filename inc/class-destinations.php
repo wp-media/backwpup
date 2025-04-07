@@ -27,7 +27,7 @@ abstract class BackWPup_Destinations
 	private static $local_destination = [
 		'local' => [
 			'slug'  => 'FOLDER',
-			'label' => 'Local',
+			'label' => 'Website Server',
 		],
 	];
 	/**

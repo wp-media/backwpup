@@ -1,14 +1,20 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+/**
+ * @var $job_id int Job ID
+ */
 $job_id = $job_id ?? null;
+
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Amazon S3 Settings", 'backwpup'),
   'type' => 'sidebar'
 ]);
 $selectedOptions = null;
-if (null === $job_id) {
-  $s3dir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
-  $s3maxbackups = 3;
+if (null === $job_id || empty($job_id) ) {
+	$is_in_form    = true;
+	$s3dir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
+	$s3maxbackups = 3;
 } else {
   $selectedOptions = BackWPup_S3_Destination::fromJobId($job_id);
   $s3dir = esc_attr(BackWPup_Option::get($job_id, 's3dir',trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')))));

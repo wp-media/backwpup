@@ -57,9 +57,9 @@ final class BackWPup_Admin {
         wp_enqueue_style(
             'backwpup',
             BackWPup::get_plugin_data('URL') . '/assets/css/main.min.css',
-            [],
-            filemtime($filePath),
-            'screen'
+			[],
+			BackWPup::get_plugin_data( 'Version' ),
+			'screen'
         );
     }
 
@@ -73,7 +73,7 @@ final class BackWPup_Admin {
 				'backwpup-generate',
 				BackWPup::get_plugin_data( 'URL' ) . '/assets/js/backwpup-generate.js',
 				[ 'jquery' ],
-				'1.0.0',
+				BackWPup::get_plugin_data( 'Version' ),
 				true
 			);
 			wp_localize_script(
@@ -104,14 +104,14 @@ final class BackWPup_Admin {
 				'backwpup-admin',
 				BackWPup::get_plugin_data( 'URL' ) . '/assets/css/backwpup-admin.css',
 				[],
-				'1.0.0'
+				BackWPup::get_plugin_data( 'Version' )
 			);
 
 			wp_enqueue_script(
 				'backwpup-admin',
 				BackWPup::get_plugin_data( 'URL' ) . '/assets/js/backwpup-admin.js',
 				[ 'jquery' ],
-				'1.0.0',
+				BackWPup::get_plugin_data( 'Version' ),
 				true
 			);
 
@@ -313,7 +313,7 @@ final class BackWPup_Admin {
 				'jquery',
 				'thickbox',
 			],
-			filemtime( untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . "/assets/js/settings-encryption{$suffix}.js" ),
+			BackWPup::get_plugin_data( 'Version' ),
 			false
 		);
 
@@ -842,16 +842,8 @@ final class BackWPup_Admin {
 			$query_args['jobid'] = $jobid;
         }
 
-		// Update archive format for files and database jobs.
-		$files_job_id = get_site_option( 'backwpup_backup_files_job_id', false );
-		if ( false === $files_job_id ) {
-			throw new Exception( esc_html__( 'Files job not found', 'backwpup' ) );
-		}
-
-		$jobs = [
-			$files_job_id,
-			$files_job_id + 1, // Assumes the database job follows directly.
-		];
+		// Save archive format for all jobs.
+		$jobs = BackWPup_Option::get_job_ids();
 
 		foreach ( $jobs as $job_id ) {
 			if ( $post_archiveformat ) {
@@ -1156,6 +1148,7 @@ EOT;
 	 *               - 'nonce_generate' (string): Nonce for BackWPup working AJAX.
 	 *               - 'backupslistings' (string): REST URL for backups listings.
 	 *               - 'backupspagination' (string): REST URL for backups pagination.
+	 *               - 'addjob' (string): REST URL for adding a job.
 	 *               - 'updatejob' (string): REST URL for updating a job.
 	 *               - 'nonce' (string): Nonce for WP REST API.
 	 *               - 'cloudsaveandtest' (string): REST URL for cloud save and test.
@@ -1172,18 +1165,21 @@ EOT;
 	 *               - 'getblock' (string): REST URL for getting a block.
 	 *               - 'backupslistingslength' (int): Length of backups listings.
 	 *               - 'logfile' (string): Optional. Basename of the logfile if $job_object is provided.
+	 *               - 'delete_job' (string): REST URL for deleting a job.
 	 */
 	private function get_backwpup_api_data( $job_object = null ) {
 		$data = [
 			'nonce_generate'         => wp_create_nonce( 'backwpupworking_ajax_nonce' ),
 			'backupslistings'        => rest_url( 'backwpup/v1/backups' ),
 			'backupspagination'      => rest_url( 'backwpup/v1/pagination' ),
+			'getjobslist'            => rest_url( 'backwpup/v1/getjobslist' ),
+			'addjob'                 => rest_url( 'backwpup/v1/addjob' ),
 			'updatejob'              => rest_url( 'backwpup/v1/updatejob' ),
+			'updatejobtitle'         => rest_url( 'backwpup/v1/update-job-title' ),
 			'nonce'                  => wp_create_nonce( 'wp_rest' ),
 			'cloudsaveandtest'       => rest_url( 'backwpup/v1/cloudsaveandtest' ),
 			'storagelistcompact'     => rest_url( 'backwpup/v1/storagelistcompact' ),
-			'save_database_settings' => rest_url( 'backwpup/v1/save_database_settings' ),
-			'save_files_settings'    => rest_url( 'backwpup/v1/save_files_settings' ),
+			'save_job_settings'      => rest_url( 'backwpup/v1/save_job_settings' ),
 			'startbackup'            => rest_url( 'backwpup/v1/startbackup' ),
 			'save_excluded_tables'   => rest_url( 'backwpup/v1/save_excluded_tables' ),
 			'backups_bulk_actions'   => rest_url( 'backwpup/v1/process_bulk_actions' ),
@@ -1194,6 +1190,8 @@ EOT;
 			'getblock'               => rest_url( 'backwpup/v1/getblock' ),
 			'license_update'         => rest_url( 'backwpup/v1/license_update' ),
 			'save_site_option'       => rest_url( 'backwpup/v1/save_site_option' ),
+			'delete_job'             => rest_url( 'backwpup/v1/delete_job' ),
+			'backupnow'              => rest_url( 'backwpup/v1/backupnow' ),
 			'backupslistingslength'  => 10,
 		];
 

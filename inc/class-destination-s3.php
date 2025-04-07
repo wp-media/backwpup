@@ -497,13 +497,22 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
 
             try {
                 $s3 = $aws_destination->client($args['s3accesskey'], $args['s3secretkey']);
-                $buckets = $s3->listBuckets();
+				$buckets = $s3->listBuckets(
+					[
+						'BucketRegion' => $args['s3region'] ?? '',
+					]
+				);
                 if (!empty($buckets['Buckets'])) {
                     $buckets_list = $buckets['Buckets'];
                 }
 
                 while (!empty($vaults['Marker'])) {
-                    $buckets = $s3->listBuckets(['marker' => $buckets['Marker']]);
+					$buckets = $s3->listBuckets(
+						[
+							'marker' => $buckets['Marker'],
+							'BucketRegion' => $args['s3region'] ?? '',
+                        ]
+					);
                     if (!empty($buckets['Buckets'])) {
                         $buckets_list = array_merge($buckets_list, $buckets['Buckets']);
                     }
@@ -525,6 +534,8 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
         } elseif (!empty($error)) {
             echo esc_html($error);
         } elseif (empty($buckets) || count($buckets['Buckets']) < 1) {
+			echo '</span>';
+			echo '<span id="s3bucketwarning" class="bwu-message-warning">';
             esc_html_e('No bucket found!', 'backwpup');
         }
         echo '</span>';
@@ -633,41 +644,41 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
 						BackWPup_Option::update($jobid, 's3syncnodelete', !empty($_POST['s3syncnodelete']));
 				}
 				//create new bucket
-				if (!empty($_POST['s3newbucket'])) {
-						try {
-								$region = BackWPup_Option::get($jobid, 's3base_url');
-								if (empty($region)) {
-										$region = BackWPup_Option::get($jobid, 's3region');
-										$aws_destination = BackWPup_S3_Destination::fromOption($region);
-								} else {
-										$aws_destination = BackWPup_S3_Destination::fromJobId($jobid);
-								}
-
-								$s3 = $aws_destination->client(
-										BackWPup_Option::get($jobid, 's3accesskey'),
-										BackWPup_Option::get($jobid, 's3secretkey')
-								);
-								$s3->createBucket(
-										[
-												'Bucket' => sanitize_text_field($_POST['s3newbucket']),
-												'PathStyle' => $aws_destination->onlyPathStyleBucket(),
-												'LocationConstraint' => $aws_destination->region(),
-										]
-								);
-								BackWPup_Admin::message(
-										sprintf(
-												__('Bucket %1$s created.', 'backwpup'),
-												sanitize_text_field($_POST['s3newbucket'])
-										)
-								);
-						} catch (S3Exception $e) {
-								BackWPup_Admin::message($e->getMessage(), true);
-								throw new Exception($e->getMessage(), 0, $e);
-						}
-						foreach ($jobids as $id) {
-								BackWPup_Option::update($jobid, 's3bucket', sanitize_text_field($_POST['s3newbucket']));
-							}
+		if (!empty($_POST['s3newbucket'])) {
+			try {
+				$region = BackWPup_Option::get($jobid, 's3base_url');
+				if (empty($region)) {
+					$region = BackWPup_Option::get($jobid, 's3region');
+					$aws_destination = BackWPup_S3_Destination::fromOption($region);
+				} else {
+					$aws_destination = BackWPup_S3_Destination::fromJobId($jobid);
 				}
+
+				$s3 = $aws_destination->client(
+					BackWPup_Option::get($jobid, 's3accesskey'),
+					BackWPup_Option::get($jobid, 's3secretkey')
+				);
+				$s3->createBucket(
+					[
+						'Bucket' => sanitize_text_field($_POST['s3newbucket']),
+						'PathStyle' => $aws_destination->onlyPathStyleBucket(),
+						'LocationConstraint' => $aws_destination->region(),
+					]
+				);
+				BackWPup_Admin::message(
+					sprintf(
+						__('Bucket %1$s created.', 'backwpup'),
+						sanitize_text_field($_POST['s3newbucket'])
+					)
+				);
+			} catch (S3Exception $e) {
+				BackWPup_Admin::message($e->getMessage(), true);
+				throw new Exception($e->getMessage(), 0, $e);
+			}
+			foreach ($jobids as $id) {
+				BackWPup_Option::update($id, 's3bucket', sanitize_text_field($_POST['s3newbucket']));
+			}
+		}
     }
 
     public function file_delete(string $jobdest, string $backupfile): void

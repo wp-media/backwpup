@@ -370,10 +370,12 @@ class BackWPup_Cron
                             ) && in_array(
                                 (int) gmdate('w', $timestamp),
                                 $cron['wday'],
-                                true
-                            ) && $timestamp > $current_timestamp) {
-                                return $timestamp - ((int) get_option('gmt_offset') * 3600);
-                            }
+								true
+							) && $timestamp > $current_timestamp ) {
+								$cron_next_timestamp = $timestamp - ( (int) get_option( 'gmt_offset' ) * 3600 );
+
+								return wpm_apply_filters_typed( 'integer', 'backwpup_cron_next', $cron_next_timestamp );
+							}
                         }
                     }
                 }

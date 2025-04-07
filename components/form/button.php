@@ -28,10 +28,10 @@ $types = ["primary", "secondary", "link", "settings"];
 $type = isset($type) && in_array($type, $types) ? $type : "link";
 switch ($type) {
   case "primary":
-    $button_style = "justify-center rounded border border-transparent disabled:opacity-40 bg-secondary-base text-base font-medium text-primary-darker enabled:hover:bg-secondary-darker";
+    $button_style = "justify-center rounded border border-transparent disabled:opacity-40 bg-secondary-base font-medium text-primary-darker enabled:hover:bg-secondary-darker";
     break;
   case "secondary":
-    $button_style = "justify-center rounded border border-primary-darker disabled:opacity-40 text-base font-medium text-primary-darker enabled:hover:bg-grey-200";
+    $button_style = "justify-center rounded border border-primary-darker disabled:opacity-40 font-medium text-primary-darker enabled:hover:bg-grey-200";
     break;
   case "settings":
     $button_style = "justify-between rounded bg-grey-100 text-xl font-medium text-primary-darker hover:bg-grey-200";
@@ -45,10 +45,11 @@ switch ($type) {
 $font = $font ?? "medium";
 $font_key = $type === "link" ? $font . "_link" : $font;
 $font_sizes = [
-  "small_link" => "text-xs gap-2",
+  "small_link" => "text-xs gap-2 text-base",
   "medium_link" => "text-base gap-4",
   "small" => "px-4 py-[11px] text-xs gap-2",
   "medium" => "px-6 py-[14px] text-base gap-4",
+  "semi_large" => "px-3 py-[11px] text-base",
 ];
 $font_size = array_key_exists($font_key, $font_sizes) ? $font_sizes[$font_key] : $font_sizes['medium'];
 

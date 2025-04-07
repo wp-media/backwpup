@@ -515,19 +515,19 @@ final class BackWPup_Page_Backups extends WP_List_Table
 
         wp_register_script(
             'backwpup_functions',
-            "{$shared_scripts_path}/functions{$suffix}.js",
-            ['underscore', 'jquery'],
-            filemtime("{$shared_scripts_dir}/functions{$suffix}.js"),
-            true
+			"{$shared_scripts_path}/functions{$suffix}.js",
+			[ 'underscore', 'jquery' ],
+			BackWPup::get_plugin_data( 'Version' ),
+			true
         );
         wp_register_script(
             'backwpup_states',
             "{$shared_scripts_path}/states{$suffix}.js",
             [
                 'backwpup_functions',
-            ],
-            filemtime("{$shared_scripts_dir}/states{$suffix}.js"),
-            true
+			],
+			BackWPup::get_plugin_data( 'Version' ),
+			true
         );
 
         $dependencies = [
@@ -543,9 +543,9 @@ final class BackWPup_Page_Backups extends WP_List_Table
         wp_enqueue_script(
             'backwpup-backup-downloader',
             "{$plugin_scripts_url}/backup-downloader{$suffix}.js",
-            $dependencies,
-            filemtime("{$plugin_scripts_dir}/backup-downloader{$suffix}.js"),
-            true
+			$dependencies,
+			BackWPup::get_plugin_data( 'Version' ),
+			true
         );
 
         if (\BackWPup::is_pro()) {
@@ -573,9 +573,9 @@ final class BackWPup_Page_Backups extends WP_List_Table
                 'jquery',
                 'backwpup_states',
                 'backwpup_functions',
-            ],
-            filemtime("{$restore_scripts_dir}/decrypter{$suffix}.js"),
-            true
+			],
+			BackWPup::get_plugin_data( 'Version' ),
+			true
         );
     }
 

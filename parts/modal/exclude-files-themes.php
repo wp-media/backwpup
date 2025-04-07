@@ -1,14 +1,14 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 /**
- * @var string $fileJobId Optional. The main plugin file. Default: null.
+ * @var string $job_id Optional. The main plugin file. Default: null.
  *
  */
+if ( ! isset($job_id) ) {
+	return;
+}
 
-#Defaults
-$fileJobId = $fileJobId ?? null;
-
-$excludedFiles = BackWPup_Directory::get_folder_list_to_exclude('themes',get_theme_root(), $fileJobId);
+$excludedFiles = BackWPup_Directory::get_folder_list_to_exclude('themes',get_theme_root(), $job_id);
 
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Themes", 'backwpup') . " - " . __("Exclusion Settings", 'backwpup'),

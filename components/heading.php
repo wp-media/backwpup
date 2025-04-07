@@ -9,12 +9,15 @@ use BackWPup\Utils\BackWPupHelpers;
  * @var string  $font       Optional. Font size. Values: small, medium, large. Default: medium. 
  * @var string  $color      Optional. Heading color. Default: "primary-darker".
  * @var string  $identifier Optional. The identifier for the component. Default: null.
+ * @var string  $bold       Optional. Font weight. Values: tailwind bold utitlity claseses. Default: font-bold.
+ * @var bool  $flex         Optional. Flex Box Layout. Values: true, false. Default: true.
+ * @var bool  $truncate     Optional. Wrap text. Values: true, false. Default: false.
  */
 
 $title = $title ?? "";
 $level = isset($level) && in_array($level, range(1, 6)) ? $level : 1;
 $tag = "h" . $level;
-$bold = $level < 3 ? "font-bold" : "font-semibold";
+$bold = $bold ?? $level < 3 ? "font-bold" : "font-semibold";
 $class = $class ?? "";
 $id = isset($identifier) ? " id='".esc_attr($identifier)."'" : null;
 
@@ -23,6 +26,7 @@ $font = $font ?? ($level < 3 ? "medium" :  "small");
 $font_sizes = [
   "xs" => "text-lg",
   "small" => "text-xl",
+  "regular" => "text-[1.21rem]",
   "medium" => "text-2xl",
   "large" => "text-3xl",
 ];
@@ -31,9 +35,14 @@ $font_size = array_key_exists($font, $font_sizes) ? $font_sizes[$font] : $font_s
 # Color 
 $color = $color ?? "primary-darker";
 
+$flex = isset( $flex ) && ! $flex ? '' : 'flex';
+$truncate = isset( $truncate ) && $truncate ? 'truncate' : '';
+
 # CSS classes
 $classes = BackWPupHelpers::clsx(
-  "flex items-center gap-1 text-$color font-title",
+  "items-center gap-1 text-$color font-title",
+  $flex,
+  $truncate,
   $bold,
   $font_size,
   (isset($align) ? "justify-$align" : ""),

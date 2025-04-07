@@ -189,78 +189,78 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
 	<?php
     }
 
-    /**
-     * @param $id
-     */
-    public function edit_form_post_save($id)
-    {
-        // Parse and save files to exclude
-        $exclude_input = filter_input(INPUT_POST, 'fileexclude');
-        $to_exclude_list = $exclude_input ? str_replace(["\r\n", "\r"], ',', $exclude_input) : [];
-        $to_exclude_list and $to_exclude_list = sanitize_text_field(stripslashes($to_exclude_list));
-        $to_exclude = $to_exclude_list ? explode(',', $to_exclude_list) : [];
-        $to_exclude_parsed = [];
+	/**
+	 * Handles saving file exclusions based on provided parameters.
+	 *
+	 * @param int   $id     The job ID.
+	 * @param array $params Optional. The parameters passed to update the exclusions.
+	 *                      If empty, the method falls back to using $_POST.
+	 *
+	 * @return void
+	 */
+	public function edit_form_post_save( $id, array $params = [] ) {
+		// If $params is empty, fallback to $_POST (for backward compatibility).
+		if ( empty( $params ) ) {
+			$params = $_POST; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		}
 
-        foreach ($to_exclude as $key => $value) {
-            $normalized = wp_normalize_path(trim($value));
-            $normalized and $to_exclude_parsed[$key] = $normalized;
-        }
-        sort($to_exclude_parsed);
-        BackWPup_Option::update($id, 'fileexclude', implode(',', $to_exclude_parsed));
-        unset($exclude_input, $to_exclude_list, $to_exclude, $to_exclude_parsed, $normalized);
+		// Save file exclusions.
+		$file_exclude = $params['fileexclude'] ?? '';
+		$to_exclude   = $file_exclude ? explode( ',', str_replace( [ "\r\n", "\r" ], ',', sanitize_text_field( stripslashes( $file_exclude ) ) ) ) : [];
 
-        // Parse and save folders to include
-        $include_input = filter_input(INPUT_POST, 'dirinclude');
-        $include_list = $include_input ? str_replace(["\r\n", "\r"], ',', $include_input) : [];
-        $to_include = $include_list ? explode(',', $include_list) : [];
-        $to_include_parsed = [];
+		$to_exclude_parsed = array_values( array_filter( array_map( 'wp_normalize_path', array_map( 'trim', $to_exclude ) ) ) );
+		sort( $to_exclude_parsed );
+		BackWPup_Option::update( $id, 'fileexclude', implode( ',', $to_exclude_parsed ) );
 
-        foreach ($to_include as $key => $value) {
-            $normalized = trailingslashit(wp_normalize_path(trim($value)));
-            $normalized and $normalized = filter_var($normalized, FILTER_SANITIZE_URL);
-            $realpath = $normalized && $normalized !== '/' ? realpath($normalized) : false;
-            $realpath and $to_include_parsed[$key] = $realpath;
-        }
-        sort($to_include_parsed);
-        BackWPup_Option::update($id, 'dirinclude', implode(',', $to_include_parsed));
-        unset($include_input, $include_list, $to_include, $to_include_parsed, $normalized, $realpath);
+		// Save directories to include.
+		$dir_include = $params['dirinclude'] ?? '';
+		$to_include  = $dir_include ? explode( ',', str_replace( [ "\r\n", "\r" ], ',', $dir_include ) ) : [];
 
-        // Parse and save boolean fields
-        $boolean_fields_def = [
-            'backupexcludethumbs' => FILTER_VALIDATE_BOOLEAN,
-            'backupspecialfiles' => FILTER_VALIDATE_BOOLEAN,
-            'backuproot' => FILTER_VALIDATE_BOOLEAN,
-            'backupabsfolderup' => FILTER_VALIDATE_BOOLEAN,
-            'backupcontent' => FILTER_VALIDATE_BOOLEAN,
-            'backupplugins' => FILTER_VALIDATE_BOOLEAN,
-            'backupthemes' => FILTER_VALIDATE_BOOLEAN,
-            'backupuploads' => FILTER_VALIDATE_BOOLEAN,
-        ];
-        $boolean_data = filter_input_array(INPUT_POST, $boolean_fields_def);
-        $boolean_data or $boolean_data = [];
+		$to_include_parsed = array_values(
+				array_filter(
+						array_map(
+								function ( $value ) {
+									$normalized = trailingslashit( wp_normalize_path( trim( $value ) ) );
+									return filter_var( $normalized, FILTER_SANITIZE_URL ) ?: '';
+								},
+								$to_include
+						)
+				)
+		);
 
-        foreach ($boolean_fields_def as $key => $value) {
-            BackWPup_Option::update($id, $key, !empty($boolean_data[$key]));
-        }
-        unset($boolean_fields_def, $boolean_data);
+		sort( $to_include_parsed );
+		BackWPup_Option::update( $id, 'dirinclude', implode( ',', $to_include_parsed ) );
 
-        // Parse and save directories to exclude
-        $exclude_dirs_def = [
-            'backuprootexcludedirs' => ['filter' => FILTER_SANITIZE_URL, 'flags' => FILTER_FORCE_ARRAY],
-            'backupcontentexcludedirs' => ['filter' => FILTER_SANITIZE_URL, 'flags' => FILTER_FORCE_ARRAY],
-            'backuppluginsexcludedirs' => ['filter' => FILTER_SANITIZE_URL, 'flags' => FILTER_FORCE_ARRAY],
-            'backupthemesexcludedirs' => ['filter' => FILTER_SANITIZE_URL, 'flags' => FILTER_FORCE_ARRAY],
-            'backupuploadsexcludedirs' => ['filter' => FILTER_SANITIZE_URL, 'flags' => FILTER_FORCE_ARRAY],
-        ];
-        $exclude_dirs = filter_input_array(INPUT_POST, $exclude_dirs_def);
-        $exclude_dirs or $exclude_dirs = [];
+		// Save boolean fields.
+		$boolean_fields = [
+			'backupexcludethumbs',
+			'backupspecialfiles',
+			'backuproot',
+			'backupabsfolderup',
+			'backupcontent',
+			'backupplugins',
+			'backupthemes',
+			'backupuploads',
+		];
 
-        foreach ($exclude_dirs_def as $key => $filter) {
-            $value = !empty($exclude_dirs[$key]) && is_array($exclude_dirs[$key]) ? $exclude_dirs[$key] : [];
-            BackWPup_Option::update($id, $key, $value);
-        }
-        unset($exclude_dirs_def, $exclude_dirs);
-    }
+		foreach ( $boolean_fields as $field ) {
+			BackWPup_Option::update( $id, $field, ! empty( $params[ $field ] ) );
+		}
+
+		// Save directories to exclude.
+		$exclude_fields = [
+			'backuprootexcludedirs',
+			'backupcontentexcludedirs',
+			'backuppluginsexcludedirs',
+			'backupthemesexcludedirs',
+			'backupuploadsexcludedirs',
+		];
+
+		foreach ( $exclude_fields as $field ) {
+			$value = $params[ $field ] ?? [];
+			BackWPup_Option::update( $id, $field, is_array( $value ) ? array_values( $value ) : [] );
+		}
+	}
 
     /**
      * @param $job_object

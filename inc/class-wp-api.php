@@ -22,9 +22,9 @@ class BackWPup_WP_API {
 	];
 
 	/**
-	 * Constructor.
+	 * Init hooks.
 	 */
-	public function __construct() {
+	public function init() {
 		add_action( 'rest_api_init', [ $this, 'register_routes' ] );
 	}
 
@@ -56,6 +56,28 @@ class BackWPup_WP_API {
 		);
 		register_rest_route(
 			'backwpup/v1',
+			'/getjobslist',
+			[
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => [ $this, 'get_jobs_list' ],
+				'permission_callback' => function () {
+					return current_user_can( 'backwpup' );
+				},
+			]
+		);
+		register_rest_route(
+			'backwpup/v1',
+			'/addjob',
+			[
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'add_job' ],
+				'permission_callback' => function () {
+					return current_user_can( 'backwpup' );
+				},
+			]
+		);
+		register_rest_route(
+			'backwpup/v1',
 			'/updatejob',
 			[
 				'methods'             => WP_REST_Server::CREATABLE,
@@ -80,22 +102,10 @@ class BackWPup_WP_API {
 
 		register_rest_route(
 			'backwpup/v1',
-			'/save_database_settings',
+			'/save_job_settings',
 			[
 				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => [ $this, 'save_database_settings' ],
-				'permission_callback' => function () {
-					return current_user_can( 'backwpup' );
-				},
-			]
-		);
-
-		register_rest_route(
-			'backwpup/v1',
-			'/save_files_settings',
-			[
-				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => [ $this, 'save_files_settings' ],
+				'callback'            => [ $this, 'save_job_settings' ],
 				'permission_callback' => function () {
 					return current_user_can( 'backwpup' );
 				},
@@ -219,6 +229,65 @@ class BackWPup_WP_API {
 			[
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => [ $this, 'license_update' ],
+				'permission_callback' => function () {
+					return current_user_can( 'backwpup' );
+				},
+			]
+		);
+
+		register_rest_route(
+			'backwpup/v1',
+			'/delete_job',
+			[
+				'methods'             => WP_REST_Server::DELETABLE,
+				'callback'            => [ $this, 'delete_job' ],
+				'permission_callback' => function () {
+					return current_user_can( 'backwpup' );
+				},
+			]
+		);
+
+		register_rest_route(
+			'backwpup/v1',
+			'/update-job-title',
+			[
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'update_job_title' ],
+				'permission_callback' => function () {
+					return current_user_can( 'backwpup' );
+				},
+				'args'                => [
+					'job_id' => [
+						'required'          => true,
+						'validate_callback' => function ( $param ) {
+							if ( ! is_numeric( $param ) ) {
+								return false;
+							}
+
+							return $param > 0;
+						},
+						'sanitize_callback' => 'absint',
+					],
+					'title'  => [
+						'required'          => true,
+						'validate_callback' => function ( $param ) {
+							if ( ! is_string( $param ) ) {
+								return false;
+							}
+
+							return ! empty( trim( $param ) );
+						},
+						'sanitize_callback' => 'sanitize_text_field',
+					],
+				],
+			]
+		);
+		register_rest_route(
+			'backwpup/v1',
+			'/backupnow',
+			[
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'backup_now' ],
 				'permission_callback' => function () {
 					return current_user_can( 'backwpup' );
 				},
@@ -504,7 +573,10 @@ class BackWPup_WP_API {
 		$backups                 = [];
 		$registered_destinations = BackWPup::get_registered_destinations();
 		foreach ( $jobs_ids as $a_job_id ) {
-			$job      = BackWPup_Option::get_job( $a_job_id );
+			$job = BackWPup_Option::get_job( $a_job_id );
+			if ( ! $job ) {
+				continue;
+			}
 			$dests    = BackWPup_Option::get( $a_job_id, 'destinations' );
 			$job_data = [
 				'id'       => $a_job_id,
@@ -521,94 +593,18 @@ class BackWPup_WP_API {
 				}
 				$dest_object = BackWPup::get_destination( $dest );
 				$items       = $dest_object->file_get_list( $a_job_id . '_' . $dest );
-				array_walk(
-					$items,
-					function ( &$item ) use ( $job_data, $dest, $page ) {
-						$item = array_merge( $item, $job_data, [ 'stored_on' => $dest ] );
-						// Parse the filename to get the type of backup.
-						$filename = pathinfo( $item['filename'] )['filename'];
-						// Remove reluctant file extensions.
-						$filename       = preg_replace( '/\.[^.]+$/', '', $filename );
-						$filename_parts = explode( '_', $filename );
-						if ( isset( $filename_parts[3] ) ) {
-							$item['data'] = (array) explode( '-', $filename_parts[3] );
-						}
-						$local_file      = untrailingslashit( BackWPup::get_plugin_data( 'TEMP' ) ) . "/{$item['filename']}";
-						$downloadhref    = '';
-						$downloadurl     = '';
-						$downloadtrigger = '';
-						if ( 'HIDRIVE' === $dest && $item['filesize'] > 10485760 ) {
-							$request       = new BackWPup_Pro_Destination_HiDrive_Request();
-							$authorization = new BackWPup_Pro_Destination_HiDrive_Authorization( $request );
-							$api           = new BackWPup_Pro_Destination_HiDrive_Api( $request, $authorization );
-							$response      = $api->temporalDownloadUrl( $job_data['id'], $item['file'] );
-							$respons_body  = json_decode( (string) $response['body'] );
-
-							if ( isset( $respons_body->url ) ) {
-								$downloadurl     = $respons_body->url;
-								$downloadhref    = $respons_body->url;
-								$downloadtrigger = 'direct-download-backup';
-							}
-						} else {
-							$downloadurl     = wp_nonce_url( $item['downloadurl'], 'backwpup_action_nonce' );
-							$downloadhref    = '#TB_inline?height=300&inlineId=tb_download_file&width=640&height=412';
-							$downloadtrigger = 'download-backup';
-						}
-						// Add the download URL and dataset.
-						$item['dataset-download'] = [
-							'data-jobid'       => $job_data['id'],
-							'data-destination' => $dest,
-							'data-file'        => $item['file'],
-							'data-local-file'  => $local_file,
-							'data-nonce'       => wp_create_nonce( 'backwpup_action_nonce' ),
-							'data-url'         => $downloadurl,
-							'data-href'        => $downloadhref,
-						];
-						$item['download-trigger'] = $downloadtrigger;
-						// If the user can restore, add the restore URL.
-						if ( current_user_can( 'backwpup_restore' ) && ! empty( $item['restoreurl'] ) ) {
-							$item['dataset-restore'] = [
-								'label'    => __( 'Restore Backup', 'backwpup' ),
-								'data-url' => wp_nonce_url(
-									add_query_arg(
-										[
-											'step' => 1,
-											'trigger_download' => 1,
-										],
-										$item['restoreurl']
-										),
-								'restore-backup_' . $job_data['id']
-									),
-							];
-						} elseif ( current_user_can( 'backwpup_restore' ) ) {
-							$item['dataset-restore'] = [
-								'label'    => __( 'Restore Backup', 'backwpup' ),
-								'data-url' => network_admin_url( 'admin.php?page=backwpuprestore' ),
-							];
-						}
-						// If the user can delete, add the delete URL.
-						if ( current_user_can( 'backwpup_backups_delete' ) ) {
-							$item['dataset-delete'] = [
-								'data-url' => wp_nonce_url(
-									add_query_arg(
-										[
-											'page'        => 'backwpupbackups',
-											'action'      => 'delete',
-											'jobdest-top' => $job_data['id'] . '_' . $dest,
-											'backupfiles[]' => esc_attr( $item['file'] ),
-											'paged'       => $page,
-										],
-										network_admin_url( 'admin.php' )
-									),
-									'bulk-backups'
-								),
-							];
-						}
-					}
-					);
-				$backups = array_merge( $backups, $items );
+				$items       = BackWPupHelpers::process_backup_items( $items, $job_data, $dest, $page );
+				$backups     = array_merge( $backups, $items );
 			}
 		}
+		if ( 0 !== count( $jobs_ids ) ) {
+			// Retrieve The default location backup files and add them to the list.
+			$default_location = BackWPup::get_destination( 'FOLDER' );
+			$items            = $default_location->file_get_list();
+			$items            = BackWPupHelpers::process_backup_items( $items, $job_data, 'FOLDER', $page );
+			$backups          = array_merge( $backups, $items );
+		}
+
 		$unique_backups = [];
 		foreach ( $backups as $item ) {
 			$key = $item['stored_on'] . '|' . $item['filename'];
@@ -628,8 +624,13 @@ class BackWPup_WP_API {
 		$nb_totalbackups = count( $backups );
 		$backups         = array_slice( $backups, $start, $length );
 		$html            = '';
+
 		// Render the backups list.
 		foreach ( $backups as $backup ) {
+			if ( 'wpcron' === $backup['type'] ) {
+				$backup['type'] = __( 'Scheduled', 'backwpup' );
+			}
+
 			$html .= BackWPupHelpers::component( 'table-row-backups', [ 'backup' => $backup ], true );
 		}
 		$html .= BackWPupHelpers::component(
@@ -706,6 +707,80 @@ class BackWPup_WP_API {
 	}
 
 	/**
+	 * Get jobs list in HTML
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function get_jobs_list(): WP_REST_Response {
+		$jobs = BackWPup_Job::get_jobs();
+
+		$html = '';
+
+		foreach ( $jobs as $job ) {
+			// Skip temp jobs.
+			if ( isset( $job['tempjob'] ) && true === $job['tempjob'] ) {
+				continue;
+			}
+			// Skip legacy jobs.
+			if ( ! isset( $job['jobid'] ) || ( isset( $job['legacy'] ) && true === $job['legacy'] ) ) {
+				continue;
+			}
+			$html .= BackWPupHelpers::component( 'job-item', [ 'job' => $job ], true );
+		}
+
+		return rest_ensure_response( $html );
+	}
+
+	/**
+	 * Add a new backup job.
+	 *
+	 * @param WP_Rest_Request $request The request object.
+	 *
+	 * @return WP_Rest_Response
+	 */
+	public function add_job( WP_Rest_Request $request ): WP_REST_Response {
+		$params = $request->get_params();
+
+		$default_values = BackWPup_Option::defaults_job();
+
+		$type   = sanitize_text_field( $params['type'] );
+		$job_id = BackWPup_Option::next_job_id();
+
+		$job = [
+			'activ' => true,
+			'jobid' => $job_id,
+		];
+
+		switch ( $type ) {
+			case 'files':
+				$job['type'] = BackWPup_JobTypes::$type_job_files;
+				$job['name'] = BackWPup_JobTypes::$name_job_files;
+				break;
+			case 'database':
+				$job['type'] = BackWPup_JobTypes::$type_job_database;
+				$job['name'] = BackWPup_JobTypes::$name_job_database;
+				break;
+		}
+
+		$job = wp_parse_args( $job, $default_values );
+
+		foreach ( $job as $key => $value ) {
+			BackWPup_Option::update( $job_id, $key, $value );
+		}
+
+		$cron_next = BackWPup_Cron::cron_next( $job['cron'] );
+
+		wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $job_id ] );
+
+		return rest_ensure_response(
+			[
+				'success' => true,
+				'message' => __( 'You scheduled a new backup successfully!<br>Now you can configure it as you wish.', 'backwpup' ),
+			]
+			);
+	}
+
+	/**
 	 * Update the job.
 	 *
 	 * @param WP_REST_Request $request
@@ -722,23 +797,23 @@ class BackWPup_WP_API {
 				$job_id = (int) $params['job_id']; // The job ID.
 				$activ  = filter_var( $params['activ'], FILTER_VALIDATE_BOOLEAN ); // Determine if the job is being activated or deactivated.
 
-				if ( $activ ) {
-					// Enable and schedule the job.
-					BackWPup_Job::enable_job( $job_id );
-					BackWPup_Job::schedule_job( $job_id );
+				if ( ! $activ ) {
+					BackWPup_Job::disable_job( $params['job_id'] );
+					$next_backup_label = __( 'No backup scheduled', 'backwpup' );
+
 				} else {
-					// Disable the job.
-					BackWPup_Job::disable_job( $job_id );
+					BackWPup_Job::enable_job( $params['job_id'] );
+					BackWPup_Job::schedule_job( $params['job_id'] );
+					$cron_next         = BackWPup_Cron::cron_next( BackWPup_Option::get( $params['job_id'], 'cron' ) );
+					$next_backup_label = sprintf(
+						__( '%1$s at %2$s', 'backwpup' ), // @phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
+						date_i18n( get_option( 'date_format' ), $cron_next, true ),
+						date_i18n( 'H:i', $cron_next, true )
+					);
 				}
 
 				// Set response message based on activation status.
-				$return['message'] = $activ
-					? sprintf(
-						__( 'Backup scheduled at %1$s', 'backwpup' ), // phpcs:ignore
-						date_i18n( get_option( 'date_format' ), time(), true ),
-						date_i18n( get_option( 'H:i' ), time(), true )
-						) // If activated, show backup schedule details.
-					: __( 'No backup scheduled', 'backwpup' ); // phpcs:ignore If not activated, show no backup message. 
+				$return['message'] = $next_backup_label;
 			} else {
 				// If there is a job ID and storage destinations, update the storage destinations just for this id.
 				if ( isset( $params['job_id'] ) && isset( $params['storage_destinations'] ) ) {
@@ -768,6 +843,30 @@ class BackWPup_WP_API {
 		}
 
 		return new WP_HTTP_Response( $return, $status, [ 'Content-Type' => 'text/json' ] );
+	}
+
+	/**
+	 * Updates the job title.
+	 *
+	 * @param WP_REST_Request $request The request object.
+	 *
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public function update_job_title( WP_REST_Request $request ) {
+		$params = $request->get_params();
+		$title  = $params['title'];
+
+		BackWPup_Job::rename_job( $params['job_id'], $title );
+
+		return rest_ensure_response(
+			[
+				'code'    => 'success',
+				'message' => __( 'Job title updated successfully.', 'backwpup' ),
+				'data'    => [
+					'title' => ucfirst( $title ),
+				],
+			]
+		);
 	}
 
 	/**
@@ -830,7 +929,7 @@ class BackWPup_WP_API {
 	 * If a job ID is provided, it will start the backup for that job. Otherwise, it will start the backup for the file job.
 	 *
 	 * @param WP_REST_Request $request
-	 * @return WP_REST_Response|WP_Error The response object on success, or WP_Error on failure.
+	 * @return WP_REST_Response|WP_Error|WP_HTTP_Response The response object on success, or WP_Error on failure.
 	 */
 	public function start_backup( WP_REST_Request $request ) {
 		$params = $request->get_params();
@@ -898,62 +997,73 @@ class BackWPup_WP_API {
 	}
 
 	/**
-	 * Save settings via REST API.
+	 * Save the job frequency settings via the REST API.
 	 *
-	 * This method handles the saving of backup settings based on the provided
-	 * parameters from the WP_REST_Request. It updates the cron expression and job types
-	 * for the backup jobs accordingly.
+	 * This function updates the cron schedule for a given job and reschedules it accordingly.
+	 * It generates a new cron expression based on user input and stores it in the database.
 	 *
-	 * @param WP_REST_Request $request The REST request object containing the parameters.
-	 * @param string          $job_type The type of job (database or files).
+	 * @param WP_REST_Request $request The REST API request containing job settings.
 	 *
-	 * @return WP_Error|WP_REST_Response The response object containing the status and message.
+	 * @return WP_HTTP_Response The response containing the updated job schedule or an error message.
 	 */
-	private function save_settings( WP_REST_Request $request, string $job_type ) {
-		$params = $request->get_params();
+	public function save_job_settings( WP_REST_Request $request ) {
+		$params = $request->get_params(); // Get request parameters.
 		$return = [];
 
-		$frequency                   = $params['frequency'];
-		$params['start_time']        = isset( $params['start_time'] ) ? $params['start_time'] : '00:00';
-		$params['hourly_start_time'] = isset( $params['hourly_start_time'] ) ? (int) $params['hourly_start_time'] : 0;
-		$day_of_week                 = (int) isset( $params['day_of_week'] ) ? $params['day_of_week'] : 0;
-		$day_of_month                = isset( $params['day_of_month'] ) ? $params['day_of_month'] : '';
-		$start_time                  = explode( ':', $params['start_time'] );
+		try {
+			// Extract parameters from the request.
+			$job_id    = $params['job_id'];
+			$frequency = $params['frequency'];
 
-		if ( 'hourly' === $frequency ) {
-			$start_time = [ '*', $params['hourly_start_time'] ];
+			// Set default values if parameters are not provided.
+			$params['start_time']        = isset( $params['start_time'] ) ? $params['start_time'] : '00:00';
+			$params['hourly_start_time'] = isset( $params['hourly_start_time'] ) ? (int) $params['hourly_start_time'] : 0;
+			$day_of_week                 = (int) isset( $params['day_of_week'] ) ? $params['day_of_week'] : 0;
+			$day_of_month                = isset( $params['day_of_month'] ) ? $params['day_of_month'] : '';
+
+			// Convert start_time into hour and minute parts.
+			$start_time = explode( ':', $params['start_time'] );
+
+			// Adjust start time for hourly jobs.
+			if ( 'hourly' === $frequency ) {
+				$start_time = [ '*', $params['hourly_start_time'] ];
+			}
+
+			// Generate new cron expression based on the selected frequency and time settings.
+			$new_cron_expression = BackWPup_Cron::get_basic_cron_expression(
+				$frequency,
+				$start_time[0],
+				$start_time[1],
+				$day_of_week,
+				$day_of_month
+			);
+
+			// Update the cron expression in the job settings.
+			BackWPup_Option::update( $job_id, 'cron', $new_cron_expression );
+
+			// Re-schedule the job with the updated cron schedule.
+			BackWPup_Job::schedule_job( $job_id );
+
+			// Get the next scheduled execution time.
+			$cron_next = BackWPup_Cron::cron_next( $new_cron_expression );
+
+			// Prepare response with next backup schedule.
+			$return['next_backup'] = sprintf(
+				__( '%1$s at %2$s', 'backwpup' ), // @phpcs:ignore
+				date_i18n( get_option( 'date_format' ), $cron_next, true ),
+				date_i18n( 'H:i', $cron_next, true )
+			); // @phpcs:ignore
+
+			$return['status']  = 200;
+			$return['message'] = __('Job settings saved successfully.', 'backwpup'); // @phpcs:ignore
+
+		} catch ( Exception $e ) {
+			// Handle errors.
+			$return['status'] = 500;
+			$return['error']  = $e->getMessage();
 		}
 
-		$new_cron_expression = BackWPup_Cron::get_basic_cron_expression( $frequency, $start_time[0], $start_time[1], $day_of_week, $day_of_month );
-
-		// Map job IDs based on type.
-		$job_ids = [
-			'database' => get_site_option( 'backwpup_backup_database_job_id', false ),
-			'files'    => get_site_option( 'backwpup_backup_files_job_id', false ),
-		];
-
-		// Update cron and re-evaluate jobs.
-		if ( ! BackWPup_Option::update( $job_ids[ $job_type ], 'cron', $new_cron_expression ) ) {
-			return rest_ensure_response( new WP_Error( 'backwpup_option_update_failed', __( 'Failed to update option.', 'backwpup' ) ) );
-		}
-
-		if ( ! BackWPup_Job::schedule_job( $job_ids[ $job_type ] ) ) {
-			return rest_ensure_response( new WP_Error( 'backwpup_job_schedule_failed', __( 'Failed to schedule job.', 'backwpup' ) ) );
-		}
-
-		$cron_next = BackWPup_Cron::cron_next( $new_cron_expression );
-
-		$return['success']     = true;
-		$return['next_backup'] = sprintf(
-			// translators: %1$s is the date, %2$s is the time.
-			__( '%1$s at %2$s', 'backwpup' ),
-			date_i18n( get_option( 'date_format' ), $cron_next, true ),
-			date_i18n( 'H:i', $cron_next, true )
-		);
-
-		// translators: %s is the job type.
-		$return['message'] = sprintf( __( '%s settings saved successfully.', 'backwpup' ), ucfirst( $job_type ) );
-
+		// Return response as a valid WP REST API response.
 		return rest_ensure_response( $return );
 	}
 
@@ -1074,32 +1184,6 @@ class BackWPup_WP_API {
 	}
 
 	/**
-	 * Save database settings via REST API.
-	 *
-	 * @param WP_REST_Request $request The REST request object containing the parameters.
-	 *
-	 * @return WP_HTTP_Response The response object containing the status and message.
-	 *
-	 * @throws Exception If an error occurs during the process.
-	 */
-	public function save_database_settings( WP_REST_Request $request ) {
-		return $this->save_settings( $request, 'database' );
-	}
-
-	/**
-	 * Save file settings via REST API.
-	 *
-	 * @param WP_REST_Request $request The REST request object containing the parameters.
-	 *
-	 * @return WP_HTTP_Response The response object containing the status and message.
-	 *
-	 * @throws Exception If an error occurs during the process.
-	 */
-	public function save_files_settings( WP_REST_Request $request ) {
-		return $this->save_settings( $request, 'files' );
-	}
-
-	/**
 	 * Save excluded tables via REST API.
 	 *
 	 * This method handles the saving of excluded database tables based on the provided
@@ -1119,16 +1203,9 @@ class BackWPup_WP_API {
 			$job_id = $params['job_id'];
 			$tables = $params['tabledb'];
 
-			$jobs = [
-				$job_id,
-				$job_id + 1,
-			];
-
 			$job_types = BackWPup::get_job_types();
-			foreach ( $jobs as $a_job ) {
-				if ( isset( $job_types['DBDUMP'] ) ) {
-					$job_types['DBDUMP']->edit_form_post_save( $a_job );
-				}
+			if ( isset( $job_types['DBDUMP'] ) ) {
+				$job_types['DBDUMP']->edit_form_post_save( $job_id, $params );
 			}
 
 			$return['status']  = 200;
@@ -1138,7 +1215,7 @@ class BackWPup_WP_API {
 			$return['error']  = $e->getMessage();
 		}
 
-		return new WP_HTTP_Response( $return, $return['status'], [ 'Content-Type' => 'text/json' ] );
+		return rest_ensure_response( $return );
 	}
 
 	/**
@@ -1157,29 +1234,21 @@ class BackWPup_WP_API {
 		$params = $request->get_params();
 		$return = [];
 		try {
-			$job_ids =
-			[
-				get_site_option( 'backwpup_backup_files_job_id', false ),
-				get_site_option( 'backwpup_backup_files_job_id', false ) + 1,
-			];
-			foreach ( $job_ids as $job_id ) {
-				if ( false === $job_id ) {
-					throw new Exception( __( 'Files job not found', 'backwpup' ) );
-				}
-				$job_types = BackWPup::get_job_types();
-				if ( isset( $job_types['FILE'] ) ) {
-					$job_types['FILE']->edit_form_post_save( $job_id );
-				}
-
-				$return['status']  = 200;
-				$return['message'] = __( 'File exclusions saved successfully.', 'backwpup' );
+			if ( false === $params['job_id'] ) {
+				throw new Exception( __( 'Files job not found', 'backwpup' ) );
 			}
+			$job_types = BackWPup::get_job_types();
+			if ( isset( $job_types['FILE'] ) ) {
+				$job_types['FILE']->edit_form_post_save( $params['job_id'], $params );
+			}
+			$return['status']  = 200;
+			$return['message'] = __( 'File exclusions saved successfully.', 'backwpup' );
 		} catch ( Exception $e ) {
 			$return['status'] = 500;
 			$return['error']  = $e->getMessage();
 		}
 
-		return new WP_HTTP_Response( $return, $return['status'], [ 'Content-Type' => 'text/json' ] );
+		return rest_ensure_response( $return );
 	}
 
 	/**
@@ -1255,7 +1324,7 @@ class BackWPup_WP_API {
 			$method = $params['block_type'];
 			$data   = $params['block_data'] ?? [];
 			if ( 'component' === $method ) {
-				$html = BackWPupHelpers::$method( $params['block_name'], $data );
+				$html = BackWPupHelpers::$method( $params['block_name'], $data, true );
 			} else {
 				$html = BackWPupHelpers::$method( $params['block_name'],  true, $data );
 			}
@@ -1271,5 +1340,98 @@ class BackWPup_WP_API {
 			);
 		}
 		return rest_ensure_response( $html );
+	}
+
+	/**
+	 * Delete a job.
+	 *
+	 * @param WP_REST_Request $request The REST request object containing the parameters.
+	 *
+	 * @return WP_REST_Response The response object containing the status and message.
+	 *
+	 * @throws Exception If an error occurs during the process.
+	 */
+	public function delete_job( WP_REST_Request $request ) {
+		$params = $request->get_params();
+		$return = [
+			'success' => true,
+			'message' => __( 'Job deleted successfully.', 'backwpup' ),
+		];
+		$status = 200;
+
+		if ( ! isset( $params['job_id'] ) ) {
+
+			return new WP_Error( 'missing_job_id', __( 'Job ID not set', 'backwpup' ), [ 'status' => 400 ] );
+		}
+
+		$job_id = (int) $params['job_id'];
+		if ( ! BackWPup_Job::delete_job( $job_id ) ) {
+			$return['success'] = false;
+			$return['message'] = __( 'Failed to delete job', 'backwpup' );
+		}
+
+		$response = rest_ensure_response( $return );
+		$response->set_status( $status );
+		return $response;
+	}
+
+	/**
+	 * Create a new temporary job for the backup now and triger start_backup method with it's id.
+	 *
+	 * @param WP_REST_Request $request The REST request object containing the parameters.
+	 * @return WP_REST_Response
+	 * @throws Exception If Error occurs during the process.
+	 */
+	public function backup_now( WP_REST_Request $request ) {
+		$params = $request->get_params();
+		$return = [];
+		if ( ! empty( $params['first_backup'] ) ) {
+			if ( false === get_site_transient( 'backwpup_first_backup' ) ) {
+				set_site_transient( 'backwpup_first_backup', true, HOUR_IN_SECONDS );
+			} else {
+				return new WP_REST_Response(
+					[
+						'status' => 301,
+						'url'    => network_admin_url( 'admin.php?page=backwpup' ),
+					],
+					200
+				);
+			}
+		}
+		try {
+			// Create a new temporary job for the backup now.
+			$next_jobid                        = BackWPup_Option::next_job_id();
+			$backup_now_job_values             = [
+				'jobid'              => $next_jobid,
+				'name'               => 'Backup Now',
+				'destinations'       => [ 'FOLDER' ],
+				'activetype'         => '',
+				'backupsyncnodelete' => false,
+				'tempjob'            => true,
+			];
+			$default_values                    = BackWPup_Option::defaults_job();
+			$default_destination_folder_values = BackWPup::get_destination( 'FOLDER' )->option_defaults();
+			$values                            = array_merge( $default_values, $default_destination_folder_values, $backup_now_job_values );
+
+			if ( 0 < count( BackWPup_Option::get_job_ids() ) ) {
+				$values['archiveformat'] = BackWPup_Option::get( BackWPup_Option::get_job_ids()[0], 'archiveformat' );
+			}
+
+			foreach ( $values as $key => $value ) {
+				BackWPup_Option::update( $next_jobid, $key, $value );
+			}
+
+			$temp_request = new WP_REST_Request( 'POST' );
+			$temp_request->set_body_params(
+				[
+					'job_id' => $next_jobid,
+				]
+				);
+
+			$return = $this->start_backup( $temp_request );
+		} catch ( Exception $e ) {
+			$return['error'] = $e->getMessage();
+		}
+		return rest_ensure_response( $return );
 	}
 }

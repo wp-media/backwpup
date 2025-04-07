@@ -10,7 +10,7 @@ use BackWPup\Utils\BackWPupHelpers;
  */
 
 # Type
-$types = ["pro", "alert", "danger", "default"];
+$types = ["pro", "alert", "danger", "default","success"];
 $type = isset($type) && in_array($type, $types) ? $type : "default";
 switch ($type) {
   case "pro":
@@ -23,8 +23,13 @@ switch ($type) {
     break;
   case "danger":
     $block_style = "bg-danger-light text-danger";
-    $icon = "danger";
+    $icon = "alert";
     break;
+  case "success":
+    $block_style = "bg-secondary-lighter text-primary-darker";
+    $icon = "circle-check";
+    break;
+
   default:
     $block_style = "bg-white text-primary-darker";
     $icon = "info";
@@ -40,12 +45,13 @@ $font_sizes = [
 ];
 $font_size = array_key_exists($font, $font_sizes) ? $font_sizes[$font] : $font_sizes['medium'];
 
+$dismiss_icon = $dismiss_icon ?? false;
 ?>
 <div class="flex items-center gap-2 p-4 rounded <?php echo $block_style; ?>">
   <div class="shrink-0">
     <?php BackWPupHelpers::component("icon", ["name" => $icon, "size" => "large"]); ?>
   </div>
-  <div class="flex flex-col gap-1">
+  <div class="flex flex-col gap-1 flex-1">
     <p class="<?php echo $font_size; ?> font-medium">
       <?php echo $content ?? ''; ?>
     </p>
@@ -56,4 +62,9 @@ $font_size = array_key_exists($font, $font_sizes) ? $font_sizes[$font] : $font_s
     <?php endif; ?>
     <?php isset($children) && BackWPupHelpers::children($children); ?>
   </div>
+	<?php if ($dismiss_icon) : ?>
+    <div id="dismiss-icon" class="shrink-0 cursor-pointer ml-auto">
+		<?php BackWPupHelpers::component("icon", ["name" => "close", "size" => "small"]); ?>
+    </div>
+    <?php endif; ?>
 </div>

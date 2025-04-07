@@ -115,10 +115,9 @@ class BackWPup_Directory extends DirectoryIterator {
 	 *
 	 * @return array
 	 */
-	public static function get_folder_list_to_exclude( $id_path, $path, $id_job = null ) {
+	public static function get_folder_list_to_exclude( $id_path, $path, $id_job ) {
 		$folder      = realpath( BackWPup_Path_Fixer::fix_path( $path ) );
 		$folder_size = 0;
-		$id_job      = $id_job ?? get_site_option( 'backwpup_backup_files_job_id', false );
 
 		if ( $folder ) {
 			$folder      = untrailingslashit( str_replace( '\\', '/', $folder ) );
@@ -127,10 +126,8 @@ class BackWPup_Directory extends DirectoryIterator {
 		$folders_to_exclude = [];
 		try {
 			$dir      = new BackWPup_Directory( $folder );
-			$excludes = [];
-			if ( null !== $id_job ) {
-				$excludes = BackWPup_Option::get( $id_job, 'backup' . $id_path . 'excludedirs' );
-			}
+			$excludes = BackWPup_Option::get( $id_job, 'backup' . $id_path . 'excludedirs' );
+
 			foreach ( $dir as $file ) {
 				if (
 					! $file->isDot() &&

@@ -3,7 +3,7 @@ use BackWPup\Utils\BackWPupHelpers;
 /**
  * @var string  $title          Title of the accordion. Default: "".
  * @var bool    $open           Optional. True to open the accordion. Default: false. 
- * @var string  $children       Children component to display. Must fit a /part/ template. Default: null.   
+ * @var string  $children       Children component to display. Must fit a /part/ template. Default: null.
  * @var array   $children_data  Optional. Data to pass to the children component. Default: [].
  * @var bool    $children_return Optional. True to return the children component. Default: false.
  */

@@ -5,9 +5,11 @@ BackWPupHelpers::component("closable-heading", [
   'title' => __("FTP Settings", 'backwpup'),
   'type' => 'sidebar'
 ]);
-if (null === $job_id) {
-  $ftpdir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
-  $ftpmaxbackups = 15;
+
+if (null === $job_id || empty($job_id) ) {
+	$ftpdir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
+	$ftpmaxbackups = 15;
+	$is_in_form    = true;
 } else {
   $ftpdir = BackWPup_Option::get($job_id, 'ftpdir', trailingslashit(sanitize_title_with_dashes(get_bloginfo('name'))));
   $ftpmaxbackups = esc_attr(BackWPup_Option::get($job_id, 'ftpmaxbackups', 15));

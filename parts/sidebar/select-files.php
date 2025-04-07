@@ -1,8 +1,19 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+/**
+ * @var int $job_id Job ID information
+ * @var int $first_job_id ID of the first job we are retrieving the frequency settings for. (Only available during onboarding)
+ */
+if ( ! isset( $job_id ) && get_site_option( 'backwpup_onboarding', false ) ) {
+	$job_id = $first_job_id;
+}
+if ( ! isset($job_id)) {
+	return;
+}
 BackWPupHelpers::component("closable-heading", [
-  'title' => __("Select Files", 'backwpup'),
-  'type' => 'sidebar'
+    'title' => __("Select Files", 'backwpup'),
+    'type' => 'sidebar'
 ]);
 ?>
 
@@ -10,9 +21,11 @@ BackWPupHelpers::component("closable-heading", [
 <div class="rounded-lg p-6 bg-grey-100 overflow-y-scroll">
   <?php
   BackWPupHelpers::component("containers/accordion", [
-    "title" => __("Content Selector", 'backwpup'),
-    "open" => true,
-    "children" => "sidebar/parts/files-content-selector-pro",
+	"title" => __("Content Selector", 'backwpup'),
+	"open" => true,
+	"children" => "sidebar/parts/files-content-selector-pro",
+	"children_return" => false,
+	"children_data" => ['job_id' => $job_id],
   ]);
   ?>
 </div>
@@ -20,21 +33,27 @@ BackWPupHelpers::component("closable-heading", [
 <div class="rounded-lg p-6 bg-grey-100">
   <?php
   BackWPupHelpers::component("containers/accordion", [
-    "title" => __("Exclude from backup", 'backwpup'),
-    "open" => true,
-    "children" => "sidebar/parts/exclude-from-backup",
+	"title" => __("Exclude from backup", 'backwpup'),
+	"open" => true,
+	"children" => "sidebar/parts/exclude-from-backup",
+	"children_return" => false,
+	"children_data" => ['job_id' => $job_id],
   ]);
   ?>
 </div>
 <?php BackWPupHelpers::component("containers/scrollable-end"); ?>
 
 <?php
+BackWPupHelpers::component("form/hidden", [
+	"name" => "job_id",
+	"value" => $job_id,
+]);
 BackWPupHelpers::component("form/button", [
-  "type" => "primary",
-  "label" => __("Save settings", 'backwpup'),
-  "full_width" => true,
-  "trigger" => "close-sidebar",
-  "identifier" => "file-exclusions-submit",
-  "class" => "file-exclusions-submit",
+    "type" => "primary",
+    "label" => __("Save settings", 'backwpup'),
+    "full_width" => true,
+    "trigger" => "close-sidebar",
+    "identifier" => "file-exclusions-submit",
+    "class" => "file-exclusions-submit",
 ]);
 ?>

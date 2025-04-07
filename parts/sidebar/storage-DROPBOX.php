@@ -6,9 +6,10 @@ BackWPupHelpers::component("closable-heading", [
   'type' => 'sidebar'
 ]);
 // if null we are on onboarding so we use the default values.
-if (null === $job_id) {
-  $dropboxdir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
-  $dropboxmaxbackups = 15;
+if (null === $job_id || empty($job_id) ) {
+	$is_in_form    = true;
+    $dropboxdir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
+    $dropboxmaxbackups = 15;
 } else {
   $dropboxdir = BackWPup_Option::get($job_id, 'dropboxdir', trailingslashit(sanitize_title_with_dashes(get_bloginfo('name'))));
   $dropboxmaxbackups = BackWPup_Option::get($job_id, 'dropboxmaxbackups', 15);

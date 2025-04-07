@@ -6,7 +6,7 @@ $date = new DateTime();
 $date->setTimestamp($backup['time']);
 $formatted_date = $date->format('M j, Y');
 $formatted_time = $date->format('g:ia');
-$type = ('' === $backup['type']) ? 'Manual Backup' : $backup['type'];
+$type = ('' === $backup['type']) ? 'Manual' : $backup['type'];
 $type_icon = ('' === $backup['type']) ? 'user-settings' : 'clock';
 $actions =[];
 //Add the download and restore action

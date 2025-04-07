@@ -1321,6 +1321,10 @@ class BackWPup_Job
         //logfile end
         file_put_contents($this->logfile, '</body>' . PHP_EOL . '</html>', FILE_APPEND);
 
+		// Delete The job if it's a temp job.
+		if ( true === $this->job['tempjob'] ) {
+			BackWPup_Option::delete_job( $this->job['jobid'] );
+		}
 		BackWPup_Cron::check_cleanup();
 	}
 
@@ -2974,5 +2978,32 @@ class BackWPup_Job
 			$instance->$key = $value;
 		}
 		return $instance;
+	}
+
+
+	/**
+	 * Get the list of jobs from the backwpup_jobs site option.
+	 *
+	 * @return array The list of jobs.
+	 */
+	public static function get_jobs() {
+		return get_site_option( 'backwpup_jobs', [] );
+	}
+
+	/**
+	 * Deletes a BackWPup job.
+	 *
+	 * This function removes the job with the given job ID from the options and clears any scheduled cron hooks
+	 * associated with the job.
+	 *
+	 * @param int $job_id The ID of the job to delete.
+	 */
+	public static function delete_job( $job_id ): bool {
+		if ( BackWPup_Option::delete_job( $job_id ) ) {
+			// Clear any scheduled cron hooks for the job.
+			wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $job_id ] );
+			return true;
+		}
+		return false;
 	}
 }

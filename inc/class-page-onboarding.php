@@ -21,27 +21,27 @@ class BackWPup_Page_Onboarding {
 	 * TODO Refactor this method using a Job class.
 	 */
 	public static function save_post_form() {
-		$save                    = true;
 		$sanitized_data          = self::sanitize_post_data();
 		$default_values          = BackWPup_Option::defaults_job();
 		$job_types               = BackWPup::get_job_types();
-		$job_frequency           = [];
 		$default_id_job_files    = get_site_option( 'backwpup_backup_files_job_id', false );
 		$default_id_job_database = $default_id_job_files + 1;
+		$first_job_frequency     = "job_{$default_id_job_files}_frequency";
+		$second_job_frequency    = "job_{$default_id_job_database}_frequency";
 
 		// The 2 base jobs.
 		$job_frequency = [
 			'files'    => [
 				'job_id'    => $default_id_job_files,
-				'frequency' => $sanitized_data['files_frequency'] ?? 'daily',
+				'frequency' => $sanitized_data[ $first_job_frequency ] ?? 'daily',
 				'type'      => BackWPup_JobTypes::$type_job_files,
-				'activ'     => isset( $sanitized_data['files_frequency'] ),
+				'activ'     => isset( $sanitized_data[ $first_job_frequency ] ),
 			],
 			'database' => [
 				'job_id'    => $default_id_job_database,
-				'frequency' => $sanitized_data['database_frequency'] ?? 'daily',
+				'frequency' => $sanitized_data[ $second_job_frequency ] ?? 'daily',
 				'type'      => BackWPup_JobTypes::$type_job_database,
-				'activ'     => isset( $sanitized_data['database_frequency'] ),
+				'activ'     => isset( $sanitized_data[ $second_job_frequency ] ),
 			],
 		];
 
@@ -86,6 +86,10 @@ class BackWPup_Page_Onboarding {
 		// Onboarding OK.
 		$onboarding_done = true;
 		update_site_option( 'backwpup_onboarding', ! $onboarding_done );
+		if ( defined( 'BWU_TESTING' ) ) {
+			return;
+		}
+
 		wp_safe_redirect( network_admin_url( 'admin.php?page=backwpupfirstbackup' ) );
 		exit;
 	}
@@ -116,6 +120,14 @@ class BackWPup_Page_Onboarding {
 	 * Display the page content.
 	 */
 	public static function page() {
+		$first_job_id  = get_site_option( 'backwpup_backup_files_job_id', false );
+		$second_job_id = get_site_option( 'backwpup_backup_database_job_id', false );
+
+		$jobs = BackWPup_Job::get_jobs();
+		if ( empty( $jobs ) ) {
+			BackWPup_Option::create_default_jobs();
+		}
+
 		include untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . '/pages/onboarding.php';
 	}
 }

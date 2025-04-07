@@ -224,8 +224,8 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 				$dropbox      = new BackWPup_Destination_Dropbox_API( 'dropbox' );
 				$dropboxtoken = $dropbox->oAuthToken( $_POST['dropbbox_code'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
 				foreach ( $jobids as $id ) {
-					BackWPup_Option::update( $jobid, 'dropboxtoken', $dropboxtoken );
-					BackWPup_Option::update( $jobid, 'dropboxroot', 'dropbox' );
+					BackWPup_Option::update( $id, 'dropboxtoken', $dropboxtoken );
+					BackWPup_Option::update( $id, 'dropboxroot', 'dropbox' );
 				}
 			} catch ( Exception $e ) {
 				BackWPup_Admin::message( 'DROPBOX: ' . $e->getMessage(), true );

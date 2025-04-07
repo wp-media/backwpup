@@ -3,8 +3,9 @@ use BackWPup\Utils\BackWPupHelpers;
 $job_id = $job_id ?? null;
 //The way SugarSync works requires a job_id here to prevent bugs during onboarding.
 // @todo Refactor it.
-if (null === $job_id) {
-  $job_id = get_site_option( 'backwpup_backup_files_job_id', false );
+if (null === $job_id || empty($job_id) ) {
+	$is_in_form    = true;
+	$job_id = get_site_option( 'backwpup_backup_files_job_id', false );
 }
 $sugardir = esc_attr(BackWPup_Option::get($job_id, 'sugardir', trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')))));
 $sugarmaxbackups = esc_attr(BackWPup_Option::get($job_id, 'sugarmaxbackups', 3));

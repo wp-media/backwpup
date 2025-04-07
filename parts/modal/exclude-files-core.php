@@ -6,17 +6,18 @@ use BackWPup\Utils\BackWPupHelpers;
  *
  */
 
-#Defaults
-$fileJobId = $fileJobId ?? null;
+if ( ! isset( $job_id ) ) {
+	return;
+}
 
 # Get the folder path
-$abs_folder_up = BackWPup_Option::get($fileJobId, 'backupabsfolderup');
+$abs_folder_up = BackWPup_Option::get($job_id, 'backupabsfolderup');
 $abs_path = realpath(BackWPup_Path_Fixer::fix_path(ABSPATH));
 if ($abs_folder_up) {
     $abs_path = dirname($abs_path);
 }
 
-$excludedFiles = BackWPup_Directory::get_folder_list_to_exclude("core",$abs_path, $fileJobId);
+$excludedFiles = BackWPup_Directory::get_folder_list_to_exclude("root",$abs_path, $job_id);
 
 BackWPupHelpers::component("closable-heading", [
   'title' => __("WordPress Core", 'backwpup') . " - " . __("Exclusion Settings", 'backwpup'),
