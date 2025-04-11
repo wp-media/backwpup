@@ -5,7 +5,7 @@ Tags: backup, restore, cloud backup, database backup, wordpress backup
 Requires at least: 4.9
 Tested up to: 6.7.1
 Requires PHP: 7.4
-Stable tag: 5.0.9
+Stable tag: 5.1.1
 License: GPLv2+
 
 Create a complete WordPress backup easily. Schedule automatic backups, store securely, and restore effortlessly with the best WordPress backup plugin! 
@@ -14,8 +14,7 @@ Create a complete WordPress backup easily. Schedule automatic backups, store sec
 
 == Description == 
 
-[BackWPup](https://backwpup.com/) is the most comprehensive backup & restore plugin for WordPress. 
-
+[BackWPup](https://backwpup.com/) is the most comprehensive backup & restore plugin for WordPress.
  
 
 = 🎉 BackWPup 5.1 – New Features & Improvements = 
@@ -190,7 +189,10 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
  
 
-== Changelog == 
+== Changelog ==
+= 5.1.1 =
+* Fixed: Backups created before v5 are no longer deactivated when updating the plugin
+
 = 5.1.0 =
 Release date: April 07,2025
 
