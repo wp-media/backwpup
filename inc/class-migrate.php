@@ -278,7 +278,6 @@ class BackWPup_Migrate {
 					BackWPup_Option::update( $id, 'legacy', false );
 				} else {
 					BackWPup_Option::update( $id, 'legacy', true );
-					BackWPup_Job::disable_job( $id );
 				}
 			}
 

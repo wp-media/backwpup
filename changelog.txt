@@ -1,4 +1,9 @@
 == Changelog ==
+= 5.1.1 =
+Release date: April 11,2025
+
+* Fixed: Backups created before v5 are no longer deactivated when updating the plugin.
+
 = 5.1.0 =
 Release date: April 07,2025
 
