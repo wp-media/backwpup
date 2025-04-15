@@ -396,6 +396,7 @@ class ComposerStaticInit29926854b38f2f4714b04bb82535cbf6
         'Inpsyde\\BackWPup\\Notice\\EnvironmentNotice' => __DIR__ . '/../..' . '/inc/Notice/EnvironmentNotice.php',
         'Inpsyde\\BackWPup\\Notice\\EvaluateNotice' => __DIR__ . '/../..' . '/inc/Notice/EvaluateNotice.php',
         'Inpsyde\\BackWPup\\Notice\\Informations505Notice' => __DIR__ . '/../..' . '/inc/Notice/Informations505Notice.php',
+        'Inpsyde\\BackWPup\\Notice\\LegacyDisabledJobsNotice' => __DIR__ . '/../..' . '/inc/Notice/LegacyDisabledJobsNotice.php',
         'Inpsyde\\BackWPup\\Notice\\Notice' => __DIR__ . '/../..' . '/inc/Notice/Notice.php',
         'Inpsyde\\BackWPup\\Notice\\NoticeMessage' => __DIR__ . '/../..' . '/inc/Notice/NoticeMessage.php',
         'Inpsyde\\BackWPup\\Notice\\NoticeView' => __DIR__ . '/../..' . '/inc/Notice/NoticeView.php',

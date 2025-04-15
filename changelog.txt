@@ -1,4 +1,9 @@
 == Changelog ==
+= 5.1.2 =
+Release date: April 15,2025
+
+* Enhancement: Display the warning message for customers affected by the bug in 5.1 version of the plugin
+
 = 5.1.1 =
 Release date: April 11,2025
 

@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-04-11 22:09+0000\n"
+"POT-Creation-Date: 2025-04-15 06:01+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -226,100 +226,100 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: components/table-row-backups.php:137, inc/class-admin.php:725, inc/class-admin.php:726, inc/class-page-backups.php:325, parts/restore/start.php:34, views/restore/steps/step5_top.php:2
+#: components/table-row-backups.php:137, inc/class-admin.php:731, inc/class-admin.php:732, inc/class-page-backups.php:325, parts/restore/start.php:34, views/restore/steps/step5_top.php:2
 msgid "Restore"
 msgstr ""
 
-#: inc/class-admin.php:324, inc/class-page-settings.php:343
+#: inc/class-admin.php:325, inc/class-page-settings.php:343
 msgid "Public key is valid."
 msgstr ""
 
-#: inc/class-admin.php:325, inc/class-page-settings.php:344
+#: inc/class-admin.php:326, inc/class-page-settings.php:344
 msgid "Public key is invalid."
 msgstr ""
 
-#: inc/class-admin.php:326, inc/class-page-settings.php:345
+#: inc/class-admin.php:327, inc/class-page-settings.php:345
 msgid "Please enter your private key."
 msgstr ""
 
-#: inc/class-admin.php:327, inc/class-page-settings.php:346
+#: inc/class-admin.php:328, inc/class-page-settings.php:346
 msgid "Please enter a public key first, or generate a key pair."
 msgstr ""
 
-#: inc/class-admin.php:331, inc/class-page-settings.php:350
+#: inc/class-admin.php:332, inc/class-page-settings.php:350
 msgid "Please download the private key before continuing. If you do not save it locally, you cannot decrypt your backups later."
 msgstr ""
 
-#: inc/class-admin.php:335, inc/class-page-settings.php:354
+#: inc/class-admin.php:336, inc/class-page-settings.php:354
 msgid "Please download the key before continuing. If you do not save it locally, you cannot decrypt your backups later."
 msgstr ""
 
-#: inc/class-admin.php:406
+#: inc/class-admin.php:412
 msgid "View details"
 msgstr ""
 
-#: inc/class-admin.php:422, inc/class-admin.php:488, inc/class-admin.php:700, inc/class-admin.php:701
+#: inc/class-admin.php:428, inc/class-admin.php:494, inc/class-admin.php:706, inc/class-admin.php:707
 msgid "Settings"
 msgstr ""
 
-#: inc/class-admin.php:462, inc/class-admin.php:463
+#: inc/class-admin.php:468, inc/class-admin.php:469
 msgid "Docs"
 msgstr ""
 
-#: inc/class-admin.php:471, inc/class-admin.php:472
+#: inc/class-admin.php:477, inc/class-admin.php:478
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: inc/class-admin.php:501, inc/class-admin.php:502
+#: inc/class-admin.php:507, inc/class-admin.php:508
 msgid "First Backup"
 msgstr ""
 
-#: inc/class-admin.php:523, inc/class-admin.php:524, inc/class-page-settings.php:552, parts/sidebar/advanced-settings.php:15
+#: inc/class-admin.php:529, inc/class-admin.php:530, inc/class-page-settings.php:552, parts/sidebar/advanced-settings.php:15
 msgid "Jobs"
 msgstr ""
 
-#: inc/class-admin.php:561, inc/class-admin.php:562
+#: inc/class-admin.php:567, inc/class-admin.php:568
 msgid "Add new job"
 msgstr ""
 
-#: inc/class-admin.php:599, inc/class-admin.php:600, inc/class-page-logs.php:383, inc/class-page-settings.php:556, parts/sidebar/advanced-settings.php:27
+#: inc/class-admin.php:605, inc/class-admin.php:606, inc/class-page-logs.php:383, inc/class-page-settings.php:556, parts/sidebar/advanced-settings.php:27
 msgid "Logs"
 msgstr ""
 
-#: inc/class-admin.php:641, inc/class-admin.php:642
+#: inc/class-admin.php:647, inc/class-admin.php:648
 msgid "Onboarding"
 msgstr ""
 
-#: inc/class-admin.php:661, inc/class-admin.php:662, inc/class-adminbar.php:85
+#: inc/class-admin.php:667, inc/class-admin.php:668, inc/class-adminbar.php:85
 msgid "Backups"
 msgstr ""
 
-#: inc/class-admin.php:766, inc/class-admin.php:767
+#: inc/class-admin.php:772, inc/class-admin.php:773
 msgid "About"
 msgstr ""
 
-#: inc/class-admin.php:818, inc/class-admin.php:825
+#: inc/class-admin.php:824, inc/class-admin.php:831
 msgid "Cheating, huh?"
 msgstr ""
 
-#: inc/class-admin.php:905
+#: inc/class-admin.php:911
 msgid "<a class=\"backwpup-get-pro\" href=\"%s\">Get BackWPup Pro now.</a>"
 msgstr ""
 
-#: inc/class-admin.php:909, inc/class-admin.php:931, inc/class-job.php:466, inc/class-jobtype-dbcheck.php:9, inc/class-jobtype-dbdump.php:9, inc/class-jobtype-file.php:10, inc/class-jobtype-wpexp.php:13, inc/class-jobtype-wpplugin.php:9, inc/class-page-about.php:366, inc/class-page-about.php:356, inc/class-page-about.php:676, inc/class-page-backwpup.php:253, inc/class-page-backwpup.php:259, inc/class-page-backwpup.php:261, inc/class-page-settings.php:63, inc/Pro/class-wizard-job.php:17, inc/Pro/class-wizard-jobimport.php:14, inc/Pro/class-wizard-systemtest.php:22
+#: inc/class-admin.php:915, inc/class-admin.php:937, inc/class-job.php:466, inc/class-jobtype-dbcheck.php:9, inc/class-jobtype-dbdump.php:9, inc/class-jobtype-file.php:10, inc/class-jobtype-wpexp.php:13, inc/class-jobtype-wpplugin.php:9, inc/class-page-about.php:366, inc/class-page-about.php:356, inc/class-page-about.php:676, inc/class-page-backwpup.php:253, inc/class-page-backwpup.php:259, inc/class-page-backwpup.php:261, inc/class-page-settings.php:63, inc/Pro/class-wizard-job.php:17, inc/Pro/class-wizard-jobimport.php:14, inc/Pro/class-wizard-systemtest.php:22
 msgid "http://backwpup.com"
 msgstr ""
 
 #. translators: %s is the version number of the BackWPup plugin.
-#: inc/class-admin.php:936
+#: inc/class-admin.php:942
 msgid "version %s"
 msgstr ""
 
-#: inc/class-admin.php:985
+#: inc/class-admin.php:991
 msgid "Add BackWPup Role"
 msgstr ""
 
-#: inc/class-admin.php:992
+#: inc/class-admin.php:998
 msgid "&mdash; No additional role for BackWPup &mdash;"
 msgstr ""
 
@@ -2258,7 +2258,7 @@ msgstr ""
 msgid "Added plugin list file \"%1$s\" with %2$s to backup file list."
 msgstr ""
 
-#: inc/class-message-box.php:88, views/notice/existingUsersInformations505.php:2, views/notice/newUsersInformations505.php:2
+#: inc/class-message-box.php:88, views/notice/disabled_legacy_jobs.php:2, views/notice/existingUsersInformations505.php:2, views/notice/newUsersInformations505.php:2
 msgid "Dismiss"
 msgstr ""
 
@@ -6064,6 +6064,20 @@ msgstr ""
 
 #: parts/sidebar/storages.php:34
 msgid "You can select where to store your backups and configure each storage."
+msgstr ""
+
+#: views/notice/disabled_legacy_jobs.php:1
+msgid "BackWPup - Update Alert"
+msgstr ""
+
+#. translators: %1$s = <a>, %2$s = </a>.
+#: views/notice/disabled_legacy_jobs.php:7
+msgid ""
+"We have identified a critical issue with the recent BackWPup 5.1 update: all backup jobs %1$screated prior to version 5%2$s are now disabled and not running. Unfortunately, reverting to a previous version will not restore these jobs. \n"
+"			%3$sWe are actively working on solutions to assist you in restoring your backups, and we anticipate these will be available with the upcoming 5.1.3 update in just a few days.\n"
+"			%3$sTo check if your backup jobs are affected, please click %4$shere%5$s.\n"
+"			%3$sIf you are impacted and cannot wait for the update, you can restore a database backup from before version 5.1 to recover your previous jobs.\n"
+"			%3$sWe sincerely apologize for this inconvenience and appreciate your patience and understanding."
 msgstr ""
 
 #: views/notice/dropbox.php:2

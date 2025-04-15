@@ -12,6 +12,7 @@ use Inpsyde\BackWPup\Notice\EvaluateNotice;
 use Inpsyde\BackWPup\Notice\EasycronUpdateNotice;
 use Inpsyde\BackWPup\Notice\RestoreFeatureInformationNotice;
 use Inpsyde\BackWPup\Notice\Informations505Notice;
+use Inpsyde\BackWPup\Notice\LegacyDisabledJobsNotice;
 
 /**
  * BackWPup_Admin.
@@ -384,6 +385,11 @@ final class BackWPup_Admin {
 			new NoticeView( Informations505Notice::ID )
 		);
 		$informations_505_notice->init( Informations505Notice::TYPE_ADMIN );
+
+		$disabled_legacy_jobs = new LegacyDisabledJobsNotice(
+			new NoticeView( LegacyDisabledJobsNotice::ID )
+		);
+		$disabled_legacy_jobs->init( LegacyDisabledJobsNotice::TYPE_ADMIN );
 	}
 
     /**
