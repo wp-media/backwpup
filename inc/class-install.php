@@ -169,8 +169,9 @@ class BackWPup_Install
         //add default options
         BackWPup_Option::default_site_options();
 
-        //update version
-        update_site_option('backwpup_version', BackWPup::get_plugin_data('Version'));
+		// update version.
+		update_site_option( 'backwpup_previous_version', get_site_option( 'backwpup_version', BackWPup::get_plugin_data( 'Version' ) ) );
+		update_site_option( 'backwpup_version', BackWPup::get_plugin_data( 'Version' ) );
 
 		// only redirect if not in WP CLI environment.
 		if ( ! $version_db && ! ( defined( \WP_CLI::class ) && WP_CLI ) ) {

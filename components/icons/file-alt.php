@@ -1,3 +1,5 @@
-<svg width="<?php echo $size ?>" height="<?php echo $size ?>" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 48 48">
-    <path d="M 12.5 4 C 10.019 4 8 6.019 8 8.5 L 8 39.5 C 8 41.981 10.019 44 12.5 44 L 35.5 44 C 37.981 44 40 41.981 40 39.5 L 40 20 L 28.5 20 C 26.019 20 24 17.981 24 15.5 L 24 4 L 12.5 4 z M 27 4.8789062 L 27 15.5 C 27 16.327 27.673 17 28.5 17 L 39.121094 17 L 27 4.8789062 z"/>
+<svg width="<?= $size; ?>" height="<?= $size; ?>" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+	<g transform="scale(0.48) translate(5 5)">
+		<path d="M12.5 4C10.019 4 8 6.019 8 8.5v31c0 2.481 2.019 4.5 4.5 4.5h23c2.481 0 4.5-2.019 4.5-4.5V20H28.5C26.019 20 24 17.981 24 15.5V4H12.5zM27 4.879V15.5c0 .827.673 1.5 1.5 1.5h10.621L27 4.879z" fill="currentColor"/>
+	</g>
 </svg>

@@ -8,6 +8,11 @@
     "identifier" => "backwpupworking_ajax_nonce",
     "value" => wp_create_nonce('backwpupworking_ajax_nonce'),
   ]);
+  BackWPupHelpers::component("form/hidden", [
+    "name" => "backwpup_first_backup_job_id",
+    "identifier" => "backwpup_first_backup_job_id",
+    "value" => get_site_option( 'backwpup_first_backup_job_id' ),
+  ]);
 ?>
 <div class="max-w-screen-xl flex flex-col gap-4 backwpup-typography">
 

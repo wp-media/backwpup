@@ -13,6 +13,7 @@ use BackWPup\Utils\BackWPupHelpers;
  * @var string  $class          Optional. Additional CSS classname . Default: null.
  * @var array   $data           Optional. Additional data attributes. Default: [].
  * @var string  $identifier     Optional. The identifier for the component. Default: null.
+ * @var string  $button_type    Optional. The button type. Values: "submit", "button", "reset". Default: "submit".
  */
 
 # Disabled
@@ -75,8 +76,10 @@ if (isset($data)) {
   }
 }
 
+$button_type = $button_type ?? 'submit';
+
 ?>
-<button <?php echo $id ?> <?php if ($disabled) : ?>disabled<?php endif; ?> class="<?php echo BackWPupHelpers::clsx($font_size, $full_width, $button_base, $button_style, $class, $trigger); ?>" <?php echo $display; ?><?php echo $data_attrs; ?>>
+<button type="<?php echo esc_attr( $button_type ); ?>" <?php echo $id ?> <?php if ($disabled) : ?>disabled<?php endif; ?> class="<?php echo BackWPupHelpers::clsx($font_size, $full_width, $button_base, $button_style, $class, $trigger); ?>" <?php echo $display; ?><?php echo $data_attrs; ?>>
   <?= $icon_position === "before" || $icon_position === "alone" && BackWPupHelpers::component("icon", $icon) ? BackWPupHelpers::component("icon", $icon) : '' ; ?>
   <?php if ($icon_position !== "alone" && $label !== "") : ?>
     <span><?php echo $label ?? ""; ?></span>

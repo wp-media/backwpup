@@ -347,11 +347,12 @@ final class BackWPup_Page_Backups extends WP_List_Table
 
     public function column_time($item)
     {
-        return sprintf(
-            __('%1$s at %2$s', 'backwpup'),
-            date_i18n(get_option('date_format'), $item['time'], true),
-            date_i18n(get_option('time_format'), $item['time'], true)
-        );
+		return sprintf(
+			// translators: %1$s = date, %2$s = time.
+			__( '%1$s at %2$s', 'backwpup' ),
+			wp_date( get_option( 'date_format' ), $item['time'] ),
+			wp_date( get_option( 'time_format' ), $item['time'] )
+		);
     }
 
     public static function load()

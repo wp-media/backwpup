@@ -721,6 +721,11 @@ class BackWPup_WP_API {
 			if ( isset( $job['tempjob'] ) && true === $job['tempjob'] ) {
 				continue;
 			}
+
+			if ( isset( $job['backup_now'] ) && true === $job['backup_now'] ) {
+				continue;
+			}
+
 			// Skip legacy jobs.
 			if ( ! isset( $job['jobid'] ) || ( isset( $job['legacy'] ) && true === $job['legacy'] ) ) {
 				continue;
@@ -806,9 +811,10 @@ class BackWPup_WP_API {
 					BackWPup_Job::schedule_job( $params['job_id'] );
 					$cron_next         = BackWPup_Cron::cron_next( BackWPup_Option::get( $params['job_id'], 'cron' ) );
 					$next_backup_label = sprintf(
-						__( '%1$s at %2$s', 'backwpup' ), // @phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
-						date_i18n( get_option( 'date_format' ), $cron_next, true ),
-						date_i18n( 'H:i', $cron_next, true )
+						// translators: %1$s = date, %2$s = time.
+						__( '%1$s at %2$s', 'backwpup' ),
+						wp_date( get_option( 'date_format' ), $cron_next ),
+						wp_date( get_option( 'time_format' ), $cron_next )
 					);
 				}
 
@@ -891,13 +897,16 @@ class BackWPup_WP_API {
 			}
 			// If no job ID is set, it's from onboarding so we use the files job and DB job.
 			if ( ! isset( $params['job_id'] ) || '' === $params['job_id'] ) {
-				$files_job_id = get_site_option( 'backwpup_backup_files_job_id', false );
-				if ( false === $files_job_id ) {
+				$files_job_id        = get_site_option( 'backwpup_backup_files_job_id', false );
+				$database_job_id     = get_site_option( 'backwpup_backup_database_job_id', false );
+				$first_backup_job_id = get_site_option( 'backwpup_first_backup_job_id', false );
+				if ( false === $files_job_id || false === $database_job_id || false === $first_backup_job_id ) {
 					throw new Exception( __( 'Files job not found', 'backwpup' ) );
 				}
 				$jobs = [
 					$files_job_id,
-					$files_job_id + 1,
+					$database_job_id,
+					$first_backup_job_id,
 				];
 			} else {
 				$jobs = [ $params['job_id'] ];
@@ -948,10 +957,20 @@ class BackWPup_WP_API {
 			}
 		}
 
-		if ( isset( $params['job_id'] ) ) {
-			$jobid = $params['job_id'];
-		} else {
-			$jobid = get_site_option( 'backwpup_backup_files_job_id', false );
+		$create_backup_now_job = true;
+		$jobs                  = BackWPup_Job::get_jobs();
+		foreach ( $jobs as $job ) {
+			if (
+				isset( $job['backup_now'] ) && true === $job['backup_now']
+				&& ! empty( $job['activetype'] )
+			) {
+				$create_backup_now_job = false;
+			}
+		}
+
+		$jobid = $params['job_id'] ?? get_site_option( 'backwpup_backup_files_job_id', false );
+		if ( $create_backup_now_job ) {
+			$jobid = $this->get_job_id_when_no_available_job();
 		}
 
 		// check temp folder.
@@ -1049,10 +1068,11 @@ class BackWPup_WP_API {
 
 			// Prepare response with next backup schedule.
 			$return['next_backup'] = sprintf(
-				__( '%1$s at %2$s', 'backwpup' ), // @phpcs:ignore
-				date_i18n( get_option( 'date_format' ), $cron_next, true ),
-				date_i18n( 'H:i', $cron_next, true )
-			); // @phpcs:ignore
+				// translators: %1$s = date, %2$s = time.
+				__( '%1$s at %2$s', 'backwpup' ),
+				wp_date( get_option( 'date_format' ), $cron_next ),
+				wp_date( get_option( 'time_format' ), $cron_next )
+			);
 
 			$return['status']  = 200;
 			$return['message'] = __('Job settings saved successfully.', 'backwpup'); // @phpcs:ignore
@@ -1376,6 +1396,60 @@ class BackWPup_WP_API {
 	}
 
 	/**
+	 * Start backup process for when jobs are deleted
+	 *
+	 * @return int
+	 */
+	private function get_job_id_when_no_available_job(): int {
+		$job_id = get_site_option( 'backwpup_backup_now_job_id', 0 );
+		if ( $job_id < 1 ) {
+			$job_id = BackWPup_Option::next_job_id();
+			update_site_option( 'backwpup_backup_now_job_id', $job_id );
+			BackWPup_Option::update( $job_id, 'type', BackWPup_JobTypes::$type_job_both );
+		}
+
+		$this->backup_now_default_values( $job_id, true );
+
+		return $job_id;
+	}
+
+	/**
+	 * Generate backup default values
+	 *
+	 * @param int  $next_job_id The next job id.
+	 * @param bool $backup_now Check if it's a temp job or back up now.
+	 *
+	 * @return void
+	 */
+	private function backup_now_default_values( int $next_job_id, bool $backup_now = false ): void {
+		$backup_now_job_values = [
+			'jobid'              => $next_job_id,
+			'name'               => 'Backup Now',
+			'destinations'       => [ 'FOLDER' ],
+			'activetype'         => '',
+			'backupsyncnodelete' => false,
+			'tempjob'            => true,
+		];
+
+		if ( $backup_now ) {
+			$backup_now_job_values['tempjob']    = false;
+			$backup_now_job_values['backup_now'] = true;
+		}
+
+		$default_values                    = BackWPup_Option::defaults_job();
+		$default_destination_folder_values = BackWPup::get_destination( 'FOLDER' )->option_defaults();
+
+		$bwp_job_values = array_merge( $default_values, $default_destination_folder_values, $backup_now_job_values );
+
+		if ( 0 < count( BackWPup_Option::get_job_ids() ) ) {
+			$bwp_job_values['archiveformat'] = BackWPup_Option::get( BackWPup_Option::get_job_ids()[0], 'archiveformat' );
+		}
+
+		foreach ( $bwp_job_values as $key => $value ) {
+			BackWPup_Option::update( $next_job_id, $key, $value );
+		}
+	}
+	/**
 	 * Create a new temporary job for the backup now and triger start_backup method with it's id.
 	 *
 	 * @param WP_REST_Request $request The REST request object containing the parameters.
@@ -1400,26 +1474,8 @@ class BackWPup_WP_API {
 		}
 		try {
 			// Create a new temporary job for the backup now.
-			$next_jobid                        = BackWPup_Option::next_job_id();
-			$backup_now_job_values             = [
-				'jobid'              => $next_jobid,
-				'name'               => 'Backup Now',
-				'destinations'       => [ 'FOLDER' ],
-				'activetype'         => '',
-				'backupsyncnodelete' => false,
-				'tempjob'            => true,
-			];
-			$default_values                    = BackWPup_Option::defaults_job();
-			$default_destination_folder_values = BackWPup::get_destination( 'FOLDER' )->option_defaults();
-			$values                            = array_merge( $default_values, $default_destination_folder_values, $backup_now_job_values );
-
-			if ( 0 < count( BackWPup_Option::get_job_ids() ) ) {
-				$values['archiveformat'] = BackWPup_Option::get( BackWPup_Option::get_job_ids()[0], 'archiveformat' );
-			}
-
-			foreach ( $values as $key => $value ) {
-				BackWPup_Option::update( $next_jobid, $key, $value );
-			}
+			$next_jobid = BackWPup_Option::next_job_id();
+			$this->backup_now_default_values( $next_jobid );
 
 			$temp_request = new WP_REST_Request( 'POST' );
 			$temp_request->set_body_params(

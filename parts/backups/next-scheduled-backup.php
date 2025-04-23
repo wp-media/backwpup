@@ -34,6 +34,10 @@ $jobs = BackWPup_Job::get_jobs();
 				continue;
 			}
 
+            if ( isset($job['backup_now']) && true === $job['backup_now'] ) {
+                continue;
+            }
+
 			BackWPupHelpers::component( 'job-item', [ 'job' => $job ] );
 		}
 	}

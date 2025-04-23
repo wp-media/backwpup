@@ -425,20 +425,21 @@ class BackWPup_Job
             true
         )) {
             $this->log_level = 'normal_translated';
-        }
-        //create log file
-        $head = '';
-        $info = '';
-        $head .= '<!DOCTYPE html>' . PHP_EOL;
-        $head .= '<html lang="' . str_replace('_', '-', get_locale()) . '">' . PHP_EOL;
-        $head .= '<head>' . PHP_EOL;
-        $head .= '<meta charset="' . get_bloginfo('charset') . '" />' . PHP_EOL;
-        $head .= '<title>' . sprintf(
-            __('BackWPup log for %1$s from %2$s at %3$s', 'backwpup'),
-            esc_attr($this->job['name']),
-            date_i18n(get_option('date_format')),
-            date_i18n(get_option('time_format'))
-        ) . '</title>' . PHP_EOL;
+		}
+		// create log file.
+		$head  = '';
+		$info  = '';
+		$head .= '<!DOCTYPE html>' . PHP_EOL;
+		$head .= '<html lang="' . str_replace( '_', '-', get_locale() ) . '">' . PHP_EOL;
+		$head .= '<head>' . PHP_EOL;
+		$head .= '<meta charset="' . get_bloginfo( 'charset' ) . '" />' . PHP_EOL;
+		$head .= '<title>' . sprintf(
+			// translators: %1$s = job name, %2$s = date, %3$s = time.
+			__( 'BackWPup log for %1$s from %2$s at %3$s', 'backwpup' ),
+			esc_attr( $this->job['name'] ),
+			wp_date( get_option( 'date_format' ) ),
+			wp_date( get_option( 'time_format' ) )
+		) . '</title>' . PHP_EOL;
         $head .= '<meta name="robots" content="noindex, nofollow" />' . PHP_EOL;
         $head .= '<meta name="copyright" content="Copyright &copy; 2012 - ' . date('Y') . ' WP Media, Inc." />' . PHP_EOL;
         $head .= '<meta name="author" content="WP Media" />' . PHP_EOL;
@@ -505,30 +506,30 @@ class BackWPup_Job
             if ($this->is_debug()) {
                 if (!$cron_next) {
                     $cron_next = __('Not scheduled!', 'backwpup');
-                } else {
-                    $cron_next = date_i18n(
-                        'D, j M Y @ H:i',
-                        $cron_next + (get_option('gmt_offset') * 3600),
-                        true
-                    );
+				} else {
+					$cron_next = wp_date(
+						'D, j M Y @ H:i',
+						$cron_next
+					);
                 }
                 $info .= sprintf(
                     __('[INFO] Cron: %s; Next: %s ', 'backwpup'),
                     $this->job['cron'],
                     $cron_next
                 ) . '<br />' . PHP_EOL;
-            }
-        } elseif ($this->job['activetype'] == 'link' && $this->is_debug()) {
-            $info .= __('[INFO] BackWPup job start with link is active', 'backwpup') . '<br />' . PHP_EOL;
-        } elseif ($this->job['activetype'] == 'easycron' && $this->is_debug()) {
-            $info .= __('[INFO] BackWPup job start with EasyCron.com', 'backwpup') . '<br />' . PHP_EOL;
-            //output scheduling
-            if ($this->is_debug()) {
-                $cron_next = BackWPup_Cron::cron_next($this->job['cron']);
-                $cron_next = date_i18n('D, j M Y @ H:i', $cron_next + (get_option('gmt_offset') * 3600), true);
-                $info .= sprintf(
-                    __('[INFO] Cron: %s; Next: %s ', 'backwpup'),
-                    $this->job['cron'],
+			}
+		} elseif ( 'link' === $this->job['activetype'] && $this->is_debug() ) {
+			$info .= __( '[INFO] BackWPup job start with link is active', 'backwpup' ) . '<br />' . PHP_EOL;
+		} elseif ( 'easycron' === $this->job['activetype'] && $this->is_debug() ) {
+			$info .= __( '[INFO] BackWPup job start with EasyCron.com', 'backwpup' ) . '<br />' . PHP_EOL;
+			// output scheduling.
+			if ( $this->is_debug() ) {
+				$cron_next = BackWPup_Cron::cron_next( $this->job['cron'] );
+				$cron_next = wp_date( 'D, j M Y @ H:i', $cron_next );
+				$info     .= sprintf(
+					// translators: %1$s = cron name, %2$s = next run.
+					__( '[INFO] Cron: %1$s; Next: %2$s ', 'backwpup' ),
+					$this->job['cron'],
                     $cron_next
                 ) . '<br />' . PHP_EOL;
             }
@@ -1269,11 +1270,12 @@ class BackWPup_Job
                     $status = __('ERROR', 'backwpup');
                 }
 
-                $subject = sprintf(
-                    __('[%3$s] BackWPup log %1$s: %2$s', 'backwpup'),
-                    date_i18n('d-M-Y H:i', $this->start_time, true),
-                    esc_attr($this->job['name']),
-                    $status
+				$subject = sprintf(
+					// translators: %1$s = Date, %2$s = job name, %3$s = job status.
+					__( '[%3$s] BackWPup log %1$s: %2$s', 'backwpup' ),
+					wp_date( 'd-M-Y H:i', $this->start_time ),
+					esc_attr( $this->job['name'] ),
+					$status
                 );
                 $headers = [];
                 $headers[] = 'Content-Type: text/html; charset=' . get_bloginfo('charset');
@@ -1321,9 +1323,9 @@ class BackWPup_Job
         //logfile end
         file_put_contents($this->logfile, '</body>' . PHP_EOL . '</html>', FILE_APPEND);
 
-		// Delete The job if it's a temp job.
+		// Disable The job if it's a temp job.
 		if ( true === $this->job['tempjob'] ) {
-			BackWPup_Option::delete_job( $this->job['jobid'] );
+			self::disable_job( $this->job['jobid'] );
 		}
 		BackWPup_Cron::check_cleanup();
 	}

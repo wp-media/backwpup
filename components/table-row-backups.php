@@ -84,7 +84,7 @@ ob_start();
       foreach ($backup['data'] as $data) {
         switch ($data) {
           case 'FILE':
-            $icon = 'wp';
+            $icon = 'file-alt';
             $label = 'Files';
             break;
           case 'DBDUMP':

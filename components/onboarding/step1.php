@@ -21,6 +21,7 @@ BackWPupHelpers::component("heading", [
     "icon_name" => "arrow-right",
     "icon_position" => "after",
     "trigger" => "onboarding-step-2",
+    'button_type' => 'button',
   ]);
   ?>
 </footer>

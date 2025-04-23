@@ -407,7 +407,7 @@ class BackWPup_Page_Editjob
 							<th scope="row"><?php esc_html_e('Backup type', 'backwpup'); ?></th>
 							<td>
 								<fieldset>
-									<legend class="screen-reader-text">	<span><?php esc_html_e('Backup type', 'backwpup'); ?></span></legend>
+									<legend class="screen-reader-text"><span><?php esc_html_e('Backup type', 'backwpup'); ?></span></legend>
 									<p>
 										<label for="idbackuptype-sync">
 											<input readonly disabled class="radio" type="radio"<?php checked( 'sync', BackWPup_Option::get( $jobid, 'backuptype' ), true ); ?> name="backuptype" id="idbackuptype-sync" value="sync" /> <?php esc_html_e( 'Synchronize file by file to destination', 'backwpup' ); ?>
@@ -952,8 +952,8 @@ class BackWPup_Page_Editjob
 		if (PHP_INT_MAX === $cron_next) {
 			echo '<span class="bwu-message-error">' . __('ATTENTION: Can\'t calculate cron!', 'backwpup') . '</span><br />';
 		} else {
-			_e('Next runtime:', 'backwpup');
-			echo ' <b>' . date_i18n('D, j M Y, H:i', $cron_next, true) . '</b>';
+			esc_html_e( 'Next runtime:', 'backwpup' );
+			echo ' <b>' . wp_date( 'D, j M Y, H:i', $cron_next ) . '</b>'; // @phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 		echo '</p>';
 

@@ -280,9 +280,6 @@ class BackWPup_Migrate {
 					BackWPup_Option::update( $id, 'legacy', true );
 				}
 			}
-
-			// Mark migration complete.
-			update_site_option( 'backwpup_version', '5.1.0' );
 		}
 	}
 

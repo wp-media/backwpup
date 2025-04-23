@@ -907,7 +907,7 @@ jQuery(document).ready(function ($) {
   // Start Backup Now
   $(".js-backwpup-start-backup-now").on('click', function () {
     enableBackupButton(false);
-    requestWPApi(backwpupApi.backupnow, {}, function(response) {
+    requestWPApi(backwpupApi.startbackup, {}, function(response) {
       if ( response.status === 200 ) {
         window.location.reload();
       }
@@ -956,9 +956,6 @@ jQuery(document).ready(function ($) {
         function (response) {
           if (response.success) {
             $(`#backwpup-${job_id}-options`).remove();
-            if ($('.backwpup-job-card').length === 0) {
-              $("#backwpup-backup-now").prop("disabled", true);
-            }
             loadBackupsListingAndPagination(getUrlParameter('page_num', 1));
 	          backwpupDisplaySettingsToast('success', response.message);
           } else {
@@ -1033,7 +1030,7 @@ jQuery(document).ready(function ($) {
           $("#backwpup-backup-now").prop("disabled", false);
           loadBackupsListingAndPagination(getUrlParameter('page_num', 1));
           // Display floating success notice.
-		  backwpupDisplaySettingsToast('success', response.message);
+		      backwpupDisplaySettingsToast('success', response.message);
           requestWPApi(
             backwpupApi.getjobslist,
             {},
@@ -1052,7 +1049,7 @@ jQuery(document).ready(function ($) {
       "POST",
       function (request, error) {
         // Display floating error notice.
-        backwpupDisplaySettingsToast('error', request.responseText, 5000);
+        backwpupDisplaySettingsToast('error', request.responseText);
         that.prop('disabled', false);
       }
     );
@@ -1962,7 +1959,8 @@ jQuery(document).ready(function ($) {
   // Call the functions when the "First Backup" page is loaded
   if (window.location.search.includes('backwpupfirstbackup')) {
     if ( ! isGenerateJsIncluded() ) {
-      requestWPApi(backwpupApi.backupnow, {first_backup: 1}, function(response) {
+      let first_job_id = $('#backwpup_first_backup_job_id').val();
+      requestWPApi(backwpupApi.startbackup, {first_backup: 1, job_id : first_job_id}, function(response) {
         if (200 === response.status) {
           setTimeout(function() {
               window.location.reload();
@@ -2014,9 +2012,9 @@ jQuery(document).ready(function ($) {
    * Display a toast notification in the settings page.
    * @param type disable auto-remove if type is not 'success'.
    * @param message
-   * @param duration - The duration in milliseconds to display the toast. Default is 2000ms. Set to -1 to disable auto-remove.
+   * @param duration - The duration in milliseconds to display the toast. Default is 5000ms. Set to -1 to disable auto-remove.
    */
-  function backwpupDisplaySettingsToast(type = 'info', message = '', duration = 2000) {
+  function backwpupDisplaySettingsToast(type = 'info', message = '', duration = 5000) {
     requestWPApi(
         backwpupApi.getblock,
         {

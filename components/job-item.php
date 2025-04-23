@@ -15,9 +15,9 @@ if ( $is_active ) {
 	$cron_next = BackWPup_Cron::cron_next(BackWPup_Option::get($job_id, 'cron'));
 
 	$next_backup_label = sprintf(
-		__('%1$s at %2$s', 'backwpup'),
-		date_i18n(get_option('date_format'), $cron_next, true),
-		date_i18n('H:i', $cron_next, true)
+		__( '%1$s at %2$s', 'backwpup' ),
+		wp_date( get_option( 'date_format' ), $cron_next ),
+		wp_date( get_option( 'time_format' ), $cron_next )
 	);
 }
 
@@ -25,7 +25,7 @@ $is_file = in_array( $job['type'], [BackWPup_JobTypes::$type_job_both, BackWPup_
 if ( $is_file ) {
 	$job_type   = 'files';
 	$select     = "select-files";
-	$icon = 'wp';
+	$icon = 'file-alt';
 } else {
 	$job_type   = 'database';
 	$select     = "select-tables";
@@ -34,12 +34,12 @@ if ( $is_file ) {
 
 
 ?>
-<div class="flex-1 p-8 bg-white rounded-lg flex flex-col relative backwpup-job-card backwpup-job-<?= $job_type ?>" id="<?= 'backwpup-'.$job_id.'-options' ?>">
+<div class="flex-1 p-8 bg-white rounded-lg flex flex-col relative backwpup-job-card backwpup-job-<?= $job_type ?> h-[200px]" id="<?= 'backwpup-'.$job_id.'-options' ?>">
 
 	<div class="mb-2 flex items-center gap-4">
 		<?php BackWPupHelpers::component("icon", ["name" => $icon, "size" => "large"]); ?>
 
-		<div class="mt-[5px] w-[152px] flex flex-auto gap-1">
+		<div class="mt-[5px] w-[152px] flex flex-auto">
 			<?php
 			$title = trim( BackWPup_Option::get($job_id, 'name') );
 
@@ -52,11 +52,11 @@ if ( $is_file ) {
 				"flex"  => false,
 				"truncate" => true,
 			]);
-			?><?php
+
 			BackWPupHelpers::component("icon", [
 				"name" => 'edit',
 				"size" => "medium",
-				"class" => "js-backwpup-load-and-open-sidebar cursor-pointer min-w-[21px]",
+				"class" => "js-backwpup-load-and-open-sidebar cursor-pointer min-w-[21px] ml-3",
 				"data"      => [
 					'job-id' => $job_id,
 					'block-type' => 'children',

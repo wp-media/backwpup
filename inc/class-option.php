@@ -282,6 +282,7 @@ final class BackWPup_Option
 		$default['legacy']                = false;
 		$default['archiveencryption']     = false;
 		$default['tempjob']               = false;
+		$default['backup_now']            = false;
 		// defaults vor destinations.
 		foreach ( BackWPup::get_registered_destinations() as $dest_key => $dest ) {
 			if ( ! empty( $dest['class'] ) ) {
@@ -645,23 +646,28 @@ final class BackWPup_Option
 	}
 
 	/**
-	 * Create default jobs for BackWPup.
+	 * Creates a default job with the specified name and type.
 	 *
-	 * This method initializes two default jobs: one for backing up files and another for backing up the database.
-	 * It sets the job ID, type, and name for each job and then updates the job options.
+	 * This method initializes a new job using default settings, assigns it a unique job ID,
+	 * and updates the job's properties with the provided name and type. The job is then
+	 * saved using the `self::update` method.
+	 *
+	 * @param string $job_name The name of the job to be created.
+	 * @param array  $job_type An array specifying the type(s) of the job.
+	 *
+	 * @return int The ID of the newly created job.
 	 */
-	public static function create_default_jobs() {
-		$job_file          = self::defaults_job();
-		$job_file['jobid'] = (int) get_site_option( 'backwpup_backup_files_job_id', 1 );
-		$job_file['type']  = BackWPup_JobTypes::$type_job_files;
-		$job_file['name']  = BackWPup_JobTypes::$name_job_files;
+	public static function create_default_jobs( string $job_name, array $job_type ) {
+		$job          = self::defaults_job();
+		$next_jobid   = self::next_job_id();
+		$job['jobid'] = $next_jobid;
+		$job['type']  = $job_type;
+		$job['name']  = $job_name;
 
-		$job_db          = self::defaults_job();
-		$job_db['jobid'] = (int) get_site_option( 'backwpup_backup_database_job_id', 2 );
-		$job_db['type']  = BackWPup_JobTypes::$type_job_database;
-		$job_db['name']  = BackWPup_JobTypes::$name_job_database;
-
-		self::update_jobs_options( [ $job_file, $job_db ] );
+		foreach ( $job as $key => $value ) {
+			self::update( $next_jobid, $key, $value );
+		}
+		return $next_jobid;
 	}
 
 	/**

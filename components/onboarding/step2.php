@@ -15,7 +15,7 @@ BackWPupHelpers::component("heading", [
 <div class="flex-auto">
   <div class="flex items-center gap-4 border-b border-grey-200 py-6 test-files">
     <div class="shrink-0">
-      <?php BackWPupHelpers::component("icon", ["name" => "wp", "size" => "xl"]); ?>
+      <?php BackWPupHelpers::component("icon", ["name" => "file-alt", "size" => "xl"]); ?>
     </div>
     <div class="flex-auto">
       <?php
@@ -115,6 +115,7 @@ BackWPupHelpers::component("heading", [
     "icon_name" => "arrow-right",
     "icon_position" => "after",
     "trigger" => "onboarding-step-3",
+    'button_type' => 'button',
   ]);
   ?>
 </footer>

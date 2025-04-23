@@ -12,6 +12,8 @@ return array(
     'WPMedia\\BackWPup\\StorageProviders\\' => array($baseDir . '/src/StorageProviders'),
     'WPMedia\\BackWPup\\Plugin\\' => array($baseDir . '/src/Plugin'),
     'WPMedia\\BackWPup\\Dependencies\\' => array($baseDir . '/src/Dependencies'),
+    'WPMedia\\BackWPup\\Admin\\' => array($baseDir . '/src/Admin'),
+    'WPMedia\\BackWPup\\Adapters\\' => array($baseDir . '/src/Adapters'),
     'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Contracts\\EventDispatcher\\' => array($vendorDir . '/symfony/event-dispatcher-contracts'),

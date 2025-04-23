@@ -277,4 +277,124 @@ class BackWPup_WP_CLI extends WP_CLI_Command
 		}
 		WP_CLI::success( __( 'Archive has been successfully encrypted.', 'backwpup' ) );
 	}
+
+	/**
+	 * Activate Legacy Jobs; Filter by all or selected job IDs
+	 *
+	 * @subcommand activate-legacy-job
+	 *
+	 * @param array $args        Positional arguments passed to the command.
+	 * @param array $assoc_args  Associative arguments passed to the command (e.g --type, --jobIds).
+	 * @return void
+	 */
+	public function activate_legacy_job( array $args, array $assoc_args ): void {
+		// Check if mandatory flag exist.
+		if ( ! isset( $assoc_args['type'] ) ) {
+			WP_CLI::error( __( 'The --type flag is mandatory and must be specified.', 'backwpup' ) );
+		}
+
+		// Check if provided type is valid (must be either wpcron or link).
+		if ( ! in_array( $assoc_args['type'], [ 'wpcron', 'link' ], true ) ) {
+			WP_CLI::error( __( 'Invalid value for --type flag.', 'backwpup' ) );
+		}
+
+		$job_ids = isset( $assoc_args['jobIds'] ) ? explode( ',', $assoc_args['jobIds'] ) : [];
+
+		// Check that all job ids are numeric.
+		if ( ! empty( $job_ids ) && count( $job_ids ) !== count( array_filter( $job_ids, 'is_numeric' ) ) ) {
+			WP_CLI::error( __( 'Invalid value for --jobIds flag provided.', 'backwpup' ) );
+		}
+
+		// Convert string ids to proper integers.
+		$job_ids = array_map( 'intval', $job_ids );
+
+		// Sanitize type value.
+		$type = sanitize_text_field( wp_unslash( $assoc_args['type'] ) );
+
+		WP_CLI::log( __( 'Activating legacy jobs.', 'backwpup' ) );
+
+		// Get all jobs.
+		$jobs = get_site_option( 'backwpup_jobs', [] );
+
+		[ $filtered_jobs, $total_filtered_jobs ] = $this->filter_jobs_to_be_activated( $jobs, $job_ids, $type );
+
+		// Bail out early if number of jobs to be updated is still 0.
+		if ( 0 === $total_filtered_jobs ) {
+			WP_CLI::warning( 'No job was updated.', 'backwpup' );
+			return;
+		}
+
+		// Update jobs.
+		update_site_option( 'backwpup_jobs', $filtered_jobs );
+		WP_CLI::success(
+			sprintf(
+				// translators: %1$d = Number of jobs, %2$s = Success message.
+				_n( '%1$d job %2$s', '%1$d jobs %2$s', $total_filtered_jobs, 'backwpup' ),
+				$total_filtered_jobs,
+				esc_html__( 'successfully activated', 'backwpup' )
+			)
+			);
+	}
+
+	/**
+	 * Filters jobs to be activated based on job IDs and activation type.
+	 *
+	 * @param array  $jobs     Array of jobs to filter.
+	 * @param array  $job_ids  Array of job IDs to activate. If empty, all legacy jobs will be activated.
+	 * @param string $type     The activation type ('wpcron' or 'link').
+	 *
+	 * @return array An array containing the filtered jobs and the count of updated jobs.
+	 */
+	private function filter_jobs_to_be_activated( array $jobs, array $job_ids, string $type ) {
+		$jobs_updated = 0;
+
+		// Go over jobs and update only those with empty activeType and legacy set to 1.
+		$jobs = array_map(
+			function ( $job ) use ( $job_ids, $type, &$jobs_updated ) {
+				// Filter out jobs that already have activetype set and not empty either legacy or not.
+				if ( isset( $job['activetype'] ) && '' !== $job['activetype'] ) {
+					return $job;
+				}
+
+				// Filter out non-legacy jobs.
+				if ( ! isset( $job['legacy'] ) || ! $job['legacy'] ) {
+						return $job;
+				}
+
+				// Activate legacy jobs with specified job ids.
+				if ( ! empty( $job_ids ) && in_array( $job['jobid'], $job_ids, true ) ) {
+					$job['activetype'] = $type;
+
+					// Schedule next run for type of wpcron.
+					if ( 'wpcron' === $type ) {
+						wp_schedule_single_event( BackWPup_Cron::cron_next( $job['cron'] ), 'backwpup_cron', [ 'arg' => $job['jobid'] ] );
+					}
+
+					$jobs_updated++;
+					return $job;
+				}
+
+				// Activate all legacy jobs.
+				if ( empty( $job_ids ) ) {
+					$job['activetype'] = $type;
+
+					// Schedule next run for type of wpcron.
+					if ( 'wpcron' === $type ) {
+						wp_schedule_single_event( BackWPup_Cron::cron_next( $job['cron'] ), 'backwpup_cron', [ 'arg' => $job['jobid'] ] );
+					}
+
+					$jobs_updated++;
+					return $job;
+				}
+
+				return $job;
+			},
+		$jobs
+		);
+
+		return [
+			$jobs,
+			$jobs_updated,
+		];
+	}
 }

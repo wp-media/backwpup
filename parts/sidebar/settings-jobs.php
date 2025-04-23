@@ -120,7 +120,7 @@ BackWPupHelpers::component("form/checkbox", [
 <?php
   BackWPupHelpers::component("navigation/link", [
     "type" => "secondary",
-    "content" => __("Access to Jobs", 'backwpup'),
+    "content" => __("Access to Legacy Jobs", 'backwpup'),
     "url" => network_admin_url('admin.php?page=backwpupjobs'),
     "full_width" => true,
   ]);

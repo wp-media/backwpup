@@ -18,6 +18,8 @@ if ( ! class_exists( \BackWPup::class ) ) {
         $wpdb->query('DELETE FROM ' . $wpdb->options . " WHERE option_name LIKE '%backwpup_%' ");
     }
 
+	$wpdb->query( 'DELETE FROM ' . $wpdb->usermeta . " WHERE meta_key LIKE '%backwpup_%' " );// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+
     //delete Backwpup user roles
     // Special handling for multisite when network-activated.
     if (is_multisite()) {

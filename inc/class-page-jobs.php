@@ -6,16 +6,47 @@ use Inpsyde\Restore\ViewLoader;
 /**
  * Class For BackWPup Jobs page.
  */
-class BackWPup_Page_Jobs extends WP_List_Table
-{
-    public static $logfile;
+class BackWPup_Page_Jobs extends WP_List_Table {
 
-    private static $listtable;
-    private $job_object;
-    private $job_types;
-    private $destinations;
+	/**
+	 * Log file path.
+	 *
+	 * @var string
+	 */
+	public static $logfile;
 
-    public function __construct()
+	/**
+	 * List table object
+	 *
+	 * @var self
+	 */
+	private static $listtable;
+
+	/**
+	 * Job object.
+	 *
+	 * @var bool|object
+	 */
+	private $job_object;
+
+	/**
+	 * Job types.
+	 *
+	 * @var array
+	 */
+	private $job_types;
+
+	/**
+	 * Destinations array.
+	 *
+	 * @var array
+	 */
+	private $destinations;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct()
     {
         parent::__construct([
             'plural' => 'jobs',
@@ -24,20 +55,57 @@ class BackWPup_Page_Jobs extends WP_List_Table
         ]);
     }
 
-    /**
-     * @return bool|void
-     */
+	/**
+	 * Check if the current user has backwpup capability.
+	 *
+	 * @return bool
+	 */
     public function ajax_user_can()
     {
         return current_user_can('backwpup');
     }
 
-    public function prepare_items()
-    {
-        $this->items = BackWPup_Option::get_job_ids();
-        $this->job_object = BackWPup_Job::get_working_data();
-        $this->job_types = BackWPup::get_job_types();
-        $this->destinations = BackWPup::get_registered_destinations();
+	/**
+	 * Get filtered jobs based on the status UI filter.
+	 *
+	 * @return array
+	 */
+	private function get_filtered_jobs() {
+		$jobs = array_filter(
+			BackWPup_Option::get_job_ids(),
+			function ( $job_id ) {
+				return BackWPup_Option::get( $job_id, 'legacy', false );
+			}
+		);
+
+		// Get the "status" filter value from the GET request.
+		$status_filter = isset( $_GET['status'] ) ? sanitize_text_field( wp_unslash( $_GET['status'] ) ) : '';// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( empty( $status_filter ) ) {
+			return $jobs;
+		}
+
+		return array_filter(
+			$jobs,
+			function ( $job_id ) use ( $status_filter ) {
+				switch ( $status_filter ) {
+					case 'disabled':
+						return empty( BackWPup_Option::get( $job_id, 'activetype', '' ) );
+				}
+				return true;
+			}
+		);
+	}
+
+	/**
+	 * Prepares the list of items for displaying.
+	 *
+	 * @return void
+	 */
+	public function prepare_items() {
+		$this->items        = $this->get_filtered_jobs();
+		$this->job_object   = BackWPup_Job::get_working_data();
+		$this->job_types    = BackWPup::get_job_types();
+		$this->destinations = BackWPup::get_registered_destinations();
 
         if (!isset($_GET['order']) || !isset($_GET['orderby'])) {
             return;
@@ -92,13 +160,19 @@ class BackWPup_Page_Jobs extends WP_List_Table
         }
     }
 
-    public function no_items()
-    {
-        _e('No Jobs.', 'backwpup');
-    }
+	/**
+	 * Message to be displayed when there are no items.
+	 *
+	 * @return void
+	 */
+	public function no_items() {
+		esc_html_e( 'No Legacy Jobs.', 'backwpup' );
+	}
 
-    /**
-     * @return array
+	/**
+	 * Retrieves the list of bulk actions available for this table.
+	 *
+	 * @return array
      */
     public function get_bulk_actions()
     {
@@ -112,8 +186,10 @@ class BackWPup_Page_Jobs extends WP_List_Table
 		return wpm_apply_filters_typed( 'array', 'backwpup_page_jobs_get_bulk_actions', $actions );
 	}
 
-    /**
-     * @return array
+	/**
+	 * Gets a list of columns.
+	 *
+	 * @return array
      */
     public function get_columns()
     {
@@ -128,8 +204,10 @@ class BackWPup_Page_Jobs extends WP_List_Table
         return $jobs_columns;
     }
 
-    /**
-     * @return array
+	/**
+	 * Gets a list of sortable columns.
+	 *
+	 * @return array
      */
     public function get_sortable_columns()
     {
@@ -294,16 +372,24 @@ class BackWPup_Page_Jobs extends WP_List_Table
 		if ( BackWPup_Option::get( $item, 'activetype' ) === 'wpcron' ) {
 			$nextrun = wp_next_scheduled( 'backwpup_cron', [ 'arg' => $item ] ) + ( get_option( 'gmt_offset' ) * 3600 );
 			if ( $nextrun ) {
-				$r .= '<span title="' . sprintf( esc_html__( 'Cron: %s', 'backwpup' ), BackWPup_Option::get( $item, 'cron' ) ) . '">' . sprintf( __( '%1$s at %2$s', 'backwpup' ), date_i18n( get_option( 'date_format' ), $nextrun, true ), date_i18n( get_option( 'time_format' ), $nextrun, true ) ) . '</span><br />'; // @phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
+				// translators: %s: cron expression.
+				$title = sprintf( esc_html__( 'Cron: %s', 'backwpup' ), BackWPup_Option::get( $item, 'cron' ) );
+				// translators: %1$s: date, %2$s: time.
+				$content = sprintf( __( '%1$s at %2$s', 'backwpup' ), wp_date( get_option( 'date_format' ), $nextrun ), wp_date( get_option( 'time_format' ), $nextrun ) );
+				$r      .= '<span title="' . $title . '">' . $content . '</span><br />';
 			} else {
                 $r .= __('Not scheduled!', 'backwpup') . '<br />';
-            }
-        } elseif (BackWPup_Option::get($item, 'activetype') == 'easycron') {
-            $easycron_status = BackWPup_EasyCron::status($item);
-            if (!empty($easycron_status)) {
-                $nextrun = BackWPup_Cron::cron_next($easycron_status['cron_expression']) + (get_option('gmt_offset') * 3600);
-                $r .= '<span title="' . sprintf(esc_html__('Cron: %s', 'backwpup'), $easycron_status['cron_expression']) . '">' . sprintf(__('%1$s at %2$s by EasyCron', 'backwpup'), date_i18n(get_option('date_format'), $nextrun, true), date_i18n(get_option('time_format'), $nextrun, true)) . '</span><br />';
-            } else {
+			}
+		} elseif ( BackWPup_Option::get( $item, 'activetype' ) === 'easycron' ) {
+			$easycron_status = BackWPup_EasyCron::status( $item );
+			if ( ! empty( $easycron_status ) ) {
+				$nextrun = BackWPup_Cron::cron_next( $easycron_status['cron_expression'] ) + ( get_option( 'gmt_offset' ) * 3600 );
+				// translators: %s: cron expression.
+				$title = sprintf( esc_html__( 'Cron: %s', 'backwpup' ), $easycron_status['cron_expression'] );
+				// translators: %1$s: date, %2$s: time.
+				$content = sprintf( __( '%1$s at %2$s by EasyCron', 'backwpup' ), wp_date( get_option( 'date_format' ), $nextrun ), wp_date( get_option( 'time_format' ), $nextrun ) );
+				$r      .= '<span title="' . $title . '">' . $content . '</span><br />';
+			} else {
                 $r .= __('Not scheduled!', 'backwpup') . '<br />';
             }
         } elseif (BackWPup_Option::get($item, 'activetype') == 'link') {
@@ -329,12 +415,21 @@ class BackWPup_Page_Jobs extends WP_List_Table
     {
         $r = '';
 
-        if (BackWPup_Option::get($item, 'lastrun')) {
-            $lastrun = BackWPup_Option::get($item, 'lastrun');
-            $r .= sprintf(__('%1$s at %2$s', 'backwpup'), date_i18n(get_option('date_format'), $lastrun, true), date_i18n(get_option('time_format'), $lastrun, true));
-            if (BackWPup_Option::get($item, 'lastruntime')) {
-                $r .= '<br />' . sprintf(__('Runtime: %d seconds', 'backwpup'), BackWPup_Option::get($item, 'lastruntime'));
-            }
+		if ( BackWPup_Option::get( $item, 'lastrun' ) ) {
+			$lastrun = BackWPup_Option::get( $item, 'lastrun' );
+			$r      .= sprintf(
+				// translators: %1$s: date, %2$s: time.
+				__( '%1$s at %2$s', 'backwpup' ),
+				wp_date( get_option( 'date_format' ), $lastrun ),
+				wp_date( get_option( 'time_format' ), $lastrun )
+			);
+			if ( BackWPup_Option::get( $item, 'lastruntime' ) ) {
+				$r .= '<br />' . sprintf(
+					// translators: %d: seconds.
+					__( 'Runtime: %d seconds', 'backwpup' ),
+					BackWPup_Option::get( $item, 'lastruntime' )
+				);
+			}
         } else {
             $r .= __('not yet', 'backwpup');
         }
@@ -363,9 +458,14 @@ class BackWPup_Page_Jobs extends WP_List_Table
         return $r;
     }
 
-    private static function generate_download_link($download_url)
-    {
-        $params = [];
+	/**
+	 * Generates download link from url.
+	 *
+	 * @param string $download_url Download url.
+	 * @return string
+	 */
+	private static function generate_download_link( $download_url ) {
+		$params = [];
         parse_str(wp_parse_url($download_url, PHP_URL_QUERY), $params);
 
         $file = $params['file'];
@@ -394,7 +494,12 @@ class BackWPup_Page_Jobs extends WP_List_Table
         );
     }
 
-    public static function load()
+	/**
+	 * Load listing page.
+	 *
+	 * @return void
+	 */
+	public static function load()
     {
         //Create Table
         self::$listtable = new self();
@@ -550,7 +655,12 @@ class BackWPup_Page_Jobs extends WP_List_Table
         self::$listtable->prepare_items();
     }
 
-    public static function admin_print_styles()
+	/**
+	 * Print admin styles
+	 *
+	 * @return void
+	 */
+	public static function admin_print_styles()
     {
         ?>
         <style type="text/css" media="screen">
@@ -636,7 +746,12 @@ class BackWPup_Page_Jobs extends WP_List_Table
         <?php
     }
 
-    public static function admin_print_scripts()
+	/**
+	 * Print admin scripts.
+	 *
+	 * @return void
+	 */
+	public static function admin_print_scripts()
     {
         wp_enqueue_script('backwpupgeneral');
 
@@ -688,9 +803,17 @@ class BackWPup_Page_Jobs extends WP_List_Table
         }
     }
 
-    private static function admin_print_pro_scripts($suffix, $plugin_url, $plugin_dir)
-    {
-        $restore_scripts_path = "{$plugin_url}/vendor/inpsyde/backwpup-restore-shared/resources/js";
+	/**
+	 * Print admin pro scripts.
+	 *
+	 * @param string $suffix Script suffix.
+	 * @param string $plugin_url Plugin url.
+	 * @param string $plugin_dir Plugin Directory.
+	 *
+	 * @return void
+	 */
+	private static function admin_print_pro_scripts( $suffix, $plugin_url, $plugin_dir ) {
+		$restore_scripts_path = "{$plugin_url}/vendor/inpsyde/backwpup-restore-shared/resources/js";
         $restore_scripts_dir = "{$plugin_dir}/vendor/inpsyde/backwpup-restore-shared/resources/js";
 
         wp_register_script(
@@ -707,11 +830,16 @@ class BackWPup_Page_Jobs extends WP_List_Table
         );
     }
 
-    public static function page()
+	/**
+	 * Admin page assigned to admin menu item.
+	 *
+	 * @return void
+	 */
+	public static function page()
     {
 		echo '<div class="wrap" id="backwpup-page">';
 		// translators: %s: plugin name.
-		echo '<h1>' . esc_html( sprintf( __( '%s &rsaquo; Jobs', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ) ) . '</h1>';
+		echo '<h1>' . esc_html( sprintf( __( '%s &rsaquo; Legacy Jobs', 'backwpup' ), BackWPup::get_plugin_data( 'name' ) ) ) . '</h1>';
 		BackWPup_Admin::display_messages();
         $job_object = BackWPup_Job::get_working_data();
         if (current_user_can('backwpup_jobs_start') && is_object($job_object)) {
@@ -1009,11 +1137,19 @@ class BackWPup_Page_Jobs extends WP_List_Table
 		wp_send_json( $data_ro_return );
 	}
 
-    private static function get_logfile_path(string $folder, ?string $filename): string
-    {
-        if (!$filename) {
-            throw new \InvalidArgumentException('Log file cannot be null.');
-        }
+	/**
+	 * Get log file path.
+	 *
+	 * @param string      $folder Folder Path.
+	 * @param string|null $filename Filename.
+	 * @return string
+	 *
+	 * @throws \InvalidArgumentException When empty filename.
+	 */
+	private static function get_logfile_path( string $folder, ?string $filename ): string {
+		if ( ! $filename ) {
+			throw new \InvalidArgumentException( 'Log file cannot be null.' );
+		}
 
         $filename = basename(trim($filename));
 
@@ -1026,4 +1162,33 @@ class BackWPup_Page_Jobs extends WP_List_Table
 
         return $folder . $filename;
     }
+
+	/**
+	 * Render extra controls in the table navigation area (above or below the table).
+	 *
+	 * @param string $which The location of the extra table nav markup: 'top' or 'bottom'.
+	 */
+	protected function extra_tablenav( $which ) {
+		if ( 'top' !== $which ) { // Add the filter only at the top of the table.
+			return;
+		}
+		// Get the current "status" filter from the GET request.
+		$current_status_filter = isset( $_GET['status'] ) ? sanitize_text_field( wp_unslash( $_GET['status'] ) ) : '';// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		?>
+		<div class="alignleft actions">
+			<label for="filter-by-status" class="screen-reader-text">
+				<?php esc_html_e( 'Filter by Status', 'backwpup' ); ?>
+			</label>
+			<select name="status" id="filter-by-status" onchange="this.form.submit();">
+				<option value=""><?php esc_html_e( 'All Statuses', 'backwpup' ); ?></option>
+				<option value="disabled" <?php selected( $current_status_filter, 'disabled' ); ?>>
+					<?php esc_html_e( 'Disabled', 'backwpup' ); ?>
+				</option>
+			</select>
+			<noscript>
+				<button type="submit" class="button"><?php esc_html_e( 'Filter', 'backwpup' ); ?></button>
+			</noscript>
+		</div>
+		<?php
+	}
 }

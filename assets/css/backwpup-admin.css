@@ -971,6 +971,10 @@ select {
   margin-left: 0.5rem;
 }
 
+.ml-3 {
+  margin-left: 0.75rem;
+}
+
 .ml-auto {
   margin-left: auto;
 }
@@ -1071,6 +1075,10 @@ select {
 
 .h-6 {
   height: 1.5rem;
+}
+
+.h-\[200px\] {
+  height: 200px;
 }
 
 .h-\[312px\] {

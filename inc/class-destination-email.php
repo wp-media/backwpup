@@ -335,16 +335,31 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
 			// Create the Mailer using your created Transport
 			$emailer = Swift_Mailer::newInstance($transport);
 
-			// Create a message
-			$message = Swift_Message::newInstance(sprintf(__('BackWPup archive from %1$s: %2$s', 'backwpup'), date_i18n('d-M-Y H:i', $job_object->start_time, true), esc_attr($job_object->job['name'])));
-			$message->setFrom([$job_object->job['emailsndemail'] => $job_object->job['emailsndemailname']]);
-			$message->setTo($this->get_email_array($job_object->job['emailaddress']));
-			$message->setBody(sprintf(__('Backup archive: %s', 'backwpup'), $job_object->backup_file), 'text/plain', strtolower(get_bloginfo('charset')));
-			$message->attach(Swift_Attachment::fromPath($job_object->backup_folder . $job_object->backup_file, MimeTypeExtractor::fromFilePath($job_object->backup_folder . $job_object->backup_file)));
-			// Send the message
-			$result = $emailer->send($message);
-		} catch (Exception $e) {
-			$job_object->log('Swift Mailer: ' . $e->getMessage(), E_USER_ERROR);
+			// Create a message.
+			$message = Swift_Message::newInstance(
+				sprintf(
+					// translators: %1$s = date, %2$s = job name.
+					__( 'BackWPup archive from %1$s: %2$s', 'backwpup' ),
+					wp_date( 'd-M-Y H:i', $job_object->start_time ),
+					esc_attr( $job_object->job['name'] )
+				)
+			);
+			$message->setFrom( [ $job_object->job['emailsndemail'] => $job_object->job['emailsndemailname'] ] );
+			$message->setTo( $this->get_email_array( $job_object->job['emailaddress'] ) );
+			$message->setBody(
+				sprintf(
+					// translators: %s = backup archive.
+					__( 'Backup archive: %s', 'backwpup' ),
+					$job_object->backup_file
+				),
+				'text/plain',
+				strtolower( get_bloginfo( 'charset' ) )
+			);
+			$message->attach( Swift_Attachment::fromPath( $job_object->backup_folder . $job_object->backup_file, MimeTypeExtractor::fromFilePath( $job_object->backup_folder . $job_object->backup_file ) ) );
+			// Send the message.
+			$result = $emailer->send( $message );
+		} catch ( Exception $e ) {
+			$job_object->log( 'Swift Mailer: ' . $e->getMessage(), E_USER_ERROR );
 		}
 
 		if (isset($mbEncoding)) {

@@ -116,44 +116,56 @@ class BackWPup_Directory extends DirectoryIterator {
 	 * @return array
 	 */
 	public static function get_folder_list_to_exclude( $id_path, $path, $id_job ) {
-		$folder      = realpath( BackWPup_Path_Fixer::fix_path( $path ) );
-		$folder_size = 0;
+		$folder = realpath( BackWPup_Path_Fixer::fix_path( $path ) );
 
-		if ( $folder ) {
-			$folder      = untrailingslashit( str_replace( '\\', '/', $folder ) );
-			$folder_size = BackWPup_File::get_folder_size( $folder );
+		if ( ! $folder ) {
+			return [];
 		}
+
+		$folder = untrailingslashit( str_replace( '\\', '/', $folder ) );
+
+		// Prepare variables once.
 		$folders_to_exclude = [];
+		$excludes           = BackWPup_Option::get( $id_job, 'backup' . $id_path . 'excludedirs' );
+
+		if ( ! is_array( $excludes ) ) {
+			$excludes = [];
+		}
+
+		$dir           = new BackWPup_Directory( $folder );
+		$auto_excludes = array_map( 'trailingslashit', self::get_exclude_dirs( $folder, $dir::get_auto_exclusion_plugins_folders() ) );
+
 		try {
-			$dir      = new BackWPup_Directory( $folder );
-			$excludes = BackWPup_Option::get( $id_job, 'backup' . $id_path . 'excludedirs' );
-
 			foreach ( $dir as $file ) {
-				if (
-					! $file->isDot() &&
-					$file->isDir() &&
-					! in_array( trailingslashit( $file->getPathname() ), self::get_exclude_dirs( $folder, $dir::get_auto_exclusion_plugins_folders() ), true )
-				) {
-					$donotbackup = file_exists( $file->getPathname() . '/.donotbackup' );
-					$folder_size = BackWPup_File::get_folder_size( $file->getPathname() );
-					if ( $donotbackup ) {
-						$excludes[] = $file->getPathname();
-					}
-					if ( ! is_array( $excludes ) ) {
-						$excludes = [];
-					}
-
-					$folders_to_exclude[] = [
-						'name'     => $file->getFilename(),
-						'path'     => $file->getPathname(),
-						'size'     => $folder_size,
-						'excluded' => in_array( $file->getFilename(), $excludes, true ),
-					];
+				if ( $file->isDot() || ! $file->isDir() ) {
+					continue;
 				}
+
+				$pathname = $file->getPathname();
+
+				// Skip auto-excluded folders.
+				if ( in_array( trailingslashit( $pathname ), $auto_excludes, true ) ) {
+					continue;
+				}
+
+				$filename = $file->getFilename();
+
+				// Check for .donotbackup.
+				if ( file_exists( $pathname . '/.donotbackup' ) ) {
+					$excludes[] = $pathname;
+				}
+
+				$folders_to_exclude[] = [
+					'name'     => $filename,
+					'path'     => $pathname,
+					'size'     => BackWPup_File::get_folder_size( $pathname ),
+					'excluded' => in_array( $filename, $excludes, true ),
+				];
 			}
 		} catch ( Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
-			// Do nothing just skip.
+			// Do nothing.
 		}
+
 		return $folders_to_exclude;
 	}
 

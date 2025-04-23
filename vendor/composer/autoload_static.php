@@ -35,6 +35,8 @@ class ComposerStaticInit29926854b38f2f4714b04bb82535cbf6
             'WPMedia\\BackWPup\\StorageProviders\\' => 34,
             'WPMedia\\BackWPup\\Plugin\\' => 24,
             'WPMedia\\BackWPup\\Dependencies\\' => 30,
+            'WPMedia\\BackWPup\\Admin\\' => 23,
+            'WPMedia\\BackWPup\\Adapters\\' => 26,
         ),
         'S' => 
         array (
@@ -117,6 +119,14 @@ class ComposerStaticInit29926854b38f2f4714b04bb82535cbf6
         'WPMedia\\BackWPup\\Dependencies\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/Dependencies',
+        ),
+        'WPMedia\\BackWPup\\Admin\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Admin',
+        ),
+        'WPMedia\\BackWPup\\Adapters\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Adapters',
         ),
         'Symfony\\Polyfill\\Php80\\' => 
         array (
@@ -396,7 +406,6 @@ class ComposerStaticInit29926854b38f2f4714b04bb82535cbf6
         'Inpsyde\\BackWPup\\Notice\\EnvironmentNotice' => __DIR__ . '/../..' . '/inc/Notice/EnvironmentNotice.php',
         'Inpsyde\\BackWPup\\Notice\\EvaluateNotice' => __DIR__ . '/../..' . '/inc/Notice/EvaluateNotice.php',
         'Inpsyde\\BackWPup\\Notice\\Informations505Notice' => __DIR__ . '/../..' . '/inc/Notice/Informations505Notice.php',
-        'Inpsyde\\BackWPup\\Notice\\LegacyDisabledJobsNotice' => __DIR__ . '/../..' . '/inc/Notice/LegacyDisabledJobsNotice.php',
         'Inpsyde\\BackWPup\\Notice\\Notice' => __DIR__ . '/../..' . '/inc/Notice/Notice.php',
         'Inpsyde\\BackWPup\\Notice\\NoticeMessage' => __DIR__ . '/../..' . '/inc/Notice/NoticeMessage.php',
         'Inpsyde\\BackWPup\\Notice\\NoticeView' => __DIR__ . '/../..' . '/inc/Notice/NoticeView.php',

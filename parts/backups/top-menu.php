@@ -2,10 +2,6 @@
 use BackWPup\Utils\BackWPupHelpers;
 
 $jobs = BackWPup_Job::get_jobs();
-$backup_now_button_status = true;
-if ( count( $jobs ) > 0 ) {
-  $backup_now_button_status = false;
-}
 
 BackWPupHelpers::component("form/button", [
   "identifier" => "backwpup-backup-now",
@@ -15,7 +11,7 @@ BackWPupHelpers::component("form/button", [
   "icon_position" => "after",
   "trigger" => "open-modal",
   "display" => "backup-now",
-  "disabled" => $backup_now_button_status,
+  "disabled" => false,
   "class" => "whitespace-nowrap backwpup-button-backup",
 ]);
 ?>

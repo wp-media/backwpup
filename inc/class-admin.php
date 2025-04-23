@@ -12,7 +12,6 @@ use Inpsyde\BackWPup\Notice\EvaluateNotice;
 use Inpsyde\BackWPup\Notice\EasycronUpdateNotice;
 use Inpsyde\BackWPup\Notice\RestoreFeatureInformationNotice;
 use Inpsyde\BackWPup\Notice\Informations505Notice;
-use Inpsyde\BackWPup\Notice\LegacyDisabledJobsNotice;
 
 /**
  * BackWPup_Admin.
@@ -99,15 +98,19 @@ final class BackWPup_Admin {
 		// Get the current screen object.
 		$screen = get_current_screen();
 
+		$is_backwpup_page = isset( $screen->id ) && strpos( $screen->id, 'backwpup' ) !== false;
+
 		// Check if we're on a BackWPUp page.
-		if ( isset( $screen->id ) && strpos( $screen->id, 'backwpup' ) !== false ) {
+		if ( $is_backwpup_page && 'admin_page_backwpupjobs' !== $screen->id ) {
 			wp_enqueue_style(
 				'backwpup-admin',
 				BackWPup::get_plugin_data( 'URL' ) . '/assets/css/backwpup-admin.css',
 				[],
 				BackWPup::get_plugin_data( 'Version' )
 			);
+		}
 
+		if ( $is_backwpup_page ) {
 			wp_enqueue_script(
 				'backwpup-admin',
 				BackWPup::get_plugin_data( 'URL' ) . '/assets/js/backwpup-admin.js',
@@ -385,11 +388,6 @@ final class BackWPup_Admin {
 			new NoticeView( Informations505Notice::ID )
 		);
 		$informations_505_notice->init( Informations505Notice::TYPE_ADMIN );
-
-		$disabled_legacy_jobs = new LegacyDisabledJobsNotice(
-			new NoticeView( LegacyDisabledJobsNotice::ID )
-		);
-		$disabled_legacy_jobs->init( LegacyDisabledJobsNotice::TYPE_ADMIN );
 	}
 
     /**
@@ -526,8 +524,8 @@ final class BackWPup_Admin {
     {
 		$this->page_hooks['backwpupjobs'] = add_submenu_page(
 			'backwpup_null',
-			__( 'Jobs', 'backwpup' ),
-			__( 'Jobs', 'backwpup' ),
+			__( 'Legacy Jobs', 'backwpup' ),
+			__( 'Legacy Jobs', 'backwpup' ),
 			'backwpup_jobs',
             'backwpupjobs',
             [
