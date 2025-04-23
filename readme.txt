@@ -5,7 +5,7 @@ Tags: backup, restore, cloud backup, database backup, wordpress backup
 Requires at least: 4.9
 Tested up to: 6.7.1
 Requires PHP: 7.4
-Stable tag: 5.1.2
+Stable tag: 5.1.3
 License: GPLv2+
 
 Create a complete WordPress backup easily. Schedule automatic backups, store securely, and restore effortlessly with the best WordPress backup plugin! 
@@ -190,6 +190,25 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
 
 == Changelog ==
+= 5.1.3 =
+Release date: April 23,2025
+
+* Added: Filter to show legacy/disabled jobs
+* Added: Notice for legacy disabled jobs
+* Enhancement: Replaced Files icon (currently WP logo) with a new file icon
+* Enhancement: Adding new jobs moves the existing job placement in the interface
+* Enhancement: Increased the default timeout for toast messages
+* Bugfix: Old jobs auto disabled for users from v5.0.9 & v5.1.0 to v5.1
+* Bugfix: Legacy jobs link not triggering the job
+* Bugfix: Clicking “Save & Continue” before the page fully loads skips onboarding
+* Bugfix: Added WP default admin styles in the Legacy jobs page
+* Bugfix: WordPress timezone changes mess up the frequency feature
+* Bugfix: The “Backup Now” error when there’s no job available
+* Bugfix: Fix a problem with the encryption Save button doing nothing
+* Bugfix: Long load time on clicking Data after adding File job exclusion
+* Bugfix: Backup job pencil icon grows smaller with long titles
+* Bugfix: Conflict with MainWP child plugin
+
 = 5.1.2 =
 Release date: April 15,2025
 
