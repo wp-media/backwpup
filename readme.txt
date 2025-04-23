@@ -3,7 +3,7 @@
 Contributors: backwpup, wp_rocket, imagify 
 Tags: backup, restore, cloud backup, database backup, wordpress backup 
 Requires at least: 4.9
-Tested up to: 6.7.1
+Tested up to: 6.8
 Requires PHP: 7.4
 Stable tag: 5.1.3
 License: GPLv2+
