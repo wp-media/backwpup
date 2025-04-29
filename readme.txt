@@ -190,7 +190,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 == Changelog ==
 
-= 5.2 =
+= 5.2.0 =
 Release date: April 29, 2025
 
 * New feature: Add “Backup Now” button to each scheduled job
