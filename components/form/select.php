@@ -12,6 +12,7 @@ use BackWPup\Utils\BackWPupHelpers;
  * @var string  $tooltip_pos    Optional. The tooltip position. Default: "center".
  * @var string $class Optional. Additional CSS classname . Default: null.
  * @var string $identifier Optional. The field identifier. Default: null.
+ * @var array $hide_subset_current_options Optional. Array of eligible options to be hidden if current. Default: [].
  */
 
 # Name
@@ -27,6 +28,7 @@ $withEmpty = $withEmpty ?? false;
 $required = $required ?? false;
 $id = isset($identifier) ? " id='".esc_attr($identifier)."'" : null;
 $tooltip_pos = $tooltip_pos ?? "top";
+$hide_subset_current_options = $hide_subset_current_options ?? [];
 
 # JS actions
 $trigger = isset($trigger) ? "js-backwpup-$trigger" : "";
@@ -45,7 +47,9 @@ $class = $class ?? "";
       <option value="" <?php if ($value === "") : ?>selected<?php endif; ?>></option>
     <?php endif; ?>
     <?php foreach ($options as $key => $option) : ?>
-      <option value="<?php echo $key; ?>" <?php selected( $key, $value ); ?>><?php echo $option; ?></option>
+      <option value="<?php echo esc_attr( $key ); ?>" <?php selected( $key, $value ); echo $key === $value && in_array( $key, $hide_subset_current_options, true ) ? 'hidden' : '' ?>>
+        <?php echo $option; ?>
+      </option>
     <?php endforeach; ?>
   </select>
   <div class="absolute right-4 top-0 bottom-0 flex items-center pointer-events-none rotate-180">

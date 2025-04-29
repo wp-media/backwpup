@@ -1250,6 +1250,10 @@ select {
           user-select: all;
 }
 
+.flex-row {
+  flex-direction: row;
+}
+
 .flex-col {
   flex-direction: column;
 }

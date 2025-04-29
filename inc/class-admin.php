@@ -1,17 +1,14 @@
 <?php
 
 use Inpsyde\BackWPup\Infrastructure\Restore\Restore;
-use Inpsyde\BackWPup\Notice;
 use Inpsyde\BackWPup\Notice\DropboxNotice;
 use Inpsyde\BackWPup\Notice\NoticeView;
 use Inpsyde\BackWPup\Notice\PhpNotice;
 use Inpsyde\BackWPup\Notice\WordPressNotice;
-use Inpsyde\BackWPup\Pro\Settings;
 use Inpsyde\BackWPup\Pro\Settings\AjaxEncryptionKeyHandler;
 use Inpsyde\BackWPup\Notice\EvaluateNotice;
 use Inpsyde\BackWPup\Notice\EasycronUpdateNotice;
 use Inpsyde\BackWPup\Notice\RestoreFeatureInformationNotice;
-use Inpsyde\BackWPup\Notice\Informations505Notice;
 
 /**
  * BackWPup_Admin.
@@ -383,11 +380,6 @@ final class BackWPup_Admin {
 			true
 		);
 		// $restore_feature_information_notice->init( RestoreFeatureInformationNotice::TYPE_ADMIN );
-
-		$informations_505_notice = new Informations505Notice(
-			new NoticeView( Informations505Notice::ID )
-		);
-		$informations_505_notice->init( Informations505Notice::TYPE_ADMIN );
 	}
 
     /**

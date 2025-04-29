@@ -125,7 +125,6 @@ return array(
     'Inpsyde\\BackWPup\\Notice\\EasycronUpdateNotice' => $baseDir . '/inc/Notice/EasycronUpdateNotice.php',
     'Inpsyde\\BackWPup\\Notice\\EnvironmentNotice' => $baseDir . '/inc/Notice/EnvironmentNotice.php',
     'Inpsyde\\BackWPup\\Notice\\EvaluateNotice' => $baseDir . '/inc/Notice/EvaluateNotice.php',
-    'Inpsyde\\BackWPup\\Notice\\Informations505Notice' => $baseDir . '/inc/Notice/Informations505Notice.php',
     'Inpsyde\\BackWPup\\Notice\\Notice' => $baseDir . '/inc/Notice/Notice.php',
     'Inpsyde\\BackWPup\\Notice\\NoticeMessage' => $baseDir . '/inc/Notice/NoticeMessage.php',
     'Inpsyde\\BackWPup\\Notice\\NoticeView' => $baseDir . '/inc/Notice/NoticeView.php',

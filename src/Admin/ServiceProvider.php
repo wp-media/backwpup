@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WPMedia\BackWPup\Admin;
 
 use BackWPup;
+use WPMedia\BackWPup\Admin\Notices\Notices\Notice52;
 use WPMedia\BackWPup\Admin\Notices\Subscriber as NoticeSubscriber;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice513;
 use Inpsyde\BackWPup\Notice\NoticeView;
@@ -61,10 +62,22 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $notice513_view )
 			->addArgument( $this->getContainer()->get( 'backwpup_adapter' ) );
 
+		// Notice for 5.2.
+		$this->getContainer()->add( 'notice_52_view', NoticeView::class )
+			->addArgument( Notice52::ID );
+		$this->getContainer()->addShared( 'notice_52', Notice52::class )
+			->addArguments(
+				[
+					'notice_52_view',
+					'backwpup_adapter',
+				]
+			);
+
 		// Register the Subscriber with an array of notice instances.
 		$this->getContainer()->addShared( 'notice_subscriber', NoticeSubscriber::class )
 			->addArgument(
 				[
+					$this->getContainer()->get( 'notice_52' ),
 					$this->getContainer()->get( 'notice_513' ),
 				]
 				);
