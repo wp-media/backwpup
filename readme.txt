@@ -182,7 +182,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 2. WHEN - Set your backup schedule (hourly, daily, weekly, or monthly) 
 3. WHERE - Select your preferred storage destination(s) 
 4. Configure all your backup settings 
-5. Backup history, next scheduled backups all in one place 
+5. Add new backup, backup history, next scheduled backups all in one place
 6. Content selector to exclude or include files for backups 
 7. Storage settings to select location to store backups 
 
