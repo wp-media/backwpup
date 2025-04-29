@@ -5,7 +5,7 @@ Tags: backup, restore, cloud backup, database backup, wordpress backup
 Requires at least: 4.9
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 5.1.3
+Stable tag: 5.2.0
 License: GPLv2+
 
 Create a complete WordPress backup easily. Schedule automatic backups, store securely, and restore effortlessly with the best WordPress backup plugin! 
@@ -17,16 +17,15 @@ Create a complete WordPress backup easily. Schedule automatic backups, store sec
 [BackWPup](https://backwpup.com/) is the most comprehensive backup & restore plugin for WordPress.
  
 
-= 🎉 BackWPup 5.1 – New Features & Improvements = 
+= 🎉 BackWPup 5.2 – New Features & Improvements =
 
-We're excited to bring you BackWPup 5.1, which combines the redesigned interface of 5.0 with the return of many beloved features from previous versions. We've carefully listened to your feedback to offer a renewed backup experience. Check out our [blog post](https://backwpup.com/backwpup-5-1/) to learn more about these updates.
- 
-🚀 What’s New in BackWPup 5.1? 
+BackWPup 5.2 is now available! This update builds on the improvements introduced in [5.1](https://backwpup.com/backwpup-5-1/), combining our redesigned interface with the return of even more features you’ve requested.
+**Read our [blog post](https://backwpup.com/backwpup-5-2/)** for all the details.
 
-✅ Add a New Backup: Add or remove unlimited backup jobs with a few clicks.  
-✅ Revamped “Backup Now” Flow: One-click to manually back up all your website data.  
-✅ Edit Backup Title: Customize backup job names for better organization.   
-✅ Hourly Frequency: Schedule hourly backups for more frequent protection. 
+🚀 What’s New in BackWPup 5.2?
+
+✅ Monthly Frequency:  Choose the exact day for your monthly backups.
+✅ “Backup Now” button: Instantly run any scheduled backup job.
  
 If you happen to experience any issues with the new version, contact us directly [here](https://backwpup.com/contact) so we can investigate your case. We are committed to resolving any concerns quickly and are actively working to ensure a smooth experience for everyone.
 
@@ -183,13 +182,21 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 2. WHEN - Set your backup schedule (hourly, daily, weekly, or monthly) 
 3. WHERE - Select your preferred storage destination(s) 
 4. Configure all your backup settings 
-5. Backup history, next scheduled backups all in one place 
+5. Add new backup, backup history, next scheduled backups all in one place
 6. Content selector to exclude or include files for backups 
 7. Storage settings to select location to store backups 
 
  
 
 == Changelog ==
+
+= 5.2.0 =
+Release date: April 29, 2025
+
+* New feature: Add “Backup Now” button to each scheduled job
+* Enhancement: Monthly frequency to allow users to select the exact day
+* Enhancement: Show the Toast messages on specific actions instead of every actions
+
 = 5.1.3 =
 Release date: April 23,2025
 
