@@ -451,7 +451,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
             $job_object->add_folders_to_backup($folder);
             //scan folder
             foreach ($dir as $file) {
-                if ($file->isDot()) {
+                if ($file->isDot() || strpos($file->getPathname(), $folder) !== 0) {
                     continue;
                 }
                 $path = str_replace('\\', '/', realpath($file->getPathname()));
