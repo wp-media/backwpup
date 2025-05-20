@@ -1,3 +1,4 @@
+let requestWPApi;
 jQuery(document).ready(function ($) {
   const $document = $(document); // Cache document lookup
 
@@ -20,7 +21,7 @@ jQuery(document).ready(function ($) {
    * @param function callback
    * @param string method (default: 'GET')
    */
-  function requestWPApi(route, data, callback, method = 'GET', error_callback = null) {
+  requestWPApi = function requestWPApi(route, data, callback, method = 'GET', error_callback = null) {
 	  const $trigger = $(document.activeElement);
 	  const $overlayTemplate = $('#backwpup-loading-overlay-template').children().first();
 	  const $jobCard = $trigger.closest('.backwpup-job-card');
@@ -1129,7 +1130,7 @@ jQuery(document).ready(function ($) {
       job_id = null;
     }
     if ($("#s3bucketerror").html()!="") {
-      refresh_storage_destinations('S3', false);
+      refresh_storage_destinations(job_id, 'S3', false);
       alert('Error in Bucket Configurations');
       return;
     }
@@ -1183,7 +1184,7 @@ jQuery(document).ready(function ($) {
       job_id = null;
     }
     if ($("#glacierbucketerror").html()!="") {
-      refresh_storage_destinations('GLACIER', false);
+      refresh_storage_destinations(job_id, 'GLACIER', false);
       alert('Error in Bucket Configurations');
       return;
     }
@@ -1301,13 +1302,13 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
-        refresh_storage_destinations('GDRIVE', response.connected);
+        refresh_storage_destinations(job_id, 'GDRIVE', response.connected);
         backwpupDisplaySettingsToast('success', response.message);
         closeSidebar();
       },
       "POST",
       function (request, error) {
-        refresh_storage_destinations('GDRIVE', false);
+        refresh_storage_destinations(job_id, 'GDRIVE', false);
         const errorMessage = request.responseJSON && request.responseJSON.error
             ? request.responseJSON.error
             : (request.responseText || 'Unknown error occurred');
@@ -1605,6 +1606,7 @@ jQuery(document).ready(function ($) {
     const content = $(this).data("content");
     openSidebar(content);
   });
+
 
   $('.js-backwpup-refresh-authentification').on('click', function() {
     let trigger = $(this).data('trigger');
@@ -2032,6 +2034,7 @@ jQuery(document).ready(function ($) {
   $(document).on('backup-complete', function () {
     enableBackupButton(true);
     enableDeleteJob(true);
+    loadBackupsListingAndPagination(getUrlParameter('page_num', 1));
   });
 
 
@@ -2270,3 +2273,39 @@ jQuery(document).ready(function ($) {
       return originalHide.apply(this, arguments);
   };
 })(jQuery);
+
+/**
+ * Unselects a storage option by sending a request to the WordPress API.
+ *
+ */
+document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("click", function (event) {
+        const group_buttons = document.querySelectorAll('.js-backwpup-unselect-storage'),
+            storage_button = event.target.closest('.js-backwpup-unselect-storage');
+
+        if (group_buttons.length > 1 && storage_button ) {
+            const data = {
+                'job_id': storage_button.dataset.jobId,
+                'name': storage_button.dataset.storage,
+            };
+
+            const storage_checkbox = storage_button.querySelector('input[type="checkbox"]'),
+                  is_currently_checked = storage_checkbox.checked
+
+            if (typeof requestWPApi === 'function') {
+                requestWPApi(backwpupApi.storages, data, function(response) {
+                        if ( response.status === 200 ) {
+                            storage_button.classList.toggle('js-backwpup-unselect-storage')
+                            storage_checkbox.checked = !is_currently_checked
+                        }
+                    },
+                    'POST',
+                    function (request, error) {
+                        console.log(request);
+                        console.log(error);
+                        alert(request.responseJSON.error);
+                    });
+            }
+        }
+    })
+});

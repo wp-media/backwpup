@@ -1,4 +1,14 @@
 == Changelog ==
+= 5.2.2 =
+Release date: May 20, 2025
+
+* New feature: Deselect Website Server as a default storage destination
+* Enhancement: Reduce overall plugin size
+* Bugfix: Google Drive does not remain selected
+* Bugfix: Plugin interface becomes non-functional & not clickable
+* Bugfix: Error during backup for Dropbox storage
+* Bugfix: Dropbox authentication error
+
 = 5.2.1 =
 Release date: April 30, 2025
 

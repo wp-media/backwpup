@@ -38,10 +38,8 @@ final class BackWPup_Admin {
 
     public function __construct(BackWPup_Page_Settings $settings)
     {
-        $this->settings = $settings;
-
-        BackWPup::load_text_domain();
-    }
+		$this->settings = $settings;
+	}
 
     /**
      * Enqueues main css file.
@@ -1187,8 +1185,8 @@ EOT;
 			'license_update'         => rest_url( 'backwpup/v1/license_update' ),
 			'save_site_option'       => rest_url( 'backwpup/v1/save_site_option' ),
 			'delete_job'             => rest_url( 'backwpup/v1/delete_job' ),
-			'backupnow'              => rest_url( 'backwpup/v1/backupnow' ),
 			'backupslistingslength'  => 10,
+			'storages'               => rest_url( 'backwpup/v2/storages' ),
 		];
 
 		if ( $job_object ) {

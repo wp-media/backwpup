@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit29926854b38f2f4714b04bb82535cbf6
+class ComposerStaticInitd3d056b49e154dcec1f924aa2712d38d
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -34,9 +34,14 @@ class ComposerStaticInit29926854b38f2f4714b04bb82535cbf6
             'Webmozart\\Assert\\' => 17,
             'WPMedia\\BackWPup\\StorageProviders\\' => 34,
             'WPMedia\\BackWPup\\Plugin\\' => 24,
+            'WPMedia\\BackWPup\\License\\' => 25,
+            'WPMedia\\BackWPup\\Jobs\\' => 22,
+            'WPMedia\\BackWPup\\Frontend\\' => 26,
             'WPMedia\\BackWPup\\Dependencies\\' => 30,
+            'WPMedia\\BackWPup\\Backups\\' => 25,
             'WPMedia\\BackWPup\\Admin\\' => 23,
             'WPMedia\\BackWPup\\Adapters\\' => 26,
+            'WPMedia\\BackWPup\\API\\' => 21,
         ),
         'S' => 
         array (
@@ -60,6 +65,10 @@ class ComposerStaticInit29926854b38f2f4714b04bb82535cbf6
             'Microsoft\\Graph\\' => 16,
             'MicrosoftAzure\\Storage\\Common\\' => 30,
             'MicrosoftAzure\\Storage\\Blob\\' => 28,
+        ),
+        'L' => 
+        array (
+            'Liborm85\\ComposerVendorCleaner\\' => 31,
         ),
         'K' => 
         array (
@@ -116,9 +125,25 @@ class ComposerStaticInit29926854b38f2f4714b04bb82535cbf6
         array (
             0 => __DIR__ . '/../..' . '/src/Plugin',
         ),
+        'WPMedia\\BackWPup\\License\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/License',
+        ),
+        'WPMedia\\BackWPup\\Jobs\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Jobs',
+        ),
+        'WPMedia\\BackWPup\\Frontend\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Frontend',
+        ),
         'WPMedia\\BackWPup\\Dependencies\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/Dependencies',
+        ),
+        'WPMedia\\BackWPup\\Backups\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Backups',
         ),
         'WPMedia\\BackWPup\\Admin\\' => 
         array (
@@ -127,6 +152,10 @@ class ComposerStaticInit29926854b38f2f4714b04bb82535cbf6
         'WPMedia\\BackWPup\\Adapters\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/Adapters',
+        ),
+        'WPMedia\\BackWPup\\API\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/API',
         ),
         'Symfony\\Polyfill\\Php80\\' => 
         array (
@@ -184,6 +213,10 @@ class ComposerStaticInit29926854b38f2f4714b04bb82535cbf6
         'MicrosoftAzure\\Storage\\Blob\\' => 
         array (
             0 => __DIR__ . '/..' . '/microsoft/azure-storage-blob/src/Blob',
+        ),
+        'Liborm85\\ComposerVendorCleaner\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/liborm85/composer-vendor-cleaner/src',
         ),
         'Krizalys\\Onedrive\\' => 
         array (
@@ -310,7 +343,7 @@ class ComposerStaticInit29926854b38f2f4714b04bb82535cbf6
         'AWS\\CRT\\OptionValue' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Options.php',
         'AWS\\CRT\\Options' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Options.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
-        'BackWPup' => __DIR__ . '/../..' . '/backwpup.php',
+        'BackWPup' => __DIR__ . '/../..' . '/inc/BackWPup.php',
         'BackWPup\\ThirdParty\\Autoptimize' => __DIR__ . '/../..' . '/inc/ThirdParty/Autoptimize.php',
         'BackWPup\\ThirdParty\\Breeze' => __DIR__ . '/../..' . '/inc/ThirdParty/Breeze.php',
         'BackWPup\\ThirdParty\\HummingbirdPerformance' => __DIR__ . '/../..' . '/inc/ThirdParty/HummingbirdPerformance.php',
@@ -394,7 +427,6 @@ class ComposerStaticInit29926854b38f2f4714b04bb82535cbf6
         'BackWPup_System_Tests' => __DIR__ . '/../..' . '/inc/class-system-tests.php',
         'BackWPup_System_Tests_Runner' => __DIR__ . '/../..' . '/inc/class-system-tests-runner.php',
         'BackWPup_ThirdParties' => __DIR__ . '/../..' . '/inc/class-thirdparties.php',
-        'BackWPup_WP_API' => __DIR__ . '/../..' . '/inc/class-wp-api.php',
         'BackWPup_WP_CLI' => __DIR__ . '/../..' . '/inc/class-wp-cli.php',
         'BackWpUp_Destination_Downloader_Data' => __DIR__ . '/../..' . '/inc/class-destination-downloader-data.php',
         'BackWpup_Download_Handler' => __DIR__ . '/../..' . '/inc/class-download-handler.php',
@@ -446,10 +478,10 @@ class ComposerStaticInit29926854b38f2f4714b04bb82535cbf6
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit29926854b38f2f4714b04bb82535cbf6::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit29926854b38f2f4714b04bb82535cbf6::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit29926854b38f2f4714b04bb82535cbf6::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit29926854b38f2f4714b04bb82535cbf6::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitd3d056b49e154dcec1f924aa2712d38d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitd3d056b49e154dcec1f924aa2712d38d::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitd3d056b49e154dcec1f924aa2712d38d::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitd3d056b49e154dcec1f924aa2712d38d::$classMap;
 
         }, null, ClassLoader::class);
     }

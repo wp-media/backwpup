@@ -3,11 +3,18 @@
 namespace Inpsyde\BackWPup\Notice;
 
 /**
- *@property string $id
- *@property string|null $buttonLabel
- *@property string|null $buttonUrl
+ * Class NoticeMessage
+ *
+ * Handles the creation and management of notice messages within the BackWPup Pro plugin.
+ * This class is marked as final and cannot be extended.
+ *
+ * @package BackWPupPro\Notice
+ *
+ * @property string $id
+ * @property string|null $buttonLabel
+ * @property string|null $buttonUrl
  * @property string|null $dismissActionUrl
- *@property string|null $type
+ * @property string|null $type
  * @property string                  $template
  * @property array<int, string>|null $jobs
  */

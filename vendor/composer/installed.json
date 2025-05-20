@@ -451,17 +451,17 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "2.0.4",
-            "version_normalized": "2.0.4.0",
+            "version": "2.2.0",
+            "version_normalized": "2.2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "f9c436286ab2892c7db7be8c8da4ef61ccf7b455"
+                "reference": "7c69f28996b0a6920945dd20b3857e499d9ca96c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/f9c436286ab2892c7db7be8c8da4ef61ccf7b455",
-                "reference": "f9c436286ab2892c7db7be8c8da4ef61ccf7b455",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/7c69f28996b0a6920945dd20b3857e499d9ca96c",
+                "reference": "7c69f28996b0a6920945dd20b3857e499d9ca96c",
                 "shasum": ""
             },
             "require": {
@@ -471,7 +471,7 @@
                 "bamarni/composer-bin-plugin": "^1.8.2",
                 "phpunit/phpunit": "^8.5.39 || ^9.6.20"
             },
-            "time": "2024-10-17T10:06:22+00:00",
+            "time": "2025-03-27T13:27:01+00:00",
             "type": "library",
             "extra": {
                 "bamarni-bin": {
@@ -517,7 +517,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/2.0.4"
+                "source": "https://github.com/guzzle/promises/tree/2.2.0"
             },
             "funding": [
                 {
@@ -645,8 +645,8 @@
         },
         {
             "name": "inpsyde/assert",
-            "version": "dev-fix/466-dont-display-deleted-backup",
-            "version_normalized": "dev-fix/466-dont-display-deleted-backup",
+            "version": "dev-develop",
+            "version_normalized": "dev-develop",
             "dist": {
                 "type": "path",
                 "url": "packages/assert",
@@ -997,6 +997,69 @@
                 "wiki": "https://github.com/krizalys/onedrive-php-sdk/wiki"
             },
             "install-path": "../krizalys/onedrive-php-sdk"
+        },
+        {
+            "name": "liborm85/composer-vendor-cleaner",
+            "version": "1.7.1",
+            "version_normalized": "1.7.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/liborm85/composer-vendor-cleaner.git",
+                "reference": "3d0feeb847c764d6eed2d993041101efbac67dcc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/liborm85/composer-vendor-cleaner/zipball/3d0feeb847c764d6eed2d993041101efbac67dcc",
+                "reference": "3d0feeb847c764d6eed2d993041101efbac67dcc",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.1 || ^2.0",
+                "ext-json": "*",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "composer/composer": "^1.10.23 || ^2.1.9",
+                "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5 || ^8.4 || ^9.1"
+            },
+            "time": "2023-06-02T14:36:46+00:00",
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Liborm85\\ComposerVendorCleaner\\Plugin"
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Liborm85\\ComposerVendorCleaner\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Libor M.",
+                    "email": "liborm85@gmail.com"
+                }
+            ],
+            "description": "Composer Vendor Cleaner removes unnecessary development files and directories from vendor directory.",
+            "keywords": [
+                ".gitattributes",
+                "cleaner",
+                "cleanup",
+                "composer",
+                "composer-plugin",
+                "delete",
+                "ignore",
+                "php",
+                "remove"
+            ],
+            "support": {
+                "issues": "https://github.com/liborm85/composer-vendor-cleaner/issues",
+                "source": "https://github.com/liborm85/composer-vendor-cleaner"
+            },
+            "install-path": "../liborm85/composer-vendor-cleaner"
         },
         {
             "name": "microsoft/azure-storage-blob",
@@ -1898,24 +1961,29 @@
         },
         {
             "name": "psr/container",
-            "version": "1.1.2",
-            "version_normalized": "1.1.2.0",
+            "version": "2.0.2",
+            "version_normalized": "2.0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/container.git",
-                "reference": "513e0666f7216c7459170d56df27dfcefe1689ea"
+                "reference": "c71ecc56dfe541dbd90c5360474fbc405f8d5963"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/container/zipball/513e0666f7216c7459170d56df27dfcefe1689ea",
-                "reference": "513e0666f7216c7459170d56df27dfcefe1689ea",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/c71ecc56dfe541dbd90c5360474fbc405f8d5963",
+                "reference": "c71ecc56dfe541dbd90c5360474fbc405f8d5963",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.4.0"
             },
-            "time": "2021-11-05T16:50:12+00:00",
+            "time": "2021-11-05T16:47:00+00:00",
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
             "installation-source": "dist",
             "autoload": {
                 "psr-4": {
@@ -1943,7 +2011,7 @@
             ],
             "support": {
                 "issues": "https://github.com/php-fig/container/issues",
-                "source": "https://github.com/php-fig/container/tree/1.1.2"
+                "source": "https://github.com/php-fig/container/tree/2.0.2"
             },
             "install-path": "../psr/container"
         },

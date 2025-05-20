@@ -68,9 +68,10 @@ class BackWPup_Page_Onboarding {
 
 			if ( $value['activ'] ) {
 				BackWPup_Option::update( $value['job_id'], 'activetype', $default_values['activetype'] );
-				$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $value['job_id'], 'cron' ) );
-				wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $value['job_id'] ] );
-				wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $value['job_id'] ] );
+				$cron_next     = BackWPup_Cron::cron_next( BackWPup_Option::get( $value['job_id'], 'cron' ) );
+				$job_id_as_int = (int) $value['job_id'];
+				wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $job_id_as_int ] );
+				wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $job_id_as_int ] );
 			} else {
 				BackWPup_Option::update( $value['job_id'], 'activetype', '' );
 			}

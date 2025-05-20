@@ -5,12 +5,12 @@ namespace WPMedia\BackWPup\Admin;
 
 use BackWPup;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice52;
+use WPMedia\BackWPup\Admin\Notices\Notices\Notice522;
 use WPMedia\BackWPup\Admin\Notices\Subscriber as NoticeSubscriber;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice513;
 use Inpsyde\BackWPup\Notice\NoticeView;
 use WPMedia\BackWPup\Admin\Settings\Subscriber as SettingSubscriber;
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WPMedia\BackWPup\Adapters\BackWPupAdapter;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -21,7 +21,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		'notice_subscriber',
 		'notice_view_factory',
-		'backwpup_adapter',
 		SettingSubscriber::class,
 	];
 
@@ -53,9 +52,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 
-		// Register BackWPupAdapter.
-		$this->getContainer()->add( 'backwpup_adapter', BackWPupAdapter::class );
-
 		// Register Notice513 with its NoticeView and BackWPupAdapter dependencies.
 		$notice513_view = new NoticeView( Notice513::ID );
 		$this->getContainer()->addShared( 'notice_513', Notice513::class )
@@ -72,11 +68,21 @@ class ServiceProvider extends AbstractServiceProvider {
 					'backwpup_adapter',
 				]
 			);
-
+		// Notice for 5.2.2.
+		$this->getContainer()->add( 'notice_522_view', NoticeView::class )
+			->addArgument( Notice522::ID );
+		$this->getContainer()->addShared( 'notice_522', Notice522::class )
+			->addArguments(
+				[
+					'notice_522_view',
+					'backwpup_adapter',
+				]
+			);
 		// Register the Subscriber with an array of notice instances.
 		$this->getContainer()->addShared( 'notice_subscriber', NoticeSubscriber::class )
 			->addArgument(
 				[
+					$this->getContainer()->get( 'notice_522' ),
 					$this->getContainer()->get( 'notice_52' ),
 					$this->getContainer()->get( 'notice_513' ),
 				]
