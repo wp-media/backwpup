@@ -1,4 +1,9 @@
 == Changelog ==
+= 5.2.3 =
+Release date: May 22, 2025
+
+* Bugfix: Fixed fatal error when both Free and Pro versions are activated together.
+
 = 5.2.2 =
 Release date: May 20, 2025
 
