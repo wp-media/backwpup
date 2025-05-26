@@ -13,6 +13,10 @@ use BackWPup\Utils\BackWPupHelpers;
  * @var string  $class          Optional. Additional CSS classname . Default: null.
  * @var array   $data           Optional. Additional data attributes. Default: [].
  * @var string  $identifier     Optional. The identifier for the component. Default: null.
+ * @var string  $tooltip        Optional. The tooltip content. Default: "".
+ * @var string  $tooltip_pos    Optional. The tooltip position. Default: "center".
+ * @var string  $tooltip_icon   Optional. The tooltip icon name. Must match a file in components/icons/. Default: "info".
+ * @var string  $tooltip_size   Optional. The tooltip icon size. Values: "small", "medium". Default: "small".
  * @var string  $button_type    Optional. The button type. Values: "submit", "button", "reset". Default: "submit".
  */
 
@@ -25,7 +29,7 @@ $id = isset($identifier) ? " id='".esc_attr($identifier)."'" : null;
 
 # Type
 $button_base = "flex items-center";
-$types = ["primary", "secondary", "link", "settings"];
+$types = ["primary", "secondary", "link", "settings", "icon"];
 $type = isset($type) && in_array($type, $types) ? $type : "link";
 switch ($type) {
   case "primary":
@@ -36,6 +40,9 @@ switch ($type) {
     break;
   case "settings":
     $button_style = "justify-between rounded bg-grey-100 text-xl font-medium text-primary-darker hover:bg-grey-200";
+    break;
+  case 'icon':
+    $button_style = "justify-between rounded bg-white-100 text-xl font-medium text-primary-darker hover:bg-grey-200";
     break;
   default:
     $button_style = "justify-center leading-5 text-primary-darker border-b border-primary-darker font-title disabled:opacity-40 enabled:hover:text-primary-lighter enabled:hover:border-primary-lighter";
@@ -68,6 +75,11 @@ $display = isset($display) ? " data-content=\"$display\"" : "";
 # CSS
 $class = $class ?? "";
 
+# Tooltip position
+$tooltip_pos = $tooltip_pos ?? "top";
+$tooltip_icon = $tooltip_icon ?? "info";
+$tooltip_size = $tooltip_size ?? "small";
+
 # Data
 $data_attrs = "";
 if (isset($data)) {
@@ -85,4 +97,5 @@ $button_type = $button_type ?? 'submit';
     <span><?php echo $label ?? ""; ?></span>
   <?php endif; ?>
   <?= $icon_position === "after" && BackWPupHelpers::component("icon", $icon) ? BackWPupHelpers::component("icon", $icon) : ''; ?>
+  <?php isset($tooltip) && BackWPupHelpers::component("tooltip", ["content" => $tooltip, "position" => $tooltip_pos, "icon_name" => $tooltip_icon, 'icon_size' => $tooltip_size]); ?>
 </button>

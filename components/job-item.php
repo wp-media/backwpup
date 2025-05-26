@@ -83,8 +83,25 @@ if ( $is_file ) {
 		?>
 	</div>
 
-	<div class="mt-2 mb-4 flex-auto">
-		<p class="text-base label-scheduled"><?= $next_backup_label; ?></p>
+	<div class="mt-2 mb-4 flex flex-row items-center gap-2">
+		<span class="text-base label-scheduled">
+			<?= $next_backup_label; ?>
+		</span>
+		<?php 
+			BackWPupHelpers::component("form/button", [
+				"type" => "icon",
+				"font_size" => "small",
+				"label" => '',
+				"trigger" => "load-and-open-modal",
+				"class" => "backwpup-btn-backup-job disabled:opacity-40 always-enabled",
+				"display" => "backup-job",
+				"data"    => ['job-id' => $job_id, 'block-type' => 'children', 'block-name' => 'modal/backup-job'],
+				"tooltip" => __("Backup now", 'backwpup'),
+				"tooltip_position" => "top",
+				"tooltip_size" => "medium",
+				"tooltip_icon" => "download",
+			]);
+		?>
 	</div>
 
 	<p class="flex items-center gap-4">

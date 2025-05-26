@@ -1,6 +1,8 @@
 jQuery(document).ready(function ($) {
+
   $("#runningjob").show('slow');
   $('.js-backwpup-open-modal').prop('disabled', true);
+  $(document).trigger('start-backupjob');
   backwpup_show_progress = function() {
     var save_log_pos = 0;
     $.ajax({
@@ -45,6 +47,7 @@ jQuery(document).ready(function ($) {
             $('#info_container_2').hide();
             $('#first-congratulations').show();
           }
+          $(document).trigger('backup-complete');
         } else {
           if (rundata.restart_url !== '') {
             backwpup_trigger_cron(rundata.restart_url);
@@ -96,5 +99,4 @@ jQuery(document).ready(function ($) {
     }
     return false;
   });
-
 });

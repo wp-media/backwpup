@@ -1,4 +1,31 @@
 == Changelog ==
+= 5.2.3 =
+Release date: May 22, 2025
+
+* Bugfix: Fixed fatal error when both Free and Pro versions are activated together.
+
+= 5.2.2 =
+Release date: May 20, 2025
+
+* New feature: Deselect Website Server as a default storage destination
+* Enhancement: Reduce overall plugin size
+* Bugfix: Google Drive does not remain selected
+* Bugfix: Plugin interface becomes non-functional & not clickable
+* Bugfix: Error during backup for Dropbox storage
+* Bugfix: Dropbox authentication error
+
+= 5.2.1 =
+Release date: April 30, 2025
+
+* Bugfix: Fixed fatal error caused by cal_days_in_month() function on 5.2 for unsupported servers.
+
+= 5.2.0 =
+Release date: April 29, 2025
+
+* New feature: Add “Backup Now” button to each scheduled job
+* Enhancement: Monthly frequency to allow users to select the exact day
+* Enhancement: Show the Toast messages on specific actions instead of every actions
+
 = 5.1.3 =
 Release date: April 23,2025
 

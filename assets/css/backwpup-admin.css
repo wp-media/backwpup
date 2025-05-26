@@ -1250,6 +1250,10 @@ select {
           user-select: all;
 }
 
+.flex-row {
+  flex-direction: row;
+}
+
 .flex-col {
   flex-direction: column;
 }
@@ -1510,6 +1514,10 @@ select {
 
 .p-20 {
   padding: 5rem;
+}
+
+.p-3 {
+  padding: 0.75rem;
 }
 
 .p-4 {

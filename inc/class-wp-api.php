@@ -968,8 +968,8 @@ class BackWPup_WP_API {
 			}
 		}
 
-		$jobid = $params['job_id'] ?? get_site_option( 'backwpup_backup_files_job_id', false );
-		if ( $create_backup_now_job ) {
+		$jobid = $params['job_id'] ?? false;
+		if ( $create_backup_now_job && false === $jobid ) {
 			$jobid = $this->get_job_id_when_no_available_job();
 		}
 

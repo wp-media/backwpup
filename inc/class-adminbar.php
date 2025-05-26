@@ -14,13 +14,15 @@ class BackWPup_Adminbar
         $this->admin = $admin;
     }
 
-    public function init()
-    {
-        BackWPup::load_text_domain();
-
-        add_action('admin_bar_menu', [$this, 'adminbar'], 100);
-        add_action('wp_head', [$this->admin, 'admin_css']);
-    }
+	/**
+	 * Initialize the class.
+	 *
+	 * @return void
+	 */
+	public function init() {
+		add_action( 'admin_bar_menu', [ $this, 'adminbar' ], 100 );
+		add_action( 'wp_head', [ $this->admin, 'admin_css' ] );
+	}
 
     /**
      * @global $wp_admin_bar WP_Admin_Bar

@@ -1,3 +1,4 @@
+let requestWPApi;
 jQuery(document).ready(function ($) {
   const $document = $(document); // Cache document lookup
 
@@ -20,7 +21,7 @@ jQuery(document).ready(function ($) {
    * @param function callback
    * @param string method (default: 'GET')
    */
-  function requestWPApi(route, data, callback, method = 'GET', error_callback = null) {
+  requestWPApi = function requestWPApi(route, data, callback, method = 'GET', error_callback = null) {
 	  const $trigger = $(document.activeElement);
 	  const $overlayTemplate = $('#backwpup-loading-overlay-template').children().first();
 	  const $jobCard = $trigger.closest('.backwpup-job-card');
@@ -65,6 +66,18 @@ jQuery(document).ready(function ($) {
   // Function to enable or disable all the backup button.
   function enableBackupButton(enable = true) {
     $(".backwpup-button-backup").prop("disabled", !enable);
+    $('.backwpup-btn-backup-job').prop('disabled', !enable);
+    let toolTipVisibility = enable ? 'visible' : 'hidden';
+    jQuery(".backwpup-btn-backup-job span span.tooltip").css("visibility", toolTipVisibility);
+  }
+
+  function enableDeleteJob(enable = true) {
+    console.log("enableDeleteJob", enable);
+    if ( enable ) {
+      $(".js-backwpup-delete-job").removeClass("disabled");
+    } else {
+      $(".js-backwpup-delete-job").addClass("disabled");
+    }
   }
   // Function to get URL parameter.
   function getUrlParameter(name, defaultValue="") {
@@ -393,6 +406,10 @@ jQuery(document).ready(function ($) {
 				// Fill infos
 				target.html(response);
 				openSidebar(panel);
+
+        // Trigger custom event for disabling elements with legacy frequency start days set.
+        $document.trigger('disableLegacyFrequency', { panel: panel });
+       
 				$(".js-backwpup-close-sidebar").on('click', closeSidebar);
 				$(".js-backwpup-toggle-storage").on('click', load_and_open_storage);
 			},
@@ -404,6 +421,51 @@ jQuery(document).ready(function ($) {
 		);
 	}
 	$document.on('click', '.js-backwpup-load-and-open-sidebar', load_and_open_sidebar);
+
+  // Array of legacy frequency start days.
+  const legacy_start_days = [
+    'first-monday',
+    'first-sunday',
+  ];
+
+  let save_settings_button, start_time, day_of_month;
+
+  $document.on('disableLegacyFrequency', function (_, data) {
+    save_settings_button = $('#save-job-settings');
+    start_time = save_settings_button.closest("article").find("input[name='start_time']");
+    day_of_month = $('#backwpup_day_of_month');
+
+    // Bail out if panel is not frequency.
+    if ('frequency' !== data.panel) {
+      return;
+    }
+
+    // Disable start time and save button when start day is legacy.
+    if (legacy_start_days.includes(day_of_month.val())) {
+      start_time.prop('disabled', true);
+      save_settings_button.prop('disabled', true);
+    }
+  });
+
+  // Array of target select elements to watch on change.
+  const frequency_field_targets = [
+    '#backwpup_day_of_month',
+    '#backwpup_frequency',
+  ];
+  
+  frequency_field_targets.forEach(selector => {
+    $('#backwpup-sidebar').on('change', selector, function() {
+      if (legacy_start_days.includes(day_of_month.val()) && 'monthly' === $('#backwpup_frequency').val()) {
+        start_time.prop('disabled', true);
+        save_settings_button.prop('disabled', true);
+
+        return;
+      }
+      
+      start_time.prop('disabled', false);
+      save_settings_button.prop('disabled', false);
+    });
+  });
 
 	/**
 	 * Load and open modals using the WordPress API.
@@ -930,7 +992,7 @@ jQuery(document).ready(function ($) {
   $("#backwup-next-scheduled-backups").on('change', '.js-backwpup-toggle-job', function () {
     const checked = $(this).prop("checked");
     let job_id = $(this).data("job-id");
-    $(`#backwpup-${job_id}-options`).find("button").prop("disabled", !checked);
+    $(`#backwpup-${job_id}-options`).find("button:not(.always-enabled)").prop("disabled", !checked);
     requestWPApi(
         backwpupApi.updatejob,
         {
@@ -938,7 +1000,7 @@ jQuery(document).ready(function ($) {
           'activ': checked
         },
         function (response) {
-          $(`#backwpup-${job_id}-options div p.label-scheduled`).html(response.message);
+          $(`#backwpup-${job_id}-options div span.label-scheduled`).html(response.message);
         },
         "POST"
     );
@@ -956,13 +1018,17 @@ jQuery(document).ready(function ($) {
         function (response) {
           if (response.success) {
             $(`#backwpup-${job_id}-options`).remove();
+            if ($('.backwpup-job-card').length === 0) {
+              $("#backwpup-backup-now").prop("disabled", true);
+            }
+
             loadBackupsListingAndPagination(getUrlParameter('page_num', 1));
-	          backwpupDisplaySettingsToast('success', response.message);
-          } else {
-	          backwpupDisplaySettingsToast('error', response.message);
           }
         },
-        "DELETE"
+        "DELETE",
+        function(request) {
+          backwpupDisplaySettingsToast( 'danger', request.responseJSON.message );
+        }
     );
   });
 
@@ -1064,7 +1130,7 @@ jQuery(document).ready(function ($) {
       job_id = null;
     }
     if ($("#s3bucketerror").html()!="") {
-      refresh_storage_destinations('S3', false);
+      refresh_storage_destinations(job_id, 'S3', false);
       alert('Error in Bucket Configurations');
       return;
     }
@@ -1118,7 +1184,7 @@ jQuery(document).ready(function ($) {
       job_id = null;
     }
     if ($("#glacierbucketerror").html()!="") {
-      refresh_storage_destinations('GLACIER', false);
+      refresh_storage_destinations(job_id, 'GLACIER', false);
       alert('Error in Bucket Configurations');
       return;
     }
@@ -1236,13 +1302,13 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
-        refresh_storage_destinations('GDRIVE', response.connected);
+        refresh_storage_destinations(job_id, 'GDRIVE', response.connected);
         backwpupDisplaySettingsToast('success', response.message);
         closeSidebar();
       },
       "POST",
       function (request, error) {
-        refresh_storage_destinations('GDRIVE', false);
+        refresh_storage_destinations(job_id, 'GDRIVE', false);
         const errorMessage = request.responseJSON && request.responseJSON.error
             ? request.responseJSON.error
             : (request.responseText || 'Unknown error occurred');
@@ -1541,6 +1607,7 @@ jQuery(document).ready(function ($) {
     openSidebar(content);
   });
 
+
   $('.js-backwpup-refresh-authentification').on('click', function() {
     let trigger = $(this).data('trigger');
     if (typeof window[trigger] === 'function') {
@@ -1779,14 +1846,14 @@ jQuery(document).ready(function ($) {
       title: $('#backwpup-job-title').val(),
       job_id: job_id,
     };
-  
+
     requestWPApi(
       backwpupApi.updatejobtitle,
       data,
       function(response) {
         if (response.code === 'success') {
           $('#backwpup-'+job_id+'-options').find('.backwpup-job-title').html(response.data.title);
-  
+
           backwpupDisplaySettingsToast( 'success', response.message );
           closeSidebar();
         }
@@ -1937,26 +2004,44 @@ jQuery(document).ready(function ($) {
   }
 
   // Function to start the backup process using requestWPApi
-  function startBackupProcess( data = {} ) {
-    if ( ! isGenerateJsIncluded() ) { 
-      requestWPApi(backwpupApi.startbackup, data, function(response) {
-        if (response.status === 200) {
-          setTimeout(function() {
-              window.location.reload();
-          }, 500);
-        } else if ( 301 === response.status ) {
-          window.location = response.url;
-        }
-      }, 'POST');
-    } else {
-      // Add a listener for the custom 'hide' event
-      $('.progress-bar').on('hide', function () {
-        console.log('.progress-bar is being hidden');
-      });
-    }
-  }
-  
-  // Call the functions when the "First Backup" page is loaded
+	function startBackupProcess( data = {} ) {
+		$document.trigger('start-backupjob');
+		requestWPApi(
+			backwpupApi.startbackup,
+		    data,
+		    function(response) {
+		      if (response.status === 200) {
+		        setTimeout(function() {
+		            window.location.reload();
+		        }, 500);
+		      } else if ( 301 === response.status ) {
+		        window.location = response.url;
+		      }
+		    },
+			'POST',
+			function(request, error) {
+		        $document.trigger('backup-ended');
+		    }
+		);
+	}
+
+  $(document).on('start-backupjob', function () {
+    enableBackupButton(false);
+    enableDeleteJob(false);
+  });
+
+  // Re-enable buttons when a backup completes
+  $(document).on('backup-complete', function () {
+    enableBackupButton(true);
+    enableDeleteJob(true);
+    loadBackupsListingAndPagination(getUrlParameter('page_num', 1));
+  });
+
+
+
+
+
+	// Call the functions when the "First Backup" page is loaded
   if (window.location.search.includes('backwpupfirstbackup')) {
     if ( ! isGenerateJsIncluded() ) {
       let first_job_id = $('#backwpup_first_backup_job_id').val();
@@ -2150,7 +2235,7 @@ jQuery(document).ready(function ($) {
         function (response) {
           if (response.status === 200) {
             // Update the next scheduled backup time in the UI
-            $(`#backwpup-${data.job_id}-options div p.label-scheduled`).html(response.next_backup);
+            $(`#backwpup-${data.job_id}-options div span.label-scheduled`).html(response.next_backup);
 
             // Sync onboarding frequency dropdown (if present)
             const onboardingPane = $("#backwpup-onboarding-panes");
@@ -2174,6 +2259,10 @@ jQuery(document).ready(function ($) {
   // Run the job settings function on initial page load
   runWhenJobFrequencySettingsLoaded();
 
+  $document.on('click', '.backwpup-start-backup-job', function () {
+	  startBackupProcess({ 'job_id': $(this).data('job_id') });
+	  closeModal();
+  });
 });
 
 // Add a custom 'hide' event when the .hide() function is called
@@ -2184,3 +2273,39 @@ jQuery(document).ready(function ($) {
       return originalHide.apply(this, arguments);
   };
 })(jQuery);
+
+/**
+ * Unselects a storage option by sending a request to the WordPress API.
+ *
+ */
+document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("click", function (event) {
+        const group_buttons = document.querySelectorAll('.js-backwpup-unselect-storage'),
+            storage_button = event.target.closest('.js-backwpup-unselect-storage');
+
+        if (group_buttons.length > 1 && storage_button ) {
+            const data = {
+                'job_id': storage_button.dataset.jobId,
+                'name': storage_button.dataset.storage,
+            };
+
+            const storage_checkbox = storage_button.querySelector('input[type="checkbox"]'),
+                  is_currently_checked = storage_checkbox.checked
+
+            if (typeof requestWPApi === 'function') {
+                requestWPApi(backwpupApi.storages, data, function(response) {
+                        if ( response.status === 200 ) {
+                            storage_button.classList.toggle('js-backwpup-unselect-storage')
+                            storage_checkbox.checked = !is_currently_checked
+                        }
+                    },
+                    'POST',
+                    function (request, error) {
+                        console.log(request);
+                        console.log(error);
+                        alert(request.responseJSON.error);
+                    });
+            }
+        }
+    })
+});

@@ -149,21 +149,20 @@ class BackWPup_Job
      */
     private $signal = 0;
 
-    public static function start_http($starttype, $jobid = 0)
-    {
-        //load text domain
-        $log_level = get_site_option('backwpup_cfg_loglevel', 'normal_translated');
-        if (strstr((string) $log_level, 'translated')) {
-            BackWPup::load_text_domain();
-        } else {
-            add_filter('override_load_textdomain', '__return_true');
-            $GLOBALS['l10n'] = [];
-        }
-        if ($starttype !== 'restart') {
-            //check job id exists
-            if ((int) $jobid !== (int) BackWPup_Option::get($jobid, 'jobid')) {
-                return false;
-            }
+	/**
+	 * Start the job.
+	 *
+	 * @param string $starttype Start type.
+	 * @param int    $jobid Job ID.
+	 *
+	 * @return void
+	 */
+	public static function start_http( $starttype, $jobid = 0 ) {
+		if ( 'restart' !== $starttype ) {
+			// check job id exists.
+			if ( (int) BackWPup_Option::get( $jobid, 'jobid' ) !== (int) $jobid ) {
+				return;
+			}
 
             //check folders
             $log_folder = get_site_option('backwpup_cfg_logfolder');
@@ -173,9 +172,9 @@ class BackWPup_Job
                 BackWPup_Admin::message($folder_message_log, true);
                 BackWPup_Admin::message($folder_message_temp, true);
 
-                return false;
-            }
-        }
+				return;
+			}
+		}
 
         // redirect
         if ($starttype === 'runnowalt') {
@@ -2387,15 +2386,6 @@ class BackWPup_Job
             define('DOING_CRON', true);
         }
 
-        //load text domain
-        $log_level = get_site_option('backwpup_cfg_loglevel', 'normal_translated');
-        if (strstr((string) $log_level, 'translated')) {
-            BackWPup::load_text_domain();
-        } else {
-            add_filter('override_load_textdomain', '__return_true');
-            $GLOBALS['l10n'] = [];
-        }
-
         $jobid = absint($jobid);
 
         //Logs Folder
@@ -2905,6 +2895,7 @@ class BackWPup_Job
 	 * @return int|false The Unix timestamp of the next scheduled event, or false if an error occurred.
 	 */
 	public static function schedule_job( $job_id ) {
+		wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $job_id ] );
 		$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $job_id, 'cron' ) );
 		wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $job_id ] );
 		return $cron_next;

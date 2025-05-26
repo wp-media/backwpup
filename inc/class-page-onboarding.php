@@ -61,13 +61,17 @@ class BackWPup_Page_Onboarding {
 			BackWPup_Option::update( $value['job_id'], 'archivename', BackWPup_Job::sanitize_file_name( BackWPup_Option::normalize_archive_name( $default_values['archivename'], $value['job_id'], false ) ) );
 
 			// Cron part.
-			BackWPup_Option::update( $value['job_id'], 'cron', BackWPup_Cron::get_basic_cron_expression( $value['frequency'] ) );
+			// Update cron expression with default only if default activation values are still set.
+			if ( '0 0 1 * *' === BackWPup_Option::get( $value['job_id'], 'cron' ) && 'monthly' === BackWPup_Option::get( $value['job_id'], 'frequency' ) ) {
+				BackWPup_Option::update( $value['job_id'], 'cron', BackWPup_Cron::get_basic_cron_expression( $value['frequency'] ) );
+			}
 
 			if ( $value['activ'] ) {
 				BackWPup_Option::update( $value['job_id'], 'activetype', $default_values['activetype'] );
-				$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $value['job_id'], 'cron' ) );
-				wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $value['job_id'] ] );
-				wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $value['job_id'] ] );
+				$cron_next     = BackWPup_Cron::cron_next( BackWPup_Option::get( $value['job_id'], 'cron' ) );
+				$job_id_as_int = (int) $value['job_id'];
+				wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $job_id_as_int ] );
+				wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $job_id_as_int ] );
 			} else {
 				BackWPup_Option::update( $value['job_id'], 'activetype', '' );
 			}

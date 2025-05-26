@@ -51,6 +51,7 @@ BackWPupHelpers::component("form/select", [
     "weekly" => __("Weekly", 'backwpup'),
     "monthly" => __("Monthly", 'backwpup'),
   ],
+  "identifier" => 'backwpup_frequency',
 ]);
 ?>
 
@@ -80,15 +81,30 @@ BackWPupHelpers::component("form/select", [
 
 <div class="js-backwpup-frequency-job-show-if-monthly">
   <?php
+  $days_in_month = cal_days_in_month( CAL_GREGORIAN, current_time( 'n' ), current_time( 'Y' ) );
+  $days_in_month = range( 1,   $days_in_month );
+  $days_in_month = array_map( function ( $day ) {
+    return  sprintf('%02d', $day);
+  }, $days_in_month );
+  $days_in_month = array_combine( $days_in_month, $days_in_month );
+
+  // Backward Compatibility with old monthly frequency.
+  $old_monthly_frequency = [
+    "first-monday" => __("1st Monday of the month", 'backwpup'),
+    "first-sunday" => __("1st Sunday of the month", 'backwpup'),
+  ];
+
+  if ( in_array( $current['monthly_start_day'], array_keys( $old_monthly_frequency ), true ) ) {
+    $days_in_month[ $current['monthly_start_day'] ] = $old_monthly_frequency[ $current['monthly_start_day'] ];
+  }
+
   BackWPupHelpers::component("form/select", [
     "name" => "day_of_month",
     "label" => __("Start day", 'backwpup'),
     "value" => $current['monthly_start_day'],
-    "options" => [
-      "first-day" => __("1st day of the month", 'backwpup'),
-      "first-monday" => __("1st Monday of the month", 'backwpup'),
-      "first-sunday" => __("1st Sunday of the month", 'backwpup'),
-    ],
+    "options" => $days_in_month,
+    "hide_subset_current_options" => array_keys( $old_monthly_frequency ),
+    "identifier" => 'backwpup_day_of_month',
   ]);
   ?>
 </div>

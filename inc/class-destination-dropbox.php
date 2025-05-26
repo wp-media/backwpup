@@ -239,18 +239,44 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 			$_POST['dropboxdir'] = '';
 		}
 
-				// Delete auth.
+		// Delete auth.
 		if ( ! empty( $_POST['delete_auth'] ) ) {
-			// We only need to revoke the token once.
-				$dropbox = $this->get_dropbox( $jobids[0] );
-				$dropbox->authTokenRevoke();
+			// We need to check if the token is used on another job.
+			$temp_jobs_ids                  = BackWPup_Option::get_job_ids();
+			$job_token                      = BackWPup_Option::get( $jobids[0], 'dropboxtoken' );
+			$is_job_token_used_on_other_job = false;
+			foreach ( $temp_jobs_ids as $id ) {
+				// We need to cast the id to int, because the job id is sometimes a string.
+				if ( (int) $id !== (int) $jobids[0] && BackWPup_Option::get( $id, 'dropboxtoken' ) === $job_token ) {
+					$is_job_token_used_on_other_job = true;
+					break;
+				}
+			}
+			// If the token is used on another job, we don't need to revoke it.
+			if ( ! $is_job_token_used_on_other_job ) {
+				// Try to revoke the token on dropbox.
+				try {
+					$dropbox = $this->get_dropbox( $jobids[0] );
+					$dropbox->authTokenRevoke();
+				} catch ( Exception $e ) {
+					BackWPup_Admin::message(
+						sprintf(
+							// translators: %s is the error message.
+							__( 'Failed to revoke Dropbox token: %s', 'backwpup' ),
+							esc_html( $e->getMessage() )
+						),
+						true
+					);
+                }
+			}
+			// We delete the token from the jobs and seet the root to sandbox.
 			foreach ( $jobids as $id ) {
-					BackWPup_Option::update( $id, 'dropboxtoken', [] );
-					BackWPup_Option::update( $id, 'dropboxroot', 'sandbox' );
+				BackWPup_Option::update( $id, 'dropboxtoken', [] );
+				BackWPup_Option::update( $id, 'dropboxroot', 'sandbox' );
 			}
 		}
 
-				// Save settings.
+		// Save settings.
 		foreach ( $jobids as $id ) {
 			BackWPup_Option::update( $id, 'dropboxsyncnodelete', ! empty( $_POST['dropboxsyncnodelete'] ) );
 			BackWPup_Option::update(
@@ -291,7 +317,15 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 
 		$key = 'backwpup_' . strtolower( $jobdest );
 
-		wpm_apply_filters_typed( 'null', 'backwpup_update_backup_history', $key, $files );
+		/**
+		 * Fires after jobs is updated.
+		 *
+		 * @since 5.2.1
+		 *
+		 * @param string $key The newly backup reference key.
+		 * @param array $files An array of files data.
+		 */
+		do_action( 'backwpup_update_backup_history', $key, $files );
 	}
 
     /**
@@ -386,7 +420,15 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 		}
 		$key = 'backwpup_' . $jobid . '_dropbox';
 
-		wpm_apply_filters_typed( 'null', 'backwpup_update_backup_history', $key, $files );
+		/**
+		 * Fires after jobs is updated.
+		 *
+		 * @since 5.2.1
+		 *
+		 * @param string $key The newly backup reference key.
+		 * @param array $files An array of files data.
+		 */
+		do_action( 'backwpup_update_backup_history', $key, $files );
 	}
 
     public function job_run_archive(BackWPup_Job $job_object): bool

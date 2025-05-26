@@ -1,5 +1,9 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+// Because on the onboarding we don't have the job_id.
+if (empty($job_id)) {
+    $job_id = get_site_option( 'backwpup_backup_files_job_id', false );
+}
 $token = BackWPup_Option::get($job_id, 'sugarrefreshtoken', false);
 ?>
 <?php if (!$token) : ?>
