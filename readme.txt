@@ -17,15 +17,16 @@ Create a complete WordPress backup easily. Schedule automatic backups, store sec
 [BackWPup](https://backwpup.com/) is the most comprehensive backup & restore plugin for WordPress.
  
 
-= 🎉 BackWPup 5.2 – New Features & Improvements =
+= 🎉 BackWPup 5.3 – New Features & Improvements =
 
-BackWPup 5.2 is now available! This update builds on the improvements introduced in [5.1](https://backwpup.com/backwpup-5-1/), combining our redesigned interface with the return of even more features you’ve requested.
-**Read our [blog post](https://backwpup.com/backwpup-5-2/)** for all the details.
+BackWPup 5.3 is now available! Building on the enhancements introduced in version 5.2, this update brings back many of the most requested features from earlier releases. We've listened to your feedback to deliver a renewed and improved backup experience. 
 
-🚀 What’s New in BackWPup 5.2?
+🚀 What’s New in BackWPup?
 
-✅ Monthly Frequency:  Choose the exact day for your monthly backups.
-✅ “Backup Now” button: Instantly run any scheduled backup job.
+✅ File & Database Single Backup: Easily back up your files and database together in a single job—no need to run separate backups.  
+✅ Deselect Website Server:  Pick your preferred backup destination and easily deselect the default website server, giving you more control over your storage. 
+✅ Reduced plugin size – We’ve made the plugin smaller, so it uses less space and runs more smoothly on your server.  
+✅ Improved Cloud Storages – We’ve fixed issues with Dropbox and SugarSync, making your cloud backups more reliable than ever.
  
 If you happen to experience any issues with the new version, contact us directly [here](https://backwpup.com/contact) so we can investigate your case. We are committed to resolving any concerns quickly and are actively working to ensure a smooth experience for everyone.
 
