@@ -90,4 +90,21 @@ class OptionAdapter {
 	public function delete( int $jobid, string $option ) {
 		return \BackWPup_Option::delete( $jobid, $option );
 	}
+
+	/**
+	 * Normalizes the archive name.
+	 *
+	 * The archive name should include the hash to identify this site, and the job id to identify this job.
+	 *
+	 * This allows backup files belonging to this job to be tracked.
+	 *
+	 * @param string $archive_name The archive name.
+	 * @param int    $jobid        The job id.
+	 * @param bool   $substitute_hash Substitute hash.
+	 *
+	 * @return string The normalized archive name
+	 */
+	public function normalize_archive_name( string $archive_name, int $jobid, $substitute_hash = true ) {
+		return \BackWPup_Option::normalize_archive_name( $archive_name, $jobid, $substitute_hash );
+	}
 }

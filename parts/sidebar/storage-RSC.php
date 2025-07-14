@@ -1,5 +1,6 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+use WPMedia\BackWPup\Plugin\Plugin;
 $job_id = $job_id ?? null;
 $regions = [
   "DFW" => __('Dallas (DFW)', 'backwpup'),
@@ -17,13 +18,11 @@ BackWPupHelpers::component("closable-heading", [
   'type' => 'sidebar'
 ]);
 if (null === $job_id || empty($job_id) ) {
+	$job_id = get_site_option(Plugin::FIRST_JOB_ID, false);
 	$is_in_form    = true;
-	$rscdir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
-    $rscmaxbackups = 3;
-} else {
-  $rscdir = esc_attr(BackWPup_Option::get($job_id, 'rscdir',trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')))));
-  $rscmaxbackups = esc_attr(BackWPup_Option::get($job_id, 'rscmaxbackups', 3));
 }
+$rscdir = esc_attr(BackWPup_Option::get($job_id, 'rscdir',trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')))));
+$rscmaxbackups = esc_attr(BackWPup_Option::get($job_id, 'rscmaxbackups', 3));
 ?>
 
 <?php if (isset($is_in_form) && ( false === $is_in_form || 'false' === $is_in_form )) : ?>

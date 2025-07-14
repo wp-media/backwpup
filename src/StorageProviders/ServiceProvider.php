@@ -15,6 +15,8 @@ use WPMedia\BackWPup\StorageProviders\GDrive\GDriveProvider;
 use WPMedia\BackWPup\StorageProviders\OneDrive\OneDriveProvider;
 use WPMedia\BackWPup\StorageProviders\SugarSync\SugarSyncProvider;
 use WPMedia\BackWPup\StorageProviders\CloudProviderManager;
+use WPMedia\BackWPup\StorageProviders\GDrive\Subscriber as GDriveSubscriber;
+use WPMedia\BackWPup\StorageProviders\OneDrive\Subscriber as OneDriveSubscriber;
 
 /**
  * Service provider for Storage providers
@@ -36,6 +38,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'onedrive_provider',
 		'sugarsync_provider',
 		'cloud_provider_manager',
+		'storage_providers_gdrive_subscriber',
+		OneDriveSubscriber::class,
 	];
 
 	/**
@@ -47,6 +51,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		StorageProviderSubscriber::class,
 		'storage_providers_frontend_api_subscriber',
 		'storage_providers_api_subscriber',
+		'storage_providers_gdrive_subscriber',
+		OneDriveSubscriber::class,
 	];
 
 	/**
@@ -66,7 +72,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->addShared( Subscriber::class );
 
 		$this->getContainer()->addShared( 'dropbox_provider', DropboxProvider::class )
 			->addArguments(
@@ -80,7 +85,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					$this->getContainer()->get( 'option_adapter' ),
 					$this->getContainer()->get( 'backwpup_helpers_adapter' ),
-					$this->getContainer()->get( 'encryption_adapter' ),
+					$this->getContainer()->get( 'backwpup_adapter' ),
 				]
 				);
 		$this->getContainer()->addShared( 'onedrive_provider', OneDriveProvider::class )
@@ -137,6 +142,15 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'storage_providers_api_rest' ),
 				]
 				);
+		$this->getContainer()->addShared( 'storage_providers_gdrive_subscriber', GDriveSubscriber::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'option_adapter' ),
+					$this->getContainer()->get( 'backwpup_adapter' ),
+				]
+				);
+		$this->getContainer()->addShared( StorageProviderSubscriber::class, StorageProviderSubscriber::class );
+		$this->getContainer()->addShared( OneDriveSubscriber::class, OneDriveSubscriber::class );
 	}
 
 	/**

@@ -1,4 +1,5 @@
 <?php
+use WPMedia\BackWPup\Plugin\Plugin;
 /**
  * Class for upgrade / deactivation / uninstall.
  */
@@ -29,35 +30,9 @@ class BackWPup_Install
 		// Migration for the new UI.
 		BackWPup_Migrate::migrate();
 
-		$backwpup_backup_files_job_id    = get_site_option( 'backwpup_backup_files_job_id', false );
-		$backwpup_backup_database_job_id = get_site_option( 'backwpup_backup_database_job_id', false );
-
-		$jobids = BackWPup_Option::get_job_ids();
-		if ( false === $backwpup_backup_files_job_id && false === $backwpup_backup_database_job_id ) {
-			$backwpup_backup_files_job_id = BackWPup_Option::next_job_id();
-			update_site_option( 'backwpup_backup_files_job_id', $backwpup_backup_files_job_id );
-			update_site_option( 'backwpup_backup_database_job_id', $backwpup_backup_files_job_id + 1 );
-			$default_jobs = BackWPup_Option::get_default_jobs();
-			$jobs         = BackWPup_Job::get_jobs();
-			$jobs         = array_merge( $default_jobs, $jobs );
-			update_site_option( 'backwpup_jobs', $jobs );
-		} elseif ( ! in_array( (int) $backwpup_backup_files_job_id, $jobids, true ) && ! in_array( (int) $backwpup_backup_database_job_id, $jobids, true ) ) {
-			$default_jobs = BackWPup_Option::get_default_jobs();
-			$jobs         = BackWPup_Job::get_jobs();
-			$jobs         = array_merge( $default_jobs, $jobs );
-			update_site_option( 'backwpup_jobs', $jobs );
-		}
-
-		// V5 jobs migration.
-		if ( $backwpup_backup_files_job_id === $backwpup_backup_database_job_id ) {
-			$backwpup_backup_database_job_id = $backwpup_backup_files_job_id + 1;
-			// We should migrate the combined job to two separate jobs.
-			BackWPup_Option::update( $backwpup_backup_files_job_id, 'type', BackWPup_JobTypes::$type_job_files );
-			BackWPup_Option::update( $backwpup_backup_database_job_id, 'type', BackWPup_JobTypes::$type_job_database );
-			update_site_option( 'backwpup_backup_database_job_id', $backwpup_backup_database_job_id );
-			BackWPup_Job::enable_job( $backwpup_backup_database_job_id );
-			$filecron = BackWPup_Option::get( $backwpup_backup_files_job_id, 'cron' );
-			BackWPup_Option::update( $backwpup_backup_database_job_id, 'cron', $filecron );
+		// Define the default archive format if not set.
+		if ( get_site_option( 'backwpup_archiveformat', false ) === false ) {
+			add_site_option( 'backwpup_archiveformat', '.tar' );
 		}
 
         //changes for 3.2
@@ -168,6 +143,23 @@ class BackWPup_Install
 
         //add default options
         BackWPup_Option::default_site_options();
+
+		// Manage the first backup job and remove old default jobs ids.
+		$first_job_id        = get_site_option( Plugin::FILES_JOB_ID, false );
+		$second_job_id       = get_site_option( Plugin::DATABASE_JOB_ID, false );
+		$first_backup_job_id = get_site_option( Plugin::FIRST_JOB_ID, false );
+
+		if ( ! $first_backup_job_id ) {
+			$first_backup_job_id = BackWPup_Option::create_default_jobs( 'First backup', BackWPup_JobTypes::$type_job_both );
+			BackWPup_Option::update( $first_backup_job_id, 'tempjob', true );
+			update_site_option( Plugin::FIRST_JOB_ID, $first_backup_job_id );
+		}
+		if ( $first_job_id ) {
+			delete_site_option( Plugin::FILES_JOB_ID );
+		}
+		if ( $second_job_id ) {
+			delete_site_option( Plugin::DATABASE_JOB_ID );
+		}
 
 		// update version.
 		update_site_option( 'backwpup_previous_version', get_site_option( 'backwpup_version', BackWPup::get_plugin_data( 'Version' ) ) );

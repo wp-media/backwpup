@@ -806,6 +806,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
             if (count($backupfilelist) > $job_object->job['s3maxbackups']) {
                 ksort($backupfilelist);
                 $numdeltefiles = 0;
+	            $deleted_files = [];
 
                 while ($file = array_shift($backupfilelist)) {
                     if (count($backupfilelist) < $job_object->job['s3maxbackups']) {
@@ -820,6 +821,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
                     if ($s3->deleteObject($args)) {
                         foreach ($files as $key => $filedata) {
                             if ($filedata['file'] == $job_object->job['s3dir'] . $file) {
+	                            $deleted_files[] = $filedata['filename'];
                                 unset($files[$key]);
                             }
                         }
@@ -846,6 +848,8 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
                         $numdeltefiles
                     ));
                 }
+
+	            parent::remove_file_history_from_database( $deleted_files, 'S3' );
             }
         }
         set_site_transient('backwpup_' . $jobid . '_s3', $files, YEAR_IN_SECONDS);

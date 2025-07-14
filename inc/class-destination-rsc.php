@@ -351,25 +351,29 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations
             if (!empty($job_object->job['rscmaxbackups']) && $job_object->job['rscmaxbackups'] > 0) { //Delete old backups
                 if (count($backupfilelist) > $job_object->job['rscmaxbackups']) {
                     ksort($backupfilelist);
-                    $numdeltefiles = 0;
+					$numdeltefiles = 0;
+					$deleted_files = [];
 
                     while ($file = array_shift($backupfilelist)) {
                         if (count($backupfilelist) < $job_object->job['rscmaxbackups']) {
                             break;
                         }
 
-                        foreach ($files as $key => $filedata) {
-                            if ($filedata['file'] == $file->getName()) {
-                                unset($files[$key]);
-                            }
+						foreach ( $files as $key => $filedata ) {
+							if ( $filedata['file'] === $file->getName() ) {
+								$deleted_files[] = $filedata['filename'];
+								unset( $files[ $key ] );
+							}
                         }
                         $file->delete();
                         ++$numdeltefiles;
                     }
                     if ($numdeltefiles > 0) {
                         $job_object->log(sprintf(_n('One file deleted on Rackspace cloud container.', '%d files deleted on Rackspace cloud container.', $numdeltefiles, 'backwpup'), $numdeltefiles), E_USER_NOTICE);
-                    }
-                }
+					}
+
+					parent::remove_file_history_from_database( $deleted_files, 'RSC' );
+				}
             }
             set_site_transient('backwpup_' . $job_object->job['jobid'] . '_rsc', $files, YEAR_IN_SECONDS);
         } catch (Exception $e) {

@@ -10,6 +10,23 @@ global $wpdb;
 
 // only uninstall if no BackWPup Version active.
 if ( ! class_exists( \BackWPup::class ) ) {
+	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Base.php';
+	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Column.php';
+	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Schema.php';
+	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Query.php';
+	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Row.php';
+	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Table.php';
+	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Queries/Meta.php';
+	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Queries/Date.php';
+	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Queries/Compare.php';
+	require_once __DIR__ . '/src/Common/Database/TableInterface.php';
+	require_once __DIR__ . '/src/Common/Database/Tables/AbstractTable.php';
+	require_once __DIR__ . '/src/Backup/Database/Tables/Backup.php';
+
+	$tables = [
+		new \WPMedia\BackWPup\Backup\Database\Tables\Backup(),
+	];
+	backwpup_remove_tables( $tables );
 
     //delete plugin options
     if (is_multisite()) {
@@ -30,8 +47,9 @@ if ( ! class_exists( \BackWPup::class ) ) {
 
         foreach ($sites as $site) {
             switch_to_blog($site);
-            backwpup_remove_roles();
-        }
+			backwpup_remove_roles();
+			backwpup_remove_tables( $tables );
+		}
 
         switch_to_blog($current_site);
     } else {
@@ -63,4 +81,20 @@ function backwpup_remove_roles()
         $role->remove_cap('backwpup_settings');
         $role->remove_cap('backwpup_restore');
     }
+}
+
+/**
+ * Remove available database tables.
+ *
+ * @param array $tables Database tables objects.
+ *
+ * @return void
+ */
+function backwpup_remove_tables( $tables ) {
+	foreach ( $tables as $table ) {
+		if ( ! $table->exists() ) {
+			continue;
+		}
+		$table->uninstall();
+	}
 }

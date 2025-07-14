@@ -274,10 +274,6 @@ class Rest implements RestInterface {
 
 		$bwp_job_values = array_merge( $default_values, $default_destination_folder_values, $backup_now_job_values );
 
-		if ( 0 < count( $this->option_adapter->get_job_ids() ) ) {
-			$bwp_job_values['archiveformat'] = $this->option_adapter->get( $this->option_adapter->get_job_ids()[0], 'archiveformat' );
-		}
-
 		foreach ( $bwp_job_values as $key => $value ) {
 			$this->option_adapter->update( $next_job_id, $key, $value );
 		}
@@ -316,6 +312,7 @@ class Rest implements RestInterface {
 				$response['message'] = __( 'Bulk action processed.', 'backwpup' );
 				break;
 		}
+
 		return rest_ensure_response( $response );
 	}
 
@@ -352,5 +349,13 @@ class Rest implements RestInterface {
 
 		// Perform the deletion.
 		$dest_class->file_delete( $jobdest, $file );
+
+		/**
+		 * Fires after deleting backups.
+		 *
+		 * @param array $params['backupfiles'] Backup file deleted.
+		 * @param string $dest Destination.
+		 */
+		do_action( 'backwpup_after_delete_backups', $params['backupfiles'], $dest );
 	}
 }

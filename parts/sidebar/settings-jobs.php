@@ -4,8 +4,7 @@ BackWPupHelpers::component("closable-heading", [
   'title' => __("Jobs Settings", 'backwpup'),
   'type' => 'sidebar'
 ]);
-$jobid = get_site_option( 'backwpup_backup_files_job_id', false );
-$archiveformat = BackWPup_Option::get($jobid, 'archiveformat', '.tar');
+$archiveformat = get_site_option('backwpup_archiveformat', '.tar');;
 ?>
 
 <p>

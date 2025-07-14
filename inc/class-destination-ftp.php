@@ -362,17 +362,19 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations
         if ($delete && $job_object && !empty($job_object->job['ftpmaxbackups']) && $job_object->job['ftpmaxbackups'] > 0) { //Delete old backups
             if (count($backupfilelist) > $job_object->job['ftpmaxbackups']) {
                 ksort($backupfilelist);
-                $numdeltefiles = 0;
+				$numdeltefiles = 0;
+				$deleted_files = [];
 
                 while ($file = array_shift($backupfilelist)) {
                     if (count($backupfilelist) < $job_object->job['ftpmaxbackups']) {
                         break;
-                    }
-                    if (ftp_delete($ftp_conn_id, $file)) { //delete files on ftp
-                        foreach ($files as $key => $filedata) {
-                            if ($filedata['file'] == trailingslashit($job_object->job['ftpdir']) . $file) {
-                                unset($files[$key]);
-                            }
+					}
+					if ( ftp_delete( $ftp_conn_id, $file ) ) { // delete files on ftp.
+						$deleted_files[] = $file->getPathname();
+						foreach ( $files as $key => $filedata ) {
+							if ( trailingslashit( $job_object->job['ftpdir'] ) . $file === $filedata['file'] ) {
+								unset( $files[ $key ] );
+							}
                         }
                         ++$numdeltefiles;
                     } else {
@@ -399,7 +401,9 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations
                         E_USER_NOTICE
                     );
                 }
-            }
+
+				parent::remove_file_history_from_database( $deleted_files, 'FTP' );
+			}
         }
         set_site_transient('backwpup_' . $jobid . '_ftp', $files, YEAR_IN_SECONDS);
     }

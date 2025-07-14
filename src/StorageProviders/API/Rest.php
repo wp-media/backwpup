@@ -11,6 +11,7 @@ use Exception;
 use WPMedia\BackWPup\Adapters\BackWPupHelpersAdapter;
 use WPMedia\BackWPup\Adapters\BackWPupAdapter;
 use WPMedia\BackWPup\Adapters\OptionAdapter;
+use WPMedia\BackWPup\Plugin\Plugin;
 
 class Rest implements RestInterface {
 
@@ -151,15 +152,19 @@ class Rest implements RestInterface {
 		$status = 200;
 		$html   = '';
 		try {
-			$files_job_id = get_site_option( 'backwpup_backup_files_job_id', false );
-			if ( false === $files_job_id ) {
-				throw new Exception( __( 'No backup jobs set.', 'backwpup' ) );
+			if ( ! isset( $params['job_id'] ) || '' === $params['job_id'] ) {
+				$job_id = get_site_option( Plugin::FIRST_JOB_ID, false );
+				if ( false === $job_id ) {
+					throw new Exception( __( 'No backup jobs set.', 'backwpup' ) );
+				}
+			} else {
+				$job_id = $params['job_id'];
 			}
 			if ( ! isset( $params['cloud_name'] ) ) {
 				throw new Exception( __( 'No cloud name set.', 'backwpup' ) );
 			}
 			$provider = $this->cloud_provider_manager->get_provider( $params['cloud_name'] );
-			$html     = $provider->is_authenticated( $files_job_id );
+			$html     = $provider->is_authenticated( $job_id );
 		} catch ( Exception $e ) {
 			$html   = $this->helpers_adapter->component(
 				'alerts/info',
@@ -268,17 +273,13 @@ class Rest implements RestInterface {
 			if ( null === $cloud ) {
 				throw new Exception( __( 'Cloud not found', 'backwpup' ) );
 			}
-			// If no job ID is set, it's from onboarding so we use the files job and DB job.
+			// If no job ID is set, it's from onboarding so we use only the first back job id.
 			if ( ! isset( $params['job_id'] ) || '' === $params['job_id'] ) {
-				$files_job_id        = get_site_option( 'backwpup_backup_files_job_id', false );
-				$database_job_id     = get_site_option( 'backwpup_backup_database_job_id', false );
-				$first_backup_job_id = get_site_option( 'backwpup_first_backup_job_id', false );
-				if ( false === $files_job_id || false === $database_job_id || false === $first_backup_job_id ) {
+				$first_backup_job_id = get_site_option( Plugin::FIRST_JOB_ID, false );
+				if ( false === $first_backup_job_id ) {
 					throw new Exception( __( 'Files job not found', 'backwpup' ) );
 				}
 				$jobs = [
-					$files_job_id,
-					$database_job_id,
 					$first_backup_job_id,
 				];
 			} else {
@@ -300,6 +301,7 @@ class Rest implements RestInterface {
 			$return['error'] = $e->getMessage();
 			$status          = 422;
 		}
+
 		return rest_ensure_response( new \WP_REST_Response( $return, $status ) );
 	}
 

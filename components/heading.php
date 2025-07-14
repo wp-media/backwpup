@@ -26,7 +26,7 @@ $font = $font ?? ($level < 3 ? "medium" :  "small");
 $font_sizes = [
   "xs" => "text-lg",
   "small" => "text-xl",
-  "regular" => "text-[1.21rem]",
+  "regular" => "text-[1.1rem]",
   "medium" => "text-2xl",
   "large" => "text-3xl",
 ];

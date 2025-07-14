@@ -1,5 +1,6 @@
 <?php
 
+use WPMedia\BackWPup\Plugin\Plugin;
 /**
  * Class for BackWPup cron methods.
  */
@@ -519,12 +520,13 @@ class BackWPup_Cron
 	 * 4. Disables the current scheduled cron for the database backup job.
 	 * 5. If the database backup job is active and uses 'wpcron', it reschedules the job.
 	 *
+	 * @deprecated 5.3 Not used anymore
 	 * @return int|false The timestamp of the next cron job, or false if the job is not active.
 	 */
 	public static function re_evaluate_cron_jobs() {
 		// Retrieve the default job IDs for verification and scheduling.
-		$default_file_job_id     = get_site_option( 'backwpup_backup_files_job_id', false );
-		$default_database_job_id = $default_file_job_id + 1;
+		$default_file_job_id     = get_site_option( Plugin::FILES_JOB_ID, false );
+		$default_database_job_id = get_site_option( Plugin::DATABASE_JOB_ID, false );
 
 		// Disable the default file backup cron.
 		wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $default_file_job_id ] );

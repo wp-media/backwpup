@@ -1,5 +1,6 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+use WPMedia\BackWPup\Plugin\Plugin;
 $job_id = $job_id ?? null;
 # Form Values
 
@@ -7,13 +8,11 @@ $dest_object = BackWPup::get_destination( "FOLDER" );
 $values = $dest_object->option_defaults();
 // if null we are on onboarding so we use the default values.
 if (null === $job_id || empty($job_id) ) {
-  $backupdir     = $values['backupdir'];
-  $maxbackups    = $values['maxbackups'];
-  $is_in_form    = true;
-} else {
-  $backupdir = BackWPup_Option::get($job_id, 'backupdir', $values['backupdir']);
-  $maxbackups = BackWPup_Option::get($job_id, 'maxbackups', $values['maxbackups']);
+	$job_id = get_site_option(Plugin::FIRST_JOB_ID, false);
+	$is_in_form    = true;
 }
+$backupdir = BackWPup_Option::get($job_id, 'backupdir', $values['backupdir']);
+$maxbackups = BackWPup_Option::get($job_id, 'maxbackups', $values['maxbackups']);
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Folder Settings", 'backwpup'),
   'type' => 'sidebar'

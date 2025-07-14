@@ -33,7 +33,10 @@
 
     <div class="p-8 bg-grey-100 rounded-lg flex flex-col flex-auto" id="backwpup-onboarding-panes">
       <article class="flex flex-col flex-auto" data-step="1">
-        <?php BackWPupHelpers::component("onboarding/step1", ['first_job_id' => $first_job_id, 'second_job_id' => $second_job_id]); ?>
+        <?php BackWPupHelpers::component("onboarding/step1", [
+			'first_job_id' => $first_backup_job_id,
+			'second_job_id' => $first_backup_job_id
+		]); ?>
       </article>
 
       <article class="hidden flex-col flex-auto" data-step="2">
@@ -49,14 +52,22 @@
     </div>
   </div>
 </div>
-
+<div id="backwpup-loading-overlay-template" class="hidden">
+    <div class="backwpup-loading-overlay">
+        <?php
+            BackWPupHelpers::component( 'icon', [
+                'name' => 'loading',
+                'size' => 'xl',
+            ]);
+        ?>
+    </div>
+</div>
 <?php
-BackWPupHelpers::component("containers/sidebar", [
-    "is_in_form" => true,
-	"first_job_id"  => $first_job_id,
-	"second_job_id" => $second_job_id,
-
+BackWPupHelpers::component( 'containers/sidebar', [
+    'is_in_form'    => true,
+	'first_job_id'  => $first_backup_job_id,
+	'second_job_id' => $first_backup_job_id,
 ]);
-BackWPupHelpers::component("containers/modal");
-BackWPupHelpers::component("containers/form-end");
+BackWPupHelpers::component( 'containers/modal' );
+BackWPupHelpers::component( 'containers/form-end' );
 ?>

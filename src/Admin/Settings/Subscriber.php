@@ -20,6 +20,7 @@ class Subscriber implements SubscriberInterface {
 				[ 'process_link_action' ],
 				[ 'process_wpcron_action' ],
 			],
+			'backwpup_save_archiveformat'         => [ 'save_archive_format' ],
 		];
 	}
 
@@ -109,5 +110,17 @@ class Subscriber implements SubscriberInterface {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Save archive format.
+	 *
+	 * @param string $archive_format The archive format to save.
+	 *
+	 * @return void
+	 */
+	public function save_archive_format( $archive_format ): void {
+		// Save archive format general value.
+		update_site_option( 'backwpup_archiveformat', $archive_format );
 	}
 }

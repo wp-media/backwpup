@@ -1,4 +1,5 @@
 <?php
+use WPMedia\BackWPup\Plugin\Plugin;
 
 class BackWPup_Migrate {
 	/**
@@ -28,11 +29,52 @@ class BackWPup_Migrate {
 			} elseif ( ! empty( $jobs ) ) { // Jobs are existing but not set with cron.
 				self::set_jobs_legacy( $jobs, true );
 			}
-			$jobs = get_option( 'backwpup_jobs', [] );
+
 			self::convert_jobs( $jobs_by_type );
 		}
 
 		self::migration_50_51( $old_version, $new_version );
+
+		( new self() )->migrate_storage_token( $old_version, $new_version, get_option( 'backwpup_jobs', [] ) );
+	}
+
+	/**
+	 * Migrate onedrive storage token
+	 *
+	 * @param string $old_version The previous version of the plugin.
+	 * @param string $new_version The current version of the plugin.
+	 * @param array  $jobs        Array of available jobs.
+	 *
+	 *  @return void
+	 */
+	public function migrate_storage_token( string $old_version, string $new_version, array $jobs ): void {
+		$first_job_id = get_site_option( Plugin::FIRST_JOB_ID, false );
+		if ( version_compare( $old_version, '5.2.3', '<=' )
+			&& version_compare( $new_version, '5.3.0', '>=' )
+		) {
+			$backwpup_onedrive_state = get_site_transient( 'backwpup_onedrive_state' );
+			if ( ! $backwpup_onedrive_state ) {
+				// If the first job doesn't exist, create it.
+				if ( ! $first_job_id ) {
+					$first_job_id = BackWPup_Option::create_default_jobs( 'First backup', BackWPup_JobTypes::$type_job_both );
+					BackWPup_Option::update( $first_job_id, 'tempjob', true );
+					update_site_option( Plugin::FIRST_JOB_ID, $first_job_id );
+				}
+				foreach ( $jobs as $job ) {
+					if (
+						array_key_exists( 'onedrive_client_state', $job )
+						&& ! is_null( $job['onedrive_client_state'] )
+						&& $job['jobid'] !== $first_job_id
+					) {
+						BackWPup_Option::update(
+							$first_job_id,
+							'onedrive_client_state',
+							$job['onedrive_client_state']
+						);
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -67,7 +109,7 @@ class BackWPup_Migrate {
 	 */
 	public static function should_migrate( $old_version, $new_version ) {
 		$version_migrate = version_compare( $old_version, '5.0.0', '<' ) && version_compare( $new_version, '5.0.0', '>=' );
-		$options_exists  = get_site_option( 'backwpup_backup_files_job_id', false ) && get_site_option( 'backwpup_backup_database_job_id', false );
+		$options_exists  = get_site_option( Plugin::FILES_JOB_ID, false ) && get_site_option( Plugin::DATABASE_JOB_ID, false );
 		return $version_migrate && ! $options_exists;
 	}
 
@@ -155,10 +197,10 @@ class BackWPup_Migrate {
 	 */
 	private static function convert_jobs( array $jobs_by_type ) {
 		update_site_option( 'backwpup_onboarding', false );
-		$default_id_job_files    = get_site_option( 'backwpup_backup_files_job_id', BackWPup_Option::next_job_id() );
+		$default_id_job_files    = get_site_option( Plugin::FILES_JOB_ID, BackWPup_Option::next_job_id() );
 		$default_id_job_database = (int) $default_id_job_files + 1;
-		update_site_option( 'backwpup_backup_files_job_id', $default_id_job_files );
-		update_site_option( 'backwpup_backup_database_job_id', $default_id_job_database );
+		update_site_option( Plugin::FILES_JOB_ID, $default_id_job_files );
+		update_site_option( Plugin::DATABASE_JOB_ID, $default_id_job_database );
 
 		$created_job = [
 			'files'    => false,
@@ -181,7 +223,7 @@ class BackWPup_Migrate {
 			BackWPup_Option::update( $default_id_job_files, 'type', BackWPup_JobTypes::$type_job_files );
 			$created_job['files'] = true;
 			BackWPup_Option::update( $default_id_job_files, 'legacy', false );
-			update_site_option( 'backwpup_backup_files_job_id', $default_id_job_files );
+			update_site_option( Plugin::FILES_JOB_ID, $default_id_job_files );
 		}
 
 		// ✅ Handle DATABASE job.
@@ -195,7 +237,7 @@ class BackWPup_Migrate {
 			BackWPup_Option::update( $default_id_job_database, 'type', BackWPup_JobTypes::$type_job_database );
 			$created_job['database'] = true;
 			BackWPup_Option::update( $default_id_job_database, 'legacy', false );
-			update_site_option( 'backwpup_backup_database_job_id', $default_id_job_database );
+			update_site_option( Plugin::DATABASE_JOB_ID, $default_id_job_database );
 		}
 
 		// ✅ Ensure both jobs exist by duplicating if needed.
@@ -206,7 +248,7 @@ class BackWPup_Migrate {
 			BackWPup_Option::update( $default_id_job_files, 'type', BackWPup_JobTypes::$type_job_files );
 			BackWPup_Job::disable_job( $default_id_job_files );
 			BackWPup_Option::update_job_id( $default_id_job_database, $default_id_job_files + 1 );
-			update_site_option( 'backwpup_backup_files_job_id', $default_id_job_files );
+			update_site_option( Plugin::FILES_JOB_ID, $default_id_job_files );
 			BackWPup_Option::update( $default_id_job_files, 'legacy', false );
 			$created_job['files'] = true;
 		}
@@ -217,7 +259,7 @@ class BackWPup_Migrate {
 			BackWPup_Job::rename_job( $default_id_job_database, BackWPup_JobTypes::$name_job_database );
 			BackWPup_Option::update( $default_id_job_database, 'type', BackWPup_JobTypes::$type_job_database );
 			BackWPup_Job::disable_job( $default_id_job_database );
-			update_site_option( 'backwpup_backup_database_job_id', $default_id_job_database );
+			update_site_option( Plugin::DATABASE_JOB_ID, $default_id_job_database );
 			BackWPup_Option::update( $default_id_job_database, 'legacy', false );
 			$created_job['database'] = true;
 		}
@@ -258,10 +300,10 @@ class BackWPup_Migrate {
 	 */
 	public static function migration_50_51( $old_version, $new_version ) {
 		if ( version_compare( $old_version, '5.1.0', '<' ) && version_compare( $new_version, '5.1.0', '>=' ) ) {
-			$default_50_file_job = get_site_option( 'backwpup_backup_files_job_id', 1 );
+			$default_50_file_job = get_site_option( Plugin::FILES_JOB_ID, 1 );
 			$default_50_db_job   = $default_50_file_job + 1;
-			if ( get_site_option( 'backwpup_backup_database_job_id', 2 ) === $default_50_file_job ) {
-				update_site_option( 'backwpup_backup_database_job_id', $default_50_db_job );
+			if ( get_site_option( Plugin::DATABASE_JOB_ID, 2 ) === $default_50_file_job ) {
+				update_site_option( Plugin::DATABASE_JOB_ID, $default_50_db_job );
 			}
 
 			$file_job = BackWPup_Option::get_job( $default_50_file_job );

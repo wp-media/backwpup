@@ -1,4 +1,19 @@
 == Changelog ==
+= 5.3.0 =
+Release date: July 14, 2025
+
+* New feature: Backup File & Database together in a single job
+* Bugfix: New jobs ignore the global archive format and default to .Tar
+* Bugfix: SugarSync error message after authenticating
+* Bugfix: Google Drive not working correctly during onboarding
+* Enhancement: Show only successful backup entries in the backup history
+* Enhancement: Long job title spills outside the pop-up
+* Enhancement: Configure backup data settings without selecting it
+* Enhancement: Fixed Schedule backup title is too long issue
+* Enhancement: Added tooltips for schedule backup icons
+* Enhancement: Add new backup UI ux issues
+* Enhancement: Improvement of cloud storage code
+
 = 5.2.3 =
 Release date: May 22, 2025
 

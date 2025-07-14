@@ -5,6 +5,7 @@ use WP_REST_Request;
 use WPMedia\BackWPup\StorageProviders\ProviderInterface;
 use WPMedia\BackWPup\Adapters\OptionAdapter;
 use WPMedia\BackWPup\Adapters\BackWPupHelpersAdapter;
+use WPMedia\BackWPup\Plugin\Plugin;
 use Exception;
 
 class SugarSyncProvider implements ProviderInterface {
@@ -140,17 +141,15 @@ class SugarSyncProvider implements ProviderInterface {
 	 * Return jobs id
 	 *
 	 * @return array
-	 * @throws Exception Throw exception when $files_job_id is missing.
+	 * @throws Exception Throw exception when $first_job_id is missing.
 	 */
 	private function get_job_ids(): array {
-		$files_job_id    = get_site_option( 'backwpup_backup_files_job_id', false );
-		$database_job_id = get_site_option( 'backwpup_backup_database_job_id', false );
-		$first_job_id    = get_site_option( 'backwpup_first_backup_job_id', false );
+		$first_job_id = get_site_option( Plugin::FIRST_JOB_ID, false );
 
-		if ( false === $files_job_id ) {
+		if ( false === $first_job_id ) {
 			throw new Exception( __( 'No backup jobs set.', 'backwpup' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 		}
 
-		return [ $files_job_id, $database_job_id, $first_job_id ];
+		return [ $first_job_id ];
 	}
 }

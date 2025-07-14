@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: BackWPup – WordPress Backup & Restore Plugin
  * Author URI: https://backwpup.com
- * Version: 5.2.3
+ * Version: 5.3.0
  * Requires at least: 4.9
  * Requires PHP: 7.4
  * Text Domain: backwpup
@@ -22,7 +22,6 @@ if ( defined( 'BACKWPUP_PLUGIN_LOADED' ) || class_exists( \BackWPup::class, fals
 }
 
 define( 'BACKWPUP_PLUGIN_FILE', __FILE__ );
-
 define( 'BACKWPUP_PLUGIN_LOADED', true );
 
 // Include the Composer autoload file.

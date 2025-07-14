@@ -38,7 +38,7 @@ $parent_classes = $parent_classes ?? '';
 # CSS
 $tooltip_classes = BackWPupHelpers::clsx(
     $tooltip_class,
-    'absolute invisible inline-block group-hover:opacity-100 group-hover:visible bg-gray-800 text-white text-xs rounded z-10 transform',
+    'absolute invisible inline-block group-hover:opacity-100 group-hover:visible bg-gray-800 text-white text-xs rounded z-50 transform',
     'p-2 text-xs font-normal opacity-0 font-body bg-gray-900 rounded-lg shadow-md tooltip dark:bg-gray-700 min-w-[130px] text-center max-w-[200px]'
 );
 
@@ -51,13 +51,19 @@ $parent_classes = BackWPupHelpers::clsx(
   "group relative pointer-events-auto",
   $parent_classes
 );
+$tooltip_surrounding_element = $tooltip_surrounding_element ?? 'span';
+
 ?>
-<span class="<?php echo $parent_classes; ?>">
+<<?php echo $tooltip_surrounding_element; ?> class="<?php echo $parent_classes; ?>">
+  <?php if (isset($tooltip_component)) : ?>
+    <?php BackWPupHelpers::component($tooltip_component['component'], $tooltip_component['args']); ?>
+  <?php elseif (isset($icon_name)) : ?>
   <span class="text-primary-darker cursor-pointer">
     <?php BackWPupHelpers::component("icon", ["name" => $icon_name, "size" => $icon_size, "data" => $data, "class" => $classes]); ?>
   </span>
-  <span data-tooltip-position="<?php echo esc_attr( $position); ?>" class="<?php echo esc_attr( $tooltip_classes ); ?>">
+  <?php endif; ?>
+  <span data-tooltip-position="<?php echo esc_attr( $position ); ?>" class="<?php echo esc_attr( $tooltip_classes ); ?>">
     <?php echo $content ?? ''; ?>
       <span class="<?php echo esc_attr( $tooltip_arrow_classes ); ?>"></span>
   </span>
-</span>
+</<?php echo $tooltip_surrounding_element; ?>>

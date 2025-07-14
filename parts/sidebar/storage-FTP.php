@@ -1,5 +1,6 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+use WPMedia\BackWPup\Plugin\Plugin;
 $job_id = $job_id ?? null;
 BackWPupHelpers::component("closable-heading", [
   'title' => __("FTP Settings", 'backwpup'),
@@ -7,13 +8,11 @@ BackWPupHelpers::component("closable-heading", [
 ]);
 
 if (null === $job_id || empty($job_id) ) {
-	$ftpdir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
-	$ftpmaxbackups = 15;
+	$job_id = get_site_option(Plugin::FIRST_JOB_ID, false);
 	$is_in_form    = true;
-} else {
-  $ftpdir = BackWPup_Option::get($job_id, 'ftpdir', trailingslashit(sanitize_title_with_dashes(get_bloginfo('name'))));
-  $ftpmaxbackups = esc_attr(BackWPup_Option::get($job_id, 'ftpmaxbackups', 15));
 }
+$ftpdir = BackWPup_Option::get($job_id, 'ftpdir', trailingslashit(sanitize_title_with_dashes(get_bloginfo('name'))));
+$ftpmaxbackups = esc_attr(BackWPup_Option::get($job_id, 'ftpmaxbackups', 15));
 ?>
 
 <?php if (isset($is_in_form) && ( false === $is_in_form || 'false' === $is_in_form )) : ?>

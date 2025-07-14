@@ -2,12 +2,14 @@
 
 namespace WPMedia\BackWPup\Jobs\API;
 
+use WP_REST_Server;
 use WPMedia\BackWPup\Adapters\JobAdapter;
 use WPMedia\BackWPup\Adapters\OptionAdapter;
 use WPMedia\BackWPup\Adapters\CronAdapter;
 use WPMedia\BackWPup\Adapters\JobTypesAdapter;
 use WPMedia\BackWPup\Adapters\BackWPupAdapter;
 use WPMedia\BackWPup\Adapters\EncryptionAdapter;
+use WPMedia\BackWPup\Plugin\Plugin;
 use Exception;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -103,7 +105,7 @@ class Rest implements RestInterface {
 					'job_id'               => [
 						'required'          => true,
 						'validate_callback' => function ( $param ) {
-							return is_numeric( $param ) && $param > 0;
+							return ( ( is_numeric( $param ) && $param > 0 ) || '' === $param );
 						},
 						'sanitize_callback' => 'absint',
 					],
@@ -164,7 +166,7 @@ class Rest implements RestInterface {
 					'type' => [
 						'required'          => true,
 						'validate_callback' => function ( $param ) {
-							return in_array( $param, [ 'files', 'database' ], true );
+							return in_array( $param, [ 'files', 'database', 'mixed' ], true );
 						},
 						'sanitize_callback' => 'sanitize_text_field',
 					],
@@ -325,6 +327,35 @@ class Rest implements RestInterface {
 				'permission_callback' => [ $this, 'has_permission' ],
 			]
 		);
+
+		/**
+		 * Edit job endpoint.
+		*/
+		register_rest_route(
+			self::ROUTE_V2_NAMESPACE,
+			'/backups/(?P<id>\d+)/type',
+			[
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'update_backup_type' ],
+				'permission_callback' => [ $this, 'has_permission' ],
+				'args'                => [
+					'id'   => [
+						'required'          => true,
+						'validate_callback' => function ( $param ) {
+							return is_numeric( $param ) && $param > 0;
+						},
+						'sanitize_callback' => 'absint',
+					],
+					'type' => [
+						'required'          => true,
+						'validate_callback' => function ( $param ) {
+							return in_array( $param, [ 'files', 'database', 'mixed' ], true );
+						},
+						'sanitize_callback' => 'sanitize_text_field',
+					],
+				],
+			]
+		);
 	}
 
 	/**
@@ -360,28 +391,56 @@ class Rest implements RestInterface {
 				}
 
 				$return['message'] = $next_backup_label;
-			} elseif ( isset( $params['job_id'] ) && isset( $params['storage_destinations'] ) ) {
-				$jobs = [ $params['job_id'] ];
+			} else {
+				if ( isset( $params['job_id'] ) && 0 !== $params['job_id'] && isset( $params['storage_destinations'] ) ) {
+					$jobs = [ $params['job_id'] ];
+				} else {
+					$first_job_id = get_site_option( Plugin::FIRST_JOB_ID, false );
+					if ( false === $first_job_id ) {
+						throw new Exception( __( 'First job not found', 'backwpup' ) );
+					}
+					$jobs = [ $first_job_id ];
+				}
 				foreach ( $jobs as $a_job ) {
 					$this->option_adapter->update( $a_job, 'destinations', $params['storage_destinations'] );
-				}
-				$return['message'] = __( 'Backup updated.', 'backwpup' );
-			} else {
-				$files_job_id = get_site_option( 'backwpup_backup_files_job_id', false );
-				if ( false === $files_job_id ) {
-					throw new Exception( __( 'Files job not found', 'backwpup' ) );
-				}
-				$jobs = [ $files_job_id, $files_job_id + 1 ];
-				foreach ( $jobs as $a_job ) {
-					if ( isset( $params['storage_destinations'] ) ) {
-						$this->option_adapter->update( $a_job, 'destinations', $params['storage_destinations'] );
-					}
 				}
 				$return['message'] = __( 'Backup updated.', 'backwpup' );
 			}
 		} catch ( Exception $e ) {
 			$status          = 500;
 			$return['error'] = $e->getMessage();
+		}
+
+		return rest_ensure_response( $return );
+	}
+
+	/**
+	 * Update backup
+	 *
+	 * @param WP_REST_Request $request Request parameters.
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function update_backup_type( WP_REST_Request $request ): WP_REST_Response {
+		$params = $request->get_params();
+		$return = [
+			'status' => 200,
+		];
+
+		try {
+			$job_id = $params['id'];
+
+			$job_data = [
+				'type' => $this->job_types_adapter->job_type_map( $params['type'] ),
+				'name' => $this->job_types_adapter->job_name_map( $params['type'] ),
+			];
+
+			foreach ( $job_data as $key => $value ) {
+				$this->option_adapter->update( $job_id, $key, $value );
+			}
+		} catch ( Exception $e ) {
+			$return['status'] = 500;
+			$return['error']  = $e->getMessage();
 		}
 
 		return rest_ensure_response( $return );
@@ -440,6 +499,10 @@ class Rest implements RestInterface {
 			case 'database':
 				$job['type'] = $this->job_types_adapter->get_type_job_database();
 				$job['name'] = $this->job_types_adapter->get_name_job_database();
+				break;
+			case 'mixed':
+				$job['type'] = $this->job_types_adapter->get_type_job_both();
+				$job['name'] = $this->job_types_adapter->get_name_job_both();
 				break;
 		}
 
@@ -589,8 +652,7 @@ class Rest implements RestInterface {
 		 * Save excluded tables via REST API.
 		 *
 		 * This method handles the saving of excluded database tables based on the provided
-		 * parameters from the WP_REST_Request. It updates the excluded tables for both jobs
-		 * (backwpup_backup_files_job_id and backwpup_backup_files_job_id + 1).
+		 * parameters from the WP_REST_Request. It updates the excluded tables for the given job
 		 *
 		 * @param WP_REST_Request $request The REST request object containing the parameters.
 		 *

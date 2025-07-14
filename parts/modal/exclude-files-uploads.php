@@ -35,7 +35,7 @@ BackWPupHelpers::component("closable-heading", [
   <?php
   BackWPupHelpers::component("form/toggle", [
     "name" => "backupexcludethumbs",
-    "checked" => BackWPup_Option::get(get_site_option('backwpup_backup_files_job_id', false), 'backupexcludethumbs'),
+    "checked" => BackWPup_Option::get($job_id, 'backupexcludethumbs'),
     "label" => __("Exclude thumbnails from the site's uploads folder.", 'backwpup'),
   ]);
   ?>

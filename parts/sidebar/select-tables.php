@@ -15,9 +15,10 @@ if ( ! isset( $job_id ) ) {
 	return;
 }
 
-BackWPupHelpers::component("closable-heading", [
-  'title' => __("Select Tables", 'backwpup'),
-  'type' => 'sidebar'
+BackWPupHelpers::component( 'navigation-header', [
+	'title' => __( 'Select Tables', 'backwpup' ),
+	'type' => 'sidebar',
+	'navigation' => 'database'
 ]);
 
 /** @var wpdb $wpdb */

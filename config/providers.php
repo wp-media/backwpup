@@ -12,7 +12,9 @@ $providers = [
 	'WPMedia\BackWPup\Admin\ServiceProvider',
 	'WPMedia\BackWPup\Jobs\ServiceProvider',
 	'WPMedia\BackWPup\Backups\ServiceProvider',
+	'WPMedia\BackWPup\Backup\ServiceProvider',
 	'WPMedia\BackWPup\Frontend\ServiceProvider',
+	'WPMedia\BackWPup\Tracking\ServiceProvider',
 ];
 
 

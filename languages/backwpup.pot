@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-05-22 13:26+0000\n"
+"POT-Creation-Date: 2025-07-14 11:40+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -35,11 +35,11 @@ msgid "https://backwpup.com"
 msgstr ""
 
 #. translators: %1$s is the minimum PHP version, %2$s is the minimum WordPress version.
-#: backwpup.php:56
+#: backwpup.php:55
 msgid "BackWPup requires PHP version %1$s with spl extension or greater and WordPress %2$s or greater."
 msgstr ""
 
-#: components/file-line.php:34, inc/class-jobtype-file.php:154, parts/sidebar/select-files.php:36
+#: components/file-line.php:34, inc/class-jobtype-file.php:154, parts/sidebar/select-files.php:37
 msgid "Exclude from backup"
 msgstr ""
 
@@ -59,25 +59,41 @@ msgstr ""
 msgid "No backup scheduled"
 msgstr ""
 
+#: components/job-item.php:13
+msgid "Enable"
+msgstr ""
+
 #. translators: %1$s = date, %2$s = time.
 #. translators: %1$s: date, %2$s: time.
-#: components/job-item.php:18, inc/class-page-backups.php:352, inc/class-page-backwpup.php:321, inc/class-page-backwpup.php:384, inc/class-page-jobs.php:378, inc/class-page-jobs.php:422, inc/class-page-logs.php:201
+#: components/job-item.php:18, inc/class-page-backups.php:352, inc/class-page-backwpup.php:321, inc/class-page-backwpup.php:384, inc/class-page-jobs.php:377, inc/class-page-jobs.php:421, inc/class-page-logs.php:201
 msgid "%1$s at %2$s"
 msgstr ""
 
-#: components/job-item.php:99
+#: components/job-item.php:22
+msgid "Disable"
+msgstr ""
+
+#: components/job-item.php:82
+msgid "Edit title"
+msgstr ""
+
+#: components/job-item.php:96, components/table-row-backups.php:25, inc/class-page-backups.php:170, inc/class-page-backups.php:620, inc/class-page-jobs.php:183, inc/class-page-jobs.php:268, inc/class-page-logs.php:162, inc/class-page-logs.php:241
+msgid "Delete"
+msgstr ""
+
+#: components/job-item.php:144
 msgid "Backup now"
 msgstr ""
 
-#: components/job-item.php:111, components/table-backups.php:19, components/table-row-backups.php:81
+#: components/job-item.php:159, components/table-backups.php:19, components/table-row-backups.php:81
 msgid "Data"
 msgstr ""
 
-#: components/job-item.php:123, components/onboarding/step2.php:42, components/onboarding/step2.php:81, parts/sidebar/frequency.php:45
+#: components/job-item.php:179, components/onboarding/step2.php:42, components/onboarding/step2.php:81, parts/sidebar/frequency.php:47
 msgid "Frequency"
 msgstr ""
 
-#: components/job-item.php:134
+#: components/job-item.php:197
 msgid "Storage"
 msgstr ""
 
@@ -105,11 +121,11 @@ msgstr ""
 msgid "Display Logs"
 msgstr ""
 
-#: components/progress-box.php:31, inc/class-page-backwpup.php:310, inc/class-page-jobs.php:865, pages/first-congratulations.php:37
+#: components/progress-box.php:31, inc/class-page-backwpup.php:310, inc/class-page-jobs.php:858, pages/first-congratulations.php:37
 msgid "Abort"
 msgstr ""
 
-#: components/progress-box.php:45, inc/class-page-jobs.php:866, parts/sidebar/advanced-settings.php:77, parts/sidebar/storages.php:54
+#: components/progress-box.php:45, inc/class-page-jobs.php:859, parts/sidebar/advanced-settings.php:77, parts/sidebar/settings-data-type.php:56, parts/sidebar/storages.php:56
 msgid "Close"
 msgstr ""
 
@@ -125,7 +141,7 @@ msgstr ""
 msgid "Include your WordPress database in the backup"
 msgstr ""
 
-#: components/storage-item.php:60
+#: components/storage-item.php:60, components/data-settings/buttons.php:43
 msgid "Configure"
 msgstr ""
 
@@ -141,7 +157,7 @@ msgstr ""
 msgid "Created at"
 msgstr ""
 
-#: components/table-backups.php:17, components/table-row-backups.php:58, inc/class-page-editjob.php:670, inc/class-page-jobs.php:199, inc/class-page-logs.php:177, inc/Pro/class-wizard-job.php:320
+#: components/table-backups.php:17, components/table-row-backups.php:58, inc/class-page-editjob.php:670, inc/class-page-jobs.php:198, inc/class-page-logs.php:177, inc/Pro/class-wizard-job.php:320
 msgid "Type"
 msgstr ""
 
@@ -153,12 +169,8 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: components/table-row-backups.php:15, components/table-row-backups.php:126, inc/class-page-backups.php:308, inc/class-page-backups.php:630, inc/class-page-jobs.php:442, inc/class-page-jobs.php:493, inc/class-page-logs.php:243
+#: components/table-row-backups.php:15, components/table-row-backups.php:126, inc/class-page-backups.php:308, inc/class-page-backups.php:644, inc/class-page-jobs.php:441, inc/class-page-jobs.php:492, inc/class-page-logs.php:243
 msgid "Download"
-msgstr ""
-
-#: components/table-row-backups.php:25, inc/class-page-backups.php:170, inc/class-page-backups.php:606, inc/class-page-jobs.php:184, inc/class-page-jobs.php:269, inc/class-page-logs.php:162, inc/class-page-logs.php:241
-msgid "Delete"
 msgstr ""
 
 #: components/table-row-backups.php:137, inc/class-admin.php:719, inc/class-admin.php:720, inc/class-page-backups.php:325, parts/restore/start.php:34, views/restore/steps/step5_top.php:2
@@ -189,7 +201,7 @@ msgstr ""
 msgid "Backup to FTP"
 msgstr ""
 
-#: inc/BackWPup.php:249, inc/class-destination-dropbox.php:513
+#: inc/BackWPup.php:249, inc/class-destination-dropbox.php:519
 msgid "Dropbox"
 msgstr ""
 
@@ -197,7 +209,7 @@ msgstr ""
 msgid "Backup to Dropbox"
 msgstr ""
 
-#: inc/BackWPup.php:264, inc/class-destination-s3.php:42, parts/sidebar/storage-S3.php:51
+#: inc/BackWPup.php:264, inc/class-destination-s3.php:42, parts/sidebar/storage-S3.php:49
 msgid "S3 Service"
 msgstr ""
 
@@ -312,28 +324,28 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: inc/class-admin.php:812, inc/class-admin.php:819
+#: inc/class-admin.php:820, inc/class-admin.php:827
 msgid "Cheating, huh?"
 msgstr ""
 
-#: inc/class-admin.php:899
+#: inc/class-admin.php:901
 msgid "<a class=\"backwpup-get-pro\" href=\"%s\">Get BackWPup Pro now.</a>"
 msgstr ""
 
-#: inc/class-admin.php:903, inc/class-admin.php:925, inc/class-job.php:466, inc/class-jobtype-dbcheck.php:9, inc/class-jobtype-dbdump.php:9, inc/class-jobtype-file.php:10, inc/class-jobtype-wpexp.php:13, inc/class-jobtype-wpplugin.php:9, inc/class-page-about.php:366, inc/class-page-about.php:356, inc/class-page-about.php:676, inc/class-page-backwpup.php:253, inc/class-page-backwpup.php:259, inc/class-page-backwpup.php:261, inc/class-page-settings.php:63, inc/Pro/class-wizard-job.php:17, inc/Pro/class-wizard-jobimport.php:14, inc/Pro/class-wizard-systemtest.php:22
+#: inc/class-admin.php:905, inc/class-admin.php:927, inc/class-job.php:466, inc/class-jobtype-dbcheck.php:9, inc/class-jobtype-dbdump.php:9, inc/class-jobtype-file.php:10, inc/class-jobtype-wpexp.php:13, inc/class-jobtype-wpplugin.php:9, inc/class-page-about.php:366, inc/class-page-about.php:356, inc/class-page-about.php:676, inc/class-page-backwpup.php:253, inc/class-page-backwpup.php:259, inc/class-page-backwpup.php:261, inc/class-page-settings.php:63, inc/Pro/class-wizard-job.php:17, inc/Pro/class-wizard-jobimport.php:14, inc/Pro/class-wizard-systemtest.php:22
 msgid "http://backwpup.com"
 msgstr ""
 
 #. translators: %s is the version number of the BackWPup plugin.
-#: inc/class-admin.php:930
+#: inc/class-admin.php:932
 msgid "version %s"
 msgstr ""
 
-#: inc/class-admin.php:979
+#: inc/class-admin.php:981
 msgid "Add BackWPup Role"
 msgstr ""
 
-#: inc/class-admin.php:986
+#: inc/class-admin.php:988
 msgid "&mdash; No additional role for BackWPup &mdash;"
 msgstr ""
 
@@ -444,11 +456,11 @@ msgstr ""
 msgid "Cannot open source file %s."
 msgstr ""
 
-#: inc/class-cron.php:71
+#: inc/class-cron.php:72
 msgid "Aborted, because no progress for one hour!"
 msgstr ""
 
-#: inc/class-cron.php:122, inc/class-destination-folder.php:234, inc/class-jobtype-file.php:484
+#: inc/class-cron.php:123, inc/class-destination-folder.php:234, inc/class-jobtype-file.php:484
 msgid "Could not open path: %s"
 msgstr ""
 
@@ -518,20 +530,20 @@ msgstr ""
 msgid "(429) Requests are being rate limited. Please try again later."
 msgstr ""
 
-#: inc/class-destination-dropbox-downloader.php:69, inc/class-destination-ftp-downloader.php:70, inc/class-destination-s3-downloader.php:71, inc/Pro/class-destination-gdrive-downloader.php:77, inc/Pro/class-destination-onedrive-downloader.php:58
+#: inc/class-destination-dropbox-downloader.php:69, inc/class-destination-ftp-downloader.php:70, inc/class-destination-s3-downloader.php:71, inc/Pro/class-destination-gdrive-downloader.php:92, inc/Pro/class-destination-onedrive-downloader.php:58
 msgid "Could not write data to file."
 msgstr ""
 
-#: inc/class-destination-dropbox-downloader.php:101, inc/class-destination-folder-downloader.php:130, inc/class-destination-ftp-downloader.php:125, inc/class-destination-msazure-downloader.php:98, inc/class-destination-s3-downloader.php:97, inc/Pro/class-destination-gdrive-downloader.php:123, inc/Pro/class-destination-onedrive-downloader.php:94
+#: inc/class-destination-dropbox-downloader.php:101, inc/class-destination-folder-downloader.php:130, inc/class-destination-ftp-downloader.php:125, inc/class-destination-msazure-downloader.php:98, inc/class-destination-s3-downloader.php:97, inc/Pro/class-destination-gdrive-downloader.php:138, inc/Pro/class-destination-onedrive-downloader.php:94
 msgid "File could not be opened for writing."
 msgstr ""
 
 #. translators: the $1 is the error message
-#: inc/class-destination-dropbox.php:55, inc/class-destination-dropbox.php:526, inc/Pro/class-destination-dropbox.php:380
+#: inc/class-destination-dropbox.php:55, inc/class-destination-dropbox.php:532, inc/Pro/class-destination-dropbox.php:380
 msgid "Dropbox API: %s"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:71, inc/Pro/class-destination-gdrive.php:91, inc/Pro/class-destination-hidrive.php:53, inc/Pro/class-destination-onedrive.php:42, parts/sidebar/dropbox-parts/api-connexion.php:14, parts/sidebar/sugar-sync-parts/api-connexion.php:12, pro/parts/sidebar/storage-GDRIVE.php:74, pro/parts/sidebar/storage-HIDRIVE.php:45, pro/parts/sidebar/storage-ONEDRIVE.php:64
+#: inc/class-destination-dropbox.php:71, inc/Pro/class-destination-gdrive.php:143, inc/Pro/class-destination-hidrive.php:53, inc/Pro/class-destination-onedrive.php:48, parts/sidebar/dropbox-parts/api-connexion.php:14, parts/sidebar/sugar-sync-parts/api-connexion.php:11, pro/parts/sidebar/storage-GDRIVE.php:72, pro/parts/sidebar/storage-HIDRIVE.php:45, pro/parts/sidebar/storage-ONEDRIVE.php:60
 msgid "Login"
 msgstr ""
 
@@ -539,7 +551,7 @@ msgstr ""
 msgid "Authentication"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:82, inc/class-destination-sugarsync.php:40, inc/Pro/class-destination-dropbox.php:48, inc/Pro/class-destination-gdrive.php:99, inc/Pro/class-destination-gdrive.php:433, inc/Pro/class-destination-hidrive.php:61, inc/Pro/class-destination-onedrive.php:53, inc/Pro/class-destination-sugarsync.php:25, pro/parts/sidebar/gdrive-parts/authenticate.php:3, pro/parts/sidebar/onedrive-parts/authenticate.php:4
+#: inc/class-destination-dropbox.php:82, inc/class-destination-sugarsync.php:40, inc/Pro/class-destination-dropbox.php:48, inc/Pro/class-destination-gdrive.php:151, inc/Pro/class-destination-gdrive.php:450, inc/Pro/class-destination-hidrive.php:61, inc/Pro/class-destination-onedrive.php:59, inc/Pro/class-destination-sugarsync.php:25, pro/parts/sidebar/gdrive-parts/authenticate.php:8, pro/parts/sidebar/onedrive-parts/authenticate.php:6
 msgid "Authenticated!"
 msgstr ""
 
@@ -547,7 +559,7 @@ msgstr ""
 msgid "Delete Dropbox Authentication"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:77, inc/Pro/class-destination-gdrive.php:97, inc/Pro/class-destination-gdrive.php:426, inc/Pro/class-destination-hidrive.php:59, inc/Pro/class-destination-onedrive.php:48, parts/sidebar/sugar-sync-parts/root-folder.php:14, pro/parts/sidebar/gdrive-parts/authenticate.php:6, pro/parts/sidebar/onedrive-parts/authenticate.php:14
+#: inc/class-destination-dropbox.php:77, inc/Pro/class-destination-gdrive.php:149, inc/Pro/class-destination-gdrive.php:443, inc/Pro/class-destination-hidrive.php:59, inc/Pro/class-destination-onedrive.php:54, parts/sidebar/sugar-sync-parts/api-connexion.php:47, pro/parts/sidebar/gdrive-parts/authenticate.php:11, pro/parts/sidebar/onedrive-parts/authenticate.php:16
 msgid "Not authenticated!"
 msgstr ""
 
@@ -583,7 +595,7 @@ msgstr ""
 msgid "BackWPup will have full read and write access to your entire Dropbox. You can specify your backup destination wherever you want, just be aware that ANY files or folders inside of your Dropbox can be overridden or deleted by BackWPup."
 msgstr ""
 
-#: inc/class-destination-dropbox.php:140, inc/class-destination-folder.php:21, inc/class-destination-ftp.php:69, inc/class-destination-msazure.php:74, inc/class-destination-rsc.php:91, inc/class-destination-sugarsync.php:77, inc/Pro/class-destination-gdrive.php:114, inc/Pro/class-destination-hidrive.php:98, inc/Pro/class-destination-onedrive.php:73
+#: inc/class-destination-dropbox.php:140, inc/class-destination-folder.php:21, inc/class-destination-ftp.php:69, inc/class-destination-msazure.php:74, inc/class-destination-rsc.php:91, inc/class-destination-sugarsync.php:77, inc/Pro/class-destination-gdrive.php:166, inc/Pro/class-destination-hidrive.php:98, inc/Pro/class-destination-onedrive.php:79
 msgid "Backup settings"
 msgstr ""
 
@@ -591,23 +603,23 @@ msgstr ""
 msgid "Destination Folder"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:153, parts/sidebar/storage-DROPBOX.php:71
+#: inc/class-destination-dropbox.php:153, parts/sidebar/storage-DROPBOX.php:72
 msgid "Specify a subfolder where your backup archives will be stored. If you use the App option from above, this folder will be created inside of Apps/BackWPup. Otherwise it will be created at the root of your Dropbox. Already exisiting folders with the same name will not be overriden."
 msgstr ""
 
-#: inc/class-destination-dropbox.php:161, inc/class-destination-folder.php:37, inc/class-destination-ftp.php:82, inc/class-destination-sugarsync.php:87, inc/Pro/class-destination-gdrive.php:127, inc/Pro/class-destination-hidrive.php:123, inc/Pro/class-destination-onedrive.php:91
+#: inc/class-destination-dropbox.php:161, inc/class-destination-folder.php:37, inc/class-destination-ftp.php:82, inc/class-destination-sugarsync.php:87, inc/Pro/class-destination-gdrive.php:179, inc/Pro/class-destination-hidrive.php:123, inc/Pro/class-destination-onedrive.php:97
 msgid "File Deletion"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:183, inc/class-destination-folder.php:73, inc/class-destination-ftp.php:106, inc/class-destination-msazure.php:107, inc/class-destination-rsc.php:115, inc/class-destination-s3.php:380, inc/class-destination-sugarsync.php:101, inc/Pro/class-destination-dropbox.php:74, inc/Pro/class-destination-folder.php:45, inc/Pro/class-destination-ftp.php:65, inc/Pro/class-destination-gdrive.php:151, inc/Pro/class-destination-gdrive.php:471, inc/Pro/class-destination-hidrive.php:157, inc/Pro/class-destination-msazure.php:60, inc/Pro/class-destination-onedrive.php:118, inc/Pro/class-destination-rsc.php:69, inc/Pro/class-destination-s3.php:102, inc/Pro/class-destination-sugarsync.php:62
+#: inc/class-destination-dropbox.php:183, inc/class-destination-folder.php:73, inc/class-destination-ftp.php:106, inc/class-destination-msazure.php:107, inc/class-destination-rsc.php:115, inc/class-destination-s3.php:380, inc/class-destination-sugarsync.php:101, inc/Pro/class-destination-dropbox.php:74, inc/Pro/class-destination-folder.php:45, inc/Pro/class-destination-ftp.php:65, inc/Pro/class-destination-gdrive.php:206, inc/Pro/class-destination-gdrive.php:488, inc/Pro/class-destination-hidrive.php:157, inc/Pro/class-destination-msazure.php:60, inc/Pro/class-destination-onedrive.php:124, inc/Pro/class-destination-rsc.php:69, inc/Pro/class-destination-s3.php:102, inc/Pro/class-destination-sugarsync.php:62
 msgid "Do not delete files while syncing to destination!"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:170, inc/class-destination-folder.php:52, inc/class-destination-ftp.php:91, inc/class-destination-msazure.php:97, inc/class-destination-rsc.php:108, inc/class-destination-s3.php:363, inc/class-destination-sugarsync.php:94, inc/Pro/class-destination-dropbox.php:68, inc/Pro/class-destination-folder.php:39, inc/Pro/class-destination-gdrive.php:136, inc/Pro/class-destination-gdrive.php:463, inc/Pro/class-destination-hidrive.php:137, inc/Pro/class-destination-msazure.php:48, inc/Pro/class-destination-onedrive.php:103, inc/Pro/class-destination-rsc.php:63, inc/Pro/class-destination-s3.php:96
+#: inc/class-destination-dropbox.php:170, inc/class-destination-folder.php:52, inc/class-destination-ftp.php:91, inc/class-destination-msazure.php:97, inc/class-destination-rsc.php:108, inc/class-destination-s3.php:363, inc/class-destination-sugarsync.php:94, inc/Pro/class-destination-dropbox.php:68, inc/Pro/class-destination-folder.php:39, inc/Pro/class-destination-gdrive.php:188, inc/Pro/class-destination-gdrive.php:480, inc/Pro/class-destination-hidrive.php:137, inc/Pro/class-destination-msazure.php:48, inc/Pro/class-destination-onedrive.php:109, inc/Pro/class-destination-rsc.php:63, inc/Pro/class-destination-s3.php:96
 msgid "Number of files to keep in folder."
 msgstr ""
 
-#: inc/class-destination-dropbox.php:172, inc/class-destination-folder.php:56, inc/class-destination-ftp.php:93, inc/class-destination-msazure.php:99, inc/class-destination-rsc.php:110, inc/class-destination-s3.php:366, inc/class-destination-sugarsync.php:96, inc/Pro/class-destination-gdrive.php:138, inc/Pro/class-destination-glacier.php:107, inc/Pro/class-destination-hidrive.php:142, inc/Pro/class-destination-onedrive.php:105
+#: inc/class-destination-dropbox.php:172, inc/class-destination-folder.php:56, inc/class-destination-ftp.php:93, inc/class-destination-msazure.php:99, inc/class-destination-rsc.php:110, inc/class-destination-s3.php:366, inc/class-destination-sugarsync.php:96, inc/Pro/class-destination-gdrive.php:190, inc/Pro/class-destination-glacier.php:107, inc/Pro/class-destination-hidrive.php:142, inc/Pro/class-destination-onedrive.php:111
 msgid "<strong>Warning</strong>: Files belonging to this job are now tracked. Old backup archives which are untracked will not be automatically deleted."
 msgstr ""
 
@@ -616,41 +628,41 @@ msgstr ""
 msgid "Failed to revoke Dropbox token: %s"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:408
+#: inc/class-destination-dropbox.php:412
 msgid "One file deleted from Dropbox"
 msgid_plural "%d files deleted on Dropbox"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/class-destination-dropbox.php:440
+#: inc/class-destination-dropbox.php:446
 msgid "%d. Try to send backup file to Dropbox&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:472, inc/Pro/class-destination-dropbox.php:192
+#: inc/class-destination-dropbox.php:478, inc/Pro/class-destination-dropbox.php:192
 msgid "Not Authenticated with Dropbox!"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:458, inc/Pro/class-destination-dropbox.php:178
+#: inc/class-destination-dropbox.php:464, inc/Pro/class-destination-dropbox.php:178
 msgid "Authenticated with Dropbox of user: %s"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:466, inc/Pro/class-destination-dropbox.php:186
+#: inc/class-destination-dropbox.php:472, inc/Pro/class-destination-dropbox.php:186
 msgid "%s available on your Dropbox"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:476
+#: inc/class-destination-dropbox.php:482
 msgid "Uploading to Dropbox&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:512, inc/Pro/class-destination-gdrive.php:784, inc/Pro/class-destination-glacier.php:474
+#: inc/class-destination-dropbox.php:518, inc/Pro/class-destination-gdrive.php:802, inc/Pro/class-destination-glacier.php:474
 msgid "Error transfering backup to %s."
 msgstr ""
 
-#: inc/class-destination-dropbox.php:506
+#: inc/class-destination-dropbox.php:512
 msgid "Uploaded file size and local file size don't match."
 msgstr ""
 
-#: inc/class-destination-dropbox.php:500, inc/class-destination-msazure.php:326, inc/class-destination-sugarsync.php:279, inc/Pro/class-destination-gdrive.php:804
+#: inc/class-destination-dropbox.php:506, inc/class-destination-msazure.php:326, inc/class-destination-sugarsync.php:279, inc/Pro/class-destination-gdrive.php:822
 msgid "Backup transferred to %s"
 msgstr ""
 
@@ -817,7 +829,7 @@ msgstr ""
 msgid "Folder to store backups in"
 msgstr ""
 
-#: inc/class-destination-folder.php:264
+#: inc/class-destination-folder.php:265
 msgid "One backup file deleted"
 msgid_plural "%d backup files deleted"
 msgstr[0] ""
@@ -835,15 +847,15 @@ msgstr ""
 msgid "FTP server"
 msgstr ""
 
-#: inc/class-destination-ftp.php:50, inc/class-destination-rsc.php:40, parts/sidebar/storage-FTP.php:80, parts/sidebar/storage-RSC.php:62
+#: inc/class-destination-ftp.php:50, inc/class-destination-rsc.php:40, parts/sidebar/storage-FTP.php:79, parts/sidebar/storage-RSC.php:61
 msgid "Username"
 msgstr ""
 
-#: inc/class-destination-ftp.php:58, parts/sidebar/storage-FTP.php:91, parts/sidebar/sugar-sync-parts/api-connexion.php:35
+#: inc/class-destination-ftp.php:58, parts/sidebar/storage-FTP.php:90, parts/sidebar/sugar-sync-parts/api-connexion.php:31
 msgid "Password"
 msgstr ""
 
-#: inc/class-destination-ftp.php:74, parts/sidebar/storage-DROPBOX.php:64, parts/sidebar/storage-FOLDER.php:57, parts/sidebar/storage-FTP.php:148, parts/sidebar/storage-MSAZURE.php:135, parts/sidebar/storage-RSC.php:143, parts/sidebar/storage-S3.php:256, parts/sidebar/storage-SUGARSYNC.php:65, pro/parts/sidebar/storage-GDRIVE.php:99, pro/parts/sidebar/storage-HIDRIVE.php:123, pro/parts/sidebar/storage-ONEDRIVE.php:89
+#: inc/class-destination-ftp.php:74, parts/sidebar/storage-DROPBOX.php:65, parts/sidebar/storage-FOLDER.php:56, parts/sidebar/storage-FTP.php:147, parts/sidebar/storage-MSAZURE.php:135, parts/sidebar/storage-RSC.php:142, parts/sidebar/storage-S3.php:254, parts/sidebar/storage-SUGARSYNC.php:62, pro/parts/sidebar/storage-GDRIVE.php:95, pro/parts/sidebar/storage-HIDRIVE.php:123, pro/parts/sidebar/storage-ONEDRIVE.php:85
 msgid "Folder to store files in"
 msgstr ""
 
@@ -879,101 +891,101 @@ msgstr ""
 msgid "Could not log in to FTP server."
 msgstr ""
 
-#: inc/class-destination-ftp.php:381
+#: inc/class-destination-ftp.php:383
 msgid "Cannot delete \"%s\" on FTP server!"
 msgstr ""
 
-#: inc/class-destination-ftp.php:391
+#: inc/class-destination-ftp.php:393
 msgid "One file deleted on FTP server"
 msgid_plural "%d files deleted on FTP server"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/class-destination-ftp.php:413
+#: inc/class-destination-ftp.php:417
 msgid "%d. Try to send backup file to an FTP server&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-ftp.php:471
+#: inc/class-destination-ftp.php:475
 msgid "Cannot connect to FTP server: %s"
 msgstr ""
 
-#: inc/class-destination-ftp.php:463
+#: inc/class-destination-ftp.php:467
 msgid "Connected to FTP server: %s"
 msgstr ""
 
-#: inc/class-destination-ftp.php:448
+#: inc/class-destination-ftp.php:452
 msgid "PHP function to connect with explicit SSL-FTP to server does not exist!"
 msgstr ""
 
-#: inc/class-destination-ftp.php:438
+#: inc/class-destination-ftp.php:442
 msgid "Cannot connect via explicit SSL-FTP to server: %s"
 msgstr ""
 
-#: inc/class-destination-ftp.php:430
+#: inc/class-destination-ftp.php:434
 msgid "Connected via explicit SSL-FTP to server: %s"
 msgstr ""
 
-#: inc/class-destination-ftp.php:483, inc/class-destination-ftp.php:503, inc/class-destination-ftp.php:526, inc/class-destination-ftp.php:583
+#: inc/class-destination-ftp.php:487, inc/class-destination-ftp.php:507, inc/class-destination-ftp.php:530, inc/class-destination-ftp.php:587
 msgid "FTP client command: %s"
 msgstr ""
 
-#: inc/class-destination-ftp.php:500, inc/class-destination-ftp.php:514, inc/class-destination-ftp.php:511, inc/class-destination-ftp.php:532, inc/class-destination-ftp.php:529, inc/class-destination-ftp.php:605, inc/class-destination-ftp.php:600, inc/class-destination-ftp.php:593, inc/class-destination-ftp.php:588
+#: inc/class-destination-ftp.php:504, inc/class-destination-ftp.php:518, inc/class-destination-ftp.php:515, inc/class-destination-ftp.php:536, inc/class-destination-ftp.php:533, inc/class-destination-ftp.php:609, inc/class-destination-ftp.php:604, inc/class-destination-ftp.php:597, inc/class-destination-ftp.php:592
 msgid "FTP server reply: %s"
 msgstr ""
 
-#: inc/class-destination-ftp.php:493
+#: inc/class-destination-ftp.php:497
 msgid "FTP server response: %s"
 msgstr ""
 
-#: inc/class-destination-ftp.php:532
+#: inc/class-destination-ftp.php:536
 msgid "Error getting SYSTYPE"
 msgstr ""
 
-#: inc/class-destination-ftp.php:570
+#: inc/class-destination-ftp.php:574
 msgid "FTP current folder is: %s"
 msgstr ""
 
-#: inc/class-destination-ftp.php:605
+#: inc/class-destination-ftp.php:609
 msgid "Cannot enter normal mode"
 msgstr ""
 
-#: inc/class-destination-ftp.php:600
+#: inc/class-destination-ftp.php:604
 msgid "Entering normal mode"
 msgstr ""
 
-#: inc/class-destination-ftp.php:593
+#: inc/class-destination-ftp.php:597
 msgid "Cannot enter passive mode"
 msgstr ""
 
-#: inc/class-destination-ftp.php:588
+#: inc/class-destination-ftp.php:592
 msgid "Entering passive mode"
 msgstr ""
 
-#: inc/class-destination-ftp.php:612
+#: inc/class-destination-ftp.php:616
 msgid "Starting upload to FTP &#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-ftp.php:657, inc/class-destination-msazure.php:310, inc/class-destination-rsc.php:300, inc/class-destination-s3.php:979, inc/class-destination-s3.php:934, inc/Pro/class-destination-gdrive.php:713, inc/Pro/class-destination-glacier.php:493, inc/Pro/class-destination-rsc.php:228, inc/Pro/class-destination-rsc.php:264
+#: inc/class-destination-ftp.php:661, inc/class-destination-msazure.php:310, inc/class-destination-rsc.php:300, inc/class-destination-s3.php:983, inc/class-destination-s3.php:938, inc/Pro/class-destination-gdrive.php:731, inc/Pro/class-destination-glacier.php:493, inc/Pro/class-destination-rsc.php:228, inc/Pro/class-destination-rsc.php:264
 msgid "Can not open source file for transfer."
 msgstr ""
 
-#: inc/class-destination-ftp.php:631
+#: inc/class-destination-ftp.php:635
 msgid "Cannot transfer backup to FTP server!"
 msgstr ""
 
-#: inc/class-destination-ftp.php:638
+#: inc/class-destination-ftp.php:642
 msgid "Backup transferred to FTP server: %s"
 msgstr ""
 
-#: inc/class-destination-ftp.php:772
+#: inc/class-destination-ftp.php:776
 msgid "FTP Folder \"%s\" cannot be created! Parent directory may be not writable."
 msgstr ""
 
-#: inc/class-destination-ftp.php:790
+#: inc/class-destination-ftp.php:794
 msgid "FTP Folder \"%s\" cannot be created!"
 msgstr ""
 
-#: inc/class-destination-ftp.php:802
+#: inc/class-destination-ftp.php:806
 msgid "FTP Folder \"%s\" created!"
 msgstr ""
 
@@ -1001,11 +1013,11 @@ msgstr ""
 msgid "Blob container"
 msgstr ""
 
-#: inc/class-destination-msazure.php:54, inc/class-destination-rsc.php:70, inc/class-destination-rsc.php:497
+#: inc/class-destination-msazure.php:54, inc/class-destination-rsc.php:70, inc/class-destination-rsc.php:501
 msgid "Container selection"
 msgstr ""
 
-#: inc/class-destination-msazure.php:67, inc/class-destination-rsc.php:84, parts/sidebar/storage-MSAZURE.php:111, parts/sidebar/storage-RSC.php:118
+#: inc/class-destination-msazure.php:67, inc/class-destination-rsc.php:84, parts/sidebar/storage-MSAZURE.php:111, parts/sidebar/storage-RSC.php:117
 msgid "Create a new container"
 msgstr ""
 
@@ -1047,33 +1059,33 @@ msgstr ""
 msgid "Starting upload to MS Azure&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-msazure.php:331, inc/class-destination-msazure.php:396, inc/Pro/class-destination-msazure.php:299
+#: inc/class-destination-msazure.php:331, inc/class-destination-msazure.php:400, inc/Pro/class-destination-msazure.php:299
 msgid "Microsoft Azure API: %s"
 msgstr ""
 
-#: inc/class-destination-msazure.php:390
+#: inc/class-destination-msazure.php:392
 msgid "One file deleted on Microsoft Azure container."
 msgid_plural "%d files deleted on Microsoft Azure container."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/class-destination-msazure.php:500
+#: inc/class-destination-msazure.php:504
 msgid "No container found!"
 msgstr ""
 
-#: inc/class-destination-msazure.php:496, inc/class-destination-s3.php:529, inc/Pro/class-destination-glacier.php:160
+#: inc/class-destination-msazure.php:500, inc/class-destination-s3.php:529, inc/Pro/class-destination-glacier.php:160
 msgid "Missing access key!"
 msgstr ""
 
-#: inc/class-destination-msazure.php:494
+#: inc/class-destination-msazure.php:498
 msgid "Missing account name!"
 msgstr ""
 
-#: inc/class-destination-msazure.php:514, inc/class-destination-s3.php:271, inc/class-destination-s3.php:549, inc/Pro/class-destination-glacier.php:178, parts/sidebar/sugar-sync-parts/root-folder.php:42
+#: inc/class-destination-msazure.php:518, inc/class-destination-s3.php:271, inc/class-destination-s3.php:549, inc/Pro/class-destination-glacier.php:178, parts/sidebar/sugar-sync-parts/root-folder.php:32
 msgid "Bucket selection"
 msgstr ""
 
-#: inc/class-destination-msazure.php:666
+#: inc/class-destination-msazure.php:670
 msgid "Could not extract job id from destination %s."
 msgstr ""
 
@@ -1081,7 +1093,7 @@ msgstr ""
 msgid "Rack Space Cloud Keys"
 msgstr ""
 
-#: inc/class-destination-rsc.php:46, parts/sidebar/storage-RSC.php:72, pro/parts/sidebar/license-parts/activate.php:12
+#: inc/class-destination-rsc.php:46, parts/sidebar/storage-RSC.php:71, pro/parts/sidebar/license-parts/activate.php:12
 msgid "API Key"
 msgstr ""
 
@@ -1089,31 +1101,31 @@ msgstr ""
 msgid "Select region"
 msgstr ""
 
-#: inc/class-destination-rsc.php:57, inc/class-destination-rsc.php:59, inc/Pro/class-destination-rsc.php:26, parts/sidebar/storage-RSC.php:95
+#: inc/class-destination-rsc.php:57, inc/class-destination-rsc.php:59, inc/Pro/class-destination-rsc.php:26, parts/sidebar/storage-RSC.php:94
 msgid "Rackspace Cloud Files Region"
 msgstr ""
 
-#: inc/class-destination-rsc.php:60, inc/Pro/class-destination-rsc.php:27, parts/sidebar/storage-RSC.php:5
+#: inc/class-destination-rsc.php:60, inc/Pro/class-destination-rsc.php:27, parts/sidebar/storage-RSC.php:6
 msgid "Dallas (DFW)"
 msgstr ""
 
-#: inc/class-destination-rsc.php:61, inc/Pro/class-destination-rsc.php:28, parts/sidebar/storage-RSC.php:6
+#: inc/class-destination-rsc.php:61, inc/Pro/class-destination-rsc.php:28, parts/sidebar/storage-RSC.php:7
 msgid "Chicago (ORD)"
 msgstr ""
 
-#: inc/class-destination-rsc.php:62, inc/Pro/class-destination-rsc.php:29, parts/sidebar/storage-RSC.php:7
+#: inc/class-destination-rsc.php:62, inc/Pro/class-destination-rsc.php:29, parts/sidebar/storage-RSC.php:8
 msgid "Sydney (SYD)"
 msgstr ""
 
-#: inc/class-destination-rsc.php:63, inc/Pro/class-destination-rsc.php:30, parts/sidebar/storage-RSC.php:8
+#: inc/class-destination-rsc.php:63, inc/Pro/class-destination-rsc.php:30, parts/sidebar/storage-RSC.php:9
 msgid "London (LON)"
 msgstr ""
 
-#: inc/class-destination-rsc.php:64, inc/Pro/class-destination-rsc.php:31, parts/sidebar/storage-RSC.php:9
+#: inc/class-destination-rsc.php:64, inc/Pro/class-destination-rsc.php:31, parts/sidebar/storage-RSC.php:10
 msgid "Northern Virginia (IAD)"
 msgstr ""
 
-#: inc/class-destination-rsc.php:65, inc/Pro/class-destination-rsc.php:32, parts/sidebar/storage-RSC.php:10
+#: inc/class-destination-rsc.php:65, inc/Pro/class-destination-rsc.php:32, parts/sidebar/storage-RSC.php:11
 msgid "Hong Kong (HKG)"
 msgstr ""
 
@@ -1127,7 +1139,7 @@ msgid "Rackspace Cloud container \"%s\" created."
 msgstr ""
 
 #. translators: %s: error message.
-#: inc/class-destination-rsc.php:162, inc/class-destination-rsc.php:286, inc/class-destination-rsc.php:325, inc/class-destination-rsc.php:376, inc/Pro/class-destination-rsc.php:116, inc/Pro/class-destination-rsc.php:164, inc/Pro/class-destination-rsc.php:296
+#: inc/class-destination-rsc.php:162, inc/class-destination-rsc.php:286, inc/class-destination-rsc.php:325, inc/class-destination-rsc.php:380, inc/Pro/class-destination-rsc.php:116, inc/Pro/class-destination-rsc.php:164, inc/Pro/class-destination-rsc.php:296
 msgid "Rackspace Cloud API: %s"
 msgstr ""
 
@@ -1151,21 +1163,21 @@ msgstr ""
 msgid "Backup File transferred to RSC://"
 msgstr ""
 
-#: inc/class-destination-rsc.php:370
+#: inc/class-destination-rsc.php:372
 msgid "One file deleted on Rackspace cloud container."
 msgid_plural "%d files deleted on Rackspace cloud container."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/class-destination-rsc.php:486
+#: inc/class-destination-rsc.php:490
 msgid "A container could not be found!"
 msgstr ""
 
-#: inc/class-destination-rsc.php:482
+#: inc/class-destination-rsc.php:486
 msgid "Missing API Key!"
 msgstr ""
 
-#: inc/class-destination-rsc.php:480
+#: inc/class-destination-rsc.php:484
 msgid "Missing username!"
 msgstr ""
 
@@ -1181,7 +1193,7 @@ msgstr ""
 msgid "Or a S3 Server URL"
 msgstr ""
 
-#: inc/class-destination-s3.php:77, parts/sidebar/storage-S3.php:91
+#: inc/class-destination-s3.php:77, parts/sidebar/storage-S3.php:89
 msgid "Endpoint"
 msgstr ""
 
@@ -1189,7 +1201,7 @@ msgstr ""
 msgid "Leave it empty to use a destination from S3 service list"
 msgstr ""
 
-#: inc/class-destination-s3.php:100, parts/sidebar/storage-S3.php:103
+#: inc/class-destination-s3.php:100, parts/sidebar/storage-S3.php:101
 msgid "Region"
 msgstr ""
 
@@ -1201,7 +1213,7 @@ msgstr ""
 msgid "Multipart"
 msgstr ""
 
-#: inc/class-destination-s3.php:137, parts/sidebar/storage-S3.php:115
+#: inc/class-destination-s3.php:137, parts/sidebar/storage-S3.php:113
 msgid "Destination supports multipart"
 msgstr ""
 
@@ -1209,7 +1221,7 @@ msgstr ""
 msgid "Pathstyle-Only Bucket"
 msgstr ""
 
-#: inc/class-destination-s3.php:167, parts/sidebar/storage-S3.php:124
+#: inc/class-destination-s3.php:167, parts/sidebar/storage-S3.php:122
 msgid "Destination provides only Pathstyle buckets"
 msgstr ""
 
@@ -1217,11 +1229,11 @@ msgstr ""
 msgid "Example: http://s3.example.com/bucket-name"
 msgstr ""
 
-#: inc/class-destination-s3.php:194, parts/sidebar/storage-S3.php:134
+#: inc/class-destination-s3.php:194, parts/sidebar/storage-S3.php:132
 msgid "The S3 version for the API like \"2006-03-01\", default \"latest\""
 msgstr ""
 
-#: inc/class-destination-s3.php:203, parts/sidebar/storage-S3.php:145
+#: inc/class-destination-s3.php:203, parts/sidebar/storage-S3.php:143
 msgid "Signature"
 msgstr ""
 
@@ -1229,19 +1241,19 @@ msgstr ""
 msgid "The signature for the API like \"v4\""
 msgstr ""
 
-#: inc/class-destination-s3.php:233, parts/sidebar/storage-S3.php:158
+#: inc/class-destination-s3.php:233, parts/sidebar/storage-S3.php:156
 msgid "S3 Access Keys"
 msgstr ""
 
-#: inc/class-destination-s3.php:239, inc/Pro/class-destination-glacier.php:50, parts/sidebar/storage-S3.php:169, pro/parts/sidebar/storage-GLACIER.php:84
+#: inc/class-destination-s3.php:239, inc/Pro/class-destination-glacier.php:50, parts/sidebar/storage-S3.php:167, pro/parts/sidebar/storage-GLACIER.php:83
 msgid "Access Key"
 msgstr ""
 
-#: inc/class-destination-s3.php:253, inc/Pro/class-destination-glacier.php:57, parts/sidebar/storage-S3.php:179, pro/parts/sidebar/storage-GLACIER.php:95
+#: inc/class-destination-s3.php:253, inc/Pro/class-destination-glacier.php:57, parts/sidebar/storage-S3.php:177, pro/parts/sidebar/storage-GLACIER.php:94
 msgid "Secret Key"
 msgstr ""
 
-#: inc/class-destination-s3.php:265, parts/sidebar/storage-S3.php:195
+#: inc/class-destination-s3.php:265, parts/sidebar/storage-S3.php:193
 msgid "S3 Bucket"
 msgstr ""
 
@@ -1257,31 +1269,31 @@ msgstr ""
 msgid "Amazon specific settings"
 msgstr ""
 
-#: inc/class-destination-s3.php:392, inc/class-destination-s3.php:399, parts/sidebar/storage-S3.php:298
+#: inc/class-destination-s3.php:392, inc/class-destination-s3.php:399, parts/sidebar/storage-S3.php:296
 msgid "Amazon: Storage Class"
 msgstr ""
 
-#: inc/class-destination-s3.php:402, parts/sidebar/storage-S3.php:301
+#: inc/class-destination-s3.php:402, parts/sidebar/storage-S3.php:299
 msgid "Standard"
 msgstr ""
 
-#: inc/class-destination-s3.php:406, parts/sidebar/storage-S3.php:302
+#: inc/class-destination-s3.php:406, parts/sidebar/storage-S3.php:300
 msgid "Standard-Infrequent Access"
 msgstr ""
 
-#: inc/class-destination-s3.php:410, parts/sidebar/storage-S3.php:303
+#: inc/class-destination-s3.php:410, parts/sidebar/storage-S3.php:301
 msgid "One Zone-Infrequent Access"
 msgstr ""
 
-#: inc/class-destination-s3.php:414, parts/sidebar/storage-S3.php:304
+#: inc/class-destination-s3.php:414, parts/sidebar/storage-S3.php:302
 msgid "Reduced Redundancy"
 msgstr ""
 
-#: inc/class-destination-s3.php:418, parts/sidebar/storage-S3.php:305
+#: inc/class-destination-s3.php:418, parts/sidebar/storage-S3.php:303
 msgid "Intelligent-Tiering"
 msgstr ""
 
-#: inc/class-destination-s3.php:422, parts/sidebar/storage-S3.php:306
+#: inc/class-destination-s3.php:422, parts/sidebar/storage-S3.php:304
 msgid "Glacier Instant Retrieval"
 msgstr ""
 
@@ -1309,7 +1321,7 @@ msgstr ""
 msgid "Bucket %1$s created."
 msgstr ""
 
-#: inc/class-destination-s3.php:723, inc/class-destination-s3.php:1057, inc/class-destination-s3.php:965, inc/class-destination-s3.php:1118, inc/class-destination-s3.php:1135, inc/Pro/class-destination-s3.php:462
+#: inc/class-destination-s3.php:723, inc/class-destination-s3.php:1061, inc/class-destination-s3.php:969, inc/class-destination-s3.php:1122, inc/class-destination-s3.php:1139, inc/Pro/class-destination-s3.php:462
 msgid "S3 Service API: %s"
 msgstr ""
 
@@ -1317,45 +1329,45 @@ msgstr ""
 msgid "Storage Class: %s"
 msgstr ""
 
-#: inc/class-destination-s3.php:830
+#: inc/class-destination-s3.php:832
 msgid "Cannot delete backup from %s."
 msgstr ""
 
-#: inc/class-destination-s3.php:840
+#: inc/class-destination-s3.php:842
 msgid "One file deleted on S3 Bucket."
 msgid_plural "%d files deleted on S3 Bucket"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/class-destination-s3.php:861
+#: inc/class-destination-s3.php:865
 msgid "%d. Trying to send backup file to S3 Service&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-s3.php:891, inc/Pro/class-destination-s3.php:252
+#: inc/class-destination-s3.php:895, inc/Pro/class-destination-s3.php:252
 msgid "S3 Bucket \"%s\" does not exist!"
 msgstr ""
 
-#: inc/class-destination-s3.php:884, inc/Pro/class-destination-s3.php:245
+#: inc/class-destination-s3.php:888, inc/Pro/class-destination-s3.php:245
 msgid "Connected to S3 Bucket \"%1$s\" in %2$s"
 msgstr ""
 
-#: inc/class-destination-s3.php:900
+#: inc/class-destination-s3.php:904
 msgid "Checking for not aborted multipart Uploads&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-s3.php:913
+#: inc/class-destination-s3.php:917
 msgid "Upload for %s aborted."
 msgstr ""
 
-#: inc/class-destination-s3.php:919
+#: inc/class-destination-s3.php:923
 msgid "Starting upload to S3 Service&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-s3.php:1104
+#: inc/class-destination-s3.php:1108
 msgid "Cannot transfer backup to S3! (%1$d) %2$s"
 msgstr ""
 
-#: inc/class-destination-s3.php:1089, inc/Pro/class-destination-glacier.php:470
+#: inc/class-destination-s3.php:1093, inc/Pro/class-destination-glacier.php:470
 msgid "Backup transferred to %s."
 msgstr ""
 
@@ -1424,17 +1436,17 @@ msgstr ""
 msgid "Cannot transfer backup to SugarSync!"
 msgstr ""
 
-#: inc/class-destination-sugarsync.php:331
+#: inc/class-destination-sugarsync.php:333
 msgid "One file deleted on SugarSync folder"
 msgid_plural "%d files deleted on SugarSync folder"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/class-destination-sugarsync.php:337
+#: inc/class-destination-sugarsync.php:341
 msgid "SugarSync API: %s"
 msgstr ""
 
-#: inc/class-destination-sugarsync.php:432
+#: inc/class-destination-sugarsync.php:436
 msgid "Auth Token not set correctly!"
 msgstr ""
 
@@ -1482,15 +1494,15 @@ msgstr ""
 msgid "BackWPup will not backup folders and its sub folders when this file is inside."
 msgstr ""
 
-#: inc/class-install.php:122
+#: inc/class-install.php:97
 msgid "BackWPup Admin"
 msgstr ""
 
-#: inc/class-install.php:139
+#: inc/class-install.php:114
 msgid "BackWPup jobs checker"
 msgstr ""
 
-#: inc/class-install.php:154
+#: inc/class-install.php:129
 msgid "BackWPup jobs functions"
 msgstr ""
 
@@ -1573,7 +1585,7 @@ msgstr ""
 msgid "[INFO] BackWPup job start with link is active"
 msgstr ""
 
-#: inc/class-job.php:507, inc/class-page-backwpup.php:323, inc/class-page-jobs.php:393, inc/class-page-jobs.php:381
+#: inc/class-job.php:507, inc/class-page-backwpup.php:323, inc/class-page-jobs.php:392, inc/class-page-jobs.php:380
 msgid "Not scheduled!"
 msgstr ""
 
@@ -1645,306 +1657,306 @@ msgstr ""
 msgid "No destination correctly defined for backup! Please correct job settings."
 msgstr ""
 
-#: inc/class-job.php:754
+#: inc/class-job.php:762
 msgid "Cannot write progress to working file. Job will be aborted."
 msgstr ""
 
-#: inc/class-job.php:831, inc/class-page-jobs.php:1076
+#: inc/class-job.php:839, inc/class-page-jobs.php:1069
 msgid "WARNING:"
 msgstr ""
 
-#: inc/class-job.php:841, inc/class-page-jobs.php:1073
+#: inc/class-job.php:849, inc/class-page-jobs.php:1066
 msgid "ERROR:"
 msgstr ""
 
-#: inc/class-job.php:846
+#: inc/class-job.php:854
 msgid "DEPRECATED:"
 msgstr ""
 
-#: inc/class-job.php:850
+#: inc/class-job.php:858
 msgid "STRICT NOTICE:"
 msgstr ""
 
-#: inc/class-job.php:856
+#: inc/class-job.php:864
 msgid "RECOVERABLE ERROR:"
 msgstr ""
 
-#: inc/class-job.php:1132
+#: inc/class-job.php:1140
 msgid "Aborted by user!"
 msgstr ""
 
-#: inc/class-job.php:1170
+#: inc/class-job.php:1178
 msgid "One old log deleted"
 msgid_plural "%d old logs deleted"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/class-job.php:1207
+#: inc/class-job.php:1215
 msgid "Job done in %s seconds."
 msgstr ""
 
-#: inc/class-job.php:1197
+#: inc/class-job.php:1205
 msgid "Job finished with warnings in %s seconds. Please resolve them for correct execution."
 msgstr ""
 
-#: inc/class-job.php:1186, inc/class-page-jobs.php:1073
+#: inc/class-job.php:1194, inc/class-page-jobs.php:1066
 msgid "Job has ended with errors in %s seconds. You must resolve the errors for correct execution."
 msgstr ""
 
-#: inc/class-job.php:1264
+#: inc/class-job.php:1272
 msgid "SUCCESSFUL"
 msgstr ""
 
-#: inc/class-job.php:1266
+#: inc/class-job.php:1274
 msgid "WARNING"
 msgstr ""
 
-#: inc/class-job.php:1269
+#: inc/class-job.php:1277
 msgid "ERROR"
 msgstr ""
 
 #. translators: %1$s = Date, %2$s = job name, %3$s = job status.
-#: inc/class-job.php:1274
+#: inc/class-job.php:1282
 msgid "[%3$s] BackWPup log %1$s: %2$s"
 msgstr ""
 
-#: inc/class-job.php:1407
+#: inc/class-job.php:1423
 msgid "Restart after getting signal."
 msgstr ""
 
-#: inc/class-job.php:1405
+#: inc/class-job.php:1421
 msgid "Restart after %1$d seconds."
 msgstr ""
 
-#: inc/class-job.php:1597
+#: inc/class-job.php:1613
 msgid "Job restarts due to inactivity for more than 5 minutes."
 msgstr ""
 
-#: inc/class-job.php:1707
+#: inc/class-job.php:1723
 msgid "Step aborted: too many attempts!"
 msgstr ""
 
-#: inc/class-job.php:1786
+#: inc/class-job.php:1819
 msgid "%d. Trying to create backup archive &hellip;"
 msgstr ""
 
-#: inc/class-job.php:1799
+#: inc/class-job.php:1832
 msgctxt "Archive compression method"
 msgid "Compressing files as %s. Please be patient, this may take a moment."
 msgstr ""
 
-#: inc/class-job.php:1812
+#: inc/class-job.php:1845
 msgid "Adding Extra files to Archive"
 msgstr ""
 
-#: inc/class-job.php:1828, inc/class-job.php:1896
+#: inc/class-job.php:1861, inc/class-job.php:1929
 msgid "Cannot create backup archive correctly. Aborting creation."
 msgstr ""
 
-#: inc/class-job.php:1846
+#: inc/class-job.php:1879
 msgid "Archiving Folder: %s"
 msgstr ""
 
-#: inc/class-job.php:1908
+#: inc/class-job.php:1941
 msgid "Backup archive created."
 msgstr ""
 
-#: inc/class-job.php:1931
+#: inc/class-job.php:1964
 msgid "Archive size is %s."
 msgstr ""
 
-#: inc/class-job.php:1922
+#: inc/class-job.php:1955
 msgid "The Backup archive will be too large for file operations with this PHP Version. You might want to consider splitting the backup job in multiple jobs with less files each."
 msgstr ""
 
-#: inc/class-job.php:1938
+#: inc/class-job.php:1971
 msgid "%1$d Files with %2$s in Archive."
 msgstr ""
 
-#: inc/class-job.php:1983
+#: inc/class-job.php:2016
 msgid "No encryption key was provided. Aborting encryption."
 msgstr ""
 
-#: inc/class-job.php:1993
+#: inc/class-job.php:2026
 msgid "%d. Trying to encrypt archive &hellip;"
 msgstr ""
 
-#: inc/class-job.php:2003, inc/class-wp-cli.php:244
+#: inc/class-job.php:2036, inc/class-wp-cli.php:244
 msgid "Cannot open the archive for reading. Aborting encryption."
 msgstr ""
 
-#: inc/class-job.php:2011, inc/class-wp-cli.php:250
+#: inc/class-job.php:2044, inc/class-wp-cli.php:250
 msgid "Cannot write the encrypted archive. Aborting encryption."
 msgstr ""
 
-#: inc/class-job.php:2032, inc/class-wp-cli.php:261
+#: inc/class-job.php:2065, inc/class-wp-cli.php:261
 msgid "Could not initialize encryptor."
 msgstr ""
 
-#: inc/class-job.php:2058
+#: inc/class-job.php:2091
 msgid "Encrypted %s of data."
 msgstr ""
 
-#: inc/class-job.php:2064, inc/class-wp-cli.php:273
+#: inc/class-job.php:2097, inc/class-wp-cli.php:273
 msgid "Unable to delete unencrypted archive."
 msgstr ""
 
-#: inc/class-job.php:2072, inc/class-wp-cli.php:276
+#: inc/class-job.php:2105, inc/class-wp-cli.php:276
 msgid "Unable to rename encrypted archive."
 msgstr ""
 
-#: inc/class-job.php:2078, inc/class-wp-cli.php:278
+#: inc/class-job.php:2111, inc/class-wp-cli.php:278
 msgid "Archive has been successfully encrypted."
 msgstr ""
 
-#: inc/class-job.php:2127
+#: inc/class-job.php:2160
 msgctxt "Folder name"
 msgid "Folder %s does not exist"
 msgstr ""
 
-#: inc/class-job.php:2136
+#: inc/class-job.php:2169
 msgctxt "Folder name"
 msgid "Folder %s is not readable"
 msgstr ""
 
-#: inc/class-job.php:2185
+#: inc/class-job.php:2218
 msgid "File size of “%s” cannot be retrieved. File might be too large and will not be added to queue."
 msgstr ""
 
-#: inc/class-job.php:2177
+#: inc/class-job.php:2210
 msgid "File \"%s\" is not readable!"
 msgstr ""
 
-#: inc/class-job.php:2172
+#: inc/class-job.php:2205
 msgid "Link \"%s\" not following."
 msgstr ""
 
-#: inc/class-job.php:2277
+#: inc/class-job.php:2310
 msgid "%d. Trying to generate a manifest file&#160;&hellip;"
 msgstr ""
 
-#: inc/class-job.php:2347
+#: inc/class-job.php:2380
 msgid "You may have noticed the manifest.json file in this archive."
 msgstr ""
 
-#: inc/class-job.php:2348
+#: inc/class-job.php:2381
 msgid "manifest.json might be needed for later restoring a backup from this archive."
 msgstr ""
 
-#: inc/class-job.php:2352
+#: inc/class-job.php:2385
 msgid "Please leave manifest.json untouched and in place. Otherwise it is safe to be ignored."
 msgstr ""
 
-#: inc/class-job.php:2366
+#: inc/class-job.php:2399
 msgid "Added manifest.json file with %1$s to backup file list."
 msgstr ""
 
-#: inc/class-job.php:2398
+#: inc/class-job.php:2431
 msgid "Wrong BackWPup JobID"
 msgstr ""
 
-#: inc/class-job.php:2411
+#: inc/class-job.php:2444
 msgid "A BackWPup job is already running"
 msgstr ""
 
-#: inc/class-job.php:2529
+#: inc/class-job.php:2562
 msgctxt "SIGHUP: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Hangup detected on controlling terminal or death of controlling process"
 msgstr ""
 
-#: inc/class-job.php:2537
+#: inc/class-job.php:2570
 msgctxt "SIGINT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Interrupt from keyboard"
 msgstr ""
 
-#: inc/class-job.php:2545
+#: inc/class-job.php:2578
 msgctxt "SIGQUIT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Quit from keyboard"
 msgstr ""
 
-#: inc/class-job.php:2553
+#: inc/class-job.php:2586
 msgctxt "SIGILL: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Illegal Instruction"
 msgstr ""
 
-#: inc/class-job.php:2561
+#: inc/class-job.php:2594
 msgctxt "SIGABRT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Abort signal from abort(3)"
 msgstr ""
 
-#: inc/class-job.php:2569
+#: inc/class-job.php:2602
 msgctxt "SIGBUS: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Bus error (bad memory access)"
 msgstr ""
 
-#: inc/class-job.php:2577
+#: inc/class-job.php:2610
 msgctxt "SIGFPE: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Floating point exception"
 msgstr ""
 
-#: inc/class-job.php:2585
+#: inc/class-job.php:2618
 msgctxt "SIGSEGV: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Invalid memory reference"
 msgstr ""
 
-#: inc/class-job.php:2593
+#: inc/class-job.php:2626
 msgctxt "SIGTERM: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Termination signal"
 msgstr ""
 
-#: inc/class-job.php:2601
+#: inc/class-job.php:2634
 msgctxt "SIGSTKFLT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Stack fault on coprocessor"
 msgstr ""
 
-#: inc/class-job.php:2609
+#: inc/class-job.php:2642
 msgctxt "SIGUSR1: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "User-defined signal 1"
 msgstr ""
 
-#: inc/class-job.php:2617
+#: inc/class-job.php:2650
 msgctxt "SIGUSR2: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "User-defined signal 2"
 msgstr ""
 
-#: inc/class-job.php:2625
+#: inc/class-job.php:2658
 msgctxt "SIGURG: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Urgent condition on socket"
 msgstr ""
 
-#: inc/class-job.php:2633
+#: inc/class-job.php:2666
 msgctxt "SIGXCPU: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "CPU time limit exceeded"
 msgstr ""
 
-#: inc/class-job.php:2641
+#: inc/class-job.php:2674
 msgctxt "SIGXFSZ: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "File size limit exceeded"
 msgstr ""
 
-#: inc/class-job.php:2649
+#: inc/class-job.php:2682
 msgctxt "SIGPWR: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Power failure"
 msgstr ""
 
-#: inc/class-job.php:2657
+#: inc/class-job.php:2690
 msgctxt "SIGSYS: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Bad argument to routine"
 msgstr ""
 
-#: inc/class-job.php:2670
+#: inc/class-job.php:2703
 msgid "Signal \"%1$s\" (%2$s) is sent to script!"
 msgstr ""
 
-#: inc/class-job.php:2707, inc/class-job.php:2720
+#: inc/class-job.php:2740, inc/class-job.php:2753
 msgid "System: %s"
 msgstr ""
 
-#: inc/class-job.php:2736
+#: inc/class-job.php:2769
 msgid "Exception caught in %1$s: %2$s"
 msgstr ""
 
-#: inc/class-job.php:2941, inc/class-page-jobs.php:545
+#: inc/class-job.php:2974, inc/class-page-jobs.php:538
 msgid "Copy of"
 msgstr ""
 
@@ -2245,7 +2257,7 @@ msgstr ""
 msgid "Added XML export \"%1$s\" with %2$s to backup file list."
 msgstr ""
 
-#: inc/class-jobtype-wpplugin.php:7, parts/modal/exclude-files-plugins.php:15, parts/sidebar/parts/files-content-selector-pro.php:43, parts/sidebar/parts/files-content-selector.php:24, pro/parts/sidebar/parts/files-content-selector-pro.php:37
+#: inc/class-jobtype-wpplugin.php:7, parts/modal/exclude-files-plugins.php:15, parts/sidebar/parts/files-content-selector-pro.php:43
 msgid "Plugins"
 msgstr ""
 
@@ -2285,7 +2297,7 @@ msgstr ""
 msgid "Added plugin list file \"%1$s\" with %2$s to backup file list."
 msgstr ""
 
-#: inc/class-message-box.php:88, views/notice/legacy_disabled_tasks.php:2, views/notice/notice_5_2.php:2, views/notice/notice_5_2_2.php:2
+#: inc/class-message-box.php:88, views/notice/legacy_disabled_tasks.php:2, views/notice/notice_5_2.php:2, views/notice/notice_5_2_2.php:2, views/notice/notice_5_3.php:2
 msgid "Dismiss"
 msgstr ""
 
@@ -2329,7 +2341,7 @@ msgstr ""
 msgid "Error while writing file!"
 msgstr ""
 
-#: inc/class-option.php:268, inc/class-page-editjob.php:373
+#: inc/class-option.php:271, inc/class-page-editjob.php:373
 msgid "New Job"
 msgstr ""
 
@@ -2629,19 +2641,19 @@ msgstr ""
 msgid "?"
 msgstr ""
 
-#: inc/class-page-backups.php:369, inc/class-page-backups.php:409, inc/class-page-editjob.php:30, inc/class-page-jobs.php:564
+#: inc/class-page-backups.php:369, inc/class-page-backups.php:423, inc/class-page-editjob.php:30, inc/class-page-jobs.php:557
 msgid "Sorry, you don't have permissions to do that."
 msgstr ""
 
-#: inc/class-page-backups.php:448
+#: inc/class-page-backups.php:462
 msgid "&laquo; Go back"
 msgstr ""
 
-#: inc/class-page-backups.php:477
+#: inc/class-page-backups.php:491
 msgid "Backup Files"
 msgstr ""
 
-#: inc/class-page-backups.php:595
+#: inc/class-page-backups.php:609
 msgid "You are about to delete this backup archive. 'Cancel' to stop, 'OK' to delete."
 msgstr ""
 
@@ -2865,7 +2877,7 @@ msgstr ""
 msgid "Jobs overview"
 msgstr ""
 
-#: inc/class-page-editjob.php:223, inc/class-page-jobs.php:273
+#: inc/class-page-editjob.php:223, inc/class-page-jobs.php:272
 msgid "Run now"
 msgstr ""
 
@@ -2881,7 +2893,7 @@ msgstr ""
 msgid "Schedule"
 msgstr ""
 
-#: inc/class-page-editjob.php:368, inc/class-page-editjob.php:373, inc/class-page-jobs.php:198
+#: inc/class-page-editjob.php:368, inc/class-page-editjob.php:373, inc/class-page-jobs.php:197
 msgid "Job Name"
 msgstr ""
 
@@ -3017,7 +3029,7 @@ msgstr ""
 msgid "Disabled due to missing %s PHP function."
 msgstr ""
 
-#: inc/class-page-editjob.php:482, inc/class-page-editjob.php:487, inc/class-page-editjob.php:504, pro/parts/sidebar/settings-encryption.php:49
+#: inc/class-page-editjob.php:482, inc/class-page-editjob.php:487, inc/class-page-editjob.php:504, pro/parts/sidebar/settings-encryption.php:50
 msgid "Encrypt Archive"
 msgstr ""
 
@@ -3133,31 +3145,31 @@ msgstr ""
 msgid "weekly"
 msgstr ""
 
-#: inc/class-page-editjob.php:708, inc/class-page-editjob.php:819, inc/Pro/class-wizard-job.php:382, parts/sidebar/frequency.php:125
+#: inc/class-page-editjob.php:708, inc/class-page-editjob.php:819, inc/Pro/class-wizard-job.php:382, parts/sidebar/frequency.php:127
 msgid "Sunday"
 msgstr ""
 
-#: inc/class-page-editjob.php:709, inc/class-page-editjob.php:820, inc/Pro/class-wizard-job.php:390, parts/sidebar/frequency.php:119
+#: inc/class-page-editjob.php:709, inc/class-page-editjob.php:820, inc/Pro/class-wizard-job.php:390, parts/sidebar/frequency.php:121
 msgid "Monday"
 msgstr ""
 
-#: inc/class-page-editjob.php:710, inc/class-page-editjob.php:821, inc/Pro/class-wizard-job.php:398, parts/sidebar/frequency.php:120
+#: inc/class-page-editjob.php:710, inc/class-page-editjob.php:821, inc/Pro/class-wizard-job.php:398, parts/sidebar/frequency.php:122
 msgid "Tuesday"
 msgstr ""
 
-#: inc/class-page-editjob.php:711, inc/class-page-editjob.php:822, inc/Pro/class-wizard-job.php:406, parts/sidebar/frequency.php:121
+#: inc/class-page-editjob.php:711, inc/class-page-editjob.php:822, inc/Pro/class-wizard-job.php:406, parts/sidebar/frequency.php:123
 msgid "Wednesday"
 msgstr ""
 
-#: inc/class-page-editjob.php:712, inc/class-page-editjob.php:823, inc/Pro/class-wizard-job.php:414, parts/sidebar/frequency.php:122
+#: inc/class-page-editjob.php:712, inc/class-page-editjob.php:823, inc/Pro/class-wizard-job.php:414, parts/sidebar/frequency.php:124
 msgid "Thursday"
 msgstr ""
 
-#: inc/class-page-editjob.php:713, inc/class-page-editjob.php:824, inc/Pro/class-wizard-job.php:422, parts/sidebar/frequency.php:123
+#: inc/class-page-editjob.php:713, inc/class-page-editjob.php:824, inc/Pro/class-wizard-job.php:422, parts/sidebar/frequency.php:125
 msgid "Friday"
 msgstr ""
 
-#: inc/class-page-editjob.php:714, inc/class-page-editjob.php:825, inc/Pro/class-wizard-job.php:430, parts/sidebar/frequency.php:124
+#: inc/class-page-editjob.php:714, inc/class-page-editjob.php:825, inc/Pro/class-wizard-job.php:430, parts/sidebar/frequency.php:126
 msgid "Saturday"
 msgstr ""
 
@@ -3261,159 +3273,159 @@ msgstr ""
 msgid "ATTENTION: Can't calculate cron!"
 msgstr ""
 
-#: inc/class-page-jobs.php:169
+#: inc/class-page-jobs.php:168
 msgid "No Legacy Jobs."
 msgstr ""
 
-#: inc/class-page-jobs.php:200, inc/Pro/class-wizard-job.php:67, inc/Pro/class-wizard-job.php:640
+#: inc/class-page-jobs.php:199, inc/Pro/class-wizard-job.php:67, inc/Pro/class-wizard-job.php:640
 msgid "Destinations"
 msgstr ""
 
-#: inc/class-page-jobs.php:201
+#: inc/class-page-jobs.php:200
 msgid "Next Run"
 msgstr ""
 
-#: inc/class-page-jobs.php:202
+#: inc/class-page-jobs.php:201
 msgid "Last Run"
 msgstr ""
 
-#: inc/class-page-jobs.php:264, inc/class-page-logs.php:237
+#: inc/class-page-jobs.php:263, inc/class-page-logs.php:237
 msgid "Job ID: %d"
 msgstr ""
 
-#: inc/class-page-jobs.php:267, views/restore/steps/step3_action.php:45
+#: inc/class-page-jobs.php:266, views/restore/steps/step3_action.php:45
 msgid "Edit"
 msgstr ""
 
-#: inc/class-page-jobs.php:281
+#: inc/class-page-jobs.php:280
 msgid "Last log"
 msgstr ""
 
-#: inc/class-page-jobs.php:344
+#: inc/class-page-jobs.php:343
 msgid "Not needed or set"
 msgstr ""
 
-#: inc/class-page-jobs.php:367
+#: inc/class-page-jobs.php:366
 msgid "Running for: %s seconds"
 msgstr ""
 
-#: inc/class-page-jobs.php:398
+#: inc/class-page-jobs.php:397
 msgid "Inactive"
 msgstr ""
 
-#: inc/class-page-jobs.php:396
+#: inc/class-page-jobs.php:395
 msgid "External link"
 msgstr ""
 
-#: inc/class-page-jobs.php:388, inc/class-page-jobs.php:376
+#: inc/class-page-jobs.php:387, inc/class-page-jobs.php:375
 msgid "Cron: %s"
 msgstr ""
 
-#: inc/class-page-jobs.php:390
+#: inc/class-page-jobs.php:389
 msgid "%1$s at %2$s by EasyCron"
 msgstr ""
 
-#: inc/class-page-jobs.php:434
+#: inc/class-page-jobs.php:433
 msgid "not yet"
 msgstr ""
 
-#: inc/class-page-jobs.php:429
+#: inc/class-page-jobs.php:428
 msgid "Runtime: %d seconds"
 msgstr ""
 
-#: inc/class-page-jobs.php:442
+#: inc/class-page-jobs.php:441
 msgid "Download last backup"
 msgstr ""
 
-#: inc/class-page-jobs.php:454
+#: inc/class-page-jobs.php:453
 msgid "Log"
 msgstr ""
 
-#: inc/class-page-jobs.php:600
+#: inc/class-page-jobs.php:593
 msgid "The job \"%1$s\" destination \"%2$s\" is not configured properly"
 msgstr ""
 
-#: inc/class-page-jobs.php:605
+#: inc/class-page-jobs.php:598
 msgid "The job \"%s\" needs properly configured destinations to run!"
 msgstr ""
 
 #. translators: 1: Job name, 2: Information URL
-#: inc/class-page-jobs.php:626
+#: inc/class-page-jobs.php:619
 msgid "Job \"%1$s\" has started, but not responded for 10 seconds. Please check <a href=\"%2$s\">information</a>."
 msgstr ""
 
 #. translators: Job name
-#: inc/class-page-jobs.php:632
+#: inc/class-page-jobs.php:625
 msgid "Job \"%s\" started."
 msgstr ""
 
-#: inc/class-page-jobs.php:647, inc/class-wp-cli.php:60
+#: inc/class-page-jobs.php:640, inc/class-wp-cli.php:60
 msgid "Job will be terminated."
 msgstr ""
 
 #. translators: %s: plugin name.
-#: inc/class-page-jobs.php:842
+#: inc/class-page-jobs.php:835
 msgid "%s &rsaquo; Legacy Jobs"
 msgstr ""
 
-#: inc/class-page-jobs.php:861
+#: inc/class-page-jobs.php:854
 msgid "Job currently running: %s"
 msgstr ""
 
-#: inc/class-page-jobs.php:862
+#: inc/class-page-jobs.php:855
 msgid "Warnings:"
 msgstr ""
 
-#: inc/class-page-jobs.php:863
+#: inc/class-page-jobs.php:856
 msgid "Errors:"
 msgstr ""
 
-#: inc/class-page-jobs.php:864
+#: inc/class-page-jobs.php:857
 msgid "Log of running job"
 msgstr ""
 
-#: inc/class-page-jobs.php:864
+#: inc/class-page-jobs.php:857
 msgid "Display working log"
 msgstr ""
 
-#: inc/class-page-jobs.php:866
+#: inc/class-page-jobs.php:859
 msgid "Close working screen"
 msgstr ""
 
-#: inc/class-page-jobs.php:895, pages/backups.php:9
+#: inc/class-page-jobs.php:888, pages/backups.php:9
 msgid "Please wait &hellip;"
 msgstr ""
 
-#: inc/class-page-jobs.php:898, pages/backups.php:12
+#: inc/class-page-jobs.php:891, pages/backups.php:12
 msgid "Your download has been generated. It should begin downloading momentarily."
 msgstr ""
 
-#: inc/class-page-jobs.php:1070
+#: inc/class-page-jobs.php:1063
 msgid "Job completed"
 msgstr ""
 
 #. translators: %s is duration in seconds.
-#: inc/class-page-jobs.php:1079
+#: inc/class-page-jobs.php:1072
 msgid "Backup created in %s seconds."
 msgstr ""
 
-#: inc/class-page-jobs.php:1076
+#: inc/class-page-jobs.php:1069
 msgid "backup created with warnings in %s seconds. Please resolve them for correct execution."
 msgstr ""
 
-#: inc/class-page-jobs.php:1180
+#: inc/class-page-jobs.php:1173
 msgid "Filter by Status"
 msgstr ""
 
-#: inc/class-page-jobs.php:1183
+#: inc/class-page-jobs.php:1176
 msgid "All Statuses"
 msgstr ""
 
-#: inc/class-page-jobs.php:1185
+#: inc/class-page-jobs.php:1178
 msgid "Disabled"
 msgstr ""
 
-#: inc/class-page-jobs.php:1189
+#: inc/class-page-jobs.php:1182
 msgid "Filter"
 msgstr ""
 
@@ -3690,7 +3702,7 @@ msgstr ""
 msgid "Jobs"
 msgstr ""
 
-#: inc/class-page-settings.php:554, parts/sidebar/advanced-settings.php:61, pro/parts/sidebar/settings-encryption.php:4
+#: inc/class-page-settings.php:554, parts/sidebar/advanced-settings.php:61, pro/parts/sidebar/settings-encryption.php:5
 msgid "Encryption"
 msgstr ""
 
@@ -3758,7 +3770,7 @@ msgstr ""
 msgid "There are a couple of general options for backup jobs. Set them here."
 msgstr ""
 
-#: inc/class-page-settings.php:679, parts/sidebar/settings-jobs.php:36
+#: inc/class-page-settings.php:679, parts/sidebar/settings-jobs.php:35
 msgid "Maximum number of retries for job steps"
 msgstr ""
 
@@ -3782,11 +3794,11 @@ msgstr ""
 msgid "Key to start jobs externally with an URL"
 msgstr ""
 
-#: inc/class-page-settings.php:724, parts/sidebar/settings-jobs.php:64
+#: inc/class-page-settings.php:724, parts/sidebar/settings-jobs.php:63
 msgid "Will be used to protect job starts from unauthorized person."
 msgstr ""
 
-#: inc/class-page-settings.php:732, inc/class-page-settings.php:737, parts/sidebar/settings-jobs.php:86
+#: inc/class-page-settings.php:732, inc/class-page-settings.php:737, parts/sidebar/settings-jobs.php:85
 msgid "Reduce server load"
 msgstr ""
 
@@ -3806,7 +3818,7 @@ msgstr ""
 msgid "maximum"
 msgstr ""
 
-#: inc/class-page-settings.php:761, parts/sidebar/settings-jobs.php:95
+#: inc/class-page-settings.php:761, parts/sidebar/settings-jobs.php:94
 msgid "This adds short pauses to the process. Can be used to reduce the CPU load."
 msgstr ""
 
@@ -4219,7 +4231,7 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
-#: pages/first-congratulations.php:14, pages/first-progress.php:27, parts/backups/progress.php:26, parts/now/complete.php:5, parts/now/progress.php:5
+#: pages/first-congratulations.php:14, pages/first-progress.php:28, parts/backups/progress.php:26, parts/now/complete.php:5, parts/now/progress.php:5
 msgid "We are creating a backup of your site…"
 msgstr ""
 
@@ -4231,15 +4243,15 @@ msgstr ""
 msgid "Download my Backup"
 msgstr ""
 
-#: pages/first-progress.php:49, parts/now/info-few-minutes.php:8
+#: pages/first-progress.php:50, parts/now/info-few-minutes.php:8
 msgid "Creating a backup might take a few minutes, depending on your site’s size"
 msgstr ""
 
-#: pages/first-progress.php:50
+#: pages/first-progress.php:51
 msgid "The backup will keep running. You’ll get a notification when it’s done."
 msgstr ""
 
-#: pages/first-progress.php:51, parts/now/info-few-minutes.php:10
+#: pages/first-progress.php:52, parts/now/info-few-minutes.php:10
 msgid "Feel free to leave 👋"
 msgstr ""
 
@@ -4299,19 +4311,19 @@ msgstr ""
 msgid "Files backup scheduled"
 msgstr ""
 
-#: components/onboarding/step2.php:47, components/onboarding/step2.php:86, parts/sidebar/frequency.php:49
+#: components/onboarding/step2.php:47, components/onboarding/step2.php:86, parts/sidebar/frequency.php:51
 msgid "Hourly"
 msgstr ""
 
-#: components/onboarding/step2.php:48, components/onboarding/step2.php:87, parts/sidebar/frequency.php:50
+#: components/onboarding/step2.php:48, components/onboarding/step2.php:87, parts/sidebar/frequency.php:52
 msgid "Daily"
 msgstr ""
 
-#: components/onboarding/step2.php:49, components/onboarding/step2.php:88, parts/sidebar/frequency.php:51
+#: components/onboarding/step2.php:49, components/onboarding/step2.php:88, parts/sidebar/frequency.php:53
 msgid "Weekly"
 msgstr ""
 
-#: components/onboarding/step2.php:50, components/onboarding/step2.php:89, parts/sidebar/frequency.php:52
+#: components/onboarding/step2.php:50, components/onboarding/step2.php:89, parts/sidebar/frequency.php:54
 msgid "Monthly"
 msgstr ""
 
@@ -4359,7 +4371,7 @@ msgstr ""
 msgid "Call to undefined method %1$s::%2$s()"
 msgstr ""
 
-#: inc/Pro/class-destination-dropbox.php:47, inc/Pro/class-destination-gdrive.php:432, inc/Pro/class-destination-gdrive.php:425, inc/Pro/class-destination-sugarsync.php:24
+#: inc/Pro/class-destination-dropbox.php:47, inc/Pro/class-destination-gdrive.php:449, inc/Pro/class-destination-gdrive.php:442, inc/Pro/class-destination-sugarsync.php:24
 msgid "Login:"
 msgstr ""
 
@@ -4371,7 +4383,7 @@ msgstr ""
 msgid "Get auth code"
 msgstr ""
 
-#: inc/Pro/class-destination-dropbox.php:52, inc/Pro/class-destination-gdrive.php:443, inc/Pro/class-destination-sugarsync.php:53
+#: inc/Pro/class-destination-dropbox.php:52, inc/Pro/class-destination-gdrive.php:460, inc/Pro/class-destination-sugarsync.php:53
 msgid "Folder:"
 msgstr ""
 
@@ -4411,7 +4423,7 @@ msgstr ""
 msgid "Absolute path to folder for backup files:"
 msgstr ""
 
-#: inc/Pro/class-destination-folder.php:37, inc/Pro/class-destination-gdrive.php:458
+#: inc/Pro/class-destination-folder.php:37, inc/Pro/class-destination-gdrive.php:475
 msgid "Oldest files will be deleted first."
 msgstr ""
 
@@ -4467,114 +4479,114 @@ msgstr ""
 msgid "Maximum number of backup files to keep in folder:"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive-downloader.php:66, inc/Pro/class-destination-gdrive-downloader.php:88
+#: inc/Pro/class-destination-gdrive-downloader.php:81, inc/Pro/class-destination-gdrive-downloader.php:103
 msgid "No source file found"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive-downloader.php:96
+#: inc/Pro/class-destination-gdrive-downloader.php:111
 msgid "Could not get file %s from Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:66, inc/Pro/class-destination-gdrive.php:406
+#: inc/Pro/class-destination-gdrive.php:122, inc/Pro/class-destination-gdrive.php:423
 msgid "Looks like you haven’t set up any API keys yet. Head over to <a href=\"%s\">Settings | API-Keys</a> and get Google Drive all set up, then come back here."
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:95, inc/Pro/class-destination-gdrive.php:430, inc/Pro/class-destination-onedrive.php:46
+#: inc/Pro/class-destination-gdrive.php:147, inc/Pro/class-destination-gdrive.php:447, inc/Pro/class-destination-onedrive.php:52
 msgid "Authenticate"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:108, inc/Pro/class-destination-gdrive.php:436, inc/Pro/class-destination-onedrive.php:65, pro/parts/sidebar/gdrive-parts/authenticate.php:11, pro/parts/sidebar/onedrive-parts/authenticate.php:18
+#: inc/Pro/class-destination-gdrive.php:160, inc/Pro/class-destination-gdrive.php:453, inc/Pro/class-destination-onedrive.php:71, pro/parts/sidebar/gdrive-parts/authenticate.php:18, pro/parts/sidebar/onedrive-parts/authenticate.php:20
 msgid "Reauthenticate"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:119
+#: inc/Pro/class-destination-gdrive.php:171
 msgid "Folder in Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:163
+#: inc/Pro/class-destination-gdrive.php:218
 msgid "Consider using trash to delete files. If trash is not enabled, files will be deleted permanently."
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:225, inc/Pro/class-destination-gdrive.php:277
+#: inc/Pro/class-destination-gdrive.php:283
 msgid "GDrive: No refresh token received. Try to Authenticate again!"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:217, inc/Pro/class-destination-gdrive.php:268
+#: inc/Pro/class-destination-gdrive.php:275
 msgid "GDrive: Authenticated."
 msgstr ""
 
 #. translators: %s: error message.
-#: inc/Pro/class-destination-gdrive.php:238, inc/Pro/class-destination-gdrive.php:283, inc/Pro/class-destination-gdrive.php:309, inc/Pro/class-destination-gdrive.php:337
+#: inc/Pro/class-destination-gdrive.php:296, inc/Pro/class-destination-gdrive.php:328, inc/Pro/class-destination-gdrive.php:354
 msgid "GDrive API: %s"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:675
+#: inc/Pro/class-destination-gdrive.php:691
 msgid "%d file deleted from Google Drive"
 msgid_plural "%d files deleted from Google Drive"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Pro/class-destination-gdrive.php:700
+#: inc/Pro/class-destination-gdrive.php:718
 msgid "%d. Try to send backup file to Google Drive&#160;&hellip;"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:708
+#: inc/Pro/class-destination-gdrive.php:726
 msgid "Uploading to Google Drive&#160;&hellip;"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:757
+#: inc/Pro/class-destination-gdrive.php:775
 msgid "Can not resume transfer backup to Google Drive!"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:742
+#: inc/Pro/class-destination-gdrive.php:760
 msgid "Could not create resumable file transfer to Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:770
+#: inc/Pro/class-destination-gdrive.php:788
 msgid "Error transfering file chunks to %s."
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:771, inc/Pro/class-destination-gdrive.php:785
+#: inc/Pro/class-destination-gdrive.php:789, inc/Pro/class-destination-gdrive.php:803
 msgid "Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:813, inc/Pro/class-destination-gdrive.php:916
+#: inc/Pro/class-destination-gdrive.php:831, inc/Pro/class-destination-gdrive.php:936
 msgid "Google Drive API: %s"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:845
+#: inc/Pro/class-destination-gdrive.php:865
 msgid "%d. Try to sync files to Google Drive&#160;&hellip;"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:853
+#: inc/Pro/class-destination-gdrive.php:873
 msgid "Syncing changed files to Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:1100
+#: inc/Pro/class-destination-gdrive.php:1118
 msgid "File %s updated on Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:1117
+#: inc/Pro/class-destination-gdrive.php:1135
 msgid "File %s uploaded to Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:1170
+#: inc/Pro/class-destination-gdrive.php:1188
 msgid "File %s deleted permanently in Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:1162
+#: inc/Pro/class-destination-gdrive.php:1180
 msgid "File %s moved to trash in Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:1220
+#: inc/Pro/class-destination-gdrive.php:1238
 msgid "Extra file %s updated on Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:1244
+#: inc/Pro/class-destination-gdrive.php:1262
 msgid "Extra file %s uploaded to Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-glacier.php:27, pro/parts/sidebar/storage-GLACIER.php:49
+#: inc/Pro/class-destination-glacier.php:27, pro/parts/sidebar/storage-GLACIER.php:48
 msgid "Amazon Glacier"
 msgstr ""
 
@@ -4586,11 +4598,11 @@ msgstr ""
 msgid "Amazon Glacier Region"
 msgstr ""
 
-#: inc/Pro/class-destination-glacier.php:46, pro/parts/sidebar/storage-GLACIER.php:73
+#: inc/Pro/class-destination-glacier.php:46, pro/parts/sidebar/storage-GLACIER.php:72
 msgid "Amazon Access Keys"
 msgstr ""
 
-#: inc/Pro/class-destination-glacier.php:65, pro/parts/sidebar/storage-GLACIER.php:107
+#: inc/Pro/class-destination-glacier.php:65, pro/parts/sidebar/storage-GLACIER.php:106
 msgid "Vault"
 msgstr ""
 
@@ -4598,7 +4610,7 @@ msgstr ""
 msgid "Vault selection"
 msgstr ""
 
-#: inc/Pro/class-destination-glacier.php:83, pro/parts/sidebar/storage-GLACIER.php:130
+#: inc/Pro/class-destination-glacier.php:83, pro/parts/sidebar/storage-GLACIER.php:129
 msgid "Create a new vault"
 msgstr ""
 
@@ -4643,7 +4655,7 @@ msgstr ""
 msgid "New Vault:"
 msgstr ""
 
-#: inc/Pro/class-destination-glacier.php:349, inc/Pro/class-destination-glacier.php:481, inc/Pro/class-destination-glacier.php:498, inc/Pro/class-destination-glacier.php:543
+#: inc/Pro/class-destination-glacier.php:349, inc/Pro/class-destination-glacier.php:481, inc/Pro/class-destination-glacier.php:498, inc/Pro/class-destination-glacier.php:547
 msgid "AWS API: %s"
 msgstr ""
 
@@ -4671,11 +4683,11 @@ msgstr ""
 msgid "Archive ID: %s"
 msgstr ""
 
-#: inc/Pro/class-destination-glacier.php:533
+#: inc/Pro/class-destination-glacier.php:535
 msgid "Cannot delete archive from %s."
 msgstr ""
 
-#: inc/Pro/class-destination-glacier.php:537
+#: inc/Pro/class-destination-glacier.php:539
 msgid "One file deleted on vault."
 msgid_plural "%d files deleted on vault"
 msgstr[0] ""
@@ -4697,13 +4709,13 @@ msgstr ""
 msgid "Specify a subfolder where your backup archives will be stored."
 msgstr ""
 
-#: inc/Pro/class-destination-hidrive.php:254
+#: inc/Pro/class-destination-hidrive.php:256
 msgid "One file deleted from HiDrive"
 msgid_plural "%d files deleted on HiDrive"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Pro/class-destination-hidrive.php:408
+#: inc/Pro/class-destination-hidrive.php:412
 msgid "%d. Try to send backup file to HiDrive&#160;&hellip;"
 msgstr ""
 
@@ -4751,25 +4763,21 @@ msgstr ""
 msgid "File %s deleted from MS Azure."
 msgstr ""
 
-#: inc/Pro/class-destination-onedrive.php:30
+#: inc/Pro/class-destination-onedrive.php:36
 msgid "Looks like you haven’t set up any API keys yet. Head over to <a href=\"%s\">Settings | API-Keys</a> and get OneDrive all set up, then come back here."
 msgstr ""
 
-#: inc/Pro/class-destination-onedrive.php:78
+#: inc/Pro/class-destination-onedrive.php:84
 msgid "Folder in OneDrive"
 msgstr ""
 
-#: inc/Pro/class-destination-onedrive.php:143
-msgid "Job ID was not provided"
-msgstr ""
-
 #. translators: 1: file name, 2: error message.
-#: inc/Pro/class-destination-onedrive.php:338
+#: inc/Pro/class-destination-onedrive.php:323
 msgid "Error deleting file %1$s from One Drive: %2$s"
 msgstr ""
 
 #. translators: %d: number of files deleted.
-#: inc/Pro/class-destination-onedrive.php:358
+#: inc/Pro/class-destination-onedrive.php:344
 msgid "%d file deleted from One Drive"
 msgid_plural "%d files deleted on One Drive"
 msgstr[0] ""
@@ -5252,7 +5260,7 @@ msgstr ""
 msgid "App ID:"
 msgstr ""
 
-#: inc/Pro/class-settings-apikeys.php:210, pro/parts/sidebar/storage-GDRIVE.php:65
+#: inc/Pro/class-settings-apikeys.php:210, pro/parts/sidebar/storage-GDRIVE.php:63
 msgid "Google API Keys"
 msgstr ""
 
@@ -5596,7 +5604,7 @@ msgstr ""
 msgid "Authentication Complete"
 msgstr ""
 
-#: parts/modal/exclude-files-core.php:23, parts/sidebar/parts/files-content-selector-pro.php:16, parts/sidebar/parts/files-content-selector.php:12, pro/parts/sidebar/parts/files-content-selector-pro.php:12
+#: parts/modal/exclude-files-core.php:23, parts/sidebar/parts/files-content-selector-pro.php:16
 msgid "WordPress Core"
 msgstr ""
 
@@ -5604,7 +5612,7 @@ msgstr ""
 msgid "Exclusion Settings"
 msgstr ""
 
-#: parts/modal/exclude-files-core.php:47, parts/modal/exclude-files-plugins.php:38, parts/modal/exclude-files-root.php:32, parts/modal/exclude-files-themes.php:37, parts/modal/exclude-files-uploads.php:48, parts/modal/exclude-files-wp-content.php:37, parts/sidebar/edit-title.php:42, parts/sidebar/settings-jobs.php:138, parts/sidebar/settings-logs.php:134, parts/sidebar/settings-network.php:108, pro/parts/sidebar/settings-encryption.php:198
+#: parts/modal/exclude-files-core.php:47, parts/modal/exclude-files-plugins.php:38, parts/modal/exclude-files-root.php:32, parts/modal/exclude-files-themes.php:37, parts/modal/exclude-files-uploads.php:48, parts/modal/exclude-files-wp-content.php:37, parts/sidebar/edit-title.php:42, parts/sidebar/settings-jobs.php:137, parts/sidebar/settings-logs.php:134, parts/sidebar/settings-network.php:108, pro/parts/sidebar/settings-encryption.php:199
 msgid "Save"
 msgstr ""
 
@@ -5612,11 +5620,11 @@ msgstr ""
 msgid "Others in root"
 msgstr ""
 
-#: parts/modal/exclude-files-themes.php:14, parts/sidebar/parts/files-content-selector-pro.php:69, parts/sidebar/parts/files-content-selector.php:37, pro/parts/sidebar/parts/files-content-selector-pro.php:62
+#: parts/modal/exclude-files-themes.php:14, parts/sidebar/parts/files-content-selector-pro.php:69
 msgid "Themes"
 msgstr ""
 
-#: parts/modal/exclude-files-uploads.php:14, parts/sidebar/parts/files-content-selector-pro.php:96, parts/sidebar/parts/files-content-selector.php:50, pro/parts/sidebar/parts/files-content-selector-pro.php:87
+#: parts/modal/exclude-files-uploads.php:14, parts/sidebar/parts/files-content-selector-pro.php:96
 msgid "Uploads"
 msgstr ""
 
@@ -5724,43 +5732,43 @@ msgstr ""
 msgid "Your scheduled backup needs a title."
 msgstr ""
 
-#: parts/sidebar/frequency.php:8
+#: parts/sidebar/frequency.php:9
 msgid "Job Scheduled Settings"
 msgstr ""
 
-#: parts/sidebar/frequency.php:30
+#: parts/sidebar/frequency.php:32
 msgid "Current cron expression is not supported by this UI."
 msgstr ""
 
-#: parts/sidebar/frequency.php:62
+#: parts/sidebar/frequency.php:64
 msgid "Minutes"
 msgstr ""
 
-#: parts/sidebar/frequency.php:93
+#: parts/sidebar/frequency.php:95
 msgid "1st Monday of the month"
 msgstr ""
 
-#: parts/sidebar/frequency.php:94
+#: parts/sidebar/frequency.php:96
 msgid "1st Sunday of the month"
 msgstr ""
 
-#: parts/sidebar/frequency.php:103, parts/sidebar/frequency.php:116
+#: parts/sidebar/frequency.php:105, parts/sidebar/frequency.php:118
 msgid "Start day"
 msgstr ""
 
-#: parts/sidebar/frequency.php:136
+#: parts/sidebar/frequency.php:138
 msgid "Start time"
 msgstr ""
 
-#: parts/sidebar/frequency.php:148
+#: parts/sidebar/frequency.php:150
 msgid "Making a copy of your website can slow down your site a bit. We recommend doing this at night to avoid any inconvenience."
 msgstr ""
 
-#: parts/sidebar/frequency.php:158
+#: parts/sidebar/frequency.php:160
 msgid "Enable \"Reduced server load\" in “Advanced Settings > Jobs” to reduce website load and keep your site running smoothly during hourly backups."
 msgstr ""
 
-#: parts/sidebar/frequency.php:170, parts/sidebar/select-files.php:53, parts/sidebar/select-tables.php:93
+#: parts/sidebar/frequency.php:172, parts/sidebar/select-files.php:54, parts/sidebar/select-tables.php:94
 msgid "Save settings"
 msgstr ""
 
@@ -5768,7 +5776,7 @@ msgstr ""
 msgid "Select Files"
 msgstr ""
 
-#: parts/sidebar/select-files.php:24
+#: parts/sidebar/select-files.php:25
 msgid "Content Selector"
 msgstr ""
 
@@ -5776,55 +5784,63 @@ msgstr ""
 msgid "Select Tables"
 msgstr ""
 
-#: parts/sidebar/select-tables.php:41
+#: parts/sidebar/select-tables.php:42
 msgid "Select tables you want to backup"
 msgstr ""
 
-#: parts/sidebar/select-tables.php:47
+#: parts/sidebar/select-tables.php:48
 msgid "Search…"
+msgstr ""
+
+#: parts/sidebar/settings-data-type.php:15
+msgid "Data Settings"
+msgstr ""
+
+#: parts/sidebar/settings-data-type.php:34
+msgid "You can choose what to save in your backup"
 msgstr ""
 
 #: parts/sidebar/settings-jobs.php:4
 msgid "Jobs Settings"
 msgstr ""
 
-#: parts/sidebar/settings-jobs.php:15, parts/sidebar/settings-logs.php:13, parts/sidebar/settings-network.php:24, pro/parts/sidebar/settings-encryption.php:20, pro/parts/sidebar/settings-license.php:37
+#: parts/sidebar/settings-jobs.php:14, parts/sidebar/settings-logs.php:13, parts/sidebar/settings-network.php:24, pro/parts/sidebar/settings-encryption.php:21, pro/parts/sidebar/settings-license.php:37
 msgid "Back to Advanced Settings"
 msgstr ""
 
-#: parts/sidebar/settings-jobs.php:47
+#: parts/sidebar/settings-jobs.php:46
 msgid "Maximum number script execution time (in seconds)"
 msgstr ""
 
-#: parts/sidebar/settings-jobs.php:51
+#: parts/sidebar/settings-jobs.php:50
 msgid "Job will restart before hitting maximum execution time. Restarts will be disabled on CLI usage. if <strong>ALTERNATE_WP_CRON</strong> has been defined, WordPress Cron will be used for restarts, so it can take a while. 0 means no maximum."
 msgstr ""
 
-#: parts/sidebar/settings-jobs.php:60
+#: parts/sidebar/settings-jobs.php:59
 msgid "Key to start a job externally with an URL"
 msgstr ""
 
-#: parts/sidebar/settings-jobs.php:72
+#: parts/sidebar/settings-jobs.php:71
 msgid "Archive format"
 msgstr ""
 
-#: parts/sidebar/settings-jobs.php:104
+#: parts/sidebar/settings-jobs.php:103
 msgid "Enable an empty output on backup working"
 msgstr ""
 
-#: parts/sidebar/settings-jobs.php:105
+#: parts/sidebar/settings-jobs.php:104
 msgid "Allow the backup to complete successfully even if the backup results in an empty output (i.e., no files or data are backed up)"
 msgstr ""
 
-#: parts/sidebar/settings-jobs.php:114
+#: parts/sidebar/settings-jobs.php:113
 msgid "Enable compatibility with IIS on Windows"
 msgstr ""
 
-#: parts/sidebar/settings-jobs.php:115
+#: parts/sidebar/settings-jobs.php:114
 msgid "This ensures the backup will run smoothly on IIS without errors."
 msgstr ""
 
-#: parts/sidebar/settings-jobs.php:123
+#: parts/sidebar/settings-jobs.php:122
 msgid "Access to Legacy Jobs"
 msgstr ""
 
@@ -5872,71 +5888,71 @@ msgstr ""
 msgid "If you protected your blog with HTTP basic authentication (.htaccess), or you use a plugin to secure wp-cron.php, then use the authentication methods above."
 msgstr ""
 
-#: parts/sidebar/storage-DROPBOX.php:5
+#: parts/sidebar/storage-DROPBOX.php:6
 msgid "Dropbox Settings"
 msgstr ""
 
-#: parts/sidebar/storage-DROPBOX.php:30, parts/sidebar/storage-FOLDER.php:29, parts/sidebar/storage-FTP.php:24, parts/sidebar/storage-MSAZURE.php:31, parts/sidebar/storage-RSC.php:34, parts/sidebar/storage-S3.php:34, parts/sidebar/storage-SUGARSYNC.php:25, pro/parts/sidebar/storage-GDRIVE.php:47, pro/parts/sidebar/storage-GLACIER.php:32, pro/parts/sidebar/storage-HIDRIVE.php:28, pro/parts/sidebar/storage-ONEDRIVE.php:37
+#: parts/sidebar/storage-DROPBOX.php:31, parts/sidebar/storage-FOLDER.php:28, parts/sidebar/storage-FTP.php:23, parts/sidebar/storage-MSAZURE.php:31, parts/sidebar/storage-RSC.php:33, parts/sidebar/storage-S3.php:32, parts/sidebar/storage-SUGARSYNC.php:26, pro/parts/sidebar/storage-GDRIVE.php:45, pro/parts/sidebar/storage-GLACIER.php:31, pro/parts/sidebar/storage-HIDRIVE.php:28, pro/parts/sidebar/storage-ONEDRIVE.php:33
 msgid "Back to Storages"
 msgstr ""
 
-#: parts/sidebar/storage-DROPBOX.php:53, parts/sidebar/storage-FOLDER.php:46, parts/sidebar/storage-FTP.php:137, parts/sidebar/storage-MSAZURE.php:124, parts/sidebar/storage-RSC.php:132, parts/sidebar/storage-SUGARSYNC.php:54, pro/parts/sidebar/storage-GDRIVE.php:88, pro/parts/sidebar/storage-GLACIER.php:139, pro/parts/sidebar/storage-HIDRIVE.php:112, pro/parts/sidebar/storage-ONEDRIVE.php:78
+#: parts/sidebar/storage-DROPBOX.php:54, parts/sidebar/storage-FOLDER.php:45, parts/sidebar/storage-FTP.php:136, parts/sidebar/storage-MSAZURE.php:124, parts/sidebar/storage-RSC.php:131, parts/sidebar/storage-SUGARSYNC.php:51, pro/parts/sidebar/storage-GDRIVE.php:84, pro/parts/sidebar/storage-GLACIER.php:138, pro/parts/sidebar/storage-HIDRIVE.php:112, pro/parts/sidebar/storage-ONEDRIVE.php:74
 msgid "Backup Settings"
 msgstr ""
 
-#: parts/sidebar/storage-DROPBOX.php:80, parts/sidebar/storage-FOLDER.php:69, parts/sidebar/storage-FTP.php:160, parts/sidebar/storage-MSAZURE.php:147, parts/sidebar/storage-RSC.php:155, parts/sidebar/storage-S3.php:267, parts/sidebar/storage-SUGARSYNC.php:77, pro/parts/sidebar/storage-GDRIVE.php:111, pro/parts/sidebar/storage-GLACIER.php:153, pro/parts/sidebar/storage-HIDRIVE.php:135, pro/parts/sidebar/storage-ONEDRIVE.php:101
+#: parts/sidebar/storage-DROPBOX.php:81, parts/sidebar/storage-FOLDER.php:68, parts/sidebar/storage-FTP.php:159, parts/sidebar/storage-MSAZURE.php:147, parts/sidebar/storage-RSC.php:154, parts/sidebar/storage-S3.php:265, parts/sidebar/storage-SUGARSYNC.php:72, pro/parts/sidebar/storage-GDRIVE.php:107, pro/parts/sidebar/storage-GLACIER.php:152, pro/parts/sidebar/storage-HIDRIVE.php:135, pro/parts/sidebar/storage-ONEDRIVE.php:97
 msgid "Max backups to retain"
 msgstr ""
 
-#: parts/sidebar/storage-DROPBOX.php:90, parts/sidebar/storage-FOLDER.php:79, parts/sidebar/storage-FTP.php:170, parts/sidebar/storage-MSAZURE.php:157, parts/sidebar/storage-RSC.php:165, parts/sidebar/storage-S3.php:277, parts/sidebar/storage-SUGARSYNC.php:87, pro/parts/sidebar/storage-GDRIVE.php:121, pro/parts/sidebar/storage-GLACIER.php:163, pro/parts/sidebar/storage-HIDRIVE.php:145, pro/parts/sidebar/storage-ONEDRIVE.php:111
+#: parts/sidebar/storage-DROPBOX.php:91, parts/sidebar/storage-FOLDER.php:78, parts/sidebar/storage-FTP.php:169, parts/sidebar/storage-MSAZURE.php:157, parts/sidebar/storage-RSC.php:164, parts/sidebar/storage-S3.php:275, parts/sidebar/storage-SUGARSYNC.php:80, pro/parts/sidebar/storage-GDRIVE.php:117, pro/parts/sidebar/storage-GLACIER.php:162, pro/parts/sidebar/storage-HIDRIVE.php:145, pro/parts/sidebar/storage-ONEDRIVE.php:107
 msgid "When this limit is exceeded, the oldest backup will be deleted."
 msgstr ""
 
-#: parts/sidebar/storage-DROPBOX.php:101, parts/sidebar/storage-FOLDER.php:90, parts/sidebar/storage-FTP.php:190, parts/sidebar/storage-MSAZURE.php:168, parts/sidebar/storage-RSC.php:176, parts/sidebar/storage-S3.php:328, parts/sidebar/storage-SUGARSYNC.php:98, pro/parts/sidebar/storage-GDRIVE.php:142, pro/parts/sidebar/storage-GLACIER.php:174, pro/parts/sidebar/storage-HIDRIVE.php:156, pro/parts/sidebar/storage-ONEDRIVE.php:121
+#: parts/sidebar/storage-DROPBOX.php:102, parts/sidebar/storage-FOLDER.php:89, parts/sidebar/storage-FTP.php:189, parts/sidebar/storage-MSAZURE.php:168, parts/sidebar/storage-RSC.php:175, parts/sidebar/storage-S3.php:326, parts/sidebar/storage-SUGARSYNC.php:92, pro/parts/sidebar/storage-GDRIVE.php:138, pro/parts/sidebar/storage-GLACIER.php:173, pro/parts/sidebar/storage-HIDRIVE.php:156, pro/parts/sidebar/storage-ONEDRIVE.php:117
 msgid "Save & Test connection"
 msgstr ""
 
-#: parts/sidebar/storage-FOLDER.php:18
+#: parts/sidebar/storage-FOLDER.php:17
 msgid "Folder Settings"
 msgstr ""
 
-#: parts/sidebar/storage-FTP.php:5
+#: parts/sidebar/storage-FTP.php:6
 msgid "FTP Settings"
 msgstr ""
 
-#: parts/sidebar/storage-FTP.php:41
+#: parts/sidebar/storage-FTP.php:40
 msgid "Server and Login"
 msgstr ""
 
-#: parts/sidebar/storage-FTP.php:54
+#: parts/sidebar/storage-FTP.php:53
 msgid "FTP Server"
 msgstr ""
 
-#: parts/sidebar/storage-FTP.php:68
+#: parts/sidebar/storage-FTP.php:67
 msgid "Port"
 msgstr ""
 
-#: parts/sidebar/storage-FTP.php:105
+#: parts/sidebar/storage-FTP.php:104
 msgid "Timeout for FTP connection (in seconds)"
 msgstr ""
 
-#: parts/sidebar/storage-FTP.php:117
+#: parts/sidebar/storage-FTP.php:116
 msgid "Use explicit SSL-FTP connexion"
 msgstr ""
 
-#: parts/sidebar/storage-FTP.php:118
+#: parts/sidebar/storage-FTP.php:117
 msgid "This option is only available if your server supports SSL connections."
 msgstr ""
 
-#: parts/sidebar/storage-FTP.php:127
+#: parts/sidebar/storage-FTP.php:126
 msgid "Use FTP passive mode"
 msgstr ""
 
-#: parts/sidebar/storage-FTP.php:178
+#: parts/sidebar/storage-FTP.php:177
 msgid "Files belonging to this job are now tracked. Old backup archives which are untracked will not be automatically deleted."
 msgstr ""
 
-#: parts/sidebar/storage-MSAZURE.php:8
+#: parts/sidebar/storage-MSAZURE.php:9
 msgid "Microsoft Azure Settings"
 msgstr ""
 
@@ -5952,7 +5968,7 @@ msgstr ""
 msgid "Please enter your Azure Access Keys"
 msgstr ""
 
-#: parts/sidebar/storage-MSAZURE.php:105, parts/sidebar/storage-RSC.php:112, parts/sidebar/storage-S3.php:77, parts/sidebar/storage-S3.php:227, parts/sidebar/dropbox-parts/api-connexion.php:70, pro/parts/sidebar/settings-encryption.php:80, pro/parts/sidebar/storage-GLACIER.php:124
+#: parts/sidebar/storage-MSAZURE.php:105, parts/sidebar/storage-RSC.php:111, parts/sidebar/storage-S3.php:75, parts/sidebar/storage-S3.php:225, parts/sidebar/dropbox-parts/api-connexion.php:70, pro/parts/sidebar/settings-encryption.php:81, pro/parts/sidebar/storage-GLACIER.php:123
 msgid "OR"
 msgstr ""
 
@@ -5960,19 +5976,19 @@ msgstr ""
 msgid "The container name must be alphanumeric characters only and in lowercase."
 msgstr ""
 
-#: parts/sidebar/storage-RSC.php:16
+#: parts/sidebar/storage-RSC.php:17
 msgid "Rackspace Cloud Settings"
 msgstr ""
 
-#: parts/sidebar/storage-RSC.php:51
+#: parts/sidebar/storage-RSC.php:50
 msgid "Rackspace Cloud Keys"
 msgstr ""
 
-#: parts/sidebar/storage-RSC.php:84
+#: parts/sidebar/storage-RSC.php:83
 msgid "Select Region"
 msgstr ""
 
-#: parts/sidebar/storage-RSC.php:120, parts/sidebar/storage-S3.php:235
+#: parts/sidebar/storage-RSC.php:119, parts/sidebar/storage-S3.php:233
 msgid "The bucket name must be alphanumeric characters only and in lowercase."
 msgstr ""
 
@@ -5980,39 +5996,39 @@ msgstr ""
 msgid "Amazon S3 Settings"
 msgstr ""
 
-#: parts/sidebar/storage-S3.php:62
+#: parts/sidebar/storage-S3.php:60
 msgid "Select a S3 Service"
 msgstr ""
 
-#: parts/sidebar/storage-S3.php:83
+#: parts/sidebar/storage-S3.php:81
 msgid "a S3 Server URL"
 msgstr ""
 
-#: parts/sidebar/storage-S3.php:133
+#: parts/sidebar/storage-S3.php:131
 msgid "Version"
 msgstr ""
 
-#: parts/sidebar/storage-S3.php:146
+#: parts/sidebar/storage-S3.php:144
 msgid "The S3 signature version like \"v4\", default \"latest\""
 msgstr ""
 
-#: parts/sidebar/storage-S3.php:233
+#: parts/sidebar/storage-S3.php:231
 msgid "Create a new Bucket"
 msgstr ""
 
-#: parts/sidebar/storage-S3.php:245
+#: parts/sidebar/storage-S3.php:243
 msgid "S3 Backup Settings"
 msgstr ""
 
-#: parts/sidebar/storage-S3.php:287
+#: parts/sidebar/storage-S3.php:285
 msgid "Amazon Specific Settings"
 msgstr ""
 
-#: parts/sidebar/storage-S3.php:315
+#: parts/sidebar/storage-S3.php:313
 msgid "Save files encrypted (AES256) on server"
 msgstr ""
 
-#: parts/sidebar/storage-SUGARSYNC.php:15
+#: parts/sidebar/storage-SUGARSYNC.php:16
 msgid "Sugar Sync Settings"
 msgstr ""
 
@@ -6020,7 +6036,7 @@ msgstr ""
 msgid "Storages Settings"
 msgstr ""
 
-#: parts/sidebar/storages.php:34
+#: parts/sidebar/storages.php:36
 msgid "You can select where to store your backups and configure each storage."
 msgstr ""
 
@@ -6133,6 +6149,14 @@ msgstr ""
 msgid "You can now deselect the default Website Server as a storage destination. We’ve fixed Google Drive & Dropbox storage issues, the sidebar not clickable error, and reduced plugin size, among other improvements for a stable BackWPup experience."
 msgstr ""
 
+#: views/notice/notice_5_3.php:1
+msgid "BackWPup 5.3 is here!"
+msgstr ""
+
+#: views/notice/notice_5_3.php:5
+msgid "You can now back up Files & Database together in a single backup and schedule it. We’ve also fixed new backups not respecting your selected archive format, along with other improvements."
+msgstr ""
+
 #: views/notice/php.php:1
 msgid "BackWPup is dropping support for PHP versions less than 7.4. As such, using outdated and unsupported versions of PHP may expose your site to security vulnerabilities. Please update PHP to the latest version. Ask your hoster if you don't know how."
 msgstr ""
@@ -6233,15 +6257,15 @@ msgstr ""
 msgid "Encryption Type"
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:29, pro/parts/sidebar/settings-encryption.php:120
+#: inc/Pro/Settings/EncryptionSettingsView.php:29, pro/parts/sidebar/settings-encryption.php:121
 msgid "Encryption Key"
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:55, pro/parts/sidebar/settings-encryption.php:63
+#: inc/Pro/Settings/EncryptionSettingsView.php:55, pro/parts/sidebar/settings-encryption.php:64
 msgid "Symmetric (public key only)"
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:61, pro/parts/sidebar/settings-encryption.php:71
+#: inc/Pro/Settings/EncryptionSettingsView.php:61, pro/parts/sidebar/settings-encryption.php:72
 msgid "Generate a single unique 256-bit key. This is a one time option, key cannot be changed and new keys cannot be created."
 msgstr ""
 
@@ -6249,11 +6273,11 @@ msgstr ""
 msgid "Note: Download the encryption key to be able to restore the backups using the standalone application."
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:89, pro/parts/sidebar/settings-encryption.php:88
+#: inc/Pro/Settings/EncryptionSettingsView.php:89, pro/parts/sidebar/settings-encryption.php:89
 msgid "Asymmetric (public and private key)"
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:93, pro/parts/sidebar/settings-encryption.php:96
+#: inc/Pro/Settings/EncryptionSettingsView.php:93, pro/parts/sidebar/settings-encryption.php:97
 msgid "Generate a RSA public/private key pair (more secure)."
 msgstr ""
 
@@ -6269,67 +6293,63 @@ msgstr ""
 msgid "You can also <strong>Validate</strong> that you have the correct private key for the given public key."
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:151, pro/parts/sidebar/settings-encryption.php:140
+#: inc/Pro/Settings/EncryptionSettingsView.php:151, pro/parts/sidebar/settings-encryption.php:141
 msgid "Generate Key"
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:160, pro/parts/sidebar/settings-encryption.php:148
+#: inc/Pro/Settings/EncryptionSettingsView.php:160, pro/parts/sidebar/settings-encryption.php:149
 msgid "Download Key"
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:180, pro/parts/sidebar/settings-encryption.php:172
+#: inc/Pro/Settings/EncryptionSettingsView.php:180, pro/parts/sidebar/settings-encryption.php:173
 msgid "Generate Key Pair"
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:187, inc/Pro/Settings/EncryptionSettingsView.php:219, pro/parts/sidebar/settings-encryption.php:181, pro/parts/sidebar/settings-encryption.php:227
+#: inc/Pro/Settings/EncryptionSettingsView.php:187, inc/Pro/Settings/EncryptionSettingsView.php:219, pro/parts/sidebar/settings-encryption.php:182, pro/parts/sidebar/settings-encryption.php:228
 msgid "Validate"
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:201, pro/parts/sidebar/settings-encryption.php:209
+#: inc/Pro/Settings/EncryptionSettingsView.php:201, pro/parts/sidebar/settings-encryption.php:210
 msgid "Enter your private key below to verify it will work with the provided public key."
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:207, pro/parts/sidebar/settings-encryption.php:215
+#: inc/Pro/Settings/EncryptionSettingsView.php:207, pro/parts/sidebar/settings-encryption.php:216
 msgid "The private key will not be stored, so you must still securely store it yourself."
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:214, inc/Pro/Settings/EncryptionSettingsView.php:249, pro/parts/sidebar/settings-encryption.php:222, pro/parts/sidebar/settings-encryption.php:251
+#: inc/Pro/Settings/EncryptionSettingsView.php:214, inc/Pro/Settings/EncryptionSettingsView.php:249, pro/parts/sidebar/settings-encryption.php:223, pro/parts/sidebar/settings-encryption.php:252
 msgid "Private Key"
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:231, pro/parts/sidebar/settings-encryption.php:233
+#: inc/Pro/Settings/EncryptionSettingsView.php:231, pro/parts/sidebar/settings-encryption.php:234
 msgid "Your keys are being generated. Please hold on &hellip;"
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:237, pro/parts/sidebar/settings-encryption.php:239
+#: inc/Pro/Settings/EncryptionSettingsView.php:237, pro/parts/sidebar/settings-encryption.php:240
 msgid "Public Key"
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:244, pro/parts/sidebar/settings-encryption.php:246
+#: inc/Pro/Settings/EncryptionSettingsView.php:244, pro/parts/sidebar/settings-encryption.php:247
 msgid "Download Public Key"
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:256, pro/parts/sidebar/settings-encryption.php:258
+#: inc/Pro/Settings/EncryptionSettingsView.php:256, pro/parts/sidebar/settings-encryption.php:259
 msgid "Download Private Key"
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:263, pro/parts/sidebar/settings-encryption.php:265
+#: inc/Pro/Settings/EncryptionSettingsView.php:263, pro/parts/sidebar/settings-encryption.php:266
 msgid "Please download at least the private key you entered above. The plugin will not store this key, and without it your backups cannot be decrypted."
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:269, pro/parts/sidebar/settings-encryption.php:271
+#: inc/Pro/Settings/EncryptionSettingsView.php:269, pro/parts/sidebar/settings-encryption.php:272
 msgid "Click the button below to use the generated keys."
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingsView.php:273, pro/parts/sidebar/settings-encryption.php:275
+#: inc/Pro/Settings/EncryptionSettingsView.php:273, pro/parts/sidebar/settings-encryption.php:276
 msgid "Use These Keys"
 msgstr ""
 
-#: inc/Pro/Settings/EncryptionSettingUpdater.php:107
-msgid "Files job not found"
-msgstr ""
-
-#: parts/sidebar/dropbox-parts/api-connexion.php:121, parts/sidebar/sugar-sync-parts/api-connexion.php:64, pro/parts/sidebar/storage-HIDRIVE.php:66
+#: parts/sidebar/dropbox-parts/api-connexion.php:121, parts/sidebar/sugar-sync-parts/api-connexion.php:61, pro/parts/sidebar/storage-HIDRIVE.php:66
 msgid "Authenticated"
 msgstr ""
 
@@ -6349,51 +6369,51 @@ msgstr ""
 msgid "BackWPup will have full read and write access to your entire Dropbox. You can specify your backup destination wherever you want, just be aware that ANY files or folders inside of your Dropbox can be overridden or deleted by BackWPup"
 msgstr ""
 
-#: parts/sidebar/parts/exclude-from-backup.php:8, pro/parts/sidebar/parts/exclude-from-backup.php:4
+#: parts/sidebar/parts/exclude-from-backup.php:8
 msgid "Add folders, files or extensions you want to exclude"
 msgstr ""
 
-#: parts/sidebar/parts/files-content-selector-pro.php:26, parts/sidebar/parts/files-content-selector-pro.php:53, parts/sidebar/parts/files-content-selector-pro.php:79, parts/sidebar/parts/files-content-selector-pro.php:106, parts/sidebar/parts/files-content-selector-pro.php:133, pro/parts/sidebar/parts/files-content-selector-pro.php:22, pro/parts/sidebar/parts/files-content-selector-pro.php:47, pro/parts/sidebar/parts/files-content-selector-pro.php:72, pro/parts/sidebar/parts/files-content-selector-pro.php:97, pro/parts/sidebar/parts/files-content-selector-pro.php:122
+#: parts/sidebar/parts/files-content-selector-pro.php:26, parts/sidebar/parts/files-content-selector-pro.php:53, parts/sidebar/parts/files-content-selector-pro.php:79, parts/sidebar/parts/files-content-selector-pro.php:106, parts/sidebar/parts/files-content-selector-pro.php:133
 msgid "Exclude files"
 msgstr ""
 
-#: parts/sidebar/parts/files-content-selector-pro.php:123, parts/sidebar/parts/files-content-selector.php:63, pro/parts/sidebar/parts/files-content-selector-pro.php:112
+#: parts/sidebar/parts/files-content-selector-pro.php:123
 msgid "Other in wp-content"
 msgstr ""
 
-#: parts/sidebar/sugar-sync-parts/api-connexion.php:54
+#: parts/sidebar/sugar-sync-parts/api-connexion.php:52
 msgid "Delete Sugar Sync Authentication"
 msgstr ""
 
-#: parts/sidebar/sugar-sync-parts/api-connexion.php:24
+#: parts/sidebar/sugar-sync-parts/api-connexion.php:22
 msgid "Email Address"
 msgstr ""
 
-#: parts/sidebar/sugar-sync-parts/api-connexion.php:44
+#: parts/sidebar/sugar-sync-parts/api-connexion.php:38
 msgid "Authenticate with SugarSync"
 msgstr ""
 
-#: parts/sidebar/sugar-sync-parts/root-folder.php:32
+#: parts/sidebar/sugar-sync-parts/root-folder.php:24
 msgid "Sugar Sync Root"
 msgstr ""
 
-#: pro/parts/sidebar/settings-encryption.php:52
+#: pro/parts/sidebar/settings-encryption.php:53
 msgid "Secure your backups, even if someone gains access to the backup files, they can’t read or use the data without the encryption key."
 msgstr ""
 
-#: pro/parts/sidebar/settings-encryption.php:76
+#: pro/parts/sidebar/settings-encryption.php:77
 msgid "<b>Note:</b> Download the encryption key to be able to restore the backups using the standalone application."
 msgstr ""
 
-#: pro/parts/sidebar/settings-encryption.php:101
+#: pro/parts/sidebar/settings-encryption.php:102
 msgid "You can create as many key pairs as you want, but they will override the previous one."
 msgstr ""
 
-#: pro/parts/sidebar/settings-encryption.php:106
+#: pro/parts/sidebar/settings-encryption.php:107
 msgid "<b>Note</b>: You will be asked to download the keys for safe storage. The plugin does not keep a copy of the private key, so if you lose this, your data cannot be decrypted!"
 msgstr ""
 
-#: pro/parts/sidebar/settings-encryption.php:111
+#: pro/parts/sidebar/settings-encryption.php:112
 msgid "You can also Validate that you have the correct private key for the given public key."
 msgstr ""
 
@@ -6401,23 +6421,23 @@ msgstr ""
 msgid "License Settings"
 msgstr ""
 
-#: pro/parts/sidebar/storage-GDRIVE.php:37
+#: pro/parts/sidebar/storage-GDRIVE.php:35
 msgid "Google Drive Settings"
 msgstr ""
 
-#: pro/parts/sidebar/storage-GDRIVE.php:131
+#: pro/parts/sidebar/storage-GDRIVE.php:127
 msgid "Consider using trash to delete files. <br /> If trash is not enabled, files will be deleted permanently"
 msgstr ""
 
-#: pro/parts/sidebar/storage-GLACIER.php:17
+#: pro/parts/sidebar/storage-GLACIER.php:16
 msgid "Amazon Glacier Settings"
 msgstr ""
 
-#: pro/parts/sidebar/storage-GLACIER.php:60
+#: pro/parts/sidebar/storage-GLACIER.php:59
 msgid "Select a region"
 msgstr ""
 
-#: pro/parts/sidebar/storage-HIDRIVE.php:5
+#: pro/parts/sidebar/storage-HIDRIVE.php:6
 msgid "HiDrive Settings"
 msgstr ""
 
@@ -6441,11 +6461,11 @@ msgstr ""
 msgid "Delete Hidrive Authentication"
 msgstr ""
 
-#: pro/parts/sidebar/storage-ONEDRIVE.php:5
+#: pro/parts/sidebar/storage-ONEDRIVE.php:6
 msgid "Microsoft OneDrive Settings"
 msgstr ""
 
-#: pro/parts/sidebar/storage-ONEDRIVE.php:54
+#: pro/parts/sidebar/storage-ONEDRIVE.php:50
 msgid "One Drive API Keys"
 msgstr ""
 

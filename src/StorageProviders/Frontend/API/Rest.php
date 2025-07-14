@@ -5,6 +5,7 @@ namespace WPMedia\BackWPup\StorageProviders\Frontend\API;
 use WPMedia\BackWPup\API\Rest as RestInterface;
 use WPMedia\BackWPup\Adapters\BackWPupHelpersAdapter;
 use WPMedia\BackWPup\Adapters\OptionAdapter;
+use WPMedia\BackWPup\Plugin\Plugin;
 
 use WP_HTTP_Response;
 use Exception;
@@ -75,11 +76,11 @@ class Rest implements RestInterface {
 	public function get_storage_list_compact() {
 		$status = 200;
 		try {
-			$files_job_id = get_site_option( 'backwpup_backup_files_job_id', false );
-			if ( false === $files_job_id ) {
+			$first_job_id = get_site_option( Plugin::FIRST_JOB_ID, false );
+			if ( false === $first_job_id ) {
 				throw new Exception( __( 'No backup jobs set.', 'backwpup' ) );
 			}
-			$storage_destination = $this->option_adapter->get( $files_job_id, 'destinations', [] );
+			$storage_destination = $this->option_adapter->get( $first_job_id, 'destinations', [] );
 			$html                = $this->helper_adapter->component( 'storage-list-compact', [ 'storages' => $storage_destination ] );
 		}
 		catch ( Exception $e ) {

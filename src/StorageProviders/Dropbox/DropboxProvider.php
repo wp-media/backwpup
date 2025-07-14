@@ -5,6 +5,7 @@ use WP_REST_Request;
 use WPMedia\BackWPup\StorageProviders\ProviderInterface;
 use WPMedia\BackWPup\Adapters\OptionAdapter;
 use WPMedia\BackWPup\Adapters\BackWPupHelpersAdapter;
+use WPMedia\BackWPup\Plugin\Plugin;
 
 class DropboxProvider implements ProviderInterface {
 
@@ -89,11 +90,11 @@ class DropboxProvider implements ProviderInterface {
 		if ( isset( $params['job_id'] ) ) {
 			$jobids = [ $params['job_id'] ];
 		} else {
-			$files_job_id = get_site_option( 'backwpup_backup_files_job_id', false );
-			if ( false === $files_job_id ) {
+			$first_job_id = get_site_option( Plugin::FIRST_JOB_ID, false );
+			if ( false === $first_job_id ) {
 				throw new \Exception( __( 'No backup jobs set.', 'backwpup' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 			}
-			$jobids = [ $files_job_id, $files_job_id + 1 ];
+			$jobids = [ $first_job_id ];
 		}
 		foreach ( $jobids as $jobid ) {
 			$this->option_adapter->delete( $jobid, 'dropboxtoken' );

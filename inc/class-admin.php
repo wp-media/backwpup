@@ -807,7 +807,15 @@ final class BackWPup_Admin {
 		$post_tab           = isset( $_POST['tab'] ) ? sanitize_text_field( wp_unslash( $_POST['tab'] ) ) : null;
 		$post_nexttab       = isset( $_POST['nexttab'] ) ? sanitize_text_field( wp_unslash( $_POST['nexttab'] ) ) : null;
 		$post_archiveformat = isset( $_POST['archiveformat'] ) ? sanitize_text_field( wp_unslash( $_POST['archiveformat'] ) ) : null;
-
+		$archiveformat      = in_array(
+			$post_archiveformat,
+			[
+				'.zip',
+				'.tar',
+				'.tar.gz',
+			],
+			true
+			) ? $post_archiveformat : '.tar';
 		if ( isset( $post_page ) && ! in_array( $post_page, $allowed_pages, true ) ) {
 			wp_die( esc_html__( 'Cheating, huh?', 'backwpup' ) );
 		}
@@ -836,14 +844,8 @@ final class BackWPup_Admin {
 			$query_args['jobid'] = $jobid;
         }
 
-		// Save archive format for all jobs.
-		$jobs = BackWPup_Option::get_job_ids();
-
-		foreach ( $jobs as $job_id ) {
-			if ( $post_archiveformat ) {
-				BackWPup_Option::update( $job_id, 'archiveformat', $post_archiveformat );
-			}
-		}
+		// Save archive format general value.
+		do_action( 'backwpup_save_archiveformat', $archiveformat );
 
 		// Call method to save data.
 		if ( 'backwpupeditjob' === $post_page ) {
@@ -1187,6 +1189,7 @@ EOT;
 			'delete_job'             => rest_url( 'backwpup/v1/delete_job' ),
 			'backupslistingslength'  => 10,
 			'storages'               => rest_url( 'backwpup/v2/storages' ),
+			'updates_backup_type'    => trailingslashit( rest_url( 'backwpup/v2/backups' ) ) . '%d/type',
 		];
 
 		if ( $job_object ) {

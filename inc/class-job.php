@@ -345,7 +345,7 @@ class BackWPup_Job
 				}
 				// Add job type to the filename.
 				$archive_filename = $this->job['archivename'] . '_' . implode( '-', $this->job['type'] );
-				$format           = $this->job['archiveformat'];
+				$format           = get_site_option( 'backwpup_archiveformat' );
 				/**
 				 * Filter the backup extension.
 				 *
@@ -651,6 +651,14 @@ class BackWPup_Job
                 $this->steps_todo = ['END'];
             }
         }
+
+		/**
+		 * Fires on backup job creation
+		 *
+		 * @param array $job Job details.
+		 * @param string $backup_file Backup file name.
+		 */
+		do_action( 'backwpup_create_job', $this->job, $this->backup_file );
 
         //Set start as done
         $this->steps_done[] = 'CREATE';
@@ -1311,6 +1319,14 @@ class BackWPup_Job
         $this->substeps_done = 1;
         $this->steps_done[] = 'END';
 
+		/**
+		 * Fires when a backup job ends
+		 *
+		 * @param array  $job Job details.
+		 * @param string $backup_file Backup file name.
+		 */
+		do_action( 'backwpup_end_job', $this->job, $this->backup_file );
+
         //clean up temp
         self::clean_temp_folder();
 
@@ -1747,7 +1763,24 @@ class BackWPup_Job
                     $this->substeps_done = 0;
                     $this->substeps_todo = 0;
                     $this->update_working_data(true);
-                }
+				}
+				if ( $done && strstr( (string) $this->step_working, 'DEST_' ) ) {
+
+					// Retrieve the destintation ID.
+					$destination = str_replace( 'DEST_', '', (string) $this->step_working );
+					if ( strstr( (string) $this->step_working, 'DEST_SYNC_' ) ) {
+						$destination = str_replace( 'DEST_SYNC_', '', (string) $this->step_working );
+					}
+
+					/**
+					 * Action fires with backup success.
+					 *
+					 * @param array $job Job details.
+					 * @param string $destination Destination ID.
+					 * @param string $backup_file Backup file name.
+					 */
+					do_action( 'backwpup_job_success', $this->job, $destination, $this->backup_file );
+				}
                 if (count($this->steps_done) < count($this->steps_todo) - 1) {
                     $this->do_restart();
                 }
@@ -2307,14 +2340,14 @@ class BackWPup_Job
         $manifest['job_settings'] = [
             'dbdumptype' => $this->job['dbdumptype'],
             'dbdumpfile' => $this->job['dbdumpfile'],
-            'dbdumpfilecompression' => $this->job['dbdumpfilecompression'],
-            'dbdumpdbcharset' => !empty($this->job['dbdumpdbcharset']) ? $this->job['dbdumpdbcharset'] : '',
-            'type' => $this->job['type'],
-            'destinations' => $this->job['destinations'],
-            'backuptype' => $this->job['backuptype'],
-            'archiveformat' => $this->job['archiveformat'],
-            'dbdumpexclude' => $this->job['dbdumpexclude'],
-        ];
+			'dbdumpfilecompression' => $this->job['dbdumpfilecompression'],
+			'dbdumpdbcharset'       => ! empty( $this->job['dbdumpdbcharset'] ) ? $this->job['dbdumpdbcharset'] : '',
+			'type'                  => $this->job['type'],
+			'destinations'          => $this->job['destinations'],
+			'backuptype'            => $this->job['backuptype'],
+			'archiveformat'         => get_site_option( 'backwpup_archiveformat' ),
+			'dbdumpexclude'         => $this->job['dbdumpexclude'],
+		];
 
         // add archive info
         foreach ($this->additional_files_to_backup as $file) {

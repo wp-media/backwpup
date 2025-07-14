@@ -1,6 +1,7 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 use Inpsyde\BackWPup\MsAzureDestinationConfiguration;
+use WPMedia\BackWPup\Plugin\Plugin;
 $job_id = $job_id ?? null;
 $msazure = BackWPup::get_destination("msazure");
 $msazure->edit_inline_js();
@@ -9,18 +10,17 @@ BackWPupHelpers::component("closable-heading", [
   'type' => 'sidebar'
 ]);
 if (null === $job_id || empty($job_id) ) {
-	$is_in_form    = true;  $msazuredir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
-    $msazuremaxbackups = 15;
-} else {
-  $msazuredir = esc_attr(BackWPup_Option::get(
+	$is_in_form    = true;
+	$job_id = get_site_option(Plugin::FIRST_JOB_ID, false);
+}
+$msazuredir = esc_attr(BackWPup_Option::get(
     $job_id,
     "msazuredir",
     trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')))));
-  $msazuremaxbackups = esc_attr(BackWPup_Option::get(
-    $job_id,
-    "msazuremaxbackups",
-    3));
-}
+$msazuremaxbackups = esc_attr(BackWPup_Option::get(
+	$job_id,
+	"msazuremaxbackups",
+	3));
 ?>
 
 <?php if (isset($is_in_form) && ( false === $is_in_form || 'false' === $is_in_form )) : ?>

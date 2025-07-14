@@ -1,7 +1,6 @@
 <?php
-
-use function Inpsyde\BackWPup\Infrastructure\Restore\restore_container;
 use Inpsyde\Restore\ViewLoader;
+use function Inpsyde\BackWPup\Infrastructure\Restore\restore_container;
 
 /**
  * Class For BackWPup Jobs page.
@@ -509,16 +508,10 @@ class BackWPup_Page_Jobs extends WP_List_Table {
                 if (!current_user_can('backwpup_jobs_edit')) {
                     break;
 				}
-				$database_job_id = get_site_option( 'backwpup_backup_database_job_id', false );
-				$files_job_id    = get_site_option( 'backwpup_backup_files_job_id', false );
 				if ( isset( $_GET['jobs'] ) && is_array( $_GET['jobs'] ) ) {
 					check_admin_referer( 'bulk-jobs' );
 
 					foreach ( $_GET['jobs'] as $jobid ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
-						// Do not delete the database or files job.
-						if ( $jobid === $database_job_id || $jobid === $files_job_id ) {
-							continue;
-						}
 						wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => absint( $jobid ) ] );
 						BackWPup_Option::delete_job( absint( $jobid ) );
 					}

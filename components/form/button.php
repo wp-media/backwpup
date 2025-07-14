@@ -29,7 +29,7 @@ $id = isset($identifier) ? " id='".esc_attr($identifier)."'" : null;
 
 # Type
 $button_base = "flex items-center";
-$types = ["primary", "secondary", "link", "settings", "icon"];
+$types = ["primary", "secondary", "link", "settings", "icon", "icon-hover"];
 $type = isset($type) && in_array($type, $types) ? $type : "link";
 switch ($type) {
   case "primary":
@@ -44,6 +44,9 @@ switch ($type) {
   case 'icon':
     $button_style = "justify-between rounded bg-white-100 text-xl font-medium text-primary-darker hover:bg-grey-200";
     break;
+  case 'icon-hover':
+   $button_style = "justify-between rounded bg-white-100 text-xl font-medium text-primary-darker";
+   break;
   default:
     $button_style = "justify-center leading-5 text-primary-darker border-b border-primary-darker font-title disabled:opacity-40 enabled:hover:text-primary-lighter enabled:hover:border-primary-lighter";
     break;

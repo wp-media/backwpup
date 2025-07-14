@@ -242,18 +242,19 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations
         if ($job_object->job['maxbackups'] > 0) {
             if (count($backupfilelist) > $job_object->job['maxbackups']) {
                 ksort($backupfilelist);
-                $numdeltefiles = 0;
+				$numdeltefiles = 0;
+				$deleted_files = [];
 
                 while ($file = array_shift($backupfilelist)) {
                     if (count($backupfilelist) < $job_object->job['maxbackups']) {
                         break;
-                    }
-                    unlink($file->getPathname());
-
-                    foreach ($files as $key => $filedata) {
-                        if ($filedata['file'] === $file->getPathname()) {
-                            unset($files[$key]);
-                        }
+					}
+					wp_delete_file( $file->getPathname() );
+					$deleted_files[] = $file->getPathname();
+					foreach ( $files as $key => $filedata ) {
+						if ( $filedata['file'] === $file->getPathname() ) {
+							unset( $files[ $key ] );
+						}
                     }
                     ++$numdeltefiles;
                 }
@@ -266,8 +267,10 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations
                         ),
                         E_USER_NOTICE
                     );
-                }
-            }
+				}
+
+				parent::remove_file_history_from_database( $deleted_files, 'FOLDER' );
+			}
         }
 
         ++$job_object->substeps_done;

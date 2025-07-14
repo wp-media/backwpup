@@ -1,6 +1,7 @@
 <?php
 
 use Base32\Base32;
+use WPMedia\BackWPup\Plugin\Plugin;
 
 /**
  * Class for options.
@@ -31,6 +32,8 @@ final class BackWPup_Option
 		// Logs.
 		add_site_option( 'backwpup_cfg_maxlogs', 30 );
 		add_site_option( 'backwpup_cfg_gzlogs', 0 );
+		// Archive format.
+		add_site_option( 'backwpup_archiveformat', '.tar' );
 		$upload_dir   = wp_upload_dir( null, false, true );
 		$logs_dir     = trailingslashit(
 			str_replace(
@@ -276,7 +279,6 @@ final class BackWPup_Option
 		$default['mailaddresssenderlog']  = 'BackWPup ' . get_bloginfo( 'name' ) . ' <' . sanitize_email( get_bloginfo( 'admin_email' ) ) . '>';
 		$default['mailerroronly']         = true;
 		$default['backuptype']            = 'archive';
-		$default['archiveformat']         = '.tar';
 		$default['archivename']           = '%Y-%m-%d_%H-%i-%s_%hash%';
 		$default['archivenamenohash']     = '%Y-%m-%d_%H-%i-%s_%hash%';
 		$default['legacy']                = false;
@@ -676,13 +678,14 @@ final class BackWPup_Option
 	 * @return array
 	 */
 	public static function get_default_jobs() {
+
 		$job_file          = self::defaults_job();
-		$job_file['jobid'] = (int) get_site_option( 'backwpup_backup_files_job_id', 1 );
+		$job_file['jobid'] = (int) get_site_option( Plugin::FILES_JOB_ID, 1 );
 		$job_file['type']  = BackWPup_JobTypes::$type_job_files;
 		$job_file['name']  = BackWPup_JobTypes::$name_job_files;
 
 		$job_db          = self::defaults_job();
-		$job_db['jobid'] = (int) get_site_option( 'backwpup_backup_database_job_id', 2 );
+		$job_db['jobid'] = (int) get_site_option( Plugin::DATABASE_JOB_ID, 2 );
 		$job_db['type']  = BackWPup_JobTypes::$type_job_database;
 		$job_db['name']  = BackWPup_JobTypes::$name_job_database;
 

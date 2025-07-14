@@ -6,10 +6,12 @@ namespace WPMedia\BackWPup\Admin;
 use BackWPup;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice52;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice522;
+use WPMedia\BackWPup\Admin\Notices\Notices\Notice53;
 use WPMedia\BackWPup\Admin\Notices\Subscriber as NoticeSubscriber;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice513;
 use Inpsyde\BackWPup\Notice\NoticeView;
 use WPMedia\BackWPup\Admin\Settings\Subscriber as SettingSubscriber;
+use WPMedia\BackWPup\Admin\Frontend\Subscriber as AdminFrontendSubscriber;
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider {
@@ -22,6 +24,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'notice_subscriber',
 		'notice_view_factory',
 		SettingSubscriber::class,
+		AdminFrontendSubscriber::class,
 	];
 
 	/**
@@ -32,6 +35,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	public $subscribers = [
 		SettingSubscriber::class,
 		'notice_subscriber',
+		AdminFrontendSubscriber::class,
 	];
 
 	/**
@@ -78,16 +82,33 @@ class ServiceProvider extends AbstractServiceProvider {
 					'backwpup_adapter',
 				]
 			);
+		// Notice for 5.3.
+		$this->getContainer()->add( 'notice_53_view', NoticeView::class )
+			->addArgument( Notice53::ID );
+		$this->getContainer()->addShared( 'notice_53', Notice53::class )
+			->addArguments(
+				[
+					'notice_53_view',
+					'backwpup_adapter',
+				]
+			);
 		// Register the Subscriber with an array of notice instances.
 		$this->getContainer()->addShared( 'notice_subscriber', NoticeSubscriber::class )
 			->addArgument(
 				[
+					$this->getContainer()->get( 'notice_53' ),
 					$this->getContainer()->get( 'notice_522' ),
 					$this->getContainer()->get( 'notice_52' ),
 					$this->getContainer()->get( 'notice_513' ),
 				]
 				);
 		$this->getContainer()->addShared( SettingSubscriber::class );
+		$this->getContainer()->addShared( AdminFrontendSubscriber::class )
+			->addArguments(
+				[
+					'backwpup_adapter',
+				]
+			);
 	}
 
 	/**

@@ -9,12 +9,10 @@ use WPMedia\BackWPup\Backups\API\Subscriber as BackupsApiSubscriber;
 use WPMedia\BackWPup\Backups\API\Rest as BackupsApiRest;
 use WPMedia\BackWPup\Backups\History\Frontend\API\Subscriber as BackupsHistoryFrontendApiSubscriber;
 use WPMedia\BackWPup\Backups\History\Frontend\API\Rest as BackupsHistoryFrontendApiRest;
-use WPMedia\BackWPup\Adapters\BackWPupAdapter;
-use WPMedia\BackWPup\Adapters\OptionAdapter;
-use WPMedia\BackWPup\Adapters\BackWPupHelpersAdapter;
-use WPMedia\BackWPup\Adapters\JobAdapter;
-use WPMedia\BackWPup\Adapters\FileAdapter;
-use WPMedia\BackWPup\Adapters\JobTypesAdapter;
+use WPMedia\BackWPup\Backups\Onboarding\{
+	Onboarding,
+	Subscriber as OnboardingSubscriber
+};
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -30,6 +28,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'backups_api_rest',
 		'backups_history_frontend_api_rest',
 		'backups_history_frontend_api_subscriber',
+		'backwpup_onboarding_subscriber',
+		'backwpup_onboarding',
 	];
 
 	/**
@@ -44,6 +44,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	public $subscribers = [
 		'backups_api_subscriber',
 		'backups_history_frontend_api_subscriber',
+		'backwpup_onboarding_subscriber',
 	];
 
 	/**
@@ -97,6 +98,22 @@ class ServiceProvider extends AbstractServiceProvider {
 					'backups_history_frontend_api_rest',
 				]
 				);
+		$this->getContainer()->addShared( 'backwpup_onboarding', Onboarding::class )
+			->addArguments(
+				[
+					'job_types_adapter',
+					'option_adapter',
+					'job_adapter',
+					'backwpup_adapter',
+				]
+			);
+
+		$this->getContainer()->addShared( 'backwpup_onboarding_subscriber', OnboardingSubscriber::class )
+			->addArguments(
+				[
+					'backwpup_onboarding',
+				]
+			);
 	}
 
 	/**

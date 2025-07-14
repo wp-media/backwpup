@@ -11,9 +11,10 @@ if ( ! isset( $job_id ) && get_site_option( 'backwpup_onboarding', false ) ) {
 if ( ! isset($job_id)) {
 	return;
 }
-BackWPupHelpers::component("closable-heading", [
+BackWPupHelpers::component("navigation-header", [
     'title' => __("Select Files", 'backwpup'),
-    'type' => 'sidebar'
+    'type' => 'sidebar',
+    'navigation' => 'files'
 ]);
 ?>
 

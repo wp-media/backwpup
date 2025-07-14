@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitd3d056b49e154dcec1f924aa2712d38d
+class ComposerStaticInit126770be2d1467f47df4f788858c0817
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -13,6 +13,7 @@ class ComposerStaticInitd3d056b49e154dcec1f924aa2712d38d
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '1f155afceeab454b94183cdd8d5248a6' => __DIR__ . '/..' . '/mixpanel/mixpanel-php/lib/Mixpanel.php',
         'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
         '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
@@ -32,13 +33,17 @@ class ComposerStaticInitd3d056b49e154dcec1f924aa2712d38d
         'W' => 
         array (
             'Webmozart\\Assert\\' => 17,
+            'WPMedia\\Mixpanel\\' => 17,
+            'WPMedia\\BackWPup\\Tracking\\' => 26,
             'WPMedia\\BackWPup\\StorageProviders\\' => 34,
             'WPMedia\\BackWPup\\Plugin\\' => 24,
             'WPMedia\\BackWPup\\License\\' => 25,
             'WPMedia\\BackWPup\\Jobs\\' => 22,
             'WPMedia\\BackWPup\\Frontend\\' => 26,
             'WPMedia\\BackWPup\\Dependencies\\' => 30,
+            'WPMedia\\BackWPup\\Common\\' => 24,
             'WPMedia\\BackWPup\\Backups\\' => 25,
+            'WPMedia\\BackWPup\\Backup\\' => 24,
             'WPMedia\\BackWPup\\Admin\\' => 23,
             'WPMedia\\BackWPup\\Adapters\\' => 26,
             'WPMedia\\BackWPup\\API\\' => 21,
@@ -82,7 +87,6 @@ class ComposerStaticInitd3d056b49e154dcec1f924aa2712d38d
         array (
             'Inpsyde\\Restore\\' => 16,
             'Inpsyde\\BackWPup\\Infrastructure\\' => 32,
-            'Inpsyde\\BackWPup\\Common\\' => 24,
             'Inpsyde\\BackWPup\\Archiver\\' => 26,
             'Inpsyde\\BackWPupShared\\' => 23,
             'Inpsyde\\Assert\\' => 15,
@@ -117,6 +121,14 @@ class ComposerStaticInitd3d056b49e154dcec1f924aa2712d38d
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
         ),
+        'WPMedia\\Mixpanel\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src',
+        ),
+        'WPMedia\\BackWPup\\Tracking\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Tracking',
+        ),
         'WPMedia\\BackWPup\\StorageProviders\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/StorageProviders',
@@ -141,9 +153,17 @@ class ComposerStaticInitd3d056b49e154dcec1f924aa2712d38d
         array (
             0 => __DIR__ . '/../..' . '/src/Dependencies',
         ),
+        'WPMedia\\BackWPup\\Common\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Common',
+        ),
         'WPMedia\\BackWPup\\Backups\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/Backups',
+        ),
+        'WPMedia\\BackWPup\\Backup\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Backup',
         ),
         'WPMedia\\BackWPup\\Admin\\' => 
         array (
@@ -233,10 +253,6 @@ class ComposerStaticInitd3d056b49e154dcec1f924aa2712d38d
         'Inpsyde\\BackWPup\\Infrastructure\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/Infrastructure',
-        ),
-        'Inpsyde\\BackWPup\\Common\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src/Common',
         ),
         'Inpsyde\\BackWPup\\Archiver\\' => 
         array (
@@ -478,10 +494,10 @@ class ComposerStaticInitd3d056b49e154dcec1f924aa2712d38d
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitd3d056b49e154dcec1f924aa2712d38d::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitd3d056b49e154dcec1f924aa2712d38d::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitd3d056b49e154dcec1f924aa2712d38d::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitd3d056b49e154dcec1f924aa2712d38d::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit126770be2d1467f47df4f788858c0817::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit126770be2d1467f47df4f788858c0817::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit126770be2d1467f47df4f788858c0817::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit126770be2d1467f47df4f788858c0817::$classMap;
 
         }, null, ClassLoader::class);
     }

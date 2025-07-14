@@ -116,6 +116,15 @@ class Rest implements RestInterface {
 	}
 
 	/**
+	 * Get registered destinations
+	 *
+	 * @return array
+	 */
+	protected function get_registered_destinations(): array {
+		return $this->backwpup_adapter->get_registered_destinations();
+	}
+
+	/**
 	 * Retrieves a list of backups and returns them in a paginated format.
 	 *
 	 * @param WP_REST_Request $request The REST API request object containing parameters.
@@ -141,7 +150,8 @@ class Rest implements RestInterface {
 		$start                   = $page * $length - $length;
 		$jobs_ids                = $this->option_adapter->get_job_ids();
 		$backups                 = [];
-		$registered_destinations = $this->backwpup_adapter->get_registered_destinations();
+		$registered_destinations = $this->get_registered_destinations();
+
 		foreach ( $jobs_ids as $a_job_id ) {
 			$job = $this->option_adapter->get_job( $a_job_id );
 			if ( ! $job ) {
@@ -192,9 +202,12 @@ class Rest implements RestInterface {
 				return $b['time'] <=> $a['time'];
 			}
 		);
-		$nb_totalbackups = count( $backups );
+
 		$backups         = array_slice( $backups, $start, $length );
 		$html            = '';
+		$backups         = wpm_apply_filters_typed( 'array', 'backwpup_backups_list', $backups );
+		$nb_totalbackups = count( $backups );
+
 		foreach ( $backups as $backup ) {
 			if ( 'wpcron' === $backup['type'] ) {
 				$backup['type'] = __( 'Scheduled', 'backwpup' );
@@ -209,22 +222,23 @@ class Rest implements RestInterface {
 			],
 			true
 		);
-		if ( ! empty( $html ) ) {
-			return rest_ensure_response(
-				[
-					'success' => true,
-					'data'    => $html,
-				]
-				);
-		} else {
+
+		if ( empty( $html ) ) {
 			return rest_ensure_response(
 				[
 					'success' => false,
 					'data'    => '',
 					'message' => __( 'No backups found.', 'backwpup' ),
 				]
-				);
+			);
 		}
+
+		return rest_ensure_response(
+			[
+				'success' => true,
+				'data'    => $html,
+			]
+		);
 	}
 
 	/**

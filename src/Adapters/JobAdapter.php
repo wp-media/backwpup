@@ -100,4 +100,15 @@ class JobAdapter {
 	public static function get_jobrun_url( string $starttype, int $jobid = 0 ) {
 		return \BackWPup_Job::get_jobrun_url( $starttype, $jobid );
 	}
+
+	/**
+	 * Sanitizes a filename, replacing whitespace with underscores.
+	 *
+	 * @param mixed $filename The filename to sanitize.
+	 *
+	 * @return mixed
+	 */
+	public function sanitize_file_name( $filename ) {
+		return \BackWPup_Job::sanitize_file_name( $filename );
+	}
 }

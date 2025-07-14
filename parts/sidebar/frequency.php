@@ -1,5 +1,6 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+use WPMedia\BackWPup\Adapters\OptionAdapter;
 
 /**
  * @var int $job_id ID of the job we are retrieving the frequency settings for.
@@ -9,12 +10,13 @@ BackWPupHelpers::component("closable-heading", [
   'type' => 'sidebar'
 ]);
 
+$optionAdapter = new OptionAdapter();
 
 if ( ! isset ( $job_id ) ) {
   return;
 }
 
-$job_cron = BackWPup_Option::get($job_id, 'cron');
+$job_cron = BackWPup_Option::get($job_id, 'cron', $optionAdapter->defaults_job('cron'));
 
 ?>
 

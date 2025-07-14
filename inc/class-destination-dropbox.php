@@ -384,7 +384,8 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
         if ($delete && $job_object && BackWPup_Option::get($jobid, 'dropboxmaxbackups') > 0) { //Delete old backups
             if (count($backupfilelist) > $job_object->job['dropboxmaxbackups']) {
                 ksort($backupfilelist);
-                $numdeltefiles = 0;
+				$numdeltefiles = 0;
+				$deleted_files = [];
 
                 while ($file = array_shift($backupfilelist)) {
                     if (count($backupfilelist) < $job_object->job['dropboxmaxbackups']) {
@@ -395,7 +396,10 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
                     ); //delete files on Cloud
 
 					foreach ( $files as $key => $filedata ) {
-						if ( $filedata['file'] === $job_object->job['dropboxdir'] . $file ) {
+						if ( $filedata['file'] === $job_object->job['dropboxdir'] . $file
+						&& ! empty( $response )
+						) {
+							$deleted_files[] = $filedata['filename'];
 							unset( $files[ $key ] );
 							break;
 						}
@@ -415,8 +419,10 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
                         ),
                         E_USER_NOTICE
                     );
-                }
-            }
+				}
+
+				parent::remove_file_history_from_database( $deleted_files, 'DROPBOX' );
+			}
 		}
 		$key = 'backwpup_' . $jobid . '_dropbox';
 

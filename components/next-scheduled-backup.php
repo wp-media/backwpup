@@ -2,9 +2,9 @@
 use BackWPup\Utils\BackWPupHelpers;
 ?>
 
-<div class="flex-1 p-8 border border-grey-250 justify-center hover:bg-grey-200 rounded-lg flex flex-col cursor-pointer backwpup-add-new-backup-card min-h-[173px]" id="js_backwpup_add_new_backup">
+<div class="flex-1 p-8 border border-grey-250 justify-center rounded-lg flex flex-col cursor-pointer backwpup-add-new-backup-card min-h-[173px]" id="js_backwpup_add_new_backup">
     <div class="mb-2 flex justify-center">
-      <button class="text-primary-darker hover:text-secondary-darker flex items-center justify-center gap-3 font-title font-bold">
+      <button class="text-primary-darker flex items-center justify-center gap-3 font-title font-bold">
         <?php BackWPupHelpers::component("icon", ["name" => "plus", "size" => "medium-2x"]); ?>
         <div class="text-base"><?php esc_html_e( 'Add a new backup', 'backwpup' ); ?></div>
       </button>
@@ -39,16 +39,16 @@ use BackWPup\Utils\BackWPupHelpers;
     ?>
 	<div class="flex items-center gap-1 backwpup-dynamic-input">
         <label for="new_files" class="flex w-1/2 items-center gap-2 border rounded-md p-[2px] cursor-pointer bg-secondary-lighter border-secondary-base">
-	        <input type="radio" name="type" value="files" id="new_files" class="sr-only backwpup-dynamic-backup-type" checked>
+	        <input type="checkbox" name="type" value="files" id="new_files" class="sr-only backwpup-dynamic-backup-type" checked>
 	        <div class="border bg-white p-1 rounded border-secondary-base">
 	            <?php BackWPupHelpers::component("icon", ["name" => "file-alt", "size" => "large"]); ?>
 	        </div>
 	        <p><?php esc_html_e( 'Files', 'backwpup' ); ?></p>
         </label>
 
-		<label for="new_db" class="flex w-1/2 items-center gap-2 border rounded-md p-[2px] cursor-pointer">
-			<input type="radio" name="type" value="database" id="new_db" class="sr-only backwpup-dynamic-backup-type">
-			<div class="border bg-white p-1 rounded">
+		<label for="new_db" class="flex w-1/2 items-center gap-2 border rounded-md p-[2px] cursor-pointer bg-secondary-lighter border-secondary-base">
+			<input type="checkbox" name="type" value="database" id="new_db" class="sr-only backwpup-dynamic-backup-type"  checked>
+			<div class="border bg-white p-1 rounded border-secondary-base">
 				<?php BackWPupHelpers::component("icon", ["name" => "database", "size" => "large"]); ?>
 			</div>
 			<p><?php esc_html_e( 'Database', 'backwpup' ); ?></p>

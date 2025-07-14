@@ -29,7 +29,7 @@ $contextual_style = "has-[:checked]:border-secondary-base has-[:checked]:bg-seco
 hover:bg-grey-200";
 $full_width_class = isset($full_width) && $full_width ? "w-full" : "";
 $js_trigger_class = '';
-$configure_btn_class = BackWPupHelpers::clsx( 'js-backwpup-toggle-storage' , 'flex items-center gap-2 border rounded', 'ml-2 border-transparent bg-white hover:bg-grey-200' ) ;
+$configure_btn_class = BackWPupHelpers::clsx( 'js-backwpup-toggle-storage' , 'flex items-center gap-2 border rounded', 'ml-2 border-transparent bg-white' ) ;
 # JS
 $configure_btn_content = "storage-$slug";
 

@@ -371,7 +371,8 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations
             if (!empty($job_object->job[self::MSAZUREMAXBACKUPS]) && $job_object->job[self::MSAZUREMAXBACKUPS] > 0) {
                 if (count($backupfilelist) > $job_object->job[self::MSAZUREMAXBACKUPS]) {
                     ksort($backupfilelist);
-                    $numdeltefiles = 0;
+					$numdeltefiles = 0;
+					$deleted_files = [];
 
                     while ($file = array_shift($backupfilelist)) {
                         if (count($backupfilelist) < $job_object->job[self::MSAZUREMAXBACKUPS]) {
@@ -379,17 +380,20 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations
                         }
                         $blobRestProxy->deleteBlob($job_object->job[MsAzureDestinationConfiguration::MSAZURE_CONTAINER], $job_object->job[self::MSAZUREDIR] . $file);
 
-                        foreach ($files as $key => $filedata) {
-                            if ($filedata['file'] == $job_object->job[self::MSAZUREDIR] . $file) {
-                                unset($files[$key]);
-                            }
+						foreach ( $files as $key => $filedata ) {
+							if ( $filedata['file'] === $job_object->job[ self::MSAZUREDIR ] . $file ) {
+								$deleted_files[] = $filedata['filename'];
+								unset( $files[ $key ] );
+							}
                         }
                         ++$numdeltefiles;
                     }
                     if ($numdeltefiles > 0) {
                         $job_object->log(sprintf(_n('One file deleted on Microsoft Azure container.', '%d files deleted on Microsoft Azure container.', $numdeltefiles, 'backwpup'), $numdeltefiles), E_USER_NOTICE);
-                    }
-                }
+					}
+
+					parent::remove_file_history_from_database( $deleted_files, 'MSAZURE' );
+				}
             }
             set_site_transient('backwpup_' . $job_object->job['jobid'] . '_msazure', $files, YEAR_IN_SECONDS);
         } catch (Exception $e) {

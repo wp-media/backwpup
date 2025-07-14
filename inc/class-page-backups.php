@@ -389,18 +389,32 @@ final class BackWPup_Page_Backups extends WP_List_Table
                 $dest_class = BackWPup::get_destination($dest);
                 $files = $dest_class->file_get_list($jobdest);
 
-                foreach ($_GET['backupfiles'] as $backupfile) {
-                    foreach ($files as $file) {
-                        if (is_array($file) && $file['file'] == $backupfile) {
-                            $dest_class->file_delete($jobdest, $backupfile);
-                        }
-                    }
-                }
+				$request_backup_files = ! empty( $_GET['backupfiles'] ) ? wp_unslash( $_GET['backupfiles'] ) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+				if ( empty( $request_backup_files ) ) {
+					break;
+				}
+				$backup_files = [];
+				foreach ( $request_backup_files as $backupfile ) {
+					foreach ( $files as $file ) {
+						if ( is_array( $file ) && $file['file'] === $backupfile ) {
+							$dest_class->file_delete( $jobdest, $backupfile );
+						}
+					}
+					$backup_files[] = sanitize_text_field( $backupfile );
+				}
                 $files = $dest_class->file_get_list($jobdest);
                 if (empty($files)) {
                     $_GET['jobdest-top'] = '';
-                }
-                break;
+				}
+
+				/**
+				 * Fires after deleting backups.
+				 *
+				 * @param array $backup_files Backup files deleted.
+				 * @param string $dest Destination.
+				 */
+				do_action( 'backwpup_after_delete_backups', $backup_files, $dest );
+				break;
 
             default:
                 if (isset($_GET['jobid'])) {

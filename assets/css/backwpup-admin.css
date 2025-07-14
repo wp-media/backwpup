@@ -919,6 +919,10 @@ select {
   z-index: 10;
 }
 
+.z-50 {
+  z-index: 50;
+}
+
 .z-\[100000\] {
   z-index: 100000;
 }
@@ -1332,6 +1336,10 @@ select {
   text-wrap: nowrap;
 }
 
+.break-all {
+  word-break: break-all;
+}
+
 .rounded {
   border-radius: 0.25rem;
 }
@@ -1651,8 +1659,8 @@ select {
   line-height: 2.25rem;
 }
 
-.text-\[1\.21rem\] {
-  font-size: 1.21rem;
+.text-\[1\.1rem\] {
+  font-size: 1.1rem;
 }
 
 .text-base {

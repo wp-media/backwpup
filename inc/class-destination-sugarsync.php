@@ -312,7 +312,8 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations
             if (!empty($job_object->job['sugarmaxbackups']) && $job_object->job['sugarmaxbackups'] > 0) { //Delete old backups
                 if (count($backupfilelist) > $job_object->job['sugarmaxbackups']) {
                     ksort($backupfilelist);
-                    $numdeltefiles = 0;
+					$numdeltefiles = 0;
+					$deleted_files = [];
 
                     while ($file = array_shift($backupfilelist)) {
                         if (count($backupfilelist) < $job_object->job['sugarmaxbackups']) {
@@ -320,17 +321,20 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations
                         }
                         $sugarsync->delete($file); //delete files on Cloud
 
-                        foreach ($files as $key => $filedata) {
-                            if ($filedata['file'] == $file) {
-                                unset($files[$key]);
-                            }
+						foreach ( $files as $key => $filedata ) {
+							if ( $filedata['file'] === $file ) {
+								$deleted_files[] = $filedata['filename'];
+								unset( $files[ $key ] );
+							}
                         }
                         ++$numdeltefiles;
                     }
                     if ($numdeltefiles > 0) {
                         $job_object->log(sprintf(_n('One file deleted on SugarSync folder', '%d files deleted on SugarSync folder', $numdeltefiles, 'backwpup'), $numdeltefiles), E_USER_NOTICE);
-                    }
-                }
+					}
+
+					parent::remove_file_history_from_database( $deleted_files, 'SUGARSYNC' );
+				}
             }
             set_site_transient('BackWPup_' . $job_object->job['jobid'] . '_SUGARSYNC', $files, YEAR_IN_SECONDS);
         } catch (Exception $e) {

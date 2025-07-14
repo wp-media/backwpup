@@ -1,4 +1,4 @@
-let requestWPApi;
+let requestWPApi, loadBackupsListingAndPagination, getUrlParameter, backwpupDisplaySettingsToast;
 jQuery(document).ready(function ($) {
   const $document = $(document); // Cache document lookup
 
@@ -80,7 +80,7 @@ jQuery(document).ready(function ($) {
     }
   }
   // Function to get URL parameter.
-  function getUrlParameter(name, defaultValue="") {
+    getUrlParameter = function getUrlParameter(name, defaultValue="") {
     let searchParams = new URLSearchParams(window.location.search)
     if (searchParams.has(name)) {
       return searchParams.get(name);
@@ -88,6 +88,54 @@ jQuery(document).ready(function ($) {
       return defaultValue;
     }
   }
+
+    /**
+     * Display a toast notification in the settings page.
+     * @param type disable auto-remove if type is not 'success'.
+     * @param message
+     * @param duration - The duration in milliseconds to display the toast. Default is 5000ms. Set to -1 to disable auto-remove.
+     */
+    backwpupDisplaySettingsToast = function backwpupDisplaySettingsToast(type = 'info', message = '', duration = 5000) {
+        if(!message) {
+            return;
+        }
+        requestWPApi(
+            backwpupApi.getblock,
+            {
+                'block_name': 'alerts/info',
+                'block_type': 'component',
+                'block_data': {
+                    'type': type,
+                    'font': 'small',
+                    'dismiss_icon': true,
+                    'content': message
+                },
+            },
+            function(response) {
+                const toast = jQuery('<div class="transform translate-y-2 transition-all duration-300"></div>').html(response);
+                $('#bwp-settings-toast').html('');
+                $('#bwp-settings-toast').append(toast);
+                // Animate in
+                setTimeout(() => {
+                    toast.addClass('opacity-100 translate-y-0');
+                }, 10);
+
+                // Auto-remove after duration
+                if (duration !== -1 || type !== 'success') {
+                    setTimeout(() => {
+                        toast.removeClass('opacity-100 translate-y-0').addClass('opacity-0 translate-y-2');
+                        setTimeout(() => {
+                            toast.remove();
+                        }, 300);
+                    }, duration);
+                }
+            },
+            'POST',
+            function(request, error) {
+                console.log(error,request);
+            }
+        );
+    }
 
   // Function to be sure the value on this class is an integer.
   $(".js-backwpup-intonly").on('keydown', function(event) {
@@ -167,10 +215,11 @@ jQuery(document).ready(function ($) {
   }
 
   //Refresh the dropbox authentification block.
-  window.dropbox_refresh_authentification = function() {
+  window.dropbox_refresh_authentification = function(job_id) {
     requestWPApi(
       backwpupApi.cloud_is_authenticated,
       {
+		'job_id' : job_id,
         'cloud_name': 'dropbox',
       },
       function(response) {
@@ -375,7 +424,8 @@ jQuery(document).ready(function ($) {
 
 		// Set default block data payload.
 		let block_data = {
-		  'job_id': job_id
+		  'job_id': job_id,
+            'job_type': that.data("job-type")
 		};
 
 		// Define basic frequency settings selectors on the onboarding screen.
@@ -387,8 +437,8 @@ jQuery(document).ready(function ($) {
 		// Check that we are requesting frequency settings and basic frequency settings are present.
 		if ('frequency' === panel && basic_frequency_selectors.files.is(':visible') && basic_frequency_selectors.database.is(':visible')) {
 		  let basic_frequency_data = {
-			job_1: basic_frequency_selectors.files.val(),
-			job_2: basic_frequency_selectors.database.val()
+			job_2: basic_frequency_selectors.files.val(),
+			job_3: basic_frequency_selectors.database.val()
 		  }
 
 		  // Update block data payload with basic frequency data.
@@ -529,7 +579,7 @@ jQuery(document).ready(function ($) {
 		);
 	}
 
-	$document.on('click', '.backwpup-btn-select-files, .onboarding-advanced-files-settings ', function () {
+	$document.on('click', '.js-data-settings-files, .onboarding-advanced-files-settings ', function () {
 		let that = $(this);
 		let job_id = that.data("job-id");
 		let panels = ['exclude-files-core', 'exclude-files-plugins', 'exclude-files-root', 'exclude-files-themes', 'exclude-files-uploads', 'exclude-files-wp-content'];
@@ -571,6 +621,19 @@ jQuery(document).ready(function ($) {
 
   //Refresh the SugarSync root folders.
   window.refreshSugarSyncRootFolders = function(job_id) {
+      const $overlayTemplate = $('#backwpup-loading-overlay-template').children().first();
+      const $sugarsyncSidebar = $('#sidebar-storage-SUGARSYNC');
+
+      let $overlay;
+
+      if ($sugarsyncSidebar.length) {
+          // Add overlay to the sidebar.
+          $overlay = $overlayTemplate.clone();
+          $overlay.find('svg').addClass('animate-spin');
+          $sugarsyncSidebar.find('.backwpup-loading-overlay').remove();
+          $sugarsyncSidebar.append($overlay);
+      }
+
     // Reload the root folder list.
     requestWPApi(
       backwpupApi.getblock,
@@ -583,10 +646,12 @@ jQuery(document).ready(function ($) {
       },
       function(response) {
         $('#sugarsyncroot').html(response);
+          $overlay?.remove();
       },
       'POST',
       function (request, error) {
         $('#sugarsyncroot').html(request.responseText);
+          $overlay?.remove();
       }
     );
   }
@@ -723,7 +788,7 @@ jQuery(document).ready(function ($) {
         data,
         function (response) {
           refresh_storage_destinations(job_id, 'DROPBOX', response.connected);
-          dropbox_refresh_authentification();
+          dropbox_refresh_authentification(job_id);
           closeSidebar();
         },
         "POST",
@@ -754,7 +819,7 @@ jQuery(document).ready(function ($) {
         data,
         function (response) {
           refresh_storage_destinations(job_id, 'DROPBOX', response.connected);
-          dropbox_refresh_authentification();
+          dropbox_refresh_authentification(job_id);
           closeSidebar();
         },
         "POST",
@@ -880,7 +945,7 @@ jQuery(document).ready(function ($) {
    * Load the backups listing and the pagination from the api
    * @param page
    */
-  function loadBackupsListingAndPagination(page) {
+  loadBackupsListingAndPagination = function loadBackupsListingAndPagination(page) {
     requestWPApi(backwpupApi.backupslistings, {page: page, length:  backwpupApi.backupslistingslength}, refreshBackupTable, 'POST');
   }
 
@@ -992,6 +1057,13 @@ jQuery(document).ready(function ($) {
   $("#backwup-next-scheduled-backups").on('change', '.js-backwpup-toggle-job', function () {
     const checked = $(this).prop("checked");
     let job_id = $(this).data("job-id");
+    let tooltip_text = 'Disable';
+    if(!checked) {
+        tooltip_text = 'Enable'
+    }
+      const $tooltip = $(`#backwpup-${job_id}-options div`).find('[data-tooltip-position]:eq(2)');
+      const spanHTML = $tooltip.find('span').prop('outerHTML');
+
     $(`#backwpup-${job_id}-options`).find("button:not(.always-enabled)").prop("disabled", !checked);
     requestWPApi(
         backwpupApi.updatejob,
@@ -1000,7 +1072,8 @@ jQuery(document).ready(function ($) {
           'activ': checked
         },
         function (response) {
-          $(`#backwpup-${job_id}-options div span.label-scheduled`).html(response.message);
+            $(`#backwpup-${job_id}-options div span.label-scheduled`).html(response.message);
+            $tooltip.html(tooltip_text + ' ' + spanHTML);
         },
         "POST"
     );
@@ -1033,13 +1106,19 @@ jQuery(document).ready(function ($) {
   });
 
   $("#backwup-next-scheduled-backups").on('change', '.backwpup-dynamic-backup-type', function() {
-    // Remove classes from all labels and child divs
-    $('.backwpup-dynamic-input label').removeClass('bg-secondary-lighter border-secondary-base');
-    $('.backwpup-dynamic-input label > div').removeClass('border-secondary-base');
-
-    // Add classes to the selected label and its child div
-    $(this).closest('label').addClass('bg-secondary-lighter border-secondary-base');
-    $(this).closest('label').find('div').addClass('border-secondary-base');
+    if (0 === $('#js-backwpup-add-new-backup-form').find('input[name="type"]:checked').length) {
+      $( this ).prop( "checked", true );
+      return; // Do not allow empty selection.
+    }
+    if (!$(this).is(':checked')) {
+      // Remove classes from the selected label and its child divs
+      $(this).closest('label').removeClass('bg-secondary-lighter border-secondary-base');
+      $(this).closest('label').find('div').removeClass('border-secondary-base');
+    } else {
+      // Add classes to the selected label and its child div
+      $(this).closest('label').addClass('bg-secondary-lighter border-secondary-base');
+      $(this).closest('label').find('div').addClass('border-secondary-base');
+    }
   });
 
   const $target_dynamic_card = '.backwpup-dynamic-backup-card';
@@ -1073,23 +1152,24 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  // Show dynamic backup card when button is clicked.
-  $("#backwup-next-scheduled-backups").on('click', '#js_backwpup_add_new_backup', function () {
-    toggleDynamicCardDisplay($target_dynamic_card, 'visible');
-  });
 
   $("#backwup-next-scheduled-backups").on('click', '#js_backwpup_close_dynamic_backup_card', function () {
     toggleDynamicCardDisplay($target_dynamic_card);
   });
 
+  //Deprecated since 5.3
   $("#backwup-next-scheduled-backups").on('click', "#js-backwpup-add-new-backup", function (e) {
     e.preventDefault();
     $(this).prop('disabled', true);
     let that = $(this);
+    let type = $('#js-backwpup-add-new-backup-form').find('input[name="type"]:checked').val();
+    if (2 === $('#js-backwpup-add-new-backup-form').find('input[name="type"]:checked').length) {
+      type = 'mixed';
+    }
     requestWPApi(
       backwpupApi.addjob,
       {
-        type: $('#js-backwpup-add-new-backup-form').find('input[name="type"]:checked').val(),
+        type: type,
       },
       function (response) {
         if ( response.success == true ) {
@@ -2053,9 +2133,9 @@ jQuery(document).ready(function ($) {
         } else if ( 301 === response.status ) {
           window.location = response.url;
         }
-      },
-      'POST');
+      }, 'POST');
     }
+    
   }
 
   // Replace the 'Buy Pro' menu item with the correct link.
@@ -2092,51 +2172,6 @@ jQuery(document).ready(function ($) {
       },
     });
   } );
-
-  /**
-   * Display a toast notification in the settings page.
-   * @param type disable auto-remove if type is not 'success'.
-   * @param message
-   * @param duration - The duration in milliseconds to display the toast. Default is 5000ms. Set to -1 to disable auto-remove.
-   */
-  function backwpupDisplaySettingsToast(type = 'info', message = '', duration = 5000) {
-    requestWPApi(
-        backwpupApi.getblock,
-        {
-          'block_name': 'alerts/info',
-          'block_type': 'component',
-          'block_data': {
-            'type': type,
-            'font': 'small',
-            'dismiss_icon': true,
-            'content': message
-          },
-        },
-        function(response) {
-          const toast = jQuery('<div class="transform translate-y-2 transition-all duration-300"></div>').html(response);
-          $('#bwp-settings-toast').html('');
-          $('#bwp-settings-toast').append(toast);
-          // Animate in
-          setTimeout(() => {
-            toast.addClass('opacity-100 translate-y-0');
-          }, 10);
-
-          // Auto-remove after duration
-          if (duration !== -1 || type !== 'success') {
-            setTimeout(() => {
-              toast.removeClass('opacity-100 translate-y-0').addClass('opacity-0 translate-y-2');
-              setTimeout(() => {
-                toast.remove();
-              }, 300);
-            }, duration);
-          }
-        },
-        'POST',
-        function(request, error) {
-          console.log(error,request);
-        }
-    );
-  }
 
   // hide toast on click.
   $(document).on('click', '#bwp-settings-toast #dismiss-icon', function() {

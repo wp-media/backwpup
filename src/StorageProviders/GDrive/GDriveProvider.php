@@ -2,10 +2,10 @@
 namespace WPMedia\BackWPup\StorageProviders\GDrive;
 
 use WP_REST_Request;
+use WPMedia\BackWPup\Adapters\BackWPupAdapter;
 use WPMedia\BackWPup\StorageProviders\ProviderInterface;
 use WPMedia\BackWPup\Adapters\OptionAdapter;
 use WPMedia\BackWPup\Adapters\BackWPupHelpersAdapter;
-use WPMedia\BackWPup\Adapters\EncryptionAdapter;
 
 class GDriveProvider implements ProviderInterface {
 
@@ -25,9 +25,9 @@ class GDriveProvider implements ProviderInterface {
 	/**
 	 * Instance of EncryptionAdapter.
 	 *
-	 * @var EncryptionAdapter
+	 * @var BackWPupAdapter
 	 */
-	private $encryption_adapter;
+	private $backwpup;
 
 	/**
 	 * GDriveProvider constructor.
@@ -36,12 +36,12 @@ class GDriveProvider implements ProviderInterface {
 	 *
 	 * @param OptionAdapter          $option_adapter     Adapter for handling plugin options.
 	 * @param BackWPupHelpersAdapter $helpers_adapter    Adapter for helper functions.
-	 * @param EncryptionAdapter      $encryption_adapter Adapter for encryption operations.
+	 * @param BackWPupAdapter        $backwpup           Adapter for BackWPup plugin data.
 	 */
-	public function __construct( OptionAdapter $option_adapter, BackWPupHelpersAdapter $helpers_adapter, EncryptionAdapter $encryption_adapter ) {
-		$this->option_adapter     = $option_adapter;
-		$this->helpers_adapter    = $helpers_adapter;
-		$this->encryption_adapter = $encryption_adapter;
+	public function __construct( OptionAdapter $option_adapter, BackWPupHelpersAdapter $helpers_adapter, BackWPupAdapter $backwpup ) {
+		$this->option_adapter  = $option_adapter;
+		$this->helpers_adapter = $helpers_adapter;
+		$this->backwpup        = $backwpup;
 	}
 
 	/**
@@ -63,7 +63,8 @@ class GDriveProvider implements ProviderInterface {
 	 * @return string|null HTML for the authentication status alert component, or null on failure.
 	 */
 	public function is_authenticated( $job_id ): ?string {
-		$refresh_token      = $this->encryption_adapter->decrypt( (string) $this->option_adapter->get( $job_id, 'gdriverefreshtoken' ) );
+		$dest_gdrive        = $this->backwpup->get_destination( 'GDRIVE' );
+		$refresh_token      = $dest_gdrive->get_refresh_token( $job_id );
 		$authenticate_label = __( 'Authenticated!', 'backwpup' );
 		$type               = 'info';
 		if ( empty( $refresh_token ) ) {

@@ -262,4 +262,16 @@ abstract class BackWPup_Destinations
 		}
 		return $destinations;
 	}
+
+	/**
+	 * Remove file history from database
+	 *
+	 * @param array  $files Array of files that should be removed.
+	 * @param string $destination The destination of the backup.
+	 *
+	 * @return void
+	 */
+	public function remove_file_history_from_database( array $files, string $destination ): void {
+		do_action( 'backwpup_after_delete_backups', $files, $destination );
+	}
 }

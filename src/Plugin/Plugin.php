@@ -61,6 +61,15 @@ class Plugin {
 	private $plugin_path;
 
 	/**
+	 * Job IDs.
+	 *
+	 * These constants are used to identify the wp_options storing the different types of backup jobs.
+	 */
+	public const FILES_JOB_ID    = 'backwpup_backup_files_job_id';
+	public const DATABASE_JOB_ID = 'backwpup_backup_database_job_id';
+	public const FIRST_JOB_ID    = 'backwpup_first_backup_job_id';
+
+	/**
 	 * Instantiate the class.
 	 *
 	 * @param Container $container Instance of the container.
@@ -158,61 +167,7 @@ class Plugin {
 		}
 
 		// Only in backend.
-		if ( is_admin() && class_exists( BackWPup_Admin::class ) ) {
-			$settings_views    = [];
-			$settings_updaters = [];
-
-			if ( BackWPup::is_pro() ) {
-				$activate   = new LicenseActivation( $plugin_data );
-				$deactivate = new LicenseDeactivation( $plugin_data );
-				$status     = new LicenseStatusRequest();
-
-				$settings_views    = array_merge(
-					$settings_views,
-					[
-						new EncryptionSettingsView(),
-						new LicenseSettingsView(
-							$activate,
-							$deactivate,
-							$status
-						),
-					]
-				);
-				$settings_updaters = array_merge(
-					$settings_updaters,
-					[
-						new EncryptionSettingUpdater(),
-						new LicenseSettingUpdater(
-							$activate,
-							$deactivate,
-							$status
-						),
-					]
-				);
-			}
-
-			$settings = new BackWPup_Page_Settings(
-				$settings_views,
-				$settings_updaters
-			);
-
-			$admin = new BackWPup_Admin( $settings );
-			$admin->init();
-
-			/**
-			 * Filter whether BackWPup will show the plugins in the admin bar or not.
-			 *
-			 * @param bool $is_in_admin_bar Whether the admin link will be shown in the admin bar or not.
-			 */
-			$is_in_admin_bar = wpm_apply_filters_typed( 'boolean', 'backwpup_is_in_admin_bar', (bool) get_site_option( 'backwpup_cfg_showadminbar' ) );
-
-			if ( true === $is_in_admin_bar ) {
-				$admin_bar = new BackWPup_Adminbar( $admin );
-				add_action( 'init', [ $admin_bar, 'init' ] );
-			}
-
-			new BackWPup_EasyCron();
-		}
+		$this->load_admin_backend( $plugin_data );
 
 		// Work with wp-cli.
 		if ( defined( WP_CLI::class ) && WP_CLI && method_exists( WP_CLI::class, 'add_command' ) ) {
@@ -252,6 +207,74 @@ class Plugin {
 		}
 
 		$this->loaded = true;
+	}
+
+	/**
+	 * Load admin related
+	 *
+	 * @param array $plugin_data Plugin data.
+	 *
+	 * @return void
+	 */
+	private function load_admin_backend( array $plugin_data ): void {
+		// Bail early.
+		if ( ! is_admin() && class_exists( BackWPup_Admin::class ) ) {
+			return;
+		}
+
+		$settings_views    = [];
+		$settings_updaters = [];
+
+		if ( BackWPup::is_pro() ) {
+			$activate   = new LicenseActivation( $plugin_data );
+			$deactivate = new LicenseDeactivation( $plugin_data );
+			$status     = new LicenseStatusRequest();
+
+			$settings_views    = array_merge(
+				$settings_views,
+				[
+					new EncryptionSettingsView(),
+					new LicenseSettingsView(
+						$activate,
+						$deactivate,
+						$status
+					),
+				]
+			);
+			$settings_updaters = array_merge(
+				$settings_updaters,
+				[
+					new EncryptionSettingUpdater(),
+					new LicenseSettingUpdater(
+						$activate,
+						$deactivate,
+						$status
+					),
+				]
+			);
+		}
+
+		$settings = new BackWPup_Page_Settings(
+			$settings_views,
+			$settings_updaters
+		);
+
+		$admin = new BackWPup_Admin( $settings );
+		$admin->init();
+
+		/**
+		 * Filter whether BackWPup will show the plugins in the admin bar or not.
+		 *
+		 * @param bool $is_in_admin_bar Whether the admin link will be shown in the admin bar or not.
+		 */
+		$is_in_admin_bar = wpm_apply_filters_typed( 'boolean', 'backwpup_is_in_admin_bar', (bool) get_site_option( 'backwpup_cfg_showadminbar' ) );
+
+		if ( true === $is_in_admin_bar ) {
+			$admin_bar = new BackWPup_Adminbar( $admin );
+			add_action( 'init', [ $admin_bar, 'init' ] );
+		}
+
+		new BackWPup_EasyCron();
 	}
 
 	/**

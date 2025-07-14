@@ -1253,6 +1253,58 @@
             "install-path": "../mikemccabe/json-patch-php"
         },
         {
+            "name": "mixpanel/mixpanel-php",
+            "version": "2.11.0",
+            "version_normalized": "2.11.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mixpanel/mixpanel-php.git",
+                "reference": "4b0fafacf2129eff5d50721e129b07f0c32687e7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mixpanel/mixpanel-php/zipball/4b0fafacf2129eff5d50721e129b07f0c32687e7",
+                "reference": "4b0fafacf2129eff5d50721e129b07f0c32687e7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0"
+            },
+            "require-dev": {
+                "phpdocumentor/phpdocumentor": "2.9.*",
+                "phpunit/phpunit": "5.6.*"
+            },
+            "time": "2023-04-11T23:03:57+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "files": [
+                    "lib/Mixpanel.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Mixpanel <dev@mixpanel.com>",
+                    "homepage": "https://mixpanel.com/"
+                }
+            ],
+            "description": "The Official PHP library for Mixpanel",
+            "homepage": "https://mixpanel.com/help/reference/php",
+            "keywords": [
+                "mixpanel",
+                "mixpanel php"
+            ],
+            "support": {
+                "issues": "https://github.com/mixpanel/mixpanel-php/issues",
+                "source": "https://github.com/mixpanel/mixpanel-php/tree/2.11.0"
+            },
+            "install-path": "../mixpanel/mixpanel-php"
+        },
+        {
             "name": "monolog/monolog",
             "version": "2.10.0",
             "version_normalized": "2.10.0.0",
@@ -1792,17 +1844,17 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.43",
-            "version_normalized": "3.0.43.0",
+            "version": "3.0.46",
+            "version_normalized": "3.0.46.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "709ec107af3cb2f385b9617be72af8cf62441d02"
+                "reference": "56483a7de62a6c2a6635e42e93b8a9e25d4f0ec6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/709ec107af3cb2f385b9617be72af8cf62441d02",
-                "reference": "709ec107af3cb2f385b9617be72af8cf62441d02",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/56483a7de62a6c2a6635e42e93b8a9e25d4f0ec6",
+                "reference": "56483a7de62a6c2a6635e42e93b8a9e25d4f0ec6",
                 "shasum": ""
             },
             "require": {
@@ -1820,7 +1872,7 @@
                 "ext-mcrypt": "Install the Mcrypt extension in order to speed up a few other cryptographic operations.",
                 "ext-openssl": "Install the OpenSSL extension in order to speed up a wide variety of cryptographic operations."
             },
-            "time": "2024-12-14T21:12:59+00:00",
+            "time": "2025-06-26T16:29:55+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1885,7 +1937,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.43"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.46"
             },
             "funding": [
                 {
@@ -2721,20 +2773,21 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.31.0",
-            "version_normalized": "1.31.0.0",
+            "version": "v1.32.0",
+            "version_normalized": "1.32.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "85181ba99b2345b0ef10ce42ecac37612d9fd341"
+                "reference": "6d857f4d76bd4b343eac26d6b539585d2bc56493"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/85181ba99b2345b0ef10ce42ecac37612d9fd341",
-                "reference": "85181ba99b2345b0ef10ce42ecac37612d9fd341",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/6d857f4d76bd4b343eac26d6b539585d2bc56493",
+                "reference": "6d857f4d76bd4b343eac26d6b539585d2bc56493",
                 "shasum": ""
             },
             "require": {
+                "ext-iconv": "*",
                 "php": ">=7.2"
             },
             "provide": {
@@ -2743,7 +2796,7 @@
             "suggest": {
                 "ext-mbstring": "For best performance"
             },
-            "time": "2024-09-09T11:45:10+00:00",
+            "time": "2024-12-23T08:48:59+00:00",
             "type": "library",
             "extra": {
                 "thanks": {
@@ -2784,7 +2837,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.31.0"
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.32.0"
             },
             "funding": [
                 {
@@ -2804,23 +2857,23 @@
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.31.0",
-            "version_normalized": "1.31.0.0",
+            "version": "v1.32.0",
+            "version_normalized": "1.32.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "60328e362d4c2c802a54fcbf04f9d3fb892b4cf8"
+                "reference": "0cc9dd0f17f61d8131e7df6b84bd344899fe2608"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/60328e362d4c2c802a54fcbf04f9d3fb892b4cf8",
-                "reference": "60328e362d4c2c802a54fcbf04f9d3fb892b4cf8",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/0cc9dd0f17f61d8131e7df6b84bd344899fe2608",
+                "reference": "0cc9dd0f17f61d8131e7df6b84bd344899fe2608",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2"
             },
-            "time": "2024-09-09T11:45:10+00:00",
+            "time": "2025-01-02T08:10:11+00:00",
             "type": "library",
             "extra": {
                 "thanks": {
@@ -2867,7 +2920,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.31.0"
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.32.0"
             },
             "funding": [
                 {
@@ -2992,6 +3045,63 @@
                 "source": "https://github.com/wp-media/apply-filters-typed/tree/v1.2"
             },
             "install-path": "../wp-media/apply-filters-typed"
+        },
+        {
+            "name": "wp-media/wp-mixpanel",
+            "version": "dev-develop",
+            "version_normalized": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wp-media/wp-mixpanel.git",
+                "reference": "e56dd8d49d4277be1bbaedd1f4a18735849987f0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wp-media/wp-mixpanel/zipball/e56dd8d49d4277be1bbaedd1f4a18735849987f0",
+                "reference": "e56dd8d49d4277be1bbaedd1f4a18735849987f0",
+                "shasum": ""
+            },
+            "require": {
+                "mixpanel/mixpanel-php": "2.*",
+                "php": ">=7.3"
+            },
+            "require-dev": {
+                "php-stubs/wordpress-tests-stubs": "^6.5",
+                "phpcompatibility/phpcompatibility-wp": "^2.0",
+                "phpstan/extension-installer": "^1.3",
+                "phpstan/phpstan-mockery": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "roave/security-advisories": "dev-master",
+                "szepeviktor/phpstan-wordpress": "^2.0",
+                "wp-coding-standards/wpcs": "^3",
+                "wp-media/phpunit": "^3"
+            },
+            "time": "2025-06-13T15:39:13+00:00",
+            "default-branch": true,
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "WPMedia\\Mixpanel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "WP Media",
+                    "homepage": "https://github.com/wp-media/wp-mixpanel",
+                    "role": "Developer"
+                }
+            ],
+            "description": "WordPress Mixpanel Integration",
+            "support": {
+                "issues": "https://github.com/wp-media/wp-mixpanel/issues",
+                "source": "https://github.com/wp-media/wp-mixpanel/tree/develop"
+            },
+            "install-path": "../wp-media/wp-mixpanel"
         }
     ],
     "dev": false,

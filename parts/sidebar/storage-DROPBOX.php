@@ -1,5 +1,6 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+use WPMedia\BackWPup\Plugin\Plugin;
 $job_id = $job_id ?? null;
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Dropbox Settings", 'backwpup'),
@@ -8,12 +9,12 @@ BackWPupHelpers::component("closable-heading", [
 // if null we are on onboarding so we use the default values.
 if (null === $job_id || empty($job_id) ) {
 	$is_in_form    = true;
-    $dropboxdir = trailingslashit(sanitize_title_with_dashes(get_bloginfo('name')));
-    $dropboxmaxbackups = 15;
-} else {
-  $dropboxdir = BackWPup_Option::get($job_id, 'dropboxdir', trailingslashit(sanitize_title_with_dashes(get_bloginfo('name'))));
-  $dropboxmaxbackups = BackWPup_Option::get($job_id, 'dropboxmaxbackups', 15);
+    $job_id = get_site_option(Plugin::FIRST_JOB_ID, false);
 }
+
+$dropboxdir = BackWPup_Option::get($job_id, 'dropboxdir', trailingslashit(sanitize_title_with_dashes(get_bloginfo('name'))));
+$dropboxmaxbackups = BackWPup_Option::get($job_id, 'dropboxmaxbackups', 15);
+
 $dropbox = new BackWPup_Destination_Dropbox_API('dropbox');
 $dropbox_auth_url = $dropbox->oAuthAuthorize();
 $dropbox = new BackWPup_Destination_Dropbox_API('sandbox');

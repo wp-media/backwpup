@@ -17,13 +17,15 @@ $destinations = BackWPup_Option::get($job_id, 'destinations');
 // Get all the destinations including local.
 $cloud_destinations = BackWPup_Destinations::get_destinations(true);
 $dist_storages = [];
-foreach ($cloud_destinations as $a_cloud_destination) {
-  $dist_storages[] = [
-    "slug" => $a_cloud_destination["slug"],
-    "label" => $a_cloud_destination["label"],
-    "name" => "storage_destinations[]",
-    "active" => in_array($a_cloud_destination["slug"], $destinations ?? [] ),
-  ];
+if ( $destinations ){
+	foreach ($cloud_destinations as $a_cloud_destination) {
+	$dist_storages[] = [
+		"slug" => $a_cloud_destination["slug"],
+		"label" => $a_cloud_destination["label"],
+		"name" => "storage_destinations[]",
+		"active" => in_array($a_cloud_destination["slug"], $destinations ?? [] ),
+	];
+	}
 }
 
 ?>

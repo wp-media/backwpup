@@ -21,7 +21,7 @@ class BackWPupAdapter {
 	 *
 	 * @return array BackWPup_Destinations
 	 */
-	public static function get_registered_destinations(): array {
+	public function get_registered_destinations(): array {
 		return \BackWPup::get_registered_destinations();
 	}
 
