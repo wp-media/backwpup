@@ -82,9 +82,9 @@ class JobAdapter {
 	/**
 	 * Get the list of jobs from the backwpup_jobs site option.
 	 *
-	 * @return array The list of jobs.
+	 * @return array|bool The list of jobs.
 	 */
-	public function get_jobs(): array {
+	public function get_jobs() {
 		return \BackWPup_Job::get_jobs();
 	}
 

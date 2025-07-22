@@ -23,7 +23,7 @@ $jobs = BackWPup_Job::get_jobs();
 
 <div class="mt-2 dynamic-cards-grid max-md:flex-col gap-4" id="backwup-next-scheduled-backups">
 	<?php
-	if ( ! empty( $jobs ) ) {
+	if ( ! empty( $jobs ) && is_array( $jobs ) ) {
 		foreach ( $jobs as $job ) {
 			if ( ! isset( $job['jobid'] ) || (isset($job['legacy']) && $job['legacy'] === true))  {
 				continue;

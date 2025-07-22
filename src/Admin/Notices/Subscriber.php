@@ -33,7 +33,7 @@ class Subscriber implements SubscriberInterface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices' => [ 'render_all_notices' ],
+			'all_admin_notices' => [ 'render_all_notices' ],
 		];
 	}
 

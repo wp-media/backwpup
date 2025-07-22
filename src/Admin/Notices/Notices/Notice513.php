@@ -48,7 +48,7 @@ class Notice513 extends AbstractNotice {
 			parent::should_display()
 		) {
 			$jobs = get_option( 'backwpup_jobs', [] );
-			if ( empty( $jobs ) ) {
+			if ( empty( $jobs ) || ! is_array( $jobs ) ) {
 				return false;
 			}
 			$legacy_disabled_jobs = array_filter(

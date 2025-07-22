@@ -1,4 +1,12 @@
 == Changelog ==
+= 5.3.1 =
+Release date: July 22,2025
+
+* Bugfix: Default archive format resets to Tar format after update to 5.3
+* Bugfix: Updating to 5.3 causes Fatal error due to corrupted data
+* Bugfix: License activation fails due to service provider issue
+* Bugfix: Upload to FTP backup limit issue on 5.3
+
 = 5.3.0 =
 Release date: July 14, 2025
 

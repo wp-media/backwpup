@@ -7,6 +7,7 @@ use BackWPup;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice52;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice522;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice53;
+use WPMedia\BackWPup\Admin\Notices\Notices\NoticeDataCorrupted;
 use WPMedia\BackWPup\Admin\Notices\Subscriber as NoticeSubscriber;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice513;
 use Inpsyde\BackWPup\Notice\NoticeView;
@@ -92,6 +93,17 @@ class ServiceProvider extends AbstractServiceProvider {
 					'backwpup_adapter',
 				]
 			);
+		// Notice for data corrupted alert.
+		$this->getContainer()->add( 'notice_data_corrupted_view', NoticeView::class )
+			->addArgument( NoticeDataCorrupted::ID );
+		$this->getContainer()->addShared( 'notice_datacorrupted', NoticeDataCorrupted::class )
+			->addArguments(
+				[
+					'notice_data_corrupted_view',
+					'job_adapter',
+				]
+			);
+
 		// Register the Subscriber with an array of notice instances.
 		$this->getContainer()->addShared( 'notice_subscriber', NoticeSubscriber::class )
 			->addArgument(
@@ -100,6 +112,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'notice_522' ),
 					$this->getContainer()->get( 'notice_52' ),
 					$this->getContainer()->get( 'notice_513' ),
+					$this->getContainer()->get( 'notice_datacorrupted' ),
 				]
 				);
 		$this->getContainer()->addShared( SettingSubscriber::class );

@@ -370,9 +370,9 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations
                         break;
 					}
 					if ( ftp_delete( $ftp_conn_id, $file ) ) { // delete files on ftp.
-						$deleted_files[] = $file->getPathname();
 						foreach ( $files as $key => $filedata ) {
 							if ( trailingslashit( $job_object->job['ftpdir'] ) . $file === $filedata['file'] ) {
+								$deleted_files[] = $filedata['file'];
 								unset( $files[ $key ] );
 							}
                         }

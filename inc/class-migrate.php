@@ -35,7 +35,7 @@ class BackWPup_Migrate {
 
 		self::migration_50_51( $old_version, $new_version );
 
-		( new self() )->migrate_storage_token( $old_version, $new_version, get_option( 'backwpup_jobs', [] ) );
+		( new self() )->migrate_storage_token( $old_version, $new_version );
 	}
 
 	/**
@@ -43,11 +43,16 @@ class BackWPup_Migrate {
 	 *
 	 * @param string $old_version The previous version of the plugin.
 	 * @param string $new_version The current version of the plugin.
-	 * @param array  $jobs        Array of available jobs.
 	 *
 	 *  @return void
 	 */
-	public function migrate_storage_token( string $old_version, string $new_version, array $jobs ): void {
+	public function migrate_storage_token( string $old_version, string $new_version ): void {
+		$jobs = get_site_option( 'backwpup_jobs', [] );
+		// If job is corrupt or not properly formatted then bail early.
+		if ( ! is_array( $jobs ) ) {
+			return;
+		}
+
 		$first_job_id = get_site_option( Plugin::FIRST_JOB_ID, false );
 		if ( version_compare( $old_version, '5.2.3', '<=' )
 			&& version_compare( $new_version, '5.3.0', '>=' )

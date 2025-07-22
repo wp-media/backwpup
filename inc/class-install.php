@@ -5,7 +5,25 @@ use WPMedia\BackWPup\Plugin\Plugin;
  */
 class BackWPup_Install
 {
-    /**
+	/**
+	 * Update archive format during plugin upgrade.
+	 */
+	private function update_archive_format() {
+		if ( get_site_option( 'backwpup_archiveformat', false ) === false ) {
+			// Check for the default job files archive format.
+			$jobid          = get_site_option( Plugin::FILES_JOB_ID, false );
+			$archive_format = BackWPup_Option::get( $jobid, 'archiveformat', '.tar' );
+			if ( $archive_format ) {
+				add_site_option( 'backwpup_archiveformat', $archive_format );
+
+				return;
+			}
+
+			add_site_option( 'backwpup_archiveformat', '.tar' );
+		}
+	}
+
+	/**
      * Creates DB und updates settings.
      */
     public static function activate()
@@ -31,9 +49,7 @@ class BackWPup_Install
 		BackWPup_Migrate::migrate();
 
 		// Define the default archive format if not set.
-		if ( get_site_option( 'backwpup_archiveformat', false ) === false ) {
-			add_site_option( 'backwpup_archiveformat', '.tar' );
-		}
+		( new self() )->update_archive_format();
 
         //changes for 3.2
         $no_translation = get_site_option('backwpup_cfg_jobnotranslate');

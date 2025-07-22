@@ -5,34 +5,34 @@ namespace WPMedia\BackWPup\Admin\Notices\Notices;
 use Inpsyde\BackWPup\Notice\NoticeMessage;
 use Inpsyde\BackWPup\Notice\DismissibleNoticeOption;
 use Inpsyde\BackWPup\Notice\NoticeView;
-use WPMedia\BackWPup\Adapters\BackWPupAdapter;
+use WPMedia\BackWPup\Adapters\JobAdapter;
 
 /**
- * Notice after update to 5.3
+ * Notice When jobs data is corrupted
  */
-class Notice53 extends AbstractNotice {
+class NoticeDataCorrupted extends AbstractNotice {
 
 	/**
 	 * The unique ID for this notice.
 	 */
-	public const ID = 'notice_5_3';
+	public const ID = 'notice_data_corrupted';
 
 	/**
-	 * Adapter for BackWPup plugin data.
+	 * Adapter for job data.
 	 *
-	 * @var BackWPupAdapter
+	 * @var JobAdapter
 	 */
-	private BackWPupAdapter $backwpup;
+	private JobAdapter $jobs_adapter;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param NoticeView      $view The view renderer for the notice.
-	 * @param BackWPupAdapter $backwpup Adapter for plugin data.
+	 * @param NoticeView $view The view renderer for the notice.
+	 * @param JobAdapter $jobs_adapter Adapter for job data.
 	 */
-	public function __construct( NoticeView $view, BackWPupAdapter $backwpup ) {
+	public function __construct( NoticeView $view, JobAdapter $jobs_adapter ) {
 		parent::__construct( $view, true );
-		$this->backwpup = $backwpup;
+		$this->jobs_adapter = $jobs_adapter;
 	}
 
 	/**
@@ -45,9 +45,15 @@ class Notice53 extends AbstractNotice {
 			return false;
 		}
 
-		$new_version = $this->backwpup->get_plugin_data( 'Version' );
-		// We will show this notice only with version 5.3 and all its sub-versions.
-		return version_compare( $new_version, '5.3', '>=' ) && version_compare( $new_version, '5.3.1', '<' );
+		try {
+			$jobs = $this->jobs_adapter->get_jobs();
+			if ( ! is_array( $jobs ) ) {
+				return true;
+			}
+		} catch ( \Exception $e ) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -56,7 +62,7 @@ class Notice53 extends AbstractNotice {
 	 * @param NoticeMessage $message
 	 */
 	protected function render( NoticeMessage $message ): void {
-		$this->view->success( $message, null );
+		$this->view->warning( $message, null );
 	}
 
 	/**

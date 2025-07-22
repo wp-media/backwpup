@@ -346,6 +346,7 @@ class BackWPup_Job
 				// Add job type to the filename.
 				$archive_filename = $this->job['archivename'] . '_' . implode( '-', $this->job['type'] );
 				$format           = get_site_option( 'backwpup_archiveformat' );
+
 				/**
 				 * Filter the backup extension.
 				 *
@@ -2336,6 +2337,8 @@ class BackWPup_Job
         $manifest['blog_info']['themes']['basedir'] = get_theme_root();
         $manifest['blog_info']['themes']['baseurl'] = get_theme_root_uri();
 
+		$format = get_site_option( 'backwpup_archiveformat' );
+
         // Add job settings
         $manifest['job_settings'] = [
             'dbdumptype' => $this->job['dbdumptype'],
@@ -2345,7 +2348,7 @@ class BackWPup_Job
 			'type'                  => $this->job['type'],
 			'destinations'          => $this->job['destinations'],
 			'backuptype'            => $this->job['backuptype'],
-			'archiveformat'         => get_site_option( 'backwpup_archiveformat' ),
+			'archiveformat'         => $format,
 			'dbdumpexclude'         => $this->job['dbdumpexclude'],
 		];
 

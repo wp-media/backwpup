@@ -191,6 +191,10 @@ final class BackWPup_Option
 
 		$jobs_options = self::jobs_options($use_cache);
 
+		if ( ! is_array( $jobs_options ) ) {
+			return false;
+		}
+
 		$jobids    = array_column( $jobs_options, 'jobid' );
 		$job_keys  = array_keys( $jobs_options );
 		$job_index = array_search( $jobid, $jobids, true );
@@ -439,7 +443,7 @@ final class BackWPup_Option
 		$key          = sanitize_key( trim( (string) $key ) );
 		$jobs_options = self::jobs_options( false );
 
-		if ( empty( $jobs_options ) ) {
+		if ( empty( $jobs_options ) || ! is_array( $jobs_options ) ) {
 			return [];
 		}
 

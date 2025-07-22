@@ -807,15 +807,7 @@ final class BackWPup_Admin {
 		$post_tab           = isset( $_POST['tab'] ) ? sanitize_text_field( wp_unslash( $_POST['tab'] ) ) : null;
 		$post_nexttab       = isset( $_POST['nexttab'] ) ? sanitize_text_field( wp_unslash( $_POST['nexttab'] ) ) : null;
 		$post_archiveformat = isset( $_POST['archiveformat'] ) ? sanitize_text_field( wp_unslash( $_POST['archiveformat'] ) ) : null;
-		$archiveformat      = in_array(
-			$post_archiveformat,
-			[
-				'.zip',
-				'.tar',
-				'.tar.gz',
-			],
-			true
-			) ? $post_archiveformat : '.tar';
+
 		if ( isset( $post_page ) && ! in_array( $post_page, $allowed_pages, true ) ) {
 			wp_die( esc_html__( 'Cheating, huh?', 'backwpup' ) );
 		}
@@ -844,8 +836,20 @@ final class BackWPup_Admin {
 			$query_args['jobid'] = $jobid;
         }
 
-		// Save archive format general value.
-		do_action( 'backwpup_save_archiveformat', $archiveformat );
+		// Update the job archive only if it's set.
+		if ( null !== $post_archiveformat ) {
+			$archiveformat = in_array(
+			$post_archiveformat,
+			[
+				'.zip',
+				'.tar',
+				'.tar.gz',
+			],
+			true
+			) ? $post_archiveformat : '.tar';
+			// Save archive format general value.
+			do_action( 'backwpup_save_archiveformat', $archiveformat );
+		}
 
 		// Call method to save data.
 		if ( 'backwpupeditjob' === $post_page ) {
