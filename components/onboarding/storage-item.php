@@ -41,5 +41,5 @@ $configure_btn_class = BackWPupHelpers::clsx( 'flex items-center gap-2 p-3 borde
 	<span class="p-2 border border-grey-500 rounded">
     <?php include untrailingslashit(BackWPup::get_plugin_data('plugindir'))."/assets/img/storage/$slug.svg"; ?>
   </span>
-	<label class="text-base font-title"><?php echo esc_html( $label ); ?></label>
+	<label class="text-base font-title cursor-pointer"><?php echo esc_html( $label ); ?></label>
 </button>

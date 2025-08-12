@@ -30,13 +30,6 @@ final class BackWPup {
 	private static $job_types = [];
 
 	/**
-	 * Registered BackWPup_JobTypes
-	 *
-	 * @var array
-	 */
-	private static $wizards = [];
-
-	/**
 	 * Is Pro
 	 *
 	 * @var bool
@@ -408,27 +401,5 @@ final class BackWPup {
 		}
 
 		return self::$job_types;
-	}
-
-	/**
-	 * Gets a array of instances from Wizards.
-	 *
-	 * @return array BackWPup_Pro_Wizards
-	 */
-	public static function get_wizards() {
-		if ( ! empty( self::$wizards ) ) {
-			return self::$wizards;
-		}
-
-		self::$wizards = wpm_apply_filters_typed( 'array',  'backwpup_pro_wizards', self::$wizards );
-
-		// remove wizards can't load.
-		foreach ( self::$wizards as $key => $wizard ) {
-			if ( empty( $wizard ) || ! is_object( $wizard ) ) {
-				unset( self::$wizards[ $key ] );
-			}
-		}
-
-		return self::$wizards;
 	}
 }

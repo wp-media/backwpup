@@ -52,9 +52,18 @@ window.BWU.Restore.Factory = window.BWU.Restore.Factory || {};
 		 * Show the Decryption Fields
 		 *
 		 * @param data
+		 * @param error
 		 */
-		function showDecryptField( data ) {
-			this.decrypter.needDecryption( data.state );
+		function showDecryptField( data, error ) {
+			let error_message = {
+				message: '',
+			};
+			if ( error && error.data ) {
+				error_message = JSON.parse( error.data );
+			}
+			if ( data.state || error_message.message === BWU.States.NEED_DECRYPTION_KEY ) {
+				this.decrypter.needDecryption( data.state );
+			}
 		}
 
 		/**

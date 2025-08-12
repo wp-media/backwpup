@@ -432,7 +432,7 @@ class BackWPup_Page_Settings
 			'backwpup_cfg_keepplugindata'       => get_site_option( 'backwpup_cfg_keepplugindata' ),
 			'backwpup_cfg_mailaddresslog'       => get_site_option( 'backwpup_cfg_mailaddresslog' ),
 			'backwpup_cfg_mailaddresssenderlog' => get_site_option( 'backwpup_cfg_mailaddresssenderlog' ),
-			'backwpup_cfg_idmailerroronly'      => get_site_option( 'backwpup_cfg_idmailerroronly' ),
+			'backwpup_cfg_mailerroronly'        => get_site_option( 'backwpup_cfg_mailerroronly' ),
 		];
 
 		// Validate and add new options values.
@@ -518,9 +518,9 @@ class BackWPup_Page_Settings
 			$new_options['backwpup_cfg_mailaddresssenderlog'] = sanitize_email( wp_unslash( $_POST['mailaddresssenderlog'] ) );
 		}
 
-		// as idmailerroronly is a checkbox we need to check if another field is set to know if it is checked or not.
+		// as mailerroronly is a checkbox we need to check if another field is set to know if it is checked or not.
 		if ( isset( $_POST['loglevel'] ) ) {
-			$new_options['backwpup_cfg_idmailerroronly'] = ! empty( $_POST['idmailerroronly'] );
+			$new_options['backwpup_cfg_mailerroronly'] = ! empty( $_POST['mailerroronly'] );
 		}
 
 		// Merge actual options with new ones.
@@ -530,8 +530,6 @@ class BackWPup_Page_Settings
 		foreach ( $merged_options as $option_name => $option_value ) {
 			update_site_option( $option_name, $option_value );
 		}
-
-        do_action('backwpup_page_settings_save');
 
 		BackWPup_Admin::message( __( 'Settings saved', 'backwpup' ) );
         // phpcs:enable

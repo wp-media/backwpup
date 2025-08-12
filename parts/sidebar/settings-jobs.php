@@ -117,6 +117,21 @@ BackWPupHelpers::component("form/checkbox", [
 ?>
 
 <?php
+BackWPupHelpers::component("form/checkbox", [
+  "name" => "mixpanel",
+  "checked" => (bool) get_option('backwpup_mixpanel_optin', false),
+  "label" => __("BackWPUp analytics", 'backwpup'),
+  "tooltip" => sprintf(
+    __('By checking this box, I agree to share anonymous usage data with the BackWPup development team to help improve the plugin. %1$sWhat info will we collect?%2$s', 'backwpup'),
+    '<a href="https://backwpup.com/docs/what-info-we-collect/" target="_blank" rel="noopener noreferrer">',
+    '</a>'
+  ),
+  "tooltip_pos" => "left",
+  "value" => "1",
+]);
+?>
+
+<?php
   BackWPupHelpers::component("navigation/link", [
     "type" => "secondary",
     "content" => __("Access to Legacy Jobs", 'backwpup'),

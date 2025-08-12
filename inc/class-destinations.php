@@ -64,8 +64,6 @@ abstract class BackWPup_Destinations
 
     abstract public function option_defaults(): array;
 
-    abstract public function edit_tab(int $jobid): void;
-
     public function edit_auth(int $jobid): void
     {
     }
@@ -91,30 +89,6 @@ abstract class BackWPup_Destinations
 
     public function edit_ajax(): void
     {
-    }
-
-    public function wizard_admin_print_styles(): void
-    {
-    }
-
-    public function wizard_admin_print_scripts(): void
-    {
-    }
-
-    public function wizard_inline_js(): void
-    {
-    }
-
-    public function wizard_page(array $job_settings): void
-    {
-        echo '<br /><pre>';
-        print_r($job_settings);
-        echo '</pre>';
-    }
-
-    public function wizard_save(array $job_settings): array
-    {
-        return $job_settings;
     }
 
     public function admin_print_styles(): void

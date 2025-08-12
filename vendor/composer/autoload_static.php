@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit126770be2d1467f47df4f788858c0817
+class ComposerStaticInitd8b4005d81d6ce75b33832e6369e330b
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -13,7 +13,6 @@ class ComposerStaticInit126770be2d1467f47df4f788858c0817
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '1f155afceeab454b94183cdd8d5248a6' => __DIR__ . '/..' . '/mixpanel/mixpanel-php/lib/Mixpanel.php',
         'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
         '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
@@ -399,7 +398,7 @@ class ComposerStaticInit126770be2d1467f47df4f788858c0817
         'BackWPup_Destination_S3' => __DIR__ . '/../..' . '/inc/class-destination-s3.php',
         'BackWPup_Destination_S3_Downloader' => __DIR__ . '/../..' . '/inc/class-destination-s3-downloader.php',
         'BackWPup_Destination_SugarSync' => __DIR__ . '/../..' . '/inc/class-destination-sugarsync.php',
-        'BackWPup_Destination_SugarSync_API' => __DIR__ . '/../..' . '/inc/class-destination-sugarsync.php',
+        'BackWPup_Destination_SugarSync_API' => __DIR__ . '/../..' . '/inc/class-destination-sugarsync-api.php',
         'BackWPup_Destination_SugarSync_API_Exception' => __DIR__ . '/../..' . '/inc/class-destination-sugarsync.php',
         'BackWPup_Destinations' => __DIR__ . '/../..' . '/inc/class-destinations.php',
         'BackWPup_Directory' => __DIR__ . '/../..' . '/inc/class-directory.php',
@@ -489,15 +488,25 @@ class ComposerStaticInit126770be2d1467f47df4f788858c0817
         'WPMedia\\BackWPup\\EventManagement\\EventManager' => __DIR__ . '/../..' . '/inc/dependencies/wp-media/event-manager/EventManager.php',
         'WPMedia\\BackWPup\\EventManagement\\EventManagerAwareSubscriberInterface' => __DIR__ . '/../..' . '/inc/dependencies/wp-media/event-manager/EventManagerAwareSubscriberInterface.php',
         'WPMedia\\BackWPup\\EventManagement\\SubscriberInterface' => __DIR__ . '/../..' . '/inc/dependencies/wp-media/event-manager/SubscriberInterface.php',
+        'WPMedia_Base_MixpanelBase' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Base/MixpanelBase.php',
+        'WPMedia_ConsumerStrategies_AbstractConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/AbstractConsumer.php',
+        'WPMedia_ConsumerStrategies_CurlConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/CurlConsumer.php',
+        'WPMedia_ConsumerStrategies_FileConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/FileConsumer.php',
+        'WPMedia_ConsumerStrategies_SocketConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/SocketConsumer.php',
+        'WPMedia_Mixpanel' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Mixpanel.php',
+        'WPMedia_Producers_MixpanelBaseProducer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelBaseProducer.php',
+        'WPMedia_Producers_MixpanelEvents' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelEvents.php',
+        'WPMedia_Producers_MixpanelGroups' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelGroups.php',
+        'WPMedia_Producers_MixpanelPeople' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelPeople.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit126770be2d1467f47df4f788858c0817::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit126770be2d1467f47df4f788858c0817::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit126770be2d1467f47df4f788858c0817::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit126770be2d1467f47df4f788858c0817::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitd8b4005d81d6ce75b33832e6369e330b::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitd8b4005d81d6ce75b33832e6369e330b::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitd8b4005d81d6ce75b33832e6369e330b::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitd8b4005d81d6ce75b33832e6369e330b::$classMap;
 
         }, null, ClassLoader::class);
     }

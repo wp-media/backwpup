@@ -85,35 +85,6 @@ abstract class BackWPup_JobTypes {
     {
     }
 
-    public function wizard_admin_print_styles()
-    {
-    }
-
-    public function wizard_admin_print_scripts()
-    {
-    }
-
-    public function wizard_inline_js()
-    {
-    }
-
-    /**
-     * @param $job_settings
-     */
-    public function wizard_page(array $job_settings)
-    {
-    }
-
-    /**
-     * @param $job_settings
-     *
-     * @return array
-     */
-    public function wizard_save(array $job_settings)
-    {
-        return $job_settings;
-    }
-
     public function admin_print_styles()
     {
     }

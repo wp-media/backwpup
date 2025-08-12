@@ -32,23 +32,18 @@ $js_trigger_class = '';
 $configure_btn_class = BackWPupHelpers::clsx( 'js-backwpup-toggle-storage' , 'flex items-center gap-2 border rounded', 'ml-2 border-transparent bg-white' ) ;
 # JS
 $configure_btn_content = "storage-$slug";
-
-if( $active && $total_active > 1 ) {
-	$js_trigger_class = 'js-backwpup-unselect-storage';
-}
-
 ?>
 <button data-job-id="<?php echo esc_attr( $job_id ); ?>"
         data-storage="<?php echo esc_attr( $slug ); ?>"
         data-label="<?php echo esc_html( $label ); ?>"
-        class="<?php echo BackWPupHelpers::clsx( $js_trigger_class, $base_style, $contextual_style, $full_width_class ); ?>"
+        class="<?php echo BackWPupHelpers::clsx( 'js-backwpup-select-storage', $base_style, $contextual_style, $full_width_class ); ?>"
 >
   <input id='<?php echo esc_attr( $identifier ); ?>' value="<?php echo esc_attr( $slug); ?>"
          type="checkbox" name="<?php echo esc_attr( $name ); ?>" class="sr-only" <?php checked( $active ); ?>>
   <span class="p-2 border border-grey-500 rounded">
     <?php include untrailingslashit(BackWPup::get_plugin_data('plugindir'))."/assets/img/storage/$slug.svg"; ?>
   </span>
-  <label class="text-base font-title"><?php echo esc_html( $label ); ?></label>
+  <label class="text-base font-title cursor-pointer"><?php echo esc_html( $label ); ?></label>
 </button>
 <button data-content="<?php echo esc_attr( $configure_btn_content ); ?>"
         data-job-id="<?php echo esc_attr( $job_id ); ?>"
@@ -59,9 +54,9 @@ if( $active && $total_active > 1 ) {
         BackWPupHelpers::component( 'tooltip', [
             "content" => __( 'Configure', 'backwpup'),
             "icon_name" => 'settings',
-            "icon_size" => 'large',
+            "icon_size" => 'medium',
             "position" => 'left',
-            'parent_classes' => 'p-3'
+            'parent_classes' => 'p-4',
         ]);
     ?>
 </button>

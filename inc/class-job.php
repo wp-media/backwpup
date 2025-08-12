@@ -1260,6 +1260,13 @@ class BackWPup_Job
                 fclose($fd);
             }
 
+			// check for new settings and overwrite when it is not a legacy job.
+			if ( empty( $this->job['legacy'] ) ) {
+				$this->job['mailaddresslog']       = get_site_option( 'backwpup_cfg_mailaddresslog' );
+				$this->job['mailerroronly']        = (bool) get_site_option( 'backwpup_cfg_mailerroronly' );
+				$this->job['mailaddresssenderlog'] = get_site_option( 'backwpup_cfg_mailaddresssenderlog' );
+			}
+
             //Send mail with log
             $sendmail = false;
             if ($this->job['mailaddresslog']) {

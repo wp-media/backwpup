@@ -849,6 +849,8 @@ final class BackWPup_Admin {
 			) ? $post_archiveformat : '.tar';
 			// Save archive format general value.
 			do_action( 'backwpup_save_archiveformat', $archiveformat );
+			// Save the settings only if the archive is set to be sure it's not empty from the log part.
+			do_action( 'backwpup_page_settings_save' );
 		}
 
 		// Call method to save data.
@@ -1118,8 +1120,6 @@ EOT;
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_assets' ] );
 		// Save Form posts general.
 		add_action( 'admin_post_backwpup', [ $this, 'save_post_form' ] );
-		// Save Form posts wizard.
-		add_action( 'admin_post_backwpup_wizard', [ \BackWPup_Pro_Page_Wizard::class, 'save_post_form' ] );
 		// Save form posts for support.
 		add_action( 'admin_post_backwpup_support', [ \BackWPup_Pro_Page_Support::class, 'save_post_form' ] );
 		// Admin Footer Text replacement.

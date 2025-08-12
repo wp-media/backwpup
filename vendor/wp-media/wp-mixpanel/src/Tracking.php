@@ -3,28 +3,44 @@ declare(strict_types=1);
 
 namespace WPMedia\Mixpanel;
 
-use Mixpanel;
+use WPMedia_Mixpanel;
 
 class Tracking {
+	const HOST = 'mixpanel-tracking-proxy-prod.public-default.live2-k8s-cph3.ingress.k8s.g1i.one';
+
 	/**
 	 * Mixpanel instance
 	 *
-	 * @var Mixpanel
+	 * @var WPMedia_Mixpanel
 	 */
 	private $mixpanel;
 
 	/**
+	 * Mixpanel token
+	 *
+	 * @var string
+	 */
+	protected $token;
+
+	/**
 	 * Constructor
 	 *
-	 * @param string $mixpanel_token Mixpanel token.
+	 * @param string  $mixpanel_token Mixpanel token.
+	 * @param mixed[] $options Options for Mixpanel instance.
 	 */
-	public function __construct( string $mixpanel_token ) {
-		$this->mixpanel = Mixpanel::getInstance(
-			$mixpanel_token,
+	public function __construct( string $mixpanel_token, array $options = [] ) {
+		$mixpanel_options = array_merge(
 			[
-				'host'            => 'api-eu.mixpanel.com',
+				'host'            => self::HOST,
 				'events_endpoint' => '/track/?ip=0',
-			]
+			],
+			$options
+		);
+
+		$this->token    = $mixpanel_token;
+		$this->mixpanel = WPMedia_Mixpanel::getInstance(
+			$this->token,
+			$mixpanel_options
 		);
 	}
 
@@ -46,7 +62,7 @@ class Tracking {
 	 * @return void
 	 */
 	public function identify( string $user_id ): void {
-		$this->mixpanel->identify( hash( 'sha3-224', $user_id ) );
+		$this->mixpanel->identify( $this->hash( $user_id ) );
 	}
 
 	/**
@@ -67,14 +83,14 @@ class Tracking {
 	}
 
 	/**
-	 * Hash a value using SHA3-224
+	 * Hash a value using sha224
 	 *
 	 * @param string $value Value to hash.
 	 *
 	 * @return string
 	 */
 	public function hash( string $value ): string {
-		return hash( 'sha3-224', $value );
+		return hash( 'sha224', $value );
 	}
 
 	/**
@@ -137,5 +153,31 @@ class Tracking {
 		}
 
 		return $plugins;
+	}
+
+	/**
+	 * Get the Mixpanel token
+	 *
+	 * @return string
+	 */
+	public function get_token(): string {
+		return $this->token;
+	}
+
+	/**
+	 * Add the Mixpanel script & initialize it
+	 */
+	public function add_script(): void {
+		?>
+		<!-- start Mixpanel --><script>
+		const MIXPANEL_CUSTOM_LIB_URL = "https://<?php echo esc_js( self::HOST ); ?>/lib.min.js";
+		(function (f, b) { if (!b.__SV) { var e, g, i, h; window.mixpanel = b; b._i = []; b.init = function (e, f, c) { function g(a, d) { var b = d.split("."); 2 == b.length && ((a = a[b[0]]), (d = b[1])); a[d] = function () { a.push([d].concat(Array.prototype.slice.call(arguments, 0))); }; } var a = b; "undefined" !== typeof c ? (a = b[c] = []) : (c = "mixpanel"); a.people = a.people || []; a.toString = function (a) { var d = "mixpanel"; "mixpanel" !== c && (d += "." + c); a || (d += " (stub)"); return d; }; a.people.toString = function () { return a.toString(1) + ".people (stub)"; }; i = "disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking start_batch_senders people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split( " "); for (h = 0; h < i.length; h++) g(a, i[h]); var j = "set set_once union unset remove delete".split(" "); a.get_group = function () { function b(c) { d[c] = function () { call2_args = arguments; call2 = [c].concat(Array.prototype.slice.call(call2_args, 0)); a.push([e, call2]); }; } for ( var d = {}, e = ["get_group"].concat( Array.prototype.slice.call(arguments, 0)), c = 0; c < j.length; c++) b(j[c]); return d; }; b._i.push([e, f, c]); }; b.__SV = 1.2; e = f.createElement("script"); e.type = "text/javascript"; e.async = !0; e.src = "undefined" !== typeof MIXPANEL_CUSTOM_LIB_URL ? MIXPANEL_CUSTOM_LIB_URL : "file:" === f.location.protocol && "//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//) ? "https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js" : "//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js"; g = f.getElementsByTagName("script")[0]; g.parentNode.insertBefore(e, g); } })(document, window.mixpanel || []);
+		mixpanel.init( '<?php echo esc_js( $this->token ); ?>', {
+			api_host: "https://<?php echo esc_js( self::HOST ); ?>",
+			id: false,
+			property_blacklist: ['$initial_referrer', '$current_url', '$initial_referring_domain', '$referrer', '$referring_domain']
+		} );
+		</script><!-- end Mixpanel -->
+		<?php
 	}
 }

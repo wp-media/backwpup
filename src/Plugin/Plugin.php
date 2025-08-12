@@ -26,6 +26,8 @@ use Inpsyde\BackWPup\Pro\License\LicenseSettingUpdater;
 use Inpsyde\BackWPup\Pro\Settings\EncryptionSettingsView;
 use Inpsyde\BackWPup\Pro\Settings\EncryptionSettingUpdater;
 use WP_CLI;
+use WPMedia\BackWPup\Admin\Options\Options;
+use WPMedia\BackWPup\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WPMedia\BackWPup\Dependencies\League\Container\Container;
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\ServiceProviderInterface;
 use WPMedia\BackWPup\EventManagement\EventManager;
@@ -171,6 +173,9 @@ class Plugin {
 				return new EventManager();
 			}
 		);
+
+		$this->container->add( 'options_api', Options::class )
+			->addArgument( new StringArgument( 'backwpup_' ) );
 
 		// Load service providers.
 		$providers = require dirname( BACKWPUP_PLUGIN_FILE ) . '/config/providers.php';

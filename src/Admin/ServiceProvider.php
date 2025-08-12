@@ -4,10 +4,11 @@ declare(strict_types=1);
 namespace WPMedia\BackWPup\Admin;
 
 use BackWPup;
+use WPMedia\BackWPup\Admin\Notices\Notices;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice52;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice522;
-use WPMedia\BackWPup\Admin\Notices\Notices\Notice53;
 use WPMedia\BackWPup\Admin\Notices\Notices\NoticeDataCorrupted;
+use WPMedia\BackWPup\Admin\Notices\Notices\NoticeTracking;
 use WPMedia\BackWPup\Admin\Notices\Subscriber as NoticeSubscriber;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice513;
 use Inpsyde\BackWPup\Notice\NoticeView;
@@ -26,6 +27,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'notice_view_factory',
 		SettingSubscriber::class,
 		AdminFrontendSubscriber::class,
+		'options',
 	];
 
 	/**
@@ -56,7 +58,22 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
+		$this->getContainer()->addShared( 'options', OptionData::class )
+			->addArgument( [ $this->getContainer()->get( 'options_api' )->get( 'settings', [] ) ] );
 
+		// Register notices.
+		$this->getContainer()->addShared( 'admin_notices', Notices::class )
+			->addArguments(
+				[
+					'options',
+					'backwpup_adapter',
+				]
+				);
+
+		$this->getContainer()->addShared( 'admin_subscriber', Subscriber::class )
+			->addArgument( 'options' );
+
+		// Deprecate, remove old container of notices.
 		// Register Notice513 with its NoticeView and BackWPupAdapter dependencies.
 		$notice513_view = new NoticeView( Notice513::ID );
 		$this->getContainer()->addShared( 'notice_513', Notice513::class )
@@ -83,16 +100,6 @@ class ServiceProvider extends AbstractServiceProvider {
 					'backwpup_adapter',
 				]
 			);
-		// Notice for 5.3.
-		$this->getContainer()->add( 'notice_53_view', NoticeView::class )
-			->addArgument( Notice53::ID );
-		$this->getContainer()->addShared( 'notice_53', Notice53::class )
-			->addArguments(
-				[
-					'notice_53_view',
-					'backwpup_adapter',
-				]
-			);
 		// Notice for data corrupted alert.
 		$this->getContainer()->add( 'notice_data_corrupted_view', NoticeView::class )
 			->addArgument( NoticeDataCorrupted::ID );
@@ -106,13 +113,15 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		// Register the Subscriber with an array of notice instances.
 		$this->getContainer()->addShared( 'notice_subscriber', NoticeSubscriber::class )
-			->addArgument(
+			->addArguments(
 				[
-					$this->getContainer()->get( 'notice_53' ),
-					$this->getContainer()->get( 'notice_522' ),
-					$this->getContainer()->get( 'notice_52' ),
-					$this->getContainer()->get( 'notice_513' ),
-					$this->getContainer()->get( 'notice_datacorrupted' ),
+					'admin_notices',
+					[
+						$this->getContainer()->get( 'notice_522' ),
+						$this->getContainer()->get( 'notice_52' ),
+						$this->getContainer()->get( 'notice_513' ),
+						$this->getContainer()->get( 'notice_datacorrupted' ),
+					],
 				]
 				);
 		$this->getContainer()->addShared( SettingSubscriber::class );

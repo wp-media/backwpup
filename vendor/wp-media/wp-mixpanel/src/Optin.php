@@ -59,6 +59,13 @@ class Optin {
 		}
 
 		update_option( $this->plugin_slug . '_mixpanel_optin', true );
+
+		/**
+		 * Fires when the Mixpanel opt-in status changes to enabled.
+		 *
+		 * @param bool $status The opt-in status.
+		 */
+		do_action( $this->plugin_slug . '_mixpanel_optin_changed', true );
 	}
 
 	/**
@@ -72,5 +79,12 @@ class Optin {
 		}
 
 		delete_option( $this->plugin_slug . '_mixpanel_optin' );
+
+		/**
+		 * Fires when the Mixpanel opt-in status changes to disabled.
+		 *
+		 * @param bool $status The opt-in status.
+		 */
+		do_action( $this->plugin_slug . '_mixpanel_optin_changed', false );
 	}
 }

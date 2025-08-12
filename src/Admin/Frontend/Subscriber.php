@@ -29,7 +29,10 @@ class Subscriber implements SubscriberInterface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_enqueue_scripts' => 'add_backwpup_job_script',
+			'admin_enqueue_scripts' => [
+				[ 'add_backwpup_job_script' ],
+				[ 'add_backwpup_onboarding_script' ],
+			],
 		];
 	}
 
@@ -54,5 +57,28 @@ class Subscriber implements SubscriberInterface {
 		wp_register_script( 'backwpup-job-admin-js',  $assets_path,  [],  $this->backwpup->get_plugin_data( 'Version' ),  true );
 
 		wp_enqueue_script( 'backwpup-job-admin-js' );
+	}
+
+	/**
+	 * Add script to the footer of the admin page for backwpup onboarding pages only.
+	 *
+	 * @since 5.3.1
+	 *
+	 * @return void
+	 */
+	public function add_backwpup_onboarding_script() {
+		$screen                      = get_current_screen();
+		$is_backwpup_onboarding_page = isset( $screen->id ) && str_contains( $screen->id, 'backwpuponboarding' );
+
+		if ( ! $is_backwpup_onboarding_page ) {
+			return;
+		}
+
+		$plugin_url  = $this->backwpup->get_plugin_data( 'URL' );
+		$assets_path = $plugin_url . '/assets/js/backwpup-onboarding.js';
+
+		wp_register_script( 'backwpup-onboarding-admin-js',  $assets_path,  [],  $this->backwpup->get_plugin_data( 'Version' ),  true );
+
+		wp_enqueue_script( 'backwpup-onboarding-admin-js' );
 	}
 }

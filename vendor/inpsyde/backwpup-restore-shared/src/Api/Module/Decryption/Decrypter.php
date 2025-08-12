@@ -337,7 +337,7 @@ class Decrypter
     {
         // Get last character of decrypted string to detect padding length
         $paddingLength = ord($packet[strlen($packet) - 1]);
-        if ($paddingLength <= self::BLOCK_SIZE) {
+        if ($paddingLength && $paddingLength <= self::BLOCK_SIZE) {
             $packet = substr($packet, 0, -$paddingLength);
         }
 

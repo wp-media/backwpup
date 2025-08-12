@@ -2315,32 +2315,34 @@ jQuery(document).ready(function ($) {
  */
 document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener("click", function (event) {
-        const group_buttons = document.querySelectorAll('.js-backwpup-unselect-storage'),
-            storage_button = event.target.closest('.js-backwpup-unselect-storage');
+        const storage_button = event.target.closest('.js-backwpup-select-storage');
+        if (!storage_button) {
+            return;
+        }
 
-        if (group_buttons.length > 1 && storage_button ) {
-            const data = {
-                'job_id': storage_button.dataset.jobId,
-                'name': storage_button.dataset.storage,
-            };
+        const storage_checkbox = storage_button.querySelector('input[type="checkbox"]');
+        if (!storage_checkbox) {
+            return;
+        }
 
-            const storage_checkbox = storage_button.querySelector('input[type="checkbox"]'),
-                  is_currently_checked = storage_checkbox.checked
+        const data = {
+            'job_id': storage_button.dataset.jobId,
+            'name': storage_button.dataset.storage,
+            'checked': storage_checkbox.checked ? 1 : 0,
+        };
 
-            if (typeof requestWPApi === 'function') {
-                requestWPApi(backwpupApi.storages, data, function(response) {
-                        if ( response.status === 200 ) {
-                            storage_button.classList.toggle('js-backwpup-unselect-storage')
-                            storage_checkbox.checked = !is_currently_checked
-                        }
-                    },
-                    'POST',
-                    function (request, error) {
-                        console.log(request);
-                        console.log(error);
-                        alert(request.responseJSON.error);
-                    });
-            }
+        if (typeof requestWPApi === 'function') {
+            requestWPApi(backwpupApi.storages, data, function(response) {
+                    if ( response.status === 200 ) {
+                        storage_checkbox.checked = data.checked !== 1;
+                    }
+                },
+                'POST',
+                function (request, error) {
+                    console.log(request);
+                    console.log(error);
+                    alert(request.responseJSON.error);
+                });
         }
     })
 });

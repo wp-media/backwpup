@@ -258,3 +258,61 @@ function backwpup_cal_days_in_month( $month, $year ) {
 	// Return the number of days for the given month.
 	return $days_in_months[ $month - 1 ];
 }
+
+/**
+ * Outputs notice HTML
+ *
+ * @param array $args An array of arguments used to determine the notice output.
+ * @return void
+ */
+function backwpup_notice_html( $args ) {
+	$defaults = [
+		'status'                 => 'success',
+		'dismissible'            => 'is-dismissible',
+		'message'                => '',
+		'action'                 => '',
+		'dismiss_button'         => false,
+		'dismiss_button_message' => __( 'Dismiss this notice', 'backwpup' ),
+		'readonly_content'       => '',
+		'id'                     => '',
+	];
+
+	$args = wp_parse_args( $args, $defaults );
+	switch ( $args['action'] ) {
+		case 'dropbox':
+		case 'legacy_jobs':
+			$args['action'] = ''; // This can be a specific action to be carried out.
+			break;
+	}
+
+	$notice_id = '';
+
+	if ( ! empty( $args['id'] ) ) {
+		$notice_id = ' id="' . esc_attr( $args['id'] ) . '"';
+	}
+
+	?>
+	<div <?php echo $notice_id; ?> class="notice notice-inpsyde notice-<?php echo esc_attr( $args['status'] ); ?> <?php echo esc_attr( $args['dismissible'] ); ?>"<?php echo $notice_id; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+		<div class="notice-inpsyde__content">
+			<p class="notice-titre">
+				<?php echo $args['title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			</p>
+			<?php if ( $args['action'] || $args['dismiss_button'] ) : ?>
+			<a class="closeIt <?php echo esc_attr( $args['dismiss_button_class'] ?? '' ); ?>"
+				data-bwpu-hide="<?php echo esc_attr( $args['id'] ?? '' ); ?>"
+				href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=backwpup_dismiss_notice&box=' . $args['dismiss_button'] ), 'backwpup_dismiss_notice_' . $args['dismiss_button'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>">
+				<span class="screen-reader-text">
+					<?php echo esc_html( $args['dismiss_button_message'] ); ?>
+				</span>
+			</a>
+			<?php endif; ?>
+
+			<?php
+			$tag = 0 !== strpos( $args['message'], '<p' ) && 0 !== strpos( $args['message'], '<ul' );
+
+			echo ( $tag ? '<p>' : '' ) . $args['message'] . ( $tag ? '</p>' : '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+			?>
+		</div>
+	</div>
+	<?php
+}

@@ -105,9 +105,9 @@ BackWPupHelpers::component("closable-heading", [
 
     <?php
     BackWPupHelpers::component("form/checkbox", [
-      "name" => "idmailerroronly",
+      "name" => "mailerroronly",
       "label" => __("Send email with log only when errors occur during job execution", 'backwpup'),
-      "checked" => (bool)get_site_option('backwpup_cfg_idmailerroronly'),
+      "checked" => (bool)get_site_option('backwpup_cfg_mailerroronly'),
     ]);
     ?>
   </div>

@@ -586,21 +586,6 @@ _e('Use your backup archives to save your entire WordPress installation includin
 								<td class="tick"></td>
 							</tr>
 							<tr class="<?php self::row_class(); ?>">
-								<td><?php esc_html_e( 'Wizard for system tests', 'backwpup' ); ?></td>
-								<td class="error"></td>
-								<td class="tick"></td>
-							</tr>
-							<tr class="<?php self::row_class(); ?>">
-								<td><?php esc_html_e( 'Wizard for scheduled backup jobs', 'backwpup' ); ?></td>
-								<td class="error"></td>
-								<td class="tick"></td>
-							</tr>
-							<tr class="<?php self::row_class(); ?>">
-								<td><?php esc_html_e( 'Wizard to import settings and backup jobs', 'backwpup' ); ?></td>
-								<td class="error"></td>
-								<td class="tick"></td>
-							</tr>
-							<tr class="<?php self::row_class(); ?>">
 								<td><?php esc_html_e( 'Differential backup of changed directories to Dropbox', 'backwpup' ); ?></td>
 								<td class="error"></td>
 								<td class="tick"></td>

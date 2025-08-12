@@ -516,6 +516,13 @@ class Rest implements RestInterface {
 
 		wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $job_id ] );
 
+		/**
+		 * Fires after a new job is added.
+		 *
+		 * @param array $job The job data.
+		 */
+		do_action( 'backwpup_add_job', $job );
+
 		return rest_ensure_response(
 			[
 				'success' => true,
@@ -540,6 +547,14 @@ class Rest implements RestInterface {
 		$status = 200;
 
 		$job_id = $params['job_id'];
+
+		/**
+		 * Fires before a job is deleted.
+		 *
+		 * @param int $job_id The ID of the deleted job.
+		 */
+		do_action( 'backwpup_delete_job', $job_id );
+
 		if ( ! $this->job_adapter->delete_job( $job_id ) ) {
 			$return['success'] = false;
 			$return['message'] = __( 'Failed to delete job', 'backwpup' );
@@ -547,6 +562,7 @@ class Rest implements RestInterface {
 
 		$response = rest_ensure_response( $return );
 		$response->set_status( $status );
+
 		return $response;
 	}
 
@@ -597,6 +613,9 @@ class Rest implements RestInterface {
 
 			// Re-schedule the job with the updated cron schedule.
 			$this->job_adapter->schedule_job( $job_id );
+
+			// Update frequency.
+			$this->option_adapter->update( $job_id, 'frequency', $frequency );
 
 			// Get the next scheduled execution time.
 			$cron_next = $this->cron_adapter->cron_next( $new_cron_expression );

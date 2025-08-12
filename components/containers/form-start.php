@@ -26,11 +26,12 @@ $method = $method ?? 'post';
 $page = $page ?? 'backwpup';
 $action = $action ?? 'backwpup';
 $overflow = $scrollable ?? true ? 'overflow-y-scroll' : '';
+$absolute = $scrollable ?? true ? 'absolute' : '';
 $idForm = $identifier ? 'id="'.$identifier.'"' : '';
 ?>
-<div class="relative flex-auto <?=$scrollable?>">
+<div class="<?php echo BackWPupHelpers::clsx("relative flex-auto", $overflow); ?>">
 	<form
-		class="<?php echo BackWPupHelpers::clsx("w-full flex flex-col", $gap, $overflow, $class); ?>"
+		class="<?php echo BackWPupHelpers::clsx("w-full flex flex-col", $absolute, $gap, $class); ?>"
 		action="<?php echo admin_url('admin-post.php'); ?>"
 		method="<?php echo esc_attr($method); ?>"
     <?=$idForm?>

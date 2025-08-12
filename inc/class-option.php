@@ -32,6 +32,9 @@ final class BackWPup_Option
 		// Logs.
 		add_site_option( 'backwpup_cfg_maxlogs', 30 );
 		add_site_option( 'backwpup_cfg_gzlogs', 0 );
+		add_site_option( 'backwpup_cfg_mailaddresslog', sanitize_email( get_bloginfo( 'admin_email' ) ) );
+		add_site_option( 'backwpup_cfg_mailaddresssenderlog', sanitize_email( get_bloginfo( 'admin_email' ) ) );
+		add_site_option( 'backwpup_cfg_mailerroronly', true );
 		// Archive format.
 		add_site_option( 'backwpup_archiveformat', '.tar' );
 		$upload_dir   = wp_upload_dir( null, false, true );

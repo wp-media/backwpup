@@ -645,8 +645,8 @@
         },
         {
             "name": "inpsyde/assert",
-            "version": "dev-develop",
-            "version_normalized": "dev-develop",
+            "version": "dev-enhancement/887-job-event",
+            "version_normalized": "dev-enhancement/887-job-event",
             "dist": {
                 "type": "path",
                 "url": "packages/assert",
@@ -767,17 +767,17 @@
         },
         {
             "name": "inpsyde/backwpup-restore-shared",
-            "version": "0.20.3",
-            "version_normalized": "0.20.3.0",
+            "version": "0.20.4",
+            "version_normalized": "0.20.4.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:wp-media/backwpup-restore-shared.git",
-                "reference": "7865d34f7385ed5dec96da1d31767f1758159e3c"
+                "reference": "2bbdd156bcc39ce8e7d82447f685f9172a05fbf3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/backwpup-restore-shared/zipball/7865d34f7385ed5dec96da1d31767f1758159e3c",
-                "reference": "7865d34f7385ed5dec96da1d31767f1758159e3c",
+                "url": "https://api.github.com/repos/wp-media/backwpup-restore-shared/zipball/2bbdd156bcc39ce8e7d82447f685f9172a05fbf3",
+                "reference": "2bbdd156bcc39ce8e7d82447f685f9172a05fbf3",
                 "shasum": ""
             },
             "require": {
@@ -807,7 +807,7 @@
                 "squizlabs/php_codesniffer": "^3.4",
                 "vimeo/psalm": "^4.18"
             },
-            "time": "2024-07-29T09:36:06+00:00",
+            "time": "2025-08-05T14:33:41+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -873,7 +873,7 @@
             ],
             "description": "A library for shared code for backwpup restore feature.",
             "support": {
-                "source": "https://github.com/wp-media/backwpup-restore-shared/tree/0.20.3",
+                "source": "https://github.com/wp-media/backwpup-restore-shared/tree/0.20.4",
                 "issues": "https://github.com/wp-media/backwpup-restore-shared/issues"
             },
             "install-path": "../inpsyde/backwpup-restore-shared"
@@ -1253,58 +1253,6 @@
             "install-path": "../mikemccabe/json-patch-php"
         },
         {
-            "name": "mixpanel/mixpanel-php",
-            "version": "2.11.0",
-            "version_normalized": "2.11.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mixpanel/mixpanel-php.git",
-                "reference": "4b0fafacf2129eff5d50721e129b07f0c32687e7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mixpanel/mixpanel-php/zipball/4b0fafacf2129eff5d50721e129b07f0c32687e7",
-                "reference": "4b0fafacf2129eff5d50721e129b07f0c32687e7",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.0"
-            },
-            "require-dev": {
-                "phpdocumentor/phpdocumentor": "2.9.*",
-                "phpunit/phpunit": "5.6.*"
-            },
-            "time": "2023-04-11T23:03:57+00:00",
-            "type": "library",
-            "installation-source": "dist",
-            "autoload": {
-                "files": [
-                    "lib/Mixpanel.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Mixpanel <dev@mixpanel.com>",
-                    "homepage": "https://mixpanel.com/"
-                }
-            ],
-            "description": "The Official PHP library for Mixpanel",
-            "homepage": "https://mixpanel.com/help/reference/php",
-            "keywords": [
-                "mixpanel",
-                "mixpanel php"
-            ],
-            "support": {
-                "issues": "https://github.com/mixpanel/mixpanel-php/issues",
-                "source": "https://github.com/mixpanel/mixpanel-php/tree/2.11.0"
-            },
-            "install-path": "../mixpanel/mixpanel-php"
-        },
-        {
             "name": "monolog/monolog",
             "version": "2.10.0",
             "version_normalized": "2.10.0.0",
@@ -1603,22 +1551,22 @@
         },
         {
             "name": "pear/archive_tar",
-            "version": "1.5.0",
-            "version_normalized": "1.5.0.0",
+            "version": "1.6.0",
+            "version_normalized": "1.6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Archive_Tar.git",
-                "reference": "b439c859564f5cbb0f64ad6002d0afe84a889602"
+                "reference": "dc3285537f1832da8ddbbe45f5a007248b6cc00e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Archive_Tar/zipball/b439c859564f5cbb0f64ad6002d0afe84a889602",
-                "reference": "b439c859564f5cbb0f64ad6002d0afe84a889602",
+                "url": "https://api.github.com/repos/pear/Archive_Tar/zipball/dc3285537f1832da8ddbbe45f5a007248b6cc00e",
+                "reference": "dc3285537f1832da8ddbbe45f5a007248b6cc00e",
                 "shasum": ""
             },
             "require": {
                 "pear/pear-core-minimal": "^1.10.0alpha2",
-                "php": ">=5.2.0"
+                "php": ">=5.4.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "*"
@@ -1628,7 +1576,7 @@
                 "ext-xz": "Lzma2 compression support.",
                 "ext-zlib": "Gzip compression support."
             },
-            "time": "2024-03-16T16:21:40+00:00",
+            "time": "2025-07-19T14:49:16+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -3048,21 +2996,20 @@
         },
         {
             "name": "wp-media/wp-mixpanel",
-            "version": "dev-develop",
-            "version_normalized": "dev-develop",
+            "version": "v1.1.1",
+            "version_normalized": "1.1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/wp-mixpanel.git",
-                "reference": "e56dd8d49d4277be1bbaedd1f4a18735849987f0"
+                "reference": "0646d525f0624b13c336ff2829713d9a37192c46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/wp-mixpanel/zipball/e56dd8d49d4277be1bbaedd1f4a18735849987f0",
-                "reference": "e56dd8d49d4277be1bbaedd1f4a18735849987f0",
+                "url": "https://api.github.com/repos/wp-media/wp-mixpanel/zipball/0646d525f0624b13c336ff2829713d9a37192c46",
+                "reference": "0646d525f0624b13c336ff2829713d9a37192c46",
                 "shasum": ""
             },
             "require": {
-                "mixpanel/mixpanel-php": "2.*",
                 "php": ">=7.3"
             },
             "require-dev": {
@@ -3076,14 +3023,16 @@
                 "wp-coding-standards/wpcs": "^3",
                 "wp-media/phpunit": "^3"
             },
-            "time": "2025-06-13T15:39:13+00:00",
-            "default-branch": true,
+            "time": "2025-08-04T16:14:18+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "WPMedia\\Mixpanel\\": "src/"
-                }
+                },
+                "classmap": [
+                    "src/Classes/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -3099,7 +3048,7 @@
             "description": "WordPress Mixpanel Integration",
             "support": {
                 "issues": "https://github.com/wp-media/wp-mixpanel/issues",
-                "source": "https://github.com/wp-media/wp-mixpanel/tree/develop"
+                "source": "https://github.com/wp-media/wp-mixpanel/tree/v1.1.1"
             },
             "install-path": "../wp-media/wp-mixpanel"
         }

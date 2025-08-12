@@ -17,6 +17,9 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		Optin::class,
 		TrackingPlugin::class,
+		Tracking::class,
+		Subscriber::class,
+		Notices::class,
 	];
 
 	/**
@@ -24,7 +27,9 @@ class ServiceProvider extends AbstractServiceProvider {
 	 *
 	 * @var array
 	 */
-	public $subscribers = [];
+	public $subscribers = [
+		Subscriber::class,
+	];
 
 	/**
 	 * Check if the service provider provides a specific service.
@@ -54,8 +59,34 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( TrackingPlugin::class )
 			->addArguments(
 				[
-					'ca194771e8caa6fca7ff02896cded17d',
+					'517e881edc2636e99a2ecf013d8134d3',
 					BackWPup::get_plugin_data( 'version' ),
+					'WP Media',
+					'BackWPup',
+				]
+			);
+
+		$this->getContainer()->add( Tracking::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( Optin::class ),
+					$this->getContainer()->get( TrackingPlugin::class ),
+					$this->getContainer()->get( 'option_adapter' ),
+				]
+			);
+
+		$this->getContainer()->add( Notices::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( Optin::class ),
+				]
+			);
+
+		$this->getContainer()->addShared( Subscriber::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( Tracking::class ),
+					$this->getContainer()->get( Notices::class ),
 				]
 			);
 	}

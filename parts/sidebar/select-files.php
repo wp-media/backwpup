@@ -19,7 +19,7 @@ BackWPupHelpers::component("navigation-header", [
 ?>
 
 <?php BackWPupHelpers::component("containers/scrollable-start"); ?>
-<div class="rounded-lg p-6 bg-grey-100 overflow-y-scroll">
+<div class="rounded-lg p-6 bg-grey-100">
   <?php
   BackWPupHelpers::component("containers/accordion", [
 	"title" => __("Content Selector", 'backwpup'),

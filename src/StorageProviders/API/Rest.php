@@ -330,25 +330,27 @@ class Rest implements RestInterface {
 			if ( ! isset( $params['job_id'] ) || '' === $params['job_id'] ) {
 				throw new Exception( __( 'Job id not set', 'backwpup' ) );
 			}
-
-			$job_id = $params['job_id'];
-
+			$checked       = (bool) $params['checked'];
+			$job_id        = $params['job_id'];
 			$backwpup_jobs = $this->option_adapter->get_job( $job_id );
+			$destinations  = $backwpup_jobs['destinations'];
 
-			$destinations = $backwpup_jobs['destinations'];
-			if ( count( $destinations ) <= 1 ) {
-				throw new Exception( __( 'At least one storage is required for a job to run', 'backwpup' ) );
+			if ( ! $checked ) {
+				$destinations[] = strtoupper( $storage_name );
+			} else {
+				$destinations = array_filter(
+					$destinations,
+					function ( $value ) use ( $storage_name ) {
+						return $value !== $storage_name;
+					}
+				);
 			}
 
-			// Remove the storage from destinations.
-			$destinations = array_filter(
-				$destinations,
-				function ( $value ) use ( $storage_name ) {
-					return $value !== $storage_name;
-				}
-			);
+			$destinations = array_unique( array_values( $destinations ) );
 
-			$destinations = array_values( $destinations );
+			if ( count( $destinations ) < 1 ) {
+				throw new Exception( __( 'At least one storage is required for a job to run', 'backwpup' ) );
+			}
 
 			$this->option_adapter->update( $job_id, 'destinations', $destinations );
 
