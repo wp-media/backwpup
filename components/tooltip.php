@@ -58,7 +58,7 @@ $tooltip_surrounding_element = $tooltip_surrounding_element ?? 'span';
   <?php if (isset($tooltip_component)) : ?>
     <?php BackWPupHelpers::component($tooltip_component['component'], $tooltip_component['args']); ?>
   <?php elseif (isset($icon_name)) : ?>
-  <span class="text-primary-darker cursor-pointer">
+  <span class="text-primary-darker">
     <?php BackWPupHelpers::component("icon", ["name" => $icon_name, "size" => $icon_size, "data" => $data, "class" => $classes]); ?>
   </span>
   <?php endif; ?>

@@ -363,16 +363,21 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
             $job_object->do_restart_time();
         }
 
-        if ($job_object->substeps_done === 5) {
-            //include dirs
-            if ($job_object->job['dirinclude']) {
-                $dirinclude = explode(',', (string) $job_object->job['dirinclude']);
-                $dirinclude = array_unique($dirinclude);
-                //Crate file list for includes
-                foreach ($dirinclude as $dirincludevalue) {
-                    if (is_dir($dirincludevalue)) {
-                        $this->get_folder_list($job_object, $dirincludevalue);
-                    }
+		if ( 5 === $job_object->substeps_done ) {
+			// include dirs.
+			if ( $job_object->job['dirinclude'] ) {
+				$dirinclude = explode( ',', (string) $job_object->job['dirinclude'] );
+				$dirinclude = array_unique( $dirinclude );
+				// Create file list for includes.
+				foreach ( $dirinclude as $dirincludevalue ) {
+					if ( is_dir( $dirincludevalue ) ) {
+						// translators: %s: Directory path.
+						$job_object->log( sprintf( __( 'Added "%s" folder to backup', 'backwpup' ), $dirincludevalue ) );
+						$this->get_folder_list( $job_object, $dirincludevalue );
+					} else {
+						// translators: %s: Directory path.
+						$job_object->log( sprintf( __( '"%s" is not a folder and will be ignored', 'backwpup' ), $dirincludevalue ), E_USER_WARNING );
+					}
                 }
             }
             $job_object->substeps_done = 6;
@@ -389,17 +394,19 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
             $job_object->do_restart_time();
         }
 
-        //add extra files if selected
-        if (!empty($job_object->job['backupspecialfiles'])) {
-            // Special handling for wp-config.php
-            if (is_readable(ABSPATH . 'wp-config.php')) {
-                $job_object->additional_files_to_backup[] = str_replace('\\', '/', ABSPATH . 'wp-config.php');
-                $job_object->log(sprintf(__('Added "%s" to backup file list', 'backwpup'), 'wp-config.php'));
-            } elseif (BackWPup_File::is_in_open_basedir(dirname((string) ABSPATH) . '/wp-config.php')) {
-                if (is_readable(dirname((string) ABSPATH) . '/wp-config.php') && !is_readable(dirname((string) ABSPATH) . '/wp-settings.php')) {
-                    $job_object->additional_files_to_backup[] = str_replace('\\', '/', dirname((string) ABSPATH) . '/wp-config.php');
-                    $job_object->log(sprintf(__('Added "%s" to backup file list', 'backwpup'), 'wp-config.php'));
-                }
+		// add extra files if selected.
+		if ( ! empty( $job_object->job['backupspecialfiles'] ) ) {
+			// Special handling for wp-config.php.
+			if ( is_readable( ABSPATH . 'wp-config.php' ) ) {
+				$job_object->additional_files_to_backup[] = str_replace( '\\', '/', ABSPATH . 'wp-config.php' );
+				// translators: %s: File name.
+				$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), 'wp-config.php' ) );
+			} elseif ( BackWPup_File::is_in_open_basedir( dirname( (string) ABSPATH ) . '/wp-config.php' ) ) {
+				if ( is_readable( dirname( (string) ABSPATH ) . '/wp-config.php' ) && ! is_readable( dirname( (string) ABSPATH ) . '/wp-settings.php' ) ) {
+					$job_object->additional_files_to_backup[] = str_replace( '\\', '/', dirname( (string) ABSPATH ) . '/wp-config.php' );
+					// translators: %s: File name.
+					$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), 'wp-config.php' ) );
+				}
             }
 
             // Files to include
@@ -440,52 +447,65 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
      * @param bool   $first
      *
      * @return bool
-     */
-    private function get_folder_list(&$job_object, $folder, $excludedirs = [], $first = true)
-    {
-        $folder = trailingslashit($folder);
+	 */
+	private function get_folder_list( &$job_object, $folder, $excludedirs = [], $first = true ) {
+		$folder = trailingslashit( $folder );
 
-        try {
-            $dir = new BackWPup_Directory($folder);
-            //add folder to folder list
-            $job_object->add_folders_to_backup($folder);
-            //scan folder
-            foreach ($dir as $file) {
-                if ($file->isDot()) {
-                    continue;
-                }
-                $path = str_replace('\\', '/', realpath($file->getPathname()));
+		try {
+			$dir = new BackWPup_Directory( $folder );
+			// add folder to folder list.
+			$job_object->add_folders_to_backup( $folder );
+			// scan folder.
+			foreach ( $dir as $file ) {
+				if ( $file->isDot() ) {
+					continue;
+				}
 
-                foreach ($job_object->exclude_from_backup as $exclusion) { //exclude files
-                    $exclusion = trim((string) $exclusion);
-                    if (stripos($path, $exclusion) !== false && !empty($exclusion)) {
-                        continue 2;
-                    }
-                }
-                if ($file->isDir()) {
-                    if (in_array(trailingslashit($path), $excludedirs, true)) {
-                        continue;
-                    }
-                    if (file_exists(trailingslashit($file->getPathname()) . '.donotbackup')) {
-                        continue;
-                    }
-                    if (!$file->isReadable()) {
-                        $job_object->log(sprintf(__('Folder "%s" is not readable!', 'backwpup'), $file->getPathname()), E_USER_WARNING);
+				// Check readability before any filesystem operations.
+				if ( ! $file->isReadable() ) {
+					$job_object->log(
+					// translators: %s: folder name.
+					sprintf( __( 'Folder "%s" is not readable!', 'backwpup' ), $file->getPathname() ),
+					E_USER_WARNING
+					);
+					continue;
+				}
 
-                        continue;
-                    }
-                    $this->get_folder_list($job_object, trailingslashit($path), $excludedirs, false);
-                }
-                if ($first) {
-                    $job_object->do_restart_time();
-                }
-            }
-        } catch (UnexpectedValueException $e) {
-            $job_object->log(sprintf(__('Could not open path: %s', 'backwpup'), $e->getMessage()), E_USER_WARNING);
-        }
+				$path = realpath( $file->getPathname() );
+				if ( ! $path ) {
+					continue;
+				}
 
-        return true;
-    }
+				$path = str_replace( '\\', '/', $path );
+
+				foreach ( $job_object->exclude_from_backup as $exclusion ) { // exclude files.
+					$exclusion = trim( (string) $exclusion );
+					if ( stripos( $path, $exclusion ) !== false && ! empty( $exclusion ) ) {
+						continue 2;
+					}
+				}
+
+				if ( $file->isDir() ) {
+					if ( in_array( trailingslashit( $path ), $excludedirs, true ) ) {
+						continue;
+					}
+					if ( file_exists( trailingslashit( $file->getPathname() ) . '.donotbackup' ) ) {
+						continue;
+					}
+					$this->get_folder_list( $job_object, trailingslashit( $path ), $excludedirs, false );
+				}
+
+				if ( $first ) {
+					$job_object->do_restart_time();
+				}
+			}
+		} catch ( UnexpectedValueException $e ) {
+			// translators: %s: folder name.
+			$job_object->log( sprintf( __( 'Could not open path: %s', 'backwpup' ), $e->getMessage() ), E_USER_WARNING );
+		}
+
+		return true;
+	}
 
     /**
      * Get folder to exclude from a given folder for file backups.

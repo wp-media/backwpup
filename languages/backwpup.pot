@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-08-12 10:21+0000\n"
+"POT-Creation-Date: 2025-08-20 09:47+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -375,7 +375,7 @@ msgctxt "%s = Folder name"
 msgid "Folder %s for archive not found"
 msgstr ""
 
-#: inc/class-create-archive.php:104, inc/class-create-archive.php:131, inc/class-create-archive.php:175, inc/class-mysqldump.php:104
+#: inc/class-create-archive.php:104, inc/class-create-archive.php:131, inc/class-create-archive.php:175, inc/class-mysqldump.php:97
 msgid "Functions for gz compression not available"
 msgstr ""
 
@@ -460,7 +460,8 @@ msgstr ""
 msgid "Aborted, because no progress for one hour!"
 msgstr ""
 
-#: inc/class-cron.php:123, inc/class-destination-folder.php:164, inc/class-jobtype-file.php:484
+#. translators: %s: folder name.
+#: inc/class-cron.php:123, inc/class-destination-folder.php:164, inc/class-jobtype-file.php:504
 msgid "Could not open path: %s"
 msgstr ""
 
@@ -530,11 +531,11 @@ msgstr ""
 msgid "(429) Requests are being rate limited. Please try again later."
 msgstr ""
 
-#: inc/class-destination-dropbox-downloader.php:69, inc/class-destination-ftp-downloader.php:70, inc/class-destination-s3-downloader.php:71, inc/Pro/class-destination-gdrive-downloader.php:92, inc/Pro/class-destination-onedrive-downloader.php:58
+#: inc/class-destination-dropbox-downloader.php:69, inc/class-destination-ftp-downloader.php:73, inc/class-destination-s3-downloader.php:71, inc/Pro/class-destination-gdrive-downloader.php:91, inc/Pro/class-destination-onedrive-downloader.php:58
 msgid "Could not write data to file."
 msgstr ""
 
-#: inc/class-destination-dropbox-downloader.php:101, inc/class-destination-folder-downloader.php:130, inc/class-destination-ftp-downloader.php:125, inc/class-destination-msazure-downloader.php:98, inc/class-destination-s3-downloader.php:97, inc/Pro/class-destination-gdrive-downloader.php:138, inc/Pro/class-destination-onedrive-downloader.php:94
+#: inc/class-destination-dropbox-downloader.php:101, inc/class-destination-folder-downloader.php:130, inc/class-destination-ftp-downloader.php:154, inc/class-destination-msazure-downloader.php:98, inc/class-destination-s3-downloader.php:97, inc/Pro/class-destination-gdrive-downloader.php:137, inc/Pro/class-destination-onedrive-downloader.php:94
 msgid "File could not be opened for writing."
 msgstr ""
 
@@ -569,7 +570,7 @@ msgstr ""
 msgid "Uploading to Dropbox&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-dropbox.php:357, inc/Pro/class-destination-gdrive.php:473, inc/Pro/class-destination-glacier.php:322
+#: inc/class-destination-dropbox.php:357, inc/Pro/class-destination-gdrive.php:474, inc/Pro/class-destination-glacier.php:322
 msgid "Error transfering backup to %s."
 msgstr ""
 
@@ -577,7 +578,7 @@ msgstr ""
 msgid "Uploaded file size and local file size don't match."
 msgstr ""
 
-#: inc/class-destination-dropbox.php:345, inc/class-destination-msazure.php:238, inc/class-destination-sugarsync.php:181, inc/Pro/class-destination-gdrive.php:493
+#: inc/class-destination-dropbox.php:345, inc/class-destination-msazure.php:238, inc/class-destination-sugarsync.php:181, inc/Pro/class-destination-gdrive.php:494
 msgid "Backup transferred to %s"
 msgstr ""
 
@@ -646,7 +647,7 @@ msgid_plural "%d backup files deleted"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/class-destination-ftp-downloader.php:107
+#: inc/class-destination-ftp-downloader.php:136
 msgid "Cannot open FTP file for download."
 msgstr ""
 
@@ -728,7 +729,7 @@ msgstr ""
 msgid "Starting upload to FTP &#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-ftp.php:536, inc/class-destination-msazure.php:222, inc/class-destination-rsc.php:209, inc/class-destination-s3.php:572, inc/class-destination-s3.php:527, inc/Pro/class-destination-gdrive.php:402, inc/Pro/class-destination-glacier.php:341, inc/Pro/class-destination-rsc.php:118, inc/Pro/class-destination-rsc.php:154
+#: inc/class-destination-ftp.php:536, inc/class-destination-msazure.php:222, inc/class-destination-rsc.php:209, inc/class-destination-s3.php:572, inc/class-destination-s3.php:527, inc/Pro/class-destination-gdrive.php:403, inc/Pro/class-destination-glacier.php:341, inc/Pro/class-destination-rsc.php:118, inc/Pro/class-destination-rsc.php:154
 msgid "Can not open source file for transfer."
 msgstr ""
 
@@ -1675,32 +1676,43 @@ msgstr ""
 msgid "%d. Trying to make a list of folders to back up&#160;&hellip;"
 msgstr ""
 
-#: inc/class-jobtype-file.php:401, inc/class-jobtype-file.php:397, inc/class-jobtype-file.php:418
+#. translators: %s: Directory path.
+#: inc/class-jobtype-file.php:379
+msgid "\"%s\" is not a folder and will be ignored"
+msgstr ""
+
+#: inc/class-jobtype-file.php:375
+msgid "Added \"%s\" folder to backup"
+msgstr ""
+
+#. translators: %s: File name.
+#: inc/class-jobtype-file.php:408, inc/class-jobtype-file.php:403, inc/class-jobtype-file.php:425
 msgid "Added \"%s\" to backup file list"
 msgstr ""
 
-#: inc/class-jobtype-file.php:426
+#: inc/class-jobtype-file.php:433
 msgid "%1$d folders to backup."
 msgstr ""
 
-#: inc/class-jobtype-file.php:424
+#: inc/class-jobtype-file.php:431
 msgid "No files/folder for the backup."
 msgstr ""
 
-#: inc/class-jobtype-file.php:473
+#. translators: %s: folder name.
+#: inc/class-jobtype-file.php:468
 msgid "Folder \"%s\" is not readable!"
 msgstr ""
 
 #. translators: %s: Path as set by user (symlink?).
-#: inc/class-jobtype-file.php:537
+#: inc/class-jobtype-file.php:557
 msgid "Path as set by user (symlink?): %s"
 msgstr ""
 
-#: inc/class-jobtype-file.php:545
+#: inc/class-jobtype-file.php:565
 msgid "Exclude:"
 msgstr ""
 
-#: inc/class-jobtype-file.php:559
+#: inc/class-jobtype-file.php:579
 msgid "Excluded by .donotbackup file!"
 msgstr ""
 
@@ -1832,43 +1844,43 @@ msgstr ""
 msgid "Dismiss"
 msgstr ""
 
-#: inc/class-mysqldump.php:77
+#: inc/class-mysqldump.php:70
 msgid "No MySQLi extension found. Please install it."
 msgstr ""
 
-#: inc/class-mysqldump.php:117
+#: inc/class-mysqldump.php:110
 msgid "Cannot open SQL backup file"
 msgstr ""
 
-#: inc/class-mysqldump.php:124, inc/class-mysqldump.php:136, inc/class-mysqldump.php:487, inc/class-mysqldump.php:521, inc/class-mysqldump.php:557, inc/class-mysqldump.php:617, inc/Pro/class-jobtype-dbdump.php:1033, inc/Pro/class-jobtype-dbdump.php:1050, inc/Pro/class-jobtype-dbdump.php:1117, inc/Pro/class-jobtype-dbdump.php:1099, inc/Pro/class-jobtype-dbdump.php:1159
+#: inc/class-mysqldump.php:117, inc/class-mysqldump.php:129, inc/class-mysqldump.php:484, inc/class-mysqldump.php:518, inc/class-mysqldump.php:554, inc/class-mysqldump.php:614, inc/Pro/class-jobtype-dbdump.php:1033, inc/Pro/class-jobtype-dbdump.php:1050, inc/Pro/class-jobtype-dbdump.php:1117, inc/Pro/class-jobtype-dbdump.php:1099, inc/Pro/class-jobtype-dbdump.php:1159
 msgid "Database error %1$s for query %2$s"
 msgstr ""
 
-#: inc/class-mysqldump.php:241
+#: inc/class-mysqldump.php:238
 msgid "Cannot set DB charset to %s"
 msgstr ""
 
-#: inc/class-mysqldump.php:288, inc/Pro/class-jobtype-dbdump.php:1008
+#: inc/class-mysqldump.php:285, inc/Pro/class-jobtype-dbdump.php:1008
 msgid "Setting of MySQLi connection timeout failed"
 msgstr ""
 
-#: inc/class-mysqldump.php:305
+#: inc/class-mysqldump.php:302
 msgid "Cannot connect to MySQL database (%1$d: %2$s)"
 msgstr ""
 
-#: inc/class-mysqldump.php:340
+#: inc/class-mysqldump.php:337
 msgid "Database error: %1$s. Query: %2$s"
 msgstr ""
 
-#: inc/class-mysqldump.php:600
+#: inc/class-mysqldump.php:597
 msgid "Start for table backup is not correctly set: %1$s"
 msgstr ""
 
-#: inc/class-mysqldump.php:604
+#: inc/class-mysqldump.php:601
 msgid "Length for table backup is not correctly set: %1$s"
 msgstr ""
 
-#: inc/class-mysqldump.php:895
+#: inc/class-mysqldump.php:892
 msgid "Error while writing file!"
 msgstr ""
 
@@ -3958,82 +3970,82 @@ msgstr ""
 msgid "Empty folder %s deleted"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive-downloader.php:81, inc/Pro/class-destination-gdrive-downloader.php:103
+#: inc/Pro/class-destination-gdrive-downloader.php:80, inc/Pro/class-destination-gdrive-downloader.php:102
 msgid "No source file found"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive-downloader.php:111
+#: inc/Pro/class-destination-gdrive-downloader.php:110
 msgid "Could not get file %s from Google Drive"
 msgstr ""
 
 #. translators: %s: error message.
-#: inc/Pro/class-destination-gdrive.php:153
+#: inc/Pro/class-destination-gdrive.php:154
 msgid "GDrive API: %s"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:362
+#: inc/Pro/class-destination-gdrive.php:363
 msgid "%d file deleted from Google Drive"
 msgid_plural "%d files deleted from Google Drive"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Pro/class-destination-gdrive.php:389
+#: inc/Pro/class-destination-gdrive.php:390
 msgid "%d. Try to send backup file to Google Drive&#160;&hellip;"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:397
+#: inc/Pro/class-destination-gdrive.php:398
 msgid "Uploading to Google Drive&#160;&hellip;"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:446
+#: inc/Pro/class-destination-gdrive.php:447
 msgid "Can not resume transfer backup to Google Drive!"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:431
+#: inc/Pro/class-destination-gdrive.php:432
 msgid "Could not create resumable file transfer to Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:459
+#: inc/Pro/class-destination-gdrive.php:460
 msgid "Error transfering file chunks to %s."
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:460, inc/Pro/class-destination-gdrive.php:474
+#: inc/Pro/class-destination-gdrive.php:461, inc/Pro/class-destination-gdrive.php:475
 msgid "Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:502, inc/Pro/class-destination-gdrive.php:607
+#: inc/Pro/class-destination-gdrive.php:503, inc/Pro/class-destination-gdrive.php:608
 msgid "Google Drive API: %s"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:536
+#: inc/Pro/class-destination-gdrive.php:537
 msgid "%d. Try to sync files to Google Drive&#160;&hellip;"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:544
+#: inc/Pro/class-destination-gdrive.php:545
 msgid "Syncing changed files to Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:789
+#: inc/Pro/class-destination-gdrive.php:790
 msgid "File %s updated on Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:806
+#: inc/Pro/class-destination-gdrive.php:807
 msgid "File %s uploaded to Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:859
+#: inc/Pro/class-destination-gdrive.php:860
 msgid "File %s deleted permanently in Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:851
+#: inc/Pro/class-destination-gdrive.php:852
 msgid "File %s moved to trash in Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:909
+#: inc/Pro/class-destination-gdrive.php:910
 msgid "Extra file %s updated on Google Drive"
 msgstr ""
 
-#: inc/Pro/class-destination-gdrive.php:933
+#: inc/Pro/class-destination-gdrive.php:934
 msgid "Extra file %s uploaded to Google Drive"
 msgstr ""
 
@@ -4789,7 +4801,7 @@ msgstr ""
 msgid "Enable \"Reduced server load\" in “Advanced Settings > Jobs” to reduce website load and keep your site running smoothly during hourly backups."
 msgstr ""
 
-#: parts/sidebar/frequency.php:172, parts/sidebar/select-files.php:54, parts/sidebar/select-tables.php:94
+#: parts/sidebar/frequency.php:172, parts/sidebar/select-files.php:66, parts/sidebar/select-tables.php:94
 msgid "Save settings"
 msgstr ""
 
@@ -4799,6 +4811,10 @@ msgstr ""
 
 #: parts/sidebar/select-files.php:25
 msgid "Content Selector"
+msgstr ""
+
+#: parts/sidebar/select-files.php:49
+msgid "Include in backup"
 msgstr ""
 
 #: parts/sidebar/select-tables.php:19
@@ -5593,6 +5609,14 @@ msgstr ""
 
 #: parts/sidebar/parts/files-content-selector-pro.php:123
 msgid "Other in wp-content"
+msgstr ""
+
+#: parts/sidebar/parts/include-in-backup.php:8
+msgid "Add folders you want to include"
+msgstr ""
+
+#: parts/sidebar/parts/include-in-backup.php:16
+msgid "Enter absolute folder path"
 msgstr ""
 
 #: parts/sidebar/sugar-sync-parts/api-connexion.php:52

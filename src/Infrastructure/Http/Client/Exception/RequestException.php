@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Inpsyde\BackWPup\Infrastructure\Http\Client\Exception;
 
-use Psr\Http\Client\RequestExceptionInterface;
-use Psr\Http\Message\RequestInterface;
+use WPMedia\BackWPup\Dependencies\Psr\Http\Client\RequestExceptionInterface;
+use WPMedia\BackWPup\Dependencies\Psr\Http\Message\RequestInterface;
 
 /**
  * {@inheritdoc}

@@ -44,11 +44,14 @@ final class BackWPup_Destination_Ftp_Downloader implements BackWPup_Destination_
 
     /**
      * Clean up things.
-     */
-    public function __destruct()
-    {
-        fclose($this->source_file_handler);
-        fclose($this->local_file_handler);
+	 */
+	public function __destruct() {
+		if ( is_resource( $this->source_file_handler ) ) {
+			fclose( $this->source_file_handler ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+		}
+		if ( is_resource( $this->local_file_handler ) ) {
+			fclose( $this->local_file_handler ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+		}
     }
 
     /**
@@ -87,6 +90,27 @@ final class BackWPup_Destination_Ftp_Downloader implements BackWPup_Destination_
         return $size;
     }
 
+	/**
+	 * Disable ftp server with filter.
+	 *
+	 * @param int $start_byte The start byte of the download.
+	 */
+	public function disable_ftp_server_ssl( int $start_byte ) {
+		$backwpup_ftp_ssl = wpm_apply_filters_typed( 'boolean', 'backwpup_disable_ftp_server_ssl', true );
+
+		return stream_context_create(
+			[
+				'ftp' => [
+					'resume_pos' => $start_byte,
+				],
+				'ssl' => [
+					'verify_peer'      => $backwpup_ftp_ssl,
+					'verify_peer_name' => $backwpup_ftp_ssl,
+				],
+			]
+		);
+	}
+
     /**
      * Set the source file handler.
      *
@@ -98,10 +122,15 @@ final class BackWPup_Destination_Ftp_Downloader implements BackWPup_Destination_
             return;
         }
 
-        $ctx = stream_context_create([\ftp::class => ['resume_pos' => $start_byte]]);
-        $url = $this->ftp_resource->getURL($this->data->source_file_path(), false, $ctx);
+		$url = $this->ftp_resource->getURL( $this->data->source_file_path() );
 
-        $this->source_file_handler = fopen($url, 'r');
+		$this->source_file_handler = fopen( $url, 'r', false, $this->disable_ftp_server_ssl( $start_byte ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
+
+		if ( ! is_resource( $this->source_file_handler ) ) {
+			// Fall back to FTP.
+			$url                       = str_replace( 'ftps://', 'ftp://', $url );
+			$this->source_file_handler = @fopen( $url, 'r' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.file_system_operations_fopen
+		}
 
         if (!is_resource($this->source_file_handler)) {
             throw new \RuntimeException(__('Cannot open FTP file for download.', 'backwpup'));

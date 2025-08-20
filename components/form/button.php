@@ -62,7 +62,9 @@ $font_sizes = [
   "medium" => "px-6 py-[14px] text-base gap-4",
   "semi_large" => "px-3 py-[11px] text-base",
 ];
-$font_size = array_key_exists($font_key, $font_sizes) ? $font_sizes[$font_key] : $font_sizes['medium'];
+if (empty($font_size)) {
+	$font_size = array_key_exists($font_key, $font_sizes) ? $font_sizes[$font_key] : $font_sizes['medium'];
+}
 
 # Icon
 $icon_position = isset($icon_name) ? $icon_position ?? "after" : false;

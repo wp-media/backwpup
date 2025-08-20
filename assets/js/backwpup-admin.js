@@ -975,14 +975,14 @@ jQuery(document).ready(function ($) {
     $( this ).prev().val( "" );
 
     // Update hidden input
-    let values = $( ".js-backwpup-add-input-values" ).val().split( "," );
+    let values = $(this).siblings( ".js-backwpup-add-input-values" ).val().split( "," ).filter(v => v.trim() !== "");
     if (!values.includes( tag )) {
       values.push( tag );
       values = [...new Set( values )]; // Ensure unique values
-      $( ".js-backwpup-add-input-values" ).val( values.join( "," ) );
+      $(this).siblings( ".js-backwpup-add-input-values" ).val( values.join( "," ) );
 
       // Prevent duplicates on the frontend
-      const existingTags = $( ".js-backwpup-add-input-tags button span" )
+      const existingTags = $(this).parent().siblings( ".js-backwpup-add-input-tags button span" )
         .map( function () {
           return $( this ).text();
         })
@@ -996,7 +996,7 @@ jQuery(document).ready(function ($) {
           .clone();
 
         $newTag.find( "span" ).text( tag );
-        $newTag.appendTo( ".js-backwpup-add-input-tags" );
+        $newTag.appendTo( $(this).parent().siblings(".js-backwpup-add-input-tags") );
       }
     }
   });
@@ -1005,13 +1005,12 @@ jQuery(document).ready(function ($) {
     "click",
     ".js-backwpup-remove-tag",
     function () {
-      // Remove tag from list
-      $(this).remove();
-
-      // Update hidden input
-      let values = $(".js-backwpup-add-input-values").val().split(",");
-      values = values.filter((value) => value !== $(this).data("tag"));
-      $(".js-backwpup-add-input-values").val(values.join(","));
+		// Update hidden input
+		let values = $(this).parent().siblings("label").children(".js-backwpup-add-input-values").val().split(",").filter(v => v.trim() !== "");
+		values = values.filter((value) => value !== $(this).data("tag"));
+		$(this).parent().siblings("label").children(".js-backwpup-add-input-values").val(values.join(","));
+		// Remove tag from list
+		$(this).remove();
     },
   );
 

@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Inpsyde\BackWPup\Infrastructure\Http\Message;
 
-use GuzzleHttp\Psr7\Utils;
+use WPMedia\BackWPup\Dependencies\GuzzleHttp\Psr7\Utils;
 use Inpsyde\BackWPup\Infrastructure\Http\Message\Exception\CouldNotCreateStream;
-use Psr\Http\Message\StreamFactoryInterface;
-use Psr\Http\Message\StreamInterface;
+use WPMedia\BackWPup\Dependencies\Psr\Http\Message\StreamFactoryInterface;
+use WPMedia\BackWPup\Dependencies\Psr\Http\Message\StreamInterface;
 use Webmozart\Assert\Assert;
 
 /**
  * Factory for creating streams.
  *
- * Uses GuzzleHttp\Psr7 objects for implementation.
+ * Uses WPMedia\BackWPup\Dependencies\GuzzleHttp\Psr7 objects for implementation.
  */
 final class StreamFactory implements StreamFactoryInterface
 {

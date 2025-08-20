@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'inpsyde/backwpup-pro',
-        'pretty_version' => '5.3.2',
-        'version' => '5.3.2.0',
-        'reference' => '6e7b0c4cbcab2bee0e42a82caa7b0a497267b68c',
+        'pretty_version' => '5.4.0',
+        'version' => '5.4.0.0',
+        'reference' => 'a5cfdb8d13bb56fbac5005649049bad510fb99b8',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -206,8 +206,8 @@
             'dev_requirement' => false,
         ),
         'inpsyde/assert' => array(
-            'pretty_version' => 'dev-enhancement/887-job-event',
-            'version' => 'dev-enhancement/887-job-event',
+            'pretty_version' => 'dev-enhancement/add-guzzle-to-mozart',
+            'version' => 'dev-enhancement/add-guzzle-to-mozart',
             'reference' => '2dcedaaec70bcf5577129f6038556368e6ad2dc0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../inpsyde/assert',
@@ -224,9 +224,9 @@
             'dev_requirement' => false,
         ),
         'inpsyde/backwpup-pro' => array(
-            'pretty_version' => '5.3.2',
-            'version' => '5.3.2.0',
-            'reference' => '6e7b0c4cbcab2bee0e42a82caa7b0a497267b68c',
+            'pretty_version' => '5.4.0',
+            'version' => '5.4.0.0',
+            'reference' => 'a5cfdb8d13bb56fbac5005649049bad510fb99b8',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

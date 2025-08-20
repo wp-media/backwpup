@@ -35,50 +35,61 @@ class BackWPup_Migrate {
 
 		self::migration_50_51( $old_version, $new_version );
 
-		( new self() )->migrate_storage_token( $old_version, $new_version );
+		( new self() )->migrate_to_first_job( $old_version, $new_version );
 	}
 
 	/**
-	 * Migrate onedrive storage token
+	 * Migrate to the first job.
 	 *
 	 * @param string $old_version The previous version of the plugin.
 	 * @param string $new_version The current version of the plugin.
 	 *
 	 *  @return void
 	 */
-	public function migrate_storage_token( string $old_version, string $new_version ): void {
+	public function migrate_to_first_job( string $old_version, string $new_version ): void {
 		$jobs = get_site_option( 'backwpup_jobs', [] );
 		// If job is corrupt or not properly formatted then bail early.
 		if ( ! is_array( $jobs ) ) {
 			return;
 		}
 
-		$first_job_id = get_site_option( Plugin::FIRST_JOB_ID, false );
-		if ( version_compare( $old_version, '5.2.3', '<=' )
-			&& version_compare( $new_version, '5.3.0', '>=' )
+		if ( ! ( version_compare( $old_version, '5.2.3', '<=' )
+			&& version_compare( $new_version, '5.3.0', '>=' ) )
 		) {
-			$backwpup_onedrive_state = get_site_transient( 'backwpup_onedrive_state' );
-			if ( ! $backwpup_onedrive_state ) {
-				// If the first job doesn't exist, create it.
-				if ( ! $first_job_id ) {
-					$first_job_id = BackWPup_Option::create_default_jobs( 'First backup', BackWPup_JobTypes::$type_job_both );
-					BackWPup_Option::update( $first_job_id, 'tempjob', true );
-					update_site_option( Plugin::FIRST_JOB_ID, $first_job_id );
-				}
-				foreach ( $jobs as $job ) {
-					if (
-						array_key_exists( 'onedrive_client_state', $job )
-						&& ! is_null( $job['onedrive_client_state'] )
-						&& $job['jobid'] !== $first_job_id
-					) {
-						BackWPup_Option::update(
-							$first_job_id,
-							'onedrive_client_state',
-							$job['onedrive_client_state']
-						);
-					}
+			return;
+		}
+
+		$first_job_id = get_site_option( Plugin::FIRST_JOB_ID, false );
+		$file_job_id  = get_site_option( Plugin::FILES_JOB_ID, false );
+
+		// migrate onedrive token.
+		$backwpup_onedrive_state = get_site_transient( 'backwpup_onedrive_state' );
+		if ( ! $backwpup_onedrive_state ) {
+			// If the first job doesn't exist, create it.
+			if ( ! $first_job_id ) {
+				$first_job_id = BackWPup_Option::create_default_jobs( 'First backup', BackWPup_JobTypes::$type_job_both );
+				BackWPup_Option::update( $first_job_id, 'tempjob', true );
+				update_site_option( Plugin::FIRST_JOB_ID, $first_job_id );
+			}
+			foreach ( $jobs as $job ) {
+				if (
+					array_key_exists( 'onedrive_client_state', $job )
+					&& ! is_null( $job['onedrive_client_state'] )
+					&& $job['jobid'] !== $first_job_id
+				) {
+					BackWPup_Option::update(
+						$first_job_id,
+						'onedrive_client_state',
+						$job['onedrive_client_state']
+					);
 				}
 			}
+		}
+
+		// migrate encryption setting.
+		if ( $first_job_id && $file_job_id ) {
+			$use_encryption = (bool) BackWPup_Option::get( $file_job_id, 'archiveencryption', false );
+			BackWPup_Option::update( $first_job_id, 'archiveencryption', $use_encryption );
 		}
 	}
 

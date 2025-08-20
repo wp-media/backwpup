@@ -6,7 +6,7 @@ namespace Inpsyde\BackWPup\Infrastructure\Http\Message\Decorator;
 
 use Inpsyde\BackWPup\Infrastructure\Http\Message\Exception\CouldNotDecodeJsonData;
 use Inpsyde\BackWPup\Infrastructure\Http\Message\Exception\CouldNotEncodeJsonData;
-use Psr\Http\Message\StreamFactoryInterface;
+use WPMedia\BackWPup\Dependencies\Psr\Http\Message\StreamFactoryInterface;
 
 /**
  * JSON request decorator.
@@ -44,8 +44,10 @@ final class JsonRequest extends RequestDecorator
      *
      * @throws CouldNotEncodeJsonData
      */
-    public function withJsonData($data, StreamFactoryInterface $streamFactory): self
-    {
+    public function withJsonData(
+        $data,
+        StreamFactoryInterface $streamFactory
+    ): self {
         $data = json_encode($data);
         if ($data === false) {
             throw CouldNotEncodeJsonData::withError(json_last_error_msg());

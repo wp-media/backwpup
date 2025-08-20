@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WPMedia\BackWPup\Admin;
 
 use BackWPup;
+use WPMedia\BackWPup\Admin\Beacon\Beacon;
 use WPMedia\BackWPup\Admin\Notices\Notices;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice52;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice522;
@@ -14,6 +15,7 @@ use WPMedia\BackWPup\Admin\Notices\Notices\Notice513;
 use Inpsyde\BackWPup\Notice\NoticeView;
 use WPMedia\BackWPup\Admin\Settings\Subscriber as SettingSubscriber;
 use WPMedia\BackWPup\Admin\Frontend\Subscriber as AdminFrontendSubscriber;
+use WPMedia\BackWPup\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider {
@@ -61,12 +63,16 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'options', OptionData::class )
 			->addArgument( [ $this->getContainer()->get( 'options_api' )->get( 'settings', [] ) ] );
 
+		$this->getContainer()->addShared( 'beacon', Beacon::class )
+			->addArgument( new StringArgument( $this->getContainer()->get( 'template_path' ) . '/notice' ) );
+
 		// Register notices.
 		$this->getContainer()->addShared( 'admin_notices', Notices::class )
 			->addArguments(
 				[
 					'options',
 					'backwpup_adapter',
+					'beacon',
 				]
 				);
 

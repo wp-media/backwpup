@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Inpsyde\BackWPup\Infrastructure\Http\Message;
 
-use GuzzleHttp\Psr7\Request;
-use Psr\Http\Message\RequestFactoryInterface;
-use Psr\Http\Message\RequestInterface;
+use WPMedia\BackWPup\Dependencies\GuzzleHttp\Psr7\Request;
+use WPMedia\BackWPup\Dependencies\Psr\Http\Message\RequestFactoryInterface;
+use WPMedia\BackWPup\Dependencies\Psr\Http\Message\RequestInterface;
 
 /**
  * Factory for creating requests.
  *
- * Uses GuzzleHttp\Psr7 objects for implementation.
+ * Uses WPMedia\BackWPup\Dependencies\GuzzleHttp\Psr7 objects for implementation.
  */
 final class RequestFactory implements RequestFactoryInterface
 {

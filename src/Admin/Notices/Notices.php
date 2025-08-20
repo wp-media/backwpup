@@ -8,6 +8,8 @@ use WPMedia\BackWPup\Admin\OptionData;
 use WPMedia\BackWPup\Admin\Options\Options;
 
 class Notices {
+
+	private const VERSION = '5.4.0';
 	/**
 	 * Beacon instance.
 	 *
@@ -34,10 +36,12 @@ class Notices {
 	 *
 	 * @param OptionData      $options
 	 * @param BackWPupAdapter $backwpup
+	 * @param Beacon          $beacon An instance of Beacon.
 	 */
-	public function __construct( OptionData $options, BackWPupAdapter $backwpup ) {
+	public function __construct( OptionData $options, BackWPupAdapter $backwpup, Beacon $beacon ) {
 		$this->options  = $options;
 		$this->backwpup = $backwpup;
+		$this->beacon   = $beacon;
 	}
 
 
@@ -47,16 +51,25 @@ class Notices {
 	 * @return void
 	 */
 	public function display_update_notices() {
+		// Do not display if not on a BackWPup page or if already dismissed.
 		if ( ! $this->should_display_notice() ) {
 			return;
 		}
 
 		$current_version = $this->backwpup->get_plugin_data( 'Version' );
 
-		// Bail-out if current version is greater than or equal to 5.3.1.
-		if ( version_compare( $current_version, '5.3.1', '>=' ) ) {
+		// Do not display if the current version is greater/lesser than 5.4.0.
+		if ( version_compare( $current_version, self::VERSION, '!=' ) ) {
 			return;
 		}
+
+		$include_extra_files = $this->beacon->get_suggest( 'include_extra_files' );
+		$message             = sprintf(
+		// translators: %1$s: opening a tag, %2$s: closing a tag.
+			__( 'You can now include non-WordPress files and folders directly in your backups! Simply select the files or folders you want to add to your scheduled or manual backups. This release also brings several enhancements and bug fixes. Check out our %1$sblog post%2$s to learn more and see what’s coming next for BackWPup!', 'backwpup' ),
+			'<a href="' . esc_url( $include_extra_files['url'] ) . '" title="' . esc_attr( $include_extra_files['title'] ) . '" target="_blank" rel="noopener noreferrer" class="text-primary-darker border-b border-primary-darker">',
+			'</a>'
+		);
 
 		backwpup_notice_html(
 			[
@@ -64,11 +77,11 @@ class Notices {
 				'dismissible'          => '',
 				'title'                => sprintf(
 					// translators: %1$s = strong opening tag, %2$s = strong closing tag.
-					__( '🎉 %1$sBackWPup 5.3 is here! %2$s', 'backwpup' ),
+					__( '🎉 %1$sWelcome to BackWPup 5.4! %2$s', 'backwpup' ),
 					'<strong>',
 					'</strong>',
 				),
-				'message'              => __( 'You can now back up Files & Database together in a single backup and schedule it. We’ve also fixed new backups not respecting your selected archive format, along with other improvements.', 'backwpup' ),
+				'message'              => $message,
 				'dismiss_button'       => 'backwpup_update_notice',
 				'dismiss_button_class' => 'bwpup-ajax-close',
 				'id'                   => 'backwpup_update_notice',

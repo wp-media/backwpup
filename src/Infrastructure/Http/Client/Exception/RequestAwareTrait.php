@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Inpsyde\BackWPup\Infrastructure\Http\Client\Exception;
 
-use Psr\Http\Message\RequestInterface;
+use WPMedia\BackWPup\Dependencies\Psr\Http\Message\RequestInterface;
 
 trait RequestAwareTrait
 {
