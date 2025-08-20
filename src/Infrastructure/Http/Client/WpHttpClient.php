@@ -6,13 +6,13 @@ namespace Inpsyde\BackWPup\Infrastructure\Http\Client;
 
 use Inpsyde\BackWPup\Infrastructure\Http\Client\Exception\NetworkException;
 use Inpsyde\BackWPup\Infrastructure\Http\Client\Exception\RequestException;
-use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamFactoryInterface;
 use Symfony\Component\OptionsResolver\Exception\NoSuchOptionException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use WPMedia\BackWPup\Dependencies\Psr\Http\Client\ClientInterface;
+use WPMedia\BackWPup\Dependencies\Psr\Http\Message\RequestInterface;
+use WPMedia\BackWPup\Dependencies\Psr\Http\Message\ResponseFactoryInterface;
+use WPMedia\BackWPup\Dependencies\Psr\Http\Message\ResponseInterface;
+use WPMedia\BackWPup\Dependencies\Psr\Http\Message\StreamFactoryInterface;
 
 /**
  * A wrapper of WP_Http.

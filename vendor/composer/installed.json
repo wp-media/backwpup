@@ -645,8 +645,8 @@
         },
         {
             "name": "inpsyde/assert",
-            "version": "dev-enhancement/887-job-event",
-            "version_normalized": "dev-enhancement/887-job-event",
+            "version": "dev-enhancement/add-guzzle-to-mozart",
+            "version_normalized": "dev-enhancement/add-guzzle-to-mozart",
             "dist": {
                 "type": "path",
                 "url": "packages/assert",

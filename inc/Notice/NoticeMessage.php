@@ -6,6 +6,8 @@ namespace Inpsyde\BackWPup\Notice;
  * Class NoticeMessage
  *
  * Handles the creation and management of notice messages within the BackWPup Pro plugin.
+ * This class is responsible for displaying, storing, and formatting admin notices
+ * to inform users about important events or actions required.
  * This class is marked as final and cannot be extended.
  *
  * @package BackWPupPro\Notice

@@ -174,6 +174,9 @@ class Plugin {
 			}
 		);
 
+		$plugin_path = dirname( BACKWPUP_PLUGIN_FILE ) . '/views';
+		$this->container->add( 'template_path', new StringArgument( $plugin_path ) );
+
 		$this->container->add( 'options_api', Options::class )
 			->addArgument( new StringArgument( 'backwpup_' ) );
 

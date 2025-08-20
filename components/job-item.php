@@ -131,7 +131,7 @@ backwpup-job-<?php echo esc_attr( $data_type ); ?> h-[200px]" id="<?php echo esc
 			'form/button',
 			[
 				'type'             => 'icon-hover',
-				'font_size'        => 'small',
+				'font_size'        => 'py-[14px] text-base gap-4',
 				'label'            => '',
 				'trigger'          => 'load-and-open-modal',
 				'class'            => 'backwpup-btn-backup-job disabled:opacity-40 always-enabled',

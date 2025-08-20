@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Inpsyde\BackWPup\Infrastructure\Http\Message\Decorator;
 
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\StreamInterface;
-use Psr\Http\Message\UriInterface;
+use WPMedia\BackWPup\Dependencies\Psr\Http\Message\RequestInterface;
+use WPMedia\BackWPup\Dependencies\Psr\Http\Message\StreamInterface;
+use WPMedia\BackWPup\Dependencies\Psr\Http\Message\UriInterface;
 use Webmozart\Assert\Assert;
 
 /**

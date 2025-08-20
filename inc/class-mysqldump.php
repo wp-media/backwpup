@@ -55,13 +55,6 @@ class BackWPup_MySQLDump
     private $dbname = '';
 
     /**
-     * Compression to use
-     * empty for none
-     * gz for Gzip.
-     */
-    private $compression = '';
-
-    /**
      * Check params and makes confections
      * gets the table information too.
      *
@@ -76,6 +69,9 @@ class BackWPup_MySQLDump
         if (!class_exists(\mysqli::class)) {
             throw new BackWPup_MySQLDump_Exception(__('No MySQLi extension found. Please install it.', 'backwpup'));
         }
+
+		// compression will be automatically set by dumpfile.
+		unset( $args['compression'] );
 
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
@@ -93,9 +89,6 @@ class BackWPup_MySQLDump
         if (!empty($args['dbcharset'])) {
             $this->setCharset($args['dbcharset']);
         }
-
-        //set compression
-        $this->compression = $args['compression'];
 
         //open file if set
         if ($args['dumpfile']) {
@@ -148,30 +141,33 @@ class BackWPup_MySQLDump
     }
 
     /**
-     * Configure options.
-     */
-    protected function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'dbhost' => DB_HOST,
-            'dbport' => null,
-            'dbsocket' => null,
-            'dbname' => DB_NAME,
-            'dbuser' => DB_USER,
-            'dbpassword' => DB_PASSWORD,
-            'dbcharset' => defined('DB_CHARSET') ? DB_CHARSET : 'utf8mb4',
-            'dumpfilehandle' => fopen('php://output', 'wb'),
-            'dumpfile' => null,
-            'dbclientflags' => defined('MYSQL_CLIENT_FLAGS') ? MYSQL_CLIENT_FLAGS : 0,
-            'compression' => function (Options $options) {
-                if ($options['dumpfile'] !== null
-                    && substr(strtolower((string) $options['dumpfile']), -3) === '.gz') {
-                    return self::COMPRESS_GZ;
-                }
+	 * Configure options.
+	 *
+     * phpcs:disable WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid
+	 */
+	protected function configureOptions( OptionsResolver $resolver ) {
+		$resolver->setDefaults(
+			[
+				'dbhost'         => DB_HOST,
+				'dbport'         => null,
+				'dbsocket'       => null,
+				'dbname'         => DB_NAME,
+				'dbuser'         => DB_USER,
+				'dbpassword'     => DB_PASSWORD,
+				'dbcharset'      => defined( 'DB_CHARSET' ) ? DB_CHARSET : 'utf8mb4',
+				'dumpfilehandle' => fopen( 'php://output', 'wb' ),
+				'dumpfile'       => null,
+				'dbclientflags'  => defined( 'MYSQL_CLIENT_FLAGS' ) ? MYSQL_CLIENT_FLAGS : 0,
+				'compression'    => function ( Options $options ) {
+					if ( ! empty( $options['dumpfile'] )
+						&& substr( strtolower( (string) $options['dumpfile'] ), -3 ) === '.gz' ) {
+						return self::COMPRESS_GZ;
+					}
 
-                return self::COMPRESS_NONE;
-            },
-        ]);
+					return self::COMPRESS_NONE;
+				},
+			]
+			);
 
         $port = $socket = null;
 
@@ -205,17 +201,18 @@ class BackWPup_MySQLDump
 
         $resolver->setAllowedValues('compression', [self::COMPRESS_NONE, self::COMPRESS_GZ]);
 
-        $resolver->setAllowedTypes('dbhost', 'string');
-        $resolver->setAllowedTypes('dbport', ['null', 'int']);
-        $resolver->setAllowedTypes('dbsocket', ['null', 'string']);
-        $resolver->setAllowedTypes('dbname', 'string');
-        $resolver->setAllowedTypes('dbuser', 'string');
-        $resolver->setAllowedTypes('dbpassword', 'string');
-        $resolver->setAllowedTypes('dbcharset', ['null', 'string']);
-        $resolver->setAllowedTypes('dumpfilehandle', 'resource');
-        $resolver->setAllowedTypes('dumpfile', ['null', 'string']);
-        $resolver->setAllowedTypes('dbclientflags', 'int');
-    }
+		$resolver->setAllowedTypes( 'dbhost', 'string' );
+		$resolver->setAllowedTypes( 'dbport', [ 'null', 'int' ] );
+		$resolver->setAllowedTypes( 'dbsocket', [ 'null', 'string' ] );
+		$resolver->setAllowedTypes( 'dbname', 'string' );
+		$resolver->setAllowedTypes( 'dbuser', 'string' );
+		$resolver->setAllowedTypes( 'dbpassword', 'string' );
+		$resolver->setAllowedTypes( 'dbcharset', [ 'null', 'string' ] );
+		$resolver->setAllowedTypes( 'dumpfilehandle', 'resource' );
+		$resolver->setAllowedTypes( 'dumpfile', [ 'null', 'string' ] );
+		$resolver->setAllowedTypes( 'dbclientflags', 'int' );
+		$resolver->setAllowedTypes( 'compression', [ 'string' ] );
+	}
 
     /**
      * Set the best available database charset.

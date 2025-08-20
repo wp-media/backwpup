@@ -145,15 +145,15 @@ class BackWPup_WP_CLI extends WP_CLI_Command
 	 *   backwpup decrypt archiv.zip --key="./id_rsa_backwpup.pri"
 	 *
 	 * @param $args
-	 * @param $assocArgs
+	 * @param $assoc_args
 	 */
-	public function decrypt( $args, $assocArgs ) {
+	public function decrypt( $args, $assoc_args ) {
 		$key = '';
-		if ( isset( $assocArgs['key'] ) ) {
-			if ( is_file( $assocArgs['key'] ) ) {
-				$key = file_get_contents( $assocArgs['key'], false );
+		if ( isset( $assoc_args['key'] ) ) {
+			if ( is_file( $assoc_args['key'] ) ) {
+				$key = file_get_contents( $assoc_args['key'], false ); // phpcs:ignore
 			} else {
-				$key = $assocArgs['key'];
+				$key = $assoc_args['key'];
 			}
 		} else {
 			$decryptionType = get_site_option( 'backwpup_cfg_encryption' );
@@ -167,19 +167,19 @@ class BackWPup_WP_CLI extends WP_CLI_Command
 		}
 
 		if ( $args[0] && is_file( $args[0] ) ) {
-			$archiveFile = $args[0];
+			$archive_file = $args[0];
 		} else {
 			WP_CLI::error( __( 'Archive file that should be decrypted can\'t be found!', 'backwpup' ) );
 		}
 
 		/** @var \Inpsyde\Restore\Api\Module\Decryption\Decrypter $decrypter */
 		$decrypter = Inpsyde\BackWPup\Infrastructure\Restore\restore_container( 'decrypter' );
-		if ( ! $decrypter->isEncrypted( $archiveFile ) ) {
+		if ( ! $decrypter->isEncrypted( $archive_file ) ) {
 			WP_CLI::error( __( 'Archive not needs decryption.', 'backwpup' ) );
 		}
 
 		try {
-			$decrypter->decrypt( $key, $archiveFile );
+			$decrypter->decrypt( $key, $archive_file );
 		} catch ( \Exception $e ) {
 			WP_CLI::error( sprintf( __( 'Cannot decrypt: %s', 'backwpup' ), $e->getMessage() ) );
 		}
@@ -197,26 +197,26 @@ class BackWPup_WP_CLI extends WP_CLI_Command
 	 *   backwpup encrypt archiv.zip -keyfile="./id_rsa_backwpup.pub"
 	 *
 	 * @param $args
-	 * @param $assocArgs
+	 * @param $assoc_args
 	 */
-	public function encrypt( $args, $assocArgs ) {
-		$aesIv     = \phpseclib3\Crypt\Random::string( 16 );
-		$rsaPubKey = '';
-		$type      = Inpsyde\BackWPup\Infrastructure\Security\EncryptionStream::TYPE_SYMMETRIC;
-		if ( isset( $assocArgs['key'] ) ) {
-			if ( is_file( $assocArgs['key'] ) ) {
-				$key       = \phpseclib3\Crypt\Random::string( 32 );
-				$rsaPubKey = file_get_contents( $assocArgs['key'], false );
-				$type      = Inpsyde\BackWPup\Infrastructure\Security\EncryptionStream::TYPE_ASYMMETRIC;
+	public function encrypt( $args, $assoc_args ) {
+		$aes_iv      = \phpseclib3\Crypt\Random::string( 16 );
+		$rsa_pub_key = '';
+		$type        = Inpsyde\BackWPup\Infrastructure\Security\EncryptionStream::TYPE_SYMMETRIC;
+		if ( isset( $assoc_args['key'] ) ) {
+			if ( is_file( $assoc_args['key'] ) ) {
+				$key         = \phpseclib3\Crypt\Random::string( 32 );
+				$rsa_pub_key = file_get_contents( $assoc_args['key'], false ); // phpcs:ignore
+				$type        = Inpsyde\BackWPup\Infrastructure\Security\EncryptionStream::TYPE_ASYMMETRIC;
 			} else {
-				$key = pack( 'H*', $assocArgs['key'] );
+				$key = pack( 'H*', $assoc_args['key'] );
 			}
 		} else {
-			$encryptionType = get_site_option( 'backwpup_cfg_encryption' );
-			if ( $encryptionType !== 'symmetric' ) {
-				$key       = \phpseclib3\Crypt\Random::string( 32 );
-				$rsaPubKey = get_site_option( 'backwpup_cfg_publickey' );
-				$type      = Inpsyde\BackWPup\Infrastructure\Security\EncryptionStream::TYPE_ASYMMETRIC;
+			$encryption_type = get_site_option( 'backwpup_cfg_encryption' );
+			if ( 'symmetric' !== $encryption_type ) {
+				$key         = \phpseclib3\Crypt\Random::string( 32 );
+				$rsa_pub_key = get_site_option( 'backwpup_cfg_publickey' );
+				$type        = Inpsyde\BackWPup\Infrastructure\Security\EncryptionStream::TYPE_ASYMMETRIC;
 			} else {
 				$key = pack( 'H*', get_site_option( 'backwpup_cfg_encryptionkey' ) );
 			}
@@ -227,7 +227,7 @@ class BackWPup_WP_CLI extends WP_CLI_Command
 		}
 
 		if ( $args[0] && is_file( $args[0] ) ) {
-			$archiveFile = $args[0];
+			$archive_file = $args[0];
 		} else {
 			WP_CLI::error( __( 'Archive file that should be encrypted can\'t be found!', 'backwpup' ) );
 		}
@@ -239,40 +239,40 @@ class BackWPup_WP_CLI extends WP_CLI_Command
 		}
 
 		try {
-			$fileIn = GuzzleHttp\Psr7\Utils::streamFor( GuzzleHttp\Psr7\Utils::tryFopen( $archiveFile, 'r' ) );
+			$file_in = WPMedia\BackWPup\Dependencies\GuzzleHttp\Psr7\Utils::streamFor( WPMedia\BackWPup\Dependencies\GuzzleHttp\Psr7\Utils::tryFopen( $archive_file, 'r' ) );
 		} catch ( \RuntimeException $e ) {
 			WP_CLI::error( __( 'Cannot open the archive for reading. Aborting encryption.', 'backwpup' ) );
 		}
 
 		try {
-			$fileOut = GuzzleHttp\Psr7\Utils::tryFopen( $archiveFile . '.encrypted', 'a+' );
+			$file_out = WPMedia\BackWPup\Dependencies\GuzzleHttp\Psr7\Utils::tryFopen( $archive_file . '.encrypted', 'a+' );
 		} catch ( \RuntimeException $e ) {
 			WP_CLI::error( __( 'Cannot write the encrypted archive. Aborting encryption.', 'backwpup' ) );
 		}
 
 		$encryptor = new Inpsyde\BackWPup\Infrastructure\Security\EncryptionStream(
-			$aesIv,
+			$aes_iv,
 			$key,
-			GuzzleHttp\Psr7\Utils::streamFor( $fileOut ),
-			$rsaPubKey
+			WPMedia\BackWPup\Dependencies\GuzzleHttp\Psr7\Utils::streamFor( $file_out ),
+			$rsa_pub_key
 		);
 
 		if ( ! $encryptor ) {
 			WP_CLI::error( __( 'Could not initialize encryptor.', 'backwpup' ) );
 		}
 
-		$blockSize = 128 * 1024;
-		while ( ! $fileIn->eof() ) {
-			$data = $fileIn->read( $blockSize );
+		$block_size = 128 * 1024;
+		while ( ! $file_in->eof() ) {
+			$data = $file_in->read( $block_size );
 			$encryptor->write( $data );
 		}
-		$fileIn->close();
+		$file_in->close();
 		$encryptor->close();
 
-		if ( ! unlink( $archiveFile ) ) {
+		if ( ! unlink( $archive_file ) ) { // phpcs:ignore
 			WP_CLI::error( __( 'Unable to delete unencrypted archive.', 'backwpup' ) );
 		}
-		if ( ! rename( $archiveFile . '.encrypted', $archiveFile ) ) {
+		if ( ! rename( $archive_file . '.encrypted', $archive_file ) ) { // phpcs:ignore
 			WP_CLI::error( __( 'Unable to rename encrypted archive.', 'backwpup' ) );
 		}
 		WP_CLI::success( __( 'Archive has been successfully encrypted.', 'backwpup' ) );
