@@ -4,9 +4,9 @@ Release date: August 20, 2025
 
 * New feature: Add extra files or folders for backups
 * Fix: Sending unwanted warning email because of .donotbackup file.
-* Fix: Showing cursor pointer on non-clickable elements.
-* Fix: Backup downloads are not working for FTP storage.
-* Fix: Guzzel Dependency conflict causing errors in backups
+* FIx: Showing cursor pointer on non-clickable elements.
+* FIx: Backup downloads are not working for FTP storage.
+* Fix: Guzzle Dependency conflict causing errors in backups.
 * Fix: The Encrypt archive option is disabled after the update.
 * Fix: The backup now icon is closer to the date of scheduled backups.
 * Fix: No backup is created for any storage when OneDrive is selected during onboarding.

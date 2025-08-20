@@ -16,17 +16,14 @@ Create a complete WordPress backup easily. Schedule automatic backups, store sec
 
 [BackWPup](https://backwpup.com/) is the most comprehensive backup & restore plugin for WordPress.
  
+= 🎉 BackWPup 5.4 – New Features & Improvements =
 
-= 🎉 BackWPup 5.3 – New Features & Improvements =
+BackWPup 5.4 is now available! Building on the enhancements introduced in version 5.3, this update brings back many of the most requested features from earlier releases. We've listened to your feedback to deliver a renewed and improved backup experience.
 
-BackWPup 5.3 is now available! Building on the enhancements introduced in version 5.2, this update brings back many of the most requested features from earlier releases. We've listened to your feedback to deliver a renewed and improved backup experience. 
+🚀 What’s new in BackWPup?
 
-🚀 What’s New in BackWPup?
-
-✅ File & Database Single Backup: Easily back up your files and database together in a single job—no need to run separate backups.  
-✅ Deselect Website Server:  Pick your preferred backup destination and easily deselect the default website server, giving you more control over your storage. 
-✅ Reduced plugin size – We’ve made the plugin smaller, so it uses less space and runs more smoothly on your server.  
-✅ Improved Cloud Storages – We’ve fixed issues with Dropbox and SugarSync, making your cloud backups more reliable than ever.
+✅  Include Extra Files or Folders: You can now include non-WordPress files and folders directly in your backups! Easily select additional files or entire folders to be covered in your scheduled or manual backups.
+✅ Better Encryption: Preserved the “Encrypt archive” setting after updates; asymmetric keys remain intact. Giving you better encryption coverage even after an update.
  
 If you happen to experience any issues with the new version, contact us directly [here](https://backwpup.com/contact) so we can investigate your case. We are committed to resolving any concerns quickly and are actively working to ensure a smooth experience for everyone.
 
@@ -190,6 +187,17 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
 
 == Changelog ==
+5.4 Release date: August 20, 2025
+
+* New feature: Add extra files or folders for backups
+* Fix: Sending unwanted warning email because of .donotbackup file.
+* FIx: Showing cursor pointer on non-clickable elements.
+* FIx: Backup downloads are not working for FTP storage.
+* Fix: Guzzle Dependency conflict causing errors in backups.
+* Fix: The Encrypt archive option is disabled after the update.
+* Fix: The backup now icon is closer to the date of scheduled backups.
+* Fix: No backup is created for any storage when OneDrive is selected during onboarding.
+
 = 5.3.2 =
 Release date: August 12, 2025
 
