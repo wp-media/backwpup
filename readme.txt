@@ -1,6 +1,6 @@
 === BackWPup – WordPress Backup & Restore Plugin === 
 
-Contributors: backwpup, wp_rocket, imagify 
+Contributors: backwpup, wp_rocket, imagify, nullbyte, cocreation, danielhuesken, wido
 Tags: backup, restore, cloud backup, database backup, wordpress backup 
 Requires at least: 4.9
 Tested up to: 6.8
