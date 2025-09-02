@@ -1,4 +1,4 @@
-name: Deploy to WordPress.org
+name: Deploy Beta to WordPress.org
 on:
   release:
     types:
@@ -7,13 +7,13 @@ jobs:
   tag:
     name: New Release
     runs-on: ubuntu-latest
-    if: ${{ !contains(github.event.release.name, 'beta') }}
+    if: ${{ contains(github.event.release.name, 'beta') }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: WordPress Plugin Deploy
-        uses: 10up/action-wordpress-plugin-deploy@stable
+      - name: WordPress Beta Plugin Deploy
+        uses: wp-media/action-wordpress-plugin-trunk-deploy@v1.0
         env:
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
