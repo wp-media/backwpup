@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Inpsyde\BackWPup\Infrastructure\Http\Message\Decorator;
 
-use WPMedia\BackWPup\Dependencies\Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 
 /**
  * Form params request decorator.

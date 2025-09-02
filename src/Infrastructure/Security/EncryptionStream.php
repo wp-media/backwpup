@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Inpsyde\BackWPup\Infrastructure\Security;
 
-use WPMedia\BackWPup\Dependencies\GuzzleHttp\Psr7\StreamDecoratorTrait;
+use GuzzleHttp\Psr7\StreamDecoratorTrait;
 use phpseclib3\Crypt\AES;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Crypt\RSA;
-use WPMedia\BackWPup\Dependencies\Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\StreamInterface;
 
 final class EncryptionStream implements StreamInterface
 {

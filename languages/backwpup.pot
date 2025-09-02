@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-08-20 09:47+0000\n"
+"POT-Creation-Date: 2025-09-02 12:43+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -1309,15 +1309,15 @@ msgstr ""
 msgid "%d. Trying to encrypt archive &hellip;"
 msgstr ""
 
-#: inc/class-job.php:2044, inc/class-wp-cli.php:244
+#: inc/class-job.php:2044, inc/class-wp-cli.php:245
 msgid "Cannot open the archive for reading. Aborting encryption."
 msgstr ""
 
-#: inc/class-job.php:2052, inc/class-wp-cli.php:250
+#: inc/class-job.php:2052, inc/class-wp-cli.php:251
 msgid "Cannot write the encrypted archive. Aborting encryption."
 msgstr ""
 
-#: inc/class-job.php:2073, inc/class-wp-cli.php:261
+#: inc/class-job.php:2073, inc/class-wp-cli.php:262
 msgid "Could not initialize encryptor."
 msgstr ""
 
@@ -1325,15 +1325,15 @@ msgstr ""
 msgid "Encrypted %s of data."
 msgstr ""
 
-#: inc/class-job.php:2105, inc/class-wp-cli.php:273
+#: inc/class-job.php:2105, inc/class-wp-cli.php:274
 msgid "Unable to delete unencrypted archive."
 msgstr ""
 
-#: inc/class-job.php:2113, inc/class-wp-cli.php:276
+#: inc/class-job.php:2113, inc/class-wp-cli.php:277
 msgid "Unable to rename encrypted archive."
 msgstr ""
 
-#: inc/class-job.php:2119, inc/class-wp-cli.php:278
+#: inc/class-job.php:2119, inc/class-wp-cli.php:279
 msgid "Archive has been successfully encrypted."
 msgstr ""
 
@@ -2882,7 +2882,7 @@ msgstr ""
 msgid "Job \"%s\" started."
 msgstr ""
 
-#: inc/class-page-jobs.php:640, inc/class-wp-cli.php:60
+#: inc/class-page-jobs.php:640, inc/class-wp-cli.php:61
 msgid "Job will be terminated."
 msgstr ""
 
@@ -3659,86 +3659,86 @@ msgstr ""
 msgid "There are some warnings. BackWPup will work, but with limitations."
 msgstr ""
 
-#: inc/class-wp-cli.php:26
+#: inc/class-wp-cli.php:27
 msgid "A job is already running."
 msgstr ""
 
-#: inc/class-wp-cli.php:38
+#: inc/class-wp-cli.php:39
 msgid "No job ID specified!"
 msgstr ""
 
-#: inc/class-wp-cli.php:43
+#: inc/class-wp-cli.php:44
 msgid "Job ID does not exist!"
 msgstr ""
 
-#: inc/class-wp-cli.php:55
+#: inc/class-wp-cli.php:56
 msgid "Nothing to abort!"
 msgstr ""
 
-#: inc/class-wp-cli.php:104
+#: inc/class-wp-cli.php:105
 msgid "No job running"
 msgstr ""
 
-#: inc/class-wp-cli.php:166
+#: inc/class-wp-cli.php:167
 msgid "No Key provided or stored in settings for decryption!"
 msgstr ""
 
-#: inc/class-wp-cli.php:172
+#: inc/class-wp-cli.php:173
 msgid "Archive file that should be decrypted can't be found!"
 msgstr ""
 
-#: inc/class-wp-cli.php:178
+#: inc/class-wp-cli.php:179
 msgid "Archive not needs decryption."
 msgstr ""
 
-#: inc/class-wp-cli.php:184
+#: inc/class-wp-cli.php:185
 msgid "Cannot decrypt: %s"
 msgstr ""
 
-#: inc/class-wp-cli.php:187
+#: inc/class-wp-cli.php:188
 msgid "Archive has been successfully decrypted."
 msgstr ""
 
-#: inc/class-wp-cli.php:226
+#: inc/class-wp-cli.php:227
 msgid "No Key provided or stored in settings for encryption!"
 msgstr ""
 
-#: inc/class-wp-cli.php:232
+#: inc/class-wp-cli.php:233
 msgid "Archive file that should be encrypted can't be found!"
 msgstr ""
 
-#: inc/class-wp-cli.php:238
+#: inc/class-wp-cli.php:239
 msgid "Asymmetric encryption will be used for the archive."
 msgstr ""
 
-#: inc/class-wp-cli.php:236
+#: inc/class-wp-cli.php:237
 msgid "Symmetric encryption will be used for the archive."
 msgstr ""
 
-#: inc/class-wp-cli.php:293
+#: inc/class-wp-cli.php:294
 msgid "The --type flag is mandatory and must be specified."
 msgstr ""
 
-#: inc/class-wp-cli.php:298
+#: inc/class-wp-cli.php:299
 msgid "Invalid value for --type flag."
 msgstr ""
 
-#: inc/class-wp-cli.php:305
+#: inc/class-wp-cli.php:306
 msgid "Invalid value for --jobIds flag provided."
 msgstr ""
 
-#: inc/class-wp-cli.php:314
+#: inc/class-wp-cli.php:315
 msgid "Activating legacy jobs."
 msgstr ""
 
 #. translators: %1$d = Number of jobs, %2$s = Success message.
-#: inc/class-wp-cli.php:332
+#: inc/class-wp-cli.php:333
 msgid "%1$d job %2$s"
 msgid_plural "%1$d jobs %2$s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/class-wp-cli.php:334
+#: inc/class-wp-cli.php:335
 msgid "successfully activated"
 msgstr ""
 

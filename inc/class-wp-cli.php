@@ -1,6 +1,7 @@
 <?php
 
 use WP_CLI\Formatter;
+use GuzzleHttp\Psr7\Utils;
 
 /**
  * Class for WP-CLI commands.
@@ -239,13 +240,13 @@ class BackWPup_WP_CLI extends WP_CLI_Command
 		}
 
 		try {
-			$file_in = WPMedia\BackWPup\Dependencies\GuzzleHttp\Psr7\Utils::streamFor( WPMedia\BackWPup\Dependencies\GuzzleHttp\Psr7\Utils::tryFopen( $archive_file, 'r' ) );
+			$file_in = Utils::streamFor( Utils::tryFopen( $archive_file, 'r' ) );
 		} catch ( \RuntimeException $e ) {
 			WP_CLI::error( __( 'Cannot open the archive for reading. Aborting encryption.', 'backwpup' ) );
 		}
 
 		try {
-			$file_out = WPMedia\BackWPup\Dependencies\GuzzleHttp\Psr7\Utils::tryFopen( $archive_file . '.encrypted', 'a+' );
+			$file_out = Utils::tryFopen( $archive_file . '.encrypted', 'a+' );
 		} catch ( \RuntimeException $e ) {
 			WP_CLI::error( __( 'Cannot write the encrypted archive. Aborting encryption.', 'backwpup' ) );
 		}
@@ -253,7 +254,7 @@ class BackWPup_WP_CLI extends WP_CLI_Command
 		$encryptor = new Inpsyde\BackWPup\Infrastructure\Security\EncryptionStream(
 			$aes_iv,
 			$key,
-			WPMedia\BackWPup\Dependencies\GuzzleHttp\Psr7\Utils::streamFor( $file_out ),
+			Utils::streamFor( $file_out ),
 			$rsa_pub_key
 		);
 

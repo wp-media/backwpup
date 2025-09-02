@@ -7,7 +7,7 @@ namespace WPMedia\BackWPup\Dependencies\League\Container;
 use WPMedia\BackWPup\Dependencies\League\Container\Argument\{ArgumentResolverInterface, ArgumentResolverTrait};
 use WPMedia\BackWPup\Dependencies\League\Container\Exception\ContainerException;
 use WPMedia\BackWPup\Dependencies\League\Container\Exception\NotFoundException;
-use WPMedia\BackWPup\Dependencies\Psr\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionFunction;
 use ReflectionMethod;

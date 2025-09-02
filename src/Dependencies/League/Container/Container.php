@@ -10,7 +10,7 @@ use WPMedia\BackWPup\Dependencies\League\Container\Inflector\{InflectorAggregate
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\{ServiceProviderAggregate,
     ServiceProviderAggregateInterface,
     ServiceProviderInterface};
-use WPMedia\BackWPup\Dependencies\Psr\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class Container implements DefinitionContainerInterface
 {

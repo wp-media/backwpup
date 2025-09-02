@@ -19,11 +19,11 @@ class TrackingPlugin extends Tracking {
 	private $brand;
 
 	/**
-	 * Product name
+	 * Application name
 	 *
 	 * @var string
 	 */
-	private $product;
+	private $app;
 
 	/**
 	 * Constructor
@@ -31,9 +31,9 @@ class TrackingPlugin extends Tracking {
 	 * @param string $mixpanel_token Mixpanel token.
 	 * @param string $plugin         Plugin name.
 	 * @param string $brand          Brand name.
-	 * @param string $product        Product name.
+	 * @param string $app            Application name.
 	 */
-	public function __construct( string $mixpanel_token, string $plugin, string $brand = '', string $product = '' ) {
+	public function __construct( string $mixpanel_token, string $plugin, string $brand = '', string $app = '' ) {
 		$options = [
 			'consumer'  => 'wp',
 			'consumers' => [
@@ -43,9 +43,9 @@ class TrackingPlugin extends Tracking {
 
 		parent::__construct( $mixpanel_token, $options );
 
-		$this->plugin  = $plugin;
-		$this->brand   = $brand;
-		$this->product = $product;
+		$this->plugin = $plugin;
+		$this->brand  = $brand;
+		$this->app    = $app;
 	}
 
 	/**
@@ -65,14 +65,14 @@ class TrackingPlugin extends Tracking {
 			'domain'      => $this->hash( $host ),
 			'wp_version'  => $this->get_wp_version(),
 			'php_version' => $this->get_php_version(),
-			'plugin'      => $this->plugin,
-			'brand'       => $this->brand,
-			'product'     => $this->product,
+			'plugin'      => strtolower( $this->plugin ),
+			'brand'       => strtolower( $this->brand ),
+			'application' => strtolower( $this->app ),
 		];
 
 		$properties = array_merge( $properties, $defaults );
 
-		parent::track( $event, $properties );
+		parent::track( ucfirst( $event ), $properties );
 	}
 
 	/**

@@ -7,7 +7,7 @@ namespace WPMedia\BackWPup\Dependencies\League\Container;
 use WPMedia\BackWPup\Dependencies\League\Container\Definition\DefinitionInterface;
 use WPMedia\BackWPup\Dependencies\League\Container\Inflector\InflectorInterface;
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\ServiceProviderInterface;
-use WPMedia\BackWPup\Dependencies\Psr\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 interface DefinitionContainerInterface extends ContainerInterface
 {

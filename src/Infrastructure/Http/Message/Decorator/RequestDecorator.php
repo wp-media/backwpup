@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Inpsyde\BackWPup\Infrastructure\Http\Message\Decorator;
 
-use WPMedia\BackWPup\Dependencies\Psr\Http\Message\RequestInterface;
-use WPMedia\BackWPup\Dependencies\Psr\Http\Message\StreamInterface;
-use WPMedia\BackWPup\Dependencies\Psr\Http\Message\UriInterface;
+use Psr\Http\Message\MessageInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UriInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -89,7 +90,7 @@ abstract class RequestDecorator implements RequestInterface
     /**
      * {@inheritdoc}
      */
-    final public function withRequestTarget($requestTarget)
+    final public function withRequestTarget($requestTarget): RequestInterface
     {
         return $this->createInstance($this->request->withRequestTarget($requestTarget));
     }
@@ -105,7 +106,7 @@ abstract class RequestDecorator implements RequestInterface
     /**
      * {@inheritdoc}
      */
-    final public function withMethod($method)
+    final public function withMethod($method): RequestInterface
     {
         return $this->createInstance($this->request->withMethod($method));
     }
@@ -121,7 +122,7 @@ abstract class RequestDecorator implements RequestInterface
     /**
      * {@inheritdoc}
      */
-    final public function withUri(UriInterface $uri, $preserveHost = false)
+    final public function withUri(UriInterface $uri, $preserveHost = false): RequestInterface
     {
         return $this->createInstance($this->request->withUri($uri, $preserveHost));
     }
@@ -137,7 +138,7 @@ abstract class RequestDecorator implements RequestInterface
     /**
      * {@inheritdoc}
      */
-    final public function withProtocolVersion($version)
+    final public function withProtocolVersion($version): MessageInterface
     {
         return $this->createInstance($this->request->withProtocolVersion($version));
     }
@@ -177,7 +178,7 @@ abstract class RequestDecorator implements RequestInterface
     /**
      * {@inheritdoc}
      */
-    final public function withHeader($name, $value)
+    final public function withHeader($name, $value): MessageInterface
     {
         return $this->createInstance($this->request->withHeader($name, $value));
     }
@@ -185,7 +186,7 @@ abstract class RequestDecorator implements RequestInterface
     /**
      * {@inheritdoc}
      */
-    final public function withAddedHeader($name, $value)
+    final public function withAddedHeader($name, $value): MessageInterface
     {
         return $this->createInstance($this->request->withAddedHeader($name, $value));
     }
@@ -193,7 +194,7 @@ abstract class RequestDecorator implements RequestInterface
     /**
      * {@inheritdoc}
      */
-    final public function withoutHeader($name)
+    final public function withoutHeader($name): MessageInterface
     {
         return $this->createInstance($this->request->withoutHeader($name));
     }
@@ -209,7 +210,7 @@ abstract class RequestDecorator implements RequestInterface
     /**
      * {@inheritdoc}
      */
-    final public function withBody(StreamInterface $body)
+    final public function withBody(StreamInterface $body): MessageInterface
     {
         return $this->createInstance($this->request->withBody($body));
     }

@@ -8,9 +8,9 @@ use Inpsyde\BackWPup\Infrastructure\Http\Message\Decorator\JsonRequest;
 use Inpsyde\BackWPup\Infrastructure\Http\Message\RequestFactory;
 use Inpsyde\BackWPup\Infrastructure\Http\Message\ResponseFactory;
 use Inpsyde\BackWPup\Infrastructure\Http\Message\StreamFactory;
-use WPMedia\BackWPup\Dependencies\Psr\Http\Client\ClientInterface;
-use WPMedia\BackWPup\Dependencies\Psr\Http\Message\RequestInterface;
-use WPMedia\BackWPup\Dependencies\Psr\Http\Message\ResponseInterface;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -987,7 +987,7 @@ class BackWPup_Destination_Dropbox_API
     /**
      * Handle 400 response error.
 	 *
-	 * @param \\WPMedia\BackWPup\Dependencies\Psr\Http\Message\ResponseInterface $response The returned response.
+	 * @param \Psr\Http\Message\ResponseInterface $response The returned response.
 	 *
      * @throws BackWPup_Destination_Dropbox_API_Exception
      */
@@ -1007,7 +1007,7 @@ class BackWPup_Destination_Dropbox_API
     /**
      * Handle 401 response error.
 	 *
-	 * @param \\WPMedia\BackWPup\Dependencies\Psr\Http\Message\ResponseInterface $response The returned response.
+	 * @param \Psr\Http\Message\ResponseInterface $response The returned response.
 	 *
      * @throws BackWPup_Destination_Dropbox_API_Exception If token is invalid
      */
@@ -1032,7 +1032,7 @@ class BackWPup_Destination_Dropbox_API
     /**
      * Handle 403 response error.
 	 *
-	 * @param \\WPMedia\BackWPup\Dependencies\Psr\Http\Message\ResponseInterface $response The returned response.
+	 * @param \Psr\Http\Message\ResponseInterface $response The returned response.
 	 *
      * @throws BackWPup_Destination_Dropbox_API_Exception
      */
@@ -1075,7 +1075,7 @@ class BackWPup_Destination_Dropbox_API
     /**
      * Handle 409 response error.
 	 *
-	 * @param \\WPMedia\BackWPup\Dependencies\Psr\Http\Message\ResponseInterface $response The returned response.
+	 * @param \Psr\Http\Message\ResponseInterface $response The returned response.
 	 *
      * @throws BackWPup_Destination_Dropbox_API_Request_Exception
      */
@@ -1102,7 +1102,7 @@ class BackWPup_Destination_Dropbox_API
      *
      * This error is encountered when requests are being rate limited.
 	 *
-	 * @param \\WPMedia\BackWPup\Dependencies\Psr\Http\Message\ResponseInterface $response The returned response.
+	 * @param \Psr\Http\Message\ResponseInterface $response The returned response.
 	 *
      * @throws BackWPup_Destination_Dropbox_API_Exception If unable to detect time to wait
      */

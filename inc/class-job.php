@@ -1,6 +1,6 @@
 <?php
 
-use WPMedia\BackWPup\Dependencies\GuzzleHttp\Psr7\Utils;
+use GuzzleHttp\Psr7\Utils;
 use Inpsyde\BackWPup\Infrastructure\Security\EncryptionStream;
 
 /**
