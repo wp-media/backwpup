@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WPMedia\Mixpanel;
+namespace WPMedia\Beta;
 
 class Optin {
 	/**
@@ -39,22 +39,13 @@ class Optin {
 			return false;
 		}
 
-		$optin = get_option( $this->plugin_slug . '_mixpanel_optin', false );
+		$optin = get_option( $this->plugin_slug . '_beta_optin', false );
 
 		if ( ! $optin ) {
 			return false;
 		}
 
 		return true;
-	}
-
-	/**
-	 * Check if tracking is allowed.
-	 *
-	 * @return bool
-	 */
-	public function can_track(): bool {
-		return (bool) get_option( $this->plugin_slug . '_mixpanel_optin', false );
 	}
 
 	/**
@@ -67,14 +58,14 @@ class Optin {
 			return;
 		}
 
-		update_option( $this->plugin_slug . '_mixpanel_optin', true );
+		update_option( $this->plugin_slug . '_beta_optin', true );
 
 		/**
-		 * Fires when the Mixpanel opt-in status changes to enabled.
+		 * Fires when the Beta opt-in status changes to enabled.
 		 *
 		 * @param bool $status The opt-in status.
 		 */
-		do_action( $this->plugin_slug . '_mixpanel_optin_changed', true );
+		do_action( $this->plugin_slug . '_beta_optin_changed', true );
 	}
 
 	/**
@@ -87,13 +78,13 @@ class Optin {
 			return;
 		}
 
-		delete_option( $this->plugin_slug . '_mixpanel_optin' );
+		delete_option( $this->plugin_slug . '_beta_optin' );
 
 		/**
-		 * Fires when the Mixpanel opt-in status changes to disabled.
+		 * Fires when the Beta opt-in status changes to disabled.
 		 *
 		 * @param bool $status The opt-in status.
 		 */
-		do_action( $this->plugin_slug . '_mixpanel_optin_changed', false );
+		do_action( $this->plugin_slug . '_beta_optin_changed', false );
 	}
 }

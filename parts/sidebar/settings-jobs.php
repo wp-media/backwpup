@@ -125,6 +125,19 @@ BackWPupHelpers::component("form/checkbox", [
 ?>
 
 <?php
+if ( ! BackWPup::is_pro() ) {
+  BackWPupHelpers::component("form/checkbox", [
+    "name" => "beta",
+    "checked" => (bool) get_option('backwpup_beta_optin', false),
+    "label" => __("Receive beta updates", 'backwpup'),
+    "tooltip" => __('With this option, you will receive beta updates of the BackWPUp plugin. Beta versions might be unstable and their use is discouraged on production websites.', 'backwpup'),
+    "tooltip_pos" => "left",
+    "value" => "0",
+  ]);
+}
+?>
+
+<?php
   BackWPupHelpers::component("navigation/link", [
     "type" => "secondary",
     "content" => __("Access to Legacy Jobs", 'backwpup'),
