@@ -9,7 +9,7 @@ use WPMedia\BackWPup\Admin\Options\Options;
 
 class Notices {
 
-	private const VERSION = '5.4.0';
+	private const VERSION = '5.5.0';
 	/**
 	 * Beacon instance.
 	 *
@@ -58,16 +58,16 @@ class Notices {
 
 		$current_version = $this->backwpup->get_plugin_data( 'Version' );
 
-		// Do not display if the current version is greater/lesser than 5.4.0.
+		// Do not display if the current version is greater/lesser than 5.5.0.
 		if ( version_compare( $current_version, self::VERSION, '!=' ) ) {
 			return;
 		}
 
-		$include_extra_files = $this->beacon->get_suggest( 'include_extra_files' );
-		$message             = sprintf(
+		$admin_notice = $this->beacon->get_suggest( 'file_format' );
+		$message      = sprintf(
 		// translators: %1$s: opening a tag, %2$s: closing a tag.
-			__( 'You can now include non-WordPress files and folders directly in your backups! Simply select the files or folders you want to add to your scheduled or manual backups. This release also brings several enhancements and bug fixes. Check out our %1$sblog post%2$s to learn more and see what’s coming next for BackWPup!', 'backwpup' ),
-			'<a href="' . esc_url( $include_extra_files['url'] ) . '" title="' . esc_attr( $include_extra_files['title'] ) . '" target="_blank" rel="noopener noreferrer" class="text-primary-darker border-b border-primary-darker">',
+			__( 'You can now set the archive format and name for each backup for better flexibility, and easily disconnect and re-authenticate OneDrive storage. We\'ve also fixed Rackspace cloud connection issues on PHP 8 and above, among other improvements. Check out our %1$sblog post%2$s to learn more and see what’s coming next for BackWPup!',  'backwpup' ),
+			'<a href="' . esc_url( $admin_notice['url'] ) . '" title="' . esc_attr( $admin_notice['title'] ) . '" target="_blank" rel="noopener noreferrer" class="text-primary-darker border-b border-primary-darker">',
 			'</a>'
 		);
 
@@ -77,7 +77,7 @@ class Notices {
 				'dismissible'          => '',
 				'title'                => sprintf(
 					// translators: %1$s = strong opening tag, %2$s = strong closing tag.
-					__( '🎉 %1$sWelcome to BackWPup 5.4! %2$s', 'backwpup' ),
+					__( '📣 %1$sBackWPup 5.5 is here! %2$s', 'backwpup' ),
 					'<strong>',
 					'</strong>',
 				),

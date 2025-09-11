@@ -1180,6 +1180,7 @@ EOT;
 			'cloudsaveandtest'       => rest_url( 'backwpup/v1/cloudsaveandtest' ),
 			'storagelistcompact'     => rest_url( 'backwpup/v1/storagelistcompact' ),
 			'save_job_settings'      => rest_url( 'backwpup/v1/save_job_settings' ),
+			'save_job_format'        => rest_url( 'backwpup/v2/save_job_format' ),
 			'startbackup'            => rest_url( 'backwpup/v1/startbackup' ),
 			'save_excluded_tables'   => rest_url( 'backwpup/v1/save_excluded_tables' ),
 			'backups_bulk_actions'   => rest_url( 'backwpup/v1/process_bulk_actions' ),

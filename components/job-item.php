@@ -206,5 +206,23 @@ backwpup-job-<?php echo esc_attr( $data_type ); ?> h-[200px]" id="<?php echo esc
 			]
 		);
 		?>
+      <span class="h-5 w-0 border-r border-primary-darker"></span>
+      <?php
+      BackWPupHelpers::component(
+        'form/button',
+        [
+          'type'     => 'link',
+          'label'    => __( 'Format', 'backwpup' ),
+          'trigger'  => 'load-and-open-sidebar',
+          'display'  => 'format',
+          'disabled' => ! $is_active,
+          'data'     => [
+            'job-id'     => $job_id,
+            'block-type' => 'children',
+            'block-name' => 'sidebar/format',
+          ],
+        ]
+      );
+      ?>
     </p>
 </div>

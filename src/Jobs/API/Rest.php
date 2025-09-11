@@ -204,6 +204,16 @@ class Rest implements RestInterface {
 		);
 
 		register_rest_route(
+			self::ROUTE_V2_NAMESPACE,
+			'/save_job_format',
+			[
+				'methods'             => 'POST',
+				'callback'            => [ $this, 'save_job_format' ],
+				'permission_callback' => [ $this, 'has_permission' ],
+			]
+		);
+
+		register_rest_route(
 			self::ROUTE_NAMESPACE,
 			'/save_files_exclusions',
 			[
@@ -627,6 +637,63 @@ class Rest implements RestInterface {
 				wp_date( get_option( 'date_format' ), $cron_next ),
 				wp_date( get_option( 'time_format' ), $cron_next )
 			);
+
+			$return['status']  = 200;
+			$return['message'] = __('Job settings saved successfully.', 'backwpup'); // @phpcs:ignore
+
+		} catch ( Exception $e ) {
+			// Handle errors.
+			$return['status'] = 500;
+			$return['error']  = $e->getMessage();
+		}
+
+		// Return response as a valid WP REST API response.
+		return rest_ensure_response( $return );
+	}
+
+
+	/**
+	 * Save the job format settings via the REST API.
+	 *
+	 * @param WP_REST_Request $request The REST API request containing job settings.
+	 *
+	 * @throws Exception If an error occurs during the process.
+	 *
+	 * @return WP_REST_Response|WP_Error|WP_HTTP_Response The response containing the updated job schedule or an error message.
+	 */
+	public function save_job_format( WP_REST_Request $request ) {
+		$params = $request->get_params(); // Get request parameters.
+		$return = [];
+
+		try {
+			// Extract parameters from the request.
+			$job_id         = $params['job_id'];
+			$archive_format = ! isset( $params['archiveformat'] ) ? get_site_option( 'backwpup_archiveformat', '.tar' ) : strtolower( $params['archiveformat'] );
+			$archive_name   = ! isset( $params['archivename'] ) ? $this->option_adapter->defaults_job( 'archivename' ) : $params['archivename'];
+			$archive_name   = trim( \BackWPup_Job::sanitize_file_name( $archive_name ) );
+
+			if ( empty( $job_id ) ) {
+				throw new Exception( __( 'Invalid parameter(s): job_id', 'backwpup' ) );
+			}
+
+			if ( empty( $archive_format ) ) {
+				throw new Exception( __( 'Invalid parameter(s): archiveformat', 'backwpup' ) );
+			}
+
+			if ( ! in_array( $archive_format, [ '.tar', '.zip', '.tar.gz' ], true ) ) {
+				throw new Exception( __( 'Invalid job archive format.', 'backwpup' ) );
+			}
+
+			if ( strpos( $archive_name, '%hash%' ) === false ) {
+				throw new Exception( __( 'The hash must be defined in archive name.', 'backwpup' ) );
+			}
+
+			if ( strlen( $archive_name ) > 200 ) {
+				throw new Exception( __( 'The archive name must be shorter then 200 chars.', 'backwpup' ) );
+			}
+
+			$this->option_adapter->update( $job_id, 'archiveformat', $archive_format );
+			$this->option_adapter->update( $job_id, 'archivename', $archive_name );
 
 			$return['status']  = 200;
 			$return['message'] = __('Job settings saved successfully.', 'backwpup'); // @phpcs:ignore

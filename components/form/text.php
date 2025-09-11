@@ -41,7 +41,7 @@ $text_contextual_classes = $invalid ? "text-danger" : "text-grey-700";
 
 ?>
 <label class="<?php echo BackWPupHelpers::clsx($container_classes, $container_contextual_classes); ?>">
-  <input name="<?=esc_attr($name)?>" type="<?php echo esc_attr($type); ?>" <?php echo $id; ?> class="<?php echo BackWPupHelpers::clsx("input-base text-lg w-full", $trigger); ?>" placeholder="" <?php if ($required) : ?>required<?php endif; ?> value="<?php echo esc_attr($value); ?>" <?php if (isset($min) && $type === "number") : ?>min="<?php echo esc_attr($min); ?>" <?php endif; ?> <?php if (isset($max) && $type === "number") : ?>max="<?php echo esc_attr($max); ?>" <?php endif; ?>>
+  <input name="<?=esc_attr($name)?>" type="<?php echo esc_attr($type); ?>" <?php echo $id; ?> class="<?php echo BackWPupHelpers::clsx("input-base text-lg w-full", $trigger); ?>" placeholder="" <?php if ($required) : ?>required<?php endif; ?> value="<?php echo esc_attr($value); ?>" <?php if (isset($min) && $type === "number") : ?>min="<?php echo esc_attr($min); ?>" <?php endif; ?> <?php if (isset($max) && $type === "number") : ?>max="<?php echo esc_attr($max); ?>" <?php endif; ?><?php if (isset($maxlength)) : ?> maxlength="<?php echo esc_attr($maxlength); ?>" <?php endif; ?>>
   <p class="<?php echo $text_classes; ?> <?php echo $text_contextual_classes; ?>">
     <?php echo $label; ?>
     <?php isset($tooltip) && BackWPupHelpers::component("tooltip", ["content" => $tooltip, "icon_size" => "small", "position" => $tooltip_pos]); ?>

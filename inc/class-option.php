@@ -288,6 +288,7 @@ final class BackWPup_Option
 		$default['backuptype']            = 'archive';
 		$default['archivename']           = '%Y-%m-%d_%H-%i-%s_%hash%';
 		$default['archivenamenohash']     = '%Y-%m-%d_%H-%i-%s_%hash%';
+		$default['archiveformat']         = get_site_option( 'backwpup_archiveformat', '.tar' );
 		$default['legacy']                = false;
 		$default['archiveencryption']     = false;
 		$default['tempjob']               = false;

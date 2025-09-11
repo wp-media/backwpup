@@ -113,12 +113,16 @@ class BackWPupHelpers {
 				$item = array_merge( $item, $job_data, [ 'stored_on' => $dest ] );
 
 				// Parse the filename to get the type of backup.
-				$filename       = pathinfo( $item['filename'] )['filename'];
-				$filename       = preg_replace( '/\.[^.]+$/', '', $filename ); // Remove file extensions.
+				$filename = pathinfo( $item['filename'] )['filename'];
+				if ( stripos( $item['filename'], '.tar.gz' ) === strlen( $item['filename'] ) - 7 ) {
+					$filename = substr( $item['filename'], 0, -7 );
+				} elseif ( stripos( $item['filename'], '.tar.bz2' ) === strlen( $item['filename'] ) - 8 ) {
+					$filename = substr( $item['filename'], 0, -8 );
+				}
 				$filename_parts = explode( '_', $filename );
 
-				if ( isset( $filename_parts[3] ) ) {
-					$item['data'] = (array) explode( '-', $filename_parts[3] );
+				if ( count( $filename_parts ) > 1 ) {
+					$item['data'] = (array) explode( '-', end( $filename_parts ) );
 				}
 
 				$local_file      = untrailingslashit( BackWPup::get_plugin_data( 'TEMP' ) ) . "/{$item['filename']}";

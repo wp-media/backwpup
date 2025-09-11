@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'inpsyde/backwpup-pro',
-        'pretty_version' => '5.4.1',
-        'version' => '5.4.1.0',
-        'reference' => '45073381245a47b6e47ee91abb41cfee033ece5a',
+        'pretty_version' => 'dev-ops/release-free-version',
+        'version' => 'dev-ops/release-free-version',
+        'reference' => '416ea0fc912b835ae3836e17ab197354e2f60ee9',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -224,9 +224,9 @@
             'dev_requirement' => false,
         ),
         'inpsyde/backwpup-pro' => array(
-            'pretty_version' => '5.4.1',
-            'version' => '5.4.1.0',
-            'reference' => '45073381245a47b6e47ee91abb41cfee033ece5a',
+            'pretty_version' => 'dev-ops/release-free-version',
+            'version' => 'dev-ops/release-free-version',
+            'reference' => '416ea0fc912b835ae3836e17ab197354e2f60ee9',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -1,6 +1,15 @@
 == Changelog ==
+= 5.5.0 =
+Release date: September ???, 2025 
+
+* New Feature: Archive format per backup
+* Bugfix: Rackspace cloud connection fails on PHP 8 and above
+* New Feature: Archive name per backup
+* Enhancement: Add One drive storage disconnect & re-authenticate option
+
 = 5.4.1 =
 Release date: September 2, 2025
+
 * Fix: Additional Guzzle Dependency conflicts causing errors.
 
 = 5.4 =

@@ -102,7 +102,7 @@ class Tracking {
 		$this->mixpanel->identify( $user->user_email );
 
 		$this->mixpanel->track(
-			'WPM Scheduled Backup Job Created',
+			'Scheduled Backup Job Created',
 			$this->get_event_properties( $job, true )
 		);
 	}
@@ -126,7 +126,7 @@ class Tracking {
 		$job = $this->option_adapter->get_job( $job_id );
 
 		$this->mixpanel->track(
-			'WPM Scheduled Backup Job Deleted',
+			'Scheduled Backup Job Deleted',
 			$this->get_event_properties( $job )
 		);
 	}
@@ -140,11 +140,15 @@ class Tracking {
 	 * @return array
 	 */
 	private function get_event_properties( array $job, bool $exclude_scheduled_info = false ): array {
+		if ( empty( $job['archiveformat'] ) ) {
+			$job['archiveformat'] = get_site_option( 'backwpup_archiveformat', '.tar' );
+		}
+
 		$properties = [
 			'context'                => 'wp_plugin',
 			'job_id'                 => $job['jobid'],
 			'storage'                => $job['destinations'],
-			'format'                 => get_site_option( 'backwpup_archiveformat' ),
+			'format'                 => $job['archiveformat'],
 			'manually_excluded_data' => $this->has_manual_exclude( $job ),
 		];
 

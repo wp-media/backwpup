@@ -23,6 +23,10 @@ class Beacon extends AbstractRender {
 				'url'   => 'https://backwpup.com/backwpup-5-4/',
 				'title' => 'Welcome to BackWPup 5.4!',
 			],
+			'file_format'         => [
+				'url'   => 'https://backwpup.com/backwpup-5-5/',
+				'title' => 'BackWPup 5.5 is here!',
+			],
 		];
 
 		return $suggest[ $doc_id ] ?? [];
