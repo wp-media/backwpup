@@ -16,14 +16,16 @@ Create a complete WordPress backup easily. Schedule automatic backups, store sec
 
 [BackWPup](https://backwpup.com/) is the most comprehensive backup & restore plugin for WordPress.
  
-= 🎉 BackWPup 5.4 – New Features & Improvements =
+= 🎉 BackWPup 5.5– New Features & Improvements = 
 
-BackWPup 5.4 is now available! Building on the enhancements introduced in version 5.3, this update brings back many of the most requested features from earlier releases. We've listened to your feedback to deliver a renewed and improved backup experience.
+BackWPup 5.5 is now available! Building on previous releases, it brings back your most‑requested features and delivers a refreshed, more controlled backup experience—shaped by your feedback. 
 
-🚀 What’s new in BackWPup?
+ 
+🚀 What’s new in BackWPup? 
 
-✅  Include Extra Files or Folders: You can now include non-WordPress files and folders directly in your backups! Easily select additional files or entire folders to be covered in your scheduled or manual backups.
-✅ Better Encryption: Preserved the “Encrypt archive” setting after updates; asymmetric keys remain intact. Giving you better encryption coverage even after an update.
+✅ Archive format per backup: Pick the archive type for each backup (ZIP, TAR, etc.) to match your storage and restore needs. 
+
+✅ Archive name per backup: Give each backup a clear, custom filename so they are easy to recognize at a glance.
  
 If you happen to experience any issues with the new version, contact us directly [here](https://backwpup.com/contact) so we can investigate your case. We are committed to resolving any concerns quickly and are actively working to ensure a smooth experience for everyone.
 
@@ -73,17 +75,21 @@ Take your WordPress backups to the next level with BackWPup Pro. Get additional 
 
 With BackWPup, you have full control over your backup process. You can back up your entire WordPress site, including files and database, save them to multiple locations, and easily restore your site from a backup if anything goes wrong. You can choose what to back up, how often to perform backups, and where to store them: 
 
-* Backup your entire WordPress installation, including the /wp-content/ folder and your database. 
+* Comprehensive Backups: Backup your entire WordPress installation, including the /wp-content/ folder, database and any additional non-WordPress files and folders. 
 
-* Schedule automatic backups to run hourly, daily, weekly, or monthly, ensuring your data is always up-to-date and secure. 
+* Flexible Scheduling: Schedule automatic backups to run hourly, daily, weekly, monthly —with the freedom to pick any specific date in the month 
+
+* Immediate Backups: Instantly run any scheduled backup job with the “Backup Now” button—perfect for on-demand backups before updates or changes.   
+
+* Custom Backup Jobs: Combine files and database into a single job, or set up separate jobs for advanced workflows. 
 
 * Store your backup in different locations: 
 > **Free version**: Dropbox, Amazon S3, FTP, Rackspace Cloud, Microsoft Azure, SugarSync.  
 > **Pro version**: Additional storage options including Amazon Glacier, Google Drive, OneDrive and HiDrive **[Get BackWPup Pro](https://backwpup.com/#buy)** 
 
 This flexibility makes BackWPup the best choice for WordPress backup. 
-
   
+
 
 = 🛟 Easily Restore Your WordPress Site = 
 
@@ -187,6 +193,11 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
 
 == Changelog ==
+5.5 Release date: September ??, 2025 
+
+*New Feature: Archive format per backup 
+*New Feature: Archive name per backup 
+
 5.4.1 Release date: September 2, 2025
 
 * Fix: Additional Guzzle Dependency conflicts causing errors.
