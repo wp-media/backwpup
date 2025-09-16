@@ -193,7 +193,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
 
 == Changelog ==
-5.5 Release date: September ??, 2025 
+5.5 Release date: September 16, 2025 
 
 *New Feature: Archive format per backup 
 *New Feature: Archive name per backup 
