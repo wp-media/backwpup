@@ -2196,6 +2196,17 @@ jQuery(document).ready(function ($) {
   }
 
   /**
+   * Function to initialize the frequency job settings
+   * Runs when the element `.js-backwpup-frequency-job` is found in the DOM.
+   */
+  function runWhenJobFormatSettingsLoaded() {
+    const $element = $(".js-backwpup-format-job");
+    if ($element.length) {
+      showArchiveFormatJobFields($element);
+    }
+  }
+
+  /**
    * MutationObserver: Watches for new elements being added to the DOM
    * When a `.js-backwpup-frequency-job` field appears, it triggers `runWhenJobFrequencySettingsLoaded()`
    */
@@ -2206,12 +2217,99 @@ jQuery(document).ready(function ($) {
         if ($(node).is(".js-backwpup-frequency-job") || $(node).find(".js-backwpup-frequency-job").length) {
           runWhenJobFrequencySettingsLoaded();
         }
+        const format_job_element = $(node).find(".js-backwpup-format-job");
+        if ($(node).is(".js-backwpup-format-job") || format_job_element.length) {
+          showArchiveFormatJobFields(format_job_element);
+        }
       });
     });
   });
 
   // Start observing DOM changes on the entire document
   observer.observe(document.body, { childList: true, subtree: true });
+
+  /**
+   * Event Listener: Detect changes in format dropdown
+   * Calls `showArchiveFormatJobFields()` whenever the user selects a new frequency.
+   */
+  $document.on("change", ".js-backwpup-format-job", function () {
+    showArchiveFormatJobFields($(this));
+  });
+
+  /**
+   * Event Listener: Detect changes in archive name input
+   * Calls `showArchiveFormatJobFields()` whenever the user selects a new frequency.
+   */
+  $document.on("input", ".js-backwpup-format-job-name", function () {
+    let name = $(this).val();
+    let error_box = $(this).closest(`div`).find(`.js-backwpup-format-job-name-no-hash`);
+    if ( ! name ) {
+      return;
+    }
+    if ( name.includes('%hash%') ) {
+      error_box.hide();
+    } else {
+      error_box.show();
+    }
+    //replace plaseholder
+    let name_preview_span = error_box.parent().find(`.js-backwpup-format-archive-name`);
+    let name_previev = name.trim().replace('%hash%', name_preview_span.data('hash'));
+    const date = new Date();
+    let hourIn12Format = date.getHours();
+    let dayPart = 'am'
+    if (hourIn12Format > 12) {
+      hourIn12Format = hourIn12Format - 12;
+      dayPart = 'pm'
+    }
+    name_previev = name_previev.replace('%d', String(date.getDay() + 1).padStart(2, '0'));
+    name_previev = name_previev.replace('%m', String(date.getMonth() + 1).padStart(2, '0'));
+    name_previev = name_previev.replace('%n', String(date.getMonth() + 1));
+    name_previev = name_previev.replace('%j', date.getDay() + 1);
+    name_previev = name_previev.replace('%Y', date.getFullYear());
+    name_previev = name_previev.replace('%y', String(date.getFullYear()).slice(-2));
+    name_previev = name_previev.replace('%a', dayPart);
+    name_previev = name_previev.replace('%A', dayPart.toUpperCase());
+    let btm = ( ( date.getHours() * 60 + date.getMinutes() ) * 86.4 / 100 ).toFixed(0);
+    name_previev = name_previev.replace('%B', btm);
+    name_previev = name_previev.replace('%g', hourIn12Format);
+    name_previev = name_previev.replace('%G', date.getHours());
+    name_previev = name_previev.replace('%h', String(hourIn12Format).padStart(2, '0'));
+    name_previev = name_previev.replace('%H', String(date.getHours()).padStart(2, '0'));
+    name_previev = name_previev.replace('%i', date.getMinutes());
+    name_previev = name_previev.replace('%s', date.getSeconds());
+    //replace special chars
+    let specialChars = [ '?', '[', ']', '/', '\\', '=', '<', '>', ':', ';', ',', "'", '"', '&', '$', '#', '*', '(', ')', '|', '~', '`', '!', '{', '}' ];
+    specialChars.forEach(function (char) {
+      name_previev = name_previev.replace(char, '');
+    });
+    let spaces = [ ' ', '%20', '+' ];
+    spaces.forEach(function (space) {
+      name_previev = name_previev.replace(space, '_');
+    });
+    let divider = [ '\t', '\r', '\n' ];
+    divider.forEach(function (divider) {
+      name_previev = name_previev.replace(divider, '-');
+    });
+    name_preview_span.text(name_previev);
+  });
+
+  /**
+   * Function to show/hide elements based on selected job archive format
+   * @param {string} element - the element to check.
+   */
+  function showArchiveFormatJobFields(element) {
+    let format = element.val();
+    let alert_box = element.closest(`div`).next(`.js-backwpup-format-job-show-if-zip`);
+    if (format === ".zip") {
+      alert_box.show();
+    } else {
+      alert_box.hide();
+    }
+    let name_preview = alert_box.parent().find(`.js-backwpup-format-archive-name-format`);
+    if ( name_preview ) {
+      name_preview.text(format);
+    }
+  }
 
   /**
    * Event Listener: Detect changes in frequency dropdown
@@ -2290,8 +2388,42 @@ jQuery(document).ready(function ($) {
     );
   });
 
+
+  /**
+   * Event Listener: Handles the "Save Job Format Settings" button click
+   * Extracts form data and sends an AJAX request to save the job format settings.
+   */
+  $document.on("click", "#save-job-format", function () {
+    const container = $(this).closest("article");
+
+    // Collect input values from the form
+    const data = {
+      archiveformat: container.find("select[name='archiveformat']").val(),
+      archivename: container.find("input[name='archivename']").val(),
+      job_id: container.find("input[name='job_id']").val(),
+    };
+
+    // Send AJAX request to save job settings
+    requestWPApi(
+      backwpupApi.save_job_format,
+      data,
+      function (response) {
+        if (response.status === 200) {
+          backwpupDisplaySettingsToast('success', response.message);
+          // Close the settings sidebar
+          closeSidebar();
+        }
+        if (response.status === 500) {
+          backwpupDisplaySettingsToast('danger', response.error);
+        }
+      },
+      "POST"
+    );
+  });
+
   // Run the job settings function on initial page load
   runWhenJobFrequencySettingsLoaded();
+  runWhenJobFormatSettingsLoaded();
 
   $document.on('click', '.backwpup-start-backup-job', function () {
 	  startBackupProcess({ 'job_id': $(this).data('job_id') });

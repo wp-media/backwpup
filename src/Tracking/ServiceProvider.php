@@ -61,8 +61,8 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'517e881edc2636e99a2ecf013d8134d3',
 					BackWPup::get_plugin_data( 'version' ),
-					'WP Media',
-					'BackWPup',
+					'wp media',
+					'backwpup',
 				]
 			);
 

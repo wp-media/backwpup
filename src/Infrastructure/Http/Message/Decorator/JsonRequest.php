@@ -6,7 +6,7 @@ namespace Inpsyde\BackWPup\Infrastructure\Http\Message\Decorator;
 
 use Inpsyde\BackWPup\Infrastructure\Http\Message\Exception\CouldNotDecodeJsonData;
 use Inpsyde\BackWPup\Infrastructure\Http\Message\Exception\CouldNotEncodeJsonData;
-use WPMedia\BackWPup\Dependencies\Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 
 /**
  * JSON request decorator.

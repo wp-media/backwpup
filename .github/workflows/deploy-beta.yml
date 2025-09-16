@@ -1,0 +1,20 @@
+name: Deploy Beta to WordPress.org
+on:
+  release:
+    types:
+      - published
+jobs:
+  tag:
+    name: New Release
+    runs-on: ubuntu-latest
+    if: ${{ contains(github.event.release.name, 'beta') }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: WordPress Beta Plugin Deploy
+        uses: wp-media/action-wordpress-plugin-trunk-deploy@v1.0.1
+        env:
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SLUG: backwpup
