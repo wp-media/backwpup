@@ -44,7 +44,6 @@ class Subscriber implements SubscriberInterface {
 			'backwpup_page_settings_save'     => 'update_setting',
 			'wp_ajax_backwpup_notice_optin'   => 'notice_optin_callback',
 			'admin_notices'                   => 'display_tracking_notice',
-			'backwpup_beta_optin_change'      => 'track_beta_optin_change',
 		];
 	}
 
@@ -57,17 +56,6 @@ class Subscriber implements SubscriberInterface {
 	 */
 	public function track_optin_change( $optin ): void {
 		$this->tracking->track_optin_change( $optin );
-	}
-
-	/**
-	 * Track the beta opt-in change event.
-	 *
-	 * @param int $optin The new opt-in value.
-	 *
-	 * @return void
-	 */
-	public function track_beta_optin_change( $optin ): void {
-		$this->tracking->track_beta_optin_change( $optin );
 	}
 
 	/**

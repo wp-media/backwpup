@@ -66,7 +66,7 @@ class Notices {
 		$admin_notice = $this->beacon->get_suggest( 'file_format' );
 		$message      = sprintf(
 		// translators: %1$s: opening a tag, %2$s: closing a tag.
-			__( 'You can now set the archive format and name for each backup for better flexibility, and easily disconnect and re-authenticate OneDrive storage. We\'ve also fixed Rackspace cloud connection issues on PHP 8 and above, among other improvements. Check out our %1$sblog post%2$s to learn more and see what’s coming next for BackWPup!',  'backwpup' ),
+			__( 'You can now set the archive format and name for each backup for better flexibility and more control. We\'ve also added opt-in beta release among other improvements. Check out our %1$sblog post%2$s to learn more and see what’s coming next for BackWPup!',  'backwpup' ),
 			'<a href="' . esc_url( $admin_notice['url'] ) . '" title="' . esc_attr( $admin_notice['title'] ) . '" target="_blank" rel="noopener noreferrer" class="text-primary-darker border-b border-primary-darker">',
 			'</a>'
 		);

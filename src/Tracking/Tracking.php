@@ -86,30 +86,6 @@ class Tracking {
 	}
 
 	/**
-	 * Track the beta opt-in change event.
-	 *
-	 * @param int $optin The new opt-in value.
-	 *
-	 * @return void
-	 */
-	public function track_beta_optin_change( $optin ): void {
-		if ( ! $this->optin->is_enabled() ) {
-			return;
-		}
-
-		$user = wp_get_current_user();
-
-		$this->mixpanel->identify( $user->user_email );
-		$this->mixpanel->track(
-			'WordPress Plugin Beta Opt-in Changed',
-			[
-				'context'       => 'wp_plugin',
-				'opt_in_status' => (bool) $optin,
-			]
-		);
-	}
-
-	/**
 	 * Track the addition of a new job.
 	 *
 	 * @param array $job The job data.

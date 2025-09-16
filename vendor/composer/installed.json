@@ -656,8 +656,8 @@
         },
         {
             "name": "inpsyde/assert",
-            "version": "dev-feature/1072-beta",
-            "version_normalized": "dev-feature/1072-beta",
+            "version": "dev-fix/revert-5-4",
+            "version_normalized": "dev-fix/revert-5-4",
             "dist": {
                 "type": "path",
                 "url": "packages/assert",
@@ -3014,73 +3014,18 @@
             "install-path": "../wp-media/apply-filters-typed"
         },
         {
-            "name": "wp-media/wp-beta",
-            "version": "v1.0.3",
-            "version_normalized": "1.0.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/wp-media/wp-beta.git",
-                "reference": "aec98a0a5d10a188054d438e730beedf06b0ef52"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/wp-beta/zipball/aec98a0a5d10a188054d438e730beedf06b0ef52",
-                "reference": "aec98a0a5d10a188054d438e730beedf06b0ef52",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.3"
-            },
-            "require-dev": {
-                "php-stubs/wordpress-tests-stubs": "^6.5",
-                "phpcompatibility/phpcompatibility-wp": "^2.0",
-                "phpstan/extension-installer": "^1.3",
-                "phpstan/phpstan-mockery": "^2.0",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "roave/security-advisories": "dev-master",
-                "szepeviktor/phpstan-wordpress": "^2.0",
-                "wp-coding-standards/wpcs": "^3",
-                "wp-media/phpunit": "^3"
-            },
-            "time": "2025-09-10T13:56:29+00:00",
-            "type": "library",
-            "installation-source": "dist",
-            "autoload": {
-                "psr-4": {
-                    "WPMedia\\Beta\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "WP Media",
-                    "homepage": "https://github.com/wp-media/wp-beta",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Beta for WordPress plugins",
-            "support": {
-                "issues": "https://github.com/wp-media/wp-beta/issues",
-                "source": "https://github.com/wp-media/wp-beta/tree/v1.0.3"
-            },
-            "install-path": "../wp-media/wp-beta"
-        },
-        {
             "name": "wp-media/wp-mixpanel",
-            "version": "v1.2.0",
-            "version_normalized": "1.2.0.0",
+            "version": "v1.1.2",
+            "version_normalized": "1.1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/wp-mixpanel.git",
-                "reference": "b73de3558313642298a0ffaf32afbe8b555622ac"
+                "reference": "1eddae0d32f802ac14003c80c7ff096adf8e232f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/wp-mixpanel/zipball/b73de3558313642298a0ffaf32afbe8b555622ac",
-                "reference": "b73de3558313642298a0ffaf32afbe8b555622ac",
+                "url": "https://api.github.com/repos/wp-media/wp-mixpanel/zipball/1eddae0d32f802ac14003c80c7ff096adf8e232f",
+                "reference": "1eddae0d32f802ac14003c80c7ff096adf8e232f",
                 "shasum": ""
             },
             "require": {
@@ -3097,7 +3042,7 @@
                 "wp-coding-standards/wpcs": "^3",
                 "wp-media/phpunit": "^3"
             },
-            "time": "2025-09-08T14:54:11+00:00",
+            "time": "2025-08-20T18:28:16+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -3122,7 +3067,7 @@
             "description": "WordPress Mixpanel Integration",
             "support": {
                 "issues": "https://github.com/wp-media/wp-mixpanel/issues",
-                "source": "https://github.com/wp-media/wp-mixpanel/tree/v1.2.0"
+                "source": "https://github.com/wp-media/wp-mixpanel/tree/v1.1.2"
             },
             "install-path": "../wp-media/wp-mixpanel"
         }
