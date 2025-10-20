@@ -75,6 +75,10 @@ class Database {
 			return;
 		}
 
+		$job_statuses = [];
+
+		$status = 'completed';
+		$i      = 0;
 		foreach ( $backup_ids as $backup_id ) {
 			$backup = $this->backup_query->get_item( $backup_id );
 
@@ -83,11 +87,34 @@ class Database {
 				||
 				'completed' === $backup->status
 			) {
+				$job_statuses[ $i ] = [
+					'status'        => $status,
+					'storage'       => $backup->destination,
+					'error_code'    => $backup->error_code,
+					'error_message' => $backup->error_message,
+				];
+				++$i;
 				continue;
 			}
 
+			$status = 'failed';
 			$this->backup_query->set_status( $backup->id, 'failed' );
+			$job_statuses[ $i ] = [
+				'status'        => $status,
+				'storage'       => $backup->destination,
+				'error_code'    => $backup->error_code,
+				'error_message' => $backup->error_message,
+			];
+			++$i;
 		}
+
+		/**
+		 * Fires after a job ended.
+		 *
+		 * @param int $job_id The job id.
+		 * @param array $job_statuses Status of the job storages.
+		 */
+		do_action( 'backwpup_track_end_job', $job['jobid'], $job_statuses );
 	}
 
 	/**

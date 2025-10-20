@@ -4,14 +4,14 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit519e5db9a2cb27fc9c3b1eefc384faeb
+class ComposerStaticInit5cbcfb1449c8529bdcab591b4c0578d6
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
         '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
@@ -24,14 +24,11 @@ class ComposerStaticInit519e5db9a2cb27fc9c3b1eefc384faeb
         array (
             'phpseclib3\\' => 11,
         ),
-        'm' => 
-        array (
-            'mikemccabe\\JsonPatch\\' => 21,
-        ),
         'W' => 
         array (
             'Webmozart\\Assert\\' => 17,
             'WPMedia\\Mixpanel\\' => 17,
+            'WPMedia\\Beta\\' => 13,
             'WPMedia\\BackWPup\\Tracking\\' => 26,
             'WPMedia\\BackWPup\\StorageProviders\\' => 34,
             'WPMedia\\BackWPup\\Plugin\\' => 24,
@@ -40,6 +37,7 @@ class ComposerStaticInit519e5db9a2cb27fc9c3b1eefc384faeb
             'WPMedia\\BackWPup\\Frontend\\' => 26,
             'WPMedia\\BackWPup\\Dependencies\\' => 30,
             'WPMedia\\BackWPup\\Common\\' => 24,
+            'WPMedia\\BackWPup\\Beta\\' => 22,
             'WPMedia\\BackWPup\\Backups\\' => 25,
             'WPMedia\\BackWPup\\Backup\\' => 24,
             'WPMedia\\BackWPup\\Admin\\' => 23,
@@ -111,10 +109,6 @@ class ComposerStaticInit519e5db9a2cb27fc9c3b1eefc384faeb
         array (
             0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
         ),
-        'mikemccabe\\JsonPatch\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/mikemccabe/json-patch-php/src',
-        ),
         'Webmozart\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
@@ -122,6 +116,10 @@ class ComposerStaticInit519e5db9a2cb27fc9c3b1eefc384faeb
         'WPMedia\\Mixpanel\\' => 
         array (
             0 => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src',
+        ),
+        'WPMedia\\Beta\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wp-media/wp-beta/src',
         ),
         'WPMedia\\BackWPup\\Tracking\\' => 
         array (
@@ -154,6 +152,10 @@ class ComposerStaticInit519e5db9a2cb27fc9c3b1eefc384faeb
         'WPMedia\\BackWPup\\Common\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/Common',
+        ),
+        'WPMedia\\BackWPup\\Beta\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Beta',
         ),
         'WPMedia\\BackWPup\\Backups\\' => 
         array (
@@ -298,24 +300,6 @@ class ComposerStaticInit519e5db9a2cb27fc9c3b1eefc384faeb
                 0 => __DIR__ . '/..' . '/pimple/pimple/src',
             ),
         ),
-        'O' => 
-        array (
-            'OpenCloud' => 
-            array (
-                0 => __DIR__ . '/..' . '/rackspace/php-opencloud/lib',
-            ),
-        ),
-        'G' => 
-        array (
-            'Guzzle\\Tests' => 
-            array (
-                0 => __DIR__ . '/..' . '/guzzle/guzzle/tests',
-            ),
-            'Guzzle' => 
-            array (
-                0 => __DIR__ . '/..' . '/guzzle/guzzle/src',
-            ),
-        ),
         'C' => 
         array (
             'Console' => 
@@ -394,6 +378,7 @@ class ComposerStaticInit519e5db9a2cb27fc9c3b1eefc384faeb
         'BackWPup_Destination_MSAzure' => __DIR__ . '/../..' . '/inc/class-destination-msazure.php',
         'BackWPup_Destination_MSAzure_Downloader' => __DIR__ . '/../..' . '/inc/class-destination-msazure-downloader.php',
         'BackWPup_Destination_RSC' => __DIR__ . '/../..' . '/inc/class-destination-rsc.php',
+        'BackWPup_Destination_RSC_Downloader' => __DIR__ . '/../..' . '/inc/class-destination-rsc-downloader.php',
         'BackWPup_Destination_S3' => __DIR__ . '/../..' . '/inc/class-destination-s3.php',
         'BackWPup_Destination_S3_Downloader' => __DIR__ . '/../..' . '/inc/class-destination-s3-downloader.php',
         'BackWPup_Destination_SugarSync' => __DIR__ . '/../..' . '/inc/class-destination-sugarsync.php',
@@ -434,6 +419,7 @@ class ComposerStaticInit519e5db9a2cb27fc9c3b1eefc384faeb
         'BackWPup_Page_Restore' => __DIR__ . '/../..' . '/inc/class-page-restore.php',
         'BackWPup_Page_Settings' => __DIR__ . '/../..' . '/inc/class-page-settings.php',
         'BackWPup_Path_Fixer' => __DIR__ . '/../..' . '/inc/class-path-fixer.php',
+        'BackWPup_Pro_OneDrive_ConfigTrait' => __DIR__ . '/../..' . '/inc/class-destination-onedrive-config-trait.php',
         'BackWPup_Recursive_Directory' => __DIR__ . '/../..' . '/inc/class-recursive-directory.php',
         'BackWPup_S3_Destination' => __DIR__ . '/../..' . '/inc/class-s3-destination.php',
         'BackWPup_Sanitize_Path' => __DIR__ . '/../..' . '/inc/class-sanitize-path.php',
@@ -502,10 +488,10 @@ class ComposerStaticInit519e5db9a2cb27fc9c3b1eefc384faeb
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit519e5db9a2cb27fc9c3b1eefc384faeb::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit519e5db9a2cb27fc9c3b1eefc384faeb::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit519e5db9a2cb27fc9c3b1eefc384faeb::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit519e5db9a2cb27fc9c3b1eefc384faeb::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit5cbcfb1449c8529bdcab591b4c0578d6::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit5cbcfb1449c8529bdcab591b4c0578d6::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit5cbcfb1449c8529bdcab591b4c0578d6::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit5cbcfb1449c8529bdcab591b4c0578d6::$classMap;
 
         }, null, ClassLoader::class);
     }

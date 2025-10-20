@@ -126,27 +126,9 @@ class BackWPupHelpers {
 				}
 
 				$local_file      = untrailingslashit( BackWPup::get_plugin_data( 'TEMP' ) ) . "/{$item['filename']}";
-				$downloadhref    = '';
-				$downloadurl     = '';
-				$downloadtrigger = '';
-
-				if ( 'HIDRIVE' === $dest && $item['filesize'] > 10485760 ) {
-					$request       = new BackWPup_Pro_Destination_HiDrive_Request();
-					$authorization = new BackWPup_Pro_Destination_HiDrive_Authorization( $request );
-					$api           = new BackWPup_Pro_Destination_HiDrive_Api( $request, $authorization );
-					$response      = $api->temporalDownloadUrl( $job_data['id'], $item['file'] );
-					$respons_body  = json_decode( (string) $response['body'] );
-
-					if ( isset( $respons_body->url ) ) {
-						$downloadurl     = $respons_body->url;
-						$downloadhref    = $respons_body->url;
-						$downloadtrigger = 'direct-download-backup';
-					}
-				} else {
-					$downloadurl     = wp_nonce_url( $item['downloadurl'], 'backwpup_action_nonce' );
-					$downloadhref    = '#TB_inline?height=300&inlineId=tb_download_file&width=640&height=412';
-					$downloadtrigger = 'download-backup';
-				}
+				$downloadurl     = wp_nonce_url( $item['downloadurl'], 'backwpup_action_nonce' );
+				$downloadhref    = '#TB_inline?height=300&inlineId=tb_download_file&width=640&height=412';
+				$downloadtrigger = 'download-backup';
 
 				// Add the download URL and dataset.
 				$item['dataset-download'] = [

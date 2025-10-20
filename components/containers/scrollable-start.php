@@ -13,5 +13,5 @@ $gap_size = $gap_size ?? 'medium';
 $gap = array_key_exists($gap_size, $gap_sizes) ? $gap_sizes[$gap_size] : $gap_sizes['medium'];
 
 ?>
-<div class="relative flex-auto overflow-y-scroll">
+<div class="relative flex-auto overflow-y-auto">
   <div class="<?php echo BackWPupHelpers::clsx("absolute w-full flex flex-col", $gap); ?>">

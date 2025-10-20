@@ -86,6 +86,30 @@ class Tracking {
 	}
 
 	/**
+	 * Track the beta opt-in change event.
+	 *
+	 * @param int $optin The new opt-in value.
+	 *
+	 * @return void
+	 */
+	public function track_beta_optin_change( $optin ): void {
+		if ( ! $this->optin->is_enabled() ) {
+			return;
+		}
+
+		$user = wp_get_current_user();
+
+		$this->mixpanel->identify( $user->user_email );
+		$this->mixpanel->track(
+			'WordPress Plugin Beta Opt-in Changed',
+			[
+				'context'       => 'wp_plugin',
+				'opt_in_status' => (bool) $optin,
+			]
+		);
+	}
+
+	/**
 	 * Track the addition of a new job.
 	 *
 	 * @param array $job The job data.
@@ -129,6 +153,104 @@ class Tracking {
 			'Scheduled Backup Job Deleted',
 			$this->get_event_properties( $job )
 		);
+	}
+
+	/**
+	 * Track the start of a job.
+	 *
+	 * @param array $job The Job data.
+	 *
+	 * @return void
+	 */
+	public function track_start_job( array $job ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$user  = wp_get_current_user();
+		$email = $user->user_email ?? $job['mailaddresslog'];
+
+		$this->mixpanel->identify( $email );
+
+		// @todo Refactor it when the Mixpanel library supports system capabilities.
+		$this->with_system_cap( function() use ( $job ) {
+			$this->mixpanel->track(
+				'Scheduled Backup Job Started',
+				$this->get_backup_event_properties( $job ),
+				'bwu_mixpanel_send_event'
+			);
+		});
+	}
+
+	/**
+	 * Track end of job.
+	 *
+	 * @param int   $job_id The job id.
+	 * @param array $job_details The status of the job.
+	 *
+	 * @return void
+	 */
+	public function track_end_job( $job_id, array $job_details ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$job   = $this->option_adapter->get_job( $job_id );
+		$user  = wp_get_current_user();
+		$email = $user->user_email ?? $job['mailaddresslog'];
+
+		$this->mixpanel->identify( $email );
+		$status = true;
+
+		$properties = $this->get_backup_event_properties( $job, true );
+
+		foreach ( $job_details as $job ) {
+			$properties[ 'storage_' . $job['storage'] ] = [
+				'storage'       => $job['storage'],
+				'status'        => $job['status'],
+				'error_code'    => $job['error_code'],
+				'error_message' => $job['error_message'],
+			];
+
+			if ( 'completed' !== $job['status'] ) {
+				$status = false;
+			}
+		}
+
+		$properties['job_completed'] = $status;
+
+		// @todo Refactor it when the Mixpanel library supports system capabilities.
+		$this->with_system_cap( function() use ( $properties ) {
+			$this->mixpanel->track(
+				'Scheduled Backup Job Ended',
+				$properties,
+				'bwu_mixpanel_send_event'
+			);
+		});
+	}
+
+	/**
+	 * Get backup event properties.
+	 *
+	 * @param array $job The job data.
+	 * @param bool  $included_job_completion Include job completion info.
+	 *
+	 * @return array
+	 */
+	private function get_backup_event_properties( array $job, bool $included_job_completion = false ): array {
+		$backup_trigger = $job['activetype'];
+		$legacy_job     = ! empty( $job['legacy'] );
+
+		$properties = [
+			'backup_trigger' => $backup_trigger,
+			'legacy_job'     => $legacy_job,
+		];
+
+		if ( $included_job_completion ) {
+			$properties['duration'] = $job['lastruntime'];
+		}
+
+		return array_merge( $this->get_event_properties( $job, false ), $properties );
 	}
 
 	/**
@@ -237,5 +359,28 @@ class Tracking {
 		$this->optin->enable();
 
 		wp_send_json_success();
+	}
+
+	/**
+	 * Run a callback with the system capability to send events.
+	 * The system capability is only granted to the callback and removed afterwards.
+	 * The capability is only granted if the current capability check is for sending events with no user (0) and to the capability bwu_mixpanel_send_event.
+	 * The capability is granted via the 'user_has_cap' filter.
+	 * This is to allow sending events from contexts where no user is logged in, such as cron jobs.
+	 *
+	 * @param callable $cb The callback to run.
+	 *
+	 * @return void
+	 */
+	private function with_system_cap( callable $cb ) {
+		$grant_cap = static function( $allcaps, $caps, $args, $user ) {
+			if ( isset( $args[0], $args[1] ) && 'bwu_mixpanel_send_event' === $args[0] && (int) $args[1] === 0 ) {
+				$allcaps['bwu_mixpanel_send_event'] = true;
+			}
+			return $allcaps;
+		};
+
+		add_filter( 'user_has_cap', $grant_cap, 10, 4 );
+		try { $cb(); } finally { remove_filter( 'user_has_cap', $grant_cap, 10 ); }
 	}
 }

@@ -131,7 +131,7 @@ class Plugin {
 			||
 			! wp_next_scheduled( 'backwpup_check_cleanup' )
 		) {
-			BackWPup_Install::activate();
+			add_action( 'init', [ BackWPup_Install::class, 'activate' ], 0 );
 		}
 
 		$plugin_data = [

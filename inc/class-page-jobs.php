@@ -1006,9 +1006,51 @@ class BackWPup_Page_Jobs extends WP_List_Table {
     }
 
     /**
-     * Function to generate json data.
+	 * Function to generate json data.
+	 *
+	 * @throws Exception To check capability and nonce verification.
 	 */
 	public static function ajax_working() {
+
+		$allowed_caps = [
+			'backwpup_jobs',
+			'backwpup_jobs_start',
+			'backwpup_backups',
+			'manage_options', // admins fallback.
+		];
+
+		// Check if the user has at least one of the listed capabilities.
+		$can_access = array_reduce( $allowed_caps, fn( $carry, $cap ) => $carry || current_user_can( $cap ), false );
+
+		if ( ! $can_access ) {
+			http_response_code( 403 );
+			echo wp_json_encode(
+			[
+				'success' => false,
+				'data'    => [
+					'message'  => __( 'You do not have sufficient permissions to access this function.', 'backwpup' ),
+					'job_done' => 1,
+				],
+			]
+			);
+			throw new Exception( 'ajax_exit' );
+		}
+
+		// Nonce verification.
+		if ( ! check_ajax_referer( 'backwpupworking_ajax_nonce', '_ajax_nonce', false ) ) {
+			http_response_code( 401 );
+			echo wp_json_encode(
+			[
+				'success' => false,
+				'data'    => [
+					'message'  => __( 'Security check failed. Please refresh the page and try again.', 'backwpup' ),
+					'job_done' => 1,
+				],
+			]
+			);
+			throw new Exception( 'ajax_exit' );
+		}
+
 		$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
 		$log_folder = BackWPup_File::get_absolute_path( $log_folder );
 

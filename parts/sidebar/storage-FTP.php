@@ -113,8 +113,9 @@ $ftpmaxbackups = esc_attr(BackWPup_Option::get($job_id, 'ftpmaxbackups', 15));
       "identifier" => "ftpssl",
 			"disabled" => !function_exists('ftp_ssl_connect'),
       "checked" => BackWPup_Option::get($job_id, 'ftpssl', false),
-      "label" => __("Use explicit SSL-FTP connexion", 'backwpup'),
+      "label" => __("Use explicit SSL-FTP connection", 'backwpup'),
 			"tooltip" => __("This option is only available if your server supports SSL connections.", 'backwpup'),
+      "tooltip_pos" => "left"
     ]);
     ?>
 

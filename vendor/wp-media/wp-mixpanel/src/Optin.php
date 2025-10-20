@@ -49,6 +49,15 @@ class Optin {
 	}
 
 	/**
+	 * Check if tracking is allowed.
+	 *
+	 * @return bool
+	 */
+	public function can_track(): bool {
+		return (bool) get_option( $this->plugin_slug . '_mixpanel_optin', false );
+	}
+
+	/**
 	 * Enable the opt-in.
 	 *
 	 * @return void

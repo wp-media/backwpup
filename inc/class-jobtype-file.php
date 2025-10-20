@@ -457,7 +457,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
 			$job_object->add_folders_to_backup( $folder );
 			// scan folder.
 			foreach ( $dir as $file ) {
-				if ( $file->isDot() ) {
+				if ( $file->isDot() || ! $file->getPathname() ) {
 					continue;
 				}
 
@@ -465,18 +465,13 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
 				if ( ! $file->isReadable() ) {
 					$job_object->log(
 					// translators: %s: folder name.
-					sprintf( __( 'Folder "%s" is not readable!', 'backwpup' ), $file->getPathname() ),
+					sprintf( __( 'Folder "%s" is not readable!', 'backwpup' ), $path ),
 					E_USER_WARNING
 					);
 					continue;
 				}
 
-				$path = realpath( $file->getPathname() );
-				if ( ! $path ) {
-					continue;
-				}
-
-				$path = str_replace( '\\', '/', $path );
+				$path = str_replace( '\\', '/', $file->getRealPath() );
 
 				foreach ( $job_object->exclude_from_backup as $exclusion ) { // exclude files.
 					$exclusion = trim( (string) $exclusion );

@@ -13,7 +13,7 @@
 			'backwpup'
 		),
 		'<br>',
-		'<a target="_blank" href="' . esc_url( home_url( '/wp-admin/admin.php?page=backwpupjobs' ) ) . '">',
+		'<a target="_blank" href="' . esc_url( network_admin_url( 'admin.php?page=backwpupjobs' ) ) . '">',
 		'</a>',
 		'<a target="_blank" href="' . esc_url( 'https://backwpup.com/docs/article/reactivating-backup-jobs-after-update/' ) . '">',
 		'</a>',

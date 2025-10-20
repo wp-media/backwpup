@@ -48,6 +48,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
+		$plugin_name = BackWPup::get_plugin_data( 'name' ) . ' ' . BackWPup::get_plugin_data( 'version' );
+
 		$this->getContainer()->add( Optin::class )
 			->addArguments(
 				[
@@ -60,7 +62,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'517e881edc2636e99a2ecf013d8134d3',
-					BackWPup::get_plugin_data( 'version' ),
+					$plugin_name,
 					'wp media',
 					'backwpup',
 				]

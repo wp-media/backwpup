@@ -1,4 +1,14 @@
 == Changelog ==
+= 5.5.1 =
+Release date: October 20, 2025
+
+* Security Fix: Missing Authorization to Sensitive Information Exposure
+* Fix: HiDrive backup download partially not working.
+* Fix: HiDrive backup not working properly due to major storage issue.
+* Fix: Compatibility issue with .donotbackup file and open_basedir environments.
+* Fix: Minor UX issues when including files in backups.
+* Fix: OneDrive allow users to reauthenticate.
+
 = 5.5.0 =
 Release date: September 16, 2025
 

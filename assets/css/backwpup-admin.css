@@ -107,7 +107,7 @@
 }
 
 /*
-! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com
+! tailwindcss v3.4.18 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -919,8 +919,8 @@ select {
   z-index: 10;
 }
 
-.z-50 {
-  z-index: 50;
+.z-\[1000000\] {
+  z-index: 1000000;
 }
 
 .z-\[100000\] {
@@ -1318,12 +1318,16 @@ select {
   gap: 2rem;
 }
 
+.self-center {
+  align-self: center;
+}
+
 .overflow-hidden {
   overflow: hidden;
 }
 
-.overflow-y-scroll {
-  overflow-y: scroll;
+.overflow-y-auto {
+  overflow-y: auto;
 }
 
 .truncate {

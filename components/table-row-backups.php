@@ -42,7 +42,7 @@ ob_start();
         "style" => "light",
         "trigger" => "select-backup",
         "data" => [
-          "delete" => json_encode($backup['dataset-delete']),
+          "delete" => json_encode( $backup['dataset-delete'] ?? null ),
         ]
       ]);
     ?>

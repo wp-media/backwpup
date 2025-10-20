@@ -25,7 +25,7 @@ $gap = array_key_exists($gap_size, $gap_sizes) ? $gap_sizes[$gap_size] : $gap_si
 $method = $method ?? 'post';
 $page = $page ?? 'backwpup';
 $action = $action ?? 'backwpup';
-$overflow = $scrollable ?? true ? 'overflow-y-scroll' : '';
+$overflow = $scrollable ?? true ? 'overflow-y-auto' : '';
 $absolute = $scrollable ?? true ? 'absolute' : '';
 $idForm = $identifier ? 'id="'.$identifier.'"' : '';
 ?>

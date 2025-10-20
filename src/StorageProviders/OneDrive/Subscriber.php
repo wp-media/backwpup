@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace WPMedia\BackWPup\StorageProviders\OneDrive;
 
+use BackWPup_Encryption;
+use BackWPup_Pro_OneDrive_ConfigTrait;
 use WPMedia\BackWPup\EventManagement\SubscriberInterface;
 use WPMedia\BackWPup\Plugin\Plugin;
 use InvalidArgumentException;
@@ -10,6 +12,8 @@ use BackWPup_Pro_Settings_APIKeys;
 use Krizalys\Onedrive\Onedrive;
 
 class Subscriber implements SubscriberInterface {
+
+	use BackWPup_Pro_OneDrive_ConfigTrait;
 
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
@@ -32,8 +36,12 @@ class Subscriber implements SubscriberInterface {
 	 */
 	public function get_login_url( ?string $url = null ): ?string {
 
-		$client_id = get_site_option( BackWPup_Pro_Settings_APIKeys::OPTION_ONEDRIVE_CLIENT_ID );
-		$client    = Onedrive::client( $client_id );
+		[$client_id, $client_secret] = $this->one_drive_credentials();
+
+		$config                  = $this->one_drive_client_config();
+		$config['client_secret'] = $client_secret;
+
+		$client = Onedrive::client( $client_id, $config );
 
 		$job_id = get_site_option( Plugin::FIRST_JOB_ID );
 		if ( ! $job_id ) {
@@ -41,14 +49,8 @@ class Subscriber implements SubscriberInterface {
 		}
 
 		$url = $client->getLogInUrl(
-			[
-				'files.read',
-				'files.read.all',
-				'files.readwrite',
-				'files.readwrite.all',
-				'offline_access',
-			],
-			home_url( 'wp-load.php' ),
+			$this->one_drive_scopes(),
+			$config['redirect_uri'],
 			'backwpup_dest_onedrive'
 		);
 
@@ -72,10 +74,6 @@ class Subscriber implements SubscriberInterface {
 			HOUR_IN_SECONDS
 		);
 
-		if ( ! empty( $url ) ) {
-			return $url;
-		}
-
-		return null;
+		return $url ?: null;
 	}
 }

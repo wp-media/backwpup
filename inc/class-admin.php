@@ -1071,7 +1071,20 @@ EOT;
         }
     }
 
+	/**
+	 * Initializes the plugin by setting up hooks, filters, and actions.
+	 *
+	 * This method ensures proper integration into the WordPress admin interface by adding menu pages,
+	 * registering scripts, handling form submissions, and updating relevant user profile fields.
+	 * It also manages various filters and actions required for the plugin to function, including
+	 * plugin links, admin-specific actions, and footer text customization.
+	 *
+	 * @return void
+	 */
 	public function init() {
+		if ( ! current_user_can( 'backwpup' ) ) {
+			return;
+		}
 		$restore = new Restore();
 		$restore->set_hooks()->init();
 

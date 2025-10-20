@@ -2261,10 +2261,10 @@ jQuery(document).ready(function ($) {
       hourIn12Format = hourIn12Format - 12;
       dayPart = 'pm'
     }
-    name_previev = name_previev.replace('%d', String(date.getDay() + 1).padStart(2, '0'));
+    name_previev = name_previev.replace('%d', String(date.getDate()).padStart(2, '0'));
     name_previev = name_previev.replace('%m', String(date.getMonth() + 1).padStart(2, '0'));
     name_previev = name_previev.replace('%n', String(date.getMonth() + 1));
-    name_previev = name_previev.replace('%j', date.getDay() + 1);
+    name_previev = name_previev.replace('%j', date.getDate());
     name_previev = name_previev.replace('%Y', date.getFullYear());
     name_previev = name_previev.replace('%y', String(date.getFullYear()).slice(-2));
     name_previev = name_previev.replace('%a', dayPart);
