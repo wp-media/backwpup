@@ -245,7 +245,7 @@ final class BackWPup {
 			'can_sync' => false,
 			'needed'   => [
 				'php_version' => '',
-				'functions'   => [ 'curl_exec' ],
+				'functions'   => [],
 				'classes'     => [],
 			],
 		];
@@ -260,7 +260,7 @@ final class BackWPup {
 			'can_sync' => false,
 			'needed'   => [
 				'php_version' => '',
-				'functions'   => [ 'curl_exec' ],
+				'functions'   => [ 'curl_init' ],
 				'classes'     => [ \XMLWriter::class ],
 			],
 		];
@@ -290,7 +290,7 @@ final class BackWPup {
 			'can_sync' => false,
 			'needed'   => [
 				'php_version' => '',
-				'functions'   => [ 'curl_exec' ],
+				'functions'   => [ 'curl_init' ],
 				'classes'     => [],
 			],
 		];
@@ -305,7 +305,7 @@ final class BackWPup {
 			'can_sync' => false,
 			'needed'   => [
 				'php_version' => '',
-				'functions'   => [ 'curl_exec' ],
+				'functions'   => [ 'curl_init' ],
 				'classes'     => [],
 			],
 		];

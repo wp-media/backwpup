@@ -234,6 +234,15 @@ abstract class BackWPup_Destinations
 		if ( BackWPup::is_pro() ) {
 			$destinations = array_merge( $destinations, BackWPup_Pro_Destinations::get_destinations() );
 		}
+
+		$checked_destinations = \BackWPup::get_registered_destinations();
+		foreach ( $destinations as $key => $destination ) {
+			$error = $checked_destinations[ $destination['slug'] ]['error'];
+			if ( $error ) {
+				$destinations[ $key ]['deactivated_message'] = $error;
+			}
+		}
+
 		return $destinations;
 	}
 

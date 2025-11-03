@@ -238,6 +238,21 @@ class BackWPup_Page_Settings
             $information['disablewpcron']['value'] = esc_html__('Off', 'backwpup');
         }
 
+		$cron_works      = true;
+		$day_before      = current_time( 'timestamp' ) - DAY_IN_SECONDS / 2; //phpcs:ignore
+		$next_cron_times = array_keys( _get_cron_array() );
+		foreach ( $next_cron_times as $next_cron_time ) {
+			if ( $next_cron_time < $day_before ) {
+				$cron_works = false;
+				break;
+			}
+		}
+		$information['cronworking']['label'] = esc_html__( 'WP Cron is working', 'backwpup' );
+		$information['cronworking']['value'] = esc_html__( 'No', 'backwpup' );
+		if ( $cron_works ) {
+			$information['cronworking']['value'] = esc_html__( 'Yes', 'backwpup' );
+		}
+
         // CHMOD dir
         $information['chmoddir']['label'] = esc_html__('CHMOD Dir', 'backwpup');
         if (defined('FS_CHMOD_DIR')) {

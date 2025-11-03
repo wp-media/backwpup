@@ -1,4 +1,14 @@
 == Changelog ==
+= 5.5.2 =
+Release date: November 03, 2025
+
+* Security fix: Safe handling of job attributes concatenated into HTML attributes on the admin UI
+* Enhancement: Compatibility with Kinsta hosting with backup rate limits
+* Enhancement: Better handling of missing PHP cURL extension
+* Enhancement: Improved upload of large backups on HiDrive
+* Enhancement: Facilitated diagnosis for support with dedicated tooling
+* Fix: Consistently displaying the "Help Us Improve BackWPup!" notice
+
 = 5.5.1 =
 Release date: October 20, 2025
 

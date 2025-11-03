@@ -5,6 +5,7 @@ use BackWPup\Utils\BackWPupHelpers;
  * @var bool    $full_width   Optional. True to make the button full width. Default: false.
  * @var string  $prefix       Optional. The prefix for the input name. Default: "".
  * @var string  $job_id       Optional. The job ID. Default: null.
+ * @var string $deactivated_message Optional. The message to display when the storage is deactivated.
  */
 
 # Defaults
@@ -24,9 +25,14 @@ $total_active = count( array_filter( $storages, fn( $s ) => !empty( $s['active']
 ?>
 
 <ul class="<?php echo esc_attr( $css_class ); ?>">
-  <?php foreach ( $storages as $storage ) : ?>
+  <?php foreach ( $storages as $storage ) :
+    $storage_component_ident = $storage_component;
+    if ($storage['deactivated_message']) {
+      $storage_component_ident .= '-disabled';
+    }
+    ?>
       <li class="flex flex-row">
-        <?php BackWPupHelpers::component( $storage_component, [
+        <?php BackWPupHelpers::component( $storage_component_ident, [
             'name' => $storage['name'],
             'slug' => $storage['slug'],
             'active' => $storage['active'],
@@ -34,7 +40,8 @@ $total_active = count( array_filter( $storages, fn( $s ) => !empty( $s['active']
             'prefix' => $prefix,
             'label' => $storage['label'],
             'job_id' => $job_id,
-            'total_active' => $total_active
+            'total_active' => $total_active,
+            'deactivated_message' => $storage['deactivated_message'],
         ]); ?>
       </li>
   <?php endforeach; ?>

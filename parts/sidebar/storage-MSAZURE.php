@@ -4,6 +4,9 @@ use Inpsyde\BackWPup\MsAzureDestinationConfiguration;
 use WPMedia\BackWPup\Plugin\Plugin;
 $job_id = $job_id ?? null;
 $msazure = BackWPup::get_destination("msazure");
+if ( ! $msazure ) {
+  return;
+}
 $msazure->edit_inline_js();
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Microsoft Azure Settings", 'backwpup'),

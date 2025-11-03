@@ -198,10 +198,10 @@ class BackWPup_Job
         // Start class.
         $starttype_exists = in_array($starttype, ['runnow', 'runnowalt', 'runext', 'cronrun'], true);
         if (!$backwpup_job_object && $starttype_exists && $jobid) {
-            // Schedule restart event.
-            wp_schedule_single_event(time() + 60, 'backwpup_cron', ['arg' => 'restart']);
-            // Sstart job.
-            $backwpup_job_object = new self();
+			// Schedule restart event.
+			wp_schedule_single_event( time() + 60, 'backwpup_cron', [ 'arg' => 'restart' ] );
+			// Start job.
+			$backwpup_job_object = new self();
             $backwpup_job_object->create($starttype, $jobid);
         }
         if ($backwpup_job_object) {
@@ -272,6 +272,19 @@ class BackWPup_Job
         } else {
             return;
         }
+
+		/**
+		 * Filter to avoid starting of the job.
+		 *
+		 * @param bool $start Start the job.
+		 * @param array $job Job data.
+		 * @param string $start_type Start type.
+		 * @return bool Start the job.
+		 */
+		$start = wpm_apply_filters_typed( 'boolean', 'backwpup_can_job_start', true, $this->job, $start_type );
+		if ( ! $start ) {
+			return;
+		}
 
         $this->start_time = current_time('timestamp');
         $this->lastmsg = __('Starting job', 'backwpup');
@@ -1559,13 +1572,13 @@ class BackWPup_Job
         $cron_request = [
             'url' => add_query_arg($query_args, $url),
             'key' => $query_args['doing_wp_cron'],
-            'args' => [
-                'blocking' => false,
-                'sslverify' => false,
-                'timeout' => 0.01,
-                'headers' => $header,
-                'user-agent' => BackWPup::get_plugin_data('User-Agent'),
-            ],
+			'args' => [
+				'blocking'   => ! function_exists( 'curl_init' ),
+				'sslverify'  => false,
+				'timeout'    => 0.01,
+				'headers'    => $header,
+				'user-agent' => BackWPup::get_plugin_data( 'User-Agent' ),
+			],
         ];
 
         if (!empty($cookies)) {

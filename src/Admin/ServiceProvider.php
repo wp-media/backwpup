@@ -116,6 +116,10 @@ class ServiceProvider extends AbstractServiceProvider {
 					'job_adapter',
 				]
 			);
+		$this->getContainer()->add( Notices\NoticeMissingCurl::ID . '_view', NoticeView::class )
+			->addArgument( Notices\NoticeMissingCurl::ID );
+		$this->getContainer()->addShared( Notices\NoticeMissingCurl::class, Notices\NoticeMissingCurl::class )
+			->addArgument( Notices\NoticeMissingCurl::ID . '_view' );
 
 		// Register the Subscriber with an array of notice instances.
 		$this->getContainer()->addShared( 'notice_subscriber', NoticeSubscriber::class )
@@ -127,6 +131,7 @@ class ServiceProvider extends AbstractServiceProvider {
 						$this->getContainer()->get( 'notice_52' ),
 						$this->getContainer()->get( 'notice_513' ),
 						$this->getContainer()->get( 'notice_datacorrupted' ),
+						$this->getContainer()->get( Notices\NoticeMissingCurl::class ),
 					],
 				]
 				);

@@ -31,7 +31,7 @@ class Notices {
 	 */
 	private function should_display_notice() {
 		$screen = get_current_screen();
-		if ( ! isset( $screen->id ) || ! preg_match( '/^backwpup(-pro)?_page_backwpuponboarding(-network)?$/', $screen->id ) ) {
+		if ( strpos( $screen->id, 'backwpuponboarding' ) === false ) {
 			return false;
 		}
 

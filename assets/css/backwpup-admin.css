@@ -843,6 +843,10 @@ select {
   visibility: hidden;
 }
 
+.static {
+  position: static;
+}
+
 .fixed {
   position: fixed;
 }
@@ -1087,6 +1091,10 @@ select {
 
 .h-\[200px\] {
   height: 200px;
+}
+
+.h-\[300px\] {
+  height: 300px;
 }
 
 .h-\[312px\] {

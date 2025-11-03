@@ -24,6 +24,7 @@ if ( $destinations ){
 		"label" => $a_cloud_destination["label"],
 		"name" => "storage_destinations[]",
 		"active" => in_array($a_cloud_destination["slug"], $destinations ?? [] ),
+    "deactivated_message" => $a_cloud_destination["deactivated_message"] ?? "",
 	];
 	}
 }

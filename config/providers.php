@@ -16,6 +16,7 @@ $providers = [
 	'WPMedia\BackWPup\Frontend\ServiceProvider',
 	'WPMedia\BackWPup\Tracking\ServiceProvider',
 	'WPMedia\BackWPup\Beta\ServiceProvider',
+	'WPMedia\BackWPup\Hosting\ServiceProvider',
 ];
 
 

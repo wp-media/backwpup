@@ -43,12 +43,12 @@ BackWPupHelpers::component("heading", [
       "class" => "onboarding-files-frequency",
       "value" => "monthly",
       "trigger" => "onboarding-files-frequency",
-      "options" => [
+      "options" => wpm_apply_filters_typed( 'array', 'backwpup_backup_select_frequency_options', [
         'hourly' => __( 'Hourly', 'backwpup' ),
         "daily" => __("Daily", 'backwpup'),
         "weekly" => __("Weekly", 'backwpup'),
         "monthly" => __("Monthly", 'backwpup'),
-      ],
+      ], $first_job_id ),
     ]);
     ?>
   </div>
@@ -82,12 +82,12 @@ BackWPupHelpers::component("heading", [
       "value" => "monthly",
       "class" => "onboarding-database-frequency",
       "trigger" => "onboarding-database-frequency",
-      "options" => [
+      "options" => wpm_apply_filters_typed( 'array', 'backwpup_backup_select_frequency_options', [
         'hourly' => __( 'Hourly', 'backwpup' ),
         "daily" => __("Daily", 'backwpup'),
         "weekly" => __("Weekly", 'backwpup'),
         "monthly" => __("Monthly", 'backwpup'),
-      ],
+      ], $second_job_id ),
     ]);
     ?>
   </div>

@@ -15,6 +15,7 @@ return array(
     'WPMedia\\BackWPup\\Plugin\\' => array($baseDir . '/src/Plugin'),
     'WPMedia\\BackWPup\\License\\' => array($baseDir . '/src/License'),
     'WPMedia\\BackWPup\\Jobs\\' => array($baseDir . '/src/Jobs'),
+    'WPMedia\\BackWPup\\Hosting\\' => array($baseDir . '/src/Hosting'),
     'WPMedia\\BackWPup\\Frontend\\' => array($baseDir . '/src/Frontend'),
     'WPMedia\\BackWPup\\Dependencies\\' => array($baseDir . '/src/Dependencies'),
     'WPMedia\\BackWPup\\Common\\' => array($baseDir . '/src/Common'),

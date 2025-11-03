@@ -273,10 +273,22 @@ final class BackWPup_Admin {
 		$jobtypes     = BackWPup::get_job_types();
 		$destinations = BackWPup::get_registered_destinations();
 
-        add_action('wp_ajax_backwpup_working', [\BackWPup_Page_Jobs::class, 'ajax_working']);
-        add_action('wp_ajax_backwpup_cron_text', [\BackWPup_Page_Editjob::class, 'ajax_cron_text']);
-        add_action('wp_ajax_backwpup_view_log', [\BackWPup_Page_Logs::class, 'ajax_view_log']);
-        add_action('wp_ajax_download_backup_file', [\BackWPup_Destination_Downloader::class, 'download_by_ajax']);
+		add_action(
+			'wp_ajax_backwpup_debug_info',
+			function () {
+				echo '<html lang="en"><head><title>' . esc_html__( 'Debug Information', 'backwpup' ) . '</title></head><body style="font-family:monospace;word-wrap: break-word;">';
+				$information = BackWPup_Page_Settings::get_information();
+				foreach ( $information as $item ) {
+					echo esc_html( trim( $item['label'] ) ) . ': ' . esc_html( trim( $item['value'] ) ) . "\n<br/>";
+				}
+				echo '</body></html>';
+				wp_die();
+			}
+			);
+		add_action( 'wp_ajax_backwpup_working', [ \BackWPup_Page_Jobs::class, 'ajax_working' ] );
+		add_action( 'wp_ajax_backwpup_cron_text', [ \BackWPup_Page_Editjob::class, 'ajax_cron_text' ] );
+		add_action( 'wp_ajax_backwpup_view_log', [ \BackWPup_Page_Logs::class, 'ajax_view_log' ] );
+		add_action( 'wp_ajax_download_backup_file', [ \BackWPup_Destination_Downloader::class, 'download_by_ajax' ] );
 
         foreach ($jobtypes as $id => $jobtypeclass) {
             add_action('wp_ajax_backwpup_jobtype_' . strtolower($id), [$jobtypeclass, 'edit_ajax']);

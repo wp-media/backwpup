@@ -47,12 +47,12 @@ BackWPupHelpers::component("form/select", [
   "label" => __("Frequency", 'backwpup'),
   "trigger" => "frequency-job",
   "value" => $basic_frequency ?? $current['frequency'], // hourly, daily, weekly, monthly   
-  "options" => [
+  "options" => wpm_apply_filters_typed( 'array', 'backwpup_backup_select_frequency_options', [
     'hourly' => __('Hourly', 'backwpup'),
     "daily" => __("Daily", 'backwpup'),
     "weekly" => __("Weekly", 'backwpup'),
     "monthly" => __("Monthly", 'backwpup'),
-  ],
+  ], $job_id ),
   "identifier" => 'backwpup_frequency',
 ]);
 ?>

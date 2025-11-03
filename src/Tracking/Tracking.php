@@ -173,13 +173,15 @@ class Tracking {
 		$this->mixpanel->identify( $email );
 
 		// @todo Refactor it when the Mixpanel library supports system capabilities.
-		$this->with_system_cap( function() use ( $job ) {
-			$this->mixpanel->track(
-				'Scheduled Backup Job Started',
-				$this->get_backup_event_properties( $job ),
-				'bwu_mixpanel_send_event'
+		$this->with_system_cap(
+				function () use ( $job ) {
+					$this->mixpanel->track(
+					'Scheduled Backup Job Started',
+					$this->get_backup_event_properties( $job ),
+					'bwu_mixpanel_send_event'
+					);
+				}
 			);
-		});
 	}
 
 	/**
@@ -220,13 +222,15 @@ class Tracking {
 		$properties['job_completed'] = $status;
 
 		// @todo Refactor it when the Mixpanel library supports system capabilities.
-		$this->with_system_cap( function() use ( $properties ) {
-			$this->mixpanel->track(
-				'Scheduled Backup Job Ended',
-				$properties,
-				'bwu_mixpanel_send_event'
+		$this->with_system_cap(
+				function () use ( $properties ) {
+					$this->mixpanel->track(
+					'Scheduled Backup Job Ended',
+					$properties,
+					'bwu_mixpanel_send_event'
+					);
+				}
 			);
-		});
 	}
 
 	/**
@@ -373,14 +377,18 @@ class Tracking {
 	 * @return void
 	 */
 	private function with_system_cap( callable $cb ) {
-		$grant_cap = static function( $allcaps, $caps, $args, $user ) {
-			if ( isset( $args[0], $args[1] ) && 'bwu_mixpanel_send_event' === $args[0] && (int) $args[1] === 0 ) {
+		$grant_cap = static function ( $allcaps, $caps, $args ) {
+			if ( isset( $args[0], $args[1] ) && 'bwu_mixpanel_send_event' === $args[0] && 0 === (int) $args[1] ) {
 				$allcaps['bwu_mixpanel_send_event'] = true;
 			}
 			return $allcaps;
 		};
 
-		add_filter( 'user_has_cap', $grant_cap, 10, 4 );
-		try { $cb(); } finally { remove_filter( 'user_has_cap', $grant_cap, 10 ); }
+		add_filter( 'user_has_cap', $grant_cap, 10, 3 );
+		try {
+			$cb();
+		} finally {
+			remove_filter( 'user_has_cap', $grant_cap, 10 );
+		}
 	}
 }

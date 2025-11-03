@@ -34,6 +34,7 @@ class ComposerStaticInit5cbcfb1449c8529bdcab591b4c0578d6
             'WPMedia\\BackWPup\\Plugin\\' => 24,
             'WPMedia\\BackWPup\\License\\' => 25,
             'WPMedia\\BackWPup\\Jobs\\' => 22,
+            'WPMedia\\BackWPup\\Hosting\\' => 25,
             'WPMedia\\BackWPup\\Frontend\\' => 26,
             'WPMedia\\BackWPup\\Dependencies\\' => 30,
             'WPMedia\\BackWPup\\Common\\' => 24,
@@ -140,6 +141,10 @@ class ComposerStaticInit5cbcfb1449c8529bdcab591b4c0578d6
         'WPMedia\\BackWPup\\Jobs\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/Jobs',
+        ),
+        'WPMedia\\BackWPup\\Hosting\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Hosting',
         ),
         'WPMedia\\BackWPup\\Frontend\\' => 
         array (
