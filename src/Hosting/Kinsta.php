@@ -42,7 +42,7 @@ class Kinsta implements SubscriberInterface {
 	 * @return bool True if the server environment is hosting, false otherwise.
 	 */
 	public function is_hosting() {
-		return isset( $_SERVER['KINSTA_CACHE_ZONE'] );
+		return isset( $_SERVER['KINSTA_CACHE_ZONE'] ) || defined( 'KINSTAMU_VERSION' );
 	}
 
 	/**
@@ -187,6 +187,51 @@ class Kinsta implements SubscriberInterface {
 	}
 
 	/**
+	 * Modifies the error content message based on the hosting environment, job ID, and backup type limitations.
+	 *
+	 * @param string $error_content The initial error content to be potentially modified.
+	 * @param int    $job_id The ID of the job used to determine the backup type. If null, 'full' type is used by default.
+	 *
+	 * @return string The modified or unmodified error content message.
+	 */
+	public function cli_error_content( string $error_content, int $job_id ): string {
+		if ( ! $this->is_hosting() ) {
+			return $error_content;
+		}
+
+		if ( ! $job_id ) {
+			$current_type = 'full';
+		} else {
+			$job_data = $this->option_adapter->get_job( $job_id );
+			if ( ! $job_data ) {
+				return $error_content;
+			}
+			$current_type = $this->get_backup_type( $job_data );
+		}
+
+		// phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
+		$current_time  = current_time( 'timestamp' );
+		$last_run_time = $this->get_last_run_time_from_jobs_by_type( $current_type );
+		$avoid_time    = $this->get_avoid_time_by_type( $current_type );
+
+		if ( $last_run_time + $avoid_time > $current_time ) {
+			// translators: %1$s: date, %2$s: time.
+			$date_string = sprintf( __( '%1$s at %2$s', 'backwpup' ), wp_date( get_option( 'date_format' ), $last_run_time + $avoid_time, new \DateTimeZone( 'UTC' ) ), wp_date( get_option( 'time_format' ), $last_run_time + $avoid_time, new \DateTimeZone( 'UTC' ) ) );
+			if ( 'full' === $current_type ) {
+				// translators: %s: date.
+				$error_content = sprintf( __( 'Kinsta limit reached: one full site backup every 30 days. Next available: %s', 'backwpup' ), $date_string );
+			} elseif ( 'db' === $current_type ) {
+				// translators: %s: date.
+				$error_content = sprintf( __( 'Kinsta limit reached: only one database backup every 7 days. Next available: %s', 'backwpup' ), $date_string );
+			} elseif ( 'file' === $current_type ) {
+				// translators: %s: date.
+				$error_content = sprintf( __( 'Kinsta limit reached: only one file backup every 7 days. Next available: %s', 'backwpup' ), $date_string );
+			}
+		}
+		return $error_content;
+	}
+
+	/**
 	 * Modifies the modal button based on the hosting environment, job ID, and backup type.
 	 *
 	 * @param array $button The initial button configuration to be potentially modified.
@@ -263,6 +308,7 @@ class Kinsta implements SubscriberInterface {
 			'backwpup_backup_now_modal_info_content'   => [ 'modal_info_content', 10, 2 ],
 			'backwpup_backup_now_modal_button'         => [ 'modal_button', 10, 2 ],
 			'backwpup_backup_select_frequency_options' => [ 'frequency_options', 10, 2 ],
+			'backwpup_job_not_started_error_message'   => [ 'cli_error_content', 10, 2 ],
 		];
 	}
 }

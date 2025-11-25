@@ -29,7 +29,7 @@ class Subscriber implements SubscriberInterface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'backwpup_create_job'             => [ 'add_backup_row', 10, 2 ],
+			'backwpup_create_job'             => [ 'add_backup_row', 10, 3 ],
 			'backwpup_end_job'                => 'set_not_completed_backups_to_failed',
 			'backwpup_job_success'            => [ 'set_backup_completed', 10, 2 ],
 			'backwpup_after_delete_backups'   => [ 'delete_backup_rows', 10, 2 ],
@@ -43,11 +43,12 @@ class Subscriber implements SubscriberInterface {
 	 *
 	 * @param array  $job Current Job.
 	 * @param string $filename Backup filename.
+	 * @param string $trigger  Backup trigger.
 	 *
 	 * @return void
 	 */
-	public function add_backup_row( $job, $filename ): void {
-		$this->database->add_backup_row( $job, $filename );
+	public function add_backup_row( $job, $filename, $trigger ): void {
+		$this->database->add_backup_row( $job, $filename, $trigger );
 	}
 
 	/**

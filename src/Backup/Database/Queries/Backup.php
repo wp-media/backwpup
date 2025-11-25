@@ -74,15 +74,17 @@ class Backup extends AbstractQuery {
 	 *
 	 * @param string $destination_id Destination ID.
 	 * @param string $filename Backup filename.
+	 * @param string $trigger  Backup trigger.
 	 *
 	 * @return bool
 	 */
-	public function add( $destination_id, $filename ) {
+	public function add( $destination_id, $filename, $trigger ) {
 		return $this->add_item(
 			[
-				'destination' => $destination_id,
-				'filename'    => $filename,
-				'status'      => 'created',
+				'destination'    => $destination_id,
+				'filename'       => $filename,
+				'status'         => 'created',
+				'backup_trigger' => $trigger,
 			]
 		);
 	}

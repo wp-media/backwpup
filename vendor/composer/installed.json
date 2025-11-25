@@ -556,8 +556,8 @@
         },
         {
             "name": "inpsyde/assert",
-            "version": "dev-fix/637-rackspace-connection",
-            "version_normalized": "dev-fix/637-rackspace-connection",
+            "version": "dev-1134-as-a-technical-user-i-want-to-use-wp-cli-to-handle-my-backups",
+            "version_normalized": "dev-1134-as-a-technical-user-i-want-to-use-wp-cli-to-handle-my-backups",
             "dist": {
                 "type": "path",
                 "url": "packages/assert",
@@ -1669,17 +1669,17 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.46",
-            "version_normalized": "3.0.46.0",
+            "version": "3.0.47",
+            "version_normalized": "3.0.47.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "56483a7de62a6c2a6635e42e93b8a9e25d4f0ec6"
+                "reference": "9d6ca36a6c2dd434765b1071b2644a1c683b385d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/56483a7de62a6c2a6635e42e93b8a9e25d4f0ec6",
-                "reference": "56483a7de62a6c2a6635e42e93b8a9e25d4f0ec6",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/9d6ca36a6c2dd434765b1071b2644a1c683b385d",
+                "reference": "9d6ca36a6c2dd434765b1071b2644a1c683b385d",
                 "shasum": ""
             },
             "require": {
@@ -1697,7 +1697,7 @@
                 "ext-mcrypt": "Install the Mcrypt extension in order to speed up a few other cryptographic operations.",
                 "ext-openssl": "Install the OpenSSL extension in order to speed up a wide variety of cryptographic operations."
             },
-            "time": "2025-06-26T16:29:55+00:00",
+            "time": "2025-10-06T01:07:24+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1762,7 +1762,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.46"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.47"
             },
             "funding": [
                 {
@@ -1782,17 +1782,17 @@
         },
         {
             "name": "pimple/pimple",
-            "version": "v3.5.0",
-            "version_normalized": "3.5.0.0",
+            "version": "v3.6.0",
+            "version_normalized": "3.6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Pimple.git",
-                "reference": "a94b3a4db7fb774b3d78dad2315ddc07629e1bed"
+                "reference": "a70f552d338f9266eec6606c1f0b324da5514c96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/a94b3a4db7fb774b3d78dad2315ddc07629e1bed",
-                "reference": "a94b3a4db7fb774b3d78dad2315ddc07629e1bed",
+                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/a70f552d338f9266eec6606c1f0b324da5514c96",
+                "reference": "a70f552d338f9266eec6606c1f0b324da5514c96",
                 "shasum": ""
             },
             "require": {
@@ -1800,9 +1800,9 @@
                 "psr/container": "^1.1 || ^2.0"
             },
             "require-dev": {
-                "symfony/phpunit-bridge": "^5.4@dev"
+                "phpunit/phpunit": "*"
             },
-            "time": "2021-10-28T11:13:42+00:00",
+            "time": "2025-11-12T12:31:38+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1832,7 +1832,7 @@
                 "dependency injection"
             ],
             "support": {
-                "source": "https://github.com/silexphp/Pimple/tree/v3.5.0"
+                "source": "https://github.com/silexphp/Pimple/tree/v3.6.0"
             },
             "install-path": "../pimple/pimple"
         },
@@ -2709,31 +2709,31 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "1.11.0",
-            "version_normalized": "1.11.0.0",
+            "version": "1.12.1",
+            "version_normalized": "1.12.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozarts/assert.git",
-                "reference": "11cb2199493b2f8a3b53e7f19068fc6aac760991"
+                "reference": "9be6926d8b485f55b9229203f962b51ed377ba68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozarts/assert/zipball/11cb2199493b2f8a3b53e7f19068fc6aac760991",
-                "reference": "11cb2199493b2f8a3b53e7f19068fc6aac760991",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/9be6926d8b485f55b9229203f962b51ed377ba68",
+                "reference": "9be6926d8b485f55b9229203f962b51ed377ba68",
                 "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
+                "ext-date": "*",
+                "ext-filter": "*",
                 "php": "^7.2 || ^8.0"
             },
-            "conflict": {
-                "phpstan/phpstan": "<0.12.20",
-                "vimeo/psalm": "<4.6.1 || 4.6.2"
+            "suggest": {
+                "ext-intl": "",
+                "ext-simplexml": "",
+                "ext-spl": ""
             },
-            "require-dev": {
-                "phpunit/phpunit": "^8.5.13"
-            },
-            "time": "2022-06-03T18:03:27+00:00",
+            "time": "2025-10-29T15:56:20+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -2764,7 +2764,7 @@
             ],
             "support": {
                 "issues": "https://github.com/webmozarts/assert/issues",
-                "source": "https://github.com/webmozarts/assert/tree/1.11.0"
+                "source": "https://github.com/webmozarts/assert/tree/1.12.1"
             },
             "install-path": "../webmozart/assert"
         },
@@ -2872,17 +2872,17 @@
         },
         {
             "name": "wp-media/wp-mixpanel",
-            "version": "v1.2.0",
-            "version_normalized": "1.2.0.0",
+            "version": "v1.4.0",
+            "version_normalized": "1.4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/wp-mixpanel.git",
-                "reference": "b73de3558313642298a0ffaf32afbe8b555622ac"
+                "reference": "dfedab2014e816a1040c57d544a6180f1d446624"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/wp-mixpanel/zipball/b73de3558313642298a0ffaf32afbe8b555622ac",
-                "reference": "b73de3558313642298a0ffaf32afbe8b555622ac",
+                "url": "https://api.github.com/repos/wp-media/wp-mixpanel/zipball/dfedab2014e816a1040c57d544a6180f1d446624",
+                "reference": "dfedab2014e816a1040c57d544a6180f1d446624",
                 "shasum": ""
             },
             "require": {
@@ -2899,7 +2899,7 @@
                 "wp-coding-standards/wpcs": "^3",
                 "wp-media/phpunit": "^3"
             },
-            "time": "2025-09-08T14:54:11+00:00",
+            "time": "2025-11-12T09:51:35+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2924,7 +2924,7 @@
             "description": "WordPress Mixpanel Integration",
             "support": {
                 "issues": "https://github.com/wp-media/wp-mixpanel/issues",
-                "source": "https://github.com/wp-media/wp-mixpanel/tree/v1.2.0"
+                "source": "https://github.com/wp-media/wp-mixpanel/tree/v1.4.0"
             },
             "install-path": "../wp-media/wp-mixpanel"
         }

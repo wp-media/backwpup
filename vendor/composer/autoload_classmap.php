@@ -116,7 +116,6 @@ return array(
     'BackWPup_System_Tests' => $baseDir . '/inc/class-system-tests.php',
     'BackWPup_System_Tests_Runner' => $baseDir . '/inc/class-system-tests-runner.php',
     'BackWPup_ThirdParties' => $baseDir . '/inc/class-thirdparties.php',
-    'BackWPup_WP_CLI' => $baseDir . '/inc/class-wp-cli.php',
     'BackWpUp_Destination_Downloader_Data' => $baseDir . '/inc/class-destination-downloader-data.php',
     'BackWpup_Download_Handler' => $baseDir . '/inc/class-download-handler.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',

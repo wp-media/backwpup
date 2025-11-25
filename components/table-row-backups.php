@@ -3,11 +3,21 @@ use BackWPup\Utils\BackWPupHelpers;
 
 // Date formatting logic
 $date = new DateTime();
-$date->setTimestamp($backup['time']);
+$date->setTimestamp( $backup['time'] );
+
 $formatted_date = $date->format('M j, Y');
 $formatted_time = $date->format('g:ia');
-$type = ('' === $backup['type']) ? 'Manual' : $backup['type'];
-$type_icon = ('' === $backup['type']) ? 'user-settings' : 'clock';
+$type_icon      = 'clock';
+$backup_trigger = $backup['backup_trigger'] ?? '';
+$type           = $backup['type'];
+
+if ( 'link' === $backup_trigger ) {
+	$type_icon = 'link';
+	$type = 'Link';
+} elseif( '' === $backup['type'] ) {
+	$type_icon = 'user-settings';
+	$type = 'Manual';
+}
 $actions =[];
 //Add the download and restore action
 //If we can't restore the backup, we can't download it either.

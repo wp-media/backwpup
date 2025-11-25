@@ -283,6 +283,11 @@ class BackWPup_Job
 		 */
 		$start = wpm_apply_filters_typed( 'boolean', 'backwpup_can_job_start', true, $this->job, $start_type );
 		if ( ! $start ) {
+			if ( 'runcli' === $start_type && defined( 'WP_CLI' ) && WP_CLI ) {
+				// translators: %s = job name.
+				$error_message = wpm_apply_filters_typed( 'string', 'backwpup_job_not_started_error_message', sprintf( __( 'Start of job "%s" forbidden!', 'backwpup' ), $this->job['name'] ), $this->job['jobid'] );
+				\WP_CLI::error( $error_message );
+			}
 			return;
 		}
 
@@ -670,17 +675,53 @@ class BackWPup_Job
             }
         }
 
+		$backup_trigger = $this->get_backup_trigger( $start_type, $this->job );
+
 		/**
 		 * Fires on backup job creation
 		 *
 		 * @param array $job Job details.
 		 * @param string $backup_file Backup file name.
+		 * @param string $backup_trigger Backup trigger.
 		 */
-		do_action( 'backwpup_create_job', $this->job, $this->backup_file );
+		do_action( 'backwpup_create_job', $this->job, $this->backup_file, $backup_trigger );
 
         //Set start as done
         $this->steps_done[] = 'CREATE';
     }
+
+	/**
+	 * Get backup trigger.
+	 *
+	 * @param string $start_type Backup Start types.
+	 * @param array  $job Backup job data.
+	 *
+	 * @return string
+	 */
+	private function get_backup_trigger( string $start_type, array $job ): string {
+		$trigger = 'first_job';
+		switch ( $start_type ) {
+			case 'runcli':
+				$trigger = 'wp-cli';
+				break;
+			case 'cronrun':
+				$trigger = 'scheduled_job';
+				break;
+			case 'runext':
+				$trigger = 'link';
+				break;
+			case 'runnow':
+				$trigger = 'backup_now_job';
+				if ( ! empty( $job['backup_now'] ) ) {
+					$trigger = 'backup_now_global';
+				} elseif ( $job['tempjob'] ) {
+					$trigger = 'first_job';
+				}
+				break;
+		}
+
+		return $trigger;
+	}
 
     /**
      * @param        $name
@@ -1508,9 +1549,9 @@ class BackWPup_Job
             $url .= '?' . $authentication['query_arg'];
         }
 
-        if ($starttype === 'runext') {
-            $query_args['_nonce'] = get_site_option('backwpup_cfg_jobrunauthkey');
-            $query_args['doing_wp_cron'] = null;
+		if ( 'runext' === $starttype ) {
+			$query_args['_nonce']        = md5( get_site_option( 'backwpup_cfg_jobrunauthkey' ) . $jobid );
+			$query_args['doing_wp_cron'] = null;
             if (!empty($authurl)) {
                 $url = str_replace('https://', 'https://' . $authurl, $url);
                 $url = str_replace('http://', 'http://' . $authurl, $url);
@@ -2538,9 +2579,13 @@ class BackWPup_Job
             $joddata['logtime'] = strtotime((string) $metas['date']) + (get_option('gmt_offset') * 3600);
         }
 
-        //use file create date if none
-        if (empty($joddata['logtime'])) {
-            $joddata['logtime'] = filectime($logfile);
+		// use file create date if none.
+		if ( empty( $joddata['logtime'] ) ) {
+			if ( file_exists( $logfile ) ) {
+				$joddata['logtime'] = filectime( $logfile );
+			} else {
+				$joddata['logtime'] = current_time( 'timestamp' ); // phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
+			}
         }
 
         return $joddata;

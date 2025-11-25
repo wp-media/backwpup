@@ -163,6 +163,46 @@ class BackWPup_Destination_Downloader
         return true;
     }
 
+	/**
+	 * Downloads a file in chunks using WP-CLI. The method calculates the file size, divides it
+	 * into chunks, and downloads each chunk sequentially until the entire file is downloaded.
+	 */
+	public function download_by_chunks_wp_cli() {
+
+		$size       = $this->destination->calculate_size();
+		$start_byte = 0;
+		$chunk_size = 2 * 1024 * 1024;
+		$end_byte = $start_byte + $chunk_size - 1;
+
+		if ($end_byte >= $size) {
+			$end_byte = $size - 1;
+		}
+
+		/* translators: %s: file name */
+		$progress = \WP_CLI\Utils\make_progress_bar( sprintf( __( 'Download %s:', 'backwpup' ), basename( $this->data->source_file_path() ) ), $size );
+		try {
+			while ( $end_byte <= $size ) {
+				$this->destination->download_chunk( $start_byte, $end_byte );
+				$progress->tick( $chunk_size );
+
+				if ( $end_byte === $size - 1 ) {
+					$progress->finish();
+					break;
+				}
+
+				$start_byte = $end_byte + 1;
+				$end_byte = $start_byte + $chunk_size - 1;
+
+				if ($start_byte < $size && $end_byte >= $size) {
+					$end_byte = $size - 1;
+				}
+			}
+		} catch ( \Exception $e ) {
+			/* translators: %s: error message */
+			\WP_CLI::error( sprintf( __( 'Backup file download error: %s.', 'backwpup' ), $e->getMessage() ) );
+		}
+	}
+
     /**
      * Ensure user capability.
      */

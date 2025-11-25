@@ -38,17 +38,19 @@ BackWPupHelpers::component("heading", [
 
     <?php
     BackWPupHelpers::component("form/select", [
-      "name" => "job_".$first_job_id."_frequency",
+        "name" => "job_".$first_job_id."_frequency",
         "label" => __("Frequency", 'backwpup'),
-      "class" => "onboarding-files-frequency",
-      "value" => "monthly",
-      "trigger" => "onboarding-files-frequency",
-      "options" => wpm_apply_filters_typed( 'array', 'backwpup_backup_select_frequency_options', [
-        'hourly' => __( 'Hourly', 'backwpup' ),
-        "daily" => __("Daily", 'backwpup'),
-        "weekly" => __("Weekly", 'backwpup'),
-        "monthly" => __("Monthly", 'backwpup'),
-      ], $first_job_id ),
+        "class" => "onboarding-files-frequency",
+        "value" => "monthly",
+        "trigger" => "onboarding-files-frequency",
+        "options" => wpm_apply_filters_typed( 'array', 'backwpup_backup_select_frequency_options', [
+            'hourly'  => __( 'Hourly', 'backwpupe' ),
+            'daily'   => __( 'Daily', 'backwpup' ),
+            'weekly'  => __( 'Weekly', 'backwpup' ),
+            'monthly' => __( 'Monthly', 'backwpup' ),
+            ],
+            $first_job_id
+        ),
     ]);
     ?>
   </div>
@@ -76,17 +78,17 @@ BackWPupHelpers::component("heading", [
       </p>
     </div>
     <?php
-    BackWPupHelpers::component("form/select", [
-	    "name" => "job_".$second_job_id."_frequency",
-      "label" => __("Frequency", 'backwpup'),
-      "value" => "monthly",
-      "class" => "onboarding-database-frequency",
-      "trigger" => "onboarding-database-frequency",
-      "options" => wpm_apply_filters_typed( 'array', 'backwpup_backup_select_frequency_options', [
-        'hourly' => __( 'Hourly', 'backwpup' ),
-        "daily" => __("Daily", 'backwpup'),
-        "weekly" => __("Weekly", 'backwpup'),
-        "monthly" => __("Monthly", 'backwpup'),
+    BackWPupHelpers::component( 'form/select', [
+        'name'    => "job_".$second_job_id."_frequency",
+        'label'   => __("Frequency", 'backwpup'),
+        'value'   => 'monthly',
+        'class'   => 'onboarding-database-frequency',
+        'trigger' => 'onboarding-database-frequency',
+        'options' => wpm_apply_filters_typed( 'array', 'backwpup_backup_select_frequency_options', [
+            'hourly'  => __( 'Hourly', 'backwpup' ),
+            'daily'   => __( 'Daily', 'backwpup' ),
+            'weekly'  => __( 'Weekly', 'backwpup' ),
+            'monthly' => __( 'Monthly', 'backwpup' ),
       ], $second_job_id ),
     ]);
     ?>

@@ -19,6 +19,7 @@ return array(
     'WPMedia\\BackWPup\\Frontend\\' => array($baseDir . '/src/Frontend'),
     'WPMedia\\BackWPup\\Dependencies\\' => array($baseDir . '/src/Dependencies'),
     'WPMedia\\BackWPup\\Common\\' => array($baseDir . '/src/Common'),
+    'WPMedia\\BackWPup\\Cli\\' => array($baseDir . '/src/Cli'),
     'WPMedia\\BackWPup\\Beta\\' => array($baseDir . '/src/Beta'),
     'WPMedia\\BackWPup\\Backups\\' => array($baseDir . '/src/Backups'),
     'WPMedia\\BackWPup\\Backup\\' => array($baseDir . '/src/Backup'),

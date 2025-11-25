@@ -44,8 +44,8 @@ class Subscriber implements SubscriberInterface {
 			'backwpup_page_settings_save'     => 'update_setting',
 			'wp_ajax_backwpup_notice_optin'   => 'notice_optin_callback',
 			'admin_notices'                   => 'display_tracking_notice',
-			'backwpup_create_job'             => [ 'track_start_job', 20, 2 ],
-			'backwpup_track_end_job'          => [ 'track_end_job', 10, 2 ],
+			'backwpup_create_job'             => [ 'track_start_job', 20, 3 ],
+			'backwpup_track_end_job'          => [ 'track_end_job', 10, 3 ],
 			'backwpup_beta_optin_change'      => 'track_beta_optin_change',
 		];
 	}
@@ -126,22 +126,24 @@ class Subscriber implements SubscriberInterface {
 	 *
 	 * @param array  $job Current Job.
 	 * @param string $filename Backup filename.
+	 * @param string $trigger Backup trigger.
 	 *
 	 * @return void
 	 */
-	public function track_start_job( $job, $filename ) {
-		$this->tracking->track_start_job( $job );
+	public function track_start_job( $job, $filename, string $trigger ) {
+		$this->tracking->track_start_job( $job, $trigger );
 	}
 
 	/**
 	 * Track the end of a job.
 	 *
-	 * @param int   $job_id The ID of the job to delete.
-	 * @param array $job_details The details of the job storages.
+	 * @param int    $job_id The ID of the job to delete.
+	 * @param array  $job_details The details of the job storages.
+	 * @param string $trigger Backup trigger.
 	 *
 	 * @return void
 	 */
-	public function track_end_job( $job_id, array $job_details ) {
-		$this->tracking->track_end_job( $job_id, $job_details );
+	public function track_end_job( $job_id, array $job_details, string $trigger ) {
+		$this->tracking->track_end_job( $job_id, $job_details, $trigger );
 	}
 }

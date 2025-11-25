@@ -1,4 +1,12 @@
 == Changelog ==
+= 5.6.0 =
+Release date: November 25, 2025
+
+* Enhancement: Introduced WP-CLI support for running backups
+* Enhancement: Improved Mixpanel event tracking accuracy
+* Added support for triggering backups via link
+* Fix: Resolved a compatibility issue with Visual Composer
+
 = 5.5.2 =
 Release date: November 03, 2025
 

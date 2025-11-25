@@ -2330,6 +2330,7 @@ jQuery(document).ready(function ($) {
       ".js-backwpup-frequency-job-show-if-weekly",
       ".js-backwpup-frequency-job-show-if-monthly",
       ".js-backwpup-frequency-job-hide-if-hourly",
+      ".js-backwpup-frequency-job-show-if-link",
     ];
 
     // Hide all elements initially
@@ -2445,7 +2446,43 @@ jQuery(document).ready(function ($) {
  *
  */
 document.addEventListener("DOMContentLoaded", function() {
+    //Copy button
+    const copyButtons = document.querySelectorAll('.js-backwpup-copy-clipboard svg');
+
+    copyButtons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+        });
+    })
+
     document.addEventListener("click", function (event) {
+        const copy_button = event.target.closest('.js-backwpup-copy-clipboard svg');
+
+        if( copy_button ) {
+            const parentDiv = copy_button.closest('.js-frequency-link-url');
+            const textSpan = parentDiv.querySelector('.backwpup-backup-link');
+            const textToCopy = textSpan.textContent.trim();
+
+            navigator.clipboard.writeText(textToCopy).then(function() {
+
+                const paths = copy_button.querySelectorAll('path');
+                const originalFill = copy_button.querySelector('path').getAttribute('fill');
+                paths.forEach(path => {
+                    path.setAttribute('fill', '#10b981');
+                });
+
+                setTimeout(function() {
+                    paths.forEach(path => {
+                        path.setAttribute('fill', originalFill);
+                    });
+                }, 500);
+
+            }).catch(function(err) {
+                console.error('Failed to copy:', err);
+                // Fallback for older browsers
+                fallbackCopy(textToCopy);
+            });
+        }
+
         const storage_button = event.target.closest('.js-backwpup-select-storage');
         if (!storage_button) {
             return;

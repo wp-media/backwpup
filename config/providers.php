@@ -3,6 +3,7 @@ $pro_providers = [];
 if( BackWPup::is_pro()) {
 	$pro_providers = [
 		'WPMedia\BackWPup\License\ServiceProvider',
+		'WPMedia\BackWPup\Cli\ServiceProviderPro',
 	];
 }
 
@@ -16,6 +17,7 @@ $providers = [
 	'WPMedia\BackWPup\Frontend\ServiceProvider',
 	'WPMedia\BackWPup\Tracking\ServiceProvider',
 	'WPMedia\BackWPup\Beta\ServiceProvider',
+	'WPMedia\BackWPup\Cli\ServiceProvider',
 	'WPMedia\BackWPup\Hosting\ServiceProvider',
 ];
 

@@ -158,26 +158,30 @@ class Tracking {
 	/**
 	 * Track the start of a job.
 	 *
-	 * @param array $job The Job data.
+	 * @param array  $job The Job data.
+	 * @param string $trigger The backup trigger.
 	 *
 	 * @return void
 	 */
-	public function track_start_job( array $job ): void {
+	public function track_start_job( array $job, $trigger ): void {
 		if ( ! $this->optin->can_track() ) {
 			return;
 		}
 
-		$user  = wp_get_current_user();
-		$email = $user->user_email ?? $job['mailaddresslog'];
+		$user       = wp_get_current_user();
+		$email      = $user->user_email ?? $job['mailaddresslog'];
+		$properties = $this->get_backup_event_properties( $job );
 
 		$this->mixpanel->identify( $email );
 
+		$properties['backup_trigger'] = $trigger;
+
 		// @todo Refactor it when the Mixpanel library supports system capabilities.
 		$this->with_system_cap(
-				function () use ( $job ) {
+				function () use ( $job, $properties ) {
 					$this->mixpanel->track(
 					'Scheduled Backup Job Started',
-					$this->get_backup_event_properties( $job ),
+					$properties,
 					'bwu_mixpanel_send_event'
 					);
 				}
@@ -187,12 +191,13 @@ class Tracking {
 	/**
 	 * Track end of job.
 	 *
-	 * @param int   $job_id The job id.
-	 * @param array $job_details The status of the job.
+	 * @param int    $job_id The job id.
+	 * @param array  $job_details The status of the job.
+	 * @param string $trigger Backup trigger.
 	 *
 	 * @return void
 	 */
-	public function track_end_job( $job_id, array $job_details ): void {
+	public function track_end_job( $job_id, array $job_details, $trigger ): void {
 		if ( ! $this->optin->can_track() ) {
 			return;
 		}
@@ -204,7 +209,8 @@ class Tracking {
 		$this->mixpanel->identify( $email );
 		$status = true;
 
-		$properties = $this->get_backup_event_properties( $job, true );
+		$properties                   = $this->get_backup_event_properties( $job, true );
+		$properties['backup_trigger'] = $trigger;
 
 		foreach ( $job_details as $job ) {
 			$properties[ 'storage_' . $job['storage'] ] = [
@@ -242,12 +248,10 @@ class Tracking {
 	 * @return array
 	 */
 	private function get_backup_event_properties( array $job, bool $included_job_completion = false ): array {
-		$backup_trigger = $job['activetype'];
-		$legacy_job     = ! empty( $job['legacy'] );
+		$legacy_job = ! empty( $job['legacy'] );
 
 		$properties = [
-			'backup_trigger' => $backup_trigger,
-			'legacy_job'     => $legacy_job,
+			'legacy_job' => $legacy_job,
 		];
 
 		if ( $included_job_completion ) {
@@ -378,7 +382,7 @@ class Tracking {
 	 */
 	private function with_system_cap( callable $cb ) {
 		$grant_cap = static function ( $allcaps, $caps, $args ) {
-			if ( isset( $args[0], $args[1] ) && 'bwu_mixpanel_send_event' === $args[0] && 0 === (int) $args[1] ) {
+			if ( isset( $args[0], $args[1] ) && 'bwu_mixpanel_send_event' === $args[0] ) {
 				$allcaps['bwu_mixpanel_send_event'] = true;
 			}
 			return $allcaps;

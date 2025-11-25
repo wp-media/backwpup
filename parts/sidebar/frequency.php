@@ -16,44 +16,55 @@ if ( ! isset ( $job_id ) ) {
   return;
 }
 
-$job_cron = BackWPup_Option::get($job_id, 'cron', $optionAdapter->defaults_job('cron'));
-
+$job_cron    = BackWPup_Option::get($job_id, 'cron', $optionAdapter->defaults_job('cron'));
+$active_type = BackWPup_Option::get( $job_id, 'activetype' );
+$url = BackWPup_Job::get_jobrun_url( 'runext', $job_id );
 ?>
 
 <?php BackWPupHelpers::component("containers/scrollable-start", ["gap_size" => "small"]); ?>
 
 <?php
-try {
-  $current = BackWPup_Cron::parse_cron_expression($job_cron);
-} catch (Exception $e) {
-  BackWPupHelpers::component("alerts/error", [
-    "type" => "info",
-    "font" => "small",
-    "content" => __("Current cron expression is not supported by this UI.", 'backwpup'). ' ' . esc_html($job_cron),
-  ]);
-  $current = [
-    'frequency' => '',
-    'start_time' => '00:00',
-    'hourly_start_time'  => 0,
-    'monthly_start_day' => "",
-    'weekly_start_day' => "",
-  ];
+$current = [
+	'frequency'         => '',
+	'start_time'        => '00:00',
+	'hourly_start_time' => 0,
+	'monthly_start_day' => '',
+	'weekly_start_day'  => '',
+];
+
+if ( 'link' === $active_type ) {
+	$current['frequency'] = 'link';
+} else {
+	try {
+		$current = BackWPup_Cron::parse_cron_expression($job_cron);
+	} catch (Exception $e) {
+		BackWPupHelpers::component("alerts/error", [
+			"type" => "info",
+			"font" => "small",
+			"content" => __("Current cron expression is not supported by this UI.", 'backwpup') . ' ' . esc_html($job_cron),
+		]);
+	}
 }
 ?>
 
 <?php
-BackWPupHelpers::component("form/select", [
-  "name" => "frequency",
-  "label" => __("Frequency", 'backwpup'),
-  "trigger" => "frequency-job",
-  "value" => $basic_frequency ?? $current['frequency'], // hourly, daily, weekly, monthly   
-  "options" => wpm_apply_filters_typed( 'array', 'backwpup_backup_select_frequency_options', [
-    'hourly' => __('Hourly', 'backwpup'),
-    "daily" => __("Daily", 'backwpup'),
-    "weekly" => __("Weekly", 'backwpup'),
-    "monthly" => __("Monthly", 'backwpup'),
-  ], $job_id ),
-  "identifier" => 'backwpup_frequency',
+$options = wpm_apply_filters_typed( 'array', 'backwpup_backup_select_frequency_options', [
+	'hourly'  => __( 'Hourly', 'backwpup' ),
+	'daily'   => __( 'Daily', 'backwpup' ),
+	'weekly'  => __( 'Weekly', 'backwpup' ),
+	'monthly' => __( 'Monthly', 'backwpup' ),
+], $job_id );
+
+if( ! get_site_option( 'backwpup_onboarding', false ) ) {
+    $options['link'] =  __( 'Triggered by link', 'backwpup' );
+}
+BackWPupHelpers::component( 'form/select', [
+  'name'       => 'frequency',
+  'label'      => __( 'Frequency', 'backwpup' ),
+  'trigger'    => 'frequency-job',
+  'value'      => $basic_frequency ?? $current['frequency'], // hourly, daily, weekly, monthly, link
+  'options'    => $options,
+  'identifier' => 'backwpup_frequency',
 ]);
 ?>
 
@@ -160,6 +171,45 @@ BackWPupHelpers::component( 'alerts/info', [
   'content' => __( 'Enable "Reduced server load" in “Advanced Settings > Jobs” to reduce website load and keep your site running smoothly during hourly backups.', 'backwpup' ),
 ]);
 ?>
+</div>
+
+<div class="mt-2 pl-3 pr-3">
+  <strong>
+    <?php esc_html_e( 'Start Backups with CLI:', 'backwpup' ); ?>
+  </strong>
+  <?php
+  // translators: %1$s: link tag to backwpup.com, %2$s: closing link tag, %3$s: link tag to wp-cli.org.
+  printf( esc_html__( 'Use %1$sWP-CLI%2$s to run backups from the command line.', 'backwpup' ), '<a class="underline" href="https://backwpup.com/docs/backwpup-wp-cli-commands/" target="_blank">', '</a>' );
+  ?>
+</div>
+<div class="js-backwpup-frequency-job-show-if-link">
+    <div class="bg-slate-300 text-black js-frequency-link-url p-3 flex rounded-md mb-3">
+        <span class="backwpup-backup-link truncate pr-3">
+            <?php echo $url['url'] ?? '' ; ?>
+        </span>
+        <span class="js-backwpup-copy-clipboard cursor-pointer">
+        <?php
+            BackWPupHelpers::component(
+                'icon',
+                [
+                    'name'  => 'copy',
+                    'size'  => 'medium',
+                ]
+            );
+        ?>
+            </span>
+    </div>
+    <?php
+    BackWPupHelpers::component( 'alerts/info', [
+        'type'    => 'alert',
+        'font'    => 'small',
+        'content' => __(
+                "Use the link above to trigger this backup. If you change the frequency and then switch back to 
+                'Triggered by link', a new link will be generated - you'll need to use the updated one. ",
+                'backwpup'
+        ),
+    ]);
+    ?>
 </div>
 
 <?php BackWPupHelpers::component("containers/scrollable-end"); ?>

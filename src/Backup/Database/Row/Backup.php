@@ -51,6 +51,13 @@ class Backup extends Row {
 	public $error_message;
 
 	/**
+	 * Backup trigger
+	 *
+	 * @var string
+	 */
+	public $backup_trigger;
+
+	/**
 	 * Number of retries
 	 *
 	 * @var int
@@ -80,13 +87,14 @@ class Backup extends Row {
 		parent::__construct( $item );
 
 		// Set the type of each column, and prepare.
-		$this->id            = (int) $this->id;
-		$this->destination   = (string) $this->destination;
-		$this->filename      = (string) $this->filename;
-		$this->status        = (string) $this->status;
-		$this->error_code    = (string) $this->error_code;
-		$this->error_message = (string) $this->error_message;
-		$this->modified      = empty( $this->modified ) ? 0 : strtotime( $this->modified );
-		$this->submitted_at  = empty( $this->submitted_at ) ? 0 : strtotime( $this->submitted_at );
+		$this->id             = (int) $this->id;
+		$this->destination    = (string) $this->destination;
+		$this->filename       = (string) $this->filename;
+		$this->status         = (string) $this->status;
+		$this->error_code     = (string) $this->error_code;
+		$this->error_message  = (string) $this->error_message;
+		$this->backup_trigger = (string) $this->backup_trigger;
+		$this->modified       = empty( $this->modified ) ? 0 : strtotime( $this->modified );
+		$this->submitted_at   = empty( $this->submitted_at ) ? 0 : strtotime( $this->submitted_at );
 	}
 }

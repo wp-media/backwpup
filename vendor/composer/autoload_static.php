@@ -20,11 +20,11 @@ class ComposerStaticInit5cbcfb1449c8529bdcab591b4c0578d6
     );
 
     public static $prefixLengthsPsr4 = array (
-        'p' => 
+        'p' =>
         array (
             'phpseclib3\\' => 11,
         ),
-        'W' => 
+        'W' =>
         array (
             'Webmozart\\Assert\\' => 17,
             'WPMedia\\Mixpanel\\' => 17,
@@ -38,6 +38,7 @@ class ComposerStaticInit5cbcfb1449c8529bdcab591b4c0578d6
             'WPMedia\\BackWPup\\Frontend\\' => 26,
             'WPMedia\\BackWPup\\Dependencies\\' => 30,
             'WPMedia\\BackWPup\\Common\\' => 24,
+            'WPMedia\\BackWPup\\Cli\\' => 21,
             'WPMedia\\BackWPup\\Beta\\' => 22,
             'WPMedia\\BackWPup\\Backups\\' => 25,
             'WPMedia\\BackWPup\\Backup\\' => 24,
@@ -45,7 +46,7 @@ class ComposerStaticInit5cbcfb1449c8529bdcab591b4c0578d6
             'WPMedia\\BackWPup\\Adapters\\' => 26,
             'WPMedia\\BackWPup\\API\\' => 21,
         ),
-        'S' => 
+        'S' =>
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
@@ -53,7 +54,7 @@ class ComposerStaticInit5cbcfb1449c8529bdcab591b4c0578d6
             'Symfony\\Component\\OptionsResolver\\' => 34,
             'Symfony\\Component\\EventDispatcher\\' => 34,
         ),
-        'P' => 
+        'P' =>
         array (
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
@@ -61,26 +62,26 @@ class ComposerStaticInit5cbcfb1449c8529bdcab591b4c0578d6
             'Psr\\Container\\' => 14,
             'ParagonIE\\ConstantTime\\' => 23,
         ),
-        'M' => 
+        'M' =>
         array (
             'Monolog\\' => 8,
             'Microsoft\\Graph\\' => 16,
             'MicrosoftAzure\\Storage\\Common\\' => 30,
             'MicrosoftAzure\\Storage\\Blob\\' => 28,
         ),
-        'L' => 
+        'L' =>
         array (
             'Liborm85\\ComposerVendorCleaner\\' => 31,
         ),
-        'K' => 
+        'K' =>
         array (
             'Krizalys\\Onedrive\\' => 18,
         ),
-        'J' => 
+        'J' =>
         array (
             'JmesPath\\' => 9,
         ),
-        'I' => 
+        'I' =>
         array (
             'Inpsyde\\Restore\\' => 16,
             'Inpsyde\\BackWPup\\Infrastructure\\' => 32,
@@ -88,233 +89,237 @@ class ComposerStaticInit5cbcfb1449c8529bdcab591b4c0578d6
             'Inpsyde\\BackWPupShared\\' => 23,
             'Inpsyde\\Assert\\' => 15,
         ),
-        'G' => 
+        'G' =>
         array (
             'GuzzleHttp\\Psr7\\' => 16,
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
         ),
-        'B' => 
+        'B' =>
         array (
             'Beta\\Microsoft\\Graph\\' => 21,
             'Base32\\' => 7,
         ),
-        'A' => 
+        'A' =>
         array (
             'Aws\\' => 4,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'phpseclib3\\' => 
+        'phpseclib3\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
         ),
-        'Webmozart\\Assert\\' => 
+        'Webmozart\\Assert\\' =>
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
         ),
-        'WPMedia\\Mixpanel\\' => 
+        'WPMedia\\Mixpanel\\' =>
         array (
             0 => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src',
         ),
-        'WPMedia\\Beta\\' => 
+        'WPMedia\\Beta\\' =>
         array (
             0 => __DIR__ . '/..' . '/wp-media/wp-beta/src',
         ),
-        'WPMedia\\BackWPup\\Tracking\\' => 
+        'WPMedia\\BackWPup\\Tracking\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Tracking',
         ),
-        'WPMedia\\BackWPup\\StorageProviders\\' => 
+        'WPMedia\\BackWPup\\StorageProviders\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/StorageProviders',
         ),
-        'WPMedia\\BackWPup\\Plugin\\' => 
+        'WPMedia\\BackWPup\\Plugin\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Plugin',
         ),
-        'WPMedia\\BackWPup\\License\\' => 
+        'WPMedia\\BackWPup\\License\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/License',
         ),
-        'WPMedia\\BackWPup\\Jobs\\' => 
+        'WPMedia\\BackWPup\\Jobs\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Jobs',
         ),
-        'WPMedia\\BackWPup\\Hosting\\' => 
+        'WPMedia\\BackWPup\\Hosting\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Hosting',
         ),
-        'WPMedia\\BackWPup\\Frontend\\' => 
+        'WPMedia\\BackWPup\\Frontend\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Frontend',
         ),
-        'WPMedia\\BackWPup\\Dependencies\\' => 
+        'WPMedia\\BackWPup\\Dependencies\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Dependencies',
         ),
-        'WPMedia\\BackWPup\\Common\\' => 
+        'WPMedia\\BackWPup\\Common\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Common',
         ),
-        'WPMedia\\BackWPup\\Beta\\' => 
+        'WPMedia\\BackWPup\\Cli\\' =>
+        array (
+            0 => __DIR__ . '/../..' . '/src/Cli',
+        ),
+        'WPMedia\\BackWPup\\Beta\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Beta',
         ),
-        'WPMedia\\BackWPup\\Backups\\' => 
+        'WPMedia\\BackWPup\\Backups\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Backups',
         ),
-        'WPMedia\\BackWPup\\Backup\\' => 
+        'WPMedia\\BackWPup\\Backup\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Backup',
         ),
-        'WPMedia\\BackWPup\\Admin\\' => 
+        'WPMedia\\BackWPup\\Admin\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Admin',
         ),
-        'WPMedia\\BackWPup\\Adapters\\' => 
+        'WPMedia\\BackWPup\\Adapters\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Adapters',
         ),
-        'WPMedia\\BackWPup\\API\\' => 
+        'WPMedia\\BackWPup\\API\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/API',
         ),
-        'Symfony\\Polyfill\\Php80\\' => 
+        'Symfony\\Polyfill\\Php80\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
         ),
-        'Symfony\\Polyfill\\Mbstring\\' => 
+        'Symfony\\Polyfill\\Mbstring\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
-        'Symfony\\Contracts\\EventDispatcher\\' => 
+        'Symfony\\Contracts\\EventDispatcher\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/event-dispatcher-contracts',
         ),
-        'Symfony\\Component\\OptionsResolver\\' => 
+        'Symfony\\Component\\OptionsResolver\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/options-resolver',
         ),
-        'Symfony\\Component\\EventDispatcher\\' => 
+        'Symfony\\Component\\EventDispatcher\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/event-dispatcher',
         ),
-        'Psr\\Log\\' => 
+        'Psr\\Log\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
-        'Psr\\Http\\Message\\' => 
+        'Psr\\Http\\Message\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-factory/src',
             1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
-        'Psr\\Http\\Client\\' => 
+        'Psr\\Http\\Client\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
         ),
-        'Psr\\Container\\' => 
+        'Psr\\Container\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
         ),
-        'ParagonIE\\ConstantTime\\' => 
+        'ParagonIE\\ConstantTime\\' =>
         array (
             0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
         ),
-        'Monolog\\' => 
+        'Monolog\\' =>
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
-        'Microsoft\\Graph\\' => 
+        'Microsoft\\Graph\\' =>
         array (
             0 => __DIR__ . '/..' . '/microsoft/microsoft-graph/src',
         ),
-        'MicrosoftAzure\\Storage\\Common\\' => 
+        'MicrosoftAzure\\Storage\\Common\\' =>
         array (
             0 => __DIR__ . '/..' . '/microsoft/azure-storage-common/src/Common',
         ),
-        'MicrosoftAzure\\Storage\\Blob\\' => 
+        'MicrosoftAzure\\Storage\\Blob\\' =>
         array (
             0 => __DIR__ . '/..' . '/microsoft/azure-storage-blob/src/Blob',
         ),
-        'Liborm85\\ComposerVendorCleaner\\' => 
+        'Liborm85\\ComposerVendorCleaner\\' =>
         array (
             0 => __DIR__ . '/..' . '/liborm85/composer-vendor-cleaner/src',
         ),
-        'Krizalys\\Onedrive\\' => 
+        'Krizalys\\Onedrive\\' =>
         array (
             0 => __DIR__ . '/..' . '/krizalys/onedrive-php-sdk/src',
         ),
-        'JmesPath\\' => 
+        'JmesPath\\' =>
         array (
             0 => __DIR__ . '/..' . '/mtdowling/jmespath.php/src',
         ),
-        'Inpsyde\\Restore\\' => 
+        'Inpsyde\\Restore\\' =>
         array (
             0 => __DIR__ . '/..' . '/inpsyde/backwpup-restore-shared/src',
         ),
-        'Inpsyde\\BackWPup\\Infrastructure\\' => 
+        'Inpsyde\\BackWPup\\Infrastructure\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Infrastructure',
         ),
-        'Inpsyde\\BackWPup\\Archiver\\' => 
+        'Inpsyde\\BackWPup\\Archiver\\' =>
         array (
             0 => __DIR__ . '/..' . '/inpsyde/backwpup-archiver/src',
         ),
-        'Inpsyde\\BackWPupShared\\' => 
+        'Inpsyde\\BackWPupShared\\' =>
         array (
             0 => __DIR__ . '/..' . '/inpsyde/backwpup-shared/src',
         ),
-        'Inpsyde\\Assert\\' => 
+        'Inpsyde\\Assert\\' =>
         array (
             0 => __DIR__ . '/..' . '/inpsyde/assert/src',
         ),
-        'GuzzleHttp\\Psr7\\' => 
+        'GuzzleHttp\\Psr7\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
         ),
-        'GuzzleHttp\\Promise\\' => 
+        'GuzzleHttp\\Promise\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
         ),
-        'GuzzleHttp\\' => 
+        'GuzzleHttp\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
-        'Beta\\Microsoft\\Graph\\' => 
+        'Beta\\Microsoft\\Graph\\' =>
         array (
             0 => __DIR__ . '/..' . '/microsoft/microsoft-graph/src/Beta/Microsoft/Graph',
         ),
-        'Base32\\' => 
+        'Base32\\' =>
         array (
             0 => __DIR__ . '/..' . '/christian-riesen/base32/src',
         ),
-        'Aws\\' => 
+        'Aws\\' =>
         array (
             0 => __DIR__ . '/..' . '/aws/aws-sdk-php/src',
         ),
     );
 
     public static $prefixesPsr0 = array (
-        'P' => 
+        'P' =>
         array (
-            'Pimple' => 
+            'Pimple' =>
             array (
                 0 => __DIR__ . '/..' . '/pimple/pimple/src',
             ),
         ),
-        'C' => 
+        'C' =>
         array (
-            'Console' => 
+            'Console' =>
             array (
                 0 => __DIR__ . '/..' . '/pear/console_getopt',
             ),
         ),
-        'A' => 
+        'A' =>
         array (
-            'Archive_Tar' => 
+            'Archive_Tar' =>
             array (
                 0 => __DIR__ . '/..' . '/pear/archive_tar',
             ),
@@ -432,7 +437,6 @@ class ComposerStaticInit5cbcfb1449c8529bdcab591b4c0578d6
         'BackWPup_System_Tests' => __DIR__ . '/../..' . '/inc/class-system-tests.php',
         'BackWPup_System_Tests_Runner' => __DIR__ . '/../..' . '/inc/class-system-tests-runner.php',
         'BackWPup_ThirdParties' => __DIR__ . '/../..' . '/inc/class-thirdparties.php',
-        'BackWPup_WP_CLI' => __DIR__ . '/../..' . '/inc/class-wp-cli.php',
         'BackWpUp_Destination_Downloader_Data' => __DIR__ . '/../..' . '/inc/class-destination-downloader-data.php',
         'BackWpup_Download_Handler' => __DIR__ . '/../..' . '/inc/class-download-handler.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',

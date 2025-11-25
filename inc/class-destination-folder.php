@@ -52,9 +52,12 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations
 
         $backupfile = realpath(trailingslashit($backup_dir) . basename($backupfile));
 
-        if ($backupfile && is_writeable($backupfile) && !is_dir($backupfile) && !is_link($backupfile)) {
-            unlink($backupfile);
-        }
+		if ( $backupfile && is_writable( $backupfile ) && ! is_dir( $backupfile ) && ! is_link( $backupfile ) ) { //phpcs:ignore
+			wp_delete_file( $backupfile );
+		} else {
+			// translators: %s: backup file path.
+			\BackWPup_Admin::message( sprintf( __( 'Could not delete backup archive "%s", check permissions!', 'backwpup' ), $backupfile ), true );
+		}
     }
 
     /**

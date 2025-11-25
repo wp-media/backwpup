@@ -218,14 +218,14 @@ class BackWPup_Cron
             }
         }
 
-        // generate normal nonce
-        $nonce = substr(wp_hash(wp_nonce_tick() . 'backwpup_job_run-' . $args['run'], 'nonce'), -12, 10);
-        //special nonce on external start
-        if ($args['run'] === 'runext') {
-            $nonce = get_site_option('backwpup_cfg_jobrunauthkey');
-        }
-        if ($args['run'] === 'cronrun') {
-            $nonce = '';
+		// generate normal nonce.
+		$nonce = substr( wp_hash( wp_nonce_tick() . 'backwpup_job_run-' . $args['run'], 'nonce' ), -12, 10 );
+		// special nonce on external start.
+		if ( 'runext' === $args['run'] ) {
+			$nonce = md5( get_site_option( 'backwpup_cfg_jobrunauthkey' ) . $args['jobid'] );
+		}
+		if ( 'cronrun' === $args['run'] ) {
+			$nonce = '';
         }
         // check nonce
         if ($nonce !== $args['nonce']) {

@@ -54,6 +54,8 @@ class TrackingPlugin extends Tracking {
 	 * @param string  $event      Event name.
 	 * @param mixed[] $properties Event properties.
 	 * @param string  $event_capability The capability required to track the event.
+	 *
+	 * @return void
 	 */
 	public function track( string $event, array $properties, string $event_capability = '' ): void {
 		/**
@@ -73,6 +75,18 @@ class TrackingPlugin extends Tracking {
 			return;
 		}
 
+		$this->track_direct( $event, $properties );
+	}
+
+	/**
+	 * Track an event directly in Mixpanel, bypassing capability checks.
+	 *
+	 * @param string  $event      Event name.
+	 * @param mixed[] $properties Event properties.
+	 *
+	 * @return void
+	 */
+	public function track_direct( string $event, array $properties ): void {
 		$host = wp_parse_url( get_home_url(), PHP_URL_HOST );
 
 		if ( ! $host ) {
