@@ -75,19 +75,49 @@ class Database {
 			return;
 		}
 
+		$job_statuses = [];
+
+		$status         = 'completed';
+		$i              = 0;
+		$backup_trigger = '';
 		foreach ( $backup_ids as $backup_id ) {
-			$backup = $this->backup_query->get_item( $backup_id );
+			$backup         = $this->backup_query->get_item( $backup_id );
+			$backup_trigger = $backup->backup_trigger;
 
 			if (
 				! $backup
 				||
 				'completed' === $backup->status
 			) {
+				$job_statuses[ $i ] = [
+					'status'        => $status,
+					'storage'       => $backup->destination,
+					'error_code'    => $backup->error_code,
+					'error_message' => $backup->error_message,
+				];
+				++$i;
 				continue;
 			}
 
+			$status = 'failed';
 			$this->backup_query->set_status( $backup->id, 'failed' );
+			$job_statuses[ $i ] = [
+				'status'        => $status,
+				'storage'       => $backup->destination,
+				'error_code'    => $backup->error_code,
+				'error_message' => $backup->error_message,
+			];
+			++$i;
 		}
+
+		/**
+		 * Fires after a job ended.
+		 *
+		 * @param int $job_id The job id.
+		 * @param array $job_statuses Status of the job storages.
+		 * @param array $backup_trigger Backup job trigger.
+		 */
+		do_action( 'backwpup_track_end_job', $job['jobid'], $job_statuses, $backup_trigger );
 	}
 
 	/**
@@ -117,10 +147,11 @@ class Database {
 	 *
 	 * @param array  $job Current Job.
 	 * @param string $filename Backup filename.
+	 * @param string $trigger Backup trigger.
 	 *
 	 * @return void
 	 */
-	public function add_backup_row( $job, $filename ): void {
+	public function add_backup_row( $job, $filename, $trigger ): void {
 		$destinations = BackWPup::get_registered_destinations();
 		$backup_ids   = [];
 
@@ -135,7 +166,7 @@ class Database {
 				continue;
 			}
 
-			$backup_ids[ $destination_id ] = $this->backup_query->add( $destination_id, $filename );
+			$backup_ids[ $destination_id ] = $this->backup_query->add( $destination_id, $filename, $trigger );
 		}
 
 		BackWPup_Option::update( $job['jobid'], 'backup_ids', $backup_ids );
@@ -217,6 +248,7 @@ class Database {
 			) {
 				continue;
 			}
+			$item['backup_trigger'] = $backup_row->backup_trigger ?? '';
 
 			// Keep unique backups with valid status for history.
 			$unique_backups[ $item['stored_on'] . $item['filename'] ] = $item;

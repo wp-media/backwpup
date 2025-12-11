@@ -166,7 +166,8 @@ class Rest implements RestInterface {
 						'status' => 301,
 						'url'    => network_admin_url( 'admin.php?page=backwpup' ),
 					],
-					200
+					200,
+					[ 'Content-Type' => 'text/json' ]
 				);
 			}
 		}
@@ -189,43 +190,111 @@ class Rest implements RestInterface {
 
 		// check temp folder.
 		$temp_folder_message = $this->file_adapter->check_folder( $this->backwpup_adapter->get_plugin_data( 'TEMP' ), true );
+		if ( ! empty( $temp_folder_message ) ) {
+			return new WP_HTTP_Response(
+				[
+					'status'  => 500,
+					'message' => $temp_folder_message,
+				],
+				200,
+				[ 'Content-Type' => 'text/json' ]
+			);
+		}
+
 		// check log folder.
 		$log_folder         = get_site_option( 'backwpup_cfg_logfolder' );
 		$log_folder         = $this->file_adapter->get_absolute_path( $log_folder );
 		$log_folder_message = $this->file_adapter->check_folder( $log_folder );
+		if ( ! empty( $log_folder_message ) ) {
+			return new WP_HTTP_Response(
+				[
+					'status'  => 500,
+					'message' => $log_folder_message,
+				],
+				200,
+				[ 'Content-Type' => 'text/json' ]
+			);
+		}
+
 		// check backup destinations.
-		$job_types      = $this->backwpup_adapter->get_job_types();
-		$job_conf_types = $this->option_adapter->get( $jobid, 'type' );
-		$creates_file   = false;
+		$job_types    = $this->backwpup_adapter->get_job_types();
+		$job_data     = $this->option_adapter->get_job( $jobid );
+		$creates_file = false;
 		foreach ( $job_types as $id => $job_type_class ) {
-			if ( in_array( $id, $job_conf_types, true ) && $job_type_class->creates_file() ) {
+			if ( in_array( $id, $job_data['type'], true ) && $job_type_class->creates_file() ) {
 				$creates_file = true;
 				break;
 			}
 		}
 		if ( $creates_file ) {
-			$job_conf_dests = $this->option_adapter->get( $jobid, 'destinations' );
-			$destinations   = 0;
-
-			foreach ( $this->backwpup_adapter->get_registered_destinations() as $id => $dest ) {
-				if ( ! in_array( $id, $job_conf_dests, true ) || empty( $dest['class'] ) ) {
+			$destinations = 0;
+			foreach ( $job_data['destinations'] as $dest_key ) {
+				$dest = $this->backwpup_adapter->get_destination( $dest_key );
+				if ( ! $dest || ! $dest->can_run( $job_data ) ) {
 					continue;
 				}
 				++$destinations;
 			}
+
+			if ( ! $destinations ) {
+				return new WP_HTTP_Response(
+					[
+						'status'  => 500,
+						// translators: %s: Job name.
+						'message' => sprintf( __( 'No backup destination available for "%s" or properly configured!', 'backwpup' ), esc_attr( $job_data['name'] ) ),
+					],
+					200,
+					[ 'Content-Type' => 'text/json' ]
+				);
+			}
+		}
+
+		// check if wp cron is working.
+		$current_time    = time() - HOUR_IN_SECONDS;
+		$next_cron_times = array_keys( _get_cron_array() );
+		sort( $next_cron_times );
+		if ( isset( $next_cron_times[0] ) && $next_cron_times[0] < $current_time ) {
+			\BackWPup_Admin::message( __( 'WP-Cron does not seem to be working properly, because it has not run in the last hour. Please check your server settings.', 'backwpup' ), true );
 		}
 
 		$this->job_adapter->get_jobrun_url( 'runnow', $jobid );
 
 		sleep( 1 ); // Wait for the job to start.
+		$start_file_name = trailingslashit( $this->backwpup_adapter->get_plugin_data( 'TEMP' ) ) . '.backwpup_job_started';
+		if ( file_exists( $start_file_name ) ) {
+			wp_delete_file( $start_file_name );
+		} else {
+			return new WP_HTTP_Response(
+				[
+					'status'  => 500,
+					'message' => __( 'The backup process could not be started! Please try to contact our support.', 'backwpup' ),
+				],
+				200,
+				[ 'Content-Type' => 'text/json' ]
+			);
+		}
+
+		if ( file_exists( $this->backwpup_adapter->get_plugin_data( 'running_file' ) ) ) {
+			return new WP_HTTP_Response(
+				[
+					'status'  => 200,
+					// translators: %s: Job name.
+					'message' => sprintf( __( 'Job "%s" started.', 'backwpup' ), esc_attr( $job_data['name'] ) ),
+				],
+				200,
+				[ 'Content-Type' => 'text/json' ]
+			);
+		}
+
 		return new WP_HTTP_Response(
 			[
-				'status'  => 200,
-				'message' => sprintf( __( 'Job "%s" started.', 'backwpup' ), esc_attr( $this->option_adapter->get( $jobid, 'name' ) ) ), // @phpcs:ignore
+				'status'  => 201,
+				// translators: %s: Job name.
+				'message' => sprintf( __( 'Job "%s" executed.', 'backwpup' ), esc_attr( $job_data['name'] ) ),
 			],
 			200,
 			[ 'Content-Type' => 'text/json' ]
-			);
+		);
 	}
 
 	/**

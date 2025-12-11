@@ -7,6 +7,11 @@ use BackWPup\Utils\BackWPupHelpers;
 if ( $job_id === null ) {
 	return;
 }
+$is_onboarding = get_site_option( 'backwpup_onboarding', false );
+if ( $is_onboarding ) {
+  return;
+}
+
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Storages Settings", 'backwpup'),
   'type' => 'sidebar'
@@ -24,6 +29,7 @@ if ( $destinations ){
 		"label" => $a_cloud_destination["label"],
 		"name" => "storage_destinations[]",
 		"active" => in_array($a_cloud_destination["slug"], $destinations ?? [] ),
+    "deactivated_message" => $a_cloud_destination["deactivated_message"] ?? "",
 	];
 	}
 }

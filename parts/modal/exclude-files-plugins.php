@@ -17,7 +17,7 @@ BackWPupHelpers::component("closable-heading", [
 ]);
 ?>
 
-<div class="flex-auto overflow-y-scroll flex flex-col gap-2 h-[312px]">
+<div class="flex-auto overflow-y-auto flex flex-col gap-2 h-[312px]">
     <?php
     foreach ($excludedFiles as $file) {
         BackWPupHelpers::component("file-line", [

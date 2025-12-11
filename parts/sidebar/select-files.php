@@ -46,11 +46,12 @@ BackWPupHelpers::component("navigation-header", [
 <div class="rounded-lg p-6 bg-grey-100">
   <?php
   BackWPupHelpers::component("containers/accordion", [
-	"title" => __("Include in backup", 'backwpup'),
-	"open" => true,
-	"children" => "sidebar/parts/include-in-backup",
-	"children_return" => false,
-	"children_data" => ['job_id' => $job_id],
+      'title' => __("Include in backup", 'backwpup'),
+      'open' => true,
+      'children' => "sidebar/parts/include-in-backup",
+      'children_return' => false,
+      'children_data' => ['job_id' => $job_id],
+      'remove_item_center_class' => true
   ]);
   ?>
 </div>

@@ -9,6 +9,7 @@ foreach ($destinations as $destination) {
     "label" => $destination["label"],
     "name" => "onboarding_storage[]",
     "active" => false,
+    "deactivated_message" => $destination["deactivated_message"] ?? "",
   ];
 }
 BackWPupHelpers::component("heading", [
@@ -36,6 +37,7 @@ BackWPupHelpers::component("heading", [
             "label" => "Website Server",
             "name" => "onboarding_storage[]",
             "active" => false,
+            "deactivated_message" => "",
           ],
         ],
       ]);

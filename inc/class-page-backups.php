@@ -284,23 +284,23 @@ final class BackWPup_Page_Backups extends WP_List_Table
             try {
                 $actions['download'] = $this->download_item_action($item);
 
-                if ($this->dest === 'HIDRIVE') {
-                    $downloadUrl = wp_nonce_url($item['downloadurl'], 'backwpup_action_nonce');
+				if ( 'HIDRIVE' === $this->dest ) {
+					$download_url = wp_nonce_url( $item['downloadurl'], 'backwpup_action_nonce' );
 
-                    if ($item['filesize'] > 10485760) { // 10 MB
-                        $request = new BackWPup_Pro_Destination_HiDrive_Request();
-                        $authorization = new BackWPup_Pro_Destination_HiDrive_Authorization($request);
-                        $api = new BackWPup_Pro_Destination_HiDrive_Api($request, $authorization);
-                        $response = $api->temporalDownloadUrl($this->jobid, $item['file']);
-                        $responsBody = json_decode((string) $response['body']);
+					if ( $item['filesize'] > 10485760 ) { // 10 MB
+						$request       = new BackWPup_Pro_Destination_HiDrive_Request();
+						$authorization = new BackWPup_Pro_Destination_HiDrive_Authorization( $request );
+						$api           = new BackWPup_Pro_Destination_HiDrive_Api( $request, $authorization );
+						$response      = $api->temporal_download_url( $this->jobid, $item['file'] );
+						$response_body = json_decode( (string) $response['body'] );
 
-                        if (isset($responsBody->url)) {
-                            $downloadUrl = $responsBody->url;
-                        }
-                    }
+						if ( isset( $response_body->url ) ) {
+							$download_url = $response_body->url;
+						}
+					}
 
-                    $actions['download'] = '<a href="' . $downloadUrl . '" class="backup-download-link">Download</a>';
-                }
+					$actions['download'] = '<a href="' . $download_url . '" class="backup-download-link">Download</a>';
+				}
             } catch (BackWPup_Factory_Exception $e) {
                 $actions['download'] = sprintf(
                     '<a href="%1$s">%2$s</a>',

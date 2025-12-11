@@ -163,6 +163,10 @@ final class BackWPup {
 	public static function get_destination( $key ) {
 		$key = strtoupper( $key );
 
+		if ( ! isset( self::$destinations ) ) {
+			self::$destinations = self::get_registered_destinations();
+		}
+
 		if ( isset( self::$destinations[ $key ] ) && is_object( self::$destinations[ $key ] ) ) {
 			return self::$destinations[ $key ];
 		}
@@ -245,7 +249,7 @@ final class BackWPup {
 			'can_sync' => false,
 			'needed'   => [
 				'php_version' => '',
-				'functions'   => [ 'curl_exec' ],
+				'functions'   => [],
 				'classes'     => [],
 			],
 		];
@@ -260,7 +264,7 @@ final class BackWPup {
 			'can_sync' => false,
 			'needed'   => [
 				'php_version' => '',
-				'functions'   => [ 'curl_exec' ],
+				'functions'   => [ 'curl_init' ],
 				'classes'     => [ \XMLWriter::class ],
 			],
 		];
@@ -290,7 +294,7 @@ final class BackWPup {
 			'can_sync' => false,
 			'needed'   => [
 				'php_version' => '',
-				'functions'   => [ 'curl_exec' ],
+				'functions'   => [ 'curl_init' ],
 				'classes'     => [],
 			],
 		];
@@ -305,7 +309,7 @@ final class BackWPup {
 			'can_sync' => false,
 			'needed'   => [
 				'php_version' => '',
-				'functions'   => [ 'curl_exec' ],
+				'functions'   => [ 'curl_init' ],
 				'classes'     => [],
 			],
 		];

@@ -82,7 +82,6 @@ class Onboarding {
 			'mailaddresslog'       => sanitize_email( $default['mailaddresslog'] ),
 			'mailaddresssenderlog' => $default['mailaddresssenderlog'],
 			'mailerroronly'        => $default['mailerroronly'],
-			'archiveencryption'    => $default['archiveencryption'],
 			'archivename'          => $this->job_adapter->sanitize_file_name(
 				$this->option_adapter->normalize_archive_name(
 					$default['archivename'],

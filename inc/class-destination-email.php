@@ -58,7 +58,7 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
 						emailsecure      : $( '#emailsecure' ).val(),
 						emailuser        : $( 'input[name="emailuser"]' ).val(),
 						emailpass        : $( 'input[name="emailpass"]' ).val(),
-						_ajax_nonce      : $( '#backwpupajaxnonce' ).val()
+						_ajax_nonce      : $( 'input[name="backwpupajaxnonce"]' ).val()
 					};
 					$.post( ajaxurl, data, function ( response ) {
 						$( '#emailsendtext' ).replaceWith( response );

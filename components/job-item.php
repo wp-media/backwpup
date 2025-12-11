@@ -11,7 +11,8 @@ $is_cron_active    = BackWPup_Option::get( $job_id, 'activetype' );
 $is_active         = ! empty( $is_cron_active );
 $next_backup_label = __( 'No backup scheduled', 'backwpup' ); // Default label.
 $tooltip_text      = __( 'Enable', 'backwpup' );
-if ( $is_active ) {
+
+if( $is_active && 'link' !== $is_cron_active ) {
 	$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $job_id, 'cron' ) );
 
 	$next_backup_label = sprintf(
@@ -19,6 +20,11 @@ if ( $is_active ) {
 		wp_date( get_option( 'date_format' ), $cron_next ),
 		wp_date( get_option( 'time_format' ), $cron_next )
 	);
+}
+if( 'link' === $is_cron_active ) {
+	$next_backup_label = __( 'External link', 'backwpup' );
+}
+if ( $is_active ) {
 	$tooltip_text      = __( 'Disable', 'backwpup' );
 }
 
@@ -144,7 +150,7 @@ backwpup-job-<?php echo esc_attr( $data_type ); ?> h-[200px]" id="<?php echo esc
 				'tooltip'          => __( 'Backup now', 'backwpup' ),
 				'tooltip_position' => 'top',
 				'tooltip_size'     => 'medium',
-				'tooltip_icon'     => 'download',
+				'tooltip_icon'     => 'backup',
 			]
 		);
 		?>

@@ -63,7 +63,7 @@ $dismiss_icon = $dismiss_icon ?? false;
     <?php isset($children) && BackWPupHelpers::children($children); ?>
   </div>
 	<?php if ($dismiss_icon) : ?>
-    <div id="dismiss-icon" class="shrink-0 cursor-pointer ml-auto">
+    <div class="shrink-0 cursor-pointer ml-auto dismiss-icon">
 		<?php BackWPupHelpers::component("icon", ["name" => "close", "size" => "small"]); ?>
     </div>
     <?php endif; ?>

@@ -5,6 +5,8 @@ namespace WPMedia\BackWPup\StorageProviders;
 
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
+use WPMedia\BackWPup\StorageProviders\Rackspace\RackspaceProvider as Rackspace;
+use WPMedia\BackWPup\StorageProviders\Rackspace\Subscriber as RCSSubscriber;
 use WPMedia\BackWPup\StorageProviders\Subscriber as StorageProviderSubscriber;
 use WPMedia\BackWPup\StorageProviders\Frontend\API\Subscriber as StorageProviderFrontendApiSubscriber;
 use WPMedia\BackWPup\StorageProviders\Frontend\API\Rest as StorageProviderFrontendApiRest;
@@ -40,6 +42,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cloud_provider_manager',
 		'storage_providers_gdrive_subscriber',
 		OneDriveSubscriber::class,
+		'storage_rcs_subscriber',
 	];
 
 	/**
@@ -53,6 +56,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'storage_providers_api_subscriber',
 		'storage_providers_gdrive_subscriber',
 		OneDriveSubscriber::class,
+		'storage_rcs_subscriber',
 	];
 
 	/**
@@ -151,6 +155,12 @@ class ServiceProvider extends AbstractServiceProvider {
 				);
 		$this->getContainer()->addShared( StorageProviderSubscriber::class, StorageProviderSubscriber::class );
 		$this->getContainer()->addShared( OneDriveSubscriber::class, OneDriveSubscriber::class );
+		$this->getContainer()->addShared( 'storage_rcs_subscriber', RCSSubscriber::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'option_adapter' ),
+				]
+			);
 	}
 
 	/**

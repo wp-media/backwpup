@@ -59,6 +59,9 @@ class BackWPup_Page_Onboarding {
 		$db_cron_value    = $onboarding_class->get_onboarding_job_cron( $default_id_job_database, $database_job_frequency );
 
 		$first_backup_job_data = BackWPup_Option::get_job( $first_backup_job_id );
+		if ( ! $first_backup_job_data ) {
+			$first_backup_job_data = [];
+		}
 
 		// The 2 base jobs.
 		$job_frequency = [

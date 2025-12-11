@@ -1,4 +1,40 @@
 == Changelog ==
+
+= 5.6.1 =
+Release date: December 11, 2025
+
+* Fix: Legacy backup job links stopped working after upgrading from version 5.6.0.
+* Fix: Storage configuration was failing for multiple storage providers (Amazon S3, Amazon Glacier, Azure Storage, Google Cloud Storage, OneDrive, Rackspace).
+* Added: Compatibility for legacy backup job link formats to ensure older jobs continue to work without any changes.
+
+= 5.6.0 =
+Release date: November 25, 2025
+
+* Enhancement: Introduced WP-CLI support for running backups
+* Enhancement: Improved Mixpanel event tracking accuracy
+* Added support for triggering backups via link
+* Fix: Resolved a compatibility issue with Visual Composer
+
+= 5.5.2 =
+Release date: November 03, 2025
+
+* Security fix: Safe handling of job attributes concatenated into HTML attributes on the admin UI
+* Enhancement: Compatibility with Kinsta hosting with backup rate limits
+* Enhancement: Better handling of missing PHP cURL extension
+* Enhancement: Improved upload of large backups on HiDrive
+* Enhancement: Facilitated diagnosis for support with dedicated tooling
+* Fix: Consistently displaying the "Help Us Improve BackWPup!" notice
+
+= 5.5.1 =
+Release date: October 20, 2025
+
+* Security Fix: Missing Authorization to Sensitive Information Exposure
+* Fix: HiDrive backup download partially not working.
+* Fix: HiDrive backup not working properly due to major storage issue.
+* Fix: Compatibility issue with .donotbackup file and open_basedir environments.
+* Fix: Minor UX issues when including files in backups.
+* Fix: OneDrive allow users to reauthenticate.
+
 = 5.5.0 =
 Release date: September 16, 2025
 

@@ -45,12 +45,45 @@ class Tracking {
 	}
 
 	/**
+	 * Check if debug mode is enabled
+	 *
+	 * @return bool
+	 */
+	private function is_debug(): bool {
+		$debug = ( defined( 'WP_DEBUG' ) ? constant( 'WP_DEBUG' ) : false )
+			&& ( defined( 'WP_DEBUG_LOG' ) ? constant( 'WP_DEBUG_LOG' ) : false );
+
+		/**
+		 * Filters whether Mixpanel debug mode is enabled.
+		 *
+		 * @param bool $debug Debug mode value.
+		 */
+		return apply_filters( 'wp_media_mixpanel_debug', $debug );
+	}
+
+	/**
+	 * Log event to error log if debug mode is enabled
+	 *
+	 * @param string  $event Event name.
+	 * @param mixed[] $properties Event properties.
+	 */
+	private function log_event( string $event, array $properties ): void {
+		if ( ! $this->is_debug() ) {
+			return;
+		}
+
+		error_log( 'Mixpanel event: ' . $event . ' ' . var_export( $properties, true ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log, WordPress.PHP.DevelopmentFunctions.error_log_var_export
+	}
+
+	/**
 	 * Track an event in Mixpanel
 	 *
 	 * @param string  $event Event name.
 	 * @param mixed[] $properties Event properties.
 	 */
 	public function track( string $event, array $properties ): void {
+		$this->log_event( $event, $properties );
+
 		$this->mixpanel->track( $event, $properties );
 	}
 
@@ -145,6 +178,10 @@ class Tracking {
 		$all_plugins    = get_plugins();
 
 		foreach ( $active_plugins as $plugin_path ) {
+			if ( ! is_string( $plugin_path ) ) {
+				continue;
+			}
+
 			if ( ! isset( $all_plugins[ $plugin_path ] ) ) {
 				continue;
 			}

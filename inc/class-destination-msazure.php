@@ -343,7 +343,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations
 						msazureaccname: $('#msazureaccname').val(),
 						msazurekey: $('#msazurekey').val(),
 						msazureselected: $('#msazurecontainer').val(),
-						_ajax_nonce: $('#backwpupajaxnonce').val()
+						_ajax_nonce: $('input[name="backwpupajaxnonce"]').val()
 					};
 					$.post(ajaxurl, data, function (response) {
 						$('#msazureBucketContainer').html(response);

@@ -38,7 +38,7 @@ $parent_classes = $parent_classes ?? '';
 # CSS
 $tooltip_classes = BackWPupHelpers::clsx(
     $tooltip_class,
-    'absolute invisible inline-block group-hover:opacity-100 group-hover:visible bg-gray-800 text-white text-xs rounded z-50 transform',
+    'absolute invisible inline-block group-hover:opacity-100 group-hover:visible bg-gray-800 text-white text-xs rounded z-[1000000] transform',
     'p-2 text-xs font-normal opacity-0 font-body bg-gray-900 rounded-lg shadow-md tooltip dark:bg-gray-700 min-w-[130px] text-center max-w-[200px]'
 );
 

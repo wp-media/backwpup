@@ -81,6 +81,17 @@ class Backup extends Schema {
 			'sortable'   => true,
 		],
 
+		// Trigger column.
+		[
+			'name'       => 'backup_trigger',
+			'type'       => 'varchar',
+			'length'     => '32',
+			'default'    => '',
+			'cache_key'  => false,
+			'searchable' => true,
+			'sortable'   => true,
+		],
+
 		// MODIFIED column.
 		[
 			'name'       => 'modified',

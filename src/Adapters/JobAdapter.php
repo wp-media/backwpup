@@ -97,7 +97,7 @@ class JobAdapter {
 	 *
 	 * @return array|object [url] is the job url [header] for auth header or object form wp_remote_get()
 	 */
-	public static function get_jobrun_url( string $starttype, int $jobid = 0 ) {
+	public function get_jobrun_url( string $starttype, int $jobid = 0 ) {
 		return \BackWPup_Job::get_jobrun_url( $starttype, $jobid );
 	}
 
@@ -110,5 +110,54 @@ class JobAdapter {
 	 */
 	public function sanitize_file_name( $filename ) {
 		return \BackWPup_Job::sanitize_file_name( $filename );
+	}
+
+	/**
+	 * Reads the header information of the specified log file.
+	 *
+	 * @param string $log_file_name The name of the log file to read the header from.
+	 *
+	 * @return mixed The header information extracted from the log file.
+	 */
+	public function read_log_header( $log_file_name ) {
+		return \BackWPup_Job::read_logheader( $log_file_name );
+	}
+
+	/**
+	 * Retrieves the working data for the current BackWPup job.
+	 *
+	 * This method fetches the working data associated with the current job
+	 * by utilizing the static `get_working_data` method in the `BackWPup_Job` class.
+	 *
+	 * @return mixed The working data for the BackWPup job.
+	 */
+	public function get_working_data() {
+		return \BackWPup_Job::get_working_data();
+	}
+
+	/**
+	 * Starts a BackWPup job via CLI by its ID.
+	 *
+	 * This method initiates a scheduled job in the BackWPup plugin
+	 * by calling the static `start_cli` method of the `BackWPup_Job` class.
+	 *
+	 * @param mixed $jobid The ID of the job to start.
+	 *
+	 * @return void
+	 */
+	public function start_cli( $jobid ) {
+		\BackWPup_Job::start_cli( $jobid );
+	}
+
+	/**
+	 * Handles the user abort functionality for a BackWPup job.
+	 *
+	 * This method triggers the user abort operation in the BackWPup plugin
+	 * by calling the static `user_abort` method of the `BackWPup_Job` class.
+	 *
+	 * @return void
+	 */
+	public function user_abort() {
+		\BackWPup_Job::user_abort();
 	}
 }

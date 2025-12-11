@@ -5,6 +5,7 @@ namespace WPMedia\BackWPup\Admin;
 
 use BackWPup;
 use WPMedia\BackWPup\Admin\Beacon\Beacon;
+use WPMedia\BackWPup\Admin\Messages\API\Rest;
 use WPMedia\BackWPup\Admin\Notices\Notices;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice52;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice522;
@@ -30,6 +31,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		SettingSubscriber::class,
 		AdminFrontendSubscriber::class,
 		'options',
+		\WPMedia\BackWPup\Admin\Messages\API\Subscriber::class,
 	];
 
 	/**
@@ -41,6 +43,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		SettingSubscriber::class,
 		'notice_subscriber',
 		AdminFrontendSubscriber::class,
+		\WPMedia\BackWPup\Admin\Messages\API\Subscriber::class,
 	];
 
 	/**
@@ -116,6 +119,10 @@ class ServiceProvider extends AbstractServiceProvider {
 					'job_adapter',
 				]
 			);
+		$this->getContainer()->add( Notices\NoticeMissingCurl::ID . '_view', NoticeView::class )
+			->addArgument( Notices\NoticeMissingCurl::ID );
+		$this->getContainer()->addShared( Notices\NoticeMissingCurl::class, Notices\NoticeMissingCurl::class )
+			->addArgument( Notices\NoticeMissingCurl::ID . '_view' );
 
 		// Register the Subscriber with an array of notice instances.
 		$this->getContainer()->addShared( 'notice_subscriber', NoticeSubscriber::class )
@@ -127,6 +134,7 @@ class ServiceProvider extends AbstractServiceProvider {
 						$this->getContainer()->get( 'notice_52' ),
 						$this->getContainer()->get( 'notice_513' ),
 						$this->getContainer()->get( 'notice_datacorrupted' ),
+						$this->getContainer()->get( Notices\NoticeMissingCurl::class ),
 					],
 				]
 				);
@@ -135,6 +143,13 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'backwpup_adapter',
+				]
+			);
+		$this->getContainer()->addShared( Rest::class );
+		$this->getContainer()->addShared( \WPMedia\BackWPup\Admin\Messages\API\Subscriber::class )
+			->addArguments(
+				[
+					Rest::class,
 				]
 			);
 	}

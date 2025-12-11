@@ -45,7 +45,8 @@ class Subscriber implements SubscriberInterface {
 	 */
 	public function add_backwpup_job_script() {
 		$screen           = get_current_screen();
-		$is_backwpup_page = isset( $screen->id ) && str_contains( $screen->id, 'backwpup' );
+		$screen_id        = isset( $screen->id ) ? (string) $screen->id : '';
+		$is_backwpup_page = ! empty( $screen_id ) && str_contains( $screen_id, 'backwpup' );
 
 		if ( ! $is_backwpup_page ) {
 			return;
@@ -68,7 +69,8 @@ class Subscriber implements SubscriberInterface {
 	 */
 	public function add_backwpup_onboarding_script() {
 		$screen                      = get_current_screen();
-		$is_backwpup_onboarding_page = isset( $screen->id ) && str_contains( $screen->id, 'backwpuponboarding' );
+		$screen_id                   = isset( $screen->id ) ? (string) $screen->id : '';
+		$is_backwpup_onboarding_page = ! empty( $screen_id ) && str_contains( $screen_id, 'backwpuponboarding' );
 
 		if ( ! $is_backwpup_onboarding_page ) {
 			return;

@@ -203,10 +203,10 @@ class Rest implements RestInterface {
 			}
 		);
 
-		$backups         = array_slice( $backups, $start, $length );
-		$html            = '';
 		$backups         = wpm_apply_filters_typed( 'array', 'backwpup_backups_list', $backups );
 		$nb_totalbackups = count( $backups );
+		$backups         = array_slice( $backups, $start, $length );
+		$html            = '';
 
 		foreach ( $backups as $backup ) {
 			if ( 'wpcron' === $backup['type'] ) {

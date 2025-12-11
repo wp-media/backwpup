@@ -25,7 +25,7 @@ $gap = array_key_exists($gap_size, $gap_sizes) ? $gap_sizes[$gap_size] : $gap_si
 $method = $method ?? 'post';
 $page = $page ?? 'backwpup';
 $action = $action ?? 'backwpup';
-$overflow = $scrollable ?? true ? 'overflow-y-scroll' : '';
+$overflow = $scrollable ?? true ? 'overflow-y-auto' : '';
 $absolute = $scrollable ?? true ? 'absolute' : '';
 $idForm = $identifier ? 'id="'.$identifier.'"' : '';
 ?>
@@ -36,7 +36,8 @@ $idForm = $identifier ? 'id="'.$identifier.'"' : '';
 		method="<?php echo esc_attr($method); ?>"
     <?=$idForm?>
 	>
-  <?php wp_nonce_field($page.'_page'); ?>
-  <?php wp_nonce_field('backwpup_ajax_nonce', 'backwpupajaxnonce', false); ?>
+  <input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( $page.'_page' ); ?>" />
+  <?php wp_referer_field(); ?>
+  <input type="hidden" name="backwpupajaxnonce" value="<?php echo wp_create_nonce( 'backwpup_ajax_nonce' ); ?>" />
   <input type="hidden" name="page" value="<?=$page?>"/>
   <input type="hidden" name="action" value="<?=$action?>"/>

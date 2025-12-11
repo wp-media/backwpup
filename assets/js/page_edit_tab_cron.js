@@ -54,7 +54,7 @@ jQuery(document).ready(function ($) {
             cronmon:cronmon,
             cronwday:cronwday,
             crontype:'advanced',
-            _ajax_nonce:$('#backwpupajaxnonce').val()
+            _ajax_nonce:$('input[name="backwpupajaxnonce"]').val()
         };
         $.post(ajaxurl, data, function (response) {
             $('#schedulecron').replaceWith(response);
@@ -118,7 +118,7 @@ jQuery(document).ready(function ($) {
             cronmon:cronmon,
             cronwday:cronwday,
             crontype:'basic',
-            _ajax_nonce:$('#backwpupajaxnonce').val()
+            _ajax_nonce:$('input[name="backwpupajaxnonce"]').val()
         };
         $.post(ajaxurl, data, function (response) {
             $('#schedulecron').replaceWith(response);

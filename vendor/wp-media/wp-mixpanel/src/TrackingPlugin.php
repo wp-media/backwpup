@@ -53,8 +53,40 @@ class TrackingPlugin extends Tracking {
 	 *
 	 * @param string  $event      Event name.
 	 * @param mixed[] $properties Event properties.
+	 * @param string  $event_capability The capability required to track the event.
+	 *
+	 * @return void
 	 */
-	public function track( string $event, array $properties ): void {
+	public function track( string $event, array $properties, string $event_capability = '' ): void {
+		/**
+		 * Filter the default capability required to track a specific event.
+		 *
+		 * @param string $capability The capability required to track the event.
+		 * @param string $event      The event name.
+		 * @param string $app        The application name.
+		 */
+		$default = apply_filters( 'wp_mixpanel_event_capability', 'manage_options', $event, $this->app );
+
+		if ( empty( $event_capability ) ) {
+			$event_capability = $default;
+		}
+
+		if ( ! current_user_can( $event_capability ) ) {
+			return;
+		}
+
+		$this->track_direct( $event, $properties );
+	}
+
+	/**
+	 * Track an event directly in Mixpanel, bypassing capability checks.
+	 *
+	 * @param string  $event      Event name.
+	 * @param mixed[] $properties Event properties.
+	 *
+	 * @return void
+	 */
+	public function track_direct( string $event, array $properties ): void {
 		$host = wp_parse_url( get_home_url(), PHP_URL_HOST );
 
 		if ( ! $host ) {
@@ -89,5 +121,24 @@ class TrackingPlugin extends Tracking {
 				'opt_in_status' => $status,
 			]
 		);
+	}
+
+	/**
+	 * Add the Mixpanel script & initialize it
+	 */
+	public function add_script(): void {
+		/**
+		 * Filter the default capability required to track with JS.
+		 *
+		 * @param string $capability The capability required to track the event.
+		 * @param string $app        The application name.
+		 */
+		$capability = apply_filters( 'wp_mixpanel_js_track_capability', 'manage_options', $this->app );
+
+		if ( ! current_user_can( $capability ) ) {
+			return;
+		}
+
+		parent::add_script();
 	}
 }

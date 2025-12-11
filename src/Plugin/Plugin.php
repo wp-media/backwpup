@@ -131,7 +131,7 @@ class Plugin {
 			||
 			! wp_next_scheduled( 'backwpup_check_cleanup' )
 		) {
-			BackWPup_Install::activate();
+			add_action( 'init', [ BackWPup_Install::class, 'activate' ], 0 );
 		}
 
 		$plugin_data = [
@@ -161,11 +161,6 @@ class Plugin {
 
 		// Only in backend.
 		$this->load_admin_backend( $plugin_data );
-
-		// Work with wp-cli.
-		if ( defined( WP_CLI::class ) && WP_CLI && method_exists( WP_CLI::class, 'add_command' ) ) {
-			WP_CLI::add_command( 'backwpup', BackWPup_WP_CLI::class );
-		}
 
 		$this->container->addShared(
 			'event_manager',

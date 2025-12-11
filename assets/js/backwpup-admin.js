@@ -40,6 +40,7 @@ jQuery(document).ready(function ($) {
 		  url: route,
 		  beforeSend: function(xhr) {
 			  xhr.setRequestHeader('X-WP-Nonce', backwpupApi.nonce);
+        xhr.setRequestHeader('Cache-Control', 'no-cache');
 		  },
 		  method: method,
 		  data: data,
@@ -112,16 +113,15 @@ jQuery(document).ready(function ($) {
                 },
             },
             function(response) {
-                const toast = jQuery('<div class="transform translate-y-2 transition-all duration-300"></div>').html(response);
-                $('#bwp-settings-toast').html('');
-                $('#bwp-settings-toast').append(toast);
+                const toast = jQuery('<div class="transform translate-y-2 transition-all mb-2"></div>').html(response);
+                 $('#bwp-settings-toast').append(toast);
                 // Animate in
                 setTimeout(() => {
                     toast.addClass('opacity-100 translate-y-0');
                 }, 10);
 
                 // Auto-remove after duration
-                if (duration !== -1 || type !== 'success') {
+                if (duration !== -1) {
                     setTimeout(() => {
                         toast.removeClass('opacity-100 translate-y-0').addClass('opacity-0 translate-y-2');
                         setTimeout(() => {
@@ -136,6 +136,25 @@ jQuery(document).ready(function ($) {
             }
         );
     }
+
+  function getBackWPupMessages() {
+    requestWPApi(backwpupApi.messages, null, function(response) {
+
+      if (response['error'] && response['error'].length) {
+        response['error'].forEach(function(error) {
+          backwpupDisplaySettingsToast('danger', error, -1 );
+        });
+      }
+
+      if (response['updated'] && response['updated'].length) {
+        response['updated'].forEach(function(updated) {
+          backwpupDisplaySettingsToast('success', updated );
+        });
+      }
+    });
+  }
+
+  getBackWPupMessages();
 
   // Function to be sure the value on this class is an integer.
   $(".js-backwpup-intonly").on('keydown', function(event) {
@@ -1384,6 +1403,7 @@ jQuery(document).ready(function ($) {
         refresh_storage_destinations(job_id, 'GDRIVE', response.connected);
         backwpupDisplaySettingsToast('success', response.message);
         closeSidebar();
+        getBackWPupMessages();
       },
       "POST",
       function (request, error) {
@@ -1935,6 +1955,7 @@ jQuery(document).ready(function ($) {
 
           backwpupDisplaySettingsToast( 'success', response.message );
           closeSidebar();
+          getBackWPupMessages();
         }
       },
       "POST",
@@ -2003,6 +2024,7 @@ jQuery(document).ready(function ($) {
             if (response.status === 200) {
                 if ( ! $("#backwpup-onboarding-panes").length ) {
 	                backwpupDisplaySettingsToast('success', response.message);
+                  getBackWPupMessages();
                 }
                 closeSidebar();
             }
@@ -2065,6 +2087,7 @@ jQuery(document).ready(function ($) {
           closeSidebar();
           if ( ! $("#backwpup-onboarding-panes").length ) {
 	          backwpupDisplaySettingsToast('success', response.message);
+            getBackWPupMessages();
           }
         }
     }, 'POST');
@@ -2090,16 +2113,23 @@ jQuery(document).ready(function ($) {
 		    data,
 		    function(response) {
 		      if (response.status === 200) {
-		        setTimeout(function() {
-		            window.location.reload();
-		        }, 500);
-		      } else if ( 301 === response.status ) {
+            window.location.reload();
+		      } else if (response.status === 201) {
+            backwpupDisplaySettingsToast('success', response.message);
+            setTimeout(function() {
+              window.location.reload();
+            }, 750);
+          }else if ( 301 === response.status ) {
 		        window.location = response.url;
-		      }
+		      } else if ( 500 === response.status ) {
+            backwpupDisplaySettingsToast('danger', response.message, -1);
+            $document.trigger('backup-complete');
+          }
 		    },
-			'POST',
-			function(request, error) {
-		        $document.trigger('backup-ended');
+			  'POST',
+			  function(request, error) {
+          backwpupDisplaySettingsToast('danger', 'Get an undefined error on trying to start backup! You can find more information in the browser console.', -1);
+		      $document.trigger('backup-complete');
 		    }
 		);
 	}
@@ -2173,14 +2203,16 @@ jQuery(document).ready(function ($) {
   } );
 
   // hide toast on click.
-  $(document).on('click', '#bwp-settings-toast #dismiss-icon', function() {
-    const toastElements = $('#bwp-settings-toast').children();
+  $(document).on('click', '#bwp-settings-toast .dismiss-icon', function(event) {
+    const toast = event.target.closest(".flex.items-center.gap-2.p-4.rounded");
 
-    toastElements.removeClass('opacity-100 translate-y-0')
-        .addClass('opacity-0 translate-y-2');
+    toast.classList.remove("oopacity-100");
+    toast.classList.remove("translate-y-0");
+    toast.classList.add("opacity-0");
+    toast.classList.add("translate-y-2");
 
     setTimeout(() => {
-      toastElements.remove();
+      toast.parentElement.remove();
     }, 300);
   });
 
@@ -2261,10 +2293,10 @@ jQuery(document).ready(function ($) {
       hourIn12Format = hourIn12Format - 12;
       dayPart = 'pm'
     }
-    name_previev = name_previev.replace('%d', String(date.getDay() + 1).padStart(2, '0'));
+    name_previev = name_previev.replace('%d', String(date.getDate()).padStart(2, '0'));
     name_previev = name_previev.replace('%m', String(date.getMonth() + 1).padStart(2, '0'));
     name_previev = name_previev.replace('%n', String(date.getMonth() + 1));
-    name_previev = name_previev.replace('%j', date.getDay() + 1);
+    name_previev = name_previev.replace('%j', date.getDate());
     name_previev = name_previev.replace('%Y', date.getFullYear());
     name_previev = name_previev.replace('%y', String(date.getFullYear()).slice(-2));
     name_previev = name_previev.replace('%a', dayPart);
@@ -2330,6 +2362,7 @@ jQuery(document).ready(function ($) {
       ".js-backwpup-frequency-job-show-if-weekly",
       ".js-backwpup-frequency-job-show-if-monthly",
       ".js-backwpup-frequency-job-hide-if-hourly",
+      ".js-backwpup-frequency-job-show-if-link",
     ];
 
     // Hide all elements initially
@@ -2378,7 +2411,8 @@ jQuery(document).ready(function ($) {
               onboardingPane.find("select[name='job_"+data.job_id+"_frequency']").val(sidebarFrequency.val());
             } else {
 	            backwpupDisplaySettingsToast('success', response.message);
-			}
+              getBackWPupMessages();
+			      }
 
             // Close the settings sidebar
             closeSidebar();
@@ -2410,6 +2444,7 @@ jQuery(document).ready(function ($) {
       function (response) {
         if (response.status === 200) {
           backwpupDisplaySettingsToast('success', response.message);
+          getBackWPupMessages();
           // Close the settings sidebar
           closeSidebar();
         }
@@ -2446,6 +2481,42 @@ jQuery(document).ready(function ($) {
  */
 document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener("click", function (event) {
+        const copy_button = event.target.closest('.js-backwpup-copy-clipboard ');
+
+        if( copy_button ) {
+            const parentDiv = copy_button.closest('.js-frequency-link-url');
+            const textSpan = parentDiv.querySelector('.backwpup-backup-link');
+            const textToCopy = textSpan.textContent.trim();
+
+            navigator.clipboard.writeText(textToCopy).then(function() {
+
+                const originalText = copy_button.textContent;
+                copy_button.textContent = 'Copied!';
+                copy_button.style.backgroundColor = '#10b981';
+                copy_button.setAttribute('aria-label', 'Backup link copied to clipboard');
+
+                const liveRegion = parentDiv.querySelector('[role="status"]');
+                if(liveRegion) {
+                    liveRegion.textContent = 'Backup link copied to clipboard';
+                }
+
+                setTimeout(() => {
+                    copy_button.textContent = originalText;
+                    copy_button.style.backgroundColor = '';
+                    copy_button.setAttribute('aria-label', 'Copy backup link to clipboard');
+
+                    if(liveRegion) {
+                        liveRegion.textContent = '';
+                    }
+                }, 2000);
+
+            }).catch(function(err) {
+                console.error('Failed to copy:', err);
+                // Fallback for older browsers
+                fallbackCopy(textToCopy);
+            });
+        }
+
         const storage_button = event.target.closest('.js-backwpup-select-storage');
         if (!storage_button) {
             return;
