@@ -223,6 +223,11 @@ class BackWPup_Cron
 		// special nonce on external start.
 		if ( 'runext' === $args['run'] ) {
 			$nonce = md5( get_site_option( 'backwpup_cfg_jobrunauthkey' ) . $args['jobid'] );
+
+			// fallback for old jobs not using hash.
+			if ( preg_match( '/^[a-f0-9]{32}$/i', $args['nonce'] ) !== 1 ) {
+				$nonce = get_site_option( 'backwpup_cfg_jobrunauthkey' );
+			}
 		}
 		if ( 'cronrun' === $args['run'] ) {
 			$nonce = '';

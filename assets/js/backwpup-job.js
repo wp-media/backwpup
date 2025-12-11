@@ -11,7 +11,19 @@ document.addEventListener("DOMContentLoaded", function() {
         element.style.pointerEvents = 'auto';
     }
 
-  document.addEventListener("click", function (event) {
+    document.addEventListener('change', function(e) {
+        if (e.target && e.target.id === 's3region') {
+            const customService = document.querySelector('.js-s3-custom-service');
+
+            if (e.target.value === 'custom') {
+                customService.classList.remove('hidden');
+            } else {
+                customService.classList.add('hidden');
+            }
+        }
+    })
+
+    document.addEventListener("click", function (event) {
         const buttonAddNew = event.target.closest('#js_backwpup_add_new_backup');
         if (!buttonAddNew) {
           return;

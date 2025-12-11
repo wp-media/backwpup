@@ -124,9 +124,10 @@ class BackWPup_Page_Editjob {
 					'.zip',
 					'.tar',
 					'.tar.gz',
-				], true) ? $_POST['archiveformat'] : '.zip';
-				BackWPup_Option::update($jobid, 'archiveformat', $archiveformat);
-				BackWPup_Option::update($jobid, 'archiveencryption', !empty($_POST['archiveencryption']));
+				],
+					true
+					) ? $_POST['archiveformat'] : '.zip'; // @phpcs:ignore
+				BackWPup_Option::update( $jobid, 'archiveformat', $archiveformat );
 
 				BackWPup_Option::update($jobid, 'archivename', BackWPup_Job::sanitize_file_name(BackWPup_Option::normalize_archive_name($_POST['archivename'], $jobid, false)));
 				break;

@@ -764,7 +764,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
 						s3base_signature      : $( 'input[name="s3base_signature"]' ).val(),
 						s3base_multipart      : $( 'input[name="s3base_multipart"]' ).is(':checked'),
 						s3base_pathstylebucket      : $( 'input[name="s3base_pathstylebucket"]' ).is(':checked'),
-						_ajax_nonce     : $( '#backwpupajaxnonce' ).val()
+						_ajax_nonce     : $( 'input[name="backwpupajaxnonce"]' ).val()
 					};
 					$.post( ajaxurl, data, function ( response ) {
 						$( '#s3bucketContainer').html(response);

@@ -210,7 +210,12 @@ final class BackWPup_S3_Destination
                     'label' => __('Scaleway: PAR', 'backwpup'),
                     'region' => 'fr-par',
                     'endpoint' => 'https://s3.fr-par.scw.cloud',
-                ],
+				],
+				'custom'              => [
+					'label'    => __( 'Custom', 'backwpup' ),
+					'region'   => null,
+					'endpoint' => null,
+				],
             ]
         );
     }

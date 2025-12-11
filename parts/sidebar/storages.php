@@ -7,6 +7,11 @@ use BackWPup\Utils\BackWPupHelpers;
 if ( $job_id === null ) {
 	return;
 }
+$is_onboarding = get_site_option( 'backwpup_onboarding', false );
+if ( $is_onboarding ) {
+  return;
+}
+
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Storages Settings", 'backwpup'),
   'type' => 'sidebar'

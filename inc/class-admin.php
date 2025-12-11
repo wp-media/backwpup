@@ -1219,6 +1219,7 @@ EOT;
 			'delete_job'             => rest_url( 'backwpup/v1/delete_job' ),
 			'backupslistingslength'  => 10,
 			'storages'               => rest_url( 'backwpup/v2/storages' ),
+			'messages'               => rest_url( 'backwpup/v2/messages' ),
 			'updates_backup_type'    => trailingslashit( rest_url( 'backwpup/v2/backups' ) ) . '%d/type',
 		];
 

@@ -15,10 +15,8 @@ use Inpsyde\Restore\Api\Module\Decryption\Exception\DecryptException;
  *
  * @since   3.6.0
  */
-class BackWPup_Destination_Downloader
-{
-    public const ARCHIVE_ENCRYPT_OPTION = 'archiveencryption';
-    public const CAPABILITY = 'backwpup_backups_download';
+class BackWPup_Destination_Downloader {
+	public const CAPABILITY = 'backwpup_backups_download';
 
     public const STATE_DOWNLOADING = 'downloading';
     public const STATE_ERROR = 'error';

@@ -5,6 +5,7 @@ namespace WPMedia\BackWPup\Admin;
 
 use BackWPup;
 use WPMedia\BackWPup\Admin\Beacon\Beacon;
+use WPMedia\BackWPup\Admin\Messages\API\Rest;
 use WPMedia\BackWPup\Admin\Notices\Notices;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice52;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice522;
@@ -30,6 +31,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		SettingSubscriber::class,
 		AdminFrontendSubscriber::class,
 		'options',
+		\WPMedia\BackWPup\Admin\Messages\API\Subscriber::class,
 	];
 
 	/**
@@ -41,6 +43,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		SettingSubscriber::class,
 		'notice_subscriber',
 		AdminFrontendSubscriber::class,
+		\WPMedia\BackWPup\Admin\Messages\API\Subscriber::class,
 	];
 
 	/**
@@ -140,6 +143,13 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'backwpup_adapter',
+				]
+			);
+		$this->getContainer()->addShared( Rest::class );
+		$this->getContainer()->addShared( \WPMedia\BackWPup\Admin\Messages\API\Subscriber::class )
+			->addArguments(
+				[
+					Rest::class,
 				]
 			);
 	}

@@ -379,7 +379,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 						rscapikey: $('#rscapikey').val(),
 						rscregion: $('#rscregion').val(),
 						rscselected: $('#rsccontainer').val(),
-						_ajax_nonce: $('#backwpupajaxnonce').val()
+						_ajax_nonce: $('input[name="backwpupajaxnonce"]').val()
 					};
 					$.post(ajaxurl, data, function (response) {
 						$('#rscbucketContainer').html(response);

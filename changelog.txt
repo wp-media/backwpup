@@ -1,4 +1,12 @@
 == Changelog ==
+
+= 5.6.1 =
+Release date: December 11, 2025
+
+* Fix: Legacy backup job links stopped working after upgrading from version 5.6.0.
+* Fix: Storage configuration was failing for multiple storage providers (Amazon S3, Amazon Glacier, Azure Storage, Google Cloud Storage, OneDrive, Rackspace).
+* Added: Compatibility for legacy backup job link formats to ensure older jobs continue to work without any changes.
+
 = 5.6.0 =
 Release date: November 25, 2025
 

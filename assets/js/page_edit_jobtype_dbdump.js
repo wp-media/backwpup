@@ -56,7 +56,7 @@ jQuery(document).ready(function ($) {
       dbpassword: $("#dbdumpdbpassword").val(),
       wpdbsettings: $("#dbdumpwpdbsettings:checked").val(),
       jobid: $("#jobid").val(),
-      _ajax_nonce: $("#backwpupajaxnonce").val(),
+      _ajax_nonce: $('input[name="backwpupajaxnonce"]').val(),
     };
     $.post(ajaxurl, data, function (response) {
       $("#dbtables").replaceWith(response);
@@ -80,7 +80,7 @@ jQuery(document).ready(function ($) {
       dbuser: $("#dbdumpdbuser").val(),
       dbpassword: $("#dbdumpdbpassword").val(),
       wpdbsettings: $("#dbdumpwpdbsettings:checked").val(),
-      _ajax_nonce: $("#backwpupajaxnonce").val(),
+      _ajax_nonce: $('input[name="backwpupajaxnonce"]').val(),
     };
     $.post(ajaxurl, data, function (response) {
       $("#dbdumpdbname").replaceWith(response);
@@ -100,7 +100,7 @@ jQuery(document).ready(function ($) {
       dbpassword: $("#dbdumpdbpassword").val(),
       wpdbsettings: $("#dbdumpwpdbsettings:checked").val(),
       jobid: $("#jobid").val(),
-      _ajax_nonce: $("#backwpupajaxnonce").val(),
+      _ajax_nonce: $('input[name="backwpupajaxnonce"]').val(),
     };
 
     $.post(ajaxurl, data, function (response) {

@@ -94,7 +94,7 @@ $s3->edit_inline_js();
 		);
 	?>
 
-	<p class="my-2 text-center text-sm"><?php _e( 'OR', 'backwpup' ); ?></p>
+        <div class="js-s3-custom-service contents hidden">
 
 	<?php
 	BackWPupHelpers::component(
@@ -188,6 +188,7 @@ $s3->edit_inline_js();
 		]
 		);
 	?>
+        </div>
 
 	</div>
 </div>

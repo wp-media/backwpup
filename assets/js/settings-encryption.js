@@ -9,7 +9,7 @@
   }
 
   function nonce() {
-    return document.querySelector("#backwpupajaxnonce").value;
+    return document.querySelector('input[name="backwpupajaxnonce"]').value;
   }
 
   function waitingMessageVisibilityTo(display) {

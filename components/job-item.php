@@ -150,7 +150,7 @@ backwpup-job-<?php echo esc_attr( $data_type ); ?> h-[200px]" id="<?php echo esc
 				'tooltip'          => __( 'Backup now', 'backwpup' ),
 				'tooltip_position' => 'top',
 				'tooltip_size'     => 'medium',
-				'tooltip_icon'     => 'download',
+				'tooltip_icon'     => 'backup',
 			]
 		);
 		?>

@@ -173,6 +173,29 @@ BackWPupHelpers::component( 'alerts/info', [
 ?>
 </div>
 
+    <div class="js-backwpup-frequency-job-show-if-link">
+        <div class="bg-slate-300 text-black js-frequency-link-url pl-3 flex rounded-md mb-3">
+        <span class="backwpup-backup-link truncate self-center pr-3">
+            <?php echo $url['url'] ?? '' ; ?>
+        </span>
+            <button type="button"
+                    aria-label="Copy backup link to clipboard"
+                    class="js-backwpup-copy-clipboard rounded-md cursor-pointer py-2 px-4 bg-black text-white inline-block min-w-20 text-center">
+                Copy
+            </button>
+            <span class="sr-only" role="status" aria-live="polite" aria-atomic="true"></span>
+        </div>
+		<?php
+		BackWPupHelpers::component( 'alerts/info', [
+			'type'    => 'alert',
+			'font'    => 'small',
+			'content' => __(
+				"Use the link above to trigger this backup. The link stays the same even if you change the frequency and switch back to “Triggered by link.”",
+				'backwpup'
+			),
+		]);
+		?>
+    </div>
 <div class="mt-2 pl-3 pr-3">
   <strong>
     <?php esc_html_e( 'Start Backups with CLI:', 'backwpup' ); ?>
@@ -181,35 +204,6 @@ BackWPupHelpers::component( 'alerts/info', [
   // translators: %1$s: link tag to backwpup.com, %2$s: closing link tag, %3$s: link tag to wp-cli.org.
   printf( esc_html__( 'Use %1$sWP-CLI%2$s to run backups from the command line.', 'backwpup' ), '<a class="underline" href="https://backwpup.com/docs/backwpup-wp-cli-commands/" target="_blank">', '</a>' );
   ?>
-</div>
-<div class="js-backwpup-frequency-job-show-if-link">
-    <div class="bg-slate-300 text-black js-frequency-link-url p-3 flex rounded-md mb-3">
-        <span class="backwpup-backup-link truncate pr-3">
-            <?php echo $url['url'] ?? '' ; ?>
-        </span>
-        <span class="js-backwpup-copy-clipboard cursor-pointer">
-        <?php
-            BackWPupHelpers::component(
-                'icon',
-                [
-                    'name'  => 'copy',
-                    'size'  => 'medium',
-                ]
-            );
-        ?>
-            </span>
-    </div>
-    <?php
-    BackWPupHelpers::component( 'alerts/info', [
-        'type'    => 'alert',
-        'font'    => 'small',
-        'content' => __(
-                "Use the link above to trigger this backup. If you change the frequency and then switch back to 
-                'Triggered by link', a new link will be generated - you'll need to use the updated one. ",
-                'backwpup'
-        ),
-    ]);
-    ?>
 </div>
 
 <?php BackWPupHelpers::component("containers/scrollable-end"); ?>

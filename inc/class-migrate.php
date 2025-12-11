@@ -89,7 +89,8 @@ class BackWPup_Migrate {
 		// migrate encryption setting.
 		if ( $first_job_id && $file_job_id ) {
 			$use_encryption = (bool) BackWPup_Option::get( $file_job_id, 'archiveencryption', false );
-			BackWPup_Option::update( $first_job_id, 'archiveencryption', $use_encryption );
+
+			update_site_option( 'backwpup_archiveencryption', $use_encryption );
 		}
 	}
 

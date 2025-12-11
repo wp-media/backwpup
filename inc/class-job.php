@@ -161,6 +161,8 @@ class BackWPup_Job
 		if ( 'restart' !== $starttype ) {
 			// check job id exists.
 			if ( (int) BackWPup_Option::get( $jobid, 'jobid' ) !== (int) $jobid ) {
+				// translators: %s = job id.
+				BackWPup_Admin::message( sprintf( __( 'Job with ID %s not exists', 'backwpup' ), $jobid ), true );
 				return;
 			}
 
@@ -172,6 +174,12 @@ class BackWPup_Job
                 BackWPup_Admin::message($folder_message_log, true);
                 BackWPup_Admin::message($folder_message_temp, true);
 
+				return;
+			}
+
+			$written = file_put_contents( trailingslashit( BackWPup::get_plugin_data( 'TEMP' ) ) . '.backwpup_job_started', $starttype . "\n", LOCK_EX ); // phpcs:ignore
+			if ( false === $written ) {
+				BackWPup_Admin::message( __( 'Can`t write a file to temporary folder', 'backwpup' ), true );
 				return;
 			}
 		}
@@ -283,11 +291,12 @@ class BackWPup_Job
 		 */
 		$start = wpm_apply_filters_typed( 'boolean', 'backwpup_can_job_start', true, $this->job, $start_type );
 		if ( ! $start ) {
+			// translators: %s = job name.
+			$error_message = wpm_apply_filters_typed( 'string', 'backwpup_job_not_started_error_message', sprintf( __( 'Start of job "%s" forbidden!', 'backwpup' ), $this->job['name'] ), $this->job['jobid'] );
 			if ( 'runcli' === $start_type && defined( 'WP_CLI' ) && WP_CLI ) {
-				// translators: %s = job name.
-				$error_message = wpm_apply_filters_typed( 'string', 'backwpup_job_not_started_error_message', sprintf( __( 'Start of job "%s" forbidden!', 'backwpup' ), $this->job['name'] ), $this->job['jobid'] );
 				\WP_CLI::error( $error_message );
 			}
+			BackWPup_Admin::message( $error_message, true );
 			return;
 		}
 
@@ -385,12 +394,12 @@ class BackWPup_Job
 				$this->steps_data['CREATE_ARCHIVE']['NAME']          = __( 'Creates archive', 'backwpup' );
 				$this->steps_data['CREATE_ARCHIVE']['STEP_TRY']      = 0;
 				$this->steps_data['CREATE_ARCHIVE']['SAVE_STEP_TRY'] = 0;
-                // Encrypt archive
-                if (BackWPup_Option::get($this->job['jobid'], 'archiveencryption')) {
-                    $this->steps_todo[] = 'ENCRYPT_ARCHIVE';
-                    $this->steps_data['ENCRYPT_ARCHIVE']['NAME'] = __('Encrypts the archive', 'backwpup');
-                    $this->steps_data['ENCRYPT_ARCHIVE']['STEP_TRY'] = 0;
-                    $this->steps_data['ENCRYPT_ARCHIVE']['SAVE_STEP_TRY'] = 0;
+				// Encrypt archive.
+				if ( get_option( 'backwpup_archiveencryption' ) ) {
+					$this->steps_todo[]                                   = 'ENCRYPT_ARCHIVE';
+					$this->steps_data['ENCRYPT_ARCHIVE']['NAME']          = __( 'Encrypts the archive', 'backwpup' );
+					$this->steps_data['ENCRYPT_ARCHIVE']['STEP_TRY']      = 0;
+					$this->steps_data['ENCRYPT_ARCHIVE']['SAVE_STEP_TRY'] = 0;
                 }
             }
             //ADD Destinations
@@ -1412,13 +1421,14 @@ class BackWPup_Job
 	}
 
     /**
-     * Cleanup Temp Folder.
-     */
-    public static function clean_temp_folder()
-    {
-        $instance = new self();
-        $temp_dir = BackWPup::get_plugin_data('TEMP');
-        $do_not_delete_files = ['.htaccess', 'nginx.conf', 'index.php', '.', '..', '.donotbackup'];
+	 * Cleanup Temp Folder.
+	 *
+	 * @return void
+	 */
+	public static function clean_temp_folder() {
+		$instance            = new self();
+		$temp_dir            = BackWPup::get_plugin_data( 'TEMP' );
+		$do_not_delete_files = [ '.htaccess', 'nginx.conf', 'index.php', '.', '..', '.donotbackup', '.backwpup_job_started' ];
 
         if (is_writable($temp_dir)) {
             try {
@@ -1668,17 +1678,19 @@ class BackWPup_Job
             $running_file = BackWPup::get_plugin_data('running_file');
             if (file_exists($running_file)) {
                 unlink($running_file);
-            }
+			}
 
-            return;
+			BackWPup_Admin::message( __( 'Backup can\'t be started because it is not created!', 'backwpup' ), true );
+			return;
         }
 
-        //Check double running and inactivity
-        $last_update = microtime(true) - $this->timestamp_last_update;
-        if (!empty($this->pid) && $last_update > 300) {
-            $this->log(__('Job restarts due to inactivity for more than 5 minutes.', 'backwpup'), E_USER_WARNING);
-        } elseif (!empty($this->pid)) {
-            return;
+		// Check double running and inactivity.
+		$last_update = microtime( true ) - $this->timestamp_last_update;
+		if ( ! empty( $this->pid ) && $last_update > 300 ) {
+			$this->log( __( 'Job restarts due to inactivity for more than 5 minutes.', 'backwpup' ), E_USER_WARNING );
+		} elseif ( ! empty( $this->pid ) ) {
+			BackWPup_Admin::message( __( 'Run aborted because no PID given!', 'backwpup' ), true );
+			return;
         }
         // set timestamp of script start
         $this->timestamp_script_start = microtime(true);
