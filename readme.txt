@@ -196,8 +196,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 = 5.6.2 =
 Release date: January 07, 2026
 
-* Fix: Validation of the “Max backups to retain” field.
-* Enhancement(pro): Improved license management and added a banner to notify users.
+* Fix: Improved validation for the “Max backups to retain” setting to prevent incorrect values.
+* Pro enhancement: Improved license management and added an in-plugin notification to alert users about license status changes.
 
 = 5.6.1 =
 Release date: December 11, 2025
