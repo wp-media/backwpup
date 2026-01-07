@@ -1,8 +1,15 @@
 <?php
 
-class BackWPup_Destination_Ftp extends BackWPup_Destinations
-{
-    private const FILTER_USEPASVADDRESS = 'backwpup_ftp_use_passive_address';
+class BackWPup_Destination_Ftp extends BackWPup_Destinations {
+
+	/**
+	 * Service name
+	 *
+	 * @var string
+	 */
+	private const SERVICE_NAME = 'FTP';
+
+	private const FILTER_USEPASVADDRESS = 'backwpup_ftp_use_passive_address';
 
     /**
      * FTP Connection Resource.
@@ -63,7 +70,7 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations
 				BackWPup_Option::update(
 					$id,
 					'ftpmaxbackups',
-					! empty( $_POST['ftpmaxbackups'] ) ? absint( $_POST['ftpmaxbackups'] ) : 0
+					isset( $_POST['ftpmaxbackups'] ) && is_numeric( $_POST['ftpmaxbackups'] ) ? absint( $_POST['ftpmaxbackups'] ) : $this->option_defaults()['ftpmaxbackups']
 				);
 			if ( function_exists( 'ftp_ssl_connect' ) ) {
 				BackWPup_Option::update( $id, 'ftpssl', ! empty( $_POST['ftpssl'] ) );
@@ -111,16 +118,6 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations
         }
 
         set_site_transient('backwpup_' . strtolower($jobdest), $files, YEAR_IN_SECONDS);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function file_get_list(string $jobdest): array
-    {
-        $list = (array) get_site_transient('backwpup_' . strtolower($jobdest));
-
-        return array_filter($list);
     }
 
     /**
@@ -686,4 +683,11 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations
 
         return $response;
     }
+
+	/**
+	 * Get service name
+	 */
+	public function get_service_name(): string {
+		return self::SERVICE_NAME;
+	}
 }

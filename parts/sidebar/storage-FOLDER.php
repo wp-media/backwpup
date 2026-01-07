@@ -64,10 +64,9 @@ BackWPupHelpers::component("closable-heading", [
       "name" => "maxbackups",
       "identifier" => "maxbackups",
       "type" => "number",
-      "min" => 1,
+      "min" => 0,
       "label" => __("Max backups to retain", 'backwpup'),
       "value" => $maxbackups,
-      "required" => true,
     ]);
     ?>
 
@@ -75,7 +74,7 @@ BackWPupHelpers::component("closable-heading", [
     BackWPupHelpers::component("alerts/info", [
       "type" => "alert",
       "font" => "xs",
-      "content" => __("When this limit is exceeded, the oldest backup will be deleted.", 'backwpup'),
+      "content" => __("Limits the number of stored backups. When exceeded, the oldest backup is removed. Setting this to 0 keeps unlimited backups and may increase storage usage.", 'backwpup'),
     ]);
     ?>
   </div>

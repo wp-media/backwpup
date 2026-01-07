@@ -13,11 +13,18 @@ use BackWPup\Utils\BackWPupHelpers;
 /**
  * Documentation: http://www.windowsazure.com/en-us/develop/php/how-to-guides/blob-service/.
  */
-class BackWPup_Destination_MSAzure extends BackWPup_Destinations
-{
-    public const MSAZUREDIR = 'msazuredir';
-    public const MSAZUREMAXBACKUPS = 'msazuremaxbackups';
-    public const MSAZURESYNCNODELETE = 'msazuresyncnodelete';
+class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
+
+	/**
+	 * Service name
+	 *
+	 * @var string
+	 */
+	private const SERVICE_NAME = 'MSAzure';
+
+	public const MSAZUREDIR          = 'msazuredir';
+	public const MSAZUREMAXBACKUPS   = 'msazuremaxbackups';
+	public const MSAZURESYNCNODELETE = 'msazuresyncnodelete';
     public const NEWMSAZURECONTAINER = 'newmsazurecontainer';
 
     public function option_defaults(): array
@@ -86,7 +93,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations
 				BackWPup_Option::update(
 					$jobid,
 					self::MSAZUREMAXBACKUPS,
-					filter_input( INPUT_POST, self::MSAZUREMAXBACKUPS, FILTER_SANITIZE_NUMBER_INT ) ?: 0
+					isset( $_POST[ self::MSAZUREMAXBACKUPS ] ) && is_numeric( $_POST[ self::MSAZUREMAXBACKUPS ] ) ? absint( $_POST[ self::MSAZUREMAXBACKUPS ] ) : $this->option_defaults()[ self::MSAZUREMAXBACKUPS ] // phpcs:ignore WordPress.Security.NonceVerification.Missing
 				);
 
 				BackWPup_Option::update(
@@ -134,16 +141,6 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations
         }
 
         set_site_transient('backwpup_' . strtolower($jobdest), $files, YEAR_IN_SECONDS);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function file_get_list(string $jobdest): array
-    {
-        $list = (array) get_site_transient('backwpup_' . strtolower($jobdest));
-
-        return array_filter($list);
     }
 
     public function job_run_archive(BackWPup_Job $job_object): bool
@@ -585,4 +582,11 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations
 
         return $jobId;
     }
+
+	/**
+	 * Get service name
+	 */
+	public function get_service_name(): string {
+		return self::SERVICE_NAME;
+	}
 }

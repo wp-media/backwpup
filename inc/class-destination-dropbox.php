@@ -7,7 +7,14 @@
  */
 class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 {
-    /**
+	/**
+	 * Service name
+	 *
+	 * @var string
+	 */
+	private const SERVICE_NAME = 'Dropbox';
+
+	/**
      * Dropbox.
      *
      * Instance of Dropbox API
@@ -121,7 +128,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 			BackWPup_Option::update(
 				$id,
 				'dropboxmaxbackups',
-				! empty( $_POST['dropboxmaxbackups'] ) ? absint( $_POST['dropboxmaxbackups'] ) : 0
+				isset( $_POST['dropboxmaxbackups'] ) && is_numeric( $_POST['dropboxmaxbackups'] ) ? absint( $_POST['dropboxmaxbackups'] ) : $this->option_defaults()['dropboxmaxbackups']
 			);
 			BackWPup_Option::update( $id, 'dropboxdir', $_POST['dropboxdir'] );
 		}
@@ -166,16 +173,6 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 		 */
 		do_action( 'backwpup_update_backup_history', $key, $files );
 	}
-
-    /**
-     * {@inheritdoc}
-     */
-    public function file_get_list(string $jobdest): array
-    {
-        $list = (array) get_site_transient('backwpup_' . strtolower($jobdest));
-
-        return array_filter($list);
-    }
 
     /**
      * File Update List.
@@ -413,4 +410,11 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 
         return $this->dropbox;
     }
+
+	/**
+	 * Get service name
+	 */
+	public function get_service_name(): string {
+		return self::SERVICE_NAME;
+	}
 }

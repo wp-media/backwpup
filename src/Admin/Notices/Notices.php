@@ -5,6 +5,7 @@ namespace WPMedia\BackWPup\Admin\Notices;
 use WPMedia\BackWPup\Adapters\BackWPupAdapter;
 use WPMedia\BackWPup\Admin\Beacon\Beacon;
 use WPMedia\BackWPup\Admin\OptionData;
+use WPMedia\BackWPup\License\LicenseManager;
 use WPMedia\BackWPup\Admin\Options\Options;
 
 class Notices {
@@ -90,6 +91,42 @@ class Notices {
 	}
 
 	/**
+	 * Display license notice if license is not valid.
+	 * This notice is only shown to pro users.
+	 * This notice is not shown during onboarding.
+	 * This notice is not dismissible.
+	 *
+	 * @return void
+	 */
+	public function display_license_notice() {
+		if ( ! \BackWPup::is_pro() ) {
+			return;
+		}
+		// Check if onboarding finished.
+		$is_onboarding = get_site_option( 'backwpup_onboarding', false );
+		if ( $is_onboarding ) {
+			return;
+		}
+		// Check license status.
+		$license_status = get_site_option( LicenseManager::LICENSE_STATUS, 'inactive' );
+		if ( 'active' === $license_status ) {
+			return;
+		}
+
+		$notice_data = $this->get_license_notice_data();
+		backwpup_notice_html(
+			[
+				'status'         => 'warning',
+				'dismissible'    => '',
+				'title'          => $notice_data['title'],
+				'message'        => $notice_data['message'],
+				'dismiss_button' => false,
+				'id'             => 'backwpup_license_notice',
+			]
+		);
+	}
+
+	/**
 	 * Ajax callback to save the dismiss as a user meta
 	 *
 	 * @since 5.4
@@ -138,5 +175,56 @@ class Notices {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get license notice data based on license status
+	 *
+	 * @return array
+	 */
+	protected function get_license_notice_data(): array {
+		// Check if legacy payment method is used. and set notice data accordingly.
+		if ( true === (bool) get_site_option( LicenseManager::LICENSE_LEGACY_PAYMENT_METHOD, false ) ) {
+			$update_payment_method_link = $this->beacon->get_suggest(
+				'update-payment-method',
+				true,
+				[
+					'bwu_event' => 'legacy_update_payment_method',
+				]
+			);
+			$title                      = sprintf(
+				// translators: %1$s = strong opening tag, %2$s = link opening tag, %3$s = link closing tag, %4$s = strong closing tag.
+				__( '⚠️ %1$sAction Required – %2$sUpdate Your Payment Method%3$s%4$s', 'backwpup' ),
+				'<strong>',
+				'<a href="' . esc_url( $update_payment_method_link['url'] ) . '" title="' . esc_attr( $update_payment_method_link['title'] ) . '" target="_blank" class="text-primary-darker border-b border-primary-darker">',
+				'</a>',
+				'</strong>'
+			);
+			$message = __( 'Your payment method is outdated. Update it to restore your Pro features.', 'backwpup' );
+		} else {
+			$update_payment_method_link = $this->beacon->get_suggest(
+				'update-payment-method',
+				true,
+				[
+					'bwu_event' => 'expired_license_update_payment_method',
+				]
+			);
+			$title                      = sprintf(
+				// translators: %1$s = strong opening tag, %2$s = strong closing tag.
+				__( '⚠️ %1$sYour BackWPup Pro Plan Has Expired%2$s', 'backwpup' ),
+				'<strong>',
+				'</strong>'
+			);
+			$message = sprintf(
+				// translators: %1$s = link opening tag, %2$s = link closing tag.
+				__( '%1$sRenew now%2$s to continue receiving updates and Pro features.', 'backwpup' ),
+				'<a href="' . esc_url( $update_payment_method_link['url'] ) . '" title="' . esc_attr( $update_payment_method_link['title'] ) . '" target="_blank" class="text-primary-darker border-b border-primary-darker">',
+				'</a>'
+			);
+		}
+		return [
+			'title'   => $title,
+			'message' => $message,
+		];
 	}
 }

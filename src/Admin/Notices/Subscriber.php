@@ -46,6 +46,7 @@ class Subscriber implements SubscriberInterface {
 			'all_admin_notices'                  => [
 				[ 'render_all_notices' ],
 				[ 'display_update_notice' ],
+				[ 'display_license_notice' ],
 			],
 			'wp_ajax_backwpup_dismiss_notice'    => 'backwpup_dismiss_notices',
 			'admin_post_backwpup_dismiss_notice' => 'backwpup_dismiss_notices',
@@ -70,6 +71,15 @@ class Subscriber implements SubscriberInterface {
 	 */
 	public function display_update_notice(): void {
 		$this->admin_notices->display_update_notices();
+	}
+
+	/**
+	 * Display license notice.
+	 *
+	 * @return void
+	 */
+	public function display_license_notice(): void {
+		$this->admin_notices->display_license_notice();
 	}
 
 	/**

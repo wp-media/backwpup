@@ -2155,7 +2155,7 @@ jQuery(document).ready(function ($) {
     if ( ! isGenerateJsIncluded() ) {
       let first_job_id = $('#backwpup_first_backup_job_id').val();
       requestWPApi(backwpupApi.startbackup, {first_backup: 1, job_id : first_job_id}, function(response) {
-        if (200 === response.status) {
+        if (201 === response.status || 200 === response.status) {
           setTimeout(function() {
               window.location.reload();
           }, 500);

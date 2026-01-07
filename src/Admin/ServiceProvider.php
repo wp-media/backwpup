@@ -119,6 +119,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'job_adapter',
 				]
 			);
+
 		$this->getContainer()->add( Notices\NoticeMissingCurl::ID . '_view', NoticeView::class )
 			->addArgument( Notices\NoticeMissingCurl::ID );
 		$this->getContainer()->addShared( Notices\NoticeMissingCurl::class, Notices\NoticeMissingCurl::class )

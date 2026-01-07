@@ -370,6 +370,34 @@ class Tracking {
 	}
 
 	/**
+	 * Track link clicked event.
+	 *
+	 * @param string $event The event name property.
+	 * @param array  $properties Additional event properties.
+	 *
+	 * @return void
+	 */
+	public function track_link_clicked( string $event, array $properties = [] ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$user = wp_get_current_user();
+
+		$this->mixpanel->identify( $user->user_email );
+		// Merge default properties.
+		$defaults   = [
+			'context' => 'wp_plugin',
+		];
+		$properties = array_merge( $defaults, $properties );
+		// Track link clicked event.
+		$this->mixpanel->track(
+			$event,
+			$properties
+		);
+	}
+
+	/**
 	 * Run a callback with the system capability to send events.
 	 * The system capability is only granted to the callback and removed afterwards.
 	 * The capability is only granted if the current capability check is for sending events with no user (0) and to the capability bwu_mixpanel_send_event.

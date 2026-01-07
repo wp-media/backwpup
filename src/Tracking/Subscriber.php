@@ -47,6 +47,7 @@ class Subscriber implements SubscriberInterface {
 			'backwpup_create_job'             => [ 'track_start_job', 20, 3 ],
 			'backwpup_track_end_job'          => [ 'track_end_job', 10, 3 ],
 			'backwpup_beta_optin_change'      => 'track_beta_optin_change',
+			'backwpup_link_clicked'           => [ 'track_link_clicked', 10, 2 ],
 		];
 	}
 
@@ -145,5 +146,17 @@ class Subscriber implements SubscriberInterface {
 	 */
 	public function track_end_job( $job_id, array $job_details, string $trigger ) {
 		$this->tracking->track_end_job( $job_id, $job_details, $trigger );
+	}
+
+	/**
+	 * Track link clicked event.
+	 *
+	 * @param string $event The event name.
+	 * @param array  $properties Additional event properties.
+	 *
+	 * @return void
+	 */
+	public function track_link_clicked( string $event, array $properties = [] ): void {
+		$this->tracking->track_link_clicked( $event, $properties );
 	}
 }

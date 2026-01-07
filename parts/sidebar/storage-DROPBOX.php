@@ -77,10 +77,9 @@ $dropboxtoken = BackWPup_Option::get($job_id, 'dropboxtoken', []);
       "name" => "dropboxmaxbackups",
       "identifier" => "dropboxmaxbackups",
       "type" => "number",
-      "min" => 1,
+      "min" => 0,
       "label" => __("Max backups to retain", 'backwpup'),
       "value" => $dropboxmaxbackups,
-      "required" => true,
     ]);
     ?>
 
@@ -88,7 +87,7 @@ $dropboxtoken = BackWPup_Option::get($job_id, 'dropboxtoken', []);
     BackWPupHelpers::component("alerts/info", [
       "type" => "alert",
       "font" => "xs",
-      "content" => __("When this limit is exceeded, the oldest backup will be deleted.", 'backwpup'),
+      "content" => __("Limits the number of stored backups. When exceeded, the oldest backup is removed. Setting this to 0 keeps unlimited backups and may increase storage usage.", 'backwpup'),
     ]);
     ?>
   </div>

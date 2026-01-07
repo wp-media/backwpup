@@ -389,4 +389,11 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
 
 		return $phpmailer;
 	}
+
+	/**
+	 * Get service name
+	 */
+	public function get_service_name(): string {
+		return 'Email';
+	}
 }

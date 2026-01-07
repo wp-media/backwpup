@@ -1,8 +1,20 @@
 <?php
 
-class BackWPup_Destination_SugarSync extends BackWPup_Destinations
-{
-    public static $backwpup_job_object;
+class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
+
+	/**
+	 * Service name
+	 *
+	 * @var string
+	 */
+	private const SERVICE_NAME = 'SugarSync';
+
+	/**
+	 * Backwpup job object.
+	 *
+	 * @var mixed
+	 */
+	public static $backwpup_job_object;
 
     public function option_defaults(): array
     {
@@ -61,7 +73,7 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations
 				BackWPup_Option::update( $jobid, 'sugardir', $_POST['sugardir'] );
 
 				BackWPup_Option::update( $jobid, 'sugarroot', isset( $_POST['sugarroot'] ) ? sanitize_text_field( $_POST['sugarroot'] ) : '' );
-				BackWPup_Option::update( $jobid, 'sugarmaxbackups', isset( $_POST['sugarmaxbackups'] ) ? absint( $_POST['sugarmaxbackups'] ) : 0 );
+				BackWPup_Option::update( $jobid, 'sugarmaxbackups', isset( $_POST['sugarmaxbackups'] ) && is_numeric( $_POST['sugarmaxbackups'] ) ? absint( $_POST['sugarmaxbackups'] ) : $this->option_defaults()['sugarmaxbackups'] );
 		}
 	}
 	// phpcs:enable
@@ -123,15 +135,14 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function file_get_list(string $jobdest): array
-    {
-        $list = (array) get_site_transient('backwpup_' . strtolower($jobdest));
+	/**
+	 * {@inheritdoc}
+	 */
+	public function file_get_list( string $jobdest ): array {
+		$list = (array) get_site_transient( 'backwpup_' . strtolower( $jobdest ) );
 
-        return array_filter($list);
-    }
+		return array_filter( $list );
+	}
 
     public function job_run_archive(BackWPup_Job $job_object): bool
     {
@@ -257,6 +268,13 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations
 
         return !(empty($job_settings['sugarroot']));
     }
+
+	/**
+	 * Get service name
+	 */
+	public function get_service_name(): string {
+		return self::SERVICE_NAME;
+	}
 }
 
 

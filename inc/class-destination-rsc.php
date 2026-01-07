@@ -6,7 +6,12 @@ use WPMedia\BackWPup\StorageProviders\Rackspace\RackspaceProvider as Rackspace;
 
 
 class BackWPup_Destination_RSC extends BackWPup_Destinations {
-
+	/**
+	 * Service name
+	 *
+	 * @var string
+	 */
+	private const SERVICE_NAME = 'RSC';
 
 	/**
 	 * Rackspace US
@@ -101,7 +106,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			BackWPup_Option::update( $id, 'rsccontainer', isset( $_POST['rsccontainer'] ) ? sanitize_text_field( $_POST['rsccontainer'] ) : '' );
 			BackWPup_Option::update( $id, 'rscregion', ! empty( $_POST['rscregion'] ) ? sanitize_text_field( $_POST['rscregion'] ) : 'DFW' );
 			BackWPup_Option::update( $id, 'rscdir', $_POST['rscdir'] );
-			BackWPup_Option::update( $id, 'rscmaxbackups', ! empty( $_POST['rscmaxbackups'] ) ? absint( $_POST['rscmaxbackups'] ) : 0 );
+			BackWPup_Option::update( $id, 'rscmaxbackups', isset( $_POST['rscmaxbackups'] ) && is_numeric( $_POST['rscmaxbackups'] ) ? absint( $_POST['rscmaxbackups'] ) : $this->option_defaults()['rscmaxbackups'] );
 			BackWPup_Option::update( $id, 'rscsyncnodelete', ! empty( $_POST['rscsyncnodelete'] ) );
 			if ( ! empty( $newrsccontainer ) ) {
 				BackWPup_Option::update( $id, 'rsccontainer', $newrsccontainer );
@@ -152,16 +157,6 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 		 * @param array $files An array of files data.
 		 */
 		do_action( 'backwpup_update_backup_history', $key, $files );
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function file_get_list(string $jobdest): array
-	{
-		$list = (array) get_site_transient('backwpup_' . strtolower($jobdest));
-
-		return array_filter($list);
 	}
 
 	/**
@@ -476,5 +471,12 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 		if ( $ajax ) {
 			wp_die();
 		}
+	}
+
+	/**
+	 * Get service name
+	 */
+	public function get_service_name(): string {
+		return self::SERVICE_NAME;
 	}
 }

@@ -61,6 +61,7 @@ class BackWPup_Destination_SugarSync_API {
 	 * @param string $url the url to call.
 	 * @param string $data the data to send, File on put, xml on post.
 	 * @param string $method the method to use. Possible values are GET, POST, PUT, DELETE.
+	 * @param array  $extra_headers Additional headers (e.g., Range).
 	 *
 	 * @throws BackWPup_Destination_SugarSync_API_Exception When an error is thrown.
 	 *
@@ -69,7 +70,7 @@ class BackWPup_Destination_SugarSync_API {
 	 * @internal param $string [optiona] $data            File on put, xml on post
 	 * @internal param $string [optional] $method        The method to use. Possible values are GET, POST, PUT, DELETE.
 	 */
-	private function do_call( string $url, string $data = '', string $method = 'GET' ) {
+	private function do_call( string $url, string $data = '', string $method = 'GET', array $extra_headers = [] ) {
 		$datafilefd = null;
 		// allowed methods.
 		$allowed_methods = [ 'GET', 'POST', 'PUT', 'DELETE' ];
@@ -90,6 +91,10 @@ class BackWPup_Destination_SugarSync_API {
 		$headers[] = 'Authorization: ' . $this->access_token;
 
 		$headers[] = 'Expect:';
+
+		foreach ( $extra_headers as $header ) {
+			$headers[] = $header;
+		}
 
 		// init.
 		$curl = curl_init();
@@ -598,5 +603,19 @@ class BackWPup_Destination_SugarSync_API {
 				return $getfile->ref;
 			}
 		}
+	}
+
+	/**
+	 * Download a chunk of a file with Range header.
+	 *
+	 * @param string $url        File URL.
+	 * @param int    $start_byte Start byte.
+	 * @param int    $end_byte   End byte.
+	 *
+	 * @return string|SimpleXMLElement Binary data on success or a SimpleXMLElement on error.
+	 */
+	public function download_chunk( string $url, int $start_byte, int $end_byte ) {
+		$range_header = 'Range: bytes=' . $start_byte . '-' . $end_byte;
+		return $this->do_call( $url . '/data', '', 'GET', [ $range_header ] );
 	}
 }
