@@ -5,7 +5,7 @@ Tags: backup, restore, cloud backup, database backup, wordpress backup
 Requires at least: 4.9
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 5.6.1
+Stable tag: 5.6.2
 License: GPLv2+
 
 Create a complete WordPress backup easily. Schedule automatic backups, store securely, and restore effortlessly with the best WordPress backup plugin!
@@ -193,6 +193,12 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
 == Changelog ==
+= 5.6.2 =
+Release date: January 07, 2026
+
+* Fix: Validation of the “Max backups to retain” field.
+* Enhancement(pro): Improved license management and added a banner to notify users.
+
 = 5.6.1 =
 Release date: December 11, 2025
 
