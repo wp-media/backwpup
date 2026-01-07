@@ -47,7 +47,7 @@ class RackspaceProvider {
 	 *
 	 * @var string
 	 */
-	private string $cloud_files_endpoint_url;
+	private string $cloud_files_endpoint_url = '';
 
 	/**
 	 * Container name
@@ -226,6 +226,7 @@ class RackspaceProvider {
 	 *
 	 * @param object $data Rackspace data.
 	 *
+	 * @throws Exception Throw guzzle exception if request failed.
 	 * @return void
 	 */
 	public function set_endpoint_url( $data ): void {
@@ -234,11 +235,19 @@ class RackspaceProvider {
 				foreach ( $service->endpoints as $endpoint ) {
 					if ( $endpoint->region === $this->get_region() ) {
 						$this->cloud_files_endpoint_url = $endpoint->publicURL; // phpcs:ignore
-						break 2;
+						return;
 					}
 				}
 			}
 		}
+
+		$error_message = sprintf(
+		/* translators: 1: region */
+			__( 'Cloud Files endpoint not found for region "%s". Please check your region setting.', 'backwpup' ),
+			$this->get_region()
+		);
+
+		throw new Exception( esc_html( $error_message ) );
 	}
 
 	/**
@@ -248,6 +257,11 @@ class RackspaceProvider {
 	 * @throws Exception If container request failed.
 	 */
 	public function get_containers() {
+		if ( '' === $this->cloud_files_endpoint_url ) {
+			throw new Exception(
+				esc_html__( 'Rackspace not initialized. Please check your region and credentials.', 'backwpup' )
+			);
+		}
 		try {
 			$response = wp_remote_get(
 				$this->cloud_files_endpoint_url,

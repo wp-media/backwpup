@@ -335,9 +335,9 @@ $s3->edit_inline_js();
 			'name'       => 's3maxbackups',
 			'identifier' => 's3maxbackups',
 			'type'       => 'number',
+			'min'        => 0,
 			'label'      => __( 'Max backups to retain', 'backwpup' ),
 			'value'      => $s3maxbackups,
-			'required'   => true,
 		]
 		);
 	?>
@@ -348,7 +348,7 @@ $s3->edit_inline_js();
 		[
 			'type'    => 'alert',
 			'font'    => 'xs',
-			'content' => __( 'When this limit is exceeded, the oldest backup will be deleted.', 'backwpup' ),
+			'content' => __( 'Limits the number of stored backups. When exceeded, the oldest backup is removed. Setting this to 0 keeps unlimited backups and may increase storage usage.', 'backwpup' ),
 		]
 		);
 	?>
