@@ -5,7 +5,7 @@ Tags: backup, restore, cloud backup, database backup, wordpress backup
 Requires at least: 4.9
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 5.6.2
+Stable tag: 5.6.3
 License: GPLv2+
 
 Create a complete WordPress backup easily. Schedule automatic backups, store securely, and restore effortlessly with the best WordPress backup plugin!
@@ -193,6 +193,17 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
 == Changelog ==
+= 5.6.3 =
+Release date: January 20, 2026
+
+* Fix: Backups stored on Amazon Glacier were not listed correctly.
+* Fix: When restoring multiple backups consecutively, the previously selected backup was restored instead of the intended one.
+* Fix: No error message was shown when an FTP error occurred during backup or restore.
+* Fix: Fatal error occurring on Kinsta-hosted environments.
+* Fix: Re-enabled automatic folder protection to prevent backup directories from being publicly accessible.
+* Enhancement: Cache is now flushed after database restore to ensure restored data is properly reflected.
+* Security: Fixed a security vulnerability (CVE-2025-15041).
+
 = 5.6.2 =
 Release date: January 07, 2026
 
