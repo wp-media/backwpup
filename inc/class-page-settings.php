@@ -382,29 +382,28 @@ class BackWPup_Page_Settings
 
 		// Set default options if button clicked.
         if (isset($_POST['default_settings']) && $_POST['default_settings']) { // phpcs:ignore
-            delete_site_option('backwpup_cfg_showadminbar');
-            delete_site_option('backwpup_cfg_showfoldersize');
-            delete_site_option('backwpup_cfg_jobstepretry');
-            delete_site_option('backwpup_cfg_jobmaxexecutiontime');
-            delete_site_option('backwpup_cfg_loglevel');
-            delete_site_option('backwpup_cfg_jobwaittimems');
-            delete_site_option('backwpup_cfg_jobrunauthkey');
-            delete_site_option('backwpup_cfg_jobdooutput');
-            delete_site_option('backwpup_cfg_windows');
-            delete_site_option('backwpup_cfg_maxlogs');
-            delete_site_option('backwpup_cfg_gzlogs');
-            delete_site_option('backwpup_cfg_protectfolders');
-            delete_site_option('backwpup_cfg_authentication');
-            delete_site_option('backwpup_cfg_logfolder');
-            delete_site_option('backwpup_cfg_dropboxappkey');
-            delete_site_option('backwpup_cfg_dropboxappsecret');
-            delete_site_option('backwpup_cfg_dropboxsandboxappkey');
-            delete_site_option('backwpup_cfg_dropboxsandboxappsecret');
-            delete_site_option('backwpup_cfg_sugarsynckey');
-            delete_site_option('backwpup_cfg_sugarsyncsecret');
-            delete_site_option('backwpup_cfg_sugarsyncappid');
-            delete_site_option('backwpup_cfg_hash');
-            delete_site_option('backwpup_cfg_keepplugindata');
+			delete_site_option( 'backwpup_cfg_showadminbar' );
+			delete_site_option( 'backwpup_cfg_showfoldersize' );
+			delete_site_option( 'backwpup_cfg_jobstepretry' );
+			delete_site_option( 'backwpup_cfg_jobmaxexecutiontime' );
+			delete_site_option( 'backwpup_cfg_loglevel' );
+			delete_site_option( 'backwpup_cfg_jobwaittimems' );
+			delete_site_option( 'backwpup_cfg_jobrunauthkey' );
+			delete_site_option( 'backwpup_cfg_jobdooutput' );
+			delete_site_option( 'backwpup_cfg_windows' );
+			delete_site_option( 'backwpup_cfg_maxlogs' );
+			delete_site_option( 'backwpup_cfg_gzlogs' );
+			delete_site_option( 'backwpup_cfg_authentication' );
+			delete_site_option( 'backwpup_cfg_logfolder' );
+			delete_site_option( 'backwpup_cfg_dropboxappkey' );
+			delete_site_option( 'backwpup_cfg_dropboxappsecret' );
+			delete_site_option( 'backwpup_cfg_dropboxsandboxappkey' );
+			delete_site_option( 'backwpup_cfg_dropboxsandboxappsecret' );
+			delete_site_option( 'backwpup_cfg_sugarsynckey' );
+			delete_site_option( 'backwpup_cfg_sugarsyncsecret' );
+			delete_site_option( 'backwpup_cfg_sugarsyncappid' );
+			delete_site_option( 'backwpup_cfg_hash' );
+			delete_site_option( 'backwpup_cfg_keepplugindata' );
 
             foreach ($this->settings_updaters as $setting) {
                 $setting->reset();
@@ -434,7 +433,6 @@ class BackWPup_Page_Settings
 			'backwpup_cfg_windows'              => get_site_option( 'backwpup_cfg_windows' ),
 			'backwpup_cfg_maxlogs'              => get_site_option( 'backwpup_cfg_maxlogs' ),
 			'backwpup_cfg_gzlogs'               => get_site_option( 'backwpup_cfg_gzlogs' ),
-			'backwpup_cfg_protectfolders'       => get_site_option( 'backwpup_cfg_protectfolders' ),
 			'backwpup_cfg_jobrunauthkey'        => get_site_option( 'backwpup_cfg_jobrunauthkey' ),
 			'backwpup_cfg_logfolder'            => get_site_option( 'backwpup_cfg_logfolder' ),
 			'backwpup_cfg_authentication'       => get_site_option( 'backwpup_cfg_authentication' ),
@@ -473,8 +471,7 @@ class BackWPup_Page_Settings
 			$new_options['backwpup_cfg_maxlogs'] = absint( $_POST['maxlogs'] );
 		}
 
-		$new_options['backwpup_cfg_gzlogs']         = ! empty( $_POST['gzlogs'] );
-		$new_options['backwpup_cfg_protectfolders'] = ! empty( $_POST['protectfolders'] );
+		$new_options['backwpup_cfg_gzlogs'] = ! empty( $_POST['gzlogs'] );
 
 		if ( isset( $_POST['jobrunauthkey'] ) ) {
 			$new_options['backwpup_cfg_jobrunauthkey'] = preg_replace( '/[^a-zA-Z0-9]/', '', trim( (string) sanitize_text_field( wp_unslash( $_POST['jobrunauthkey'] ) ) ) );

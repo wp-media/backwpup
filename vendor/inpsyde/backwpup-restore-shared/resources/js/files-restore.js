@@ -23,6 +23,7 @@ window.BWU = window.BWU || {};
 				}
 
 				this.closeSource();
+				this.cleanup();
 
 				return this;
 			},
@@ -40,6 +41,7 @@ window.BWU = window.BWU || {};
 				}
 
 				this.closeSource();
+				this.cleanup();
 
 				return this;
 			},
@@ -59,6 +61,8 @@ window.BWU = window.BWU || {};
 					$el.text( backwpupRestoreLocalized.restoringDirectories );
 				}
 
+				this.isRestoring = true;
+
 				return this;
 			},
 
@@ -75,6 +79,33 @@ window.BWU = window.BWU || {};
 
 				$( '#start-restore' )
 					.prop( 'disabled', false );
+
+				this.isRestoring = false;
+
+				return this;
+			},
+
+			/**
+			 * Cleanup
+			 *
+			 * Reset the state for next restore
+			 *
+			 * @returns {BWU} this for chaining
+			 */
+			cleanup: function () {
+				this.errors = 0;
+				this.isRestoring = false;
+
+				// Remove any event listeners
+				if ( this.eventSource ) {
+					this.eventSource.removeEventListener( 'log', this.onError );
+					this.eventSource.onmessage = null;
+					this.eventSource.onopen = null;
+					this.eventSource.onerror = null;
+				}
+
+				// Trigger cleanup event for other components
+				$( 'body' ).trigger( 'backwpup.restore_cleanup' );
 
 				return this;
 			},
@@ -115,6 +146,8 @@ window.BWU = window.BWU || {};
 
 				if ( 'done' === data.state ) {
 					this.onDone( data );
+
+					return this;
 				}
 
 				if ( _.isFunction( this.options.onMessageCallback ) ) {
@@ -124,31 +157,32 @@ window.BWU = window.BWU || {};
 				return this;
 			},
 
-      /**
-       * On Error
-       *
-       * @returns {BWU} this for chaining
-       */
-      onError: function (data) {
-        data = JSON.parse(data.data)
-        var message = data.message
-        var $messageContainer = $('#restore_step')
+			/**
+			 * On Error
+			 *
+			 * @returns {BWU} this for chaining
+			 */
+			onError: function (data) {
+				data = JSON.parse(data.data)
+				var message = data.message
+				var $messageContainer = $('#restore_step')
 
-        this.eventSource.close()
+				this.eventSource.close()
+				this.cleanup();
 
-        // Skip if not error.
-        if (!data.state || 'error' !== data.state) {
-          return this
-        }
+				// Skip if not error.
+				if (!data.state || 'error' !== data.state) {
+					return this
+				}
 
-        BWU.Functions.printMessageError(message, $messageContainer)
+				BWU.Functions.printMessageError(message, $messageContainer)
 
-        $('body').trigger(this.ACTION_FILE_RESTORE_ERROR, message)
+				$('body').trigger(this.ACTION_FILE_RESTORE_ERROR, message)
 
-        this.errors++
+				this.errors++
 
-        return this
-      },
+				return this
+			},
 
 			/**
 			 * Restore
@@ -220,25 +254,25 @@ window.BWU = window.BWU || {};
 			}
 		};
 
-    /**
-     * Construct
-     *
-     * @param {string} url The url where call the server.
-     * @param {string} nonce The nonce for the request.
-     * @param {object} options The options for the object.
-     *
-     * @returns {FilesRestore} The object
-     */
-    BWU.Restore.FactoryFilesRestore = function FactoryFilesRestore (
-      url, nonce, options) {
-      return Object.create(
-        FilesRestore,
-        {
-          ACTION_FILE_RESTORE_ERROR: BWU.Functions.makeConstant(
-            'backwpup.database_restore_error'
-          ),
-        }).construct(url, nonce, options)
-    }
+		/**
+		 * Construct
+		 *
+		 * @param {string} url The url where call the server.
+		 * @param {string} nonce The nonce for the request.
+		 * @param {object} options The options for the object.
+		 *
+		 * @returns {FilesRestore} The object
+		 */
+		BWU.Restore.FactoryFilesRestore = function FactoryFilesRestore (
+			url, nonce, options) {
+			return Object.create(
+				FilesRestore,
+				{
+					ACTION_FILE_RESTORE_ERROR: BWU.Functions.makeConstant(
+						'backwpup.database_restore_error'
+					),
+				}).construct(url, nonce, options)
+		}
 
 	}( window.BWU, window._, window.jQuery, window.backwpupRestoreLocalized )
 );

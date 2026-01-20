@@ -53,6 +53,9 @@ class Kinsta implements SubscriberInterface {
 	 * @return string Returns 'db' if the backup type is only database, 'file' if it is only files, 'full' if it is both, or an empty string if none match.
 	 */
 	public function get_backup_type( array $job_data ) {
+		if ( empty( $job_data['type'] ) || ! is_array( $job_data['type'] ) ) {
+			return '';
+		}
 		if ( ! in_array( 'FILE', $job_data['type'], true ) && in_array( 'DBDUMP', $job_data['type'], true ) ) {
 			return 'db';
 		} elseif ( in_array( 'FILE', $job_data['type'], true ) && ! in_array( 'DBDUMP', $job_data['type'], true ) ) {

@@ -334,7 +334,9 @@ class Rest implements RestInterface {
 			[
 				'methods'             => 'POST',
 				'callback'            => [ $this, 'save_site_option' ],
-				'permission_callback' => [ $this, 'has_permission' ],
+				'permission_callback' => function () {
+					return current_user_can( 'backwpup_jobs_edit' ) || current_user_can( 'backwpup_settings' );
+				},
 			]
 		);
 
@@ -784,6 +786,8 @@ class Rest implements RestInterface {
 	 * @param WP_REST_Request $request The REST request object containing the parameters.
 	 *
 	 * @return WP_REST_Response The response object containing the status and message.
+	 *
+	 * @throws \RuntimeException If an update of a site option is not allowed.
 	 */
 	public function save_site_option( WP_REST_Request $request ) {
 		$params = $request->get_params();
@@ -791,6 +795,14 @@ class Rest implements RestInterface {
 		$status = 200;
 		try {
 			foreach ( $params as $key => $values ) {
+				if ( strpos( $key, 'backwpup' ) !== 0 || in_array( $key, [ 'backwpup_jobs', 'backwpup_version', 'backwpup_previous_version', 'backwpup_messages' ], true ) ) {
+					// translators: %s = site option name.
+					throw new \RuntimeException( sprintf( __( 'Update of site option with name is "%s" not allowed!', 'backwpup' ), $key ) );
+				}
+				if ( ! is_array( $values ) || ! array_key_exists( 'value', $values ) ) {
+					// translators: %s = site option name.
+					throw new \RuntimeException( sprintf( __( 'Invalid data format for site option "%s".', 'backwpup' ), $key ) );
+				}
 				if ( '' !== trim( $values['value'] ) ) {
 					$value = sanitize_text_field( $values['value'] );
 					if ( isset( $values['secure'] ) && true === filter_var( $values['secure'], FILTER_VALIDATE_BOOLEAN ) ) {

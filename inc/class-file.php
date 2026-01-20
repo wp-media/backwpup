@@ -193,7 +193,7 @@ class BackWPup_File
 			 *
 			 * @param bool $protect_folders Whether the folder will be protect or not.
 			 */
-			$protect_folders = wpm_apply_filters_typed( 'boolean', 'backwpup_protect_folders', (bool) get_site_option( 'backwpup_cfg_protectfolders' ) );
+			$protect_folders = wpm_apply_filters_typed( 'boolean', 'backwpup_protect_folders', true );
 			if ( $protect_folders ) {
 				self::protect_folder( $childFolder ); // phpcs:ignore
 			}

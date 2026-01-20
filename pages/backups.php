@@ -17,6 +17,7 @@
         <div class="progressbar" style="display: none;">
           <div id="progresssteps" class="bwpu-progress" style="width:0%;">0%</div>
         </div>
+        <div id="error-ui" style="display: none;" role="alert" aria-live="polite"></div>
       <?php
       if ( \BackWPup::is_pro() ) {
         $view = new ViewLoader();

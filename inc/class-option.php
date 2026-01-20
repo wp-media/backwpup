@@ -19,7 +19,6 @@ final class BackWPup_Option
 		// general.
 		add_site_option( 'backwpup_cfg_showadminbar', true );
 		add_site_option( 'backwpup_cfg_showfoldersize', false );
-		add_site_option( 'backwpup_cfg_protectfolders', true );
 		add_site_option( 'backwpup_cfg_keepplugindata', false );
 		// job.
 		add_site_option( 'backwpup_cfg_jobmaxexecutiontime', 30 );

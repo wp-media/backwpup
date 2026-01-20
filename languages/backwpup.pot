@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-01-07 09:30+0000\n"
+"POT-Creation-Date: 2026-01-20 08:21+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -30,7 +30,7 @@ msgstr ""
 msgid "BackWPup – WordPress Backup & Restore Plugin"
 msgstr ""
 
-#: backwpup.php:7, inc/class-page-settings.php:1041
+#: backwpup.php:7, inc/class-page-settings.php:1038
 msgid "https://backwpup.com"
 msgstr ""
 
@@ -312,7 +312,7 @@ msgstr ""
 msgid "Add new job"
 msgstr ""
 
-#: inc/class-admin.php:605, inc/class-admin.php:606, inc/class-page-logs.php:383, inc/class-page-settings.php:563, parts/sidebar/advanced-settings.php:27
+#: inc/class-admin.php:605, inc/class-admin.php:606, inc/class-page-logs.php:383, inc/class-page-settings.php:560, parts/sidebar/advanced-settings.php:27
 msgid "Logs"
 msgstr ""
 
@@ -549,7 +549,7 @@ msgstr ""
 msgid "Could not write data to file."
 msgstr ""
 
-#: inc/class-destination-dropbox-downloader.php:101, inc/class-destination-folder-downloader.php:130, inc/class-destination-ftp-downloader.php:154, inc/class-destination-msazure-downloader.php:98, inc/class-destination-rsc-downloader.php:121, inc/class-destination-s3-downloader.php:97, inc/Pro/class-destination-gdrive-downloader.php:137, inc/Pro/class-destination-hidrive-downloader.php:162, inc/Pro/class-destination-onedrive-downloader.php:94
+#: inc/class-destination-dropbox-downloader.php:101, inc/class-destination-folder-downloader.php:130, inc/class-destination-ftp-downloader.php:161, inc/class-destination-msazure-downloader.php:98, inc/class-destination-rsc-downloader.php:121, inc/class-destination-s3-downloader.php:97, inc/Pro/class-destination-gdrive-downloader.php:137, inc/Pro/class-destination-hidrive-downloader.php:162, inc/Pro/class-destination-onedrive-downloader.php:94
 msgid "File could not be opened for writing."
 msgstr ""
 
@@ -666,8 +666,9 @@ msgid_plural "%d backup files deleted"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/class-destination-ftp-downloader.php:136
-msgid "Cannot open FTP file for download."
+#. translators: %1$s: opening a tag, %2$s: closing a tag.
+#: inc/class-destination-ftp-downloader.php:139
+msgid "BackWPup couldn’t download the backup file from your FTP server. Please check your FTP connection settings and permissions. See %1$sthe FTP setup guide%2$s for more details."
 msgstr ""
 
 #: inc/class-destination-ftp.php:178
@@ -1624,7 +1625,7 @@ msgstr ""
 msgid "all"
 msgstr ""
 
-#: inc/class-jobtype-dbdump.php:61, inc/class-jobtype-wpexp.php:73, inc/class-jobtype-wpplugin.php:51, inc/class-page-backwpup.php:292, inc/class-page-backwpup.php:367, inc/class-page-settings.php:888, inc/Pro/class-jobtype-dbdump.php:135
+#: inc/class-jobtype-dbdump.php:61, inc/class-jobtype-wpexp.php:73, inc/class-jobtype-wpplugin.php:51, inc/class-page-backwpup.php:292, inc/class-page-backwpup.php:367, inc/class-page-settings.php:885, inc/Pro/class-jobtype-dbdump.php:135
 msgid "none"
 msgstr ""
 
@@ -1944,7 +1945,7 @@ msgstr ""
 msgid "Error while writing file!"
 msgstr ""
 
-#: inc/class-option.php:278, inc/class-page-editjob.php:415
+#: inc/class-option.php:277, inc/class-page-editjob.php:415
 msgid "New Job"
 msgstr ""
 
@@ -3290,251 +3291,251 @@ msgstr ""
 msgid "Loaded PHP Extensions:"
 msgstr ""
 
-#: inc/class-page-settings.php:419
+#: inc/class-page-settings.php:418
 msgid "Settings reset to default"
 msgstr ""
 
-#: inc/class-page-settings.php:543
+#: inc/class-page-settings.php:540
 msgid "Settings saved"
 msgstr ""
 
-#: inc/class-page-settings.php:553
+#: inc/class-page-settings.php:550
 msgid "%s &rsaquo; Settings"
 msgstr ""
 
-#: inc/class-page-settings.php:559, parts/sidebar/advanced-settings.php:15
+#: inc/class-page-settings.php:556, parts/sidebar/advanced-settings.php:15
 msgid "Jobs"
 msgstr ""
 
-#: inc/class-page-settings.php:561, parts/sidebar/advanced-settings.php:61, pro/parts/sidebar/settings-encryption.php:5
+#: inc/class-page-settings.php:558, parts/sidebar/advanced-settings.php:61, pro/parts/sidebar/settings-encryption.php:5
 msgid "Encryption"
 msgstr ""
 
-#: inc/class-page-settings.php:564, parts/sidebar/advanced-settings.php:39
+#: inc/class-page-settings.php:561, parts/sidebar/advanced-settings.php:39
 msgid "Network"
 msgstr ""
 
-#: inc/class-page-settings.php:565
+#: inc/class-page-settings.php:562
 msgid "API Keys"
 msgstr ""
 
-#: inc/class-page-settings.php:566
+#: inc/class-page-settings.php:563
 msgid "Information"
 msgstr ""
 
-#: inc/class-page-settings.php:568, parts/sidebar/advanced-settings.php:52
+#: inc/class-page-settings.php:565, parts/sidebar/advanced-settings.php:52
 msgid "License"
 msgstr ""
 
-#: inc/class-page-settings.php:589
+#: inc/class-page-settings.php:586
 msgid "Every time BackWPup runs a backup job, a log file is being generated. Choose where to store your log files and how many of them."
 msgstr ""
 
-#: inc/class-page-settings.php:598, parts/sidebar/settings-logs.php:41
+#: inc/class-page-settings.php:595, parts/sidebar/settings-logs.php:41
 msgid "Log file folder"
 msgstr ""
 
-#: inc/class-page-settings.php:608
+#: inc/class-page-settings.php:605
 msgid "You can use absolute or relative path! Relative path is relative to %s."
 msgstr ""
 
-#: inc/class-page-settings.php:624
+#: inc/class-page-settings.php:621
 msgid "Maximum log files"
 msgstr ""
 
-#: inc/class-page-settings.php:632
+#: inc/class-page-settings.php:629
 msgid "Maximum log files in folder."
 msgstr ""
 
-#: inc/class-page-settings.php:636, inc/class-page-settings.php:641
+#: inc/class-page-settings.php:633, inc/class-page-settings.php:638
 msgid "Logging Level"
 msgstr ""
 
-#: inc/class-page-settings.php:649
+#: inc/class-page-settings.php:646
 msgid "Normal (translated)"
 msgstr ""
 
-#: inc/class-page-settings.php:653
+#: inc/class-page-settings.php:650
 msgid "Normal (not translated)"
 msgstr ""
 
-#: inc/class-page-settings.php:657
+#: inc/class-page-settings.php:654
 msgid "Debug (translated)"
 msgstr ""
 
-#: inc/class-page-settings.php:661
+#: inc/class-page-settings.php:658
 msgid "Debug (not translated)"
 msgstr ""
 
-#: inc/class-page-settings.php:665
+#: inc/class-page-settings.php:662
 msgid "Debug log has much more information than normal logs. It is for support and should be handled carefully. For support is the best to use a not translated log file. Usage of not translated logs can reduce the PHP memory usage too."
 msgstr ""
 
-#: inc/class-page-settings.php:678
+#: inc/class-page-settings.php:675
 msgid "There are a couple of general options for backup jobs. Set them here."
 msgstr ""
 
-#: inc/class-page-settings.php:686, parts/sidebar/settings-jobs.php:35
+#: inc/class-page-settings.php:683, parts/sidebar/settings-jobs.php:35
 msgid "Maximum number of retries for job steps"
 msgstr ""
 
-#: inc/class-page-settings.php:695
+#: inc/class-page-settings.php:692
 msgid "Maximum script execution time"
 msgstr ""
 
-#: inc/class-page-settings.php:700
+#: inc/class-page-settings.php:697
 msgid "Maximum PHP Script execution time"
 msgstr ""
 
-#: inc/class-page-settings.php:706
+#: inc/class-page-settings.php:703
 msgid "seconds."
 msgstr ""
 
-#: inc/class-page-settings.php:709
+#: inc/class-page-settings.php:706
 msgid "Job will restart before hitting maximum execution time. Restarts will be disabled on CLI usage. If <code>ALTERNATE_WP_CRON</code> has been defined, WordPress Cron will be used for restarts, so it can take a while. 0 means no maximum."
 msgstr ""
 
-#: inc/class-page-settings.php:723
+#: inc/class-page-settings.php:720
 msgid "Key to start jobs externally with an URL"
 msgstr ""
 
-#: inc/class-page-settings.php:731, parts/sidebar/settings-jobs.php:63
+#: inc/class-page-settings.php:728, parts/sidebar/settings-jobs.php:63
 msgid "Will be used to protect job starts from unauthorized person."
 msgstr ""
 
-#: inc/class-page-settings.php:739, inc/class-page-settings.php:744, parts/sidebar/settings-jobs.php:78
+#: inc/class-page-settings.php:736, inc/class-page-settings.php:741, parts/sidebar/settings-jobs.php:78
 msgid "Reduce server load"
 msgstr ""
 
-#: inc/class-page-settings.php:752
+#: inc/class-page-settings.php:749
 msgid "disabled"
 msgstr ""
 
-#: inc/class-page-settings.php:756
+#: inc/class-page-settings.php:753
 msgid "minimum"
 msgstr ""
 
-#: inc/class-page-settings.php:760
+#: inc/class-page-settings.php:757
 msgid "medium"
 msgstr ""
 
-#: inc/class-page-settings.php:764
+#: inc/class-page-settings.php:761
 msgid "maximum"
 msgstr ""
 
-#: inc/class-page-settings.php:768, parts/sidebar/settings-jobs.php:87
+#: inc/class-page-settings.php:765, parts/sidebar/settings-jobs.php:87
 msgid "This adds short pauses to the process. Can be used to reduce the CPU load."
 msgstr ""
 
-#: inc/class-page-settings.php:777
+#: inc/class-page-settings.php:774
 msgid "Empty output on working"
 msgstr ""
 
-#: inc/class-page-settings.php:782, inc/class-page-settings.php:794
+#: inc/class-page-settings.php:779, inc/class-page-settings.php:791
 msgid "Enable an empty Output on backup working."
 msgstr ""
 
-#: inc/class-page-settings.php:797
+#: inc/class-page-settings.php:794
 msgid "This do an empty output on job working. This can help in some situations or can break the working. You must test it."
 msgstr ""
 
-#: inc/class-page-settings.php:806
+#: inc/class-page-settings.php:803
 msgid "Windows IIS compatibility"
 msgstr ""
 
-#: inc/class-page-settings.php:811, inc/class-page-settings.php:822
+#: inc/class-page-settings.php:808, inc/class-page-settings.php:819
 msgid "Enable compatibility with IIS on Windows."
 msgstr ""
 
-#: inc/class-page-settings.php:826
+#: inc/class-page-settings.php:823
 msgid "There is a PHP bug (<a href=\"https://bugs.php.net/43817\">bug #43817</a>), which is triggered on some versions of Windows and IIS. Checking this box will enable a workaround for that bug. Only enable if you are getting errors about &ldquo;Permission denied&rdquo; in your logs."
 msgstr ""
 
-#: inc/class-page-settings.php:850
+#: inc/class-page-settings.php:847
 msgid "Authentication for <code>%s</code>"
 msgstr ""
 
-#: inc/class-page-settings.php:857
+#: inc/class-page-settings.php:854
 msgid "If you protected your blog with HTTP basic authentication (.htaccess), or you use a Plugin to secure wp-cron.php, then use the authentication methods below."
 msgstr ""
 
-#: inc/class-page-settings.php:875, inc/class-page-settings.php:880, parts/sidebar/settings-network.php:51
+#: inc/class-page-settings.php:872, inc/class-page-settings.php:877, parts/sidebar/settings-network.php:51
 msgid "Authentication method"
 msgstr ""
 
-#: inc/class-page-settings.php:892
+#: inc/class-page-settings.php:889
 msgid "Basic auth"
 msgstr ""
 
-#: inc/class-page-settings.php:896
+#: inc/class-page-settings.php:893
 msgid "WordPress User"
 msgstr ""
 
-#: inc/class-page-settings.php:900
+#: inc/class-page-settings.php:897
 msgid "Query argument"
 msgstr ""
 
-#: inc/class-page-settings.php:911, parts/sidebar/parts/network-basic-authentication.php:16
+#: inc/class-page-settings.php:908, parts/sidebar/parts/network-basic-authentication.php:16
 msgid "Basic Auth Username:"
 msgstr ""
 
-#: inc/class-page-settings.php:929, parts/sidebar/parts/network-basic-authentication.php:25
+#: inc/class-page-settings.php:926, parts/sidebar/parts/network-basic-authentication.php:25
 msgid "Basic Auth Password:"
 msgstr ""
 
-#: inc/class-page-settings.php:944, inc/class-page-settings.php:947, parts/sidebar/parts/network-user-authentication.php:27
+#: inc/class-page-settings.php:941, inc/class-page-settings.php:944, parts/sidebar/parts/network-user-authentication.php:27
 msgid "Select WordPress User"
 msgstr ""
 
-#: inc/class-page-settings.php:981, parts/sidebar/parts/network-query-argument-authentication.php:16
+#: inc/class-page-settings.php:978, parts/sidebar/parts/network-query-argument-authentication.php:16
 msgid "Query arg key=value:"
 msgstr ""
 
-#: inc/class-page-settings.php:1008
+#: inc/class-page-settings.php:1005
 msgid "Experiencing an issue and need to contact BackWPup support? Click the link below to get debug information you can send to us."
 msgstr ""
 
-#: inc/class-page-settings.php:1015
+#: inc/class-page-settings.php:1012
 msgid "Debug Info"
 msgstr ""
 
-#: inc/class-page-settings.php:1019
+#: inc/class-page-settings.php:1016
 msgid "Get Debug Info"
 msgstr ""
 
-#: inc/class-page-settings.php:1026
+#: inc/class-page-settings.php:1023
 msgid "You will find debug information below. Click the button to copy the debug info to send to support."
 msgstr ""
 
-#: inc/class-page-settings.php:1042
+#: inc/class-page-settings.php:1039
 msgid "Get Pro"
 msgstr ""
 
-#: inc/class-page-settings.php:1055
+#: inc/class-page-settings.php:1052
 msgid "Copy Debug Info"
 msgstr ""
 
-#: inc/class-page-settings.php:1060
+#: inc/class-page-settings.php:1057
 msgid "Debug info copied to clipboard."
 msgstr ""
 
-#: inc/class-page-settings.php:1068
+#: inc/class-page-settings.php:1065
 msgid "Could not copy debug info. You can simply press ctrl+C to copy it."
 msgstr ""
 
-#: inc/class-page-settings.php:1130, inc/class-page-settings.php:1134
+#: inc/class-page-settings.php:1127, inc/class-page-settings.php:1131
 msgid "Setting"
 msgstr ""
 
-#: inc/class-page-settings.php:1130, inc/class-page-settings.php:1134
+#: inc/class-page-settings.php:1127, inc/class-page-settings.php:1131
 msgid "Value"
 msgstr ""
 
-#: inc/class-page-settings.php:1154
+#: inc/class-page-settings.php:1151
 msgid "Save Changes"
 msgstr ""
 
-#: inc/class-page-settings.php:1160
+#: inc/class-page-settings.php:1157
 msgid "Reset all settings to default"
 msgstr ""
 
@@ -3744,19 +3745,19 @@ msgstr ""
 msgid "Dismiss this notice"
 msgstr ""
 
-#: pages/backups.php:56
+#: pages/backups.php:57
 msgid "Backups History"
 msgstr ""
 
-#: pages/backups.php:77
+#: pages/backups.php:78
 msgid "Bulk Actions"
 msgstr ""
 
-#: pages/backups.php:82
+#: pages/backups.php:83
 msgid "Delete permanently"
 msgstr ""
 
-#: pages/backups.php:90
+#: pages/backups.php:91
 msgid "Apply"
 msgstr ""
 

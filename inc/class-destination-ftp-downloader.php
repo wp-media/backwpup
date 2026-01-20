@@ -132,9 +132,16 @@ final class BackWPup_Destination_Ftp_Downloader implements BackWPup_Destination_
 			$this->source_file_handler = @fopen( $url, 'r' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		}
 
-        if (!is_resource($this->source_file_handler)) {
-            throw new \RuntimeException(__('Cannot open FTP file for download.', 'backwpup'));
-        }
+		if ( ! is_resource( $this->source_file_handler ) ) {
+			throw new \RuntimeException(
+				sprintf(
+					// translators: %1$s: opening a tag, %2$s: closing a tag.
+					esc_html__( 'BackWPup couldn’t download the backup file from your FTP server. Please check your FTP connection settings and permissions. See %1$sthe FTP setup guide%2$s for more details.', 'backwpup' ),
+					'<a href="https://backwpup.com/docs/how-to-save-backups-to-your-ftp-server/" title="the FTP setup guide" target="_blank" rel="noopener noreferrer" class="text-primary-darker border-b border-primary-darker">',
+					'</a>'
+				)
+			);
+		}
     }
 
     /**

@@ -147,8 +147,15 @@ abstract class BackWPup_Destinations
 	 * @return array
 	 */
 	public function file_get_list( string $jobdest ): array {
-		$list  = (array) get_site_transient( 'backwpup_' . strtolower( $jobdest ) );
-		$files = array_filter( $list );
+		$key  = 'backwpup_' . strtolower( $jobdest );
+		$list = get_site_transient( $key );
+
+		if ( false === $list ) {
+			// Legacy compatibility (e.g. Glacier history stored in options).
+			$list = get_site_option( $key, [] );
+		}
+
+		$files = array_filter( (array) $list );
 
 		// Disable auto downloading for onedrive during restoration see #1239 on Github.
 		if ( BackWPup::is_pro() && $this->get_service_name() !== 'OneDrive' ) {

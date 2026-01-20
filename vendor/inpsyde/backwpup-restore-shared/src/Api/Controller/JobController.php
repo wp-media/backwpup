@@ -193,6 +193,9 @@ class JobController
         // Set service and job_id in registry for future use
         $this->registry->service_name = $service_name;
         $this->registry->job_id = $job_id;
+        //rest if uploaded again
+        $this->registry->uploaded_file = $local_file_path;
+        $this->registry->decompression_state = null;
 
         $factory = new BackWPup_Destination_Downloader_Factory();
         $downloader = $factory->create(
@@ -336,6 +339,11 @@ class JobController
 
         // Restore the db.
         $this->database_importer->import();
+
+        //flush WP cache after db restore
+        if (function_exists('wp_cache_flush')) {
+            wp_cache_flush();
+        }
 
         // Refresh file list
         if ($this->registry->service_name && $this->registry->job_id) {

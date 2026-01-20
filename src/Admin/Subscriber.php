@@ -55,7 +55,6 @@ class Subscriber implements SubscriberInterface {
 			'backwpup_activation_time',
 			'backwpup_cfg_showadminbar',
 			'backwpup_cfg_showfoldersize',
-			'backwpup_cfg_protectfolders',
 			'backwpup_cfg_keepplugindata',
 			'backwpup_cfg_jobmaxexecutiontime',
 			'backwpup_cfg_jobstepretry',
