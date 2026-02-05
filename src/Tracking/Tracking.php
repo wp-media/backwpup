@@ -423,4 +423,50 @@ class Tracking {
 			remove_filter( 'user_has_cap', $grant_cap, 10 );
 		}
 	}
+
+	/**
+	 * Track support tool button displayed event.
+	 *
+	 * @return void
+	 */
+	public function track_support_tool_button_displayed(): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$user = wp_get_current_user();
+		if ( $user->exists() ) {
+			$this->mixpanel->identify( $user->user_email );
+		}
+
+		$this->mixpanel->track(
+			'Support button shown',
+			[
+				'context' => 'wp_plugin',
+			]
+		);
+	}
+
+	/**
+	 * Track support tool button clicked event.
+	 *
+	 * @return void
+	 */
+	public function track_support_tool_button_clicked(): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$user = wp_get_current_user();
+		if ( $user->exists() ) {
+			$this->mixpanel->identify( $user->user_email );
+		}
+
+		$this->mixpanel->track(
+			'Support button clicked',
+			[
+				'context' => 'wp_plugin',
+			]
+		);
+	}
 }

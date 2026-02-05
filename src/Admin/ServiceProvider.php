@@ -16,8 +16,10 @@ use WPMedia\BackWPup\Admin\Notices\Notices\Notice513;
 use Inpsyde\BackWPup\Notice\NoticeView;
 use WPMedia\BackWPup\Admin\Settings\Subscriber as SettingSubscriber;
 use WPMedia\BackWPup\Admin\Frontend\Subscriber as AdminFrontendSubscriber;
+use WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsStore;
 use WPMedia\BackWPup\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WPMedia\Mixpanel\Optin;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -32,6 +34,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		AdminFrontendSubscriber::class,
 		'options',
 		\WPMedia\BackWPup\Admin\Messages\API\Subscriber::class,
+		\WPMedia\BackWPup\Admin\Chatbot\API\ChatbotRestSubscriber::class,
+		\WPMedia\BackWPup\Admin\Chatbot\ChatbotSubscriber::class,
+		\WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsSubscriber::class,
 	];
 
 	/**
@@ -44,6 +49,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		'notice_subscriber',
 		AdminFrontendSubscriber::class,
 		\WPMedia\BackWPup\Admin\Messages\API\Subscriber::class,
+		\WPMedia\BackWPup\Admin\Chatbot\API\ChatbotRestSubscriber::class,
+		\WPMedia\BackWPup\Admin\Chatbot\ChatbotSubscriber::class,
+		\WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsSubscriber::class,
 	];
 
 	/**
@@ -153,6 +161,69 @@ class ServiceProvider extends AbstractServiceProvider {
 					Rest::class,
 				]
 			);
+
+		$this->getContainer()->addShared(
+			'error_signals_store',
+			\WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsStore::class
+		);
+
+		$this->getContainer()->addShared(
+			'mixpanel_optin',
+			Optin::class
+			)->addArguments(
+				[
+					'backwpup',
+					'manage_options',
+				]
+			);
+
+		$this->getContainer()->addShared(
+			'chatbot_context_snapshot_builder',
+			\WPMedia\BackWPup\Admin\Chatbot\ContextSnapshotBuilder::class
+		)->addArguments(
+			[
+				'backwpup_adapter',
+				'error_signals_store',
+				'mixpanel_optin',
+			]
+			);
+
+		$this->getContainer()->addShared(
+			\WPMedia\BackWPup\Admin\Chatbot\API\ChatbotRest::class
+		)->addArguments(
+			[
+				'chatbot_context_snapshot_builder',
+			]
+		);
+
+		$this->getContainer()->addShared(
+			\WPMedia\BackWPup\Admin\Chatbot\API\ChatbotRestSubscriber::class
+		)->addArguments(
+			[
+				\WPMedia\BackWPup\Admin\Chatbot\API\ChatbotRest::class,
+			]
+		);
+
+		$this->getContainer()->addShared( \WPMedia\BackWPup\Admin\Chatbot\Chatbot::class )
+			->addArguments(
+				[
+					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/chatbot' ),
+					'chatbot_context_snapshot_builder',
+				]
+			);
+
+		$this->getContainer()->addShared(
+			\WPMedia\BackWPup\Admin\Chatbot\ChatbotSubscriber::class
+		)->addArguments(
+			[
+				'backwpup_adapter',
+				\WPMedia\BackWPup\Admin\Chatbot\Chatbot::class,
+			]
+		);
+
+		$this->getContainer()->addShared(
+			\WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsSubscriber::class
+		)->addArgument( 'error_signals_store' );
 	}
 
 	/**

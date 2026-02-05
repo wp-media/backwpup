@@ -1,4 +1,9 @@
 == Changelog ==
+= 5.6.5 =
+Release date: February 05, 2026
+
+* New Feature: Introduced support tool chatbot for user assistance.
+
 = 5.6.4 =
 Release date: January 20, 2026
 

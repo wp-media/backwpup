@@ -38,16 +38,18 @@ class Subscriber implements SubscriberInterface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'backwpup_mixpanel_optin_changed' => 'track_optin_change',
-			'backwpup_add_job'                => 'track_add_job',
-			'backwpup_delete_job'             => 'track_delete_job',
-			'backwpup_page_settings_save'     => 'update_setting',
-			'wp_ajax_backwpup_notice_optin'   => 'notice_optin_callback',
-			'admin_notices'                   => 'display_tracking_notice',
-			'backwpup_create_job'             => [ 'track_start_job', 20, 3 ],
-			'backwpup_track_end_job'          => [ 'track_end_job', 10, 3 ],
-			'backwpup_beta_optin_change'      => 'track_beta_optin_change',
-			'backwpup_link_clicked'           => [ 'track_link_clicked', 10, 2 ],
+			'backwpup_mixpanel_optin_changed'              => 'track_optin_change',
+			'backwpup_add_job'                             => 'track_add_job',
+			'backwpup_delete_job'                          => 'track_delete_job',
+			'backwpup_page_settings_save'                  => 'update_setting',
+			'wp_ajax_backwpup_notice_optin'                => 'notice_optin_callback',
+			'admin_notices'                                => 'display_tracking_notice',
+			'backwpup_create_job'                          => [ 'track_start_job', 20, 3 ],
+			'backwpup_track_end_job'                       => [ 'track_end_job', 10, 3 ],
+			'backwpup_beta_optin_change'                   => 'track_beta_optin_change',
+			'backwpup_link_clicked'                        => [ 'track_link_clicked', 10, 2 ],
+			'backwpup_track_support_tool_button_displayed' => 'track_support_tool_button_displayed',
+			'backwpup_track_support_tool_button_clicked'   => 'track_support_tool_button_clicked',
 		];
 	}
 
@@ -158,5 +160,23 @@ class Subscriber implements SubscriberInterface {
 	 */
 	public function track_link_clicked( string $event, array $properties = [] ): void {
 		$this->tracking->track_link_clicked( $event, $properties );
+	}
+
+	/**
+	 * Track support tool button displayed event.
+	 *
+	 * @return void
+	 */
+	public function track_support_tool_button_displayed(): void {
+		$this->tracking->track_support_tool_button_displayed();
+	}
+
+	/**
+	 * Track support tool button clicked event.
+	 *
+	 * @return void
+	 */
+	public function track_support_tool_button_clicked(): void {
+		$this->tracking->track_support_tool_button_clicked();
 	}
 }

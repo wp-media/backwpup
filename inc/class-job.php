@@ -1040,6 +1040,44 @@ class BackWPup_Job
         //write working data
         $this->update_working_data($error || $warning);
 
+		// Fire "signal" for warnings/errors so other components can store/forward them.
+		if ( $error || $warning ) {
+			/**
+			 * Fires when BackWPup logs a warning/error (signal).
+			 *
+			 * @param array $signal {
+			 *   @type string $level      'error'|'warning'
+			 *   @type int    $type       PHP error type (E_USER_ERROR, etc)
+			 *   @type string $message    The (already prefixed) message string
+			 *   @type int    $timestamp  current_time('timestamp')
+			 *   @type int    $job_id     Job id (if available)
+			 *   @type string $job_name   Job name (if available)
+			 *   @type string $step       Current step identifier
+			 *   @type string $logfile    Current logfile path (maybe empty)
+			 *   @type string $file       Source file (debug only might be filled)
+			 *   @type int    $line       Source line
+			 * }
+			 *
+			 * @param BackWPup_Job $job The job instance.
+			 */
+			do_action(
+				'backwpup_job_error_signal',
+				[
+					'level'     => $error ? 'error' : 'warning',
+					'type'      => (int) $type,
+					'message'   => (string) $message,
+					'timestamp' => time(),
+					'job_id'    => isset( $this->job['jobid'] ) ? (int) $this->job['jobid'] : 0,
+					'job_name'  => isset( $this->job['name'] ) ? (string) $this->job['name'] : '',
+					'step'      => (string) $this->step_working,
+					'logfile'   => (string) $this->logfile,
+					'file'      => (string) $file,
+					'line'      => (int) $line,
+				],
+				$this
+			);
+		}
+
         //true for no more php error handling.
         return true;
     }

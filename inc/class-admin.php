@@ -936,29 +936,33 @@ EOT;
      * @param $update_footer_text string
      *
      * @return string
-     */
-    public function update_footer($update_footer_text)
-    {
-        $default_text = $update_footer_text;
+	 */
+	public function update_footer( $update_footer_text ) {
+		$default_text = $update_footer_text;
+		$screen       = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		$screen_id    = ( $screen && isset( $screen->id ) ) ? (string) $screen->id : '';
 
-        if (isset($_REQUEST['page']) && strstr((string) $_REQUEST['page'], 'backwpup')) {
-			$update_footer_text = '<span class="backwpup-update-footer"><a href="' . __(
-					'http://backwpup.com',
-					'backwpup'
-				) . '">' . BackWPup::get_plugin_data( 'Name' ) . '</a> ' . sprintf(
-			// Translators: %s is the version number of the BackWPup plugin.
-			__(
-						'version %s',
-						'backwpup'
-					),
-					BackWPup::get_plugin_data( 'Version' )
-				) . '</span>';
+		if ( '' === $screen_id || false === strpos( $screen_id, 'backwpup' ) ) {
+			return $update_footer_text;
+		}
 
-            return $update_footer_text . $default_text;
-        }
+			ob_start();
+			do_action( 'backwpup_admin_footer_before_version' );
+			$before_version = ob_get_clean();
 
-        return $update_footer_text;
-    }
+			$update_footer_text =
+			$before_version .
+			'<span class="backwpup-update-footer">
+        <a href="' . esc_url( 'http://backwpup.com' ) . '">' . esc_html( BackWPup::get_plugin_data( 'Name' ) ) . '</a> ' .
+			sprintf(
+				// Translators: %s is the version number of the BackWPup plugin.
+			esc_html__( 'version %s', 'backwpup' ),
+					esc_html( BackWPup::get_plugin_data( 'Version' ) )
+				) .
+			'</span>';
+
+			return $update_footer_text . $default_text;
+	}
 
     /**
      *  Add filed for selecting user role in user section.
