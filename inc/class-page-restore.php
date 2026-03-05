@@ -25,8 +25,8 @@ class BackWPup_Page_Restore {
 		$restore_scripts_dir  = "{$dir}/vendor/inpsyde/backwpup-restore-shared/resources/js";
 		$suffix               = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-		// Vendor
-		wp_register_script( 'js-url', "{$path_js}/vendor/url.min.js", [ 'jquery' ], '', true );
+		// Vendor.
+		wp_register_script( 'js-url', "{$path_js}/vendor/url.min.js", [ 'jquery' ], BackWPup::get_plugin_data( 'Version' ), true );
 
 		wp_register_script(
 			'backwpup_functions',

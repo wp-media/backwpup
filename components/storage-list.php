@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var array   $storages     An array of storage services. Default: [].
  * @var bool    $full_width   Optional. True to make the button full width. Default: false.

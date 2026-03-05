@@ -1,6 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 $jobs = BackWPup_Job::get_jobs();
 
 BackWPupHelpers::component( 'form/button', [

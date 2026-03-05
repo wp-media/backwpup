@@ -1,6 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 BackWPupHelpers::component("heading", [
 	"level" => 1,
 	"title" => __("Next Scheduled Backups", 'backwpup'),

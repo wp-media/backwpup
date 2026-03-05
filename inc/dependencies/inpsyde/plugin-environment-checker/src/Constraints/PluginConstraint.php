@@ -35,20 +35,20 @@ class PluginConstraint extends AbstractVersionConstraint
 				= "The {$this->pluginDisplayName} plugin must be active. Please install & activate {$this->pluginDisplayName}";
 
 			throw new ConstraintFailedException(
-				$this,
-				$this->requiredPluginName,
-				[$this->error],
-				$this->message
+				$this, // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Constraint instance is stored on the exception, not output.
+				esc_html($this->requiredPluginName),
+				[esc_html($this->error)],
+				esc_html($this->message)
 			);
 		}
 
 		$pathToPluginFile = $this->absolutePathToPlugin();
 		if (!$pathToPluginFile) {
 			throw new ConstraintFailedException(
-				$this,
-				$this->requiredPluginName,
-				[$this->error],
-				"Cannot find absolute path to {$this->pluginDisplayName} plugin"
+				$this, // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Constraint instance is stored on the exception, not output.
+				esc_html($this->requiredPluginName),
+				[esc_html($this->error)],
+				esc_html("Cannot find absolute path to {$this->pluginDisplayName} plugin")
 			);
 		}
 		if (!function_exists('get_plugin_data')) {

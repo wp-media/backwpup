@@ -35,7 +35,12 @@ final class StreamFactory implements StreamFactoryInterface
      */
     public function createStreamFromFile(string $filename, string $mode = 'r'): StreamInterface
     {
-        Assert::inArray(strtolower($mode[0]), self::VALID_MODES, __('Invalid mode provided for fopen: %s', 'backwpup'));
+        Assert::inArray(
+            strtolower($mode[0]),
+            self::VALID_MODES,
+            /* translators: %s: invalid file mode. */
+            __('Invalid mode provided for fopen: %s', 'backwpup')
+        );
 
         $resource = Utils::tryFopen($filename, $mode);
 

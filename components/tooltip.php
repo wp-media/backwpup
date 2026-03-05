@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $content      The tooltip content. Default: "".
  * @var string  $position     Optionnal. The tooltip position. Values: "left" or "center". Default: "left".
@@ -54,7 +59,7 @@ $parent_classes = BackWPupHelpers::clsx(
 $tooltip_surrounding_element = $tooltip_surrounding_element ?? 'span';
 
 ?>
-<<?php echo $tooltip_surrounding_element; ?> class="<?php echo $parent_classes; ?>">
+<<?php echo tag_escape( $tooltip_surrounding_element ); ?> class="<?php echo esc_attr( $parent_classes ); ?>">
   <?php if (isset($tooltip_component)) : ?>
     <?php BackWPupHelpers::component($tooltip_component['component'], $tooltip_component['args']); ?>
   <?php elseif (isset($icon_name)) : ?>
@@ -63,7 +68,7 @@ $tooltip_surrounding_element = $tooltip_surrounding_element ?? 'span';
   </span>
   <?php endif; ?>
   <span data-tooltip-position="<?php echo esc_attr( $position ); ?>" class="<?php echo esc_attr( $tooltip_classes ); ?>">
-    <?php echo $content ?? ''; ?>
+    <?php echo wp_kses_post( $content ?? '' ); ?>
       <span class="<?php echo esc_attr( $tooltip_arrow_classes ); ?>"></span>
   </span>
-</<?php echo $tooltip_surrounding_element; ?>>
+</<?php echo tag_escape( $tooltip_surrounding_element ); ?>>

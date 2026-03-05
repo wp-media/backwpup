@@ -25,8 +25,8 @@ final class BasicAuthCredentials
      */
     private function __construct(string $username, string $password)
     {
-        Assert::stringNotEmpty($username, __('Username cannot be empty'));
-        Assert::stringNotEmpty($password, __('Password cannot be empty'));
+        Assert::stringNotEmpty($username, __('Username cannot be empty', 'backwpup'));
+        Assert::stringNotEmpty($password, __('Password cannot be empty', 'backwpup'));
 
         $this->username = $username;
         $this->password = $password;
@@ -48,7 +48,7 @@ final class BasicAuthCredentials
     {
         $decoded = base64_decode($token, true);
         if ($decoded === false) {
-            throw CouldNotDecodeBasicAuthenticationToken::withToken($token);
+            throw CouldNotDecodeBasicAuthenticationToken::withToken($token); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Token is escaped inside the exception message.
         }
 
         $credentials = explode(':', $decoded, 2);
@@ -57,7 +57,7 @@ final class BasicAuthCredentials
             || empty($credentials[0])
             || empty($credentials[1])
         ) {
-            throw CouldNotDecodeBasicAuthenticationToken::withToken($token);
+            throw CouldNotDecodeBasicAuthenticationToken::withToken($token); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Token is escaped inside the exception message.
         }
 
         return new self($credentials[0], $credentials[1]);

@@ -43,18 +43,19 @@ class BackWPup_Destination_MSAzure_Downloader implements BackWPup_Destination_Do
         );
 
         if ($blob->getProperties()->getContentLength() === 0) {
-            throw new RuntimeException(
-                __('Could not write data to file. Empty source file.', 'backwpup')
-            );
+			throw new RuntimeException(
+				esc_html__( 'Could not write data to file. Empty source file.', 'backwpup' )
+			);
         }
 
         $this->setLocalFileHandler($start_byte);
 
-        $bytes = (int) fwrite($this->local_file_handler, stream_get_contents($blob->getContentStream()));
-        if ($bytes === 0) {
-            throw new RuntimeException(
-                sprintf(__('Could not write data to file %s.', 'backwpup'), $this->data->source_file_path())
-            );
+		$bytes = (int) fwrite( $this->local_file_handler, stream_get_contents( $blob->getContentStream() ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
+		if ( 0 === $bytes ) {
+			throw new RuntimeException(
+				// translators: %s = file name.
+				sprintf( esc_html__( 'Could not write data to file %s.', 'backwpup' ), esc_html( $this->data->source_file_path() ) )
+			);
         }
     }
 
@@ -89,14 +90,14 @@ class BackWPup_Destination_MSAzure_Downloader implements BackWPup_Destination_Do
             return;
         }
 
-        $this->local_file_handler = fopen(
-            $this->data->local_file_path(),
+		$this->local_file_handler = fopen( // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
+			$this->data->local_file_path(),
             $start_byte == 0 ? 'wb' : 'ab'
         );
 
-        if (!is_resource($this->local_file_handler)) {
-            throw new RuntimeException(__('File could not be opened for writing.', 'backwpup'));
-        }
+		if ( ! is_resource( $this->local_file_handler ) ) {
+			throw new RuntimeException( esc_html__( 'File could not be opened for writing.', 'backwpup' ) );
+		}
     }
 
     /**

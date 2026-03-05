@@ -44,11 +44,10 @@ final class BackWPup_Destination_Dropbox_Downloader implements BackWPup_Destinat
 
     /**
      * Clean up things.
-     */
-    public function __destruct()
-    {
-        fclose($this->local_file_handler);
-    }
+	 */
+	public function __destruct() {
+		fclose( $this->local_file_handler ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+	}
 
     /**
      * {@inheritdoc}
@@ -64,10 +63,10 @@ final class BackWPup_Destination_Dropbox_Downloader implements BackWPup_Destinat
                 $end_byte
             );
 
-            $bytes = (int) fwrite($this->local_file_handler, (string) $data);
-            if ($bytes === 0) {
-                throw new \RuntimeException(__('Could not write data to file.', 'backwpup'));
-            }
+			$bytes = (int) fwrite( $this->local_file_handler, (string) $data ); //phpcs:ignore
+			if ( 0 === $bytes ) {
+				throw new \RuntimeException( esc_html__( 'Could not write data to file.', 'backwpup' ) );
+			}
         } catch (\Exception $e) {
             BackWPup_Admin::message('Dropbox: ' . $e->getMessage());
         }
@@ -94,12 +93,12 @@ final class BackWPup_Destination_Dropbox_Downloader implements BackWPup_Destinat
             return;
         }
 
-        // Open file; write mode if $start_byte is 0, else append
-        $this->local_file_handler = fopen($this->data->local_file_path(), $start_byte == 0 ? 'wb' : 'ab');
+		// Open file; write mode if $start_byte is 0, else append.
+		$this->local_file_handler = fopen( $this->data->local_file_path(), 0 === $start_byte ? 'wb' : 'ab' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 
-        if (!is_resource($this->local_file_handler)) {
-            throw new \RuntimeException(__('File could not be opened for writing.', 'backwpup'));
-        }
+		if ( ! is_resource( $this->local_file_handler ) ) {
+			throw new \RuntimeException( esc_html__( 'File could not be opened for writing.', 'backwpup' ) );
+		}
     }
 
     /**

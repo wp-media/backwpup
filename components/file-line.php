@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $name       The input name.
  * @var string  $value      File or folder name.
@@ -19,12 +24,12 @@ $value = $value ?? "";
 
 ?>
 <div class="group rounded-lg p-4 flex items-center gap-2 bg-grey-100 cursor-pointer js-backwpup-toggle-include">
-  <input type="checkbox" value="<?php echo $value; ?>" name="<?php echo $name; ?>" class="peer sr-only" <?php if (!$included) : ?>checked<?php endif; ?>>
+  <input type="checkbox" value="<?php echo esc_attr( $value ); ?>" name="<?php echo esc_attr( $name ); ?>" class="peer sr-only" <?php if (!$included) : ?>checked<?php endif; ?>>
   <span class="flex-auto flex items-center gap-2 peer-checked:text-danger peer-checked:line-through">
     <?php if ($icon) {
       BackWPupHelpers::component("icon", ["name" => $icon]);
     } ?>
-    <span class="text-base"><?php echo $label ?? ''; ?></span>
+    <span class="text-base"><?php echo esc_html( $label ?? '' ); ?></span>
   </span>
   <div class="hidden group-hover:block">
     <?php

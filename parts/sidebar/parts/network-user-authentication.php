@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 $users = get_users(
 	[
 		'role' => 'administrator',

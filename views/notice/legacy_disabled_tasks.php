@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
 <p class="notice-titre"><?php esc_html_e( 'BackWPup - Restore Your Legacy Jobs', 'backwpup' ); ?></p>
 <a class="closeIt" href="<?php echo esc_url( $bind->dismissurl ); // phpcs:ignore ?>" data-bwpu-hide="informations_505_notice_notice"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss', 'backwpup' ); ?></span></a>
 <p>

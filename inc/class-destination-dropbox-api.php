@@ -108,7 +108,7 @@ class BackWPup_Destination_Dropbox_API
         }
 
 		if ( empty( $this->oauth_app_key ) || empty( $this->oauth_app_secret ) ) {
-			throw new BackWPup_Destination_Dropbox_API_Exception( 'No App key or App Secret specified.' );
+			throw new BackWPup_Destination_Dropbox_API_Exception( esc_html__( 'No App key or App Secret specified.', 'backwpup' ) );
 		}
 
 		$this->job_object = $job_object;
@@ -159,8 +159,12 @@ class BackWPup_Destination_Dropbox_API
         $file = str_replace('\\', '/', $file);
 
         if (!is_readable($file)) {
-            throw new BackWPup_Destination_Dropbox_API_Exception(
-                "Error: File \"{$file}\" is not readable or doesn't exist."
+			throw new BackWPup_Destination_Dropbox_API_Exception(
+				sprintf(
+					// translators: %s = File name.
+					esc_html__( "Error: File \"%s\" is not readable or doesn't exist.", 'backwpup' ),
+					esc_html( $file )
+				)
             );
         }
 
@@ -191,16 +195,20 @@ class BackWPup_Destination_Dropbox_API
         $file = str_replace('\\', '/', (string) $file);
 
         if (!is_readable($file)) {
-            throw new BackWPup_Destination_Dropbox_API_Exception(
-                "Error: File \"{$file}\" is not readable or doesn't exist."
-            );
+			throw new BackWPup_Destination_Dropbox_API_Exception(
+				sprintf(
+					// translators: %s = File name.
+					esc_html__( "Error: File \"%s\" is not readable or doesn't exist.", 'backwpup' ),
+					esc_html( $file )
+				)
+			);
         }
 
 		$chunk_size = 4194304; // 4194304 = 4MB
 
 		$file_handle = fopen( $file, 'rb' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		if ( ! $file_handle ) {
-			throw new BackWPup_Destination_Dropbox_API_Exception( 'Can not open source file for transfer.' );
+			throw new BackWPup_Destination_Dropbox_API_Exception( esc_html__( 'Can not open source file for transfer.', 'backwpup' ) );
 		}
 
 		if ( ! isset( $this->job_object->steps_data[ $this->job_object->step_working ]['uploadid'] ) ) {
@@ -307,15 +315,15 @@ class BackWPup_Destination_Dropbox_API
     public function setOAuthTokens(array $token, $listener = null)
     {
         if (empty($token['access_token'])) {
-            throw new BackWPup_Destination_Dropbox_API_Exception(
-                __('No access token provided', 'backwpup')
-            );
+			throw new BackWPup_Destination_Dropbox_API_Exception(
+				esc_html__( 'No access token provided', 'backwpup' )
+			);
         }
 
         if (empty($token['refresh_token'])) {
-            throw new BackWPup_Destination_Dropbox_API_Exception(
-                __('No refresh token provided. You may need to reauthenticate with Dropbox', 'backwpup')
-            );
+			throw new BackWPup_Destination_Dropbox_API_Exception(
+				esc_html__( 'No refresh token provided. You may need to reauthenticate with Dropbox', 'backwpup' )
+			);
         }
 
         $this->oauthToken = $token;
@@ -344,9 +352,9 @@ class BackWPup_Destination_Dropbox_API
         $now = time();
         $tokens = $this->oauthToken;
         if (empty($tokens)) {
-            throw new \BadMethodCallException(
-                __('OAuth tokens have not been set.', 'backwpup')
-            );
+			throw new \BadMethodCallException(
+				esc_html__( 'OAuth tokens have not been set.', 'backwpup' )
+			);
         }
 
         if ($tokens['expires'] > $now) {
@@ -948,16 +956,17 @@ class BackWPup_Destination_Dropbox_API
                 break;
 
             default:
-                throw new BackWPup_Destination_Dropbox_API_Exception(
-                    sprintf(
-                        __(
-                            '(%1$s) An unknown error has occurred. Response from server: %2$s',
-                            'backwpup'
-                        ),
-                        $response->getStatusCode(),
-                        $response->getBody()->getContents()
-                    )
-                );
+				throw new BackWPup_Destination_Dropbox_API_Exception(
+					sprintf(
+						// translators: %1$s is the error code, %2$s is the response body.
+						esc_html__(
+							'(%1$s) An unknown error has occurred. Response from server: %2$s',
+							'backwpup'
+						),
+						esc_html( (string) $response->getStatusCode() ),
+						esc_html( $response->getBody()->getContents() )
+					)
+				);
         }
     }
 
@@ -972,16 +981,17 @@ class BackWPup_Destination_Dropbox_API
      */
     protected function handleServerException(ResponseInterface $response)
     {
-        throw new BackWPup_Destination_Dropbox_API_Exception(
-            sprintf(
-                __(
-                    '(%1$d) An unexpected server error was encountered. Response from server: %2$s',
-                    'backwpup'
-                ),
-                $response->getStatusCode(),
-                $response->getBody()->getContents()
-            )
-        );
+		throw new BackWPup_Destination_Dropbox_API_Exception(
+			sprintf(
+				// translators: %1$d is the error code, %2$s is the response body.
+				esc_html__(
+					'(%1$d) An unexpected server error was encountered. Response from server: %2$s',
+					'backwpup'
+				),
+				esc_html( (string) $response->getStatusCode() ),
+				esc_html( $response->getBody()->getContents() )
+			)
+		);
     }
 
     /**
@@ -993,15 +1003,16 @@ class BackWPup_Destination_Dropbox_API
      */
     protected function handle400Error(ResponseInterface $response)
     {
-        throw new BackWPup_Destination_Dropbox_API_Exception(
-            sprintf(
-                __(
-                    '(400) Bad input parameter. Response from server: %s',
-                    'backwpup'
-                ),
-                $response->getBody()->getContents()
-            )
-        );
+		throw new BackWPup_Destination_Dropbox_API_Exception(
+			sprintf(
+				// translators: %s is the response body.
+				esc_html__(
+					'(400) Bad input parameter. Response from server: %s',
+					'backwpup'
+				),
+				esc_html( $response->getBody()->getContents() )
+			)
+		);
     }
 
     /**
@@ -1017,15 +1028,16 @@ class BackWPup_Destination_Dropbox_API
         if ($error['error']['.tag'] === 'expired_access_token') {
             $this->refresh($this->oauthToken['refresh_token']);
         } else {
-            throw new BackWPup_Destination_Dropbox_API_Exception(
-                sprintf(
-                    __(
-                        '(401) Bad or expired token. Response from server: %s',
-                        'backwpup'
-                    ),
-                    $error['error']['.tag']
-                )
-            );
+			throw new BackWPup_Destination_Dropbox_API_Exception(
+				sprintf(
+					// translators: %s is the response error.
+					esc_html__(
+						'(401) Bad or expired token. Response from server: %s',
+						'backwpup'
+					),
+					esc_html( $error['error']['.tag'] )
+				)
+			);
         }
     }
 
@@ -1043,17 +1055,17 @@ class BackWPup_Destination_Dropbox_API
         if ($error['error']['.tag'] === 'invalid_account_type') {
             // InvalidAccountTypeError
             if ($error['error']['invalid_account_type']['.tag'] === 'endpoint') {
-                throw new BackWPup_Destination_Dropbox_API_Exception(
-                    __(
-                        '(403) You do not have permission to access this endpoint.',
+				throw new BackWPup_Destination_Dropbox_API_Exception(
+					esc_html__(
+						'(403) You do not have permission to access this endpoint.',
                         'backwpup'
                     )
                 );
             }
             if ($error['error']['invalid_account_type']['.tag'] === 'feature') {
-                throw new BackWPup_Destination_Dropbox_API_Exception(
-                    __(
-                        '(403) You do not have permission to access this feature.',
+				throw new BackWPup_Destination_Dropbox_API_Exception(
+					esc_html__(
+						'(403) You do not have permission to access this feature.',
                         'backwpup'
                     )
                 );
@@ -1061,15 +1073,16 @@ class BackWPup_Destination_Dropbox_API
         }
 
         // Catch all
-        throw new BackWPup_Destination_Dropbox_API_Exception(
-            sprintf(
-                __(
-                    '(403) You do not have permission to access this resource. Response from server: %s',
-                    'backwpup'
-                ),
-                $error['error_summary']
-            )
-        );
+		throw new BackWPup_Destination_Dropbox_API_Exception(
+			sprintf(
+				// translators: %s is the response error.
+				esc_html__(
+					'(403) You do not have permission to access this resource. Response from server: %s',
+					'backwpup'
+				),
+				esc_html( $error['error_summary'] )
+			)
+		);
     }
 
     /**
@@ -1083,18 +1096,19 @@ class BackWPup_Destination_Dropbox_API
     {
         $error = json_decode($response->getBody(), true);
 
-        throw new BackWPup_Destination_Dropbox_API_Request_Exception(
-            sprintf(
-                __(
-                    '(409) Endpoint-specific error. Response from server: %s',
-                    'backwpup'
-                ),
-                $error['error_summary']
-            ),
-            $response->getStatusCode(),
-            null,
-            $error['error']
-        );
+		throw new BackWPup_Destination_Dropbox_API_Request_Exception(
+			sprintf(
+				// translators: %s is the response error.
+				esc_html__(
+					'(409) Endpoint-specific error. Response from server: %s',
+					'backwpup'
+				),
+				esc_html( $error['error_summary'] )
+			),
+			(int) esc_html( (string) $response->getStatusCode() ),
+			null,
+			$error['error'] // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Error details are stored on the exception, not output.
+		);
     }
 
     /**
@@ -1109,15 +1123,15 @@ class BackWPup_Destination_Dropbox_API
     protected function handle429Error(ResponseInterface $response)
     {
         if (!$response->hasHeader('Retry-After')) {
-            throw new BackWPup_Destination_Dropbox_API_Exception(
-                __(
-                    '(429) Requests are being rate limited. Please try again later.',
+			throw new BackWPup_Destination_Dropbox_API_Exception(
+				esc_html__(
+					'(429) Requests are being rate limited. Please try again later.',
                     'backwpup'
                 )
             );
-        }
-        sleep(intval($response->getHeaderLine('Retry-After')));
-    }
+		}
+		sleep( (int) $response->getHeaderLine( 'Retry-After' ) );
+	}
 
     /**
      * Creates a new HTTP client.

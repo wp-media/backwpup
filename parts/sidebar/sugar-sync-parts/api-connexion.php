@@ -1,6 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 $token = false;
 if( ! is_null( $job_id ) ) {
 	$token = BackWPup_Option::get( $job_id, 'sugarrefreshtoken', false );

@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $name           Unique name of the field to handle value when form is submitted to PHP.
  * @var string  $value          The field label. Default: "".
@@ -7,6 +12,6 @@ use BackWPup\Utils\BackWPupHelpers;
  */
 #Defaults
 $value = $value ?? "";
-$id = isset($identifier) ? " id='".esc_attr($identifier)."'" : null;
+$id = $identifier ?? '';
 ?>
-<input type="hidden" <?php echo $id; ?>  name="<?= esc_attr($name) ?>" value="<?= esc_attr($value) ?>">
+<input type="hidden"<?php echo $id ? ' id="' . esc_attr( $id ) . '"' : ''; ?> name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">

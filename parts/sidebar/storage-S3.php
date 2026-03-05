@@ -1,6 +1,11 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 use WPMedia\BackWPup\Plugin\Plugin;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var $job_id int Job ID
  */
@@ -284,7 +289,7 @@ $s3->edit_inline_js();
 			?>
 	</div>
 
-	<p class="my-2 text-center text-sm"><?php _e( 'OR', 'backwpup' ); ?></p>
+	<p class="my-2 text-center text-sm"><?php esc_html_e( 'OR', 'backwpup' ); ?></p>
 
 	<?php
 	BackWPupHelpers::component(

@@ -38,10 +38,11 @@ class BackWPup_Destination_Downloader_Factory
 
         if (!class_exists($class)) {
             throw new BackWPup_Factory_Exception(
-                sprintf(
-                    'No way to instantiate class %s. Class doesn\'t exist.',
-                    $class
-                )
+				sprintf(
+					// translators: %s = Destination class name.
+					esc_html__( 'No way to instantiate class %s. Class doesn\'t exist.', 'backwpup' ),
+					esc_html( $class )
+				)
             );
         }
 

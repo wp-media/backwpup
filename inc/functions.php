@@ -1,23 +1,28 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Template Function.
  *
  * @since 3.5.0
  *
- * @param object $bind      the object to use within the view
- * @param string $file_path the path of the file to include
+ * @param object $bind      the object to use within the view.
+ * @param string $file_path the path of the file to include.
+ * @throws \InvalidArgumentException When the template path is invalid.
  */
-function backwpup_template($bind, $file_path)
-{
-    $file_path = \BackWPup_Sanitize_Path::sanitize_path_regexp($file_path);
+function backwpup_template( $bind, $file_path ) {
+	$file_path = \BackWPup_Sanitize_Path::sanitize_path_regexp( $file_path );
 
     if (!$file_path) {
         throw new \InvalidArgumentException(
-            sprintf(
-                'Invalid or malformed file path %s: for template function.',
-                $file_path
-            )
-        );
+			sprintf(
+		// translators: %s = file path.
+			esc_html__( 'Invalid or malformed file path %s: for template function.', 'backwpup' ),
+			esc_html( $file_path )
+			)
+		);
     }
 
     // Build the path.
@@ -25,10 +30,11 @@ function backwpup_template($bind, $file_path)
 
     if (!file_exists($path)) {
         throw new \InvalidArgumentException(
-            sprintf(
-                'Cannot locate the template %s in template function.',
-                $path
-            )
+			sprintf(
+				// translators: %s = template path.
+				esc_html__( 'Cannot locate the template %s in template function.', 'backwpup' ),
+				esc_html( $path )
+			)
         );
     }
 

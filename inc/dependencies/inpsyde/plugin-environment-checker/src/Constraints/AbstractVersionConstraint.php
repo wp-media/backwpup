@@ -60,10 +60,10 @@ abstract class AbstractVersionConstraint implements ConstraintInterface
 			return $result;
 		}
 		throw new ConstraintFailedException(
-			$this,
-			$actualVersion,
-			[$this->error],
-			$this->message
+			$this, // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Constraint instance is stored on the exception, not output.
+			esc_html($actualVersion),
+			[esc_html($this->error)],
+			esc_html($this->message)
 		);
 	}
 }

@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $title      Heading title. Default "".
  * @var string  $level      Heading level. Values: 1 to 6. Default: 1.
@@ -12,6 +17,7 @@ use BackWPup\Utils\BackWPupHelpers;
  * @var string  $bold       Optional. Font weight. Values: tailwind bold utitlity claseses. Default: font-bold.
  * @var bool  $flex         Optional. Flex Box Layout. Values: true, false. Default: true.
  * @var bool  $truncate     Optional. Wrap text. Values: true, false. Default: false.
+ * @var bool  $allow_html   Optional. Allow limited HTML in title. Default: false.
  */
 
 $title = $title ?? "";
@@ -19,7 +25,7 @@ $level = isset($level) && in_array($level, range(1, 6)) ? $level : 1;
 $tag = "h" . $level;
 $bold = $bold ?? $level < 3 ? "font-bold" : "font-semibold";
 $class = $class ?? "";
-$id = isset($identifier) ? " id='".esc_attr($identifier)."'" : null;
+$id = $identifier ?? '';
 
 # Font
 $font = $font ?? ($level < 3 ? "medium" :  "small");
@@ -37,6 +43,7 @@ $color = $color ?? "primary-darker";
 
 $flex = isset( $flex ) && ! $flex ? '' : 'flex';
 $truncate = isset( $truncate ) && $truncate ? 'truncate' : '';
+$allow_html = isset( $allow_html ) && $allow_html;
 
 # CSS classes
 $classes = BackWPupHelpers::clsx(
@@ -47,10 +54,10 @@ $classes = BackWPupHelpers::clsx(
   $font_size,
   (isset($align) ? "justify-$align" : ""),
   $class,
-)
+);
 
 ?>
-<<?php echo $tag ?> class="<?php echo $classes; ?>" <?php echo $id ?>>
-  <?php echo $title ?>
+<<?php echo tag_escape( $tag ); ?> class="<?php echo esc_attr( $classes ); ?>"<?php echo $id ? " id='" . esc_attr( $id ) . "'" : ''; ?>>
+  <?php echo $allow_html ? wp_kses( $title, [ 'sup' => [] ] ) : esc_html( $title ); ?>
   <?php isset($tooltip) && BackWPupHelpers::component("tooltip", ["content" => $tooltip]); ?>
-</<?php echo $tag ?>>
+</<?php echo tag_escape( $tag ); ?>>

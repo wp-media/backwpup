@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $name           Unique name of the field to handle value when form is submitted to PHP.  
  * @var bool    $placeholder    Optional. True to check the toggle. Default: "". 
@@ -15,10 +20,10 @@ $tags = $tags ?? [];
 $tags_values = implode(",", $tags);
 
 ?>
-<div class="<?php echo BackWPupHelpers::clsx("js-backwpup-add-input", $trigger); ?>">
+<div class="<?php echo esc_attr( BackWPupHelpers::clsx( "js-backwpup-add-input", $trigger ) ); ?>">
   <label class="mb-2 p-1 flex border border-grey-500 rounded font-title focus-within:border-secondary-base">
-    <input type="hidden" name="<?php echo $name; ?>" value="<?php echo $tags_values; ?>" class="js-backwpup-add-input-values">
-    <input type="text" name="add" class="flex-auto input-special" placeholder="<?php echo $placeholder; ?>">
+    <input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $tags_values ); ?>" class="js-backwpup-add-input-values">
+    <input type="text" name="add" class="flex-auto input-special" placeholder="<?php echo esc_attr( $placeholder ); ?>">
     <?php
     BackWPupHelpers::component("form/button", [
       "type" => "primary",

@@ -32,6 +32,12 @@ use WPMedia\BackWPup\Dependencies\League\Container\Container;
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\ServiceProviderInterface;
 use WPMedia\BackWPup\EventManagement\EventManager;
 use WPMedia\BackWPup\EventManagement\SubscriberInterface;
+use WPMedia\BackWPup\License\Infrastructure\LicenseOptions;
+use WPMedia\BackWPup\License\Infrastructure\WpOptionsLicenseRepository;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class Plugin {
 	/**
@@ -96,19 +102,6 @@ class Plugin {
 	}
 
 	/**
-	 * Load Plugin Translation.
-	 *
-	 * @return void
-	 */
-	public function load_plugin_textdomain(): void {
-		if ( is_textdomain_loaded( 'backwpup' ) ) {
-			return;
-		}
-
-		load_plugin_textdomain( 'backwpup', false, dirname( plugin_basename( $this->plugin_path ) ) . '/languages' );
-	}
-
-	/**
 	 * Plugin init.
 	 *
 	 * @return void
@@ -143,25 +136,6 @@ class Plugin {
 		// Register the third party services.
 		BackWPup_ThirdParties::register();
 
-		// Load pro features.
-		if ( BackWPup::is_pro() ) {
-			$license = new License(
-				get_site_option( 'license_product_id', '' ),
-				get_site_option( 'license_api_key', '' ),
-				get_site_option( 'license_instance_key' ) ?: wp_generate_password( 12, false ),
-				get_site_option( 'license_status', 'inactive' )
-			);
-
-			$plugin_update      = new PluginUpdate( $license, $plugin_data );
-			$plugin_information = new PluginInformation( $license, $plugin_data );
-
-			$pro = new BackWPup_Pro( $plugin_update, $plugin_information );
-			$pro->init();
-		}
-
-		// Only in backend.
-		$this->load_admin_backend( $plugin_data );
-
 		$this->container->addShared(
 			'event_manager',
 			function () {
@@ -185,6 +159,34 @@ class Plugin {
 			// Load each service provider's subscribers if found.
 			$this->load_subscribers( $provider_instance );
 		}
+
+		// Load pro features.
+		if ( BackWPup::is_pro() ) {
+			/**
+			 * WpOptionsLicenseRepository instance.
+			 *
+			 * @var WpOptionsLicenseRepository $license_repository
+			 */
+			$license_repository = $this->container->get( 'license_repository' );
+			$instance_key       = $license_repository->get_instance_key();
+			$instance_key       = '' !== $instance_key ? $instance_key : wp_generate_password( 12, false );
+
+			$license = new License(
+				$license_repository->get_product_id(),
+				$license_repository->get_api_key(),
+				$instance_key,
+				$license_repository->get_status()
+			);
+
+			$plugin_update      = new PluginUpdate( $license, $plugin_data );
+			$plugin_information = new PluginInformation( $license, $plugin_data );
+
+			$pro = new BackWPup_Pro( $plugin_update, $plugin_information );
+			$pro->init();
+		}
+
+		// Only in backend.
+		$this->load_admin_backend( $plugin_data );
 
 		// WP-Cron.
 		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
@@ -219,15 +221,17 @@ class Plugin {
 			return;
 		}
 
-		$settings_views    = [];
-		$settings_updaters = [];
+		$settings_views     = [];
+		$settings_updaters  = [];
+		$license_repository = null;
 
 		if ( BackWPup::is_pro() ) {
-			$activate   = new LicenseActivation( $plugin_data );
-			$deactivate = new LicenseDeactivation( $plugin_data );
-			$status     = new LicenseStatusRequest();
+			$activate        = new LicenseActivation( $plugin_data );
+			$deactivate      = new LicenseDeactivation( $plugin_data );
+			$status          = new LicenseStatusRequest();
+			$license_manager = $this->container->get( 'license_manager' );
 
-			$settings_views    = array_merge(
+			$settings_views     = array_merge(
 				$settings_views,
 				[
 					new EncryptionSettingsView(),
@@ -238,22 +242,25 @@ class Plugin {
 					),
 				]
 			);
-			$settings_updaters = array_merge(
+			$settings_updaters  = array_merge(
 				$settings_updaters,
 				[
 					new EncryptionSettingUpdater(),
 					new LicenseSettingUpdater(
 						$activate,
 						$deactivate,
-						$status
+						$status,
+						$license_manager
 					),
 				]
 			);
+			$license_repository = $this->container->get( 'license_repository' );
 		}
 
 		$settings = new BackWPup_Page_Settings(
 			$settings_views,
-			$settings_updaters
+			$settings_updaters,
+			$license_repository
 		);
 
 		$admin = new BackWPup_Admin( $settings );

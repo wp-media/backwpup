@@ -95,8 +95,9 @@ class Container implements DefinitionContainerInterface
         }
 
         throw new NotFoundException(sprintf(
-            'Unable to extend alias (%s) as it is not being managed as a definition',
-            $id
+			// Translators: %s is the alias of the definition that cannot be extended.
+            esc_html__('Unable to extend alias (%s) as it is not being managed as a definition', 'backwpup'),
+            esc_html($id)
         ));
     }
 
@@ -192,7 +193,8 @@ class Container implements DefinitionContainerInterface
             $this->providers->register($id);
 
             if (!$this->definitions->has($id) && !$this->definitions->hasTag($id)) {
-                throw new ContainerException(sprintf('Service provider lied about providing (%s) service', $id));
+				// translators: %s is the alias of the service that was not found.
+                throw new ContainerException(sprintf(esc_html__('Service provider lied about providing (%s) service', 'backwpup'), esc_html($id)));
             }
 
             return $this->resolve($id, $new);
@@ -205,6 +207,7 @@ class Container implements DefinitionContainerInterface
             }
         }
 
-        throw new NotFoundException(sprintf('Alias (%s) is not being managed by the container or delegates', $id));
+		// translators: %s is the alias of the definition that cannot be resolved.
+        throw new NotFoundException(sprintf(esc_html__('Alias (%s) is not being managed by the container or delegates', 'backwpup'), esc_html($id)));
     }
 }

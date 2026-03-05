@@ -1,6 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var int $job_id Job ID information.
  * @var string $type The configured job selected.

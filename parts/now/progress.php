@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 BackWPupHelpers::component("heading", [
   "level" => 1,
   "title" => __("We are creating a backup of your site…", 'backwpup'),

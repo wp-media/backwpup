@@ -10,8 +10,9 @@ final class CouldNotDecodeBasicAuthenticationToken extends \RuntimeException
     {
         return new self(
             sprintf(
-                __('Could not decode basic authentication token %s', 'backwpup'),
-                $token
+                /* translators: %s: authentication token. */
+                esc_html__( 'Could not decode basic authentication token %s', 'backwpup' ),
+                esc_html( $token )
             )
         );
     }

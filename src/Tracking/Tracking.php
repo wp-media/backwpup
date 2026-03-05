@@ -7,6 +7,10 @@ use WPMedia\BackWPup\Adapters\OptionAdapter;
 use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class Tracking {
 	/**
 	 * Optin instance.

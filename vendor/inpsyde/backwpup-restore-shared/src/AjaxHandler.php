@@ -205,7 +205,7 @@ class AjaxHandler
         $callback = [$this->languageController, $action];
         Assert::isCallable($callback);
 
-        $locale = filter_input(INPUT_POST, 'locale',FILTER_SANITIZE_ADD_SLASHES);
+        $locale = filter_input(INPUT_POST, 'locale', FILTER_SANITIZE_ADD_SLASHES);
 
         if (is_string($locale)) {
             return $callback($locale);

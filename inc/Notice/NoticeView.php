@@ -84,11 +84,12 @@ final class NoticeView
 
             default:
                 throw new \BadMethodCallException(
-                    sprintf(
-                        __('Call to undefined method %1$s::%2$s()', 'backwpup'),
-                        self::class,
-                        $name
-                    )
+					sprintf(
+						// translators: %1$s: Class name, %2$s: Method name.
+						esc_html__( 'Call to undefined method %1$s::%2$s()', 'backwpup' ),
+						esc_html( self::class ),
+						esc_html( $name )
+					)
                 );
         }
 

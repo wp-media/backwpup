@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
 <p class="notice-titre">BackWpUp</p>
 <span><a class="closeIt" href="<?php echo esc_url( $bind->dismissActionUrl ); // phpcs:ignore ?>">Dismiss</a></span>
 <p class="notice-titre"><?php esc_html_e( 'EasyCron No Longer Supported', 'backwpup' ); ?></p>

@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 //Get the current network settings.
 $authentication = get_site_option(
 	'backwpup_cfg_authentication',
@@ -38,10 +43,10 @@ if (isset($is_in_form) && false === $is_in_form) {
 
 <div>
   <p class="font-semibold text-base text-primary-darker">
-    <?=__("Authentication for", 'backwpup') ?>
+	  <?php esc_html_e("Authentication for", 'backwpup') ?>
   </p>
   <p class="text-base text-primary-darker">
-    <?=site_url('wp-cron.php') ?>
+	  <?php echo esc_url( site_url( 'wp-cron.php' ) ); ?>
   </p>
 </div>
 

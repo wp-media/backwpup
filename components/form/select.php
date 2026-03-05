@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $name           Unique name of the field to handle value when form is submitted to PHP.
  * @var string  $label          The field label. Default: "". 
@@ -26,7 +31,7 @@ $value = $value ?? "";
 $options = $options ?? [];
 $withEmpty = $withEmpty ?? false;
 $required = $required ?? false;
-$id = isset($identifier) ? " id='".esc_attr($identifier)."'" : null;
+$id = $identifier ?? '';
 $tooltip_pos = $tooltip_pos ?? "top";
 $hide_subset_current_options = $hide_subset_current_options ?? [];
 
@@ -38,17 +43,17 @@ $class = $class ?? "";
 
 ?>
 <div class="select block relative border border-grey-500 rounded font-title focus-within:border-secondary-base">
-  <label class="select-label flex gap-1 items-center absolute top-2 left-4 text-grey-700 leading-5 text-xs transition-all pointer-events-none" name="<?php echo $name; ?>">
-    <?php echo $label; ?>
+  <label class="select-label flex gap-1 items-center absolute top-2 left-4 text-grey-700 leading-5 text-xs transition-all pointer-events-none" name="<?php echo esc_attr( $name ); ?>">
+    <?php echo esc_html( $label ); ?>
     <?php isset($tooltip) && BackWPupHelpers::component("tooltip", ["content" => $tooltip, "icon_size" => "small", "position" => $tooltip_pos]); ?>
   </label>
-  <select name="<?=esc_attr($name)?>" <?php echo $id; ?> class="<?php echo BackWPupHelpers::clsx("peer select-transparent block min-w-[200px] w-full text-base text-primary-darker", $trigger, $class); ?>" <?php if ($required) : ?>required<?php endif; ?>>
+  <select name="<?php echo esc_attr( $name ); ?>"<?php echo $id ? ' id="' . esc_attr( $id ) . '"' : ''; ?> class="<?php echo esc_attr( BackWPupHelpers::clsx( "peer select-transparent block min-w-[200px] w-full text-base text-primary-darker", $trigger, $class ) ); ?>" <?php if ($required) : ?>required<?php endif; ?>>
     <?php if ($withEmpty) : ?>
       <option value="" <?php if ($value === "") : ?>selected<?php endif; ?>></option>
     <?php endif; ?>
     <?php foreach ($options as $key => $option) : ?>
       <option value="<?php echo esc_attr( $key ); ?>" <?php selected( $key, $value ); echo $key === $value && in_array( $key, $hide_subset_current_options, true ) ? 'hidden' : '' ?>>
-        <?php echo $option; ?>
+        <?php echo esc_html( $option ); ?>
       </option>
     <?php endforeach; ?>
   </select>

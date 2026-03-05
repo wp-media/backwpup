@@ -2,6 +2,10 @@
 use BackWPup\Utils\BackWPupHelpers;
 use WPMedia\BackWPup\Adapters\OptionAdapter;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var int $job_id ID of the job we are retrieving the frequency settings for.
  */
@@ -176,7 +180,7 @@ BackWPupHelpers::component( 'alerts/info', [
     <div class="js-backwpup-frequency-job-show-if-link">
         <div class="bg-slate-300 text-black js-frequency-link-url pl-3 flex rounded-md mb-3">
         <span class="backwpup-backup-link truncate self-center pr-3">
-            <?php echo $url['url'] ?? '' ; ?>
+	            <?php echo esc_url( $url['url'] ?? '' ); ?>
         </span>
             <button type="button"
                     aria-label="Copy backup link to clipboard"

@@ -1,6 +1,11 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 use WPMedia\BackWPup\Plugin\Plugin;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 $job_id = $job_id ?? null;
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Dropbox Settings", 'backwpup'),
@@ -69,7 +74,7 @@ $dropboxtoken = BackWPup_Option::get($job_id, 'dropboxtoken', []);
     ?>
 
     <p class="px-2 font-light text-xs">
-      <?php _e("Specify a subfolder where your backup archives will be stored. If you use the App option from above, this folder will be created inside of Apps/BackWPup. Otherwise it will be created at the root of your Dropbox. Already exisiting folders with the same name will not be overriden.", 'backwpup'); ?>
+      <?php esc_html_e("Specify a subfolder where your backup archives will be stored. If you use the App option from above, this folder will be created inside of Apps/BackWPup. Otherwise it will be created at the root of your Dropbox. Already exisiting folders with the same name will not be overriden.", 'backwpup'); ?>
     </p>
 
     <?php

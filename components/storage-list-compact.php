@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 ob_start();
 /**
  * @var array  $storages     An array of storage services. Default: [].
@@ -15,9 +20,9 @@ $justify_class = isset($style) && $style === "alt" ? "max-md:justify-end" : "";
 
 if (count($storages)>0) {
 ?>
-<ul class="<?php echo BackWPupHelpers::clsx("flex flex-wrap gap-2", $justify_class); ?>">
+<ul class="<?php echo esc_attr( BackWPupHelpers::clsx( "flex flex-wrap gap-2", $justify_class ) ); ?>">
   <?php foreach ($storages as $storage) : ?>
-    <li class="<?php echo BackWPupHelpers::clsx("rounded flex items-center", $item_class); ?>">
+    <li class="<?php echo esc_attr( BackWPupHelpers::clsx( "rounded flex items-center", $item_class ) ); ?>">
       <?php  
         $content = $storage;
 
@@ -25,8 +30,8 @@ if (count($storages)>0) {
           $content = __( 'Website Server', 'backwpup' );
         }
 
-         echo BackWPupHelpers::component("tooltip", [
-          "content" => __($content, 'backwpup'),
+         BackWPupHelpers::component("tooltip", [
+          "content" => $content,
           "icon_name" => $storage,
           "icon_size" => "large",
           "position" => "top",

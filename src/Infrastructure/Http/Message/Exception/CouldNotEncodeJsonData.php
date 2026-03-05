@@ -8,6 +8,12 @@ final class CouldNotEncodeJsonData extends \RuntimeException
 {
     public static function withError(string $error): self
     {
-        return new self(sprintf(__('Cannot encode data into JSON. Got error: %s', 'backwpup'), $error));
+        return new self(
+            sprintf(
+                /* translators: %s: JSON error message. */
+                __('Cannot encode data into JSON. Got error: %s', 'backwpup'),
+                $error
+            )
+        );
     }
 }

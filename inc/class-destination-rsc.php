@@ -4,6 +4,9 @@ declare(strict_types=1);
 use BackWPup\Utils\BackWPupHelpers;
 use WPMedia\BackWPup\StorageProviders\Rackspace\RackspaceProvider as Rackspace;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class BackWPup_Destination_RSC extends BackWPup_Destinations {
 	/**
@@ -322,7 +325,14 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 	{
 		$job_object->substeps_todo = 2 + $job_object->backup_filesize;
 		$job_object->substeps_done = 0;
-		$job_object->log(sprintf(__('%d. Trying to send backup file to Rackspace cloud &hellip;', 'backwpup'), $job_object->steps_data[$job_object->step_working]['STEP_TRY']), E_USER_NOTICE);
+		$job_object->log(
+			sprintf(
+			/* translators: %d: attempt number. */
+			__( '%d. Trying to send backup file to Rackspace cloud &hellip;', 'backwpup' ),
+			$job_object->steps_data[ $job_object->step_working ]['STEP_TRY']
+		),
+			E_USER_NOTICE
+			);
 
 		$storage_provider = $this->get_rackspace_client(
 			[
@@ -442,14 +452,14 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			}
 		}
 
-		if (empty($args['rscusername'])) {
-			_e('Missing username!', 'backwpup');
-		} elseif (empty($args['rscapikey'])) {
-			_e('Missing API Key!', 'backwpup');
-		} elseif (!empty($error)) {
-			echo esc_html($error);
-		} elseif (empty($container_list)) {
-			_e('A container could not be found!', 'backwpup');
+		if ( empty( $args['rscusername'] ) ) {
+			esc_html_e( 'Missing username!', 'backwpup' );
+		} elseif ( empty( $args['rscapikey'] ) ) {
+			esc_html_e( 'Missing API Key!', 'backwpup' );
+		} elseif ( ! empty( $error ) ) {
+			echo esc_html( $error );
+		} elseif ( empty( $container_list ) ) {
+			esc_html_e( 'A container could not be found!', 'backwpup' );
 		}
 		echo '</span>';
 

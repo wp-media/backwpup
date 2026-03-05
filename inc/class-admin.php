@@ -10,6 +10,10 @@ use Inpsyde\BackWPup\Notice\EvaluateNotice;
 use Inpsyde\BackWPup\Notice\EasycronUpdateNotice;
 use Inpsyde\BackWPup\Notice\RestoreFeatureInformationNotice;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * BackWPup_Admin.
  */
@@ -231,12 +235,13 @@ final class BackWPup_Admin {
             $message_error = '<div' . $message_id . ' class="bwu-message-error">' . $message_error . '</div>';
         }
 
-        if ($echo) {
-            echo $message_updated . $message_error;
-        }
+		$output = $message_updated . $message_error;
+		if ( $echo ) {
+			echo wp_kses_post( $output );
+		}
 
-        return $message_updated . $message_error;
-    }
+		return wp_kses_post( $output );
+	}
 
     /**
      * Admin init function.
@@ -727,16 +732,17 @@ final class BackWPup_Admin {
 	 */
 	public function admin_page_restore( $page_hooks ) {
 		$this->page_hooks['backwpuprestore'] = add_submenu_page(
-			'backwpup_null',
-			esc_html__( 'Restore', 'backwpup' ),
-			esc_html__( 'Restore', 'backwpup' ),
+			'backwpup',
+			esc_html__( 'Restore backup', 'backwpup' ),
+			esc_html__( 'Restore backup', 'backwpup' ),
 			'backwpup_restore',
 			'backwpuprestore',
 			[
 				\BackWPup_Page_Restore::class,
 				'page',
-            ]
-        );
+			],
+			1
+		);
 
 		// Register the submenu page (WP take care of capability) but prevent other stuffs to be executed if user
 		// doesn't have correct privileges.
@@ -915,13 +921,14 @@ final class BackWPup_Admin {
 EOT;
 
             if (!class_exists(\BackWPup_Pro::class, false)) {
-                $admin_footer_text .= sprintf(
-                    __(
+				$admin_footer_text .= sprintf(
+					// translators: %s: BackWPup website URL.
+					__(
                         '<a class="backwpup-get-pro" href="%s">Get BackWPup Pro now.</a>',
                         'backwpup'
-                    ),
-                    __('http://backwpup.com', 'backwpup')
-                );
+					),
+					__( 'http://backwpup.com', 'backwpup' )
+				);
             }
 
             return $admin_footer_text . $default_text;
@@ -955,10 +962,10 @@ EOT;
 			'<span class="backwpup-update-footer">
         <a href="' . esc_url( 'http://backwpup.com' ) . '">' . esc_html( BackWPup::get_plugin_data( 'Name' ) ) . '</a> ' .
 			sprintf(
-				// Translators: %s is the version number of the BackWPup plugin.
-			esc_html__( 'version %s', 'backwpup' ),
-					esc_html( BackWPup::get_plugin_data( 'Version' ) )
-				) .
+				// translators: %s: BackWPup version.
+				esc_html__( 'version %s', 'backwpup' ),
+				esc_html( BackWPup::get_plugin_data( 'Version' ) )
+			) .
 			'</span>';
 
 			return $update_footer_text . $default_text;
@@ -996,7 +1003,7 @@ EOT;
         if (!empty($user->roles[0]) && in_array($user->roles[0], array_keys($backwpup_roles), true)) {
             return;
 		} ?>
-		<h3><?php echo esc_html__( BackWPup::get_plugin_data( 'name' ), 'backwpup' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText ?></h3>
+		<h3><?php echo esc_html( BackWPup::get_plugin_data( 'name' ) ); ?></h3>
 		<table class="form-table">
 		<tr>
 			<th>
@@ -1015,11 +1022,12 @@ EOT;
 					</option>
 				<?php
 				foreach ( $backwpup_roles as $role => $role_value ) {
-					echo '<option value="' . $role . '" ' . selected( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							$user->has_cap( $role ),
-							true,
-							false
-						) . '>' . $role_value['name'] . '</option>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					printf(
+						'<option value="%1$s"%2$s>%3$s</option>',
+						esc_attr( $role ),
+						selected( $user->has_cap( $role ), true, false ),
+						esc_html( $role_value['name'] )
+					);
 				}
 				?>
 			</select>
@@ -1106,12 +1114,12 @@ EOT;
 
 		// Add menu pages.
 		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_onboarding' ], 2 );
+		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_restore' ], 2 );
 		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_backups' ], 3 );
 		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_jobs' ], 4 );
 		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_about' ], 5 );
 
 		// Hidden menu pages.
-		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_restore' ], 19 );
 		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_editjob' ], 20 );
 		add_filter( 'backwpup_admin_pages', [ $this, 'admin_page_first_backup' ], 21 );
 

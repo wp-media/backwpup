@@ -74,17 +74,38 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
     {
         $errors = 0;
 
+        // Initialize restore_list if empty.
+        // Empty string represent the backup root directory.
+        if (empty($this->registry->restore_list) || !is_array($this->registry->restore_list)) {
+            $this->registry->restore_list = [''];
+        }
+
         do {
             // Ignore extra files.
-            $extra_ignored_files = $this->registry->extra_files;
+            $extra_ignored_files = $this->registry->extra_files ?? [];
+
             $ignore = array_merge(self::$ignore_files_directories, $extra_ignored_files);
 
             // Set archive path and length used during copy files.
-            $archive_extracted_path = $this->registry->extract_folder;
+            $archive_extracted_path = (string) ($this->registry->extract_folder ?? '');
+
             $this->current_archive_extracted_path_length = \strlen($archive_extracted_path);
 
             // The next directory to restore.
-            $next_dir = $this->registry->next_dir_in_restore_list();
+            $next_dir = (string) $this->registry->next_dir_in_restore_list();
+
+            if ($archive_extracted_path === '') {
+                throw new RestorePathException(
+                    ExceptionLinkHelper::translateWithAppropiatedLink(
+                        sprintf(
+                            __('Archive Path is not set; Archive Path: %1$s', 'backwpup'),
+                            $archive_extracted_path ?: '(empty string)'
+                        ),
+                        'ARCHIVE_RESTORE_PATH_CANNOT_BE_SET'
+                    )
+                );
+            }
+
             $archive_extracted_path = $this->append_path($archive_extracted_path, $next_dir);
 
             // Create the path where the files must be restored.

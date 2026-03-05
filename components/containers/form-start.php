@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $gap_size   The gap size. Values: "small", "medium". Default: "medium".
  * @var string $method     The form method. Default: "post".
@@ -27,17 +32,17 @@ $page = $page ?? 'backwpup';
 $action = $action ?? 'backwpup';
 $overflow = $scrollable ?? true ? 'overflow-y-auto' : '';
 $absolute = $scrollable ?? true ? 'absolute' : '';
-$idForm = $identifier ? 'id="'.$identifier.'"' : '';
+$idForm = $identifier ? $identifier : '';
 ?>
-<div class="<?php echo BackWPupHelpers::clsx("relative flex-auto", $overflow); ?>">
+<div class="<?php echo esc_attr( BackWPupHelpers::clsx( "relative flex-auto", $overflow ) ); ?>">
 	<form
-		class="<?php echo BackWPupHelpers::clsx("w-full flex flex-col", $absolute, $gap, $class); ?>"
-		action="<?php echo admin_url('admin-post.php'); ?>"
+		class="<?php echo esc_attr( BackWPupHelpers::clsx( "w-full flex flex-col", $absolute, $gap, $class ) ); ?>"
+		action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>"
 		method="<?php echo esc_attr($method); ?>"
-    <?=$idForm?>
+    <?php echo $idForm ? ' id="' . esc_attr( $idForm ) . '"' : ''; ?>
 	>
-  <input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( $page.'_page' ); ?>" />
+  <input type="hidden" name="_wpnonce" value="<?php echo esc_attr( wp_create_nonce( $page . '_page' ) ); ?>" />
   <?php wp_referer_field(); ?>
-  <input type="hidden" name="backwpupajaxnonce" value="<?php echo wp_create_nonce( 'backwpup_ajax_nonce' ); ?>" />
-  <input type="hidden" name="page" value="<?=$page?>"/>
-  <input type="hidden" name="action" value="<?=$action?>"/>
+  <input type="hidden" name="backwpupajaxnonce" value="<?php echo esc_attr( wp_create_nonce( 'backwpup_ajax_nonce' ) ); ?>" />
+  <input type="hidden" name="page" value="<?php echo esc_attr($page);?>"/>
+  <input type="hidden" name="action" value="<?php echo esc_attr($action);?>"/>

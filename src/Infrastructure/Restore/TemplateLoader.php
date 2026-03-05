@@ -33,10 +33,15 @@ use Inpsyde\BackWPup\Infrastructure\Restore\LogDownloader\DownloaderFactory;
 use Inpsyde\Restore\Api\Module\Registry;
 use Inpsyde\Restore\Api\Module\Upload\BackupUpload;
 use Inpsyde\Restore\Log\LevelExtractorFactory;
+use Inpsyde\Restore\Api\Module\Manifest\ManifestFile;
 use Pimple\Container;
 use SplFileObject;
 use function untrailingslashit;
 use function wp_create_nonce;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 /**
  * Class Template.
@@ -268,6 +273,7 @@ final class TemplateLoader
                     'upload_is_sql' => empty($registry->uploaded_file) ? null : $backupUpload::upload_is_sql(
                         $registry->uploaded_file
                     ),
+                    'restore_capabilities' => $this->restoreCapabilities($registry->manifest_file),
                 ];
                 break;
 
@@ -276,6 +282,17 @@ final class TemplateLoader
                 // Note that this is hard-coded: if new steps are inserted, please modify as necessary
                 $bind = [
                     'migrate_allowed' => \BackWPup::is_pro(),
+                ];
+                break;
+
+            case 5:
+                /** @var Registry $registry */
+                $registry = $this->container('registry');
+                $caps = $this->restoreCapabilities($registry->manifest_file ?? null);
+
+                $bind = [
+                    'has_db' => (bool) ($caps->has_db ?? false),
+                    'has_files' => (bool) ($caps->has_files ?? false),
                 ];
                 break;
 
@@ -293,7 +310,7 @@ final class TemplateLoader
         }
 
         // Set nonce to use within the template.
-        $bind['nonce'] = wp_create_nonce('backwpup_action_nonce');
+        $bind['nonce'] = $this->currentNonce();
 
         return (object) $bind;
     }
@@ -309,5 +326,70 @@ final class TemplateLoader
     private function item(string $item): array
     {
         return $this->list[$item] ?? [];
+    }
+
+    /**
+     * Determines the restore capabilities available in a given manifest.json file.
+     *
+     * This method attempts to load and parse the provided manifest file in order to
+     * detect which restore operations are supported (database, files, full restore, etc.).
+     * If the manifest file is missing, unreadable, invalid, or an error occurs during
+     * processing, a safe fallback object with all capabilities disabled is returned.
+     *
+     * @param string|null $manifestFile Absolute path to the manifest.json file.
+     * @return \stdClass Object describing the available restore capabilities.
+     */
+    private function restoreCapabilities(?string $manifestFile): \stdClass
+    {
+        $fallback = (object)[
+            'has_db' => false,
+            'has_files' => false,
+            'can_full_restore' => false,
+            'mode' => 'unknown',
+            'job_types' => [],
+        ];
+
+        /** @var ManifestFile $manifest */
+        $manifest = $this->container('manifest');
+        if (!$manifest instanceof ManifestFile) {
+            return $fallback;
+        }
+
+        if (empty($manifestFile) || !is_readable($manifestFile)) {
+            return $fallback;
+        }
+
+        try {
+            $manifest->set_manifest_file($manifestFile);
+            return $manifest->get_restore_capabilities();
+        } catch (\Throwable $e) {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log(sprintf('[BackWPup Restore] Failed to load manifest capabilities: %s', $e->getMessage()));
+            }
+            return $fallback;
+        }
+    }
+
+    /**
+     * Retrieve the current BackWPup restore nonce.
+     *
+     * This method attempts to reuse the existing `backwpup_action_nonce` passed via
+     * the request (GET), which is required to keep AJAX restore actions working
+     * across wizard steps without breaking the nonce chain.
+     *
+     * If no nonce is present in the request, a new nonce is generated as a safe
+     * fallback to allow the restore flow to continue.
+     *
+     * @return string The existing or newly generated BackWPup action nonce.
+     */
+    private function currentNonce(): string
+    {
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended
+        $nonce = isset($_GET['backwpup_action_nonce'])
+            ? sanitize_text_field((string) $_GET['backwpup_action_nonce'])
+            : '';
+        // phpcs:enable
+
+        return $nonce !== '' ? $nonce : wp_create_nonce('backwpup_action_nonce');
     }
 }

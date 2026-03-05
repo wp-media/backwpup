@@ -41,7 +41,7 @@ window.BWU = window.BWU || {};
 							.text( backwpupRestoreLocalized.restoringPrefix + data.message );
 					},
 					onSuccessCallback: function () {
-						BWU.Restore.Functions.loadNextStep( 6, nonce );
+
 					}
 				}
 			);
@@ -54,9 +54,7 @@ window.BWU = window.BWU || {};
 							.text( backwpupRestoreLocalized.restoringPrefix + data.message );
 					},
 					onSuccessCallback: function () {
-						databaserestore
-							.init()
-							.restore();
+
 					}
 				}
 			);

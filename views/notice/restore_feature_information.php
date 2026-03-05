@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
 <p class="notice-titre"><?php esc_html_e( '🎁 Restore is Now Available in BackWPup Free!', 'backwpup' ); ?></p>
 <span><a class="closeIt" href="<?php echo esc_url( $bind->dismissurl ); // phpcs:ignore ?>">Dismiss</a></span>
 <p><?php esc_html_e( 'You can now restore your WordPress backups in just a few clicks with the free version of BackWPup.', 'backwpup' ); ?></p>

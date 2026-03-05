@@ -2,7 +2,15 @@
 
 use Inpsyde\Restore\Log\Log;
 
-/** @var \stdClass $bind */
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Restore step action view.
+ *
+ * @var \stdClass $bind
+ */
 if ( $bind->errors ) {
 	/** @var Log $error */
 	foreach ( $bind->errors as $error ) {

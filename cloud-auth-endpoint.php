@@ -4,6 +4,10 @@
  * Description: A bare page for Cloud Auth endpoint response.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 header('Content-Type: text/html; charset=utf-8');
 ?>
 	<!DOCTYPE html>

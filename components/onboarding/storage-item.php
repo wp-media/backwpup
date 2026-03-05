@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $name         The name of the service.
  * @var string  $slug         The slug of the service, also icon file name.
@@ -31,7 +36,7 @@ $js_trigger_class = "js-backwpup-toggle-storage";
 $content = "storage-$slug";
 $configure_btn_class = BackWPupHelpers::clsx( 'flex items-center gap-2 p-3 border rounded', 'ml-2 border-transparent bg-white hover:bg-grey-200' ) ;
 ?>
-<button class="<?php echo BackWPupHelpers::clsx( $js_trigger_class, $base_style, $contextual_style, $full_width_class ); ?>"
+<button class="<?php echo esc_attr( BackWPupHelpers::clsx( $js_trigger_class, $base_style, $contextual_style, $full_width_class ) ); ?>"
         data-content="<?php echo esc_attr( $content ); ?>"
         data-job-id="<?php echo esc_attr( $job_id ); ?>"
         data-storage="<?php echo esc_attr( $slug ); ?>"

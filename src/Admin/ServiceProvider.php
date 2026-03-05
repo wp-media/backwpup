@@ -6,6 +6,7 @@ namespace WPMedia\BackWPup\Admin;
 use BackWPup;
 use WPMedia\BackWPup\Admin\Beacon\Beacon;
 use WPMedia\BackWPup\Admin\Messages\API\Rest;
+use WPMedia\BackWPup\Admin\Notices\LicenseNoticeFactory;
 use WPMedia\BackWPup\Admin\Notices\Notices;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice52;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice522;
@@ -14,11 +15,20 @@ use WPMedia\BackWPup\Admin\Notices\Notices\NoticeTracking;
 use WPMedia\BackWPup\Admin\Notices\Subscriber as NoticeSubscriber;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice513;
 use Inpsyde\BackWPup\Notice\NoticeView;
+use WPMedia\BackWPup\Admin\Rating\Rating;
+use WPMedia\BackWPup\Admin\Rating\RatingActions;
+use WPMedia\BackWPup\Admin\Rating\RatingEvents;
+use WPMedia\BackWPup\Admin\Rating\RatingInstallStateInitializer;
+use WPMedia\BackWPup\Admin\Rating\RatingNoticeDecider;
+use WPMedia\BackWPup\Admin\Rating\RatingNoticeMessageProvider;
+use WPMedia\BackWPup\Admin\Rating\RatingSubscriber;
 use WPMedia\BackWPup\Admin\Settings\Subscriber as SettingSubscriber;
 use WPMedia\BackWPup\Admin\Frontend\Subscriber as AdminFrontendSubscriber;
 use WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsStore;
 use WPMedia\BackWPup\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WPMedia\BackWPup\License\WpOptionsLicenseStateProvider;
+use WPMedia\BackWPup\License\WpOptionsPaymentMethodProvider;
 use WPMedia\Mixpanel\Optin;
 
 class ServiceProvider extends AbstractServiceProvider {
@@ -37,6 +47,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		\WPMedia\BackWPup\Admin\Chatbot\API\ChatbotRestSubscriber::class,
 		\WPMedia\BackWPup\Admin\Chatbot\ChatbotSubscriber::class,
 		\WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsSubscriber::class,
+		RatingSubscriber::class,
 	];
 
 	/**
@@ -52,6 +63,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		\WPMedia\BackWPup\Admin\Chatbot\API\ChatbotRestSubscriber::class,
 		\WPMedia\BackWPup\Admin\Chatbot\ChatbotSubscriber::class,
 		\WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsSubscriber::class,
+		RatingSubscriber::class,
 	];
 
 	/**
@@ -77,13 +89,22 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'beacon', Beacon::class )
 			->addArgument( new StringArgument( $this->getContainer()->get( 'template_path' ) . '/notice' ) );
 
+		$this->getContainer()->addShared( 'license_state_provider', WpOptionsLicenseStateProvider::class );
+		$this->getContainer()->addShared( 'payment_method_provider', WpOptionsPaymentMethodProvider::class );
+
 		// Register notices.
+		$this->getContainer()->addShared( 'license_notice_factory', LicenseNoticeFactory::class )
+			->addArgument( 'beacon' );
+
 		$this->getContainer()->addShared( 'admin_notices', Notices::class )
 			->addArguments(
 				[
 					'options',
 					'backwpup_adapter',
 					'beacon',
+					'license_state_provider',
+					'payment_method_provider',
+					'license_notice_factory',
 				]
 				);
 
@@ -224,6 +245,39 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared(
 			\WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsSubscriber::class
 		)->addArgument( 'error_signals_store' );
+
+		$this->getContainer()->addShared( 'rating_initializer', RatingInstallStateInitializer::class );
+		$this->getContainer()->addShared( 'rating_notice_message_provider', RatingNoticeMessageProvider::class );
+		$this->getContainer()->addShared( 'rating_notice_decider', RatingNoticeDecider::class );
+		$this->getContainer()->addShared( 'rating_events', RatingEvents::class )->addArguments(
+			[
+				$this->getContainer()->get( 'backwpup_adapter' ),
+			]
+		);
+		$this->getContainer()->addShared( 'rating_actions', RatingActions::class )->addArguments(
+			[
+				$this->getContainer()->get( 'rating_notice_decider' ),
+				$this->getContainer()->get( 'rating_events' ),
+			]
+		);
+
+		$this->getContainer()->addShared( 'rating', Rating::class )->addArguments(
+			[
+				new StringArgument( $this->getContainer()->get( 'template_path' ) . '/rating' ),
+			]
+		);
+
+		$this->getContainer()->addShared( RatingSubscriber::class )->addArguments(
+			[
+				$this->getContainer()->get( 'rating' ),
+				$this->getContainer()->get( 'rating_notice_decider' ),
+				$this->getContainer()->get( 'rating_actions' ),
+				$this->getContainer()->get( 'rating_notice_message_provider' ),
+				$this->getContainer()->get( 'rating_events' ),
+				$this->getContainer()->get( 'backwpup_adapter' ),
+				$this->getContainer()->get( 'rating_initializer' ),
+			]
+		);
 	}
 
 	/**

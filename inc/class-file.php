@@ -159,33 +159,50 @@ class BackWPup_File
             || $folder === untrailingslashit(BackWPup_Path_Fixer::slashify(WP_PLUGIN_DIR))
             || $folder === untrailingslashit(BackWPup_Path_Fixer::slashify(WP_CONTENT_DIR))
             || $folder === untrailingslashit(BackWPup_Path_Fixer::slashify($uploads))
-        ) {
-            return sprintf(__('Folder %1$s not allowed, please use another folder.', 'backwpup'), $folder);
-        }
+		) {
+			return sprintf(
+				/* translators: %s: folder path. */
+				__( 'Folder %1$s not allowed, please use another folder.', 'backwpup' ),
+				$folder
+			);
+		}
 
-        //open base dir check
-        if (!self::is_in_open_basedir($folder)) {
-            return sprintf(__('Folder %1$s is not in open basedir, please use another folder.', 'backwpup'), $folder);
-        }
+		// Open base dir check.
+		if ( ! self::is_in_open_basedir( $folder ) ) {
+			return sprintf(
+				/* translators: %s: folder path. */
+				__( 'Folder %1$s is not in open basedir, please use another folder.', 'backwpup' ),
+				$folder
+			);
+		}
 
-        // We always want to at least process `$folder`
-        $foldersToProcess = [$folder];
-        $parentFolder = dirname($folder);
+		// We always want to at least process `$folder`.
+		$folders_to_process = [ $folder ];
+		$parent_folder      = dirname( $folder );
 
-        while (!file_exists($parentFolder)) {
-            array_unshift($foldersToProcess, $parentFolder);
-            $parentFolder = dirname($parentFolder);
-        }
+		while ( ! file_exists( $parent_folder ) ) {
+			array_unshift( $folders_to_process, $parent_folder );
+			$parent_folder = dirname( $parent_folder );
+		}
 
-        // Process each child folder separately
-        foreach ($foldersToProcess as $childFolder) {
-            if (!is_dir($childFolder) && !wp_mkdir_p($childFolder)) {
-                return sprintf(__('Cannot create folder: %1$s', 'backwpup'), $childFolder);
-            }
+		// Process each child folder separately.
+		foreach ( $folders_to_process as $child_folder ) {
+			if ( ! is_dir( $child_folder ) && ! wp_mkdir_p( $child_folder ) ) {
+				return sprintf(
+					/* translators: %s: folder path. */
+					__( 'Cannot create folder: %1$s', 'backwpup' ),
+					$child_folder
+				);
+			}
 
-            if (!is_writable($childFolder)) {
-                return sprintf(__('Folder "%1$s" is not writable', 'backwpup'), $childFolder);
-            }
+            // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable
+			if ( ! is_writable( $child_folder ) ) {
+				return sprintf(
+					/* translators: %s: folder path. */
+					__( 'Folder "%1$s" is not writable', 'backwpup' ),
+					$child_folder
+				);
+			}
 
 			// create files for securing folder.
 			/**
@@ -195,14 +212,14 @@ class BackWPup_File
 			 */
 			$protect_folders = wpm_apply_filters_typed( 'boolean', 'backwpup_protect_folders', true );
 			if ( $protect_folders ) {
-				self::protect_folder( $childFolder ); // phpcs:ignore
+				self::protect_folder( $child_folder ); // phpcs:ignore
 			}
 
-            //Create do not backup file for this folder
-            if ($donotbackup) {
-                self::write_do_not_backup_file($childFolder);
-            }
-        }
+			// Create do not backup file for this folder.
+			if ( $donotbackup ) {
+				self::write_do_not_backup_file( $child_folder );
+			}
+		}
 
         return '';
     }

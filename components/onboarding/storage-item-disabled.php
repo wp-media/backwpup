@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $name         The name of the service.
  * @var string  $slug         The slug of the service, also icon file name.
@@ -30,7 +35,7 @@ $full_width_class = isset($full_width) && $full_width ? "w-full" : "";
 # JS
 $content = "storage-$slug";
 ?>
-<div class="<?php echo BackWPupHelpers::clsx( $base_style, $contextual_style, $full_width_class ); ?>">
+<div class="<?php echo esc_attr( BackWPupHelpers::clsx( $base_style, $contextual_style, $full_width_class ) ); ?>">
     <?php
     BackWPupHelpers::component( 'tooltip', [
       "content" => $deactivated_message,

@@ -81,6 +81,7 @@ class Registry
         }
 
         $this->filePath = $path;
+        $this->init();
     }
 
     /**

@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 $job_id = $job_id ?? null;
 BackWPupHelpers::component("closable-heading", [
     'title' => __("Edit Title", 'backwpup'),

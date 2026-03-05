@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Restore Backup", 'backwpup'),
   'type' => 'modal'

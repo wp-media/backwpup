@@ -110,6 +110,13 @@ class Compare extends Meta {
 		// Column name and value.
 		if ( array_key_exists( 'key', $clause ) && array_key_exists( 'value', $clause ) ) {
 			$column = sanitize_key( $clause['key'] );
+			$allowed_columns = array();
+			if ( is_object( $parent_query ) && isset( $parent_query->columns ) && is_array( $parent_query->columns ) ) {
+				$allowed_columns = wp_list_pluck( $parent_query->columns, 'name' );
+			}
+			if ( ! empty( $allowed_columns ) && ! in_array( $column, $allowed_columns, true ) ) {
+				return $sql_chunks;
+			}
 			$value  = $clause['value'];
 
 			// IN or BETWEEN
@@ -128,7 +135,7 @@ class Compare extends Meta {
 				case 'IN':
 				case 'NOT IN':
 					$compare_string = '(' . substr( str_repeat( ',%s', count( $value ) ), 1 ) . ')';
-					$where          = $wpdb->prepare( $compare_string, $value );
+					$where          = $wpdb->prepare( $compare_string, $value ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Placeholder string is dynamically generated.
 					break;
 
 				case 'BETWEEN':

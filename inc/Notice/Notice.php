@@ -4,6 +4,10 @@ namespace Inpsyde\BackWPup\Notice;
 
 use BackWPup;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 abstract class Notice
 {
     /**
@@ -90,9 +94,9 @@ abstract class Notice
 				20
 				);
 		} else {
-            throw new \InvalidArgumentException(
-                __('Invalid notice type specified', 'backwpup')
-            );
+			throw new \InvalidArgumentException(
+				esc_html__( 'Invalid notice type specified', 'backwpup' )
+			);
         }
 
         if ($this->dismissible) {

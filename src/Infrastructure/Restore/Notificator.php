@@ -11,6 +11,10 @@ use function add_action;
 use Inpsyde\Restore\Api\Module\Session\NotificableStorableSessionInterface;
 use Inpsyde\Restore\Api\Module\Session\Session;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * Class Notifications.
  *
@@ -85,9 +89,9 @@ final class Notificator
                 $this->notifications[$note['level']] = [];
             }
 
-            // Set the message and translate it.
+            // Set the message without translating it.
             // Don't use WordPress functions here because the text messages come from the shared library.
-            $this->notifications[$note['level']][] = __($note['msg'], 'backwpup');
+            $this->notifications[$note['level']][] = $note['msg'];
         }
 
         // Clean the session.

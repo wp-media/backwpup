@@ -1,6 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string $label The label of the select.
  * @var string $archiveformat The archive format selected

@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $class   Optional. Additional CSS classname . Default: null.
  * @var string  $abortUrl   Optional. The URL to abort the job. Default: null.
@@ -10,7 +15,7 @@ $classStep = $class."-step";
 $abortUrl = $abortUrl ?? "";
 ?>
 <div class="mt-6">
-  <div class="flex gap-2 <?php echo $class; ?>">
+  <div class="flex gap-2 <?php echo esc_attr( $class ); ?>">
     <?php BackWPupHelpers::component("progress-bar", []); ?>
 
     <?php
@@ -60,6 +65,6 @@ $abortUrl = $abortUrl ?? "";
   </div>
 
   <p class="mt-1 text-base font-title">
-    <span class="js-backwpup-current-file <?php echo $classStep; ?>"></span>
+    <span class="js-backwpup-current-file <?php echo esc_attr( $classStep ); ?>"></span>
   </p>
 </div>

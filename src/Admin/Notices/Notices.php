@@ -5,8 +5,8 @@ namespace WPMedia\BackWPup\Admin\Notices;
 use WPMedia\BackWPup\Adapters\BackWPupAdapter;
 use WPMedia\BackWPup\Admin\Beacon\Beacon;
 use WPMedia\BackWPup\Admin\OptionData;
-use WPMedia\BackWPup\License\LicenseManager;
-use WPMedia\BackWPup\Admin\Options\Options;
+use WPMedia\BackWPup\License\LicenseStateProviderInterface;
+use WPMedia\BackWPup\License\PaymentMethodProviderInterface;
 
 class Notices {
 
@@ -33,16 +33,56 @@ class Notices {
 	private BackWPupAdapter $backwpup;
 
 	/**
+	 * Provides the current license state.
+	 *
+	 * @var LicenseStateProviderInterface|null
+	 */
+	private ?LicenseStateProviderInterface $license_state_provider;
+
+	/**
+	 * Provides information about the payment method.
+	 *
+	 * @var PaymentMethodProviderInterface|null
+	 */
+	private ?PaymentMethodProviderInterface $payment_method_provider;
+
+	/**
+	 * Factory to build license notice content.
+	 *
+	 * @var LicenseNoticeFactory|null
+	 */
+	private ?LicenseNoticeFactory $license_notice_factory;
+
+	/**
 	 * Constructor
 	 *
-	 * @param OptionData      $options
-	 * @param BackWPupAdapter $backwpup
-	 * @param Beacon          $beacon An instance of Beacon.
+	 * @param OptionData                          $options OptionData instance.
+	 * @param BackWPupAdapter                     $backwpup $backwpup Adapter for BackWPup plugin data.
+	 * @param Beacon                              $beacon An instance of Beacon.
+	 * @param LicenseStateProviderInterface|null  $license_state_provider Provides the current license state.
+	 * @param PaymentMethodProviderInterface|null $payment_method_provider Provides payment method information (legacy vs current).
+	 * @param LicenseNoticeFactory|null           $license_notice_factory Factory to build license notice title and message.
 	 */
-	public function __construct( OptionData $options, BackWPupAdapter $backwpup, Beacon $beacon ) {
-		$this->options  = $options;
-		$this->backwpup = $backwpup;
-		$this->beacon   = $beacon;
+	public function __construct(
+		OptionData $options,
+		BackWPupAdapter $backwpup,
+		Beacon $beacon,
+		$license_state_provider = null,
+		$payment_method_provider = null,
+		$license_notice_factory = null
+	) {
+		$this->options                 = $options;
+		$this->backwpup                = $backwpup;
+		$this->beacon                  = $beacon;
+		$this->license_state_provider  = $license_state_provider instanceof LicenseStateProviderInterface
+			? $license_state_provider
+			: null;
+		$this->payment_method_provider = $payment_method_provider instanceof PaymentMethodProviderInterface
+			? $payment_method_provider
+			: null;
+		$this->license_notice_factory  = $license_notice_factory instanceof LicenseNoticeFactory
+			? $license_notice_factory
+			: null;
 	}
 
 
@@ -107,13 +147,24 @@ class Notices {
 		if ( $is_onboarding ) {
 			return;
 		}
+		if (
+			! $this->license_state_provider instanceof LicenseStateProviderInterface
+			|| ! $this->payment_method_provider instanceof PaymentMethodProviderInterface
+			|| ! $this->license_notice_factory instanceof LicenseNoticeFactory
+		) {
+			return;
+		}
 		// Check license status.
-		$license_status = get_site_option( LicenseManager::LICENSE_STATUS, 'inactive' );
-		if ( 'active' === $license_status ) {
+		$state = $this->license_state_provider->get_state();
+		if ( $state->is_active() ) {
 			return;
 		}
 
-		$notice_data = $this->get_license_notice_data();
+		$notice_data = $this->license_notice_factory->build(
+			$state,
+			$this->payment_method_provider->is_legacy()
+		);
+
 		backwpup_notice_html(
 			[
 				'status'         => 'warning',
@@ -175,56 +226,5 @@ class Notices {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Get license notice data based on license status
-	 *
-	 * @return array
-	 */
-	protected function get_license_notice_data(): array {
-		// Check if legacy payment method is used. and set notice data accordingly.
-		if ( true === (bool) get_site_option( LicenseManager::LICENSE_LEGACY_PAYMENT_METHOD, false ) ) {
-			$update_payment_method_link = $this->beacon->get_suggest(
-				'update-payment-method',
-				true,
-				[
-					'bwu_event' => 'legacy_update_payment_method',
-				]
-			);
-			$title                      = sprintf(
-				// translators: %1$s = strong opening tag, %2$s = link opening tag, %3$s = link closing tag, %4$s = strong closing tag.
-				__( '⚠️ %1$sAction Required – %2$sUpdate Your Payment Method%3$s%4$s', 'backwpup' ),
-				'<strong>',
-				'<a href="' . esc_url( $update_payment_method_link['url'] ) . '" title="' . esc_attr( $update_payment_method_link['title'] ) . '" target="_blank" class="text-primary-darker border-b border-primary-darker">',
-				'</a>',
-				'</strong>'
-			);
-			$message = __( 'Your payment method is outdated. Update it to restore your Pro features.', 'backwpup' );
-		} else {
-			$update_payment_method_link = $this->beacon->get_suggest(
-				'update-payment-method',
-				true,
-				[
-					'bwu_event' => 'expired_license_update_payment_method',
-				]
-			);
-			$title                      = sprintf(
-				// translators: %1$s = strong opening tag, %2$s = strong closing tag.
-				__( '⚠️ %1$sYour BackWPup Pro Plan Has Expired%2$s', 'backwpup' ),
-				'<strong>',
-				'</strong>'
-			);
-			$message = sprintf(
-				// translators: %1$s = link opening tag, %2$s = link closing tag.
-				__( '%1$sRenew now%2$s to continue receiving updates and Pro features.', 'backwpup' ),
-				'<a href="' . esc_url( $update_payment_method_link['url'] ) . '" title="' . esc_attr( $update_payment_method_link['title'] ) . '" target="_blank" class="text-primary-darker border-b border-primary-darker">',
-				'</a>'
-			);
-		}
-		return [
-			'title'   => $title,
-			'message' => $message,
-		];
 	}
 }

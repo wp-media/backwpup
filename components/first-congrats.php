@@ -1,6 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string $identifier The unique identifier for the component. Optional.
  * @var bool $display Whether to display the component (default: true).
@@ -11,9 +15,9 @@ $display = isset($display) ? $display : true;
 
 ?>
 <div 
-    <?= isset($identifier) && !empty($identifier) ? "id='" . esc_attr($identifier) . "'" : ''; ?> 
-    class="p-8 text-center bg-white rounded-lg" 
-    <?= !$display ? 'style="display:none;"' : ''; ?>
+    <?php echo isset($identifier) && !empty($identifier) ? "id='" . esc_attr($identifier) . "'" : ''; ?>
+    class="p-8 text-center bg-white rounded-lg"
+	  <?php echo !$display ? 'style="display:none;"' : ''; ?>
 >
 	<div class="inline-block p-1 bg-secondary-lighter text-primary-base rounded">
 		<?php BackWPupHelpers::component("icon", ["name" => "check", "size" => "medium"]); ?>

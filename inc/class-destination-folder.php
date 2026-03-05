@@ -157,8 +157,8 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
         $backupfilelist = [];
         $files = [];
 
-        if (is_writable($job_object->backup_folder)) { //make file list
-            try {
+		if ( is_writable( $job_object->backup_folder ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable -- Make file list.
+			try {
                 $dir = new BackWPup_Directory($job_object->backup_folder);
 
                 foreach ($dir as $file) {
@@ -174,9 +174,10 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
                 }
             } catch (UnexpectedValueException $e) {
                 $job_object->log(
-                    sprintf(
-                        esc_html__('Could not open path: %s', 'backwpup'),
-                        $e->getMessage()
+					sprintf(
+						/* translators: %s: path. */
+						esc_html__( 'Could not open path: %s', 'backwpup' ),
+						$e->getMessage()
                     ),
                     E_USER_WARNING
                 );
@@ -205,9 +206,10 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 
                 if ($numdeltefiles > 0) {
                     $job_object->log(
-                        sprintf(
-                            _n('One backup file deleted', '%d backup files deleted', $numdeltefiles, 'backwpup'),
-                            $numdeltefiles
+						sprintf(
+							// translators: %d: number of backup files.
+							_n( '%d backup file deleted', '%d backup files deleted', $numdeltefiles, 'backwpup' ),
+							$numdeltefiles
                         ),
                         E_USER_NOTICE
                     );

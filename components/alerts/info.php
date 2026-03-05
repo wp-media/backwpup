@@ -1,6 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $type           The type of alert. Values: "pro", "alert", "danger", "default". Default: "default".
  * @var string  $content        The content. Default: "".
@@ -47,17 +51,17 @@ $font_size = array_key_exists($font, $font_sizes) ? $font_sizes[$font] : $font_s
 
 $dismiss_icon = $dismiss_icon ?? false;
 ?>
-<div class="flex items-center gap-2 p-4 rounded <?php echo $block_style; ?>">
+<div class="flex items-center gap-2 p-4 rounded <?php echo esc_attr( $block_style ); ?>">
   <div class="shrink-0">
     <?php BackWPupHelpers::component("icon", ["name" => $icon, "size" => "large"]); ?>
   </div>
   <div class="flex flex-col gap-1 flex-1">
-    <p class="<?php echo $font_size; ?> font-medium">
-      <?php echo $content ?? ''; ?>
+    <p class="<?php echo esc_attr( $font_size ); ?> font-medium">
+      <?php echo wp_kses_post( $content ?? '' ); ?>
     </p>
     <?php if (isset($content2)) : ?>
-      <p class="<?php echo BackWPupHelpers::clsx("mt-2", $font_size); ?> font-medium">
-        <?php echo $content2; ?>
+      <p class="<?php echo esc_attr( BackWPupHelpers::clsx( "mt-2", $font_size ) ); ?> font-medium">
+        <?php echo wp_kses_post( $content2 ); ?>
       </p>
     <?php endif; ?>
     <?php isset($children) && BackWPupHelpers::children($children); ?>

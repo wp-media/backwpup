@@ -40,32 +40,32 @@ final class BackWPup_Destination_Folder_Downloader implements BackWPup_Destinati
 
     /**
      * Clean up things.
-     */
-    public function __destruct()
-    {
-        fclose($this->local_file_handler);
-        fclose($this->source_file_handler);
-    }
+	 */
+	public function __destruct() {
+		fclose( $this->local_file_handler ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+		fclose( $this->source_file_handler ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function download_chunk($start_byte, $end_byte)
-    {
-        if (ftell($this->source_file_handler) !== $start_byte) {
-            fseek($this->source_file_handler, $start_byte);
-        }
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @throws Exception When file operations fail.
+	 */
+	public function download_chunk( $start_byte, $end_byte ) {
+		if ( ftell( $this->source_file_handler ) !== $start_byte ) {
+			fseek( $this->source_file_handler, $start_byte );
+		}
 
-        $data = fread($this->source_file_handler, $end_byte - $start_byte + 1);
-        if (!$data) {
-            throw new Exception(__('Could not read data from source file.', 'backwpup'));
-        }
+		$data = fread( $this->source_file_handler, $end_byte - $start_byte + 1 ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fread
+		if ( false === $data ) {
+			throw new Exception( esc_html__( 'Could not read data from source file.', 'backwpup' ) );
+		}
 
-        $bytes = (int) fwrite($this->local_file_handler, $data);
-        if ($bytes === 0) {
-            throw new Exception(__('Could not write data into target file.', 'backwpup'));
-        }
-    }
+		$bytes = (int) fwrite( $this->local_file_handler, $data ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
+		if ( 0 === $bytes ) {
+			throw new Exception( esc_html__( 'Could not write data into target file.', 'backwpup' ) );
+		}
+	}
 
     /**
      * {@inheritdoc}
@@ -86,10 +86,10 @@ final class BackWPup_Destination_Folder_Downloader implements BackWPup_Destinati
 
         $file = $this->source_backup_file();
 
-        $this->source_file_handler = @fopen($file, 'rb');
-        if (!is_resource($this->source_file_handler)) {
-            throw new \RuntimeException(__('File could not be opened for reading.', 'backwpup'));
-        }
+		$this->source_file_handler = @fopen( $file, 'rb' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.file_system_operations_fopen
+		if ( ! is_resource( $this->source_file_handler ) ) {
+			throw new \RuntimeException( esc_html__( 'File could not be opened for reading.', 'backwpup' ) );
+		}
     }
 
     /**
@@ -124,16 +124,18 @@ final class BackWPup_Destination_Folder_Downloader implements BackWPup_Destinati
             return;
         }
 
-        try {
-            $this->local_file_handler = @fopen($this->data->local_file_path(), 'wb');
-        } catch (\RuntimeException $exc) {
-            throw new \RuntimeException(__('File could not be opened for writing.', 'backwpup'));
-        } catch (\LogicException $exc) {
-            throw new \RuntimeException(sprintf(
-            // translators: $1 is the path of the local file where the backup will be stored
-                __('%s is a directory not a file.', 'backwpup'),
-                $this->data->local_file_path()
-            ));
-        }
+		try {
+				$this->local_file_handler = @fopen( $this->data->local_file_path(), 'wb' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.file_system_operations_fopen
+		} catch ( \RuntimeException $exc ) {
+			throw new \RuntimeException( esc_html__( 'File could not be opened for writing.', 'backwpup' ) );
+		} catch ( \LogicException $exc ) {
+			throw new \RuntimeException(
+				sprintf(
+				// translators: $1 is the path of the local file where the backup will be stored.
+				esc_html__( '%s is a directory not a file.', 'backwpup' ),
+				esc_html( $this->data->local_file_path() )
+			)
+				);
+		}
     }
 }

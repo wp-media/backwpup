@@ -66,13 +66,15 @@ class Rest implements RestInterface {
 						'default'           => 1,
 						'sanitize_callback' => 'absint',
 						'validate_callback' => function ( $param ) {
-							return is_numeric( $param ) && $param >= 1; },
+							return is_numeric( $param );
+						},
 					],
 					'length' => [
 						'default'           => 10,
 						'sanitize_callback' => 'absint',
 						'validate_callback' => function ( $param ) {
-							return is_numeric( $param ) && $param >= 1; },
+							return is_numeric( $param );
+						},
 					],
 				],
 			]
@@ -90,16 +92,14 @@ class Rest implements RestInterface {
 						'default'           => 1,
 						'sanitize_callback' => 'absint',
 						'validate_callback' => function ( $param ) {
-							return is_numeric( $param ) && $param >= 1; },
+							return is_numeric( $param );
+						},
 					],
 					'max_pages' => [
 						'default'           => 10,
-						'sanitize_callback' => function ( $param ) {
-							$val = absint( $param );
-							return $val < 1 ? 1 : $val;
-						},
+						'sanitize_callback' => 'absint',
 						'validate_callback' => function ( $param ) {
-							return is_numeric( $param ) && absint( $param ) >= 0;
+							return is_numeric( $param );
 						},
 					],
 				],
@@ -145,9 +145,8 @@ class Rest implements RestInterface {
 	 */
 	public function get_backups_list( WP_REST_Request $request ) {
 		$params                  = $request->get_params();
-		$page                    = $params['page'] ?? 1;
-		$length                  = $params['length'] ?? 10;
-		$start                   = $page * $length - $length;
+		$page                    = empty( $params['page'] ) ? 1 : $params['page'];
+		$length                  = empty( $params['length'] ) ? 10 : $params['length'];
 		$jobs_ids                = $this->option_adapter->get_job_ids();
 		$backups                 = [];
 		$registered_destinations = $this->get_registered_destinations();
@@ -205,10 +204,15 @@ class Rest implements RestInterface {
 
 		$backups         = wpm_apply_filters_typed( 'array', 'backwpup_backups_list', $backups );
 		$nb_totalbackups = count( $backups );
-		$backups         = array_slice( $backups, $start, $length );
-		$html            = '';
+		$total_pages     = ceil( $nb_totalbackups / $length );
+		if ( $page > $total_pages ) {
+			$page = $total_pages;
+		}
+		$start        = $page * $length - $length;
+		$backups_list = array_slice( $backups, $start, $length );
+		$html         = '';
 
-		foreach ( $backups as $backup ) {
+		foreach ( $backups_list as $backup ) {
 			if ( 'wpcron' === $backup['type'] ) {
 				$backup['type'] = __( 'Scheduled', 'backwpup' );
 			}
@@ -229,6 +233,7 @@ class Rest implements RestInterface {
 					'success' => false,
 					'data'    => '',
 					'message' => __( 'No backups found.', 'backwpup' ),
+					'page'    => 1,
 				]
 			);
 		}
@@ -237,6 +242,7 @@ class Rest implements RestInterface {
 			[
 				'success' => true,
 				'data'    => $html,
+				'page'    => $page,
 			]
 		);
 	}
@@ -250,8 +256,8 @@ class Rest implements RestInterface {
 	 */
 	public function get_pagination( WP_REST_Request $request ): WP_REST_Response {
 		$params    = $request->get_params();
-		$page      = $params['page'] ?? 1;
-		$max_pages = $params['max_pages'] ?? 10;
+		$page      = empty( $params['page'] ) ? 1 : $params['page'];
+		$max_pages = empty( $params['max_pages'] ) ? 10 : $params['max_pages'];
 		$html      = $this->helpers_adapter->component(
 			'navigation/pagination',
 			[

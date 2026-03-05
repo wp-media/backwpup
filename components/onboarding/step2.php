@@ -1,6 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var int $first_job_id ID of the first job we are retrieving the frequency settings for.
  * @var int $second_job_id ID of the second job we are retrieving the frequency settings for.
@@ -8,7 +12,13 @@ use BackWPup\Utils\BackWPupHelpers;
 
 BackWPupHelpers::component("heading", [
   "level" => 2,
-  "title" => __("When to automatically create your backup?", 'backwpup') . "<sup>*</sup>",
+  "title" => sprintf(
+    // Translators: %1$s = opening tag, %2$s = closing tag.
+    __('When to automatically create your backup? %1$s*%2$s', 'backwpup'),
+    '<sup>',
+    '</sup>'
+  ),
+  "allow_html" => true,
 ]);
 ?>
 
@@ -44,7 +54,7 @@ BackWPupHelpers::component("heading", [
         "value" => "monthly",
         "trigger" => "onboarding-files-frequency",
         "options" => wpm_apply_filters_typed( 'array', 'backwpup_backup_select_frequency_options', [
-            'hourly'  => __( 'Hourly', 'backwpupe' ),
+            'hourly'  => __( 'Hourly', 'backwpup' ),
             'daily'   => __( 'Daily', 'backwpup' ),
             'weekly'  => __( 'Weekly', 'backwpup' ),
             'monthly' => __( 'Monthly', 'backwpup' ),
@@ -96,7 +106,7 @@ BackWPupHelpers::component("heading", [
 </div>
 
 <div>
-  <p class="text-xs"><sup>*</sup><?php _e("The first backup will be created right after saving the options", 'backwpup'); ?></p>
+  <p class="text-xs"><sup>*</sup><?php esc_html_e("The first backup will be created right after saving the options", 'backwpup'); ?></p>
 </div>
 
 <footer class="mt-6 flex justify-between items-center gap-4">

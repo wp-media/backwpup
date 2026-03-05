@@ -70,6 +70,7 @@ class ContextSnapshotBuilder {
 			'active_plugins'          => $active_plugins,
 			'recent_error_signals'    => $this->signals_store->latest( $signals_limit ),
 			'backwpup_mixpanel_optin' => $this->optin->is_enabled(),
+			'plugin'                  => (string) $this->backwpup_adapter->get_plugin_data( 'name' ) . ' ' . (string) $this->backwpup_adapter->get_plugin_data( 'version' ),
 			'generated_at'            => time(),
 		];
 	}

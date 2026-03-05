@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $gap_size   The gap size. Values: "small", "medium". Default: "medium".
  */
@@ -14,4 +19,4 @@ $gap = array_key_exists($gap_size, $gap_sizes) ? $gap_sizes[$gap_size] : $gap_si
 
 ?>
 <div class="relative flex-auto overflow-y-auto">
-  <div class="<?php echo BackWPupHelpers::clsx("absolute w-full flex flex-col", $gap); ?>">
+  <div class="<?php echo esc_attr( BackWPupHelpers::clsx( "absolute w-full flex flex-col", $gap ) ); ?>">

@@ -1,6 +1,11 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 use WPMedia\BackWPup\Plugin\Plugin;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 $job_id = $job_id ?? null;
 //The way SugarSync works requires a job_id here to prevent bugs during onboarding.
 // @todo Refactor it.

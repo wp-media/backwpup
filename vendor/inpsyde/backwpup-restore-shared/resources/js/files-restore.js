@@ -269,7 +269,7 @@ window.BWU = window.BWU || {};
 				FilesRestore,
 				{
 					ACTION_FILE_RESTORE_ERROR: BWU.Functions.makeConstant(
-						'backwpup.database_restore_error'
+						'backwpup.file_restore_error'
 					),
 				}).construct(url, nonce, options)
 		}

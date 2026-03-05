@@ -121,9 +121,9 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
                     $this->show_folder('content', $main, WP_CONTENT_DIR); ?>
                 </td>
             </tr>
-            <tr>
-                <th scope="row"><label for="idbackupplugins"><?php _e('Backup plugins', 'backwpup'); ?></label></th>
-                <td>
+			<tr>
+				<th scope="row"><label for="idbackupplugins"><?php esc_html_e( 'Backup plugins', 'backwpup' ); ?></label></th>
+				<td>
 					<?php
                     $this->show_folder('plugins', $main, WP_PLUGIN_DIR); ?>
                 </td>
@@ -266,12 +266,17 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
      * @param $job_object
      *
      * @return bool
-     */
-    public function job_run(BackWPup_Job $job_object)
-    {
-        if ($job_object->steps_data[$job_object->step_working]['SAVE_STEP_TRY'] != $job_object->steps_data[$job_object->step_working]['STEP_TRY']) {
-            $job_object->log(sprintf(__('%d. Trying to make a list of folders to back up&#160;&hellip;', 'backwpup'), $job_object->steps_data[$job_object->step_working]['STEP_TRY']));
-        }
+	 */
+	public function job_run( BackWPup_Job $job_object ) {
+		if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] !== $job_object->steps_data[ $job_object->step_working ]['STEP_TRY'] ) {
+			$job_object->log(
+				sprintf(
+				/* translators: %d: attempt number. */
+				__( '%d. Trying to make a list of folders to back up&#160;&hellip;', 'backwpup' ),
+				$job_object->steps_data[ $job_object->step_working ]['STEP_TRY']
+			)
+				);
+		}
         $job_object->substeps_todo = 8;
 
         $abs_path = realpath(BackWPup_Path_Fixer::fix_path(ABSPATH));
@@ -421,17 +426,29 @@ class BackWPup_JobType_File extends BackWPup_JobTypes
 
             foreach ($special_files as $file) {
                 if (is_readable($abs_path . $file) && empty($job_object->job['backuproot'])) {
-                    $job_object->additional_files_to_backup[] = $abs_path . $file;
-                    $job_object->log(sprintf(__('Added "%s" to backup file list', 'backwpup'), $file));
-                }
+					$job_object->additional_files_to_backup[] = $abs_path . $file;
+					$job_object->log(
+						sprintf(
+						/* translators: %s: file name. */
+						__( 'Added "%s" to backup file list', 'backwpup' ),
+						$file
+					)
+						);
+				}
             }
         }
 
-        if ($job_object->count_folder === 0 && count($job_object->additional_files_to_backup) === 0) {
-            $job_object->log(__('No files/folder for the backup.', 'backwpup'), E_USER_WARNING);
-        } elseif ($job_object->count_folder > 1) {
-            $job_object->log(sprintf(__('%1$d folders to backup.', 'backwpup'), $job_object->count_folder));
-        }
+		if ( 0 === $job_object->count_folder && 0 === count( $job_object->additional_files_to_backup ) ) {
+			$job_object->log( __( 'No files/folder for the backup.', 'backwpup' ), E_USER_WARNING );
+		} elseif ( $job_object->count_folder > 1 ) {
+			$job_object->log(
+				sprintf(
+				/* translators: %d: number of folders. */
+				__( '%1$d folders to backup.', 'backwpup' ),
+				$job_object->count_folder
+			)
+				);
+		}
 
         $job_object->substeps_done = 8;
 

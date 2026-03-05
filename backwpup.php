@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: BackWPup – WordPress Backup & Restore Plugin
  * Author URI: https://backwpup.com
- * Version: 5.6.5
+ * Version: 5.6.6
  * Requires at least: 4.9
  * Requires PHP: 7.4
  * Text Domain: backwpup
@@ -16,6 +16,10 @@
 
 use WPMedia\BackWPup\Dependencies\League\Container\Container;
 use WPMedia\BackWPup\Plugin\Plugin;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( defined( 'BACKWPUP_PLUGIN_LOADED' ) || class_exists( \BackWPup::class, false ) ) {
 	return;
@@ -67,5 +71,4 @@ register_deactivation_hook( __FILE__, [ BackWPup_Install::class, 'deactivate' ] 
 
 $backwpup_plugin = new Plugin( new Container(), __FILE__ );
 
-add_action( 'init', [ $backwpup_plugin, 'load_plugin_textdomain' ] );
 add_action( 'plugins_loaded', [ $backwpup_plugin, 'init' ], 11 );

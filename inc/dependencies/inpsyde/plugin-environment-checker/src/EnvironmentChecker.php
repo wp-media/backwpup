@@ -7,6 +7,10 @@ use Inpsyde\EnvironmentChecker\Constraints\ConstraintInterface;
 use Inpsyde\EnvironmentChecker\Exception\ConstraintFailedException;
 use Inpsyde\EnvironmentChecker\Exception\ConstraintFailedExceptionInterface;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class EnvironmentChecker implements ConstraintInterface {
 
     protected $constraintsArray;
@@ -43,10 +47,10 @@ class EnvironmentChecker implements ConstraintInterface {
 		$errCount = count($this->errors);
 		if ($errCount) {
 			throw new ConstraintFailedException(
-				$this,
-				'General Checker',
-				$this->errors,
-				$this->__('Validation failed with %1$d errors', [$errCount])
+				$this, // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Constraint instance is stored on the exception, not output.
+				esc_html('General Checker'),
+				esc_html($this->errors),
+				esc_html($this->__('Validation failed with %1$d errors', [$errCount]))
 			);
 		}
 	}

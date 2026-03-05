@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Jobs Settings", 'backwpup'),
   'type' => 'sidebar'
@@ -115,6 +120,7 @@ BackWPupHelpers::component("form/checkbox", [
   "checked" => (bool) get_option('backwpup_mixpanel_optin', false),
   "label" => __("BackWPUp analytics", 'backwpup'),
   "tooltip" => sprintf(
+    // translators: 1: Opening anchor tag. 2: Closing anchor tag.
     __('By checking this box, I agree to share anonymous usage data with the BackWPup development team to help improve the plugin. %1$sWhat info will we collect?%2$s', 'backwpup'),
     '<a href="https://backwpup.com/docs/what-info-we-collect/" target="_blank" rel="noopener noreferrer">',
     '</a>'

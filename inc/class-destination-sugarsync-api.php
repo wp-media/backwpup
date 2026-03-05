@@ -37,19 +37,19 @@ class BackWPup_Destination_SugarSync_API {
 	 */
 	protected $access_token = '';
 
-	// class methods.
-
 	/**
 	 * Default constructor/Auth.
 	 *
 	 * @param string|null $refresh_token The refresh token to use for authentication.
+	 *
+	 * @throws BackWPup_Destination_SugarSync_API_Exception When an error occurs during the API call.
 	 */
 	public function __construct( $refresh_token = null ) {
 		// auth xml.
 		$this->encoding = mb_internal_encoding();
 
 		// get access token.
-		if ( isset( $refresh_token ) && ! empty( $refresh_token ) ) {
+		if ( ! empty( $refresh_token ) ) {
 			$this->refresh_token = $refresh_token;
 			$this->get_access_token();
 		}
@@ -59,117 +59,79 @@ class BackWPup_Destination_SugarSync_API {
 	 * Make the call.
 	 *
 	 * @param string $url the url to call.
-	 * @param string $data the data to send, File on put, xml on post.
+	 * @param string $body the data to send, File on put, xml on post.
 	 * @param string $method the method to use. Possible values are GET, POST, PUT, DELETE.
 	 * @param array  $extra_headers Additional headers (e.g., Range).
 	 *
 	 * @throws BackWPup_Destination_SugarSync_API_Exception When an error is thrown.
 	 *
-	 * @return string|SimpleXMLElement
-	 *
-	 * @internal param $string [optiona] $data            File on put, xml on post
-	 * @internal param $string [optional] $method        The method to use. Possible values are GET, POST, PUT, DELETE.
+	 * @return string|SimpleXMLElement The response body, or a SimpleXMLElement object if the response is XML.
 	 */
-	private function do_call( string $url, string $data = '', string $method = 'GET', array $extra_headers = [] ) {
-		$datafilefd = null;
-		// allowed methods.
-		$allowed_methods = [ 'GET', 'POST', 'PUT', 'DELETE' ];
-
-		// redefine.
-		$url     = (string) $url;
-		$method  = (string) $method;
+	private function do_call( string $url, string $body = '', string $method = 'GET', array $extra_headers = [] ) {
 		$headers = [];
-		// validate method.
-		if ( ! in_array( $method, $allowed_methods, true ) ) {
-			throw new BackWPup_Destination_SugarSync_API_Exception( esc_html( 'Unknown method (' . $method . '). Allowed methods are: ' . implode( ', ', $allowed_methods ) ) );
+		if ( $this->access_token ) {
+			$headers['Authorization'] = $this->access_token;
 		}
-
-		// check auth token.
-		if ( empty( $this->access_token ) ) {
-			throw new BackWPup_Destination_SugarSync_API_Exception( esc_html( __( 'Auth Token not set correctly!', 'backwpup' ) ) );
-		}
-		$headers[] = 'Authorization: ' . $this->access_token;
-
-		$headers[] = 'Expect:';
-
-		foreach ( $extra_headers as $header ) {
-			$headers[] = $header;
-		}
-
-		// init.
-		$curl = curl_init();
-		// set options.
-		curl_setopt( $curl, CURLOPT_URL, $url );
-		curl_setopt( $curl, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' ) );
-		if ( ini_get( 'open_basedir' ) === '' ) {
-			curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, true );
-		}
-		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
-		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
-			curl_setopt( $curl, CURLOPT_SSLVERSION, 1 );
-			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, true );
-			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
-			curl_setopt( $curl, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
-		} else {
-			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
-		}
-
+		$headers['Content-Length'] = strlen( $body );
 		if ( 'POST' === $method ) {
-			$headers[] = 'Content-Type: application/xml; charset=UTF-8';
-			curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
-			curl_setopt( $curl, CURLOPT_POST, true );
-			$headers[] = 'Content-Length: ' . strlen( $data );
-		} elseif ( 'PUT' === $method ) {
-			if ( is_readable( $data ) ) {
-				$headers[]  = 'Content-Length: ' . filesize( $data );
-				$datafilefd = fopen( $data, 'rb' ); //phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
-				curl_setopt( $curl, CURLOPT_PUT, true );
-				curl_setopt( $curl, CURLOPT_INFILE, $datafilefd );
-				curl_setopt( $curl, CURLOPT_INFILESIZE, filesize( $data ) );
-				curl_setopt( $curl, CURLOPT_READFUNCTION, [ BackWPup_Destination_SugarSync::$backwpup_job_object, 'curl_read_callback' ] );
-			} else {
-				throw new BackWPup_Destination_SugarSync_API_Exception( 'Is not a readable file:' . esc_html( $data ) );
+			$headers['Content-Type'] = 'application/xml; charset=UTF-8';
+		}
+		$headers = array_merge( $headers, $extra_headers );
+		if ( isset( $headers['Transfer-Encoding'] ) && 'chunked' === $headers['Transfer-Encoding'] ) {
+			unset( $headers['Content-Length'] );
+		}
+		$request = wp_remote_request(
+			$url,
+			[
+				'method'      => $method,
+				'headers'     => $headers,
+				'timeout'     => 30,
+				'body'        => ! $body ? null : $body,
+				'user-agent'  => BackWPup::get_plugin_data( 'User-Agent' ),
+				'redirection' => 0,
+				'blocking'    => true,
+				'compress'    => false,
+			]
+		);
+
+		$response_status  = wp_remote_retrieve_response_code( $request );
+		$response_headers = wp_remote_retrieve_headers( $request );
+		if ( $response_headers ) {
+			$response_headers = $response_headers->getAll();
+		}
+		$response_body = wp_remote_retrieve_body( $request );
+
+		if ( is_wp_error( $request ) ) {
+			throw new BackWPup_Destination_SugarSync_API_Exception(
+				sprintf(
+					// translators: %1$s: HTTP response error message.
+					esc_html__( 'SugarSync error: %1$s', 'backwpup' ),
+					esc_html( $request->get_error_message() )
+				)
+			);
+		}
+
+		if ( $response_status >= 200 && $response_status < 300 ) {
+			if ( 201 === $response_status && ! empty( $response_headers['location'] ) ) {
+				return trim( $response_headers['location'] );
 			}
-		} elseif ( 'DELETE' === $method ) {
-			curl_setopt( $curl, CURLOPT_CUSTOMREQUEST, 'DELETE' );
-		} else {
-			curl_setopt( $curl, CURLOPT_POST, false );
-		}
-
-		// set headers.
-		curl_setopt( $curl, CURLOPT_HTTPHEADER, $headers );
-		curl_setopt( $curl, CURLINFO_HEADER_OUT, true );
-		// execute.
-		$response    = curl_exec( $curl );
-		$curlgetinfo = curl_getinfo( $curl );
-
-		// fetch curl errors.
-		if ( curl_errno( $curl ) !== 0 ) { //phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_errno
-			throw new BackWPup_Destination_SugarSync_API_Exception( 'cUrl Error: ' . esc_html( curl_error( $curl ) ) );
-		}
-		curl_close( $curl );
-		if ( ! empty( $datafilefd ) && is_resource( $datafilefd ) ) {
-			fclose( $datafilefd ); //phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
-		}
-
-		if ( $curlgetinfo['http_code'] >= 200 && $curlgetinfo['http_code'] < 300 ) {
-			if ( false !== stripos( $curlgetinfo['content_type'], 'xml' ) && ! empty( $response ) ) {
-				return simplexml_load_string( $response );
+			if ( ! empty( $response_body ) && false !== stripos( $response_headers['content-type'], 'application/xml' ) ) {
+				return simplexml_load_string( $response_body );
 			}
 
-			return $response;
-		}
-		if ( 401 === $curlgetinfo['http_code'] ) {
-			throw new BackWPup_Destination_SugarSync_API_Exception( 'Http Error: ' . esc_html( $curlgetinfo['http_code'] ) . ' Authorization required.' );
-		}
-		if ( 403 === $curlgetinfo['http_code'] ) {
-			throw new BackWPup_Destination_SugarSync_API_Exception( 'Http Error: ' . esc_html( $curlgetinfo['http_code'] ) . ' (Forbidden)  Authentication failed.' );
-		}
-		if ( 404 === $curlgetinfo['http_code'] ) {
-			throw new BackWPup_Destination_SugarSync_API_Exception( 'Http Error: ' . esc_html( $curlgetinfo['http_code'] ) . ' Not found' );
+			return $response_body;
 		}
 
-		throw new BackWPup_Destination_SugarSync_API_Exception( 'Http Error: ' . esc_html( $curlgetinfo['http_code'] ) );
+		throw new BackWPup_Destination_SugarSync_API_Exception(
+			sprintf(
+				// translators: %1$s: HTTP status code, %2$s: HTTP response message.
+				esc_html__( 'SugarSync error: (%1$s) %2$s', 'backwpup' ),
+				esc_html( $response_status ),
+				esc_html(
+					wp_remote_retrieve_response_message( $request )
+				)
+			)
+		);
 	}
 
 	/**
@@ -186,56 +148,16 @@ class BackWPup_Destination_SugarSync_API {
 		$auth .= '<privateAccessKey>' . BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_sugarsyncsecret', base64_decode( 'TkRFd01UazRNVEpqTW1Ga05EaG1NR0k1TVRFNFpqa3lPR1V6WlRVMk1tTQ==' ) ) ) . '</privateAccessKey>'; //phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
 		$auth .= '<refreshToken>' . trim( $this->refresh_token ) . '</refreshToken>';
 		$auth .= '</tokenAuthRequest>';
-		// init.
-		$curl = curl_init();
-		// set options.
-		curl_setopt( $curl, CURLOPT_URL, self::API_URL . '/authorization' );
-		curl_setopt( $curl, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' ) );
-		if ( ini_get( 'open_basedir' ) === '' ) {
-			curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, true );
-		}
-		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
-		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
-			curl_setopt( $curl, CURLOPT_SSLVERSION, 1 );
-			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, true );
-			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
-			curl_setopt( $curl, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
-		} else {
-			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
-		}
-		curl_setopt( $curl, CURLOPT_HEADER, true );
-		curl_setopt( $curl, CURLOPT_HTTPHEADER, [ 'Content-Type: application/xml; charset=UTF-8', 'Content-Length: ' . strlen( $auth ) ] );
-		curl_setopt( $curl, CURLOPT_POSTFIELDS, $auth );
-		curl_setopt( $curl, CURLOPT_POST, true );
-		// execute.
-		$response    = curl_exec( $curl );
-		$curlgetinfo = curl_getinfo( $curl );
-		// fetch curl errors.
-		if ( curl_errno( $curl ) !== 0 ) { //phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_errno
-			throw new BackWPup_Destination_SugarSync_API_Exception( 'cUrl Error: ' . esc_html( curl_error( $curl ) ) );
-		}
 
-		curl_close( $curl );
+		$result = $this->do_call( self::API_URL . '/authorization', $auth, 'POST' );
 
-		if ( $curlgetinfo['http_code'] >= 200 && $curlgetinfo['http_code'] < 300 ) {
-			if ( preg_match( '/Location:(.*?)\r/i', $response, $matches ) ) {
-				$this->access_token = trim( $matches[1] );
-			}
+		if ( $result && ! $result instanceof SimpleXMLElement ) {
+			$this->access_token = $result;
 
 			return $this->access_token;
 		}
 
-		if ( 401 === $curlgetinfo['http_code'] ) {
-			throw new BackWPup_Destination_SugarSync_API_Exception( 'Http Error: ' . esc_html( $curlgetinfo['http_code'] ) . ' Authorization required.' );
-		}
-		if ( 403 === $curlgetinfo['http_code'] ) {
-			throw new BackWPup_Destination_SugarSync_API_Exception( 'Http Error: ' . esc_html( $curlgetinfo['http_code'] ) . ' (Forbidden)  Authentication failed.' );
-		}
-		if ( 404 === $curlgetinfo['http_code'] ) {
-			throw new BackWPup_Destination_SugarSync_API_Exception( 'Http Error: ' . esc_html( $curlgetinfo['http_code'] ) . ' Not found' );
-		}
-
-		throw new BackWPup_Destination_SugarSync_API_Exception( 'Http Error: ' . esc_html( $curlgetinfo['http_code'] ) );
+		return '';
 	}
 
 	/**
@@ -257,56 +179,16 @@ class BackWPup_Destination_SugarSync_API {
 		$auth .= '<accessKeyId>' . get_site_option( 'backwpup_cfg_sugarsynckey', base64_decode( 'TlRBek1EY3lOakV6TkRrMk1URXhNemM0TWpJ' ) ) . '</accessKeyId>'; //phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
 		$auth .= '<privateAccessKey>' . BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_sugarsyncsecret', base64_decode( 'TkRFd01UazRNVEpqTW1Ga05EaG1NR0k1TVRFNFpqa3lPR1V6WlRVMk1tTQ==' ) ) ) . '</privateAccessKey>'; //phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
 		$auth .= '</appAuthorization>';
-		// init.
-		$curl = curl_init();
-		// set options.
-		curl_setopt( $curl, CURLOPT_URL, self::API_URL . '/app-authorization' );
-		curl_setopt( $curl, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' ) );
-		if ( ini_get( 'open_basedir' ) === '' ) {
-			curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, true );
-		}
-		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
-		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
-			curl_setopt( $curl, CURLOPT_SSLVERSION, 1 );
-			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, true );
-			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
-			curl_setopt( $curl, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
-		} else {
-			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
-		}
-		curl_setopt( $curl, CURLOPT_HEADER, true );
-		curl_setopt( $curl, CURLOPT_POSTFIELDS, $auth );
-		curl_setopt( $curl, CURLOPT_POST, true );
-		curl_setopt( $curl, CURLOPT_HTTPHEADER, [ 'Content-Type: application/xml; charset=UTF-8', 'Content-Length: ' . strlen( $auth ) ] );
-		// execute.
-		$response    = curl_exec( $curl );
-		$curlgetinfo = curl_getinfo( $curl );
-		// fetch curl errors.
-		if ( curl_errno( $curl ) !== 0 ) { //phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_errno
-			throw new BackWPup_Destination_SugarSync_API_Exception( 'cUrl Error: ' . esc_html( curl_error( $curl ) ) );
+
+		$result = $this->do_call( self::API_URL . '/app-authorization', $auth, 'POST' );
+
+		if ( $result && ! $result instanceof SimpleXMLElement ) {
+			$this->access_token = $result;
+
+			return $this->access_token;
 		}
 
-		curl_close( $curl );
-
-		if ( $curlgetinfo['http_code'] >= 200 && $curlgetinfo['http_code'] < 300 ) {
-			if ( preg_match( '/Location:(.*?)\r/i', $response, $matches ) ) {
-				$this->refresh_token = trim( $matches[1] );
-			}
-
-			return $this->refresh_token;
-		}
-
-		if ( 401 === $curlgetinfo['http_code'] ) {
-			throw new BackWPup_Destination_SugarSync_API_Exception( 'Http Error: ' . esc_html( $curlgetinfo['http_code'] ) . ' Authorization required.' );
-		}
-		if ( 403 === $curlgetinfo['http_code'] ) {
-			throw new BackWPup_Destination_SugarSync_API_Exception( 'Http Error: ' . esc_html( $curlgetinfo['http_code'] ) . ' (Forbidden)  Authentication failed.' );
-		}
-		if ( 404 === $curlgetinfo['http_code'] ) {
-			throw new BackWPup_Destination_SugarSync_API_Exception( 'Http Error: ' . esc_html( $curlgetinfo['http_code'] ) . ' Not found' );
-		}
-
-		throw new BackWPup_Destination_SugarSync_API_Exception( 'Http Error: ' . esc_html( $curlgetinfo['http_code'] ) );
+		return '';
 	}
 
 	/**
@@ -325,55 +207,11 @@ class BackWPup_Destination_SugarSync_API {
 		$auth .= '<accessKeyId>' . get_site_option( 'backwpup_cfg_sugarsynckey', base64_decode( 'TlRBek1EY3lOakV6TkRrMk1URXhNemM0TWpJ' ) ) . '</accessKeyId>'; //phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
 		$auth .= '<privateAccessKey>' . BackWPup_Encryption::decrypt( get_site_option( 'backwpup_cfg_sugarsyncsecret', base64_decode( 'TkRFd01UazRNVEpqTW1Ga05EaG1NR0k1TVRFNFpqa3lPR1V6WlRVMk1tTQ==' ) ) ) . '</privateAccessKey>'; //phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
 		$auth .= '</user>';
-		// init.
-		$curl = curl_init();
-		// set options.
-		curl_setopt( $curl, CURLOPT_URL, 'https://provisioning-api.sugarsync.com/users' );
-		curl_setopt( $curl, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' ) );
-		if ( ini_get( 'open_basedir' ) === '' ) {
-			curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, true );
-		}
-		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
-		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
-			curl_setopt( $curl, CURLOPT_SSLVERSION, 1 );
-			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, true );
-			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) );
-			curl_setopt( $curl, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) );
-		} else {
-			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
-		}
-		curl_setopt( $curl, CURLOPT_HEADER, true );
-		curl_setopt( $curl, CURLOPT_HTTPHEADER, [ 'Content-Type: application/xml; charset=UTF-8', 'Content-Length: ' . strlen( $auth ) ] );
-		curl_setopt( $curl, CURLOPT_POSTFIELDS, $auth );
-		curl_setopt( $curl, CURLOPT_POST, true );
-		// execute.
-		$response    = curl_exec( $curl );
-		$curlgetinfo = curl_getinfo( $curl );
-		// fetch curl errors.
-		if ( curl_errno( $curl ) !== 0 ) { //phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_errno
-			throw new BackWPup_Destination_SugarSync_API_Exception( 'cUrl Error: ' . esc_html( curl_error( $curl ) ) );
-		}
 
-		curl_close( $curl );
-
-		if ( 201 === $curlgetinfo['http_code'] ) {
-			throw new BackWPup_Destination_SugarSync_API_Exception( 'Account created.' );
+		$result = $this->do_call( 'https://provisioning-api.sugarsync.com/users', $auth, 'POST' );
+		if ( ! $result ) {
+			throw new BackWPup_Destination_SugarSync_API_Exception( esc_html__( 'Failed to create SugarSync account.', 'backwpup' ) );
 		}
-
-		if ( 400 === $curlgetinfo['http_code'] ) {
-			throw new BackWPup_Destination_SugarSync_API_Exception( 'Http Error: ' . esc_html( $curlgetinfo['http_code'] . ' ' . substr( $response, $curlgetinfo['header_size'] ) ) );
-		}
-		if ( 401 === $curlgetinfo['http_code'] ) {
-			throw new BackWPup_Destination_SugarSync_API_Exception( 'Http Error: ' . esc_html( $curlgetinfo['http_code'] . ' Developer credentials cannot be verified. Either a developer with the specified accessKeyId does not exist or the privateKeyID does not match an assigned accessKeyId.' ) );
-		}
-		if ( 403 === $curlgetinfo['http_code'] ) {
-			throw new BackWPup_Destination_SugarSync_API_Exception( 'Http Error: ' . esc_html( $curlgetinfo['http_code'] . ' ' . substr( $response, $curlgetinfo['header_size'] ) ) );
-		}
-		if ( 503 === $curlgetinfo['http_code'] ) {
-			throw new BackWPup_Destination_SugarSync_API_Exception( 'Http Error: ' . esc_html( $curlgetinfo['http_code'] . ' ' . substr( $response, $curlgetinfo['header_size'] ) ) );
-		}
-
-		throw new BackWPup_Destination_SugarSync_API_Exception( 'Http Error: ' . esc_html( $curlgetinfo['http_code'] ) );
 	}
 
 	/**
@@ -388,7 +226,7 @@ class BackWPup_Destination_SugarSync_API {
 	 */
 	public function chdir( string $folder, string $root = '' ) {
 		$folder = rtrim( $folder, '/' );
-		if ( substr( $folder, 0, 1 ) === '/' || empty( $this->folder ) ) {
+		if ( '/' === $folder[0] || empty( $this->folder ) ) {
 			if ( ! empty( $root ) ) {
 				$this->folder = $root;
 			} else {
@@ -427,7 +265,9 @@ class BackWPup_Destination_SugarSync_API {
 	 * Show the current directory path.
 	 *
 	 * @param string $folderid The folder ID to show the path for.
+	 *
 	 * @return string Returns the path of the folder.
+	 * @throws BackWPup_Destination_SugarSync_API_Exception When the folder does not exist.
 	 */
 	public function showdir( string $folderid ): string {
 		$showfolder = '';
@@ -456,7 +296,7 @@ class BackWPup_Destination_SugarSync_API {
 	public function mkdir( string $folder, string $root = '' ): bool {
 		$savefolder = $this->folder;
 		$folder     = rtrim( $folder, '/' );
-		if ( substr( $folder, 0, 1 ) === '/' || empty( $this->folder ) ) {
+		if ( '/' === $folder[0] || empty( $this->folder ) ) {
 			if ( ! empty( $root ) ) {
 				$this->folder = $root;
 			} else {
@@ -505,6 +345,7 @@ class BackWPup_Destination_SugarSync_API {
 	 * Get the user information.
 	 *
 	 * @return string|SimpleXMLElement
+	 * @throws BackWPup_Destination_SugarSync_API_Exception When an error occurs during the API call.
 	 */
 	public function user() {
 		return $this->do_call( self::API_URL . '/user' );
@@ -516,9 +357,10 @@ class BackWPup_Destination_SugarSync_API {
 	 * @param string $url The URL to retrieve.
 	 *
 	 * @return string|SimpleXMLElement
+	 * @throws BackWPup_Destination_SugarSync_API_Exception When an error occurs during the API call.
 	 */
 	public function get( string $url ) {
-		return $this->do_call( $url, '', 'GET' );
+		return $this->do_call( $url );
 	}
 
 	/**
@@ -527,6 +369,7 @@ class BackWPup_Destination_SugarSync_API {
 	 * @param string $url The URL of the file to download.
 	 *
 	 * @return string|SimpleXMLElement
+	 * @throws BackWPup_Destination_SugarSync_API_Exception When an error occurs during the API call.
 	 */
 	public function download( string $url ) {
 		return $this->do_call( $url . '/data' );
@@ -538,6 +381,7 @@ class BackWPup_Destination_SugarSync_API {
 	 * @param string $url The URL of the file or folder to delete.
 	 *
 	 * @return string|SimpleXMLElement
+	 * @throws BackWPup_Destination_SugarSync_API_Exception When an error occurs during the API call.
 	 */
 	public function delete( string $url ) {
 		return $this->do_call( $url, '', 'DELETE' );
@@ -546,11 +390,12 @@ class BackWPup_Destination_SugarSync_API {
 	/**
 	 * Get the contents of the current folder.
 	 *
-	 * @param string $type  The type of contents to retrieve. Possible values are 'folder' or 'file'. If empty, it retrieves both.
+	 * @param string $type The type of contents to retrieve. Possible values are 'folder' or 'file'. If empty, it retrieves both.
 	 * @param int    $start The starting index for pagination. Default is 0.
-	 * @param int    $max   The maximum number of items to retrieve. Default is 500.
+	 * @param int    $max The maximum number of items to retrieve. Default is 500.
 	 *
 	 * @return string|SimpleXMLElement
+	 * @throws BackWPup_Destination_SugarSync_API_Exception When an error occurs during the API call.
 	 */
 	public function getcontents( string $type = '', int $start = 0, int $max = 500 ) {
 		$parameters = '';
@@ -558,13 +403,13 @@ class BackWPup_Destination_SugarSync_API {
 		if ( strtolower( $type ) === 'folder' || strtolower( $type ) === 'file' ) {
 			$parameters .= 'type=' . strtolower( $type );
 		}
-		if ( ! empty( $start ) && is_integer( $start ) ) {
+		if ( ! empty( $start ) && is_int( $start ) ) {
 			if ( ! empty( $parameters ) ) {
 				$parameters .= '&';
 			}
 			$parameters .= 'start=' . $start;
 		}
-		if ( ! empty( $max ) && is_integer( $max ) ) {
+		if ( ! empty( $max ) && is_int( $max ) ) {
 			if ( ! empty( $parameters ) ) {
 				$parameters .= '&';
 			}
@@ -575,47 +420,105 @@ class BackWPup_Destination_SugarSync_API {
 	}
 
 	/**
+	 *
 	 * Upload a file to the current folder.
+	 *
+	 * phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_setopt
 	 *
 	 * @param string $file The file path to upload.
 	 * @param string $name The name to give the file in SugarSync. If empty, it will use the base name of the file.
 	 *
-	 * @return mixed
+	 * @return SimpleXMLElement|bool Returns the file data if successful, false otherwise.
+	 * @throws BackWPup_Destination_SugarSync_API_Exception When an error occurs during the API call.
 	 */
 	public function upload( string $file, string $name = '' ) {
 		if ( empty( $name ) ) {
 			$name = basename( $file );
 		}
+
+		// create a new file.
 		$content_type = MimeTypeExtractor::fromFilePath( $file );
 
-		$xmlrequest  = '<?xml version="1.0" encoding="UTF-8"?>';
-		$xmlrequest .= '<file>';
-		$xmlrequest .= '<displayName>' . mb_convert_encoding( $name, 'UTF-8', $this->encoding ) . '</displayName>';
-		$xmlrequest .= '<mediaType>' . $content_type . '</mediaType>';
-		$xmlrequest .= '</file>';
+		$xml_request  = '<?xml version="1.0" encoding="UTF-8"?>';
+		$xml_request .= '<file>';
+		$xml_request .= '<displayName>' . mb_convert_encoding( $name, 'UTF-8', $this->encoding ) . '</displayName>';
+		$xml_request .= '<mediaType>' . $content_type . '</mediaType>';
+		$xml_request .= '</file>';
 
-		$this->do_call( $this->folder, $xmlrequest, 'POST' );
-		$getfiles = $this->getcontents( 'file' );
-		foreach ( $getfiles->file as $getfile ) {
-			if ( (string) $getfile->displayName === (string) $name ) { //phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-				$this->do_call( $getfile->ref . '/data', $file, 'PUT' );
+		$location = $this->do_call( $this->folder, $xml_request, 'POST' );
 
-				return $getfile->ref;
-			}
+		if ( ! $location ) {
+			return false;
 		}
+
+		$file_data = $this->do_call( $location );
+
+		// create a new file version.
+		$location = $this->do_call( $file_data->versions, '', 'POST' );
+		if ( ! $location ) {
+			return false;
+		}
+
+		$version_data = $this->do_call( $location );
+
+		// upload with native curl todo: refactor with wp_remote_* functions when we find a solution how it can work.
+		// Documentations https://www.sugarsync.com/dev/upload-file-data-example.html#resumeup outdated.
+		$data_file_fd = fopen( $file, 'rb' ); //phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
+		$curl         = curl_init(); //phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_init
+		curl_setopt( $curl, CURLOPT_URL, $version_data->fileData ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase, WordPress.WP.AlternativeFunctions.curl_curl_setopt
+		curl_setopt( $curl, CURLOPT_USERAGENT, BackWPup::get_plugin_data( 'User-Agent' ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_setopt
+		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_setopt
+		curl_setopt( // phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_setopt
+			$curl,
+			CURLOPT_HTTPHEADER,
+			[
+				'Authorization: ' . $this->access_token,
+				'Expect:',
+				'Content-Length: ' . filesize( $file ),
+			]
+		);
+		if ( BackWPup::get_plugin_data( 'cacert' ) ) {
+			curl_setopt( $curl, CURLOPT_SSLVERSION, 1 ); // phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_setopt
+			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_setopt
+			curl_setopt( $curl, CURLOPT_CAINFO, BackWPup::get_plugin_data( 'cacert' ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_setopt
+			curl_setopt( $curl, CURLOPT_CAPATH, dirname( BackWPup::get_plugin_data( 'cacert' ) ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_setopt
+		} else {
+			curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false ); // phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_setopt
+		}
+		curl_setopt( $curl, CURLOPT_PUT, true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_setopt
+		curl_setopt( $curl, CURLOPT_INFILE, $data_file_fd ); // phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_setopt
+		curl_setopt( $curl, CURLOPT_INFILESIZE, filesize( $file ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_setopt
+		curl_setopt( $curl, CURLOPT_READFUNCTION, [ BackWPup_Destination_SugarSync::$backwpup_job_object, 'curl_read_callback' ] ); // phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_setopt
+
+		curl_exec( $curl ); //phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_exec
+		$curl_info = curl_getinfo( $curl ); //phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_getinfo
+
+		// fetch curl errors.
+		if ( curl_errno( $curl ) !== 0 ) { //phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_errno
+			throw new BackWPup_Destination_SugarSync_API_Exception( 'cUrl Error: ' . esc_html( curl_error( $curl ) ) ); //phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_error
+		}
+		curl_close( $curl ); //phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_close
+		fclose( $data_file_fd ); //phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+
+		if ( $curl_info['http_code'] < 200 || $curl_info['http_code'] >= 300 ) {
+			throw new BackWPup_Destination_SugarSync_API_Exception( 'Http Error: ' . esc_html( $curl_info['http_code'] ) );
+		}
+
+		return $file_data;
 	}
 
 	/**
-	 * Download a chunk of a file with Range header.
+	 * Download a chunk of a file with a Range header.
 	 *
-	 * @param string $url        File URL.
+	 * @param string $url File URL.
 	 * @param int    $start_byte Start byte.
-	 * @param int    $end_byte   End byte.
+	 * @param int    $end_byte End byte.
 	 *
 	 * @return string|SimpleXMLElement Binary data on success or a SimpleXMLElement on error.
+	 * @throws BackWPup_Destination_SugarSync_API_Exception When an error occurs during the API call.
 	 */
 	public function download_chunk( string $url, int $start_byte, int $end_byte ) {
-		$range_header = 'Range: bytes=' . $start_byte . '-' . $end_byte;
+		$range_header['Range'] = 'bytes=' . $start_byte . '-' . $end_byte;
 		return $this->do_call( $url . '/data', '', 'GET', [ $range_header ] );
 	}
 }

@@ -29,8 +29,8 @@ final class BackWPup_Destination_S3_Downloader implements BackWPup_Destination_D
 
     /**
      * @var resource
-     */
-    private $localHandle;
+	 */
+	private $local_handle;
 
     /**
      * BackWPup_Destination_S3_Downloader constructor.
@@ -43,11 +43,10 @@ final class BackWPup_Destination_S3_Downloader implements BackWPup_Destination_D
 
     /**
      * Clean stuffs.
-     */
-    public function __destruct()
-    {
-        fclose($this->localHandle);
-    }
+	 */
+	public function __destruct() {
+		fclose( $this->local_handle ); //phpcs:ignore
+	}
 
     /**
      * {@inheritdoc}
@@ -60,16 +59,16 @@ final class BackWPup_Destination_S3_Downloader implements BackWPup_Destination_D
             'Range' => 'bytes=' . $start_byte . '-' . $end_byte,
         ]);
 
-        if (empty($file['ContentType']) || $file['ContentLength'] === 0) {
-            throw new RuntimeException(__('Could not write data to file. Empty source file.', 'backwpup'));
-        }
+		if ( empty( $file['ContentType'] ) || 0 === $file['ContentLength'] ) {
+			throw new RuntimeException( esc_html__( 'Could not write data to file. Empty source file.', 'backwpup' ) );
+		}
 
         $this->openLocalHandle($start_byte);
 
-        $bytes = (int) fwrite($this->localHandle, (string) $file['Body']);
-        if ($bytes === 0) {
-            throw new RuntimeException(__('Could not write data to file.', 'backwpup'));
-        }
+		$bytes = (int) fwrite( $this->local_handle, (string) $file['Body'] ); //phpcs:ignore
+		if ( 0 === $bytes ) {
+			throw new RuntimeException( esc_html__( 'Could not write data to file.', 'backwpup' ) );
+		}
     }
 
     /**
@@ -85,17 +84,24 @@ final class BackWPup_Destination_S3_Downloader implements BackWPup_Destination_D
         return (int) (!empty($file['ContentType']) ? $file['ContentLength'] : 0);
     }
 
-    private function openLocalHandle(int $start_byte): void
-    {
-        if (is_resource($this->localHandle)) {
-            return;
+	/**
+	 * Open local file handle.
+	 *
+	 * @param int $start_byte
+	 *
+	 * @return void
+	 * @throws RuntimeException If the file could not be opened.
+	 */
+	private function openLocalHandle( int $start_byte ): void {
+		if ( is_resource( $this->local_handle ) ) {
+			return;
         }
 
-        $this->localHandle = fopen($this->data->local_file_path(), $start_byte === 0 ? 'wb' : 'ab');
+		$this->local_handle = fopen( $this->data->local_file_path(), $start_byte === 0 ? 'wb' : 'ab' ); //phpcs:ignore
 
-        if (!is_resource($this->localHandle)) {
-            throw new RuntimeException(__('File could not be opened for writing.', 'backwpup'));
-        }
+		if ( ! is_resource( $this->local_handle ) ) {
+			throw new RuntimeException( esc_html__( 'File could not be opened for writing.', 'backwpup' ) );
+		}
     }
 
     /**

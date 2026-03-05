@@ -5,6 +5,9 @@
  * @var \Inpsyde\BackWPup\Notice\NoticeMessage $bind
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 ?>
 
 <p class="notice-titre">BackWpUp</p>

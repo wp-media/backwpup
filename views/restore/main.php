@@ -1,4 +1,14 @@
-<?php /** @var \stdClass $bind */ ?>
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Restore main view.
+ *
+ * @var \stdClass $bind
+ */
+?>
 <div class="mdl-grid bwpr-content">
 	<?php
 

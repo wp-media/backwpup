@@ -332,7 +332,8 @@ class JobController
      */
     public function restore_db_action(): string
     {
-        if (!file_exists($this->registry->dbdumpfile)) {
+        $dbdumpfile = $this->registry->dbdumpfile;
+        if (!is_string($dbdumpfile) || $dbdumpfile === '' || !file_exists($dbdumpfile)) {
             $this->logger->warning('No database dump file found.');
             return __('No database dump file found.', 'backwpup');
         }

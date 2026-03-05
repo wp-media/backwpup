@@ -79,7 +79,7 @@ final class DownloaderFactory
 
         /** @var string $dir */
         $dir = $this->container['project_temp'] ?? '';
-        if (!$dir || !is_readable($dir) || !is_writable($dir)) {
+        if (!$dir || !is_readable($dir) || !is_writable($dir)) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable
             throw new \RuntimeException(
                 'Project temporary directory doesn\'t exist or is not readable/writable'
             );

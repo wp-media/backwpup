@@ -70,7 +70,7 @@ class Beacon extends AbstractRender {
 		];
 
 		// change urls by license server.
-		if ( '{{%LICENSE_URL%}}' === 'https://backwpup.de/' ) {
+		if ( 'https://backwpup.com/' === 'https://backwpup.de/' ) {
 			$suggest['user_account']['url']          = 'https://backwpup.de/mein-account/';
 			$suggest['update-payment-method']['url'] = 'https://backwpup.de/mein-account/add-payment-method/';
 		}

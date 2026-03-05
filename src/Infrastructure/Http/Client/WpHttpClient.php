@@ -121,10 +121,10 @@ final class WpHttpClient implements ClientInterface
         if (is_wp_error($response)) {
             if ($response->get_error_code() === 'http_request_not_executed') {
                 // Not a network error, so throw RequestException
-                throw new RequestException($response->get_error_message(), $request);
+                throw new RequestException(esc_html($response->get_error_message()), $request); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- RequestInterface is stored on the exception, not output.
             }
 
-            throw new NetworkException($response->get_error_message(), $request);
+            throw new NetworkException(esc_html($response->get_error_message()), $request); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- RequestInterface is stored on the exception, not output.
         }
 
         return $this->prepareResponse($response);
@@ -280,11 +280,11 @@ final class WpHttpClient implements ClientInterface
         $uri = (string) $request->getUri();
 
         if (empty($uri)) {
-            throw new RequestException(__('URI must not be empty.', 'backwpup'), $request);
+            throw new RequestException(esc_html__('URI must not be empty.', 'backwpup'), $request); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- RequestInterface is stored on the exception, not output.
         }
 
         if (wp_http_validate_url($uri) === false) {
-            throw new RequestException(__('The given URI is invalid.', 'backwpup'), $request);
+            throw new RequestException(esc_html__('The given URI is invalid.', 'backwpup'), $request); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- RequestInterface is stored on the exception, not output.
         }
     }
 }

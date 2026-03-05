@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 //Get the current network settings.
 $authentication = get_site_option(
 	'backwpup_cfg_authentication',

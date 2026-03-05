@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var array   $actions        An array of actions.  
  */
@@ -11,7 +16,7 @@ $actions = $actions ?? [];
 $class = $class ?? "";
 
 ?>
-<div class="<?php echo BackWPupHelpers::clsx("group relative flex justify-end js-backwpup-menu", $class); ?>">
+<div class="<?php echo esc_attr( BackWPupHelpers::clsx( "group relative flex justify-end js-backwpup-menu", $class ) ); ?>">
   <div class="h-11 w-10 flex items-center justify-center border border-primary-darker rounded cursor-pointer group-hover:border-secondary-darker group-hover:text-secondary-darker">
     <?php BackWPupHelpers::component("icon", ["name" => "dots", "size" => "small"]); ?>
   </div>

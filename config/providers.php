@@ -1,4 +1,9 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 $pro_providers = [];
 if( BackWPup::is_pro()) {
 	$pro_providers = [

@@ -98,9 +98,10 @@ trait ArgumentResolverTrait
             }
 
             throw new NotFoundException(sprintf(
-                'Unable to resolve a value for parameter (%s) in the function/method (%s)',
-                $name,
-                $method->getName()
+                /* translators: 1: parameter name, 2: function/method name. */
+                esc_html__('Unable to resolve a value for parameter (%1$s) in the function/method (%2$s)', 'backwpup'),
+                esc_html($name),
+                esc_html($method->getName())
             ));
         }
 

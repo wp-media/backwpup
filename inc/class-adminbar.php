@@ -2,6 +2,11 @@
 /**
  * Class to display BackWPup in Adminbar.
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class BackWPup_Adminbar
 {
     /**

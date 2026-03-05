@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Others in root", 'backwpup') . " - " . __("Exclusion Settings", 'backwpup'),
   'type' => 'modal'

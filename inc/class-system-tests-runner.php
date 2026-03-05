@@ -59,20 +59,22 @@ class BackWPup_System_Tests_Runner
 
     /**
      * Run Tests.
-     */
-    public function run()
-    {
-        $extension_rec = _x(
+	 */
+	public function run() {
+		/* translators: 1: extension name, 2: file suffix. */
+		$extension_rec = _x(
             'We recommend to install the %1$s extension to generate %2$s archives.',
             '%1 = extension name, %2 = file suffix',
             'backwpup'
         );
         $raw_response = BackWPup_Job::get_jobrun_url('test');
 
-        // WP Version check.
-        if (!$this->system_tests->is_wp_version_compatible()) {
-            $this->errors[] = $this->message(sprintf(
-                __(
+		// WP Version check.
+		if ( ! $this->system_tests->is_wp_version_compatible() ) {
+			$this->errors[] = $this->message(
+				sprintf(
+				/* translators: 1: minimum WordPress version, 2: current WordPress version. */
+				__(
                     'You must run WordPress version %1$s or higher to use this plugin. You are using version %2$s now.',
                     'backwpup'
                 ),
@@ -81,10 +83,12 @@ class BackWPup_System_Tests_Runner
             ), 'error');
         }
 
-        // PHP Version check.
-        if (!$this->system_tests->is_php_version_compatible()) {
-            $this->errors[] = $this->message(sprintf(
-                __(
+		// PHP Version check.
+		if ( ! $this->system_tests->is_php_version_compatible() ) {
+			$this->errors[] = $this->message(
+				sprintf(
+				/* translators: 1: minimum PHP version, 2: current PHP version. */
+				__(
                     'We recommend to run a PHP version above %1$s to get the full plugin functionality. You are using version %2$s now.',
                     'backwpup'
                 ),
@@ -94,10 +98,12 @@ class BackWPup_System_Tests_Runner
         }
 
         $db_version = backwpup_wpdb()->db_version();
-        // Mysql Version check.
-        if (!$this->system_tests->is_database_compatible()) {
-            $this->errors[] = $this->message(sprintf(
-                __(
+		// Mysql Version check.
+		if ( ! $this->system_tests->is_database_compatible() ) {
+			$this->errors[] = $this->message(
+				sprintf(
+				/* translators: 1: minimum MySQL version, 2: current MySQL version. */
+				__(
                     'You must have the MySQLi extension installed and a MySQL server version of %1$s or higher to use this plugin. You are using version %2$s now.',
                     'backwpup'
                 ),
@@ -126,10 +132,14 @@ class BackWPup_System_Tests_Runner
 
         // Safe mode.
         if ($this->system_tests->is_save_mode_activated()) {
-            $this->errors[] = $this->message(
-                str_replace('\"', '"', sprintf(
-                    _x('Please disable the deprecated <a href="%s">PHP safe mode</a>.', 'Link to PHP manual', 'backwpup'),
-                    'http://php.net/manual/en/features.safe-mode.php'
+			$this->errors[] = $this->message(
+				str_replace(
+					'\"',
+					'"',
+					sprintf(
+					/* translators: %s: PHP manual URL. */
+					_x( 'Please disable the deprecated <a href="%s">PHP safe mode</a>.', 'Link to PHP manual', 'backwpup' ),
+					'http://php.net/manual/en/features.safe-mode.php'
                 )),
                 'error'
             );
@@ -155,21 +165,29 @@ class BackWPup_System_Tests_Runner
             $this->errors[] = $this->message(esc_html($log_folder_message), 'error');
         }
 
-        if (is_wp_error($raw_response)) {
-            $this->warnings[] = $this->message(esc_html(sprintf(
-                __(
+		if ( is_wp_error( $raw_response ) ) {
+			$this->warnings[] = $this->message(
+				esc_html(
+				sprintf(
+				/* translators: %s: HTTP error message. */
+				__(
                     'The HTTP response test result is an error: "%s".',
                     'backwpup'
                 ),
-                $raw_response->get_error_message()
-            )), 'warning');
-        }
+				$raw_response->get_error_message()
+				)
+					),
+				'warning'
+				);
+		}
 
         if (200 != wp_remote_retrieve_response_code($raw_response)
              && 204 != wp_remote_retrieve_response_code($raw_response)
-        ) {
-            $this->warnings[] = $this->message(sprintf(
-                __(
+		) {
+			$this->warnings[] = $this->message(
+				sprintf(
+				/* translators: %s: HTTP status code. */
+				__(
                     'The HTTP response test result is a wrong HTTP status: %s. It should be status 200.',
                     'backwpup'
                 ),

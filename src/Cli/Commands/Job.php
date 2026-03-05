@@ -117,11 +117,12 @@ class Job implements Command {
 		}
 
 		// Get the list of jobs.
-		$items         = [];
-		$backup_now_id = get_site_option( 'backwpup_backup_now_job_id', 0 );
-		$jobs          = $this->job_adapter->get_jobs();
+		$items                  = [];
+		$backup_now_id          = get_site_option( 'backwpup_backup_now_job_id', 0 );
+		$default_archive_format = get_site_option( 'backwpup_archiveformat', '.tar' );
+		$jobs                   = $this->job_adapter->get_jobs();
 		foreach ( $jobs as $job ) {
-			if ( $job['jobid'] === $backup_now_id || ! empty( $job['tempjob'] ) || ! empty( $job['backup_now'] ) ) {
+			if ( empty( $job['jobid'] ) || $job['jobid'] === $backup_now_id || ! empty( $job['tempjob'] ) || ! empty( $job['backup_now'] ) ) {
 				continue;
 			}
 			if ( ! empty( $job['lastrun'] ) ) {
@@ -132,19 +133,19 @@ class Job implements Command {
 
 			$items[ $job['jobid'] ] = [
 				'job_id'                 => $job['jobid'],
-				'name'                   => $job['name'],
+				'name'                   => $job['name'] ?? '',
 				'active_type'            => ! empty( $job['activetype'] ) ? $job['activetype'] : 'none',
 				'type'                   => strtolower( implode( ', ', (array) $job['type'] ) ),
 				'storages'               => strtolower( implode( ', ', (array) $job['destinations'] ) ),
 				'cron'                   => $job['cron'] ?? '0 0 1 * *',
-				'backup_type'            => $job['backuptype'],
-				'archive_format'         => $job['archiveformat'],
+				'backup_type'            => $job['backuptype'] ?? '',
+				'archive_format'         => ! empty( $job['archiveformat'] ) ? $job['archiveformat'] : $default_archive_format,
 				'last_run'               => $last_run_string,
 				'last_runtime'           => ! empty( $job['lastruntime'] ) ? $job['lastruntime'] . ' Seconds' : '',
-				'legacy'                 => $job['legacy'] ? 'yes' : 'no',
-				'archive_encryption'     => $job['archiveencryption'] ? 'yes' : 'no',
+				'legacy'                 => ! empty( $job['legacy'] ) ? 'yes' : 'no',
+				'archive_encryption'     => ! empty( $job['archiveencryption'] ) ? 'yes' : 'no',
 				'email_address_for_logs' => $job['mailaddresslog'],
-				'email_on_errors_only'   => $job['mailerroronly'] ? 'yes' : 'no',
+				'email_on_errors_only'   => ! empty( $job['mailerroronly'] ) ? 'yes' : 'no',
 			];
 		}
 

@@ -1,6 +1,10 @@
 <?php
 namespace WPMedia\BackWPup\EventManagement;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * The event manager manages events using the WordPress plugin API.
  *

@@ -30,9 +30,15 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
 
         $defaults = [
             'dbdumpexclude' => [], 'dbdumpfile' => sanitize_file_name(DB_NAME), 'dbdumptype' => 'sql', 'dbdumpfilecompression' => '',
-        ];
-        //set only wordpress tables as default
-        $dbtables = $wpdb->get_results('SHOW TABLES FROM `' . DB_NAME . '`', ARRAY_N);
+		];
+		// Set only WordPress tables as default.
+		$cache_group = 'backwpup_dbdump';
+		$tables_key  = 'show_tables_' . DB_NAME;
+		$dbtables    = wp_cache_get( $tables_key, $cache_group );
+		if ( false === $dbtables ) {
+			$dbtables = $wpdb->get_results( 'SHOW TABLES', ARRAY_N ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- No WP API for SHOW TABLES.
+			wp_cache_set( $tables_key, $dbtables, $cache_group, MINUTE_IN_SECONDS );
+		}
 
         foreach ($dbtables as $dbtable) {
             if ($wpdb->prefix != substr((string) $dbtable[0], 0, strlen($wpdb->prefix))) {
@@ -54,17 +60,23 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
 		<h3 class="title"><?php esc_html_e( 'Settings for database backup', 'backwpup' ); ?></h3>
 		<p></p>
         <table class="form-table">
-            <tr>
-                <th scope="row"><?php _e('Tables to backup', 'backwpup'); ?></th>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Tables to backup', 'backwpup' ); ?></th>
 				<td>
 					<input readonly disabled type="button" class="button-secondary" id="dball" value="<?php esc_attr_e( 'all', 'backwpup' ); ?>">&nbsp;
 					<input readonly disabled type="button" class="button-secondary" id="dbnone" value="<?php esc_attr_e( 'none', 'backwpup' ); ?>">&nbsp;
 					<input readonly disabled type="button" class="button-secondary" id="dbwp" value="<?php echo esc_attr( $wpdb->prefix ); ?>">
 					<?php
-                    $tables = $wpdb->get_results('SHOW FULL TABLES FROM `' . DB_NAME . '`', ARRAY_N);
-        echo '<fieldset id="dbtables"><div style="width: 30%; float:left; min-width: 250px; margin-right: 10px;">';
-        $next_row = ceil(count($tables) / 3);
-        $counter = 0;
+					$cache_group = 'backwpup_dbdump';
+					$tables_key  = 'show_full_tables_' . DB_NAME;
+					$tables      = wp_cache_get( $tables_key, $cache_group );
+					if ( false === $tables ) {
+						$tables = $wpdb->get_results( 'SHOW FULL TABLES', ARRAY_N ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- No WP API for SHOW FULL TABLES.
+						wp_cache_set( $tables_key, $tables, $cache_group, MINUTE_IN_SECONDS );
+					}
+					echo '<fieldset id="dbtables"><div style="width: 30%; float:left; min-width: 250px; margin-right: 10px;">';
+					$next_row = ceil( count( $tables ) / 3 );
+					$counter  = 0;
 
 					foreach ( $tables as $table ) {
 						$tabletype = '';
@@ -125,7 +137,13 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
 			: [];
 
 		// Retrieve all tables from the database.
-		$dbtables = $wpdb->get_results( 'SHOW TABLES FROM `' . DB_NAME . '`', ARRAY_N ); // phpcs:ignore
+		$cache_group = 'backwpup_dbdump';
+		$tables_key  = 'show_tables_' . DB_NAME;
+		$dbtables    = wp_cache_get( $tables_key, $cache_group );
+		if ( false === $dbtables ) {
+			$dbtables = $wpdb->get_results( 'SHOW TABLES', ARRAY_N ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- No WP API for SHOW TABLES.
+			wp_cache_set( $tables_key, $dbtables, $cache_group, MINUTE_IN_SECONDS );
+		}
 
 		// Identify tables to exclude.
 		foreach ( $dbtables as $dbtable ) {
@@ -149,9 +167,15 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
     {
         $job_object->substeps_todo = 1;
 
-        if ($job_object->steps_data[$job_object->step_working]['SAVE_STEP_TRY'] != $job_object->steps_data[$job_object->step_working]['STEP_TRY']) {
-            $job_object->log(sprintf(__('%d. Try to backup database&#160;&hellip;', 'backwpup'), $job_object->steps_data[$job_object->step_working]['STEP_TRY']));
-        }
+		if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] !== $job_object->steps_data[ $job_object->step_working ]['STEP_TRY'] ) {
+			$job_object->log(
+				sprintf(
+				/* translators: %d: attempt number. */
+				__( '%d. Try to backup database&#160;&hellip;', 'backwpup' ),
+				$job_object->steps_data[ $job_object->step_working ]['STEP_TRY']
+			)
+				);
+		}
 
 		// build filename.
 		if ( empty( $job_object->steps_data[ $job_object->step_working ]['dbdumpfile'] ) ) {
@@ -164,9 +188,16 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
                 'dumpfile' => BackWPup::get_plugin_data('TEMP') . $job_object->steps_data[$job_object->step_working]['dbdumpfile'],
             ]);
 
-            if ($job_object->steps_data[$job_object->step_working]['SAVE_STEP_TRY'] != $job_object->steps_data[$job_object->step_working]['STEP_TRY']) {
-                $job_object->log(sprintf(__('Connected to database %1$s on %2$s', 'backwpup'), DB_NAME, DB_HOST));
-            }
+			if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] !== $job_object->steps_data[ $job_object->step_working ]['STEP_TRY'] ) {
+				$job_object->log(
+					sprintf(
+					/* translators: 1: database name, 2: database host. */
+					__( 'Connected to database %1$s on %2$s', 'backwpup' ),
+					DB_NAME,
+					DB_HOST
+				)
+					);
+			}
 
             //Exclude Tables
             foreach ($sql_dump->tables_to_dump as $key => $table) {
@@ -198,14 +229,23 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
                     ++$i;
 
                     continue;
-                }
-                if (empty($job_object->steps_data[$job_object->step_working]['tables'][$table])) {
-                    $num_records = $sql_dump->dump_table_head($table);
-                    $job_object->steps_data[$job_object->step_working]['tables'][$table] = ['start' => 0,
-                        'length' => 1000, ];
-                    if ($job_object->is_debug()) {
-                        $job_object->log(sprintf(__('Backup database table "%s" with "%s" records', 'backwpup'), $table, $num_records));
-                    }
+				}
+				if ( empty( $job_object->steps_data[ $job_object->step_working ]['tables'][ $table ] ) ) {
+					$num_records = $sql_dump->dump_table_head( $table );
+					$job_object->steps_data[ $job_object->step_working ]['tables'][ $table ] = [
+						'start'  => 0,
+						'length' => 1000,
+					];
+					if ( $job_object->is_debug() ) {
+						$job_object->log(
+							sprintf(
+							// translators: 1: Table name. 2: Number of records.
+							__( 'Backup database table "%1$s" with "%2$s" records', 'backwpup' ),
+							$table,
+							$num_records
+						)
+							);
+					}
                 }
                 $while = true;
 
@@ -251,9 +291,16 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
             $job_object->log(__('MySQL backup file not created', 'backwpup'), E_USER_ERROR);
 
             return false;
-        }
-        $job_object->additional_files_to_backup[] = BackWPup::get_plugin_data('TEMP') . $job_object->steps_data[$job_object->step_working]['dbdumpfile'];
-        $job_object->log(sprintf(__('Added database dump "%1$s" with %2$s to backup file list', 'backwpup'), $job_object->steps_data[$job_object->step_working]['dbdumpfile'], size_format($filesize, 2)));
+		}
+		$job_object->additional_files_to_backup[] = BackWPup::get_plugin_data( 'TEMP' ) . $job_object->steps_data[ $job_object->step_working ]['dbdumpfile'];
+		$job_object->log(
+			sprintf(
+			/* translators: 1: backup file name, 2: file size. */
+			__( 'Added database dump "%1$s" with %2$s to backup file list', 'backwpup' ),
+			$job_object->steps_data[ $job_object->step_working ]['dbdumpfile'],
+			size_format( $filesize, 2 )
+		)
+			);
 
         //cleanups
         unset($job_object->steps_data[$job_object->step_working]['tables']);

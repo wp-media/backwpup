@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $content        The link label. Default: ""    
  * @var string  $url            The URL for the link. It should be a valid URL. Default: "#".
@@ -15,13 +20,13 @@ use BackWPup\Utils\BackWPupHelpers;
 
 # URL & Target
 $url = isset($url) ? $url : "#";
-$target = isset($newtab) && $newtab ? 'target="_blank"' : '';
+$target = isset($newtab) && $newtab ? '_blank' : '';
 
 # Full width
 $full_width = isset($full_width) && $full_width ? "w-full" : "";
 
 # Identifier
-$id = isset($identifier) ? " id='".esc_attr($identifier)."'" : null;
+$id = $identifier ?? '';
 
 # Type
 $types = ["primary", "secondary", "link"];
@@ -67,11 +72,20 @@ $icon = [
 $class = $class ?? "";
 
 # Download
-$download = isset($download) ? 'download="' . $download . '"' : "";
+$download = $download ?? '';
+
+$allowed_protocols = null;
+if ( ! empty( $download ) ) {
+  $allowed_protocols = wp_allowed_protocols();
+  if ( ! in_array( 'data', $allowed_protocols, true ) ) {
+    $allowed_protocols[] = 'data';
+  }
+}
+$href = $url;
 
 ?>
-<a href="<?php echo $url; ?>" <?=$id;?> <?php echo $target; ?> <?=$download;?> class="<?php echo BackWPupHelpers::clsx($paddings, $font_size, $full_width, $button_style, $class); ?>">
+<a href="<?php echo esc_url( $href, $allowed_protocols ); ?>"<?php echo $id ? " id='" . esc_attr( $id ) . "'" : ''; ?><?php echo $target ? ' target="' . esc_attr( $target ) . '"' : ''; ?><?php echo $download ? ' download="' . esc_attr( $download ) . '"' : ''; ?> class="<?php echo esc_attr( BackWPupHelpers::clsx( $paddings, $font_size, $full_width, $button_style, $class ) ); ?>">
   <?php $icon_position === "before" && BackWPupHelpers::component("icon", $icon); ?>
-  <?php echo $content ?? ""; ?>
+  <?php echo wp_kses_post( $content ?? '' ); ?>
   <?php $icon_position === "after" && BackWPupHelpers::component("icon", $icon); ?>
 </a>

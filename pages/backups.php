@@ -1,6 +1,11 @@
 <?php
   use BackWPup\Utils\BackWPupHelpers;
   use Inpsyde\Restore\ViewLoader;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 ?>
   <div class="max-w-screen-xl flex flex-col gap-4 backwpup-typography">
     <div id="tb_download_file" style="display: none;">

@@ -184,18 +184,38 @@ class BackWPup_EasyCron {
             $message = json_decode($json, true);
         }
 
-        if ($message['status'] != 'success') {
-            BackWPup_Admin::message(sprintf(__('EasyCron.com API returns (%s): %s', 'backwpup'), esc_attr($message['error']['code']), esc_attr($message['error']['message'])), true);
-        }
+		if ( 'success' !== $message['status'] ) {
+			BackWPup_Admin::message(
+				sprintf(
+				// translators: 1: EasyCron error code. 2: EasyCron error message.
+				__( 'EasyCron.com API returns (%1$s): %2$s', 'backwpup' ),
+				esc_attr( $message['error']['code'] ),
+				esc_attr( $message['error']['message'] )
+			),
+				true
+				);
+		}
 
         return $message;
     }
 
     public function api_key_form()
     {
-        ?>
-		<h3 class="title"><?php esc_html_e('EasyCron', 'backwpup'); ?></h3>
-		<p><?php _e('Here you can setup your <a href="https://www.easycron.com/user/token?ref=36673" title="Affiliate Link!">EasyCron.com API key</a> to use this service.', 'backwpup'); ?></p>
+		?>
+		<h3 class="title"><?php esc_html_e( 'EasyCron', 'backwpup' ); ?></h3>
+		<p>
+		<?php
+		echo wp_kses(
+			__( 'Here you can setup your <a href="https://www.easycron.com/user/token?ref=36673" title="Affiliate Link!">EasyCron.com API key</a> to use this service.', 'backwpup' ),
+			[
+				'a' => [
+					'href'  => true,
+					'title' => true,
+				],
+			]
+			);
+		?>
+			</p>
 		<table class="form-table">
 			<tr>
 				<th scope="row"><label for="easycronapikeyid"><?php esc_html_e('Api key:', 'backwpup'); ?></label></th>

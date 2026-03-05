@@ -1,6 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var int $first_job_id ID of the first job we are retrieving the frequency settings for.
  * @var int $second_job_id ID of the second job we are retrieving the frequency settings for.

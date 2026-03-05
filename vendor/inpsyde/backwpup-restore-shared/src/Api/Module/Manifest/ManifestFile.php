@@ -138,4 +138,97 @@ class ManifestFile
 
         return $this->manifest->blog_info->url;
     }
+
+    /**
+     * @return string[]
+     */
+    public function get_job_types(): array
+    {
+        if ($this->manifest === null) {
+            throw new ManifestFileException(
+                __('Manifest file not found. Please check the file exists within the backup and extraction folder.', 'backwpup')
+            );
+        }
+
+        if (
+            !property_exists($this->manifest, 'job_settings')
+            || !$this->manifest->job_settings instanceof \stdClass
+            || !property_exists($this->manifest->job_settings, 'type')
+        ) {
+            return [];
+        }
+
+        $typesRaw = $this->manifest->job_settings->type;
+
+        if (is_string($typesRaw) && $typesRaw !== '') {
+            return [$typesRaw];
+        }
+
+        if (is_array($typesRaw)) {
+            return array_values(array_filter($typesRaw, 'is_string'));
+        }
+
+        return [];
+    }
+
+    public function has_db(): bool
+    {
+        $types = $this->get_job_types();
+        return in_array('DBDUMP', $types, true);
+    }
+
+    public function has_files(): bool
+    {
+        $types = $this->get_job_types();
+        return !empty(array_diff($types, ['DBDUMP']));
+    }
+
+    public function can_full_restore(): bool
+    {
+        return $this->has_db() && $this->has_files();
+    }
+
+    /**
+     * @return 'full'|'db_only'|'files_only'|'unknown'
+     */
+    public function restore_mode(): string
+    {
+        $types = $this->get_job_types();
+        $hasDb = in_array('DBDUMP', $types, true);
+        $hasFiles = !empty(array_diff($types, ['DBDUMP']));
+
+        if ($hasDb && $hasFiles) {
+            return 'full';
+        }
+        if ($hasDb) {
+            return 'db_only';
+        }
+        if ($hasFiles) {
+            return 'files_only';
+        }
+
+        return 'unknown';
+    }
+
+    /**
+     * Capabilities.
+     *
+     * @return object{
+     *   has_db: bool,
+     *   has_files: bool,
+     *   can_full_restore: bool,
+     *   mode: 'full'|'db_only'|'files_only'|'unknown',
+     *   job_types: string[]
+     * }
+     */
+    public function get_restore_capabilities(): object
+    {
+        return (object) [
+            'has_db' => $this->has_db(),
+            'has_files' => $this->has_files(),
+            'can_full_restore' => $this->can_full_restore(),
+            'mode' => $this->restore_mode(),
+            'job_types' => $this->get_job_types(),
+        ];
+    }
 }

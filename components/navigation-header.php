@@ -1,6 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $title  Title to display. Default: "".
  * @var string  $type   The type of container. Values: "modal", "sidebar". Default : "sidebar".
@@ -21,8 +25,8 @@ $navigation = $navigation ?? "";
             ]);
         ?>
 	</button>
-	<h1 class="flex items-center gap-1 text-primary-darker font-title font-bold text-2xl"><?php echo $title; ?></h1>
-	<button class="text-primary-darker text-2xl hover:text-secondary-darker js-backwpup-close-<?php echo $type; ?>">
+	<h1 class="flex items-center gap-1 text-primary-darker font-title font-bold text-2xl"><?php echo esc_html( $title ); ?></h1>
+	<button class="text-primary-darker text-2xl hover:text-secondary-darker js-backwpup-close-<?php echo esc_attr( $type ); ?>">
 		✕
 	</button>
 </header>

@@ -155,10 +155,12 @@ final class BackWPup_Page_Backups extends WP_List_Table
         $this->items = $paged_items;
     }
 
-    public function no_items()
-    {
-        _e('No files could be found. (List will be generated during next backup.)', 'backwpup');
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function no_items() {
+		esc_html_e( 'No files could be found. (List will be generated during next backup.)', 'backwpup' );
+	}
 
     public function get_bulk_actions()
     {
@@ -180,24 +182,25 @@ final class BackWPup_Page_Backups extends WP_List_Table
             return;
         }
 
-        if (count($destinations_list) === 1) {
-            echo '<input type="hidden" name="jobdest-' . $which . '" value="' . $destinations_list[0] . '">';
+		if ( count( $destinations_list ) === 1 ) {
+			echo '<input type="hidden" name="jobdest-' . esc_attr( $which ) . '" value="' . esc_attr( $destinations_list[0] ) . '">';
 
             return;
         } ?>
 		<div class="alignleft actions">
-			<label for="jobdest-<?php echo esc_attr($which); ?>">
-				<select name="jobdest-<?php echo esc_html($which); ?>" class="postform"
-				        id="jobdest-<?php echo esc_attr($which); ?>">
+			<label for="jobdest-<?php echo esc_attr( $which ); ?>">
+				<select name="jobdest-<?php echo esc_attr( $which ); ?>" class="postform"
+						id="jobdest-<?php echo esc_attr( $which ); ?>">
 					<?php
-                    foreach ($destinations_list as $jobdest) {
-                        [$jobid, $dest] = explode('_', (string) $jobdest);
-                        echo "\t<option value=\"" . $jobdest . '" ' . selected(
-                            $this->jobid . '_' . $this->dest,
+					foreach ( $destinations_list as $jobdest ) {
+						[$jobid, $dest] = explode( '_', (string) $jobdest );
+						echo "\t<option value=\"" . esc_attr( $jobdest ) . '" ' . selected(
+							$this->jobid . '_' . $this->dest,
                             $jobdest,
-                            false
-                        ) . '>' . $dest . ': ' . esc_html(BackWPup_Option::get(
-                            $jobid,
+							false
+						) . '>' . esc_html( $dest ) . ': ' . esc_html(
+							BackWPup_Option::get(
+							$jobid,
                             'name'
                         )) . '</option>' . PHP_EOL;
                     } ?>
@@ -342,16 +345,16 @@ final class BackWPup_Page_Backups extends WP_List_Table
             return size_format($item['filesize'], 2);
         }
 
-        return __('?', 'backwpup');
-    }
+		return esc_html__( '?', 'backwpup' );
+	}
 
     public function column_time($item)
     {
 		return sprintf(
 			// translators: %1$s = date, %2$s = time.
-			__( '%1$s at %2$s', 'backwpup' ),
-			wp_date( get_option( 'date_format' ), $item['time'] ),
-			wp_date( get_option( 'time_format' ), $item['time'] )
+			esc_html__( '%1$s at %2$s', 'backwpup' ),
+			esc_html( wp_date( get_option( 'date_format' ), $item['time'] ) ),
+			esc_html( wp_date( get_option( 'time_format' ), $item['time'] ) )
 		);
     }
 
@@ -362,12 +365,12 @@ final class BackWPup_Page_Backups extends WP_List_Table
         //Create Table
         self::$listtable = new BackWPup_Page_Backups();
 
-        switch (self::$listtable->current_action()) {
-            case 'delete': //Delete Backup archives
-                check_admin_referer('bulk-backups');
-                if (!current_user_can('backwpup_backups_delete')) {
-                    wp_die(__('Sorry, you don\'t have permissions to do that.', 'backwpup'));
-                }
+		switch ( self::$listtable->current_action() ) {
+			case 'delete': // Delete Backup archives.
+				check_admin_referer( 'bulk-backups' );
+				if ( ! current_user_can( 'backwpup_backups_delete' ) ) {
+					wp_die( esc_html__( 'Sorry, you don\'t have permissions to do that.', 'backwpup' ) );
+				}
 
                 $jobdest = '';
                 if (isset($_GET['jobdest'])) {
@@ -416,12 +419,12 @@ final class BackWPup_Page_Backups extends WP_List_Table
 				do_action( 'backwpup_after_delete_backups', $backup_files, $dest );
 				break;
 
-            default:
-                if (isset($_GET['jobid'])) {
-                    $jobid = absint($_GET['jobid']);
-                    if (!current_user_can('backwpup_backups_download')) {
-                        wp_die(__('Sorry, you don\'t have permissions to do that.', 'backwpup'));
-                    }
+			default:
+				if ( isset( $_GET['jobid'] ) ) {
+					$jobid = absint( $_GET['jobid'] );
+					if ( ! current_user_can( 'backwpup_backups_download' ) ) {
+						wp_die( esc_html__( 'Sorry, you don\'t have permissions to do that.', 'backwpup' ) );
+					}
                     check_admin_referer('backwpup_action_nonce');
 
                     $filename = untrailingslashit(BackWPup::get_plugin_data('temp')) . '/' . basename($_GET['local_file'] ?? $_GET['file']);
@@ -433,10 +436,10 @@ final class BackWPup_Page_Backups extends WP_List_Table
                                     ->headers()
                                 ;
 
-                                readfile($filename);
+								readfile( $filename ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_readfile
 
-                                // Delete the temporary file.
-                                unlink($filename);
+								// Delete the temporary file.
+								wp_delete_file( $filename );
 
                                 exit();
                             },
@@ -455,10 +458,10 @@ final class BackWPup_Page_Backups extends WP_List_Table
                                 $dest_class->file_download($jobid, trim(sanitize_text_field($_GET['file'])));
                             } catch (BackWPup_Destination_Download_Exception $e) {
                                 header('HTTP/1.0 404 Not Found');
-                                wp_die(
-                                    esc_html__('Ops! Unfortunately the file doesn\'t exists. May be was deleted?'),
-                                    esc_html__('404 - File Not Found.'),
-                                    [
+								wp_die(
+									esc_html__( 'Ops! Unfortunately the file doesn\'t exists. May be was deleted?', 'backwpup' ),
+									esc_html__( '404 - File Not Found.', 'backwpup' ),
+									[
                                         'back_link' => esc_html__('&laquo; Go back', 'backwpup'),
                                     ]
                                 );

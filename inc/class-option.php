@@ -71,7 +71,7 @@ final class BackWPup_Option
 			return false;
 		}
 
-		$jobs_options = get_site_option( 'backwpup_jobs', [] );
+		$jobs_options = self::jobs_options();
 
 		$jobids    = array_column( $jobs_options, 'jobid' );
 		$job_keys  = array_keys( $jobs_options );
@@ -138,8 +138,7 @@ final class BackWPup_Option
 	 *
 	 * @return array of options
 	 */
-	private static function jobs_options($use_cache = true)
-	{
+	public static function jobs_options( $use_cache = true ) {
 		global $current_site;
 
 		//remove from cache
@@ -158,7 +157,15 @@ final class BackWPup_Option
 			}
 		}
 
-		return get_site_option('backwpup_jobs', []);
+		$jobs = get_site_option( 'backwpup_jobs', [] );
+		foreach ( $jobs as $job_key => $job ) {
+			// remove entry that has no jobid that is needed.
+			if ( ! isset( $job['jobid'] ) ) {
+				unset( $jobs[ $job_key ] );
+			}
+		}
+
+		return $jobs;
 	}
 
 	/**
@@ -604,10 +611,9 @@ final class BackWPup_Option
 	 *
 	 * @return string the archive name with substituted variables
 	 */
-	public static function substitute_date_vars($archivename)
-	{
-		$current_time = current_time('timestamp');
-		$datevars = [
+	public static function substitute_date_vars( $archivename ) {
+		$current_time = time();
+		$datevars     = [
 			'%d',
 			'%j',
 			'%m',
@@ -624,22 +630,22 @@ final class BackWPup_Option
 			'%i',
 			'%s',
 		];
-		$datevalues = [
-			date('d', $current_time),
-			date('j', $current_time),
-			date('m', $current_time),
-			date('n', $current_time),
-			date('Y', $current_time),
-			date('y', $current_time),
-			date('a', $current_time),
-			date('A', $current_time),
-			date('B', $current_time),
-			date('g', $current_time),
-			date('G', $current_time),
-			date('h', $current_time),
-			date('H', $current_time),
-			date('i', $current_time),
-			date('s', $current_time),
+		$datevalues   = [
+			wp_date( 'd', $current_time ),
+			wp_date( 'j', $current_time ),
+			wp_date( 'm', $current_time ),
+			wp_date( 'n', $current_time ),
+			wp_date( 'Y', $current_time ),
+			wp_date( 'y', $current_time ),
+			wp_date( 'a', $current_time ),
+			wp_date( 'A', $current_time ),
+			wp_date( 'B', $current_time ),
+			wp_date( 'g', $current_time ),
+			wp_date( 'G', $current_time ),
+			wp_date( 'h', $current_time ),
+			wp_date( 'H', $current_time ),
+			wp_date( 'i', $current_time ),
+			wp_date( 's', $current_time ),
 		];
 		// Temporarily replace %hash% with [hash]
 		$archivename = str_replace('%hash%', '[hash]', $archivename);

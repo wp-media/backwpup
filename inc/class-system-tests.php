@@ -58,15 +58,14 @@ class BackWPup_System_Tests
      * @uses version_compare() To compare the versions
      *
      * @return bool True if compatible, false otherwise
-     */
-    public function is_database_compatible()
-    {
-        $version = backwpup_wpdb()->db_version();
+	 */
+	public function is_database_compatible() {
+		$wpdb    = backwpup_wpdb();
+		$version = $wpdb->db_version();
 
-        return
-            class_exists(\mysqli::class)
-            && version_compare($version, $this->requirements->mysql_minimum_version(), '>=');
-    }
+		return $wpdb->check_connection( false )
+			&& version_compare( $version, $this->requirements->mysql_minimum_version(), '>=' );
+	}
 
     /**
      * Test if CURL is supported.

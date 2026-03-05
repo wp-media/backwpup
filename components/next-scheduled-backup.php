@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 ?>
 
 <div class="flex-1 p-8 border border-grey-250 justify-center rounded-lg flex flex-col cursor-pointer backwpup-add-new-backup-card min-h-[173px]" id="js_backwpup_add_new_backup">

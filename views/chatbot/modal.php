@@ -5,6 +5,10 @@
  * @var array $data Modal configuration with 'title', 'close', and optional 'snapshot'
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 $modal_title = $data['title'] ?? '';
 $close       = $data['close'] ?? '';
 ?>

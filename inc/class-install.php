@@ -60,16 +60,16 @@ class BackWPup_Install
 
         delete_site_option('backwpup_cfg_jobziparchivemethod');
 
-        //create new options
-        if (is_multisite()) {
-            add_site_option('backwpup_jobs', []);
-        } else {
-            add_option('backwpup_jobs', [], null, 'no');
-        }
+		// Create new options.
+		if ( is_multisite() ) {
+			add_site_option( 'backwpup_jobs', [] );
+		} else {
+			add_option( 'backwpup_jobs', [], '', 'no' );
+		}
 
-		// remove old schedule.
+		// Remove old schedule.
 		wp_clear_scheduled_hook( 'backwpup_cron' );
-		// replace easycron with wpcron.
+		// Replace easycron with wpcron.
 		$activejobs = BackWPup_Option::get_job_ids( 'activetype', 'easycron' );
 		if ( ! empty( $activejobs ) ) {
 			update_site_option( 'backwpup_easycron_update', true );
@@ -91,21 +91,42 @@ class BackWPup_Install
             wp_schedule_event(time(), 'twicedaily', 'backwpup_check_cleanup');
         }
 
-        //add capabilities to administrator role
-        $role = get_role('administrator');
-        if (is_object($role) && method_exists($role, 'add_cap')) {
-            $role->add_cap('backwpup');
-            $role->add_cap('backwpup_jobs');
-            $role->add_cap('backwpup_jobs_edit');
-            $role->add_cap('backwpup_jobs_start');
-            $role->add_cap('backwpup_backups');
-            $role->add_cap('backwpup_backups_download');
-            $role->add_cap('backwpup_backups_delete');
-            $role->add_cap('backwpup_logs');
-            $role->add_cap('backwpup_logs_delete');
-            $role->add_cap('backwpup_settings');
-            $role->add_cap('backwpup_restore');
-        }
+		// add capabilities to an administrator role on a single site.
+		if ( ! is_multisite() ) {
+			$role = get_role( 'administrator' );
+			if ( is_object( $role ) && method_exists( $role, 'add_cap' ) ) {
+				$role->add_cap( 'backwpup' );
+				$role->add_cap( 'backwpup_jobs' );
+				$role->add_cap( 'backwpup_jobs_edit' );
+				$role->add_cap( 'backwpup_jobs_start' );
+				$role->add_cap( 'backwpup_backups' );
+				$role->add_cap( 'backwpup_backups_download' );
+				$role->add_cap( 'backwpup_backups_delete' );
+				$role->add_cap( 'backwpup_logs' );
+				$role->add_cap( 'backwpup_logs_delete' );
+				$role->add_cap( 'backwpup_settings' );
+				$role->add_cap( 'backwpup_restore' );
+			}
+		} else {
+			// a super admin has all capabilities. Must be removed from an administrator role.
+			// delete them because they are maybe applied from an old version.
+			switch_to_blog( get_main_site_id() );
+			$role = get_role( 'administrator' );
+			if ( is_object( $role ) && method_exists( $role, 'remove_cap' ) ) {
+				$role->remove_cap( 'backwpup' );
+				$role->remove_cap( 'backwpup_jobs' );
+				$role->remove_cap( 'backwpup_jobs_edit' );
+				$role->remove_cap( 'backwpup_jobs_start' );
+				$role->remove_cap( 'backwpup_backups' );
+				$role->remove_cap( 'backwpup_backups_download' );
+				$role->remove_cap( 'backwpup_backups_delete' );
+				$role->remove_cap( 'backwpup_logs' );
+				$role->remove_cap( 'backwpup_logs_delete' );
+				$role->remove_cap( 'backwpup_settings' );
+				$role->remove_cap( 'backwpup_restore' );
+			}
+			restore_current_blog();
+		}
 
 		// add/overwrite roles.
 		add_role(
@@ -199,10 +220,10 @@ class BackWPup_Install
         delete_option('backwpup');
         delete_option('backwpup_jobs');
 
-        //add new option default structure and without auto load cache
-        if (!is_multisite()) {
-            add_option('backwpup_jobs', [], null, 'no');
-        }
+		// Add new option default structure and without auto load cache.
+		if ( ! is_multisite() ) {
+			add_option( 'backwpup_jobs', [], '', 'no' );
+		}
 
         //upgrade cfg
         //if old value switch it to new

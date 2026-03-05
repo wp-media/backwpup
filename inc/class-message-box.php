@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Class BackWPup_Message_Box.
  *
@@ -9,6 +8,11 @@
  *  );
  * $message_box->init_hooks();
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class BackWPup_Message_Box
 {
     /**
@@ -66,10 +70,10 @@ class BackWPup_Message_Box
             return;
         }
 
-        if ($this->campaign_to_date !== '0000-00-00') {
-            $this_day = date('Y-m-d');
-            if ($this_day > $this->campaign_to_date) {
-                return;
+		if ( '0000-00-00' !== $this->campaign_to_date ) {
+			$this_day = wp_date( 'Y-m-d', time() );
+			if ( $this_day > $this->campaign_to_date ) {
+				return;
             }
         }
 
@@ -79,13 +83,18 @@ class BackWPup_Message_Box
 
     /**
      * Output the message box.
-     */
-    public function output_box_html()
-    {
-        $url = add_query_arg(['backwpup_msg_' . $this->box_id => 1], '//' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']); ?>
-		<div id="backwpup-message-<?php echo $this->box_id; ?>" class="notice" style="padding:0;border:0;position:relative;">
-			<?php echo $this->box_html; ?>
-			<a href="<?php echo $url; ?>" class="dismiss" style="text-decoration:none;position:absolute;top:5px;right:5px;" title="<?php echo __('Dismiss', 'backwpup'); ?>"><span class="dashicons dashicons-dismiss"></span></a>
+	 */
+	public function output_box_html() {
+		$server_name = isset( $_SERVER['SERVER_NAME'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ) : '';
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+		$base_url    = '//' . $server_name . $request_uri;
+		$url         = add_query_arg(
+			[ 'backwpup_msg_' . $this->box_id => 1 ],
+			$base_url
+		); ?>
+		<div id="backwpup-message-<?php echo esc_attr( $this->box_id ); ?>" class="notice" style="padding:0;border:0;position:relative;">
+			<?php echo wp_kses_post( $this->box_html ); ?>
+			<a href="<?php echo esc_url( $url ); ?>" class="dismiss" style="text-decoration:none;position:absolute;top:5px;right:5px;" title="<?php echo esc_attr__( 'Dismiss', 'backwpup' ); ?>"><span class="dashicons dashicons-dismiss"></span></a>
 		</div>
 		<?php
     }

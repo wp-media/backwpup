@@ -5,6 +5,10 @@ namespace WPMedia\BackWPup\Common\Database\Tables;
 use WPMedia\BackWPup\Common\Database\TableInterface;
 use WPMedia\BackWPup\Dependencies\BerlinDB\Database\Table;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class AbstractTable extends Table implements TableInterface {
 
 	/**

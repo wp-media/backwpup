@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $name         The name of the service.
  * @var string  $slug         The slug of the service, also icon file name.
@@ -35,8 +40,8 @@ $configure_btn_content = "storage-$slug";
 ?>
 <button data-job-id="<?php echo esc_attr( $job_id ); ?>"
         data-storage="<?php echo esc_attr( $slug ); ?>"
-        data-label="<?php echo esc_html( $label ); ?>"
-        class="<?php echo BackWPupHelpers::clsx( 'js-backwpup-select-storage', $base_style, $contextual_style, $full_width_class ); ?>"
+        data-label="<?php echo esc_attr( $label ); ?>"
+        class="<?php echo esc_attr( BackWPupHelpers::clsx( 'js-backwpup-select-storage', $base_style, $contextual_style, $full_width_class ) ); ?>"
 >
   <input id='<?php echo esc_attr( $identifier ); ?>' value="<?php echo esc_attr( $slug); ?>"
          type="checkbox" name="<?php echo esc_attr( $name ); ?>" class="sr-only" <?php checked( $active ); ?>>
@@ -48,7 +53,7 @@ $configure_btn_content = "storage-$slug";
 <button data-content="<?php echo esc_attr( $configure_btn_content ); ?>"
         data-job-id="<?php echo esc_attr( $job_id ); ?>"
         data-storage="<?php echo esc_attr( $slug ); ?>"
-        class="<?php echo $configure_btn_class ?>"
+        class="<?php echo esc_attr( $configure_btn_class ); ?>"
 >
     <?php
         BackWPupHelpers::component( 'tooltip', [

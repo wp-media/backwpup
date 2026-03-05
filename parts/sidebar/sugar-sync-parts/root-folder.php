@@ -1,6 +1,11 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 use WPMedia\BackWPup\Plugin\Plugin;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 // Because on the onboarding we don't have the job_id.
 if (empty($job_id)) {
     $job_id = get_site_option( Plugin::FIRST_JOB_ID, false );

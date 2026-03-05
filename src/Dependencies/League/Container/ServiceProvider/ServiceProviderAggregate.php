@@ -58,7 +58,8 @@ class ServiceProviderAggregate implements ServiceProviderAggregateInterface
     {
         if (false === $this->provides($service)) {
             throw new ContainerException(
-                sprintf('(%s) is not provided by a service provider', $service)
+				// Translators: %s is the service name.
+                sprintf(esc_html__('(%s) is not provided by a service provider', 'backwpup'), esc_html($service))
             );
         }
 

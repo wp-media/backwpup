@@ -1,6 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 BackWPupHelpers::component("alerts/info", [
 	"type" => "alert",
 	"content" => __("Please complete the authentication to continue.", 'backwpup'),

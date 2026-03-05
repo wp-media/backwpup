@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Logs Settings", 'backwpup'),
   'type' => 'sidebar'
@@ -89,7 +94,6 @@ BackWPupHelpers::component("closable-heading", [
       "type" => "email",
       "label" => __("Send log to email address", 'backwpup'),
       "value" => get_site_option('backwpup_cfg_mailaddresslog'),
-      "required" => true,
     ]);
     ?>
 
@@ -98,8 +102,7 @@ BackWPupHelpers::component("closable-heading", [
       "name" => "mailaddresssenderlog",
       "type" => "email",
       "label" => __("Email from field", 'backwpup'),
-      "value" => get_site_option('backwpup_cfg_mailaddresssenderlog'),
-      "required" => true,
+      "value" => get_site_option('backwpup_cfg_mailaddresssenderlog')
     ]);
     ?>
 

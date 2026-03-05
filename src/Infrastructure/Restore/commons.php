@@ -19,7 +19,6 @@ use Inpsyde\Restore\Api\Module\Database;
 use Inpsyde\Restore\Api\Module\Database\DatabaseTypeFactory;
 use Inpsyde\Restore\Api\Module\Database\ImportFileFactory;
 use Inpsyde\Restore\Api\Module\Database\ImportModel;
-use Inpsyde\Restore\Api\Module\Database\MysqliDatabaseType;
 use Inpsyde\Restore\Api\Module\Database\SqlFileImport;
 use Inpsyde\Restore\Api\Module\Decompress\Decompressor;
 use Inpsyde\Restore\Api\Module\Decompress\State;
@@ -39,6 +38,9 @@ use Monolog\Logger;
 use Pimple\Container;
 use Pimple\Exception\FrozenServiceException;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 /**
  * Container.
@@ -93,6 +95,31 @@ function restore_container($name)
         $container['registry'] = static function (Container $container): Registry {
             $registry = new Registry((string) $container['project_temp'] . '/restore.dat');
             $registry->init();
+
+            // Ensure that all values (not even project_root is empty)
+            if (empty($registry->project_root)) {
+                $registry->project_root = (string) $container['project_root'];
+            }
+
+            if (empty($registry->project_temp)) {
+                $registry->project_temp = (string) $container['project_temp'];
+            }
+
+            if (empty($registry->extract_folder)) {
+                $registry->extract_folder = untrailingslashit((string) $container['project_temp']) . '/extract';
+            }
+
+            if (empty($registry->uploads_folder)) {
+                $registry->uploads_folder = untrailingslashit((string) $container['project_temp']) . '/uploads';
+
+                if (!file_exists($registry->uploads_folder)) {
+                    backwpup_wpfilesystem()->mkdir($registry->uploads_folder);
+                }
+            }
+
+            if (empty($registry->locale)) {
+                $registry->locale = get_locale();
+            }
 
             return $registry;
         };
@@ -164,7 +191,7 @@ function restore_container($name)
         // Database.
         $container['database_factory'] = static function (Container $container): DatabaseTypeFactory {
             $types = [
-                \mysqli::class => MysqliDatabaseType::class,
+                \wpdb::class => WpdbDatabaseType::class,
             ];
             $db_factory = new DatabaseTypeFactory($types, $container['registry']);
             $db_factory->set_logger($container['logger']);
@@ -253,8 +280,9 @@ function restore_container($name)
     if (!isset($container[$name])) {
         throw new \OutOfBoundsException(
             sprintf(
-                'Invalid data request for container. %s doesn\'t exist in the container',
-                $name
+				// translators: %s is the name of the service that doesn't exist in the container.
+                esc_html__('Invalid data request for container. %s doesn\'t exist in the container', 'backwpup'),
+                esc_html($name)
             )
         );
     }
@@ -284,19 +312,28 @@ function restore_registry(): Registry
     /** @var Registry $registry */
     $registry = $container['registry'];
 
-    if (! $registry->project_root) {
-        // Save Project Root in Registry.
-        $registry->project_root = $container['project_root'];
-        $registry->project_temp = $container['project_temp'];
-        $registry->extract_folder = untrailingslashit($container['project_temp']) . '/extract';
-        $registry->uploads_folder = untrailingslashit($container['project_temp']) . '/uploads';
+    // Ensure that all values, even if restore.dat already exists.
+    if (empty($registry->project_root)) {
+        $registry->project_root = (string) $container['project_root'];
+    }
 
-        // Create the uploads directory if not exists.
-        // In some cases me need to create the uploaded file from third party services and the directory must exists
-        // prior to save the file.
+    if (empty($registry->project_temp)) {
+        $registry->project_temp = (string) $container['project_temp'];
+    }
+
+    if (empty($registry->extract_folder)) {
+        $registry->extract_folder = untrailingslashit((string) $container['project_temp']) . '/extract';
+    }
+
+    if (empty($registry->uploads_folder)) {
+        $registry->uploads_folder = untrailingslashit((string) $container['project_temp']) . '/uploads';
+
         if (!file_exists($registry->uploads_folder)) {
             backwpup_wpfilesystem()->mkdir($registry->uploads_folder);
         }
+    }
+
+    if (empty($registry->locale)) {
         $registry->locale = get_locale();
     }
 
@@ -339,7 +376,7 @@ function create_project_temp_dir(Container $container): void
     $response = \BackWPup_File::check_folder((string) $container['project_temp'], true);
 
     if ($response) {
-        throw new \Exception($response);
+        throw new \Exception(esc_html($response));
     }
 }
 

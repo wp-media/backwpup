@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $label          The link label. Default: "".
  * @var string  $type           The button variation type. Values: "primary", "secondary", "link". Default: "link".
@@ -25,7 +30,7 @@ $disabled = $disabled ?? false;
 
 # Full width
 $full_width = isset($full_width) && $full_width ? "w-full" : "";
-$id = isset($identifier) ? " id='".esc_attr($identifier)."'" : null;
+$id = $identifier ?? '';
 
 # Type
 $button_base = "flex items-center";
@@ -75,7 +80,7 @@ $icon = [
 
 # JS actions
 $trigger = isset($trigger) ? "js-backwpup-$trigger" : "";
-$display = isset($display) ? " data-content=\"$display\"" : "";
+$display = $display ?? '';
 
 # CSS
 $class = $class ?? "";
@@ -85,22 +90,22 @@ $tooltip_pos = $tooltip_pos ?? "top";
 $tooltip_icon = $tooltip_icon ?? "info";
 $tooltip_size = $tooltip_size ?? "small";
 
-# Data
-$data_attrs = "";
-if (isset($data)) {
-  foreach ($data as $key => $value) {
-    $data_attrs .= " data-$key=\"$value\"";
-  }
-}
-
 $button_type = $button_type ?? 'submit';
 
 ?>
-<button type="<?php echo esc_attr( $button_type ); ?>" <?php echo $id ?> <?php if ($disabled) : ?>disabled<?php endif; ?> class="<?php echo BackWPupHelpers::clsx($font_size, $full_width, $button_base, $button_style, $class, $trigger); ?>" <?php echo $display; ?><?php echo $data_attrs; ?>>
-  <?= $icon_position === "before" || $icon_position === "alone" && BackWPupHelpers::component("icon", $icon) ? BackWPupHelpers::component("icon", $icon) : '' ; ?>
-  <?php if ($icon_position !== "alone" && $label !== "") : ?>
-    <span><?php echo $label ?? ""; ?></span>
+<button type="<?php echo esc_attr( $button_type ); ?>"<?php echo $id ? " id='" . esc_attr( $id ) . "'" : ''; ?><?php if ($disabled) : ?> disabled<?php endif; ?> class="<?php echo esc_attr( BackWPupHelpers::clsx( $font_size, $full_width, $button_base, $button_style, $class, $trigger ) ); ?>"<?php echo $display ? ' data-content="' . esc_attr( $display ) . '"' : ''; ?><?php if ( isset( $data ) && is_array( $data ) ) : ?><?php foreach ( $data as $key => $value ) : ?><?php echo ' data-' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"'; ?><?php endforeach; ?><?php endif; ?>>
+  <?php
+  if ( $icon_position === "before" || $icon_position === "alone" ) {
+    BackWPupHelpers::component("icon", $icon);
+  }
+  ?>
+  <?php if ($icon_position !== "alone" && ( $label ?? "" ) !== "") : ?>
+    <span><?php echo esc_html( $label ?? "" ); ?></span>
   <?php endif; ?>
-  <?= $icon_position === "after" && BackWPupHelpers::component("icon", $icon) ? BackWPupHelpers::component("icon", $icon) : ''; ?>
+  <?php
+  if ( $icon_position === "after" ) {
+    BackWPupHelpers::component("icon", $icon);
+  }
+  ?>
   <?php isset($tooltip) && BackWPupHelpers::component("tooltip", ["content" => $tooltip, "position" => $tooltip_pos, "icon_name" => $tooltip_icon, 'icon_size' => $tooltip_size]); ?>
 </button>

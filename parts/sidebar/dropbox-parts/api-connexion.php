@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 $dropbox = new BackWPup_Destination_Dropbox_API('dropbox');
 $dropbox_auth_url = $dropbox->oAuthAuthorize();
 $dropbox = new BackWPup_Destination_Dropbox_API('sandbox');
@@ -28,7 +33,7 @@ $dropboxtoken = BackWPup_Option::get($job_id, 'dropboxtoken', []);
     "newtab" => true,
   ]);
   ?>
-  <p class="mt-2 text-base text-danger"><?php _e("Not authenticated", 'backwpup'); ?></p>
+  <p class="mt-2 text-base text-danger"><?php esc_html_e("Not authenticated", 'backwpup'); ?></p>
   <?php BackWPupHelpers::component("separator"); ?>
 
 <div class="flex flex-col gap-2">
@@ -64,10 +69,10 @@ $dropboxtoken = BackWPup_Option::get($job_id, 'dropboxtoken', []);
     ]);
     ?>
     <p class="px-2 font-light text-xs">
-      <?php _e("A dedicated folder named BackWPup will be created inside of the Apps folder in your Dropbox. BackWPup will get read and write access to that folder only. You can specify a subfolder as your backup destination for this job in the destination field below.", 'backwpup'); ?>
+      <?php esc_html_e("A dedicated folder named BackWPup will be created inside of the Apps folder in your Dropbox. BackWPup will get read and write access to that folder only. You can specify a subfolder as your backup destination for this job in the destination field below.", 'backwpup'); ?>
     </p>
 
-    <p class="my-2 text-center text-sm"><?php _e("OR", 'backwpup'); ?></p>
+    <p class="my-2 text-center text-sm"><?php esc_html_e("OR", 'backwpup'); ?></p>
 
     <?php
     BackWPupHelpers::component("heading", [
@@ -102,7 +107,7 @@ $dropboxtoken = BackWPup_Option::get($job_id, 'dropboxtoken', []);
     ?>
 
     <p class="px-2 font-light text-xs">
-      <?php _e("BackWPup will have full read and write access to your entire Dropbox. You can specify your backup destination wherever you want, just be aware that ANY files or folders inside of your Dropbox can be overridden or deleted by BackWPup", 'backwpup'); ?>
+      <?php esc_html_e("BackWPup will have full read and write access to your entire Dropbox. You can specify your backup destination wherever you want, just be aware that ANY files or folders inside of your Dropbox can be overridden or deleted by BackWPup", 'backwpup'); ?>
     </p>
 
   </div>
@@ -118,5 +123,5 @@ $dropboxtoken = BackWPup_Option::get($job_id, 'dropboxtoken', []);
     ],
 	]);
 	?>
-	<p class="mt-2 text-base text-secondary-base"><?php _e("Authenticated", 'backwpup'); ?></p>
+	<p class="mt-2 text-base text-secondary-base"><?php esc_html_e("Authenticated", 'backwpup'); ?></p>
 	<?php endif;?>

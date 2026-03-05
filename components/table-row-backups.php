@@ -1,6 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 // Date formatting logic
 $date = new DateTime();
 $date->setTimestamp( $backup['time'] );
@@ -11,13 +15,13 @@ $type_icon      = 'clock';
 $backup_trigger = $backup['backup_trigger'] ?? '';
 $type           = $backup['type'];
 
-if ( 'link' === $backup_trigger ) {
-	$type_icon = 'link';
-	$type = 'Link';
-} elseif( '' === $backup['type'] ) {
-	$type_icon = 'user-settings';
-	$type = 'Manual';
-}
+	if ( 'link' === $backup_trigger ) {
+		$type_icon = 'link';
+		$type = __( 'Link', 'backwpup' );
+	} elseif( '' === $backup['type'] ) {
+		$type_icon = 'user-settings';
+		$type = __( 'Manual', 'backwpup' );
+	}
 $actions =[];
 //Add the download and restore action
 //If we can't restore the backup, we can't download it either.
@@ -47,7 +51,7 @@ ob_start();
 <tr class="*:py-6 *:border-b *:border-grey-300 max-md:bg-grey-100 max-md:rounded-lg max-md:block max-md:p-4">
   <td class="p-0 max-md:hidden">
     <?php
-      echo BackWPupHelpers::component("form/checkbox", [
+      BackWPupHelpers::component("form/checkbox", [
         "name" => "select_backup",
         "style" => "light",
         "trigger" => "select-backup",
@@ -59,16 +63,16 @@ ob_start();
   </td>
 
   <td class="px-8 max-md:py-4 max-md:px-6 max-md:flex max-md:items-baseline max-md:gap-1 max-md:bg-white max-md:rounded max-md:border-none">
-    <p class="text-sm font-bold"><?= $formatted_date ?></p>
-    <p class="text-base">at <?= $formatted_time ?></p>
+    <p class="text-sm font-bold"><?php echo esc_html( $formatted_date ); ?></p>
+    <p class="text-base">at <?php echo esc_html( $formatted_time ); ?></p>
   </td>
 
   <td class="px-8 max-md:block max-md:px-2 max-md:py-3">
     <div class="flex items-center md:justify-center max-md:justify-between">
-      <p class="text-base font-semibold md:hidden"><?php _e("Type", "backwpup"); ?></p>
+      <p class="text-base font-semibold md:hidden"><?php esc_html_e("Type", "backwpup"); ?></p>
       <?php
-        echo BackWPupHelpers::component("tooltip", [
-          "content" => __($type, 'backwpup'),
+        BackWPupHelpers::component("tooltip", [
+          "content" => $type,
           "icon_name" => $type_icon,
           "icon_size" => "large",
           "position" => "center",
@@ -78,9 +82,9 @@ ob_start();
   </td>
 
   <td class="px-8 max-md:px-2 max-md:py-3 max-md:flex max-md:justify-between max-md:items-center">
-    <p class="text-base font-semibold md:hidden"><?php _e("Stored on", "backwpup"); ?></p>
+    <p class="text-base font-semibold md:hidden"><?php esc_html_e("Stored on", "backwpup"); ?></p>
     <?php
-      echo BackWPupHelpers::component("storage-list-compact", [
+      BackWPupHelpers::component("storage-list-compact", [
         "storages" => (array)$backup['stored_on'],
         "style" => "alt"
       ]);
@@ -88,30 +92,30 @@ ob_start();
   </td>
 
   <td class="px-8 max-md:px-2 max-md:py-3 max-md:flex max-md:justify-between max-md:items-center">
-    <p class="text-base font-semibold md:hidden"><?php _e("Data", "backwpup"); ?></p>
+    <p class="text-base font-semibold md:hidden"><?php esc_html_e("Data", "backwpup"); ?></p>
     <div class="flex gap-2">
     <?php
       foreach ($backup['data'] as $data) {
         switch ($data) {
           case 'FILE':
             $icon = 'file-alt';
-            $label = 'Files';
+            $label = __( 'Files', 'backwpup' );
             break;
           case 'DBDUMP':
             $icon = 'database';
-            $label = 'Database';
+            $label = __( 'Database', 'backwpup' );
             break;
           case 'WPPLUGIN':
             $icon = 'file';
-            $label = 'Plugins';
+            $label = __( 'Plugins', 'backwpup' );
             break;
           default:
             $icon = 'dots';
             $label = $data;
             break;
         }
-        echo BackWPupHelpers::component("tooltip", [
-          "content" => __($label, 'backwpup'),
+        BackWPupHelpers::component("tooltip", [
+          "content" => $label,
           "icon_name" => $icon,
           "icon_size" => "large",
           "position" => "center",
@@ -123,7 +127,7 @@ ob_start();
 
   <td class="px-8 max-md:block max-md:p-0 max-md:border-none">
     <?php
-      echo BackWPupHelpers::component("navigation/menu", [
+      BackWPupHelpers::component("navigation/menu", [
         "class" => "max-md:hidden",
         "actions" => $actions,
       ]);
@@ -131,7 +135,7 @@ ob_start();
     <ul class="md:hidden flex flex-col">
       <li class="py-4 flex justify-end border-b border-grey-400">
         <?php
-          echo BackWPupHelpers::component("form/button", [
+          BackWPupHelpers::component("form/button", [
             "type" => "link",
             "label" => __("Download", "backwpup"),
             "icon_name" => "download",
@@ -142,7 +146,7 @@ ob_start();
       </li>
       <li class="py-4 flex justify-end">
         <?php
-          echo BackWPupHelpers::component("form/button", [
+          BackWPupHelpers::component("form/button", [
             "type" => "link",
             "label" => __("Restore", "backwpup"),
             "icon_name" => "restore",
@@ -161,5 +165,5 @@ ob_start();
 $tableRowHtml = ob_get_clean();
 
 // Return the HTML to use or echo it when needed
-echo $tableRowHtml;
+echo $tableRowHtml; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 ?>

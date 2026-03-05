@@ -3,6 +3,10 @@ use Inpsyde\BackWPup\Infrastructure\Xml\Exception\InvalidWxrFileException;
 use Inpsyde\BackWPup\Infrastructure\Xml\Exception\InvalidXmlException;
 use Inpsyde\BackWPup\Infrastructure\Xml\WxrValidator;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
 {
     public function __construct()
@@ -45,9 +49,9 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
 				<th scope="row"><?php esc_html_e('Items to export', 'backwpup'); ?></th>
 				<td>
 					<fieldset>
-						<label for="idwpexportcontent-all"><input type="radio" name="wpexportcontent" id="idwpexportcontent-all" value="all" <?php checked(BackWPup_Option::get($jobid, 'wpexportcontent'), 'all'); ?> /> <?php _e('All content', 'backwpup'); ?></label><br />
-						<label for="idwpexportcontent-post"><input type="radio" name="wpexportcontent" id="idwpexportcontent-post" value="post" <?php checked(BackWPup_Option::get($jobid, 'wpexportcontent'), 'post'); ?> /> <?php _e('Posts', 'backwpup'); ?></label><br />
-						<label for="idwpexportcontent-page"><input type="radio" name="wpexportcontent" id="idwpexportcontent-page" value="page" <?php checked(BackWPup_Option::get($jobid, 'wpexportcontent'), 'page'); ?> /> <?php _e('Pages', 'backwpup'); ?></label><br />
+						<label for="idwpexportcontent-all"><input type="radio" name="wpexportcontent" id="idwpexportcontent-all" value="all" <?php checked( BackWPup_Option::get( $jobid, 'wpexportcontent' ), 'all' ); ?> /> <?php esc_html_e( 'All content', 'backwpup' ); ?></label><br />
+						<label for="idwpexportcontent-post"><input type="radio" name="wpexportcontent" id="idwpexportcontent-post" value="post" <?php checked( BackWPup_Option::get( $jobid, 'wpexportcontent' ), 'post' ); ?> /> <?php esc_html_e( 'Posts', 'backwpup' ); ?></label><br />
+						<label for="idwpexportcontent-page"><input type="radio" name="wpexportcontent" id="idwpexportcontent-page" value="page" <?php checked( BackWPup_Option::get( $jobid, 'wpexportcontent' ), 'page' ); ?> /> <?php esc_html_e( 'Pages', 'backwpup' ); ?></label><br />
 						<?php
                         foreach (get_post_types(['_builtin' => false, 'can_export' => true], 'objects') as $post_type) {
                             ?>
@@ -98,44 +102,75 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
 
     /**
      * @return bool
-     */
-    public function job_run(BackWPup_Job $job_object)
-    {
-        global $wpdb, $post, $wp_query;
+	 */
+	public function job_run( BackWPup_Job $job_object ) {
+		global $wpdb, $wp_query;
 
         $wxr_version = '1.2';
 
-        if ($job_object->steps_data[$job_object->step_working]['SAVE_STEP_TRY'] != $job_object->steps_data[$job_object->step_working]['STEP_TRY']) {
-            $job_object->log(sprintf(__('%d. Trying to create a WordPress export to XML file&#160;&hellip;', 'backwpup'), $job_object->steps_data[$job_object->step_working]['STEP_TRY']));
-            $job_object->steps_data[$job_object->step_working]['wpexportfile'] = BackWPup::get_plugin_data('TEMP') . $job_object->generate_filename($job_object->job['wpexportfile'], 'xml', true);
-            $job_object->steps_data[$job_object->step_working]['substep'] = 'header';
-            $job_object->steps_data[$job_object->step_working]['post_ids'] = [];
-            $job_object->substeps_todo = 10;
+		if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] !== $job_object->steps_data[ $job_object->step_working ]['STEP_TRY'] ) {
+			$job_object->log(
+				sprintf(
+				/* translators: %d: attempt number. */
+				__( '%d. Trying to create a WordPress export to XML file&#160;&hellip;', 'backwpup' ),
+				$job_object->steps_data[ $job_object->step_working ]['STEP_TRY']
+			)
+				);
+			$job_object->steps_data[ $job_object->step_working ]['wpexportfile'] = BackWPup::get_plugin_data( 'TEMP' ) . $job_object->generate_filename( $job_object->job['wpexportfile'], 'xml', true );
+			$job_object->steps_data[ $job_object->step_working ]['substep']      = 'header';
+			$job_object->steps_data[ $job_object->step_working ]['post_ids']     = [];
+			$job_object->substeps_todo = 10;
             $job_object->substeps_done = 0;
         }
 
         add_filter('backwpup_wxr_export_skip_postmeta', [$this, 'wxr_filter_postmeta'], 10, 2);
 
-        if ($job_object->steps_data[$job_object->step_working]['substep'] == 'header') {
-            if ('all' != $job_object->job['wpexportcontent'] && post_type_exists($job_object->job['wpexportcontent'])) {
-                $ptype = get_post_type_object($job_object->job['wpexportcontent']);
-                if (!$ptype->can_export) {
-                    $job_object->log(sprintf(__('WP Export: Post type “%s” does not allow export.', 'backwpup'), $job_object->job['wpexportcontent']), E_USER_ERROR);
+		if ( 'header' === $job_object->steps_data[ $job_object->step_working ]['substep'] ) {
+			$post_status = 'auto-draft';
+
+				$post_ids    = [];
+				$cache_group = 'backwpup_wpexport';
+			if ( 'all' !== $job_object->job['wpexportcontent'] && post_type_exists( $job_object->job['wpexportcontent'] ) ) {
+				$ptype = get_post_type_object( $job_object->job['wpexportcontent'] );
+				if ( ! $ptype->can_export ) {
+					/* translators: %s: post type slug. */
+					$job_object->log( sprintf( __( 'WP Export: Post type “%s” does not allow export.', 'backwpup' ), $job_object->job['wpexportcontent'] ), E_USER_ERROR );
 
                     return false;
-                }
-                $where = $wpdb->prepare("{$wpdb->posts}.post_type = %s", $job_object->job['wpexportcontent']);
-            } else {
-                $post_types = get_post_types(['can_export' => true]);
-                $esses = array_fill(0, count($post_types), '%s');
-                $where = $wpdb->prepare("{$wpdb->posts}.post_type IN (" . implode(',', $esses) . ')', $post_types);
-                $job_object->job['wpexportcontent'] = 'all';
-            }
-            $where .= " AND {$wpdb->posts}.post_status != 'auto-draft'";
+				}
+				$post_ids_key = 'post_ids_' . $job_object->job['wpexportcontent'] . '_' . $post_status;
+				$post_ids     = wp_cache_get( $post_ids_key, $cache_group );
+				if ( false === $post_ids ) {
+					$post_ids = $wpdb->get_col( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- No WP API for raw export selection.
+						$wpdb->prepare(
+							"SELECT ID FROM {$wpdb->posts} WHERE {$wpdb->posts}.post_type = %s AND {$wpdb->posts}.post_status != %s",
+							$job_object->job['wpexportcontent'],
+							$post_status
+						)
+					);
+					wp_cache_set( $post_ids_key, $post_ids, $cache_group, MINUTE_IN_SECONDS );
+				}
+			} else {
+				$post_types   = array_values( get_post_types( [ 'can_export' => true ] ) );
+				$placeholders = implode( ',', array_fill( 0, count( $post_types ), '%s' ) );
+				$post_ids_key = 'post_ids_' . md5( implode( ',', $post_types ) . '|' . $post_status );
+				$post_ids     = wp_cache_get( $post_ids_key, $cache_group );
+				if ( false === $post_ids ) {
+					$post_ids = $wpdb->get_col( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- No WP API for raw export selection.
+						$wpdb->prepare(
+							// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Dynamic IN clause placeholders.
+							"SELECT ID FROM {$wpdb->posts} WHERE {$wpdb->posts}.post_type IN ({$placeholders}) AND {$wpdb->posts}.post_status != %s",
+							array_merge( $post_types, [ $post_status ] )
+						)
+					);
+					wp_cache_set( $post_ids_key, $post_ids, $cache_group, MINUTE_IN_SECONDS );
+				}
+				$job_object->job['wpexportcontent'] = 'all';
+			}
 
-            // grab a snapshot of post IDs, just in case it changes during the export
-            $job_object->steps_data[$job_object->step_working]['post_ids'] = $wpdb->get_col("SELECT ID FROM {$wpdb->posts} WHERE {$where}");
-            $job_object->substeps_todo = $job_object->substeps_todo + count($job_object->steps_data[$job_object->step_working]['post_ids']);
+			// Grab a snapshot of post IDs, just in case it changes during the export.
+			$job_object->steps_data[ $job_object->step_working ]['post_ids'] = $post_ids;
+			$job_object->substeps_todo                                       = $job_object->substeps_todo + count( $job_object->steps_data[ $job_object->step_working ]['post_ids'] );
 
             $header = '<?xml version="1.0" encoding="' . get_bloginfo('charset') . "\" ?>\n";
             $header .= "<!-- This is a WordPress eXtended RSS file generated by the WordPress plugin BackWPup as an export of your site. -->\n";
@@ -152,21 +187,22 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
             $header .= "<!--    on the site. For each author, you may choose to map to an -->\n";
             $header .= "<!--    existing user on the site or to create a new user. -->\n";
             $header .= "<!-- 7. WordPress will then import each of the posts, pages, comments, categories, etc. -->\n";
-            $header .= "<!--    contained in this file into your site. -->\n\n";
-            $header .= '<!-- generator="WordPress/' . get_bloginfo_rss('version') . '" created="' . date('Y-m-d H:i') . "\" -->\n";
-            $header .= "<rss version=\"2.0\" xmlns:excerpt=\"http://wordpress.org/export/{$wxr_version}/excerpt/\" xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" xmlns:wfw=\"http://wellformedweb.org/CommentAPI/\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:wp=\"http://wordpress.org/export/{$wxr_version}/\">\n";
-            $header .= "<channel>\n";
-            $header .= "\t<title>" . get_bloginfo_rss('name') . "</title>\n";
-            $header .= "\t<link>" . get_bloginfo_rss('url') . "</link>\n";
-            $header .= "\t<description>" . get_bloginfo_rss('description') . "</description>\n";
-            $header .= "\t<pubDate>" . date('D, d M Y H:i:s +0000') . "</pubDate>\n";
-            $header .= "\t<language>" . get_bloginfo_rss('language') . "</language>\n";
-            $header .= "\t<wp:wxr_version>" . $wxr_version . "</wp:wxr_version>\n";
-            $header .= "\t<wp:base_site_url>" . $this->wxr_site_url() . "</wp:base_site_url>\n";
-            $header .= "\t<wp:base_blog_url>" . get_bloginfo_rss('url') . "</wp:base_blog_url>\n";
-            $written = file_put_contents($job_object->steps_data[$job_object->step_working]['wpexportfile'], $header, FILE_APPEND);
-            if ($written === false) {
-                $job_object->log(__('WP Export file could not written.', 'backwpup'), E_USER_ERROR);
+			$header .= "<!--    contained in this file into your site. -->\n\n";
+			$header .= '<!-- generator="WordPress/' . get_bloginfo_rss( 'version' ) . '" created="' . wp_date( 'Y-m-d H:i', time() ) . "\" -->\n";
+			$header .= "<rss version=\"2.0\" xmlns:excerpt=\"http://wordpress.org/export/{$wxr_version}/excerpt/\" xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" xmlns:wfw=\"http://wellformedweb.org/CommentAPI/\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:wp=\"http://wordpress.org/export/{$wxr_version}/\">\n";
+			$header .= "<channel>\n";
+			$header .= "\t<title>" . get_bloginfo_rss( 'name' ) . "</title>\n";
+			$header .= "\t<link>" . get_bloginfo_rss( 'url' ) . "</link>\n";
+			$header .= "\t<description>" . get_bloginfo_rss( 'description' ) . "</description>\n";
+			$header .= "\t<pubDate>" . gmdate( 'D, d M Y H:i:s +0000', time() ) . "</pubDate>\n";
+			$header .= "\t<language>" . get_bloginfo_rss( 'language' ) . "</language>\n";
+			$header .= "\t<wp:wxr_version>" . $wxr_version . "</wp:wxr_version>\n";
+			$header .= "\t<wp:base_site_url>" . $this->wxr_site_url() . "</wp:base_site_url>\n";
+			$header .= "\t<wp:base_blog_url>" . get_bloginfo_rss( 'url' ) . "</wp:base_blog_url>\n";
+      // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+			$written = file_put_contents( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'], $header, FILE_APPEND );
+			if ( false === $written ) {
+				$job_object->log( __( 'WP Export file could not written.', 'backwpup' ), E_USER_ERROR );
 
                 return false;
             }
@@ -177,10 +213,10 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
             $job_object->do_restart_time();
         }
 
-        if ($job_object->steps_data[$job_object->step_working]['substep'] == 'authors') {
-            $written = file_put_contents($job_object->steps_data[$job_object->step_working]['wpexportfile'], $this->wxr_authors_list(), FILE_APPEND);
-            if ($written === false) {
-                $job_object->log(__('WP Export file could not written.', 'backwpup'), E_USER_ERROR);
+		if ( 'authors' === $job_object->steps_data[ $job_object->step_working ]['substep'] ) {
+			$written = file_put_contents( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'], $this->wxr_authors_list(), FILE_APPEND ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+			if ( false === $written ) {
+				$job_object->log( __( 'WP Export file could not written.', 'backwpup' ), E_USER_ERROR );
 
                 return false;
             }
@@ -190,15 +226,16 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
             $job_object->do_restart_time();
         }
 
-        if ($job_object->steps_data[$job_object->step_working]['substep'] == 'cats') {
-            if ('all' == $job_object->job['wpexportcontent']) {
-                $cats = [];
-                $categories = (array) get_categories(['get' => 'all']);
-                // put categories in order with no child going before its parent
-                while ($cat = array_shift($categories)) {
-                    if ($cat->parent == 0 || isset($cats[$cat->parent])) {
-                        $cats[$cat->term_id] = $cat;
-                    } else {
+		if ( 'cats' === $job_object->steps_data[ $job_object->step_working ]['substep'] ) {
+			if ( 'all' === $job_object->job['wpexportcontent'] ) {
+				$cats       = [];
+				$categories = (array) get_categories( [ 'get' => 'all' ] );
+				// Put categories in order with no child going before its parent.
+				while ( ! empty( $categories ) ) {
+					$cat = array_shift( $categories );
+					if ( 0 === (int) $cat->parent || isset( $cats[ $cat->parent ] ) ) {
+						$cats[ $cat->term_id ] = $cat;
+					} else {
                         $categories[] = $cat;
                     }
                 }
@@ -207,10 +244,10 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
                 foreach ($cats as $c) {
                     $parent_slug = $c->parent ? $cats[$c->parent]->slug : '';
                     $cats_xml .= "\t<wp:category><wp:term_id>" . $c->term_id . '</wp:term_id><wp:category_nicename>' . $c->slug . '</wp:category_nicename><wp:category_parent>' . $parent_slug . '</wp:category_parent>' . $this->wxr_cat_name($c) . $this->wxr_category_description($c) . "</wp:category>\n";
-                }
-                $written = file_put_contents($job_object->steps_data[$job_object->step_working]['wpexportfile'], $cats_xml, FILE_APPEND);
-                if ($written === false) {
-                    $job_object->log(__('WP Export file could not written.', 'backwpup'), E_USER_ERROR);
+				}
+				$written = file_put_contents( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'], $cats_xml, FILE_APPEND ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+				if ( false === $written ) {
+					$job_object->log( __( 'WP Export file could not written.', 'backwpup' ), E_USER_ERROR );
 
                     return false;
                 }
@@ -222,17 +259,17 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
             $job_object->do_restart_time();
         }
 
-        if ($job_object->steps_data[$job_object->step_working]['substep'] == 'tags') {
-            if ('all' == $job_object->job['wpexportcontent']) {
-                $tags = (array) get_tags(['get' => 'all']);
-                $tags_xml = '';
+		if ( 'tags' === $job_object->steps_data[ $job_object->step_working ]['substep'] ) {
+			if ( 'all' === $job_object->job['wpexportcontent'] ) {
+				$tags     = (array) get_tags( [ 'get' => 'all' ] );
+				$tags_xml = '';
 
                 foreach ($tags as $t) {
                     $tags_xml .= "\t<wp:tag><wp:term_id>" . $t->term_id . '</wp:term_id><wp:tag_slug>' . $t->slug . '</wp:tag_slug>' . $this->wxr_tag_name($t) . $this->wxr_tag_description($t) . "</wp:tag>\n";
-                }
-                $written = file_put_contents($job_object->steps_data[$job_object->step_working]['wpexportfile'], $tags_xml, FILE_APPEND);
-                if ($written === false) {
-                    $job_object->log(__('WP Export file could not written.', 'backwpup'), E_USER_ERROR);
+				}
+				$written = file_put_contents( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'], $tags_xml, FILE_APPEND ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+				if ( false === $written ) {
+					$job_object->log( __( 'WP Export file could not written.', 'backwpup' ), E_USER_ERROR );
 
                     return false;
                 }
@@ -244,17 +281,23 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
             $job_object->do_restart_time();
         }
 
-        if ($job_object->steps_data[$job_object->step_working]['substep'] == 'terms') {
-            if ('all' == $job_object->job['wpexportcontent']) {
-                $terms = [];
-                $custom_taxonomies = get_taxonomies(['_builtin' => false]);
-                $custom_terms = (array) get_terms($custom_taxonomies, ['get' => 'all']);
+		if ( 'terms' === $job_object->steps_data[ $job_object->step_working ]['substep'] ) {
+			if ( 'all' === $job_object->job['wpexportcontent'] ) {
+				$terms             = [];
+				$custom_taxonomies = get_taxonomies( [ '_builtin' => false ] );
+				$custom_terms      = (array) get_terms(
+					[
+						'taxonomy'   => $custom_taxonomies,
+						'hide_empty' => false,
+					]
+				);
 
-                // put terms in order with no child going before its parent
-                while ($t = array_shift($custom_terms)) {
-                    if ($t->parent == 0 || isset($terms[$t->parent])) {
-                        $terms[$t->term_id] = $t;
-                    } else {
+				// Put terms in order with no child going before its parent.
+				while ( ! empty( $custom_terms ) ) {
+					$t = array_shift( $custom_terms );
+					if ( 0 === (int) $t->parent || isset( $terms[ $t->parent ] ) ) {
+						$terms[ $t->term_id ] = $t;
+					} else {
                         $custom_terms[] = $t;
                     }
                 }
@@ -263,10 +306,10 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
                 foreach ($terms as $t) {
                     $parent_slug = $t->parent ? $terms[$t->parent]->slug : '';
                     $terms_xml .= "\t<wp:term><wp:term_id>" . $t->term_id . '</wp:term_id><wp:term_taxonomy>' . $t->taxonomy . '</wp:term_taxonomy><wp:term_slug>' . $t->slug . '</wp:term_slug><wp:term_parent>' . $parent_slug . '</wp:term_parent>' . $this->wxr_term_name($t) . $this->wxr_term_description($t) . "</wp:term>\n";
-                }
-                $written = file_put_contents($job_object->steps_data[$job_object->step_working]['wpexportfile'], $terms_xml, FILE_APPEND);
-                if ($written === false) {
-                    $job_object->log(__('WP Export file could not written.', 'backwpup'), E_USER_ERROR);
+				}
+				$written = file_put_contents( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'], $terms_xml, FILE_APPEND ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+				if ( false === $written ) {
+					$job_object->log( __( 'WP Export file could not written.', 'backwpup' ), E_USER_ERROR );
 
                     return false;
                 }
@@ -278,15 +321,15 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
             $job_object->do_restart_time();
         }
 
-        if ($job_object->steps_data[$job_object->step_working]['substep'] == 'menus') {
-            $menu_xml = '';
-            if ('all' == $job_object->job['wpexportcontent']) {
-                $menu_xml .= $this->wxr_nav_menu_terms();
-            }
-            $menu_xml .= "\t<generator>http://wordpress.org/?v=" . get_bloginfo_rss('version') . "</generator>\n";
-            $written = file_put_contents($job_object->steps_data[$job_object->step_working]['wpexportfile'], $menu_xml, FILE_APPEND);
-            if ($written === false) {
-                $job_object->log(__('WP Export file could not written.', 'backwpup'), E_USER_ERROR);
+		if ( 'menus' === $job_object->steps_data[ $job_object->step_working ]['substep'] ) {
+			$menu_xml = '';
+			if ( 'all' === $job_object->job['wpexportcontent'] ) {
+				$menu_xml .= $this->wxr_nav_menu_terms();
+			}
+			$menu_xml .= "\t<generator>http://wordpress.org/?v=" . get_bloginfo_rss( 'version' ) . "</generator>\n";
+			$written   = file_put_contents( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'], $menu_xml, FILE_APPEND ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+			if ( false === $written ) {
+				$job_object->log( __( 'WP Export file could not written.', 'backwpup' ), E_USER_ERROR );
 
                 return false;
             }
@@ -298,47 +341,67 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
             $job_object->do_restart_time();
         }
 
-        if ($job_object->steps_data[$job_object->step_working]['substep'] == 'posts') {
-            if (!empty($job_object->steps_data[$job_object->step_working]['post_ids'])) {
-                $wp_query->in_the_loop = true; // Fake being in the loop.
+		if ( 'posts' === $job_object->steps_data[ $job_object->step_working ]['substep'] ) {
+			if ( ! empty( $job_object->steps_data[ $job_object->step_working ]['post_ids'] ) ) {
+				$cache_group           = 'backwpup_wpexport';
+				$wp_query->in_the_loop = true; // Fake being in the loop.
 
-                // fetch 20 posts at a time rather than loading the entire table into memory
-                while ($next_posts = array_splice($job_object->steps_data[$job_object->step_working]['post_ids'], 0, 20)) {
-                    $where = 'WHERE ID IN (' . join(',', $next_posts) . ')';
-                    $posts = $wpdb->get_results("SELECT * FROM {$wpdb->posts} {$where}");
-                    $wxr_post = '';
-                    // Begin Loop
-                    /** @var WP_Post $post */
-                    foreach ($posts as $post) {
-                        $is_sticky = is_sticky($post->ID) ? 1 : 0;
+				// Fetch 20 posts at a time rather than loading the entire table into memory.
+				while ( ! empty( $job_object->steps_data[ $job_object->step_working ]['post_ids'] ) ) {
+					$next_posts   = array_splice( $job_object->steps_data[ $job_object->step_working ]['post_ids'], 0, 20 );
+					$next_posts   = array_map( 'intval', $next_posts );
+					$placeholders = implode( ',', array_fill( 0, count( $next_posts ), '%d' ) );
+					$posts_key    = 'post_chunk_' . md5( implode( ',', $next_posts ) );
+					$posts        = wp_cache_get( $posts_key, $cache_group );
+					if ( false === $posts ) {
+						$posts = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- No WP API for raw export selection.
+							$wpdb->prepare(
+								// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Dynamic IN clause placeholders.
+								"SELECT * FROM {$wpdb->posts} WHERE ID IN ({$placeholders})",
+								$next_posts
+							)
+						);
+						wp_cache_set( $posts_key, $posts, $cache_group, MINUTE_IN_SECONDS );
+					}
+					$wxr_post = '';
+					// Begin loop.
+					/* @var WP_Post $post_item */
+					foreach ( $posts as $post_item ) {
+						setup_postdata( $post_item );
+						$is_sticky = is_sticky( $post_item->ID ) ? 1 : 0;
 
 						$wxr_post .= "\t<item>\n";
-						$wxr_post .= "\t\t<title>" . wpm_apply_filters_typed( 'string', 'the_title_rss', $post->post_title ) . "</title>\n";
-						$wxr_post .= "\t\t<link>" . esc_url( wpm_apply_filters_typed( 'string', 'the_permalink_rss', get_permalink( $post ) ) ) . "</link>\n";
-						$wxr_post .= "\t\t<pubDate>" . mysql2date( 'D, d M Y H:i:s +0000', get_post_time( 'Y-m-d H:i:s', true, $post ), false ) . "</pubDate>\n";
-						$wxr_post .= "\t\t<dc:creator>" . $this->wxr_cdata( get_the_author_meta( 'login', $post->post_author ) ) . "</dc:creator>\n";
-						$wxr_post .= "\t\t<guid isPermaLink=\"false\">" . esc_url( get_the_guid( $post->ID ) ) . "</guid>\n";
+						$wxr_post .= "\t\t<title>" . wpm_apply_filters_typed( 'string', 'the_title_rss', $post_item->post_title ) . "</title>\n";
+						$wxr_post .= "\t\t<link>" . esc_url( wpm_apply_filters_typed( 'string', 'the_permalink_rss', get_permalink( $post_item ) ) ) . "</link>\n";
+						$wxr_post .= "\t\t<pubDate>" . mysql2date( 'D, d M Y H:i:s +0000', get_post_time( 'Y-m-d H:i:s', true, $post_item ), false ) . "</pubDate>\n";
+						$wxr_post .= "\t\t<dc:creator>" . $this->wxr_cdata( get_the_author_meta( 'login', $post_item->post_author ) ) . "</dc:creator>\n";
+						$wxr_post .= "\t\t<guid isPermaLink=\"false\">" . esc_url( get_the_guid( $post_item->ID ) ) . "</guid>\n";
 						$wxr_post .= "\t\t<description></description>\n";
-						$wxr_post .= "\t\t<content:encoded>" . $this->wxr_cdata( wpm_apply_filters_typed( 'string', 'the_content_export', $post->post_content ) ) . "</content:encoded>\n";
-						$wxr_post .= "\t\t<excerpt:encoded>" . $this->wxr_cdata( wpm_apply_filters_typed( 'string', 'the_excerpt_export', $post->post_excerpt ) ) . "</excerpt:encoded>\n";
-						$wxr_post .= "\t\t<wp:post_id>" . $post->ID . "</wp:post_id>\n";
-                        $wxr_post .= "\t\t<wp:post_date>" . $post->post_date . "</wp:post_date>\n";
-                        $wxr_post .= "\t\t<wp:post_date_gmt>" . $post->post_date_gmt . "</wp:post_date_gmt>\n";
-                        $wxr_post .= "\t\t<wp:comment_status>" . $post->comment_status . "</wp:comment_status>\n";
-                        $wxr_post .= "\t\t<wp:ping_status>" . $post->ping_status . "</wp:ping_status>\n";
-                        $wxr_post .= "\t\t<wp:post_name>" . $post->post_name . "</wp:post_name>\n";
-                        $wxr_post .= "\t\t<wp:status>" . $post->post_status . "</wp:status>\n";
-                        $wxr_post .= "\t\t<wp:post_parent>" . $post->post_parent . "</wp:post_parent>\n";
-                        $wxr_post .= "\t\t<wp:menu_order>" . $post->menu_order . "</wp:menu_order>\n";
-                        $wxr_post .= "\t\t<wp:post_type>" . $post->post_type . "</wp:post_type>\n";
-                        $wxr_post .= "\t\t<wp:post_password>" . $post->post_password . "</wp:post_password>\n";
-                        $wxr_post .= "\t\t<wp:is_sticky>" . $is_sticky . "</wp:is_sticky>\n";
-                        if ($post->post_type == 'attachment') {
-                            $wxr_post .= "\t\t<wp:attachment_url>" . wp_get_attachment_url($post->ID) . "</wp:attachment_url>\n";
-                        }
+						$wxr_post .= "\t\t<content:encoded>" . $this->wxr_cdata( wpm_apply_filters_typed( 'string', 'the_content_export', $post_item->post_content ) ) . "</content:encoded>\n";
+						$wxr_post .= "\t\t<excerpt:encoded>" . $this->wxr_cdata( wpm_apply_filters_typed( 'string', 'the_excerpt_export', $post_item->post_excerpt ) ) . "</excerpt:encoded>\n";
+						$wxr_post .= "\t\t<wp:post_id>" . $post_item->ID . "</wp:post_id>\n";
+						$wxr_post .= "\t\t<wp:post_date>" . $post_item->post_date . "</wp:post_date>\n";
+						$wxr_post .= "\t\t<wp:post_date_gmt>" . $post_item->post_date_gmt . "</wp:post_date_gmt>\n";
+						$wxr_post .= "\t\t<wp:comment_status>" . $post_item->comment_status . "</wp:comment_status>\n";
+						$wxr_post .= "\t\t<wp:ping_status>" . $post_item->ping_status . "</wp:ping_status>\n";
+						$wxr_post .= "\t\t<wp:post_name>" . $post_item->post_name . "</wp:post_name>\n";
+						$wxr_post .= "\t\t<wp:status>" . $post_item->post_status . "</wp:status>\n";
+						$wxr_post .= "\t\t<wp:post_parent>" . $post_item->post_parent . "</wp:post_parent>\n";
+						$wxr_post .= "\t\t<wp:menu_order>" . $post_item->menu_order . "</wp:menu_order>\n";
+						$wxr_post .= "\t\t<wp:post_type>" . $post_item->post_type . "</wp:post_type>\n";
+						$wxr_post .= "\t\t<wp:post_password>" . $post_item->post_password . "</wp:post_password>\n";
+						$wxr_post .= "\t\t<wp:is_sticky>" . $is_sticky . "</wp:is_sticky>\n";
+						if ( 'attachment' === $post_item->post_type ) {
+							$wxr_post .= "\t\t<wp:attachment_url>" . wp_get_attachment_url( $post_item->ID ) . "</wp:attachment_url>\n";
+						}
                         $wxr_post .= $this->wxr_post_taxonomy();
 
-                        $postmeta = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->postmeta} WHERE post_id = %d", $post->ID));
+						$postmeta_key = 'postmeta_' . $post_item->ID;
+						$postmeta     = wp_cache_get( $postmeta_key, $cache_group );
+						if ( false === $postmeta ) {
+							$postmeta = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->postmeta} WHERE post_id = %d", $post_item->ID ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- No WP API for raw postmeta export.
+							wp_cache_set( $postmeta_key, $postmeta, $cache_group, MINUTE_IN_SECONDS );
+						}
 
 						foreach ( $postmeta as $meta ) {
 							if ( wpm_apply_filters_typed( 'boolean', 'backwpup_wxr_export_skip_postmeta', false, $meta->meta_key, $meta ) ) {
@@ -347,23 +410,33 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
                             $wxr_post .= "\t\t<wp:postmeta>\n\t\t\t<wp:meta_key>" . $meta->meta_key . "</wp:meta_key>\n\t\t\t<wp:meta_value>" . $this->wxr_cdata($meta->meta_value) . "</wp:meta_value>\n\t\t</wp:postmeta>\n";
                         }
 
-                        $comments = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->comments} WHERE comment_post_ID = %d AND comment_approved <> 'spam'", $post->ID));
+						$comments_key = 'comments_' . $post_item->ID;
+						$comments     = wp_cache_get( $comments_key, $cache_group );
+						if ( false === $comments ) {
+							$comments = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->comments} WHERE comment_post_ID = %d AND comment_approved <> 'spam'", $post_item->ID ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- No WP API for raw comment export.
+							wp_cache_set( $comments_key, $comments, $cache_group, MINUTE_IN_SECONDS );
+						}
 
-                        foreach ($comments as $c) {
-                            $wxr_post .= "\t\t<wp:comment>\n";
-                            $wxr_post .= "\t\t\t<wp:comment_id>" . $c->comment_ID . "</wp:comment_id>\n";
-                            $wxr_post .= "\t\t\t<wp:comment_author>" . $this->wxr_cdata($c->comment_author) . "</wp:comment_author>\n";
-                            $wxr_post .= "\t\t\t<wp:comment_author_email>" . $c->comment_author_email . "</wp:comment_author_email>\n";
-                            $wxr_post .= "\t\t\t<wp:comment_author_url>" . esc_url_raw($c->comment_author_url) . "</wp:comment_author_url>\n";
-                            $wxr_post .= "\t\t\t<wp:comment_author_IP>" . $c->comment_author_IP . "</wp:comment_author_IP>\n";
-                            $wxr_post .= "\t\t\t<wp:comment_date>" . $c->comment_date . "</wp:comment_date>\n";
-                            $wxr_post .= "\t\t\t<wp:comment_date_gmt>" . $c->comment_date_gmt . "</wp:comment_date_gmt>\n";
-                            $wxr_post .= "\t\t\t<wp:comment_content>" . $this->wxr_cdata($c->comment_content) . "</wp:comment_content>\n";
-                            $wxr_post .= "\t\t\t<wp:comment_approved>" . $c->comment_approved . "</wp:comment_approved>\n";
-                            $wxr_post .= "\t\t\t<wp:comment_type>" . $c->comment_type . "</wp:comment_type>\n";
-                            $wxr_post .= "\t\t\t<wp:comment_parent>" . $c->comment_parent . "</wp:comment_parent>\n";
-                            $wxr_post .= "\t\t\t<wp:comment_user_id>" . $c->user_id . "</wp:comment_user_id>\n";
-                            $c_meta = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->commentmeta} WHERE comment_id = %d", $c->comment_ID));
+						foreach ( $comments as $c ) {
+							$wxr_post       .= "\t\t<wp:comment>\n";
+							$wxr_post       .= "\t\t\t<wp:comment_id>" . $c->comment_ID . "</wp:comment_id>\n";
+							$wxr_post       .= "\t\t\t<wp:comment_author>" . $this->wxr_cdata( $c->comment_author ) . "</wp:comment_author>\n";
+							$wxr_post       .= "\t\t\t<wp:comment_author_email>" . $c->comment_author_email . "</wp:comment_author_email>\n";
+							$wxr_post       .= "\t\t\t<wp:comment_author_url>" . esc_url_raw( $c->comment_author_url ) . "</wp:comment_author_url>\n";
+							$wxr_post       .= "\t\t\t<wp:comment_author_IP>" . $c->comment_author_IP . "</wp:comment_author_IP>\n";
+							$wxr_post       .= "\t\t\t<wp:comment_date>" . $c->comment_date . "</wp:comment_date>\n";
+							$wxr_post       .= "\t\t\t<wp:comment_date_gmt>" . $c->comment_date_gmt . "</wp:comment_date_gmt>\n";
+							$wxr_post       .= "\t\t\t<wp:comment_content>" . $this->wxr_cdata( $c->comment_content ) . "</wp:comment_content>\n";
+							$wxr_post       .= "\t\t\t<wp:comment_approved>" . $c->comment_approved . "</wp:comment_approved>\n";
+							$wxr_post       .= "\t\t\t<wp:comment_type>" . $c->comment_type . "</wp:comment_type>\n";
+							$wxr_post       .= "\t\t\t<wp:comment_parent>" . $c->comment_parent . "</wp:comment_parent>\n";
+							$wxr_post       .= "\t\t\t<wp:comment_user_id>" . $c->user_id . "</wp:comment_user_id>\n";
+							$commentmeta_key = 'commentmeta_' . $c->comment_ID;
+							$c_meta          = wp_cache_get( $commentmeta_key, $cache_group );
+							if ( false === $c_meta ) {
+								$c_meta = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->commentmeta} WHERE comment_id = %d", $c->comment_ID ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- No WP API for raw commentmeta export.
+								wp_cache_set( $commentmeta_key, $c_meta, $cache_group, MINUTE_IN_SECONDS );
+							}
 
                             foreach ($c_meta as $meta) {
                                 $wxr_post .= "\t\t\t<wp:commentmeta>\n\t\t\t\t<wp:meta_key>" . $meta->meta_key . "</wp:meta_key>\n\t\t\t\t<wp:meta_value>" . $this->wxr_cdata($meta->meta_value) . "</wp:meta_value>\n\t\t\t</wp:commentmeta>\n";
@@ -372,19 +445,20 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
                         }
                         $wxr_post .= "\t</item>\n";
                         ++$job_object->substeps_done;
-                    }
-                    $written = file_put_contents($job_object->steps_data[$job_object->step_working]['wpexportfile'], $wxr_post, FILE_APPEND);
-                    if ($written === false) {
-                        $job_object->log(__('WP Export file could not written.', 'backwpup'), E_USER_ERROR);
+					}
+					wp_reset_postdata();
+					$written = file_put_contents( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'], $wxr_post, FILE_APPEND ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+					if ( false === $written ) {
+						$job_object->log( __( 'WP Export file could not written.', 'backwpup' ), E_USER_ERROR );
 
                         return false;
                     }
                     $job_object->do_restart_time();
                 }
-            }
-            $written = file_put_contents($job_object->steps_data[$job_object->step_working]['wpexportfile'], "</channel>\n</rss>", FILE_APPEND);
-            if ($written === false) {
-                $job_object->log(__('WP Export file could not written.', 'backwpup'), E_USER_ERROR);
+			}
+			$written = file_put_contents( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'], "</channel>\n</rss>", FILE_APPEND ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+			if ( false === $written ) {
+				$job_object->log( __( 'WP Export file could not written.', 'backwpup' ), E_USER_ERROR );
 
                 return false;
             }
@@ -396,10 +470,10 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
 
         remove_filter('backwpup_wxr_export_skip_postmeta', [$this, 'wxr_filter_postmeta'], 10);
 
-        if ($job_object->steps_data[$job_object->step_working]['substep'] == 'check') {
-            if (class_exists(\DOMDocument::class)) {
-                $job_object->log(__('Check WP Export file&#160;&hellip;', 'backwpup'));
-                $job_object->need_free_memory(filesize($job_object->steps_data[$job_object->step_working]['wpexportfile']) * 2);
+		if ( 'check' === $job_object->steps_data[ $job_object->step_working ]['substep'] ) {
+			if ( class_exists( \DOMDocument::class ) ) {
+				$job_object->log( __( 'Check WP Export file&#160;&hellip;', 'backwpup' ) );
+				$job_object->need_free_memory( filesize( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] ) * 2 );
 
                 try {
                     $validator = new WxrValidator($job_object->steps_data[$job_object->step_working]['wpexportfile']);
@@ -411,17 +485,47 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
 
                     foreach ($errors as $error) {
                         switch ($error->level) {
-                            case LIBXML_ERR_WARNING:
-                                $job_object->log(E_USER_WARNING, sprintf(__('XML WARNING (%s): %s', 'backwpup'), $error->code, trim($error->message)), $job_object->steps_data[$job_object->step_working]['wpexportfile'], $error->line);
-                                break;
+							case LIBXML_ERR_WARNING:
+								$job_object->log(
+									E_USER_WARNING,
+									sprintf(
+									// translators: 1: XML error code. 2: XML error message.
+									__( 'XML WARNING (%1$s): %2$s', 'backwpup' ),
+									$error->code,
+									trim( $error->message )
+								),
+									$job_object->steps_data[ $job_object->step_working ]['wpexportfile'],
+									$error->line
+									);
+								break;
 
-                            case LIBXML_ERR_ERROR:
-                                $job_object->log(E_USER_WARNING, sprintf(__('XML RECOVERABLE (%s): %s', 'backwpup'), $error->code, trim($error->message)), $job_object->steps_data[$job_object->step_working]['wpexportfile'], $error->line);
-                                break;
+							case LIBXML_ERR_ERROR:
+								$job_object->log(
+									E_USER_WARNING,
+									sprintf(
+									// translators: 1: XML error code. 2: XML error message.
+									__( 'XML RECOVERABLE (%1$s): %2$s', 'backwpup' ),
+									$error->code,
+									trim( $error->message )
+								),
+									$job_object->steps_data[ $job_object->step_working ]['wpexportfile'],
+									$error->line
+									);
+								break;
 
-                            case LIBXML_ERR_FATAL:
-                                $job_object->log(E_USER_WARNING, sprintf(__('XML ERROR (%s): %s', 'backwpup'), $error->code, trim($error->message)), $job_object->steps_data[$job_object->step_working]['wpexportfile'], $error->line);
-                                break;
+							case LIBXML_ERR_FATAL:
+								$job_object->log(
+									E_USER_WARNING,
+									sprintf(
+									// translators: 1: XML error code. 2: XML error message.
+									__( 'XML ERROR (%1$s): %2$s', 'backwpup' ),
+									$error->code,
+									trim( $error->message )
+								),
+									$job_object->steps_data[ $job_object->step_working ]['wpexportfile'],
+									$error->line
+									);
+								break;
                         }
                     }
                 } catch (InvalidWxrFileException $e) {
@@ -437,19 +541,19 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
             $job_object->do_restart_time();
         }
 
-        //Compress file
-        if ($job_object->steps_data[$job_object->step_working]['substep'] == 'compress') {
-            if (!empty($job_object->job['wpexportfilecompression'])) {
-                $job_object->log(__('Compressing file&#160;&hellip;', 'backwpup'));
+		// Compress file.
+		if ( 'compress' === $job_object->steps_data[ $job_object->step_working ]['substep'] ) {
+			if ( ! empty( $job_object->job['wpexportfilecompression'] ) ) {
+				$job_object->log( __( 'Compressing file&#160;&hellip;', 'backwpup' ) );
 
-                try {
-                    $compress = new BackWPup_Create_Archive($job_object->steps_data[$job_object->step_working]['wpexportfile'] . $job_object->job['wpexportfilecompression']);
-                    if ($compress->add_file($job_object->steps_data[$job_object->step_working]['wpexportfile'])) {
-                        unset($compress);
-                        unlink($job_object->steps_data[$job_object->step_working]['wpexportfile']);
-                        $job_object->steps_data[$job_object->step_working]['wpexportfile'] .= $job_object->job['wpexportfilecompression'];
-                        $job_object->log(__('Compressing done.', 'backwpup'));
-                    }
+				try {
+					$compress = new BackWPup_Create_Archive( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] . $job_object->job['wpexportfilecompression'] );
+					if ( $compress->add_file( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] ) ) {
+						unset( $compress );
+						wp_delete_file( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] );
+						$job_object->steps_data[ $job_object->step_working ]['wpexportfile'] .= $job_object->job['wpexportfilecompression'];
+						$job_object->log( __( 'Compressing done.', 'backwpup' ) );
+					}
                 } catch (Exception $e) {
                     $job_object->log($e->getMessage(), E_USER_ERROR, $e->getFile(), $e->getLine());
 
@@ -462,13 +566,14 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
             $job_object->do_restart_time();
         }
 
-        if ($job_object->steps_data[$job_object->step_working]['substep'] == 'addfile') {
-            //add XML file to backup files
-            if (is_readable($job_object->steps_data[$job_object->step_working]['wpexportfile'])) {
-                $job_object->additional_files_to_backup[] = $job_object->steps_data[$job_object->step_working]['wpexportfile'];
-                $filesize = filesize($job_object->steps_data[$job_object->step_working]['wpexportfile']);
-                $job_object->log(sprintf(__('Added XML export "%1$s" with %2$s to backup file list.', 'backwpup'), basename((string) $job_object->steps_data[$job_object->step_working]['wpexportfile']), size_format($filesize, 2)));
-            }
+		if ( 'addfile' === $job_object->steps_data[ $job_object->step_working ]['substep'] ) {
+			// Add XML file to backup files.
+			if ( is_readable( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] ) ) {
+				$job_object->additional_files_to_backup[] = $job_object->steps_data[ $job_object->step_working ]['wpexportfile'];
+				$filesize                                 = filesize( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] );
+				/* translators: 1: XML export filename, 2: XML export file size. */
+				$job_object->log( sprintf( __( 'Added XML export "%1$s" with %2$s to backup file list.', 'backwpup' ), basename( (string) $job_object->steps_data[ $job_object->step_working ]['wpexportfile'] ), size_format( $filesize, 2 ) ) );
+			}
             ++$job_object->substeps_done;
             $job_object->update_working_data();
         }
@@ -635,8 +740,16 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
     {
         global $wpdb;
 
-        $authors = [];
-        $results = $wpdb->get_results("SELECT DISTINCT post_author FROM {$wpdb->posts} WHERE post_status != 'auto-draft'");
+		$authors     = [];
+		$cache_group = 'backwpup_wpexport';
+		$authors_key = 'authors_' . DB_NAME;
+		$results     = wp_cache_get( $authors_key, $cache_group );
+		if ( false === $results ) {
+			$results = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- No WP API for raw author export.
+			$wpdb->prepare( "SELECT DISTINCT post_author FROM {$wpdb->posts} WHERE post_status != %s", 'auto-draft' )
+			);
+			wp_cache_set( $authors_key, $results, $cache_group, MINUTE_IN_SECONDS );
+		}
 
         foreach ((array) $results as $result) {
             $authors[] = get_userdata($result->post_author);
@@ -707,12 +820,19 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes
         return $wxr_post_tags;
     }
 
-    public function wxr_filter_postmeta($return_me, $meta_key)
-    {
-        if ('_edit_lock' == $meta_key) {
-            $return_me = true;
-        }
+	/**
+	 * Filter postmeta keys that should be skipped during WXR export.
+	 *
+	 * @param bool   $return_me Whether to skip the meta key.
+	 * @param string $meta_key  Meta key name.
+	 *
+	 * @return bool
+	 */
+	public function wxr_filter_postmeta( $return_me, $meta_key ) {
+		if ( '_edit_lock' === $meta_key ) {
+			$return_me = true;
+		}
 
-        return $return_me;
-    }
+		return $return_me;
+	}
 }

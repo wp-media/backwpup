@@ -9,15 +9,6 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 	 */
 	private const SERVICE_NAME = 'FTP';
 
-	private const FILTER_USEPASVADDRESS = 'backwpup_ftp_use_passive_address';
-
-    /**
-     * FTP Connection Resource.
-     *
-     * @var resource|null
-     */
-    private $ftp_conn_id;
-
     public function option_defaults(): array
     {
         return [
@@ -27,10 +18,12 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
             'ftpuser' => '',
             'ftppass' => '',
             'ftpdir' => trailingslashit(sanitize_title_with_dashes(get_bloginfo('name'))),
-            'ftpmaxbackups' => 15,
-            'ftppasv' => true,
-            'ftpssl' => false,
-        ];
+			'ftpmaxbackups' => 15,
+			'ftppasv'       => true,
+			'ftpssl'        => false,
+			'ftpssh'        => false,
+			'ftpsshprivkey' => '',
+		];
     }
 
 
@@ -75,471 +68,225 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 			if ( function_exists( 'ftp_ssl_connect' ) ) {
 				BackWPup_Option::update( $id, 'ftpssl', ! empty( $_POST['ftpssl'] ) );
 			} else {
-					BackWPup_Option::update( $id, 'ftpssl', false );
+				BackWPup_Option::update( $id, 'ftpssl', false );
+			}
+			if ( class_exists( phpseclib3\Net\SFTP::class ) ) {
+				BackWPup_Option::update( $id, 'ftpssh', ! empty( $_POST['ftpssh'] ) );
+			} else {
+				BackWPup_Option::update( $id, 'ftpssh', false );
 			}
 				BackWPup_Option::update( $id, 'ftppasv', ! empty( $_POST['ftppasv'] ) );
+			if ( ! empty( $_POST['ftpsshprivkey'] ) ) {
+				BackWPup_Option::update( $id, 'ftpsshprivkey', BackWPup_Encryption::encrypt( wp_unslash( trim( $_POST['ftpsshprivkey'] ) ) ) );
+			}
 		}
 	}
-	// phpcs:enable
 
     public function file_delete(string $jobdest, string $backupfile): void
     {
         $files = get_site_transient('backwpup_' . strtolower($jobdest));
         [$jobid, $dest] = explode('_', $jobdest);
 
-        $job_options = (object) BackWPup_Option::get_job($jobid);
-        $service = new BackWPup_Destination_Ftp_Connect(
-            $job_options->ftphost,
-            $job_options->ftpuser,
-            BackWPup_Encryption::decrypt($job_options->ftppass),
-            $job_options->ftphostport,
-            $job_options->ftptimeout,
-            $job_options->ftpssl,
-            $job_options->ftppasv
-        );
+		$job_options = (object) BackWPup_Option::get_job( $jobid );
 
-        try {
-            $resource = $service
-                ->connect()
-                ->resource()
-            ;
+		if ( ! empty( $job_options->ftpssh ) && BackWPup::is_pro() ) {
+			$ftp = new BackWPup_Pro_Destination_Ftp_Type_Sftp();
+		} else {
+			$ftp = new BackWPup_Destination_Ftp_Type_Ftp();
+		}
 
-            // Delete file.
-            ftp_delete($resource, $backupfile);
+		try {
+			$ftp->connect(
+				$job_options->ftpuser,
+				BackWPup_Encryption::decrypt( $job_options->ftppass ),
+				$job_options->ftphost,
+				[
+					'port'    => $job_options->ftphostport,
+					'timeout' => $job_options->ftptimeout,
+					'ssl'     => ! empty( $job_options->ftpssl ),
+					'pasv'    => ! empty( $job_options->ftppasv ),
+					'privkey' => ! empty( $job_options->ftpsshprivkey ) ? BackWPup_Encryption::decrypt( $job_options->ftpsshprivkey ) : '',
+				]
+			);
 
-            // Update file list of existing files.
-            foreach ($files as $key => $file) {
-                if (is_array($file) && $file['file'] == $backupfile) {
-                    unset($files[$key]);
-                }
-            }
-        } catch (\RuntimeException $e) {
-            BackWPup_Admin::message('FTP: ' . $e->getMessage(), true);
-        }
+			if ( $ftp->delete( $backupfile ) ) {
+				foreach ( $files as $key => $file ) {
+					if ( is_array( $file ) && $file['file'] === $backupfile ) {
+						unset( $files[ $key ] );
+					}
+				}
+			}
+		} catch ( \Exception $e ) {
+			BackWPup_Admin::message( 'FTP: ' . $e->getMessage(), true );
+		}
 
         set_site_transient('backwpup_' . strtolower($jobdest), $files, YEAR_IN_SECONDS);
     }
 
-    /**
-     * File Update List.
-     *
-     * Update the list of files in the transient.
-     *
-     * @param BackWPup_Job|int $job    Either the job object or job ID
-     * @param bool             $delete whether to delete old backups
-     */
-    public function file_update_list($job, bool $delete = false): void
-    {
-        if ($job instanceof BackWPup_Job) {
-            $job_object = $job;
-            $jobid = $job->job['jobid'];
-        } else {
-            $job_object = null;
-            $jobid = $job;
-        }
-
-        if (!$this->ftp_conn_id) {
-            $ftp_ssl = BackWPup_Option::get($jobid, 'ftpssl');
-            if (!empty($ftp_ssl)
-                && function_exists('ftp_ssl_connect')) {
-                $ftp_conn_id = ftp_ssl_connect(
-                    BackWPup_Option::get($jobid, 'ftphost'),
-                    BackWPup_Option::get($jobid, 'ftphostport'),
-                    BackWPup_Option::get($jobid, 'ftptimeout')
-                );
-            } else { //make normal FTP connection if SSL not work
-                $ftp_conn_id = ftp_connect(
-                    BackWPup_Option::get($jobid, 'ftphost'),
-                    BackWPup_Option::get($jobid, 'ftphostport'),
-                    BackWPup_Option::get($jobid, 'ftptimeout')
-                );
-            }
-
-            //FTP Login
-            if ($loginok = @ftp_login(
-                $ftp_conn_id,
-                BackWPup_Option::get($jobid, 'ftpuser'),
-                BackWPup_Encryption::decrypt(BackWPup_Option::get($jobid, 'ftppass'))
-            )) {
-            } else { //if PHP ftp login don't work use raw login
-                $return = ftp_raw($ftp_conn_id, 'USER ' . BackWPup_Option::get($jobid, 'ftpuser'));
-                if (substr(trim($return[0]), 0, 3) <= 400) {
-                    $return = ftp_raw(
-                        $ftp_conn_id,
-                        'PASS ' . BackWPup_Encryption::decrypt(BackWPup_Option::get($jobid, 'ftppass'))
-                    );
-                    if (substr(trim($return[0]), 0, 3) <= 400) {
-                        $loginok = true;
-                    }
-                }
-            }
-
-            if (!$loginok) {
-                throw new Exception(__('Could not log in to FTP server.', 'backwpup'));
-            }
-
-            //set actual ftp dir to ftp dir
-            $ftp_dir = BackWPup_Option::get($jobid, 'ftpdir');
-            if (empty($ftp_dir)) {
-                $ftp_dir = trailingslashit(ftp_pwd($ftp_conn_id));
-            }
-            // prepend actual ftp dir if relative dir
-            if (substr((string) $ftp_dir, 0, 1) != '/') {
-                $ftp_dir = trailingslashit(ftp_pwd($ftp_conn_id)) . $ftp_dir;
-            }
-            ftp_chdir($ftp_conn_id, $ftp_dir);
-
-			if ( BackWPup_Option::get( $jobid, 'ftppasv' ) ) {
-				ftp_set_option( $ftp_conn_id, FTP_USEPASVADDRESS, wpm_apply_filters_typed( 'string', self::FILTER_USEPASVADDRESS, true ) );
-				ftp_pasv( $ftp_conn_id, true );
-			} else {
-                ftp_pasv($ftp_conn_id, false);
-            }
-        } else {
-            $ftp_conn_id = $this->ftp_conn_id;
-            $ftp_dir = $job_object->job['ftpdir'];
-        }
-
-        $backupfilelist = [];
-        $filecounter = 0;
-        $files = [];
-        if ($filelist = ftp_nlist($ftp_conn_id, '.')) {
-            foreach ($filelist as $file) {
-                if (basename($file) != '.' && basename($file) != '..') {
-                    if ($this->is_backup_archive($file)
-                        && $this->is_backup_owned_by_job(
-                            $file,
-                            $jobid
-                        ) == true) {
-                        $time = ftp_mdtm($ftp_conn_id, $file);
-                        if ($time != -1) {
-                            $backupfilelist[$time] = basename($file);
-                        } else {
-                            $backupfilelist[] = basename($file);
-                        }
-                    }
-                    $files[$filecounter]['folder'] = 'ftp://' . BackWPup_Option::get($jobid, 'ftphost') . ':' . BackWPup_Option::get($jobid, 'ftphostport') . $ftp_dir;
-                    $files[$filecounter]['file'] = trailingslashit($ftp_dir) . basename($file);
-                    $files[$filecounter]['filename'] = basename($file);
-                    $files[$filecounter]['downloadurl'] = network_admin_url(
-                        'admin.php?page=backwpupbackups&action=downloadftp&file=' . trailingslashit($ftp_dir) . basename($file) . '&local_file=' . basename($file) . '&jobid=' . $jobid
-                    );
-                    $files[$filecounter]['filesize'] = ftp_size($ftp_conn_id, $file);
-                    $files[$filecounter]['time'] = ftp_mdtm($ftp_conn_id, $file);
-                    ++$filecounter;
-                }
-            }
-        }
-
-        if ($delete && $job_object && !empty($job_object->job['ftpmaxbackups']) && $job_object->job['ftpmaxbackups'] > 0) { //Delete old backups
-            if (count($backupfilelist) > $job_object->job['ftpmaxbackups']) {
-                ksort($backupfilelist);
-				$numdeltefiles = 0;
-				$deleted_files = [];
-
-                while ($file = array_shift($backupfilelist)) {
-                    if (count($backupfilelist) < $job_object->job['ftpmaxbackups']) {
-                        break;
-					}
-					if ( ftp_delete( $ftp_conn_id, $file ) ) { // delete files on ftp.
-						foreach ( $files as $key => $filedata ) {
-							if ( trailingslashit( $job_object->job['ftpdir'] ) . $file === $filedata['file'] ) {
-								$deleted_files[] = $filedata['file'];
-								unset( $files[ $key ] );
-							}
-                        }
-                        ++$numdeltefiles;
-                    } else {
-                        $job_object->log(
-                            sprintf(
-                                __('Cannot delete "%s" on FTP server!', 'backwpup'),
-                                $job_object->job['ftpdir'] . $file
-                            ),
-                            E_USER_ERROR
-                        );
-                    }
-                }
-                if ($numdeltefiles > 0) {
-                    $job_object->log(
-                        sprintf(
-                            _n(
-                                'One file deleted on FTP server',
-                                '%d files deleted on FTP server',
-                                $numdeltefiles,
-                                'backwpup'
-                            ),
-                            $numdeltefiles
-                        ),
-                        E_USER_NOTICE
-                    );
-                }
-
-				parent::remove_file_history_from_database( $deleted_files, 'FTP' );
-			}
-        }
-        set_site_transient('backwpup_' . $jobid . '_ftp', $files, YEAR_IN_SECONDS);
-    }
-
     public function job_run_archive(BackWPup_Job $job_object): bool
     {
-        $job_object->substeps_todo = 2 + $job_object->backup_filesize;
-        if ($job_object->steps_data[$job_object->step_working]['SAVE_STEP_TRY'] != $job_object->steps_data[$job_object->step_working]['STEP_TRY']) {
-            $job_object->log(
-                sprintf(
-                    __('%d. Try to send backup file to an FTP server&#160;&hellip;', 'backwpup'),
-                    $job_object->steps_data[$job_object->step_working]['STEP_TRY']
-                ),
-                E_USER_NOTICE
-            );
+		$job_object->substeps_todo = 2 + $job_object->backup_filesize;
+		if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] !== $job_object->steps_data[ $job_object->step_working ]['STEP_TRY'] ) {
+			$job_object->log(
+				sprintf(
+					// translators: %d: try number.
+					__( '%d. Try to send backup file to an FTP server&#160;&hellip;', 'backwpup' ),
+					$job_object->steps_data[ $job_object->step_working ]['STEP_TRY']
+				)
+			);
         }
 
-        if (!empty($job_object->job['ftpssl'])) { //make SSL FTP connection
-            if (function_exists('ftp_ssl_connect')) {
-                $ftp_conn_id = ftp_ssl_connect(
-                    $job_object->job['ftphost'],
-                    $job_object->job['ftphostport'],
-                    $job_object->job['ftptimeout']
-                );
-                if ($ftp_conn_id) {
-                    $job_object->log(
-                        sprintf(
-                            __('Connected via explicit SSL-FTP to server: %s', 'backwpup'),
-                            $job_object->job['ftphost'] . ':' . $job_object->job['ftphostport']
-                        ),
-                        E_USER_NOTICE
-                    );
-                } else {
-                    $job_object->log(
-                        sprintf(
-                            __('Cannot connect via explicit SSL-FTP to server: %s', 'backwpup'),
-                            $job_object->job['ftphost'] . ':' . $job_object->job['ftphostport']
-                        ),
-                        E_USER_ERROR
-                    );
+		if ( ! empty( $job_object->job['ftpssh'] ) && BackWPup::is_pro() ) {
+			$ftp = new BackWPup_Pro_Destination_Ftp_Type_Sftp( [ $job_object, 'log' ] );
+		} else {
+			$ftp = new BackWPup_Destination_Ftp_Type_Ftp( [ $job_object, 'log' ] );
+		}
+		try {
+			$ftp->connect(
+				$job_object->job['ftpuser'],
+				BackWPup_Encryption::decrypt( $job_object->job['ftppass'] ),
+				$job_object->job['ftphost'],
+				[
+					'port'    => $job_object->job['ftphostport'],
+					'timeout' => $job_object->job['ftptimeout'],
+					'ssl'     => ! empty( $job_object->job['ftpssl'] ),
+					'pasv'    => ! empty( $job_object->job['ftppasv'] ),
+					'privkey' => ! empty( $job_object->job['ftpsshprivkey'] ) ? BackWPup_Encryption::decrypt( $job_object->job['ftpsshprivkey'] ) : '',
+				]
+			);
 
-                    return false;
-                }
-            } else {
-                $job_object->log(
-                    __('PHP function to connect with explicit SSL-FTP to server does not exist!', 'backwpup'),
-                    E_USER_ERROR
-                );
-
-                return true;
-            }
-        } else { //make normal FTP connection if SSL not work
-            $ftp_conn_id = ftp_connect(
-                $job_object->job['ftphost'],
-                $job_object->job['ftphostport'],
-                $job_object->job['ftptimeout']
-            );
-            if ($ftp_conn_id) {
-                $job_object->log(
-                    sprintf(
-                        __('Connected to FTP server: %s', 'backwpup'),
-                        $job_object->job['ftphost'] . ':' . $job_object->job['ftphostport']
-                    ),
-                    E_USER_NOTICE
-                );
-            } else {
-                $job_object->log(
-                    sprintf(
-                        __('Cannot connect to FTP server: %s', 'backwpup'),
-                        $job_object->job['ftphost'] . ':' . $job_object->job['ftphostport']
-                    ),
-                    E_USER_ERROR
-                );
-
-                return false;
-            }
-        }
-
-        //FTP Login
-        $job_object->log(
-            sprintf(__('FTP client command: %s', 'backwpup'), 'USER ' . $job_object->job['ftpuser']),
-            E_USER_NOTICE
-        );
-        if ($loginok = @ftp_login(
-            $ftp_conn_id,
-            $job_object->job['ftpuser'],
-            BackWPup_Encryption::decrypt($job_object->job['ftppass'])
-        )) {
-            $job_object->log(
-                sprintf(
-                    __('FTP server response: %s', 'backwpup'),
-                    'User ' . $job_object->job['ftpuser'] . ' logged in.'
-                ),
-                E_USER_NOTICE
-            );
-        } else { //if PHP ftp login don't work use raw login
-            $return = ftp_raw($ftp_conn_id, 'USER ' . $job_object->job['ftpuser']);
-            $job_object->log(sprintf(__('FTP server reply: %s', 'backwpup'), $return[0]), E_USER_NOTICE);
-            if (substr(trim($return[0]), 0, 3) <= 400) {
-                $job_object->log(
-                    sprintf(__('FTP client command: %s', 'backwpup'), 'PASS *******'),
-                    E_USER_NOTICE
-                );
-                $return = ftp_raw(
-                    $ftp_conn_id,
-                    'PASS ' . BackWPup_Encryption::decrypt($job_object->job['ftppass'])
-                );
-                if (substr(trim($return[0]), 0, 3) <= 400) {
-                    $job_object->log(sprintf(__('FTP server reply: %s', 'backwpup'), $return[0]), E_USER_NOTICE);
-                    $loginok = true;
-                } else {
-                    $job_object->log(sprintf(__('FTP server reply: %s', 'backwpup'), $return[0]), E_USER_ERROR);
-                }
-            }
-        }
-
-        if (!$loginok) {
-            return false;
-        }
-
-        $this->ftp_conn_id = $ftp_conn_id;
-
-        //SYSTYPE
-        $job_object->log(sprintf(__('FTP client command: %s', 'backwpup'), 'SYST'), E_USER_NOTICE);
-        $systype = ftp_systype($ftp_conn_id);
-        if ($systype) {
-            $job_object->log(sprintf(__('FTP server reply: %s', 'backwpup'), $systype), E_USER_NOTICE);
-        } else {
-            $job_object->log(
-                sprintf(__('FTP server reply: %s', 'backwpup'), __('Error getting SYSTYPE', 'backwpup')),
-                E_USER_ERROR
-            );
-        }
-
-        //set actual ftp dir to ftp dir
-        if (empty($job_object->job['ftpdir'])) {
-            $job_object->job['ftpdir'] = trailingslashit(ftp_pwd($ftp_conn_id));
-        }
-        // prepend actual ftp dir if relative dir
-        if (substr((string) $job_object->job['ftpdir'], 0, 1) != '/') {
-            $job_object->job['ftpdir'] = trailingslashit(ftp_pwd($ftp_conn_id)) . $job_object->job['ftpdir'];
-        }
-
-        //test ftp dir and create it if not exists
-        if ($job_object->job['ftpdir'] != '/') {
-            @ftp_chdir($ftp_conn_id, '/'); //go to root
-            $ftpdirs = explode('/', trim((string) $job_object->job['ftpdir'], '/'));
-
-            foreach ($ftpdirs as $ftpdir) {
-                if (empty($ftpdir)) {
-                    continue;
-                }
-
-                if (!@ftp_chdir($ftp_conn_id, $ftpdir)) {
-                    if (!$this->create_dir($ftp_conn_id, $ftpdir, $job_object)) {
-                        return false;
-                    }
-
-                    ftp_chdir($ftp_conn_id, $ftpdir);
-                }
-            }
-        }
-
-        // Get the current working directory
-        $current_ftp_dir = trailingslashit(ftp_pwd($ftp_conn_id));
-        if ($job_object->substeps_done == 0) {
-            $job_object->log(
-                sprintf(__('FTP current folder is: %s', 'backwpup'), $current_ftp_dir),
-                E_USER_NOTICE
-            );
-        }
-
-        //get file size to resume upload
-        @clearstatcache();
-        $job_object->substeps_done = @ftp_size($ftp_conn_id, $job_object->job['ftpdir'] . $job_object->backup_file);
-        if ($job_object->substeps_done == -1) {
-            $job_object->substeps_done = 0;
-        }
-
-		// PASV.
-		$job_object->log( sprintf( __( 'FTP client command: %s', 'backwpup' ), 'PASV' ), E_USER_NOTICE ); // @phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
-		if ( $job_object->job['ftppasv'] ) {
-			ftp_set_option( $ftp_conn_id, FTP_USEPASVADDRESS, wpm_apply_filters_typed( 'boolean', self::FILTER_USEPASVADDRESS, true ) );
-			if ( ftp_pasv( $ftp_conn_id, true ) ) {
+			$current_ftp_dir = trailingslashit( $ftp->chdir( $job_object->job['ftpdir'] ) );
+			if ( ! $job_object->substeps_done ) {
 				$job_object->log(
-                    sprintf(__('FTP server reply: %s', 'backwpup'), __('Entering passive mode', 'backwpup')),
-                    E_USER_NOTICE
-                );
-            } else {
-                $job_object->log(
-                    sprintf(__('FTP server reply: %s', 'backwpup'), __('Cannot enter passive mode', 'backwpup')),
-                    E_USER_WARNING
-                );
-            }
-        } else {
-            if (ftp_pasv($ftp_conn_id, false)) {
-                $job_object->log(
-                    sprintf(__('FTP server reply: %s', 'backwpup'), __('Entering normal mode', 'backwpup')),
-                    E_USER_NOTICE
-                );
-            } else {
-                $job_object->log(
-                    sprintf(__('FTP server reply: %s', 'backwpup'), __('Cannot enter normal mode', 'backwpup')),
-                    E_USER_WARNING
-                );
-            }
-        }
+					// translators: %s: current FTP folder.
+					sprintf( __( 'FTP current folder is: %s', 'backwpup' ), $current_ftp_dir )
+				);
+			}
 
-        if ($job_object->substeps_done < $job_object->backup_filesize) {
-            $job_object->log(__('Starting upload to FTP &#160;&hellip;', 'backwpup'), E_USER_NOTICE);
-            if ($fp = fopen($job_object->backup_folder . $job_object->backup_file, 'rb')) {
-                //go to actual file pos
-                fseek($fp, $job_object->substeps_done);
-                $ret = ftp_nb_fput(
-                    $ftp_conn_id,
-                    $current_ftp_dir . $job_object->backup_file,
-                    $fp,
-                    FTP_BINARY,
-                    $job_object->substeps_done
-                );
+			// upload backup file.
+			$job_object->substeps_done = $ftp->size( $current_ftp_dir . $job_object->backup_file );
+			if ( $job_object->substeps_done < $job_object->backup_filesize ) {
+				$job_object->log( __( 'Starting upload to FTP &#160;&hellip;', 'backwpup' ) );
+				// get file size to resume upload and check if appending works.
+				if ( ! $ftp->supports_appending() ) {
+					$job_object->substeps_done = 0;
+					$job_max_execution_time    = get_site_option( 'backwpup_cfg_jobmaxexecutiontime' );
+					if ( $job_max_execution_time ) {
+						$job_object->log( __( 'Looks like the FTP Server do not support upload files in chunks. Try to upload it at once without restarts.', 'backwpup' ), E_USER_WARNING );
+					}
+				}
+				$fp = fopen( $job_object->backup_folder . $job_object->backup_file, 'rb' ); //phpcs:ignore
+				fseek( $fp, $job_object->substeps_done );
+				$continue                  = $ftp->upload( $current_ftp_dir . $job_object->backup_file, $fp );
+				$job_object->substeps_done = ftell( $fp );
+				while ( $continue ) {
+					$job_object->update_working_data();
+					if ( $ftp->supports_appending() ) {
+						$job_object->do_restart_time();
+					}
+					$continue                  = $ftp->upload( $current_ftp_dir . $job_object->backup_file, $fp );
+					$job_object->substeps_done = ftell( $fp );
+				}
+				fclose( $fp ); //phpcs:ignore
 
-                while ($ret == FTP_MOREDATA) {
-                    $job_object->substeps_done = ftell($fp);
-                    $job_object->update_working_data();
-                    $job_object->do_restart_time();
-                    $ret = ftp_nb_continue($ftp_conn_id);
-                }
-                if ($ret != FTP_FINISHED) {
-                    $job_object->log(__('Cannot transfer backup to FTP server!', 'backwpup'), E_USER_ERROR);
+				// check backup file size.
+				if ( $job_object->backup_filesize !== $job_object->substeps_done ) {
+					$job_object->log( __( 'Backup not correctly transferred to FTP server! Filesize not match.', 'backwpup' ), E_USER_ERROR );
+					return false;
+				}
 
-                    return false;
-                }
-                $job_object->substeps_done = $job_object->backup_filesize + 1;
-                $job_object->log(
-                    sprintf(
-                        __('Backup transferred to FTP server: %s', 'backwpup'),
-                        $current_ftp_dir . $job_object->backup_file
-                    ),
-                    E_USER_NOTICE
-                );
-                if (!empty($job_object->job['jobid'])) {
-                    BackWPup_Option::update(
-                        $job_object->job['jobid'],
-                        'lastbackupdownloadurl',
-                        network_admin_url(
-                            'admin.php?page=backwpupbackups&action=downloadftp&file=' .
-                            $current_ftp_dir . $job_object->backup_file . '&local_file=' .
-                            $job_object->backup_file . '&jobid=' . $job_object->job['jobid']
-                        )
-                    );
-                }
+				$job_object->substeps_done = $job_object->backup_filesize + 1;
+				$job_object->log(
+					sprintf(
+					// translators: %s: backup file name.
+						__( 'Backup transferred to FTP server: %s', 'backwpup' ),
+						$current_ftp_dir . $job_object->backup_file
+					)
+				);
+				if ( ! empty( $job_object->job['jobid'] ) ) {
+					BackWPup_Option::update(
+						$job_object->job['jobid'],
+						'lastbackupdownloadurl',
+						network_admin_url(
+							'admin.php?page=backwpupbackups&action=downloadftp&file=' .
+							$current_ftp_dir . $job_object->backup_file . '&local_file=' .
+							$job_object->backup_file . '&jobid=' . $job_object->job['jobid']
+						)
+					);
+				}
+			}
 
-                fclose($fp);
-            } else {
-                $job_object->log(__('Can not open source file for transfer.', 'backwpup'), E_USER_ERROR);
+			// get list of backups on FTP server.
+			$job_object->do_restart_time();
+			$backup_file_list = $ftp->list_files( $current_ftp_dir );
+			foreach ( $backup_file_list as $key => $file ) {
+				if ( ! $this->is_backup_archive( $file['file'] ) || ! $this->is_backup_owned_by_job( $file['file'], $job_object->job['jobid'] ) ) {
+					unset( $backup_file_list[ $key ] );
+				} else {
+					$backup_file_list[ $key ]['folder']      = $ftp->connection_url . '/' . ltrim( $file['file'], '/' );
+					$backup_file_list[ $key ]['downloadurl'] = network_admin_url(
+						'admin.php?page=backwpupbackups&action=downloadftp&file=' . $file['file'] . '&local_file=' . $file['filename'] . '&jobid=' . $job_object->job['jobid']
+					);
+				}
+			}
 
-                return false;
-            }
-        }
+			// Delete old backups.
+			if ( $backup_file_list && ! empty( $job_object->job['ftpmaxbackups'] ) && $job_object->job['ftpmaxbackups'] > 0 && count( $backup_file_list ) > $job_object->job['ftpmaxbackups'] ) {
+				ksort( $backup_file_list );
+				$backups_to_delete = array_slice( $backup_file_list, 0, count( $backup_file_list ) - $job_object->job['ftpmaxbackups'] );
+				if ( $backups_to_delete ) {
+					$deleted_files = [];
+					foreach ( $backups_to_delete as $file ) {
+						if ( $ftp->delete( $file['file'] ) ) {
+							foreach ( $backup_file_list as $index => $file_data ) {
+								if ( $file_data === $file ) {
+									unset( $backup_file_list[ $index ] );
+								}
+							}
+							$deleted_files[] = $file['file'];
+						} else {
+							$job_object->log(
+								sprintf(
+									// translators: %s: file name.
+									__( 'Cannot delete "%s" on FTP server!', 'backwpup' ),
+									$job_object->job['ftpdir'] . $file
+								),
+								E_USER_ERROR
+							);
+						}
+					}
+					if ( count( $deleted_files ) > 0 ) {
+						$job_object->log(
+							sprintf(
+								// translators: %d: number of deleted files.
+								_n(
+									'One file deleted on FTP server', //phpcs:ignore
+									'%d files deleted on FTP server',
+									count( $deleted_files ),
+									'backwpup'
+								),
+								count( $deleted_files )
+							)
+						);
+					}
 
-        $this->file_update_list($job_object, true);
-        ++$job_object->substeps_done;
+					$this->remove_file_history_from_database( $deleted_files, 'FTP' );
+				}
+			}
 
-        ftp_close($ftp_conn_id);
+			set_site_transient( 'backwpup_' . $job_object->job['jobid'] . '_ftp', $backup_file_list, YEAR_IN_SECONDS );
+			++$job_object->substeps_done;
+
+			$ftp->disconnect();
+		} catch ( Exception $e ) {
+			// translators: %s: FTP error message.
+			$job_object->log( sprintf( esc_html__( 'FTP server error: %s', 'backwpup' ), $e->getMessage() ), E_USER_ERROR );
+			$ftp->disconnect();
+			if ( $fp && is_resource( $fp ) ) {
+				fclose( $fp ); //phpcs:ignore
+			}
+			return false;
+		}
 
         return true;
     }
@@ -547,142 +294,45 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 	/**
 	 * Test if the job can run.
 	 *
-	 * @todo Refactor and log errors and clean it up.
-	 *
 	 * @param array $job_settings
 	 * @return boolean
 	 */
-    // phpcs:disable 
 	public function can_run( array $job_settings ): bool {
 		if ( empty( $job_settings['ftphost'] ) ) {
 			return false;
         }
 
-        if (empty($job_settings['ftpuser'])) {
-            return false;
+		if ( empty( $job_settings['ftpuser'] ) ) {
+			return false;
         }
 
-		if ( empty( $job_settings['ftppass'] ) ) {
-			return false;
+		if ( ! empty( $job_settings['ftpssh'] ) && BackWPup::is_pro() ) {
+			$ftp = new BackWPup_Pro_Destination_Ftp_Type_Sftp();
+		} else {
+			$ftp = new BackWPup_Destination_Ftp_Type_Ftp();
 		}
-		if ( ! empty( $job_settings['ftpssl'] ) ) { // make SSL FTP connection
-			if ( function_exists( 'ftp_ssl_connect' ) ) {
-				$ftp_conn_id = ftp_ssl_connect(
-					$job_settings['ftphost'],
-					$job_settings['ftphostport'],
-					$job_settings['ftptimeout']
-				);
-				if ( ! $ftp_conn_id ) {
-					return false;
-				}
-			}
-        } else { //make normal FTP connection if SSL not work
-			$ftp_conn_id = ftp_connect(
+		try {
+			$login = $ftp->connect(
+				$job_settings['ftpuser'],
+				BackWPup_Encryption::decrypt( $job_settings['ftppass'] ),
 				$job_settings['ftphost'],
-				$job_settings['ftphostport'],
-				$job_settings['ftptimeout']
+				[
+					'port'    => $job_settings['ftphostport'],
+					'timeout' => $job_settings['ftptimeout'],
+					'ssl'     => ! empty( $job_settings['ftpssl'] ),
+					'pasv'    => ! empty( $job_settings['ftppasv'] ),
+					'privkey' => ! empty( $job_settings['ftpsshprivkey'] ) ? BackWPup_Encryption::decrypt( $job_settings['ftpsshprivkey'] ) : '',
+				]
 			);
-			if ( ! $ftp_conn_id ) {
-				return false;
+			if ( $login ) {
+				$ftp->disconnect();
 			}
-        }
-
-		// FTP Login
-		if ( $loginok = @ftp_login(
-			$ftp_conn_id,
-			$job_settings['ftpuser'],
-			BackWPup_Encryption::decrypt( $job_settings['ftppass'] )
-		) ) {
-			// var_dump(
-			// sprintf(
-			// __('FTP server response: %s', 'backwpup'),
-			// 'User ' . $job_settings['ftpuser'] . ' logged in.'
-			// ));
-		} else { // if PHP ftp login don't work use raw login
-			$return = ftp_raw( $ftp_conn_id, 'USER ' . $job_settings['ftpuser'] );
-			// var_dump(sprintf(__('FTP server reply: %s', 'backwpup'), $return[0]));
-			if ( substr( trim( $return[0] ), 0, 3 ) <= 400 ) {
-				// var_dump(
-				// sprintf(__('FTP client command: %s', 'backwpup'), 'PASS *******')
-				// );
-				$return = ftp_raw(
-					$ftp_conn_id,
-					'PASS ' . BackWPup_Encryption::decrypt( $job_settings['ftppass'] )
-				);
-				if ( substr( trim( $return[0] ), 0, 3 ) <= 400 ) {
-					// var_dump(sprintf(__('FTP server reply: %s', 'backwpup'), $return[0]));
-					$loginok = true;
-				} else {
-					// var_dump(sprintf(__('FTP server reply: %s', 'backwpup'), $return[0]));
-				}
-            }
-		}
-		// var_dump($loginok);
-		if ( ! $loginok ) {
+			return $login;
+		} catch ( Exception $e ) {
+			$ftp->disconnect();
 			return false;
 		}
-		return true;
-    }
-    // phpcs:enable 
-
-    /**
-     * Create a directory.
-     *
-     * Try to create the directory and if not possible, try to change the permissions of the parent,
-     * then try to create it again.
-     *
-     * @param resource $stream the ftp stream pointer
-     */
-    private function create_dir($stream, string $dir, BackWPup_Job $job_object): bool
-    {
-        // Try to create the directory.
-        $response = (bool) ftp_mkdir($stream, $dir);
-
-        if (!$response) {
-            // Trying to set the parent directory permissions.
-            $response = (bool) ftp_chmod($stream, 0775, './');
-
-            if (!$response) {
-                $job_object->log(
-                    sprintf(
-                        esc_html__(
-                            'FTP Folder "%s" cannot be created! Parent directory may be not writable.',
-                            'backwpup'
-                        ),
-                        $dir
-                    ),
-                    E_USER_ERROR
-                );
-
-                return $response;
-            }
-
-            // Try to create the directory for the second time.
-            $response = (bool) ftp_mkdir($stream, $dir);
-
-            if (!$response) {
-                $job_object->log(
-                    sprintf(
-                        esc_html__('FTP Folder "%s" cannot be created!', 'backwpup'),
-                        $dir
-                    ),
-                    E_USER_ERROR
-                );
-
-                return $response;
-            }
-        }
-
-        $job_object->log(
-            sprintf(
-                esc_html__('FTP Folder "%s" created!', 'backwpup'),
-                $dir
-            ),
-            E_USER_NOTICE
-        );
-
-        return $response;
-    }
+	}
 
 	/**
 	 * Get service name

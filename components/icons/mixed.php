@@ -1,4 +1,9 @@
-<svg width="<?php echo $size ?>" height="<?php echo $size ?>" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+?>
+<svg width="<?php echo esc_attr( $size ); ?>" height="<?php echo esc_attr( $size ); ?>" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
 	<g clip-path="url(#clip0_193_17866)">
 		<path d="M4.625 4.75C4.625 2.95742 6.08242 1.5 7.875 1.5H16V8C16 8.89883 16.7262 9.625 17.625 9.625H24.125V24.25C24.125 26.0426 22.6676 27.5 20.875 27.5H7.875C6.08242 27.5 4.625 26.0426 4.625 24.25V4.75ZM24.125 8H17.625V1.5L24.125 8Z" fill="#041515"/>
 	</g>

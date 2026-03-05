@@ -244,10 +244,11 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
                 }
                 if ($numdeltefiles > 0) {
                     $job_object->log(
-                        sprintf(
-                            _n(
-                                'One file deleted from Dropbox',
-                                '%d files deleted on Dropbox',
+						sprintf(
+							// translators: %d: number of files.
+							_n(
+								'%d file deleted from Dropbox',
+								'%d files deleted on Dropbox',
                                 $numdeltefiles,
                                 'backwpup'
                             ),
@@ -278,10 +279,11 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
         $job_object->substeps_todo = 2 + $job_object->backup_filesize;
         if ($job_object->steps_data[$job_object->step_working]['SAVE_STEP_TRY'] != $job_object->steps_data[$job_object->step_working]['STEP_TRY']) {
             $job_object->log(
-                sprintf(
-                    __('%d. Try to send backup file to Dropbox&#160;&hellip;', 'backwpup'),
-                    $job_object->steps_data[$job_object->step_working]['STEP_TRY']
-                )
+				sprintf(
+					/* translators: %d: attempt number. */
+					__( '%d. Try to send backup file to Dropbox&#160;&hellip;', 'backwpup' ),
+					$job_object->steps_data[ $job_object->step_working ]['STEP_TRY']
+				)
             );
         }
 
@@ -296,18 +298,25 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
                         $user = $info['name']['display_name'] . ' (' . $info['email'] . ')';
                     } else {
                         $user = $info['name']['display_name'];
-                    }
-                    $job_object->log(sprintf(__('Authenticated with Dropbox of user: %s', 'backwpup'), $user));
+					}
+					$job_object->log(
+						sprintf(
+						/* translators: %s: Dropbox user. */
+						__( 'Authenticated with Dropbox of user: %s', 'backwpup' ),
+						$user
+					)
+						);
 
                     //Quota
                     if ($job_object->is_debug()) {
                         $quota = $dropbox->usersGetSpaceUsage();
                         $dropboxfreespase = $quota['allocation']['allocated'] - $quota['used'];
                         $job_object->log(
-                            sprintf(
-                                __('%s available on your Dropbox', 'backwpup'),
-                                size_format($dropboxfreespase, 2)
-                            )
+							sprintf(
+								/* translators: %s: available space. */
+								__( '%s available on your Dropbox', 'backwpup' ),
+								size_format( $dropboxfreespase, 2 )
+							)
                         );
                     }
                 } else {
@@ -338,8 +347,12 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
                         );
                     }
                     $job_object->substeps_done = 1 + $job_object->backup_filesize;
-                    $job_object->log(
-                        sprintf(__('Backup transferred to %s', 'backwpup'), $response['path_display']),
+					$job_object->log(
+						sprintf(
+							/* translators: %s: destination path. */
+							__( 'Backup transferred to %s', 'backwpup' ),
+							$response['path_display']
+						),
                         E_USER_NOTICE
                     );
                 } else {
@@ -350,10 +363,11 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
                         );
                     } else {
                         $job_object->log(
-                            sprintf(
-                                __('Error transfering backup to %s.', 'backwpup') . ' ' . $response['error'],
-                                __('Dropbox', 'backwpup')
-                            ),
+							sprintf(
+								/* translators: %s: destination service name. */
+								__( 'Error transfering backup to %s.', 'backwpup' ) . ' ' . $response['error'],
+								__( 'Dropbox', 'backwpup' )
+							),
                             E_USER_ERROR
                         );
                     }
@@ -364,9 +378,13 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 
             $this->file_update_list($job_object, true);
         } catch (Exception $e) {
-            $job_object->log(
-                sprintf(__('Dropbox API: %s', 'backwpup'), $e->getMessage()),
-                $e->getFile(),
+			$job_object->log(
+				sprintf(
+					/* translators: %s: error message. */
+					__( 'Dropbox API: %s', 'backwpup' ),
+					$e->getMessage()
+				),
+				$e->getFile(),
                 $e->getLine(),
                 E_USER_ERROR
             );

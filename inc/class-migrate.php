@@ -47,7 +47,7 @@ class BackWPup_Migrate {
 	 *  @return void
 	 */
 	public function migrate_to_first_job( string $old_version, string $new_version ): void {
-		$jobs = get_site_option( 'backwpup_jobs', [] );
+		$jobs = BackWPup_Option::jobs_options();
 		// If job is corrupt or not properly formatted then bail early.
 		if ( ! is_array( $jobs ) ) {
 			return;

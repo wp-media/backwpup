@@ -4,6 +4,9 @@
  *
  * @package BackWPup
  */
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 ?>
 <svg width="170" height="40" viewBox="0 0 170 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="max-w-full">
   <g clip-path=" url(#clip0_597_3834)">

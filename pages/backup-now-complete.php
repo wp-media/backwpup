@@ -1,5 +1,10 @@
 <?php
   use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 ?>
 <div class="max-w-[800px] flex flex-col gap-4 backwpup-typography">
 

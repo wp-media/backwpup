@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $name         The name of the service.
  * @var string  $slug         The slug of the service, also icon file name.
@@ -35,13 +40,13 @@ $select_btn_class = BackWPupHelpers::clsx( $base_style, $contextual_style, $full
 # JS
 $configure_btn_content = "storage-$slug";
 ?>
-<div class="<?php echo $select_btn_class; ?>">
+<div class="<?php echo esc_attr( $select_btn_class ); ?>">
   <span class="p-2 border border-grey-500 rounded">
     <?php include untrailingslashit(BackWPup::get_plugin_data('plugindir'))."/assets/img/storage/$slug.svg"; ?>
   </span>
   <span class="text-base font-title"><?php echo esc_html( $label ); ?></span>
 </div>
-<div class="<?php echo $configure_btn_class ?>">
+<div class="<?php echo esc_attr( $configure_btn_class ); ?>">
     <?php
         BackWPupHelpers::component( 'tooltip', [
             "content" => $deactivated_message,

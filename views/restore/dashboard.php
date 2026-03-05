@@ -1,4 +1,14 @@
-<?php /** @var \stdClass $bind */ ?>
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Restore dashboard view.
+ *
+ * @var \stdClass $bind
+ */
+?>
 <nav>
 	<ul>
 		<li>

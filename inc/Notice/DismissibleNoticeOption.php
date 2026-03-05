@@ -2,6 +2,10 @@
 
 namespace Inpsyde\BackWPup\Notice;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class DismissibleNoticeOption {
 
 	/**

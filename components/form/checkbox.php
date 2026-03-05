@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $name           Unique name of the field to handle value when form is submitted to PHP.  
  * @var string  $label          The label for the toggle. Default: null 
@@ -21,28 +26,19 @@ if (!isset($name)) {
 }
 # Disabled
 $disabled = $disabled ?? false;
-$disabledAttr = (true === $disabled) ? ' disabled="disabled"' : null;
 # ID
-$id = isset($identifier) ? " id='".esc_attr($identifier)."'" : null;
+$id = $identifier ?? '';
 
 # Label
 $label = $label ?? "";
 $value = $value ?? $label;
+$hidden  = ! empty( $hidden ) ? 'hidden' : '';
 
 # Checked
 $checked_attr = isset($checked) && $checked ? "checked" : "";
 
 # Multiline
 $items_align = isset($multiline) && $multiline ? "items-start" : "items-center";
-
-# Data attributes
-$data_attributes = '';
-if (isset($data) && !empty($data)) {
-  foreach ($data as $key => $value) {
-    $data_attributes .= ' data-' . esc_attr($key) . '="' . esc_attr($value) . '"';
-  }
-}
-
 
 # JS actions
 $trigger = isset($trigger) ? "js-backwpup-$trigger" : "";
@@ -65,9 +61,9 @@ $input_style = BackWPupHelpers::clsx(
 );
 
 ?>
-<label class="<?php echo BackWPupHelpers::clsx("cursor-pointer flex", $items_align, "gap-2 text-base leading-5 font-title"); ?>">
-  <input value="<?php echo $value; ?>" <?php echo $id; ?><?php echo $disabledAttr; ?> type="checkbox" name="<?php echo $name; ?>" class="<?php echo $input_style; ?>" <?php echo $checked_attr; ?> <?php echo $data_attributes; ?>>
-  <div class="<?php echo $checkbox_style; ?>"></div>
-  <?php echo $label; ?>
+<label class="<?php echo esc_attr( BackWPupHelpers::clsx( "cursor-pointer flex", $items_align, $hidden, "gap-2 text-base leading-5 font-title" ) ); ?>">
+  <input value="<?php echo esc_attr( $value ); ?>"<?php echo $id ? " id='" . esc_attr( $id ) . "'" : ''; ?><?php if ( $disabled ) : ?> disabled="disabled"<?php endif; ?> type="checkbox" name="<?php echo esc_attr( $name ); ?>" class="<?php echo esc_attr( $input_style ); ?>"<?php echo $checked_attr ? ' ' . esc_attr( $checked_attr ) : ''; ?><?php if ( isset( $data ) && ! empty( $data ) ) : ?><?php foreach ( $data as $key => $value ) : ?><?php echo ' data-' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"'; ?><?php endforeach; ?><?php endif; ?>>
+  <div class="<?php echo esc_attr( $checkbox_style ); ?>"></div>
+  <?php echo wp_kses_post( $label ); ?>
   <?php isset($tooltip) && BackWPupHelpers::component("tooltip", ["content" => $tooltip, "icon_size" => "small", "position" => $tooltip_pos]); ?>
 </label>

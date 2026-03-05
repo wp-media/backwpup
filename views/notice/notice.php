@@ -1,4 +1,14 @@
-<?php /** @var \Inpsyde\BackWPup\Notice\NoticeMessage $bind */ ?>
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Notice view.
+ *
+ * @var \Inpsyde\BackWPup\Notice\NoticeMessage $bind
+ */
+?>
 <div
     class="notice<?php echo $bind->type ? ' ' . esc_attr($bind->type) : ''; ?> notice-inpsyde"
     id="<?php echo esc_attr($bind->id); ?>_notice"

@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $title     Optional. Title of the page.
  * @var string  $subtitle  Optional. Subtitle of the page.
@@ -19,7 +24,7 @@ use BackWPup\Utils\BackWPupHelpers;
     ]);
     ?>
     <?php if (isset($subtitle)) : ?>
-      <p class="font-light text-xl"><?php echo $subtitle; ?></p>
+      <p class="font-light text-xl"><?php echo esc_html( $subtitle ); ?></p>
     <?php endif; ?>
   </div>
   <?php isset($children) && BackWPupHelpers::children($children); ?>

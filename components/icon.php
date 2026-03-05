@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $name   The icon name. Must match a file in components/icons/. Default: "arrow-right".
  * @var string $size The size of the icon. Values: "xs", "small", "medium", "large". Default : "medium".

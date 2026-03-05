@@ -10,11 +10,11 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 	private const SERVICE_NAME = 'SugarSync';
 
 	/**
-	 * Backwpup job object.
+	 * BackWPup_Job Object
 	 *
-	 * @var mixed
+	 * @var BackWPup_Job Object.
 	 */
-	public static $backwpup_job_object;
+	public static $backwpup_job_object = null;
 
     public function option_defaults(): array
     {
@@ -115,9 +115,9 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 
             @set_time_limit(300);
 
-            $fh = fopen(untrailingslashit(BackWPup::get_plugin_data('temp')) . '/' . basename($local_file_path ?: $get_file), 'w');
-            fwrite($fh, $sugarsync->download(urldecode($get_file)));
-            fclose($fh);
+			$fh = fopen( untrailingslashit( BackWPup::get_plugin_data( 'temp' ) ) . '/' . basename( $local_file_path ?: $get_file ), 'w' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
+			fwrite( $fh, $sugarsync->download( urldecode( $get_file ) ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
+			fclose( $fh ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 
             echo "event: message\n" .
                 'data: ' . wp_json_encode([
@@ -129,10 +129,10 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
                 ]) . "\n\n";
             flush();
 
-            exit();
-        } catch (Exception $e) {
-            exit($e->getMessage());
-        }
+			exit();
+		} catch ( Exception $e ) {
+			exit( esc_html( $e->getMessage() ) );
+		}
     }
 
 	/**
@@ -144,39 +144,65 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 		return array_filter( $list );
 	}
 
-    public function job_run_archive(BackWPup_Job $job_object): bool
-    {
-        $job_object->substeps_todo = 2 + $job_object->backup_filesize;
-        $job_object->log(sprintf(__('%d. Try to send backup to SugarSync&#160;&hellip;', 'backwpup'), $job_object->steps_data[$job_object->step_working]['STEP_TRY']), E_USER_NOTICE);
+	/**
+	 * {@inheritdoc}
+	 */
+	public function job_run_archive( BackWPup_Job $job_object ): bool {
+		self::$backwpup_job_object = $job_object;
+		$job_object->substeps_todo = 2 + $job_object->backup_filesize;
+		$job_object->log(
+			sprintf(
+			/* translators: %d: attempt number. */
+			__( '%d. Try to send backup to SugarSync&#160;&hellip;', 'backwpup' ),
+			$job_object->steps_data[ $job_object->step_working ]['STEP_TRY']
+		),
+			E_USER_NOTICE
+			);
 
         try {
             $sugarsync = new BackWPup_Destination_SugarSync_API($job_object->job['sugarrefreshtoken']);
             //Check Quota
-            $user = $sugarsync->user();
-            if (!empty($user->nickname)) {
-                $job_object->log(sprintf(__('Authenticated to SugarSync with nickname %s', 'backwpup'), $user->nickname), E_USER_NOTICE);
-            }
-            $sugarsyncfreespase = (float) $user->quota->limit - (float) $user->quota->usage; //float fixes bug for display of no free space
-            if ($job_object->backup_filesize > $sugarsyncfreespase) {
-                $job_object->log(sprintf(_x('Not enough disk space available on SugarSync. Available: %s.', 'Available space on SugarSync', 'backwpup'), size_format($sugarsyncfreespase, 2)), E_USER_ERROR);
-                $job_object->substeps_todo = 1 + $job_object->backup_filesize;
+			$user = $sugarsync->user();
+			if ( ! empty( $user->nickname ) ) {
+				$job_object->log(
+					sprintf(
+					/* translators: %s: SugarSync nickname. */
+					__( 'Authenticated to SugarSync with nickname %s', 'backwpup' ),
+					$user->nickname
+				),
+					E_USER_NOTICE
+					);
+			}
+			$sugarsyncfreespase = (float) $user->quota->limit - (float) $user->quota->usage; // Float fixes bug for display of no free space.
+			if ( $job_object->backup_filesize > $sugarsyncfreespase ) {
+				$job_object->log(
+					sprintf(
+					/* translators: %s: available space on SugarSync. */
+					_x( 'Not enough disk space available on SugarSync. Available: %s.', 'Available space on SugarSync', 'backwpup' ),
+					size_format( $sugarsyncfreespase, 2 )
+				),
+					E_USER_ERROR
+					);
+				$job_object->substeps_todo = 1 + $job_object->backup_filesize;
 
                 return true;
             }
 
-            $job_object->log(sprintf(__('%s available at SugarSync', 'backwpup'), size_format($sugarsyncfreespase, 2)), E_USER_NOTICE);
+			// translators: %s: available space on SugarSync.
+			$job_object->log( sprintf( __( '%s available at SugarSync', 'backwpup' ), size_format( $sugarsyncfreespase, 2 ) ) );
 
             //Create and change folder
             $sugarsync->mkdir($job_object->job['sugardir'], $job_object->job['sugarroot']);
             $dirid = $sugarsync->chdir($job_object->job['sugardir'], $job_object->job['sugarroot']);
             //Upload to SugarSync
-            $job_object->substeps_done = 0;
-            $job_object->log(__('Starting upload to SugarSync&#160;&hellip;', 'backwpup'), E_USER_NOTICE);
-            self::$backwpup_job_object = &$job_object;
-            $response = $sugarsync->upload($job_object->backup_folder . $job_object->backup_file);
-            if (is_object($response)) {
-                if (!empty($job_object->job['jobid'])) {
-                    BackWPup_Option::update(
+			$job_object->substeps_done = 0;
+			$job_object->log( __( 'Starting upload to SugarSync&#160;&hellip;', 'backwpup' ) );
+
+			$response = $sugarsync->upload( $job_object->backup_folder . $job_object->backup_file );
+
+			if ( is_object( $response ) ) {
+				if ( ! empty( $job_object->job['jobid'] ) ) {
+					BackWPup_Option::update(
                         $job_object->job['jobid'],
                         'lastbackupdownloadurl',
                         sprintf(
@@ -188,9 +214,16 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
                         )
                     );
                 }
-                ++$job_object->substeps_done;
-                $job_object->log(sprintf(__('Backup transferred to %s', 'backwpup'), 'https://' . $user->nickname . '.sugarsync.com/' . $sugarsync->showdir($dirid) . $job_object->backup_file), E_USER_NOTICE);
-            } else {
+				++$job_object->substeps_done;
+				$job_object->log(
+					sprintf(
+					/* translators: %s: destination path. */
+					__( 'Backup transferred to %s', 'backwpup' ),
+					'https://' . $user->nickname . '.sugarsync.com/' . $sugarsync->showdir( $dirid ) . $job_object->backup_file
+				),
+					E_USER_NOTICE
+					);
+			} else {
                 $job_object->log(__('Cannot transfer backup to SugarSync!', 'backwpup'), E_USER_ERROR);
 
                 return false;
@@ -241,17 +274,38 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 							}
                         }
                         ++$numdeltefiles;
-                    }
-                    if ($numdeltefiles > 0) {
-                        $job_object->log(sprintf(_n('One file deleted on SugarSync folder', '%d files deleted on SugarSync folder', $numdeltefiles, 'backwpup'), $numdeltefiles), E_USER_NOTICE);
+					}
+					if ( $numdeltefiles > 0 ) {
+						$job_object->log(
+							sprintf(
+								// translators: %d: number of files.
+								_n(
+									'%d file deleted on SugarSync folder',
+									'%d files deleted on SugarSync folder',
+									$numdeltefiles,
+									'backwpup'
+								),
+								$numdeltefiles
+							),
+							E_USER_NOTICE
+						);
 					}
 
 					parent::remove_file_history_from_database( $deleted_files, 'SUGARSYNC' );
 				}
-            }
-            set_site_transient('BackWPup_' . $job_object->job['jobid'] . '_SUGARSYNC', $files, YEAR_IN_SECONDS);
-        } catch (Exception $e) {
-            $job_object->log(sprintf(__('SugarSync API: %s', 'backwpup'), $e->getMessage()), E_USER_ERROR, $e->getFile(), $e->getLine());
+			}
+			set_site_transient( 'BackWPup_' . $job_object->job['jobid'] . '_SUGARSYNC', $files, YEAR_IN_SECONDS );
+		} catch ( Exception $e ) {
+			$job_object->log(
+				sprintf(
+				/* translators: %s: error message. */
+				__( 'SugarSync API: %s', 'backwpup' ),
+				$e->getMessage()
+			),
+				E_USER_ERROR,
+				$e->getFile(),
+				$e->getLine()
+				);
 
             return false;
         }

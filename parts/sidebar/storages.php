@@ -1,6 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var $job_id ID Of the job
  */
@@ -39,7 +43,7 @@ if ( $destinations ){
 <?php BackWPupHelpers::component("containers/scrollable-start"); ?>
 
 <p class="mt-2 text-base">
-  <?php _e("You can select where to store your backups and configure each storage.", 'backwpup'); ?>
+  <?php esc_html_e("You can select where to store your backups and configure each storage.", 'backwpup'); ?>
 </p>
 
 <div class="rounded-lg p-6 bg-grey-100">

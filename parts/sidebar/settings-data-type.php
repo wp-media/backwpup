@@ -1,6 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var int $job_id Job ID information
  * @var string $job_type The configured job selected
@@ -31,7 +35,7 @@ if ( ! isset( $job_id ) || ! isset( $job_type ) ) {
         'database' => 'database',
     ];
     ?>
-    <p class="text-base"><?php _e( 'You can choose what to save in your backup', 'backwpup'); ?></p>
+    <p class="text-base"><?php esc_html_e( 'You can choose what to save in your backup', 'backwpup'); ?></p>
     <div class="rounded-lg p-6 bg-grey-100">
         <ul class="<?php echo esc_attr( 'flex flex-col gap-2 max-w-screen-md' ); ?>">
             <?php foreach ( $types  as $icon => $type ) :

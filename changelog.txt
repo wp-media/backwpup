@@ -1,4 +1,15 @@
 == Changelog ==
+= 5.6.6 =
+Release date: March 05, 2026
+
+* Enhancement: Improved WP Audit plugin validation checks.
+* Enhancement: Added tracking for support tool usage.
+* Fix: Resolved job options saving issues and UI inconsistencies.
+* Fix: Replaced {{%LICENSE_URL%}} in Free version.
+* Fix: Fixed blank backup list after bulk deleting all backups from history.
+* Security fix: Prevented sensitive license values from being stored in plain text.
+* Fix: Gracefully handled disabled putenv() function during backup execution.
+
 = 5.6.5 =
 Release date: February 05, 2026
 

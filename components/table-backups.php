@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 ?>
 <table class="w-full" id="backwpup-backup-history">
   <thead class="max-md:hidden">
@@ -13,11 +18,11 @@ use BackWPup\Utils\BackWPupHelpers;
         ]);
         ?>
       </th>
-      <th class="px-8 text-left"><?php _e("Created at", 'backwpup'); ?></th>
-      <th class="px-8"><?php _e("Type", 'backwpup'); ?></th>
-      <th class=" px-8 text-left"><?php _e("Stored on", 'backwpup'); ?></th>
-      <th class="px-8 text-left"><?php _e("Data", 'backwpup'); ?></th>
-      <th class="px-8 text-right"><?php _e("Actions", 'backwpup'); ?></th>
+      <th class="px-8 text-left"><?php esc_html_e("Created at", 'backwpup'); ?></th>
+      <th class="px-8"><?php esc_html_e("Type", 'backwpup'); ?></th>
+      <th class=" px-8 text-left"><?php esc_html_e("Stored on", 'backwpup'); ?></th>
+      <th class="px-8 text-left"><?php esc_html_e("Data", 'backwpup'); ?></th>
+      <th class="px-8 text-right"><?php esc_html_e("Actions", 'backwpup'); ?></th>
     </tr>
   </thead>
   <tbody class="max-md:flex max-md:flex-col max-md:gap-4">

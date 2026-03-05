@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $name     The name of the action  
  * @var string  $action   The classe of the action.
@@ -10,7 +15,7 @@ use BackWPup\Utils\BackWPupHelpers;
 
 # JS actions
 $trigger = isset($trigger) ? "js-backwpup-$trigger" : "";
-$display = isset($display) ? " data-content=\"$display\"" : "";
+$display = $display ?? '';
 
 # Defaults
 $name = $name ?? "";
@@ -18,15 +23,15 @@ $action = $action ?? "";
 $dataset = $dataset ?? null;
 
 ?>
-<button class="<?php echo BackWPupHelpers::clsx("p-2 w-full flex gap-2 hover:bg-grey-100", $trigger); ?>" <?php echo $display; ?>
+<button class="<?php echo esc_attr( BackWPupHelpers::clsx( "p-2 w-full flex gap-2 hover:bg-grey-100", $trigger ) ); ?>"<?php echo $display ? ' data-content="' . esc_attr( $display ) . '"' : ''; ?>
   <?php if (isset($dataset)) : ?>
     <?php foreach ($dataset as $key => $value) : ?>
-      <?php echo " $key=\"$value\""; ?>
+      <?php printf( ' %s="%s"', esc_attr( $key ), esc_attr( $value ) ); ?>
     <?php endforeach; ?>
   <?php endif; ?>
 >
   <div class="shrink-0">
     <?php isset($icon) && BackWPupHelpers::component("icon", ["name" => $icon, "size" => "small"]); ?>
   </div>
-  <span class="text-nowrap"><?php echo $name; ?></span>
+  <span class="text-nowrap"><?php echo esc_html( $name ); ?></span>
 </button>

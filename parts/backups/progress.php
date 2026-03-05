@@ -1,6 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 $job_object = BackWPup_Job::get_working_data();
 $abort_url = '';
 $lobfiledata = $logfiledata ?? '';
@@ -33,8 +37,8 @@ BackWPupHelpers::component("heading", [
     "class" => "backupgeneration-progress-box",
     "abortUrl" => $abort_url,
 ]); ?>
-<input type="hidden" name="logpos" id="logpos" value="<?php echo strlen($logfiledata ?? ''); ?>" />
+<input type="hidden" name="logpos" id="logpos" value="<?php echo esc_attr( strlen( $logfiledata ?? '' ) ); ?>" />
 <input type="hidden" name="next_job_id" id="next_job_id" value="" />
 <div id="tb-showworking" style="display:none;">
-  <div id="showworking"><?php echo substr($logfiledata ?? '', $startpos ?? 0, $length ?? 0); ?></div>
+  <div id="showworking"><?php echo wp_kses_post( substr( $logfiledata ?? '', $startpos ?? 0, $length ?? 0 ) ); ?></div>
 </div>

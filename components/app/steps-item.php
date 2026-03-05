@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var int     $number       The current step number. Default 1.
  * @var string  $title        The current step title. Default "".
@@ -48,10 +53,10 @@ $step_styles = BackWPupHelpers::clsx(
 );
 
 ?>
-<article class="<?php echo $bloc_styles; ?>" data-step="<?php echo $number; ?>">
-  <div class="<?php echo $step_styles; ?>"><?php echo $number; ?></div>
+<article class="<?php echo esc_attr( $bloc_styles ); ?>" data-step="<?php echo esc_attr( $number ); ?>">
+  <div class="<?php echo esc_attr( $step_styles ); ?>"><?php echo esc_html( $number ); ?></div>
   <div>
-    <h2 class="text-xl font-bold text-white font-title"><?php echo $title; ?></h2>
-    <p class="text-grey-400 text-base"><?php echo $description; ?></p>
+    <h2 class="text-xl font-bold text-white font-title"><?php echo esc_html( $title ); ?></h2>
+    <p class="text-grey-400 text-base"><?php echo esc_html( $description ); ?></p>
   </div>
 </article>

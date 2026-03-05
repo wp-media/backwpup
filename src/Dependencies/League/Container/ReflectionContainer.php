@@ -40,7 +40,8 @@ class ReflectionContainer implements ArgumentResolverInterface, ContainerInterfa
 
         if (!$this->has($id)) {
             throw new NotFoundException(
-                sprintf('Alias (%s) is not an existing class and therefore cannot be resolved', $id)
+				// Translators: %s is the alias of the class that cannot be resolved.
+                sprintf(esc_html__('Alias (%s) is not an existing class and therefore cannot be resolved', 'backwpup'), esc_html($id))
             );
         }
 
@@ -49,7 +50,8 @@ class ReflectionContainer implements ArgumentResolverInterface, ContainerInterfa
 
         if ($construct && !$construct->isPublic()) {
             throw new NotFoundException(
-                sprintf('Alias (%s) has a non-public constructor and therefore cannot be instantiated', $id)
+				// Translators: %s is the alias of the class that cannot be instantiated.
+                sprintf(esc_html__('Alias (%s) has a non-public constructor and therefore cannot be instantiated', 'backwpup'), esc_html($id))
             );
         }
 

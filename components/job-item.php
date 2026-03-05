@@ -1,6 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var array $job Job information
  */
@@ -16,6 +20,7 @@ if( $is_active && 'link' !== $is_cron_active ) {
 	$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $job_id, 'cron' ) );
 
 	$next_backup_label = sprintf(
+		// translators: 1: Date. 2: Time.
 		__( '%1$s at %2$s', 'backwpup' ),
 		wp_date( get_option( 'date_format' ), $cron_next ),
 		wp_date( get_option( 'time_format' ), $cron_next )
@@ -130,7 +135,7 @@ backwpup-job-<?php echo esc_attr( $data_type ); ?> h-[200px]" id="<?php echo esc
 
     <div class="mt-2 mb-4 flex flex-row items-center gap-2">
 		<span class="text-base label-scheduled">
-			<?php echo $next_backup_label; ?>
+			<?php echo esc_html( $next_backup_label ); ?>
 		</span>
 		<?php
 		BackWPupHelpers::component(

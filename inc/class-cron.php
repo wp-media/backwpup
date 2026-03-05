@@ -72,9 +72,12 @@ class BackWPup_Cron
                     __('Aborted, because no progress for one hour!', 'backwpup'),
                     __FILE__,
                     __LINE__
-                );
-                unlink(BackWPup::get_plugin_data('running_file'));
-                $job_object->update_working_data();
+				);
+				$running_file = BackWPup::get_plugin_data( 'running_file' );
+				if ( file_exists( $running_file ) ) {
+					wp_delete_file( $running_file );
+				}
+				$job_object->update_working_data();
             }
         }
 
@@ -101,30 +104,34 @@ class BackWPup_Cron
 
                 $jobids = BackWPup_Option::get_job_ids();
 
-                foreach ($dir as $file) {
-                    if ($file->isWritable() && '.html' == substr($file->getFilename(), -5)) {
-                        $compress = new BackWPup_Create_Archive($file->getPathname() . '.gz');
-                        if ($compress->add_file($file->getPathname())) {
-                            unlink($file->getPathname());
-                            //change last logfile in jobs
-                            foreach ($jobids as $jobid) {
-                                $job_logfile = BackWPup_Option::get($jobid, 'logfile');
-                                if (!empty($job_logfile) && $job_logfile === $file->getPathname()) {
-                                    BackWPup_Option::update($jobid, 'logfile', $file->getPathname() . '.gz');
-                                }
+				foreach ( $dir as $file ) {
+					if ( $file->isWritable() && '.html' === substr( $file->getFilename(), -5 ) ) {
+						$compress = new BackWPup_Create_Archive( $file->getPathname() . '.gz' );
+						if ( $compress->add_file( $file->getPathname() ) ) {
+							wp_delete_file( $file->getPathname() );
+							// change last logfile in jobs.
+							foreach ( $jobids as $jobid ) {
+								$job_logfile = BackWPup_Option::get( $jobid, 'logfile' );
+								if ( ! empty( $job_logfile ) && $job_logfile === $file->getPathname() ) {
+									BackWPup_Option::update( $jobid, 'logfile', $file->getPathname() . '.gz' );
+								}
                             }
                         }
                         $compress->close();
                         unset($compress);
                     }
-                }
-            } catch (UnexpectedValueException $e) {
-                $job_object->log(
-                    sprintf(__('Could not open path: %s', 'backwpup'), $e->getMessage()),
-                    E_USER_WARNING
-                );
-            }
-        }
+				}
+			} catch ( UnexpectedValueException $e ) {
+				$job_object->log(
+					sprintf(
+						// translators: %s: Error message.
+						__( 'Could not open path: %s', 'backwpup' ),
+						$e->getMessage()
+					),
+					E_USER_WARNING
+				);
+			}
+		}
 
         //Jobs cleanings
         if (!$job_object) {

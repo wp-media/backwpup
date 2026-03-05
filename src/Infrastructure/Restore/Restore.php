@@ -18,6 +18,10 @@ use Inpsyde\Restore\Api\Module\Session\Session;
 use Inpsyde\Restore\LocalizeScripts;
 use Pimple\Exception\FrozenServiceException;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * Class Restore.
  *

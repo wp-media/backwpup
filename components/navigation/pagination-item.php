@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var int     $page_num       Optional. The page number.  
  * @var string  $arrow          Optional. The arrow to display. Values: "left", "right". Replaces $page_num if set. 
@@ -27,9 +32,9 @@ $arrow = isset($arrow) && array_key_exists($arrow, $arrows) ? $arrows[$arrow] : 
 $base_styles = "flex items-center justify-center size-8 rounded border";
 $contextual_styles = $active ? "bg-secondary-base border-secondary-base" : "border-grey-200 enabled:hover:bg-secondary-lighter enabled:hover:border-secondary-base disabled:text-grey-500";
 ?>
-<button <?php if ($disabled || $dots) : ?>disabled<?php endif; ?> class="<?php echo BackWPupHelpers::clsx($base_styles, $contextual_styles); ?>" data-page="<?php echo $page_num;  ?>">
+<button <?php if ($disabled || $dots) : ?>disabled<?php endif; ?> class="<?php echo esc_attr( BackWPupHelpers::clsx( $base_styles, $contextual_styles ) ); ?>" data-page="<?php echo esc_attr( $page_num ); ?>">
   <?php if (!$arrow) {
-    echo $page_num;
+    echo esc_html( $page_num );
   } ?>
   <?php $arrow !== null && BackWPupHelpers::component("icon", ["name" => $arrow, "size" => "medium"]); ?>
   <?php echo $dots ? "…" : ""; ?>

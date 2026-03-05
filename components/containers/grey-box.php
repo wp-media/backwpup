@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $padding_size   The padding sizes. Values: "small", "medium", "large". Default: "small".
  * @var string  $children       Children component to display. Must fit a /part/ template. Default: null.
@@ -16,9 +21,9 @@ $padding_sizes = [
 $padding_size = $padding_size ?? 'small';
 $display = $display ?? true;
 $padding = array_key_exists($padding_size, $padding_sizes) ? $padding_sizes[$padding_size] : $padding_sizes['small'];
-$id = isset($identifier) ? " id='".esc_attr($identifier)."'" : null;
-$toShow = !$display ? "style='display: none;'" : null;
+$id = $identifier ?? '';
+$toShow = ! $display;
 ?>
-<div class="<?php echo BackWPupHelpers::clsx($padding, "rounded-lg bg-grey-100"); ?>" <?=$id?> <?=$toShow?>>
+<div class="<?php echo esc_attr( BackWPupHelpers::clsx( $padding, "rounded-lg bg-grey-100" ) ); ?>"<?php echo $id ? ' id="' . esc_attr( $id ) . '"' : ''; ?><?php echo $toShow ? ' style="display: none;"' : ''; ?>>
   <?php isset($children) && BackWPupHelpers::children($children); ?>
 </div>

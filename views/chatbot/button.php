@@ -5,6 +5,10 @@
  * @var array $data Button configuration with optional 'label' key.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 $label = $data['label'] ?? __( 'Contact Support', 'backwpup' );
 ?>
 <button

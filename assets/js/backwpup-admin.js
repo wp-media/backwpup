@@ -391,6 +391,10 @@ jQuery(document).ready(function ($) {
           case 'HIDRIVE':
             initHidriveEvents();
             break;
+          case 'FTP':
+            initFTPEvents();
+            $('.js-backwpup-test-FTP-storage').on('click', window['test_FTP_storage']);
+            break;
           case 'ONEDRIVE':
             initOnedriveEvents();
             $('.js-backwpup-test-ONEDRIVE-storage').on('click', window['test_ONEDRIVE_storage']);
@@ -1109,9 +1113,6 @@ jQuery(document).ready(function ($) {
         function (response) {
           if (response.success) {
             $(`#backwpup-${job_id}-options`).remove();
-            if ($('.backwpup-job-card').length === 0) {
-              $("#backwpup-backup-now").prop("disabled", true);
-            }
 
             loadBackupsListingAndPagination(getUrlParameter('page_num', 1));
           }
@@ -1362,8 +1363,10 @@ jQuery(document).ready(function ($) {
       'ftptimeout' : $("#ftptimeout").val(),
       'ftpdir' : $("#ftpdir").val(),
       'ftpmaxbackups' : $("#ftpmaxbackups").val(),
-      'ftpssl' : $("#ftpssl").prop("checked") ? 1 : 0,
+      'ftpssl' : $("#ftpcontype").val() === 'ftps' ? 1 : 0,
+      'ftpssh' : $("#ftpcontype").val() === 'sftp' || $("#ftpcontype").val() === 'sftppk' ? 1 : 0,
       'ftppasv' : $("#ftppasv").prop("checked") ? 1 : 0,
+      'ftpsshprivkey' : $("#ftpcontype").val() === 'sftppk' ? $("#ftpsshprivkey").val() : '',
     };
     requestWPApi(
       backwpupApi.cloudsaveandtest,
@@ -1380,6 +1383,38 @@ jQuery(document).ready(function ($) {
     );
   };
   $('.js-backwpup-test-FTP-storage').on('click',  window['test_FTP_storage']);
+
+  function initFTPEvents() {
+    const $passLabel = $("#ftppass").next();
+    if (!$passLabel.data('original-label')) {
+      $passLabel.data('original-label', $passLabel.text());
+    }
+    if (!$("#ftpsshprivkey").parent().hasClass('hidden')) {
+      $passLabel.text('Password for ssh key');
+    }
+    $("#ftpcontype").on('change', function(e) {
+      let contype = $(e.currentTarget).val();
+      let ftpport = $("#ftphostport").val();
+      if (contype === 'sftppk') {
+        $("#ftpsshprivkey").parent().removeClass('hidden');
+        $passLabel.text('Password for ssh key');
+      } else {
+        $("#ftpsshprivkey").parent().addClass('hidden');
+        $passLabel.text($passLabel.data('original-label'));
+      }
+      if (contype === 'ftps' || contype === 'ftp') {
+        $("#ftppasv").parent().removeClass('hidden');
+      } else {
+        $("#ftppasv").parent().addClass('hidden');
+      }
+      if ((contype === 'sftp' || contype === 'sftppk') && ftpport === '21') {
+        $("#ftphostport").val(22);
+      }
+      if ((contype === 'ftp' || contype === 'ftps') && ftpport === '22') {
+        $("#ftphostport").val(21);
+      }
+    });
+  }
 
   // Test and save Gdrive storage.
   window.test_GDRIVE_storage = function (event) {
@@ -1885,8 +1920,16 @@ jQuery(document).ready(function ($) {
   
       // Calculate max pages and refresh the pagination
       let max_pages = Math.ceil(jQuery('input[name="nb_backups"]').val() / data.length);
-      requestWPApi(backwpupApi.backupspagination, { page: data.page, max_pages: max_pages }, refreshPagination, 'POST');
-    } 
+      requestWPApi(backwpupApi.backupspagination, { page: response.page, max_pages: max_pages }, refreshPagination, 'POST');
+      const searchParams = new URLSearchParams(window.location.search);
+      if (searchParams.has('page_num')) {
+        let page_num = searchParams.get('page_num');
+        if (parseInt(page_num) !== parseInt(response.page) && parseInt(response.page) > 0) {
+          searchParams.set('page_num', response.page);
+          window.location.search = searchParams;
+        }
+      }
+    }
   }
 
   /**
@@ -1896,7 +1939,7 @@ jQuery(document).ready(function ($) {
    * @param {boolean} response.success - Indicates if the request was successful.
    * @param {string} response.data - The HTML content to update the pagination section.
    */
-  function refreshPagination(response) {  
+  function refreshPagination(response) {
     if (response.success && response.data) {
       // Get the HTML content from the response
       var htmlContent = response.data;
@@ -1921,6 +1964,7 @@ jQuery(document).ready(function ($) {
   initOnedriveEvents();
   initGdriveEvents();
   initHidriveEvents();
+  initFTPEvents();
 
   $(document).on( 'change', '#backwpup-job-title', function() {
     if ( ! $(this).val().trim()  ) {

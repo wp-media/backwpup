@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
 <div class="metabox-holder postbox backwpup-cleared-postbox backwpup-full-width">
 	<h3 class="hndle"><span><?php esc_html_e( 'Database Settings', 'backwpup' ); ?></span></h3>
 	<div class="inside">

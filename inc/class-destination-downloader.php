@@ -214,11 +214,10 @@ class BackWPup_Destination_Downloader {
     /**
      * @param        $data
      * @param string $event
-     */
-    private static function send_message($data, $event = 'message')
-    {
-        echo "event: {$event}\n";
-        echo 'data: ' . wp_json_encode($data) . "\n\n";
-        flush();
+	 */
+	private static function send_message( $data, $event = 'message' ) {
+		echo 'event: ' . esc_html( $event ) . "\n";
+		echo 'data: ' . wp_json_encode( $data ) . "\n\n";
+		flush();
     }
 }

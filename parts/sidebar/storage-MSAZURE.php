@@ -2,6 +2,11 @@
 use BackWPup\Utils\BackWPupHelpers;
 use Inpsyde\BackWPup\MsAzureDestinationConfiguration;
 use WPMedia\BackWPup\Plugin\Plugin;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 $job_id = $job_id ?? null;
 $msazure = BackWPup::get_destination("msazure");
 if ( ! $msazure ) {
@@ -105,7 +110,7 @@ $msazuremaxbackups = esc_attr(BackWPup_Option::get(
       ?>
     <?php endif; ?>
   </div>
-  <p class="my-2 text-center text-sm"><?php _e("OR", 'backwpup'); ?></p>
+  <p class="my-2 text-center text-sm"><?php esc_html_e("OR", 'backwpup'); ?></p>
 
   <?php
   BackWPupHelpers::component("form/text", [

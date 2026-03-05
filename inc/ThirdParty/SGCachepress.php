@@ -2,6 +2,10 @@
 
 namespace BackWPup\ThirdParty;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class SGCachepress implements ThirdPartyInterface {
 
 	/**

@@ -1,6 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var int $job_id Job ID information
  * @var int $first_job_id ID of the first job we are retrieving the frequency settings for. (Only available during onboarding)

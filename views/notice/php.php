@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
 <p><?php esc_html_e( "BackWPup is dropping support for PHP versions less than 7.4. As such, using outdated and unsupported versions of PHP may expose your site to security vulnerabilities. Please update PHP to the latest version. Ask your hoster if you don't know how.", 'backwpup' ); ?></p>
 <p>
 <?php

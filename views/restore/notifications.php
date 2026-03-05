@@ -1,4 +1,14 @@
-<?php /** @var \stdClass $bind */ ?>
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Restore notifications view.
+ *
+ * @var \stdClass $bind
+ */
+?>
 <?php foreach ( $bind->notifies as $level => $notices ) { ?>
 	<div class="notice notice-<?php echo esc_attr( $level ); ?>">
 		<?php foreach ( $notices as $notice ) { ?>

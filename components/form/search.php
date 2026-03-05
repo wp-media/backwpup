@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $name           Unique name of the field to handle value when form is submitted to PHP.  
  * @var string  $value          Optional. The field value. Default: "". 
@@ -24,6 +29,6 @@ $trigger = isset($trigger) ? "js-backwpup-$trigger" : "";
   <div class="text-grey-700">
     <?php BackWPupHelpers::component("icon", ["name" => "search", "size" => "small"]); ?>
   </div>
-  <input type="text" class="<?php echo BackWPupHelpers::clsx("input-special flex-auto", $trigger); ?>" placeholder="<?php echo $placeholder; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>">
+  <input type="text" class="<?php echo esc_attr( BackWPupHelpers::clsx( "input-special flex-auto", $trigger ) ); ?>" placeholder="<?php echo esc_attr( $placeholder ); ?>" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
   <button class="text-grey-700 text-base js-backwpup-clear-search hover:text-secondary-darker">✕</button>
 </label>

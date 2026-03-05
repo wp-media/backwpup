@@ -1,8 +1,21 @@
-<?php /** @var \stdClass $bind */ ?>
+<?php
+/**
+ * The StdClass from TemplateLoader::createBindFromStep
+ *
+ * @var \stdClass $bind
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
 <div
 	id="restore_step"
 	class="metabox-holder postbox backwpup-cleared-postbox backwpup-full-width action"
-	data-nonce="<?php echo esc_attr( $bind->nonce ); ?>">
+	data-nonce="<?php echo esc_attr( $bind->nonce ); ?>"
+	data-has-db="<?php echo esc_attr( $bind->has_db ? '1' : '0' ); ?>"
+	data-has-files="<?php echo esc_attr( $bind->has_files ? '1' : '0' ); ?>"
+>
 
 	<h3 class="hndle">
 		<span>

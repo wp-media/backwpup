@@ -10,6 +10,10 @@ use Aws\S3\Exception\S3Exception;
 use Inpsyde\BackWPupShared\File\MimeTypeExtractor;
 use BackWPup\Utils\BackWPupHelpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * Documentation: http://docs.amazonwebservices.com/aws-sdk-php-2/latest/class-Aws.S3.S3Client.html.
  */
@@ -535,7 +539,8 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
                 if (!empty($job_object->job['s3storageclass'])) {
                     $create_args['StorageClass'] = $job_object->job['s3storageclass'];
                 }
-                $create_args['Metadata'] = ['BackupTime' => date('Y-m-d H:i:s', $job_object->start_time)];
+                $start_time_gmt = $job_object->start_time - (int) ((float) get_option('gmt_offset') * HOUR_IN_SECONDS);
+                $create_args['Metadata'] = ['BackupTime' => wp_date('Y-m-d H:i:s', $start_time_gmt)];
 
                 $create_args['Body'] = $up_file_handle;
                 $create_args['Key'] = $job_object->job['s3dir'] . $job_object->backup_file;

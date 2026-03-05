@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @var string  $content   The error message to display. Default: "".
  * @var string  $link      URL to the page. Default: null.
@@ -11,7 +16,7 @@ $content = $content ?? "";
 ?>
 <div class="flex md:items-center max-md:flex-col max-md:items-start gap-2">
   <div class="size-6 flex items-center justify-center rounded-sm bg-danger-light text-danger">✕</div>
-  <p class="text-base text-danger"><?php echo $content; ?></p>
+  <p class="text-base text-danger"><?php echo esc_html( $content ); ?></p>
 
   <?php if (isset($link) && !empty($link)) : ?>
     <?php

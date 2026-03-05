@@ -45,7 +45,7 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
 					}
 				} );
 				$( '#sendemailtest' ).live( 'click', function () {
-					$( '#sendemailtest' ).after( '&nbsp;<img id="emailsendtext" src="<?php echo get_admin_url() . 'images/loading.gif'; ?>" width="16" height="16" />' );
+					$( '#sendemailtest' ).after( '&nbsp;<img id="emailsendtext" src="<?php echo esc_url( get_admin_url() . 'images/loading.gif' ); ?>" width="16" height="16" />' );
 					var data = {
 						action           : 'backwpup_dest_email',
 						emailaddress     : $( 'input[name="emailaddress"]' ).val(),
@@ -99,7 +99,14 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
 	public function job_run_archive(BackWPup_Job $job_object): bool
 	{
 		$job_object->substeps_todo = 1;
-		$job_object->log(sprintf(__('%d. Try to send backup with email&#160;&hellip;', 'backwpup'), $job_object->steps_data[$job_object->step_working]['STEP_TRY']), E_USER_NOTICE);
+		$job_object->log(
+			sprintf(
+			/* translators: %d: attempt number. */
+			__( '%d. Try to send backup with email&#160;&hellip;', 'backwpup' ),
+			$job_object->steps_data[ $job_object->step_working ]['STEP_TRY']
+		),
+			E_USER_NOTICE
+			);
 
 		//check file Size
 		if (!empty($job_object->job['emailefilesize'])) {
@@ -111,7 +118,14 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
 			}
 		}
 
-		$job_object->log(sprintf(__('Sending email to %s&hellip;', 'backwpup'), $job_object->job['emailaddress']), E_USER_NOTICE);
+		$job_object->log(
+			sprintf(
+			/* translators: %s: email address. */
+			__( 'Sending email to %s&hellip;', 'backwpup' ),
+			$job_object->job['emailaddress']
+		),
+			E_USER_NOTICE
+			);
 
 		//get mail settings
 		$emailmethod = 'mail';
@@ -322,15 +336,20 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
 			// Create the Mailer using your created Transport
 			$emailer = Swift_Mailer::newInstance($transport);
 
-			// Create a message
-			$message = Swift_Message::newInstance(__('BackWPup archive sending TEST Message', 'backwpup'));
-			$message->setFrom([$_POST['emailsndemail'] => sanitize_email($_POST['emailsndemailname'])]);
-			$message->setTo($this->get_email_array($_POST['emailaddress']));
-			$message->setBody(__('If this message reaches your inbox, sending backup archives via email should work for you.', 'backwpup'));
-			// Send the message
-			$result = $emailer->send($message);
-		} catch (Exception $e) {
-			echo '<span id="emailsendtext" class="bwu-message-error">Swift Mailer: ' . $e->getMessage() . '</span>';
+			$sender_email  = isset( $_POST['emailsndemail'] ) ? sanitize_email( wp_unslash( $_POST['emailsndemail'] ) ) : '';
+			$sender_name   = isset( $_POST['emailsndemailname'] ) ? sanitize_text_field( wp_unslash( $_POST['emailsndemailname'] ) ) : '';
+			$recipient_raw = isset( $_POST['emailaddress'] ) ? sanitize_text_field( wp_unslash( $_POST['emailaddress'] ) ) : '';
+			$recipients    = $this->get_email_array( $recipient_raw );
+
+			// Create a message.
+			$message = Swift_Message::newInstance( __( 'BackWPup archive sending TEST Message', 'backwpup' ) );
+			$message->setFrom( [ $sender_email => $sender_name ] );
+			$message->setTo( $recipients );
+			$message->setBody( __( 'If this message reaches your inbox, sending backup archives via email should work for you.', 'backwpup' ) );
+			// Send the message.
+			$result = $emailer->send( $message );
+		} catch ( Exception $e ) {
+			echo '<span id="emailsendtext" class="bwu-message-error">Swift Mailer: ' . esc_html( $e->getMessage() ) . '</span>';
 		}
 
 		if (isset($mbEncoding)) {

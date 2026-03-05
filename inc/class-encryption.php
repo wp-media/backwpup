@@ -117,13 +117,15 @@ class BackWPup_Encryption
         return trim(stripslashes($cypher->decrypt($string)), "\0");
     }
 
-    /**
-     * @param string $string
-     *
-     * @throws Exception
-     *
-     * @return string
-     */
+	/**
+	 * Get the cypher class used to encrypt the given string.
+	 *
+	 * @param string $string
+	 *
+	 * @return string
+	 *
+	 * @throws \RuntimeException If the cypher used to encrypt the given string is not supported in current system.
+	 */
     private static function cypher_class_for_string($string)
     {
         foreach (self::$classes as $prefix => $class) {
@@ -133,10 +135,11 @@ class BackWPup_Encryption
                 continue;
             }
 
-            if (!call_user_func([$class, 'supported'])) {
-                throw new Exception(
-                    "Give string was encrypted using {$class} but it is not currently supported in this system."
-                );
+			if ( ! call_user_func( [ $class, 'supported' ] ) ) {
+				throw new \RuntimeException(
+					// Translators: %s is the name of the encryption algorithm that is not supported in the current system.
+					sprintf( esc_html__( 'Give string was encrypted using %s but it is not currently supported in this system.', 'backwpup' ), esc_html( $class ) )
+				);
             }
 
             return $class;
@@ -166,11 +169,10 @@ class BackWPup_Encryption
     /**
      * @param string|null $class
      * @param string      $string
-     *
-     * @throws Exception
-     *
-     * @return array
-     */
+	 *
+	 * @return array
+	 * @throws \RuntimeException If the given string was encrypted using a custom key but 'BACKWPUP_ENC_KEY' constant is not defined anymore.
+	 */
     private static function get_encrypt_info($class = null, $string = '')
     {
         $default_key = DB_NAME . DB_USER . DB_PASSWORD;
@@ -184,11 +186,11 @@ class BackWPup_Encryption
         $enc_prefix = self::PREFIX . constant("{$class}::PREFIX");
         $has_custom_key = strpos($string, $enc_prefix . self::KEY_TYPE_CUSTOM) === 0;
 
-        if ($has_custom_key) {
-            if (!defined('BACKWPUP_ENC_KEY')) {
-                throw new Exception(
-                    "Given string was encrypted using a custom key but 'BACKWPUP_ENC_KEY' constant is not defined anymore."
-                );
+		if ( $has_custom_key ) {
+			if ( ! defined( 'BACKWPUP_ENC_KEY' ) ) {
+				throw new \RuntimeException(
+					esc_html__( "Given string was encrypted using a custom key but 'BACKWPUP_ENC_KEY' constant is not defined anymore.", 'backwpup' )
+				);
             }
 
             return [BACKWPUP_ENC_KEY, self::KEY_TYPE_CUSTOM];

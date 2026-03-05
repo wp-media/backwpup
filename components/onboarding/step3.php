@@ -1,5 +1,10 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 // Get all the cloud destinations.
 $destinations = BackWPup_Destinations::get_destinations();
 $dist_storages = [];

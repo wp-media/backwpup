@@ -1,6 +1,11 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 use WPMedia\BackWPup\Plugin\Plugin;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 $job_id  = $job_id ?? null;
 $regions = [
 	'DFW' => __( 'Dallas (DFW)', 'backwpup' ),
@@ -138,7 +143,7 @@ $rscmaxbackups = esc_attr( BackWPup_Option::get( $job_id, 'rscmaxbackups', 3 ) )
 		?>
 	</div>
 
-	<p class="my-2 text-center text-sm"><?php _e( 'OR', 'backwpup' ); ?></p>
+	<p class="my-2 text-center text-sm"><?php esc_html_e( 'OR', 'backwpup' ); ?></p>
 
 	<?php
 	BackWPupHelpers::component(
