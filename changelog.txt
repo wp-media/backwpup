@@ -3,7 +3,6 @@
 Release date: March 05, 2026
 
 * Enhancement: Improved WP Audit plugin validation checks.
-* Enhancement: Added tracking for support tool usage.
 * Fix: Resolved job options saving issues and UI inconsistencies.
 * Fix: Replaced {{%LICENSE_URL%}} in Free version.
 * Fix: Fixed blank backup list after bulk deleting all backups from history.
