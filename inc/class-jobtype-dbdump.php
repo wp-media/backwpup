@@ -4,7 +4,7 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
     public function __construct()
     {
         $this->info['ID'] = 'DBDUMP';
-        $this->info['name'] = __('DB Backup', 'backwpup');
+        $this->info['name'] = __('Database', 'backwpup');
         $this->info['description'] = __('Database backup', 'backwpup');
         $this->info['URI'] = __('http://backwpup.com', 'backwpup');
         $this->info['author'] = 'WP Media';
