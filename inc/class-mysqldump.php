@@ -11,17 +11,21 @@ class BackWPup_MySQLDump {
 
 	// Compression flags.
 	public const COMPRESS_NONE = '';
-    public const COMPRESS_GZ = 'gz';
+	public const COMPRESS_GZ   = 'gz';
 
-    /**
-     * Table names of Tables in Database.
-     */
-    public $tables_to_dump = [];
+	/**
+	 * Table names of Tables in Database.
+	 *
+	 * @var string[]
+	 */
+	public $tables_to_dump = [];
 
-    /**
-     * View names of Views in Database.
-     */
-    public $views_to_dump = [];
+	/**
+	 * View names of Views in Database.
+	 *
+	 * @var string[]
+	 */
+	public $views_to_dump = [];
 
 	/**
 	 * Holder for wpdb connection.
@@ -30,52 +34,59 @@ class BackWPup_MySQLDump {
 	 */
 	private $wpdb;
 
-    /**
-     * Whether we are connected to the database.
-     *
-     * @var bool
-     */
-    private $connected = false;
+	/**
+	 * Whether we are connected to the database.
+	 *
+	 * @var bool
+	 */
+	private $connected = false;
 
-    /**
-     * Holder for dump file handle.
-     */
-    private $handle;
+	/**
+	 * Holder for dump file handle.
+	 *
+	 * @var resource|bool
+	 */
+	private $handle;
 
-    /**
-     * Table names of Tables in Database.
-     */
-    private $table_types = [];
+	/**
+	 * Table names of Tables in Database.
+	 *
+	 * @var array
+	 */
+	private $table_types = [];
 
-    /**
-     * Table information of Tables in Database.
-     */
-    private $table_status = [];
+	/**
+	 * Table information of Tables in Database.
+	 *
+	 * @var array
+	 */
+	private $table_status = [];
 
-    /**
-     * Database name.
-     */
-    private $dbname = '';
+	/**
+	 * Database name.
+	 *
+	 * @var string
+	 */
+	private $dbname = '';
 
-    /**
-     * Check params and makes confections
-     * gets the table information too.
-     *
-     * @param  $args array with arguments
-     *
-     * @throws BackWPup_MySQLDump_Exception
-     *
-     * @global $wpdb wpdb
+	/**
+	 * Check params and get table information.
+	 *
+	 * @param array $args Array with arguments.
+	 *
+	 * @throws BackWPup_MySQLDump_Exception When configuration is invalid or file cannot be opened.
+	 *
+	 * @global $wpdb wpdb
 	 */
 	public function __construct( $args = [] ) {
 		// compression will be automatically set by dumpfile.
 		unset( $args['compression'] );
 
-        $resolver = new OptionsResolver();
-        $this->configureOptions($resolver);
-        $args = $resolver->resolve($args);
+		$resolver = new OptionsResolver();
+		$this->configureOptions( $resolver );
+		$args = $resolver->resolve( $args );
 
-        $this->connect($args);
+		$this->connect( $args );
 
 		// Set charset.
 		if ( ! empty( $args['dbcharset'] ) ) {
@@ -93,9 +104,9 @@ class BackWPup_MySQLDump {
 			} else {
 				$this->handle = fopen( $args['dumpfile'], 'ab' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 			}
-        } else {
-            $this->handle = $args['dumpfilehandle'];
-        }
+		} else {
+			$this->handle = $args['dumpfilehandle'];
+		}
 
 		// Check file handle.
 		if ( ! $this->handle ) {
@@ -118,12 +129,16 @@ class BackWPup_MySQLDump {
 				$this->table_status[ $table[0] ]['Rows'] = 0;
 			}
 		}
-    }
+	}
 
-    /**
+	/**
 	 * Configure options.
 	 *
-     * phpcs:disable WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid
+	 * @param OptionsResolver $resolver Options resolver.
+	 *
+	 * @return void
+	 *
+	 * phpcs:disable WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid
 	 */
 	protected function configureOptions( OptionsResolver $resolver ) {
 		$resolver->setDefaults(
@@ -149,13 +164,18 @@ class BackWPup_MySQLDump {
 			]
 			);
 
-        $port = $socket = null;
+		$port   = null;
+		$socket = null;
 
 		$resolver->setNormalizer(
 			'dbhost',
 			function ( Options $options, $value ) use ( &$port, &$socket ) {
+				unset( $options );
+
 				if ( false !== strpos( $value, ':' ) ) {
-					[$value, $part] = array_map( 'trim', explode( ':', $value, 2 ) );
+					$parts = array_map( 'trim', explode( ':', $value, 2 ) );
+					$value = $parts[0];
+					$part  = $parts[1] ?? '';
 					if ( is_numeric( $part ) ) {
 						$port = intval( $part );
 					} elseif ( ! empty( $part ) ) {
@@ -167,13 +187,23 @@ class BackWPup_MySQLDump {
 			}
 			);
 
-        $resolver->setDefault('dbport', function (Options $options) use (&$port) {
-            return $port;
-        });
+		$resolver->setDefault(
+			'dbport',
+			function ( Options $options ) use ( &$port ) {
+				unset( $options );
 
-        $resolver->setDefault('dbsocket', function (Options $options) use (&$socket) {
-            return $socket;
-        });
+				return $port;
+			}
+			);
+
+		$resolver->setDefault(
+			'dbsocket',
+			function ( Options $options ) use ( &$socket ) {
+				unset( $options );
+
+				return $socket;
+			}
+			);
 
 		$resolver->setAllowedValues(
 			'dumpfilehandle',
@@ -185,7 +215,7 @@ class BackWPup_MySQLDump {
 			}
 			);
 
-        $resolver->setAllowedValues('compression', [self::COMPRESS_NONE, self::COMPRESS_GZ]);
+		$resolver->setAllowedValues( 'compression', [ self::COMPRESS_NONE, self::COMPRESS_GZ ] );
 
 		$resolver->setAllowedTypes( 'dbhost', 'string' );
 		$resolver->setAllowedTypes( 'dbport', [ 'null', 'int' ] );
@@ -200,12 +230,12 @@ class BackWPup_MySQLDump {
 		$resolver->setAllowedTypes( 'compression', [ 'string' ] );
 	}
 
-    /**
-     * Set the best available database charset.
+	/**
+	 * Set the best available database charset.
 	 *
 	 * @param string $charset The charset to try setting.
 	 *
-     * @return string The set charset
+	 * @return string The set charset
 	 */
 	public function setCharset( $charset ) {
 		if ( 'utf8' === $charset && true === $this->applyCharset( 'utf8mb4' ) ) {
@@ -216,22 +246,22 @@ class BackWPup_MySQLDump {
 		}
 		if ( 'utf8mb4' === $charset && true === $this->applyCharset( 'utf8' ) ) {
 			return 'utf8';
-        }
+		}
 
-        trigger_error(
+		trigger_error(
 			sprintf(
 				/* translators: %s: database charset. */
 				esc_html__( 'Cannot set DB charset to %s', 'backwpup' ),
 				esc_html( $charset )
 			),
-            E_USER_WARNING
-        );
+			E_USER_WARNING
+		);
 
-        return false;
-    }
+		return false;
+	}
 
-    /**
-     * Get the database connection.
+	/**
+	 * Get the database connection.
 	 *
 	 * @return WpdbConnection
 	 */
@@ -244,7 +274,7 @@ class BackWPup_MySQLDump {
 	 *
 	 * @param string $charset The charset to set.
 	 *
-	 * @return bool True on success, false otherwise
+	 * @return bool True on success, false otherwise.
 	 */
 	private function applyCharset( $charset ) {
 		$query = $this->wpdb->prepare( 'SET NAMES %s', $charset );
@@ -261,25 +291,26 @@ class BackWPup_MySQLDump {
 		return true;
 	}
 
-    /**
-     * Whether the database is connected.
-     *
-     * @return bool
+	/**
+	 * Whether the database is connected.
+	 *
+	 * @return bool
 	 */
 	public function isConnected() {
 		return $this->connected;
 	}
 
-    /**
-     * Connect to the database.
-     *
-     * @param array $args Connection parameters
-     */
-    protected function connect(array $args)
-    {
-        if ($this->isConnected()) {
-            return;
-        }
+	/**
+	 * Connect to the database.
+	 *
+	 * @param array $args Connection parameters.
+	 *
+	 * @throws BackWPup_MySQLDump_Exception When the database connection fails.
+	 */
+	protected function connect( array $args ) {
+		if ( $this->isConnected() ) {
+			return;
+		}
 
 		$dbhost = $args['dbhost'];
 		if ( ! empty( $args['dbsocket'] ) ) {
@@ -304,52 +335,52 @@ class BackWPup_MySQLDump {
 					0,
 					esc_html( $error_message )
 				)
-            );
-        }
+			);
+		}
 
 		// Set db name.
 		$this->dbname = $args['dbname'];
 
 		// We are now connected.
 		$this->connected = true;
-    }
+	}
 
-    /**
-     * Get the name of the database.
-     *
-     * @return string
-     */
-    protected function getDbName()
-    {
-        return $this->dbname;
-    }
+	/**
+	 * Get the name of the database.
+	 *
+	 * @return string
+	 */
+	protected function getDbName() {
+		return $this->dbname;
+	}
 
-    /**
-     * Report a query error.
+	/**
+	 * Report a query error.
 	 *
 	 * @param string $message The error message.
 	 * @param string $query   The query that caused the error.
 	 */
 	protected function logQueryError( $message, $query ) {
         // phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_trigger_error, WordPress.XSS.EscapeOutput.OutputNotEscaped
-        trigger_error(
+		trigger_error(
 			sprintf(
 				/* translators: 1: database error message, 2: SQL query. */
 				esc_html__( 'Database error: %1$s. Query: %2$s', 'backwpup' ),
 				esc_html( $message ),
 				esc_html( $query )
 			),
-            E_USER_WARNING
-        );
+			E_USER_WARNING
+		);
         // phpcs:enable WordPress.PHP.DevelopmentFunctions.error_log_trigger_error. WordPress.XSS.EscapeOutput.OutputNotEscaped
-    }
+	}
 
-    /**
-     * Send a query to the database.
-     *
-     * @param string $query The query to execute
-     *
-	 * @return mixed The result of the query
+	/**
+	 * Send a query to the database.
+	 *
+	 * @param string $sql    The query to execute.
+	 * @param mixed  $output The query output type.
+	 *
+	 * @return mixed The result of the query.
 	 *
 	 * @throws BackWPup_MySQLDump_Exception When the query fails.
 	 */
@@ -362,11 +393,11 @@ class BackWPup_MySQLDump {
 			throw new BackWPup_MySQLDump_Exception( esc_html( $this->wpdb->last_error ) );
 		}
 
-        return $result;
-    }
+		return $result;
+	}
 
-    /**
-     * Start the dump.
+	/**
+	 * Start the dump.
 	 */
 	public function execute() {
 		// Increase time limit.
@@ -391,10 +422,10 @@ class BackWPup_MySQLDump {
 		}
 		// Write footer.
 		$this->dump_footer();
-    }
+	}
 
-    /**
-     * Write Dump Header.
+	/**
+	 * Write Dump Header.
 	 *
 	 * @param bool $wp_info Dump WordPress info in dump head.
 	 *
@@ -409,36 +440,36 @@ class BackWPup_MySQLDump {
 		}
 		$mysqltimezone = (string) $mysqltimezone;
 
-        //For SQL always use \n as MySQL wants this on all platforms.
-        $dbdumpheader = "-- ---------------------------------------------------------\n";
-        $dbdumpheader .= '-- Backup with BackWPup ver.: ' . BackWPup::get_plugin_data('Version') . "\n";
-        $dbdumpheader .= "-- http://backwpup.com/\n";
-        if ($wp_info) {
-            $dbdumpheader .= '-- Blog Name: ' . get_bloginfo('name') . "\n";
-            $dbdumpheader .= '-- Blog URL: ' . trailingslashit(get_bloginfo('url')) . "\n";
-            $dbdumpheader .= '-- Blog ABSPATH: ' . trailingslashit(str_replace('\\', '/', (string) ABSPATH)) . "\n";
-            $dbdumpheader .= '-- Blog Charset: ' . get_bloginfo('charset') . "\n";
-            $dbdumpheader .= '-- Table Prefix: ' . $GLOBALS[\wpdb::class]->prefix . "\n";
-        }
+		// For SQL always use \n as MySQL wants this on all platforms.
+		$dbdumpheader  = "-- ---------------------------------------------------------\n";
+		$dbdumpheader .= '-- Backup with BackWPup ver.: ' . BackWPup::get_plugin_data( 'Version' ) . "\n";
+		$dbdumpheader .= "-- http://backwpup.com/\n";
+		if ( $wp_info ) {
+			$dbdumpheader .= '-- Blog Name: ' . get_bloginfo( 'name' ) . "\n";
+			$dbdumpheader .= '-- Blog URL: ' . trailingslashit( get_bloginfo( 'url' ) ) . "\n";
+			$dbdumpheader .= '-- Blog ABSPATH: ' . trailingslashit( str_replace( '\\', '/', (string) ABSPATH ) ) . "\n";
+			$dbdumpheader .= '-- Blog Charset: ' . get_bloginfo( 'charset' ) . "\n";
+			$dbdumpheader .= '-- Table Prefix: ' . $GLOBALS[ \wpdb::class ]->prefix . "\n";
+		}
 		$dbdumpheader .= '-- Database Name: ' . $this->dbname . "\n";
 		$dbdumpheader .= '-- Backup on: ' . wp_date( 'Y-m-d H:i.s', time() ) . "\n";
 		$dbdumpheader .= "-- ---------------------------------------------------------\n\n";
 		// For better import with mysql client.
 		$dbdumpheader .= "/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;\n";
-        $dbdumpheader .= "/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;\n";
+		$dbdumpheader .= "/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;\n";
 		$dbdumpheader .= "/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;\n";
 		$dbdumpheader .= '/*!40101 SET NAMES ' . ( $this->wpdb->charset ?: 'utf8mb4' ) . " */;\n";
 		$dbdumpheader .= "/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;\n";
-        $dbdumpheader .= "/*!40103 SET TIME_ZONE='" . $mysqltimezone . "' */;\n";
-        $dbdumpheader .= "/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;\n";
-        $dbdumpheader .= "/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;\n";
-        $dbdumpheader .= "/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;\n";
-        $dbdumpheader .= "/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;\n\n";
-        $this->write($dbdumpheader);
-    }
+		$dbdumpheader .= "/*!40103 SET TIME_ZONE='" . $mysqltimezone . "' */;\n";
+		$dbdumpheader .= "/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;\n";
+		$dbdumpheader .= "/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;\n";
+		$dbdumpheader .= "/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;\n";
+		$dbdumpheader .= "/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;\n\n";
+		$this->write( $dbdumpheader );
+	}
 
-    /**
-     * Write Dump Footer with dump of functions and procedures.
+	/**
+	 * Write Dump Footer with dump of functions and procedures.
 	 */
 	public function dump_footer() {
 		// Dump views.
@@ -461,24 +492,24 @@ class BackWPup_MySQLDump {
 		// For better import with mysql client.
 		$dbdumpfooter  = "\n/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;\n";
 		$dbdumpfooter .= "/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;\n";
-        $dbdumpfooter .= "/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;\n";
-        $dbdumpfooter .= "/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;\n";
-        $dbdumpfooter .= "/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;\n";
-        $dbdumpfooter .= "/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;\n";
-        $dbdumpfooter .= "/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;\n";
+		$dbdumpfooter .= "/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;\n";
+		$dbdumpfooter .= "/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;\n";
+		$dbdumpfooter .= "/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;\n";
+		$dbdumpfooter .= "/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;\n";
+		$dbdumpfooter .= "/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;\n";
 		$dbdumpfooter .= "/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;\n";
 		$dbdumpfooter .= "\n-- Backup completed on " . wp_date( 'Y-m-d H:i:s', time() ) . "\n";
 		$this->write( $dbdumpfooter );
 	}
 
-    /**
-     * Dump table structure.
-     *
-     * @param string $table name of Table to dump
-     *
-     * @throws BackWPup_MySQLDump_Exception
-     *
-     * @return int Size of table
+	/**
+	 * Dump table structure.
+	 *
+	 * @param string $table Name of table to dump.
+	 *
+	 * @throws BackWPup_MySQLDump_Exception When the table name is invalid.
+	 *
+	 * @return int Size of table.
 	 */
 	public function dump_table_head( $table ) {
 		$this->assertTableName( $table );
@@ -503,22 +534,22 @@ class BackWPup_MySQLDump {
 			if ( ! empty( $fields ) ) {
 				$tablecreate  = "\n--\n-- Temporary table structure for view `" . $table . "`\n--\n\n";
 				$tablecreate .= 'DROP TABLE IF EXISTS `' . $table . "`;\n";
-                $tablecreate .= '/*!50001 DROP VIEW IF EXISTS `' . $table . "`*/;\n";
+				$tablecreate .= '/*!50001 DROP VIEW IF EXISTS `' . $table . "`*/;\n";
 				$tablecreate .= "/*!40101 SET @saved_cs_client     = @@character_set_client */;\n";
 				$tablecreate .= "/*!40101 SET character_set_client = '" . ( $this->wpdb->charset ?: 'utf8mb4' ) . "' */;\n";
 				$tablecreate .= 'CREATE TABLE `' . $table . "` (\n";
 
-                foreach ($fields as $field) {
-                    $tablecreate .= '  `' . $field->orgname . "` tinyint NOT NULL,\n";
-                }
-                $tablecreate = substr($tablecreate, 0, -2) . "\n";
-                $tablecreate .= ");\n";
-                $tablecreate .= "/*!40101 SET character_set_client = @saved_cs_client */;\n";
-                $this->write($tablecreate);
-            }
+				foreach ( $fields as $field ) {
+					$tablecreate .= '  `' . $field->orgname . "` tinyint NOT NULL,\n";
+				}
+				$tablecreate  = substr( $tablecreate, 0, -2 ) . "\n";
+				$tablecreate .= ");\n";
+				$tablecreate .= "/*!40101 SET character_set_client = @saved_cs_client */;\n";
+				$this->write( $tablecreate );
+			}
 
-            return 0;
-        }
+			return 0;
+		}
 
 		// Dump normal table.
 		$tablecreate  = "\n--\n-- Table structure for `" . $table . "`\n--\n\n";
@@ -543,8 +574,8 @@ class BackWPup_MySQLDump {
 		} else {
 			$createtable  = str_replace( '"', '`', $createtable );
 			$tablecreate .= $createtable['Create Table'] . ";\n";
-            $tablecreate .= "/*!40101 SET character_set_client = @saved_cs_client */;\n";
-            $this->write($tablecreate);
+			$tablecreate .= "/*!40101 SET character_set_client = @saved_cs_client */;\n";
+			$this->write( $tablecreate );
 
 			if ( 'MyISAM' !== $this->table_status[ $table ]['Engine'] ) {
 				$this->table_status[ $table ]['Rows'] = '~' . $this->table_status[ $table ]['Rows'];
@@ -555,18 +586,18 @@ class BackWPup_MySQLDump {
 				$this->write( "\n--\n-- Backup data for table `" . $table . "`\n--\n\nLOCK TABLES `" . $table . "` WRITE;\n/*!40000 ALTER TABLE `" . $table . "` DISABLE KEYS */;\n" );
 			}
 
-            return $this->table_status[$table]['Rows'];
-        }
+			return $this->table_status[ $table ]['Rows'];
+		}
 
-        return 0;
-    }
+		return 0;
+	}
 
-    /**
-     * Dump view structure.
-     *
-     * @param string $view name of Table to dump
-     *
-     * @throws BackWPup_MySQLDump_Exception
+	/**
+	 * Dump view structure.
+	 *
+	 * @param string $view Name of view to dump.
+	 *
+	 * @throws BackWPup_MySQLDump_Exception When the view name is invalid.
 	 */
 	public function dump_view_table_head( $view ): void {
 		$this->assertTableName( $view );
@@ -588,38 +619,38 @@ class BackWPup_MySQLDump {
 		} else {
 			$tablecreate  = "\n--\n-- View structure for `" . $view . "`\n--\n\n";
 			$tablecreate .= 'DROP TABLE IF EXISTS `' . $view . "`;\n";
-            $tablecreate .= 'DROP VIEW IF EXISTS `' . $view . "`;\n";
+			$tablecreate .= 'DROP VIEW IF EXISTS `' . $view . "`;\n";
 			$tablecreate .= "/*!40101 SET @saved_cs_client     = @@character_set_client */;\n";
 			$tablecreate .= "/*!40101 SET character_set_client = '" . ( $this->wpdb->charset ?: 'utf8mb4' ) . "' */;\n";
 			$tablecreate .= $createview['Create View'] . ";\n";
-            $tablecreate .= "/*!40101 SET character_set_client = @saved_cs_client */;\n";
-            $this->write($tablecreate);
-        }
-    }
+			$tablecreate .= "/*!40101 SET character_set_client = @saved_cs_client */;\n";
+			$this->write( $tablecreate );
+		}
+	}
 
-    /**
-     * Dump table footer.
-     *
-     * @param string $table name of Table to dump
-     *
-     * @return int Size of table
+	/**
+	 * Dump table footer.
+	 *
+	 * @param string $table Name of table to dump.
+	 *
+	 * @return void
 	 */
 	public function dump_table_footer( $table ): void {
 		if ( 0 !== $this->table_status[ $table ]['Rows'] ) {
 			$this->write( '/*!40000 ALTER TABLE `' . $table . "` ENABLE KEYS */;\nUNLOCK TABLES;\n" );
 		}
-    }
+	}
 
-    /**
-     * Dump table  Data.
-     *
-     * @param string $table  name of Table to dump
-     * @param int    $start  Start of lengh paramter
-     * @param int    $length how many
-     *
-     * @throws BackWPup_MySQLDump_Exception
-     *
-     * @return int done records in this backup
+	/**
+	 * Dump table  Data.
+	 *
+	 * @param string $table  Name of table to dump.
+	 * @param int    $start  Start offset.
+	 * @param int    $length Number of records to fetch.
+	 *
+	 * @throws BackWPup_MySQLDump_Exception When the offset or length is invalid.
+	 *
+	 * @return int Done records in this backup.
 	 */
 	public function dump_table( $table, $start = 0, $length = 0 ) {
 		$this->assertTableName( $table );
@@ -641,13 +672,13 @@ class BackWPup_MySQLDump {
 					esc_html( $length )
 				)
 			);
-        }
+		}
 
-        $done_records = 0;
+		$done_records = 0;
 
 		if ( 'VIEW' === $this->get_table_type_for( $table ) ) {
 			return $done_records;
-        }
+		}
 
 		// Get data from table.
 		try {
@@ -663,20 +694,20 @@ class BackWPup_MySQLDump {
 				E_USER_WARNING
 			);
 
-            return 0;
-        }
+			return 0;
+		}
 
 		$fieldsarray = [];
 		$fieldinfo   = [];
 		$fields      = $query_result['fields'];
 		$i           = 0;
 
-        foreach ($fields as $field) {
-            $fieldsarray[$i] = $field->orgname;
-            $fieldinfo[$fieldsarray[$i]] = $field;
-            ++$i;
-        }
-        $dump = '';
+		foreach ( $fields as $field ) {
+			$fieldsarray[ $i ]               = $field->orgname;
+			$fieldinfo[ $fieldsarray[ $i ] ] = $field;
+			++$i;
+		}
+		$dump = '';
 
 		foreach ( $query_result['rows'] as $data ) {
 			$values = [];
@@ -692,50 +723,49 @@ class BackWPup_MySQLDump {
 					$hex   = unpack( 'H*', $value );
 					$value = empty( $value ) ? "''" : "0x{$hex[1]}";
 				} else {
-                    $value = "'" . $this->escapeString($value) . "'";
-                }
-                $values[] = $value;
+					$value = "'" . $this->escapeString( $value ) . "'";
+				}
+				$values[] = $value;
 			}
 			// New query in dump on more than 50000 chars.
 			if ( empty( $dump ) ) {
 				$dump = 'INSERT INTO `' . $table . '` (`' . implode( '`, `', $fieldsarray ) . "`) VALUES \n";
 			}
-            if (strlen($dump) <= 50000) {
-                $dump .= '(' . implode(', ', $values) . "),\n";
-            } else {
-                $dump .= '(' . implode(', ', $values) . ");\n";
-                $this->write($dump);
-                $dump = '';
-            }
-            ++$done_records;
-        }
-        if (!empty($dump)) {
-            // Remove trailing , and newline.
-            $dump = substr($dump, 0, -2) . ";\n";
-            $this->write($dump);
+			if ( strlen( $dump ) <= 50000 ) {
+				$dump .= '(' . implode( ', ', $values ) . "),\n";
+			} else {
+				$dump .= '(' . implode( ', ', $values ) . ");\n";
+				$this->write( $dump );
+				$dump = '';
+			}
+			++$done_records;
+		}
+		if ( ! empty( $dump ) ) {
+			// Remove trailing , and newline.
+			$dump = substr( $dump, 0, -2 ) . ";\n";
+			$this->write( $dump );
 		}
 		return $done_records;
-    }
+	}
 
-    /**
-     * Dump functions.
-     *
-     * Dumps all functions found in the database.
-     */
-	protected function dump_functions()
-    {
+	/**
+	 * Dump functions.
+	 *
+	 * Dumps all functions found in the database.
+	 */
+	protected function dump_functions() {
 		try {
 			$status_result = $this->query( 'SHOW FUNCTION STATUS', ARRAY_A );
 		} catch ( BackWPup_MySQLDump_Exception $e ) {
 			$this->logQueryError( $e->getMessage(), 'SHOW FUNCTION STATUS' );
 
-            return;
-        }
+			return;
+		}
 
 		foreach ( $status_result as $function ) {
 			if ( $function['Db'] !== $this->getDbName() ) {
 				continue;
-            }
+			}
 
 			try {
 				$db_identifier       = $this->escapeIdentifier( $function['Db'] );
@@ -743,7 +773,7 @@ class BackWPup_MySQLDump {
 			} catch ( BackWPup_MySQLDump_Exception $e ) {
 				$this->logQueryError( $e->getMessage(), 'SHOW CREATE FUNCTION' );
 				continue;
-            }
+			}
 
 			$query = sprintf(
 				'SHOW CREATE FUNCTION %1$s.%2$s',
@@ -757,27 +787,27 @@ class BackWPup_MySQLDump {
 
 				if ( null === $create_function ) {
 					continue;
-                }
+				}
 
-                $sql = sprintf(
-                    "\n--\n" .
-                    "-- Function structure for %1\$s\n" .
-                    "--\n\n" .
-                    "/*!50003 DROP FUNCTION IF EXISTS `%1\$s` */;\n" .
-                    "/*!50003 SET @saved_cs_client      = @@character_set_client */ ;\n" .
-                    "/*!50003 SET @saved_cs_results     = @@character_set_results */ ;\n" .
-                    "/*!50003 SET @saved_col_connection = @@collation_connection */ ;\n" .
-                    "/*!50003 SET character_set_client  = %2\$s */ ;\n" .
-                    "/*!50003 SET character_set_results = %2\$s */ ;\n" .
-                    "/*!50003 SET collation_connection  = %3\$s */ ;\n" .
-                    "/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;\n" .
-                    "/*!50003 SET sql_mode              = '%4\$s' */ ;\n" .
-                    "DELIMITER ;;\n" .
-                    "%5\$s ;;\n" .
-                    "DELIMITER ;\n" .
-                    "/*!50003 SET sql_mode              = @saved_sql_mode */ ;\n" .
-                    "/*!50003 SET character_set_client  = @saved_cs_client */ ;\n" .
-                    "/*!50003 SET character_set_results = @saved_cs_results */ ;\n" .
+				$sql = sprintf(
+					"\n--\n" .
+					"-- Function structure for %1\$s\n" .
+					"--\n\n" .
+					"/*!50003 DROP FUNCTION IF EXISTS `%1\$s` */;\n" .
+					"/*!50003 SET @saved_cs_client      = @@character_set_client */ ;\n" .
+					"/*!50003 SET @saved_cs_results     = @@character_set_results */ ;\n" .
+					"/*!50003 SET @saved_col_connection = @@collation_connection */ ;\n" .
+					"/*!50003 SET character_set_client  = %2\$s */ ;\n" .
+					"/*!50003 SET character_set_results = %2\$s */ ;\n" .
+					"/*!50003 SET collation_connection  = %3\$s */ ;\n" .
+					"/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;\n" .
+					"/*!50003 SET sql_mode              = '%4\$s' */ ;\n" .
+					"DELIMITER ;;\n" .
+					"%5\$s ;;\n" .
+					"DELIMITER ;\n" .
+					"/*!50003 SET sql_mode              = @saved_sql_mode */ ;\n" .
+					"/*!50003 SET character_set_client  = @saved_cs_client */ ;\n" .
+					"/*!50003 SET character_set_results = @saved_cs_results */ ;\n" .
 					"/*!50003 SET collation_connection  = @saved_col_connection */ ;\n",
 					$create_function['Function'],
 					$create_function['character_set_client'],
@@ -790,27 +820,26 @@ class BackWPup_MySQLDump {
 				$this->logQueryError( $e->getMessage(), $query );
 			}
 		}
-    }
+	}
 
-    /**
-     * Dump procedures.
-     *
-     * Dumps all stored procedures found in the database.
-     */
-	protected function dump_procedures()
-    {
+	/**
+	 * Dump procedures.
+	 *
+	 * Dumps all stored procedures found in the database.
+	 */
+	protected function dump_procedures() {
 		try {
 			$status_result = $this->query( 'SHOW PROCEDURE STATUS', ARRAY_A );
 		} catch ( BackWPup_MySQLDump_Exception $e ) {
 			$this->logQueryError( $e->getMessage(), 'SHOW PROCEDURE STATUS' );
 
-            return;
-        }
+			return;
+		}
 
 		foreach ( $status_result as $procedure ) {
 			if ( $procedure['Db'] !== $this->getDbName() ) {
 				continue;
-            }
+			}
 
 			try {
 				$db_identifier        = $this->escapeIdentifier( $procedure['Db'] );
@@ -818,7 +847,7 @@ class BackWPup_MySQLDump {
 			} catch ( BackWPup_MySQLDump_Exception $e ) {
 				$this->logQueryError( $e->getMessage(), 'SHOW CREATE PROCEDURE' );
 				continue;
-            }
+			}
 
 			$query = sprintf(
 				'SHOW CREATE PROCEDURE %1$s.%2$s',
@@ -832,27 +861,27 @@ class BackWPup_MySQLDump {
 
 				if ( null === $create_procedure ) {
 					continue;
-                }
+				}
 
-                $sql = sprintf(
-                    "\n--\n" .
-                    "-- Procedure structure for %1\$s\n" .
-                    "--\n\n" .
-                    "/*!50003 DROP PROCEDURE IF EXISTS `%1\$s` */;\n" .
-                    "/*!50003 SET @saved_cs_client      = @@character_set_client */ ;\n" .
-                    "/*!50003 SET @saved_cs_results     = @@character_set_results */ ;\n" .
-                    "/*!50003 SET @saved_col_connection = @@collation_connection */ ;\n" .
-                    "/*!50003 SET character_set_client  = %2\$s */ ;\n" .
-                    "/*!50003 SET character_set_results = %2\$s */ ;\n" .
-                    "/*!50003 SET collation_connection  = %3\$s */ ;\n" .
-                    "/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;\n" .
-                    "/*!50003 SET sql_mode              = '%4\$s' */ ;\n" .
-                    "DELIMITER ;;\n" .
-                    "%5\$s ;;\n" .
-                    "DELIMITER ;\n" .
-                    "/*!50003 SET sql_mode              = @saved_sql_mode */ ;\n" .
-                    "/*!50003 SET character_set_client  = @saved_cs_client */ ;\n" .
-                    "/*!50003 SET character_set_results = @saved_cs_results */ ;\n" .
+				$sql = sprintf(
+					"\n--\n" .
+					"-- Procedure structure for %1\$s\n" .
+					"--\n\n" .
+					"/*!50003 DROP PROCEDURE IF EXISTS `%1\$s` */;\n" .
+					"/*!50003 SET @saved_cs_client      = @@character_set_client */ ;\n" .
+					"/*!50003 SET @saved_cs_results     = @@character_set_results */ ;\n" .
+					"/*!50003 SET @saved_col_connection = @@collation_connection */ ;\n" .
+					"/*!50003 SET character_set_client  = %2\$s */ ;\n" .
+					"/*!50003 SET character_set_results = %2\$s */ ;\n" .
+					"/*!50003 SET collation_connection  = %3\$s */ ;\n" .
+					"/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;\n" .
+					"/*!50003 SET sql_mode              = '%4\$s' */ ;\n" .
+					"DELIMITER ;;\n" .
+					"%5\$s ;;\n" .
+					"DELIMITER ;\n" .
+					"/*!50003 SET sql_mode              = @saved_sql_mode */ ;\n" .
+					"/*!50003 SET character_set_client  = @saved_cs_client */ ;\n" .
+					"/*!50003 SET character_set_results = @saved_cs_results */ ;\n" .
 					"/*!50003 SET collation_connection  = @saved_col_connection */ ;\n",
 					$create_procedure['Procedure'],
 					$create_procedure['character_set_client'],
@@ -865,12 +894,12 @@ class BackWPup_MySQLDump {
 				$this->logQueryError( $e->getMessage(), $query );
 			}
 		}
-    }
+	}
 
-    /**
-     * Dump triggers.
-     *
-     * Dumps all triggers found in the database.
+	/**
+	 * Dump triggers.
+	 *
+	 * Dumps all triggers found in the database.
 	 */
 	protected function dump_triggers() {
 		try {
@@ -878,8 +907,8 @@ class BackWPup_MySQLDump {
 		} catch ( BackWPup_MySQLDump_Exception $e ) {
 			$this->logQueryError( $e->getMessage(), 'SHOW TRIGGERS' );
 
-            return;
-        }
+			return;
+		}
 
 		$query = sprintf( 'SHOW TRIGGERS FROM %1$s', $db_identifier );
 
@@ -888,8 +917,8 @@ class BackWPup_MySQLDump {
 		} catch ( BackWPup_MySQLDump_Exception $e ) {
 			$this->logQueryError( $e->getMessage(), $query );
 
-            return;
-        }
+			return;
+		}
 
 		foreach ( $status_result as $trigger ) {
 			try {
@@ -897,7 +926,7 @@ class BackWPup_MySQLDump {
 			} catch ( BackWPup_MySQLDump_Exception $e ) {
 				$this->logQueryError( $e->getMessage(), 'SHOW CREATE TRIGGER' );
 				continue;
-            }
+			}
 
 			$query = sprintf(
 				'SHOW CREATE TRIGGER %1$s.%2$s',
@@ -911,27 +940,27 @@ class BackWPup_MySQLDump {
 
 				if ( null === $create_trigger ) {
 					continue;
-                }
+				}
 
-                $sql = sprintf(
-                    "\n--\n" .
-                    "-- Trigger structure for %1\$s\n" .
-                    "--\n\n" .
-                    "/*!50032 DROP TRIGGER IF EXISTS `%1\$s` */;\n" .
-                    "/*!50003 SET @saved_cs_client      = @@character_set_client */ ;\n" .
-                    "/*!50003 SET @saved_cs_results     = @@character_set_results */ ;\n" .
-                    "/*!50003 SET @saved_col_connection = @@collation_connection */ ;\n" .
-                    "/*!50003 SET character_set_client  = %2\$s */ ;\n" .
-                    "/*!50003 SET character_set_results = %2\$s */ ;\n" .
-                    "/*!50003 SET collation_connection  = %3\$s */ ;\n" .
-                    "/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;\n" .
-                    "/*!50003 SET sql_mode              = '%4\$s' */ ;\n" .
-                    "DELIMITER ;;\n" .
-                    "/*!50003 %5\$s */;;\n" .
-                    "DELIMITER ;\n" .
-                    "/*!50003 SET sql_mode              = @saved_sql_mode */ ;\n" .
-                    "/*!50003 SET character_set_client  = @saved_cs_client */ ;\n" .
-                    "/*!50003 SET character_set_results = @saved_cs_results */ ;\n" .
+				$sql = sprintf(
+					"\n--\n" .
+					"-- Trigger structure for %1\$s\n" .
+					"--\n\n" .
+					"/*!50032 DROP TRIGGER IF EXISTS `%1\$s` */;\n" .
+					"/*!50003 SET @saved_cs_client      = @@character_set_client */ ;\n" .
+					"/*!50003 SET @saved_cs_results     = @@character_set_results */ ;\n" .
+					"/*!50003 SET @saved_col_connection = @@collation_connection */ ;\n" .
+					"/*!50003 SET character_set_client  = %2\$s */ ;\n" .
+					"/*!50003 SET character_set_results = %2\$s */ ;\n" .
+					"/*!50003 SET collation_connection  = %3\$s */ ;\n" .
+					"/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;\n" .
+					"/*!50003 SET sql_mode              = '%4\$s' */ ;\n" .
+					"DELIMITER ;;\n" .
+					"/*!50003 %5\$s */;;\n" .
+					"DELIMITER ;\n" .
+					"/*!50003 SET sql_mode              = @saved_sql_mode */ ;\n" .
+					"/*!50003 SET character_set_client  = @saved_cs_client */ ;\n" .
+					"/*!50003 SET character_set_results = @saved_cs_results */ ;\n" .
 					"/*!50003 SET collation_connection  = @saved_col_connection */ ;\n",
 					$create_trigger['Trigger'],
 					$create_trigger['character_set_client'],
@@ -944,14 +973,14 @@ class BackWPup_MySQLDump {
 				$this->logQueryError( $e->getMessage(), $query );
 			}
 		}
-    }
+	}
 
-    /**
-     * Writes data to handle and compress.
-     *
-     * @param $data string to write
-     *
-     * @throws BackWPup_MySQLDump_Exception
+	/**
+	 * Writes data to handle and compress.
+	 *
+	 * @param string $data Data to write.
+	 *
+	 * @throws BackWPup_MySQLDump_Exception When writing fails.
 	 */
 	protected function write( $data ) {
 		$written = fwrite( $this->handle, (string) $data ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
@@ -959,10 +988,10 @@ class BackWPup_MySQLDump {
 		if ( ! $written ) {
 			throw new BackWPup_MySQLDump_Exception( esc_html__( 'Error while writing file!', 'backwpup' ) );
 		}
-    }
+	}
 
-    /**
-     * Closes all confections on shutdown.
+	/**
+	 * Closes all confections on shutdown.
 	 */
 	public function __destruct() {
 		// Close MySQL connection.
@@ -974,30 +1003,29 @@ class BackWPup_MySQLDump {
 			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Closing stream resource.
 			fclose( $this->handle );
 		}
-    }
+	}
 
-    /**
-     * Get table type for given table.
-     *
-     * @param string $table the table to look up the type for
-     *
-     * @return string The table type if found
-     */
-    protected function get_table_type_for($table)
-    {
-        if (isset($this->table_types[$table])) {
-            return $this->table_types[$table];
-        }
+	/**
+	 * Get table type for given table.
+	 *
+	 * @param string $table The table to look up the type for.
+	 *
+	 * @return string|null The table type if found, null otherwise.
+	 */
+	protected function get_table_type_for( $table ) {
+		if ( isset( $this->table_types[ $table ] ) ) {
+			return $this->table_types[ $table ];
+		}
 
-        return null;
-    }
+		return null;
+	}
 
 	/**
 	 * Ensure table name exists in the whitelist and is safe to use.
 	 *
-	 * @param string $table
+	 * @param string $table Table name to validate.
 	 *
-     * @throws BackWPup_MySQLDump_Exception
+	 * @throws BackWPup_MySQLDump_Exception When the table name is invalid.
 	 */
 	protected function assertTableName( $table ): void {
 		if ( ! isset( $this->table_types[ $table ] ) || $this->isInvalidIdentifier( $table ) ) {
@@ -1009,16 +1037,16 @@ class BackWPup_MySQLDump {
 				)
 			);
 		}
-    }
+	}
 
 	/**
 	 * Escape an identifier for SQL usage.
 	 *
-	 * @param string $identifier
+	 * @param string $identifier Identifier to escape.
 	 *
-	 * @return string
+	 * @return string Escaped identifier.
 	 *
-     * @throws BackWPup_MySQLDump_Exception
+	 * @throws BackWPup_MySQLDump_Exception When the identifier is invalid.
 	 */
 	protected function escapeIdentifier( $identifier ) {
 		if ( $this->isInvalidIdentifier( $identifier ) ) {
@@ -1029,7 +1057,7 @@ class BackWPup_MySQLDump {
 					esc_html( (string) $identifier )
 				)
 			);
-        }
+		}
 
 		return '`' . $identifier . '`';
 	}
@@ -1037,9 +1065,9 @@ class BackWPup_MySQLDump {
 	/**
 	 * Check whether an identifier contains unsafe characters.
 	 *
-	 * @param string $identifier
+	 * @param string $identifier Identifier to check.
 	 *
-     * @return bool
+	 * @return bool True when invalid, false otherwise.
 	 */
 	private function isInvalidIdentifier( $identifier ): bool {
 		return '' === $identifier || 1 === preg_match( '/[`\\x00]/', (string) $identifier );
@@ -1067,16 +1095,16 @@ class BackWPup_MySQLDump {
 		return $fields;
 	}
 
-    /**
-     * Perform query to fetch table rows.
-     *
-     * @param string $table  The table on which to perform the query
-     * @param int    $start  The record to start at
-     * @param int    $length How many records to fetch
-     *
-     * @throws \BackWPup_MySQLDump_Exception In case of mysql error
+	/**
+	 * Perform query to fetch table rows.
 	 *
-	 * @return array{rows: array<int, array<string, mixed>>, fields: array<int, object>} The resulting data
+	 * @param string $table  The table on which to perform the query.
+	 * @param int    $start  The record to start at.
+	 * @param int    $length How many records to fetch.
+	 *
+	 * @throws BackWPup_MySQLDump_Exception In case of MySQL error.
+	 *
+	 * @return array{rows: array<int, array<string, mixed>>, fields: array<int, object>} The resulting data.
 	 */
 	protected function do_table_query( $table, $start, $length ) {
 		$this->assertTableName( $table );
@@ -1096,21 +1124,14 @@ class BackWPup_MySQLDump {
 		];
 	}
 
-    /**
-     * Escapes a string for MySQL.
-     *
-     * @param string $value The value to escape
-     *
-     * @return string The escaped string
+	/**
+	 * Escapes a string for MySQL.
+	 *
+	 * @param string $value The value to escape.
+	 *
+	 * @return string The escaped string.
 	 */
 	protected function escapeString( $value ) {
 		return $this->wpdb->remove_placeholder_escape( $this->wpdb->_real_escape( $value ) );
 	}
-}
-
-/**
- * Exception Handler.
- */
-class BackWPup_MySQLDump_Exception extends Exception
-{
 }

@@ -16,15 +16,15 @@ class BackWPup_Destination_Ftp_Downloader implements BackWPup_Destination_Downlo
 	 * Connection data.
 	 *
 	 * @var \BackWpUp_Destination_Downloader_Data
-     */
-    private $data;
+	 */
+	private $data;
 
 	/**
 	 * Local file handler.
 	 *
 	 * @var resource
-     */
-    private $local_file_handler;
+	 */
+	private $local_file_handler;
 
 	/**
 	 * FTP connection.
@@ -40,28 +40,29 @@ class BackWPup_Destination_Ftp_Downloader implements BackWPup_Destination_Downlo
 	 */
 	private $remote_file_size = 0;
 
-    /**
-     * BackWPup_Destination_Ftp_Downloader constructor.
-     */
-    public function __construct(BackWpUp_Destination_Downloader_Data $data)
-    {
+	/**
+	 * BackWPup_Destination_Ftp_Downloader constructor.
+	 *
+	 * @param BackWpUp_Destination_Downloader_Data $data Download data.
+	 */
+	public function __construct( BackWpUp_Destination_Downloader_Data $data ) {
 		$this->data = $data;
 	}
 
-    /**
-     * Clean up things.
+	/**
+	 * Clean up things.
 	 */
 	public function __destruct() {
 		if ( is_resource( $this->local_file_handler ) ) {
 			fclose( $this->local_file_handler ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 		}
-    }
+	}
 
-    /**
+	/**
 	 * {@inheritdoc}
 	 *
-	 * @param int $start_byte start.
-	 * @param int $end_byte end.
+	 * @param int $start_byte Start byte offset.
+	 * @param int $end_byte   End byte offset.
 	 *
 	 * @return void
 	 * @throws RuntimeException If downloaded file size does not match expected size.
@@ -70,7 +71,7 @@ class BackWPup_Destination_Ftp_Downloader implements BackWPup_Destination_Downlo
 		$this->ftp_resource();
 		$this->local_file_handler();
 
-		$this->ftp->download( $this->data->source_file_path(), $this->local_file_handler,  $start_byte, $end_byte - $start_byte + 1 );
+		$this->ftp->download( $this->data->source_file_path(), $this->local_file_handler, $start_byte, $end_byte - $start_byte + 1 );
 
 		$local_file_size = ftell( $this->local_file_handler );
 		if ( $end_byte + 1 >= $this->calculate_size() && $this->calculate_size() !== $local_file_size ) {
@@ -78,8 +79,8 @@ class BackWPup_Destination_Ftp_Downloader implements BackWPup_Destination_Downlo
 		}
 	}
 
-    /**
-     * {@inheritdoc}
+	/**
+	 * {@inheritdoc}
 	 */
 	public function calculate_size(): int {
 		$this->ftp_resource();
@@ -91,25 +92,25 @@ class BackWPup_Destination_Ftp_Downloader implements BackWPup_Destination_Downlo
 		return $this->remote_file_size;
 	}
 
-    /**
-     * Set the local file handler.
+	/**
+	 * Set the local file handler.
 	 *
 	 * @throws \RuntimeException On file open error.
 	 */
 	private function local_file_handler() {
 		if ( is_resource( $this->local_file_handler ) ) {
 			return;
-        }
+		}
 
-		$this->local_file_handler = fopen($this->data->local_file_path(), 'wb' ); //phpcs:ignore
+		$this->local_file_handler = fopen( $this->data->local_file_path(), 'wb' ); //phpcs:ignore
 
 		if ( ! is_resource( $this->local_file_handler ) ) {
 			throw new \RuntimeException( esc_html__( 'File could not be opened for writing.', 'backwpup' ) );
 		}
-    }
+	}
 
-    /**
-     * Set the Ftp resource.
+	/**
+	 * Set the Ftp resource.
 	 */
 	private function ftp_resource(): void {
 		if ( $this->ftp ) {

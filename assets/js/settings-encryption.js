@@ -54,7 +54,7 @@
 
       data = {
         action: "encrypt_key_handler",
-        task: "generateSymmetricKey",
+        task: "generate_symmetric_key",
         _ajax_nonce: nonce(),
       };
 
@@ -112,7 +112,7 @@
 
       data = {
         action: "encrypt_key_handler",
-        task: "generateAsymmetricKeyPair",
+        task: "generate_asymmetric_key_pair",
         _ajax_nonce: nonce(),
       };
       onDone = function (response) {
@@ -220,7 +220,7 @@
 
       data = {
         action: "encrypt_key_handler",
-        task: "validateAsymmetricKeyPair",
+        task: "validate_asymmetric_key_pair",
         publickey: this.asymmetricPublicKeyField.value,
         privatekey: this.asymmetricPrivateKeyField.value,
         _ajax_nonce: nonce(),

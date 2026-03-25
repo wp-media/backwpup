@@ -10,6 +10,6 @@
  *
  * @since   3.5.0
  */
-class BackWPup_Factory_Exception extends \RuntimeException
-{
+class BackWPup_Factory_Exception extends \RuntimeException {
+
 }

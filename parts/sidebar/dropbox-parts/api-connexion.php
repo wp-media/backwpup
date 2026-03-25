@@ -6,9 +6,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $dropbox = new BackWPup_Destination_Dropbox_API('dropbox');
-$dropbox_auth_url = $dropbox->oAuthAuthorize();
+$dropbox_auth_url = $dropbox->o_auth_authorize();
 $dropbox = new BackWPup_Destination_Dropbox_API('sandbox');
-$sandbox_auth_url = $dropbox->oAuthAuthorize();
+$sandbox_auth_url = $dropbox->o_auth_authorize();
 
 $dropboxtoken = BackWPup_Option::get($job_id, 'dropboxtoken', []);
 ?>

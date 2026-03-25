@@ -34,12 +34,14 @@ class LicenseNoticeFactory {
 	 *
 	 * @param LicenseState $state The normalized license state.
 	 * @param bool         $is_legacy_payment_method Whether the license uses the legacy payment flow.
+	 * @param bool         $is_backwpup_main_screen Whether the notice is rendered on the main BackWPup screen.
 	 *
 	 * @return array{title:string, message:string} Title and message to be rendered.
 	 */
 	public function build(
 		LicenseState $state,
-		bool $is_legacy_payment_method
+		bool $is_legacy_payment_method,
+		bool $is_backwpup_main_screen
 	): array {
 
 		if ( $is_legacy_payment_method ) {
@@ -64,14 +66,8 @@ class LicenseNoticeFactory {
 
 		switch ( $state->state() ) {
 			case LicenseState::STATE_NOT_ACTIVATED:
-				return [
-					'title'   => sprintf(
-						// translators: 1: <strong> opening tag, 2: </strong> closing tag.
-					__( '⚠️ %1$sYour BackWPup Pro license is not activated%2$s', 'backwpup' ),
-						'<strong>',
-						'</strong>'
-					),
-					'message' => sprintf(
+				$message = $is_backwpup_main_screen
+					? sprintf(
 						// translators: 1: line break tag, 2: opening <button> tag for "Advanced settings", 3: closing </button> tag.
 						__(
 							'To unlock Pro features and receive updates, you need to activate your license.%1$s%1$sGo to %2$sAdvanced settings%3$s → License, then enter your API Key and Product ID and click Activate.%1$sOnce the details are valid, your license will be activated automatically.',
@@ -80,7 +76,26 @@ class LicenseNoticeFactory {
 						'<br>',
 						'<button type="button" class="text-base gap-4 inline-flex items-center justify-center leading-5 text-primary-darker border-b border-primary-darker font-title enabled:hover:text-primary-lighter enabled:hover:border-primary-lighter js-backwpup-open-sidebar" data-content="advanced-settings">',
 						'</button>'
+					)
+					: sprintf(
+						// translators: 1: line break tag, 2: <strong> opening tag, 3: </strong> closing tag.
+						__(
+							'To unlock Pro features and receive updates, you need to activate your license.%1$s%1$sGo to %2$sBackWPup Pro → Advanced settings → License%3$s, then enter your API Key and Product ID and click Activate.%1$sOnce the details are valid, your license will be activated automatically.',
+							'backwpup'
+						),
+						'<br>',
+						'<strong>',
+						'</strong>'
+					);
+
+				return [
+					'title'   => sprintf(
+						// translators: 1: <strong> opening tag, 2: </strong> closing tag.
+					__( '⚠️ %1$sYour BackWPup Pro license is not activated%2$s', 'backwpup' ),
+						'<strong>',
+						'</strong>'
 					),
+					'message' => $message,
 				];
 
 			case LicenseState::STATE_LIMIT_REACHED:

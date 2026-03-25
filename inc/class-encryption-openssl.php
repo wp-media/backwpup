@@ -10,147 +10,151 @@
  * interface in a file named `class-...php`. When we get rid of PHP 5.2, we setup a better autoloader and we get rid of
  * WP coding standard, we finally could consider to introduce an interface.
  */
-class BackWPup_Encryption_OpenSSL
-{
-    /**
-     * Prefix.
-     *
-     * @var string
-     */
-    public const PREFIX = 'OSSL$';
+class BackWPup_Encryption_OpenSSL {
 
-    /**
-     * Cipher Method.
-     *
-     * @var string
-     */
-    private static $cipher_method;
+	/**
+	 * Prefix.
+	 *
+	 * @var string
+	 */
+	public const PREFIX = 'OSSL$';
 
-    private $key;
+	/**
+	 * Cipher Method.
+	 *
+	 * @var string
+	 */
+	private static $cipher_method;
 
-    private $key_type;
+	/**
+	 * Encryption key.
+	 *
+	 * @var string
+	 */
+	private $key;
 
-    /**
-     * BackWPup_Encryption_OpenSSL constructor.
-     *
-     * @param string $enc_key
-     * @param string $key_type
-     */
-    public function __construct($enc_key, $key_type)
-    {
-        $this->key = md5((string) $enc_key);
-        $this->key_type = (string) $key_type;
-    }
+	/**
+	 * Encryption key type.
+	 *
+	 * @var string
+	 */
+	private $key_type;
 
-    /**
-     * Supported.
-     *
-     * @return bool
-     */
-    public static function supported()
-    {
-        return
-            function_exists('openssl_get_cipher_methods')
-            && self::cipher_method();
-    }
+	/**
+	 * BackWPup_Encryption_OpenSSL constructor.
+	 *
+	 * @param string $enc_key  Encryption key.
+	 * @param string $key_type Key type identifier.
+	 */
+	public function __construct( $enc_key, $key_type ) {
+		$this->key      = md5( (string) $enc_key );
+		$this->key_type = (string) $key_type;
+	}
 
-    /**
-     * Encrypt a string using Open SSL lib with  AES-256-CTR cypher.
-     *
-     * @param string $string value to encrypt
-     *
-     * @return string encrypted string
-     */
-    public function encrypt($string)
-    {
-        if (!is_string($string) || !$string) {
-            return '';
-        }
+	/**
+	 * Supported.
+	 *
+	 * @return bool
+	 */
+	public static function supported() {
+		return function_exists( 'openssl_get_cipher_methods' )
+			&& self::cipher_method();
+	}
 
-        $nonce = openssl_random_pseudo_bytes(openssl_cipher_iv_length(self::cipher_method()));
-        $openssl_raw_data = defined('OPENSSL_RAW_DATA') ? OPENSSL_RAW_DATA : 1;
-        $encrypted = openssl_encrypt(
-            $string,
-            self::cipher_method(),
-            $this->key,
-            $openssl_raw_data,
-            $nonce
-        );
+	/**
+	 * Encrypt a string using Open SSL lib with  AES-256-CTR cypher.
+	 *
+	 * @param string $value Value to encrypt.
+	 *
+	 * @return string Encrypted string.
+	 */
+	public function encrypt( $value ) {
+		if ( ! is_string( $value ) || ! $value ) {
+			return '';
+		}
 
-        return BackWPup_Encryption::PREFIX . self::PREFIX . $this->key_type . base64_encode($nonce . $encrypted);
-    }
+		$nonce            = openssl_random_pseudo_bytes( openssl_cipher_iv_length( self::cipher_method() ) );
+		$openssl_raw_data = defined( 'OPENSSL_RAW_DATA' ) ? OPENSSL_RAW_DATA : 1;
+		$encrypted        = openssl_encrypt(
+			$value,
+			self::cipher_method(),
+			$this->key,
+			$openssl_raw_data,
+			$nonce
+		);
 
-    /**
-     * Decrypt a string using Open SSL lib with  AES-256-CTR cypher.
-     *
-     * @param string $string value to decrypt
-     *
-     * @return string decrypted string
-     */
-    public function decrypt($string)
-    {
-        if (
-            !is_string($string)
-            || !$string
-            || strpos($string, BackWPup_Encryption::PREFIX . self::PREFIX . $this->key_type) !== 0
-        ) {
-            return '';
-        }
+		return BackWPup_Encryption::PREFIX . self::PREFIX . $this->key_type . base64_encode( $nonce . $encrypted ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- Binary-safe encoding.
+	}
 
-        $no_prefix = substr(
-            $string,
-            strlen(BackWPup_Encryption::PREFIX . self::PREFIX . $this->key_type)
-        );
+	/**
+	 * Decrypt a string using Open SSL lib with  AES-256-CTR cypher.
+	 *
+	 * @param string $value Value to decrypt.
+	 *
+	 * @return string Decrypted string.
+	 */
+	public function decrypt( $value ) {
+		if (
+			! is_string( $value )
+			|| ! $value
+			|| 0 !== strpos( $value, BackWPup_Encryption::PREFIX . self::PREFIX . $this->key_type )
+		) {
+			return '';
+		}
 
-        $encrypted = base64_decode($no_prefix, true);
-        if ($encrypted === false) {
-            return '';
-        }
+		$no_prefix = substr(
+			$value,
+			strlen( BackWPup_Encryption::PREFIX . self::PREFIX . $this->key_type )
+		);
 
-        $nonce_size = openssl_cipher_iv_length(self::cipher_method());
-        $nonce = substr($encrypted, 0, $nonce_size);
-        $to_decrypt = substr($encrypted, $nonce_size);
-        $openssl_raw_data = defined('OPENSSL_RAW_DATA') ? OPENSSL_RAW_DATA : true;
+		$encrypted = base64_decode( $no_prefix, true ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode -- Binary-safe decoding.
+		if ( false === $encrypted ) {
+			return '';
+		}
 
-        return openssl_decrypt(
-            $to_decrypt,
-            self::cipher_method(),
-            $this->key,
-            $openssl_raw_data,
-            $nonce
-        );
-    }
+		$nonce_size       = openssl_cipher_iv_length( self::cipher_method() );
+		$nonce            = substr( $encrypted, 0, $nonce_size );
+		$to_decrypt       = substr( $encrypted, $nonce_size );
+		$openssl_raw_data = defined( 'OPENSSL_RAW_DATA' ) ? OPENSSL_RAW_DATA : true;
 
-    /**
-     * Cipher Method.
-     *
-     * @return string
-     */
-    private static function cipher_method()
-    {
-        if (is_string(self::$cipher_method)) {
-            return self::$cipher_method;
-        }
+		return openssl_decrypt(
+			$to_decrypt,
+			self::cipher_method(),
+			$this->key,
+			$openssl_raw_data,
+			$nonce
+		);
+	}
 
-        $all_methods = openssl_get_cipher_methods();
-        if (!$all_methods) {
-            self::$cipher_method = '';
+	/**
+	 * Cipher Method.
+	 *
+	 * @return string
+	 */
+	private static function cipher_method() {
+		if ( is_string( self::$cipher_method ) ) {
+			return self::$cipher_method;
+		}
 
-            return '';
-        }
+		$all_methods = openssl_get_cipher_methods();
+		if ( ! $all_methods ) {
+			self::$cipher_method = '';
 
-        $preferred = ['AES-256-CTR', 'AES-128-CTR', 'AES-192-CTR'];
+			return '';
+		}
 
-        foreach ($preferred as $method) {
-            if (in_array($method, $all_methods, true)) {
-                self::$cipher_method = $method;
+		$preferred = [ 'AES-256-CTR', 'AES-128-CTR', 'AES-192-CTR' ];
 
-                return $method;
-            }
-        }
+		foreach ( $preferred as $method ) {
+			if ( in_array( $method, $all_methods, true ) ) {
+				self::$cipher_method = $method;
 
-        self::$cipher_method = reset($all_methods);
+				return $method;
+			}
+		}
 
-        return self::$cipher_method;
-    }
+		self::$cipher_method = reset( $all_methods );
+
+		return self::$cipher_method;
+	}
 }

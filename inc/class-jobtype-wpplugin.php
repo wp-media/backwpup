@@ -1,42 +1,50 @@
 <?php
-class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes
-{
-    public function __construct()
-    {
-        $this->info['ID'] = 'WPPLUGIN';
-        $this->info['name'] = __('Plugins', 'backwpup');
-        $this->info['description'] = __('Installed plugins list', 'backwpup');
-        $this->info['URI'] = __('http://backwpup.com', 'backwpup');
-        $this->info['author'] = 'WP Media';
-        $this->info['authorURI'] = 'https://wp-media.me';
-        $this->info['version'] = BackWPup::get_plugin_data('Version');
-    }
+class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes {
 
-    /**
-     * @return bool
-     */
-    public function creates_file()
-    {
-        return true;
-    }
+	/**
+	 * Constructs the plugin list job type.
+	 */
+	public function __construct() {
+		$this->info['ID']          = 'WPPLUGIN';
+		$this->info['name']        = __( 'Plugins', 'backwpup' );
+		$this->info['description'] = __( 'Installed plugins list', 'backwpup' );
+		$this->info['URI']         = __( 'http://backwpup.com', 'backwpup' );
+		$this->info['author']      = 'WP Media';
+		$this->info['authorURI']   = 'https://wp-media.me';
+		$this->info['version']     = BackWPup::get_plugin_data( 'Version' );
+	}
 
-    /**
-     * @return array
-     */
-    public function option_defaults()
-    {
-        return ['pluginlistfilecompression' => '', 'pluginlistfile' => sanitize_file_name(get_bloginfo('name')) . '.pluginlist.%Y-%m-%d'];
-    }
+	/**
+	 * Whether the job type creates a file.
+	 *
+	 * @return bool
+	 */
+	public function creates_file() {
+		return true;
+	}
 
-    /**
-     * @param $jobid
-     */
-    public function edit_tab($jobid)
-    {
-        ?>
+	/**
+	 * Returns default options for the job type.
+	 *
+	 * @return array
+	 */
+	public function option_defaults() {
+		return [
+			'pluginlistfilecompression' => '',
+			'pluginlistfile'            => sanitize_file_name( get_bloginfo( 'name' ) ) . '.pluginlist.%Y-%m-%d',
+		];
+	}
+
+	/**
+	 * Renders the job type edit tab.
+	 *
+	 * @param int|array $jobid Job ID or list of job IDs.
+	 */
+	public function edit_tab( $jobid ) {
+		?>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="idpluginlistfile"><?php esc_html_e('Plugin list file name', 'backwpup'); ?></label></th>
+				<th scope="row"><label for="idpluginlistfile"><?php esc_html_e( 'Plugin list file name', 'backwpup' ); ?></label></th>
 				<td>
 					<input readonly disabled  name="pluginlistfile" type="text" id="idpluginlistfile"
 							value="<?php echo esc_attr( BackWPup_Option::get( $jobid, 'pluginlistfile' ) ); ?>"
@@ -44,7 +52,7 @@ class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e('File compression', 'backwpup'); ?></th>
+				<th scope="row"><?php esc_html_e( 'File compression', 'backwpup' ); ?></th>
 				<td>
 					<fieldset>
 						<?php
@@ -59,28 +67,45 @@ class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes
 				</td>
 			</tr>
 		</table>
-	<?php
-    }
+		<?php
+	}
 
-    /**
-     * @param $id
-     */
-    public function edit_form_post_save($id)
-    {
-        BackWPup_Option::update($id, 'pluginlistfile', sanitize_text_field($_POST['pluginlistfile']));
-        if ($_POST['pluginlistfilecompression'] === '' || $_POST['pluginlistfilecompression'] === '.gz' || $_POST['pluginlistfilecompression'] === '.bz2') {
-            BackWPup_Option::update($id, 'pluginlistfilecompression', $_POST['pluginlistfilecompression']);
-        }
-    }
+	/**
+	 * Saves the job type settings.
+	 *
+	 * @param int   $id     Job ID.
+	 * @param array $params Optional. Posted values to update.
+	 */
+	public function edit_form_post_save( $id, array $params = [] ) {
+		if ( empty( $params ) ) {
+			check_admin_referer( 'backwpupeditjob_page' );
+			$params = $_POST;
+		}
 
-    /**
-     * @param $job_object
-     *
-     * @return bool
-     */
-    public function job_run(BackWPup_Job $job_object)
-    {
-        $job_object->substeps_todo = 1;
+		if ( isset( $params['pluginlistfile'] ) ) {
+			$plugin_list_file = sanitize_text_field( wp_unslash( $params['pluginlistfile'] ) );
+			BackWPup_Option::update( $id, 'pluginlistfile', $plugin_list_file );
+		}
+
+		$compression = '';
+		if ( isset( $params['pluginlistfilecompression'] ) ) {
+			$compression = sanitize_text_field( wp_unslash( $params['pluginlistfilecompression'] ) );
+		}
+
+		if ( '' === $compression || '.gz' === $compression || '.bz2' === $compression ) {
+			BackWPup_Option::update( $id, 'pluginlistfilecompression', $compression );
+		}
+	}
+
+	/**
+	 * Runs the job type.
+	 *
+	 * @param BackWPup_Job $job_object Job object.
+	 *
+	 * @return bool
+	 */
+	public function job_run( BackWPup_Job $job_object ) {
+		$job_object->substeps_todo = 1;
 
 		$job_object->log(
 			sprintf(
@@ -149,10 +174,10 @@ class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes
 			}
 			fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 		} else {
-            $job_object->log(__('Can not open target file for writing.', 'backwpup'), E_USER_ERROR);
+			$job_object->log( __( 'Can not open target file for writing.', 'backwpup' ), E_USER_ERROR );
 
-            return false;
-        }
+			return false;
+		}
 
 		// Add file to backup files.
 		if ( is_readable( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->temp['pluginlistfile'] ) ) {
@@ -168,6 +193,6 @@ class BackWPup_JobType_WPPlugin extends BackWPup_JobTypes
 		}
 		$job_object->substeps_done = 1;
 
-        return true;
-    }
+		return true;
+	}
 }

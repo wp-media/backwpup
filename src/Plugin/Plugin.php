@@ -7,14 +7,11 @@ use BackWPup;
 use BackWPup_Admin;
 use BackWPup_Adminbar;
 use BackWPup_Cron;
-use BackWPup_EasyCron;
 use BackWPup_Install;
 use BackWPup_Job;
 use BackWPup_Page_Settings;
 use BackWPup_Pro;
 use BackWPup_ThirdParties;
-use BackWPup_WP_API;
-use BackWPup_WP_CLI;
 use Inpsyde\BackWPup\Pro\License\Api\LicenseActivation;
 use Inpsyde\BackWPup\Pro\License\Api\LicenseDeactivation;
 use Inpsyde\BackWPup\Pro\License\Api\LicenseStatusRequest;
@@ -25,14 +22,12 @@ use Inpsyde\BackWPup\Pro\License\LicenseSettingsView;
 use Inpsyde\BackWPup\Pro\License\LicenseSettingUpdater;
 use Inpsyde\BackWPup\Pro\Settings\EncryptionSettingsView;
 use Inpsyde\BackWPup\Pro\Settings\EncryptionSettingUpdater;
-use WP_CLI;
 use WPMedia\BackWPup\Admin\Options\Options;
 use WPMedia\BackWPup\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WPMedia\BackWPup\Dependencies\League\Container\Container;
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\ServiceProviderInterface;
 use WPMedia\BackWPup\EventManagement\EventManager;
 use WPMedia\BackWPup\EventManagement\SubscriberInterface;
-use WPMedia\BackWPup\License\Infrastructure\LicenseOptions;
 use WPMedia\BackWPup\License\Infrastructure\WpOptionsLicenseRepository;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -277,8 +272,6 @@ class Plugin {
 			$admin_bar = new BackWPup_Adminbar( $admin );
 			add_action( 'init', [ $admin_bar, 'init' ] );
 		}
-
-		new BackWPup_EasyCron();
 	}
 
 	/**

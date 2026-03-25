@@ -678,17 +678,17 @@
         },
         {
             "name": "inpsyde/backwpup-restore-shared",
-            "version": "0.20.7",
-            "version_normalized": "0.20.7.0",
+            "version": "0.20.8",
+            "version_normalized": "0.20.8.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:wp-media/backwpup-restore-shared.git",
-                "reference": "20e2ac051fcabe344246945fe3db3e01d747dcd8"
+                "reference": "ffeee0ce498dbea9ae0fb5201f9832d914d9ce01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/backwpup-restore-shared/zipball/20e2ac051fcabe344246945fe3db3e01d747dcd8",
-                "reference": "20e2ac051fcabe344246945fe3db3e01d747dcd8",
+                "url": "https://api.github.com/repos/wp-media/backwpup-restore-shared/zipball/ffeee0ce498dbea9ae0fb5201f9832d914d9ce01",
+                "reference": "ffeee0ce498dbea9ae0fb5201f9832d914d9ce01",
                 "shasum": ""
             },
             "require": {
@@ -718,7 +718,7 @@
                 "squizlabs/php_codesniffer": "^3.4",
                 "vimeo/psalm": "^4.18"
             },
-            "time": "2026-02-02T15:06:36+00:00",
+            "time": "2026-03-18T09:35:32+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -784,7 +784,7 @@
             ],
             "description": "A library for shared code for backwpup restore feature.",
             "support": {
-                "source": "https://github.com/wp-media/backwpup-restore-shared/tree/0.20.7",
+                "source": "https://github.com/wp-media/backwpup-restore-shared/tree/0.20.8",
                 "issues": "https://github.com/wp-media/backwpup-restore-shared/issues"
             },
             "install-path": "../inpsyde/backwpup-restore-shared"

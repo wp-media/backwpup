@@ -1,13 +1,13 @@
 jQuery(document).ready(function ($) {
     $('input[name="activetype"]').on('change', function () {
-        if ( $(this).val() == 'wpcron' || $(this).val() == 'easycron') {
+        if ( $(this).val() == 'wpcron' ) {
             $('.wpcron').show();
         } else {
             $('.wpcron').hide();
         }
     });
 
-    if ($('input[name="activetype"]:checked').val() == 'wpcron' || $('input[name="activetype"]:checked').val() == 'easycron' ) {
+    if ($('input[name="activetype"]:checked').val() == 'wpcron' ) {
         $('.wpcron').show();
     } else {
         $('.wpcron').hide();

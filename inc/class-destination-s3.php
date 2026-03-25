@@ -80,7 +80,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
 
         if (!empty($args['s3accesskey']) && !empty($args['s3secretkey'])) {
             if (empty($args['s3base_url'])) {
-                $aws_destination = BackWPup_S3_Destination::fromOption($args['s3region']);
+                $aws_destination = BackWPup_S3_Destination::from_option($args['s3region']);
             } else {
                 $options = [
                     'label' => __('Custom S3 destination', 'backwpup'),
@@ -91,7 +91,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
                     'version' => $args['s3base_version'],
                     'signature' => $args['s3base_signature'],
                 ];
-                $aws_destination = BackWPup_S3_Destination::fromOptionArray($options);
+                $aws_destination = BackWPup_S3_Destination::from_option_array($options);
             }
 
             try {
@@ -248,9 +248,9 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
 				$region = BackWPup_Option::get($jobid, 's3base_url');
 				if (empty($region)) {
 					$region = BackWPup_Option::get($jobid, 's3region');
-					$aws_destination = BackWPup_S3_Destination::fromOption($region);
+					$aws_destination = BackWPup_S3_Destination::from_option($region);
 				} else {
-					$aws_destination = BackWPup_S3_Destination::fromJobId($jobid);
+					$aws_destination = BackWPup_S3_Destination::from_job_id($jobid);
 				}
 
 				$s3 = $aws_destination->client(
@@ -260,7 +260,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
 				$s3->createBucket(
 					[
 						'Bucket' => sanitize_text_field($_POST['s3newbucket']),
-						'PathStyle' => $aws_destination->onlyPathStyleBucket(),
+						'PathStyle' => $aws_destination->only_path_style_bucket(),
 						'LocationConstraint' => $aws_destination->region(),
 					]
 				);
@@ -293,9 +293,9 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
                 $region = BackWPup_Option::get($jobid, 's3base_url');
                 if (empty($region)) {
                     $region = BackWPup_Option::get($jobid, 's3region');
-                    $aws_destination = BackWPup_S3_Destination::fromOption($region);
+                    $aws_destination = BackWPup_S3_Destination::from_option($region);
                 } else {
-                    $aws_destination = BackWPup_S3_Destination::fromJobId($jobid);
+                    $aws_destination = BackWPup_S3_Destination::from_job_id($jobid);
                 }
 
                 $s3 = $aws_destination->client(
@@ -345,9 +345,9 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
         }
 
         if (empty($job_object->job['s3base_url'])) {
-            $aws_destination = BackWPup_S3_Destination::fromOption($job_object->job['s3region']);
+            $aws_destination = BackWPup_S3_Destination::from_option($job_object->job['s3region']);
         } else {
-            $aws_destination = BackWPup_S3_Destination::fromJobId($job_object->job['jobid']);
+            $aws_destination = BackWPup_S3_Destination::from_job_id($job_object->job['jobid']);
         }
         $s3 = $aws_destination->client(
             BackWPup_Option::get($jobid, 's3accesskey'),
@@ -459,9 +459,9 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
 
         try {
             if (empty($job_object->job['s3base_url'])) {
-                $aws_destination = BackWPup_S3_Destination::fromOption($job_object->job['s3region']);
+                $aws_destination = BackWPup_S3_Destination::from_option($job_object->job['s3region']);
             } else {
-                $aws_destination = BackWPup_S3_Destination::fromJobId($job_object->job['jobid']);
+                $aws_destination = BackWPup_S3_Destination::from_job_id($job_object->job['jobid']);
             }
 
             $s3 = $aws_destination->client(
@@ -488,7 +488,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
                     return true;
                 }
 
-                if ($aws_destination->supportsMultipart() && empty($job_object->steps_data[$job_object->step_working]['UploadId'])) {
+                if ($aws_destination->supports_multipart() && empty($job_object->steps_data[$job_object->step_working]['UploadId'])) {
                     //Check for aborted Multipart Uploads
                     $job_object->log(__('Checking for not aborted multipart Uploads&#160;&hellip;', 'backwpup'));
                     $multipart_uploads = $s3->listMultipartUploads([
@@ -521,7 +521,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
                 $chunk_size = (int) ceil($job_object->backup_filesize / 10000);
             }
 
-            if (!$aws_destination->supportsMultipart() || $job_object->backup_filesize <= $chunk_size) {
+            if (!$aws_destination->supports_multipart() || $job_object->backup_filesize <= $chunk_size) {
                 // Prepare Upload
                 if (!$up_file_handle = fopen($job_object->backup_folder . $job_object->backup_file, 'rb')) {
                     $job_object->log(__('Can not open source file for transfer.', 'backwpup'), E_USER_ERROR);

@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit78debad7f3a589ccb6f8e0e447ced1a5
+class ComposerStaticInit801e5f9239427f20bcf6f78bc73cac29
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -395,12 +395,12 @@ class ComposerStaticInit78debad7f3a589ccb6f8e0e447ced1a5
         'BackWPup_Destination_S3_Downloader' => __DIR__ . '/../..' . '/inc/class-destination-s3-downloader.php',
         'BackWPup_Destination_SugarSync' => __DIR__ . '/../..' . '/inc/class-destination-sugarsync.php',
         'BackWPup_Destination_SugarSync_API' => __DIR__ . '/../..' . '/inc/class-destination-sugarsync-api.php',
-        'BackWPup_Destination_SugarSync_API_Exception' => __DIR__ . '/../..' . '/inc/class-destination-sugarsync.php',
+        'BackWPup_Destination_SugarSync_API_Exception' => __DIR__ . '/../..' . '/inc/class-destination-sugarsync-api-exception.php',
+        'BackWPup_Destination_SugarSync_Downloader' => __DIR__ . '/../..' . '/inc/class-destination-sugarsync-downloader.php',
         'BackWPup_Destinations' => __DIR__ . '/../..' . '/inc/class-destinations.php',
         'BackWPup_Directory' => __DIR__ . '/../..' . '/inc/class-directory.php',
         'BackWPup_Download_File' => __DIR__ . '/../..' . '/inc/class-download-file.php',
         'BackWPup_Download_File_Interface' => __DIR__ . '/../..' . '/inc/class-download-file-interface.php',
-        'BackWPup_EasyCron' => __DIR__ . '/../..' . '/inc/class-easycron.php',
         'BackWPup_Encryption' => __DIR__ . '/../..' . '/inc/class-encryption.php',
         'BackWPup_Encryption_Fallback' => __DIR__ . '/../..' . '/inc/class-encryption-fallback.php',
         'BackWPup_Encryption_Mcrypt' => __DIR__ . '/../..' . '/inc/class-encryption-mcrypt.php',
@@ -418,7 +418,7 @@ class ComposerStaticInit78debad7f3a589ccb6f8e0e447ced1a5
         'BackWPup_Message_Box' => __DIR__ . '/../..' . '/inc/class-message-box.php',
         'BackWPup_Migrate' => __DIR__ . '/../..' . '/inc/class-migrate.php',
         'BackWPup_MySQLDump' => __DIR__ . '/../..' . '/inc/class-mysqldump.php',
-        'BackWPup_MySQLDump_Exception' => __DIR__ . '/../..' . '/inc/class-mysqldump.php',
+        'BackWPup_MySQLDump_Exception' => __DIR__ . '/../..' . '/inc/class-mysqldump-exception.php',
         'BackWPup_Option' => __DIR__ . '/../..' . '/inc/class-option.php',
         'BackWPup_Page_About' => __DIR__ . '/../..' . '/inc/class-page-about.php',
         'BackWPup_Page_BackWPup' => __DIR__ . '/../..' . '/inc/class-page-backwpup.php',
@@ -445,7 +445,6 @@ class ComposerStaticInit78debad7f3a589ccb6f8e0e447ced1a5
         'Inpsyde\\BackWPup\\MsAzureDestinationConfiguration' => __DIR__ . '/../..' . '/inc/class-msazure-destination-configuration.php',
         'Inpsyde\\BackWPup\\Notice\\DismissibleNoticeOption' => __DIR__ . '/../..' . '/inc/Notice/DismissibleNoticeOption.php',
         'Inpsyde\\BackWPup\\Notice\\DropboxNotice' => __DIR__ . '/../..' . '/inc/Notice/DropboxNotice.php',
-        'Inpsyde\\BackWPup\\Notice\\EasycronUpdateNotice' => __DIR__ . '/../..' . '/inc/Notice/EasycronUpdateNotice.php',
         'Inpsyde\\BackWPup\\Notice\\EnvironmentNotice' => __DIR__ . '/../..' . '/inc/Notice/EnvironmentNotice.php',
         'Inpsyde\\BackWPup\\Notice\\EvaluateNotice' => __DIR__ . '/../..' . '/inc/Notice/EvaluateNotice.php',
         'Inpsyde\\BackWPup\\Notice\\Notice' => __DIR__ . '/../..' . '/inc/Notice/Notice.php',
@@ -499,10 +498,10 @@ class ComposerStaticInit78debad7f3a589ccb6f8e0e447ced1a5
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit78debad7f3a589ccb6f8e0e447ced1a5::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit78debad7f3a589ccb6f8e0e447ced1a5::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit78debad7f3a589ccb6f8e0e447ced1a5::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit78debad7f3a589ccb6f8e0e447ced1a5::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit801e5f9239427f20bcf6f78bc73cac29::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit801e5f9239427f20bcf6f78bc73cac29::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit801e5f9239427f20bcf6f78bc73cac29::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit801e5f9239427f20bcf6f78bc73cac29::$classMap;
 
         }, null, ClassLoader::class);
     }

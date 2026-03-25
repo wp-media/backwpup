@@ -1,76 +1,95 @@
 <?php
-class BackWPup_JobType_DBCheck extends BackWPup_JobTypes
-{
-    public function __construct()
-    {
-        $this->info['ID'] = 'DBCHECK';
-        $this->info['name'] = __('DB Check', 'backwpup');
-        $this->info['description'] = __('Check database tables', 'backwpup');
-        $this->info['URI'] = __('http://backwpup.com', 'backwpup');
-        $this->info['author'] = 'WP Media';
-        $this->info['authorURI'] = 'https://wp-media.me';
-        $this->info['version'] = BackWPup::get_plugin_data('Version');
-    }
+class BackWPup_JobType_DBCheck extends BackWPup_JobTypes {
 
-    /**
-     * @return array
-     */
-    public function option_defaults()
-    {
-        return ['dbcheckwponly' => true, 'dbcheckrepair' => false];
-    }
+	/**
+	 * Constructs the database check job type.
+	 */
+	public function __construct() {
+		$this->info['ID']          = 'DBCHECK';
+		$this->info['name']        = __( 'DB Check', 'backwpup' );
+		$this->info['description'] = __( 'Check database tables', 'backwpup' );
+		$this->info['URI']         = __( 'http://backwpup.com', 'backwpup' );
+		$this->info['author']      = 'WP Media';
+		$this->info['authorURI']   = 'https://wp-media.me';
+		$this->info['version']     = BackWPup::get_plugin_data( 'Version' );
+	}
 
-    /**
-     * @param $jobid
-     */
-    public function edit_tab($jobid)
-    {
-        ?>
-		<h3 class="title"><?php esc_html_e('Settings for database check', 'backwpup'); ?></h3>
+	/**
+	 * Returns default options for the job type.
+	 *
+	 * @return array Default options.
+	 */
+	public function option_defaults() {
+		return [
+			'dbcheckwponly' => true,
+			'dbcheckrepair' => false,
+		];
+	}
+
+	/**
+	 * Renders the job type edit tab.
+	 *
+	 * @param int|array $jobid Job ID or list of job IDs.
+	 */
+	public function edit_tab( $jobid ) {
+		?>
+		<h3 class="title"><?php esc_html_e( 'Settings for database check', 'backwpup' ); ?></h3>
 		<p></p>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><?php esc_html_e('WordPress tables only', 'backwpup'); ?></th>
+				<th scope="row"><?php esc_html_e( 'WordPress tables only', 'backwpup' ); ?></th>
 				<td>
 					<label for="iddbcheckwponly">
 					<input class="checkbox" value="1" id="iddbcheckwponly"
-						   type="checkbox" <?php checked(BackWPup_Option::get($jobid, 'dbcheckwponly'), true); ?>
-						   name="dbcheckwponly"/> <?php esc_html_e('Check WordPress database tables only', 'backwpup'); ?>
-                    </label>
+							type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'dbcheckwponly' ), true ); ?>
+							name="dbcheckwponly"/> <?php esc_html_e( 'Check WordPress database tables only', 'backwpup' ); ?>
+					</label>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php esc_html_e('Repair', 'backwpup'); ?></th>
+				<th scope="row"><?php esc_html_e( 'Repair', 'backwpup' ); ?></th>
 				<td>
-                    <label for="iddbcheckrepair">
+					<label for="iddbcheckrepair">
 					<input class="checkbox" value="1" id="iddbcheckrepair"
-						   type="checkbox" <?php checked(BackWPup_Option::get($jobid, 'dbcheckrepair'), true); ?>
-						   name="dbcheckrepair" /> <?php esc_html_e('Try to repair defect table', 'backwpup'); ?>
+							type="checkbox" <?php checked( BackWPup_Option::get( $jobid, 'dbcheckrepair' ), true ); ?>
+							name="dbcheckrepair" /> <?php esc_html_e( 'Try to repair defect table', 'backwpup' ); ?>
 					</label>
 				</td>
 			</tr>
 		</table>
 		<?php
-    }
+	}
 
-    /**
-     * @param $jobid
-     */
-    public function edit_form_post_save($jobid)
-    {
-        BackWPup_Option::update($jobid, 'dbcheckwponly', !empty($_POST['dbcheckwponly']));
-        BackWPup_Option::update($jobid, 'dbcheckrepair', !empty($_POST['dbcheckrepair']));
-    }
+	/**
+	 * Saves the job type settings.
+	 *
+	 * @param int|array $jobid  Job ID or list of job IDs.
+	 * @param array     $params Optional. Posted values to update.
+	 */
+	public function edit_form_post_save( $jobid, array $params = [] ) {
+		if ( empty( $params ) ) {
+			check_admin_referer( 'backwpupeditjob_page' );
+			$params = $_POST;
+		}
 
-    /**
-     * @param $job_object
-     *
-     * @return bool
-     */
-    public function job_run(BackWPup_Job $job_object)
-    {
-        /** @var wpdb $wpdb */
-        global $wpdb;
+		BackWPup_Option::update( $jobid, 'dbcheckwponly', ! empty( $params['dbcheckwponly'] ) );
+		BackWPup_Option::update( $jobid, 'dbcheckrepair', ! empty( $params['dbcheckrepair'] ) );
+	}
+
+	/**
+	 * Runs the database check job.
+	 *
+	 * @param BackWPup_Job $job_object Job object.
+	 *
+	 * @return bool True on success, false on failure.
+	 */
+	public function job_run( BackWPup_Job $job_object ) {
+		/**
+		 * Database connection.
+		 *
+		 * @var wpdb $wpdb
+		 */
+		global $wpdb;
 
 		$job_object->log(
 			sprintf(
@@ -94,13 +113,15 @@ class BackWPup_JobType_DBCheck extends BackWPup_JobTypes
 			wp_cache_set( $tables_key, $restables, $cache_group, MINUTE_IN_SECONDS );
 		}
 
-        foreach ($restables as $table) {
-            if ($job_object->job['dbcheckwponly'] && substr((string) $table[0], 0, strlen($wpdb->prefix)) != $wpdb->prefix) {
-                continue;
-            }
-            $tables[] = $table[0];
-            $tablestype[$table[0]] = $table[1];
-        }
+		foreach ( $restables as $table ) {
+			$table_name = (string) $table[0];
+			$has_prefix = 0 === strpos( $table_name, $wpdb->prefix );
+			if ( true === $job_object->job['dbcheckwponly'] && ! $has_prefix ) {
+				continue;
+			}
+			$tables[]                  = $table_name;
+			$tablestype[ $table_name ] = $table[1];
+		}
 
 		// Set num.
 		$job_object->substeps_todo = count( $tables );
@@ -114,20 +135,20 @@ class BackWPup_JobType_DBCheck extends BackWPup_JobTypes
 			wp_cache_set( $status_key, $resstatus, $cache_group, MINUTE_IN_SECONDS );
 		}
 
-        foreach ($resstatus as $tablestatus) {
-            $status[$tablestatus['Name']] = $tablestatus;
-        }
+		foreach ( $resstatus as $tablestatus ) {
+			$status[ $tablestatus['Name'] ] = $tablestatus;
+		}
 
 		// Check tables.
 		if ( $job_object->substeps_todo > 0 ) {
 			foreach ( $tables as $table ) {
 				if ( in_array( $table, $job_object->steps_data[ $job_object->step_working ]['DONETABLE'], true ) ) {
 					continue;
-                }
+				}
 
 				if ( ! isset( $tablestype[ $table ] ) ) {
 					continue;
-                }
+				}
 
 				$table_name = esc_sql( $table );
 
@@ -135,15 +156,15 @@ class BackWPup_JobType_DBCheck extends BackWPup_JobTypes
 					/* translators: %s: table name. */
 					$job_object->log( sprintf( __( 'Table %1$s is a view. Not checked.', 'backwpup' ), $table ) );
 
-                    continue;
-                }
+					continue;
+				}
 
 				if ( 'MyISAM' !== $status[ $table ]['Engine'] && 'InnoDB' !== $status[ $table ]['Engine'] ) {
 					/* translators: %s: table name. */
 					$job_object->log( sprintf( __( 'Table %1$s is not a MyISAM/InnoDB table. Not checked.', 'backwpup' ), $table ) );
 
-                    continue;
-                }
+					continue;
+				}
 
 				// CHECK TABLE funktioniert bei MyISAM- und InnoDB-Tabellen (http://dev.mysql.com/doc/refman/5.1/de/check-table.html).
 				$check                = $wpdb->get_row( "CHECK TABLE `{$table_name}` MEDIUM", OBJECT ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Table name comes from SHOW TABLES.
@@ -189,6 +210,6 @@ class BackWPup_JobType_DBCheck extends BackWPup_JobTypes
 
 		unset( $job_object->steps_data[ $job_object->step_working ]['DONETABLE'] );
 
-        return true;
-    }
+		return true;
+	}
 }

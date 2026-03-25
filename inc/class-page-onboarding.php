@@ -1,6 +1,5 @@
 <?php
 
-use WPMedia\BackWPup\Backups\Onboarding\Onboarding;
 use WPMedia\BackWPup\Plugin\Plugin;
 
 class BackWPup_Page_Onboarding {

@@ -1,6 +1,4 @@
 <?php
-
-use function Inpsyde\BackWPup\Infrastructure\Restore\restore_container;
 /**
  * BackWPup_Destination_Downloader.
  *
@@ -10,6 +8,8 @@ use function Inpsyde\BackWPup\Infrastructure\Restore\restore_container;
 use Inpsyde\Restore\Api\Controller\DecryptController;
 use Inpsyde\Restore\Api\Module\Decryption\Exception\DecryptException;
 
+use function Inpsyde\BackWPup\Infrastructure\Restore\restore_container;
+
 /**
  * Class BackWPup_Destination_Downloader.
  *
@@ -18,161 +18,183 @@ use Inpsyde\Restore\Api\Module\Decryption\Exception\DecryptException;
 class BackWPup_Destination_Downloader {
 	public const CAPABILITY = 'backwpup_backups_download';
 
-    public const STATE_DOWNLOADING = 'downloading';
-    public const STATE_ERROR = 'error';
-    public const STATE_DONE = 'done';
-
-    /**
-     * @var \BackWpUp_Destination_Downloader_Data
-     */
-    private $data;
-
-    /**
-     * @var \BackWPup_Destination_Downloader_Interface
-     */
-    private $destination;
-
-    /**
-     * BackWPup_Downloader constructor.
-     *
-     * @param \BackWpUp_Destination_Downloader_Data      $data
-     * @param \BackWPup_Destination_Downloader_Interface $destination
-     */
-    public function __construct(
-        BackWpUp_Destination_Downloader_Data $data,
-        BackWPup_Destination_Downloader_Interface $destination
-    ) {
-        $this->data = $data;
-        $this->destination = $destination;
-    }
-
-    /**
-     * Download file via ajax.
-     */
-    public static function download_by_ajax()
-    {
-        $dest = (string) filter_input(INPUT_GET, 'destination');
-        if (!$dest) {
-            return;
-        }
-
-        $job_id = (int) filter_input(INPUT_GET, 'jobid', FILTER_SANITIZE_NUMBER_INT);
-        if (!$job_id) {
-            return;
-        }
-
-        $file = (string) filter_input(INPUT_GET, 'file');
-        $file_local = (string) filter_input(INPUT_GET, 'local_file');
-        if (!$file || !$file_local) {
-            return;
-        }
-
-        set_time_limit(0);
-        // Set up eventsource headers
-        header('Content-Type: text/event-stream');
-        header('Cache-Control: no-cache');
-        header('X-Accel-Buffering: no');
-        header('Content-Encoding: none');
-
-        // 2KB padding for IE
-        echo ':' . str_repeat(' ', 2048) . "\n\n"; // phpcs:ignore
-
-        // Ensure we're not buffered.
-        wp_ob_end_flush_all();
-        flush();
-
-        /** @var \BackWPup_Destinations $dest_class */
-        $dest_class = BackWPup::get_destination($dest);
-        $dest_class->file_download(
-            $job_id,
-            trim(sanitize_text_field($file)),
-            trim(sanitize_text_field($file_local))
-        );
-    }
-
-    /**
-     * @return bool
-     */
-    public function download_by_chunks()
-    {
-        $this->ensure_user_can_download();
-
-        $source_file_path = $this->data->source_file_path();
-        $local_file_path = $this->data->local_file_path();
-        $size = $this->destination->calculate_size();
-        $start_byte = 0;
-        $chunk_size = 2 * 1024 * 1024;
-        $end_byte = $start_byte + $chunk_size - 1;
-
-        if ($end_byte >= $size) {
-            $end_byte = $size - 1;
-        }
-
-        try {
-            while ($end_byte <= $size) {
-                $this->destination->download_chunk($start_byte, $end_byte);
-                self::send_message(
-                    [
-                        'state' => self::STATE_DOWNLOADING,
-                        'start_byte' => $start_byte,
-                        'end_byte' => $end_byte,
-                        'size' => $size,
-                        'download_percent' => round(($end_byte + 1) / $size * 100),
-                        'filename' => basename($source_file_path),
-                    ]
-                );
-
-                if ($end_byte === $size - 1) {
-                    break;
-                }
-
-                $start_byte = $end_byte + 1;
-                $end_byte = $start_byte + $chunk_size - 1;
-
-                if ($start_byte < $size && $end_byte >= $size) {
-                    $end_byte = $size - 1;
-                }
-            }
-
-            if (BackWPup::is_pro()) {
-                /** @var \Inpsyde\Restore\Api\Module\Decryption\Decrypter $decrypter */
-                $decrypter = restore_container('decrypter');
-                if ($decrypter->isEncrypted($local_file_path)) {
-                    throw new DecryptException(DecryptController::STATE_NEED_DECRYPTION_KEY);
-                }
-            }
-        } catch (Exception $e) {
-            self::send_message(
-                [
-                    'state' => self::STATE_ERROR,
-                    'message' => $e->getMessage(),
-                ],
-                'log'
-            );
-
-            return false;
-        }
-
-        self::send_message([
-            'state' => self::STATE_DONE,
-            'message' => esc_html__('Your download is being generated &hellip;', 'backwpup'),
-        ]);
-
-        return true;
-    }
+	public const STATE_DOWNLOADING = 'downloading';
+	public const STATE_ERROR       = 'error';
+	public const STATE_DONE        = 'done';
 
 	/**
-	 * Downloads a file in chunks using WP-CLI. The method calculates the file size, divides it
-	 * into chunks, and downloads each chunk sequentially until the entire file is downloaded.
+	 * Downloader data object.
+	 *
+	 * @var \BackWpUp_Destination_Downloader_Data
+	 */
+	private $data;
+
+	/**
+	 * Destination downloader service.
+	 *
+	 * @var \BackWPup_Destination_Downloader_Interface
+	 */
+	private $destination;
+
+	/**
+	 * BackWPup_Downloader constructor.
+	 *
+	 * @param \BackWpUp_Destination_Downloader_Data      $data        Download data.
+	 * @param \BackWPup_Destination_Downloader_Interface $destination Destination service.
+	 */
+	public function __construct(
+		BackWpUp_Destination_Downloader_Data $data,
+		BackWPup_Destination_Downloader_Interface $destination
+	) {
+		$this->data        = $data;
+		$this->destination = $destination;
+	}
+
+	/**
+	 * Download file via ajax.
+	 *
+	 * @return void
+	 */
+	public static function download_by_ajax() {
+		$dest = (string) filter_input( INPUT_GET, 'destination' );
+		if ( ! $dest ) {
+			return;
+		}
+
+		$job_id = (int) filter_input( INPUT_GET, 'jobid', FILTER_SANITIZE_NUMBER_INT );
+		if ( ! $job_id ) {
+			return;
+		}
+
+		$file       = (string) filter_input( INPUT_GET, 'file' );
+		$file_local = (string) filter_input( INPUT_GET, 'local_file' );
+		if ( ! $file || ! $file_local ) {
+			return;
+		}
+
+		set_time_limit( 0 );
+		// Set up eventsource headers.
+		header( 'Content-Type: text/event-stream' );
+		header( 'Cache-Control: no-cache' );
+		header( 'X-Accel-Buffering: no' );
+		header( 'Content-Encoding: none' );
+
+		// 2KB padding for IE.
+		echo esc_html( ':' . str_repeat( ' ', 2048 ) . "\n\n" );
+
+		// Ensure we're not buffered.
+		wp_ob_end_flush_all();
+		flush();
+
+		/**
+		 * Destination handler.
+		 *
+		 * @var \BackWPup_Destinations $dest_class
+		 */
+		$dest_class = BackWPup::get_destination( $dest );
+		$dest_class->file_download(
+			$job_id,
+			trim( sanitize_text_field( $file ) ),
+			trim( sanitize_text_field( $file_local ) )
+		);
+	}
+
+	/**
+	 * Downloads the file by chunks.
+	 *
+	 * @throws DecryptException When an encrypted archive needs a decryption key.
+	 *
+	 * @return bool True on success, false on error.
+	 */
+	public function download_by_chunks() {
+		$this->ensure_user_can_download();
+
+		$source_file_path = $this->data->source_file_path();
+		$local_file_path  = $this->data->local_file_path();
+		$size             = $this->destination->calculate_size();
+		$start_byte       = 0;
+		$chunk_size       = 2 * 1024 * 1024;
+		$end_byte         = $start_byte + $chunk_size - 1;
+
+		if ( $end_byte >= $size ) {
+			$end_byte = $size - 1;
+		}
+
+		try {
+			while ( $end_byte <= $size ) {
+				$this->destination->download_chunk( $start_byte, $end_byte );
+				self::send_message(
+					[
+						'state'            => self::STATE_DOWNLOADING,
+						'start_byte'       => $start_byte,
+						'end_byte'         => $end_byte,
+						'size'             => $size,
+						'download_percent' => round( ( $end_byte + 1 ) / $size * 100 ),
+						'filename'         => basename( $source_file_path ),
+					]
+				);
+
+				if ( $end_byte === $size - 1 ) {
+					break;
+				}
+
+				$start_byte = $end_byte + 1;
+				$end_byte   = $start_byte + $chunk_size - 1;
+
+				if ( $start_byte < $size && $end_byte >= $size ) {
+					$end_byte = $size - 1;
+				}
+			}
+
+			if ( BackWPup::is_pro() ) {
+				/**
+				 * Decryption service.
+				 *
+				 * @var \Inpsyde\Restore\Api\Module\Decryption\Decrypter $decrypter
+				 */
+				$decrypter = restore_container( 'decrypter' );
+				if ( $decrypter->isEncrypted( $local_file_path ) ) {
+					throw new DecryptException( DecryptController::STATE_NEED_DECRYPTION_KEY );
+				}
+			}
+		} catch ( Exception $e ) {
+			self::send_message(
+				[
+					'state'   => self::STATE_ERROR,
+					'message' => $e->getMessage(),
+				],
+				'log'
+			);
+
+			return false;
+		}
+
+		self::send_message(
+			[
+				'state'   => self::STATE_DONE,
+				'message' => esc_html__( 'Your download is being generated &hellip;', 'backwpup' ),
+			]
+			);
+
+		return true;
+	}
+
+	/**
+	 * Downloads a file in chunks using WP-CLI.
+	 *
+	 * The method calculates the file size, divides it into chunks, and downloads each chunk
+	 * sequentially until the entire file is downloaded.
+	 *
+	 * @return void
 	 */
 	public function download_by_chunks_wp_cli() {
 
 		$size       = $this->destination->calculate_size();
 		$start_byte = 0;
 		$chunk_size = 2 * 1024 * 1024;
-		$end_byte = $start_byte + $chunk_size - 1;
+		$end_byte   = $start_byte + $chunk_size - 1;
 
-		if ($end_byte >= $size) {
+		if ( $end_byte >= $size ) {
 			$end_byte = $size - 1;
 		}
 
@@ -189,9 +211,9 @@ class BackWPup_Destination_Downloader {
 				}
 
 				$start_byte = $end_byte + 1;
-				$end_byte = $start_byte + $chunk_size - 1;
+				$end_byte   = $start_byte + $chunk_size - 1;
 
-				if ($start_byte < $size && $end_byte >= $size) {
+				if ( $start_byte < $size && $end_byte >= $size ) {
 					$end_byte = $size - 1;
 				}
 			}
@@ -201,23 +223,28 @@ class BackWPup_Destination_Downloader {
 		}
 	}
 
-    /**
-     * Ensure user capability.
-     */
-    private function ensure_user_can_download()
-    {
-        if (!current_user_can(self::CAPABILITY)) {
-            wp_die();
-        }
-    }
+	/**
+	 * Ensure user capability.
+	 *
+	 * @return void
+	 */
+	private function ensure_user_can_download() {
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_die();
+		}
+	}
 
-    /**
-     * @param        $data
-     * @param string $event
+	/**
+	 * Send event source message.
+	 *
+	 * @param array  $data  Message data.
+	 * @param string $event Event name.
+	 *
+	 * @return void
 	 */
 	private static function send_message( $data, $event = 'message' ) {
 		echo 'event: ' . esc_html( $event ) . "\n";
 		echo 'data: ' . wp_json_encode( $data ) . "\n\n";
 		flush();
-    }
+	}
 }

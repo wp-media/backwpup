@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace WPMedia\BackWPup\Common\ErrorSignals;
 
-use BackWPup_Job;
-
 class ErrorSignalsStore {
 
 	private const OPTION_KEY = 'backwpup_recent_error_signals';

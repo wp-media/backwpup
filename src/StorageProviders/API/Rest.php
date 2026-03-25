@@ -150,7 +150,6 @@ class Rest implements RestInterface {
 	public function cloud_is_authenticated( WP_REST_Request $request ) {
 		$params = $request->get_params();
 		$status = 200;
-		$html   = '';
 		try {
 			if ( ! isset( $params['job_id'] ) || '' === $params['job_id'] ) {
 				$job_id = get_site_option( Plugin::FIRST_JOB_ID, false );

@@ -5,7 +5,6 @@ namespace WPMedia\BackWPup\Admin\Notices;
 
 use WPMedia\BackWPup\EventManagement\SubscriberInterface;
 use WPMedia\BackWPup\Admin\Notices\Notices\AbstractNotice;
-use function cli\err;
 
 /**
  * Subscriber class responsible for rendering admin notices.

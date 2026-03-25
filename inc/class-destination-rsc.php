@@ -50,7 +50,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 	/**
 	 * Get Auth url by region code.
 	 *
-	 * @param string $region Region code
+	 * @param string $region Region code.
 	 */
 	public function get_auth_url_by_region( string $region ): string {
 		$region = strtoupper( $region );
@@ -206,7 +206,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			if ( ! $upload ) {
 				$job_object->log( __( 'Cannot transfer backup to Rackspace cloud.', 'backwpup' ), E_USER_ERROR );
 				return false;
-		    }
+			}
 
 			$modified_backup_name = $job_object->job['rscdir'] . $job_object->backup_file;
 			$job_object->log( __( 'Backup File transferred to RSC://', 'backwpup' ) . $job_object->job['rsccontainer'] . '/' . $modified_backup_name, E_USER_NOTICE );
@@ -223,11 +223,11 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			// translators: %s: Error message.
 			$job_object->log( E_USER_ERROR, sprintf( __( 'Rackspace Cloud API: %s', 'backwpup' ), $e->getMessage() ), $e->getFile(), $e->getLine() );
 
-		    return false;
-	    }
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
 	/**
 	 * Handle cleanup, deletion after backup is uploaded to cloud storage.
@@ -277,10 +277,11 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 					$numdeltefiles = 0;
 					$deleted_files = [];
 
-				    while ($file = array_shift($backupfilelist)) {
-					    if (count($backupfilelist) < $job_object->job['rscmaxbackups']) {
-						    break;
-					    }
+					while ( ! empty( $backupfilelist ) ) {
+						$file = array_shift( $backupfilelist );
+						if ( count( $backupfilelist ) < $job_object->job['rscmaxbackups'] ) {
+							break;
+						}
 
 						foreach ( $files as $key => $filedata ) {
 							if ( $filedata['file'] === $file['name'] ) {
@@ -315,41 +316,47 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			// translators: %s: Error message.
 			$job_object->log( E_USER_ERROR, sprintf( __( 'Rackspace Cloud API: %s', 'backwpup' ), $e->getMessage() ), $e->getFile(), $e->getLine() );
 
-		    return false;
-	    }
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-	public function job_run_archive(BackWPup_Job $job_object): bool
-	{
+	/**
+	 * Upload the backup archive to Rackspace.
+	 *
+	 * @param BackWPup_Job $job_object Job object.
+	 *
+	 * @return bool True on success, false on failure.
+	 */
+	public function job_run_archive( BackWPup_Job $job_object ): bool {
 		$job_object->substeps_todo = 2 + $job_object->backup_filesize;
 		$job_object->substeps_done = 0;
 		$job_object->log(
 			sprintf(
-			/* translators: %d: attempt number. */
-			__( '%d. Trying to send backup file to Rackspace cloud &hellip;', 'backwpup' ),
-			$job_object->steps_data[ $job_object->step_working ]['STEP_TRY']
-		),
+				/* translators: %d: attempt number. */
+				__( '%d. Trying to send backup file to Rackspace cloud &hellip;', 'backwpup' ),
+				$job_object->steps_data[ $job_object->step_working ]['STEP_TRY']
+			),
 			E_USER_NOTICE
-			);
+		);
 
 		$storage_provider = $this->get_rackspace_client(
 			[
 				'region'         => $job_object->job['rscregion'],
 				'username'       => $job_object->job['rscusername'],
-				'api_key'        => $job_object->job['rscapikey'] ,
+				'api_key'        => $job_object->job['rscapikey'],
 				'container_name' => $job_object->job['rsccontainer'],
 			]
-			);
+		);
 
 		if ( ! $this->upload_backup( $job_object, $storage_provider ) ) {
 			return false;
-        }
+		}
 
 		if ( ! $this->cleanup_after_backup_upload( $job_object, $storage_provider ) ) {
 			return false;
-        }
+		}
 
 		++$job_object->substeps_done;
 
@@ -357,23 +364,28 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 	}
 
 	/**
-	 * @param array $job_settings array
+	 * Determines whether the destination can run with the provided settings.
+	 *
+	 * @param array $job_settings Job settings.
 	 */
-	public function can_run(array $job_settings): bool
-	{
-		if (empty($job_settings['rscusername'])) {
+	public function can_run( array $job_settings ): bool {
+		if ( empty( $job_settings['rscusername'] ) ) {
 			return false;
 		}
 
-		if (empty($job_settings['rscapikey'])) {
+		if ( empty( $job_settings['rscapikey'] ) ) {
 			return false;
 		}
 
-		return !(empty($job_settings['rsccontainer']));
+		return ! ( empty( $job_settings['rsccontainer'] ) );
 	}
 
-	public function edit_inline_js(): void
-	{
+	/**
+	 * Outputs inline JS for the Rackspace container selector.
+	 *
+	 * @return void
+	 */
+	public function edit_inline_js(): void {
 		?>
 		<script type="text/javascript">
 			jQuery(document).ready(function ($) {
@@ -414,18 +426,21 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 	 */
 	public function edit_ajax( array $args = [] ): void {
 		$error = '';
-		$ajax = false;
+		$ajax  = false;
 
-		if (isset($_POST['rscusername']) || isset($_POST['rscapikey'])) {
-			if (!current_user_can('backwpup_jobs_edit')) {
-				wp_die(-1);
+		if ( isset( $_POST['rscusername'] ) || isset( $_POST['rscapikey'] ) ) {
+			if ( ! current_user_can( 'backwpup_jobs_edit' ) ) {
+				wp_die( -1 );
 			}
-			check_ajax_referer('backwpup_ajax_nonce');
-			$args['rscusername'] = sanitize_text_field($_POST['rscusername']);
-			$args['rscapikey'] = sanitize_text_field($_POST['rscapikey']);
-			$args['rscselected'] = sanitize_text_field($_POST['rscselected']);
-			$args['rscregion'] = sanitize_text_field($_POST['rscregion']);
-			$ajax = true;
+			check_ajax_referer( 'backwpup_ajax_nonce' );
+
+			$post = wp_unslash( $_POST );
+
+			$args['rscusername'] = isset( $post['rscusername'] ) ? sanitize_text_field( $post['rscusername'] ) : '';
+			$args['rscapikey']   = isset( $post['rscapikey'] ) ? sanitize_text_field( $post['rscapikey'] ) : '';
+			$args['rscselected'] = isset( $post['rscselected'] ) ? sanitize_text_field( $post['rscselected'] ) : '';
+			$args['rscregion']   = isset( $post['rscregion'] ) ? sanitize_text_field( $post['rscregion'] ) : '';
+			$ajax                = true;
 		}
 		echo '<span id="rsccontainererror" class="bwu-message-error">';
 
@@ -446,8 +461,8 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 					foreach ( $containers as $container ) {
 						$container_list[] = $container['name'];
 					}
-                }
-			} catch (Exception $e) {
+				}
+			} catch ( Exception $e ) {
 				$error = $e->getMessage();
 			}
 		}

@@ -54,8 +54,7 @@ BackWPupHelpers::component("navigation-header", [
       'open' => true,
       'children' => "sidebar/parts/include-in-backup",
       'children_return' => false,
-      'children_data' => ['job_id' => $job_id],
-      'remove_item_center_class' => true
+      'children_data' => ['job_id' => $job_id]
   ]);
   ?>
 </div>

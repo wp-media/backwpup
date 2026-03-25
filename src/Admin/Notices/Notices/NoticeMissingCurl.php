@@ -5,7 +5,6 @@ namespace WPMedia\BackWPup\Admin\Notices\Notices;
 use Inpsyde\BackWPup\Notice\NoticeMessage;
 use Inpsyde\BackWPup\Notice\DismissibleNoticeOption;
 use Inpsyde\BackWPup\Notice\NoticeView;
-use WPMedia\BackWPup\Adapters\JobAdapter;
 
 /**
  * Notice When jobs data is corrupted

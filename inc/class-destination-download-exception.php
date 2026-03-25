@@ -10,6 +10,6 @@
  *
  * @since   3.5.0
  */
-class BackWPup_Destination_Download_Exception extends \Exception
-{
+class BackWPup_Destination_Download_Exception extends \Exception {
+
 }

@@ -1,14 +1,21 @@
 <?php
+/**
+ * BackWPup uninstall cleanup.
+ */
 
-//if uninstall not called from WordPress exit
-if (!defined('WP_UNINSTALL_PLUGIN')) {
-    exit();
+// If uninstall not called from WordPress, exit.
+if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
+	exit();
 }
 
-/** @var wpdb $wpdb */
+/**
+ * WordPress database access.
+ *
+ * @var wpdb $wpdb
+ */
 global $wpdb;
 
-// only uninstall if no BackWPup Version active.
+// Only uninstall if no BackWPup Version active.
 if ( ! class_exists( \BackWPup::class ) ) {
 	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Base.php';
 	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Column.php';
@@ -28,59 +35,63 @@ if ( ! class_exists( \BackWPup::class ) ) {
 	];
 	backwpup_remove_tables( $tables );
 
-    //delete plugin options
-    if (is_multisite()) {
-        $wpdb->query('DELETE FROM ' . $wpdb->sitemeta . " WHERE meta_key LIKE '%backwpup_%' ");
-    } else {
-        $wpdb->query('DELETE FROM ' . $wpdb->options . " WHERE option_name LIKE '%backwpup_%' ");
-    }
+	// Delete plugin options.
+	if ( is_multisite() ) {
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Uninstall cleanup.
+		$wpdb->query( 'DELETE FROM ' . $wpdb->sitemeta . " WHERE meta_key LIKE '%backwpup_%' " );
+	} else {
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Uninstall cleanup.
+		$wpdb->query( 'DELETE FROM ' . $wpdb->options . " WHERE option_name LIKE '%backwpup_%' " );
+	}
 
-	$wpdb->query( 'DELETE FROM ' . $wpdb->usermeta . " WHERE meta_key LIKE '%backwpup_%' " );// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+	$wpdb->query( 'DELETE FROM ' . $wpdb->usermeta . " WHERE meta_key LIKE '%backwpup_%' " );
 
-    //delete Backwpup user roles
-    // Special handling for multisite when network-activated.
-    if (is_multisite()) {
-        $sites = get_sites([
-            'fields' => 'ids',
-        ]);
-        $current_site = get_current_blog_id();
+	// Delete Backwpup user roles.
+	// Special handling for multisite when network-activated.
+	if ( is_multisite() ) {
+		$sites           = get_sites(
+			[
+				'fields' => 'ids',
+			]
+			);
+		$current_site_id = get_current_blog_id();
 
-        foreach ($sites as $site) {
-            switch_to_blog($site);
+		foreach ( $sites as $site ) {
+			switch_to_blog( $site );
 			backwpup_remove_roles();
 			backwpup_remove_tables( $tables );
 		}
 
-        switch_to_blog($current_site);
-    } else {
-        backwpup_remove_roles();
-    }
+		switch_to_blog( $current_site_id );
+	} else {
+		backwpup_remove_roles();
+	}
 }
 
 /**
  * Removes BackWPup roles and capabilities.
  */
-function backwpup_remove_roles()
-{
-    remove_role('backwpup_admin');
-    remove_role('backwpup_helper');
-    remove_role('backwpup_check');
+function backwpup_remove_roles() {
+	remove_role( 'backwpup_admin' );
+	remove_role( 'backwpup_helper' );
+	remove_role( 'backwpup_check' );
 
-    //remove capabilities to administrator role
-    $role = get_role('administrator');
-    if (is_object($role) && method_exists($role, 'remove_cap')) {
-        $role->remove_cap('backwpup');
-        $role->remove_cap('backwpup_jobs');
-        $role->remove_cap('backwpup_jobs_edit');
-        $role->remove_cap('backwpup_jobs_start');
-        $role->remove_cap('backwpup_backups');
-        $role->remove_cap('backwpup_backups_download');
-        $role->remove_cap('backwpup_backups_delete');
-        $role->remove_cap('backwpup_logs');
-        $role->remove_cap('backwpup_logs_delete');
-        $role->remove_cap('backwpup_settings');
-        $role->remove_cap('backwpup_restore');
-    }
+	// Remove capabilities from the administrator role.
+	$role = get_role( 'administrator' );
+	if ( is_object( $role ) && method_exists( $role, 'remove_cap' ) ) {
+		$role->remove_cap( 'backwpup' );
+		$role->remove_cap( 'backwpup_jobs' );
+		$role->remove_cap( 'backwpup_jobs_edit' );
+		$role->remove_cap( 'backwpup_jobs_start' );
+		$role->remove_cap( 'backwpup_backups' );
+		$role->remove_cap( 'backwpup_backups_download' );
+		$role->remove_cap( 'backwpup_backups_delete' );
+		$role->remove_cap( 'backwpup_logs' );
+		$role->remove_cap( 'backwpup_logs_delete' );
+		$role->remove_cap( 'backwpup_settings' );
+		$role->remove_cap( 'backwpup_restore' );
+	}
 }
 
 /**

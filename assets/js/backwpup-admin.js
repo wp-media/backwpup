@@ -248,6 +248,22 @@ jQuery(document).ready(function ($) {
     )
   }
 
+  //Refresh the HiDrive authentification block.
+  window.hidrive_refresh_authentification = function(job_id) {
+    requestWPApi(
+      backwpupApi.cloud_is_authenticated,
+      {
+        'job_id' : job_id,
+        'cloud_name': 'hidrive',
+      },
+      function(response) {
+        $('#hidrive_authenticate_infos').html(response);
+        initHidriveEvents();
+      },
+      "GET"
+    )
+  }
+
   /**
    * Updates the license by sending a request to the WordPress API.
    *
@@ -382,7 +398,7 @@ jQuery(document).ready(function ($) {
             break;
           case 'SUGARSYNC':
             initSugarSyncEvents();
-            $('.js-backwpup-test-' + storage + '-storage').on('click', window['test_' + storage + '_storage']);
+            $('.js-backwpup-test-SUGARSYNC-storage').on('click', window['test_SUGARSYNC_storage']);
             break;
           case 'GDRIVE':
             initGdriveEvents();
@@ -390,6 +406,7 @@ jQuery(document).ready(function ($) {
             break;
           case 'HIDRIVE':
             initHidriveEvents();
+            $('.js-backwpup-test-HIDRIVE-storage').on('click', window['test_HIDRIVE_storage']);
             break;
           case 'FTP':
             initFTPEvents();
@@ -896,6 +913,45 @@ jQuery(document).ready(function ($) {
     .on('click', function () {
       $(".js-backwpup-tables-list label").show();
     });
+
+  function updateSelectAllTablesState($scope) {
+    const $tablesList = $scope.find(".js-backwpup-tables-list input[type='checkbox']");
+    const $selectAll = $scope.find(".js-backwpup-select-all-tables");
+    if ($selectAll.length === 0) {
+      return;
+    }
+    if ($tablesList.length === 0) {
+      $selectAll.prop("checked", false);
+      return;
+    }
+    const allChecked = $tablesList.length === $tablesList.filter(":checked").length;
+    $selectAll.prop("checked", allChecked);
+  }
+
+  // Select all tables in DB job sidebar (toggle)
+  $document.on('change', '.js-backwpup-select-all-tables', function () {
+    const $article = $(this).closest("article");
+    const $tablesList = $article.length
+      ? $article.find(".js-backwpup-tables-list input[type='checkbox']")
+      : $(".js-backwpup-tables-list input[type='checkbox']");
+
+    if ($tablesList.length === 0) {
+      return;
+    }
+
+    const checked = $(this).is(":checked");
+    $tablesList.prop("checked", checked).change();
+  });
+
+  $document.on('change', '.js-backwpup-tables-list input[type="checkbox"]', function () {
+    const $article = $(this).closest("article");
+    updateSelectAllTablesState($article.length ? $article : $(document));
+  });
+
+  $(".js-backwpup-select-all-tables").each(function () {
+    const $article = $(this).closest("article");
+    updateSelectAllTablesState($article.length ? $article : $(document));
+  });
 
   // Select all lines in backup table
   const $backupsTable = $("#backwpup-backup-history");
@@ -1456,7 +1512,7 @@ jQuery(document).ready(function ($) {
     $('.js-backwpup-modal-and-focus').on('click', modal_and_focus);
     // Delete Hidrive authentication.
     $('.js-backwpup-delete-hidrive-auth').on('click', function() {
-      let job_id = $(this).data("job_id");
+      let job_id = $(this).data("job-id");
       const urlParams = new URLSearchParams(window.location.search);
       const page = urlParams.get('page');
       if (page === 'backwpuponboarding') {
@@ -1465,48 +1521,16 @@ jQuery(document).ready(function ($) {
       const data = {
         'job_id': job_id,
         'cloud_name' : 'hidrive',
-        'hidrive_delete_authorization' : true,
-        'hidrive_max_backups' : $("#hidrive_max_backups").val(),
-        'hidrive_destination_folder' : $("#hidrive_destination_folder").val(),
-      }
-      requestWPApi(
-        backwpupApi.cloudsaveandtest,
-        data,
-        function (response) {
-          refresh_storage_destinations(job_id, 'HIDRIVE', false);
-          closeSidebar();
-        },
-        "POST",
-        function (request, error) {
-          refresh_storage_destinations(job_id, 'HIDRIVE', false);
-          alert("Error in cloud configuration");
-        }
-      );
-    });
-
-    // Test and save HiDrive storage.
-    $('.js-backwpup-test-HIDRIVE-storage').on('click', function () {
-      let job_id = $(this).data("job_id");
-      const urlParams = new URLSearchParams(window.location.search);
-      const page = urlParams.get('page');
-      if (page === 'backwpuponboarding') {
-        job_id = null;
-      }
-      const data = {
-        'job_id': job_id,
-        'cloud_name': 'hidrive',
-        'hidrive_max_backups': $("#hidrive_max_backups").val(),
-        'hidrive_destination_folder': $("#hidrive_destination_folder").val(),
-      }
-      let hidrive_authorization_code = $("#hidrive_authorization_code").val();
-      if (hidrive_authorization_code) {
-        data['hidrive_authorization_code'] = hidrive_authorization_code;
+        'delete_auth' : true,
+        'hidrive_max_backups' : $('input[name="hidrive_max_backups"]').val(),
+        'hidrive_destination_folder' : $('input[name="hidrive_destination_folder"]').val(),
       }
       requestWPApi(
         backwpupApi.cloudsaveandtest,
         data,
         function (response) {
           refresh_storage_destinations(job_id, 'HIDRIVE', response.connected);
+          hidrive_refresh_authentification(job_id);
           closeSidebar();
         },
         "POST",
@@ -1517,6 +1541,41 @@ jQuery(document).ready(function ($) {
       );
     });
   }
+
+  // Test and save HiDrive storage.
+  window.test_HIDRIVE_storage = function (event) {
+    let job_id = $(event.currentTarget).data("job-id");
+    let hidrive_authorization_code = $('input[name="hidrive_authorization_code"]').val();
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page');
+    if (page === 'backwpuponboarding') {
+      job_id = null;
+    }
+    const data = {
+      'job_id': job_id,
+      'cloud_name': 'hidrive',
+      'hidrive_max_backups': $('input[name="hidrive_max_backups"]').val(),
+      'hidrive_destination_folder': $('input[name="hidrive_destination_folder"]').val(),
+    }
+    if (hidrive_authorization_code) {
+      data['hidrive_authorization_code'] = hidrive_authorization_code;
+    }
+    requestWPApi(
+      backwpupApi.cloudsaveandtest,
+      data,
+      function (response) {
+        refresh_storage_destinations(job_id, 'HIDRIVE', response.connected);
+        hidrive_refresh_authentification(job_id);
+        closeSidebar();
+      },
+      "POST",
+      function (request, error) {
+        refresh_storage_destinations(job_id, 'HIDRIVE', false);
+        alert("Error in cloud configuration");
+      }
+    );
+  };
+  $('.js-backwpup-test-HIDRIVE-storage').on('click', window['test_HIDRIVE_storage']);
 
   // Test and save ONEDRIVE storage.
   window.test_ONEDRIVE_storage = function (event) {
@@ -2210,20 +2269,13 @@ jQuery(document).ready(function ($) {
     }
     
   }
-
-  // Replace the 'Buy Pro' menu item with the correct link.
+  
   var buyProMenuItem = $('#toplevel_page_backwpup ul li a[href="admin.php?page=buypro"]');
   if (buyProMenuItem.length) {
-      buyProMenuItem.attr('href', 'https://backwpup.com/#buy');
       buyProMenuItem.attr('target', '_blank');
-      buyProMenuItem.css({
-        'color': '#3ac495',
-        'font-weight': 'bold'
-    });
   }
   var DocsMenuItem = $('#toplevel_page_backwpup ul li a[href="admin.php?page=docs"]');
   if (DocsMenuItem.length) {
-    DocsMenuItem.attr('href', 'https://backwpup.com/docs/');
     DocsMenuItem.attr('target', '_blank');
   }
 

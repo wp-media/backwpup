@@ -1,10 +1,13 @@
 <?php
 /**
  * Restore Page.
+ *
+ * @package BackWPup
  */
 
-use function Inpsyde\BackWPup\Infrastructure\Restore\restore_container;
 use Inpsyde\BackWPup\Infrastructure\Restore\TemplateLoader;
+
+use function Inpsyde\BackWPup\Infrastructure\Restore\restore_container;
 
 /**
  * Class for BackWPup restore page.
@@ -211,7 +214,7 @@ class BackWPup_Page_Restore {
 		echo esc_html(
 			sanitize_text_field(
 				sprintf(
-				// Translators: $1 is the name of the plugin
+					// Translators: $1 is the name of the plugin.
 					esc_html__( '%s &rsaquo; Restore', 'backwpup' ),
 					BackWPup::get_plugin_data( 'name' )
 				)

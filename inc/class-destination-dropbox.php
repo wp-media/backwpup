@@ -5,8 +5,8 @@
  *
  * Documentation: https://www.dropbox.com/developers/documentation/http/overview
  */
-class BackWPup_Destination_Dropbox extends BackWPup_Destinations
-{
+class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
+
 	/**
 	 * Service name
 	 *
@@ -15,29 +15,28 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 	private const SERVICE_NAME = 'Dropbox';
 
 	/**
-     * Dropbox.
-     *
-     * Instance of Dropbox API
-     *
-     * @var BackWPup_Destination_Dropbox_API|null
-     */
-    protected $dropbox;
+	 * Dropbox.
+	 *
+	 * Instance of Dropbox API
+	 *
+	 * @var BackWPup_Destination_Dropbox_API|null
+	 */
+	protected $dropbox;
 
-    /**
-     * Default Options.
-     *
-     * @return array The default options for dropbox
-     */
-    public function option_defaults(): array
-    {
-        return [
-            'dropboxtoken' => [],
-            'dropboxroot' => 'sandbox',
-            'dropboxmaxbackups' => 15,
-            'dropboxsyncnodelete' => true,
-            'dropboxdir' => '/' . trailingslashit(sanitize_file_name(get_bloginfo('name'))),
-        ];
-    }
+	/**
+	 * Default Options.
+	 *
+	 * @return array The default options for dropbox
+	 */
+	public function option_defaults(): array {
+		return [
+			'dropboxtoken'        => [],
+			'dropboxroot'         => 'sandbox',
+			'dropboxmaxbackups'   => 15,
+			'dropboxsyncnodelete' => true,
+			'dropboxdir'          => '/' . trailingslashit( sanitize_file_name( get_bloginfo( 'name' ) ) ),
+		];
+	}
 
 	/**
 	 * {@inheritdoc}
@@ -51,10 +50,10 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 	public function edit_form_post_save( $jobid ): void {
 				$jobids = (array) $jobid;
 		// Bet auth.
-        if (!empty($_POST['sandbox_code'])) {
+		if ( ! empty( $_POST['sandbox_code'] ) ) {
 			try {
 				$dropbox      = new BackWPup_Destination_Dropbox_API( 'sandbox' );
-				$dropboxtoken = $dropbox->oAuthToken( $_POST['sandbox_code'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+				$dropboxtoken = $dropbox->o_auth_token( $_POST['sandbox_code'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
 				foreach ( $jobids as $id ) {
 					BackWPup_Option::update( $id, 'dropboxtoken', $dropboxtoken );
 					BackWPup_Option::update( $id, 'dropboxroot', 'sandbox' );
@@ -63,12 +62,12 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 				BackWPup_Admin::message( 'DROPBOX: ' . $e->getMessage(), true );
 								throw $e;
 			}
-        }
+		}
 
-        if (!empty($_POST['dropbbox_code'])) {
+		if ( ! empty( $_POST['dropbbox_code'] ) ) {
 			try {
 				$dropbox      = new BackWPup_Destination_Dropbox_API( 'dropbox' );
-				$dropboxtoken = $dropbox->oAuthToken( $_POST['dropbbox_code'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+				$dropboxtoken = $dropbox->o_auth_token( $_POST['dropbbox_code'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
 				foreach ( $jobids as $id ) {
 					BackWPup_Option::update( $id, 'dropboxtoken', $dropboxtoken );
 					BackWPup_Option::update( $id, 'dropboxroot', 'dropbox' );
@@ -103,7 +102,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 				// Try to revoke the token on dropbox.
 				try {
 					$dropbox = $this->get_dropbox( $jobids[0] );
-					$dropbox->authTokenRevoke();
+					$dropbox->auth_token_revoke();
 				} catch ( Exception $e ) {
 					BackWPup_Admin::message(
 						sprintf(
@@ -113,7 +112,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 						),
 						true
 					);
-                }
+				}
 			}
 			// We delete the token from the jobs and seet the root to sandbox.
 			foreach ( $jobids as $id ) {
@@ -135,31 +134,30 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 	}
 	// phpcs:enable
 
-    /**
-     * Delete File.
-     *
-     * @param string $jobdest    the destionation for this job
-     * @param string $backupfile the file to delete
-     */
-    public function file_delete(string $jobdest, string $backupfile): void
-    {
-        $files = get_site_transient('backwpup_' . strtolower($jobdest));
-        [$jobid, $dest] = explode('_', $jobdest);
+	/**
+	 * Delete File.
+	 *
+	 * @param string $jobdest    The destination for this job.
+	 * @param string $backupfile The file to delete.
+	 */
+	public function file_delete( string $jobdest, string $backupfile ): void {
+		$files          = get_site_transient( 'backwpup_' . strtolower( $jobdest ) );
+		[$jobid, $dest] = explode( '_', $jobdest );
 
-        try {
-            $dropbox = $this->get_dropbox($jobid);
-            $dropbox->filesDelete(['path' => $backupfile]);
+		try {
+			$dropbox = $this->get_dropbox( $jobid );
+			$dropbox->files_delete( [ 'path' => $backupfile ] );
 
-            //update file list
-            foreach ($files as $key => $file) {
-                if (is_array($file) && $file['file'] == $backupfile) {
-                    unset($files[$key]);
-                }
-            }
-            unset($dropbox);
-        } catch (Exception $e) {
-            BackWPup_Admin::message('DROPBOX: ' . $e->getMessage(), true);
-        }
+			// Update file list.
+			foreach ( $files as $key => $file ) {
+				if ( is_array( $file ) && $backupfile === $file['file'] ) {
+					unset( $files[ $key ] );
+				}
+			}
+			unset( $dropbox );
+		} catch ( Exception $e ) {
+			BackWPup_Admin::message( 'DROPBOX: ' . $e->getMessage(), true );
+		}
 
 		$key = 'backwpup_' . strtolower( $jobdest );
 
@@ -174,62 +172,62 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 		do_action( 'backwpup_update_backup_history', $key, $files );
 	}
 
-    /**
-     * File Update List.
-     *
-     * Update the list of files in the transient.
-     *
-     * @param BackWPup_Job|int $job    Either the job object or job ID
-     * @param bool             $delete whether to delete old backups
-     */
-    public function file_update_list($job, bool $delete = false): void
-    {
-        if ($job instanceof BackWPup_Job) {
-            $job_object = $job;
-            $jobid = $job->job['jobid'];
-        } else {
-            $job_object = null;
-            $jobid = $job;
-        }
+	/**
+	 * File Update List.
+	 *
+	 * Update the list of files in the transient.
+	 *
+	 * @param BackWPup_Job|int $job    Either the job object or job ID.
+	 * @param bool             $delete Whether to delete old backups.
+	 */
+	public function file_update_list( $job, bool $delete = false ): void {
+		if ( $job instanceof BackWPup_Job ) {
+			$job_object = $job;
+			$jobid      = $job->job['jobid'];
+		} else {
+			$job_object = null;
+			$jobid      = $job;
+		}
 
-        $backupfilelist = [];
-        $filecounter = 0;
-        $files = [];
-        $dropbox = $this->get_dropbox($jobid);
-        $filesList = $dropbox->listFolder(BackWPup_Option::get($jobid, 'dropboxdir'));
+		$backupfilelist = [];
+		$filecounter    = 0;
+		$files          = [];
+		$dropbox        = $this->get_dropbox( $jobid );
+		$files_list     = $dropbox->list_folder( BackWPup_Option::get( $jobid, 'dropboxdir' ) );
 
-        foreach ($filesList as $data) {
-            if ($data['.tag'] == 'file' && $this->is_backup_owned_by_job($data['name'], $jobid) == true) {
-                $file = $data['name'];
-                if ($this->is_backup_archive($file)) {
-                    $backupfilelist[strtotime((string) $data['server_modified'])] = $file;
-                }
-                $files[$filecounter]['folder'] = dirname((string) $data['path_display']);
-                $files[$filecounter]['file'] = $data['path_display'];
-                $files[$filecounter]['filename'] = $data['name'];
-                $files[$filecounter]['downloadurl'] = network_admin_url(
-                    'admin.php?page=backwpupbackups&action=downloaddropbox&file=' . $data['path_display'] . '&local_file=' . $data['name'] . '&jobid=' . $jobid
-                );
-                $files[$filecounter]['filesize'] = $data['size'];
-                $files[$filecounter]['time'] = strtotime((string) $data['server_modified']) + (get_option(
-                    'gmt_offset'
-                ) * 3600);
-                ++$filecounter;
-            }
-        }
-        if ($delete && $job_object && BackWPup_Option::get($jobid, 'dropboxmaxbackups') > 0) { //Delete old backups
-            if (count($backupfilelist) > $job_object->job['dropboxmaxbackups']) {
-                ksort($backupfilelist);
+		foreach ( $files_list as $data ) {
+			if ( 'file' === $data['.tag'] && $this->is_backup_owned_by_job( $data['name'], $jobid ) ) {
+				$file = $data['name'];
+				if ( $this->is_backup_archive( $file ) ) {
+					$backupfilelist[ strtotime( (string) $data['server_modified'] ) ] = $file;
+				}
+				$files[ $filecounter ]['folder']      = dirname( (string) $data['path_display'] );
+				$files[ $filecounter ]['file']        = $data['path_display'];
+				$files[ $filecounter ]['filename']    = $data['name'];
+				$files[ $filecounter ]['downloadurl'] = network_admin_url(
+					'admin.php?page=backwpupbackups&action=downloaddropbox&file=' . $data['path_display'] . '&local_file=' . $data['name'] . '&jobid=' . $jobid
+				);
+				$files[ $filecounter ]['filesize']    = $data['size'];
+				$files[ $filecounter ]['time']        = strtotime( (string) $data['server_modified'] ) + ( get_option(
+					'gmt_offset'
+				) * 3600 );
+				++$filecounter;
+			}
+		}
+		if ( $delete && $job_object && BackWPup_Option::get( $jobid, 'dropboxmaxbackups' ) > 0 ) { // Delete old backups.
+			if ( count( $backupfilelist ) > $job_object->job['dropboxmaxbackups'] ) {
+				ksort( $backupfilelist );
 				$numdeltefiles = 0;
 				$deleted_files = [];
 
-                while ($file = array_shift($backupfilelist)) {
-                    if (count($backupfilelist) < $job_object->job['dropboxmaxbackups']) {
-                        break;
-                    }
-                    $response = $dropbox->filesDelete(
-                        ['path' => $job_object->job['dropboxdir'] . $file]
-                    ); //delete files on Cloud
+				while ( ! empty( $backupfilelist ) ) {
+					$file = array_shift( $backupfilelist );
+					if ( count( $backupfilelist ) < $job_object->job['dropboxmaxbackups'] ) {
+						break;
+					}
+					$response = $dropbox->files_delete(
+						[ 'path' => $job_object->job['dropboxdir'] . $file ]
+					); // Delete files on Cloud.
 
 					foreach ( $files as $key => $filedata ) {
 						if ( $filedata['file'] === $job_object->job['dropboxdir'] . $file
@@ -239,23 +237,23 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 							unset( $files[ $key ] );
 							break;
 						}
-                    }
-                    ++$numdeltefiles;
-                }
-                if ($numdeltefiles > 0) {
-                    $job_object->log(
+					}
+					++$numdeltefiles;
+				}
+				if ( $numdeltefiles > 0 ) {
+					$job_object->log(
 						sprintf(
 							// translators: %d: number of files.
 							_n(
 								'%d file deleted from Dropbox',
 								'%d files deleted on Dropbox',
-                                $numdeltefiles,
-                                'backwpup'
-                            ),
-                            $numdeltefiles
-                        ),
-                        E_USER_NOTICE
-                    );
+								$numdeltefiles,
+								'backwpup'
+							),
+							$numdeltefiles
+						),
+						E_USER_NOTICE
+					);
 				}
 
 				parent::remove_file_history_from_database( $deleted_files, 'DROPBOX' );
@@ -274,30 +272,36 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 		do_action( 'backwpup_update_backup_history', $key, $files );
 	}
 
-    public function job_run_archive(BackWPup_Job $job_object): bool
-    {
-        $job_object->substeps_todo = 2 + $job_object->backup_filesize;
-        if ($job_object->steps_data[$job_object->step_working]['SAVE_STEP_TRY'] != $job_object->steps_data[$job_object->step_working]['STEP_TRY']) {
-            $job_object->log(
+	/**
+	 * Run the archive job for Dropbox.
+	 *
+	 * @param BackWPup_Job $job_object Job object.
+	 *
+	 * @return bool
+	 */
+	public function job_run_archive( BackWPup_Job $job_object ): bool {
+		$job_object->substeps_todo = 2 + $job_object->backup_filesize;
+		if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] !== $job_object->steps_data[ $job_object->step_working ]['STEP_TRY'] ) {
+			$job_object->log(
 				sprintf(
 					/* translators: %d: attempt number. */
 					__( '%d. Try to send backup file to Dropbox&#160;&hellip;', 'backwpup' ),
 					$job_object->steps_data[ $job_object->step_working ]['STEP_TRY']
 				)
-            );
-        }
+			);
+		}
 
-        try {
-            $dropbox = $this->get_dropbox($job_object);
+		try {
+			$dropbox = $this->get_dropbox( $job_object );
 
-            //get account info
-            if ($job_object->steps_data[$job_object->step_working]['SAVE_STEP_TRY'] != $job_object->steps_data[$job_object->step_working]['STEP_TRY']) {
-                $info = $dropbox->usersGetCurrentAccount();
-                if (!empty($info['account_id'])) {
-                    if ($job_object->is_debug()) {
-                        $user = $info['name']['display_name'] . ' (' . $info['email'] . ')';
-                    } else {
-                        $user = $info['name']['display_name'];
+			// Get account info.
+			if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] !== $job_object->steps_data[ $job_object->step_working ]['STEP_TRY'] ) {
+				$info = $dropbox->users_get_current_account();
+				if ( ! empty( $info['account_id'] ) ) {
+					if ( $job_object->is_debug() ) {
+						$user = $info['name']['display_name'] . ' (' . $info['email'] . ')';
+					} else {
+						$user = $info['name']['display_name'];
 					}
 					$job_object->log(
 						sprintf(
@@ -307,77 +311,77 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 					)
 						);
 
-                    //Quota
-                    if ($job_object->is_debug()) {
-                        $quota = $dropbox->usersGetSpaceUsage();
-                        $dropboxfreespase = $quota['allocation']['allocated'] - $quota['used'];
-                        $job_object->log(
+					// Quota.
+					if ( $job_object->is_debug() ) {
+						$quota            = $dropbox->users_get_space_usage();
+						$dropboxfreespase = $quota['allocation']['allocated'] - $quota['used'];
+						$job_object->log(
 							sprintf(
 								/* translators: %s: available space. */
 								__( '%s available on your Dropbox', 'backwpup' ),
 								size_format( $dropboxfreespase, 2 )
 							)
-                        );
-                    }
-                } else {
-                    $job_object->log(__('Not Authenticated with Dropbox!', 'backwpup'), E_USER_ERROR);
+						);
+					}
+				} else {
+					$job_object->log( __( 'Not Authenticated with Dropbox!', 'backwpup' ), E_USER_ERROR );
 
-                    return false;
-                }
-                $job_object->log(__('Uploading to Dropbox&#160;&hellip;', 'backwpup'));
-            }
+					return false;
+				}
+				$job_object->log( __( 'Uploading to Dropbox&#160;&hellip;', 'backwpup' ) );
+			}
 
-            // put the file
-            if ($job_object->substeps_done < $job_object->backup_filesize) { //only if upload not complete
-                $response = $dropbox->upload(
-                    $job_object->backup_folder . $job_object->backup_file,
-                    $job_object->job['dropboxdir'] . $job_object->backup_file
-                );
-                if ($response['size'] == $job_object->backup_filesize) {
-                    if (!empty($job_object->job['jobid'])) {
-                        BackWPup_Option::update(
-                            $job_object->job['jobid'],
-                            'lastbackupdownloadurl',
-                            network_admin_url(
-                                'admin.php'
-                            ) . '?page=backwpupbackups&action=downloaddropbox&file=' . ltrim(
-                                (string) $response['path_display'],
-                                '/'
-                            ) . '&jobid=' . $job_object->job['jobid']
-                        );
-                    }
-                    $job_object->substeps_done = 1 + $job_object->backup_filesize;
+			// Put the file.
+			if ( $job_object->substeps_done < $job_object->backup_filesize ) { // Only if upload not complete.
+				$response = $dropbox->upload(
+					$job_object->backup_folder . $job_object->backup_file,
+					$job_object->job['dropboxdir'] . $job_object->backup_file
+				);
+				if ( $job_object->backup_filesize === $response['size'] ) {
+					if ( ! empty( $job_object->job['jobid'] ) ) {
+						BackWPup_Option::update(
+							$job_object->job['jobid'],
+							'lastbackupdownloadurl',
+							network_admin_url(
+								'admin.php'
+							) . '?page=backwpupbackups&action=downloaddropbox&file=' . ltrim(
+								(string) $response['path_display'],
+								'/'
+							) . '&jobid=' . $job_object->job['jobid']
+						);
+					}
+					$job_object->substeps_done = 1 + $job_object->backup_filesize;
 					$job_object->log(
 						sprintf(
 							/* translators: %s: destination path. */
 							__( 'Backup transferred to %s', 'backwpup' ),
 							$response['path_display']
 						),
-                        E_USER_NOTICE
-                    );
-                } else {
-                    if ($response['size'] != $job_object->backup_filesize) {
-                        $job_object->log(
-                            __('Uploaded file size and local file size don\'t match.', 'backwpup'),
-                            E_USER_ERROR
-                        );
-                    } else {
-                        $job_object->log(
+						E_USER_NOTICE
+					);
+				} else {
+					if ( $response['size'] !== $job_object->backup_filesize ) {
+						$job_object->log(
+							__( 'Uploaded file size and local file size don\'t match.', 'backwpup' ),
+							E_USER_ERROR
+						);
+					} else {
+						$job_object->log(
 							sprintf(
 								/* translators: %s: destination service name. */
 								__( 'Error transfering backup to %s.', 'backwpup' ) . ' ' . $response['error'],
 								__( 'Dropbox', 'backwpup' )
 							),
-                            E_USER_ERROR
-                        );
-                    }
+							E_USER_ERROR
+						);
+					}
 
-                    return false;
-                }
-            }
+					return false;
+				}
+			}
 
-            $this->file_update_list($job_object, true);
-        } catch (Exception $e) {
+			$this->file_update_list( $job_object, true );
+		} catch ( Exception $e ) {
 			$job_object->log(
 				sprintf(
 					/* translators: %s: error message. */
@@ -385,49 +389,59 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations
 					$e->getMessage()
 				),
 				$e->getFile(),
-                $e->getLine(),
-                E_USER_ERROR
-            );
+				$e->getLine(),
+				E_USER_ERROR
+			);
 
-            return false;
-        }
-        ++$job_object->substeps_done;
+			return false;
+		}
+		++$job_object->substeps_done;
 
-        return true;
-    }
+		return true;
+	}
 
-    public function can_run(array $job_settings): bool
-    {
-        return !(empty($job_settings['dropboxtoken']));
-    }
+	/**
+	 * Check if Dropbox destination can run.
+	 *
+	 * @param array $job_settings Job settings.
+	 *
+	 * @return bool
+	 */
+	public function can_run( array $job_settings ): bool {
+		return ! ( empty( $job_settings['dropboxtoken'] ) );
+	}
 
-    /**
-     * Get Dropbox.
-     *
-     * Gets the Dropbox API instance.
-     *
-     * @parent BackWPup_Job|int $job Either the job object or job ID
-     */
-    protected function get_dropbox($job): BackWPup_Destination_Dropbox_API
-    {
-        if (!$this->dropbox) {
-            if ($job instanceof BackWPup_Job) {
-                $this->dropbox = new BackWPup_Destination_Dropbox_API($job->job['dropboxroot'], $job);
-                $jobid = $job->job['jobid'];
-                $token = $job->job['dropboxtoken'];
-            } else {
-                $this->dropbox = new BackWPup_Destination_Dropbox_API(BackWPup_Option::get($job, 'dropboxroot'));
-                $jobid = $job;
-                $token = BackWPup_Option::get($job, 'dropboxtoken');
-            }
+	/**
+	 * Get Dropbox.
+	 *
+	 * Gets the Dropbox API instance.
+	 *
+	 * @param BackWPup_Job|int $job Either the job object or job ID.
+	 *
+	 * @return BackWPup_Destination_Dropbox_API
+	 */
+	protected function get_dropbox( $job ): BackWPup_Destination_Dropbox_API {
+		if ( ! $this->dropbox ) {
+			if ( $job instanceof BackWPup_Job ) {
+				$this->dropbox = new BackWPup_Destination_Dropbox_API( $job->job['dropboxroot'], $job );
+				$jobid         = $job->job['jobid'];
+				$token         = $job->job['dropboxtoken'];
+			} else {
+				$this->dropbox = new BackWPup_Destination_Dropbox_API( BackWPup_Option::get( $job, 'dropboxroot' ) );
+				$jobid         = $job;
+				$token         = BackWPup_Option::get( $job, 'dropboxtoken' );
+			}
 
-            $this->dropbox->setOAuthTokens($token, function ($token) use ($jobid): void {
-                BackWPup_Option::update($jobid, 'dropboxtoken', $token);
-            });
-        }
+			$this->dropbox->set_o_auth_tokens(
+				$token,
+				function ( $token ) use ( $jobid ): void {
+					BackWPup_Option::update( $jobid, 'dropboxtoken', $token );
+				}
+				);
+		}
 
-        return $this->dropbox;
-    }
+		return $this->dropbox;
+	}
 
 	/**
 	 * Get service name

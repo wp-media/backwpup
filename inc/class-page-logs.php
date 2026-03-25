@@ -3,44 +3,45 @@
 /**
  * Class for BackWPup logs display page.
  */
-class BackWPup_Page_Logs extends WP_List_Table
-{
-    /**
-     * Log Folder.
-     *
-     * @var string The log folder
-     */
-    public $log_folder = '';
+class BackWPup_Page_Logs extends WP_List_Table {
 
-    /**
-     * BackWPup_Page_Logs.
-     *
-     * @var \BackWPup_Page_Logs The instance
-     */
-    private static $listtable;
+	/**
+	 * Log Folder.
+	 *
+	 * @var string The log folder
+	 */
+	public $log_folder = '';
 
-    /**
-     * Job Types.
-     *
-     * @var array A list of job types
-     */
-    private $job_types;
+	/**
+	 * BackWPup_Page_Logs.
+	 *
+	 * @var \BackWPup_Page_Logs The instance
+	 */
+	private static $listtable;
 
-    /**
-     * BackWPup_Page_Logs constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct([
-            'plural' => 'logs',
-            'singular' => 'log',
-            'ajax' => true,
-        ]);
+	/**
+	 * Job Types.
+	 *
+	 * @var array A list of job types
+	 */
+	private $job_types;
 
-        $this->log_folder = get_site_option('backwpup_cfg_logfolder');
-        $this->log_folder = BackWPup_File::get_absolute_path($this->log_folder);
-        $this->log_folder = untrailingslashit($this->log_folder);
-    }
+	/**
+	 * BackWPup_Page_Logs constructor.
+	 */
+	public function __construct() {
+		parent::__construct(
+			[
+				'plural'   => 'logs',
+				'singular' => 'log',
+				'ajax'     => true,
+			]
+			);
+
+		$this->log_folder = get_site_option( 'backwpup_cfg_logfolder' );
+		$this->log_folder = BackWPup_File::get_absolute_path( $this->log_folder );
+		$this->log_folder = untrailingslashit( $this->log_folder );
+	}
 
 	/**
 	 * Retrieves the table classes for the job page.
@@ -57,92 +58,96 @@ class BackWPup_Page_Logs extends WP_List_Table
 		return $classes;
 	}
 
-    /**
-     * User can.
-     *
-     * @return bool True if user has the right capabilities, false otherwise
-     */
-    public function ajax_user_can()
-    {
-        return current_user_can('backwpup_logs');
-    }
+	/**
+	 * User can.
+	 *
+	 * @return bool True if user has the right capabilities, false otherwise
+	 */
+	public function ajax_user_can() {
+		return current_user_can( 'backwpup_logs' );
+	}
 
-    /**
-     * Prepare Items.
-     */
-    public function prepare_items()
-    {
-        $this->job_types = BackWPup::get_job_types();
+	/**
+	 * Prepare Items.
+	 */
+	public function prepare_items() {
+		$this->job_types = BackWPup::get_job_types();
 
-        $per_page = $this->get_items_per_page('backwpuplogs_per_page');
-        if (empty($per_page) || $per_page < 1) {
-            $per_page = 20;
-        }
+		$per_page = $this->get_items_per_page( 'backwpuplogs_per_page' );
+		if ( empty( $per_page ) || $per_page < 1 ) {
+			$per_page = 20;
+		}
 
-        // Load logs.
-        $logfiles = [];
+		// Load logs.
+		$logfiles = [];
 
-        if (is_readable($this->log_folder)) {
-            $dir = new BackWPup_Directory($this->log_folder);
+		if ( is_readable( $this->log_folder ) ) {
+			$dir = new BackWPup_Directory( $this->log_folder );
 
-            foreach ($dir as $file) {
-                if ($file->isFile() && $file->isReadable() && strpos($file->getFilename(), 'backwpup_log_') !== false && strpos($file->getFilename(), '.html') !== false) {
-                    $logfiles[$file->getMTime()] = $file->getFilename();
-                }
-            }
-        }
+			foreach ( $dir as $file ) {
+				if ( $file->isFile() && $file->isReadable() && strpos( $file->getFilename(), 'backwpup_log_' ) !== false && strpos( $file->getFilename(), '.html' ) !== false ) {
+					$logfiles[ $file->getMTime() ] = $file->getFilename();
+				}
+			}
+		}
 
-        // Ordering.
-        $order = $_GET['order'] ?? 'desc';
-        $orderby = $_GET['orderby'] ?? 'time';
+		// Ordering.
+		$order = filter_input( INPUT_GET, 'order', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$order = $order ? sanitize_key( $order ) : 'desc';
+		$order = in_array( $order, [ 'asc', 'desc' ], true ) ? $order : 'desc';
 
-        if ($orderby == 'time') {
-            if ($order == 'asc') {
-                ksort($logfiles);
-            } else {
-                krsort($logfiles);
-            }
-        }
+		$orderby = filter_input( INPUT_GET, 'orderby', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$orderby = $orderby ? sanitize_key( $orderby ) : 'time';
+		$orderby = in_array( $orderby, [ 'time' ], true ) ? $orderby : 'time';
 
-        // By page.
-        $start = intval(($this->get_pagenum() - 1) * $per_page);
-        $end = $start + $per_page;
-        if ($end > count($logfiles)) {
-            $end = count($logfiles);
-        }
+		if ( 'time' === $orderby ) {
+			if ( 'asc' === $order ) {
+				ksort( $logfiles );
+			} else {
+				krsort( $logfiles );
+			}
+		}
 
-        $this->items = [];
-        $i = -1;
+		// By page.
+		$start = intval( ( $this->get_pagenum() - 1 ) * $per_page );
+		$end   = $start + $per_page;
+		if ( $end > count( $logfiles ) ) {
+			$end = count( $logfiles );
+		}
 
-        foreach ($logfiles as $mtime => $logfile) {
-            ++$i;
-            if ($i < $start) {
-                continue;
-            }
-            if ($i >= $end) {
-                break;
-            }
-            $this->items[$mtime] = BackWPup_Job::read_logheader($this->log_folder . '/' . $logfile);
-            $this->items[$mtime]['file'] = $logfile;
-        }
+		$this->items = [];
+		$i           = -1;
 
-        $this->set_pagination_args([
-            'total_items' => count($logfiles),
-            'per_page' => $per_page,
-            'orderby' => $orderby,
-            'order' => $order,
-        ]);
-    }
+		foreach ( $logfiles as $mtime => $logfile ) {
+			++$i;
+			if ( $i < $start ) {
+				continue;
+			}
+			if ( $i >= $end ) {
+				break;
+			}
+			$this->items[ $mtime ]         = BackWPup_Job::read_logheader( $this->log_folder . '/' . $logfile );
+			$this->items[ $mtime ]['file'] = $logfile;
+		}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get_sortable_columns()
-    {
-        return [
-            'time' => ['time', false],
-        ];
-    }
+		$this->set_pagination_args(
+			[
+				'total_items' => count( $logfiles ),
+				'per_page'    => $per_page,
+				'orderby'     => $orderby,
+				'order'       => $order,
+			]
+			);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get_sortable_columns() {
+		return [
+			'time' => [ 'time', false ],
+		];
+	}
 
 	/**
 	 * {@inheritdoc}
@@ -151,52 +156,53 @@ class BackWPup_Page_Logs extends WP_List_Table
 		esc_html_e( 'No Logs.', 'backwpup' );
 	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get_bulk_actions()
-    {
-        if (!$this->has_items()) {
-            return [];
-        }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get_bulk_actions() {
+		if ( ! $this->has_items() ) {
+			return [];
+		}
 
-        $actions = [];
-        $actions['delete'] = __('Delete', 'backwpup');
+		$actions           = [];
+		$actions['delete'] = __( 'Delete', 'backwpup' );
 
-        return $actions;
-    }
+		return $actions;
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get_columns()
-    {
-        $posts_columns = [];
-        $posts_columns['cb'] = '<input type="checkbox" />';
-        $posts_columns['time'] = __('Time', 'backwpup');
-        $posts_columns['job'] = __('Job', 'backwpup');
-        $posts_columns['status'] = __('Status', 'backwpup');
-        $posts_columns['type'] = __('Type', 'backwpup');
-        $posts_columns['size'] = __('Size', 'backwpup');
-        $posts_columns['runtime'] = __('Runtime', 'backwpup');
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get_columns() {
+		$posts_columns            = [];
+		$posts_columns['cb']      = '<input type="checkbox" />';
+		$posts_columns['time']    = __( 'Time', 'backwpup' );
+		$posts_columns['job']     = __( 'Job', 'backwpup' );
+		$posts_columns['status']  = __( 'Status', 'backwpup' );
+		$posts_columns['type']    = __( 'Type', 'backwpup' );
+		$posts_columns['size']    = __( 'Size', 'backwpup' );
+		$posts_columns['runtime'] = __( 'Runtime', 'backwpup' );
 
-        return $posts_columns;
-    }
+		return $posts_columns;
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function column_cb($item)
-    {
-        return '<input type="checkbox" name="logfiles[]" value="' . esc_attr($item['file']) . '" />';
-    }
+	/**
+	 * Render the bulk actions checkbox.
+	 *
+	 * @param array $item Item data.
+	 *
+	 * @return string
+	 */
+	public function column_cb( $item ) {
+		return '<input type="checkbox" name="logfiles[]" value="' . esc_attr( $item['file'] ) . '" />';
+	}
 
-    /**
-     * The job id Column.
-     *
-     * @param $item
-     *
-     * @return string
+	/**
+	 * The time column.
+	 *
+	 * @param array $item Item data.
+	 *
+	 * @return string
 	 */
 	public function column_time( $item ) {
 		return sprintf(
@@ -207,12 +213,12 @@ class BackWPup_Page_Logs extends WP_List_Table
 		);
 	}
 
-    /**
-     * The type Column.
-     *
-     * @param $item
-     *
-     * @return string
+	/**
+	 * The type column.
+	 *
+	 * @param array $item Item data.
+	 *
+	 * @return string
 	 */
 	public function column_type( $item ) {
 		$r     = '';
@@ -224,18 +230,18 @@ class BackWPup_Page_Logs extends WP_List_Table
 				} else {
 					$r .= esc_html( $type ) . '<br />';
 				}
-            }
-        }
+			}
+		}
 
-        return $r;
-    }
+		return $r;
+	}
 
-    /**
-     * The log Column.
-     *
-     * @param $item
-     *
-     * @return string
+	/**
+	 * The job column.
+	 *
+	 * @param array $item Item data.
+	 *
+	 * @return string
 	 */
 	public function column_job( $item ) {
 		$log_name = str_replace( [ '.html', '.gz' ], '', basename( (string) $item['file'] ) );
@@ -252,18 +258,17 @@ class BackWPup_Page_Logs extends WP_List_Table
 		$actions['download'] = '<a href="' . esc_url( wp_nonce_url( network_admin_url( 'admin.php' ) . '?page=backwpuplogs&action=download&file=' . $item['file'], 'download_backwpup_logs', 'download_backwpup_logs' ) ) . '">' . esc_html__( 'Download', 'backwpup' ) . '</a>';
 		$r                  .= $this->row_actions( $actions );
 
-        return $r;
-    }
+		return $r;
+	}
 
-    /**
-     * The status Column.
-     *
-     * @param $item
-     *
-     * @return string
-     */
-    public function column_status($item)
-    {
+	/**
+	 * The status column.
+	 *
+	 * @param array $item Item data.
+	 *
+	 * @return string
+	 */
+	public function column_status( $item ) {
 		$r = '';
 		if ( $item['errors'] ) {
 			$errors_text = sprintf(
@@ -291,15 +296,15 @@ class BackWPup_Page_Logs extends WP_List_Table
 			$r .= '<span style="color:green;font-weight:bold;">' . esc_html__( 'O.K.', 'backwpup' ) . '</span>';
 		}
 
-        return $r;
-    }
+		return $r;
+	}
 
-    /**
-     * The size Column.
-     *
-     * @param $item
-     *
-     * @return string
+	/**
+	 * The size column.
+	 *
+	 * @param array $item Item data.
+	 *
+	 * @return string
 	 */
 	public function column_size( $item ) {
 		if ( ! empty( $item['backupfilesize'] ) ) {
@@ -309,32 +314,31 @@ class BackWPup_Page_Logs extends WP_List_Table
 		return esc_html__( 'Log only', 'backwpup' );
 	}
 
-    /**
-     * The runtime Column.
-     *
-     * @param $item
-     *
-     * @return string
+	/**
+	 * The runtime column.
+	 *
+	 * @param array $item Item data.
+	 *
+	 * @return string
 	 */
 	public function column_runtime( $item ) {
 		return absint( $item['runtime'] ) . ' ' . esc_html__( 'seconds', 'backwpup' );
 	}
 
-    /**
-     * Load.
-     */
-    public static function load()
-    {
-        global $current_user;
+	/**
+	 * Load.
+	 */
+	public static function load() {
+		global $current_user;
 
-        //Create Table
-        self::$listtable = new BackWPup_Page_Logs();
+		// Create table.
+		self::$listtable = new BackWPup_Page_Logs();
 
-        switch (self::$listtable->current_action()) {
-            // Delete Log
-            case 'delete':
-                if (!current_user_can('backwpup_logs_delete')) {
-                    break;
+		switch ( self::$listtable->current_action() ) {
+			// Delete log.
+			case 'delete':
+				if ( ! current_user_can( 'backwpup_logs_delete' ) ) {
+					break;
 				}
 				if ( isset( $_GET['logfiles'] ) && is_array( $_GET['logfiles'] ) ) {
 					check_admin_referer( 'bulk-logs' );
@@ -351,79 +355,93 @@ class BackWPup_Page_Logs extends WP_List_Table
 						if ( $is_writable && ! is_dir( $file_path ) && ! is_link( $file_path ) ) {
 							wp_delete_file( $file_path );
 						}
-                    }
-                }
-                break;
-            // Download Log
-            case 'download':
-                $log_file = trailingslashit(self::$listtable->log_folder) . basename(trim((string) $_GET['file']));
-                $log_file = realpath(BackWPup_Sanitize_Path::sanitize_path($log_file));
+					}
+				}
+				break;
+			// Download log.
+			case 'download':
+				check_admin_referer( 'download_backwpup_logs', 'download_backwpup_logs' );
 
-                if (!$log_file
-                     || !is_readable($log_file)
-                     || is_dir($log_file)
-                     || is_link($log_file)
-                ) {
-                    header('HTTP/1.0 404 Not Found');
+				$file = filter_input( INPUT_GET, 'file', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+				if ( empty( $file ) ) {
+					break;
+				}
 
-                    exit();
-                }
+				$log_file = trailingslashit( self::$listtable->log_folder ) . basename( trim( (string) $file ) );
+				$log_file = realpath( BackWPup_Sanitize_Path::sanitize_path( $log_file ) );
 
-                $capability = 'backwpup_logs';
+				if ( ! $log_file
+					|| ! is_readable( $log_file )
+					|| is_dir( $log_file )
+					|| is_link( $log_file )
+				) {
+					header( 'HTTP/1.0 404 Not Found' );
 
-                $download_handler = new BackWpup_Download_Handler(
-                    new BackWPup_Download_File(
-                        $log_file,
-                        function (BackWPup_Download_File_Interface $obj) {
-                            $obj->clean_ob()
-                                ->headers()
-                            ;
+					exit();
+				}
+
+				$capability = 'backwpup_logs';
+
+				$download_handler = new BackWpup_Download_Handler(
+					new BackWPup_Download_File(
+						$log_file,
+						function ( BackWPup_Download_File_Interface $obj ) {
+							$obj->clean_ob()
+								->headers();
 
                             // phpcs:ignore
                             echo backwpup_wpfilesystem()->get_contents($obj->filepath());
 
-                            exit();
-                        },
-                        $capability
-                    ),
-                    'download_backwpup_logs',
-                    $capability,
-                    'download'
-                );
+							exit();
+						},
+						$capability
+					),
+					'download_backwpup_logs',
+					$capability,
+					'download'
+				);
 
-                $download_handler->handle();
-                break;
-        }
+				$download_handler->handle();
+				break;
+		}
 
-        //Save per page
-        if (isset($_POST['screen-options-apply'], $_POST['wp_screen_options']['option'], $_POST['wp_screen_options']['value'])
-             && $_POST['wp_screen_options']['option'] == 'backwpuplogs_per_page'
-        ) {
-            check_admin_referer('screen-options-nonce', 'screenoptionnonce');
+		// Save per page.
+		$screen_options_apply = filter_input( INPUT_POST, 'screen-options-apply', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$screen_options       = filter_input( INPUT_POST, 'wp_screen_options', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+		if ( ! empty( $screen_options_apply ) && is_array( $screen_options ) ) {
+			$screen_options = wp_unslash( $screen_options );
+			$option         = isset( $screen_options['option'] ) ? sanitize_text_field( $screen_options['option'] ) : '';
+			$value          = isset( $screen_options['value'] ) ? absint( $screen_options['value'] ) : 0;
 
-            if ($_POST['wp_screen_options']['value'] > 0 && $_POST['wp_screen_options']['value'] < 1000) {
-                update_user_option($current_user->ID, 'backwpuplogs_per_page', (int) $_POST['wp_screen_options']['value']);
-                wp_redirect(remove_query_arg(['pagenum', 'apage', 'paged'], wp_get_referer()));
+			if ( 'backwpuplogs_per_page' === $option ) {
+				check_admin_referer( 'screen-options-nonce', 'screenoptionnonce' );
 
-                exit;
-            }
-        }
+				if ( $value > 0 && $value < 1000 ) {
+					update_user_option( $current_user->ID, 'backwpuplogs_per_page', $value );
+					wp_safe_redirect( remove_query_arg( [ 'pagenum', 'apage', 'paged' ], wp_get_referer() ) );
 
-        add_screen_option('per_page', [
-            'label' => __('Logs', 'backwpup'),
-            'default' => 20,
-            'option' => 'backwpuplogs_per_page',
-        ]);
+					exit;
+				}
+			}
+		}
 
-        self::$listtable->prepare_items();
-    }
+		add_screen_option(
+			'per_page',
+			[
+				'label'   => __( 'Logs', 'backwpup' ),
+				'default' => 20,
+				'option'  => 'backwpuplogs_per_page',
+			]
+			);
 
-    /**
-     * Output css.
-     */
-    public static function admin_print_styles()
-    {
-        ?>
+		self::$listtable->prepare_items();
+	}
+
+	/**
+	 * Output css.
+	 */
+	public static function admin_print_styles() {
+		?>
 		<style type="text/css" media="screen">
 			.column-time {
 				text-align: center;
@@ -452,21 +470,20 @@ class BackWPup_Page_Logs extends WP_List_Table
 			}
 		</style>
 		<?php
-    }
+	}
 
-    /**
-     * Output js.
+	/**
+	 * Output js.
 	 */
 	public static function admin_print_scripts() {
 		wp_enqueue_script( 'backwpupgeneral', '', [], BackWPup::get_plugin_data( 'Version' ), true );
 	}
 
-    /**
-     * Display the page content.
-     */
-    public static function page()
-    {
-        ?>
+	/**
+	 * Display the page content.
+	 */
+	public static function page() {
+		?>
 		<div class="wrap" id="backwpup-page">
 			<h1>
 			<?php
@@ -487,22 +504,24 @@ class BackWPup_Page_Logs extends WP_List_Table
 			</form>
 		</div>
 		<?php
-    }
+	}
 
-    /**
-     * For displaying log files with ajax.
-     */
-    public static function ajax_view_log()
-    {
-        if (!current_user_can('backwpup_logs') || !isset($_GET['log']) || strstr((string) $_GET['log'], 'backwpup_log_') === false) {
-            exit('-1');
-        }
+	/**
+	 * For displaying log files with ajax.
+	 */
+	public static function ajax_view_log() {
+		$log = filter_input( INPUT_GET, 'log', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$log = $log ? sanitize_file_name( $log ) : '';
 
-        check_ajax_referer('view-log_' . $_GET['log']);
+		if ( ! current_user_can( 'backwpup_logs' ) || '' === $log || false === strpos( $log, 'backwpup_log_' ) ) {
+			exit( '-1' );
+		}
 
-        $log_folder = get_site_option('backwpup_cfg_logfolder');
-        $log_folder = BackWPup_File::get_absolute_path($log_folder);
-        $log_file = $log_folder . basename(trim((string) $_GET['log']));
+		check_ajax_referer( 'view-log_' . $log );
+
+		$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
+		$log_folder = BackWPup_File::get_absolute_path( $log_folder );
+		$log_file   = $log_folder . basename( $log );
 
 		$filesystem   = backwpup_wpfilesystem();
 		$allowed_html = [
@@ -536,6 +555,6 @@ class BackWPup_Page_Logs extends WP_List_Table
 			exit( esc_html__( 'Logfile not found!', 'backwpup' ) );
 		}
 
-        exit();
-    }
+		exit();
+	}
 }

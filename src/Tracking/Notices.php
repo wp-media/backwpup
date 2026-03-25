@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WPMedia\BackWPup\Tracking;
 
 use WPMedia\Mixpanel\Optin;
-use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 
 class Notices {
 	/**
@@ -38,7 +37,7 @@ class Notices {
 		/**
 		 * Filter whether the tracking notice should be displayed.
 		 *
-		 * @param bool $enable Enable starting job with external link for type "link", default is true if the activetype is link or easycron.
+		 * @param bool $enable Enable starting job with external link for type "link", default is true if the activetype is link.
 		 * @param array $args Job args array.
 		 */
 		return wpm_apply_filters_typed(

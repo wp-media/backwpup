@@ -44,14 +44,14 @@ class EvaluateNotice extends Notice {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function isScreenAllowed(): bool {
+	protected function is_screen_allowed(): bool {
 		return true;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function shouldDisplay(): bool {
+	protected function should_display(): bool {
 		// Check if the notice has been dismissed.
 		$site_wide = is_multisite() ? true : false;
 		$option    = new DismissibleNoticeOption( $site_wide );
@@ -88,11 +88,11 @@ class EvaluateNotice extends Notice {
 	protected function message(): NoticeMessage {
 
 		$message                  = new NoticeMessage( 'evaluate' );
-		$message->tempdissmissurl = $this->getNoticeDismissActionUrl(
+		$message->tempdissmissurl = $this->get_notice_dismiss_action_url(
 			DismissibleNoticeOption::FOR_NOW_ACTION,
 			self::DAYS_BEFORE_REAPPEAR * 24
 		);
-		$message->dismissurl      = $this->getNoticeDismissActionUrl(
+		$message->dismissurl      = $this->get_notice_dismiss_action_url(
 			DismissibleNoticeOption::FOR_GOOD_ACTION
 		);
 		return $message;
@@ -106,7 +106,7 @@ class EvaluateNotice extends Notice {
 	 *
 	 * @return string|null
 	 */
-	protected function getNoticeDismissActionUrl( string $action, ?int $expiration = null ): ?string {
+	protected function get_notice_dismiss_action_url( string $action, ?int $expiration = null ): ?string {
 		$option = new DismissibleNoticeOption( false );
 		return $option::dismiss_action_url(
 			static::ID,

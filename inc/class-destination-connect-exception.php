@@ -10,6 +10,6 @@
  *
  * @since   3.5.0
  */
-class BackWPup_Destination_Connect_Exception extends \RuntimeException
-{
+class BackWPup_Destination_Connect_Exception extends \RuntimeException {
+
 }

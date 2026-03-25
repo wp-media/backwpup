@@ -29,12 +29,23 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 	public const MSAZUREDIR          = 'msazuredir';
 	public const MSAZUREMAXBACKUPS   = 'msazuremaxbackups';
 	public const MSAZURESYNCNODELETE = 'msazuresyncnodelete';
-    public const NEWMSAZURECONTAINER = 'newmsazurecontainer';
+	public const NEWMSAZURECONTAINER = 'newmsazurecontainer';
 
-    public function option_defaults(): array
-    {
-        return [MsAzureDestinationConfiguration::MSAZURE_ACCNAME => '', MsAzureDestinationConfiguration::MSAZURE_KEY => '', MsAzureDestinationConfiguration::MSAZURE_CONTAINER => '', self::MSAZUREDIR => trailingslashit(sanitize_file_name(get_bloginfo('name'))), self::MSAZUREMAXBACKUPS => 15, self::MSAZURESYNCNODELETE => true];
-    }
+	/**
+	 * Get default options for Azure destination.
+	 *
+	 * @return array
+	 */
+	public function option_defaults(): array {
+		return [
+			MsAzureDestinationConfiguration::MSAZURE_ACCNAME => '',
+			MsAzureDestinationConfiguration::MSAZURE_KEY => '',
+			MsAzureDestinationConfiguration::MSAZURE_CONTAINER => '',
+			self::MSAZUREDIR                             => trailingslashit( sanitize_file_name( get_bloginfo( 'name' ) ) ),
+			self::MSAZUREMAXBACKUPS                      => 15,
+			self::MSAZURESYNCNODELETE                    => true,
+		];
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -54,11 +65,11 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 			throw $exception;
 		}
 
-		if ( $msazure_configuration->isNew() ) {
+		if ( $msazure_configuration->is_new() ) {
 			try {
 				$this->createContainer( $msazure_configuration );
 
-                BackWPup_Admin::message(
+				BackWPup_Admin::message(
 					sprintf(
 						// translators: %s is the container name.
 						__( 'MS Azure container "%s" created.', 'backwpup' ),
@@ -70,86 +81,98 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 				BackWPup_Admin::message( sprintf( __( 'MS Azure container create: %s', 'backwpup' ), $e->getMessage() ), true );
 				throw $e;
 			}
-        }
+		}
 
-				$msazure_dir = $this->msazureDir();
-
-				$jobids = (array) $jobid;
+		$msazure_dir = $this->msazureDir();
+		$jobids      = (array) $jobid;
 		foreach ( $jobids as $jobid ) {
-				BackWPup_Option::update(
-					$jobid,
-					MsAzureDestinationConfiguration::MSAZURE_ACCNAME,
-					$msazure_configuration->msazureaccname()
-				);
-				BackWPup_Option::update(
-					$jobid,
-					MsAzureDestinationConfiguration::MSAZURE_KEY,
-			$msazure_configuration->msazurekey()
-				);
-				BackWPup_Option::update(
-					$jobid,
-					MsAzureDestinationConfiguration::MSAZURE_CONTAINER,
-			$msazure_configuration->msazurecontainer()
-				);
+			BackWPup_Option::update(
+				$jobid,
+				MsAzureDestinationConfiguration::MSAZURE_ACCNAME,
+				$msazure_configuration->msazureaccname()
+			);
+			BackWPup_Option::update(
+				$jobid,
+				MsAzureDestinationConfiguration::MSAZURE_KEY,
+				$msazure_configuration->msazurekey()
+			);
+			BackWPup_Option::update(
+				$jobid,
+				MsAzureDestinationConfiguration::MSAZURE_CONTAINER,
+				$msazure_configuration->msazurecontainer()
+			);
 
-				BackWPup_Option::update( $jobid, self::MSAZUREDIR, $msazure_dir );
+			BackWPup_Option::update( $jobid, self::MSAZUREDIR, $msazure_dir );
 
-				BackWPup_Option::update(
-					$jobid,
-					self::MSAZUREMAXBACKUPS,
-					isset( $_POST[ self::MSAZUREMAXBACKUPS ] ) && is_numeric( $_POST[ self::MSAZUREMAXBACKUPS ] ) ? absint( $_POST[ self::MSAZUREMAXBACKUPS ] ) : $this->option_defaults()[ self::MSAZUREMAXBACKUPS ] // phpcs:ignore WordPress.Security.NonceVerification.Missing
-				);
+			BackWPup_Option::update(
+				$jobid,
+				self::MSAZUREMAXBACKUPS,
+				isset( $_POST[ self::MSAZUREMAXBACKUPS ] ) && is_numeric( $_POST[ self::MSAZUREMAXBACKUPS ] ) ? absint( $_POST[ self::MSAZUREMAXBACKUPS ] ) : $this->option_defaults()[ self::MSAZUREMAXBACKUPS ] // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			);
 
-				BackWPup_Option::update(
-					$jobid,
-					self::MSAZURESYNCNODELETE,
-					filter_input( INPUT_POST, self::MSAZURESYNCNODELETE ) ?: ''
-				);
+			BackWPup_Option::update(
+				$jobid,
+				self::MSAZURESYNCNODELETE,
+				filter_input( INPUT_POST, self::MSAZURESYNCNODELETE ) ?: ''
+			);
 		}
 	}
 
-    public function file_delete(string $jobdest, string $backupfile): void
-    {
-        $files = get_site_transient('backwpup_' . strtolower($jobdest));
-        [$jobid, $dest] = explode('_', $jobdest);
+	/**
+	 * Delete a file from Azure.
+	 *
+	 * @param string $jobdest    Job destination string.
+	 * @param string $backupfile Backup file path.
+	 *
+	 * @return void
+	 */
+	public function file_delete( string $jobdest, string $backupfile ): void {
+		$files          = get_site_transient( 'backwpup_' . strtolower( $jobdest ) );
+		[$jobid, $dest] = explode( '_', $jobdest );
 
-        if (BackWPup_Option::get($jobid, MsAzureDestinationConfiguration::MSAZURE_ACCNAME)
-            && BackWPup_Option::get($jobid, MsAzureDestinationConfiguration::MSAZURE_KEY)
-            && BackWPup_Option::get($jobid, MsAzureDestinationConfiguration::MSAZURE_CONTAINER)) {
-            try {
-                $blobClient = $this->createBlobClient(
-                    BackWPup_Option::get($jobid, MsAzureDestinationConfiguration::MSAZURE_ACCNAME),
-                    BackWPup_Encryption::decrypt(
-                        BackWPup_Option::get($jobid, MsAzureDestinationConfiguration::MSAZURE_KEY)
-                    )
-                );
+		if ( BackWPup_Option::get( $jobid, MsAzureDestinationConfiguration::MSAZURE_ACCNAME )
+			&& BackWPup_Option::get( $jobid, MsAzureDestinationConfiguration::MSAZURE_KEY )
+			&& BackWPup_Option::get( $jobid, MsAzureDestinationConfiguration::MSAZURE_CONTAINER ) ) {
+			try {
+				$blob_client = $this->createBlobClient(
+					BackWPup_Option::get( $jobid, MsAzureDestinationConfiguration::MSAZURE_ACCNAME ),
+					BackWPup_Encryption::decrypt(
+						BackWPup_Option::get( $jobid, MsAzureDestinationConfiguration::MSAZURE_KEY )
+					)
+				);
 
-                $this->deleteBlob(
-                    $blobClient,
-                    BackWPup_Option::get(
-                        $jobid,
-                        MsAzureDestinationConfiguration::MSAZURE_CONTAINER
-                    ),
-                    $backupfile
-                );
+				$this->deleteBlob(
+					$blob_client,
+					BackWPup_Option::get(
+						$jobid,
+						MsAzureDestinationConfiguration::MSAZURE_CONTAINER
+					),
+					$backupfile
+				);
 
-                //update file list
-                foreach ($files as $key => $file) {
-                    if (is_array($file) && $file['file'] == $backupfile) {
-                        unset($files[$key]);
-                    }
-                }
-            } catch (Exception $e) {
-                BackWPup_Admin::message('MS AZURE: ' . $e->getMessage(), true);
-            }
-        }
+				// Update file list.
+				foreach ( $files as $key => $file ) {
+					if ( is_array( $file ) && $backupfile === $file['file'] ) {
+						unset( $files[ $key ] );
+					}
+				}
+			} catch ( Exception $e ) {
+				BackWPup_Admin::message( 'MS AZURE: ' . $e->getMessage(), true );
+			}
+		}
 
-        set_site_transient('backwpup_' . strtolower($jobdest), $files, YEAR_IN_SECONDS);
-    }
+		set_site_transient( 'backwpup_' . strtolower( $jobdest ), $files, YEAR_IN_SECONDS );
+	}
 
-    public function job_run_archive(BackWPup_Job $job_object): bool
-    {
-        $job_object->substeps_todo = $job_object->backup_filesize + 2;
+	/**
+	 * Run archive job for Azure.
+	 *
+	 * @param BackWPup_Job $job_object Job object.
+	 *
+	 * @return bool
+	 */
+	public function job_run_archive( BackWPup_Job $job_object ): bool {
+		$job_object->substeps_todo = $job_object->backup_filesize + 2;
 
 		if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] !== $job_object->steps_data[ $job_object->step_working ]['STEP_TRY'] ) {
 			$job_object->log(
@@ -169,17 +192,17 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 			);
 
 			if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] !== $job_object->steps_data[ $job_object->step_working ]['STEP_TRY'] ) {
-				// Test vor existing container.
+				// Test for existing container.
 				$containers = $this->getContainers( $blob_rest_proxy );
 
-                $job_object->steps_data[$job_object->step_working]['container_url'] = '';
+				$job_object->steps_data[ $job_object->step_working ]['container_url'] = '';
 
-                foreach ($containers as $container) {
-                    if ($container->getName() == $job_object->job[MsAzureDestinationConfiguration::MSAZURE_CONTAINER]) {
-                        $job_object->steps_data[$job_object->step_working]['container_url'] = $container->getUrl();
-                        break;
-                    }
-                }
+				foreach ( $containers as $container ) {
+					if ( $job_object->job[ MsAzureDestinationConfiguration::MSAZURE_CONTAINER ] === $container->getName() ) {
+						$job_object->steps_data[ $job_object->step_working ]['container_url'] = $container->getUrl();
+						break;
+					}
+				}
 
 				if ( ! $job_object->steps_data[ $job_object->step_working ]['container_url'] ) {
 					$job_object->log(
@@ -191,7 +214,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 						E_USER_ERROR
 						);
 
-                    return true;
+					return true;
 				}
 				$job_object->log(
 					sprintf(
@@ -202,56 +225,57 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 					E_USER_NOTICE
 					);
 
-                $job_object->log(__('Starting upload to MS Azure&#160;&hellip;', 'backwpup'), E_USER_NOTICE);
-            }
+				$job_object->log( __( 'Starting upload to MS Azure&#160;&hellip;', 'backwpup' ), E_USER_NOTICE );
+			}
 
 			// Prepare upload.
 			$file_handel = fopen( $job_object->backup_folder . $job_object->backup_file, 'rb' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 			if ( $file_handel ) {
 				fseek( $file_handel, $job_object->substeps_done );
 
-                if (empty($job_object->steps_data[$job_object->step_working]['BlockList'])) {
-                    $job_object->steps_data[$job_object->step_working]['BlockList'] = [];
-                }
+				if ( empty( $job_object->steps_data[ $job_object->step_working ]['BlockList'] ) ) {
+					$job_object->steps_data[ $job_object->step_working ]['BlockList'] = [];
+				}
 
 				while ( ! feof( $file_handel ) ) {
 					$data = fread( $file_handel, 1048576 * 4 ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fread -- 4MB.
 					if ( 0 === strlen( $data ) ) {
 						continue;
-                    }
-                    $chunk_upload_start = microtime(true);
-                    $block_count = count($job_object->steps_data[$job_object->step_working]['BlockList']) + 1;
-                    $block_id = base64_encode(str_pad($block_count, 6, '0', STR_PAD_LEFT));
+					}
+					$chunk_upload_start = microtime( true );
+					$block_count        = count( $job_object->steps_data[ $job_object->step_working ]['BlockList'] ) + 1;
+          // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+					$block_id = base64_encode( str_pad( $block_count, 6, '0', STR_PAD_LEFT ) );
 
 					$blob_rest_proxy->createBlobBlock(
 						$job_object->job[ MsAzureDestinationConfiguration::MSAZURE_CONTAINER ],
 						$job_object->job[ self::MSAZUREDIR ] . $job_object->backup_file,
 						$block_id,
-                        $data
-                    );
+						$data
+					);
 
-                    $job_object->steps_data[$job_object->step_working]['BlockList'][] = $block_id;
-                    $chunk_upload_time = microtime(true) - $chunk_upload_start;
-                    $job_object->substeps_done = $job_object->substeps_done + strlen($data);
-                    $time_remaining = $job_object->do_restart_time();
-                    if ($time_remaining < $chunk_upload_time) {
-                        $job_object->do_restart_time(true);
-                    }
-                    $job_object->update_working_data();
+					$job_object->steps_data[ $job_object->step_working ]['BlockList'][] = $block_id;
+					$chunk_upload_time         = microtime( true ) - $chunk_upload_start;
+					$job_object->substeps_done = $job_object->substeps_done + strlen( $data );
+					$time_remaining            = $job_object->do_restart_time();
+					if ( $time_remaining < $chunk_upload_time ) {
+						$job_object->do_restart_time( true );
+					}
+					$job_object->update_working_data();
 				}
 				fclose( $file_handel ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 			} else {
-                $job_object->log(__('Can not open source file for transfer.', 'backwpup'), E_USER_ERROR);
+				$job_object->log( __( 'Can not open source file for transfer.', 'backwpup' ), E_USER_ERROR );
 
-                return false;
-            }
+				return false;
+			}
 
-            $blocklist = $this->createBlockList();
+			$blocklist = $this->createBlockList();
 
-            foreach ($job_object->steps_data[$job_object->step_working]['BlockList'] as $block_id) {
-                $blocklist->addUncommittedEntry($block_id);
-            }
-            unset($job_object->steps_data[$job_object->step_working]['BlockList']);
+			foreach ( $job_object->steps_data[ $job_object->step_working ]['BlockList'] as $block_id ) {
+				$blocklist->addUncommittedEntry( $block_id );
+			}
+			unset( $job_object->steps_data[ $job_object->step_working ]['BlockList'] );
 
 			// Commit Blocks.
 			$blob_rest_proxy->commitBlobBlocks( $job_object->job[ MsAzureDestinationConfiguration::MSAZURE_CONTAINER ], $job_object->job[ self::MSAZUREDIR ] . $job_object->backup_file, $blocklist->getEntries() );
@@ -285,48 +309,49 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 				fclose( $file_handel ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 			}
 
-            return false;
-        }
+			return false;
+		}
 
-        try {
-            $backupfilelist = [];
-            $filecounter = 0;
-            $files = [];
+		try {
+			$backupfilelist = [];
+			$filecounter    = 0;
+			$files          = [];
 
-            $blob_options = $this->createListBlobsOptions();
-            $blob_options->setPrefix($job_object->job[self::MSAZUREDIR]);
+			$blob_options = $this->createListBlobsOptions();
+			$blob_options->setPrefix( $job_object->job[ self::MSAZUREDIR ] );
 
 			$blobs = $this->getBlobs(
 				$blob_rest_proxy,
 				$job_object->job[ MsAzureDestinationConfiguration::MSAZURE_CONTAINER ],
 				$blob_options
-            );
+			);
 
-            if (is_array($blobs)) {
-                foreach ($blobs as $blob) {
-                    $file = basename($blob->getName());
-                    if ($this->is_backup_archive($file) && $this->is_backup_owned_by_job($file, $job_object->job['jobid']) == true) {
-                        $backupfilelist[$blob->getProperties()->getLastModified()->getTimestamp()] = $file;
-                    }
-                    $files[$filecounter]['folder'] = $job_object->steps_data[$job_object->step_working]['container_url'] . '/' . dirname($blob->getName()) . '/';
-                    $files[$filecounter]['file'] = $blob->getName();
-                    $files[$filecounter]['filename'] = basename($blob->getName());
-                    $files[$filecounter]['downloadurl'] = network_admin_url('admin.php') . '?page=backwpupbackups&action=downloadmsazure&file=' . $blob->getName() . '&jobid=' . $job_object->job['jobid'];
-                    $files[$filecounter]['filesize'] = $blob->getProperties()->getContentLength();
-                    $files[$filecounter]['time'] = $blob->getProperties()->getLastModified()->getTimestamp() + (get_option('gmt_offset') * 3600);
-                    ++$filecounter;
-                }
-            }
-            // Delete old backups
-            if (!empty($job_object->job[self::MSAZUREMAXBACKUPS]) && $job_object->job[self::MSAZUREMAXBACKUPS] > 0) {
-                if (count($backupfilelist) > $job_object->job[self::MSAZUREMAXBACKUPS]) {
-                    ksort($backupfilelist);
+			if ( is_array( $blobs ) ) {
+				foreach ( $blobs as $blob ) {
+					$file = basename( $blob->getName() );
+					if ( $this->is_backup_archive( $file ) && $this->is_backup_owned_by_job( $file, $job_object->job['jobid'] ) ) {
+						$backupfilelist[ $blob->getProperties()->getLastModified()->getTimestamp() ] = $file;
+					}
+					$files[ $filecounter ]['folder']      = $job_object->steps_data[ $job_object->step_working ]['container_url'] . '/' . dirname( $blob->getName() ) . '/';
+					$files[ $filecounter ]['file']        = $blob->getName();
+					$files[ $filecounter ]['filename']    = basename( $blob->getName() );
+					$files[ $filecounter ]['downloadurl'] = network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=downloadmsazure&file=' . $blob->getName() . '&jobid=' . $job_object->job['jobid'];
+					$files[ $filecounter ]['filesize']    = $blob->getProperties()->getContentLength();
+					$files[ $filecounter ]['time']        = $blob->getProperties()->getLastModified()->getTimestamp() + ( get_option( 'gmt_offset' ) * 3600 );
+					++$filecounter;
+				}
+			}
+			// Delete old backups.
+			if ( ! empty( $job_object->job[ self::MSAZUREMAXBACKUPS ] ) && $job_object->job[ self::MSAZUREMAXBACKUPS ] > 0 ) {
+				if ( count( $backupfilelist ) > $job_object->job[ self::MSAZUREMAXBACKUPS ] ) {
+					ksort( $backupfilelist );
 					$numdeltefiles = 0;
 					$deleted_files = [];
 
-                    while ($file = array_shift($backupfilelist)) {
-                        if (count($backupfilelist) < $job_object->job[self::MSAZUREMAXBACKUPS]) {
-                            break;
+					while ( ! empty( $backupfilelist ) ) {
+						$file = array_shift( $backupfilelist );
+						if ( count( $backupfilelist ) < $job_object->job[ self::MSAZUREMAXBACKUPS ] ) {
+							break;
 						}
 						$blob_rest_proxy->deleteBlob( $job_object->job[ MsAzureDestinationConfiguration::MSAZURE_CONTAINER ], $job_object->job[ self::MSAZUREDIR ] . $file );
 
@@ -335,8 +360,8 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 								$deleted_files[] = $filedata['filename'];
 								unset( $files[ $key ] );
 							}
-                        }
-                        ++$numdeltefiles;
+						}
+						++$numdeltefiles;
 					}
 					if ( $numdeltefiles > 0 ) {
 						$job_object->log(
@@ -370,30 +395,40 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 				$e->getLine()
 				);
 
-            return false;
-        }
+			return false;
+		}
 
-        $job_object->substeps_done = $job_object->backup_filesize + 2;
+		$job_object->substeps_done = $job_object->backup_filesize + 2;
 
-        return true;
-    }
+		return true;
+	}
 
-    public function can_run(array $job_settings): bool
-    {
-        if (empty($job_settings[MsAzureDestinationConfiguration::MSAZURE_ACCNAME])) {
-            return false;
-        }
+	/**
+	 * Check if Azure destination can run.
+	 *
+	 * @param array $job_settings Job settings.
+	 *
+	 * @return bool
+	 */
+	public function can_run( array $job_settings ): bool {
+		if ( empty( $job_settings[ MsAzureDestinationConfiguration::MSAZURE_ACCNAME ] ) ) {
+			return false;
+		}
 
-        if (empty($job_settings[MsAzureDestinationConfiguration::MSAZURE_KEY])) {
-            return false;
-        }
+		if ( empty( $job_settings[ MsAzureDestinationConfiguration::MSAZURE_KEY ] ) ) {
+			return false;
+		}
 
-        return !(empty($job_settings[MsAzureDestinationConfiguration::MSAZURE_CONTAINER]));
-    }
+		return ! ( empty( $job_settings[ MsAzureDestinationConfiguration::MSAZURE_CONTAINER ] ) );
+	}
 
-    public function edit_inline_js(): void
-    {
-        ?>
+	/**
+	 * Output inline JavaScript for Azure settings.
+	 *
+	 * @return void
+	 */
+	public function edit_inline_js(): void {
+		?>
 		<script type="text/javascript">
 			jQuery(document).ready(function ($) {
 				function msazuregetcontainer() {
@@ -417,53 +452,59 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 				});
 			});
 		</script>
-	<?php
-    }
+		<?php
+	}
 
-    public function edit_ajax(array $args = []): void
-    {
-        $error = '';
-        $ajax = false;
+	/**
+	 * Handle AJAX requests for Azure settings.
+	 *
+	 * @param array $args Request arguments.
+	 *
+	 * @return void
+	 */
+	public function edit_ajax( array $args = [] ): void {
+		$error = '';
+		$ajax  = false;
 
-        $msazureName = filter_input(
-            INPUT_POST,
-            MsAzureDestinationConfiguration::MSAZURE_ACCNAME
-        ) ?: '';
-        $msazureKey = filter_input(
-            INPUT_POST,
-            MsAzureDestinationConfiguration::MSAZURE_KEY
-        ) ?: '';
-        $msazureSelected = filter_input(
-            INPUT_POST,
-            'msazureselected'
-        ) ?: '';
+		$msazure_name     = filter_input(
+			INPUT_POST,
+			MsAzureDestinationConfiguration::MSAZURE_ACCNAME
+		) ?: '';
+		$msazure_key      = filter_input(
+			INPUT_POST,
+			MsAzureDestinationConfiguration::MSAZURE_KEY
+		) ?: '';
+		$msazure_selected = filter_input(
+			INPUT_POST,
+			'msazureselected'
+		) ?: '';
 
-        if ($msazureName || $msazureKey) {
-            if (!current_user_can('backwpup_jobs_edit')) {
-                wp_die(-1);
-            }
-            check_ajax_referer('backwpup_ajax_nonce');
-            $args[MsAzureDestinationConfiguration::MSAZURE_ACCNAME] = $msazureName;
-            $args[MsAzureDestinationConfiguration::MSAZURE_KEY] = $msazureKey;
-            $args['msazureselected'] = $msazureSelected;
-            $ajax = true;
-        }
-        echo '<span id="msazurecontainererror" class="bwu-message-error">';
+		if ( $msazure_name || $msazure_key ) {
+			if ( ! current_user_can( 'backwpup_jobs_edit' ) ) {
+				wp_die( -1 );
+			}
+			check_ajax_referer( 'backwpup_ajax_nonce' );
+			$args[ MsAzureDestinationConfiguration::MSAZURE_ACCNAME ] = $msazure_name;
+			$args[ MsAzureDestinationConfiguration::MSAZURE_KEY ]     = $msazure_key;
+			$args['msazureselected']                                  = $msazure_selected;
+			$ajax = true;
+		}
+		echo '<span id="msazurecontainererror" class="bwu-message-error">';
 
-        $containers = null;
+		$containers = null;
 
-        if (!empty($args[MsAzureDestinationConfiguration::MSAZURE_ACCNAME]) && !empty($args[MsAzureDestinationConfiguration::MSAZURE_KEY])) {
-            try {
-                $blobClient = $this->createBlobClient(
-                    $args[MsAzureDestinationConfiguration::MSAZURE_ACCNAME],
-                    BackWPup_Encryption::decrypt($args[MsAzureDestinationConfiguration::MSAZURE_KEY])
-                );
+		if ( ! empty( $args[ MsAzureDestinationConfiguration::MSAZURE_ACCNAME ] ) && ! empty( $args[ MsAzureDestinationConfiguration::MSAZURE_KEY ] ) ) {
+			try {
+				$blob_client = $this->createBlobClient(
+					$args[ MsAzureDestinationConfiguration::MSAZURE_ACCNAME ],
+					BackWPup_Encryption::decrypt( $args[ MsAzureDestinationConfiguration::MSAZURE_KEY ] )
+				);
 
-                $containers = $blobClient->listContainers()->getContainers();
-            } catch (Exception $e) {
-                $error = $e->getMessage();
-            }
-        }
+				$containers = $blob_client->listContainers()->getContainers();
+			} catch ( Exception $e ) {
+				$error = $e->getMessage();
+			}
+		}
 
 		if ( empty( $args[ MsAzureDestinationConfiguration::MSAZURE_ACCNAME ] ) ) {
 			esc_html_e( 'Missing account name!', 'backwpup' );
@@ -474,7 +515,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 		} elseif ( empty( $containers ) ) {
 			esc_html_e( 'No container found!', 'backwpup' );
 		}
-        echo '</span>';
+		echo '</span>';
 
 		if ( ! empty( $containers ) ) {
 			$containers_list = [];
@@ -493,138 +534,184 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 				]
 				);
 		}
-        if ($ajax) {
-            exit();
-        }
-    }
+		if ( $ajax ) {
+			exit();
+		}
+	}
 
-    /**
-     * Creates the service used to access the blob.
-     */
-    public function createBlobClient(string $accountName, string $accountKey): BlobRestProxy
-    {
-        $connectionString = 'DefaultEndpointsProtocol=https;AccountName='
-            . $accountName . ';AccountKey=' . $accountKey;
+	/**
+	 * Creates the service used to access the blob.
+	 *
+	 * @param string $account_name Account name.
+	 * @param string $account_key  Account key.
+	 *
+	 * @return BlobRestProxy
+	 */
+	public function createBlobClient( string $account_name, string $account_key ): BlobRestProxy {
+		$connection_string = 'DefaultEndpointsProtocol=https;AccountName='
+			. $account_name . ';AccountKey=' . $account_key;
 
-        return BlobRestProxy::createBlobService($connectionString);
-    }
+		return BlobRestProxy::createBlobService( $connection_string );
+	}
 
-    protected function msazureConfiguration(): MsAzureDestinationConfiguration
-    {
-        $msazureaccname = filter_input(INPUT_POST, MsAzureDestinationConfiguration::MSAZURE_ACCNAME);
-        $msazurekey = filter_input(INPUT_POST, MsAzureDestinationConfiguration::MSAZURE_KEY);
-        $msazurecontainer = filter_input(
-            INPUT_POST,
-            MsAzureDestinationConfiguration::MSAZURE_CONTAINER
-        );
+	/**
+	 * Build Azure configuration from request data.
+	 *
+	 * @return MsAzureDestinationConfiguration
+	 */
+	protected function msazureConfiguration(): MsAzureDestinationConfiguration {
+		$msazureaccname   = filter_input( INPUT_POST, MsAzureDestinationConfiguration::MSAZURE_ACCNAME );
+		$msazurekey       = filter_input( INPUT_POST, MsAzureDestinationConfiguration::MSAZURE_KEY );
+		$msazurecontainer = filter_input(
+			INPUT_POST,
+			MsAzureDestinationConfiguration::MSAZURE_CONTAINER
+		);
 
-        if (!$msazurecontainer) {
-            $newmsazurecontainer = filter_input(
-                INPUT_POST,
-                self::NEWMSAZURECONTAINER
-            );
+		if ( ! $msazurecontainer ) {
+			$newmsazurecontainer = filter_input(
+				INPUT_POST,
+				self::NEWMSAZURECONTAINER
+			);
 
-            return MsAzureDestinationConfiguration::withNewContainer(
-                $msazureaccname,
-                $msazurekey,
-                $newmsazurecontainer
-            );
-        }
+			return MsAzureDestinationConfiguration::with_new_container(
+				$msazureaccname,
+				$msazurekey,
+				$newmsazurecontainer
+			);
+		}
 
-        return new MsAzureDestinationConfiguration(
-            $msazureaccname,
-            $msazurekey,
-            $msazurecontainer
-        );
-    }
+		return new MsAzureDestinationConfiguration(
+			$msazureaccname,
+			$msazurekey,
+			$msazurecontainer
+		);
+	}
 
-    protected function createContainer(MsAzureDestinationConfiguration $configuration): void
-    {
-        $blobClient = $this->createBlobClient(
-            $configuration->msazureaccname(),
-            $configuration->msazurekey()
-        );
+	/**
+	 * Create container if needed.
+	 *
+	 * @param MsAzureDestinationConfiguration $configuration Configuration.
+	 *
+	 * @return void
+	 */
+	protected function createContainer( MsAzureDestinationConfiguration $configuration ): void {
+		$blob_client = $this->createBlobClient(
+			$configuration->msazureaccname(),
+			$configuration->msazurekey()
+		);
 
-        $createContainerOptions = $this->createContainerOptionsFactory();
-        $createContainerOptions->setPublicAccess(PublicAccessType::NONE);
+		$create_container_options = $this->createContainerOptionsFactory();
+		$create_container_options->setPublicAccess( PublicAccessType::NONE );
 
-        $blobClient->createContainer(
-            $configuration->msazurecontainer(),
-            $createContainerOptions
-        );
-    }
+		$blob_client->createContainer(
+			$configuration->msazurecontainer(),
+			$create_container_options
+		);
+	}
 
-    protected function createContainerOptionsFactory(): CreateContainerOptions
-    {
-        return new CreateContainerOptions();
-    }
+	/**
+	 * Create container options factory.
+	 *
+	 * @return CreateContainerOptions
+	 */
+	protected function createContainerOptionsFactory(): CreateContainerOptions {
+		return new CreateContainerOptions();
+	}
 
-    protected function deleteBlob(BlobRestProxy $blobClient, string $container, string $backupfile): void
-    {
-        $blobClient->deleteBlob(
-            $container,
-            $backupfile
-        );
-    }
+	/**
+	 * Delete a blob from a container.
+	 *
+	 * @param BlobRestProxy $blob_client Blob client.
+	 * @param string        $container   Container name.
+	 * @param string        $backupfile  Backup file name.
+	 *
+	 * @return void
+	 */
+	protected function deleteBlob( BlobRestProxy $blob_client, string $container, string $backupfile ): void {
+		$blob_client->deleteBlob(
+			$container,
+			$backupfile
+		);
+	}
 
-    /**
-     * @return Blob[]
-     */
-    protected function getBlobs(BlobRestProxy $blobClient, string $container, ListBlobsOptions $options): array
-    {
-        return $blobClient->listBlobs(
-            $container,
-            $options
-        )->getBlobs();
-    }
+	/**
+	 * Get blobs for a container.
+	 *
+	 * @param BlobRestProxy    $blob_client Blob client.
+	 * @param string           $container   Container name.
+	 * @param ListBlobsOptions $options     List options.
+	 *
+	 * @return Blob[]
+	 */
+	protected function getBlobs( BlobRestProxy $blob_client, string $container, ListBlobsOptions $options ): array {
+		return $blob_client->listBlobs(
+			$container,
+			$options
+		)->getBlobs();
+	}
 
-    /**
-     * @return Container[]
-     */
-    protected function getContainers(BlobRestProxy $blobClient): array
-    {
-        return $blobClient->listContainers()->getContainers();
-    }
+	/**
+	 * Get containers for the account.
+	 *
+	 * @param BlobRestProxy $blob_client Blob client.
+	 *
+	 * @return Container[]
+	 */
+	protected function getContainers( BlobRestProxy $blob_client ): array {
+		return $blob_client->listContainers()->getContainers();
+	}
 
-    protected function createBlockList(): BlockList
-    {
-        return new BlockList();
-    }
+	/**
+	 * Create a block list.
+	 *
+	 * @return BlockList
+	 */
+	protected function createBlockList(): BlockList {
+		return new BlockList();
+	}
 
-    protected function createListBlobsOptions(): ListBlobsOptions
-    {
-        return new ListBlobsOptions();
-    }
+	/**
+	 * Create list blobs options.
+	 *
+	 * @return ListBlobsOptions
+	 */
+	protected function createListBlobsOptions(): ListBlobsOptions {
+		return new ListBlobsOptions();
+	}
 
-    protected function msazureDir(): string
-    {
-        $msazureDir = trailingslashit(
-            str_replace(
-                '//',
-                '/',
-                str_replace(
-                    '\\',
-                    '/',
-                    trim(
-                        filter_input(INPUT_POST, self::MSAZUREDIR) ?: ''
-                    )
-                )
-            )
-        );
+	/**
+	 * Build Azure directory path.
+	 *
+	 * @return string
+	 */
+	protected function msazureDir(): string {
+		$msazure_dir = trailingslashit(
+			str_replace(
+				'//',
+				'/',
+				str_replace(
+					'\\',
+					'/',
+					trim(
+						filter_input( INPUT_POST, self::MSAZUREDIR ) ?: ''
+					)
+				)
+			)
+		);
 
-        if (substr($msazureDir, 0, 1) == '/') {
-            $msazureDir = substr($msazureDir, 1);
-        }
+		if ( '/' === substr( $msazure_dir, 0, 1 ) ) {
+			$msazure_dir = substr( $msazure_dir, 1 );
+		}
 
-        if ($msazureDir == '/') {
-            $msazureDir = '';
-        }
+		if ( '/' === $msazure_dir ) {
+			$msazure_dir = '';
+		}
 
-        return $msazureDir;
-    }
+		return $msazure_dir;
+	}
 
-    /**
-     * It extracts the job id from a job destination string.
+	/**
+	 * It extracts the job id from a job destination string.
 	 *
 	 * @param string $job_destination String containing a job destination, ex. 1_SOME_DESTINATION.
 	 *
@@ -645,7 +732,9 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 	}
 
 	/**
-	 * Get service name
+	 * Get service name.
+	 *
+	 * @return string
 	 */
 	public function get_service_name(): string {
 		return self::SERVICE_NAME;

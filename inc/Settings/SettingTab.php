@@ -1,13 +1,19 @@
 <?php
-
-// -*- coding: utf-8 -*-
+/**
+ * Settings tab interface.
+ */
 
 namespace Inpsyde\BackWPup\Settings;
 
 /**
  * Class SettingTab.
  */
-interface SettingTab
-{
-    public function tab();
+interface SettingTab {
+
+	/**
+	 * Render the settings tab contents.
+	 *
+	 * @return void
+	 */
+	public function tab();
 }

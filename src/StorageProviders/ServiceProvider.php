@@ -5,7 +5,7 @@ namespace WPMedia\BackWPup\StorageProviders;
 
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
-use WPMedia\BackWPup\StorageProviders\Rackspace\RackspaceProvider as Rackspace;
+use WPMedia\BackWPup\StorageProviders\HiDrive\HiDriveProvider;
 use WPMedia\BackWPup\StorageProviders\Rackspace\Subscriber as RCSSubscriber;
 use WPMedia\BackWPup\StorageProviders\Subscriber as StorageProviderSubscriber;
 use WPMedia\BackWPup\StorageProviders\Frontend\API\Subscriber as StorageProviderFrontendApiSubscriber;
@@ -39,6 +39,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'gdrive_provider',
 		'onedrive_provider',
 		'sugarsync_provider',
+		'hidrive_provider',
 		'cloud_provider_manager',
 		'storage_providers_gdrive_subscriber',
 		OneDriveSubscriber::class,
@@ -106,12 +107,20 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'backwpup_helpers_adapter' ),
 				]
 				);
+		$this->getContainer()->addShared( 'hidrive_provider', HiDriveProvider::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'option_adapter' ),
+					$this->getContainer()->get( 'backwpup_helpers_adapter' ),
+				]
+			);
 
 		$providers = [
 			$this->getContainer()->get( 'dropbox_provider' ),
 			$this->getContainer()->get( 'gdrive_provider' ),
 			$this->getContainer()->get( 'onedrive_provider' ),
 			$this->getContainer()->get( 'sugarsync_provider' ),
+			$this->getContainer()->get( 'hidrive_provider' ),
 		];
 
 		$this->getContainer()->addShared( 'cloud_provider_manager', CloudProviderManager::class )

@@ -2,55 +2,60 @@
 /**
  * Render plugin dashboard.
  */
-class BackWPup_Page_BackWPup
-{
-    /**
-     * Called on load action.
-     */
-    public static function load()
-    {
-        global $wpdb;
+class BackWPup_Page_BackWPup {
 
-        if (isset($_GET['action']) && $_GET['action'] == 'dbdumpdl') {
-            //check permissions
-            check_admin_referer('backwpupdbdumpdl');
+	/**
+	 * Called on load action.
+	 */
+	public static function load() {
+		global $wpdb;
 
-            if (!current_user_can('backwpup_jobs_edit')) {
-                exit();
-            }
+		$action = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( null === $action && isset( $_GET['action'] ) ) {
+			$action = sanitize_text_field( wp_unslash( $_GET['action'] ) );
+		} else {
+			$action = $action ? sanitize_text_field( $action ) : '';
+		}
+		$action = $action ? sanitize_key( $action ) : '';
+		if ( 'dbdumpdl' === $action ) {
+			// Check permissions.
+			check_admin_referer( 'backwpupdbdumpdl' );
 
-            //doing dump
-            header('Pragma: public');
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-            header('Content-Type: application/octet-stream; charset=' . get_bloginfo('charset'));
-            header('Content-Disposition: attachment; filename=' . DB_NAME . '.sql;');
+			if ( ! current_user_can( 'backwpup_jobs_edit' ) ) {
+				exit();
+			}
 
-            try {
-                $sql_dump = new BackWPup_MySQLDump();
+			// Start dump.
+			header( 'Pragma: public' );
+			header( 'Expires: 0' );
+			header( 'Cache-Control: must-revalidate, post-check=0, pre-check=0' );
+			header( 'Content-Type: application/octet-stream; charset=' . get_bloginfo( 'charset' ) );
+			header( 'Content-Disposition: attachment; filename=' . DB_NAME . '.sql;' );
 
-                foreach ($sql_dump->tables_to_dump as $key => $table) {
-                    if ($wpdb->prefix != substr((string) $table, 0, strlen((string) $wpdb->prefix))) {
-                        unset($sql_dump->tables_to_dump[$key]);
-                    }
-                }
+			try {
+				$sql_dump = new BackWPup_MySQLDump();
+
+				foreach ( $sql_dump->tables_to_dump as $key => $table ) {
+					if ( substr( (string) $table, 0, strlen( (string) $wpdb->prefix ) ) !== $wpdb->prefix ) {
+						unset( $sql_dump->tables_to_dump[ $key ] );
+					}
+				}
 				$sql_dump->execute();
 				unset( $sql_dump );
 			} catch ( Exception $e ) {
 				exit( esc_html( $e->getMessage() ) );
 			}
 
-            exit();
-        }
-    }
+			exit();
+		}
+	}
 
-    /**
-     * Enqueue script.
-     */
-    public static function admin_print_scripts()
-    {
-        wp_enqueue_script('backwpupgeneral');
-    }
+	/**
+	 * Enqueue script.
+	 */
+	public static function admin_print_scripts() {
+		wp_enqueue_script( 'backwpupgeneral' );
+	}
 
 	/**
 	 * Print the markup

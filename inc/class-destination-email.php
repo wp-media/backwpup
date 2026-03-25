@@ -1,34 +1,48 @@
 <?php
-// Swift Mailer v5.2.2
-// http://swiftmailer.org/
-// https://github.com/swiftmailer/swiftmailer
+/**
+ * Email destination handler.
+ *
+ * Swift Mailer v5.2.2
+ * http://swiftmailer.org/
+ * https://github.com/swiftmailer/swiftmailer
+ */
 
 use Inpsyde\BackWPupShared\File\MimeTypeExtractor;
 use PHPMailer\PHPMailer\PHPMailer;
 
-class BackWPup_Destination_Email extends BackWPup_Destinations
-{
-	public function option_defaults(): array
-	{
-		$default = [];
-		$default['emailaddress'] = sanitize_email(get_bloginfo('admin_email'));
-		$default['emailefilesize'] = 20;
-		$default['emailsndemail'] = sanitize_email(get_bloginfo('admin_email'));
-		$default['emailsndemailname'] = 'BackWPup ' . get_bloginfo('name');
-		$default['emailmethod'] = '';
-		$default['emailsendmail'] = ini_get('sendmail_path');
-		$default['emailhost'] = $_SERVER['SERVER_NAME'] ?? '';
-		$default['emailhostport'] = 25;
-		$default['emailsecure'] = '';
-		$default['emailuser'] = '';
-		$default['emailpass'] = '';
+class BackWPup_Destination_Email extends BackWPup_Destinations {
+
+	/**
+	 * Get default options for email destination.
+	 *
+	 * @return array
+	 */
+	public function option_defaults(): array {
+		$default                      = [];
+		$default['emailaddress']      = sanitize_email( get_bloginfo( 'admin_email' ) );
+		$default['emailefilesize']    = 20;
+		$default['emailsndemail']     = sanitize_email( get_bloginfo( 'admin_email' ) );
+		$default['emailsndemailname'] = 'BackWPup ' . get_bloginfo( 'name' );
+		$default['emailmethod']       = '';
+		$default['emailsendmail']     = ini_get( 'sendmail_path' );
+		$default['emailhost']         = isset( $_SERVER['SERVER_NAME'] )
+			? sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) )
+			: '';
+		$default['emailhostport']     = 25;
+		$default['emailsecure']       = '';
+		$default['emailuser']         = '';
+		$default['emailpass']         = '';
 
 		return $default;
 	}
 
 
-	public function edit_inline_js(): void
-	{
+	/**
+	 * Output inline JavaScript for email settings.
+	 *
+	 * @return void
+	 */
+	public function edit_inline_js(): void {
 		?>
 		<script type="text/javascript">
 			jQuery( document ).ready( function ( $ ) {
@@ -73,7 +87,7 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
 	/**
 	 * {@inheritdoc}
 	 *
-	 * @param int|array $jobid
+	 * @param int|array $jobid Job id or list of job ids.
 	 * @return void
 	 *
 	 * @phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
@@ -96,8 +110,14 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
 	}
 	// phpcs:enable
 
-	public function job_run_archive(BackWPup_Job $job_object): bool
-	{
+	/**
+	 * Run archive job for email destination.
+	 *
+	 * @param BackWPup_Job $job_object Job object.
+	 *
+	 * @return bool
+	 */
+	public function job_run_archive( BackWPup_Job $job_object ): bool {
 		$job_object->substeps_todo = 1;
 		$job_object->log(
 			sprintf(
@@ -108,10 +128,10 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
 			E_USER_NOTICE
 			);
 
-		//check file Size
-		if (!empty($job_object->job['emailefilesize'])) {
-			if ($job_object->backup_filesize > $job_object->job['emailefilesize'] * 1024 * 1024) {
-				$job_object->log(__('Backup archive too big to be sent by email!', 'backwpup'), E_USER_ERROR);
+		// Check file size.
+		if ( ! empty( $job_object->job['emailefilesize'] ) ) {
+			if ( $job_object->backup_filesize > $job_object->job['emailefilesize'] * 1024 * 1024 ) {
+				$job_object->log( __( 'Backup archive too big to be sent by email!', 'backwpup' ), E_USER_ERROR );
 				$job_object->substeps_done = 1;
 
 				return true;
@@ -127,82 +147,79 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
 			E_USER_NOTICE
 			);
 
-		//get mail settings
-		$emailmethod = 'mail';
+		// Get mail settings.
+		$emailmethod   = 'mail';
 		$emailsendmail = '';
-		$emailhost = '';
+		$emailhost     = '';
 		$emailhostport = '';
-		$emailsecure = '';
-		$emailuser = '';
-		$emailpass = '';
+		$emailsecure   = '';
+		$emailuser     = '';
+		$emailpass     = '';
 
-		if (empty($job_object->job['emailmethod'])) {
-			//do so if i'm the wp_mail to get the settings
+		if ( empty( $job_object->job['emailmethod'] ) ) {
+			// Do so if wp_mail is used to get the settings.
 			$phpmailer = $this->getPhpMailer();
 
-			//only if PHPMailer really used
-			if (is_object($phpmailer)) {
-				do_action_ref_array('phpmailer_init', [&$phpmailer]);
-				//get settings from PHPMailer
-				$emailmethod = $phpmailer->Mailer;
-				$emailsendmail = $phpmailer->Sendmail;
-				$emailhost = $phpmailer->Host;
-				$emailhostport = $phpmailer->Port;
-				$emailsecure = $phpmailer->SMTPSecure;
-				$emailuser = $phpmailer->Username;
-				$emailpass = $phpmailer->Password;
+			// Only if PHPMailer is really used.
+			if ( is_object( $phpmailer ) ) {
+				$hook = 'phpmailer_init';
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound
+				do_action_ref_array( $hook, [ &$phpmailer ] );
+				// Get settings from PHPMailer.
+				$phpmailer_vars = get_object_vars( $phpmailer );
+				$emailmethod    = $phpmailer_vars['Mailer'] ?? $emailmethod;
+				$emailsendmail  = $phpmailer_vars['Sendmail'] ?? $emailsendmail;
+				$emailhost      = $phpmailer_vars['Host'] ?? $emailhost;
+				$emailhostport  = $phpmailer_vars['Port'] ?? $emailhostport;
+				$emailsecure    = $phpmailer_vars['SMTPSecure'] ?? $emailsecure;
+				$emailuser      = $phpmailer_vars['Username'] ?? $emailuser;
+				$emailpass      = $phpmailer_vars['Password'] ?? $emailpass;
 			}
 		} else {
-			$emailmethod = $job_object->job['emailmethod'];
+			$emailmethod   = $job_object->job['emailmethod'];
 			$emailsendmail = $job_object->job['emailsendmail'];
-			$emailhost = $job_object->job['emailhost'];
+			$emailhost     = $job_object->job['emailhost'];
 			$emailhostport = $job_object->job['emailhostport'];
-			$emailsecure = $job_object->job['emailsecure'];
-			$emailuser = $job_object->job['emailuser'];
-			$emailpass = BackWPup_Encryption::decrypt($job_object->job['emailpass']);
+			$emailsecure   = $job_object->job['emailsecure'];
+			$emailuser     = $job_object->job['emailuser'];
+			$emailpass     = BackWPup_Encryption::decrypt( $job_object->job['emailpass'] );
 		}
 
-		//Generate mail with Swift Mailer
-		if (!class_exists(\Swift::class, false)) {
-			require BackWPup::get_plugin_data('plugindir') . '/vendor/SwiftMailer/swift_required.php';
-		}
-
-		$mbEncoding = null;
-		if (function_exists('mb_internal_encoding') && ((int) ini_get('mbstring.func_overload')) & 2) {
-			$mbEncoding = mb_internal_encoding();
-			mb_internal_encoding('ASCII');
+		// Generate mail with Swift Mailer.
+		if ( ! class_exists( \Swift::class, false ) ) {
+			require BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/SwiftMailer/swift_required.php';
 		}
 
 		$result = null;
 
 		try {
-			//Set Temp dir for mailing
-			Swift_Preferences::getInstance()->setTempDir(untrailingslashit(BackWPup::get_plugin_data('TEMP')))->setCacheType('disk');
-			// Create the Transport
-			if ($emailmethod == 'smtp') {
-				$transport = Swift_SmtpTransport::newInstance($emailhost, $emailhostport);
-				if ($emailuser) {
-					$transport->setUsername($emailuser);
-					$transport->setPassword($emailpass);
+			// Set temp dir for mailing.
+			Swift_Preferences::getInstance()->setTempDir( untrailingslashit( BackWPup::get_plugin_data( 'TEMP' ) ) )->setCacheType( 'disk' );
+			// Create the transport.
+			if ( 'smtp' === $emailmethod ) {
+				$transport = Swift_SmtpTransport::newInstance( $emailhost, $emailhostport );
+				if ( $emailuser ) {
+					$transport->setUsername( $emailuser );
+					$transport->setPassword( $emailpass );
 				}
-				if ($emailsecure == 'ssl') {
-					$transport->setEncryption('ssl');
+				if ( 'ssl' === $emailsecure ) {
+					$transport->setEncryption( 'ssl' );
 				}
-				if ($emailsecure == 'tls') {
-					$transport->setEncryption('tls');
+				if ( 'tls' === $emailsecure ) {
+					$transport->setEncryption( 'tls' );
 				}
-			} elseif ($emailmethod == 'sendmail') {
-				// Verify command
-				if (preg_match('/^[a-zA-Z0-9-_.\/\\\'" ]+$/', $emailsendmail) === 0) {
-				$job_object->log('The sendmail command has invalid characters.', E_USER_ERROR);
+			} elseif ( 'sendmail' === $emailmethod ) {
+				// Verify command.
+				if ( preg_match( '/^[a-zA-Z0-9-_.\/\\\'" ]+$/', $emailsendmail ) === 0 ) {
+					$job_object->log( 'The sendmail command has invalid characters.', E_USER_ERROR );
 				}
-				$transport = Swift_SendmailTransport::newInstance($emailsendmail);
+				$transport = Swift_SendmailTransport::newInstance( $emailsendmail );
 			} else {
-				$job_object->need_free_memory($job_object->backup_filesize * 8);
+				$job_object->need_free_memory( $job_object->backup_filesize * 8 );
 				$transport = Swift_MailTransport::newInstance();
 			}
-			// Create the Mailer using your created Transport
-			$emailer = Swift_Mailer::newInstance($transport);
+			// Create the mailer using the created transport.
+			$emailer = Swift_Mailer::newInstance( $transport );
 
 			// Create a message.
 			$message = Swift_Message::newInstance(
@@ -231,110 +248,114 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
 			$job_object->log( 'Swift Mailer: ' . $e->getMessage(), E_USER_ERROR );
 		}
 
-		if (isset($mbEncoding)) {
-			mb_internal_encoding($mbEncoding);
-		}
-
-		if (!isset($result) || !$result) {
-			$job_object->log(__('Error while sending email!', 'backwpup'), E_USER_ERROR);
+		if ( ! isset( $result ) || ! $result ) {
+			$job_object->log( __( 'Error while sending email!', 'backwpup' ), E_USER_ERROR );
 
 			return false;
 		}
 		$job_object->substeps_done = 1;
-		$job_object->log(__('Email sent.', 'backwpup'), E_USER_NOTICE);
+		$job_object->log( __( 'Email sent.', 'backwpup' ), E_USER_NOTICE );
 
 		return true;
 	}
 
-	public function can_run(array $job_settings): bool
-	{
-		if (empty($job_settings['emailaddress'])) {
+	/**
+	 * Check if email destination can run.
+	 *
+	 * @param array $job_settings Job settings.
+	 *
+	 * @return bool
+	 */
+	public function can_run( array $job_settings ): bool {
+		if ( empty( $job_settings['emailaddress'] ) ) {
 			return false;
 		}
 
-		return !($job_settings['backuptype'] != 'archive');
+		return 'archive' === $job_settings['backuptype'];
 	}
 
 	/**
-	 * sends test mail.
+	 * Send test mail.
+	 *
+	 * @return void
 	 */
-	public function edit_ajax(): void
-	{
-		if (!current_user_can('backwpup_jobs_edit')) {
-			wp_die(-1);
+	public function edit_ajax(): void {
+		if ( ! current_user_can( 'backwpup_jobs_edit' ) ) {
+			wp_die( -1 );
 		}
 
-		check_ajax_referer('backwpup_ajax_nonce');
+		check_ajax_referer( 'backwpup_ajax_nonce' );
 
-		//get mail settings
-		$emailmethod = 'mail';
+		$post = wp_unslash( $_POST );
+
+		// Get mail settings.
+		$emailmethod   = 'mail';
 		$emailsendmail = '';
-		$emailhost = '';
+		$emailhost     = '';
 		$emailhostport = '';
-		$emailsecure = '';
-		$emailuser = '';
-		$emailpass = '';
+		$emailsecure   = '';
+		$emailuser     = '';
+		$emailpass     = '';
 
-		if (empty($_POST['emailmethod'])) {
-			//do so if i'm the wp_mail to get the settings
+		$emailmethod_raw = isset( $post['emailmethod'] ) ? $post['emailmethod'] : '';
+
+		if ( empty( $emailmethod_raw ) ) {
+			// Do so if wp_mail is used to get the settings.
 			$phpmailer = $this->getPhpMailer();
 
-			//only if PHPMailer really used
-			if (is_object($phpmailer)) {
-				do_action_ref_array('phpmailer_init', [&$phpmailer]);
-				//get settings from PHPMailer
-				$emailmethod = $phpmailer->Mailer;
-				$emailsendmail = $phpmailer->Sendmail;
-				$emailhost = $phpmailer->Host;
-				$emailhostport = $phpmailer->Port;
-				$emailsecure = $phpmailer->SMTPSecure;
-				$emailuser = $phpmailer->Username;
-				$emailpass = $phpmailer->Password;
+			// Only if PHPMailer is really used.
+			if ( is_object( $phpmailer ) ) {
+				$hook = 'phpmailer_init';
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound
+				do_action_ref_array( $hook, [ &$phpmailer ] );
+				// Get settings from PHPMailer.
+				$phpmailer_vars = get_object_vars( $phpmailer );
+				$emailmethod    = $phpmailer_vars['Mailer'] ?? $emailmethod;
+				$emailsendmail  = $phpmailer_vars['Sendmail'] ?? $emailsendmail;
+				$emailhost      = $phpmailer_vars['Host'] ?? $emailhost;
+				$emailhostport  = $phpmailer_vars['Port'] ?? $emailhostport;
+				$emailsecure    = $phpmailer_vars['SMTPSecure'] ?? $emailsecure;
+				$emailuser      = $phpmailer_vars['Username'] ?? $emailuser;
+				$emailpass      = $phpmailer_vars['Password'] ?? $emailpass;
 			}
 		} else {
-			$emailmethod = sanitize_text_field($_POST['emailmethod']);
-			$emailsendmail = sanitize_email($_POST['emailsendmail']);
-			$emailhost = sanitize_text_field($_POST['emailhost']);
-			$emailhostport = absint($_POST['emailhostport']);
-			$emailsecure = sanitize_text_field($_POST['emailsecure']);
-			$emailuser = sanitize_text_field($_POST['emailuser']);
-			$emailpass = BackWPup_Encryption::decrypt($_POST['emailpass']);
+			$emailmethod   = sanitize_text_field( $emailmethod_raw );
+			$emailsendmail = isset( $post['emailsendmail'] ) ? sanitize_email( $post['emailsendmail'] ) : '';
+			$emailhost     = isset( $post['emailhost'] ) ? sanitize_text_field( $post['emailhost'] ) : '';
+			$emailhostport = isset( $post['emailhostport'] ) ? absint( $post['emailhostport'] ) : 0;
+			$emailsecure   = isset( $post['emailsecure'] ) ? sanitize_text_field( $post['emailsecure'] ) : '';
+			$emailuser     = isset( $post['emailuser'] ) ? sanitize_text_field( $post['emailuser'] ) : '';
+			$emailpass     = isset( $post['emailpass'] ) ? BackWPup_Encryption::decrypt( sanitize_text_field( $post['emailpass'] ) ) : '';
 		}
 
-		//Generate mail with Swift Mailer
-		if (!class_exists(\Swift::class, false)) {
-			require BackWPup::get_plugin_data('plugindir') . '/vendor/SwiftMailer/swift_required.php';
-		}
-
-		$mbEncoding = null;
-		if (function_exists('mb_internal_encoding') && ((int) ini_get('mbstring.func_overload')) & 2) {
-			$mbEncoding = mb_internal_encoding();
-			mb_internal_encoding('ASCII');
+		// Generate mail with Swift Mailer.
+		if ( ! class_exists( \Swift::class, false ) ) {
+			require BackWPup::get_plugin_data( 'plugindir' ) . '/vendor/SwiftMailer/swift_required.php';
 		}
 
 		$result = null;
 
 		try {
-			// Create the Transport
-			if ($emailmethod == 'smtp') {
-				$transport = Swift_SmtpTransport::newInstance($emailhost, $emailhostport);
-				if ($emailuser) {
-					$transport->setUsername($emailuser);
-					$transport->setPassword($emailpass);
+			// Create the transport.
+			if ( 'smtp' === $emailmethod ) {
+				$transport = Swift_SmtpTransport::newInstance( $emailhost, $emailhostport );
+				if ( $emailuser ) {
+					$transport->setUsername( $emailuser );
+					$transport->setPassword( $emailpass );
 				}
-				if ($emailsecure == 'ssl') {
-					$transport->setEncryption('ssl');
+				if ( 'ssl' === $emailsecure ) {
+					$transport->setEncryption( 'ssl' );
 				}
-				if ($emailsecure == 'tls') {
-					$transport->setEncryption('tls');
+				if ( 'tls' === $emailsecure ) {
+					$transport->setEncryption( 'tls' );
 				}
-			} elseif ($emailmethod == 'sendmail') {
-				$transport = Swift_SendmailTransport::newInstance($emailsendmail);
+			} elseif ( 'sendmail' === $emailmethod ) {
+				$transport = Swift_SendmailTransport::newInstance( $emailsendmail );
 			} else {
 				$transport = Swift_MailTransport::newInstance();
 			}
-			// Create the Mailer using your created Transport
-			$emailer = Swift_Mailer::newInstance($transport);
+			// Create the mailer using the created transport.
+			$emailer = Swift_Mailer::newInstance( $transport );
 
 			$sender_email  = isset( $_POST['emailsndemail'] ) ? sanitize_email( wp_unslash( $_POST['emailsndemail'] ) ) : '';
 			$sender_name   = isset( $_POST['emailsndemailname'] ) ? sanitize_text_field( wp_unslash( $_POST['emailsndemailname'] ) ) : '';
@@ -352,14 +373,10 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
 			echo '<span id="emailsendtext" class="bwu-message-error">Swift Mailer: ' . esc_html( $e->getMessage() ) . '</span>';
 		}
 
-		if (isset($mbEncoding)) {
-			mb_internal_encoding($mbEncoding);
-		}
-
-		if (!isset($result) || !$result) {
-			echo '<span id="emailsendtext" class="bwu-message-error">' . esc_html__('Error while sending email!', 'backwpup') . '</span>';
+		if ( ! isset( $result ) || ! $result ) {
+			echo '<span id="emailsendtext" class="bwu-message-error">' . esc_html__( 'Error while sending email!', 'backwpup' ) . '</span>';
 		} else {
-			echo '<span id="emailsendtext" class="bwu-message-success">' . esc_html__('Email sent.', 'backwpup') . '</span>';
+			echo '<span id="emailsendtext" class="bwu-message-success">' . esc_html__( 'Email sent.', 'backwpup' ) . '</span>';
 		}
 
 		exit();
@@ -367,15 +384,18 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
 
 	/**
 	 * Get an array of emails from comma-separated string.
+	 *
+	 * @param string $email_string Email string.
+	 *
+	 * @return array
 	 */
-	private function get_email_array(string $emailString): array
-	{
-		$emails = explode(',', sanitize_text_field($emailString));
+	private function get_email_array( string $email_string ): array {
+		$emails = explode( ',', sanitize_text_field( $email_string ) );
 
-		foreach ($emails as $key => $email) {
-			$emails[$key] = sanitize_email(trim($email));
-			if (!is_email($emails[$key])) {
-				unset($emails[$key]);
+		foreach ( $emails as $key => $email ) {
+			$emails[ $key ] = sanitize_email( trim( $email ) );
+			if ( ! is_email( $emails[ $key ] ) ) {
+				unset( $emails[ $key ] );
 			}
 		}
 
@@ -387,11 +407,10 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
 	 *
 	 * @return PHPMailer
 	 */
-	private function getPhpMailer()
-	{
+	private function getPhpMailer() {
 		global $phpmailer, $wp_version;
-		if (!is_object($phpmailer) || !$phpmailer instanceof PHPMailer) {
-			if (version_compare($wp_version, '5.5', '>=')) {
+		if ( ! is_object( $phpmailer ) || ! $phpmailer instanceof PHPMailer ) {
+			if ( version_compare( $wp_version, '5.5', '>=' ) ) {
 				require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
 
 				require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
@@ -403,14 +422,16 @@ class BackWPup_Destination_Email extends BackWPup_Destinations
 
 			require_once ABSPATH . WPINC . '/class-smtp.php';
 
-			return new PHPMailer(true);
+			return new PHPMailer( true );
 		}
 
 		return $phpmailer;
 	}
 
 	/**
-	 * Get service name
+	 * Get service name.
+	 *
+	 * @return string
 	 */
 	public function get_service_name(): string {
 		return 'Email';

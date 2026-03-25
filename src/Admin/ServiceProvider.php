@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WPMedia\BackWPup\Admin;
 
-use BackWPup;
 use WPMedia\BackWPup\Admin\Beacon\Beacon;
 use WPMedia\BackWPup\Admin\Messages\API\Rest;
 use WPMedia\BackWPup\Admin\Notices\LicenseNoticeFactory;
@@ -11,7 +10,6 @@ use WPMedia\BackWPup\Admin\Notices\Notices;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice52;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice522;
 use WPMedia\BackWPup\Admin\Notices\Notices\NoticeDataCorrupted;
-use WPMedia\BackWPup\Admin\Notices\Notices\NoticeTracking;
 use WPMedia\BackWPup\Admin\Notices\Subscriber as NoticeSubscriber;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice513;
 use Inpsyde\BackWPup\Notice\NoticeView;
@@ -24,7 +22,6 @@ use WPMedia\BackWPup\Admin\Rating\RatingNoticeMessageProvider;
 use WPMedia\BackWPup\Admin\Rating\RatingSubscriber;
 use WPMedia\BackWPup\Admin\Settings\Subscriber as SettingSubscriber;
 use WPMedia\BackWPup\Admin\Frontend\Subscriber as AdminFrontendSubscriber;
-use WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsStore;
 use WPMedia\BackWPup\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WPMedia\BackWPup\License\WpOptionsLicenseStateProvider;

@@ -2,9 +2,6 @@
 
 namespace WPMedia\BackWPup\Cli\Commands;
 
-use BackWPup_Destination_Downloader;
-use BackWPup_Destination_Downloader_Factory;
-use BackWPup_Factory_Exception;
 use WPMedia\BackWPup\Adapters\BackWPupAdapter;
 use WPMedia\BackWPup\Adapters\JobAdapter;
 

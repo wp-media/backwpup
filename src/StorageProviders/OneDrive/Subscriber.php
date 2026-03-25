@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace WPMedia\BackWPup\StorageProviders\OneDrive;
 
-use BackWPup_Encryption;
 use BackWPup_Pro_OneDrive_ConfigTrait;
 use WPMedia\BackWPup\EventManagement\SubscriberInterface;
 use WPMedia\BackWPup\Plugin\Plugin;
 use InvalidArgumentException;
-use BackWPup_Pro_Settings_APIKeys;
 use Krizalys\Onedrive\Onedrive;
 
 class Subscriber implements SubscriberInterface {

@@ -3,9 +3,6 @@
 namespace BackWPup\Utils;
 
 use BackWPup;
-use BackWPup_Pro_Destination_HiDrive_Api;
-use BackWPup_Pro_Destination_HiDrive_Authorization;
-use BackWPup_Pro_Destination_HiDrive_Request;
 
 class BackWPupHelpers {
 
@@ -19,12 +16,26 @@ class BackWPupHelpers {
 	 * @return string|null HTML content of the component if `$return` is true; otherwise, null.
 	 */
 	public static function component( string $component, array $args = [], bool $return = false ) { // @phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.returnFound
-		$filename = sanitize_text_field( $component ) . '.php';
-		$filename = str_replace( '../', '', $filename );
-		$path     = untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . '/components/' . $filename;
-		// Check if Pro version is active and try pro path if file not found.
-		if ( ! file_exists( $path ) && BackWPup::is_pro() ) {
-			$path = untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . '/pro/components/' . $filename;
+		$sanitized_component = sanitize_text_field( $component );
+
+		// Explicitly reject traversal-like inputs (e.g., "..", "../", "..\").
+		if ( self::contains_path_traversal( $sanitized_component ) ) {
+			error_log( "Component name contains disallowed path traversal sequence: {$sanitized_component}" ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log  
+			return null;
+		}
+
+		$filename    = $sanitized_component . '.php';
+		$path        = realpath( untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . '/components/' . $filename );
+		$allowed_dir = realpath( untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . '/components/' );
+		if ( false === $path || false === $allowed_dir ) {
+			error_log( "Component file not found or outside allowed directory: {$filename}" ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log  
+			return null;
+		}
+		// Ensure the resolved path is within the allowed components directory, using a directory-boundary-safe check.
+		$allowed_dir = rtrim( $allowed_dir, DIRECTORY_SEPARATOR );
+		if ( 0 !== strpos( $path, $allowed_dir . DIRECTORY_SEPARATOR ) ) {
+			error_log( "Component file not found or outside allowed directory: {$filename}" ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log  
+			return null;
 		}
 		if ( ! file_exists( $path ) ) {
 			error_log( "Component file not found: {$path}" ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
@@ -58,12 +69,31 @@ class BackWPupHelpers {
 	 * @return string|null HTML content of the component if `$return` is true; otherwise, null.
 	 */
 	public static function children( string $component, bool $return = false, array $args = [] ) { // @phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.returnFound
-		$filename = sanitize_text_field( $component ) . '.php';
-		$filename = str_replace( '../', '', $filename );
-		$path     = untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . '/parts/' . $filename;
-		// Check if Pro version is active and try pro path if file not found.
+		$sanitized_component = sanitize_text_field( $component );
+
+		// Explicitly reject traversal-like inputs (e.g., "..", "../", "..\").
+		if ( self::contains_path_traversal( $sanitized_component ) ) {
+			error_log( "Component name contains disallowed path traversal sequence: {$sanitized_component}" ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log  
+			return null;
+		}
+
+		$filename    = $sanitized_component . '.php';
+		$path        = realpath( untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . '/parts/' . $filename );
+		$allowed_dir = realpath( untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . '/parts/' );
+		// If the file doesn't exist and it's a pro version of the plugin, check the pro directory for the component.
 		if ( ! file_exists( $path ) && BackWPup::is_pro() ) {
-			$path = untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . '/pro/parts/' . $filename;
+			$path        = realpath( untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . '/pro/parts/' . $filename );
+			$allowed_dir = realpath( untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . '/pro/parts/' );
+		}
+		if ( false === $path || false === $allowed_dir ) {
+			error_log( "Component file not found or outside allowed directory: {$filename}" ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log  
+			return null;
+		}
+		// Ensure the resolved path is within the allowed components directory, using a directory-boundary-safe check.
+		$allowed_dir = rtrim( $allowed_dir, DIRECTORY_SEPARATOR );
+		if ( 0 !== strpos( $path, $allowed_dir . DIRECTORY_SEPARATOR ) ) {
+			error_log( "Component file not found or outside allowed directory: {$filename}" ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log  
+			return null;
 		}
 
 		if ( ! file_exists( $path ) ) {
@@ -186,5 +216,15 @@ class BackWPupHelpers {
 		);
 
 		return $items;
+	}
+
+	/***
+	 * Checks if the input string contains path traversal sequences like "..", "../", or "..\".
+	 *
+	 * @param string $input The input string to check.
+	 * @return bool True if the input contains path traversal sequences, false otherwise.
+	 */
+	private static function contains_path_traversal( string $input ): bool {
+		return preg_match( '#(^|[\\\\/])\.\.([\\\\/]|$)#', $input ) === 1;
 	}
 }

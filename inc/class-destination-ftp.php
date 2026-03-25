@@ -9,22 +9,26 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 	 */
 	private const SERVICE_NAME = 'FTP';
 
-    public function option_defaults(): array
-    {
-        return [
-            'ftphost' => '',
-            'ftphostport' => 21,
-            'ftptimeout' => 90,
-            'ftpuser' => '',
-            'ftppass' => '',
-            'ftpdir' => trailingslashit(sanitize_title_with_dashes(get_bloginfo('name'))),
+	/**
+	 * Returns default FTP options.
+	 *
+	 * @return array<string, mixed> Default options.
+	 */
+	public function option_defaults(): array {
+		return [
+			'ftphost'       => '',
+			'ftphostport'   => 21,
+			'ftptimeout'    => 90,
+			'ftpuser'       => '',
+			'ftppass'       => '',
+			'ftpdir'        => trailingslashit( sanitize_title_with_dashes( get_bloginfo( 'name' ) ) ),
 			'ftpmaxbackups' => 15,
 			'ftppasv'       => true,
 			'ftpssl'        => false,
 			'ftpssh'        => false,
 			'ftpsshprivkey' => '',
 		];
-    }
+	}
 
 
 	/**
@@ -82,10 +86,17 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 		}
 	}
 
-    public function file_delete(string $jobdest, string $backupfile): void
-    {
-        $files = get_site_transient('backwpup_' . strtolower($jobdest));
-        [$jobid, $dest] = explode('_', $jobdest);
+	/**
+	 * Deletes a file from the FTP destination.
+	 *
+	 * @param string $jobdest    Job destination identifier.
+	 * @param string $backupfile Backup file name.
+	 *
+	 * @return void
+	 */
+	public function file_delete( string $jobdest, string $backupfile ): void {
+		$files          = get_site_transient( 'backwpup_' . strtolower( $jobdest ) );
+		[$jobid, $dest] = explode( '_', $jobdest );
 
 		$job_options = (object) BackWPup_Option::get_job( $jobid );
 
@@ -120,11 +131,17 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 			BackWPup_Admin::message( 'FTP: ' . $e->getMessage(), true );
 		}
 
-        set_site_transient('backwpup_' . strtolower($jobdest), $files, YEAR_IN_SECONDS);
-    }
+		set_site_transient( 'backwpup_' . strtolower( $jobdest ), $files, YEAR_IN_SECONDS );
+	}
 
-    public function job_run_archive(BackWPup_Job $job_object): bool
-    {
+	/**
+	 * Upload the backup archive to FTP.
+	 *
+	 * @param BackWPup_Job $job_object Job object.
+	 *
+	 * @return bool True on success, false on failure.
+	 */
+	public function job_run_archive( BackWPup_Job $job_object ): bool {
 		$job_object->substeps_todo = 2 + $job_object->backup_filesize;
 		if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] !== $job_object->steps_data[ $job_object->step_working ]['STEP_TRY'] ) {
 			$job_object->log(
@@ -134,7 +151,7 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 					$job_object->steps_data[ $job_object->step_working ]['STEP_TRY']
 				)
 			);
-        }
+		}
 
 		if ( ! empty( $job_object->job['ftpssh'] ) && BackWPup::is_pro() ) {
 			$ftp = new BackWPup_Pro_Destination_Ftp_Type_Sftp( [ $job_object, 'log' ] );
@@ -288,8 +305,8 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 			return false;
 		}
 
-        return true;
-    }
+		return true;
+	}
 
 	/**
 	 * Test if the job can run.
@@ -300,11 +317,11 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 	public function can_run( array $job_settings ): bool {
 		if ( empty( $job_settings['ftphost'] ) ) {
 			return false;
-        }
+		}
 
 		if ( empty( $job_settings['ftpuser'] ) ) {
 			return false;
-        }
+		}
 
 		if ( ! empty( $job_settings['ftpssh'] ) && BackWPup::is_pro() ) {
 			$ftp = new BackWPup_Pro_Destination_Ftp_Type_Sftp();

@@ -6,7 +6,6 @@ namespace WPMedia\BackWPup\Frontend;
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WPMedia\BackWPup\Frontend\API\Rest as FrontendApiRest;
 use WPMedia\BackWPup\Frontend\API\Subscriber as FrontendApiSubscriber;
-use WPMedia\BackWPup\Adapters\BackWPupHelpersAdapter;
 
 /**
  * Service provider for Storage providers

@@ -34,6 +34,7 @@ class BackWPup_Migrate {
 		}
 
 		self::migration_50_51( $old_version, $new_version );
+		self::migration_567_remove_easycron( $old_version, $new_version );
 
 		( new self() )->migrate_to_first_job( $old_version, $new_version );
 	}
@@ -339,6 +340,63 @@ class BackWPup_Migrate {
 					BackWPup_Option::update( $id, 'legacy', true );
 				}
 			}
+		}
+	}
+
+	/**
+	 * Migration logic for removing EasyCron support in 5.6.7+.
+	 *
+	 * @param string $old_version The old version of the plugin.
+	 * @param string $new_version The new version of the plugin.
+	 *
+	 * @return void
+	 */
+	public static function migration_567_remove_easycron( $old_version, $new_version ) {
+		if ( ! ( version_compare( $old_version, '5.6.7', '<' ) && version_compare( $new_version, '5.6.7', '>=' ) ) ) {
+			return;
+		}
+
+		$easycron_ids = [];
+
+		$site_easycron_id = get_site_option( 'backwpup_cfg_easycronjobid', '' );
+		if ( ! empty( $site_easycron_id ) ) {
+			$easycron_ids[] = $site_easycron_id;
+		}
+
+		$easycron_jobs = BackWPup_Option::get_job_ids( 'activetype', 'easycron' );
+		$job_ids       = BackWPup_Option::get_job_ids();
+
+		foreach ( $job_ids as $job_id ) {
+			$job_easycron_id = BackWPup_Option::get( $job_id, 'easycronjobid' );
+			if ( ! empty( $job_easycron_id ) ) {
+				$easycron_ids[] = $job_easycron_id;
+			}
+			BackWPup_Option::delete( $job_id, 'easycronjobid' );
+		}
+
+		foreach ( $easycron_jobs as $job_id ) {
+			BackWPup_Option::update( $job_id, 'activetype', 'wpcron' );
+			$cron_expression = BackWPup_Option::get( $job_id, 'cron' );
+			if ( ! empty( $cron_expression ) ) {
+				BackWPup_Job::schedule_job( $job_id );
+			}
+		}
+
+		$easycron_ids = array_unique( array_filter( $easycron_ids ) );
+		foreach ( $easycron_ids as $easycron_id ) {
+			delete_site_transient( 'backwpup_easycron_' . $easycron_id );
+			delete_transient( 'backwpup_easycron_' . $easycron_id );
+		}
+
+		$options_to_delete = [
+			'backwpup_cfg_easycronapikey',
+			'backwpup_cfg_easycronjobid',
+			'backwpup_easycron_update',
+		];
+
+		foreach ( $options_to_delete as $option ) {
+			delete_site_option( $option );
+			delete_option( $option );
 		}
 	}
 

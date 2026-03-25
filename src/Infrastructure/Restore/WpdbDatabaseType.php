@@ -57,7 +57,7 @@ final class WpdbDatabaseType implements DatabaseInterface
                             /* translators: 1: error code, 2: error message. */
                             esc_html__( 'Cannot connect to MySQL database %1$d: %2$s', 'backwpup' ),
                             0,
-                            esc_html( $error )
+                            $error
                         ),
                         'DATABASE_CONNECTION_PROBLEMS'
                     )
@@ -73,7 +73,7 @@ final class WpdbDatabaseType implements DatabaseInterface
                 throw new DatabaseConnectionException(
                     wp_kses_post(
                         ExceptionLinkHelper::translateWithAppropiatedLink(
-                            esc_html( $this->wpdb->last_error ),
+                            $this->wpdb->last_error,
                             'DATABASE_CONNECTION_PROBLEMS'
                         )
                     )

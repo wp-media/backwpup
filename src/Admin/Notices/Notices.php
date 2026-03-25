@@ -162,7 +162,8 @@ class Notices {
 
 		$notice_data = $this->license_notice_factory->build(
 			$state,
-			$this->payment_method_provider->is_legacy()
+			$this->payment_method_provider->is_legacy(),
+			$this->is_backwpup_main_screen()
 		);
 
 		backwpup_notice_html(
@@ -214,8 +215,7 @@ class Notices {
 	 * @return boolean
 	 */
 	private function should_display_notice(): bool {
-		$screen = get_current_screen();
-		if ( isset( $screen->id ) && ! str_contains( $screen->id, 'backwpup' ) ) {
+		if ( ! $this->is_backwpup_screen() ) {
 			return false;
 		}
 
@@ -226,5 +226,40 @@ class Notices {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Determines whether the current screen belongs to BackWPup admin pages.
+	 *
+	 * @return bool
+	 */
+	private function is_backwpup_screen(): bool {
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		if ( ! is_object( $screen ) || ! isset( $screen->id ) ) {
+			return false;
+		}
+
+		return false !== strpos( (string) $screen->id, 'backwpup' );
+	}
+
+	/**
+	 * Determines whether the current screen is the main BackWPup admin page.
+	 *
+	 * @return bool
+	 */
+	private function is_backwpup_main_screen(): bool {
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		if ( ! is_object( $screen ) || ! isset( $screen->id ) ) {
+			return false;
+		}
+
+		return in_array(
+			(string) $screen->id,
+			[
+				'toplevel_page_backwpup',
+				'toplevel_page_backwpup-network',
+			],
+			true
+		);
 	}
 }

@@ -1,15 +1,26 @@
 <?php
-
-// -*- coding: utf-8 -*-
+/**
+ * Settings updater interface.
+ */
 
 namespace Inpsyde\BackWPup\Settings;
 
 /**
  * Class SettingsUpdatable.
  */
-interface SettingUpdatable
-{
-    public function update();
+interface SettingUpdatable {
 
-    public function reset();
+	/**
+	 * Update settings from the request payload.
+	 *
+	 * @return array|void
+	 */
+	public function update();
+
+	/**
+	 * Reset stored settings to defaults.
+	 *
+	 * @return void
+	 */
+	public function reset();
 }

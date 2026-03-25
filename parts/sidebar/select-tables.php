@@ -41,6 +41,8 @@ foreach ( $dbtables as $dbtable ) {
 }
 
 $excludedTables = BackWPup_Option::get( $job_id, 'dbdumpexclude', $defaultexcludedtables );
+$allTablesSelected = ! empty( $tables )
+	&& count( array_diff( $tables, $excludedTables ) ) === count( $tables );
 
 ?>
 
@@ -59,7 +61,22 @@ $excludedTables = BackWPup_Option::get( $job_id, 'dbdumpexclude', $defaultexclud
 		]
 		);
 	?>
-
+	<div class="flex justify-start">
+		<?php
+		BackWPupHelpers::component(
+			'form/checkbox',
+			[
+				'name'    => 'select_all_tables',
+				'value'   => '1',
+				'label'   => __( 'Select All', 'backwpup' ),
+				'checked' => $allTablesSelected,
+				'trigger' => 'select-all-tables',
+				'style'   => 'default',
+			]
+			);
+		?>
+	</div>
+    <hr class="my-1 text-grey-300">
 	<div class="js-backwpup-tables-list flex flex-col gap-4">
 		<?php
 		foreach ( $tables as $table ) {

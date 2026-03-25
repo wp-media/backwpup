@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/class-destination-sugarsync-api-exception.php';
+
 use Inpsyde\BackWPupShared\File\MimeTypeExtractor;
 
 class BackWPup_Destination_SugarSync_API {
@@ -78,6 +80,9 @@ class BackWPup_Destination_SugarSync_API {
 		}
 		$headers = array_merge( $headers, $extra_headers );
 		if ( isset( $headers['Transfer-Encoding'] ) && 'chunked' === $headers['Transfer-Encoding'] ) {
+			unset( $headers['Content-Length'] );
+		}
+		if ( isset( $headers['Content-Length'] ) && ! $headers['Content-Length'] ) {
 			unset( $headers['Content-Length'] );
 		}
 		$request = wp_remote_request(
@@ -518,7 +523,9 @@ class BackWPup_Destination_SugarSync_API {
 	 * @throws BackWPup_Destination_SugarSync_API_Exception When an error occurs during the API call.
 	 */
 	public function download_chunk( string $url, int $start_byte, int $end_byte ) {
-		$range_header['Range'] = 'bytes=' . $start_byte . '-' . $end_byte;
-		return $this->do_call( $url . '/data', '', 'GET', [ $range_header ] );
+		$header = [
+			'Range' => 'bytes=' . $start_byte . '-' . $end_byte,
+		];
+		return $this->do_call( $url . '/data', '', 'GET', $header );
 	}
 }

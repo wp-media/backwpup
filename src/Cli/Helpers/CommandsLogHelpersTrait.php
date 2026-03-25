@@ -3,7 +3,6 @@
 namespace WPMedia\BackWPup\Cli\Helpers;
 
 use BackWPup_File;
-use BackWPup_Job;
 use WP_CLI;
 
 /**

@@ -384,11 +384,13 @@ final class TemplateLoader
      */
     private function currentNonce(): string
     {
-        // phpcs:disable WordPress.Security.NonceVerification.Recommended
         $nonce = isset($_GET['backwpup_action_nonce'])
             ? sanitize_text_field((string) $_GET['backwpup_action_nonce'])
             : '';
-        // phpcs:enable
+
+        if ($nonce === 'undefined' || $nonce === 'null') {
+            $nonce = '';
+        }
 
         return $nonce !== '' ? $nonce : wp_create_nonce('backwpup_action_nonce');
     }

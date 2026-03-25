@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @var int     $min            Optional. The minimum value. Only for type number fields.  
  * @var int     $max            Optional. The maximum value. Only for type number fields.
  * @var string  $trigger        Optional. The javascript class. Default: "".
+ * @var bool    $readonly       Optional. True to set the field as readonly. Default: false.
  * @var string $identifier Optional. The field identifier. Default: null.
  */
 
@@ -30,6 +31,7 @@ $label = $label ?? "";
 $type = $type ?? "text";
 $value = $value ?? "";
 $required = $required ?? false;
+$readonly = $readonly ?? false;
 $invalid = $invalid ?? false;
 $id = $identifier ?? '';
 $tooltip_pos = $tooltip_pos ?? "center";
@@ -46,7 +48,7 @@ $text_contextual_classes = $invalid ? "text-danger" : "text-grey-700";
 
 ?>
 <label class="<?php echo esc_attr( BackWPupHelpers::clsx( $container_classes, $container_contextual_classes ) ); ?>">
-  <input name="<?php echo esc_attr( $name ); ?>" type="<?php echo esc_attr( $type ); ?>"<?php echo $id ? " id='" . esc_attr( $id ) . "'" : ''; ?> class="<?php echo esc_attr( BackWPupHelpers::clsx( "input-base text-lg w-full", $trigger ) ); ?>" placeholder="" <?php if ($required) : ?>required<?php endif; ?> value="<?php echo esc_attr( $value ); ?>" <?php if (isset($min) && $type === "number") : ?>min="<?php echo esc_attr( $min ); ?>" <?php endif; ?> <?php if (isset($max) && $type === "number") : ?>max="<?php echo esc_attr( $max ); ?>" <?php endif; ?><?php if (isset($step) && $type === "number") : ?> step="<?php echo esc_attr( $step ); ?>" <?php endif; ?><?php if (isset($maxlength)) : ?> maxlength="<?php echo esc_attr( $maxlength ); ?>" <?php endif; ?>>
+  <input name="<?php echo esc_attr( $name ); ?>" type="<?php echo esc_attr( $type ); ?>"<?php echo $id ? " id='" . esc_attr( $id ) . "'" : ''; ?> class="<?php echo esc_attr( BackWPupHelpers::clsx( "input-base text-lg w-full", $trigger ) ); ?>" placeholder="" <?php if ($required) : ?>required<?php endif; ?><?php if ( $readonly ) : ?> readonly<?php endif; ?> value="<?php echo esc_attr( $value ); ?>" <?php if (isset($min) && $type === "number") : ?>min="<?php echo esc_attr( $min ); ?>" <?php endif; ?> <?php if (isset($max) && $type === "number") : ?>max="<?php echo esc_attr( $max ); ?>" <?php endif; ?><?php if (isset($step) && $type === "number") : ?> step="<?php echo esc_attr( $step ); ?>" <?php endif; ?><?php if (isset($maxlength)) : ?> maxlength="<?php echo esc_attr( $maxlength ); ?>" <?php endif; ?>>
   <p class="<?php echo esc_attr( $text_classes . ' ' . $text_contextual_classes ); ?>">
     <?php echo esc_html( $label ); ?>
     <?php isset($tooltip) && BackWPupHelpers::component("tooltip", ["content" => $tooltip, "icon_size" => "small", "position" => $tooltip_pos]); ?>

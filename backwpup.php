@@ -1,11 +1,11 @@
 <?php
-/*
+/**
  * Plugin Name: BackWPup 
  * Plugin URI: https://backwpup.com/
  * Description: WordPress Backup Plugin
  * Author: BackWPup – WordPress Backup & Restore Plugin
  * Author URI: https://backwpup.com
- * Version: 5.6.6
+ * Version: 5.6.7
  * Requires at least: 4.9
  * Requires PHP: 7.4
  * Text Domain: backwpup

@@ -3,33 +3,33 @@
 /**
  * Class BackWPup_Download_File_Interface.
  */
-interface BackWPup_Download_File_Interface
-{
-    /**
-     * Download File.
-     *
-     * Initialize, clean the output and call the function that will download the file
-     */
-    public function download();
+interface BackWPup_Download_File_Interface {
 
-    /**
-     * Set Headers.
-     *
-     * @return $this For concatenation
-     */
-    public function headers();
+	/**
+	 * Download File.
+	 *
+	 * Initialize, clean the output and call the function that will download the file
+	 */
+	public function download();
 
-    /**
-     * Clean The output.
-     *
-     * @return $this For concatenation
-     */
-    public function clean_ob();
+	/**
+	 * Set Headers.
+	 *
+	 * @return $this For concatenation
+	 */
+	public function headers();
 
-    /**
-     * File Path.
-     *
-     * @return string The file path to download
-     */
-    public function filepath();
+	/**
+	 * Clean The output.
+	 *
+	 * @return $this For concatenation
+	 */
+	public function clean_ob();
+
+	/**
+	 * File Path.
+	 *
+	 * @return string The file path to download
+	 */
+	public function filepath();
 }

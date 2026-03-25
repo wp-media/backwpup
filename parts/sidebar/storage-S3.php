@@ -23,7 +23,7 @@ if ( null === $job_id || empty( $job_id ) ) {
 	$is_in_form = true;
 	$job_id     = get_site_option( Plugin::FIRST_JOB_ID, false );
 }
-$selectedOptions = BackWPup_S3_Destination::fromJobId( $job_id );
+$selectedOptions = BackWPup_S3_Destination::from_job_id( $job_id );
 $s3dir           = esc_attr( BackWPup_Option::get( $job_id, 's3dir', trailingslashit( sanitize_title_with_dashes( get_bloginfo( 'name' ) ) ) ) );
 $s3maxbackups    = esc_attr( BackWPup_Option::get( $job_id, 's3maxbackups', 3 ) );
 $s3Options       = BackWPup_S3_Destination::options();

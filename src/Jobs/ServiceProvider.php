@@ -5,12 +5,6 @@ declare(strict_types=1);
 namespace WPMedia\BackWPup\Jobs;
 
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WPMedia\BackWPup\Adapters\JobAdapter;
-use WPMedia\BackWPup\Adapters\OptionAdapter;
-use WPMedia\BackWPup\Adapters\CronAdapter;
-use WPMedia\BackWPup\Adapters\JobTypesAdapter;
-use WPMedia\BackWPup\Adapters\BackWPupHelpersAdapter;
-use WPMedia\BackWPup\Adapters\BackWPupAdapter;
 use WPMedia\BackWPup\Jobs\API\Subscriber as JobApiSubscriber;
 use WPMedia\BackWPup\Jobs\API\Rest as JobApiRest;
 use WPMedia\BackWPup\Jobs\Frontend\API\Subscriber as JobApiFrontendSubscriber;

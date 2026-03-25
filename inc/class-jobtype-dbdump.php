@@ -1,35 +1,46 @@
 <?php
-class BackWPup_JobType_DBDump extends BackWPup_JobTypes
-{
-    public function __construct()
-    {
-        $this->info['ID'] = 'DBDUMP';
-        $this->info['name'] = __('DB Backup', 'backwpup');
-        $this->info['description'] = __('Database backup', 'backwpup');
-        $this->info['URI'] = __('http://backwpup.com', 'backwpup');
-        $this->info['author'] = 'WP Media';
-        $this->info['authorURI'] = 'https://wp-media.me';
-        $this->info['version'] = BackWPup::get_plugin_data('Version');
-    }
+class BackWPup_JobType_DBDump extends BackWPup_JobTypes {
 
-    /**
-     * @return bool
-     */
-    public function creates_file()
-    {
-        return true;
-    }
+	/**
+	 * Constructs the database dump job type.
+	 */
+	public function __construct() {
+		$this->info['ID']          = 'DBDUMP';
+		$this->info['name']        = __( 'DB Backup', 'backwpup' );
+		$this->info['description'] = __( 'Database backup', 'backwpup' );
+		$this->info['URI']         = __( 'http://backwpup.com', 'backwpup' );
+		$this->info['author']      = 'WP Media';
+		$this->info['authorURI']   = 'https://wp-media.me';
+		$this->info['version']     = BackWPup::get_plugin_data( 'Version' );
+	}
 
-    /**
-     * @return array
-     */
-    public function option_defaults()
-    {
-        /** @var wpdb $wpdb */
-        global $wpdb;
+	/**
+	 * Whether the job type creates a file.
+	 *
+	 * @return bool
+	 */
+	public function creates_file() {
+		return true;
+	}
 
-        $defaults = [
-            'dbdumpexclude' => [], 'dbdumpfile' => sanitize_file_name(DB_NAME), 'dbdumptype' => 'sql', 'dbdumpfilecompression' => '',
+	/**
+	 * Returns default options for the job type.
+	 *
+	 * @return array
+	 */
+	public function option_defaults() {
+		/**
+		 * Database connection.
+		 *
+		 * @var wpdb $wpdb
+		 */
+		global $wpdb;
+
+		$defaults = [
+			'dbdumpexclude'         => [],
+			'dbdumpfile'            => sanitize_file_name( DB_NAME ),
+			'dbdumptype'            => 'sql',
+			'dbdumpfilecompression' => '',
 		];
 		// Set only WordPress tables as default.
 		$cache_group = 'backwpup_dbdump';
@@ -40,26 +51,31 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
 			wp_cache_set( $tables_key, $dbtables, $cache_group, MINUTE_IN_SECONDS );
 		}
 
-        foreach ($dbtables as $dbtable) {
-            if ($wpdb->prefix != substr((string) $dbtable[0], 0, strlen($wpdb->prefix))) {
-                $defaults['dbdumpexclude'][] = $dbtable[0];
-            }
-        }
+		foreach ( $dbtables as $dbtable ) {
+			if ( 0 !== strncmp( (string) $dbtable[0], $wpdb->prefix, strlen( $wpdb->prefix ) ) ) {
+				$defaults['dbdumpexclude'][] = $dbtable[0];
+			}
+		}
 
-        return $defaults;
-    }
+		return $defaults;
+	}
 
-    /**
-     * @param $jobid
-     */
-    public function edit_tab($jobid)
-    {
-        /** @var wpdb $wpdb */
+	/**
+	 * Renders the job type edit tab.
+	 *
+	 * @param int|array $jobid Job ID or list of job IDs.
+	 */
+	public function edit_tab( $jobid ) {
+		/**
+		 * Database connection.
+		 *
+		 * @var wpdb $wpdb
+		 */
 		global $wpdb; ?>
 		<input readonly disabled name="dbdumpwpony" type="hidden" value="1" />
 		<h3 class="title"><?php esc_html_e( 'Settings for database backup', 'backwpup' ); ?></h3>
 		<p></p>
-        <table class="form-table">
+		<table class="form-table">
 			<tr>
 				<th scope="row"><?php esc_html_e( 'Tables to backup', 'backwpup' ); ?></th>
 				<td>
@@ -94,9 +110,9 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
 					?>
 				</td>
 			</tr>
-        </table>
-<?php
-    }
+		</table>
+		<?php
+	}
 
 	/**
 	 * Handles saving database dump settings based on provided parameters.
@@ -156,16 +172,15 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
 		BackWPup_Option::update( $id, 'dbdumpexclude', $dbdumpexclude );
 	}
 
-    /**
-     * Dumps the Database.
-     *
-     * @param $job_object BackWPup_Job
-     *
-     * @return bool
-     */
-    public function job_run(BackWPup_Job $job_object)
-    {
-        $job_object->substeps_todo = 1;
+	/**
+	 * Dumps the Database.
+	 *
+	 * @param BackWPup_Job $job_object Job object.
+	 *
+	 * @return bool
+	 */
+	public function job_run( BackWPup_Job $job_object ) {
+		$job_object->substeps_todo = 1;
 
 		if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] !== $job_object->steps_data[ $job_object->step_working ]['STEP_TRY'] ) {
 			$job_object->log(
@@ -177,16 +192,18 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
 				);
 		}
 
-		// build filename.
+			// Build filename.
 		if ( empty( $job_object->steps_data[ $job_object->step_working ]['dbdumpfile'] ) ) {
 			$job_object->steps_data[ $job_object->step_working ]['dbdumpfile'] = $job_object->generate_db_dump_filename( $job_object->job['dbdumpfile'], 'sql' ) . $job_object->job['dbdumpfilecompression'];
 		}
 
-        try {
-            //Connect to Database
-            $sql_dump = new BackWPup_MySQLDump([
-                'dumpfile' => BackWPup::get_plugin_data('TEMP') . $job_object->steps_data[$job_object->step_working]['dbdumpfile'],
-            ]);
+		try {
+			// Connect to Database.
+			$sql_dump = new BackWPup_MySQLDump(
+				[
+					'dumpfile' => BackWPup::get_plugin_data( 'TEMP' ) . $job_object->steps_data[ $job_object->step_working ]['dbdumpfile'],
+				]
+				);
 
 			if ( $job_object->steps_data[ $job_object->step_working ]['SAVE_STEP_TRY'] !== $job_object->steps_data[ $job_object->step_working ]['STEP_TRY'] ) {
 				$job_object->log(
@@ -199,36 +216,36 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
 					);
 			}
 
-            //Exclude Tables
-            foreach ($sql_dump->tables_to_dump as $key => $table) {
-                if (in_array($table, $job_object->job['dbdumpexclude'], true)) {
-                    unset($sql_dump->tables_to_dump[$key]);
-                }
-            }
+			// Exclude Tables.
+			foreach ( $sql_dump->tables_to_dump as $key => $table ) {
+				if ( in_array( $table, $job_object->job['dbdumpexclude'], true ) ) {
+					unset( $sql_dump->tables_to_dump[ $key ] );
+				}
+			}
 
-            //set steps must done
-            $job_object->substeps_todo = count($sql_dump->tables_to_dump);
+			// Set steps must done.
+			$job_object->substeps_todo = count( $sql_dump->tables_to_dump );
 
-            if ($job_object->substeps_todo == 0) {
-                $job_object->log(__('No tables to backup.', 'backwpup'), E_USER_WARNING);
-                unset($sql_dump);
+			if ( 0 === $job_object->substeps_todo ) {
+				$job_object->log( __( 'No tables to backup.', 'backwpup' ), E_USER_WARNING );
+				unset( $sql_dump );
 
-                return true;
-            }
+				return true;
+			}
 
-            //dump head
-            if (!isset($job_object->steps_data[$job_object->step_working]['is_head'])) {
-                $sql_dump->dump_head(true);
-                $job_object->steps_data[$job_object->step_working]['is_head'] = true;
-            }
-            //dump tables
-            $i = 0;
+			// Dump head.
+			if ( ! isset( $job_object->steps_data[ $job_object->step_working ]['is_head'] ) ) {
+				$sql_dump->dump_head( true );
+				$job_object->steps_data[ $job_object->step_working ]['is_head'] = true;
+			}
+			// Dump tables.
+			$i = 0;
 
-            foreach ($sql_dump->tables_to_dump as $table) {
-                if ($i < $job_object->substeps_done) {
-                    ++$i;
+			foreach ( $sql_dump->tables_to_dump as $table ) {
+				if ( $i < $job_object->substeps_done ) {
+					++$i;
 
-                    continue;
+					continue;
 				}
 				if ( empty( $job_object->steps_data[ $job_object->step_working ]['tables'][ $table ] ) ) {
 					$num_records = $sql_dump->dump_table_head( $table );
@@ -246,51 +263,51 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
 						)
 							);
 					}
-                }
-                $while = true;
+				}
+				$while = true;
 
-                while ($while) {
-                    $dump_start_time = microtime(true);
-                    $done_records = $sql_dump->dump_table($table, $job_object->steps_data[$job_object->step_working]['tables'][$table]['start'], $job_object->steps_data[$job_object->step_working]['tables'][$table]['length']);
-                    $dump_time = microtime(true) - $dump_start_time;
-                    if (empty($dump_time)) {
-                        $dump_time = 0.01;
-                    }
-                    if ($done_records < $job_object->steps_data[$job_object->step_working]['tables'][$table]['length']) { //that is the last chunk
-                        $while = false;
-                    }
-                    $job_object->steps_data[$job_object->step_working]['tables'][$table]['start'] = $job_object->steps_data[$job_object->step_working]['tables'][$table]['start'] + $done_records;
-                    // dump time per record and set next length
-                    $length = ceil(($done_records / $dump_time) * $job_object->get_restart_time());
-                    if ($length > 25000 || 0 >= $job_object->get_restart_time()) {
-                        $length = 25000;
-                    }
-                    if ($length < 1000) {
-                        $length = 1000;
-                    }
-                    $job_object->steps_data[$job_object->step_working]['tables'][$table]['length'] = $length;
-                    $job_object->do_restart_time();
-                }
-                $sql_dump->dump_table_footer($table);
-                ++$job_object->substeps_done;
-                ++$i;
-                $job_object->update_working_data();
-            }
-            //dump footer
-            $sql_dump->dump_footer();
-            unset($sql_dump);
-        } catch (Exception $e) {
-            $job_object->log($e->getMessage(), E_USER_ERROR, $e->getFile(), $e->getLine());
+				while ( $while ) {
+					$dump_start_time = microtime( true );
+					$done_records    = $sql_dump->dump_table( $table, $job_object->steps_data[ $job_object->step_working ]['tables'][ $table ]['start'], $job_object->steps_data[ $job_object->step_working ]['tables'][ $table ]['length'] );
+					$dump_time       = microtime( true ) - $dump_start_time;
+					if ( empty( $dump_time ) ) {
+						$dump_time = 0.01;
+					}
+					if ( $done_records < $job_object->steps_data[ $job_object->step_working ]['tables'][ $table ]['length'] ) { // That is the last chunk.
+						$while = false;
+					}
+					$job_object->steps_data[ $job_object->step_working ]['tables'][ $table ]['start'] = $job_object->steps_data[ $job_object->step_working ]['tables'][ $table ]['start'] + $done_records;
+					// Dump time per record and set next length.
+					$length = ceil( ( $done_records / $dump_time ) * $job_object->get_restart_time() );
+					if ( $length > 25000 || 0 >= $job_object->get_restart_time() ) {
+						$length = 25000;
+					}
+					if ( $length < 1000 ) {
+						$length = 1000;
+					}
+					$job_object->steps_data[ $job_object->step_working ]['tables'][ $table ]['length'] = $length;
+					$job_object->do_restart_time();
+				}
+				$sql_dump->dump_table_footer( $table );
+				++$job_object->substeps_done;
+				++$i;
+				$job_object->update_working_data();
+			}
+			// Dump footer.
+			$sql_dump->dump_footer();
+			unset( $sql_dump );
+		} catch ( Exception $e ) {
+			$job_object->log( $e->getMessage(), E_USER_ERROR, $e->getFile(), $e->getLine() );
 
-            return false;
-        }
+			return false;
+		}
 
-        $filesize = filesize(BackWPup::get_plugin_data('TEMP') . $job_object->steps_data[$job_object->step_working]['dbdumpfile']);
+		$filesize = filesize( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->steps_data[ $job_object->step_working ]['dbdumpfile'] );
 
-        if (!is_file(BackWPup::get_plugin_data('TEMP') . $job_object->steps_data[$job_object->step_working]['dbdumpfile']) || $filesize < 1) {
-            $job_object->log(__('MySQL backup file not created', 'backwpup'), E_USER_ERROR);
+		if ( ! is_file( BackWPup::get_plugin_data( 'TEMP' ) . $job_object->steps_data[ $job_object->step_working ]['dbdumpfile'] ) || $filesize < 1 ) {
+			$job_object->log( __( 'MySQL backup file not created', 'backwpup' ), E_USER_ERROR );
 
-            return false;
+			return false;
 		}
 		$job_object->additional_files_to_backup[] = BackWPup::get_plugin_data( 'TEMP' ) . $job_object->steps_data[ $job_object->step_working ]['dbdumpfile'];
 		$job_object->log(
@@ -302,20 +319,24 @@ class BackWPup_JobType_DBDump extends BackWPup_JobTypes
 		)
 			);
 
-        //cleanups
-        unset($job_object->steps_data[$job_object->step_working]['tables']);
+		// Cleanups.
+		unset( $job_object->steps_data[ $job_object->step_working ]['tables'] );
 
-        $job_object->log(__('Database backup done!', 'backwpup'));
+		$job_object->log( __( 'Database backup done!', 'backwpup' ) );
 
-        return true;
-    }
+		return true;
+	}
 
-    public function admin_print_scripts()
-    {
-        if (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) {
-            wp_enqueue_script('backwpupjobtypedbdump', BackWPup::get_plugin_data('URL') . '/assets/js/page_edit_jobtype_dbdump.js', ['jquery'], time(), true);
-        } else {
-            wp_enqueue_script('backwpupjobtypedbdump', BackWPup::get_plugin_data('URL') . '/assets/js/page_edit_jobtype_dbdump.min.js', ['jquery'], BackWPup::get_plugin_data('Version'), true);
-        }
-    }
+	/**
+	 * Enqueues the scripts needed for the job type edit tab.
+	 *
+	 * @return void
+	 */
+	public function admin_print_scripts() {
+		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+			wp_enqueue_script( 'backwpupjobtypedbdump', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/page_edit_jobtype_dbdump.js', [ 'jquery' ], time(), true );
+		} else {
+			wp_enqueue_script( 'backwpupjobtypedbdump', BackWPup::get_plugin_data( 'URL' ) . '/assets/js/page_edit_jobtype_dbdump.min.js', [ 'jquery' ], BackWPup::get_plugin_data( 'Version' ), true );
+		}
+	}
 }

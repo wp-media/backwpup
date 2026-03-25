@@ -2,14 +2,13 @@
 /**
  * Render plugin about Page.
  */
-class BackWPup_Page_About
-{
-    /**
-     * Enqueue style.
-     */
-    public static function admin_print_styles()
-    {
-        ?>
+class BackWPup_Page_About {
+
+	/**
+	 * Enqueue style.
+	 */
+	public static function admin_print_styles() {
+		?>
 		<style type="text/css" media="screen">
 			#backwpup-page {
 				background: #fff;
@@ -330,28 +329,26 @@ class BackWPup_Page_About
 			}
 		</style>
 		<?php
-    }
+	}
 
-    /**
-     * Enqueue script.
-     */
-    public static function admin_print_scripts()
-    {
-        wp_enqueue_script('backwpupgeneral');
-    }
+	/**
+	 * Enqueue script.
+	 */
+	public static function admin_print_scripts() {
+		wp_enqueue_script( 'backwpupgeneral' );
+	}
 
-    /**
-     * Print the markup.
-     */
-    public static function page()
-    {
-        ?>
-        <div class="wrap" id="backwpup-page">
+	/**
+	 * Print the markup.
+	 */
+	public static function page() {
+		?>
+		<div class="wrap" id="backwpup-page">
 			<?php BackWPup_Admin::display_messages(); ?>
-            <div class="welcome">
-            	<div class="welcome_inner">
-                    <?php if (BackWPup::is_pro()) { ?>
-                    <div class="welcometxt">
+			<div class="welcome">
+				<div class="welcome_inner">
+					<?php if ( BackWPup::is_pro() ) { ?>
+					<div class="welcometxt">
 						<div class="backwpup-welcome">
 							<a href="<?php echo esc_url( __( 'http://backwpup.com', 'backwpup' ) ); ?>"><img class="backwpup-banner-img" src="<?php echo esc_url( BackWPup::get_plugin_data( 'URL' ) ); ?>/assets/images/banner.png" alt="<?php esc_attr_e( 'BackWPup banner', 'backwpup' ); ?>" /></a>
 							<h1><?php esc_html_e( 'Welcome to BackWPup Pro', 'backwpup' ); ?></h1>
@@ -384,9 +381,9 @@ class BackWPup_Page_About
 							?>
 							</p>
 						</div>
-                    </div>
-                    <?php } else {?>
-                    <div class="welcometxt">
+					</div>
+					<?php } else { ?>
+					<div class="welcometxt">
 						<div class="backwpup-welcome">
 							<a href="<?php echo esc_url( __( 'http://backwpup.com', 'backwpup' ) ); ?>"><img class="backwpup-banner-img" src="<?php echo esc_url( BackWPup::get_plugin_data( 'URL' ) ); ?>/assets/images/banner.png" alt="<?php esc_attr_e( 'BackWPup banner', 'backwpup' ); ?>" /></a>
 							<h1><?php esc_html_e( 'Welcome to BackWPup', 'backwpup' ); ?></h1>
@@ -397,13 +394,13 @@ class BackWPup_Page_About
 							</p>
 							<p><?php esc_html_e( 'Ready to set up a backup job? Use one of the wizards to plan what you want to save.', 'backwpup' ); ?></p>
 						</div>
-                    </div>
-                    <?php } ?>
-		            <div>
-		            </div>
-            		<div class="features">
+					</div>
+					<?php } ?>
+					<div>
+					</div>
+					<div class="features">
 
-                    	<div class="feature-box <?php self::feature_class(); ?>">
+						<div class="feature-box <?php self::feature_class(); ?>">
 							<div class="feature-image">
 								<img title="<?php esc_attr_e( 'Save your database', 'backwpup' ); ?>" src="<?php echo esc_url( BackWPup::get_plugin_data( 'URL' ) ); ?>/assets/images/imagesave.png" />
 							</div>
@@ -430,17 +427,17 @@ class BackWPup_Page_About
 								?>
 								</p>
 							</div>
-                        </div>
-                        <div class="feature-box <?php self::feature_class(); ?>">
-                            <div class="feature-text">
-                            	<h3><?php esc_html_e('WordPress XML Export', 'backwpup'); ?></h3>
-                                <p><?php esc_html_e('You can choose the built-in WordPress export format in addition or exclusive to save your data. This works in automated backups too of course. The advantage is: you can import these files into a blog with the regular WordPress importer.', 'backwpup'); ?></p>
-                            </div>
+						</div>
+						<div class="feature-box <?php self::feature_class(); ?>">
+							<div class="feature-text">
+								<h3><?php esc_html_e( 'WordPress XML Export', 'backwpup' ); ?></h3>
+								<p><?php esc_html_e( 'You can choose the built-in WordPress export format in addition or exclusive to save your data. This works in automated backups too of course. The advantage is: you can import these files into a blog with the regular WordPress importer.', 'backwpup' ); ?></p>
+							</div>
 							<div class="feature-image">
 								<img title="<?php esc_attr_e( 'WordPress XML Export', 'backwpup' ); ?>" src="<?php echo esc_url( BackWPup::get_plugin_data( 'URL' ) ); ?>/assets/images/imagexml.png" />
 							</div>
-                        </div>
-                        <div class="feature-box <?php self::feature_class(); ?>">
+						</div>
+						<div class="feature-box <?php self::feature_class(); ?>">
 							<div class="feature-image">
 								<img title="<?php esc_attr_e( 'Save all data from the webserver', 'backwpup' ); ?>" src="<?php echo esc_url( BackWPup::get_plugin_data( 'URL' ) ); ?>/assets/images/imagedata.png" />
 							</div>
@@ -467,29 +464,29 @@ class BackWPup_Page_About
 								?>
 								</p>
 							</div>
-                        </div>
-                        <div class="feature-box <?php self::feature_class(); ?>">
-                            <div class="feature-text">
-                            	<h3><?php esc_html_e('Security!', 'backwpup'); ?></h3>
-                                <p><?php esc_html_e('By default everything is encrypted: connections to external services, local files and access to directories.', 'backwpup'); ?></p>
-                            </div>
+						</div>
+						<div class="feature-box <?php self::feature_class(); ?>">
+							<div class="feature-text">
+								<h3><?php esc_html_e( 'Security!', 'backwpup' ); ?></h3>
+								<p><?php esc_html_e( 'By default everything is encrypted: connections to external services, local files and access to directories.', 'backwpup' ); ?></p>
+							</div>
 							<div class="feature-image">
 								<img title="<?php esc_attr_e( 'Security!', 'backwpup' ); ?>" src="<?php echo esc_url( BackWPup::get_plugin_data( 'URL' ) ); ?>/assets/images/imagesec.png" />
 							</div>
-                        </div>
-                        <div class="feature-box <?php self::feature_class(); ?>">
+						</div>
+						<div class="feature-box <?php self::feature_class(); ?>">
 							<div class="feature-image">
 								<img title="<?php esc_attr_e( 'Cloud Support', 'backwpup' ); ?>" src="<?php echo esc_url( BackWPup::get_plugin_data( 'URL' ) ); ?>/assets/images/imagecloud.png" />
 							</div>
-                            <div class="feature-text">
-                            	<h3><?php esc_html_e('Cloud Support', 'backwpup'); ?></h3>
-                                <p><?php esc_html_e('BackWPup supports multiple cloud services in parallel. This ensures backups are redundant.', 'backwpup'); ?></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+							<div class="feature-text">
+								<h3><?php esc_html_e( 'Cloud Support', 'backwpup' ); ?></h3>
+								<p><?php esc_html_e( 'BackWPup supports multiple cloud services in parallel. This ensures backups are redundant.', 'backwpup' ); ?></p>
+							</div>
+						</div>
+					</div>
+				</div>
 					<div class="backwpup_comp">
-						<h3><?php esc_html_e('Features / differences between Free and Pro', 'backwpup'); ?></h3>
+						<h3><?php esc_html_e( 'Features / differences between Free and Pro', 'backwpup' ); ?></h3>
 						<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							<tr class="<?php self::row_class(); ?> ub">
 								<td><?php esc_html_e( 'Features', 'backwpup' ); ?></td>
@@ -728,30 +725,34 @@ class BackWPup_Page_About
 							</tr>
 						</table>
 					</div>
-            </div>
-        </div>
-	<?php
-    }
+			</div>
+		</div>
+		<?php
+	}
 
-    /**
-     * Alternate between 'left' and 'right' CSS class.
-     *
-     * @since  2013.02.19
-     */
-    protected static function feature_class()
-    {
-        static $class = 'feature-box-left';
+	/**
+	 * Alternate between 'left' and 'right' CSS class.
+	 *
+	 * @since  2013.02.19
+	 */
+	protected static function feature_class() {
+		static $class = 'feature-box-left';
 
 		echo esc_attr( $class );
 
-        $class = 'feature-box-left' === $class ? 'feature-box-right' : 'feature-box-left';
-    }
+		$class = 'feature-box-left' === $class ? 'feature-box-right' : 'feature-box-left';
+	}
 
+	/**
+	 * Alternate between 'even' and 'odd' CSS class.
+	 *
+	 * @since 2013.02.19
+	 */
 	protected static function row_class() {
 		static $class = 'even';
 
 		echo esc_attr( $class );
 
-		$class = $class === 'odd' ? 'even' : 'odd';
+		$class = 'odd' === $class ? 'even' : 'odd';
 	}
 }

@@ -102,7 +102,7 @@ class Notice513 extends AbstractNotice {
 	 *
 	 * @return bool
 	 */
-	protected function isScreenAllowed(): bool {
+	protected function is_screen_allowed(): bool {
 		$screen = get_current_screen();
 
 		// Check if the current screen is a BackWPup page.

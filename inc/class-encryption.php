@@ -9,193 +9,209 @@
  * When we get rid of PHP 5.2, we setup a better autoloader and we get rid of WP coding standard, we finally should
  * refactor to proper code.
  */
-class BackWPup_Encryption
-{
-    public const PREFIX = '$BackWPup$';
-    public const KEY_TYPE_CUSTOM = '$0';
+class BackWPup_Encryption {
 
-    private static $classes = [
-        BackWPup_Encryption_OpenSSL::PREFIX => \BackWPup_Encryption_OpenSSL::class,
-        BackWPup_Encryption_Mcrypt::PREFIX => \BackWPup_Encryption_Mcrypt::class,
-        BackWPup_Encryption_Fallback::PREFIX => \BackWPup_Encryption_Fallback::class,
-    ];
+	public const PREFIX          = '$BackWPup$';
+	public const KEY_TYPE_CUSTOM = '$0';
 
-    /**
-     * Encrypt a string using the best algorithm available.
-     *
-     * In case the given string is encrypted with a weaker algorithm, it will first be decrypted then the plain text
-     * obtained is encrypted with the better algorithm available and returned.
-     *
-     * @param string $string value to encrypt
-     *
-     * @return string encrypted string
-     */
-    public static function encrypt($string)
-    {
-        if (!is_string($string) || !$string) {
-            return '';
-        }
+	/**
+	 * Cipher classes keyed by prefix.
+	 *
+	 * @var array
+	 */
+	private static $classes = [
+		BackWPup_Encryption_OpenSSL::PREFIX  => \BackWPup_Encryption_OpenSSL::class,
+		BackWPup_Encryption_Mcrypt::PREFIX   => \BackWPup_Encryption_Mcrypt::class,
+		BackWPup_Encryption_Fallback::PREFIX => \BackWPup_Encryption_Fallback::class,
+	];
 
-        try {
-            $cypher_class = self::cypher_class_for_string($string);
-        } catch (Exception $e) {
-            /** @TODO what to do here? The string is encrypted, but cypher used to encrypt isn't supported in current system */
+	/**
+	 * Encrypt a string using the best algorithm available.
+	 *
+	 * In case the given string is encrypted with a weaker algorithm, it will first be decrypted then the plain text
+	 * obtained is encrypted with the better algorithm available and returned.
+	 *
+	 * @param string $value Value to encrypt.
+	 *
+	 * @return string Encrypted string.
+	 */
+	public static function encrypt( $value ) {
+		if ( ! is_string( $value ) || ! $value ) {
+			return '';
+		}
 
-            return $string;
-        }
+		try {
+			$cypher_class = self::cypher_class_for_string( $value );
+		} catch ( Exception $e ) {
+			// TODO: Decide how to handle unsupported ciphers for already-encrypted values.
 
-        try {
-            [$key, $key_type] = self::get_encrypt_info($cypher_class, $string);
-        } catch (Exception $e) {
-            /** @TODO what to do here? The string is encrypted, a custom key was used to encrypt, but it is not available anymore */
+			return $value;
+		}
 
-            return $string;
-        }
+		try {
+			[$key, $key_type] = self::get_encrypt_info( $cypher_class, $value );
+		} catch ( Exception $e ) {
+			// TODO: Decide how to handle missing custom keys for already-encrypted values.
 
-        $best_cipher_class = self::best_cypher();
+			return $value;
+		}
 
-        // The given string is not encrypted, let's encrypt it and return
-        if (!$cypher_class) {
-            /** @var BackWPup_Encryption_OpenSSL|BackWPup_Encryption_Mcrypt|BackWPup_Encryption_Fallback $best_cypher */
-            $best_cypher = new $best_cipher_class($key, $key_type);
+		$best_cipher_class = self::best_cypher();
 
-            return $best_cypher->encrypt($string);
-        }
+		// The given string is not encrypted, let's encrypt it and return.
+		if ( ! $cypher_class ) {
+			/**
+			 * Best available cipher instance.
+			 *
+			 * @var BackWPup_Encryption_OpenSSL|BackWPup_Encryption_Mcrypt|BackWPup_Encryption_Fallback $best_cypher
+			 */
+			$best_cypher = new $best_cipher_class( $key, $key_type );
 
-        $encryption_count = substr_count($string, self::PREFIX);
+			return $best_cypher->encrypt( $value );
+		}
 
-        // The given string is encrypted once using best cypher, let's just return it
-        if ($encryption_count === 1 && $cypher_class === $best_cipher_class) {
-            return $string;
-        }
+		$encryption_count = substr_count( $value, self::PREFIX );
 
-        /** @var BackWPup_Encryption_OpenSSL|BackWPup_Encryption_Mcrypt|BackWPup_Encryption_Fallback $cypher */
-        $cypher = new $cypher_class($key, $key_type);
+		// The given string is encrypted once using best cypher, let's just return it.
+		if ( 1 === $encryption_count && $cypher_class === $best_cipher_class ) {
+			return $value;
+		}
 
-        $string = $cypher->decrypt($string);
+		/**
+		 * Cipher instance for decrypting the existing value.
+		 *
+		 * @var BackWPup_Encryption_OpenSSL|BackWPup_Encryption_Mcrypt|BackWPup_Encryption_Fallback $cypher
+		 */
+		$cypher = new $cypher_class( $key, $key_type );
 
-        return self::encrypt($string);
-    }
+		$value = $cypher->decrypt( $value );
 
-    /**
-     * Decrypt a string (Passwords).
-     *
-     * @param string $string value to decrypt
-     *
-     * @return string decrypted string
-     */
-    public static function decrypt($string)
-    {
-        if (!is_string($string) || !$string) {
-            return '';
-        }
+		return self::encrypt( $value );
+	}
 
-        try {
-            $cypher_class = self::cypher_class_for_string($string);
-        } catch (Exception $e) {
-            /** @TODO what to do here? The cypher used to encrypt is not supported in current system */
+	/**
+	 * Decrypt a string (Passwords).
+	 *
+	 * @param string $value Value to decrypt.
+	 *
+	 * @return string Decrypted string.
+	 */
+	public static function decrypt( $value ) {
+		if ( ! is_string( $value ) || ! $value ) {
+			return '';
+		}
 
-            return '';
-        }
+		try {
+			$cypher_class = self::cypher_class_for_string( $value );
+		} catch ( Exception $e ) {
+			// TODO: Decide how to handle unsupported ciphers when decrypting.
 
-        if (!$cypher_class) {
-            /** @TODO what to do here? The string seems not encrypted or maybe is corrupted */
+			return '';
+		}
 
-            return $string;
-        }
+		if ( ! $cypher_class ) {
+			// TODO: Decide how to handle values that appear unencrypted or corrupted.
 
-        try {
-            [$key, $key_type] = self::get_encrypt_info($cypher_class, $string);
-        } catch (Exception $e) {
-            /** @TODO what to do here? A custom key was used to encrypt but it is not available anymore */
-            return '';
-        }
+			return $value;
+		}
 
-        /** @var BackWPup_Encryption_OpenSSL|BackWPup_Encryption_Mcrypt|BackWPup_Encryption_Fallback $cypher */
-        $cypher = new $cypher_class($key, $key_type);
+		try {
+			[$key, $key_type] = self::get_encrypt_info( $cypher_class, $value );
+		} catch ( Exception $e ) {
+			// TODO: Decide how to handle missing custom keys for decryption.
+			return '';
+		}
 
-        return trim(stripslashes($cypher->decrypt($string)), "\0");
-    }
+		/**
+		 * Cipher instance used for decrypting the value.
+		 *
+		 * @var BackWPup_Encryption_OpenSSL|BackWPup_Encryption_Mcrypt|BackWPup_Encryption_Fallback $cypher
+		 */
+		$cypher = new $cypher_class( $key, $key_type );
+
+		return trim( stripslashes( $cypher->decrypt( $value ) ), "\0" );
+	}
 
 	/**
 	 * Get the cypher class used to encrypt the given string.
 	 *
-	 * @param string $string
+	 * @param string $value Encrypted value.
 	 *
 	 * @return string
 	 *
 	 * @throws \RuntimeException If the cypher used to encrypt the given string is not supported in current system.
 	 */
-    private static function cypher_class_for_string($string)
-    {
-        foreach (self::$classes as $prefix => $class) {
-            $enc_prefix = self::PREFIX . $prefix;
+	private static function cypher_class_for_string( $value ) {
+		foreach ( self::$classes as $prefix => $class ) {
+			$enc_prefix = self::PREFIX . $prefix;
 
-            if (strpos($string, $enc_prefix) !== 0) {
-                continue;
-            }
+			if ( 0 !== strpos( $value, $enc_prefix ) ) {
+				continue;
+			}
 
 			if ( ! call_user_func( [ $class, 'supported' ] ) ) {
 				throw new \RuntimeException(
 					// Translators: %s is the name of the encryption algorithm that is not supported in the current system.
 					sprintf( esc_html__( 'Give string was encrypted using %s but it is not currently supported in this system.', 'backwpup' ), esc_html( $class ) )
 				);
-            }
+			}
 
-            return $class;
-        }
+			return $class;
+		}
 
-        return '';
-    }
+		return '';
+	}
 
-    /**
-     * @return string
-     */
-    private static function best_cypher()
-    {
-        foreach (self::$classes as $prefix => $class) {
-            if (!call_user_func([$class, 'supported'])) {
-                continue;
-            }
+	/**
+	 * Get the best available cypher class.
+	 *
+	 * @return string
+	 */
+	private static function best_cypher() {
+		foreach ( self::$classes as $prefix => $class ) {
+			if ( ! call_user_func( [ $class, 'supported' ] ) ) {
+				continue;
+			}
 
-            return $class;
-        }
+			return $class;
+		}
 
-        // This should never happen because BackWPup_Encryption_Fallback::supported() always returns true
+		// This should never happen because BackWPup_Encryption_Fallback::supported() always returns true.
 
-        return '';
-    }
+		return '';
+	}
 
-    /**
-     * @param string|null $class
-     * @param string      $string
+	/**
+	 * Get the encryption key and key type for a value.
+	 *
+	 * @param string|null $class_name Cipher class name when known.
+	 * @param string      $value      Encrypted or plain value.
 	 *
 	 * @return array
 	 * @throws \RuntimeException If the given string was encrypted using a custom key but 'BACKWPUP_ENC_KEY' constant is not defined anymore.
 	 */
-    private static function get_encrypt_info($class = null, $string = '')
-    {
-        $default_key = DB_NAME . DB_USER . DB_PASSWORD;
+	private static function get_encrypt_info( $class_name = null, $value = '' ) {
+		$default_key = DB_NAME . DB_USER . DB_PASSWORD;
 
-        if (!is_string($class) || !$class) {
-            return defined('BACKWPUP_ENC_KEY')
-                ? [BACKWPUP_ENC_KEY, self::KEY_TYPE_CUSTOM]
-                : [$default_key, ''];
-        }
+		if ( ! is_string( $class_name ) || ! $class_name ) {
+			return defined( 'BACKWPUP_ENC_KEY' )
+				? [ BACKWPUP_ENC_KEY, self::KEY_TYPE_CUSTOM ]
+				: [ $default_key, '' ];
+		}
 
-        $enc_prefix = self::PREFIX . constant("{$class}::PREFIX");
-        $has_custom_key = strpos($string, $enc_prefix . self::KEY_TYPE_CUSTOM) === 0;
+		$enc_prefix     = self::PREFIX . constant( "{$class_name}::PREFIX" );
+		$has_custom_key = 0 === strpos( $value, $enc_prefix . self::KEY_TYPE_CUSTOM );
 
 		if ( $has_custom_key ) {
 			if ( ! defined( 'BACKWPUP_ENC_KEY' ) ) {
 				throw new \RuntimeException(
 					esc_html__( "Given string was encrypted using a custom key but 'BACKWPUP_ENC_KEY' constant is not defined anymore.", 'backwpup' )
 				);
-            }
+			}
 
-            return [BACKWPUP_ENC_KEY, self::KEY_TYPE_CUSTOM];
-        }
+			return [ BACKWPUP_ENC_KEY, self::KEY_TYPE_CUSTOM ];
+		}
 
-        return [$default_key, ''];
-    }
+		return [ $default_key, '' ];
+	}
 }

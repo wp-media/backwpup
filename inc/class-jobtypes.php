@@ -51,56 +51,79 @@ abstract class BackWPup_JobTypes {
 	 */
 	public $info = [];
 
-    abstract public function __construct();
+	/**
+	 * Constructs the job type.
+	 */
+	abstract public function __construct();
 
-    /**
-     * Get the default Options.
-     *
-     * @return array of default options
-     */
-    abstract public function option_defaults();
+	/**
+	 * Returns the default options.
+	 *
+	 * @return array Default options.
+	 */
+	abstract public function option_defaults();
 
-    /**
-     * @param $jobid
-     */
-    abstract public function edit_tab($jobid);
+	/**
+	 * Renders the job type edit tab.
+	 *
+	 * @param int|array $jobid Job ID or list of job IDs.
+	 */
+	abstract public function edit_tab( $jobid );
 
-    /**
-     * @param $jobid
-     */
-    abstract public function edit_form_post_save($jobid);
+	/**
+	 * Saves the job type settings.
+	 *
+	 * @param int|array $jobid Job ID or list of job IDs.
+	 */
+	abstract public function edit_form_post_save( $jobid );
 
-    /**
-     * use wp_enqueue_script() here to load js for tab.
-     */
-    public function admin_print_scripts()
-    {
-    }
+	/**
+	 * Enqueues scripts for the job type edit tab.
+	 *
+	 * @return void
+	 */
+	public function admin_print_scripts() {
+	}
 
-    public function edit_inline_js()
-    {
-    }
+	/**
+	 * Outputs inline JavaScript for the job type edit tab.
+	 *
+	 * @return void
+	 */
+	public function edit_inline_js() {
+	}
 
-    public function edit_ajax()
-    {
-    }
+	/**
+	 * Handles job type AJAX requests.
+	 *
+	 * @return void
+	 */
+	public function edit_ajax() {
+	}
 
-    public function admin_print_styles()
-    {
-    }
+	/**
+	 * Enqueues styles for the job type edit tab.
+	 *
+	 * @return void
+	 */
+	public function admin_print_styles() {
+	}
 
-    /**
-     * @return bool
-     */
-    public function creates_file()
-    {
-        return false;
-    }
+	/**
+	 * Whether the job type creates a file.
+	 *
+	 * @return bool True if it creates a file, false otherwise.
+	 */
+	public function creates_file() {
+		return false;
+	}
 
-    /**
-     * @param $job_object BackWPup_Job Object
-     *
-     * @return bool
-     */
-    abstract public function job_run(BackWPup_Job $job_object);
+	/**
+	 * Runs the job type.
+	 *
+	 * @param BackWPup_Job $job_object Job object.
+	 *
+	 * @return bool True on success, false on failure.
+	 */
+	abstract public function job_run( BackWPup_Job $job_object );
 }

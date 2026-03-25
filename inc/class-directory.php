@@ -29,9 +29,8 @@ class BackWPup_Directory extends DirectoryIterator {
 	 *
 	 * @param string $path
 	 */
-	public function __construct($path)
-	{
-		parent::__construct(BackWPup_Path_Fixer::fix_path($path));
+	public function __construct( $path ) {
+		parent::__construct( BackWPup_Path_Fixer::fix_path( $path ) );
 	}
 
 	/**

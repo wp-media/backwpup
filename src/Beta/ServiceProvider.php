@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WPMedia\BackWPup\Beta;
 
-use BackWPup;
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WPMedia\Beta\Optin;
 use WPMedia\Beta\Beta;

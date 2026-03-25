@@ -2,8 +2,6 @@
 
 namespace Inpsyde\BackWPup\Notice; // phpcs:ignore
 
-use BackWPup_Option;
-use BackWPup;
 
 class RestoreFeatureInformationNotice extends Notice {
 	/**
@@ -31,7 +29,7 @@ class RestoreFeatureInformationNotice extends Notice {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function isScreenAllowed(): bool {
+	protected function is_screen_allowed(): bool {
 		return true;
 	}
 
@@ -56,9 +54,9 @@ class RestoreFeatureInformationNotice extends Notice {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function shouldDisplay(): bool {
+	protected function should_display(): bool {
 		// Check if the notice has been dismissed.
-		if ( parent::shouldDisplay() ) {
+		if ( parent::should_display() ) {
 			// Must only be displayed in the free version.
 			return ! \BackWPup::is_pro();
 		}

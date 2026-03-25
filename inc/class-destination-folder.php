@@ -20,23 +20,29 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	public function option_defaults(): array {
 		$backups_dir = self::getDefaultBackupsDirectory();
 
-        return ['maxbackups' => 15, 'backupdir' => $backups_dir, 'backupsyncnodelete' => true];
-    }
+		return [
+			'maxbackups'         => 15,
+			'backupdir'          => $backups_dir,
+			'backupsyncnodelete' => true,
+		];
+	}
 
 
-    /**
-     * {@inheritdoc}
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @param int|array $jobid Job ID or array of job IDs.
 	 */
 	public function edit_form_post_save( $jobid ): void {
 		$backup_dir = trim( sanitize_text_field( $_POST['backupdir'] ) ); // phpcs:ignore WordPress.Security
 
-        try {
-            $backup_dir = trailingslashit(
-                BackWPup_File::normalize_path(BackWPup_Path_Fixer::slashify($backup_dir))
-            );
-        } catch (\InvalidArgumentException $e) {
-            $backup_dir = self::getDefaultBackupsDirectory();
-        }
+		try {
+			$backup_dir = trailingslashit(
+				BackWPup_File::normalize_path( BackWPup_Path_Fixer::slashify( $backup_dir ) )
+			);
+		} catch ( \InvalidArgumentException $e ) {
+			$backup_dir = self::getDefaultBackupsDirectory();
+		}
 
 		$max_backups = isset( $_POST['maxbackups'] ) && is_numeric( $_POST['maxbackups'] ) ? absint( $_POST['maxbackups'] ) : $this->option_defaults()['maxbackups']; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$jobids      = (array) $jobid;
@@ -47,21 +53,23 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 		}
 	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function file_delete(string $jobdest, string $backupfile): void
-    {
-        [$jobid, $dest] = explode('_', $jobdest, 2);
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @param string $jobdest    Job destination identifier.
+	 * @param string $backupfile Backup file name.
+	 */
+	public function file_delete( string $jobdest, string $backupfile ): void {
+		[$jobid, $dest] = explode( '_', $jobdest, 2 );
 
-        if (empty($jobid)) {
-            return;
-        }
+		if ( empty( $jobid ) ) {
+			return;
+		}
 
-        $backup_dir = esc_attr(BackWPup_Option::get((int) $jobid, 'backupdir'));
-        $backup_dir = BackWPup_File::get_absolute_path($backup_dir);
+		$backup_dir = esc_attr( BackWPup_Option::get( (int) $jobid, 'backupdir' ) );
+		$backup_dir = BackWPup_File::get_absolute_path( $backup_dir );
 
-        $backupfile = realpath(trailingslashit($backup_dir) . basename($backupfile));
+		$backupfile = realpath( trailingslashit( $backup_dir ) . basename( $backupfile ) );
 
 		if ( $backupfile && is_writable( $backupfile ) && ! is_dir( $backupfile ) && ! is_link( $backupfile ) ) { //phpcs:ignore
 			wp_delete_file( $backupfile );
@@ -69,10 +77,12 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 			// translators: %s: backup file path.
 			\BackWPup_Admin::message( sprintf( __( 'Could not delete backup archive "%s", check permissions!', 'backwpup' ), $backupfile ), true );
 		}
-    }
+	}
 
-    /**
-     * {@inheritdoc}
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @param string|null $jobdest Job destination identifier.
 	 */
 	public function file_get_list( ?string $jobdest = '' ): array {
 		$jobid         = 0;
@@ -86,113 +96,115 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 		$files             = [];
 		$backup_folder     = BackWPup_File::get_absolute_path( $backup_folder );
 		$not_allowed_files = [
-            'index.php',
-            '.htaccess',
-            '.donotbackup',
-            'Web.config',
-        ];
+			'index.php',
+			'.htaccess',
+			'.donotbackup',
+			'Web.config',
+		];
 
-        if (is_dir($backup_folder)) {
-            $dir = $this->get_backwpup_directory($backup_folder);
+		if ( is_dir( $backup_folder ) ) {
+			$dir = $this->get_backwpup_directory( $backup_folder );
 
-            foreach ($dir as $file) {
-                if (
-                    $file->isDot()
-                    || $file->isDir()
-                    || $file->isLink()
-                    || in_array($file->getFilename(), $not_allowed_files, true)
-                    || !$this->is_backup_archive($file->getFilename())
-                ) {
-                    continue;
-                }
+			foreach ( $dir as $file ) {
+				if (
+					$file->isDot()
+					|| $file->isDir()
+					|| $file->isLink()
+					|| in_array( $file->getFilename(), $not_allowed_files, true )
+					|| ! $this->is_backup_archive( $file->getFilename() )
+				) {
+					continue;
+				}
 
-                if ($file->isReadable()) {
-                    //file list for backups
-                    $files[$filecounter]['folder'] = $backup_folder;
-                    $files[$filecounter]['file'] = str_replace('\\', '/', $file->getPathname());
-                    $files[$filecounter]['filename'] = $file->getFilename();
-                    $files[$filecounter]['downloadurl'] = add_query_arg(
-                        [
-                            'page' => 'backwpupbackups',
-                            'action' => 'downloadfolder',
-                            'file' => $file->getFilename(),
-                            'local_file' => $file->getFilename(),
-                            'jobid' => $jobid,
-                        ],
-                        network_admin_url('admin.php')
-                    );
-                    $files[$filecounter]['filesize'] = $file->getSize();
-                    $files[$filecounter]['time'] = $file->getMTime() + (get_option('gmt_offset') * 3600);
-                    ++$filecounter;
-                }
-            }
-        }
+				if ( $file->isReadable() ) {
+					// File list for backups.
+					$files[ $filecounter ]['folder']      = $backup_folder;
+					$files[ $filecounter ]['file']        = str_replace( '\\', '/', $file->getPathname() );
+					$files[ $filecounter ]['filename']    = $file->getFilename();
+					$files[ $filecounter ]['downloadurl'] = add_query_arg(
+						[
+							'page'       => 'backwpupbackups',
+							'action'     => 'downloadfolder',
+							'file'       => $file->getFilename(),
+							'local_file' => $file->getFilename(),
+							'jobid'      => $jobid,
+						],
+						network_admin_url( 'admin.php' )
+					);
+					$files[ $filecounter ]['filesize']    = $file->getSize();
+					$files[ $filecounter ]['time']        = $file->getMTime() + ( get_option( 'gmt_offset' ) * 3600 );
+					++$filecounter;
+				}
+			}
+		}
 
-        return array_filter($files);
-    }
+		return array_filter( $files );
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function job_run_archive(BackWPup_Job $job_object): bool
-    {
-        $job_object->substeps_todo = 1;
-        if (!empty($job_object->job['jobid'])) {
-            BackWPup_Option::update(
-                $job_object->job['jobid'],
-                'lastbackupdownloadurl',
-                add_query_arg(
-                    [
-                        'page' => 'backwpupbackups',
-                        'action' => 'downloadfolder',
-                        'file' => basename($job_object->backup_file),
-                        'jobid' => $job_object->job['jobid'],
-                    ],
-                    network_admin_url('admin.php')
-                )
-            );
-        }
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @param BackWPup_Job $job_object Job object.
+	 */
+	public function job_run_archive( BackWPup_Job $job_object ): bool {
+		$job_object->substeps_todo = 1;
+		if ( ! empty( $job_object->job['jobid'] ) ) {
+			BackWPup_Option::update(
+				$job_object->job['jobid'],
+				'lastbackupdownloadurl',
+				add_query_arg(
+					[
+						'page'   => 'backwpupbackups',
+						'action' => 'downloadfolder',
+						'file'   => basename( $job_object->backup_file ),
+						'jobid'  => $job_object->job['jobid'],
+					],
+					network_admin_url( 'admin.php' )
+				)
+			);
+		}
 
-        // Delete old Backupfiles.
-        $backupfilelist = [];
-        $files = [];
+		// Delete old Backupfiles.
+		$backupfilelist = [];
+		$files          = [];
 
 		if ( is_writable( $job_object->backup_folder ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable -- Make file list.
 			try {
-                $dir = new BackWPup_Directory($job_object->backup_folder);
+				$dir = new BackWPup_Directory( $job_object->backup_folder );
 
-                foreach ($dir as $file) {
-                    if ($file->isDot() || $file->isDir() || $file->isLink() || !$file->isWritable()) {
-                        continue;
-                    }
+				foreach ( $dir as $file ) {
+					if ( $file->isDot() || $file->isDir() || $file->isLink() || ! $file->isWritable() ) {
+						continue;
+					}
 
-                    $is_backup_archive = $this->is_backup_archive($file->getFilename());
-                    $is_owned_by_job = $this->is_backup_owned_by_job($file->getFilename(), $job_object->job['jobid']);
-                    if ($is_backup_archive && $is_owned_by_job) {
-                        $backupfilelist[$file->getMTime()] = clone $file;
-                    }
-                }
-            } catch (UnexpectedValueException $e) {
-                $job_object->log(
+					$is_backup_archive = $this->is_backup_archive( $file->getFilename() );
+					$is_owned_by_job   = $this->is_backup_owned_by_job( $file->getFilename(), $job_object->job['jobid'] );
+					if ( $is_backup_archive && $is_owned_by_job ) {
+						$backupfilelist[ $file->getMTime() ] = clone $file;
+					}
+				}
+			} catch ( UnexpectedValueException $e ) {
+				$job_object->log(
 					sprintf(
 						/* translators: %s: path. */
 						esc_html__( 'Could not open path: %s', 'backwpup' ),
 						$e->getMessage()
-                    ),
-                    E_USER_WARNING
-                );
-            }
-        }
+					),
+					E_USER_WARNING
+				);
+			}
+		}
 
-        if ($job_object->job['maxbackups'] > 0) {
-            if (count($backupfilelist) > $job_object->job['maxbackups']) {
-                ksort($backupfilelist);
+		if ( $job_object->job['maxbackups'] > 0 ) {
+			if ( count( $backupfilelist ) > $job_object->job['maxbackups'] ) {
+				ksort( $backupfilelist );
 				$numdeltefiles = 0;
 				$deleted_files = [];
 
-                while ($file = array_shift($backupfilelist)) {
-                    if (count($backupfilelist) < $job_object->job['maxbackups']) {
-                        break;
+				while ( ! empty( $backupfilelist ) ) {
+					$file = array_shift( $backupfilelist );
+					if ( count( $backupfilelist ) < $job_object->job['maxbackups'] ) {
+						break;
 					}
 					wp_delete_file( $file->getPathname() );
 					$deleted_files[] = $file->getPathname();
@@ -200,62 +212,66 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 						if ( $filedata['file'] === $file->getPathname() ) {
 							unset( $files[ $key ] );
 						}
-                    }
-                    ++$numdeltefiles;
-                }
+					}
+					++$numdeltefiles;
+				}
 
-                if ($numdeltefiles > 0) {
-                    $job_object->log(
+				if ( $numdeltefiles > 0 ) {
+					$job_object->log(
 						sprintf(
 							// translators: %d: number of backup files.
 							_n( '%d backup file deleted', '%d backup files deleted', $numdeltefiles, 'backwpup' ),
 							$numdeltefiles
-                        ),
-                        E_USER_NOTICE
-                    );
+						),
+						E_USER_NOTICE
+					);
 				}
 
 				parent::remove_file_history_from_database( $deleted_files, 'FOLDER' );
 			}
-        }
+		}
 
-        ++$job_object->substeps_done;
+		++$job_object->substeps_done;
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function can_run(array $job_settings): bool
-    {
-        return !(empty($job_settings['backupdir']) || $job_settings['backupdir'] == '/');
-    }
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @param array $job_settings Job settings.
+	 */
+	public function can_run( array $job_settings ): bool {
+		return ! ( empty( $job_settings['backupdir'] ) || '/' === $job_settings['backupdir'] );
+	}
 
-    /**
-     * Returns new instance of BackWPup_Directory.
-     *
-     * @param string $dir the directory to iterate
-     */
-    protected function get_backwpup_directory(string $dir): BackWPup_Directory
-    {
-        return new BackWPup_Directory($dir);
-    }
+	/**
+	 * Returns new instance of BackWPup_Directory.
+	 *
+	 * @param string $dir The directory to iterate.
+	 */
+	protected function get_backwpup_directory( string $dir ): BackWPup_Directory {
+		return new BackWPup_Directory( $dir );
+	}
 
-    private static function getDefaultBackupsDirectory()
-    {
-        $upload_dir = wp_upload_dir(null, false, true);
-        $backups_dir = trailingslashit(
-            str_replace(
-                '\\',
-                '/',
-                $upload_dir['basedir']
-            )
-        ) . 'backwpup/' . BackWPup::get_plugin_data('hash') . '/backups/';
-        $content_path = trailingslashit(BackWPup_Path_Fixer::slashify((string) WP_CONTENT_DIR));
+	/**
+	 * Returns the default backup directory path.
+	 *
+	 * @return string Backup directory path relative to the content dir.
+	 */
+	private static function getDefaultBackupsDirectory() {
+		$upload_dir   = wp_upload_dir( null, false, true );
+		$backups_dir  = trailingslashit(
+			str_replace(
+				'\\',
+				'/',
+				$upload_dir['basedir']
+			)
+		) . 'backwpup/' . BackWPup::get_plugin_data( 'hash' ) . '/backups/';
+		$content_path = trailingslashit( BackWPup_Path_Fixer::slashify( (string) WP_CONTENT_DIR ) );
 
-        return str_replace($content_path, '', $backups_dir);
-    }
+		return str_replace( $content_path, '', $backups_dir );
+	}
 
 	/**
 	 * Get service name

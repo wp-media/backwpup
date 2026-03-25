@@ -6,21 +6,21 @@ use WPMedia\BackWPup\Plugin\Plugin;
 /**
  * Class for options.
  */
-final class BackWPup_Option
-{
-    /**
-     * add filter for Site option defaults.
+final class BackWPup_Option {
+
+	/**
+	 * Add filter for site option defaults.
 	 */
 	public static function default_site_options() {
-		// global.
+		// Global.
 		add_site_option( 'backwpup_version', '0.0.0' );
-		// job default.
+		// Job default.
 		add_site_option( 'backwpup_jobs', [] );
-		// general.
+		// General.
 		add_site_option( 'backwpup_cfg_showadminbar', true );
 		add_site_option( 'backwpup_cfg_showfoldersize', false );
 		add_site_option( 'backwpup_cfg_keepplugindata', false );
-		// job.
+		// Job.
 		add_site_option( 'backwpup_cfg_jobmaxexecutiontime', 30 );
 		add_site_option( 'backwpup_cfg_jobstepretry', 3 );
 		add_site_option( 'backwpup_cfg_jobrunauthkey', BackWPup::get_generated_hash( 8 ) );
@@ -40,7 +40,7 @@ final class BackWPup_Option
 		$logs_dir     = trailingslashit(
 			str_replace(
 			'\\',
-            '/',
+			'/',
 			$upload_dir['basedir']
 		)
 			) . 'backwpup/' . BackWPup::get_plugin_data( 'hash' ) . '/logs/';
@@ -67,7 +67,7 @@ final class BackWPup_Option
 		$jobid  = (int) $jobid;
 		$option = sanitize_key( trim( $option ) );
 
-		if (empty($jobid) || empty($option)) {
+		if ( empty( $jobid ) || empty( $option ) ) {
 			return false;
 		}
 
@@ -89,7 +89,7 @@ final class BackWPup_Option
 
 		$jobs_options[ $job_key ][ $option ] = $value;
 
-		return self::update_jobs_options($jobs_options);
+		return self::update_jobs_options( $jobs_options );
 	}
 
 	/**
@@ -134,32 +134,32 @@ final class BackWPup_Option
 	/**
 	 * Load BackWPup Options.
 	 *
-	 * @param bool $use_cache
+	 * @param bool $use_cache Whether to use the cache.
 	 *
-	 * @return array of options
+	 * @return array Array of options.
 	 */
 	public static function jobs_options( $use_cache = true ) {
 		global $current_site;
 
-		//remove from cache
-		if (!$use_cache) {
-			if (is_multisite()) {
+		// Remove from cache.
+		if ( ! $use_cache ) {
+			if ( is_multisite() ) {
 				$network_id = $current_site->id;
-				$cache_key = "{$network_id}:backwpup_jobs";
-				wp_cache_delete($cache_key, 'site-options');
+				$cache_key  = "{$network_id}:backwpup_jobs";
+				wp_cache_delete( $cache_key, 'site-options' );
 			} else {
-				wp_cache_delete('backwpup_jobs', 'options');
-				$alloptions = wp_cache_get('alloptions', 'options');
-				if (isset($alloptions['backwpup_jobs'])) {
-					unset($alloptions['backwpup_jobs']);
-					wp_cache_set('alloptions', $alloptions, 'options');
+				wp_cache_delete( 'backwpup_jobs', 'options' );
+				$alloptions = wp_cache_get( 'alloptions', 'options' );
+				if ( isset( $alloptions['backwpup_jobs'] ) ) {
+					unset( $alloptions['backwpup_jobs'] );
+					wp_cache_set( 'alloptions', $alloptions, 'options' );
 				}
 			}
 		}
 
 		$jobs = get_site_option( 'backwpup_jobs', [] );
 		foreach ( $jobs as $job_key => $job ) {
-			// remove entry that has no jobid that is needed.
+			// Remove entry that has no jobid that is needed.
 			if ( ! isset( $job['jobid'] ) ) {
 				unset( $jobs[ $job_key ] );
 			}
@@ -171,13 +171,12 @@ final class BackWPup_Option
 	/**
 	 * Update BackWPup Options.
 	 *
-	 * @param array $options The options array to save
+	 * @param array $options The options array to save.
 	 *
-	 * @return bool updated or not
+	 * @return bool Updated or not.
 	 */
-	private static function update_jobs_options($options)
-	{
-		return update_site_option('backwpup_jobs', $options);
+	private static function update_jobs_options( $options ) {
+		return update_site_option( 'backwpup_jobs', $options );
 	}
 
 	/**
@@ -194,11 +193,11 @@ final class BackWPup_Option
 		$jobid  = (int) $jobid;
 		$option = sanitize_key( trim( $option ) );
 
-		if (empty($jobid) || empty($option)) {
+		if ( empty( $jobid ) || empty( $option ) ) {
 			return false;
 		}
 
-		$jobs_options = self::jobs_options($use_cache);
+		$jobs_options = self::jobs_options( $use_cache );
 
 		if ( ! is_array( $jobs_options ) ) {
 			return false;
@@ -229,7 +228,7 @@ final class BackWPup_Option
 				return self::normalize_archive_name( self::defaults_job( $option ), $jobid );
 			}
 
-			return self::defaults_job($option);
+			return self::defaults_job( $option );
 		}
 
 		// Ensure archive name is formatted properly.
@@ -246,14 +245,14 @@ final class BackWPup_Option
 		// Handle special cases for option values.
 		switch ( $option ) {
 			case 'archiveformat':
-				if ($option_value === '.tar.bz2') {
+				if ( '.tar.bz2' === $option_value ) {
 					$option_value = '.tar.gz';
 				}
 				break;
 
 			case 'pluginlistfilecompression':
 			case 'wpexportfilecompression':
-				if ($option_value === '.bz2') {
+				if ( '.bz2' === $option_value ) {
 					$option_value = '.gz';
 				}
 				break;
@@ -265,17 +264,16 @@ final class BackWPup_Option
 	/**
 	 * Get default option for BackWPup option.
 	 *
-	 * @param string $key Option key
+	 * @param string $key Option key.
 	 *
 	 * @internal param int $id The job id
 	 *
 	 * @return bool|mixed
 	 */
-	public static function defaults_job($key = '')
-	{
-		$key = sanitize_key(trim($key));
+	public static function defaults_job( $key = '' ) {
+		$key = sanitize_key( trim( $key ) );
 
-		// set defaults.
+		// Set defaults.
 		$default                          = [];
 		$default['type']                  = [ 'DBDUMP', 'FILE', 'WPPLUGIN' ];
 		$default['destinations']          = [
@@ -298,23 +296,23 @@ final class BackWPup_Option
 		$default['legacy']                = false;
 		$default['tempjob']               = false;
 		$default['backup_now']            = false;
-		// defaults vor destinations.
+		// Defaults for destinations.
 		foreach ( BackWPup::get_registered_destinations() as $dest_key => $dest ) {
 			if ( ! empty( $dest['class'] ) ) {
 				$dest_object = BackWPup::get_destination( $dest_key );
 				$default     = array_merge( $default, $dest_object->option_defaults() );
 			}
 		}
-		// defaults vor job types.
+		// Defaults for job types.
 		foreach ( BackWPup::get_job_types() as $job_type ) {
 			$default = array_merge( $default, $job_type->option_defaults() );
 		}
 
-		// return all.
+		// Return all.
 		if ( empty( $key ) ) {
 			return $default;
 		}
-		// return one default setting.
+		// Return one default setting.
 		if ( isset( $default[ $key ] ) ) {
 			return $default[ $key ];
 		}
@@ -330,14 +328,13 @@ final class BackWPup_Option
 	 *
 	 * @return array|false Array of all job options if found, false otherwise.
 	 */
-	public static function get_job($id, $use_cache = true)
-	{
-		if (!is_numeric($id)) {
+	public static function get_job( $id, $use_cache = true ) {
+		if ( ! is_numeric( $id ) ) {
 			return false;
 		}
 
-		$id = intval($id);
-		$jobs_options = self::jobs_options($use_cache);
+		$id           = intval( $id );
+		$jobs_options = self::jobs_options( $use_cache );
 
 		// Find the correct job index based on "jobid".
 		$job_index = array_search( $id, array_column( $jobs_options, 'jobid' ), true );
@@ -385,12 +382,11 @@ final class BackWPup_Option
 	 *
 	 * @return bool True if deleted successfully, false otherwise.
 	 */
-	public static function delete($jobid, $option)
-	{
-		$jobid = (int) $jobid;
-		$option = sanitize_key(trim($option));
+	public static function delete( $jobid, $option ) {
+		$jobid  = (int) $jobid;
+		$option = sanitize_key( trim( $option ) );
 
-		if (empty($jobid) || empty($option)) {
+		if ( empty( $jobid ) || empty( $option ) ) {
 			return false;
 		}
 
@@ -416,18 +412,17 @@ final class BackWPup_Option
 	/**
 	 * Delete a BackWPup Job.
 	 *
-	 * @param int $id The job id
+	 * @param int $id The job id.
 	 *
-	 * @return bool deleted or not
+	 * @return bool Deleted or not.
 	 */
-	public static function delete_job($id)
-	{
-		if (!is_numeric($id)) {
+	public static function delete_job( $id ) {
+		if ( ! is_numeric( $id ) ) {
 			return false;
 		}
 
-		$id = intval($id);
-		$jobs_options = self::jobs_options(false);
+		$id           = intval( $id );
+		$jobs_options = self::jobs_options( false );
 
 		// Filter out the job with the matching ID.
 		$filtered_jobs = array_filter( $jobs_options, fn( $job ) => ( $job['jobid'] ?? null ) !== $id );
@@ -469,7 +464,7 @@ final class BackWPup_Option
 				continue;
 			}
 
-			if ( isset( $job[ $key ] ) && $job[ $key ] == $value ) { // phpcs:ignore
+			if ( isset( $job[ $key ] ) && $value === $job[ $key ] ) {
 				$job_ids[] = (int) $job['jobid'];
 			}
 		}
@@ -484,12 +479,11 @@ final class BackWPup_Option
 	 *
 	 * @return int
 	 */
-	public static function next_job_id()
-	{
+	public static function next_job_id() {
 		$ids = self::get_job_ids();
-		sort($ids);
+		sort( $ids );
 
-		return end($ids) + 1;
+		return end( $ids ) + 1;
 	}
 
 	/**
@@ -499,50 +493,50 @@ final class BackWPup_Option
 	 *
 	 * This allows backup files belonging to this job to be tracked.
 	 *
-	 * @param string $archive_name
-	 * @param int    $jobid
+	 * @param string $archive_name    The archive name.
+	 * @param int    $jobid           The job ID.
+	 * @param bool   $substitute_hash Whether to substitute the hash.
 	 *
-	 * @return string The normalized archive name
+	 * @return string The normalized archive name.
 	 */
-	public static function normalize_archive_name($archive_name, $jobid, $substitute_hash = true)
-	{
-		$hash = BackWPup::get_plugin_data('hash');
-		$generated_hash = self::get_generated_hash($jobid);
+	public static function normalize_archive_name( $archive_name, $jobid, $substitute_hash = true ) {
+		$hash           = BackWPup::get_plugin_data( 'hash' );
+		$generated_hash = self::get_generated_hash( $jobid );
 
 		// Does the string contain %hash%?
-		if (strpos($archive_name, '%hash%') !== false) {
-			if ($substitute_hash == true) {
-				return str_replace('%hash%', $generated_hash, $archive_name);
+		if ( false !== strpos( $archive_name, '%hash%' ) ) {
+			if ( true === $substitute_hash ) {
+				return str_replace( '%hash%', $generated_hash, $archive_name );
 			}
 			// Nothing needs to be done since we don't have to substitute it.
 			return $archive_name;
 		}
-		// %hash% not included, so check for old style archive name pre-3.4.3
-		// If name starts with 'backwpup', then we can try to parse
-		if (substr($archive_name, 0, 8) == 'backwpup') {
-			$parts = explode('_', $archive_name);
+		// %hash% not included, so check for old style archive name pre-3.4.3.
+		// If name starts with 'backwpup', then we can try to parse.
+		if ( 'backwpup' === substr( $archive_name, 0, 8 ) ) {
+			$parts = explode( '_', $archive_name );
 
-			// Decode hash part if hash not found (from 3.4.2)
-			if (strpos($parts[1], $hash) === false) {
-				$parts[1] = is_numeric($parts[1]) ? base_convert($parts[1], 36, 16) : $parts[1];
+			// Decode hash part if hash not found (from 3.4.2).
+			if ( false === strpos( $parts[1], $hash ) ) {
+				$parts[1] = is_numeric( $parts[1] ) ? base_convert( $parts[1], 36, 16 ) : $parts[1];
 			}
 
-			// Search again
-			if (strpos($parts[1], $hash) !== false) {
+			// Search again.
+			if ( false !== strpos( $parts[1], $hash ) ) {
 				$parts[1] = '%hash%';
 			} else {
-				// Hash not included, so insert
-				array_splice($parts, 1, 0, '%hash%');
+				// Hash not included, so insert.
+				array_splice( $parts, 1, 0, '%hash%' );
 			}
-			$archive_name = implode('_', $parts);
-			if ($substitute_hash == true) {
-				return str_replace('%hash%', $generated_hash, $archive_name);
+			$archive_name = implode( '_', $parts );
+			if ( true === $substitute_hash ) {
+				return str_replace( '%hash%', $generated_hash, $archive_name );
 			}
 
 			return $archive_name;
 		}
-		// But otherwise, just append the hash
-		if ($substitute_hash == true) {
+		// But otherwise, just append the hash.
+		if ( true === $substitute_hash ) {
 			return $archive_name . '_' . $generated_hash;
 		}
 
@@ -551,6 +545,8 @@ final class BackWPup_Option
 
 	/**
 	 * Generate a hash including random bytes and job ID.
+	 *
+	 * @param int $jobid The job ID.
 	 *
 	 * @return string
 	 */
@@ -574,42 +570,40 @@ final class BackWPup_Option
 	 *
 	 * If the hash is not found in the given code, then false is returned.
 	 *
-	 * @param string $code The string to decode
+	 * @param string $code The string to decode.
 	 *
-	 * @return array|bool An array with hash and job ID, or false otherwise
+	 * @return array|bool An array with hash and job ID, or false otherwise.
 	 */
-	public static function decode_hash($code)
-	{
-		$hash = BackWPup::get_plugin_data('hash');
+	public static function decode_hash( $code ) {
+		$hash = BackWPup::get_plugin_data( 'hash' );
 
-		// Try base 32 first
-		$decoded = bin2hex(Base32::decode(substr($code, 0, 8)));
-
-		if (substr($decoded, 2, 6) == $hash) {
-			return [substr($decoded, 2, 6), intval(substr($code, -2))];
+		// Try base 32 first.
+		$decoded = bin2hex( Base32::decode( substr( $code, 0, 8 ) ) );
+		if ( substr( $decoded, 2, 6 ) === $hash ) {
+			return [ substr( $decoded, 2, 6 ), (int) substr( $code, -2 ) ];
 		}
 
-		// Try base 36
-		$decoded = is_numeric($code) ? base_convert($code, 36, 16) : $code;
-		if (substr($decoded, 2, 6) == $hash) {
-			return [substr($decoded, 2, 6), intval(substr($decoded, -2))];
+		// Try base 36.
+		$decoded = is_numeric( $code ) ? base_convert( $code, 36, 16 ) : $code;
+		if ( substr( $decoded, 2, 6 ) === $hash ) {
+			return [ substr( $decoded, 2, 6 ), (int) substr( $decoded, -2 ) ];
 		}
 
-		// Check style prior to 3.4.1
-		if (substr($code, 0, 6) == $hash) {
-			return [substr($code, 0, 6), intval(substr($code, -2))];
+		// Check style prior to 3.4.1.
+		if ( strpos( $code, $hash ) === 0 ) {
+			return [ substr( $code, 0, 6 ), (int) substr( $code, -2 ) ];
 		}
 
-		// Tried everything, now return failure
+		// Tried everything, now return failure.
 		return false;
 	}
 
 	/**
 	 * Substitute date variables in archive name.
 	 *
-	 * @param string $archivename the name of the archive
+	 * @param string $archivename The name of the archive.
 	 *
-	 * @return string the archive name with substituted variables
+	 * @return string The archive name with substituted variables.
 	 */
 	public static function substitute_date_vars( $archivename ) {
 		$current_time = time();
@@ -647,16 +641,16 @@ final class BackWPup_Option
 			wp_date( 'i', $current_time ),
 			wp_date( 's', $current_time ),
 		];
-		// Temporarily replace %hash% with [hash]
-		$archivename = str_replace('%hash%', '[hash]', $archivename);
+		// Temporarily replace %hash% with [hash].
+		$archivename = str_replace( '%hash%', '[hash]', $archivename );
 		$archivename = str_replace(
 			$datevars,
 			$datevalues,
 			$archivename
 		);
-		$archivename = str_replace('[hash]', '%hash%', $archivename);
+		$archivename = str_replace( '[hash]', '%hash%', $archivename );
 
-		return BackWPup_Job::sanitize_file_name($archivename);
+		return BackWPup_Job::sanitize_file_name( $archivename );
 	}
 
 	/**

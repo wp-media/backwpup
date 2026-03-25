@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     <?php
     BackWPupHelpers::component("navigation/link", [
       "type" => "primary",
-      "url" => "https://backwpup.com/#buy",
+      "url" => "https://backwpup.com/pricing/",
       "newtab" => true,
       "content" => __("Get BackWPup Pro now", 'backwpup'),
     ]);

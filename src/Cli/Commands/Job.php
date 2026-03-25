@@ -2,7 +2,6 @@
 
 namespace WPMedia\BackWPup\Cli\Commands;
 
-use WP_CLI\Formatter;
 use WPMedia\BackWPup\Adapters\JobAdapter;
 
 class Job implements Command {

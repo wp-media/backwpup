@@ -16,96 +16,103 @@ use Webmozart\Assert\Assert;
 /**
  * Class for communicating with Dropbox API V2.
  */
-class BackWPup_Destination_Dropbox_API
-{
-    /**
-     * URL to Dropbox API endpoint.
-     */
-    public const API_URL = 'https://api.dropboxapi.com/';
+class BackWPup_Destination_Dropbox_API {
 
-    /**
-     * URL to Dropbox content endpoint.
-     */
-    public const API_CONTENT_URL = 'https://content.dropboxapi.com/';
+	/**
+	 * URL to Dropbox API endpoint.
+	 */
+	public const API_URL = 'https://api.dropboxapi.com/';
 
-    /**
-     * URL to Dropbox for authentication.
-     */
-    public const API_WWW_URL = 'https://www.dropbox.com/';
+	/**
+	 * URL to Dropbox content endpoint.
+	 */
+	public const API_CONTENT_URL = 'https://content.dropboxapi.com/';
 
-    /**
-     * API version.
-     */
-    public const API_VERSION_URL = '2/';
+	/**
+	 * URL to Dropbox for authentication.
+	 */
+	public const API_WWW_URL = 'https://www.dropbox.com/';
 
-    /**
-     * oAuth vars.
-     *
-     * @var string
+	/**
+	 * API version.
+	 */
+	public const API_VERSION_URL = '2/';
+
+	/**
+	 * OAuth app key.
+	 *
+	 * @var string
 	 */
 	private $oauth_app_key = '';
 
-    /**
-     * @var string
+	/**
+	 * OAuth app secret.
+	 *
+	 * @var string
 	 */
 	private $oauth_app_secret = '';
 
-    /**
-     * @var string
-     */
-    private $oauthToken = [];
+	/**
+	 * OAuth token data.
+	 *
+	 * @var array
+	 */
+	private $oauth_token = [];
 
-    /**
-     * Job object for logging.
-     *
-     * @var BackWPup_Job
+	/**
+	 * Job object for logging.
+	 *
+	 * @var BackWPup_Job
 	 */
 	private $job_object;
 
-    /**
-     * Callback to call when token is refreshed.
-     *
-     * @var callable
-     */
-    private $listener;
+	/**
+	 * Callback to call when token is refreshed.
+	 *
+	 * @var callable
+	 */
+	private $listener;
 
-    /**
-     * The user agent to use in Dropbox requests.
-     *
-     * @var string
-     */
-    private $userAgent;
+	/**
+	 * The user agent to use in Dropbox requests.
+	 *
+	 * @var string
+	 */
+	private $user_agent;
 
-    /**
-     * A path to the SSL ca-bundle file to use in Dropbox requests.
-     *
-     * @var string
-     */
-    private $caBundle;
+	/**
+	 * A path to the SSL ca-bundle file to use in Dropbox requests.
+	 *
+	 * @var string
+	 */
+	private $ca_bundle;
 
-    /**
-     * @param string $boxtype
-     *
-     * @throws BackWPup_Destination_Dropbox_API_Exception
+	/**
+	 * BackWPup_Destination_Dropbox_API constructor.
+	 *
+	 * @param string            $boxtype    Dropbox type.
+	 * @param BackWPup_Job|null $job_object Job object for logging.
+	 *
+	 * @throws BackWPup_Destination_Dropbox_API_Exception When credentials are missing.
 	 */
 	public function __construct( $boxtype = 'dropbox', ?BackWPup_Job $job_object = null ) {
 		if ( 'dropbox' === $boxtype ) {
 			$this->oauth_app_key    = get_site_option(
 				'backwpup_cfg_dropboxappkey',
-                base64_decode('NXdtdXl0cm5qZzB5aHhw')
+				'5wmuytrnjg0yhxp'
 			);
 			$this->oauth_app_secret = BackWPup_Encryption::decrypt(
-				get_site_option( 'backwpup_cfg_dropboxappsecret', base64_decode( 'cXYzZmp2N2IxcG1rbWxy' ) ) // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
+				get_site_option( 'backwpup_cfg_dropboxappsecret', 'qv3fjv7b1pmkmlr' )
 			);
 		} else {
 			$this->oauth_app_key    = get_site_option(
 				'backwpup_cfg_dropboxsandboxappkey',
-                base64_decode('a3RqeTJwdXFwZWVydW92')
+				'ktjy2puqpeeruov'
 			);
 			$this->oauth_app_secret = BackWPup_Encryption::decrypt(
-				get_site_option( 'backwpup_cfg_dropboxsandboxappsecret', base64_decode( 'aXJ1eDF3Ym9mMHM5eGp6' ) ) // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
+				get_site_option( 'backwpup_cfg_dropboxsandboxappsecret', 'irux1wbof0s9xjz' )
 			);
-        }
+		}
 
 		if ( empty( $this->oauth_app_key ) || empty( $this->oauth_app_secret ) ) {
 			throw new BackWPup_Destination_Dropbox_API_Exception( esc_html__( 'No App key or App Secret specified.', 'backwpup' ) );
@@ -114,87 +121,52 @@ class BackWPup_Destination_Dropbox_API
 		$this->job_object = $job_object;
 	}
 
-    /**
-     * List a folder.
-     *
-     * This is a functions method to use filesListFolder and
-     * filesListFolderContinue to construct an array of files within a given
-     * folder path.
-     *
-     * @param string $path
-     *
-     * @return array
-     */
-    public function listFolder($path)
-    {
-        $files = [];
-        $result = $this->filesListFolder(['path' => $path]);
+	/**
+	 * List a folder.
+	 *
+	 * This is a functions method to use files_list_folder and
+	 * files_list_folder_continue to construct an array of files within a given
+	 * folder path.
+	 *
+	 * @param string $path Folder path.
+	 *
+	 * @return array
+	 */
+	public function list_folder( $path ) {
+		$files  = [];
+		$result = $this->files_list_folder( [ 'path' => $path ] );
 
-        if (!$result) {
-            return [];
-        }
+		if ( ! $result ) {
+			return [];
+		}
 
-        $files = array_merge($files, $result['entries']);
+		$files = array_merge( $files, $result['entries'] );
 
-        $args = ['cursor' => $result['cursor']];
+		$args = [ 'cursor' => $result['cursor'] ];
 
-        while ($result['has_more'] === true) {
-            $result = $this->filesListFolderContinue($args);
-            $files = array_merge($files, $result['entries']);
-            $args['cursor'] = $result['cursor'];
-        }
+		while ( true === $result['has_more'] ) {
+			$result         = $this->files_list_folder_continue( $args );
+			$files          = array_merge( $files, $result['entries'] );
+			$args['cursor'] = $result['cursor'];
+		}
 
-        return $files;
-    }
+		return $files;
+	}
 
-    /**
-     * Uploads a file to Dropbox.
-     *
-     * @throws BackWPup_Destination_Dropbox_API_Exception
-     *
-     * @return array
-     */
-    public function upload(string $file, string $path = '', bool $overwrite = true)
-    {
-        $file = str_replace('\\', '/', $file);
+	/**
+	 * Uploads a file to Dropbox.
+	 *
+	 * @param string $file      File path.
+	 * @param string $path      Destination path.
+	 * @param bool   $overwrite Whether to overwrite existing file.
+	 *
+	 * @return array
+	 * @throws BackWPup_Destination_Dropbox_API_Exception When upload fails.
+	 */
+	public function upload( string $file, string $path = '', bool $overwrite = true ) {
+		$file = str_replace( '\\', '/', $file );
 
-        if (!is_readable($file)) {
-			throw new BackWPup_Destination_Dropbox_API_Exception(
-				sprintf(
-					// translators: %s = File name.
-					esc_html__( "Error: File \"%s\" is not readable or doesn't exist.", 'backwpup' ),
-					esc_html( $file )
-				)
-            );
-        }
-
-        if (filesize($file) < 5242880) { //chunk transfer on bigger uploads
-            return $this->filesUpload(
-                [
-                    'contents' => file_get_contents($file),
-                    'path' => $path,
-                    'mode' => ($overwrite) ? 'overwrite' : 'add',
-                ]
-            );
-        }
-
-        return $this->multipartUpload($file, $path, $overwrite);
-    }
-
-    /**
-     * @param $file
-     * @param string $path
-     * @param bool   $overwrite
-     *
-     * @throws BackWPup_Destination_Dropbox_API_Exception
-     *
-     * @return array|mixed|string
-     */
-    public function multipartUpload($file, $path = '', $overwrite = true)
-    {
-        $file = str_replace('\\', '/', (string) $file);
-
-        if (!is_readable($file)) {
+		if ( ! is_readable( $file ) ) {
 			throw new BackWPup_Destination_Dropbox_API_Exception(
 				sprintf(
 					// translators: %s = File name.
@@ -202,9 +174,45 @@ class BackWPup_Destination_Dropbox_API
 					esc_html( $file )
 				)
 			);
-        }
+		}
 
-		$chunk_size = 4194304; // 4194304 = 4MB
+		if ( filesize( $file ) < 5242880 ) { // Chunk transfer on bigger uploads.
+			return $this->files_upload(
+				[
+					'contents' => $this->get_file_contents( $file ),
+					'path'     => $path,
+					'mode'     => ( $overwrite ) ? 'overwrite' : 'add',
+				]
+			);
+		}
+
+		return $this->multipart_upload( $file, $path, $overwrite );
+	}
+
+	/**
+	 * Uploads a file in multiple parts.
+	 *
+	 * @param string $file      File path.
+	 * @param string $path      Destination path.
+	 * @param bool   $overwrite Whether to overwrite existing file.
+	 *
+	 * @return array|mixed|string
+	 * @throws BackWPup_Destination_Dropbox_API_Exception When upload fails.
+	 */
+	public function multipart_upload( $file, $path = '', $overwrite = true ) {
+		$file = str_replace( '\\', '/', (string) $file );
+
+		if ( ! is_readable( $file ) ) {
+			throw new BackWPup_Destination_Dropbox_API_Exception(
+				sprintf(
+					// translators: %s = File name.
+					esc_html__( "Error: File \"%s\" is not readable or doesn't exist.", 'backwpup' ),
+					esc_html( $file )
+				)
+			);
+		}
+
+		$chunk_size = 4194304; // 4194304 = 4MB.
 
 		$file_handle = fopen( $file, 'rb' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		if ( ! $file_handle ) {
@@ -213,7 +221,7 @@ class BackWPup_Destination_Dropbox_API
 
 		if ( ! isset( $this->job_object->steps_data[ $this->job_object->step_working ]['uploadid'] ) ) {
 			$this->job_object->log( __( 'Beginning new file upload session', 'backwpup' ) );
-			$session = $this->filesUploadSessionStart(
+			$session = $this->files_upload_session_start(
 			);
 			$this->job_object->steps_data[ $this->job_object->step_working ]['uploadid'] = $session['session_id'];
 		}
@@ -237,16 +245,16 @@ class BackWPup_Destination_Dropbox_API
 					// translators: %s is the size of the data.
 					sprintf( __( 'Uploading %s of data', 'backwpup' ), size_format( strlen( $data ) ) )
 				);
-            }
+			}
 
-            $this->filesUploadSessionAppendV2(
-                [
+			$this->files_upload_session_append_v2(
+				[
 					'contents' => $data,
 					'cursor'   => [
 						'session_id' => $this->job_object->steps_data[ $this->job_object->step_working ]['uploadid'],
 						'offset'     => $this->job_object->steps_data[ $this->job_object->step_working ]['offset'],
 					],
-                ]
+				]
 			);
 			$chunk_upload_time = microtime(
 				true
@@ -268,8 +276,8 @@ class BackWPup_Destination_Dropbox_API
 						if ( $chunk_size > 4194304 ) {
 							$chunk_size = 4194304;
 						}
-                    }
-                }
+					}
+				}
 			}
 			$this->job_object->update_working_data();
 			// correct position.
@@ -284,617 +292,597 @@ class BackWPup_Destination_Dropbox_API
 				__( 'Finishing upload session with a total of %s uploaded', 'backwpup' ),
 				size_format( $this->job_object->steps_data[ $this->job_object->step_working ]['totalread'] )
 			)
-        );
+		);
 
-        $response = $this->filesUploadSessionFinish(
-            [
+		$response = $this->files_upload_session_finish(
+			[
 				'cursor' => [
 					'session_id' => $this->job_object->steps_data[ $this->job_object->step_working ]['uploadid'],
 					'offset'     => $this->job_object->steps_data[ $this->job_object->step_working ]['totalread'],
 				],
-                'commit' => [
-                    'path' => $path,
-                    'mode' => ($overwrite) ? 'overwrite' : 'add',
-                ],
-            ]
-        );
+				'commit' => [
+					'path' => $path,
+					'mode' => ( $overwrite ) ? 'overwrite' : 'add',
+				],
+			]
+		);
 
 		unset( $this->job_object->steps_data[ $this->job_object->step_working ]['uploadid'], $this->job_object->steps_data[ $this->job_object->step_working ]['offset'] );
 
-        return $response;
-    }
+		return $response;
+	}
 
-    /**
-     * Set the oauth tokens for this request.
-     *
-     * @param array    $token    The array with access and refresh tokens
-     * @param callable $listener The callback to be called when a new token is fetched
-     *
-     * @throws BackWPup_Destination_Dropbox_API_Exception
-     */
-    public function setOAuthTokens(array $token, $listener = null)
-    {
-        if (empty($token['access_token'])) {
+	/**
+	 * Set the OAuth tokens for this request.
+	 *
+	 * @param array    $token    The array with access and refresh tokens.
+	 * @param callable $listener The callback to be called when a new token is fetched.
+	 *
+	 * @throws BackWPup_Destination_Dropbox_API_Exception When tokens are missing.
+	 */
+	public function set_o_auth_tokens( array $token, $listener = null ) {
+		if ( empty( $token['access_token'] ) ) {
 			throw new BackWPup_Destination_Dropbox_API_Exception(
 				esc_html__( 'No access token provided', 'backwpup' )
 			);
-        }
+		}
 
-        if (empty($token['refresh_token'])) {
+		if ( empty( $token['refresh_token'] ) ) {
 			throw new BackWPup_Destination_Dropbox_API_Exception(
 				esc_html__( 'No refresh token provided. You may need to reauthenticate with Dropbox', 'backwpup' )
 			);
-        }
+		}
 
-        $this->oauthToken = $token;
+		$this->oauth_token = $token;
 
-        if (isset($listener) && is_callable($listener)) {
-            $this->listener = $listener;
-        }
+		if ( isset( $listener ) && is_callable( $listener ) ) {
+			$this->listener = $listener;
+		}
 
-        if (isset($token['expires']) && time() > $token['expires']) {
-            $token = $this->refresh($token['refresh_token']);
-            $this->notifyRefresh($token);
-        }
-    }
+		if ( isset( $token['expires'] ) && time() > $token['expires'] ) {
+			$token = $this->refresh( $token['refresh_token'] );
+			$this->notify_refresh( $token );
+		}
+	}
 
-    /**
-     * Get the current token array.
-     *
-     * Also modifies expires_in to match how much time is left until the access token expires.
-     *
-     * @throws BadMethodCallException If tokens have not been set
-     *
-     * @return array The token array
-     */
-    public function getTokens()
-    {
-        $now = time();
-        $tokens = $this->oauthToken;
-        if (empty($tokens)) {
+	/**
+	 * Get the current token array.
+	 *
+	 * Also modifies expires_in to match how much time is left until the access token expires.
+	 *
+	 * @throws \BadMethodCallException If tokens have not been set.
+	 *
+	 * @return array The token array.
+	 */
+	public function get_tokens() {
+		$now    = time();
+		$tokens = $this->oauth_token;
+		if ( empty( $tokens ) ) {
 			throw new \BadMethodCallException(
 				esc_html__( 'OAuth tokens have not been set.', 'backwpup' )
 			);
-        }
+		}
 
-        if ($tokens['expires'] > $now) {
-            $tokens['expires_in'] = $tokens['expires'] - $now;
-        } else {
-            $tokens = $this->refresh($tokens['refresh_token']);
-            $this->notifyRefresh($tokens);
-        }
+		if ( $tokens['expires'] > $now ) {
+			$tokens['expires_in'] = $tokens['expires'] - $now;
+		} else {
+			$tokens = $this->refresh( $tokens['refresh_token'] );
+			$this->notify_refresh( $tokens );
+		}
 
-        return $tokens;
-    }
+		return $tokens;
+	}
 
-    /**
-     * Returns the URL to authorize the user.
-     *
-     * @return string The authorization URL
+	/**
+	 * Returns the URL to authorize the user.
+	 *
+	 * @return string The authorization URL.
 	 */
-	public function oAuthAuthorize() { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid
+	public function o_auth_authorize() {
 		return self::API_WWW_URL . 'oauth2/authorize?response_type=code&client_id=' . $this->oauth_app_key . '&token_access_type=offline';
 	}
 
-    /**
-     * Takes the oauth code and returns the access token.
-     *
-     * @param string $code The oauth code
-     *
-     * @return array an array including the access token, account ID, expiration, and
-     *               other information
-     */
-    public function oAuthToken($code)
-    {
-        $token = $this->request(
-            'oauth2/token',
-            [
-                'code' => trim($code),
-                'grant_type' => 'authorization_code',
-            ],
-            'oauth'
-        );
+	/**
+	 * Takes the oauth code and returns the access token.
+	 *
+	 * @param string $code The OAuth code.
+	 *
+	 * @return array An array including the access token, account ID, expiration, and other information.
+	 */
+	public function o_auth_token( $code ) {
+		$token = $this->request(
+			'oauth2/token',
+			[
+				'code'       => trim( $code ),
+				'grant_type' => 'authorization_code',
+			],
+			'oauth'
+		);
 
-        $token['expires'] = time() + $token['expires_in'];
+		$token['expires'] = time() + $token['expires_in'];
 
-        return $token;
-    }
+		return $token;
+	}
 
-    /**
-     * Returns a new access token given the refresh token.
-     *
-     * @param string $refreshToken The refresh token
-     *
-     * @return array an array including the access token, account ID, expiration, and
-     *               other information
-     */
-    public function refresh($refreshToken)
-    {
-        $token = $this->request(
-            'oauth2/token',
-            [
-                'refresh_token' => trim($refreshToken),
-                'grant_type' => 'refresh_token',
-            ],
-            'oauth'
-        );
+	/**
+	 * Returns a new access token given the refresh token.
+	 *
+	 * @param string $refresh_token The refresh token.
+	 *
+	 * @return array An array including the access token, account ID, expiration, and other information.
+	 */
+	public function refresh( $refresh_token ) {
+		$token = $this->request(
+			'oauth2/token',
+			[
+				'refresh_token' => trim( $refresh_token ),
+				'grant_type'    => 'refresh_token',
+			],
+			'oauth'
+		);
 
-        $token['expires'] = time() + $token['expires_in'];
+		$token['expires'] = time() + $token['expires_in'];
 
-        $this->oauthToken = array_merge($this->oauthToken, $token);
+		$this->oauth_token = array_merge( $this->oauth_token, $token );
 
-        return $this->oauthToken;
-    }
+		return $this->oauth_token;
+	}
 
-    /**
-     * Notifies the listener that the access token was refreshed.
-     *
-     * @param array $token The new token
-     */
-    private function notifyRefresh(array $token)
-    {
-        if (isset($this->listener)) {
-            call_user_func($this->listener, $token);
-        }
-    }
+	/**
+	 * Notifies the listener that the access token was refreshed.
+	 *
+	 * @param array $token The new token.
+	 *
+	 * @return void
+	 */
+	private function notify_refresh( array $token ) {
+		if ( isset( $this->listener ) ) {
+			call_user_func( $this->listener, $token );
+		}
+	}
 
-    /**
-     * Revokes the auth token.
-     *
-     * @return array
-     */
-    public function authTokenRevoke()
-    {
-        return $this->request('auth/token/revoke');
-    }
+	/**
+	 * Revokes the auth token.
+	 *
+	 * @return array
+	 */
+	public function auth_token_revoke() {
+		return $this->request( 'auth/token/revoke' );
+	}
 
-    /**
-     * Download.
-     *
-     * @param array $args argument for the api request
-     *
-     * @throws BackWPup_Destination_Dropbox_API_Exception because of a rate limit
-     *
-     * @return mixed whatever the api request returns
-     */
-    public function download($args, $startByte = null, $endByte = null)
-    {
-        $args['path'] = $this->formatPath($args['path']);
+	/**
+	 * Download.
+	 *
+	 * @param array    $args       Argument for the API request.
+	 * @param int|null $start_byte Start byte offset.
+	 * @param int|null $end_byte   End byte offset.
+	 *
+	 * @throws BackWPup_Destination_Dropbox_API_Exception Because of a rate limit.
+	 *
+	 * @return mixed Whatever the API request returns.
+	 */
+	public function download( $args, $start_byte = null, $end_byte = null ) {
+		$args['path'] = $this->format_path( $args['path'] );
 
-        if ($startByte !== null && $endByte !== null) {
-            return $this->request('files/download', $args, 'download', false, "{$startByte}-{$endByte}");
-        }
+		if ( null !== $start_byte && null !== $end_byte ) {
+			return $this->request( 'files/download', $args, 'download', false, "{$start_byte}-{$end_byte}" );
+		}
 
-        return $this->request('files/download', $args, 'download');
-    }
+		return $this->request( 'files/download', $args, 'download' );
+	}
 
-    /**
-     * Deletes a file.
-     *
-     * @param array $args An array of arguments
-     *
-     * @return array|null Information on the deleted file
-     */
-    public function filesDelete($args): ?array
-    {
-        $args['path'] = $this->formatPath($args['path']);
+	/**
+	 * Deletes a file.
+	 *
+	 * @param array $args An array of arguments.
+	 *
+	 * @return array|null Information on the deleted file.
+	 */
+	public function files_delete( $args ): ?array {
+		$args['path'] = $this->format_path( $args['path'] );
 
-        try {
-            return $this->request('files/delete', $args);
-        } catch (BackWPup_Destination_Dropbox_API_Request_Exception $e) {
-            $this->handleFilesDeleteError($e->getError());
+		try {
+			return $this->request( 'files/delete', $args );
+		} catch ( BackWPup_Destination_Dropbox_API_Request_Exception $e ) {
+			$this->handle_files_delete_error( $e->getError() );
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 
-    /**
-     * Gets the metadata of a file.
-     *
-     * @param array $args An array of arguments
-     *
-     * @return array|null The file's metadata
-     */
-    public function filesGetMetadata($args): ?array
-    {
-        $args['path'] = $this->formatPath($args['path']);
+	/**
+	 * Gets the metadata of a file.
+	 *
+	 * @param array $args An array of arguments.
+	 *
+	 * @return array|null The file's metadata.
+	 */
+	public function files_get_metadata( $args ): ?array {
+		$args['path'] = $this->format_path( $args['path'] );
 
-        try {
-            return $this->request('files/get_metadata', $args);
-        } catch (BackWPup_Destination_Dropbox_API_Request_Exception $e) {
-            $this->handleFilesGetMetadataError($e->getError());
+		try {
+			return $this->request( 'files/get_metadata', $args );
+		} catch ( BackWPup_Destination_Dropbox_API_Request_Exception $e ) {
+			$this->handle_files_get_metadata_error( $e->getError() );
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 
-    /**
-     * Gets a temporary link from Dropbox to access the file.
-     *
-     * @param array $args An array of arguments
-     *
-     * @return array|null Information on the file and link
-     */
-    public function filesGetTemporaryLink($args): ?array
-    {
-        $args['path'] = $this->formatPath($args['path']);
+	/**
+	 * Gets a temporary link from Dropbox to access the file.
+	 *
+	 * @param array $args An array of arguments.
+	 *
+	 * @return array|null Information on the file and link.
+	 */
+	public function files_get_temporary_link( $args ): ?array {
+		$args['path'] = $this->format_path( $args['path'] );
 
-        try {
-            return $this->request('files/get_temporary_link', $args);
-        } catch (BackWPup_Destination_Dropbox_API_Request_Exception $e) {
-            $this->handleFilesGetTemporaryLinkError($e->getError());
+		try {
+			return $this->request( 'files/get_temporary_link', $args );
+		} catch ( BackWPup_Destination_Dropbox_API_Request_Exception $e ) {
+			$this->handle_files_get_temporary_link_error( $e->getError() );
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 
-    /**
-     * Lists all the files within a folder.
-     *
-     * @param array $args An array of arguments
-     *
-     * @return array|null A list of files
-     */
-    public function filesListFolder($args): ?array
-    {
-        $args['path'] = $this->formatPath($args['path']);
+	/**
+	 * Lists all the files within a folder.
+	 *
+	 * @param array $args An array of arguments.
+	 *
+	 * @return array|null A list of files.
+	 */
+	public function files_list_folder( $args ): ?array {
+		$args['path'] = $this->format_path( $args['path'] );
 
-        try {
-            return $this->request('files/list_folder', $args);
-        } catch (BackWPup_Destination_Dropbox_API_Request_Exception $e) {
-            $this->handleFilesListFolderError($e->getError());
+		try {
+			return $this->request( 'files/list_folder', $args );
+		} catch ( BackWPup_Destination_Dropbox_API_Request_Exception $e ) {
+			$this->handle_files_list_folder_error( $e->getError() );
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 
-    /**
-     * Continue to list more files.
-     *
-     * When a folder has a lot of files, the API won't return all at once.
-     * So this method is to fetch more of them.
-     *
-     * @param array $args An array of arguments
-     *
-     * @return array|null An array of files
-     */
-    public function filesListFolderContinue($args): ?array
-    {
-        try {
-            return $this->request('files/list_folder/continue', $args);
-        } catch (BackWPup_Destination_Dropbox_API_Request_Exception $e) {
-            $this->handleFilesListFolderContinueError($e->getError());
+	/**
+	 * Continue to list more files.
+	 *
+	 * When a folder has a lot of files, the API won't return all at once.
+	 * So this method is to fetch more of them.
+	 *
+	 * @param array $args An array of arguments.
+	 *
+	 * @return array|null An array of files.
+	 */
+	public function files_list_folder_continue( $args ): ?array {
+		try {
+			return $this->request( 'files/list_folder/continue', $args );
+		} catch ( BackWPup_Destination_Dropbox_API_Request_Exception $e ) {
+			$this->handle_files_list_folder_continue_error( $e->getError() );
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 
-    /**
-     * Uploads a file to Dropbox.
-     *
-     * The file must be no greater than 150 MB.
-     *
-     * @param array $args An array of arguments
-     *
-     * @return array|null the uploaded file's information
-     */
-    public function filesUpload($args)
-    {
-        $args['path'] = $this->formatPath($args['path']);
+	/**
+	 * Uploads a file to Dropbox.
+	 *
+	 * The file must be no greater than 150 MB.
+	 *
+	 * @param array $args An array of arguments.
+	 *
+	 * @return array|null The uploaded file's information.
+	 */
+	public function files_upload( $args ) {
+		$args['path'] = $this->format_path( $args['path'] );
 
-        if (isset($args['client_modified'])
-            && $args['client_modified'] instanceof DateTime
-        ) {
-            $args['client_modified'] = $args['client_modified']->format('Y-m-d\TH:m:s\Z');
-        }
+		if ( isset( $args['client_modified'] )
+			&& $args['client_modified'] instanceof DateTime
+		) {
+			$args['client_modified'] = $args['client_modified']->format( 'Y-m-d\TH:m:s\Z' );
+		}
 
-        try {
-            return $this->request('files/upload', $args, 'upload');
-        } catch (BackWPup_Destination_Dropbox_API_Request_Exception $e) {
-            $this->handleFilesUploadError($e->getError());
+		try {
+			return $this->request( 'files/upload', $args, 'upload' );
+		} catch ( BackWPup_Destination_Dropbox_API_Request_Exception $e ) {
+			$this->handle_files_upload_error( $e->getError() );
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 
-    /**
-     * Append more data to an uploading file.
-     *
-     * @param array $args An array of arguments
-     */
-    public function filesUploadSessionAppendV2($args)
-    {
-        try {
-            return $this->request(
-                'files/upload_session/append_v2',
-                $args,
-                'upload'
-            );
-        } catch (BackWPup_Destination_Dropbox_API_Request_Exception $e) {
-            $error = $e->getError();
+	/**
+	 * Append more data to an uploading file.
+	 *
+	 * @param array $args An array of arguments.
+	 *
+	 * @return array|null
+	 */
+	public function files_upload_session_append_v2( $args ) {
+		try {
+			return $this->request(
+				'files/upload_session/append_v2',
+				$args,
+				'upload'
+			);
+		} catch ( BackWPup_Destination_Dropbox_API_Request_Exception $e ) {
+			$error = $e->getError();
 
-            // See if we can fix the error first
-            if ($error['.tag'] === 'incorrect_offset') {
-                $args['cursor']['offset'] = $error['correct_offset'];
+			// See if we can fix the error first.
+			if ( 'incorrect_offset' === $error['.tag'] ) {
+				$args['cursor']['offset'] = $error['correct_offset'];
 
-                return $this->request(
-                    'files/upload_session/append_v2',
-                    $args,
-                    'upload'
-                );
-            }
+				return $this->request(
+					'files/upload_session/append_v2',
+					$args,
+					'upload'
+				);
+			}
 
-            // Otherwise, can't fix
-            $this->handleFilesUploadSessionLookupError($error);
-        }
-    }
+			// Otherwise, cannot fix.
+			$this->handle_files_upload_session_lookup_error( $error );
+		}
+	}
 
-    /**
-     * Finish an upload session.
-     *
-     * @param array $args
-     *
-     * @return array|null Information on the uploaded file
-     */
-    public function filesUploadSessionFinish($args): ?array
-    {
-        $args['commit']['path'] = $this->formatPath($args['commit']['path']);
+	/**
+	 * Finish an upload session.
+	 *
+	 * @param array $args An array of arguments.
+	 *
+	 * @return array|null Information on the uploaded file.
+	 */
+	public function files_upload_session_finish( $args ): ?array {
+		$args['commit']['path'] = $this->format_path( $args['commit']['path'] );
 
-        try {
-            return $this->request('files/upload_session/finish', $args, 'upload');
-        } catch (BackWPup_Destination_Dropbox_API_Request_Exception $e) {
-            $error = $e->getError();
-            if ($error['.tag'] === 'lookup_failed') {
-                if ($error['lookup_failed']['.tag'] === 'incorrect_offset') {
-                    $args['cursor']['offset'] = $error['lookup_failed']['correct_offset'];
+		try {
+			return $this->request( 'files/upload_session/finish', $args, 'upload' );
+		} catch ( BackWPup_Destination_Dropbox_API_Request_Exception $e ) {
+			$error = $e->getError();
+			if ( 'lookup_failed' === $error['.tag'] ) {
+				if ( 'incorrect_offset' === $error['lookup_failed']['.tag'] ) {
+					$args['cursor']['offset'] = $error['lookup_failed']['correct_offset'];
 
-                    return $this->request('files/upload_session/finish', $args, 'upload');
-                }
-            }
-            $this->handleFilesUploadSessionFinishError($e->getError());
+					return $this->request( 'files/upload_session/finish', $args, 'upload' );
+				}
+			}
+			$this->handle_files_upload_session_finish_error( $e->getError() );
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 
-    /**
-     * Starts an upload session.
-     *
-     * When a file larger than 150 MB needs to be uploaded, then this API
-     * endpoint is used to start a session to allow the file to be uploaded in
-     * chunks.
-     *
-     * @param array $args
-     *
-     * @return array an array containing the session's ID
-     */
-    public function filesUploadSessionStart($args = [])
-    {
-        return $this->request('files/upload_session/start', $args, 'upload');
-    }
+	/**
+	 * Starts an upload session.
+	 *
+	 * When a file larger than 150 MB needs to be uploaded, then this API
+	 * endpoint is used to start a session to allow the file to be uploaded in
+	 * chunks.
+	 *
+	 * @param array $args An array of arguments.
+	 *
+	 * @return array An array containing the session's ID.
+	 */
+	public function files_upload_session_start( $args = [] ) {
+		return $this->request( 'files/upload_session/start', $args, 'upload' );
+	}
 
-    /**
-     * Get user's current account info.
-     *
-     * @return array
-     */
-    public function usersGetCurrentAccount()
-    {
-        return $this->request('users/get_current_account');
-    }
+	/**
+	 * Get user's current account info.
+	 *
+	 * @return array
+	 */
+	public function users_get_current_account() {
+		return $this->request( 'users/get_current_account' );
+	}
 
-    /**
-     * Get quota info for this user.
-     *
-     * @return array
-     */
-    public function usersGetSpaceUsage()
-    {
-        return $this->request('users/get_space_usage');
-    }
+	/**
+	 * Get quota info for this user.
+	 *
+	 * @return array
+	 */
+	public function users_get_space_usage() {
+		return $this->request( 'users/get_space_usage' );
+	}
 
-    /**
-     * Get the user agent.
-     *
-     * If no user agent has been provided, defaults to `BackWPup::get_plugin_data('User-Agent')`.
-     *
-     * @return string The user agent
-     */
-    public function getUserAgent()
-    {
-        return $this->userAgent ?: \BackWPup::get_plugin_data('User-Agent');
-    }
+	/**
+	 * Get the user agent.
+	 *
+	 * If no user agent has been provided, defaults to `BackWPup::get_plugin_data('User-Agent')`.
+	 *
+	 * @return string The user agent
+	 */
+	public function get_user_agent() {
+		return $this->user_agent ?: \BackWPup::get_plugin_data( 'User-Agent' );
+	}
 
-    /**
-     * Set the user agent.
-     *
-     * @param string $userAgent
-     */
-    public function setUserAgent($userAgent)
-    {
-        $this->userAgent = $userAgent;
-    }
+	/**
+	 * Set the user agent.
+	 *
+	 * @param string $user_agent User agent string.
+	 */
+	public function set_user_agent( $user_agent ) {
+		$this->user_agent = $user_agent;
+	}
 
-    /**
-     * Get the SSL ca-bundle path.
-     *
-     * If no ca-bundle has been provided, defaults to `BackWPup::get_plugin_data('cacert')`.
-     *
-     * @return string The SSL ca-bundle
-     */
-    public function getCaBundle()
-    {
-        return $this->caBundle ?: \BackWPup::get_plugin_data('cacert');
-    }
+	/**
+	 * Get the SSL ca-bundle path.
+	 *
+	 * If no ca-bundle has been provided, defaults to `BackWPup::get_plugin_data('cacert')`.
+	 *
+	 * @return string The SSL ca-bundle
+	 */
+	public function get_ca_bundle() {
+		return $this->ca_bundle ?: \BackWPup::get_plugin_data( 'cacert' );
+	}
 
-    /**
-     * Set the path to the SSL ca-bundle.
-     *
-     * @param string $caBundle The path to the ca-bundle file
-     */
-    public function setCaBundle($caBundle)
-    {
-        $this->caBundle = $caBundle;
-    }
+	/**
+	 * Set the path to the SSL ca-bundle.
+	 *
+	 * @param string $ca_bundle The path to the ca-bundle file.
+	 */
+	public function set_ca_bundle( $ca_bundle ) {
+		$this->ca_bundle = $ca_bundle;
+	}
 
-    /**
-     * Set the job object.
+	/**
+	 * Set the job object.
 	 *
 	 * @param BackWPup_Job $job_object The job object to set.
+	 *
+	 * @return void
 	 */
-	public function setJobObject( BackWPup_Job $job_object ) { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid
+	public function set_job_object( BackWPup_Job $job_object ) {
 		$this->job_object = $job_object;
 	}
 
-    /**
-     * Logs a message to the current job.
-     *
-     * @param string $message The message to log
-     * @param int    $level   The log level
-     *
-     * @return bool|null True on success, null if no job object set
+	/**
+	 * Logs a message to the current job.
+	 *
+	 * @param string $message The message to log.
+	 * @param int    $level   The log level.
+	 *
+	 * @return bool|null True on success, null if no job object set.
 	 */
 	protected function log( $message, $level = E_USER_NOTICE ) {
 		if ( ! isset( $this->job_object ) ) {
 			return null;
-        }
+		}
 
 		return $this->job_object->log( $message, $level );
 	}
 
-    /**
-     * Logs debug info about the current request.
-     *
-     * @param string $endpoint The current request endpoint
-     * @param array  $args     The request args
-     *
-     * @return bool|null True on success, null if no job object set or debug is not enabled
+	/**
+	 * Logs debug info about the current request.
+	 *
+	 * @param string $endpoint The current request endpoint.
+	 * @param array  $args     The request args.
+	 *
+	 * @return bool|null True on success, null if no job object set or debug is not enabled.
 	 */
-	protected function logRequest( $endpoint, array $args ) { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid
+	protected function log_request( $endpoint, array $args ) {
 		if ( ! isset( $this->job_object ) || ! $this->job_object->is_debug() ) {
 			return null;
-        }
+		}
 
-        $message = "Call to {$endpoint}";
+		$message = "Call to {$endpoint}";
 
-        if (isset($args['contents'])) {
-            $message .= ' with ' . size_format(strlen((string) $args['contents'])) . ' of data,';
-            unset($args['contents']);
-        }
+		if ( isset( $args['contents'] ) ) {
+			$message .= ' with ' . size_format( strlen( (string) $args['contents'] ) ) . ' of data,';
+			unset( $args['contents'] );
+		}
 
-        if (!empty($args)) {
-            $message .= ' with parameters ' . json_encode($args);
-        }
+		if ( ! empty( $args ) ) {
+			$message .= ' with parameters ' . wp_json_encode( $args );
+		}
 
-        return $this->log($message);
-    }
+		return $this->log( $message );
+	}
 
-    /**
-     * Request.
-     *
-     * @param string $url
-     * @param array  $args
-     * @param string $endpointFormat
-     * @param bool   $echo
-     * @param string $bytes
-     *
-     * @throws BackWPup_Destination_Dropbox_API_Exception
-     *
-     * @return array|mixed|string
-     */
-    public function request($endpoint, $args = [], $endpointFormat = 'rpc', $echo = false, $bytes = null)
-    {
-        // Log request
-        $this->logRequest($endpoint, $args);
+	/**
+	 * Request.
+	 *
+	 * @param string      $endpoint        API endpoint.
+	 * @param array       $args            Request arguments.
+	 * @param string      $endpoint_format Endpoint format.
+	 * @param bool        $should_echo     Whether to echo response body.
+	 * @param string|null $bytes           Byte range header value.
+	 *
+	 * @throws BackWPup_Destination_Dropbox_API_Exception When the request fails.
+	 *
+	 * @return array|mixed|string
+	 */
+	public function request( $endpoint, $args = [], $endpoint_format = 'rpc', $should_echo = false, $bytes = null ) {
+		// Log request.
+		$this->log_request( $endpoint, $args );
 
-        if ($bytes !== null) {
-            $args['bytes'] = $bytes;
-        }
+		if ( null !== $bytes ) {
+			$args['bytes'] = $bytes;
+		}
 
-        $request = $this->buildRequest($endpoint, $args, $endpointFormat);
-        $client = $this->createClient();
+		$request = $this->build_request( $endpoint, $args, $endpoint_format );
+		$client  = $this->create_client();
 
-        $response = $client->sendRequest($request);
+		$response = $client->sendRequest( $request );
 
-        if ($response->getStatusCode() >= 500) {
-            $this->handleServerException($response);
-        } elseif ($response->getStatusCode() >= 400) {
-            $this->handleRequestException($response);
+		if ( $response->getStatusCode() >= 500 ) {
+			$this->handle_server_exception( $response );
+		} elseif ( $response->getStatusCode() >= 400 ) {
+			$this->handle_request_exception( $response );
 
-            // If we're still here, then recurse
-            return $this->request($endpoint, $args, $endpointFormat, $echo, $bytes);
-        }
+			// If we're still here, then recurse.
+			return $this->request( $endpoint, $args, $endpoint_format, $should_echo, $bytes );
+		}
 
-        if ($echo === true) {
+		if ( true === $should_echo ) {
             echo $response->getBody(); // phpcs:ignore
-        }
+		}
 
-        if ($response->getHeaderLine('Content-Type') === 'application/json') {
-            return json_decode($response->getBody(), true);
-        }
+		if ( 'application/json' === $response->getHeaderLine( 'Content-Type' ) ) {
+			return json_decode( $response->getBody(), true );
+		}
 
-        return $response->getBody()->getContents();
-    }
+		return $response->getBody()->getContents();
+	}
 
-    /**
-     * Gets the full URL to the Dropbox endpoint.
-     *
-     * @param string $endpoint The API endpoint
-     * @param string $format   The endpoint Format
-     *
-     * @return string The full URL
-     */
-    private function getUrl($endpoint, $format)
-    {
-        Assert::oneOf($format, ['oauth', 'rpc', 'upload', 'download']);
+	/**
+	 * Gets the full URL to the Dropbox endpoint.
+	 *
+	 * @param string $endpoint The API endpoint.
+	 * @param string $format   The endpoint format.
+	 *
+	 * @return string The full URL.
+	 */
+	private function get_url( $endpoint, $format ) {
+		Assert::oneOf( $format, [ 'oauth', 'rpc', 'upload', 'download' ] );
 
-        switch ($format) {
-            case 'oauth':
-                return self::API_URL . $endpoint;
+		switch ( $format ) {
+			case 'oauth':
+				return self::API_URL . $endpoint;
 
-            case 'rpc':
-                return self::API_URL . self::API_VERSION_URL . $endpoint;
+			case 'rpc':
+				return self::API_URL . self::API_VERSION_URL . $endpoint;
 
-            default:
-                return self::API_CONTENT_URL . self::API_VERSION_URL . $endpoint;
-        }
-    }
+			default:
+				return self::API_CONTENT_URL . self::API_VERSION_URL . $endpoint;
+		}
+	}
 
-    /**
-     * Builds the options for the request.
-     *
-     * @param string $endpoint The endpoint to call
-     * @param array  $args     The arguments for the request
-     * @param string $format   The endpoint format
-     *
-     * @return RequestInterface The HTTP request
-     */
-    private function buildRequest($endpoint, array &$args, $format)
-    {
-        $url = $this->getUrl($endpoint, $format);
+	/**
+	 * Builds the options for the request.
+	 *
+	 * @param string $endpoint The endpoint to call.
+	 * @param array  $args     The arguments for the request.
+	 * @param string $format   The endpoint format.
+	 *
+	 * @return RequestInterface The HTTP request.
+	 */
+	private function build_request( $endpoint, array &$args, $format ) {
+		$url = $this->get_url( $endpoint, $format );
 
-        $request = $this->createRequestFactory()
-            ->createRequest('POST', $url)
-        ;
+		$request = $this->create_request_factory()
+			->createRequest( 'POST', $url );
 
-        if ($format !== 'oauth') {
-            $request = new AuthorizationRequest($request);
-            $request = $request->withOAuthToken($this->getTokens()['access_token']);
-        }
+		if ( 'oauth' !== $format ) {
+			$request = new AuthorizationRequest( $request );
+			$request = $request->withOAuthToken( $this->get_tokens()['access_token'] );
+		}
 
 		$stream_factory = new StreamFactory();
 
-        switch ($format) {
-            case 'oauth':
-                $request = new AuthorizationRequest(new FormRequest($request));
+		switch ( $format ) {
+			case 'oauth':
+				$request = new AuthorizationRequest( new FormRequest( $request ) );
 				$request = $request
 					->withBasicAuth( BasicAuthCredentials::fromUsernameAndPassword( $this->oauth_app_key, $this->oauth_app_secret ) )
 					->withFormParams( $args, $stream_factory )
 					->withHeader( 'Accept', 'application/json' );
 				break;
 
-            case 'rpc':
-                $request = new JsonRequest($request);
+			case 'rpc':
+				$request = new JsonRequest( $request );
 				$request = $request
 					->withJsonData( $args ?: null, $stream_factory )
 					->withHeader( 'Accept', 'application/json' );
@@ -907,55 +895,49 @@ class BackWPup_Destination_Dropbox_API
 					unset( $args['contents'] );
 				}
 
-                $request = $request
-                    ->withHeader('Content-Type', 'application/octet-stream')
-                    ->withHeader('Dropbox-API-Arg', json_encode($args, JSON_FORCE_OBJECT))
-                ;
-                break;
+				$request = $request
+					->withHeader( 'Content-Type', 'application/octet-stream' )
+					->withHeader( 'Dropbox-API-Arg', wp_json_encode( $args, JSON_FORCE_OBJECT ) );
+				break;
 
-            case 'download':
-                if (isset($args['bytes'])) {
-                    $request = $request
-                        ->withHeader('Range', 'bytes=' . $args['bytes'])
-                    ;
-                    unset($args['bytes']);
-                }
+			case 'download':
+				if ( isset( $args['bytes'] ) ) {
+					$request = $request
+						->withHeader( 'Range', 'bytes=' . $args['bytes'] );
+					unset( $args['bytes'] );
+				}
 
-                $request = $request
-                    ->withHeader('Content-Type', 'text/plain')
-                    ->withHeader('Accept', 'application/octet-stream')
-                    ->withHeader('Dropbox-API-Arg', json_encode($args, JSON_FORCE_OBJECT))
-                ;
-                break;
-        }
+				$request = $request
+					->withHeader( 'Content-Type', 'text/plain' )
+					->withHeader( 'Accept', 'application/octet-stream' )
+					->withHeader( 'Dropbox-API-Arg', wp_json_encode( $args, JSON_FORCE_OBJECT ) );
+				break;
+		}
 
-        return $request;
-    }
+		return $request;
+	}
 
-    /**
-     * Handle request exception.
-     *
-     * Called for 4xx responses.
-     *
-     * @param ResponseInterface $response The returned response
-     *
-     * @throws BackWPup_Destination_Dropbox_API_Exception         If the error cannot be handled
-     * @throws BackWPup_Destination_Dropbox_API_Request_Exception For endpoint-specific errors
-     *                                                            to be passed up the chain
-     */
-    private function handleRequestException(ResponseInterface $response)
-    {
-        switch ($response->getStatusCode()) {
-            case 400:
-            case 401:
-            case 403:
-            case 409:
-            case 429:
-                $callback = [$this, 'handle' . $response->getStatusCode() . 'Error'];
-                call_user_func($callback, $response);
-                break;
+	/**
+	 * Handle request exception.
+	 *
+	 * Called for 4xx responses.
+	 *
+	 * @param ResponseInterface $response The returned response.
+	 *
+	 * @throws BackWPup_Destination_Dropbox_API_Exception If the error cannot be handled.
+	 */
+	private function handle_request_exception( ResponseInterface $response ) {
+		switch ( $response->getStatusCode() ) {
+			case 400:
+			case 401:
+			case 403:
+			case 409:
+			case 429:
+				$callback = [ $this, 'handle_' . $response->getStatusCode() . '_error' ];
+				call_user_func( $callback, $response );
+				break;
 
-            default:
+			default:
 				throw new BackWPup_Destination_Dropbox_API_Exception(
 					sprintf(
 						// translators: %1$s is the error code, %2$s is the response body.
@@ -967,20 +949,19 @@ class BackWPup_Destination_Dropbox_API
 						esc_html( $response->getBody()->getContents() )
 					)
 				);
-        }
-    }
+		}
+	}
 
-    /**
-     * Handle server exception.
-     *
-     * Called for 5xx responses.
-     *
-     * @param ResponseInterface $response The returned response
-     *
-     * @throws BackWPup_Destination_Dropbox_API_Exception
-     */
-    protected function handleServerException(ResponseInterface $response)
-    {
+	/**
+	 * Handle server exception.
+	 *
+	 * Called for 5xx responses.
+	 *
+	 * @param ResponseInterface $response The returned response.
+	 *
+	 * @throws BackWPup_Destination_Dropbox_API_Exception When the server returns an error.
+	 */
+	protected function handle_server_exception( ResponseInterface $response ) {
 		throw new BackWPup_Destination_Dropbox_API_Exception(
 			sprintf(
 				// translators: %1$d is the error code, %2$s is the response body.
@@ -992,17 +973,16 @@ class BackWPup_Destination_Dropbox_API
 				esc_html( $response->getBody()->getContents() )
 			)
 		);
-    }
+	}
 
-    /**
-     * Handle 400 response error.
+	/**
+	 * Handle 400 response error.
 	 *
 	 * @param \Psr\Http\Message\ResponseInterface $response The returned response.
 	 *
-     * @throws BackWPup_Destination_Dropbox_API_Exception
-     */
-    protected function handle400Error(ResponseInterface $response)
-    {
+	 * @throws BackWPup_Destination_Dropbox_API_Exception When the request is invalid.
+	 */
+	protected function handle_400_error( ResponseInterface $response ) {
 		throw new BackWPup_Destination_Dropbox_API_Exception(
 			sprintf(
 				// translators: %s is the response body.
@@ -1013,21 +993,20 @@ class BackWPup_Destination_Dropbox_API
 				esc_html( $response->getBody()->getContents() )
 			)
 		);
-    }
+	}
 
-    /**
-     * Handle 401 response error.
+	/**
+	 * Handle 401 response error.
 	 *
 	 * @param \Psr\Http\Message\ResponseInterface $response The returned response.
 	 *
-     * @throws BackWPup_Destination_Dropbox_API_Exception If token is invalid
-     */
-    protected function handle401Error(ResponseInterface $response)
-    {
-        $error = json_decode($response->getBody()->getContents(), true);
-        if ($error['error']['.tag'] === 'expired_access_token') {
-            $this->refresh($this->oauthToken['refresh_token']);
-        } else {
+	 * @throws BackWPup_Destination_Dropbox_API_Exception If token is invalid.
+	 */
+	protected function handle_401_error( ResponseInterface $response ) {
+		$error = json_decode( $response->getBody()->getContents(), true );
+		if ( 'expired_access_token' === $error['error']['.tag'] ) {
+			$this->refresh( $this->oauth_token['refresh_token'] );
+		} else {
 			throw new BackWPup_Destination_Dropbox_API_Exception(
 				sprintf(
 					// translators: %s is the response error.
@@ -1038,41 +1017,40 @@ class BackWPup_Destination_Dropbox_API
 					esc_html( $error['error']['.tag'] )
 				)
 			);
-        }
-    }
+		}
+	}
 
-    /**
-     * Handle 403 response error.
+	/**
+	 * Handle 403 response error.
 	 *
 	 * @param \Psr\Http\Message\ResponseInterface $response The returned response.
 	 *
-     * @throws BackWPup_Destination_Dropbox_API_Exception
-     */
-    protected function handle403Error(ResponseInterface $response)
-    {
-        $error = json_decode($response->getBody(), true);
+	 * @throws BackWPup_Destination_Dropbox_API_Exception When access is denied.
+	 */
+	protected function handle_403_error( ResponseInterface $response ) {
+		$error = json_decode( $response->getBody(), true );
 
-        if ($error['error']['.tag'] === 'invalid_account_type') {
-            // InvalidAccountTypeError
-            if ($error['error']['invalid_account_type']['.tag'] === 'endpoint') {
+		if ( 'invalid_account_type' === $error['error']['.tag'] ) {
+			// InvalidAccountTypeError.
+			if ( 'endpoint' === $error['error']['invalid_account_type']['.tag'] ) {
 				throw new BackWPup_Destination_Dropbox_API_Exception(
 					esc_html__(
 						'(403) You do not have permission to access this endpoint.',
-                        'backwpup'
-                    )
-                );
-            }
-            if ($error['error']['invalid_account_type']['.tag'] === 'feature') {
+						'backwpup'
+					)
+				);
+			}
+			if ( 'feature' === $error['error']['invalid_account_type']['.tag'] ) {
 				throw new BackWPup_Destination_Dropbox_API_Exception(
 					esc_html__(
 						'(403) You do not have permission to access this feature.',
-                        'backwpup'
-                    )
-                );
-            }
-        }
+						'backwpup'
+					)
+				);
+			}
+		}
 
-        // Catch all
+		// Catch all.
 		throw new BackWPup_Destination_Dropbox_API_Exception(
 			sprintf(
 				// translators: %s is the response error.
@@ -1083,18 +1061,17 @@ class BackWPup_Destination_Dropbox_API
 				esc_html( $error['error_summary'] )
 			)
 		);
-    }
+	}
 
-    /**
-     * Handle 409 response error.
+	/**
+	 * Handle 409 response error.
 	 *
 	 * @param \Psr\Http\Message\ResponseInterface $response The returned response.
 	 *
-     * @throws BackWPup_Destination_Dropbox_API_Request_Exception
-     */
-    protected function handle409Error(ResponseInterface $response)
-    {
-        $error = json_decode($response->getBody(), true);
+	 * @throws BackWPup_Destination_Dropbox_API_Request_Exception For endpoint-specific errors.
+	 */
+	protected function handle_409_error( ResponseInterface $response ) {
+		$error = json_decode( $response->getBody(), true );
 
 		throw new BackWPup_Destination_Dropbox_API_Request_Exception(
 			sprintf(
@@ -1109,304 +1086,425 @@ class BackWPup_Destination_Dropbox_API
 			null,
 			$error['error'] // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Error details are stored on the exception, not output.
 		);
-    }
+	}
 
-    /**
-     * Handle 429 response error.
-     *
-     * This error is encountered when requests are being rate limited.
+	/**
+	 * Handle 429 response error.
+	 *
+	 * This error is encountered when requests are being rate limited.
 	 *
 	 * @param \Psr\Http\Message\ResponseInterface $response The returned response.
 	 *
-     * @throws BackWPup_Destination_Dropbox_API_Exception If unable to detect time to wait
-     */
-    protected function handle429Error(ResponseInterface $response)
-    {
-        if (!$response->hasHeader('Retry-After')) {
+	 * @throws BackWPup_Destination_Dropbox_API_Exception If unable to detect time to wait.
+	 */
+	protected function handle_429_error( ResponseInterface $response ) {
+		if ( ! $response->hasHeader( 'Retry-After' ) ) {
 			throw new BackWPup_Destination_Dropbox_API_Exception(
 				esc_html__(
 					'(429) Requests are being rate limited. Please try again later.',
-                    'backwpup'
-                )
-            );
+					'backwpup'
+				)
+			);
 		}
 		sleep( (int) $response->getHeaderLine( 'Retry-After' ) );
 	}
 
-    /**
-     * Creates a new HTTP client.
-     *
-     * @return ClientInterface
-     */
-    protected function createClient()
-    {
-        $options = [
-            'timeout' => 60,
-        ];
+	/**
+	 * Creates a new HTTP client.
+	 *
+	 * @return ClientInterface
+	 */
+	protected function create_client() {
+		$options = [
+			'timeout' => 60,
+		];
 
-        if (empty($this->getCaBundle())) {
-            $options['sslverify'] = false;
-        } else {
-            $options += [
-                'sslverify' => true,
-                'sslcertificates' => $this->getCaBundle(),
-            ];
-        }
+		if ( empty( $this->get_ca_bundle() ) ) {
+			$options['sslverify'] = false;
+		} else {
+			$options += [
+				'sslverify'       => true,
+				'sslcertificates' => $this->get_ca_bundle(),
+			];
+		}
 
-        if (!empty($this->getUserAgent())) {
-            $options['user-agent'] = $this->getUserAgent();
-        }
+		if ( ! empty( $this->get_user_agent() ) ) {
+			$options['user-agent'] = $this->get_user_agent();
+		}
 
-        return new WpHttpClient(new ResponseFactory(), new StreamFactory(), $options);
-    }
+		return new WpHttpClient( new ResponseFactory(), new StreamFactory(), $options );
+	}
 
-    /**
-     * Creates a request factory for creating requests.
-     *
-     * @return RequestFactory
-     */
-    protected function createRequestFactory()
-    {
-        return new RequestFactory();
-    }
+	/**
+	 * Creates a request factory for creating requests.
+	 *
+	 * @return RequestFactory
+	 */
+	protected function create_request_factory() {
+		return new RequestFactory();
+	}
 
-    /**
-     * Formats a path to be valid for Dropbox.
-     *
-     * @param string $path
-     *
-     * @return string The formatted path
-     */
-    private function formatPath($path)
-    {
-        if (!empty($path) && substr($path, 0, 1) !== '/') {
-            $path = '/' . rtrim($path, '/');
-        } elseif ($path === '/') {
-            $path = '';
-        }
+	/**
+	 * Formats a path to be valid for Dropbox.
+	 *
+	 * @param string $path Path to format.
+	 *
+	 * @return string The formatted path.
+	 */
+	private function format_path( $path ) {
+		if ( ! empty( $path ) && '/' !== substr( $path, 0, 1 ) ) {
+			$path = '/' . rtrim( $path, '/' );
+		} elseif ( '/' === $path ) {
+			$path = '';
+		}
 
-        return $path;
-    }
+		return $path;
+	}
 
-    // Error Handlers
+	/**
+	 * Reads a local file using the WordPress filesystem API.
+	 *
+	 * @param string $file File path.
+	 *
+	 * @return string File contents.
+	 * @throws BackWPup_Destination_Dropbox_API_Exception When the file cannot be read.
+	 */
+	private function get_file_contents( string $file ): string {
+		global $wp_filesystem;
 
-    private function handleFilesDeleteError($error)
-    {
-        switch ($error['.tag']) {
-            case 'path_lookup':
-                $this->handleFilesLookupError($error['path_lookup']);
-                break;
+		if ( ! $wp_filesystem ) {
+			if ( ! function_exists( 'WP_Filesystem' ) ) {
+				$filesystem_path = '';
+				if ( defined( 'ABSPATH' ) && is_string( ABSPATH ) ) {
+					$filesystem_path = rtrim( ABSPATH, '/\\' ) . '/wp-admin/includes/file.php';
+				}
 
-            case 'path_write':
-                $this->handleFilesWriteError($error['path_write']);
-                break;
+				if ( '' !== $filesystem_path && file_exists( $filesystem_path ) ) {
+					require_once $filesystem_path;
+				}
+			}
 
-            case 'other':
-                trigger_error('Could not delete file.', E_USER_WARNING);
-                break;
-        }
-    }
+			if ( function_exists( 'WP_Filesystem' ) ) {
+				WP_Filesystem();
+			}
+		}
 
-    private function handleFilesGetMetadataError($error)
-    {
-        switch ($error['.tag']) {
-            case 'path':
-                $this->handleFilesLookupError($error['path']);
-                break;
+		if ( ! $wp_filesystem instanceof \WP_Filesystem_Base ) {
+			throw new BackWPup_Destination_Dropbox_API_Exception(
+				esc_html__( 'File system could not be initialized.', 'backwpup' )
+			);
+		}
 
-            case 'other':
-                trigger_error('Cannot look up file metadata.', E_USER_WARNING);
-                break;
-        }
-    }
+		$contents = $wp_filesystem->get_contents( $file );
+		if ( false === $contents ) {
+			throw new BackWPup_Destination_Dropbox_API_Exception(
+				esc_html__( 'Cannot read file contents.', 'backwpup' )
+			);
+		}
 
-    private function handleFilesGetTemporaryLinkError($error)
-    {
-        switch ($error['.tag']) {
-            case 'path':
-                $this->handleFilesLookupError($error['path']);
-                break;
+		return $contents;
+	}
 
-            case 'other':
-                trigger_error('Cannot get temporary link.', E_USER_WARNING);
-                break;
-        }
-    }
+	// Error handlers.
 
-    private function handleFilesListFolderError($error)
-    {
-        switch ($error['.tag']) {
-            case 'path':
-                $this->handleFilesLookupError($error['path']);
-                break;
+	/**
+	 * Logs a Dropbox API warning message.
+	 *
+	 * @param string $message Warning message.
+	 *
+	 * @return void
+	 */
+	private function log_warning( string $message ): void {
+		if ( $this->job_object instanceof BackWPup_Job ) {
+			$this->job_object->log( $message, E_USER_WARNING );
+			return;
+		}
 
-            case 'other':
-                trigger_error('Cannot list files in folder.', E_USER_WARNING);
-                break;
-        }
-    }
+		/**
+		 * Fires when the Dropbox API emits a warning outside of a job context.
+		 *
+		 * @param string $message Warning message.
+		 * @param BackWPup_Destination_Dropbox_API $client API client instance.
+		 */
+		do_action( 'backwpup_dropbox_api_warning', $message, $this );
+	}
 
-    private function handleFilesListFolderContinueError($error)
-    {
-        switch ($error['.tag']) {
-            case 'path':
-                $this->handleFilesLookupError($error['path']);
-                break;
+	/**
+	 * Handle file delete errors.
+	 *
+	 * @param array $error Error payload.
+	 *
+	 * @return void
+	 */
+	private function handle_files_delete_error( $error ) {
+		switch ( $error['.tag'] ) {
+			case 'path_lookup':
+				$this->handle_files_lookup_error( $error['path_lookup'] );
+				break;
 
-            case 'reset':
-                trigger_error('This cursor has been invalidated.', E_USER_WARNING);
-                break;
+			case 'path_write':
+				$this->handle_files_write_error( $error['path_write'] );
+				break;
 
-            case 'other':
-                trigger_error('Cannot list files in folder.', E_USER_WARNING);
-                break;
-        }
-    }
+			case 'other':
+				$this->log_warning( 'Could not delete file.' );
+				break;
+		}
+	}
 
-    private function handleFilesLookupError($error)
-    {
-        switch ($error['.tag']) {
-            case 'malformed_path':
-                trigger_error('The path was malformed.', E_USER_WARNING);
-                break;
+	/**
+	 * Handle file metadata errors.
+	 *
+	 * @param array $error Error payload.
+	 *
+	 * @return void
+	 */
+	private function handle_files_get_metadata_error( $error ) {
+		switch ( $error['.tag'] ) {
+			case 'path':
+				$this->handle_files_lookup_error( $error['path'] );
+				break;
 
-            case 'not_found':
-                trigger_error('File could not be found.', E_USER_WARNING);
-                break;
+			case 'other':
+				$this->log_warning( 'Cannot look up file metadata.' );
+				break;
+		}
+	}
 
-            case 'not_file':
-                trigger_error('That is not a file.', E_USER_WARNING);
-                break;
+	/**
+	 * Handle temporary link errors.
+	 *
+	 * @param array $error Error payload.
+	 *
+	 * @return void
+	 */
+	private function handle_files_get_temporary_link_error( $error ) {
+		switch ( $error['.tag'] ) {
+			case 'path':
+				$this->handle_files_lookup_error( $error['path'] );
+				break;
 
-            case 'not_folder':
-                trigger_error('That is not a folder.', E_USER_WARNING);
-                break;
+			case 'other':
+				$this->log_warning( 'Cannot get temporary link.' );
+				break;
+		}
+	}
 
-            case 'restricted_content':
-                trigger_error('This content is restricted.', E_USER_WARNING);
-                break;
+	/**
+	 * Handle list folder errors.
+	 *
+	 * @param array $error Error payload.
+	 *
+	 * @return void
+	 */
+	private function handle_files_list_folder_error( $error ) {
+		switch ( $error['.tag'] ) {
+			case 'path':
+				$this->handle_files_lookup_error( $error['path'] );
+				break;
 
-            case 'invalid_path_root':
-                trigger_error('Path root is invalid.', E_USER_WARNING);
-                break;
+			case 'other':
+				$this->log_warning( 'Cannot list files in folder.' );
+				break;
+		}
+	}
 
-            case 'other':
-                trigger_error('File could not be found.', E_USER_WARNING);
-                break;
-        }
-    }
+	/**
+	 * Handle list folder continue errors.
+	 *
+	 * @param array $error Error payload.
+	 *
+	 * @return void
+	 */
+	private function handle_files_list_folder_continue_error( $error ) {
+		switch ( $error['.tag'] ) {
+			case 'path':
+				$this->handle_files_lookup_error( $error['path'] );
+				break;
 
-    private function handleFilesUploadSessionFinishError($error)
-    {
-        switch ($error['.tag']) {
-            case 'lookup_failed':
-                $this->handleFilesUploadSessionLookupError(
-                    $error['lookup_failed']
-                );
-                break;
+			case 'reset':
+				$this->log_warning( 'This cursor has been invalidated.' );
+				break;
 
-            case 'path':
-                $this->handleFilesWriteError($error['path']);
-                break;
+			case 'other':
+				$this->log_warning( 'Cannot list files in folder.' );
+				break;
+		}
+	}
 
-            case 'too_many_shared_folder_targets':
-                trigger_error('Too many shared folder targets.', E_USER_WARNING);
-                break;
+	/**
+	 * Handle lookup errors.
+	 *
+	 * @param array $error Error payload.
+	 *
+	 * @return void
+	 */
+	private function handle_files_lookup_error( $error ) {
+		switch ( $error['.tag'] ) {
+			case 'malformed_path':
+				$this->log_warning( 'The path was malformed.' );
+				break;
 
-            case 'other':
-                trigger_error('The file could not be uploaded.', E_USER_WARNING);
-                break;
-        }
-    }
+			case 'not_found':
+				$this->log_warning( 'File could not be found.' );
+				break;
 
-    private function handleFilesUploadSessionLookupError($error)
-    {
-        switch ($error['.tag']) {
-            case 'not_found':
-                trigger_error('Session not found.', E_USER_WARNING);
-                break;
+			case 'not_file':
+				$this->log_warning( 'That is not a file.' );
+				break;
 
-            case 'incorrect_offset':
-                trigger_error(
-                    'Incorrect offset given. Correct offset is ' .
-                    intval($error['correct_offset']) . '.',
-                    E_USER_WARNING
-                );
-                break;
+			case 'not_folder':
+				$this->log_warning( 'That is not a folder.' );
+				break;
 
-            case 'closed':
-                trigger_error(
-                    'This session has been closed already.',
-                    E_USER_WARNING
-                );
-                break;
+			case 'restricted_content':
+				$this->log_warning( 'This content is restricted.' );
+				break;
 
-            case 'not_closed':
-                trigger_error('This session is not closed.', E_USER_WARNING);
-                break;
+			case 'invalid_path_root':
+				$this->log_warning( 'Path root is invalid.' );
+				break;
 
-            case 'other':
-                trigger_error(
-                    'Could not look up the file session.',
-                    E_USER_WARNING
-                );
-                break;
-        }
-    }
+			case 'other':
+				$this->log_warning( 'File could not be found.' );
+				break;
+		}
+	}
 
-    private function handleFilesUploadError($error)
-    {
-        switch ($error['.tag']) {
-            case 'path':
-                $this->handleFilesUploadWriteFailed($error['path']);
-                break;
+	/**
+	 * Handle upload session finish errors.
+	 *
+	 * @param array $error Error payload.
+	 *
+	 * @return void
+	 */
+	private function handle_files_upload_session_finish_error( $error ) {
+		switch ( $error['.tag'] ) {
+			case 'lookup_failed':
+				$this->handle_files_upload_session_lookup_error(
+					$error['lookup_failed']
+				);
+				break;
 
-            case 'other':
-                trigger_error('There was an unknown error when uploading the file.', E_USER_WARNING);
-                break;
-        }
-    }
+			case 'path':
+				$this->handle_files_write_error( $error['path'] );
+				break;
 
-    private function handleFilesUploadWriteFailed($error)
-    {
-        $this->handleFilesWriteError($error['reason']);
-    }
+			case 'too_many_shared_folder_targets':
+				$this->log_warning( 'Too many shared folder targets.' );
+				break;
 
-    private function handleFilesWriteError($error)
-    {
-        $message = '';
+			case 'other':
+				$this->log_warning( 'The file could not be uploaded.' );
+				break;
+		}
+	}
 
-        // Type of error
-        switch ($error['.tag']) {
-            case 'malformed_path':
-                $message = 'The path was malformed.';
-                break;
+	/**
+	 * Handle upload session lookup errors.
+	 *
+	 * @param array $error Error payload.
+	 *
+	 * @return void
+	 */
+	private function handle_files_upload_session_lookup_error( $error ) {
+		switch ( $error['.tag'] ) {
+			case 'not_found':
+				$this->log_warning( 'Session not found.' );
+				break;
 
-            case 'conflict':
-                $message = 'Cannot write to the target path due to conflict.';
-                break;
+			case 'incorrect_offset':
+				$this->log_warning(
+					'Incorrect offset given. Correct offset is ' .
+					intval( $error['correct_offset'] ) . '.'
+				);
+				break;
 
-            case 'no_write_permission':
-                $message = 'You do not have permission to save to this location.';
-                break;
+			case 'closed':
+				$this->log_warning( 'This session has been closed already.' );
+				break;
 
-            case 'insufficient_space':
-                $message = 'You do not have enough space in your Dropbox.';
-                break;
+			case 'not_closed':
+				$this->log_warning( 'This session is not closed.' );
+				break;
 
-            case 'disallowed_name':
-                $message = 'The given name is disallowed by Dropbox.';
-                break;
+			case 'other':
+				$this->log_warning( 'Could not look up the file session.' );
+				break;
+		}
+	}
 
-            case 'team_folder':
-                $message = 'Unable to modify team folders.';
-                break;
+	/**
+	 * Handle upload errors.
+	 *
+	 * @param array $error Error payload.
+	 *
+	 * @return void
+	 */
+	private function handle_files_upload_error( $error ) {
+		switch ( $error['.tag'] ) {
+			case 'path':
+				$this->handle_files_upload_write_failed( $error['path'] );
+				break;
 
-            case 'other':
-                $message = 'There was an unknown error when uploading the file.';
-                break;
-        }
+			case 'other':
+				$this->log_warning( 'There was an unknown error when uploading the file.' );
+				break;
+		}
+	}
 
-        trigger_error($message, E_USER_WARNING); // phpcs:ignore
-    }
+	/**
+	 * Handle upload write failed errors.
+	 *
+	 * @param array $error Error payload.
+	 *
+	 * @return void
+	 */
+	private function handle_files_upload_write_failed( $error ) {
+		$this->handle_files_write_error( $error['reason'] );
+	}
+
+	/**
+	 * Handle file write errors.
+	 *
+	 * @param array $error Error payload.
+	 *
+	 * @return void
+	 */
+	private function handle_files_write_error( $error ) {
+		$message = '';
+
+		// Type of error.
+		switch ( $error['.tag'] ) {
+			case 'malformed_path':
+				$message = 'The path was malformed.';
+				break;
+
+			case 'conflict':
+				$message = 'Cannot write to the target path due to conflict.';
+				break;
+
+			case 'no_write_permission':
+				$message = 'You do not have permission to save to this location.';
+				break;
+
+			case 'insufficient_space':
+				$message = 'You do not have enough space in your Dropbox.';
+				break;
+
+			case 'disallowed_name':
+				$message = 'The given name is disallowed by Dropbox.';
+				break;
+
+			case 'team_folder':
+				$message = 'Unable to modify team folders.';
+				break;
+
+			case 'other':
+				$message = 'There was an unknown error when uploading the file.';
+				break;
+		}
+
+		$this->log_warning( $message );
+	}
 }

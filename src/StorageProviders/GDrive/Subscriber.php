@@ -7,9 +7,6 @@ use WPMedia\BackWPup\EventManagement\SubscriberInterface;
 use WPMedia\BackWPup\Plugin\Plugin;
 use WPMedia\BackWPup\Adapters\OptionAdapter;
 use BackWPup_Admin;
-use BackWPup_Option;
-use BackWPup_Encryption;
-use BackWPup;
 use Exception;
 use WPMedia\BackWPup\Adapters\BackWPupAdapter;
 

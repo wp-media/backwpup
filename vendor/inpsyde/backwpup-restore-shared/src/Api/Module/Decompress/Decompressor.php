@@ -279,53 +279,6 @@ class Decompressor
     }
 
     /**
-     * Extract Tar by index.
-     *
-     * @param Archive_Tar    $tar        The archive tar instance to use to extract the file
-     * @param array<TarFile> $content    The content of the archive
-     * @param int            $filesCount The total amount of files within the archive
-     * @param int            $index      The index of the file to extract
-     *
-     * @throws OutOfBoundsException if the index doesn't exists within the tar archive
-     * @throws DecompressException  in case the file cannot be decompressed
-     * @throws Exception            if the registry cannot be saved
-     */
-    private function tar_extractor_by_index(Archive_Tar $tar, array $content, int $filesCount, int $index): CurrentExtractInfo
-    {
-        if (!isset($content[$index])) {
-            throw new OutOfBoundsException(
-                sprintf(
-                    __('Impossible to extract file at index %d. Index does not exists', 'backwpup'),
-                    $index
-                )
-            );
-        }
-
-        // Get the name of the file we want to extract.
-        $fileName = $content[$index]['filename'];
-        // If it's not possible to extract the file, log the file name.
-        if (!$tar->extractList([$fileName], $this->registry->extract_folder)) {
-            throw new DecompressException(
-                sprintf(
-                    __('Decompress %s failed. You need to copy the file manually.', 'backwpup'),
-                    $fileName
-                )
-            );
-        }
-
-        $data = new CurrentExtractInfo(
-            $filesCount,
-            $index,
-            $fileName,
-            $this->registry->extract_folder
-        );
-
-        $this->decompressionStateUpdater->updateStatus($data);
-
-        return $data;
-    }
-
-    /**
      * Tar Extractor.
      *
      * Decompresses tar files with gz and bz compressors
@@ -334,36 +287,23 @@ class Decompressor
      */
     private function tar_extractor(): void
     {
-        $errors = 0;
-        $tar = new Archive_Tar($this->file_path);
-        $content = $tar->listContent();
-        if (!\is_array($content)) {
-            throw new RuntimeException(
-                __('Could not extract the archive', 'backwpup')
-            );
-        }
-        $filesCount = \count($content);
-        $currentIndex = $this->decompressionState->index() + 1;
-
-        for (; $currentIndex < $filesCount; ++$currentIndex) {
-            try {
-                $data = $this->tar_extractor_by_index($tar, $content, $filesCount, $currentIndex);
-
-                if ($this->context === AjaxHandler::EVENT_SOURCE_CONTEXT) {
-                    echo "event: message\n";
-                    printf("data: %s\n\n", wp_json_encode($data) ?: '');
-                    flush();
-                }
-            } catch (Exception $exc) {
-                $this->logger->error($exc->getMessage());
-                ++$errors;
+        // no progess for extraction extracting file by file is very slow.
+        $no_error = false;
+        try {
+            if (class_exists('PharData') && substr($this->file_path, -4) === '.tar') {
+                $tar = new \PharData($this->file_path);
+                $no_error = $tar->extractTo($this->registry->extract_folder, null, true);
+            } else {
+                $tar = new Archive_Tar($this->file_path);
+                $no_error = $tar->extract($this->registry->extract_folder);
             }
+        } catch (Exception $exc) {
+            $this->logger->error($exc->getMessage());
         }
 
-        // Clean the registry. So we allow to upload and decompress a new archive.
         $this->decompressionStateUpdater->clean();
 
-        if ($errors !== 0) {
+        if ($no_error !== true) {
             throw new RuntimeException(
                 __(
                     'Extracted with error. Please, see the log for more information.',

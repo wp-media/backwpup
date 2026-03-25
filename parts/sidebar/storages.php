@@ -21,21 +21,23 @@ BackWPupHelpers::component("closable-heading", [
   'type' => 'sidebar'
 ]);
 
-$destinations = BackWPup_Option::get($job_id, 'destinations');
+$selected_destinations = BackWPup_Option::get($job_id, 'destinations', []);
+if (! is_array( $selected_destinations ) ) {
+  $selected_destinations = [];
+}
 
 // Get all the destinations including local.
-$cloud_destinations = BackWPup_Destinations::get_destinations(true);
+$all_destinations = BackWPup_Destinations::get_destinations(true);
 $dist_storages = [];
-if ( $destinations ){
-	foreach ($cloud_destinations as $a_cloud_destination) {
-	$dist_storages[] = [
-		"slug" => $a_cloud_destination["slug"],
-		"label" => $a_cloud_destination["label"],
-		"name" => "storage_destinations[]",
-		"active" => in_array($a_cloud_destination["slug"], $destinations ?? [] ),
-    "deactivated_message" => $a_cloud_destination["deactivated_message"] ?? "",
-	];
-	}
+
+foreach ($all_destinations as $destination) {
+  $dist_storages[] = [
+    "slug" => $destination["slug"],
+    "label" => $destination["label"],
+    "name" => "storage_destinations[]",
+    "active" => in_array($destination["slug"], $selected_destinations),
+    "deactivated_message" => $destination["deactivated_message"] ?? "",
+  ];
 }
 
 ?>

@@ -11,7 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div class="mdl-grid bwpr-content">
 	<?php
-
 	/*
 	 * Before main content.
 	 *
