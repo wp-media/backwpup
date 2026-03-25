@@ -5,7 +5,7 @@ Tags: backup, restore, cloud backup, database backup, wordpress backup
 Requires at least: 4.9
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 5.6.6
+Stable tag: 5.6.7
 License: GPLv2+
 
 Create a complete WordPress backup easily. Schedule automatic backups, store securely, and restore effortlessly with the best WordPress backup plugin!
@@ -193,6 +193,26 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
 == Changelog ==
+= 5.6.7 =
+Release date: March 25, 2026
+
+* Security fix: Resolved a Local File Inclusion (LFI) vulnerability in the getblock REST endpoint.
+* Fix: Backup limit is now properly respected (“Max backups to retain” setting).
+* Fix: Backup process no longer continues after a job is aborted.
+* Fix: Resolved storage settings panel rendering blank in some cases.
+* Fix: Resolved SugarSync backup download failures and related PHP errors.
+* Fix: Fixed restore database connection error display.
+* Fix: Resolved UI issues during the database restoration step.
+* Fix: Fixed authentication and UI inconsistencies for cloud storage providers (HiDrive, Google Drive, OneDrive).
+* Fix: Resolved fatal error during Free version installation related to license handling.
+* Fix: Removed EasyCron support.
+* New feature: Added SFTP as a storage destination.
+* Enhancement: Improved restoration performance (extraction and file copy process).
+* Enhancement: Improved HiDrive token expiration handling.
+* Enhancement: Improved email validation and sender name parsing for job log emails.
+* Enhancement: Added “Select All” option for database tables.
+* Enhancement: Improved restore page accessibility within the admin menu.
+
 = 5.6.6 =
 Release date: March 05, 2026
 
