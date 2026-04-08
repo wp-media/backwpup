@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WPMedia\BackWPup\Admin;
 
 use WPMedia\BackWPup\Admin\Beacon\Beacon;
+use WPMedia\BackWPup\Admin\Beacon\Subscriber as BeaconSubscriber;
 use WPMedia\BackWPup\Admin\Messages\API\Rest;
 use WPMedia\BackWPup\Admin\Notices\LicenseNoticeFactory;
 use WPMedia\BackWPup\Admin\Notices\Notices;
@@ -22,11 +23,15 @@ use WPMedia\BackWPup\Admin\Rating\RatingNoticeMessageProvider;
 use WPMedia\BackWPup\Admin\Rating\RatingSubscriber;
 use WPMedia\BackWPup\Admin\Settings\Subscriber as SettingSubscriber;
 use WPMedia\BackWPup\Admin\Frontend\Subscriber as AdminFrontendSubscriber;
+use WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsStore;
+use WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsContextStore;
+use WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsContextSubscriber;
 use WPMedia\BackWPup\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WPMedia\BackWPup\License\WpOptionsLicenseStateProvider;
 use WPMedia\BackWPup\License\WpOptionsPaymentMethodProvider;
 use WPMedia\Mixpanel\Optin;
+use WPMedia\Mixpanel\TrackingPlugin;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -44,7 +49,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		\WPMedia\BackWPup\Admin\Chatbot\API\ChatbotRestSubscriber::class,
 		\WPMedia\BackWPup\Admin\Chatbot\ChatbotSubscriber::class,
 		\WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsSubscriber::class,
+		ErrorSignalsContextSubscriber::class,
 		RatingSubscriber::class,
+		BeaconSubscriber::class,
 	];
 
 	/**
@@ -60,7 +67,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		\WPMedia\BackWPup\Admin\Chatbot\API\ChatbotRestSubscriber::class,
 		\WPMedia\BackWPup\Admin\Chatbot\ChatbotSubscriber::class,
 		\WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsSubscriber::class,
+		ErrorSignalsContextSubscriber::class,
 		RatingSubscriber::class,
+		BeaconSubscriber::class,
 	];
 
 	/**
@@ -182,7 +191,12 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->addShared(
 			'error_signals_store',
-			\WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsStore::class
+			ErrorSignalsStore::class
+		);
+
+		$this->getContainer()->addShared(
+			'error_signals_context_store',
+			ErrorSignalsContextStore::class
 		);
 
 		$this->getContainer()->addShared(
@@ -242,6 +256,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared(
 			\WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsSubscriber::class
 		)->addArgument( 'error_signals_store' );
+		$this->getContainer()->addShared(
+			ErrorSignalsContextSubscriber::class
+		)->addArgument( 'error_signals_context_store' );
 
 		$this->getContainer()->addShared( 'rating_initializer', RatingInstallStateInitializer::class );
 		$this->getContainer()->addShared( 'rating_notice_message_provider', RatingNoticeMessageProvider::class );
@@ -275,6 +292,14 @@ class ServiceProvider extends AbstractServiceProvider {
 				$this->getContainer()->get( 'rating_initializer' ),
 			]
 		);
+
+		$this->getContainer()->addShared( BeaconSubscriber::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( TrackingPlugin::class ),
+					$this->getContainer()->get( Optin::class ),
+				]
+			);
 	}
 
 	/**

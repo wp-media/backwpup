@@ -24,27 +24,6 @@ abstract class BackWPup_JobTypes {
 	public static $type_job_both = [ 'FILE', 'DBDUMP', 'WPPLUGIN' ];
 
 	/**
-	 * The name of the job type for file backups.
-	 *
-	 * @var string
-	 */
-	public static $name_job_files = 'Files';
-
-	/**
-	 * The name of the job type for database backup.
-	 *
-	 * @var string
-	 */
-	public static $name_job_database = 'Database';
-
-	/**
-	 *  The name of the job type that includes both files and database backup.
-	 *
-	 * @var string
-	 */
-	public static $name_job_both = 'Files & Database';
-
-	/**
 	 * The info of job type.
 	 *
 	 * @var array
@@ -126,4 +105,31 @@ abstract class BackWPup_JobTypes {
 	 * @return bool True on success, false on failure.
 	 */
 	abstract public function job_run( BackWPup_Job $job_object );
+
+	/**
+	 * Get name for a job type file.
+	 *
+	 * @return string
+	 */
+	public static function get_name_job_files(): string {
+		return __( 'Files', 'backwpup' );
+	}
+
+	/**
+	 * Get name for a job type database.
+	 *
+	 * @return string
+	 */
+	public static function get_name_job_database(): string {
+		return __( 'Database', 'backwpup' );
+	}
+
+	/**
+	 * Get name for a job type both.
+	 *
+	 * @return string
+	 */
+	public static function get_name_job_both(): string {
+		return __( 'Files & Database', 'backwpup' );
+	}
 }

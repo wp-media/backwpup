@@ -71,7 +71,7 @@ class Onboarding {
 	 * @return void
 	 */
 	private function update_job_options_values( string $key, $job_id, array $type, array $default ): void {
-		$name   = $this->job_types_adapter->$key;
+		$name   = $this->job_types_adapter->{"get_name_job_$key"}();
 		$job_id = (int) $job_id;
 
 		$options = [

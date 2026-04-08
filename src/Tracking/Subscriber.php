@@ -50,6 +50,9 @@ class Subscriber implements SubscriberInterface {
 			'backwpup_link_clicked'                        => [ 'track_link_clicked', 10, 2 ],
 			'backwpup_track_support_tool_button_displayed' => 'track_support_tool_button_displayed',
 			'backwpup_track_support_tool_button_clicked'   => 'track_support_tool_button_clicked',
+			'backwpup_track_expired_banner_shown'          => 'track_expired_banner_shown',
+			'backwpup_track_log_opened'                    => [ 'track_log_opened', 10, 4 ],
+			'backwpup_track_dashboard_viewed'              => 'track_dashboard_viewed',
 		];
 	}
 
@@ -178,5 +181,39 @@ class Subscriber implements SubscriberInterface {
 	 */
 	public function track_support_tool_button_clicked(): void {
 		$this->tracking->track_support_tool_button_clicked();
+	}
+
+	/**
+	 * Track Expired banner shown event.
+	 *
+	 * @param string $license_state The license state when the banner is shown.
+	 *
+	 * @return void
+	 */
+	public function track_expired_banner_shown( $license_state ): void {
+		$this->tracking->track_expired_banner_shown( $license_state );
+	}
+
+	/**
+	 * Track log opened event.
+	 *
+	 * @param string $error_message The error message associated with the log, if any.
+	 * @param int    $backup_id The ID of the backup.
+	 * @param int    $job_id The ID of the job.
+	 * @param bool   $job_completed Whether the job was completed or failed.
+	 *
+	 * @return void
+	 */
+	public function track_log_opened( $error_message, $backup_id, $job_id, $job_completed ): void {
+		$this->tracking->track_log_opened( $error_message, $backup_id, $job_id, $job_completed );
+	}
+
+	/**
+	 * Track dashboard viewed event.
+	 *
+	 * @return void
+	 */
+	public function track_dashboard_viewed(): void {
+		$this->tracking->track_dashboard_viewed();
 	}
 }

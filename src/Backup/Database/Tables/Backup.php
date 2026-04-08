@@ -28,7 +28,7 @@ class Backup extends AbstractTable {
 	 *
 	 * @var int
 	 */
-	protected $version = 20251105;
+	protected $version = 20260311;
 
 	/**
 	 * Key => value array of versions => methods.
@@ -37,6 +37,7 @@ class Backup extends AbstractTable {
 	 */
 	protected $upgrades = [
 		20251105 => 'add_backup_trigger_columns',
+		20260311 => 'add_failure_details_columns',
 	];
 
 	/**
@@ -48,9 +49,11 @@ class Backup extends AbstractTable {
 				id               		bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 				destination        		varchar(255)       NOT NULL default '',
 				filename              	varchar(255)                     default NULL,
+				job_id                  bigint(20) unsigned        NULL default NULL,
 				status           		varchar(255)        NOT NULL default '',
 				error_code       		varchar(32)             NULL default NULL,
 				error_message    		longtext                NULL default NULL,
+				logfile                 varchar(255)               NULL default NULL,
 				backup_trigger          varchar(32)         NOT NULL default '',
 				modified         		timestamp           NOT NULL default '0000-00-00 00:00:00',
 				submitted_at     		timestamp           NULL,
@@ -71,6 +74,28 @@ class Backup extends AbstractTable {
 
 		if ( ! $trigger_column_exists ) {
 			$created &= $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN backup_trigger VARCHAR(32) NOT NULL default '' AFTER error_message " );
+		}
+
+		return $this->is_success( $created );
+	}
+
+	/**
+	 * Add failure details columns.
+	 *
+	 * @return bool
+	 */
+	public function add_failure_details_columns() {
+		$job_id_column_exists  = $this->column_exists( 'job_id' );
+		$logfile_column_exists = $this->column_exists( 'logfile' );
+
+		$created = true;
+
+		if ( ! $job_id_column_exists ) {
+			$created &= $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN job_id BIGINT(20) unsigned NULL default NULL AFTER filename " );
+		}
+
+		if ( ! $logfile_column_exists ) {
+			$created &= $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN logfile VARCHAR(255) NULL default NULL AFTER error_message " );
 		}
 
 		return $this->is_success( $created );

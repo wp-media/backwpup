@@ -104,12 +104,13 @@ class Tracking {
 		$user = wp_get_current_user();
 
 		$this->mixpanel->identify( $user->user_email );
+
+		$properties                  = $this->get_default_event_properties();
+		$properties['opt_in_status'] = (bool) $optin;
+
 		$this->mixpanel->track(
 			'WordPress Plugin Beta Opt-in Changed',
-			[
-				'context'       => 'wp_plugin',
-				'opt_in_status' => (bool) $optin,
-			]
+			$properties
 		);
 	}
 
@@ -131,7 +132,7 @@ class Tracking {
 
 		$this->mixpanel->track(
 			'Scheduled Backup Job Created',
-			$this->get_event_properties( $job, true )
+			array_merge( $this->get_default_event_properties(), $this->get_event_properties( $job, true ) )
 		);
 	}
 
@@ -155,7 +156,7 @@ class Tracking {
 
 		$this->mixpanel->track(
 			'Scheduled Backup Job Deleted',
-			$this->get_event_properties( $job )
+			array_merge( $this->get_default_event_properties(), $this->get_event_properties( $job ) )
 		);
 	}
 
@@ -174,7 +175,7 @@ class Tracking {
 
 		$user       = wp_get_current_user();
 		$email      = $user->user_email ?? $job['mailaddresslog'];
-		$properties = $this->get_backup_event_properties( $job );
+		$properties = array_merge( $this->get_default_event_properties(), $this->get_backup_event_properties( $job ) );
 
 		$this->mixpanel->identify( $email );
 
@@ -213,7 +214,7 @@ class Tracking {
 		$this->mixpanel->identify( $email );
 		$status = true;
 
-		$properties                   = $this->get_backup_event_properties( $job, true );
+		$properties                   = array_merge( $this->get_default_event_properties(), $this->get_backup_event_properties( $job, true ) );
 		$properties['backup_trigger'] = $trigger;
 
 		foreach ( $job_details as $job ) {
@@ -279,7 +280,6 @@ class Tracking {
 		}
 
 		$properties = [
-			'context'                => 'wp_plugin',
 			'job_id'                 => $job['jobid'],
 			'storage'                => $job['destinations'],
 			'format'                 => $job['archiveformat'],
@@ -390,10 +390,7 @@ class Tracking {
 
 		$this->mixpanel->identify( $user->user_email );
 		// Merge default properties.
-		$defaults   = [
-			'context' => 'wp_plugin',
-		];
-		$properties = array_merge( $defaults, $properties );
+		$properties = array_merge( $this->get_default_event_properties(), $properties );
 		// Track link clicked event.
 		$this->mixpanel->track(
 			$event,
@@ -445,9 +442,7 @@ class Tracking {
 
 		$this->mixpanel->track(
 			'Support button shown',
-			[
-				'context' => 'wp_plugin',
-			]
+			$this->get_default_event_properties()
 		);
 	}
 
@@ -468,9 +463,115 @@ class Tracking {
 
 		$this->mixpanel->track(
 			'Support button clicked',
+			$this->get_default_event_properties()
+		);
+	}
+
+	/**
+	 * Track Expired banner shown.
+	 *
+	 * @param string $license_state The license state when the banner is shown.
+	 *
+	 * @return void
+	 */
+	public function track_expired_banner_shown( $license_state ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$user = wp_get_current_user();
+
+		if ( $user->exists() ) {
+			$this->mixpanel->identify( $user->user_email );
+		}
+
+		$properties                  = $this->get_default_event_properties();
+		$properties['license_state'] = $license_state;
+
+		$this->mixpanel->track(
+			'Expired license update payment method banner shown',
+			$properties
+		);
+	}
+
+	/**
+	 * Track dashboard viewed event.
+	 *
+	 * @return void
+	 */
+	public function track_dashboard_viewed(): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+		$properties = $this->get_default_event_properties();
+		$user       = wp_get_current_user();
+		if ( $user->exists() ) {
+			$this->mixpanel->identify( $user->user_email );
+			$properties['user_id'] = $user->ID;
+		}
+
+		$this->mixpanel->track(
+			'Dashboard viewed',
+			$properties
+		);
+	}
+
+	/**
+	 * Track log opened event.
+	 *
+	 * @param string $error_message The error message associated with the log, if any.
+	 * @param int    $backup_id The ID of the backup.
+	 * @param int    $job_id The ID of the job.
+	 * @param bool   $job_completed Whether the job was completed or failed.
+	 *
+	 * @return void
+	 */
+	public function track_log_opened( $error_message, $backup_id, $job_id, $job_completed ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$user = wp_get_current_user();
+
+		$properties = array_merge(
+			$this->get_default_event_properties(),
 			[
-				'context' => 'wp_plugin',
+				'backup_id'      => $backup_id,
+				'job_id'         => $job_id,
+				'job_completed'  => $job_completed,
+				'failure_reason' => $error_message,
 			]
 		);
+
+		if ( $user->exists() ) {
+			$this->mixpanel->identify( $user->user_email );
+			$properties['user_id'] = $user->ID;
+		}
+
+		$this->mixpanel->track(
+			'Backup log opened',
+			$properties
+		);
+	}
+
+	/**
+	 * Get the default event properties, including the license email hash if available.
+	 *
+	 * @return array
+	 */
+	private function get_default_event_properties(): array {
+		$defaults = [
+			'context' => 'wp_plugin',
+		];
+
+		if ( \BackWPup::is_pro() ) {
+			// Use string value directly instead of LicenseManager::LICENSE_EMAIL constant
+			// to avoid loading LicenseManager class (which doesn't exist in Free version).
+			$license_email_hash = get_site_option( 'backwpup_license_email', '' );
+			if ( '' !== $license_email_hash ) {
+				$defaults['license_owner'] = $license_email_hash;
+			}
+		}
+		return $defaults;
 	}
 }

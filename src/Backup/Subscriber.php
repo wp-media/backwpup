@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WPMedia\BackWPup\Backup;
 
+use BackWPup_Job;
 use WPMedia\BackWPup\EventManagement\SubscriberInterface;
 
 class Subscriber implements SubscriberInterface {
@@ -30,7 +31,7 @@ class Subscriber implements SubscriberInterface {
 	public static function get_subscribed_events(): array {
 		return [
 			'backwpup_create_job'             => [ 'add_backup_row', 10, 3 ],
-			'backwpup_end_job'                => 'set_not_completed_backups_to_failed',
+			'backwpup_end_job'                => [ 'set_not_completed_backups_to_failed', 10, 3 ],
 			'backwpup_job_success'            => [ 'set_backup_completed', 10, 2 ],
 			'backwpup_after_delete_backups'   => [ 'delete_backup_rows', 10, 2 ],
 			'backwpup_backups_list'           => 'backups_list',
@@ -54,12 +55,14 @@ class Subscriber implements SubscriberInterface {
 	/**
 	 * Set not completed backups to failed at the end of the process.
 	 *
-	 * @param array $job Current Job.
+	 * @param array        $job Current Job.
+	 * @param string       $backup_file Backup file name.
+	 * @param BackWPup_Job $backwpup_job Job instance for proper error logging.
 	 *
 	 * @return void
 	 */
-	public function set_not_completed_backups_to_failed( $job ): void {
-		$this->database->set_not_completed_job_to_failed( $job );
+	public function set_not_completed_backups_to_failed( $job, $backup_file, BackWPup_Job $backwpup_job ): void {
+		$this->database->set_not_completed_job_to_failed( $job, $backwpup_job );
 	}
 
 	/**

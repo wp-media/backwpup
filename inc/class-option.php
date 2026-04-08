@@ -688,12 +688,12 @@ final class BackWPup_Option {
 		$job_file          = self::defaults_job();
 		$job_file['jobid'] = (int) get_site_option( Plugin::FILES_JOB_ID, 1 );
 		$job_file['type']  = BackWPup_JobTypes::$type_job_files;
-		$job_file['name']  = BackWPup_JobTypes::$name_job_files;
+		$job_file['name']  = BackWPup_JobTypes::get_name_job_files();
 
 		$job_db          = self::defaults_job();
 		$job_db['jobid'] = (int) get_site_option( Plugin::DATABASE_JOB_ID, 2 );
 		$job_db['type']  = BackWPup_JobTypes::$type_job_database;
-		$job_db['name']  = BackWPup_JobTypes::$name_job_database;
+		$job_db['name']  = BackWPup_JobTypes::get_name_job_database();
 
 		return [ $job_file, $job_db ];
 	}

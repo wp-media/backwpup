@@ -132,8 +132,13 @@ class LicenseNoticeFactory {
 				$link = $this->beacon->get_suggest(
 					'update-payment-method',
 					true,
-					[ 'bwu_event' => 'expired_license_update_payment_method' ]
+					[
+						'bwu_event'     => 'Expired license update payment method banner clicked',
+						'license_state' => $state->state(),
+					]
 				);
+
+				do_action( 'backwpup_track_expired_banner_shown', $state->state() );
 
 				return [
 					'title'   => sprintf(

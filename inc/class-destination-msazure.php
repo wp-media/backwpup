@@ -293,6 +293,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 				BackWPup_Option::update( $job_object->job['jobid'], 'lastbackupdownloadurl', network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=downloadmsazure&file=' . $job_object->job[ self::MSAZUREDIR ] . $job_object->backup_file . '&jobid=' . $job_object->job['jobid'] );
 			}
 		} catch ( Exception $e ) {
+			$context = $this->msazure_error_context( $e );
 			$job_object->log(
 				E_USER_ERROR,
 				sprintf(
@@ -301,7 +302,8 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 				$e->getMessage()
 			),
 				$e->getFile(),
-				$e->getLine()
+				$e->getLine(),
+				$context
 				);
 			$job_object->substeps_done = 0;
 			unset( $job_object->steps_data[ $job_object->step_working ]['BlockList'] );
@@ -384,6 +386,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 			}
 			set_site_transient( 'backwpup_' . $job_object->job['jobid'] . '_msazure', $files, YEAR_IN_SECONDS );
 		} catch ( Exception $e ) {
+			$context = $this->msazure_error_context( $e );
 			$job_object->log(
 				E_USER_ERROR,
 				sprintf(
@@ -392,7 +395,8 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 				$e->getMessage()
 			),
 				$e->getFile(),
-				$e->getLine()
+				$e->getLine(),
+				$context
 				);
 
 			return false;
@@ -729,6 +733,62 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 		}
 
 		return $job_id;
+	}
+
+	/**
+	 * Build error context for Azure errors.
+	 *
+	 * @param Exception $exception Exception instance.
+	 * @return array
+	 */
+	private function msazure_error_context( Exception $exception ): array {
+		$message     = strtolower( $exception->getMessage() );
+		$status      = (int) $exception->getCode();
+		$error_code  = '';
+		$error_lower = '';
+
+		if ( method_exists( $exception, 'getErrorCode' ) ) {
+			$error_code  = (string) $exception->getErrorCode();
+			$error_lower = strtolower( $error_code );
+		}
+
+		if (
+			in_array( $status, [ 401, 403 ], true )
+			|| false !== strpos( $error_lower, 'auth' )
+			|| false !== strpos( $error_lower, 'unauthorized' )
+			|| false !== strpos( $message, 'auth' )
+			|| false !== strpos( $message, 'unauthorized' )
+		) {
+			$context = [
+				'reason_code'   => 'incorrect_login',
+				'destination'   => 'MSAZURE',
+				'provider_code' => $error_code ?: 'auth_failed',
+			];
+			if ( $status > 0 ) {
+				$context['http_status'] = $status;
+			}
+			return $context;
+		}
+
+		if (
+			false !== strpos( $error_lower, 'insufficient' )
+			|| false !== strpos( $error_lower, 'quota' )
+			|| false !== strpos( $message, 'insufficient' )
+			|| false !== strpos( $message, 'quota' )
+			|| false !== strpos( $message, 'not enough' )
+		) {
+			$context = [
+				'reason_code'   => 'not_enough_storage',
+				'destination'   => 'MSAZURE',
+				'provider_code' => $error_code ?: 'quota_exceeded',
+			];
+			if ( $status > 0 ) {
+				$context['http_status'] = $status;
+			}
+			return $context;
+		}
+
+		return [];
 	}
 
 	/**

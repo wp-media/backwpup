@@ -6,6 +6,7 @@ namespace WPMedia\BackWPup\Backup;
 use WPMedia\BackWPup\Backup\Database;
 use WPMedia\BackWPup\Backup\Database\Queries\Backup as BackupQuery;
 use WPMedia\BackWPup\Backup\Database\Tables\Backup as BackupTable;
+use WPMedia\BackWPup\Backup\FailureReasonResolver;
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
@@ -20,6 +21,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		'backups_query',
 		'backups_table',
+		'failure_reason_resolver',
 		'backwpup_database',
 		'backups_subscriber',
 	];
@@ -53,10 +55,14 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'backups_table', BackupTable::class );
 		$this->getContainer()->get( 'backups_table' );
 		$this->getContainer()->add( 'backups_query', BackupQuery::class );
+		$this->getContainer()->addShared( 'failure_reason_resolver', FailureReasonResolver::class )
+			->addArgument( 'error_signals_context_store' );
 		$this->getContainer()->add( 'backwpup_database', Database::class )
 			->addArguments(
 				[
 					'backups_query',
+					'error_signals_store',
+					'failure_reason_resolver',
 				]
 			);
 		$this->getContainer()->addShared( 'backups_subscriber', Subscriber::class )

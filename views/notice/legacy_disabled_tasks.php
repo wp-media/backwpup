@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		'<br>',
 		'<a target="_blank" href="' . esc_url( network_admin_url( 'admin.php?page=backwpupjobs' ) ) . '">',
 		'</a>',
-		'<a target="_blank" href="' . esc_url( 'https://backwpup.com/docs/article/reactivating-backup-jobs-after-update/' ) . '">',
+		'<a target="_blank" href="' . esc_url( wpm_apply_filters_typed( 'string', 'backwpup_url_add_hash', 'https://backwpup.com/docs/article/reactivating-backup-jobs-after-update/' ) ) . '">',
 		'</a>',
 		'<strong>',
 		'</strong>'

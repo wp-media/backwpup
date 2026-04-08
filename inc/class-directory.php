@@ -165,6 +165,14 @@ class BackWPup_Directory extends DirectoryIterator {
 			// Do nothing.
 		}
 
+		// sort files alphabetically.
+		usort(
+			$folders_to_exclude,
+			static function ( $a, $b ) {
+				return strcmp( $a['name'], $b['name'] );
+			}
+		);
+
 		return $folders_to_exclude;
 	}
 

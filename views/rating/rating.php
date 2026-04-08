@@ -5,6 +5,10 @@
  * @var array $data Notice configuration.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 $rating_title   = $data['title'] ?? '';
 $rating_message = $data['message'] ?? '';
 $dismiss_url    = $data['dismiss_url'] ?? '';

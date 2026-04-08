@@ -90,13 +90,39 @@ class SugarSyncProvider implements ProviderInterface {
 	 */
 	public function delete_auth( WP_REST_Request $request ): ?string {
 		$params = $request->get_params();
-		if ( ! empty( $params['job_id'] ) ) {
-			$jobs_ids = [ $params['job_id'] ];
+		$job_id = $params['job_id'] ?? null;
+		if ( is_numeric( $job_id ) && (int) $job_id > 0 ) {
+			$jobs_ids = [ (int) $job_id ];
 		} else {
-			$jobs_ids = $this->get_job_ids();
+			$jobs_ids = $this->option_adapter->get_job_ids();
+			$filtered = [];
+			foreach ( $jobs_ids as $job_id ) {
+				if ( ! empty( $this->option_adapter->get( (int) $job_id, 'sugarrefreshtoken' ) ) ) {
+					$filtered[] = (int) $job_id;
+				}
+			}
+			$jobs_ids = $filtered ?: $this->get_job_ids();
 		}
 		foreach ( $jobs_ids as $jobid ) {
+			$jobid = (int) $jobid;
 			$this->option_adapter->delete( $jobid, 'sugarrefreshtoken' );
+			$job = $this->option_adapter->get_job( $jobid );
+			if ( ! is_array( $job ) ) {
+				continue;
+			}
+			$destinations = $job['destinations'] ?? [];
+			if ( ! is_array( $destinations ) ) {
+				$destinations = [];
+			}
+			$destinations = array_values(
+				array_filter(
+					$destinations,
+					static function ( $destination ): bool {
+						return 'SUGARSYNC' !== strtoupper( (string) $destination );
+					}
+				)
+			);
+			$this->option_adapter->update( $jobid, 'destinations', $destinations );
 		}
 		return $this->helpers_adapter->children( 'sidebar/sugar-sync-parts/api-connexion', true, [ 'job_id' => $jobs_ids[0] ] );
 	}

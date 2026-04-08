@@ -442,13 +442,17 @@ class Rest implements RestInterface {
 		try {
 			$job_id = $params['id'];
 
-			$job_data = [
-				'type' => $this->job_types_adapter->job_type_map( $params['type'] ),
-				'name' => $this->job_types_adapter->job_name_map( $params['type'] ),
-			];
+			$this->option_adapter->update( $job_id, 'type', $this->job_types_adapter->job_type_map( $params['type'] ) );
 
-			foreach ( $job_data as $key => $value ) {
-				$this->option_adapter->update( $job_id, $key, $value );
+			$current_name = $this->option_adapter->get( $job_id, 'name' );
+			$all_names    = $this->job_types_adapter->get_all_name();
+			$all_names_en = [
+				'files'    => 'Files',
+				'database' => 'Database',
+				'mixed'    => 'Files & Database',
+			];
+			if ( in_array( $current_name, $all_names, true ) || in_array( $current_name, $all_names_en, true ) ) {
+				$this->option_adapter->update( $job_id, 'name', $this->job_types_adapter->job_name_map( $params['type'] ) );
 			}
 		} catch ( Exception $e ) {
 			$return['status'] = 500;

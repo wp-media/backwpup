@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace WPMedia\BackWPup\Common\ErrorSignals;
@@ -7,21 +6,20 @@ namespace WPMedia\BackWPup\Common\ErrorSignals;
 use BackWPup_Job;
 use WPMedia\BackWPup\EventManagement\SubscriberInterface;
 
-class ErrorSignalsSubscriber implements SubscriberInterface {
-
+class ErrorSignalsContextSubscriber implements SubscriberInterface {
 	/**
-	 * ErrorSignalsStore instance.
+	 * ErrorSignalsContextStore instance.
 	 *
-	 * @var ErrorSignalsStore
+	 * @var ErrorSignalsContextStore
 	 */
-	private ErrorSignalsStore $store;
+	private ErrorSignalsContextStore $store;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param ErrorSignalsStore $store
+	 * @param ErrorSignalsContextStore $store Context store instance.
 	 */
-	public function __construct( ErrorSignalsStore $store ) {
+	public function __construct( ErrorSignalsContextStore $store ) {
 		$this->store = $store;
 	}
 
@@ -37,7 +35,7 @@ class ErrorSignalsSubscriber implements SubscriberInterface {
 	}
 
 	/**
-	 * Store errors.
+	 * Store error context data.
 	 *
 	 * @param array             $signal Errors data.
 	 * @param BackWPup_Job|null $job The Job instance.

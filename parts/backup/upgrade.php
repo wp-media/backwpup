@@ -4,6 +4,7 @@ use BackWPup\Utils\BackWPupHelpers;
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
+$link_docs_what_is_the_diff = wpm_apply_filters_typed( 'string', 'backwpup_url_what_is_the_diff','https://backwpup.com/docs/what-is-the-difference-between-backwpup-free-and-backwpup-pro/' );
 
 ?>
   <h1 class="text-3xl text-center text-white font-bold font-title">
@@ -22,14 +23,14 @@ if ( ! defined( 'ABSPATH' ) ) {
   </div>
 
   <p class="mt-8 flex items-center justify-center gap-10">
-    <a href="https://backwpup.com/docs/what-is-the-difference-between-backwpup-free-and-backwpup-pro/" target="_blank" class="inline-block text-base leading-5 text-white border-b border-white font-title hover:text-secondary-lighter hover:border-secondary-lighter">
+    <a href="<?php echo esc_url( $link_docs_what_is_the_diff ); ?>" target="_blank" class="inline-block text-base leading-5 text-white border-b border-white font-title hover:text-secondary-lighter hover:border-secondary-lighter">
       <?php esc_html_e("See all features", 'backwpup'); ?>
     </a>
 
     <?php
     BackWPupHelpers::component("navigation/link", [
       "type" => "primary",
-      "url" => "https://backwpup.com/pricing/",
+      "url" => wpm_apply_filters_typed( 'string', 'backwpup_url_add_hash',"https://backwpup.com/pricing/" ),
       "newtab" => true,
       "content" => __("Get BackWPup Pro now", 'backwpup'),
     ]);

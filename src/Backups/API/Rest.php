@@ -7,6 +7,7 @@ use WPMedia\BackWPup\Adapters\OptionAdapter;
 use WPMedia\BackWPup\Adapters\JobAdapter;
 use WPMedia\BackWPup\Adapters\FileAdapter;
 use WPMedia\BackWPup\Adapters\JobTypesAdapter;
+use WPMedia\BackWPup\Backup\Database as BackupDatabase;
 use WP_HTTP_Response;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -51,6 +52,13 @@ class Rest implements RestInterface {
 	private $job_types_adapter;
 
 	/**
+	 * Backup database instance.
+	 *
+	 * @var BackupDatabase
+	 */
+	private $backup_database;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param BackWPupAdapter $backups_adapter
@@ -58,19 +66,22 @@ class Rest implements RestInterface {
 	 * @param JobAdapter      $job_adapter
 	 * @param FileAdapter     $file_adapter
 	 * @param JobTypesAdapter $job_types_adapter
+	 * @param BackupDatabase  $backup_database
 	 */
 	public function __construct(
 		BackWPupAdapter $backups_adapter,
 		OptionAdapter $option_adapter,
 		JobAdapter $job_adapter,
 		FileAdapter $file_adapter,
-		JobTypesAdapter $job_types_adapter
+		JobTypesAdapter $job_types_adapter,
+		BackupDatabase $backup_database
 	) {
 		$this->backwpup_adapter  = $backups_adapter;
 		$this->option_adapter    = $option_adapter;
 		$this->job_adapter       = $job_adapter;
 		$this->file_adapter      = $file_adapter;
 		$this->job_types_adapter = $job_types_adapter;
+		$this->backup_database   = $backup_database;
 	}
 
 	/**
@@ -369,7 +380,15 @@ class Rest implements RestInterface {
 				$backups = $params['backups'];
 				foreach ( $backups as $backup ) {
 					try {
-						$this->delete_backup( $backup );
+						$backup_id = 0;
+						if ( ! empty( $backup['dataset'] ) && is_array( $backup['dataset'] ) && ! empty( $backup['dataset']['backup_id'] ) ) {
+							$backup_id = (int) $backup['dataset']['backup_id'];
+						}
+						if ( $backup_id > 0 ) {
+							$this->delete_failed_backup_entry( $backup_id );
+						} else {
+							$this->delete_backup( $backup );
+						}
 						$response['success'][] = $backup;
 					} catch ( Exception $e ) {
 						$response['errors'][] = [
@@ -426,5 +445,22 @@ class Rest implements RestInterface {
 		 * @param string $dest Destination.
 		 */
 		do_action( 'backwpup_after_delete_backups', $params['backupfiles'], $dest );
+	}
+
+	/**
+	 * Delete a failed backup entry from the database.
+	 *
+	 * @param int $backup_id Backup entry ID.
+	 *
+	 * @throws Exception When deletion fails.
+	 */
+	private function delete_failed_backup_entry( int $backup_id ): void {
+		if ( $backup_id <= 0 ) {
+			throw new Exception( __( 'Invalid failed backup entry.', 'backwpup' ) ); // @phpcs:ignore
+		}
+
+		if ( ! $this->backup_database->delete_failed_backup( $backup_id ) ) {
+			throw new Exception( __( 'Failed to delete backup entry.', 'backwpup' ) ); // @phpcs:ignore
+		}
 	}
 }

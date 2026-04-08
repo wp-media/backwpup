@@ -245,7 +245,25 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 			// Send the message.
 			$result = $emailer->send( $message );
 		} catch ( Exception $e ) {
-			$job_object->log( 'Swift Mailer: ' . $e->getMessage(), E_USER_ERROR );
+			$context = [];
+			if ( 'smtp' === $emailmethod ) {
+				$lower_message = strtolower( $e->getMessage() );
+				if ( preg_match( '/auth|login|credential|username|password/', $lower_message ) ) {
+					$context = [
+						'reason_code'   => 'incorrect_login',
+						'destination'   => 'EMAIL',
+						'provider_code' => 'smtp_auth_failed',
+					];
+				}
+			}
+
+			$job_object->log(
+				'Swift Mailer: ' . $e->getMessage(),
+				E_USER_ERROR,
+				__FILE__,
+				__LINE__,
+				$context
+			);
 		}
 
 		if ( ! isset( $result ) || ! $result ) {

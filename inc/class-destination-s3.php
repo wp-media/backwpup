@@ -554,11 +554,13 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
                     if ($e instanceof AwsException) {
                         $errorMessage = $e->getAwsErrorMessage();
                     }
+                    $context = $this->aws_error_context( $e );
                     $job_object->log(
                         E_USER_ERROR,
                         sprintf(__('S3 Service API: %s', 'backwpup'), $errorMessage),
                         $e->getFile(),
-                        $e->getLine()
+                        $e->getLine(),
+                        $context
                     );
 
                     return false;
@@ -646,11 +648,13 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
                     if ($e instanceof AwsException) {
                         $errorMessage = $e->getAwsErrorMessage();
                     }
+                    $context = $this->aws_error_context( $e );
                     $job_object->log(
                         E_USER_ERROR,
                         sprintf(__('S3 Service API: %s', 'backwpup'), $errorMessage),
                         $e->getFile(),
-                        $e->getLine()
+                        $e->getLine(),
+                        $context
                     );
                     if (!empty($job_object->steps_data[$job_object->step_working]['uploadId'])) {
                         $s3->abortMultipartUpload([
@@ -707,11 +711,13 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
             if ($e instanceof AwsException) {
                 $errorMessage = $e->getAwsErrorMessage();
             }
+            $context = $this->aws_error_context( $e );
             $job_object->log(
                 E_USER_ERROR,
                 sprintf(__('S3 Service API: %s', 'backwpup'), $errorMessage),
                 $e->getFile(),
-                $e->getLine()
+                $e->getLine(),
+                $context
             );
 
             return false;
@@ -724,11 +730,13 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
             if ($e instanceof AwsException) {
                 $errorMessage = $e->getAwsErrorMessage();
             }
+            $context = $this->aws_error_context( $e );
             $job_object->log(
                 E_USER_ERROR,
                 sprintf(__('S3 Service API: %s', 'backwpup'), $errorMessage),
                 $e->getFile(),
-                $e->getLine()
+                $e->getLine(),
+                $context
             );
 
             return false;
@@ -789,5 +797,47 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
 	 */
 	public function get_service_name(): string {
 		return self::SERVICE_NAME;
+	}
+
+	/**
+	 * Build error context for AWS errors.
+	 *
+	 * @param Exception $exception Exception instance.
+	 * @return array
+	 */
+	private function aws_error_context( Exception $exception ): array {
+		if ( ! $exception instanceof AwsException ) {
+			return [];
+		}
+
+		$error_code = (string) $exception->getAwsErrorCode();
+		$status     = (int) $exception->getStatusCode();
+
+		$auth_codes = [
+			'InvalidAccessKeyId',
+			'SignatureDoesNotMatch',
+			'AccessDenied',
+			'InvalidToken',
+			'ExpiredToken',
+			'AuthFailure',
+			'InvalidClientTokenId',
+			'RequestExpired',
+			'InvalidSignatureException',
+			'UnrecognizedClientException',
+		];
+
+		if ( in_array( $error_code, $auth_codes, true ) || in_array( $status, [ 401, 403 ], true ) ) {
+			$context = [
+				'reason_code'   => 'incorrect_login',
+				'destination'   => 'S3',
+				'provider_code' => $error_code ?: 'auth_failed',
+			];
+			if ( $status > 0 ) {
+				$context['http_status'] = $status;
+			}
+			return $context;
+		}
+
+		return [];
 	}
 }

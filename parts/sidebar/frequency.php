@@ -205,8 +205,9 @@ BackWPupHelpers::component( 'alerts/info', [
     <?php esc_html_e( 'Start Backups with CLI:', 'backwpup' ); ?>
   </strong>
   <?php
+  $link_info_frequency = wpm_apply_filters_typed( 'string', 'backwpup_url_add_hash',"https://backwpup.com/docs/backwpup-wp-cli-commands/" );
   // translators: %1$s: link tag to backwpup.com, %2$s: closing link tag, %3$s: link tag to wp-cli.org.
-  printf( esc_html__( 'Use %1$sWP-CLI%2$s to run backups from the command line.', 'backwpup' ), '<a class="underline" href="https://backwpup.com/docs/backwpup-wp-cli-commands/" target="_blank">', '</a>' );
+  printf( esc_html__( 'Use %1$sWP-CLI%2$s to run backups from the command line.', 'backwpup' ), '<a class="underline" href="' . esc_url( $link_info_frequency ) . '" target="_blank">', '</a>' );
   ?>
 </div>
 

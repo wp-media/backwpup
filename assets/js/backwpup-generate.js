@@ -75,7 +75,7 @@ jQuery(document).ready(function ($) {
   backwpup_show_progress();
   $('#showworkingclose').on('click', function() {
     let redirect_url = $(this).data('bwpup_redirect_url');
-    if ( redirect_url ) {
+    if ( redirect_url && redirect_url !== window.location.href ) {
       window.location.href = redirect_url;
     } else {
       $("#runningjob").hide('slow');

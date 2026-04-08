@@ -27,6 +27,7 @@ $archiveFormat      = BackWPup_Option::get( $job_id, 'archiveformat', $optionAda
 $archiveNameNoHash  = BackWPup_Option::get( $job_id, 'archivenamenohash', $optionAdapter->defaults_job( 'archivenamenohash' ) );
 $hash               = BackWPup_Option::get_generated_hash( $job_id );
 $archiveNamePreview = str_replace( '%hash%', $hash, BackWPup_Job::sanitize_file_name( BackWPup_Option::substitute_date_vars( $archiveNameNoHash ) ) );
+$docsUrl            = wpm_apply_filters_typed( 'string', 'backwpup_url_add_hash','https://backwpup.com/docs/what-placeholders-can-i-use-in-archive-names-and-what-do-they-mean/' );
 
 BackWPupHelpers::component( 'containers/scrollable-start', [ 'gap_size' => 'small' ] );
 
@@ -74,7 +75,7 @@ BackWPupHelpers::children(
 		</span>
 	</p>
 	<p class="mt-3 underline pl-3 pr-3">
-		<a class="underline" href="https://backwpup.com/docs/what-placeholders-can-i-use-in-archive-names-and-what-do-they-mean/" target="_blank"><?php esc_html_e( 'What do these placeholders mean?', 'backwpup' ); ?></a>
+		<a class="underline" href="<?php echo esc_url( $docsUrl ); ?>" target="_blank"><?php esc_html_e( 'What do these placeholders mean?', 'backwpup' ); ?></a>
 	</p>
 	</div>
 <?php

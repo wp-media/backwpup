@@ -38,7 +38,7 @@ class BackWPup_Page_Settings {
 	public function __construct(
 		array $settings_views,
 		array $settings_updaters,
-		WpOptionsLicenseRepository $license_repository = null
+		?WpOptionsLicenseRepository $license_repository = null
 	) {
 		$this->settings_views     = array_filter(
 			$settings_views,

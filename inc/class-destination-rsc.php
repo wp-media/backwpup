@@ -220,8 +220,15 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 				);
 			}
 		} catch ( Exception $e ) {
-			// translators: %s: Error message.
-			$job_object->log( E_USER_ERROR, sprintf( __( 'Rackspace Cloud API: %s', 'backwpup' ), $e->getMessage() ), $e->getFile(), $e->getLine() );
+			$context = $this->rackspace_error_context( $e->getMessage() );
+			$job_object->log(
+				/* translators: %s: Error message. */
+				sprintf( __( 'Rackspace Cloud API: %s', 'backwpup' ), $e->getMessage() ),
+				E_USER_ERROR,
+				$e->getFile(),
+				$e->getLine(),
+				$context
+			);
 
 			return false;
 		}
@@ -313,8 +320,15 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			}
 			set_site_transient( 'backwpup_' . $job_object->job['jobid'] . '_rsc', $files, YEAR_IN_SECONDS );
 		} catch ( Exception $e ) {
-			// translators: %s: Error message.
-			$job_object->log( E_USER_ERROR, sprintf( __( 'Rackspace Cloud API: %s', 'backwpup' ), $e->getMessage() ), $e->getFile(), $e->getLine() );
+			$context = $this->rackspace_error_context( $e->getMessage() );
+			$job_object->log(
+				/* translators: %s: Error message. */
+				sprintf( __( 'Rackspace Cloud API: %s', 'backwpup' ), $e->getMessage() ),
+				E_USER_ERROR,
+				$e->getFile(),
+				$e->getLine(),
+				$context
+			);
 
 			return false;
 		}
@@ -503,5 +517,41 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 	 */
 	public function get_service_name(): string {
 		return self::SERVICE_NAME;
+	}
+
+	/**
+	 * Build error context for Rackspace errors.
+	 *
+	 * @param string $message Error message.
+	 * @return array
+	 */
+	private function rackspace_error_context( string $message ): array {
+		$normalized = strtolower( $message );
+
+		if (
+			false !== strpos( $normalized, 'authentication' )
+			|| false !== strpos( $normalized, 'unauthorized' )
+			|| false !== strpos( $normalized, 'forbidden' )
+		) {
+			return [
+				'reason_code'   => 'incorrect_login',
+				'destination'   => 'RSC',
+				'provider_code' => 'auth_failed',
+			];
+		}
+
+		if (
+			false !== strpos( $normalized, 'quota' )
+			|| false !== strpos( $normalized, 'insufficient' )
+			|| false !== strpos( $normalized, 'not enough' )
+		) {
+			return [
+				'reason_code'   => 'not_enough_storage',
+				'destination'   => 'RSC',
+				'provider_code' => 'quota_exceeded',
+			];
+		}
+
+		return [];
 	}
 }

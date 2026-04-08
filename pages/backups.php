@@ -6,6 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+do_action( 'backwpup_track_dashboard_viewed' );
 ?>
   <div class="max-w-screen-xl flex flex-col gap-4 backwpup-typography">
     <div id="tb_download_file" style="display: none;">

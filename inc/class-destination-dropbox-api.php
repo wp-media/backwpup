@@ -259,10 +259,11 @@ class BackWPup_Destination_Dropbox_API {
 			$chunk_upload_time = microtime(
 				true
 			) - $chunk_upload_start;
-			$this->job_object->steps_data[ $this->job_object->step_working ]['totalread'] += strlen( $data );
+			$chunk_bytes       = strlen( $data );
+			$this->job_object->steps_data[ $this->job_object->step_working ]['totalread'] += $chunk_bytes;
 
 			// args for next chunk.
-			$this->job_object->steps_data[ $this->job_object->step_working ]['offset'] += $chunk_size;
+			$this->job_object->steps_data[ $this->job_object->step_working ]['offset'] += $chunk_bytes;
 			if ( 'archive' === $this->job_object->job['backuptype'] ) {
 				$this->job_object->substeps_done = $this->job_object->steps_data[ $this->job_object->step_working ]['offset'];
 				if ( strlen( $data ) === $chunk_size ) {
@@ -743,15 +744,16 @@ class BackWPup_Destination_Dropbox_API {
 	 *
 	 * @param string $message The message to log.
 	 * @param int    $level   The log level.
+	 * @param array  $context Optional context payload.
 	 *
 	 * @return bool|null True on success, null if no job object set.
 	 */
-	protected function log( $message, $level = E_USER_NOTICE ) {
+	protected function log( $message, $level = E_USER_NOTICE, array $context = [] ) {
 		if ( ! isset( $this->job_object ) ) {
 			return null;
 		}
 
-		return $this->job_object->log( $message, $level );
+		return $this->job_object->log( $message, $level, '', 0, $context );
 	}
 
 	/**
@@ -990,7 +992,7 @@ class BackWPup_Destination_Dropbox_API {
 					'(400) Bad input parameter. Response from server: %s',
 					'backwpup'
 				),
-				esc_html( $response->getBody()->getContents() )
+				wp_kses_data( $response->getBody()->getContents() )
 			)
 		);
 	}
@@ -1442,9 +1444,22 @@ class BackWPup_Destination_Dropbox_API {
 	 * @return void
 	 */
 	private function handle_files_upload_error( $error ) {
+		if ( ! is_array( $error ) || empty( $error['.tag'] ) ) {
+			$this->log_warning( 'There was an unknown error when uploading the file.' );
+			return;
+		}
+
 		switch ( $error['.tag'] ) {
 			case 'path':
-				$this->handle_files_upload_write_failed( $error['path'] );
+				if ( empty( $error['path'] ) || ! is_array( $error['path'] ) ) {
+					$this->log_warning( 'There was an unknown error when uploading the file.' );
+					break;
+				}
+				if ( ! empty( $error['path']['reason'] ) && is_array( $error['path']['reason'] ) ) {
+					$this->handle_files_upload_write_failed( $error['path'] );
+					break;
+				}
+				$this->handle_files_write_error( $error['path'] );
 				break;
 
 			case 'other':
@@ -1461,6 +1476,11 @@ class BackWPup_Destination_Dropbox_API {
 	 * @return void
 	 */
 	private function handle_files_upload_write_failed( $error ) {
+		if ( ! is_array( $error ) || empty( $error['reason'] ) || ! is_array( $error['reason'] ) ) {
+			$this->log_warning( 'There was an unknown error when uploading the file.' );
+			return;
+		}
+
 		$this->handle_files_write_error( $error['reason'] );
 	}
 
@@ -1472,6 +1492,11 @@ class BackWPup_Destination_Dropbox_API {
 	 * @return void
 	 */
 	private function handle_files_write_error( $error ) {
+		if ( ! is_array( $error ) || empty( $error['.tag'] ) ) {
+			$this->log_warning( 'There was an unknown error when uploading the file.' );
+			return;
+		}
+
 		$message = '';
 
 		// Type of error.
@@ -1504,7 +1529,20 @@ class BackWPup_Destination_Dropbox_API {
 				$message = 'There was an unknown error when uploading the file.';
 				break;
 		}
+		$context = [];
+		$level   = E_USER_WARNING;
+		if ( isset( $error['.tag'] ) && 'insufficient_space' === $error['.tag'] ) {
+			$context = [
+				'reason_code'   => 'not_enough_storage',
+				'destination'   => 'DROPBOX',
+				'provider_code' => 'insufficient_space',
+			];
+			$level   = E_USER_ERROR;
+		}
 
-		$this->log_warning( $message );
+		$logged = $this->log( $message, $level, $context );
+		if ( null === $logged ) {
+			trigger_error( $message, $level ); // phpcs:ignore
+		}
 	}
 }

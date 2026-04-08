@@ -197,7 +197,14 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 					_x( 'Not enough disk space available on SugarSync. Available: %s.', 'Available space on SugarSync', 'backwpup' ),
 					size_format( $sugarsyncfreespase, 2 )
 				),
-					E_USER_ERROR
+					E_USER_ERROR,
+					__FILE__,
+					__LINE__,
+					[
+						'reason_code'   => 'not_enough_storage',
+						'destination'   => 'SUGARSYNC',
+						'provider_code' => 'quota_exceeded',
+					]
 					);
 				$job_object->substeps_todo = 1 + $job_object->backup_filesize;
 
@@ -315,6 +322,7 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 			}
 			set_site_transient( 'BackWPup_' . $job_object->job['jobid'] . '_SUGARSYNC', $files, YEAR_IN_SECONDS );
 		} catch ( Exception $e ) {
+			$context = $this->sugarsync_error_context( $e->getMessage() );
 			$job_object->log(
 				sprintf(
 				/* translators: %s: error message. */
@@ -323,7 +331,8 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 			),
 				E_USER_ERROR,
 				$e->getFile(),
-				$e->getLine()
+				$e->getLine(),
+				$context
 				);
 
 			return false;
@@ -355,5 +364,47 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 	 */
 	public function get_service_name(): string {
 		return self::SERVICE_NAME;
+	}
+
+	/**
+	 * Build error context for SugarSync errors.
+	 *
+	 * @param string $message Error message.
+	 * @return array
+	 */
+	private function sugarsync_error_context( string $message ): array {
+		$normalized = strtolower( $message );
+		$status     = '';
+
+		if ( preg_match( '/\((\d{3})\)/', $message, $matches ) ) {
+			$status = $matches[1];
+		}
+
+		if (
+			'401' === $status
+			|| '403' === $status
+			|| false !== strpos( $normalized, 'unauthorized' )
+			|| false !== strpos( $normalized, 'authentication' )
+		) {
+			return [
+				'reason_code'   => 'incorrect_login',
+				'destination'   => 'SUGARSYNC',
+				'provider_code' => $status ?: 'auth_failed',
+			];
+		}
+
+		if (
+			false !== strpos( $normalized, 'quota' )
+			|| false !== strpos( $normalized, 'insufficient' )
+			|| false !== strpos( $normalized, 'not enough' )
+		) {
+			return [
+				'reason_code'   => 'not_enough_storage',
+				'destination'   => 'SUGARSYNC',
+				'provider_code' => $status ?: 'quota_exceeded',
+			];
+		}
+
+		return [];
 	}
 }

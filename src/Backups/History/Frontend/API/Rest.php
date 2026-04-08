@@ -6,6 +6,7 @@ use WPMedia\BackWPup\API\Rest as RestInterface;
 use WPMedia\BackWPup\Adapters\BackWPupAdapter;
 use WPMedia\BackWPup\Adapters\OptionAdapter;
 use WPMedia\BackWPup\Adapters\BackWPupHelpersAdapter;
+use WPMedia\BackWPup\Backup\Database as BackupDatabase;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -32,16 +33,25 @@ class Rest implements RestInterface {
 	private $helpers_adapter;
 
 	/**
+	 * Backup database instance.
+	 *
+	 * @var BackupDatabase
+	 */
+	private $backup_database;
+
+	/**
 	 * Constructor for the Rest class.
 	 *
 	 * @param BackWPupAdapter        $backups_adapter   Adapter for handling backup operations.
 	 * @param OptionAdapter          $option_adapter    Adapter for managing options.
 	 * @param BackWPupHelpersAdapter $helpers_adapter   Adapter for helper functions.
+	 * @param BackupDatabase         $backup_database   Backup database handler.
 	 */
-	public function __construct( BackWPupAdapter $backups_adapter, OptionAdapter $option_adapter, BackWPupHelpersAdapter $helpers_adapter ) {
+	public function __construct( BackWPupAdapter $backups_adapter, OptionAdapter $option_adapter, BackWPupHelpersAdapter $helpers_adapter, BackupDatabase $backup_database ) {
 		$this->backwpup_adapter = $backups_adapter;
 		$this->option_adapter   = $option_adapter;
 		$this->helpers_adapter  = $helpers_adapter;
+		$this->backup_database  = $backup_database;
 	}
 
 	/**
@@ -187,6 +197,7 @@ class Rest implements RestInterface {
 			}
 		}
 		$unique_backups = [];
+		$seen           = [];
 		foreach ( $backups as $item ) {
 			$key = $item['stored_on'] . '|' . $item['filename'];
 			if ( ! isset( $seen[ $key ] ) ) {
@@ -195,6 +206,7 @@ class Rest implements RestInterface {
 			}
 		}
 		$backups = $unique_backups;
+		$backups = $this->append_failed_backups( $backups );
 		usort(
 			$backups,
 			function ( $a, $b ) {
@@ -245,6 +257,150 @@ class Rest implements RestInterface {
 				'page'    => $page,
 			]
 		);
+	}
+
+	/**
+	 * Append failed backups from the backups table.
+	 *
+	 * @param array $backups Backups list.
+	 *
+	 * @return array
+	 */
+	private function append_failed_backups( array $backups ): array {
+		$failed_rows = $this->backup_database->backups_list_by_status( 'failed' );
+
+		if ( empty( $failed_rows ) ) {
+			return $backups;
+		}
+
+		$existing = [];
+		foreach ( $backups as $item ) {
+			if ( empty( $item['stored_on'] ) || empty( $item['filename'] ) ) {
+				continue;
+			}
+			$existing[ $item['stored_on'] . '|' . $item['filename'] ] = true;
+		}
+
+		foreach ( $failed_rows as $failed_row ) {
+			if ( empty( $failed_row->filename ) || empty( $failed_row->destination ) ) {
+				continue;
+			}
+
+			$key = $failed_row->destination . '|' . $failed_row->filename;
+			if ( isset( $existing[ $key ] ) ) {
+				continue;
+			}
+			$existing[ $key ] = true;
+
+			$job_id   = (int) ( $failed_row->job_id ?? 0 );
+			$job      = $job_id > 0 ? $this->option_adapter->get_job( $job_id ) : false;
+			$job_data = $this->build_job_data( $job_id, $job );
+
+			$backups[] = array_merge(
+				$job_data,
+				[
+					'time'           => $this->normalize_backup_timestamp( $failed_row->submitted_at, $failed_row->modified ),
+					'filename'       => (string) $failed_row->filename,
+					'file'           => (string) $failed_row->filename,
+					'stored_on'      => (string) $failed_row->destination,
+					'backup_trigger' => (string) ( $failed_row->backup_trigger ?? '' ),
+					'status'         => (string) ( $failed_row->status ?? '' ),
+					'error_message'  => (string) ( $failed_row->error_message ?? '' ),
+					'logfile'        => (string) ( $failed_row->logfile ?? '' ),
+					'backup_id'      => (int) ( $failed_row->id ?? 0 ),
+					'data'           => $this->build_backup_data( (string) $failed_row->filename, $job ),
+				]
+			);
+		}
+
+		return $backups;
+	}
+
+	/**
+	 * Build job data for a backup entry.
+	 *
+	 * @param int        $job_id Job ID.
+	 * @param array|bool $job Job data.
+	 *
+	 * @return array
+	 */
+	private function build_job_data( int $job_id, $job ): array {
+		if ( ! is_array( $job ) ) {
+			/* translators: %d: job id. */
+			$job_name = $job_id > 0 ? sprintf( __( 'Job #%d', 'backwpup' ), $job_id ) : __( 'Unknown job', 'backwpup' );
+
+			return [
+				'id'       => $job_id,
+				'name'     => $job_name,
+				'type'     => '',
+				'data'     => [ 'Unknown' ],
+				'logfile'  => '',
+				'last_run' => null,
+			];
+		}
+
+		return [
+			'id'       => $job_id,
+			'name'     => $job['name'] ?? '',
+			'type'     => $job['activetype'] ?? '',
+			'data'     => [ 'Unknown' ],
+			'logfile'  => $job['logfile'] ?? '',
+			'last_run' => $job['lastrun'] ?? null,
+		];
+	}
+
+	/**
+	 * Build backup data types from filename or job configuration.
+	 *
+	 * @param string     $filename Backup filename.
+	 * @param array|bool $job Job data.
+	 *
+	 * @return array
+	 */
+	private function build_backup_data( string $filename, $job ): array {
+		$data = [];
+
+		$filename_base = pathinfo( $filename, PATHINFO_FILENAME );
+		if ( stripos( $filename, '.tar.gz' ) === strlen( $filename ) - 7 ) {
+			$filename_base = substr( $filename, 0, -7 );
+		} elseif ( stripos( $filename, '.tar.bz2' ) === strlen( $filename ) - 8 ) {
+			$filename_base = substr( $filename, 0, -8 );
+		}
+		$filename_parts = explode( '_', $filename_base );
+
+		if ( count( $filename_parts ) > 1 ) {
+			$data = (array) explode( '-', end( $filename_parts ) );
+		}
+
+		if ( empty( $data ) && is_array( $job ) && ! empty( $job['type'] ) ) {
+			$data = (array) $job['type'];
+		}
+
+		if ( empty( $data ) ) {
+			$data = [ 'Unknown' ];
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Normalize backup timestamps.
+	 *
+	 * @param int $submitted_at Submitted timestamp.
+	 * @param int $modified Modified timestamp.
+	 *
+	 * @return int
+	 */
+	private function normalize_backup_timestamp( int $submitted_at, int $modified ): int {
+		if ( $submitted_at > 0 ) {
+			return $submitted_at;
+		}
+
+		if ( $modified > 0 ) {
+			return $modified;
+		}
+
+		return time();
 	}
 
 	/**

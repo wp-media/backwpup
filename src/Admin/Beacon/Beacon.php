@@ -82,6 +82,10 @@ class Beacon extends AbstractRender {
 		}
 
 		$selected_suggest = $suggest[ $doc_id ] ?? [];
+		// Apply filter on the URL if set.
+		if ( isset( $selected_suggest['url'] ) ) {
+			$selected_suggest['url'] = wpm_apply_filters_typed( 'string', 'backwpup_url_add_hash', $selected_suggest['url'] );
+		}
 		// Add tracking data if required using the redirect.
 		if ( ! empty( $selected_suggest ) && $is_tracked ) {
 			// Prefix all keys with 'bwu_event_property_' except 'bwu_event'.

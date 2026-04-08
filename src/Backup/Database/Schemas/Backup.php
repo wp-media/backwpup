@@ -49,6 +49,18 @@ class Backup extends Schema {
 			'sortable'   => false,
 		],
 
+		// job_id column.
+		[
+			'name'       => 'job_id',
+			'type'       => 'bigint',
+			'length'     => '20',
+			'unsigned'   => true,
+			'default'    => null,
+			'cache_key'  => false,
+			'searchable' => true,
+			'sortable'   => true,
+		],
+
 		// STATUS column.
 		[
 			'name'       => 'status',
@@ -75,6 +87,17 @@ class Backup extends Schema {
 		[
 			'name'       => 'error_message',
 			'type'       => 'longtext',
+			'default'    => null,
+			'cache_key'  => false,
+			'searchable' => true,
+			'sortable'   => true,
+		],
+
+		// logfile column.
+		[
+			'name'       => 'logfile',
+			'type'       => 'varchar',
+			'length'     => '255',
 			'default'    => null,
 			'cache_key'  => false,
 			'searchable' => true,

@@ -966,14 +966,15 @@ class BackWPup_Job {
 	/**
 	 * Write messages to log file.
 	 *
-	 * @param string $message The error message.
-	 * @param int    $type    The error number (E_USER_ERROR, E_USER_WARNING, E_USER_NOTICE, ...).
-	 * @param string $file    The full path of file with error (__FILE__).
-	 * @param int    $line    The line in that is the error (__LINE__).
+	 * @param string     $message The error message.
+	 * @param int        $type    The error number (E_USER_ERROR, E_USER_WARNING, E_USER_NOTICE, ...).
+	 * @param string     $file    The full path of file with error (__FILE__).
+	 * @param int        $line    The line in that is the error (__LINE__).
+	 * @param array|null $context Optional context payload for error signals.
 	 *
 	 * @return bool True.
 	 */
-	public function log( $message, $type = E_USER_NOTICE, $file = '', $line = 0 ) {
+	public function log( $message, $type = E_USER_NOTICE, $file = '', $line = 0, $context = null ) {
 		// If error has been suppressed with an @.
 		$reporting_level = (int) ini_get( 'error_reporting' );
 		if ( 0 === $reporting_level ) {
@@ -1181,39 +1182,51 @@ class BackWPup_Job {
 			/**
 			 * Fires when BackWPup logs a warning/error (signal).
 			 *
-			 * @param array $signal {
-			 *   Signal data.
+			 * @param array $signal Signal data.
 			 *
-			 *   @type string $level      'error'|'warning'.
-			 *   @type int    $type       PHP error type (E_USER_ERROR, etc).
-			 *   @type string $message    The (already prefixed) message string.
-			 *   @type int    $timestamp  current_time('timestamp').
-			 *   @type int    $job_id     Job ID (if available).
-			 *   @type string $job_name   Job name (if available).
-			 *   @type string $step       Current step identifier.
-			 *   @type string $logfile    Current logfile path (maybe empty).
-			 *   @type string $file       Source file (debug only might be filled).
-			 *   @type int    $line       Source line.
-			 * }
+			 * @type string $level      'error'|'warning'.
+			 * @type int    $type       PHP error type (E_USER_ERROR, etc).
+			 * @type string $message    The (already prefixed) message string.
+			 * @type int    $timestamp  current_time('timestamp').
+			 * @type int    $job_id     Job ID (if available).
+			 * @type string $job_name   Job name (if available).
+			 * @type string $step       Current step identifier.
+			 * @type string $logfile    Current logfile path (maybe empty).
+			 * @type string $file       Source file (debug only might be filled).
+			 * @type int    $line       Source line.
+			 * @type array  $context    Optional context payload.
+			 *   @type string $reason_code   Failure reason code.
+			 *   @type string $destination   Destination identifier.
+			 *   @type string $provider_code Provider-specific reason code.
+			 *   @type int    $http_status   HTTP status code (if any).
 			 *
 			 * @param BackWPup_Job $job The job instance.
 			 */
-			do_action(
-				'backwpup_job_error_signal',
-				[
-					'level'     => $error ? 'error' : 'warning',
-					'type'      => (int) $type,
-					'message'   => (string) $message,
-					'timestamp' => time(),
-					'job_id'    => isset( $this->job['jobid'] ) ? (int) $this->job['jobid'] : 0,
-					'job_name'  => isset( $this->job['name'] ) ? (string) $this->job['name'] : '',
-					'step'      => (string) $this->step_working,
-					'logfile'   => (string) $this->logfile,
-					'file'      => (string) $file,
-					'line'      => (int) $line,
-				],
-				$this
-			);
+			$signal_context = $this->sanitize_signal_context( $context );
+			if ( empty( $signal_context['reason_code'] ) ) {
+				$inferred_reason = $this->infer_signal_reason_code_from_message( (string) $message );
+				if ( '' !== $inferred_reason ) {
+					$signal_context['reason_code'] = $inferred_reason;
+				}
+			}
+			$signal = [
+				'level'     => $error ? 'error' : 'warning',
+				'type'      => (int) $type,
+				'message'   => (string) $message,
+				'timestamp' => time(),
+				'job_id'    => isset( $this->job['jobid'] ) ? (int) $this->job['jobid'] : 0,
+				'job_name'  => isset( $this->job['name'] ) ? (string) $this->job['name'] : '',
+				'step'      => (string) $this->step_working,
+				'logfile'   => (string) $this->logfile,
+				'file'      => (string) $file,
+				'line'      => (int) $line,
+			];
+
+			if ( ! empty( $signal_context ) ) {
+				$signal['context'] = $signal_context;
+			}
+
+			do_action( 'backwpup_job_error_signal', $signal, $this );
 		}
 
 		// true for no more php error handling.
@@ -1227,6 +1240,89 @@ class BackWPup_Job {
 	 */
 	public function is_debug() {
 		return strstr( $this->log_level, 'debug' ) ? true : false;
+	}
+
+	/**
+	 * Sanitize optional signal context data.
+	 *
+	 * @param mixed $context Optional context payload.
+	 * @return array
+	 */
+	private function sanitize_signal_context( $context ): array {
+		if ( ! is_array( $context ) ) {
+			return [];
+		}
+
+		$allowed = [
+			'reason_code',
+			'destination',
+			'provider_code',
+			'http_status',
+		];
+
+		$clean = [];
+		foreach ( $allowed as $key ) {
+			if ( ! array_key_exists( $key, $context ) ) {
+				continue;
+			}
+
+			$value = $context[ $key ];
+			if ( null === $value ) {
+				continue;
+			}
+
+			if ( 'http_status' === $key ) {
+				$clean[ $key ] = (int) $value;
+				continue;
+			}
+
+			if ( is_scalar( $value ) ) {
+				$clean[ $key ] = trim( (string) $value );
+			}
+		}
+
+		if ( isset( $clean['reason_code'] ) ) {
+			$clean['reason_code'] = strtolower( $clean['reason_code'] );
+		}
+
+		return $clean;
+	}
+
+	/**
+	 * Infer a failure reason code from a log message.
+	 *
+	 * @param string $message Error message.
+	 * @return string
+	 */
+	private function infer_signal_reason_code_from_message( string $message ): string {
+		$normalized = strtolower( trim( $message ) );
+		$normalized = preg_replace( '/^(error|warning|recoverable error|deprecated|strict notice):\s*/i', '', $normalized );
+		$normalized = $normalized ? $normalized : strtolower( trim( $message ) );
+
+		$storage_patterns = [
+			'not enough space',
+			'not enough storage',
+			'no space left on device',
+			'insufficient space',
+			'insufficient storage',
+			'insufficientstorage',
+			'disk full',
+			'storagequotaexceeded',
+			'quotalimitreached',
+			'quotaexceeded',
+			'quota limit',
+			'quota exceeded',
+			'insufficient_space',
+			'quotareached',
+		];
+
+		foreach ( $storage_patterns as $pattern ) {
+			if ( false !== strpos( $normalized, $pattern ) ) {
+				return 'not_enough_storage';
+			}
+		}
+
+		return '';
 	}
 
 	/**
@@ -1597,13 +1693,7 @@ class BackWPup_Job {
 		$this->substeps_done = 1;
 		$this->steps_done[]  = 'END';
 
-		/**
-		 * Fires when a backup job ends
-		 *
-		 * @param array  $job Job details.
-		 * @param string $backup_file Backup file name.
-		 */
-		do_action( 'backwpup_end_job', $this->job, $this->backup_file );
+		do_action( 'backwpup_end_job', $this->job, $this->backup_file, $this );
 
 		// Clean up temp.
 		self::clean_temp_folder();
@@ -1902,6 +1992,7 @@ class BackWPup_Job {
 		global $wpdb;
 
 		// Disable output buffering.
+		ob_implicit_flush( false );
 		$level = ob_get_level();
 		if ( $level ) {
 			for ( $i = 0; $i < $level; ++$i ) {
@@ -1954,11 +2045,8 @@ class BackWPup_Job {
 		set_exception_handler( [ $this, 'exception_handler' ] );
 		// disable Mixpanel error logging.
 		add_filter( 'wp_media_mixpanel_debug', '__return_false' );
-		if ( wp_is_ini_value_changeable( 'zlib.output_compression' ) ) {
+		if ( ! headers_sent() && wp_is_ini_value_changeable( 'zlib.output_compression' ) ) {
 			@ini_set( 'zlib.output_compression', '0' ); // @phpcs:ignore
-		}
-		if ( wp_is_ini_value_changeable( 'implicit_flush' ) ) {
-			@ini_set( 'implicit_flush', '0' ); // @phpcs:ignore
 		}
 		// Set WP max memory limit.
 		if ( wp_is_ini_value_changeable( 'memory_limit' ) ) {
@@ -2833,7 +2921,7 @@ class BackWPup_Job {
 		if ( function_exists( 'putenv' ) ) {
 			putenv( 'nokeepalive=1' ); // @phpcs:ignore
 		}
-		if ( wp_is_ini_value_changeable( 'zlib.output_compression' ) ) {
+		if ( ! headers_sent() && wp_is_ini_value_changeable( 'zlib.output_compression' ) ) {
 			@ini_set( 'zlib.output_compression', '0' ); // @phpcs:ignore
 		}
 

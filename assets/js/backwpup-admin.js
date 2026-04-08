@@ -434,6 +434,18 @@ jQuery(document).ready(function ($) {
   // Sidebar & Modal
   const $modal = $("#backwpup-modal");
   const $sidebar = $("#backwpup-sidebar");
+  const $modalContainer = $modal.find("> div").first();
+  const defaultModalClass = $modalContainer.attr("class") || "";
+  const defaultModalStyle = $modalContainer.attr("style") || "";
+
+  function resetModalContainer() {
+    $modalContainer.attr("class", defaultModalClass);
+    if (defaultModalStyle) {
+      $modalContainer.attr("style", defaultModalStyle);
+    } else {
+      $modalContainer.removeAttr("style");
+    }
+  }
 
   function openSidebar(panel) {
     // Fill infos
@@ -566,21 +578,29 @@ jQuery(document).ready(function ($) {
 		let that = $(event.currentTarget);
 		let panel = that.data("content"); // Get the panel to open
 		let job_id = that.data("job-id");
+		let backup_id = that.data("backup-id");
+    let modal_style = that.data("modal-style");
+    let modal_class = that.data("modal-class");
 		let target = $modal.find("#sidebar-" + panel);
+		let block_data = {
+			'job_id': job_id,
+		};
+
+		if (backup_id) {
+			block_data.backup_id = backup_id;
+		}
 
 		requestWPApi(
 			backwpupApi.getblock,
 			{
 				'block_name': that.data("block-name"),
 				'block_type': that.data("block-type"),
-				'block_data': {
-					'job_id': job_id,
-				},
+				'block_data': block_data,
 			},
 			function(response) {
 				// Fill infos
 				target.html(response);
-				openModal(panel);
+				openModal(panel, { modalStyle: modal_style, modalClass: modal_class });
 				$(".js-backwpup-close-modal").on('click', closeModal);
 			},
 			'POST',
@@ -642,10 +662,19 @@ jQuery(document).ready(function ($) {
   });
 
   function openModal(panel, dataset={}) {
+    resetModalContainer();
+    if (dataset.modalClass) {
+      $modalContainer.addClass(dataset.modalClass);
+    }
+    if (dataset.modalStyle) {
+      const mergedStyle = defaultModalStyle ? defaultModalStyle + ";" + dataset.modalStyle : dataset.modalStyle;
+      $modalContainer.attr("style", mergedStyle);
+    }
     // Fill informations
     $modal.find("article").hide();
     let thePanel = $modal.find("#sidebar-" + panel);
     thePanel.show();
+    thePanel.find(".js-backwpup-bulk-delete-backups").prop("disabled", false);
     if (dataset.url) {
       thePanel.find(".js-backwpup-open-url").attr("data-href", dataset.url);
     }
@@ -655,6 +684,7 @@ jQuery(document).ready(function ($) {
   }
 
   function closeModal() {
+    resetModalContainer();
     $("body").removeClass("overflow-hidden");
     $modal.addClass("hidden").removeClass("flex");
   }
@@ -745,7 +775,6 @@ jQuery(document).ready(function ($) {
         backwpupApi.delete_auth_cloud,
         data,
         function (response) {
-          refresh_storage_destinations(job_id, 'SUGARSYNC', false);
           $('#sugarsynclogin').html(response);
           refreshSugarSyncRootFolders(job_id);
           initSugarSyncEvents();
@@ -892,6 +921,42 @@ jQuery(document).ready(function ($) {
 
   $document.on('click', '.js-backwpup-close-modal', closeModal);
 
+  $document.on('click', '.js-backwpup-delete-failed-backup', function() {
+	  const backupId = $(this).data("backup-id");
+	  if (!backupId) {
+		  return;
+	  }
+
+	  requestWPApi(
+		  backwpupApi.backups_bulk_actions,
+		  { action: 'delete', backups: [ { dataset: { backup_id: backupId } } ] },
+		  function() {
+			  closeModal();
+			  const $backupsTable = $("#backwpup-backup-history");
+			  const $row = $backupsTable.find('tr[data-backup-id="' + backupId + '"]');
+			  if ($row.length) {
+				  $row.remove();
+			  }
+
+			  const $countInput = $backupsTable.find('input[name="nb_backups"]');
+			  if ($countInput.length) {
+				  const total = parseInt($countInput.val(), 10);
+				  if (!Number.isNaN(total) && total > 0) {
+					  $countInput.val(total - 1);
+				  }
+			  }
+
+			  const remainingRows = $backupsTable.find("tbody tr").length;
+			  if (remainingRows === 0) {
+				  const currentPage = parseInt(getUrlParameter('page_num', 1), 10) || 1;
+				  const nextPage = currentPage > 1 ? currentPage - 1 : 1;
+				  loadBackupsListingAndPagination(nextPage);
+			  }
+		  },
+		  'POST'
+	  );
+  });
+
   // Filter table list
   $document.on('keyup', '.js-backwpup-filter-tables', function () {
     const filter = $(this).val().toLowerCase();
@@ -957,10 +1022,12 @@ jQuery(document).ready(function ($) {
   const $backupsTable = $("#backwpup-backup-history");
   
   let isCheckboxListenerInitialized = false;
+  let pendingBulkDelete = null;
 
   $(".js-backwpup-select-all").on('change', function () {
     const checked = $(this).prop("checked");
-    $("#bulk-actions-apply").prop("disabled", !checked);
+    const isDeleteAction = $('#bulk-actions-select').val() === 'delete';
+    $("#bulk-actions-apply").prop("disabled", !checked || !isDeleteAction);
     $backupsTable.find("input[type=checkbox]").prop("checked", checked);
 
     // Initialize the event listener for individual checkboxes only once
@@ -991,15 +1058,25 @@ jQuery(document).ready(function ($) {
         $menu.addClass("hidden");
       }
     });
+
+    $(".js-backwpup-menu-content")
+      .off("click.backwpupLoadAndOpenModal")
+      .on("click.backwpupLoadAndOpenModal", ".js-backwpup-load-and-open-modal", function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        load_and_open_modal(event);
+        $(this).closest(".js-backwpup-menu-content").addClass("hidden");
+      });
     // Backup select
     // This button is disabled by default.
     $("#bulk-actions-apply").prop("disabled", true);
-    $(".js-backwpup-select-backup").on('click', function () {
-      // Vérifier si au moins un élément est coché
-      const isChecked = $(".js-backwpup-select-backup:checked").length > 0;
-      // Activer ou désactiver le bouton en fonction de la vérification
-      $("#bulk-actions-apply").prop("disabled", !isChecked);
-    });
+  $(".js-backwpup-select-backup").on('click', function () {
+    // Vérifier si au moins un élément est coché
+    const isChecked = $(".js-backwpup-select-backup:checked").length > 0;
+    const isDeleteAction = $('#bulk-actions-select').val() === 'delete';
+    // Activer ou désactiver le bouton en fonction de la vérification
+    $("#bulk-actions-apply").prop("disabled", !isChecked || !isDeleteAction);
+  });
   }
 
   $(document).on('click', function () {
@@ -2070,12 +2147,27 @@ jQuery(document).ready(function ($) {
 
   // Add event listener for the 'Apply' button to trigger the bulk delete action
   $("#bulk-actions-apply").on('click', function () {
-    const action = $(this).data("action");
+    const action = $('#bulk-actions-select').val() || $(this).data("action");
+    if (!action) {
+      return;
+    }
+
     const selectedBackups = $backupsTable.find("input[type=checkbox]:checked").map(function () {
       return {
         dataset: $(this).data("delete"),
       };
     }).get();
+
+    if (action === 'delete') {
+      if (!selectedBackups.length) {
+        return;
+      }
+
+      pendingBulkDelete = selectedBackups;
+      $modal.find("#sidebar-bulk-delete-backups .js-backwpup-bulk-delete-backups").prop('disabled', false);
+      openModal('bulk-delete-backups');
+      return;
+    }
 
     requestWPApi(backwpupApi.backups_bulk_actions, { action: action, backups: selectedBackups }, function (response) {
       // Refresh the backup table after deletion
@@ -2085,9 +2177,30 @@ jQuery(document).ready(function ($) {
     $(".js-backwpup-select-all").prop("checked", false);
   });
 
+  $(document).on('click', '.js-backwpup-bulk-delete-backups', function () {
+    if (!pendingBulkDelete || pendingBulkDelete.length === 0) {
+      closeModal();
+      return;
+    }
+
+    $(this).prop('disabled', true);
+    requestWPApi(backwpupApi.backups_bulk_actions, { action: 'delete', backups: pendingBulkDelete }, function (response) {
+      // Refresh the backup table after deletion
+      loadBackupsListingAndPagination(getUrlParameter('page_num', 1));
+      closeModal();
+    }, "POST");
+
+    pendingBulkDelete = null;
+    $(".js-backwpup-select-all").prop("checked", false);
+    $('#bulk-actions-select').val('');
+    $("#bulk-actions-apply").prop("disabled", true);
+  });
+
   $('#bulk-actions-select').on('change', function() {
     const selectedAction = $(this).val();
     $('#bulk-actions-apply').data('action', selectedAction);
+    const hasSelection = $(".js-backwpup-select-backup:checked").length > 0;
+    $("#bulk-actions-apply").prop("disabled", selectedAction !== 'delete' || !hasSelection);
   });
   // Handle Save Settings - excluded tables button click for table selection
   $document.on('click', "#save-excluded-tables", function () {

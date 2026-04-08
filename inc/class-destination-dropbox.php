@@ -315,16 +315,26 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 					if ( $job_object->is_debug() ) {
 						$quota            = $dropbox->users_get_space_usage();
 						$dropboxfreespase = $quota['allocation']['allocated'] - $quota['used'];
-						$job_object->log(
-							sprintf(
-								/* translators: %s: available space. */
-								__( '%s available on your Dropbox', 'backwpup' ),
-								size_format( $dropboxfreespase, 2 )
-							)
-						);
+							$job_object->log(
+								sprintf(
+									/* translators: %s: available space. */
+									__( '%s available on your Dropbox', 'backwpup' ),
+									size_format( $dropboxfreespase, 2 )
+								)
+							);
 					}
 				} else {
-					$job_object->log( __( 'Not Authenticated with Dropbox!', 'backwpup' ), E_USER_ERROR );
+					$job_object->log(
+						__( 'Not Authenticated with Dropbox!', 'backwpup' ),
+						E_USER_ERROR,
+						__FILE__,
+						__LINE__,
+						[
+							'reason_code'   => 'incorrect_login',
+							'destination'   => 'DROPBOX',
+							'provider_code' => 'not_authenticated',
+						]
+					);
 
 					return false;
 				}
@@ -332,32 +342,70 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 			}
 
 			// Put the file.
-			if ( $job_object->substeps_done < $job_object->backup_filesize ) { // Only if upload not complete.
-				$response = $dropbox->upload(
+			if ( $job_object->substeps_done <= $job_object->backup_filesize ) { // Only if upload not complete.
+				$errors_before = $job_object->errors;
+				$response      = $dropbox->upload(
 					$job_object->backup_folder . $job_object->backup_file,
 					$job_object->job['dropboxdir'] . $job_object->backup_file
 				);
+				if ( ! is_array( $response ) || ! isset( $response['size'] ) ) {
+					if ( $job_object->errors > $errors_before ) {
+						return false;
+					}
+					$message = __( 'Dropbox API: Upload failed.', 'backwpup' );
+					if ( is_array( $response ) && ! empty( $response['error'] ) ) {
+						$message .= ' ' . $response['error'];
+					}
+					$context = [
+						'destination' => 'DROPBOX',
+					];
+					try {
+						$quota = $dropbox->users_get_space_usage();
+					} catch ( Exception $exception ) {
+						$quota = null;
+					}
+					if (
+						is_array( $quota )
+						&& isset( $quota['allocation']['allocated'], $quota['used'] )
+						&& $job_object->backup_filesize > ( (int) $quota['allocation']['allocated'] - (int) $quota['used'] )
+					) {
+						$message = __( 'You do not have enough space in your Dropbox.', 'backwpup' );
+						$context = [
+							'reason_code'   => 'not_enough_storage',
+							'destination'   => 'DROPBOX',
+							'provider_code' => 'insufficient_space',
+						];
+					}
+					$job_object->log(
+						$message,
+						E_USER_ERROR,
+						__FILE__,
+						__LINE__,
+						$context
+					);
+					return false;
+				}
 				if ( $job_object->backup_filesize === $response['size'] ) {
 					if ( ! empty( $job_object->job['jobid'] ) ) {
 						BackWPup_Option::update(
 							$job_object->job['jobid'],
-							'lastbackupdownloadurl',
-							network_admin_url(
-								'admin.php'
-							) . '?page=backwpupbackups&action=downloaddropbox&file=' . ltrim(
-								(string) $response['path_display'],
-								'/'
-							) . '&jobid=' . $job_object->job['jobid']
+						'lastbackupdownloadurl',
+						network_admin_url(
+							'admin.php'
+						) . '?page=backwpupbackups&action=downloaddropbox&file=' . ltrim(
+							(string) $response['path_display'],
+							'/'
+						) . '&jobid=' . $job_object->job['jobid']
 						);
 					}
 					$job_object->substeps_done = 1 + $job_object->backup_filesize;
 					$job_object->log(
-						sprintf(
-							/* translators: %s: destination path. */
-							__( 'Backup transferred to %s', 'backwpup' ),
-							$response['path_display']
-						),
-						E_USER_NOTICE
+					sprintf(
+						/* translators: %s: destination path. */
+						__( 'Backup transferred to %s', 'backwpup' ),
+						$response['path_display']
+					),
+					E_USER_NOTICE
 					);
 				} else {
 					if ( $response['size'] !== $job_object->backup_filesize ) {

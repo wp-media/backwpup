@@ -74,6 +74,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'job_adapter',
 					'file_adapter',
 					'job_types_adapter',
+					'backwpup_database',
 				]
 				);
 
@@ -90,6 +91,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'backwpup_adapter',
 					'option_adapter',
 					'backwpup_helpers_adapter',
+					'backwpup_database',
 				]
 				);
 		$this->getContainer()->addShared( 'backups_history_frontend_api_subscriber', BackupsHistoryFrontendApiSubscriber::class )

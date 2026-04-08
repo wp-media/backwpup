@@ -87,7 +87,7 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 	}
 
 	/**
-	 * Deletes a file from the FTP destination.
+	 * {@inheritDoc}
 	 *
 	 * @param string $jobdest    Job destination identifier.
 	 * @param string $backupfile Backup file name.
@@ -95,7 +95,7 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 	 * @return void
 	 */
 	public function file_delete( string $jobdest, string $backupfile ): void {
-		$files          = get_site_transient( 'backwpup_' . strtolower( $jobdest ) );
+		$files          = $this->file_get_list( $jobdest );
 		[$jobid, $dest] = explode( '_', $jobdest );
 
 		$job_options = (object) BackWPup_Option::get_job( $jobid );
@@ -106,6 +106,7 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 			$ftp = new BackWPup_Destination_Ftp_Type_Ftp();
 		}
 
+		$deleted_files = [];
 		try {
 			$ftp->connect(
 				$job_options->ftpuser,
@@ -120,16 +121,18 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 				]
 			);
 
-			if ( $ftp->delete( $backupfile ) ) {
-				foreach ( $files as $key => $file ) {
-					if ( is_array( $file ) && $file['file'] === $backupfile ) {
-						unset( $files[ $key ] );
-					}
+			$ftp->delete( $backupfile );
+			foreach ( $files as $key => $file ) {
+				if ( is_array( $file ) && $file['file'] === $backupfile ) {
+					unset( $files[ $key ] );
 				}
 			}
+			$deleted_files[] = $backupfile;
 		} catch ( \Exception $e ) {
 			BackWPup_Admin::message( 'FTP: ' . $e->getMessage(), true );
 		}
+
+		$this->remove_file_history_from_database( $deleted_files, 'FTP' );
 
 		set_site_transient( 'backwpup_' . strtolower( $jobdest ), $files, YEAR_IN_SECONDS );
 	}
@@ -296,8 +299,15 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 
 			$ftp->disconnect();
 		} catch ( Exception $e ) {
-			// translators: %s: FTP error message.
-			$job_object->log( sprintf( esc_html__( 'FTP server error: %s', 'backwpup' ), $e->getMessage() ), E_USER_ERROR );
+			$context = $this->ftp_error_context( $e->getMessage() );
+			$job_object->log(
+				/* translators: %s: FTP error message. */
+				sprintf( esc_html__( 'FTP server error: %s', 'backwpup' ), $e->getMessage() ),
+				E_USER_ERROR,
+				$e->getFile(),
+				$e->getLine(),
+				$context
+			);
 			$ftp->disconnect();
 			if ( $fp && is_resource( $fp ) ) {
 				fclose( $fp ); //phpcs:ignore
@@ -356,5 +366,50 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 	 */
 	public function get_service_name(): string {
 		return self::SERVICE_NAME;
+	}
+
+	/**
+	 * Build error context for FTP errors.
+	 *
+	 * @param string $message FTP error message.
+	 * @return array
+	 */
+	private function ftp_error_context( string $message ): array {
+		$normalized = strtolower( $message );
+		$code       = '';
+
+		if ( preg_match( '/\b(4|5)\d{2}\b/', $message, $matches ) ) {
+			$code = $matches[0];
+		}
+
+		if (
+			'530' === $code
+			|| false !== strpos( $normalized, 'login' )
+			|| false !== strpos( $normalized, 'not logged' )
+			|| false !== strpos( $normalized, 'authentication' )
+		) {
+			return [
+				'reason_code'   => 'incorrect_login',
+				'destination'   => 'FTP',
+				'provider_code' => $code ?: 'login_failed',
+			];
+		}
+
+		if (
+			'552' === $code
+			|| '452' === $code
+			|| false !== strpos( $normalized, 'quota' )
+			|| false !== strpos( $normalized, 'disk full' )
+			|| false !== strpos( $normalized, 'no space' )
+			|| false !== strpos( $normalized, 'insufficient' )
+		) {
+			return [
+				'reason_code'   => 'not_enough_storage',
+				'destination'   => 'FTP',
+				'provider_code' => $code ?: 'insufficient_storage',
+			];
+		}
+
+		return [];
 	}
 }

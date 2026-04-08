@@ -7,27 +7,6 @@ namespace WPMedia\BackWPup\Adapters;
 class JobTypesAdapter {
 
 	/**
-	 * The name of mixed job type.
-	 *
-	 * @var string
-	 */
-	public string $both = 'Files & Database';
-
-	/**
-	 * The name of the job type for file backups.
-	 *
-	 * @var string
-	 */
-	public string $files = 'Files';
-
-	/**
-	 * The name of the job type for database backup.
-	 *
-	 * @var string
-	 */
-	public string $database = 'Database';
-
-	/**
 	 * Get the type array for file jobs.
 	 *
 	 * @return array
@@ -60,7 +39,7 @@ class JobTypesAdapter {
 	 * @return string
 	 */
 	public function get_name_job_files(): string {
-		return \BackWPup_JobTypes::$name_job_files;
+		return \BackWPup_JobTypes::get_name_job_files();
 	}
 
 	/**
@@ -69,7 +48,7 @@ class JobTypesAdapter {
 	 * @return string
 	 */
 	public function get_name_job_database(): string {
-		return \BackWPup_JobTypes::$name_job_database;
+		return \BackWPup_JobTypes::get_name_job_database();
 	}
 
 	/**
@@ -78,7 +57,20 @@ class JobTypesAdapter {
 	 * @return string
 	 */
 	public function get_name_job_both(): string {
-		return \BackWPup_JobTypes::$name_job_both;
+		return \BackWPup_JobTypes::get_name_job_both();
+	}
+
+	/**
+	 * Get all job type name
+	 *
+	 * @return array
+	 */
+	public function get_all_name(): array {
+		return [
+			'files'    => $this->get_name_job_files(),
+			'database' => $this->get_name_job_database(),
+			'mixed'    => $this->get_name_job_both(),
+		];
 	}
 
 	/**
@@ -95,7 +87,7 @@ class JobTypesAdapter {
 			'mixed'    => $this->get_type_job_both(),
 		];
 
-		return $types[ $type ];
+		return $types[ $type ] ?? [];
 	}
 
 	/**

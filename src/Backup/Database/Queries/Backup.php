@@ -75,18 +75,28 @@ class Backup extends AbstractQuery {
 	 * @param string $destination_id Destination ID.
 	 * @param string $filename Backup filename.
 	 * @param string $trigger  Backup trigger.
+	 * @param int    $job_id Job ID.
+	 * @param string $logfile Logfile path.
 	 *
 	 * @return bool
 	 */
-	public function add( $destination_id, $filename, $trigger ) {
-		return $this->add_item(
-			[
-				'destination'    => $destination_id,
-				'filename'       => $filename,
-				'status'         => 'created',
-				'backup_trigger' => $trigger,
-			]
-		);
+	public function add( $destination_id, $filename, $trigger, $job_id = 0, $logfile = '' ) {
+		$data = [
+			'destination'    => $destination_id,
+			'filename'       => $filename,
+			'status'         => 'created',
+			'backup_trigger' => $trigger,
+		];
+
+		if ( $job_id ) {
+			$data['job_id'] = (int) $job_id;
+		}
+
+		if ( '' !== $logfile ) {
+			$data['logfile'] = (string) $logfile;
+		}
+
+		return $this->add_item( $data );
 	}
 
 	/**
@@ -104,5 +114,19 @@ class Backup extends AbstractQuery {
 				'status' => $status,
 			]
 		);
+	}
+
+	/**
+	 * Set backup row to failed status with optional details.
+	 *
+	 * @param int   $id Backup ID.
+	 * @param array $details Optional details to update.
+	 *
+	 * @return bool
+	 */
+	public function set_failed( $id, array $details = [] ) {
+		$details['status'] = 'failed';
+
+		return $this->update_item( $id, $details );
 	}
 }

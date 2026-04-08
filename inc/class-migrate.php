@@ -236,7 +236,7 @@ class BackWPup_Migrate {
 				$jobs_by_type['files'][0],
 				$default_id_job_files,
 				'files',
-				BackWPup_JobTypes::$name_job_files
+				BackWPup_JobTypes::get_name_job_files()
 			);
 			BackWPup_Option::update( $default_id_job_files, 'type', BackWPup_JobTypes::$type_job_files );
 			$created_job['files'] = true;
@@ -250,7 +250,7 @@ class BackWPup_Migrate {
 				$jobs_by_type['database'][0],
 				$default_id_job_database,
 				'database',
-				BackWPup_JobTypes::$name_job_database
+				BackWPup_JobTypes::get_name_job_database()
 			);
 			BackWPup_Option::update( $default_id_job_database, 'type', BackWPup_JobTypes::$type_job_database );
 			$created_job['database'] = true;
@@ -262,7 +262,7 @@ class BackWPup_Migrate {
 		if ( $created_job['database'] && ! $created_job['files'] ) {
 			$duplicated_id = BackWPup_Job::duplicate_job( $default_id_job_database );
 			BackWPup_Option::update_job_id( $duplicated_id, $default_id_job_files );
-			BackWPup_Job::rename_job( $default_id_job_files, BackWPup_JobTypes::$name_job_files );
+			BackWPup_Job::rename_job( $default_id_job_files, BackWPup_JobTypes::get_name_job_files() );
 			BackWPup_Option::update( $default_id_job_files, 'type', BackWPup_JobTypes::$type_job_files );
 			BackWPup_Job::disable_job( $default_id_job_files );
 			BackWPup_Option::update_job_id( $default_id_job_database, $default_id_job_files + 1 );
@@ -274,7 +274,7 @@ class BackWPup_Migrate {
 		if ( $created_job['files'] && ! $created_job['database'] ) {
 			$duplicated_id = BackWPup_Job::duplicate_job( $default_id_job_files );
 			BackWPup_Option::update_job_id( $duplicated_id, $default_id_job_database );
-			BackWPup_Job::rename_job( $default_id_job_database, BackWPup_JobTypes::$name_job_database );
+			BackWPup_Job::rename_job( $default_id_job_database, BackWPup_JobTypes::get_name_job_database() );
 			BackWPup_Option::update( $default_id_job_database, 'type', BackWPup_JobTypes::$type_job_database );
 			BackWPup_Job::disable_job( $default_id_job_database );
 			update_site_option( Plugin::DATABASE_JOB_ID, $default_id_job_database );
