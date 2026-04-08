@@ -3,7 +3,7 @@
 Contributors: backwpup, wp_rocket, imagify, nullbyte, cocreation, danielhuesken, wido
 Tags: backup, restore, cloud backup, database backup, wordpress backup
 Requires at least: 4.9
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
 Stable tag: 5.6.7
 License: GPLv2+
@@ -193,6 +193,19 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
 == Changelog ==
+= 5.6.8 =
+Release date: April 08, 2026
+
+* Fix: Resolved PHP warnings related to zlib.output_compression after headers were sent.
+* Fix: Resolved TypeError in job tracking and improved error handling.
+* Fix: Resolved issue where custom job names were overwritten when changing data selection.
+* Fix: Resolved incorrect redirect when closing admin dialogs.
+* Fix: Resolved PHP 8.4 deprecation warnings for nullable parameters.
+* Fix: Improved visibility of checkbox borders in Migration Settings dialog.
+* New feature: Added failed backup history tracking.
+* Enhancement: File exclusion list is now ordered alphabetically for easier navigation.
+* Enhancement: Added confirmation warning when deleting multiple backups.
+
 = 5.6.7 =
 Release date: March 25, 2026
 
