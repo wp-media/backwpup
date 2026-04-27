@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			'PHP cURL functions are missing in your installation. Not all features of BackWPup will work without them. Please %1$scontact support%2$s for assistance.',
 			'backwpup'
 		),
-		'<a target="_blank" rel="noopener noreferrer" href="' . esc_url( 'https://backwpup.com/contact/' ) . '">',
+		'<a target="_blank" rel="noopener noreferrer" href="' . esc_url( 'https://backwpup.com/contact/?utm_source=backwpup_plugin&utm_medium=plugin&utm_campaign=in_product&utm_content=get_contact' ) . '">',
 		'</a>',
 	);
 	?>

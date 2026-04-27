@@ -1,4 +1,17 @@
 == Changelog ==
+= 5.6.9 =
+Release date: April 27, 2026
+
+* Fix: Resolved memory limit errors during some database backups.
+* Fix: Prevented restore page from hanging in certain edge cases during archive processing.
+* Fix: Corrected failed backup status reporting for SugarSync when quota limits are reached.
+* Fix: Improved backup history by including storage name for failed backups.
+* Fix: Improved consistency of backup status in logs and history.
+* Fix: "View log" action is now available for successful backups.
+* Fix: Improved consistency and alignment of UI elements across the plugin.
+* New feature: Added a filter for backup archive types.
+* Enhancement: Improved visibility and naming of in-product support tools.
+
 = 5.6.8 =
 Release date: April 08, 2026
 

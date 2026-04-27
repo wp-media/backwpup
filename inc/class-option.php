@@ -37,14 +37,8 @@ final class BackWPup_Option {
 		// Archive format.
 		add_site_option( 'backwpup_archiveformat', '.tar' );
 		$upload_dir   = wp_upload_dir( null, false, true );
-		$logs_dir     = trailingslashit(
-			str_replace(
-			'\\',
-			'/',
-			$upload_dir['basedir']
-		)
-			) . 'backwpup/' . BackWPup::get_plugin_data( 'hash' ) . '/logs/';
-		$content_path = trailingslashit( str_replace( '\\', '/', (string) WP_CONTENT_DIR ) );
+		$logs_dir     = trailingslashit( BackWPup_Path_Fixer::slashify( $upload_dir['basedir'] ) ) . 'backwpup/' . BackWPup::get_plugin_data( 'hash' ) . '/logs/';
+		$content_path = trailingslashit( BackWPup_Path_Fixer::slashify( WP_CONTENT_DIR ) );
 		$logs_dir     = str_replace( $content_path, '', $logs_dir );
 		add_site_option( 'backwpup_cfg_logfolder', $logs_dir );
 		// Network Auth.
@@ -318,6 +312,28 @@ final class BackWPup_Option {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get the list of allowed archive formats.
+	 *
+	 * Managed hosting environments or site developers can limit the list via the
+	 * `backwpup_allowed_archive_formats` filter. The '.tar' format is always
+	 * available and is not passed to the filter. The filter only supports
+	 * removing formats from the default set — adding custom formats is not supported.
+	 *
+	 * @return string[] List of allowed archive format extensions (e.g. '.zip', '.tar', '.tar.gz').
+	 */
+	public static function get_allowed_archive_formats(): array {
+		$all_formats = [ '.zip', '.tar', '.tar.gz' ];
+		$filtered    = wpm_apply_filters_typed(
+			'array',
+			'backwpup_allowed_archive_formats',
+			array_diff( $all_formats, [ '.tar' ] ) // .tar is always available and is not subject to filtering.
+		);
+
+		$filtered[] = '.tar';
+		return array_values( array_intersect( $all_formats, $filtered ) );
 	}
 
 	/**

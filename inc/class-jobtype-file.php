@@ -9,7 +9,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 		$this->info['ID']          = 'FILE';
 		$this->info['name']        = __( 'Files', 'backwpup' );
 		$this->info['description'] = __( 'File backup', 'backwpup' );
-		$this->info['URI']         = __( 'http://backwpup.com', 'backwpup' );
+		$this->info['URI']         = __( 'https://backwpup.com', 'backwpup' );
 		$this->info['author']      = 'WP Media';
 		$this->info['authorURI']   = __( 'https://wp-media.me', 'backwpup' );
 		$this->info['version']     = BackWPup::get_plugin_data( 'Version' );
@@ -302,7 +302,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 		if ( $job_object->job['backupabsfolderup'] ) {
 			$abs_path = dirname( $abs_path );
 		}
-		$abs_path = trailingslashit( str_replace( '\\', '/', $abs_path ) );
+		$abs_path = trailingslashit( BackWPup_Path_Fixer::slashify( $abs_path ) );
 
 		$job_object->temp['folders_to_backup'] = [];
 		$folders_already_in                    = $job_object->get_folders_to_backup();
@@ -310,7 +310,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 		// Folder lists for blog folders.
 		if ( 0 === $job_object->substeps_done ) {
 			if ( $abs_path && ! empty( $job_object->job['backuproot'] ) ) {
-				$abs_path = trailingslashit( str_replace( '\\', '/', $abs_path ) );
+				$abs_path = trailingslashit( BackWPup_Path_Fixer::slashify( $abs_path ) );
 				$excludes = $this->get_exclude_dirs( $abs_path, $folders_already_in );
 
 				foreach ( $job_object->job['backuprootexcludedirs'] as $folder ) {
@@ -326,7 +326,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 		if ( 1 === $job_object->substeps_done ) {
 			$wp_content_dir = realpath( WP_CONTENT_DIR );
 			if ( $wp_content_dir && ! empty( $job_object->job['backupcontent'] ) ) {
-				$wp_content_dir = trailingslashit( str_replace( '\\', '/', $wp_content_dir ) );
+				$wp_content_dir = trailingslashit( BackWPup_Path_Fixer::slashify( $wp_content_dir ) );
 				$excludes       = $this->get_exclude_dirs( $wp_content_dir, $folders_already_in );
 
 				foreach ( $job_object->job['backupcontentexcludedirs'] as $folder ) {
@@ -342,7 +342,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 		if ( 2 === $job_object->substeps_done ) {
 			$wp_plugin_dir = realpath( WP_PLUGIN_DIR );
 			if ( $wp_plugin_dir && ! empty( $job_object->job['backupplugins'] ) ) {
-				$wp_plugin_dir = trailingslashit( str_replace( '\\', '/', $wp_plugin_dir ) );
+				$wp_plugin_dir = trailingslashit( BackWPup_Path_Fixer::slashify( $wp_plugin_dir ) );
 				$excludes      = $this->get_exclude_dirs( $wp_plugin_dir, $folders_already_in );
 
 				foreach ( $job_object->job['backuppluginsexcludedirs'] as $folder ) {
@@ -358,7 +358,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 		if ( 3 === $job_object->substeps_done ) {
 			$theme_root = realpath( get_theme_root() );
 			if ( $theme_root && ! empty( $job_object->job['backupthemes'] ) ) {
-				$theme_root = trailingslashit( str_replace( '\\', '/', $theme_root ) );
+				$theme_root = trailingslashit( BackWPup_Path_Fixer::slashify( $theme_root ) );
 				$excludes   = $this->get_exclude_dirs( $theme_root, $folders_already_in );
 
 				foreach ( $job_object->job['backupthemesexcludedirs'] as $folder ) {
@@ -374,7 +374,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 		if ( 4 === $job_object->substeps_done ) {
 			$upload_dir = realpath( BackWPup_File::get_upload_dir() );
 			if ( $upload_dir && ! empty( $job_object->job['backupuploads'] ) ) {
-				$upload_dir = trailingslashit( str_replace( '\\', '/', $upload_dir ) );
+				$upload_dir = trailingslashit( BackWPup_Path_Fixer::slashify( $upload_dir ) );
 				$excludes   = $this->get_exclude_dirs( $upload_dir, $folders_already_in );
 
 				foreach ( $job_object->job['backupuploadsexcludedirs'] as $folder ) {
@@ -422,12 +422,12 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 		if ( ! empty( $job_object->job['backupspecialfiles'] ) ) {
 			// Special handling for wp-config.php.
 			if ( is_readable( ABSPATH . 'wp-config.php' ) ) {
-				$job_object->additional_files_to_backup[] = str_replace( '\\', '/', ABSPATH . 'wp-config.php' );
+				$job_object->additional_files_to_backup[] = BackWPup_Path_Fixer::slashify( ABSPATH . 'wp-config.php' );
 				// translators: %s: File name.
 				$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), 'wp-config.php' ) );
 			} elseif ( BackWPup_File::is_in_open_basedir( dirname( (string) ABSPATH ) . '/wp-config.php' ) ) {
 				if ( is_readable( dirname( (string) ABSPATH ) . '/wp-config.php' ) && ! is_readable( dirname( (string) ABSPATH ) . '/wp-settings.php' ) ) {
-					$job_object->additional_files_to_backup[] = str_replace( '\\', '/', dirname( (string) ABSPATH ) . '/wp-config.php' );
+					$job_object->additional_files_to_backup[] = BackWPup_Path_Fixer::slashify( dirname( (string) ABSPATH ) . '/wp-config.php' );
 					// translators: %s: File name.
 					$job_object->log( sprintf( __( 'Added "%s" to backup file list', 'backwpup' ), 'wp-config.php' ) );
 				}
@@ -507,7 +507,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 					continue;
 				}
 
-				$path = str_replace( '\\', '/', $file->getRealPath() );
+				$path = BackWPup_Path_Fixer::slashify( $file->getRealPath() );
 
 				foreach ( $job_object->exclude_from_backup as $exclusion ) { // Exclude files.
 					$exclusion = trim( (string) $exclusion );
@@ -547,19 +547,19 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 	 * @return array List of folders to exclude.
 	 */
 	private function get_exclude_dirs( $folder, $excludedir = [] ) {
-		$folder = trailingslashit( str_replace( '\\', '/', realpath( BackWPup_Path_Fixer::fix_path( $folder ) ) ) );
+		$folder = trailingslashit( BackWPup_Path_Fixer::slashify( realpath( BackWPup_Path_Fixer::fix_path( $folder ) ) ) );
 
-		if ( false !== strpos( trailingslashit( str_replace( '\\', '/', realpath( WP_CONTENT_DIR ) ) ), $folder ) && trailingslashit( str_replace( '\\', '/', realpath( WP_CONTENT_DIR ) ) ) !== $folder ) {
-			$excludedir[] = trailingslashit( str_replace( '\\', '/', realpath( WP_CONTENT_DIR ) ) );
+		if ( false !== strpos( trailingslashit( BackWPup_Path_Fixer::slashify( realpath( WP_CONTENT_DIR ) ) ), $folder ) && trailingslashit( BackWPup_Path_Fixer::slashify( realpath( WP_CONTENT_DIR ) ) ) !== $folder ) {
+			$excludedir[] = trailingslashit( BackWPup_Path_Fixer::slashify( realpath( WP_CONTENT_DIR ) ) );
 		}
-		if ( false !== strpos( trailingslashit( str_replace( '\\', '/', realpath( WP_PLUGIN_DIR ) ) ), $folder ) && trailingslashit( str_replace( '\\', '/', realpath( WP_PLUGIN_DIR ) ) ) !== $folder ) {
-			$excludedir[] = trailingslashit( str_replace( '\\', '/', realpath( WP_PLUGIN_DIR ) ) );
+		if ( false !== strpos( trailingslashit( BackWPup_Path_Fixer::slashify( realpath( WP_PLUGIN_DIR ) ) ), $folder ) && trailingslashit( BackWPup_Path_Fixer::slashify( realpath( WP_PLUGIN_DIR ) ) ) !== $folder ) {
+			$excludedir[] = trailingslashit( BackWPup_Path_Fixer::slashify( realpath( WP_PLUGIN_DIR ) ) );
 		}
-		if ( false !== strpos( trailingslashit( str_replace( '\\', '/', realpath( get_theme_root() ) ) ), $folder ) && trailingslashit( str_replace( '\\', '/', realpath( get_theme_root() ) ) ) !== $folder ) {
-			$excludedir[] = trailingslashit( str_replace( '\\', '/', realpath( get_theme_root() ) ) );
+		if ( false !== strpos( trailingslashit( BackWPup_Path_Fixer::slashify( realpath( get_theme_root() ) ) ), $folder ) && trailingslashit( BackWPup_Path_Fixer::slashify( realpath( get_theme_root() ) ) ) !== $folder ) {
+			$excludedir[] = trailingslashit( BackWPup_Path_Fixer::slashify( realpath( get_theme_root() ) ) );
 		}
-		if ( false !== strpos( trailingslashit( str_replace( '\\', '/', realpath( BackWPup_File::get_upload_dir() ) ) ), $folder ) && trailingslashit( str_replace( '\\', '/', realpath( BackWPup_File::get_upload_dir() ) ) ) !== $folder ) {
-			$excludedir[] = trailingslashit( str_replace( '\\', '/', realpath( BackWPup_File::get_upload_dir() ) ) );
+		if ( false !== strpos( trailingslashit( BackWPup_Path_Fixer::slashify( realpath( BackWPup_File::get_upload_dir() ) ) ), $folder ) && trailingslashit( BackWPup_Path_Fixer::slashify( realpath( BackWPup_File::get_upload_dir() ) ) ) !== $folder ) {
+			$excludedir[] = trailingslashit( BackWPup_Path_Fixer::slashify( realpath( BackWPup_File::get_upload_dir() ) ) );
 		}
 
 		return array_unique( $excludedir );
@@ -576,7 +576,7 @@ class BackWPup_JobType_File extends BackWPup_JobTypes {
 		$folder      = realpath( BackWPup_Path_Fixer::fix_path( $path ) );
 		$folder_size = 0;
 		if ( $folder ) {
-			$folder          = untrailingslashit( str_replace( '\\', '/', $folder ) );
+			$folder          = untrailingslashit( BackWPup_Path_Fixer::slashify( $folder ) );
 				$folder_size = BackWPup_File::get_folder_size( $folder );
 		}
 		?>

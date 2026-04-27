@@ -41,7 +41,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<a class="doubleLink" id="backwpup_notice_evaluate_support" href="https://wordpress.org/support/plugin/backwpup/#new-topic-0" hrefbis="<?php echo esc_url( $bind->tempdissmissurl ); ?>">
 		<?php esc_html_e( 'I need your help!', 'backwpup' ); ?>
 	</a><br />
-	<a class="doubleLink" id="backwpup_notice_evaluate_feedback" href="https://backwpup.com/contact/" hrefbis="<?php echo esc_url( $bind->tempdissmissurl ); ?>">
+	<a class="doubleLink" id="backwpup_notice_evaluate_feedback" href="https://backwpup.com/contact/?utm_source=backwpup_plugin&utm_medium=plugin&utm_campaign=in_product&utm_content=get_contact" hrefbis="<?php echo esc_url( $bind->tempdissmissurl ); ?>">
 		<?php esc_html_e( 'I have feedback', 'backwpup' ); ?>
 	</a><br />
 	<a id="backwpup_notice_evaluate_feedback" href="<?php echo esc_url( $bind->tempdissmissurl ); ?>">

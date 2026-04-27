@@ -87,6 +87,56 @@ class Database {
 	}
 
 	/**
+	 * Get the aggregate backup status for a logfile.
+	 *
+	 * If multiple backup rows share the same logfile, any non-completed row marks the logfile
+	 * as failed. This matches the job-level outcome shown in the Logs screen.
+	 *
+	 * @param string $logfile Logfile path.
+	 *
+	 * @return string
+	 */
+	public function get_status_by_logfile( string $logfile ): string {
+		if ( '' === $logfile ) {
+			return '';
+		}
+
+		$candidates = [ $logfile ];
+		if ( '.gz' === substr( $logfile, -3 ) ) {
+			$candidates[] = substr( $logfile, 0, -3 );
+		}
+
+		$statuses = [];
+		foreach ( array_unique( $candidates ) as $candidate ) {
+			$items = $this->backup_query->query(
+				[
+					'logfile' => $candidate,
+					'number'  => 20,
+				]
+			);
+
+			foreach ( $items as $item ) {
+				$status = strtolower( (string) ( $item->status ?? '' ) );
+				if ( '' !== $status ) {
+					$statuses[] = $status;
+				}
+			}
+		}
+
+		if ( empty( $statuses ) ) {
+			return '';
+		}
+
+		foreach ( $statuses as $status ) {
+			if ( 'completed' !== $status ) {
+				return 'failed';
+			}
+		}
+
+		return 'completed';
+	}
+
+	/**
 	 * Delete backup row.
 	 *
 	 * @param string $destination_id Destination ID.
@@ -469,8 +519,8 @@ class Database {
 				$item['backup_trigger'] = $backup_row->backup_trigger ?? '';
 				$item['status']         = $backup_status;
 				$item['error_message']  = 'failed' === $backup_status ? (string) ( $backup_row->error_message ?? '' ) : '';
-				$item['logfile']        = 'failed' === $backup_status ? (string) ( $backup_row->logfile ?? '' ) : '';
-				$item['backup_id']      = isset( $item['backup_id'] ) ? (int) $item['backup_id'] : 0;
+				$item['logfile']        = (string) ( $backup_row->logfile ?? '' );
+				$item['backup_id']      = (int) ( $backup_row->id ?? 0 );
 			} else {
 				$item['backup_trigger'] = '';
 				$item['status']         = $backup_status;

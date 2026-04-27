@@ -119,7 +119,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 				if ( $file->isReadable() ) {
 					// File list for backups.
 					$files[ $filecounter ]['folder']      = $backup_folder;
-					$files[ $filecounter ]['file']        = str_replace( '\\', '/', $file->getPathname() );
+					$files[ $filecounter ]['file']        = BackWPup_Path_Fixer::slashify( $file->getPathname() );
 					$files[ $filecounter ]['filename']    = $file->getFilename();
 					$files[ $filecounter ]['downloadurl'] = add_query_arg(
 						[
@@ -262,11 +262,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	private static function getDefaultBackupsDirectory() {
 		$upload_dir   = wp_upload_dir( null, false, true );
 		$backups_dir  = trailingslashit(
-			str_replace(
-				'\\',
-				'/',
-				$upload_dir['basedir']
-			)
+			BackWPup_Path_Fixer::slashify( $upload_dir['basedir'] )
 		) . 'backwpup/' . BackWPup::get_plugin_data( 'hash' ) . '/backups/';
 		$content_path = trailingslashit( BackWPup_Path_Fixer::slashify( (string) WP_CONTENT_DIR ) );
 

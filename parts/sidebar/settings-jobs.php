@@ -9,7 +9,23 @@ BackWPupHelpers::component("closable-heading", [
   'title' => __("Jobs Settings", 'backwpup'),
   'type' => 'sidebar'
 ]);
-$archiveformat = get_site_option('backwpup_archiveformat', '.tar');
+$archiveformat  = get_site_option( 'backwpup_archiveformat', '.tar' );
+$allowedFormats = BackWPup_Option::get_allowed_archive_formats();
+if ( ! in_array( $archiveformat, $allowedFormats, true ) ) {
+	BackWPupHelpers::component(
+		'alerts/info',
+		[
+			'type'    => 'alert',
+			'font'    => 'small',
+			'content' => sprintf(
+				/* translators: %s: archive format (e.g. .zip) */
+				__( 'The default archive format "%s" is no longer available on this server. .tar will be used instead.', 'backwpup' ),
+				$archiveformat
+			),
+		]
+	);
+	$archiveformat = '.tar';
+}
 ?>
 
 <p>

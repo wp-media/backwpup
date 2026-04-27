@@ -9,6 +9,12 @@ use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin;
 
 class ServiceProvider extends AbstractServiceProvider {
+
+	/**
+	 * The Mixpanel project token/key used for tracking.
+	 */
+	public const MIXPANEL_KEY = '517e881edc2636e99a2ecf013d8134d3';
+
 	/**
 	 * Services provided by this provider
 	 *
@@ -61,7 +67,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( TrackingPlugin::class )
 			->addArguments(
 				[
-					'517e881edc2636e99a2ecf013d8134d3',
+					self::MIXPANEL_KEY,
 					$plugin_name,
 					'wp media',
 					'backwpup',

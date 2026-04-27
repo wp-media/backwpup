@@ -173,3 +173,39 @@
     }
   });
 })();
+
+document.addEventListener('DOMContentLoaded', function() {
+  const chatbotButton = document.getElementById('backwpup-open-chatbot');
+  const wpFooter = document.getElementById('wpfooter');
+
+  if (chatbotButton && wpFooter) {
+    function updateButtonPosition() {
+      const footerRect = wpFooter.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      if (footerRect.top < windowHeight) {
+        const visibleFooterHeight = windowHeight - footerRect.top;
+
+        const newBottom = Math.max(16, visibleFooterHeight - 10);
+        chatbotButton.style.bottom = newBottom + 'px';
+      } else {
+        chatbotButton.style.bottom = '';
+      }
+    }
+
+    window.addEventListener('scroll', updateButtonPosition, { passive: true });
+    window.addEventListener('resize', updateButtonPosition, { passive: true });
+    window.addEventListener('load', updateButtonPosition);
+
+    if (typeof ResizeObserver !== 'undefined') {
+      const resizeObserver = new ResizeObserver(updateButtonPosition);
+      resizeObserver.observe(document.body);
+    }
+
+    if (typeof MutationObserver !== 'undefined') {
+      const mutationObserver = new MutationObserver(updateButtonPosition);
+      mutationObserver.observe(document.body, { childList: true, subtree: true });
+    }
+    updateButtonPosition();
+  }
+});

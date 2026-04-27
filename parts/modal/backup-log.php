@@ -8,7 +8,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 $backup_id = isset( $backup_id ) ? (int) $backup_id : 0;
 $job_id    = isset( $job_id ) ? (int) $job_id : 0;
 
+$can_view_logs = current_user_can( 'backwpup_logs' );
+
+if ( ! $can_view_logs ) {
+	BackWPupHelpers::component(
+		"closable-heading",
+		[
+			'title' => __( 'Backup Log', 'backwpup' ),
+			'type'  => 'modal',
+		]
+	);
+	?>
+	<p class="text-sm text-grey-700">
+		<?php esc_html_e( 'You are not allowed to view logs for this backup.', 'backwpup' ); ?>
+	</p>
+	<?php
+	return;
+}
+
 $backup_row     = null;
+$backup_status  = '';
+$is_failed      = false;
 $error_message  = '';
 $known_reasons  = [
 	__( 'not enough storage', 'backwpup' ),
@@ -28,21 +48,27 @@ if ( $backup_id > 0 && $container ) {
 }
 
 if ( $backup_row ) {
-	$error_message = (string) ( $backup_row->error_message ?? '' );
+	$backup_status = (string) ( $backup_row->status ?? '' );
+	$is_failed     = 'failed' === $backup_status;
+	if ( $is_failed ) {
+		$error_message = (string) ( $backup_row->error_message ?? '' );
+	}
 	$logfile       = (string) ( $backup_row->logfile ?? '' );
 }
 
-if ( '' !== $error_message && in_array( $error_message, $known_reasons, true ) ) {
-	/* translators: %s: failure reason. */
-	$error_message = sprintf( __( 'Backup failed – %s', 'backwpup' ), $error_message );
-} else {
-	$error_message = __( 'Backup failed', 'backwpup' );
+if ( $is_failed ) {
+	if ( '' !== $error_message && in_array( $error_message, $known_reasons, true ) ) {
+		/* translators: %s: failure reason. */
+		$error_message = sprintf( __( 'Backup failed – %s', 'backwpup' ), $error_message );
+	} else {
+		$error_message = __( 'Backup failed', 'backwpup' );
+	}
 }
 
 // Track log opened event for failed backup if backup_id and job_id are available.
 // Prevent tracking if either backup_id or job_id is missing to avoid sending incomplete data to Mixpanel or on page load.
 if ( 0 !== $backup_id && 0 !== $job_id ) {
-	do_action( 'backwpup_track_log_opened', $error_message, $backup_id, $job_id, false );
+	do_action( 'backwpup_track_log_opened', $error_message, $backup_id, $job_id, !$is_failed );
 }
 
 $log_name = '';
@@ -55,8 +81,6 @@ if (
 	'' !== $log_name
 	&&
 	false !== strpos( $log_name, 'backwpup_log_' )
-	&&
-	current_user_can( 'backwpup_logs' )
 ) {
 	$view_url = admin_url(
 		'admin-ajax.php?action=backwpup_view_log&log=' .
@@ -133,22 +157,24 @@ if ( '' !== $log_filename ) {
 BackWPupHelpers::component(
 	"closable-heading",
 	[
-		'title' => __( 'Failed Backup Details', 'backwpup' ),
+		'title' => $is_failed ? __( 'Failed Backup Details', 'backwpup' ) : __( 'Backup Log', 'backwpup' ),
 		'type'  => 'modal',
 	]
 );
 ?>
 
-<?php
-BackWPupHelpers::component(
-	"alerts/info",
-	[
-		"type"    => "danger",
-		"content" => esc_html( $error_message ),
-    "font" => "xs"
-	]
-);
-?>
+<?php if ( $is_failed && '' !== $error_message ) : ?>
+	<?php
+	BackWPupHelpers::component(
+		"alerts/info",
+		[
+			"type"    => "danger",
+			"content" => esc_html( $error_message ),
+			"font"    => "xs",
+		]
+	);
+	?>
+<?php endif; ?>
 
 <?php if ( '' !== $view_url ) : ?>
 	<div

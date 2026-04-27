@@ -30,7 +30,7 @@ $link_docs_what_is_the_diff = wpm_apply_filters_typed( 'string', 'backwpup_url_w
     <?php
     BackWPupHelpers::component("navigation/link", [
       "type" => "primary",
-      "url" => wpm_apply_filters_typed( 'string', 'backwpup_url_add_hash',"https://backwpup.com/pricing/" ),
+      "url" => wpm_apply_filters_typed( 'string', 'backwpup_url_add_hash',"https://backwpup.com/pricing/?utm_source=backwpup_plugin&utm_medium=plugin&utm_campaign=in_product&utm_content=upgrade_cta_plugin" ),
       "newtab" => true,
       "content" => __("Get BackWPup Pro now", 'backwpup'),
     ]);

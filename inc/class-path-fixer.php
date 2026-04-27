@@ -18,7 +18,7 @@ class BackWPup_Path_Fixer {
 	 *
 	 * @return string the fixed path
 	 */
-	public static function fix_path( $path ) {
+	public static function fix_path( string $path ): string {
 		if ( get_site_option( 'backwpup_cfg_windows' ) ) {
 			$path = trailingslashit( $path );
 
@@ -31,13 +31,20 @@ class BackWPup_Path_Fixer {
 	}
 
 	/**
-	 * Normalize path separators to forward slashes.
+	 * Normalize path separators to forward slashes on Windows.
 	 *
-	 * @param string $path The path to normalize.
+	 * @param string|null $path The path to normalize.
 	 *
 	 * @return string The normalized path.
 	 */
-	public static function slashify( $path ) {
-		return str_replace( '\\', '/', (string) $path );
+	public static function slashify( ?string $path ): string {
+		if ( ! $path ) {
+			return '';
+		}
+
+		if ( '\\' === DIRECTORY_SEPARATOR ) {
+			return str_replace( '\\', '/', $path );
+		}
+		return $path;
 	}
 }

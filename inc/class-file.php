@@ -14,20 +14,20 @@ class BackWPup_File {
 	public static function get_upload_dir() {
 		if ( is_multisite() ) {
 			if ( defined( 'UPLOADBLOGSDIR' ) ) {
-				return trailingslashit( str_replace( '\\', '/', ABSPATH . UPLOADBLOGSDIR ) );
+				return trailingslashit( BackWPup_Path_Fixer::slashify( ABSPATH . UPLOADBLOGSDIR ) );
 			}
 			if ( is_dir( trailingslashit( WP_CONTENT_DIR ) . 'uploads/sites' ) ) {
-				return str_replace( '\\', '/', trailingslashit( WP_CONTENT_DIR ) . 'uploads/sites/' );
+				return BackWPup_Path_Fixer::slashify( trailingslashit( WP_CONTENT_DIR ) . 'uploads/sites/' );
 			}
 			if ( is_dir( trailingslashit( WP_CONTENT_DIR ) . 'uploads' ) ) {
-				return str_replace( '\\', '/', trailingslashit( WP_CONTENT_DIR ) . 'uploads/' );
+				return BackWPup_Path_Fixer::slashify( trailingslashit( WP_CONTENT_DIR ) . 'uploads/' );
 			}
 
-			return trailingslashit( str_replace( '\\', '/', (string) WP_CONTENT_DIR ) );
+			return trailingslashit( BackWPup_Path_Fixer::slashify( WP_CONTENT_DIR ) );
 		}
 		$upload_dir = wp_upload_dir( null, false, true );
 
-		return trailingslashit( str_replace( '\\', '/', $upload_dir['basedir'] ) );
+		return trailingslashit( BackWPup_Path_Fixer::slashify( $upload_dir['basedir'] ) );
 	}
 
 	/**

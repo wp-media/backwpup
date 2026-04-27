@@ -697,8 +697,8 @@ class Rest implements RestInterface {
 				throw new Exception( __( 'Invalid parameter(s): archiveformat', 'backwpup' ) );
 			}
 
-			if ( ! in_array( $archive_format, [ '.tar', '.zip', '.tar.gz' ], true ) ) {
-				throw new Exception( __( 'Invalid job archive format.', 'backwpup' ) );
+			if ( ! in_array( $archive_format, \BackWPup_Option::get_allowed_archive_formats(), true ) ) {
+				throw new Exception( __( 'The selected archive format is not available on this server.', 'backwpup' ) );
 			}
 
 			if ( strpos( $archive_name, '%hash%' ) === false ) {

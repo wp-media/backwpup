@@ -2,50 +2,55 @@
 use BackWPup\Utils\BackWPupHelpers;
 
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+	exit;
 }
 
-ob_start();
 /**
  * @var array  $storages     An array of storage services. Default: [].
  * @var string $style        The style of the items. Values: "default", "alt". Default: "default".
  */
 
-# Defaults
+// Defaults
 $storages = $storages ?? [];
 
-# CSS
-$item_class = isset($style) && $style === "alt" ? "max-md:bg-grey-300" : "md:bg-white md:border md:border-grey-200";
-$justify_class = isset($style) && $style === "alt" ? "max-md:justify-end" : "";
+// CSS
+$item_class    = isset( $style ) && $style === 'alt' ? 'max-md:bg-grey-300' : 'md:bg-white md:border md:border-grey-200';
+$justify_class = isset( $style ) && $style === 'alt' ? 'max-md:justify-end' : '';
 
-if (count($storages)>0) {
-?>
-<ul class="<?php echo esc_attr( BackWPupHelpers::clsx( "flex flex-wrap gap-2", $justify_class ) ); ?>">
-  <?php foreach ($storages as $storage) : ?>
-    <li class="<?php echo esc_attr( BackWPupHelpers::clsx( "rounded flex items-center", $item_class ) ); ?>">
-      <?php  
-        $content = $storage;
+if ( count( $storages ) > 0 ) {
+	?>
+<ul class="<?php echo esc_attr( BackWPupHelpers::clsx( 'flex flex-wrap gap-2', $justify_class ) ); ?>">
+	<?php foreach ( $storages as $storage ) : ?>
+	<li class="<?php echo esc_attr( BackWPupHelpers::clsx( 'rounded flex items-center', $item_class ) ); ?>">
+		<?php
+		$content = $storage;
 
-        if ( $content === 'FOLDER' ) {
-          $content = __( 'Website Server', 'backwpup' );
-        }
+		if ( $content === 'FOLDER' ) {
+			$content = __( 'Website Server', 'backwpup' );
+		}
 
-         BackWPupHelpers::component("tooltip", [
-          "content" => $content,
-          "icon_name" => $storage,
-          "icon_size" => "large",
-          "position" => "top",
-        ]);
-      ?>
-    </li>
-  <?php endforeach; ?>
+		BackWPupHelpers::component(
+			'tooltip',
+			[
+				'content'   => $content,
+				'icon_name' => $storage,
+				'icon_size' => 'large',
+				'position'  => 'top',
+			]
+			);
+		?>
+	</li>
+	<?php endforeach; ?>
 </ul>
-<?php
+	<?php
 } else {
-	BackWPupHelpers::component("alerts/info", [
-		"type" => "alert",
-		"font" => "xs",
-		"content" => __("Warning: No storage method is configured. Your backup will not work!", 'backwpup'),
-	]);
+	BackWPupHelpers::component(
+		'alerts/info',
+		[
+			'type'    => 'alert',
+			'font'    => 'xs',
+			'content' => __( 'Warning: No storage method is configured. Your backup will not work!', 'backwpup' ),
+		]
+		);
 }
 ?>

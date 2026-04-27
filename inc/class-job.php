@@ -469,8 +469,18 @@ class BackWPup_Job {
 				 * @param string $format The initial extension name.
 				 */
 				$format = wpm_apply_filters_typed( 'string', 'backwpup_generate_archive_extension', $format );
-				if ( ! in_array( $format, [ 'zip', 'tar', 'tar.gz', '.zip', '.tar', '.tar.gz' ], true ) ) {
-					$format = 'tar';
+				$format = self::normalize_archive_extension( $format );
+				if ( ! in_array( $format, BackWPup_Option::get_allowed_archive_formats(), true ) ) {
+					$this->log(
+						sprintf(
+							/* translators: 1: Archive format extension, 2: Filter name. */
+							__( 'Archive format "%1$s" is not allowed and was changed to .tar. Use the %2$s filter to control available formats.', 'backwpup' ),
+							$format,
+							'backwpup_allowed_archive_formats'
+						),
+						E_USER_WARNING
+					);
+					$format = '.tar';
 				}
 				// Create backup archive full file name.
 				$this->backup_file = $this->generate_filename( $archive_filename, $format );
@@ -586,7 +596,7 @@ class BackWPup_Job {
 			),
 			BackWPup::get_plugin_data( 'name' ),
 			BackWPup::get_plugin_data( 'Version' ),
-			__( 'http://backwpup.com', 'backwpup' )
+			__( 'https://backwpup.com', 'backwpup' )
 		) . '<br />' . PHP_EOL;
 		$info .= sprintf(
 			/* translators: 1: WordPress version, 2: site URL. */
@@ -888,6 +898,25 @@ class BackWPup_Job {
 		 */
 		$name = wpm_apply_filters_typed( 'string', 'backwpup_generate_dump_filename', $name );
 		return $this->generate_filename( $name, $suffix );
+	}
+
+	/**
+	 * Ensures an archive extension starts with a dot.
+	 *
+	 * For legacy reasons, callbacks on the backwpup_generate_archive_extension
+	 * filter are allowed to return the extension without a leading dot
+	 * (e.g. "zip" instead of ".zip"). This method normalizes both forms to
+	 * the dotted canonical format expected everywhere else in the codebase.
+	 *
+	 * @param string $format Extension returned by the filter.
+	 *
+	 * @return string
+	 */
+	public static function normalize_archive_extension( string $format ): string {
+		if ( strpos( $format, '.' ) !== 0 ) {
+			return '.' . $format;
+		}
+		return $format;
 	}
 
 	/**
@@ -1337,12 +1366,11 @@ class BackWPup_Job {
 		if ( $this->job['backupabsfolderup'] ) {
 			$abs_path = dirname( $abs_path );
 		}
-		$abs_path = trailingslashit( str_replace( '\\', '/', $abs_path ) );
-
-		$path = str_replace( [ '\\', $abs_path ], '/', (string) $path );
+		$abs_path = trailingslashit( BackWPup_Path_Fixer::slashify( $abs_path ) );
+		$path     = str_replace( $abs_path, '/', BackWPup_Path_Fixer::slashify( $path ) );
 
 		// Replace the colon from Windows drive letters to avoid issues in archives or copying to directories.
-		if ( 0 === stripos( PHP_OS, 'WIN' ) && 1 === strpos( $path, ':/' ) ) {
+		if ( 'Windows' === PHP_OS_FAMILY && 1 === strpos( $path, ':/' ) ) {
 			$path = '/' . substr_replace( $path, '', 1, 1 );
 		}
 
@@ -1413,7 +1441,10 @@ class BackWPup_Job {
 
 		// Check if job aborted.
 		if ( ! file_exists( BackWPup::get_plugin_data( 'running_file' ) ) ) {
-			if ( 'END' !== $this->step_working ) {
+			// The running file is absent in two legitimate cases: during setup ('CREATE'), before it has
+			// been created, and during teardown ('END'), after it has been deleted. Calling end() in
+			// either case would incorrectly treat normal lifecycle phases as a user-triggered abort.
+			if ( 'END' !== $this->step_working && 'CREATE' !== $this->step_working ) {
 				$this->end();
 			}
 		} else {
@@ -1790,6 +1821,7 @@ class BackWPup_Job {
 		}
 
 		// No restart if no working job.
+		clearstatcache( true, BackWPup::get_plugin_data( 'running_file' ) );
 		if ( ! file_exists( BackWPup::get_plugin_data( 'running_file' ) ) ) {
 			return;
 		}
@@ -2682,7 +2714,7 @@ class BackWPup_Job {
 						continue;
 					}
 
-					$files[] = BackWPup_Path_Fixer::slashify( realpath( $path ) );
+					$files[] = $path;
 				}
 			}
 		} catch ( UnexpectedValueException $e ) {
@@ -2792,9 +2824,9 @@ class BackWPup_Job {
 		$manifest['blog_info']['abspath']              = ABSPATH;
 		$manifest['blog_info']['uploads']              = wp_upload_dir( null, false, true );
 		$manifest['blog_info']['contents']['basedir']  = WP_CONTENT_DIR;
-		$manifest['blog_info']['contents']['baseurl']  = WP_CONTENT_URL;
+		$manifest['blog_info']['contents']['baseurl']  = content_url();
 		$manifest['blog_info']['plugins']['basedir']   = WP_PLUGIN_DIR;
-		$manifest['blog_info']['plugins']['baseurl']   = WP_PLUGIN_URL;
+		$manifest['blog_info']['plugins']['baseurl']   = plugins_url();
 		$manifest['blog_info']['themes']['basedir']    = get_theme_root();
 		$manifest['blog_info']['themes']['baseurl']    = get_theme_root_uri();
 

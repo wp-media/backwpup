@@ -74,7 +74,7 @@ class BackWPup_Page_Settings {
 			$information['bwuversion']['label'] = esc_html__( 'BackWPup version', 'backwpup' );
 			$information['bwuversion']['value'] = BackWPup::get_plugin_data( 'Version' );
 			$information['bwuversion']['html']  = BackWPup::get_plugin_data( 'Version' ) .
-												' <a href="' . __( 'http://backwpup.com', 'backwpup' ) . '">' .
+												' <a href="' . __( 'https://backwpup.com/?utm_source=backwpup_plugin&utm_medium=plugin&utm_campaign=in_product&utm_content=upgrade_cta_plugin', 'backwpup' ) . '">' .
 												esc_html__( 'Get pro.', 'backwpup' ) . '</a>';
 		} else {
 			$information['bwuversion']['label'] = __( 'BackWPup Pro version', 'backwpup' );
@@ -665,7 +665,7 @@ class BackWPup_Page_Settings {
 									),
 										'<code>' . esc_html(
 											trailingslashit(
-												str_replace( '\\', '/', (string) WP_CONTENT_DIR )
+									BackWPup_Path_Fixer::slashify( WP_CONTENT_DIR )
 											)
 										) . '</code>'
 									);
@@ -1229,7 +1229,7 @@ class BackWPup_Page_Settings {
 								[ 'strong' => [] ]
 							);
 							?>
-							<a href="<?php echo esc_url( __( 'https://backwpup.com', 'backwpup' ) ); ?>">
+							<a href="<?php echo esc_url( __( 'https://backwpup.com/?utm_source=backwpup_plugin&utm_medium=plugin&utm_campaign=in_product&utm_content=upgrade_cta_plugin', 'backwpup' ) ); ?>">
 								<?php esc_html_e( 'Get Pro', 'backwpup' ); ?>
 							</a>
 						</p>

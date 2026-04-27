@@ -45,7 +45,7 @@ class Chatbot extends AbstractRender {
 	 */
 	public function render_button(): void {
 		$data = [
-			'label' => __( 'Contact Support', 'backwpup' ),
+			'label' => __( 'Get Help', 'backwpup' ),
 		];
 		/**
 		 * Fires when the contact support button is displayed.
@@ -61,7 +61,7 @@ class Chatbot extends AbstractRender {
 	 */
 	public function render_modal(): void {
 		$data = [
-			'title'    => __( 'Contact Support', 'backwpup' ),
+			'title'    => __( 'Get Help', 'backwpup' ),
 			'close'    => __( 'Close', 'backwpup' ),
 			'snapshot' => $this->snapshot_builder->build( 5 ),
 		];

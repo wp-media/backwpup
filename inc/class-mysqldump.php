@@ -280,7 +280,6 @@ class BackWPup_MySQLDump {
 		$query = $this->wpdb->prepare( 'SET NAMES %s', $charset );
         // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Query is already built by the caller with validated identifiers.
 		$this->wpdb->query( $query );
-		++$GLOBALS[ \wpdb::class ]->num_queries;
 
 		if ( '' !== $this->wpdb->last_error ) {
 			return false;
@@ -338,6 +337,12 @@ class BackWPup_MySQLDump {
 			);
 		}
 
+		if ( ! $this->wpdb->dbh instanceof \mysqli ) {
+			throw new BackWPup_MySQLDump_Exception(
+				esc_html__( 'Database backup requires a mysqli connection.', 'backwpup' )
+			);
+		}
+
 		// Set db name.
 		$this->dbname = $args['dbname'];
 
@@ -387,7 +392,6 @@ class BackWPup_MySQLDump {
 	protected function query( $sql, $output = ARRAY_A ) {
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Query is already built by the caller with validated identifiers.
 		$result = $this->wpdb->get_results( $sql, $output );
-		++$GLOBALS[ \wpdb::class ]->num_queries;
 
 		if ( '' !== $this->wpdb->last_error ) {
 			throw new BackWPup_MySQLDump_Exception( esc_html( $this->wpdb->last_error ) );
@@ -434,7 +438,6 @@ class BackWPup_MySQLDump {
 	public function dump_head( $wp_info = false ) {
 		// Get sql timezone.
 		$mysqltimezone = $this->wpdb->get_var( 'SELECT @@time_zone' );
-		++$GLOBALS[ \wpdb::class ]->num_queries;
 		if ( '' !== $this->wpdb->last_error ) {
 			throw new BackWPup_MySQLDump_Exception( esc_html( $this->wpdb->last_error ) );
 		}
@@ -443,11 +446,11 @@ class BackWPup_MySQLDump {
 		// For SQL always use \n as MySQL wants this on all platforms.
 		$dbdumpheader  = "-- ---------------------------------------------------------\n";
 		$dbdumpheader .= '-- Backup with BackWPup ver.: ' . BackWPup::get_plugin_data( 'Version' ) . "\n";
-		$dbdumpheader .= "-- http://backwpup.com/\n";
+		$dbdumpheader .= "-- https://backwpup.com/\n";
 		if ( $wp_info ) {
 			$dbdumpheader .= '-- Blog Name: ' . get_bloginfo( 'name' ) . "\n";
 			$dbdumpheader .= '-- Blog URL: ' . trailingslashit( get_bloginfo( 'url' ) ) . "\n";
-			$dbdumpheader .= '-- Blog ABSPATH: ' . trailingslashit( str_replace( '\\', '/', (string) ABSPATH ) ) . "\n";
+			$dbdumpheader .= '-- Blog ABSPATH: ' . trailingslashit( BackWPup_Path_Fixer::slashify( ABSPATH ) ) . "\n";
 			$dbdumpheader .= '-- Blog Charset: ' . get_bloginfo( 'charset' ) . "\n";
 			$dbdumpheader .= '-- Table Prefix: ' . $GLOBALS[ \wpdb::class ]->prefix . "\n";
 		}
@@ -518,9 +521,13 @@ class BackWPup_MySQLDump {
 			// Dump the view table structure.
 			$fields = [];
 			try {
-				$this->query( 'SELECT * FROM `' . $table . '` LIMIT 1', ARRAY_A );
-				$fields = $this->getLastQueryFields();
-			} catch ( BackWPup_MySQLDump_Exception $e ) {
+				$result = $this->wpdb->unbuffered_query( 'SELECT * FROM `' . $table . '` LIMIT 1' );
+				try {
+					$fields = $result->fetch_fields() ?: [];
+				} finally {
+					$result->free();
+				}
+			} catch ( \RuntimeException $e ) {
 				trigger_error(
 					sprintf(
 						/* translators: 1: database error message, 2: SQL query. */
@@ -560,7 +567,6 @@ class BackWPup_MySQLDump {
 		$identifier = $this->escapeIdentifier( $table );
         // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Query is already built by the caller with validated identifiers.
 		$createtable = $this->wpdb->get_row( 'SHOW CREATE TABLE ' . $identifier, ARRAY_A );
-		++$GLOBALS[ \wpdb::class ]->num_queries;
 		if ( '' !== $this->wpdb->last_error ) {
 			trigger_error(
 				sprintf(
@@ -605,7 +611,6 @@ class BackWPup_MySQLDump {
 		$identifier = $this->escapeIdentifier( $view );
         // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Query is already built by the caller with validated identifiers.
 		$createview = $this->wpdb->get_row( 'SHOW CREATE VIEW ' . $identifier, ARRAY_A );
-		++$GLOBALS[ \wpdb::class ]->num_queries;
 		if ( '' !== $this->wpdb->last_error ) {
 			trigger_error(
 				sprintf(
@@ -653,6 +658,15 @@ class BackWPup_MySQLDump {
 	 * @return int Done records in this backup.
 	 */
 	public function dump_table( $table, $start = 0, $length = 0 ) {
+		/**
+		 * Filter the number of rows fetched per chunk when dumping a table.
+		 *
+		 * @param int    $length Number of rows per chunk. 0 means no limit.
+		 * @param string $table  Table name being dumped.
+		 * @param int    $start  Row offset for the current chunk.
+		 * @return int Number of rows per chunk.
+		 */
+		$length = wpm_apply_filters_typed( 'integer', 'backwpup_dump_table_rows_limit', $length, $table, $start );
 		$this->assertTableName( $table );
 		if ( ! is_numeric( $start ) || $start < 0 ) {
 			throw new BackWPup_MySQLDump_Exception(
@@ -697,49 +711,69 @@ class BackWPup_MySQLDump {
 			return 0;
 		}
 
-		$fieldsarray = [];
-		$fieldinfo   = [];
-		$fields      = $query_result['fields'];
-		$i           = 0;
+		try {
+			$fieldsarray = [];
+			$fieldinfo   = [];
+			$i           = 0;
 
-		foreach ( $fields as $field ) {
-			$fieldsarray[ $i ]               = $field->orgname;
-			$fieldinfo[ $fieldsarray[ $i ] ] = $field;
-			++$i;
-		}
-		$dump = '';
+			foreach ( $query_result->fetch_fields() ?: [] as $field ) {
+				$fieldsarray[ $i ]               = $field->orgname;
+				$fieldinfo[ $fieldsarray[ $i ] ] = $field;
+				++$i;
+			}
+			$dump = '';
 
-		foreach ( $query_result['rows'] as $data ) {
-			$values = [];
+			/**
+			 * The idiomatic way of fetching mysqli_result would be `while ($data = $query_result->fetch_assoc()) {...}`
+			 *
+			 * But assigning variable inside the while loop would be a violation
+			 * of the Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition rule. So we fetch a row once
+			 * before the loop, and then do it at the very end of the loop body. It achieves the same result without
+			 * violating the PHPCS rule.
+			 */
+			$data = $query_result->fetch_assoc();
+			while ( is_array( $data ) ) {
+				$values = [];
 
-			foreach ( $data as $key => $value ) {
-				if ( null === $value ) { // Make value NULL to string NULL.
-					$value = 'NULL';
-				} elseif ( in_array( (int) $fieldinfo[ $key ]->type, [ MYSQLI_TYPE_DECIMAL, MYSQLI_TYPE_NEWDECIMAL, MYSQLI_TYPE_BIT, MYSQLI_TYPE_TINY, MYSQLI_TYPE_SHORT, MYSQLI_TYPE_LONG, MYSQLI_TYPE_FLOAT, MYSQLI_TYPE_DOUBLE, MYSQLI_TYPE_LONGLONG, MYSQLI_TYPE_INT24, MYSQLI_TYPE_YEAR ], true ) ) { // Is value numeric, no esc.
-					$value = empty( $value ) ? 0 : $value;
-				} elseif ( in_array( (int) $fieldinfo[ $key ]->type, [ MYSQLI_TYPE_TIMESTAMP, MYSQLI_TYPE_DATE, MYSQLI_TYPE_TIME, MYSQLI_TYPE_DATETIME, MYSQLI_TYPE_NEWDATE ], true ) ) { // Date/time types.
-					$value = "'{$value}'";
-				} elseif ( $fieldinfo[ $key ]->flags & MYSQLI_BINARY_FLAG ) { // Is value binary.
-					$hex   = unpack( 'H*', $value );
-					$value = empty( $value ) ? "''" : "0x{$hex[1]}";
-				} else {
-					$value = "'" . $this->escapeString( $value ) . "'";
+				foreach ( $data as $key => $value ) {
+					if ( null === $value ) { // Make value NULL to string NULL.
+						$value = 'NULL';
+					} elseif ( in_array( (int) $fieldinfo[ $key ]->type, [ MYSQLI_TYPE_DECIMAL, MYSQLI_TYPE_NEWDECIMAL, MYSQLI_TYPE_BIT, MYSQLI_TYPE_TINY, MYSQLI_TYPE_SHORT, MYSQLI_TYPE_LONG, MYSQLI_TYPE_FLOAT, MYSQLI_TYPE_DOUBLE, MYSQLI_TYPE_LONGLONG, MYSQLI_TYPE_INT24, MYSQLI_TYPE_YEAR ], true ) ) { // Is value numeric, no esc.
+						$value = empty( $value ) ? 0 : $value;
+					} elseif ( in_array( (int) $fieldinfo[ $key ]->type, [ MYSQLI_TYPE_TIMESTAMP, MYSQLI_TYPE_DATE, MYSQLI_TYPE_TIME, MYSQLI_TYPE_DATETIME, MYSQLI_TYPE_NEWDATE ], true ) ) { // Date/time types.
+						$value = "'{$value}'";
+					} elseif ( $fieldinfo[ $key ]->flags & MYSQLI_BINARY_FLAG ) { // Is value binary.
+						$hex   = unpack( 'H*', $value );
+						$value = empty( $value ) ? "''" : "0x{$hex[1]}";
+					} else {
+						$value = "'" . $this->escapeString( $value ) . "'";
+					}
+					$values[] = $value;
 				}
-				$values[] = $value;
+				// New query in dump on more than 50000 chars.
+				if ( empty( $dump ) ) {
+					$dump = 'INSERT INTO `' . $table . '` (`' . implode( '`, `', $fieldsarray ) . "`) VALUES \n";
+				}
+				if ( strlen( $dump ) <= 50000 ) {
+					$dump .= '(' . implode( ', ', $values ) . "),\n";
+				} else {
+					$dump .= '(' . implode( ', ', $values ) . ");\n";
+					$this->write( $dump );
+					$dump = '';
+				}
+				++$done_records;
+				$data = $query_result->fetch_assoc(); // Fetch row for the next loop.
 			}
-			// New query in dump on more than 50000 chars.
-			if ( empty( $dump ) ) {
-				$dump = 'INSERT INTO `' . $table . '` (`' . implode( '`, `', $fieldsarray ) . "`) VALUES \n";
+
+			if ( false === $data ) {
+				throw new BackWPup_MySQLDump_Exception(
+					esc_html__( 'Database connection lost while reading table data.', 'backwpup' )
+				);
 			}
-			if ( strlen( $dump ) <= 50000 ) {
-				$dump .= '(' . implode( ', ', $values ) . "),\n";
-			} else {
-				$dump .= '(' . implode( ', ', $values ) . ");\n";
-				$this->write( $dump );
-				$dump = '';
-			}
-			++$done_records;
+		} finally {
+			$query_result->free();
 		}
+
 		if ( ! empty( $dump ) ) {
 			// Remove trailing , and newline.
 			$dump = substr( $dump, 0, -2 ) . ";\n";
@@ -1074,29 +1108,11 @@ class BackWPup_MySQLDump {
 	}
 
 	/**
-	 * Build field metadata from the last query.
+	 * Perform a streaming query to fetch table rows.
 	 *
-	 * @return array<int, object>
-	 */
-	private function getLastQueryFields(): array {
-		$orgnames = (array) $this->wpdb->get_col_info( 'orgname' );
-		$types    = (array) $this->wpdb->get_col_info( 'type' );
-		$flags    = (array) $this->wpdb->get_col_info( 'flags' );
-		$fields   = [];
-
-		foreach ( $orgnames as $index => $name ) {
-			$fields[] = (object) [
-				'orgname' => $name,
-				'type'    => $types[ $index ] ?? null,
-				'flags'   => $flags[ $index ] ?? 0,
-			];
-		}
-
-		return $fields;
-	}
-
-	/**
-	 * Perform query to fetch table rows.
+	 * Returns an unbuffered mysqli_result whose rows are fetched one at a time,
+	 * keeping peak memory proportional to a single row rather than the full chunk.
+	 * The caller must free the result before issuing any other query on this connection.
 	 *
 	 * @param string $table  The table on which to perform the query.
 	 * @param int    $start  The record to start at.
@@ -1104,9 +1120,9 @@ class BackWPup_MySQLDump {
 	 *
 	 * @throws BackWPup_MySQLDump_Exception In case of MySQL error.
 	 *
-	 * @return array{rows: array<int, array<string, mixed>>, fields: array<int, object>} The resulting data.
+	 * @return \mysqli_result The streaming result.
 	 */
-	protected function do_table_query( $table, $start, $length ) {
+	protected function do_table_query( $table, $start, $length ): \mysqli_result {
 		$this->assertTableName( $table );
 		$start  = (int) $start;
 		$length = (int) $length;
@@ -1116,12 +1132,11 @@ class BackWPup_MySQLDump {
 			$query .= $this->wpdb->prepare( ' LIMIT %d, %d', $start, $length );
 		}
 
-		$rows = $this->query( $query, ARRAY_A );
-
-		return [
-			'rows'   => $rows,
-			'fields' => $this->getLastQueryFields(),
-		];
+		try {
+			return $this->wpdb->unbuffered_query( $query );
+		} catch ( \RuntimeException $e ) {
+			throw new BackWPup_MySQLDump_Exception( esc_html( $e->getMessage() ) );
+		}
 	}
 
 	/**

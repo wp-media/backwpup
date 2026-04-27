@@ -15,9 +15,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @var string  $trigger        Optional. For JS. The CSS classname for jQuery. Default: null.
  * @var string  $tooltip        Optional. The tooltip content. Default: "".
  * @var string  $tooltip_pos    Optional. The tooltip position. Default: "center".
- * @var string $class Optional. Additional CSS classname . Default: null.
+ * @var string $class Optional. Additional CSS classname. Default: null.
  * @var string $identifier Optional. The field identifier. Default: null.
- * @var array $hide_subset_current_options Optional. Array of eligible options to be hidden if current. Default: [].
+ * @var array  $hide_subset_current_options Optional. Array of eligible options to be hidden if current. Default: [].
+ * @var bool   $readonly Optional. Render as non-interactive; value is still submitted. Default: false.
  */
 
 # Name
@@ -34,6 +35,7 @@ $required = $required ?? false;
 $id = $identifier ?? '';
 $tooltip_pos = $tooltip_pos ?? "top";
 $hide_subset_current_options = $hide_subset_current_options ?? [];
+$readonly = $readonly ?? false;
 
 # JS actions
 $trigger = isset($trigger) ? "js-backwpup-$trigger" : "";
@@ -47,7 +49,7 @@ $class = $class ?? "";
     <?php echo esc_html( $label ); ?>
     <?php isset($tooltip) && BackWPupHelpers::component("tooltip", ["content" => $tooltip, "icon_size" => "small", "position" => $tooltip_pos]); ?>
   </label>
-  <select name="<?php echo esc_attr( $name ); ?>"<?php echo $id ? ' id="' . esc_attr( $id ) . '"' : ''; ?> class="<?php echo esc_attr( BackWPupHelpers::clsx( "peer select-transparent block min-w-[200px] w-full text-base text-primary-darker", $trigger, $class ) ); ?>" <?php if ($required) : ?>required<?php endif; ?>>
+  <select name="<?php echo esc_attr( $name ); ?>"<?php echo $id ? ' id="' . esc_attr( $id ) . '"' : ''; ?> class="<?php echo esc_attr( BackWPupHelpers::clsx( "peer select-transparent block min-w-[200px] w-full text-base text-primary-darker", $trigger, $class ) ); ?>" <?php if ($required) : ?>required<?php endif; ?><?php if ($readonly) : ?> disabled<?php endif; ?>>
     <?php if ($withEmpty) : ?>
       <option value="" <?php if ($value === "") : ?>selected<?php endif; ?>></option>
     <?php endif; ?>
@@ -61,3 +63,6 @@ $class = $class ?? "";
     <?php BackWPupHelpers::component("icon", ["name" => "toggle", "size" => "small"]); ?>
   </div>
 </div>
+<?php if ($readonly) : ?>
+<input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
+<?php endif; ?>

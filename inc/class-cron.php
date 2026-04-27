@@ -163,7 +163,7 @@ class BackWPup_Cron {
 	 */
 	public static function cron_active( $args = [] ) {
 		// Only if cron active.
-		if ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) {
+		if ( ! wp_doing_cron() ) {
 			return;
 		}
 

@@ -16,7 +16,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 		$this->info['ID']          = 'WPEXP';
 		$this->info['name']        = __( 'XML export', 'backwpup' );
 		$this->info['description'] = __( 'WordPress XML export', 'backwpup' );
-		$this->info['URI']         = __( 'http://backwpup.com', 'backwpup' );
+		$this->info['URI']         = __( 'https://backwpup.com', 'backwpup' );
 		$this->info['author']      = 'WP Media';
 		$this->info['authorURI']   = 'https://wp-media.me';
 		$this->info['version']     = BackWPup::get_plugin_data( 'Version' );
@@ -629,7 +629,14 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 	 * @return string
 	 */
 	private function wxr_cdata( $str ) {
-		if ( ! seems_utf8( $str ) ) {
+		// Use wp_is_valid_utf8() if available (WP 6.9+), otherwise fall back to seems_utf8().
+		if ( function_exists( 'wp_is_valid_utf8' ) ) {
+			$is_valid_utf8 = wp_is_valid_utf8( $str );
+		} else {
+			$is_valid_utf8 = seems_utf8( $str ); // phpcs:ignore WordPress.WP.DeprecatedFunctions.seems_utf8Found
+		}
+
+		if ( ! $is_valid_utf8 ) {
 			$str = utf8_encode( $str );
 		}
 

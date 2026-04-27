@@ -350,7 +350,7 @@ class BackWPup_Page_About {
 					<?php if ( BackWPup::is_pro() ) { ?>
 					<div class="welcometxt">
 						<div class="backwpup-welcome">
-							<a href="<?php echo esc_url( __( 'http://backwpup.com', 'backwpup' ) ); ?>"><img class="backwpup-banner-img" src="<?php echo esc_url( BackWPup::get_plugin_data( 'URL' ) ); ?>/assets/images/banner.png" alt="<?php esc_attr_e( 'BackWPup banner', 'backwpup' ); ?>" /></a>
+							<a href="<?php echo esc_url( __( 'https://backwpup.com/?utm_source=backwpup_plugin&utm_medium=plugin&utm_campaign=in_product&utm_content=pro_banner', 'backwpup' ) ); ?>"><img class="backwpup-banner-img" src="<?php echo esc_url( BackWPup::get_plugin_data( 'URL' ) ); ?>/assets/images/banner.png" alt="<?php esc_attr_e( 'BackWPup banner', 'backwpup' ); ?>" /></a>
 							<h1><?php esc_html_e( 'Welcome to BackWPup Pro', 'backwpup' ); ?></h1>
 							<p>
 							<?php
@@ -385,7 +385,7 @@ class BackWPup_Page_About {
 					<?php } else { ?>
 					<div class="welcometxt">
 						<div class="backwpup-welcome">
-							<a href="<?php echo esc_url( __( 'http://backwpup.com', 'backwpup' ) ); ?>"><img class="backwpup-banner-img" src="<?php echo esc_url( BackWPup::get_plugin_data( 'URL' ) ); ?>/assets/images/banner.png" alt="<?php esc_attr_e( 'BackWPup banner', 'backwpup' ); ?>" /></a>
+							<a href="<?php echo esc_url( __( 'https://backwpup.com/?utm_source=backwpup_plugin&utm_medium=plugin&utm_campaign=in_product&utm_content=pro_banner', 'backwpup' ) ); ?>"><img class="backwpup-banner-img" src="<?php echo esc_url( BackWPup::get_plugin_data( 'URL' ) ); ?>/assets/images/banner.png" alt="<?php esc_attr_e( 'BackWPup banner', 'backwpup' ); ?>" /></a>
 							<h1><?php esc_html_e( 'Welcome to BackWPup', 'backwpup' ); ?></h1>
 							<p>
 							<?php
@@ -721,7 +721,7 @@ class BackWPup_Page_About {
 							<tr class="<?php self::row_class(); ?> ubdown">
 								<td></td>
 								<td></td>
-								<td class="pro buylink"><a href="<?php echo esc_url( __( 'http://backwpup.com', 'backwpup' ) ); ?>"><?php esc_html_e( 'GET PRO', 'backwpup' ); ?></a></td>
+								<td class="pro buylink"><a href="<?php echo esc_url( __( 'https://backwpup.com/?utm_source=backwpup_plugin&utm_medium=plugin&utm_campaign=in_product&utm_content=upgrade_cta_plugin', 'backwpup' ) ); ?>"><?php esc_html_e( 'GET PRO', 'backwpup' ); ?></a></td>
 							</tr>
 						</table>
 					</div>

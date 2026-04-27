@@ -76,20 +76,23 @@ class Subscriber implements SubscriberInterface {
 			return;
 		}
 
-		$value = isset( $_POST['beta'] ) ? 1 : 0;
+		$value   = isset( $_POST['beta'] ) ? 1 : 0;
+		$current = $this->optin->is_enabled() ? 1 : 0;
 
-		/**
-		 * Fires when the beta opt-in setting is changed.
-		 *
-		 * @param int $value The new value of the beta opt-in setting.
-		 */
-		do_action( 'backwpup_beta_optin_change', $value );
+		// Only fire the event if the value actually changed.
+		if ( $value !== $current ) {
+			/**
+			 * Fires when the beta opt-in setting is changed.
+			 *
+			 * The parameter passed to the action is the new value of the beta opt-in setting (int).
+			 */
+			do_action( 'backwpup_beta_optin_change', $value );
+		}
 
 		if ( 0 === $value ) {
 			if ( $this->optin->is_enabled() ) {
 				$this->optin->disable();
 			}
-
 			return;
 		}
 

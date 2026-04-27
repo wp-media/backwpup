@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <p>
 <?php
 echo wp_kses(
-	__( '<a href="https://backwpup.com/support/" target="_blank">Contact our support team here</a> if any questions remain.', 'backwpup' ),
+	__( '<a href="https://backwpup.com/support/?utm_source=backwpup_plugin&utm_medium=plugin&utm_campaign=in_product&utm_content=get_support" target="_blank">Contact our support team here</a> if any questions remain.', 'backwpup' ),
 	[
 		'a' => [
 			'href'   => true,

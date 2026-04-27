@@ -269,7 +269,16 @@ class BackWPup_Page_Logs extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_status( $item ) {
-		$r = '';
+		$r             = '';
+		$backup_status = $this->get_backup_status_for_item( $item );
+		if ( 'failed' === $backup_status ) {
+			$r .= '<span style="color:red;font-weight:bold;">' . esc_html__( 'Failed', 'backwpup' ) . '</span>';
+
+			if ( ! empty( $item['errors'] ) || ! empty( $item['warnings'] ) ) {
+				$r .= '<br />';
+			}
+		}
+
 		if ( $item['errors'] ) {
 			$errors_text = sprintf(
 				// translators: %d: number of errors.
@@ -292,11 +301,37 @@ class BackWPup_Page_Logs extends WP_List_Table {
 				esc_html( $warnings_text )
 			);
 		}
-		if ( ! $item['errors'] && ! $item['warnings'] ) {
+		if ( ! $item['errors'] && ! $item['warnings'] && 'failed' !== $backup_status ) {
 			$r .= '<span style="color:green;font-weight:bold;">' . esc_html__( 'O.K.', 'backwpup' ) . '</span>';
 		}
 
 		return $r;
+	}
+
+	/**
+	 * Resolve the persisted backup status for a log item.
+	 *
+	 * @param array $item Item data.
+	 *
+	 * @return string
+	 */
+	private function get_backup_status_for_item( array $item ): string {
+		$logfile = isset( $item['file'] ) ? basename( (string) $item['file'] ) : '';
+		if ( '' === $logfile || '' === $this->log_folder ) {
+			return '';
+		}
+
+		$container = wpm_apply_filters_typed( '?object', 'backwpup_container', null );
+		if ( ! $container || ! method_exists( $container, 'get' ) ) {
+			return '';
+		}
+
+		$database = $container->get( 'backwpup_database' );
+		if ( ! $database || ! method_exists( $database, 'get_status_by_logfile' ) ) {
+			return '';
+		}
+
+		return (string) $database->get_status_by_logfile( $this->log_folder . '/' . $logfile );
 	}
 
 	/**

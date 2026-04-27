@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			'Plugin update was successful, but we ran into an unexpected issue with one of your backup data. For assistance or to ensure everything is working as expected, %1$sreach out to support%2$s.',
 			'backwpup'
 		),
-		'<a target="_blank" rel="noopener noreferrer" href="' . esc_url( 'https://backwpup.com/contact/' ) . '">',
+		'<a target="_blank" rel="noopener noreferrer" href="' . esc_url( 'https://backwpup.com/contact/?utm_source=backwpup_plugin&utm_medium=plugin&utm_campaign=in_product&utm_content=get_contact' ) . '">',
 		'</a>',
 	);
 	?>

@@ -297,8 +297,6 @@ function restore_container($name)
  * @todo Move the creation of this object within the container, so we'll pass the values directly to the construct as
  *       an array of arguments.
  *
- * @internal
- *
  * @throws FrozenServiceException if the service has been marked as frozen,
  *                                indicating that it has already been retrieved
  *                                and cannot be modified

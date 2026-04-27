@@ -121,7 +121,7 @@ class BackWPup_Directory extends DirectoryIterator {
 			return [];
 		}
 
-		$folder = untrailingslashit( str_replace( '\\', '/', $folder ) );
+		$folder = untrailingslashit( BackWPup_Path_Fixer::slashify( $folder ) );
 
 		// Prepare variables once.
 		$folders_to_exclude = [];

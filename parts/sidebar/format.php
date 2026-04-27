@@ -27,7 +27,7 @@ $archiveFormat      = BackWPup_Option::get( $job_id, 'archiveformat', $optionAda
 $archiveNameNoHash  = BackWPup_Option::get( $job_id, 'archivenamenohash', $optionAdapter->defaults_job( 'archivenamenohash' ) );
 $hash               = BackWPup_Option::get_generated_hash( $job_id );
 $archiveNamePreview = str_replace( '%hash%', $hash, BackWPup_Job::sanitize_file_name( BackWPup_Option::substitute_date_vars( $archiveNameNoHash ) ) );
-$docsUrl            = wpm_apply_filters_typed( 'string', 'backwpup_url_add_hash','https://backwpup.com/docs/what-placeholders-can-i-use-in-archive-names-and-what-do-they-mean/' );
+$docsUrl            = wpm_apply_filters_typed( 'string', 'backwpup_url_add_hash','https://backwpup.com/docs/what-placeholders-can-i-use-in-archive-names-and-what-do-they-mean/?utm_source=backwpup_plugin&utm_medium=plugin&utm_campaign=in_product&utm_content=formart_help' );
 
 BackWPupHelpers::component( 'containers/scrollable-start', [ 'gap_size' => 'small' ] );
 
@@ -57,6 +57,22 @@ BackWPupHelpers::component(
 	?>
 </div>
 <?php
+
+$allowedFormats = BackWPup_Option::get_allowed_archive_formats();
+if ( ! in_array( $archiveFormat, $allowedFormats, true ) ) {
+	BackWPupHelpers::component(
+		'alerts/info',
+		[
+			'type'    => 'alert',
+			'font'    => 'small',
+			'content' => BackWPup_Admin::unavailable_archive_format_notice(
+				BackWPup_Option::get( $job_id, 'name' ),
+				$archiveFormat
+			),
+		]
+	);
+	$archiveFormat = '.tar';
+}
 
 BackWPupHelpers::children(
 	'sidebar/parts/archive-format-selector',

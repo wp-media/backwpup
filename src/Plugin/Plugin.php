@@ -184,7 +184,7 @@ class Plugin {
 		$this->load_admin_backend( $plugin_data );
 
 		// WP-Cron.
-		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
+		if ( wp_doing_cron() ) {
 			if ( ! empty( $_GET['backwpup_run'] ) && class_exists( BackWPup_Job::class ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				// Early disable caches.
 				BackWPup_Job::disable_caches();

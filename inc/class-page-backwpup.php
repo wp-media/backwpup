@@ -245,7 +245,7 @@ class BackWPup_Page_BackWPup {
 			<div id="backwpup-thank-you" class="metabox-holder postbox backwpup-cleared-postbox backwpup-max-width">
 				<h3 class="hndle"><span><?php echo esc_html_x( 'Thank you for using BackWPup!', 'Pro teaser box', 'backwpup' ); ?></span></h3>
 				<div class="inside">
-                    <p><a href="<?php echo esc_url( __( 'http://backwpup.com', 'backwpup' ) ); ?>"><img class="backwpup-banner-img" src="<?php echo esc_url( BackWPup::get_plugin_data('URL') ); ?>/assets/images/banner.png" alt="<?php esc_attr_e('BackWPup banner', 'backwpup'); ?>" /></a></p>
+                    <p><a href="<?php echo esc_url( __( 'https://backwpup.com', 'backwpup' ) ); ?>"><img class="backwpup-banner-img" src="<?php echo esc_url( BackWPup::get_plugin_data('URL') ); ?>/assets/images/banner.png" alt="<?php esc_attr_e('BackWPup banner', 'backwpup'); ?>" /></a></p>
 					<h3 class="backwpup-text-center"><?php echo esc_html_x( 'Get access to:', 'Pro teaser box', 'backwpup' ); ?></h3>
 					<ul class="backwpup-text-center">
 						<li><?php echo wp_kses_post( _x( 'First-class <strong>dedicated support</strong> at backwpup.com.', 'Pro teaser box', 'backwpup' ) ); ?></li>
@@ -253,11 +253,11 @@ class BackWPup_Page_BackWPup {
 						<li><?php echo esc_html_x('Easy-peasy wizards to create and schedule backup jobs.', 'Pro teaser box', 'backwpup'); ?></li>
 						<li><?php printf(
 								'<a href="%s">%s</a>',
-								esc_url( __( 'http://backwpup.com', 'backwpup' ) ),
+								esc_url( __( 'https://backwpup.com', 'backwpup' ) ),
 								esc_html_x( 'And more…', 'Pro teaser box, link text', 'backwpup' )
 							); ?></li>
 					</ul>
-					<p class="backwpup-text-center"><a href="<?php echo esc_url( __( 'http://backwpup.com', 'backwpup' ) ); ?>" class="button button-primary button-primary-bwp" title="<?php echo esc_attr_x( 'Get BackWPup Pro now', 'Pro teaser box, link title', 'backwpup' ); ?>"><?php echo esc_html_x( 'Get BackWPup Pro now', 'Pro teaser box, link text', 'backwpup' ); ?></a></p>
+					<p class="backwpup-text-center"><a href="<?php echo esc_url( __( 'https://backwpup.com', 'backwpup' ) ); ?>" class="button button-primary button-primary-bwp" title="<?php echo esc_attr_x( 'Get BackWPup Pro now', 'Pro teaser box, link title', 'backwpup' ); ?>"><?php echo esc_html_x( 'Get BackWPup Pro now', 'Pro teaser box, link text', 'backwpup' ); ?></a></p>
 				</div>
 			</div>
 			<?php } ?>

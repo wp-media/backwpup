@@ -206,9 +206,9 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 						'provider_code' => 'quota_exceeded',
 					]
 					);
-				$job_object->substeps_todo = 1 + $job_object->backup_filesize;
+					$job_object->substeps_todo = 1 + $job_object->backup_filesize;
 
-				return true;
+					return false;
 			}
 
 			// translators: %s: available space on SugarSync.

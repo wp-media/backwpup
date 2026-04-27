@@ -277,16 +277,15 @@ class BackWPup_Create_Archive {
 	 *
 	 * @return bool True on success, false on error.
 	 */
-	public function add_file( $file_name, $name_in_archive = '' ) {
-		$file_name = trim( $file_name );
+	public function add_file( string $file_name, string $name_in_archive = '' ): bool {
 
-		if ( ! is_string( $file_name ) || empty( $file_name ) ) {
+		if ( empty( $file_name ) ) {
 			trigger_error(
 				esc_html__( 'File name cannot be empty.', 'backwpup' ),
 				E_USER_WARNING
 			);
 
-			return false;
+			return true;
 		}
 
 		clearstatcache( true, $file_name );
@@ -339,7 +338,7 @@ class BackWPup_Create_Archive {
 			case 'Tar':
 			case 'TarGz':
 				// Convert chars for archive file names.
-				if ( function_exists( 'iconv' ) && 0 === stripos( PHP_OS, 'win' ) ) {
+				if ( function_exists( 'iconv' ) && 'Windows' === PHP_OS_FAMILY ) {
 					$test = iconv( 'ISO-8859-1', 'UTF-8', $name_in_archive );
 					if ( false !== $test ) {
 						$name_in_archive = $test;
@@ -350,7 +349,7 @@ class BackWPup_Create_Archive {
 
 			case \ZipArchive::class:
 				// Convert chars for archives file names.
-				if ( function_exists( 'iconv' ) && 0 === stripos( PHP_OS, 'win' ) ) {
+				if ( function_exists( 'iconv' ) && 'Windows' === PHP_OS_FAMILY ) {
 					$test = iconv( 'UTF-8', 'CP437', $name_in_archive );
 					if ( false !== $test ) {
 						$name_in_archive = $test;

@@ -146,13 +146,9 @@ class BackWPup_Page_Editjob {
 				$archiveformat_input = isset( $post_data['archiveformat'] ) ? sanitize_text_field( $post_data['archiveformat'] ) : '';
 				$archiveformat       = in_array(
 					$archiveformat_input,
-					[
-						'.zip',
-						'.tar',
-						'.tar.gz',
-					],
+					BackWPup_Option::get_allowed_archive_formats(),
 					true
-				) ? $archiveformat_input : '.zip';
+				) ? $archiveformat_input : '.tar';
 				BackWPup_Option::update( $jobid, 'archiveformat', $archiveformat );
 
 				$archivename_input = isset( $post_data['archivename'] ) ? sanitize_text_field( $post_data['archivename'] ) : '';
@@ -398,6 +394,17 @@ class BackWPup_Page_Editjob {
 		}
 
 		$archive_format_option = BackWPup_Option::get( $jobid, 'archiveformat' );
+		$allowed_formats       = BackWPup_Option::get_allowed_archive_formats();
+		if ( ! in_array( $archive_format_option, $allowed_formats, true ) ) {
+			BackWPup_Admin::message(
+				BackWPup_Admin::unavailable_archive_format_notice(
+					BackWPup_Option::get( $jobid, 'name' ),
+					$archive_format_option
+				),
+				true
+			);
+			$archive_format_option = '.tar';
+		}
 		?>
 	<div class="wrap" id="backwpup-page">
 			<?php
@@ -553,19 +560,38 @@ class BackWPup_Page_Editjob {
 								<fieldset>
 									<legend class="screen-reader-text"><span><?php esc_html_e('Archive Format', 'backwpup'); ?></span></legend>
 									<?php
-									if ( class_exists( \ZipArchive::class ) ) {
-										echo '<p><label for="idarchiveformat-zip"><input readonly disabled class="radio" type="radio"' . checked( '.zip', $archive_format_option, false ) . ' name="archiveformat" id="idarchiveformat-zip" value=".zip" /> ' . esc_html__( 'Zip', 'backwpup' ) . '</label></p>';
-										} else {
-										echo '<p><label for="idarchiveformat-zip"><input readonly disabled class="radio" type="radio"' . checked( '.zip', $archive_format_option, false ) . ' name="archiveformat" id="idarchiveformat-zip" value=".zip" disabled="disabled" /> ' . esc_html__( 'Zip', 'backwpup' ) . '</label>';
-										echo '<br /><span class="description">' . esc_html( __( 'ZipArchive PHP class is missing, so BackWPUp will use PclZip instead.', 'backwpup' ) ) . '</span></p>';
+									$format_config = [
+										'.zip'    => [
+											'label'               => __( 'Zip', 'backwpup' ),
+											'id'                  => 'idarchiveformat-zip',
+											'available'           => class_exists( \ZipArchive::class ),
+											'disabled_description' => __( 'ZipArchive PHP class is missing, so BackWPUp will use PclZip instead.', 'backwpup' ),
+										],
+										'.tar'    => [
+											'label'               => __( 'Tar', 'backwpup' ),
+											'id'                  => 'idarchiveformat-tar',
+											'available'           => true,
+											'disabled_description' => '',
+										],
+										'.tar.gz' => [
+											'label'               => __( 'Tar GZip', 'backwpup' ),
+											'id'                  => 'idarchiveformat-targz',
+											'available'           => function_exists( 'gzopen' ),
+											'disabled_description' => sprintf( __( 'Disabled due to missing %s PHP function.', 'backwpup' ), 'gzopen()' ),
+										],
+									];
+									foreach ( BackWPup_Option::get_allowed_archive_formats() as $format ) {
+										if ( ! isset( $format_config[ $format ] ) ) {
+											continue;
 										}
-									echo '<p><label for="idarchiveformat-tar"><input readonly disabled class="radio" type="radio"' . checked( '.tar', $archive_format_option, false ) . ' name="archiveformat" id="idarchiveformat-tar" value=".tar" /> ' . esc_html__( 'Tar', 'backwpup' ) . '</label></p>';
-									if ( function_exists( 'gzopen' ) ) {
-									  echo '<p><label for="idarchiveformat-targz"><input readonly disabled class="radio" type="radio"' . checked( '.tar.gz', $archive_format_option, false ) . ' name="archiveformat" id="idarchiveformat-targz" value=".tar.gz" /> ' . esc_html__( 'Tar GZip', 'backwpup' ) . '</label></p>';
-									  } else {
-									echo '<p><label for="idarchiveformat-targz"><input readonly disabled class="radio" type="radio"' . checked( '.tar.gz', $archive_format_option, false ) . ' name="archiveformat" id="idarchiveformat-targz" value=".tar.gz" disabled="disabled" /> ' . esc_html__( 'Tar GZip', 'backwpup' ) . '</label>';
-									echo '<br /><span class="description">' . esc_html( sprintf( __( 'Disabled due to missing %s PHP function.', 'backwpup' ), 'gzopen()' ) ) . '</span></p>';
-									  }
+										$config   = $format_config[ $format ];
+										$disabled = $config['available'] ? '' : ' disabled="disabled"';
+										echo '<p><label for="' . esc_attr( $config['id'] ) . '"><input readonly disabled class="radio" type="radio"' . checked( $format, $archive_format_option, false ) . ' name="archiveformat" id="' . esc_attr( $config['id'] ) . '" value="' . esc_attr( $format ) . '"' . $disabled . ' /> ' . esc_html( $config['label'] ) . '</label>';
+										if ( ! $config['available'] && ! empty( $config['disabled_description'] ) ) {
+											echo '<br /><span class="description">' . esc_html( $config['disabled_description'] ) . '</span>';
+										}
+										echo '</p>';
+									}
 									?>
 								</fieldset>
 							</td>
