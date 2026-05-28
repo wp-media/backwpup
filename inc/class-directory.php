@@ -23,6 +23,13 @@ class BackWPup_Directory extends DirectoryIterator {
 	private static $auto_exclusion_plugin_cache_folders = [];
 
 	/**
+	 * Flag to check if auto exclusion folders are initialized
+	 *
+	 * @var bool
+	 */
+	private static $auto_exclusion_initialized = false;
+
+	/**
 	 * Creates the iterator.
 	 *
 	 * Fixes the path before calling the parent constructor.
@@ -34,17 +41,44 @@ class BackWPup_Directory extends DirectoryIterator {
 	}
 
 	/**
-	 * Override the current function to avoid the backup of auto exclude plugins listed in self::$_auto_exclusion_plugins
+	 * Override next to skip auto excluded folders.
 	 *
-	 * @return object
+	 * @return void
 	 */
-	public function current(): object {
-		$item = parent::current();
-		if ( ! $item->isDot() && $item->isDir() && in_array( trailingslashit( $item->getPathname() ), self::get_auto_exclusion_plugin_cache_folders(), true ) ) {
-			$this->next();
-			return $this->current();
+	public function next(): void {
+		parent::next();
+		while ( $this->valid() && $this->should_skip() ) {
+			parent::next();
 		}
-		return $item;
+	}
+
+	/**
+	 * Override rewind to skip auto excluded folders.
+	 *
+	 * @return void
+	 */
+	public function rewind(): void {
+		parent::rewind();
+		while ( $this->valid() && $this->should_skip() ) {
+			parent::next();
+		}
+	}
+
+	/**
+	 * Check if the current item should be skipped.
+	 *
+	 * @return bool
+	 */
+	private function should_skip(): bool {
+		$item = $this->current();
+
+		if ( $item->isDot() || ! $item->isDir() ) {
+			return false;
+		}
+
+		$pathname = self::sanitize_path( $item->getPathname() );
+
+		return isset( self::$auto_exclusion_plugin_cache_folders[ $pathname ] );
 	}
 
 	/**
@@ -53,11 +87,9 @@ class BackWPup_Directory extends DirectoryIterator {
 	 * @return array
 	 */
 	public static function get_auto_exclusion_plugins_folders(): array {
-		if ( 0 === count( self::$auto_exclusion_plugins_folders ) ) {
-			self::init_auto_exclusion_folders();
+		self::init_auto_exclusion_folders();
 
-		}
-		return self::$auto_exclusion_plugins_folders;
+		return array_keys( self::$auto_exclusion_plugins_folders );
 	}
 
 	/**
@@ -66,10 +98,9 @@ class BackWPup_Directory extends DirectoryIterator {
 	 * @return array
 	 */
 	public static function get_auto_exclusion_plugin_cache_folders(): array {
-		if ( 0 === count( self::$auto_exclusion_plugin_cache_folders ) ) {
-			self::init_auto_exclusion_folders();
-		}
-		return self::$auto_exclusion_plugin_cache_folders;
+		self::init_auto_exclusion_folders();
+
+		return array_keys( self::$auto_exclusion_plugin_cache_folders );
 	}
 
 	/**
@@ -78,6 +109,10 @@ class BackWPup_Directory extends DirectoryIterator {
 	 * @return void
 	 */
 	private static function init_auto_exclusion_folders() {
+		if ( self::$auto_exclusion_initialized ) {
+			return;
+		}
+
 		/**
 		 * Filter whether BackWPup will list the plugins in the excluded plugins list.
 		 *
@@ -98,11 +133,19 @@ class BackWPup_Directory extends DirectoryIterator {
 			'backwpup_exclusion_plugins_cache_folders',
 			[]
 		);
+
 		$auto_exclusion_plugins_folders       = ( ! is_array( $auto_exclusion_plugins_folders ) ? [] : $auto_exclusion_plugins_folders );
 		$auto_exclusion_plugins_cache_folders = ( ! is_array( $auto_exclusion_plugins_cache_folders ) ? [] : $auto_exclusion_plugins_cache_folders );
 
-		self::$auto_exclusion_plugins_folders      = array_unique( array_map( 'trailingslashit', $auto_exclusion_plugins_folders ) );
-		self::$auto_exclusion_plugin_cache_folders = array_unique( array_map( 'trailingslashit', $auto_exclusion_plugins_cache_folders ) );
+		foreach ( array_unique( $auto_exclusion_plugins_folders ) as $folder ) {
+			self::$auto_exclusion_plugins_folders[ trailingslashit( self::sanitize_path( $folder ) ) ] = true;
+		}
+
+		foreach ( array_unique( $auto_exclusion_plugins_cache_folders ) as $folder ) {
+			self::$auto_exclusion_plugin_cache_folders[ trailingslashit( self::sanitize_path( $folder ) ) ] = true;
+		}
+
+		self::$auto_exclusion_initialized = true;
 	}
 
 	/**
@@ -111,17 +154,18 @@ class BackWPup_Directory extends DirectoryIterator {
 	 * @param string $id_path The id of the path.
 	 * @param string $path The path to get the folders to exclude.
 	 * @param string $id_job The id of the job.
+	 * @param bool   $size Whether to include the size of the folder (performance intensive).
 	 *
 	 * @return array
 	 */
-	public static function get_folder_list_to_exclude( $id_path, $path, $id_job ) {
+	public static function get_folder_list_to_exclude( $id_path, $path, $id_job, $size = true ) {
 		$folder = realpath( BackWPup_Path_Fixer::fix_path( $path ) );
 
-		if ( ! $folder ) {
+		if ( ! $folder || ! is_dir( $folder ) ) {
 			return [];
 		}
 
-		$folder = untrailingslashit( BackWPup_Path_Fixer::slashify( $folder ) );
+		$folder = trailingslashit( BackWPup_Path_Fixer::slashify( $folder ) );
 
 		// Prepare variables once.
 		$folders_to_exclude = [];
@@ -131,39 +175,47 @@ class BackWPup_Directory extends DirectoryIterator {
 			$excludes = [];
 		}
 
-		$dir           = new BackWPup_Directory( $folder );
-		$auto_excludes = array_map( 'trailingslashit', self::get_exclude_dirs( $folder, $dir::get_auto_exclusion_plugins_folders() ) );
+		$excludes_flip = array_flip( $excludes );
 
-		try {
-			foreach ( $dir as $file ) {
-				if ( $file->isDot() || ! $file->isDir() ) {
-					continue;
-				}
+		// Initialize auto-exclusion folders.
+		self::init_auto_exclusion_folders();
+		$auto_excludes = self::get_exclude_dirs( $folder, self::$auto_exclusion_plugins_folders );
 
-				$pathname = $file->getPathname();
-
-				// Skip auto-excluded folders.
-				if ( in_array( trailingslashit( $pathname ), $auto_excludes, true ) ) {
-					continue;
-				}
-
-				$filename = $file->getFilename();
-
-				// Check for .donotbackup.
-				if ( file_exists( $pathname . '/.donotbackup' ) ) {
-					$excludes[] = $pathname;
-				}
-
-				$folders_to_exclude[] = [
-					'name'     => $filename,
-					'path'     => $pathname,
-					'size'     => BackWPup_File::get_folder_size( $pathname ),
-					'excluded' => in_array( $filename, $excludes, true ),
-				];
-			}
-		} catch ( Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
-			// Do nothing.
+		// use faster opendir() to get the list of folders.
+		$dir = opendir( $folder );
+		if ( ! $dir ) {
+			return [];
 		}
+		$file = readdir( $dir );
+		while ( false !== $file ) {
+			if ( '.' === $file || '..' === $file || ! is_dir( $folder . $file ) ) {
+				$file = readdir( $dir );
+				continue;
+			}
+
+			$pathname       = $folder . $file;
+			$sanitized_path = self::sanitize_path( $pathname );
+
+			// Skip auto-excluded folders.
+			if ( isset( $auto_excludes[ $sanitized_path ] ) ) {
+				$file = readdir( $dir );
+				continue;
+			}
+
+			// Check for .donotbackup.
+			if ( is_file( $pathname . '/.donotbackup' ) ) {
+				$excludes_flip[ $file ] = true;
+			}
+
+			$folders_to_exclude[] = [
+				'name'     => $file,
+				'path'     => $folder,
+				'size'     => $size ? BackWPup_File::get_folder_size( $folder ) : '',
+				'excluded' => isset( $excludes_flip[ $file ] ),
+			];
+			$file                 = readdir( $dir );
+		}
+		closedir( $dir );
 
 		// sort files alphabetically.
 		usort(
@@ -187,20 +239,21 @@ class BackWPup_Directory extends DirectoryIterator {
 	private static function get_exclude_dirs( $folder, $excludedir = [] ) {
 		$folder = self::sanitize_path( BackWPup_Path_Fixer::fix_path( $folder ) );
 
-		if ( false !== strpos( self::sanitize_path( WP_CONTENT_DIR ), $folder ) && self::sanitize_path( WP_CONTENT_DIR ) !== $folder ) {
-			$excludedir[] = self::sanitize_path( WP_CONTENT_DIR );
-		}
-		if ( false !== strpos( self::sanitize_path( WP_PLUGIN_DIR ), $folder ) && self::sanitize_path( WP_PLUGIN_DIR ) !== $folder ) {
-			$excludedir[] = self::sanitize_path( WP_PLUGIN_DIR );
-		}
-		if ( false !== strpos( self::sanitize_path( get_theme_root() ), $folder ) && self::sanitize_path( get_theme_root() ) !== $folder ) {
-			$excludedir[] = self::sanitize_path( get_theme_root() );
-		}
-		if ( false !== strpos( self::sanitize_path( BackWPup_File::get_upload_dir() ), $folder ) && self::sanitize_path( BackWPup_File::get_upload_dir() ) !== $folder ) {
-			$excludedir[] = self::sanitize_path( BackWPup_File::get_upload_dir() );
+		$dirs_to_check = [
+			WP_CONTENT_DIR,
+			WP_PLUGIN_DIR,
+			get_theme_root(),
+			BackWPup_File::get_upload_dir(),
+		];
+
+		foreach ( $dirs_to_check as $dir ) {
+			$sanitized_dir = self::sanitize_path( $dir );
+			if ( false !== strpos( $sanitized_dir, $folder ) && $sanitized_dir !== $folder ) {
+				$excludedir[ $sanitized_dir ] = true;
+			}
 		}
 
-		return array_unique( $excludedir );
+		return $excludedir;
 	}
 
 	/**
@@ -211,13 +264,8 @@ class BackWPup_Directory extends DirectoryIterator {
 	 * @return string
 	 */
 	private static function sanitize_path( $path ) {
-		$path = trailingslashit(
-			str_replace(
-				'\\',
-				'/',
-				realpath( $path )
-			)
+		return trailingslashit(
+			BackWPup_Path_Fixer::slashify( $path )
 		);
-		return $path;
 	}
 }

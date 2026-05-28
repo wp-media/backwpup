@@ -5,6 +5,10 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+if ( get_site_option( 'backwpup_onboarding', false ) ) {
+  return;
+}
+
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Logs Settings", 'backwpup'),
   'type' => 'sidebar'
@@ -62,10 +66,11 @@ BackWPupHelpers::component("closable-heading", [
     ?>
 
     <?php
+    $loglevel = get_site_option('backwpup_cfg_loglevel', 'normal');
     BackWPupHelpers::component("form/select", [
       "name" => "loglevel",
       "label" => __("Logging level", 'backwpup'),
-      "value" => get_site_option('backwpup_cfg_loglevel'),
+      "value" => $loglevel,
       "options" => [
         "normal_translated" => "Normal (translated)",
         "normal" => "Normal",
@@ -74,6 +79,22 @@ BackWPupHelpers::component("closable-heading", [
       ],
     ]);
     ?>
+
+    <div class="js-backwpup-show-if-debug-log-active <?php if ( strpos($loglevel, 'debug') === false) : ?>hidden<?php endif; ?>">
+        <?php
+        $count = wpm_apply_filters_typed( 'integer', 'backwpup_debug_log_count', 5 );
+        BackWPupHelpers::component('alerts/info', [
+          'type' => 'alert',
+          'font' => 'xs',
+          'content' => sprintf(
+                // translators: %1$d: number of backups with debug log active, %2$s: WP_DEBUG is enabled text.
+                __('Debug logging provides detailed information for troubleshooting. Use with caution as it may contain sensitive data. It will automatically be disabled after <strong>%1$d</strong> backups. %2$s', 'backwpup' ),
+                $count,
+                defined('WP_DEBUG') && WP_DEBUG ? '<br />' . __('Because of <code>WP_DEBUG</code> is active, automatic disabling is inactive!', 'backwpup' ) : ''
+            ),
+        ]);
+        ?>
+    </div>
   </div>
 </div>
 

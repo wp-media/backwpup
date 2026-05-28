@@ -18,10 +18,11 @@ class BackWPup_Destination_Dropbox_API_Request_Exception extends BackWPup_Destin
 	 * @param int            $code     Exception code.
 	 * @param Exception|null $previous Previous exception.
 	 * @param string[]|null  $error    Error details returned by the API.
+	 * @param array          $context  The context payload.
 	 */
-	public function __construct( string $message, int $code = 0, ?Exception $previous = null, ?array $error = null ) {
+	public function __construct( string $message, int $code = 0, ?Exception $previous = null, ?array $error = null, array $context = [] ) {
 		$this->error = $error;
-		parent::__construct( $message, $code, $previous );
+		parent::__construct( $message, $code, $previous, $context );
 	}
 
 	/**

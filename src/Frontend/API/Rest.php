@@ -105,7 +105,8 @@ class Rest implements RestInterface {
 					'type'    => 'alert',
 					'font'    => 'xs',
 					'content' => $e->getMessage(),
-				]
+				],
+				true
 			);
 			$status = 500;
 		}

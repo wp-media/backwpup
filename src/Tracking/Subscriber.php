@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace WPMedia\BackWPup\Tracking;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use WPMedia\BackWPup\EventManagement\SubscriberInterface;
 
 class Subscriber implements SubscriberInterface {
@@ -21,14 +25,23 @@ class Subscriber implements SubscriberInterface {
 	private $notices;
 
 	/**
+	 * The nudge tracking service.
+	 *
+	 * @var NudgeTracking
+	 */
+	private $nudge_tracking;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param Tracking $tracking The tracking service.
-	 * @param Notices  $notices   The notices instance.
+	 * @param Tracking      $tracking       The tracking service.
+	 * @param Notices       $notices        The notices instance.
+	 * @param NudgeTracking $nudge_tracking The nudge tracking service.
 	 */
-	public function __construct( Tracking $tracking, Notices $notices ) {
-		$this->tracking = $tracking;
-		$this->notices  = $notices;
+	public function __construct( Tracking $tracking, Notices $notices, NudgeTracking $nudge_tracking ) {
+		$this->tracking       = $tracking;
+		$this->notices        = $notices;
+		$this->nudge_tracking = $nudge_tracking;
 	}
 
 	/**
@@ -53,6 +66,10 @@ class Subscriber implements SubscriberInterface {
 			'backwpup_track_expired_banner_shown'          => 'track_expired_banner_shown',
 			'backwpup_track_log_opened'                    => [ 'track_log_opened', 10, 4 ],
 			'backwpup_track_dashboard_viewed'              => 'track_dashboard_viewed',
+			'backwpup_track_nudge_impression'              => [ 'track_nudge_impression', 10, 1 ],
+			'backwpup_track_nudge_click'                   => [ 'track_nudge_click', 10, 1 ],
+			'backwpup_track_locked_option_click'           => [ 'track_locked_option_click', 10, 1 ],
+			'wp_ajax_backwpup_track_nudge'                 => 'ajax_track_nudge',
 		];
 	}
 
@@ -215,5 +232,63 @@ class Subscriber implements SubscriberInterface {
 	 */
 	public function track_dashboard_viewed(): void {
 		$this->tracking->track_dashboard_viewed();
+	}
+
+	/**
+	 * Track nudge impression event.
+	 *
+	 * @param string $location The screen or context where the nudge appeared.
+	 *
+	 * @return void
+	 */
+	public function track_nudge_impression( string $location ): void {
+		$this->nudge_tracking->track_nudge_impression( $location );
+	}
+
+	/**
+	 * Track nudge CTA click event.
+	 *
+	 * @param string $storage_slug The storage slug the CTA was clicked on.
+	 *
+	 * @return void
+	 */
+	public function track_nudge_click( string $storage_slug ): void {
+		$this->nudge_tracking->track_nudge_click( $storage_slug );
+	}
+
+	/**
+	 * Track locked option click event.
+	 *
+	 * @param string $storage_slug The locked storage slug the user attempted to select.
+	 *
+	 * @return void
+	 */
+	public function track_locked_option_click( string $storage_slug ): void {
+		$this->nudge_tracking->track_locked_option_click( $storage_slug );
+	}
+
+	/**
+	 * Handle AJAX nudge tracking requests from the front end.
+	 *
+	 * @return void
+	 */
+	public function ajax_track_nudge(): void {
+		check_ajax_referer( 'backwpup_track_nudge', 'nonce' );
+
+		$event   = isset( $_POST['event'] ) ? sanitize_key( wp_unslash( $_POST['event'] ) ) : '';
+		$storage = isset( $_POST['storage'] ) ? sanitize_key( wp_unslash( $_POST['storage'] ) ) : '';
+
+		if ( 'nudge_click' === $event ) {
+			do_action( 'backwpup_track_nudge_click', $storage );
+			wp_send_json_success();
+		} elseif ( 'locked_option_click' === $event ) {
+			do_action( 'backwpup_track_locked_option_click', $storage );
+			wp_send_json_success();
+		}
+
+		wp_send_json_error(
+			[ 'message' => 'Unsupported tracking event.' ],
+			400
+		);
 	}
 }

@@ -10,6 +10,8 @@ class BackWPup_Cron {
 	 * Run a cron task.
 	 *
 	 * @param string $arg Cron argument.
+	 *
+	 * @throws \Random\RandomException Exception.
 	 */
 	public static function run( $arg = 'restart' ) {
 		if ( ! is_main_site( get_current_blog_id() ) ) {
@@ -36,10 +38,15 @@ class BackWPup_Cron {
 			return;
 		}
 
-		// Delay other job start for 5 minutes if already one is running.
+		// Clear all events for this job.
+		wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $arg ] );
+
+		// Delay job start for 5-7 minutes if already another one is running.
 		$job_object = BackWPup_Job::get_working_data();
 		if ( $job_object ) {
-			wp_schedule_single_event( time() + 300, 'backwpup_cron', [ 'arg' => $arg ] );
+			if ( $job_object->job['jobid'] !== $arg ) { // Only delay if different job.
+				wp_schedule_single_event( time() + 300 + random_int( 0, 120 ), 'backwpup_cron', [ 'arg' => $arg ] );
+			}
 
 			return;
 		}
@@ -149,7 +156,7 @@ class BackWPup_Cron {
 		foreach ( $activejobs as $jobid ) {
 			$cron_next = wp_next_scheduled( 'backwpup_cron', [ 'arg' => $jobid ] );
 			if ( ! $cron_next || $cron_next < time() ) {
-				wp_unschedule_event( $cron_next, 'backwpup_cron', [ 'arg' => $jobid ] );
+				wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $jobid ] );
 				$cron_next = self::cron_next( BackWPup_Option::get( $jobid, 'cron' ) );
 				wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $jobid ] );
 			}
@@ -550,6 +557,10 @@ class BackWPup_Cron {
 		$default_file_job_id     = get_site_option( Plugin::FILES_JOB_ID, false );
 		$default_database_job_id = get_site_option( Plugin::DATABASE_JOB_ID, false );
 
+		if ( ! $default_file_job_id || ! $default_database_job_id ) {
+			return false;
+		}
+
 		// Disable the default file backup cron.
 		wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $default_file_job_id ] );
 
@@ -569,5 +580,126 @@ class BackWPup_Cron {
 		}
 
 		return $cron_next ?? false;
+	}
+
+	/**
+	 * Pre-authenticate the configured WordPress user before the init hook fires.
+	 *
+	 * External-link (runext) job starts are triggered by an outside cron service
+	 * that hits wp-cron.php directly, without a BackWPup auth cookie.  When the
+	 * "WordPress user" authentication method is active, mu-plugins that restrict
+	 * wp-cron.php to a specific user would kill the request on init before
+	 * BackWPup's cron_active() handler (registered on wp_loaded) can run.
+	 *
+	 * The runext nonce is validated before touching the current user, so this does
+	 * not allow unauthenticated requests to escalate privileges.
+	 */
+	public static function preauth_for_external_run(): void {
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended
+		$run_type = isset( $_GET['backwpup_run'] ) ? sanitize_key( $_GET['backwpup_run'] ) : '';
+		if ( 'runext' !== $run_type ) {
+			return;
+		}
+
+		$authentication = get_site_option(
+			'backwpup_cfg_authentication',
+			[
+				'method'  => '',
+				'user_id' => 0,
+			]
+		);
+
+		if ( empty( $authentication['user_id'] ) || 'user' !== $authentication['method'] ) {
+			return;
+		}
+
+		$job_id         = isset( $_GET['jobid'] ) ? absint( $_GET['jobid'] ) : 0;
+		$provided_nonce = isset( $_GET['_nonce'] ) ? sanitize_text_field( wp_unslash( $_GET['_nonce'] ) ) : '';
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
+
+		$expected_nonce = md5( get_site_option( 'backwpup_cfg_jobrunauthkey' ) . $job_id );
+
+		// Fallback for legacy external job links that used plain authkey (not MD5).
+		// Mirrors cron_active() backward compatibility logic.
+		if ( preg_match( '/^[a-f0-9]{32}$/i', $provided_nonce ) !== 1 ) {
+			$expected_nonce = get_site_option( 'backwpup_cfg_jobrunauthkey' );
+		}
+
+		if ( ! hash_equals( $expected_nonce, $provided_nonce ) ) {
+			return;
+		}
+
+		wp_set_current_user( (int) $authentication['user_id'] );
+	}
+
+	/**
+	 * Filter WordPress's own cron_request to inject user authentication cookies.
+	 *
+	 * WordPress's spawn_cron() makes an unauthenticated loopback to wp-cron.php.
+	 * When the "WordPress user" authentication method is configured, sites that
+	 * restrict wp-cron.php access to a specific user (e.g. via a mu-plugin) will
+	 * block that loopback, preventing scheduled BackWPup jobs from ever running.
+	 *
+	 * By injecting the configured user's auth cookie here, the loopback request
+	 * arrives at wp-cron.php already authenticated, so the restriction passes and
+	 * BackWPup's scheduled cron events fire normally.
+	 *
+	 * If the request already carries cookies (BackWPup's own get_jobrun_url() sets
+	 * them before calling this filter), we return early to avoid duplicates.
+	 *
+	 * @param  array $cron_request The cron request data passed through the filter.
+	 * @return array Filtered cron request data.
+	 */
+	public static function authenticate_cron_request( array $cron_request ): array {
+		// BackWPup's own get_jobrun_url() already set cookies – don't duplicate.
+		if ( ! empty( $cron_request['args']['cookies'] ) ) {
+			return $cron_request;
+		}
+
+		$authentication = get_site_option(
+			'backwpup_cfg_authentication',
+			[
+				'method'  => '',
+				'user_id' => 0,
+			]
+		);
+
+		if ( empty( $authentication['user_id'] ) || 'user' !== $authentication['method'] ) {
+			return $cron_request;
+		}
+
+		$transient_key = 'backwpup_cookies_' . (int) $authentication['user_id'];
+		$cookies       = get_site_transient( $transient_key );
+		// Strict false check: empty array is a valid cached value (invalid user).
+		if ( false === $cookies || ! is_array( $cookies ) ) {
+			$cookies = [];
+			$user_id = (int) $authentication['user_id'];
+			$user    = get_userdata( $user_id );
+			if ( ! empty( $user ) && $user->exists() ) {
+				$expiration                  = time() + ( 2 * DAY_IN_SECONDS );
+				$manager                     = WP_Session_Tokens::get_instance( $user_id );
+				$token                       = $manager->create( $expiration );
+				$cookies[ LOGGED_IN_COOKIE ] = wp_generate_auth_cookie(
+					$user_id,
+					$expiration,
+					'logged_in',
+					$token
+				);
+			}
+			set_site_transient( $transient_key, $cookies, 2 * DAY_IN_SECONDS );
+		}
+
+		if ( ! empty( $cookies ) ) {
+			foreach ( $cookies as $name => $value ) {
+				$cron_request['args']['cookies'][] = new WP_Http_Cookie(
+					[
+						'name'  => $name,
+						'value' => $value,
+					]
+				);
+			}
+		}
+
+		return $cron_request;
 	}
 }

@@ -1,12 +1,13 @@
 <?php
 
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+	exit;
 }
 
 $pro_providers = [];
-if( BackWPup::is_pro()) {
+if ( BackWPup::is_pro() ) {
 	$pro_providers = [
+		'WPMedia\BackWPup\Backup\ServiceProviderPro',
 		'WPMedia\BackWPup\License\ServiceProvider',
 		'WPMedia\BackWPup\Cli\ServiceProviderPro',
 	];
@@ -24,6 +25,7 @@ $providers = [
 	'WPMedia\BackWPup\Beta\ServiceProvider',
 	'WPMedia\BackWPup\Cli\ServiceProvider',
 	'WPMedia\BackWPup\Hosting\ServiceProvider',
+	'WPMedia\BackWPup\Log\ServiceProvider',
 ];
 
 

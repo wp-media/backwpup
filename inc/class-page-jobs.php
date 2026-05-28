@@ -538,7 +538,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 					check_admin_referer( 'bulk-jobs' );
 
 					foreach ( array_map( 'absint', $jobs ) as $jobid ) {
-						wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $jobid ] );
+						wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => (int) $jobid ] );
 						BackWPup_Option::delete_job( $jobid );
 					}
 				}
@@ -618,7 +618,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 							/* @var BackWPup_Destinations $dest_class */
 							$dest_class   = BackWPup::get_destination( $id );
 							$job_settings = BackWPup_Option::get_job( $jobid );
-							if ( ! $dest_class->can_run( $job_settings ) ) {
+							if ( ! $dest_class->can_run( $job_settings, false ) ) {
 								BackWPup_Admin::message(
 									sprintf(
 										/* translators: 1: job name, 2: destination name. */
@@ -921,7 +921,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 				<div class="progressbar"><div id="progresssteps" class="bwpu-progress" style="width:<?php echo esc_attr( (int) $job_object->substep_percent ); ?>%;"><?php echo esc_html( $job_object->substep_percent ); ?>%</div></div>
 				<div id="lastmsg"><?php echo esc_html( $job_object->lastmsg ); ?></div>
 				<div id="tb-showworking" style="display:none;">
-					<div id="showworking"><?php echo wp_kses_post( substr( $logfiledata, $startpos, $length ) ); ?></div>
+					<div id="showworking"><?php echo wp_kses_post( self::render_log_content( substr( $logfiledata, $startpos, $length ) ) ); ?></div>
 				</div>
 			</div>
 			<?php
@@ -1220,7 +1220,7 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 
 		$data_ro_return = [
 			'log_pos'          => strlen( $logfiledata ) + $logpos,
-			'log_text'         => substr( $logfiledata, $startpos, $length ),
+			'log_text'         => self::render_log_content( substr( $logfiledata, $startpos, $length ) ),
 			'warning_count'    => $warnings,
 			'error_count'      => $errors,
 			'running_time'     => $runtime,
@@ -1239,6 +1239,26 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 		];
 
 		wp_send_json( $data_ro_return );
+	}
+
+	/**
+	 * Render log HTML through the shared log renderer when available.
+	 *
+	 * @param string $content Raw HTML log file fragment.
+	 *
+	 * @return string
+	 */
+	private static function render_log_content( string $content ): string {
+		$container = wpm_apply_filters_typed( '?object', 'backwpup_container', null );
+		if ( is_object( $container ) && method_exists( $container, 'has' ) && $container->has( 'log_facade' ) ) {
+			$log_facade = $container->get( 'log_facade' );
+			if ( is_object( $log_facade ) && method_exists( $log_facade, 'render_html' ) ) {
+				return $log_facade->render_html( $content );
+			}
+		}
+
+		$log_facade = new \WPMedia\BackWPup\Log\LogFacade();
+		return $log_facade->render_html( $content );
 	}
 
 	/**

@@ -530,7 +530,8 @@ class Rest implements RestInterface {
 
 		$cron_next = $this->cron_adapter->cron_next( $job['cron'] );
 
-		wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $job_id ] );
+		wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => (int) $job_id ] );
+		wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => (int) $job_id ] );
 
 		/**
 		 * Fires after a new job is added.
@@ -620,8 +621,9 @@ class Rest implements RestInterface {
 
 			if ( 'link' === $frequency ) {
 				$next_backup = __( 'External link', 'backwpup' );
-				// Update activetype.
+				// Update active type.
 				$this->option_adapter->update( $job_id, 'activetype', $frequency );
+				wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => (int) $job_id ] );
 
 			} else {
 				// Generate new cron expression based on the selected frequency and time settings.

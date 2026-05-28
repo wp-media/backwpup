@@ -32,7 +32,7 @@ $steps = [
 ];
 
 ?>
-<div class="bg-primary-darker rounded-2xl px-10 w-[400px] shrink-0 overflow-hidden" id="backwpup-onboarding-steps">
+<div class="bg-primary-darker rounded-2xl px-6 lg:px-10 w-full lg:w-[400px] lg:shrink-0 overflow-hidden" id="backwpup-onboarding-steps">
   <?php foreach ($steps as $step) : ?>
     <?php BackWPupHelpers::component("app/steps-item", array_merge($step, ["is_active" => $step['number'] === $current_step, "is_reached" => $current_step >= $step['number'], "is_last" => $step['number'] === count($steps)])); ?>
   <?php endforeach; ?>

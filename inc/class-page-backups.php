@@ -814,7 +814,7 @@ final class BackWPup_Page_Backups extends WP_List_Table {
 
 		return sprintf(
 			'<a href="#TB_inline?height=300&width=630&inlineId=tb_download_file" 
-				class="backup-download-link thickbox" 
+				class="backup-download-link thickbox js-backwpup-download-backup" 
 				id="backup-download-link"
 				data-jobid="%1$s" 
 				data-destination="%2$s" 

@@ -12,6 +12,8 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Webmozart\Assert\Assert;
+use WPMedia\BackWPup\Backup\FailureContext\Dropbox\DropboxFailureContextMapper;
+use WPMedia\BackWPup\Backup\ReasonCode;
 
 /**
  * Class for communicating with Dropbox API V2.
@@ -81,11 +83,18 @@ class BackWPup_Destination_Dropbox_API {
 	private $user_agent;
 
 	/**
-	 * A path to the SSL ca-bundle file to use in Dropbox requests.
+	 * SSL ca-bundle path.
 	 *
 	 * @var string
 	 */
 	private $ca_bundle;
+
+	/**
+	 * Failure context mapper.
+	 *
+	 * @var DropboxFailureContextMapper
+	 */
+	private $failure_mapper;
 
 	/**
 	 * BackWPup_Destination_Dropbox_API constructor.
@@ -118,7 +127,8 @@ class BackWPup_Destination_Dropbox_API {
 			throw new BackWPup_Destination_Dropbox_API_Exception( esc_html__( 'No App key or App Secret specified.', 'backwpup' ) );
 		}
 
-		$this->job_object = $job_object;
+		$this->job_object     = $job_object;
+		$this->failure_mapper = new DropboxFailureContextMapper();
 	}
 
 	/**
@@ -589,7 +599,7 @@ class BackWPup_Destination_Dropbox_API {
 		try {
 			return $this->request( 'files/upload', $args, 'upload' );
 		} catch ( BackWPup_Destination_Dropbox_API_Request_Exception $e ) {
-			$this->handle_files_upload_error( $e->getError() );
+			$this->handle_files_upload_error( $e->getError(), $e->getContext() );
 
 			return null;
 		}
@@ -624,7 +634,9 @@ class BackWPup_Destination_Dropbox_API {
 			}
 
 			// Otherwise, cannot fix.
-			$this->handle_files_upload_session_lookup_error( $error );
+			$this->handle_files_upload_session_lookup_error( $error, $e->getContext(), E_USER_ERROR );
+
+			return null;
 		}
 	}
 
@@ -649,7 +661,7 @@ class BackWPup_Destination_Dropbox_API {
 					return $this->request( 'files/upload_session/finish', $args, 'upload' );
 				}
 			}
-			$this->handle_files_upload_session_finish_error( $e->getError() );
+			$this->handle_files_upload_session_finish_error( $e->getError(), $e->getContext() );
 
 			return null;
 		}
@@ -807,7 +819,16 @@ class BackWPup_Destination_Dropbox_API {
 		$request = $this->build_request( $endpoint, $args, $endpoint_format );
 		$client  = $this->create_client();
 
-		$response = $client->sendRequest( $request );
+		try {
+			$response = $client->sendRequest( $request );
+		} catch ( \Psr\Http\Client\ClientExceptionInterface $e ) {
+			throw new BackWPup_Destination_Dropbox_API_Exception(
+				esc_html( $e->getMessage() ), // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+				$e->getCode(), // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+				$e, // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+				$this->failure_mapper->map_reason( ReasonCode::REASON_TIMEOUT_OR_NETWORK ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			);
+		}
 
 		if ( $response->getStatusCode() >= 500 ) {
 			$this->handle_server_exception( $response );
@@ -817,7 +838,6 @@ class BackWPup_Destination_Dropbox_API {
 			// If we're still here, then recurse.
 			return $this->request( $endpoint, $args, $endpoint_format, $should_echo, $bytes );
 		}
-
 		if ( true === $should_echo ) {
             echo $response->getBody(); // phpcs:ignore
 		}
@@ -973,7 +993,10 @@ class BackWPup_Destination_Dropbox_API {
 				),
 				esc_html( (string) $response->getStatusCode() ),
 				esc_html( $response->getBody()->getContents() )
-			)
+			),
+			$response->getStatusCode(), // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			null,
+			$this->failure_mapper->map_api_error( [], $response->getStatusCode() ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 		);
 	}
 
@@ -992,8 +1015,11 @@ class BackWPup_Destination_Dropbox_API {
 					'(400) Bad input parameter. Response from server: %s',
 					'backwpup'
 				),
-				wp_kses_data( $response->getBody()->getContents() )
-			)
+				esc_html( $response->getBody()->getContents() )
+			),
+			400,
+			null,
+			$this->failure_mapper->map_api_error( [], 400 ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 		);
 	}
 
@@ -1017,7 +1043,10 @@ class BackWPup_Destination_Dropbox_API {
 						'backwpup'
 					),
 					esc_html( $error['error']['.tag'] )
-				)
+				),
+				401,
+				null,
+				$this->failure_mapper->map_api_error( $error['error'], 401 ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 			);
 		}
 	}
@@ -1030,7 +1059,8 @@ class BackWPup_Destination_Dropbox_API {
 	 * @throws BackWPup_Destination_Dropbox_API_Exception When access is denied.
 	 */
 	protected function handle_403_error( ResponseInterface $response ) {
-		$error = json_decode( $response->getBody(), true );
+		$error   = json_decode( $response->getBody(), true );
+		$context = $this->failure_mapper->map_api_error( $error['error'] ?? [], 403 );
 
 		if ( 'invalid_account_type' === $error['error']['.tag'] ) {
 			// InvalidAccountTypeError.
@@ -1039,7 +1069,10 @@ class BackWPup_Destination_Dropbox_API {
 					esc_html__(
 						'(403) You do not have permission to access this endpoint.',
 						'backwpup'
-					)
+					),
+					403,
+					null,
+					$context // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 				);
 			}
 			if ( 'feature' === $error['error']['invalid_account_type']['.tag'] ) {
@@ -1047,7 +1080,10 @@ class BackWPup_Destination_Dropbox_API {
 					esc_html__(
 						'(403) You do not have permission to access this feature.',
 						'backwpup'
-					)
+					),
+					403,
+					null,
+					$context // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 				);
 			}
 		}
@@ -1061,8 +1097,11 @@ class BackWPup_Destination_Dropbox_API {
 					'backwpup'
 				),
 				esc_html( $error['error_summary'] )
-			)
-		);
+				),
+				403,
+				null,
+				$context // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			);
 	}
 
 	/**
@@ -1073,7 +1112,18 @@ class BackWPup_Destination_Dropbox_API {
 	 * @throws BackWPup_Destination_Dropbox_API_Request_Exception For endpoint-specific errors.
 	 */
 	protected function handle_409_error( ResponseInterface $response ) {
-		$error = json_decode( $response->getBody(), true );
+		$body  = (string) $response->getBody();
+		$error = json_decode( $body, true );
+		$error = is_array( $error ) ? $error : [];
+
+		$context = $this->failure_mapper->map_api_error( $error['error'] ?? [], 409 );
+		$this->log_debug_409_payload( $error, $context );
+		$summary = '';
+		if ( ! empty( $error['error_summary'] ) && is_scalar( $error['error_summary'] ) ) {
+			$summary = (string) $error['error_summary'];
+		} elseif ( '' !== $body ) {
+			$summary = $body;
+		}
 
 		throw new BackWPup_Destination_Dropbox_API_Request_Exception(
 			sprintf(
@@ -1082,11 +1132,12 @@ class BackWPup_Destination_Dropbox_API {
 					'(409) Endpoint-specific error. Response from server: %s',
 					'backwpup'
 				),
-				esc_html( $error['error_summary'] )
+				esc_html( $summary )
 			),
-			(int) esc_html( (string) $response->getStatusCode() ),
+			(int) $response->getStatusCode(),
 			null,
-			$error['error'] // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Error details are stored on the exception, not output.
+			is_array( $error['error'] ?? null ) ? $error['error'] : [], // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			$context // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 		);
 	}
 
@@ -1105,10 +1156,51 @@ class BackWPup_Destination_Dropbox_API {
 				esc_html__(
 					'(429) Requests are being rate limited. Please try again later.',
 					'backwpup'
-				)
+				),
+				429,
+				null,
+				$this->failure_mapper->map_api_error( [], 429 ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 			);
 		}
 		sleep( (int) $response->getHeaderLine( 'Retry-After' ) );
+	}
+
+	/**
+	 * Log the normalized Dropbox 409 payload when debug logging is enabled.
+	 *
+	 * @param array $error   Decoded Dropbox error payload.
+	 * @param array $context Normalized failure context.
+	 * @return void
+	 */
+	private function log_debug_409_payload( array $error, array $context ): void {
+		if ( ! isset( $this->job_object ) || ! $this->job_object->is_debug() ) {
+			return;
+		}
+
+		$payload = wp_json_encode(
+			[
+				'error_summary' => is_scalar( $error['error_summary'] ?? null ) ? (string) $error['error_summary'] : '',
+				'error'         => is_array( $error['error'] ?? null ) ? $error['error'] : [],
+				'context'       => $context,
+			]
+		);
+
+		if ( ! is_string( $payload ) || '' === $payload ) {
+			$this->log( __( 'Dropbox API 409 payload could not be encoded for debug logging.', 'backwpup' ), E_USER_WARNING );
+			return;
+		}
+
+		if ( strlen( $payload ) > 2000 ) {
+			$payload = substr( $payload, 0, 2000 ) . '...';
+		}
+
+		$this->log(
+			sprintf(
+				/* translators: %s: encoded Dropbox 409 error payload. */
+				__( 'Dropbox API 409 payload: %s', 'backwpup' ),
+				$payload
+			)
+		);
 	}
 
 	/**
@@ -1217,8 +1309,21 @@ class BackWPup_Destination_Dropbox_API {
 	 * @return void
 	 */
 	private function log_warning( string $message ): void {
+		$this->log_message( $message, E_USER_WARNING );
+	}
+
+	/**
+	 * Logs a Dropbox API message with optional context.
+	 *
+	 * @param string $message Message to log.
+	 * @param int    $level Log level.
+	 * @param array  $context Optional normalized context.
+	 *
+	 * @return void
+	 */
+	private function log_message( string $message, int $level = E_USER_NOTICE, array $context = [] ): void {
 		if ( $this->job_object instanceof BackWPup_Job ) {
-			$this->job_object->log( $message, E_USER_WARNING );
+			$this->job_object->log( $message, $level, '', 0, $context );
 			return;
 		}
 
@@ -1376,28 +1481,35 @@ class BackWPup_Destination_Dropbox_API {
 	/**
 	 * Handle upload session finish errors.
 	 *
-	 * @param array $error Error payload.
+	 * @param array $error   Error payload.
+	 * @param array $context Normalized failure context.
 	 *
 	 * @return void
 	 */
-	private function handle_files_upload_session_finish_error( $error ) {
+	private function handle_files_upload_session_finish_error( $error, array $context = [] ) {
 		switch ( $error['.tag'] ) {
 			case 'lookup_failed':
 				$this->handle_files_upload_session_lookup_error(
-					$error['lookup_failed']
+					$error['lookup_failed'],
+					$context,
+					E_USER_ERROR
 				);
 				break;
 
 			case 'path':
-				$this->handle_files_write_error( $error['path'] );
+				$this->handle_files_write_error( $error['path'], $context, E_USER_ERROR );
 				break;
 
 			case 'too_many_shared_folder_targets':
-				$this->log_warning( 'Too many shared folder targets.' );
+				$this->log_message( 'Too many shared folder targets.', E_USER_ERROR, $context );
 				break;
 
 			case 'other':
-				$this->log_warning( 'The file could not be uploaded.' );
+				$this->log_message( 'The file could not be uploaded.', E_USER_ERROR, $context );
+				break;
+
+			default:
+				$this->log_message( 'The file could not be uploaded.', E_USER_ERROR, $context );
 				break;
 		}
 	}
@@ -1405,33 +1517,41 @@ class BackWPup_Destination_Dropbox_API {
 	/**
 	 * Handle upload session lookup errors.
 	 *
-	 * @param array $error Error payload.
+	 * @param array $error   Error payload.
+	 * @param array $context Normalized failure context.
+	 * @param int   $level   Log level.
 	 *
 	 * @return void
 	 */
-	private function handle_files_upload_session_lookup_error( $error ) {
+	private function handle_files_upload_session_lookup_error( $error, array $context = [], int $level = E_USER_WARNING ) {
 		switch ( $error['.tag'] ) {
 			case 'not_found':
-				$this->log_warning( 'Session not found.' );
+				$this->log_message( 'Session not found.', $level, $context );
 				break;
 
 			case 'incorrect_offset':
-				$this->log_warning(
+				$this->log_message(
 					'Incorrect offset given. Correct offset is ' .
-					intval( $error['correct_offset'] ) . '.'
+					intval( $error['correct_offset'] ) . '.',
+					$level,
+					$context
 				);
 				break;
 
 			case 'closed':
-				$this->log_warning( 'This session has been closed already.' );
+				$this->log_message( 'This session has been closed already.', $level, $context );
 				break;
 
 			case 'not_closed':
-				$this->log_warning( 'This session is not closed.' );
+				$this->log_message( 'This session is not closed.', $level, $context );
 				break;
 
 			case 'other':
-				$this->log_warning( 'Could not look up the file session.' );
+				$this->log_message( 'Could not look up the file session.', $level, $context );
+				break;
+
+			default:
+				$this->log_message( 'Could not look up the file session.', $level, $context );
 				break;
 		}
 	}
@@ -1439,31 +1559,40 @@ class BackWPup_Destination_Dropbox_API {
 	/**
 	 * Handle upload errors.
 	 *
-	 * @param array $error Error payload.
+	 * @param array $error   Error payload.
+	 * @param array $context Normalized failure context.
 	 *
 	 * @return void
 	 */
-	private function handle_files_upload_error( $error ) {
+	private function handle_files_upload_error( $error, array $context = [] ) {
 		if ( ! is_array( $error ) || empty( $error['.tag'] ) ) {
-			$this->log_warning( 'There was an unknown error when uploading the file.' );
+			$this->log_message( 'There was an unknown error when uploading the file.', E_USER_ERROR, $context );
 			return;
 		}
 
 		switch ( $error['.tag'] ) {
 			case 'path':
+				if ( ! empty( $error['reason'] ) && is_array( $error['reason'] ) ) {
+					$this->handle_files_write_error( $error['reason'], $context, E_USER_ERROR );
+					break;
+				}
 				if ( empty( $error['path'] ) || ! is_array( $error['path'] ) ) {
-					$this->log_warning( 'There was an unknown error when uploading the file.' );
+					$this->log_message( 'There was an unknown error when uploading the file.', E_USER_ERROR, $context );
 					break;
 				}
 				if ( ! empty( $error['path']['reason'] ) && is_array( $error['path']['reason'] ) ) {
-					$this->handle_files_upload_write_failed( $error['path'] );
+					$this->handle_files_upload_write_failed( $error['path'], $context );
 					break;
 				}
-				$this->handle_files_write_error( $error['path'] );
+				$this->handle_files_write_error( $error['path'], $context, E_USER_ERROR );
 				break;
 
 			case 'other':
-				$this->log_warning( 'There was an unknown error when uploading the file.' );
+				$this->log_message( 'There was an unknown error when uploading the file.', E_USER_ERROR, $context );
+				break;
+
+			default:
+				$this->log_message( 'There was an unknown error when uploading the file.', E_USER_ERROR, $context );
 				break;
 		}
 	}
@@ -1471,27 +1600,30 @@ class BackWPup_Destination_Dropbox_API {
 	/**
 	 * Handle upload write failed errors.
 	 *
-	 * @param array $error Error payload.
+	 * @param array $error   Error payload.
+	 * @param array $context Normalized failure context.
 	 *
 	 * @return void
 	 */
-	private function handle_files_upload_write_failed( $error ) {
+	private function handle_files_upload_write_failed( $error, array $context = [] ) {
 		if ( ! is_array( $error ) || empty( $error['reason'] ) || ! is_array( $error['reason'] ) ) {
-			$this->log_warning( 'There was an unknown error when uploading the file.' );
+			$this->log_message( 'There was an unknown error when uploading the file.', E_USER_ERROR, $context );
 			return;
 		}
 
-		$this->handle_files_write_error( $error['reason'] );
+		$this->handle_files_write_error( $error['reason'], $context, E_USER_ERROR );
 	}
 
 	/**
 	 * Handle file write errors.
 	 *
-	 * @param array $error Error payload.
+	 * @param array $error   Error payload.
+	 * @param array $context Normalized failure context.
+	 * @param int   $level   Log level.
 	 *
 	 * @return void
 	 */
-	private function handle_files_write_error( $error ) {
+	private function handle_files_write_error( $error, array $context = [], int $level = E_USER_WARNING ) {
 		if ( ! is_array( $error ) || empty( $error['.tag'] ) ) {
 			$this->log_warning( 'There was an unknown error when uploading the file.' );
 			return;
@@ -1528,21 +1660,15 @@ class BackWPup_Destination_Dropbox_API {
 			case 'other':
 				$message = 'There was an unknown error when uploading the file.';
 				break;
+
+			default:
+				$message = 'There was an unknown error when uploading the file.';
+				break;
 		}
-		$context = [];
-		$level   = E_USER_WARNING;
-		if ( isset( $error['.tag'] ) && 'insufficient_space' === $error['.tag'] ) {
-			$context = [
-				'reason_code'   => 'not_enough_storage',
-				'destination'   => 'DROPBOX',
-				'provider_code' => 'insufficient_space',
-			];
-			$level   = E_USER_ERROR;
+		if ( empty( $context ) ) {
+			$context = $this->failure_mapper->map_api_error( $error, 0 );
 		}
 
-		$logged = $this->log( $message, $level, $context );
-		if ( null === $logged ) {
-			trigger_error( $message, $level ); // phpcs:ignore
-		}
+		$this->log_message( $message, $level, $context );
 	}
 }

@@ -72,6 +72,7 @@ class BackWPup_Install {
 		$activejobs = BackWPup_Option::get_job_ids( 'activetype', 'wpcron' );
 		if ( ! empty( $activejobs ) ) {
 			foreach ( $activejobs as $id ) {
+				wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $id ] );
 				$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $id, 'cron' ) );
 				wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $id ] );
 			}
@@ -185,7 +186,7 @@ class BackWPup_Install {
 		$second_job_id       = get_site_option( Plugin::DATABASE_JOB_ID, false );
 		$first_backup_job_id = get_site_option( Plugin::FIRST_JOB_ID, false );
 
-		if ( ! $first_backup_job_id ) {
+		if ( ! $first_backup_job_id || ! BackWPup_Option::get_job( $first_backup_job_id ) ) {
 			$first_backup_job_id = BackWPup_Option::create_default_jobs( 'First backup', BackWPup_JobTypes::$type_job_both );
 			BackWPup_Option::update( $first_backup_job_id, 'tempjob', true );
 			update_site_option( Plugin::FIRST_JOB_ID, $first_backup_job_id );
@@ -201,9 +202,8 @@ class BackWPup_Install {
 		update_site_option( 'backwpup_previous_version', get_site_option( 'backwpup_version', BackWPup::get_plugin_data( 'Version' ) ) );
 		update_site_option( 'backwpup_version', BackWPup::get_plugin_data( 'Version' ) );
 
-		// Only redirect if not in WP CLI environment.
-		if ( ! $version_db && ! ( defined( \WP_CLI::class ) && WP_CLI ) ) {
-			wp_redirect( network_admin_url( 'admin.php' ) . '?page=backwpup' ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
+		if ( get_site_option( 'backwpup_onboarding', false ) && ! ( defined( \WP_CLI::class ) && WP_CLI ) ) {
+			wp_safe_redirect( network_admin_url( 'admin.php' ) . '?page=backwpuponboarding' );
 
 			exit();
 		}

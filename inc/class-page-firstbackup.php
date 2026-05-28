@@ -25,4 +25,24 @@ class BackWPup_Page_First_Backup {
 	public static function init() {
 		$instance = new self();
 	}
+
+	/**
+	 * Render log HTML through the shared log facade when available.
+	 *
+	 * @param string $content Raw HTML log file fragment.
+	 *
+	 * @return string
+	 */
+	public static function render_log_content( string $content ): string {
+		$container = wpm_apply_filters_typed( '?object', 'backwpup_container', null );
+		if ( is_object( $container ) && method_exists( $container, 'has' ) && $container->has( 'log_facade' ) ) {
+			$log_facade = $container->get( 'log_facade' );
+			if ( is_object( $log_facade ) && method_exists( $log_facade, 'render_html' ) ) {
+				return $log_facade->render_html( $content );
+			}
+		}
+
+		$log_facade = new \WPMedia\BackWPup\Log\LogFacade();
+		return $log_facade->render_html( $content );
+	}
 }

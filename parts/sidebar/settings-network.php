@@ -5,6 +5,10 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+if ( get_site_option( 'backwpup_onboarding', false ) ) {
+  return;
+}
+
 //Get the current network settings.
 $authentication = get_site_option(
 	'backwpup_cfg_authentication',

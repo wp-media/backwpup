@@ -45,6 +45,7 @@ BackWPupHelpers::component("heading", [
             "deactivated_message" => "",
           ],
         ],
+        "show_locked" => false,
       ]);
       ?>
     </div>

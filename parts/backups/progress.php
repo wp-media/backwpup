@@ -40,5 +40,5 @@ BackWPupHelpers::component("heading", [
 <input type="hidden" name="logpos" id="logpos" value="<?php echo esc_attr( strlen( $logfiledata ?? '' ) ); ?>" />
 <input type="hidden" name="next_job_id" id="next_job_id" value="" />
 <div id="tb-showworking" style="display:none;">
-  <div id="showworking"><?php echo wp_kses_post( substr( $logfiledata ?? '', $startpos ?? 0, $length ?? 0 ) ); ?></div>
+  <div id="showworking"><?php echo wp_kses_post( BackWPup_Page_First_Backup::render_log_content( substr( $logfiledata ?? '', $startpos ?? 0, $length ?? 0 ) ) ); ?></div>
 </div>

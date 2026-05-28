@@ -12,7 +12,7 @@ $can_view_logs = current_user_can( 'backwpup_logs' );
 
 if ( ! $can_view_logs ) {
 	BackWPupHelpers::component(
-		"closable-heading",
+		'closable-heading',
 		[
 			'title' => __( 'Backup Log', 'backwpup' ),
 			'type'  => 'modal',
@@ -26,49 +26,84 @@ if ( ! $can_view_logs ) {
 	return;
 }
 
-$backup_row     = null;
-$backup_status  = '';
-$is_failed      = false;
-$error_message  = '';
-$known_reasons  = [
+$backup_row      = null;
+$backup_status   = '';
+$is_failed       = false;
+$is_aborted      = false;
+$destination     = '';
+$error_code      = '';
+$error_message   = '';
+$display_message = __( 'Backup failed', 'backwpup' );
+$next_step       = '';
+$known_reasons   = [
 	__( 'not enough storage', 'backwpup' ),
 	__( 'incorrect login', 'backwpup' ),
 ];
-$logfile        = '';
-$log_filename   = '';
-$log_lines      = [];
-$log_truncated  = false;
-$download_url   = '';
-$view_url       = '';
+$logfile         = '';
+$log_filename    = '';
+$log_lines       = [];
+$log_truncated   = false;
+$download_url    = '';
+$view_url        = '';
+$log_facade      = null;
 
 $container = wpm_apply_filters_typed( '?object', 'backwpup_container', null );
 if ( $backup_id > 0 && $container ) {
-	$database = $container->get( 'backwpup_database' );
+	$database   = $container->get( 'backwpup_database' );
 	$backup_row = $database ? $database->get_backup_row_by_id( $backup_id ) : null;
 }
 
 if ( $backup_row ) {
 	$backup_status = (string) ( $backup_row->status ?? '' );
 	$is_failed     = 'failed' === $backup_status;
+	$is_aborted    = 'aborted' === $backup_status;
 	if ( $is_failed ) {
+		$destination   = (string) ( $backup_row->destination ?? '' );
+		$error_code    = (string) ( $backup_row->error_code ?? '' );
 		$error_message = (string) ( $backup_row->error_message ?? '' );
 	}
-	$logfile       = (string) ( $backup_row->logfile ?? '' );
+	$logfile = (string) ( $backup_row->logfile ?? '' );
 }
 
-if ( $is_failed ) {
-	if ( '' !== $error_message && in_array( $error_message, $known_reasons, true ) ) {
-		/* translators: %s: failure reason. */
-		$error_message = sprintf( __( 'Backup failed – %s', 'backwpup' ), $error_message );
-	} else {
-		$error_message = __( 'Backup failed', 'backwpup' );
+if ( $is_aborted ) {
+	$display_message = __( 'Aborted by user', 'backwpup' );
+}
+
+if ( $is_failed && 'FTP' === $destination && $job_id > 0 ) {
+	$job = BackWPup_Option::get_job( $job_id );
+
+	if ( is_array( $job ) && ! empty( $job['ftpssh'] ) ) {
+		$destination = 'SFTP';
 	}
 }
 
-// Track log opened event for failed backup if backup_id and job_id are available.
-// Prevent tracking if either backup_id or job_id is missing to avoid sending incomplete data to Mixpanel or on page load.
+if ( $is_failed && $container && '' !== $error_code ) {
+	$display_details_resolver = $container->get( 'failure_display_details_resolver' );
+
+	if ( $display_details_resolver ) {
+		$display_details = $display_details_resolver->resolve( $error_code, $destination );
+
+		if ( ! empty( $display_details['summary'] ) ) {
+			$display_message = (string) $display_details['summary'];
+		}
+
+		if ( ! empty( $display_details['next_step'] ) ) {
+			$next_step = (string) $display_details['next_step'];
+		}
+	}
+}
+
+if ( $is_failed && __( 'Backup failed', 'backwpup' ) === $display_message && '' !== $error_message ) {
+	$display_message = sprintf(
+		/* translators: %s: failure reason. */
+		__( 'Backup failed – %s', 'backwpup' ),
+		$error_message
+	);
+}
+
+// Track log opened event when backup and job IDs are available.
 if ( 0 !== $backup_id && 0 !== $job_id ) {
-	do_action( 'backwpup_track_log_opened', $error_message, $backup_id, $job_id, !$is_failed );
+	do_action( 'backwpup_track_log_opened', ( $is_failed || $is_aborted ) ? $display_message : '', $backup_id, $job_id, ! $is_failed && ! $is_aborted );
 }
 
 $log_name = '';
@@ -91,55 +126,16 @@ if (
 	);
 }
 
-$read_log_excerpt = static function ( string $logfile_path, int $max_lines, bool &$truncated ): array {
-	$log_folder = get_site_option( 'backwpup_cfg_logfolder' );
-	$log_folder = BackWPup_File::get_absolute_path( $log_folder );
-	$log_folder = untrailingslashit( $log_folder );
+$container = wpm_apply_filters_typed( '?object', 'backwpup_container', null );
+if ( is_object( $container ) && method_exists( $container, 'has' ) && $container->has( 'log_facade' ) ) {
+	$log_facade = $container->get( 'log_facade' );
+}
+if ( ! is_object( $log_facade ) || ! method_exists( $log_facade, 'read_excerpt' ) ) {
+	$log_facade = new \WPMedia\BackWPup\Log\LogFacade();
+}
 
-	if ( empty( $logfile_path ) || empty( $log_folder ) ) {
-		return [];
-	}
-
-	$filename = basename( $logfile_path );
-	$base     = $log_folder . '/' . $filename;
-	$path     = null;
-
-	if ( is_readable( $base ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_readable
-		$path = $base;
-	} elseif ( substr( $base, -5 ) !== '.html' && is_readable( $base . '.html' ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_readable
-		$path = $base . '.html';
-	} elseif ( substr( $base, -8 ) !== '.html.gz' && is_readable( $base . '.html.gz' ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_readable
-		$path = 'compress.zlib://' . $base . '.html.gz';
-	}
-
-	if ( null === $path ) {
-		return [];
-	}
-
-	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-	$raw = file_get_contents( $path );
-	if ( false === $raw ) {
-		return [];
-	}
-
-	$raw = wp_strip_all_tags( $raw );
-	$raw = html_entity_decode( $raw );
-	$raw = str_replace( "\r\n", "\n", $raw );
-
-	$lines = [];
-	foreach ( explode( "\n", $raw ) as $line ) {
-		$line = trim( $line );
-		if ( '' !== $line ) {
-			$lines[] = $line;
-		}
-	}
-
-	if ( count( $lines ) > $max_lines ) {
-		$lines     = array_slice( $lines, -$max_lines );
-		$truncated = true;
-	}
-
-	return $lines;
+$read_log_excerpt = static function ( string $logfile_path, int $max_lines, bool &$truncated ) use ( $log_facade ): array {
+	return $log_facade->read_excerpt( $logfile_path, $max_lines, $truncated );
 };
 
 if ( '' !== $logfile && '' === $view_url ) {
@@ -155,23 +151,29 @@ if ( '' !== $log_filename ) {
 }
 
 BackWPupHelpers::component(
-	"closable-heading",
+	'closable-heading',
 	[
-		'title' => $is_failed ? __( 'Failed Backup Details', 'backwpup' ) : __( 'Backup Log', 'backwpup' ),
+		'title' => $is_aborted ? __( 'Aborted Backup', 'backwpup' ) : ( $is_failed ? __( 'Failed Backup Details', 'backwpup' ) : __( 'Backup Log', 'backwpup' ) ),
 		'type'  => 'modal',
 	]
 );
 ?>
 
-<?php if ( $is_failed && '' !== $error_message ) : ?>
+<?php if ( $is_failed || $is_aborted ) : ?>
 	<?php
+	$alert_args = [
+		'type'    => $is_aborted ? 'warning' : 'danger',
+		'content' => esc_html( $display_message ),
+		'font'    => 'xs',
+	];
+
+	if ( '' !== $next_step ) {
+		$alert_args['content2'] = esc_html( $next_step );
+	}
+
 	BackWPupHelpers::component(
-		"alerts/info",
-		[
-			"type"    => "danger",
-			"content" => esc_html( $error_message ),
-			"font"    => "xs",
-		]
+		'alerts/info',
+		$alert_args
 	);
 	?>
 <?php endif; ?>

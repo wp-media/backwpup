@@ -3,7 +3,11 @@ declare(strict_types=1);
 
 namespace WPMedia\BackWPup\Tracking;
 
-use WPMedia\Mixpanel\Optin;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use WPMedia\BackWPup\Dependencies\WPMedia\Mixpanel\Optin;
 
 class Notices {
 	/**

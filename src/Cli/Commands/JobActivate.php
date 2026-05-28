@@ -115,10 +115,9 @@ class JobActivate implements Command {
 				$this->option_adapter->update( $job['jobid'], 'activ', true );
 			}
 
+			wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => (int) $job['jobid'] ] );
 			if ( 'wpcron' === $type ) {
-				wp_schedule_single_event( $this->cron_adapter->cron_next( $job['cron'] ), 'backwpup_cron', [ 'arg' => $job['jobid'] ] );
-			} else {
-				wp_unschedule_event( $this->cron_adapter->cron_next( $job['cron'] ), 'backwpup_cron', [ 'arg' => $job['jobid'] ] );
+				wp_schedule_single_event( $this->cron_adapter->cron_next( $job['cron'] ), 'backwpup_cron', [ 'arg' => (int) $job['jobid'] ] );
 			}
 
 			$done_job_ids[] = $job['jobid'];

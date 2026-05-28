@@ -9,6 +9,10 @@ use Inpsyde\BackWPup\Infrastructure\Restore\TemplateLoader;
 
 use function Inpsyde\BackWPup\Infrastructure\Restore\restore_container;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Class for BackWPup restore page.
  */
@@ -203,6 +207,19 @@ class BackWPup_Page_Restore {
 	public function content() {
 		$template = new TemplateLoader( restore_container( null ) );
 		$template->load();
+
+		if ( ! \BackWPup::is_pro() ) {
+			$step = (int) ( filter_input( INPUT_GET, 'step', FILTER_SANITIZE_NUMBER_INT ) ?: 1 );
+			if ( 1 === $step ) {
+				add_action(
+					'backwpup_restore_before_main_content',
+					static function (): void {
+						\BackWPup\Utils\BackWPupHelpers::component( 'restore/upgrade-banner' );
+					},
+					20
+				);
+			}
+		}
 
 		backwpup_template( null, '/restore/index.php' );
 	}

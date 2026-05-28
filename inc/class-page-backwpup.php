@@ -385,11 +385,7 @@ class BackWPup_Page_BackWPup {
 						echo '<tr class="alternate">';
 						$alternate = false;
 					}
-					echo '<td>' . sprintf(
-						esc_html__( '%1$s at %2$s', 'backwpup' ),
-						esc_html( date_i18n( get_option( 'date_format' ), $logdata['logtime'] ) ),
-						esc_html( date_i18n( get_option( 'time_format' ), $logdata['logtime'] ) )
-					) . '</td>';
+					echo '<td>' . esc_html( self::format_log_datetime( (int) $logdata['logtime'] ) ) . '</td>';
 					$log_name = str_replace( [ '.html', '.gz' ], '', $logfile->getBasename() );
 					echo '<td><a class="thickbox" href="' . esc_url( admin_url( 'admin-ajax.php?action=backwpup_view_log&log=' . $log_name . '&_ajax_nonce=' . wp_create_nonce( 'view-log_' . $log_name ) . '&TB_iframe=true&width=640&height=440' ) ) . '" title="' . esc_attr( $logfile->getBasename() ) . '">' . esc_html( $logdata['name'] ) . '</i></a></td>';
 					echo '<td>';
@@ -431,4 +427,24 @@ class BackWPup_Page_BackWPup {
 		</table>
 		<?php
     }
+
+	/**
+	 * Format a UTC timestamp for the site timezone.
+	 *
+	 * @param int $timestamp UTC timestamp.
+	 *
+	 * @return string
+	 */
+	private static function format_log_datetime( int $timestamp ): string {
+		$container = wpm_apply_filters_typed( '?object', 'backwpup_container', null );
+		if ( is_object( $container ) && method_exists( $container, 'has' ) && $container->has( 'log_facade' ) ) {
+			$log_facade = $container->get( 'log_facade' );
+			if ( is_object( $log_facade ) && method_exists( $log_facade, 'format_datetime' ) ) {
+				return $log_facade->format_datetime( $timestamp );
+			}
+		}
+
+		$log_facade = new \WPMedia\BackWPup\Log\LogFacade();
+		return $log_facade->format_datetime( $timestamp );
+	}
 }

@@ -28,14 +28,14 @@ if ( ! defined( 'ABSPATH' ) ) {
   ]);
   ?>
 
-  <div class="flex gap-4">
+  <div class="flex flex-col gap-4 lg:flex-row">
     <?php
     BackWPupHelpers::component("app/steps", [
       "current_step" => 1,
     ]);
     ?>
 
-    <div class="p-8 bg-grey-100 rounded-lg flex flex-col flex-auto" id="backwpup-onboarding-panes">
+    <div class="p-4 lg:p-8 bg-grey-100 rounded-lg flex flex-col flex-auto" id="backwpup-onboarding-panes">
       <article class="flex flex-col flex-auto" data-step="1">
         <?php BackWPupHelpers::component("onboarding/step1", [
 			'first_job_id' => $first_backup_job_id,

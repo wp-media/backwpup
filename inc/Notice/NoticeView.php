@@ -11,6 +11,7 @@ use function backwpup_template;
  * @method void error(NoticeMessage $message, string|null $dismiss_action_url)
  * @method void warning(NoticeMessage $message, string|null $dismiss_action_url)
  * @method void info(NoticeMessage $message, string|null $dismiss_action_url)
+ * @method void banner(NoticeMessage $message, string|null $dismiss_action_url)
  */
 final class NoticeView {
 
@@ -38,6 +39,12 @@ final class NoticeView {
 	 * @var string
 	 */
 	public const INFO = 'notice-info';
+	/**
+	 * Banner notice class.
+	 *
+	 * @var string
+	 */
+	public const BANNER = 'notice-banner';
 
 	/**
 	 * Notice identifier.
@@ -95,6 +102,10 @@ final class NoticeView {
 
 			case 'info':
 				$args[] = self::INFO;
+				break;
+
+			case 'banner':
+				$args[] = self::BANNER;
 				break;
 
 			default:

@@ -4,16 +4,16 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit30b2cc3429e77a895d900ae7eb9bf8b5
+class ComposerStaticInitedfdbd0b8dbec4525b7b937a3242625a
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         '6c592737b91137905268e9a0eb968869' => __DIR__ . '/..' . '/wp-media/apply-filters-typed/functions.php',
@@ -27,15 +27,19 @@ class ComposerStaticInit30b2cc3429e77a895d900ae7eb9bf8b5
         'W' =>
         array (
             'Webmozart\\Assert\\' => 17,
-            'WPMedia\\Mixpanel\\' => 17,
             'WPMedia\\Beta\\' => 13,
             'WPMedia\\BackWPup\\Tracking\\' => 26,
             'WPMedia\\BackWPup\\StorageProviders\\' => 34,
             'WPMedia\\BackWPup\\Plugin\\' => 24,
+            'WPMedia\\BackWPup\\Log\\' => 21,
             'WPMedia\\BackWPup\\License\\' => 25,
             'WPMedia\\BackWPup\\Jobs\\' => 22,
             'WPMedia\\BackWPup\\Hosting\\' => 25,
             'WPMedia\\BackWPup\\Frontend\\' => 26,
+            'WPMedia\\BackWPup\\Dependencies\\WPMedia\\Mixpanel\\' => 47,
+            'WPMedia\\BackWPup\\Dependencies\\Psr\\Container\\' => 44,
+            'WPMedia\\BackWPup\\Dependencies\\League\\Container\\' => 47,
+            'WPMedia\\BackWPup\\Dependencies\\BerlinDB\\' => 39,
             'WPMedia\\BackWPup\\Dependencies\\' => 30,
             'WPMedia\\BackWPup\\Common\\' => 24,
             'WPMedia\\BackWPup\\Cli\\' => 21,
@@ -50,16 +54,13 @@ class ComposerStaticInit30b2cc3429e77a895d900ae7eb9bf8b5
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
-            'Symfony\\Contracts\\EventDispatcher\\' => 34,
             'Symfony\\Component\\OptionsResolver\\' => 34,
-            'Symfony\\Component\\EventDispatcher\\' => 34,
         ),
         'P' =>
         array (
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
-            'Psr\\Container\\' => 14,
             'ParagonIE\\ConstantTime\\' => 23,
         ),
         'M' =>
@@ -97,7 +98,6 @@ class ComposerStaticInit30b2cc3429e77a895d900ae7eb9bf8b5
         ),
         'B' =>
         array (
-            'Beta\\Microsoft\\Graph\\' => 21,
             'Base32\\' => 7,
         ),
         'A' =>
@@ -115,10 +115,6 @@ class ComposerStaticInit30b2cc3429e77a895d900ae7eb9bf8b5
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
         ),
-        'WPMedia\\Mixpanel\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src',
-        ),
         'WPMedia\\Beta\\' =>
         array (
             0 => __DIR__ . '/..' . '/wp-media/wp-beta/src',
@@ -135,6 +131,10 @@ class ComposerStaticInit30b2cc3429e77a895d900ae7eb9bf8b5
         array (
             0 => __DIR__ . '/../..' . '/src/Plugin',
         ),
+        'WPMedia\\BackWPup\\Log\\' =>
+        array (
+            0 => __DIR__ . '/../..' . '/src/Log',
+        ),
         'WPMedia\\BackWPup\\License\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/License',
@@ -150,6 +150,22 @@ class ComposerStaticInit30b2cc3429e77a895d900ae7eb9bf8b5
         'WPMedia\\BackWPup\\Frontend\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Frontend',
+        ),
+        'WPMedia\\BackWPup\\Dependencies\\WPMedia\\Mixpanel\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src',
+        ),
+        'WPMedia\\BackWPup\\Dependencies\\Psr\\Container\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'WPMedia\\BackWPup\\Dependencies\\League\\Container\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/league/container/src',
+        ),
+        'WPMedia\\BackWPup\\Dependencies\\BerlinDB\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/berlindb/core/src',
         ),
         'WPMedia\\BackWPup\\Dependencies\\' =>
         array (
@@ -195,17 +211,9 @@ class ComposerStaticInit30b2cc3429e77a895d900ae7eb9bf8b5
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
-        'Symfony\\Contracts\\EventDispatcher\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/symfony/event-dispatcher-contracts',
-        ),
         'Symfony\\Component\\OptionsResolver\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/options-resolver',
-        ),
-        'Symfony\\Component\\EventDispatcher\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/symfony/event-dispatcher',
         ),
         'Psr\\Log\\' =>
         array (
@@ -219,10 +227,6 @@ class ComposerStaticInit30b2cc3429e77a895d900ae7eb9bf8b5
         'Psr\\Http\\Client\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
-        ),
-        'Psr\\Container\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/psr/container/src',
         ),
         'ParagonIE\\ConstantTime\\' =>
         array (
@@ -288,10 +292,6 @@ class ComposerStaticInit30b2cc3429e77a895d900ae7eb9bf8b5
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
-        'Beta\\Microsoft\\Graph\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/microsoft/microsoft-graph/src/Beta/Microsoft/Graph',
-        ),
         'Base32\\' =>
         array (
             0 => __DIR__ . '/..' . '/christian-riesen/base32/src',
@@ -350,6 +350,7 @@ class ComposerStaticInit30b2cc3429e77a895d900ae7eb9bf8b5
         'AWS\\CRT\\NativeResource' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/NativeResource.php',
         'AWS\\CRT\\OptionValue' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Options.php',
         'AWS\\CRT\\Options' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Options.php',
+        'Archive_Tar' => __DIR__ . '/..' . '/pear/archive_tar/Archive/Tar.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'BackWPup' => __DIR__ . '/../..' . '/inc/BackWPup.php',
         'BackWPup\\ThirdParty\\Autoptimize' => __DIR__ . '/../..' . '/inc/ThirdParty/Autoptimize.php',
@@ -439,6 +440,16 @@ class ComposerStaticInit30b2cc3429e77a895d900ae7eb9bf8b5
         'BackWPup_System_Tests' => __DIR__ . '/../..' . '/inc/class-system-tests.php',
         'BackWPup_System_Tests_Runner' => __DIR__ . '/../..' . '/inc/class-system-tests-runner.php',
         'BackWPup_ThirdParties' => __DIR__ . '/../..' . '/inc/class-thirdparties.php',
+        'BackWPup_WPMedia_Base_MixpanelBase' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Base/MixpanelBase.php',
+        'BackWPup_WPMedia_ConsumerStrategies_AbstractConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/AbstractConsumer.php',
+        'BackWPup_WPMedia_ConsumerStrategies_CurlConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/CurlConsumer.php',
+        'BackWPup_WPMedia_ConsumerStrategies_FileConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/FileConsumer.php',
+        'BackWPup_WPMedia_ConsumerStrategies_SocketConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/SocketConsumer.php',
+        'BackWPup_WPMedia_Mixpanel' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Mixpanel.php',
+        'BackWPup_WPMedia_Producers_MixpanelBaseProducer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelBaseProducer.php',
+        'BackWPup_WPMedia_Producers_MixpanelEvents' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelEvents.php',
+        'BackWPup_WPMedia_Producers_MixpanelGroups' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelGroups.php',
+        'BackWPup_WPMedia_Producers_MixpanelPeople' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelPeople.php',
         'BackWpUp_Destination_Downloader_Data' => __DIR__ . '/../..' . '/inc/class-destination-downloader-data.php',
         'BackWpup_Download_Handler' => __DIR__ . '/../..' . '/inc/class-download-handler.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
@@ -475,6 +486,7 @@ class ComposerStaticInit30b2cc3429e77a895d900ae7eb9bf8b5
         'PEAR_Error' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR.php',
         'PEAR_ErrorStack' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR/ErrorStack.php',
         'PEAR_Exception' => __DIR__ . '/..' . '/pear/pear_exception/PEAR/Exception.php',
+        'PEAR_PHPTest' => __DIR__ . '/..' . '/pear/archive_tar/tests/phpt_test.php.inc',
         'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'System' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/System.php',
@@ -483,25 +495,15 @@ class ComposerStaticInit30b2cc3429e77a895d900ae7eb9bf8b5
         'WPMedia\\BackWPup\\EventManagement\\EventManager' => __DIR__ . '/../..' . '/inc/dependencies/wp-media/event-manager/EventManager.php',
         'WPMedia\\BackWPup\\EventManagement\\EventManagerAwareSubscriberInterface' => __DIR__ . '/../..' . '/inc/dependencies/wp-media/event-manager/EventManagerAwareSubscriberInterface.php',
         'WPMedia\\BackWPup\\EventManagement\\SubscriberInterface' => __DIR__ . '/../..' . '/inc/dependencies/wp-media/event-manager/SubscriberInterface.php',
-        'WPMedia_Base_MixpanelBase' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Base/MixpanelBase.php',
-        'WPMedia_ConsumerStrategies_AbstractConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/AbstractConsumer.php',
-        'WPMedia_ConsumerStrategies_CurlConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/CurlConsumer.php',
-        'WPMedia_ConsumerStrategies_FileConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/FileConsumer.php',
-        'WPMedia_ConsumerStrategies_SocketConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/SocketConsumer.php',
-        'WPMedia_Mixpanel' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Mixpanel.php',
-        'WPMedia_Producers_MixpanelBaseProducer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelBaseProducer.php',
-        'WPMedia_Producers_MixpanelEvents' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelEvents.php',
-        'WPMedia_Producers_MixpanelGroups' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelGroups.php',
-        'WPMedia_Producers_MixpanelPeople' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelPeople.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit30b2cc3429e77a895d900ae7eb9bf8b5::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit30b2cc3429e77a895d900ae7eb9bf8b5::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit30b2cc3429e77a895d900ae7eb9bf8b5::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit30b2cc3429e77a895d900ae7eb9bf8b5::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitedfdbd0b8dbec4525b7b937a3242625a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitedfdbd0b8dbec4525b7b937a3242625a::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitedfdbd0b8dbec4525b7b937a3242625a::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitedfdbd0b8dbec4525b7b937a3242625a::$classMap;
 
         }, null, ClassLoader::class);
     }

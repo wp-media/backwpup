@@ -629,6 +629,8 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 	 * @return string
 	 */
 	private function wxr_cdata( $str ) {
+		$str = (string) $str;
+
 		// Use wp_is_valid_utf8() if available (WP 6.9+), otherwise fall back to seems_utf8().
 		if ( function_exists( 'wp_is_valid_utf8' ) ) {
 			$is_valid_utf8 = wp_is_valid_utf8( $str );
@@ -838,6 +840,10 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 	 */
 	private function wxr_post_taxonomy() {
 		$post = get_post();
+
+		if ( ! $post instanceof WP_Post ) {
+			return '';
+		}
 
 		$taxonomies = get_object_taxonomies( $post->post_type );
 		if ( empty( $taxonomies ) ) {

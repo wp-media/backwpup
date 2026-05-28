@@ -46,7 +46,6 @@ if (isset($is_in_form) && ( false === $is_in_form || 'false' === $is_in_form )) 
 </div>
 
 <div class="rounded-lg" id="sugarsyncroot">
-    <?php BackWPupHelpers::children( 'sidebar/sugar-sync-parts/root-folder',false, [ 'job_id' => $job_id ] ); ?>
 </div>
 
 <div class="rounded-lg p-4 bg-grey-100">

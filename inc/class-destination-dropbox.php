@@ -1,5 +1,8 @@
 <?php
 
+use WPMedia\BackWPup\Backup\FailureContext\Dropbox\DropboxFailureContextMapper;
+use WPMedia\BackWPup\Backup\ReasonCode;
+
 /**
  * This class allows the user to back up to Dropbox.
  *
@@ -208,9 +211,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 					'admin.php?page=backwpupbackups&action=downloaddropbox&file=' . $data['path_display'] . '&local_file=' . $data['name'] . '&jobid=' . $jobid
 				);
 				$files[ $filecounter ]['filesize']    = $data['size'];
-				$files[ $filecounter ]['time']        = strtotime( (string) $data['server_modified'] ) + ( get_option(
-					'gmt_offset'
-				) * 3600 );
+				$files[ $filecounter ]['time']        = strtotime( (string) $data['server_modified'] );
 				++$filecounter;
 			}
 		}
@@ -313,15 +314,19 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 
 					// Quota.
 					if ( $job_object->is_debug() ) {
-						$quota            = $dropbox->users_get_space_usage();
-						$dropboxfreespase = $quota['allocation']['allocated'] - $quota['used'];
+						$quota              = $dropbox->users_get_space_usage();
+						$dropbox_free_space = $this->free_space_from_quota( is_array( $quota ) ? $quota : [] );
+						if ( null !== $dropbox_free_space ) {
 							$job_object->log(
 								sprintf(
 									/* translators: %s: available space. */
 									__( '%s available on your Dropbox', 'backwpup' ),
-									size_format( $dropboxfreespase, 2 )
+									size_format( $dropbox_free_space, 2 )
 								)
 							);
+						} else {
+							$job_object->log( __( 'Dropbox free space could not be determined from the quota response.', 'backwpup' ) );
+						}
 					}
 				} else {
 					$job_object->log(
@@ -330,7 +335,7 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 						__FILE__,
 						__LINE__,
 						[
-							'reason_code'   => 'incorrect_login',
+							'reason_code'   => ReasonCode::REASON_INCORRECT_LOGIN,
 							'destination'   => 'DROPBOX',
 							'provider_code' => 'not_authenticated',
 						]
@@ -352,29 +357,12 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 					if ( $job_object->errors > $errors_before ) {
 						return false;
 					}
-					$message = __( 'Dropbox API: Upload failed.', 'backwpup' );
+					$fallback = $this->upload_failure_fallback( $job_object, $dropbox );
+					$message  = $fallback['message'];
+					$context  = $fallback['context'];
+
 					if ( is_array( $response ) && ! empty( $response['error'] ) ) {
 						$message .= ' ' . $response['error'];
-					}
-					$context = [
-						'destination' => 'DROPBOX',
-					];
-					try {
-						$quota = $dropbox->users_get_space_usage();
-					} catch ( Exception $exception ) {
-						$quota = null;
-					}
-					if (
-						is_array( $quota )
-						&& isset( $quota['allocation']['allocated'], $quota['used'] )
-						&& $job_object->backup_filesize > ( (int) $quota['allocation']['allocated'] - (int) $quota['used'] )
-					) {
-						$message = __( 'You do not have enough space in your Dropbox.', 'backwpup' );
-						$context = [
-							'reason_code'   => 'not_enough_storage',
-							'destination'   => 'DROPBOX',
-							'provider_code' => 'insufficient_space',
-						];
 					}
 					$job_object->log(
 						$message,
@@ -436,13 +424,15 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 					__( 'Dropbox API: %s', 'backwpup' ),
 					$e->getMessage()
 				),
+				E_USER_ERROR,
 				$e->getFile(),
 				$e->getLine(),
-				E_USER_ERROR
+				$this->error_context( $e )
 			);
 
 			return false;
 		}
+
 		++$job_object->substeps_done;
 
 		return true;
@@ -451,11 +441,12 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 	/**
 	 * Check if Dropbox destination can run.
 	 *
-	 * @param array $job_settings Job settings.
+	 * @param array $job_settings
+	 * @param bool  $test_connection Job settings.
 	 *
 	 * @return bool
 	 */
-	public function can_run( array $job_settings ): bool {
+	public function can_run( array $job_settings, bool $test_connection = true ): bool {
 		return ! ( empty( $job_settings['dropboxtoken'] ) );
 	}
 
@@ -496,5 +487,78 @@ class BackWPup_Destination_Dropbox extends BackWPup_Destinations {
 	 */
 	public function get_service_name(): string {
 		return self::SERVICE_NAME;
+	}
+
+	/**
+	 * Build error context for Dropbox errors.
+	 *
+	 * @param \Exception $e Exception object.
+	 * @return array
+	 */
+	private function error_context( \Exception $e ): array {
+		if ( $e instanceof BackWPup_Destination_Dropbox_API_Exception ) {
+			$context = $e->getContext();
+			if ( ! empty( $context ) ) {
+				return $context;
+			}
+		}
+
+		$mapper = new DropboxFailureContextMapper();
+
+		return $mapper->map_reason( ReasonCode::REASON_UNKNOWN_ERROR );
+	}
+
+	/**
+	 * Build the narrow upload fallback used only when the API layer did not log a structured failure.
+	 *
+	 * @param BackWPup_Job                     $job_object Current job object.
+	 * @param BackWPup_Destination_Dropbox_API $dropbox Dropbox API instance.
+	 * @return array
+	 */
+	private function upload_failure_fallback( BackWPup_Job $job_object, BackWPup_Destination_Dropbox_API $dropbox ): array {
+		$fallback = [
+			'message' => __( 'Dropbox API: Upload failed.', 'backwpup' ),
+			'context' => [
+				'destination' => 'DROPBOX',
+			],
+		];
+
+		try {
+			$quota = $dropbox->users_get_space_usage();
+		} catch ( Exception $exception ) {
+			$quota = null;
+		}
+
+		$free_space = is_array( $quota ) ? $this->free_space_from_quota( $quota ) : null;
+		if ( null !== $free_space && $job_object->backup_filesize > $free_space ) {
+			$fallback = [
+				'message' => __( 'You do not have enough space in your Dropbox.', 'backwpup' ),
+				'context' => [
+					'reason_code'   => ReasonCode::REASON_NOT_ENOUGH_STORAGE,
+					'destination'   => 'DROPBOX',
+					'provider_code' => 'insufficient_space',
+				],
+			];
+		}
+
+		return $fallback;
+	}
+
+	/**
+	 * Extract available Dropbox space from the quota payload.
+	 *
+	 * @param array $quota Dropbox quota payload.
+	 * @return int|null
+	 */
+	private function free_space_from_quota( array $quota ): ?int {
+		if (
+			! isset( $quota['allocation']['allocated'], $quota['used'] )
+			|| ! is_numeric( $quota['allocation']['allocated'] )
+			|| ! is_numeric( $quota['used'] )
+		) {
+			return null;
+		}
+
+		return max( 0, (int) $quota['allocation']['allocated'] - (int) $quota['used'] );
 	}
 }

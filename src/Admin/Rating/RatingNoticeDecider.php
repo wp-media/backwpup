@@ -9,6 +9,22 @@ namespace WPMedia\BackWPup\Admin\Rating;
  */
 class RatingNoticeDecider {
 
+	/**
+	 * Whether the current installation is PRO.
+	 *
+	 * @var bool
+	 */
+	private bool $is_pro;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param bool $is_pro Pass true when running under BackWPup PRO.
+	 */
+	public function __construct( bool $is_pro = false ) {
+		$this->is_pro = $is_pro;
+	}
+
 	public const OPT_INSTALL_TYPE             = 'backwpup_install_type';     // 'new' | 'update' (set via RatingInstallStateInitializer).
 	public const OPT_INSTALL_TIME             = 'backwpup_first_install_ts'; // int timestamp.
 	public const META_DISMISSED               = 'backwpup_rating_notice_dismissed'; // bool.
@@ -71,6 +87,11 @@ class RatingNoticeDecider {
 			return false;
 		}
 
+		// Suppress the review banner while the Upgrade-to-PRO notice exposure window is still active.
+		if ( ! $this->is_pro && $this->is_upgrade_nudge_lifecycle_active( $user_id ) ) {
+			return false;
+		}
+
 		if ( $state[ self::STATE_HAS_REMIND_AT ] ) {
 			return $state[ self::STATE_REMIND_DUE ];
 		}
@@ -122,6 +143,33 @@ class RatingNoticeDecider {
 		// Clear remind + shown to allow the notice to reappear after the dismiss window.
 		delete_user_meta( $user_id, self::META_REMIND_AT );
 		delete_user_meta( $user_id, self::META_SHOWN );
+	}
+
+	/**
+	 * Returns true while the Upgrade-to-PRO notice exposure window is still active for the user.
+	 *
+	 * The window ends when the notice has been permanently dismissed for the user
+	 * or the per-user impression cap has been reached. Temporary ("for now") dismissals do
+	 * not end the lifecycle — the nudge will reappear once the dismissal expires.
+	 *
+	 * @param int $user_id WordPress user ID.
+	 * @return bool
+	 */
+	private function is_upgrade_nudge_lifecycle_active( int $user_id ): bool {
+		$dismiss_option = \WPMedia\BackWPup\Admin\Notices\Notices\NoticeUpgradeToPro::DISMISSED_SITE_OPTION_KEY;
+
+		// Upgrade-to-PRO uses FOR_USER_FOR_GOOD_ACTION, persisted per user.
+		if ( get_user_option( $dismiss_option, $user_id ) ) {
+			return false;
+		}
+
+		$sessions_shown = (int) get_user_meta(
+			$user_id,
+			\WPMedia\BackWPup\Admin\Notices\Notices\NoticeUpgradeToPro::SESSIONS_SHOWN_META_KEY,
+			true
+		);
+
+		return $sessions_shown < \WPMedia\BackWPup\Admin\Notices\Notices\NoticeUpgradeToPro::NUMBER_OF_SESSIONS_BEFORE_CAP;
 	}
 
 	/**

@@ -33,5 +33,5 @@ $dataset = $dataset ?? null;
   <div class="shrink-0">
     <?php isset($icon) && BackWPupHelpers::component("icon", ["name" => $icon, "size" => "small"]); ?>
   </div>
-  <span class="text-nowrap"><?php echo esc_html( $name ); ?></span>
+  <span class="text-nowrap font-medium"><?php echo esc_html( $name ); ?></span>
 </button>

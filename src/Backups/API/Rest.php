@@ -104,6 +104,25 @@ class Rest implements RestInterface {
 	public function register_routes(): void {
 		register_rest_route(
 			'backwpup/v1',
+			'/job-abort-status',
+			[
+				'methods'             => 'GET',
+				'callback'            => [ $this, 'get_job_abort_status' ],
+				'permission_callback' => [ $this, 'has_permission' ],
+				'args'                => [
+					'job_id' => [
+						'required'          => true,
+						'validate_callback' => function ( $param ) {
+							return is_numeric( $param ) && $param > 0;
+						},
+						'sanitize_callback' => 'absint',
+					],
+				],
+			]
+		);
+
+		register_rest_route(
+			'backwpup/v1',
 			'/startbackup',
 			[
 				'methods'             => 'POST',
@@ -241,7 +260,7 @@ class Rest implements RestInterface {
 			$destinations = 0;
 			foreach ( $job_data['destinations'] as $dest_key ) {
 				$dest = $this->backwpup_adapter->get_destination( $dest_key );
-				if ( ! $dest || ! $dest->can_run( $job_data ) ) {
+				if ( ! $dest || ! $dest->can_run( $job_data, false ) ) {
 					continue;
 				}
 				++$destinations;
@@ -448,6 +467,24 @@ class Rest implements RestInterface {
 	}
 
 	/**
+	 * Get the abort status of a running or recently-aborted backup job.
+	 *
+	 * Polls the database to determine whether the background PHP process has
+	 * finished its cleanup after the user triggered an abort. The JS abort
+	 * handler calls this endpoint repeatedly until `is_done` is true before
+	 * redirecting or reloading the page, ensuring the DB row status is already
+	 * updated from `created` to `aborted` when the history table is rendered.
+	 *
+	 * @param WP_REST_Request $request The REST request containing `job_id`.
+	 *
+	 * @return WP_REST_Response Response with `is_done` boolean flag.
+	 */
+	public function get_job_abort_status( WP_REST_Request $request ): WP_REST_Response {
+		$job_id = (int) $request->get_param( 'job_id' );
+		return rest_ensure_response( [ 'is_done' => $this->backup_database->is_abort_complete( $job_id ) ] );
+	}
+
+	/**
 	 * Delete a failed backup entry from the database.
 	 *
 	 * @param int $backup_id Backup entry ID.
@@ -459,8 +496,68 @@ class Rest implements RestInterface {
 			throw new Exception( __( 'Invalid failed backup entry.', 'backwpup' ) ); // @phpcs:ignore
 		}
 
+		$row = $this->backup_database->get_backup_row_by_id( $backup_id );
+
 		if ( ! $this->backup_database->delete_failed_backup( $backup_id ) ) {
 			throw new Exception( __( 'Failed to delete backup entry.', 'backwpup' ) ); // @phpcs:ignore
 		}
+
+		// For aborted backups, physically delete any partial file from the destination
+		// so it cannot re-appear as a "completed" backup after the DB row is removed.
+		if (
+			$row
+			&& 'aborted' === ( $row->status ?? '' )
+			&& ! empty( $row->filename )
+			&& ! empty( $row->destination )
+		) {
+			$destination = (string) $row->destination;
+			$filename    = (string) $row->filename;
+			$job_id      = isset( $row->job_id ) ? (int) $row->job_id : 0;
+			$dest_class  = $this->backwpup_adapter->get_destination( $destination );
+			if ( $dest_class && $job_id > 0 ) {
+				$jobdest   = $job_id . '_' . $destination;
+				$file_path = $this->find_remote_file_path( $dest_class, $jobdest, $filename );
+				if ( '' !== $file_path ) {
+					try {
+						$dest_class->file_delete( $jobdest, $file_path );
+					} catch ( \Throwable $e ) {
+						// Remote file deletion is best-effort; the DB row is already removed.
+						// Log so operators can identify orphaned partial files.
+						error_log( sprintf( '[BackWPup] Failed to delete partial aborted file "%s": %s', $filename, $e->getMessage() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Find the destination-specific file path or ID for a given base filename.
+	 *
+	 * Different destinations store files with different keys in their file lists:
+	 * FTP stores full remote paths, Google Drive stores file IDs, Azure stores blob names.
+	 * This method looks up the entry matching the base filename and returns the value
+	 * expected by file_delete(). If the file is not found (e.g. early abort with no
+	 * upload), an empty string is returned so deletion can be skipped entirely, avoiding
+	 * spurious admin error notices.
+	 *
+	 * @param \BackWPup_Destinations $dest_class Destination handler instance.
+	 * @param string                 $jobdest    Job-destination key (e.g. '123_FTP').
+	 * @param string                 $filename   Base archive filename to look for.
+	 *
+	 * @return string The file path or ID to pass to file_delete(), or '' if not found.
+	 */
+	private function find_remote_file_path( $dest_class, string $jobdest, string $filename ): string {
+		$file_list = $dest_class->file_get_list( $jobdest );
+		foreach ( $file_list as $file ) {
+			if ( ! is_array( $file ) ) {
+				continue;
+			}
+			$file_key  = (string) ( $file['file'] ?? '' );
+			$file_name = (string) ( $file['filename'] ?? basename( $file_key ) );
+			if ( $file_name === $filename || $file_key === $filename ) {
+				return $file_key;
+			}
+		}
+		return '';
 	}
 }

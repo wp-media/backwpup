@@ -1,18 +1,19 @@
 let requestWPApi, loadBackupsListingAndPagination, getUrlParameter, backwpupDisplaySettingsToast;
+
+async function postToWP(data) {
+  return await fetch(ajaxurl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Cache-Control": "no-cache",
+    },
+    keepalive: true,
+    body: new URLSearchParams(data),
+  }).then((response) => response.json());
+}
+
 jQuery(document).ready(function ($) {
   const $document = $(document); // Cache document lookup
-
-  // Helpers
-  async function postToWP(data) {
-    return await fetch(ajaxurl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Cache-Control": "no-cache",
-      },
-      body: new URLSearchParams(data),
-    }).then((response) => response.json());
-  }
 
   /**
    * Request the WP Rest API.
@@ -301,19 +302,19 @@ jQuery(document).ready(function ($) {
             'block_type': 'component',
             'block_data': {
               'type': 'info',
-              'font': 'xs',
+              'font': 'medium',
               'content': response.message
             },
           },
-          function(response) {
-            $('#backwpup_message').html(response);
+          function(messageHtml) {
+            $('#backwpup_message').html(messageHtml);
+            backwpup_license_refresh(next_block, messageHtml);
           },
           'POST',
           function(request, error) {
             console.log(request.responseJSON.error);
           }
         );
-        backwpup_license_refresh(next_block);
       },
       'POST',
       function(request, error) {
@@ -324,7 +325,7 @@ jQuery(document).ready(function ($) {
             'block_type': 'component',
             'block_data': {
               'type': 'alert',
-              'font': 'xs',
+              'font': 'medium',
               'content': request.responseJSON.error
             },
           },
@@ -351,7 +352,7 @@ jQuery(document).ready(function ($) {
    * @function
    * @param {string} activated - The activation status, either 'activate' or 'deactivate'.
   */
-  window.backwpup_license_refresh = function(activated) {
+  window.backwpup_license_refresh = function(activated, messageHtml) {
     let block_name = 'sidebar/license-parts/'+activated;
     requestWPApi(
       backwpupApi.getblock,
@@ -361,6 +362,9 @@ jQuery(document).ready(function ($) {
       },
       function(response) {
         $('#backwpup_license').html(response);
+        if (messageHtml) {
+          $('#backwpup_message').html(messageHtml);
+        }
         $('.js-backwpup-license_update').on('click', update_license);
       },
       'POST'
@@ -398,6 +402,7 @@ jQuery(document).ready(function ($) {
             break;
           case 'SUGARSYNC':
             initSugarSyncEvents();
+            refreshSugarSyncRootFolders(job_id);
             $('.js-backwpup-test-SUGARSYNC-storage').on('click', window['test_SUGARSYNC_storage']);
             break;
           case 'GDRIVE':
@@ -590,6 +595,12 @@ jQuery(document).ready(function ($) {
 			block_data.backup_id = backup_id;
 		}
 
+		const $spinnerSvg = $('#backwpup-loading-overlay-template').find('svg').clone().addClass('animate-spin');
+		if ($spinnerSvg.length) {
+			target.html($('<div class="flex justify-center items-center py-12"></div>').append($spinnerSvg));
+		}
+		openModal(panel, { modalStyle: modal_style, modalClass: modal_class });
+
 		requestWPApi(
 			backwpupApi.getblock,
 			{
@@ -600,7 +611,6 @@ jQuery(document).ready(function ($) {
 			function(response) {
 				// Fill infos
 				target.html(response);
-				openModal(panel, { modalStyle: modal_style, modalClass: modal_class });
 				$(".js-backwpup-close-modal").on('click', closeModal);
 			},
 			'POST',
@@ -616,6 +626,11 @@ jQuery(document).ready(function ($) {
 		let target = $modal.find("#sidebar-" + panel);
 		let block_name = 'modal/'+ panel;
 		let block_type = 'children';
+
+		const $spinnerSvg = $('#backwpup-loading-overlay-template').find('svg').clone().addClass('animate-spin');
+		if ($spinnerSvg.length) {
+			target.html($('<div class="flex justify-center items-center py-12"></div>').append($spinnerSvg));
+		}
 
 		requestWPApi(
 			backwpupApi.getblock,
@@ -807,13 +822,13 @@ jQuery(document).ready(function ($) {
         backwpupApi.save_site_option,
         data,
         function (response) {
-          $('#gdrive_authenticate_infos').html(response.message);
+          $('#gdrive_authenticate_infos').removeClass('text-danger').addClass('text-secondary-base').html(response.message);
           // Remove the 'open' attribute
           details.removeAttr('open');
         },
         "POST",
         function (request, error) {
-          $('#gdrive_authenticate_infos').html("Error");
+          $('#gdrive_authenticate_infos').removeClass('text-secondary-base').addClass('text-danger').html(request.responseJSON?.error ?? "Error");
         }
       )
     });
@@ -932,26 +947,11 @@ jQuery(document).ready(function ($) {
 		  { action: 'delete', backups: [ { dataset: { backup_id: backupId } } ] },
 		  function() {
 			  closeModal();
+			  const currentPage = parseInt(getUrlParameter('page_num', 1), 10) || 1;
 			  const $backupsTable = $("#backwpup-backup-history");
-			  const $row = $backupsTable.find('tr[data-backup-id="' + backupId + '"]');
-			  if ($row.length) {
-				  $row.remove();
-			  }
-
-			  const $countInput = $backupsTable.find('input[name="nb_backups"]');
-			  if ($countInput.length) {
-				  const total = parseInt($countInput.val(), 10);
-				  if (!Number.isNaN(total) && total > 0) {
-					  $countInput.val(total - 1);
-				  }
-			  }
-
 			  const remainingRows = $backupsTable.find("tbody tr").length;
-			  if (remainingRows === 0) {
-				  const currentPage = parseInt(getUrlParameter('page_num', 1), 10) || 1;
-				  const nextPage = currentPage > 1 ? currentPage - 1 : 1;
-				  loadBackupsListingAndPagination(nextPage);
-			  }
+			  const nextPage = (remainingRows <= 1 && currentPage > 1) ? currentPage - 1 : currentPage;
+			  loadBackupsListingAndPagination(nextPage);
 		  },
 		  'POST'
 	  );
@@ -1861,7 +1861,7 @@ jQuery(document).ready(function ($) {
     closeSidebar();
   });
 
-  // Verifie onboarding form and submit it.
+  // Verifies onboarding form and submit it.
   $(".js-backwpup-onboarding-submit-form").on('click', function() {
     const checkedStorageCheckboxes = $('input[type="checkbox"][name^="onboarding_storage"]:checked');
     if (0 !== checkedStorageCheckboxes.length) {
@@ -1923,13 +1923,13 @@ jQuery(document).ready(function ($) {
         backwpupApi.save_site_option,
         data,
         function (response) {
-          $('#onedrive_authenticate_infos').html(response.message);
+          $('#onedrive_authenticate_infos').removeClass('text-danger').addClass('text-secondary-base').html(response.message);
           // Remove the 'open' attribute
           details.removeAttr('open');
         },
         "POST",
         function (request, error) {
-          $('#onedrive_authenticate_infos').html("Error");
+          $('#onedrive_authenticate_infos').removeClass('text-secondary-base').addClass('text-danger').html(request.responseJSON?.error ?? "Error");
         }
       )
     });
@@ -2726,6 +2726,49 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         }
 
+        // Handle locked (PRO-only) storage option click — track attempt, do not navigate.
+        const locked_storage = event.target.closest('.js-backwpup-locked-storage');
+        if (locked_storage) {
+            event.preventDefault();
+            postToWP({
+                action: 'backwpup_track_nudge',
+                event: 'locked_option_click',
+                storage: locked_storage.dataset.storage || '',
+                nonce: backwpupApi.nudge_nonce,
+            });
+            return;
+        }
+
+        // Handle nudge CTA click — track before navigating to the upgrade page.
+        const nudge_cta = event.target.closest('.js-backwpup-nudge-cta');
+        if (nudge_cta) {
+            postToWP({
+                action: 'backwpup_track_nudge',
+                event: 'nudge_click',
+                storage: nudge_cta.dataset.storage || 'storage_selection',
+                nonce: backwpupApi.nudge_nonce,
+            });
+            // Do not return — let the anchor navigate to the upgrade page.
+        }
+
+        const uri_span = event.target.closest('.js-copy-uri');
+
+        if (uri_span) {
+            var textToCopyUri = uri_span.dataset.uri;
+
+            navigator.clipboard.writeText(textToCopyUri).then(function () {
+                var originalText = uri_span.textContent;
+                uri_span.textContent = 'Copied!';
+
+                setTimeout(function () {
+                    uri_span.textContent = originalText;
+                }, 1500);
+            }).catch(function (err) {
+                console.error('Failed to copy URI:', err);
+                fallbackCopy(textToCopyUri);
+            });
+        }
+
         const storage_button = event.target.closest('.js-backwpup-select-storage');
         if (!storage_button) {
             return;
@@ -2757,3 +2800,24 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
 });
+
+//show notice if debug log level is active
+document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener('change', function (event) {
+        const log_level_setting = event.target.closest('select[name="loglevel"]');
+        if (log_level_setting) {
+            const debug_log_level = log_level_setting.value.includes('debug');
+            const debug_log_notice = document.querySelector('.js-backwpup-show-if-debug-log-active');
+
+            if (!debug_log_notice) {
+                return;
+            }
+
+            if (debug_log_level) {
+                debug_log_notice.classList.remove('hidden');
+            } else {
+                debug_log_notice.classList.add('hidden');
+            }
+        }
+    })
+})

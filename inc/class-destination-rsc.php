@@ -220,7 +220,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 				);
 			}
 		} catch ( Exception $e ) {
-			$context = $this->rackspace_error_context( $e->getMessage() );
+			$context = $this->error_context( $e->getMessage() );
 			$job_object->log(
 				/* translators: %s: Error message. */
 				sprintf( __( 'Rackspace Cloud API: %s', 'backwpup' ), $e->getMessage() ),
@@ -320,7 +320,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			}
 			set_site_transient( 'backwpup_' . $job_object->job['jobid'] . '_rsc', $files, YEAR_IN_SECONDS );
 		} catch ( Exception $e ) {
-			$context = $this->rackspace_error_context( $e->getMessage() );
+			$context = $this->error_context( $e->getMessage() );
 			$job_object->log(
 				/* translators: %s: Error message. */
 				sprintf( __( 'Rackspace Cloud API: %s', 'backwpup' ), $e->getMessage() ),
@@ -380,9 +380,10 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 	/**
 	 * Determines whether the destination can run with the provided settings.
 	 *
-	 * @param array $job_settings Job settings.
+	 * @param array $job_settings
+	 * @param bool  $test_connection Job settings.
 	 */
-	public function can_run( array $job_settings ): bool {
+	public function can_run( array $job_settings, bool $test_connection = true ): bool {
 		if ( empty( $job_settings['rscusername'] ) ) {
 			return false;
 		}
@@ -525,7 +526,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 	 * @param string $message Error message.
 	 * @return array
 	 */
-	private function rackspace_error_context( string $message ): array {
+	private function error_context( string $message ): array {
 		$normalized = strtolower( $message );
 
 		if (
@@ -534,7 +535,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			|| false !== strpos( $normalized, 'forbidden' )
 		) {
 			return [
-				'reason_code'   => 'incorrect_login',
+				'reason_code'   => \WPMedia\BackWPup\Backup\ReasonCode::REASON_INCORRECT_LOGIN,
 				'destination'   => 'RSC',
 				'provider_code' => 'auth_failed',
 			];
@@ -546,7 +547,7 @@ class BackWPup_Destination_RSC extends BackWPup_Destinations {
 			|| false !== strpos( $normalized, 'not enough' )
 		) {
 			return [
-				'reason_code'   => 'not_enough_storage',
+				'reason_code'   => \WPMedia\BackWPup\Backup\ReasonCode::REASON_NOT_ENOUGH_STORAGE,
 				'destination'   => 'RSC',
 				'provider_code' => 'quota_exceeded',
 			];

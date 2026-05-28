@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: BackWPup – WordPress Backup & Restore Plugin
  * Author URI: https://backwpup.com
- * Version: 5.6.9
+ * Version: 5.6.10
  * Requires at least: 5.1
  * Requires PHP: 7.4
  * Text Domain: backwpup

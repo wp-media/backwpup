@@ -132,7 +132,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 						network_admin_url( 'admin.php' )
 					);
 					$files[ $filecounter ]['filesize']    = $file->getSize();
-					$files[ $filecounter ]['time']        = $file->getMTime() + ( get_option( 'gmt_offset' ) * 3600 );
+					$files[ $filecounter ]['time']        = $file->getMTime();
 					++$filecounter;
 				}
 			}
@@ -239,9 +239,10 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 	/**
 	 * {@inheritdoc}
 	 *
-	 * @param array $job_settings Job settings.
+	 * @param array $job_settings
+	 * @param bool  $test_connection Job settings.
 	 */
-	public function can_run( array $job_settings ): bool {
+	public function can_run( array $job_settings, bool $test_connection = true ): bool {
 		return ! ( empty( $job_settings['backupdir'] ) || '/' === $job_settings['backupdir'] );
 	}
 

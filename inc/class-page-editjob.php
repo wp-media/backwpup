@@ -41,7 +41,7 @@ class BackWPup_Page_Editjob {
 	 *
 	 * @return string|void
 	 */
-	public static function save_post_form( $tab, $jobid ) {
+	public static function save_post_form( $tab, int $jobid ) {
 		if ( ! current_user_can( 'backwpup_jobs_edit' ) ) {
 			return __( 'Sorry, you don\'t have permissions to do that.', 'backwpup' );
 		}

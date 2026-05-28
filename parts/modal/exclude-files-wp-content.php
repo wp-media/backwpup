@@ -13,7 +13,7 @@ if ( ! isset($job_id) ) {
 	return;
 }
 
-$excludedFiles = BackWPup_Directory::get_folder_list_to_exclude('content',WP_CONTENT_DIR, $job_id);
+$excludedFiles = BackWPup_Directory::get_folder_list_to_exclude('content',WP_CONTENT_DIR, $job_id, false);
 
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Others in wp-content", 'backwpup') . " - " . __("Exclusion Settings", 'backwpup'),

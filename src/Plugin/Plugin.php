@@ -190,6 +190,11 @@ class Plugin {
 				BackWPup_Job::disable_caches();
 				// Add action for running jobs in wp-cron.php.
 				add_action( 'wp_loaded', [ BackWPup_Cron::class, 'cron_active' ], PHP_INT_MAX );
+				// For external-link (runext) job starts, the request comes from an outside
+				// cron service without a BackWPup auth cookie.  Pre-authenticate the
+				// configured user now (before the init hook) so that mu-plugins that
+				// restrict wp-cron.php to a specific user do not block the request.
+				BackWPup_Cron::preauth_for_external_run();
 			} else {
 				// Add cron actions.
 				add_action( 'backwpup_cron', [ BackWPup_Cron::class, 'run' ] );
@@ -199,6 +204,11 @@ class Plugin {
 			// If in cron the rest is not needed.
 			return;
 		}
+
+		// Inject the configured user's auth cookie into WordPress's own spawn_cron()
+		// loopback so that mu-plugins restricting wp-cron.php to a specific user do
+		// not block scheduled BackWPup jobs.
+		add_filter( 'cron_request', [ BackWPup_Cron::class, 'authenticate_cron_request' ] );
 
 		$this->loaded = true;
 	}

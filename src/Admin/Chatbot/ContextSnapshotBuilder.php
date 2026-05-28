@@ -6,7 +6,7 @@ namespace WPMedia\BackWPup\Admin\Chatbot;
 
 use WPMedia\BackWPup\Adapters\BackWPupAdapter;
 use WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsStore;
-use WPMedia\Mixpanel\Optin;
+use WPMedia\BackWPup\Dependencies\WPMedia\Mixpanel\Optin;
 
 class ContextSnapshotBuilder {
 

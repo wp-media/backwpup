@@ -96,6 +96,6 @@ class Notice52 extends AbstractNotice {
 		$screen = get_current_screen();
 
 		// Check if the current screen is a BackWPup page.
-		return isset( $screen->id ) && str_contains( $screen->id, 'backwpup' );
+		return isset( $screen->id ) && strpos( $screen->id, 'backwpup' ) !== false;
 	}
 }

@@ -25,7 +25,7 @@ $jobs = BackWPup_Job::get_jobs();
 	</div>
 </div>
 
-<div class="mt-2 dynamic-cards-grid max-md:flex-col gap-4" id="backwup-next-scheduled-backups">
+<div class="mt-2 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 max-md:flex-col gap-4" id="backwup-next-scheduled-backups">
 	<?php
 	if ( ! empty( $jobs ) && is_array( $jobs ) ) {
 		foreach ( $jobs as $job ) {

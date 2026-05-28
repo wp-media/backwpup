@@ -554,7 +554,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
                     if ($e instanceof AwsException) {
                         $errorMessage = $e->getAwsErrorMessage();
                     }
-                    $context = $this->aws_error_context( $e );
+                    $context = $this->error_context( $e );
                     $job_object->log(
                         E_USER_ERROR,
                         sprintf(__('S3 Service API: %s', 'backwpup'), $errorMessage),
@@ -648,7 +648,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
                     if ($e instanceof AwsException) {
                         $errorMessage = $e->getAwsErrorMessage();
                     }
-                    $context = $this->aws_error_context( $e );
+                    $context = $this->error_context( $e );
                     $job_object->log(
                         E_USER_ERROR,
                         sprintf(__('S3 Service API: %s', 'backwpup'), $errorMessage),
@@ -711,7 +711,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
             if ($e instanceof AwsException) {
                 $errorMessage = $e->getAwsErrorMessage();
             }
-            $context = $this->aws_error_context( $e );
+            $context = $this->error_context( $e );
             $job_object->log(
                 E_USER_ERROR,
                 sprintf(__('S3 Service API: %s', 'backwpup'), $errorMessage),
@@ -730,7 +730,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
             if ($e instanceof AwsException) {
                 $errorMessage = $e->getAwsErrorMessage();
             }
-            $context = $this->aws_error_context( $e );
+            $context = $this->error_context( $e );
             $job_object->log(
                 E_USER_ERROR,
                 sprintf(__('S3 Service API: %s', 'backwpup'), $errorMessage),
@@ -746,7 +746,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
         return true;
     }
 
-    public function can_run(array $job_settings): bool
+    public function can_run(array $job_settings, bool $test_connection = true): bool
     {
         if (empty($job_settings['s3accesskey'])) {
             return false;
@@ -805,7 +805,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
 	 * @param Exception $exception Exception instance.
 	 * @return array
 	 */
-	private function aws_error_context( Exception $exception ): array {
+	private function error_context( Exception $exception ): array {
 		if ( ! $exception instanceof AwsException ) {
 			return [];
 		}
@@ -828,7 +828,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
 
 		if ( in_array( $error_code, $auth_codes, true ) || in_array( $status, [ 401, 403 ], true ) ) {
 			$context = [
-				'reason_code'   => 'incorrect_login',
+				'reason_code'   => \WPMedia\BackWPup\Backup\ReasonCode::REASON_INCORRECT_LOGIN,
 				'destination'   => 'S3',
 				'provider_code' => $error_code ?: 'auth_failed',
 			];

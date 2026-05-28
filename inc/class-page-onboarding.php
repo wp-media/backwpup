@@ -171,8 +171,7 @@ class BackWPup_Page_Onboarding {
 		BackWPup_Option::update( $first_backup_job_id, 'destinations', $sanitized_data['onboarding_storage'] );
 
 		// Onboarding OK.
-		$onboarding_done = true;
-		update_site_option( 'backwpup_onboarding', ! $onboarding_done );
+		delete_site_option( 'backwpup_onboarding' );
 		if ( defined( 'BWU_TESTING' ) ) {
 			return;
 		}
@@ -213,6 +212,9 @@ class BackWPup_Page_Onboarding {
 			}
 		}
 		$sanitized_data['activetype'] = '';
+		if ( ! isset( $sanitized_data['onboarding_storage'] ) ) {
+			$sanitized_data['onboarding_storage'] = [];
+		}
 		return $sanitized_data;
 	}
 

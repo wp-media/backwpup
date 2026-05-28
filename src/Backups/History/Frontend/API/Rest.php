@@ -149,7 +149,7 @@ class Rest implements RestInterface {
 	 * - Sorts backups by their timestamp in descending order.
 	 * - Paginates the backups based on the provided `page` and `length` parameters.
 	 * - Generates HTML for the backups table rows and includes a hidden input for the total number of backups.
-	 * - Returns a JSON response with the generated HTML or an error message if no backups are found.
+	 * - Returns a JSON response with the generated HTML, or the empty-state row (with nb_backups=0) when no backups are found.
 	 *
 	 * @throws \WP_Error If there is an issue with the request or processing backups.
 	 */
@@ -216,7 +216,28 @@ class Rest implements RestInterface {
 
 		$backups         = wpm_apply_filters_typed( 'array', 'backwpup_backups_list', $backups );
 		$nb_totalbackups = count( $backups );
-		$total_pages     = ceil( $nb_totalbackups / $length );
+
+		if ( 0 === $nb_totalbackups ) {
+			$empty_html  = $this->helpers_adapter->component( 'table-row-backups-empty', [], true );
+			$empty_html .= $this->helpers_adapter->component(
+				'form/hidden',
+				[
+					'name'  => 'nb_backups',
+					'value' => 0,
+				],
+				true
+			);
+
+			return rest_ensure_response(
+				[
+					'success' => true,
+					'data'    => $empty_html,
+					'page'    => 1,
+				]
+			);
+		}
+
+		$total_pages = ceil( $nb_totalbackups / $length );
 		if ( $page > $total_pages ) {
 			$page = $total_pages;
 		}
@@ -238,17 +259,6 @@ class Rest implements RestInterface {
 			],
 			true
 		);
-
-		if ( empty( $html ) ) {
-			return rest_ensure_response(
-				[
-					'success' => false,
-					'data'    => '',
-					'message' => __( 'No backups found.', 'backwpup' ),
-					'page'    => 1,
-				]
-			);
-		}
 
 		return rest_ensure_response(
 			[
@@ -305,6 +315,7 @@ class Rest implements RestInterface {
 					'stored_on'      => (string) $failed_row->destination,
 					'backup_trigger' => (string) ( $failed_row->backup_trigger ?? '' ),
 					'status'         => (string) ( $failed_row->status ?? '' ),
+					'error_code'     => (string) ( $failed_row->error_code ?? '' ),
 					'error_message'  => (string) ( $failed_row->error_message ?? '' ),
 					'logfile'        => (string) ( $failed_row->logfile ?? '' ),
 					'backup_id'      => (int) ( $failed_row->id ?? 0 ),
@@ -413,8 +424,16 @@ class Rest implements RestInterface {
 	public function get_pagination( WP_REST_Request $request ): WP_REST_Response {
 		$params    = $request->get_params();
 		$page      = empty( $params['page'] ) ? 1 : $params['page'];
-		$max_pages = empty( $params['max_pages'] ) ? 10 : $params['max_pages'];
-		$html      = $this->helpers_adapter->component(
+		$max_pages = empty( $params['max_pages'] ) ? 1 : $params['max_pages'];
+		if ( $max_pages <= 1 ) {
+			return rest_ensure_response(
+				[
+					'success' => true,
+					'data'    => '',
+				]
+			);
+		}
+		$html = $this->helpers_adapter->component(
 			'navigation/pagination',
 			[
 				'max_pages'    => $max_pages,

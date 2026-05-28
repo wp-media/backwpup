@@ -25,13 +25,22 @@ class Subscriber implements SubscriberInterface {
 	private Notices $admin_notices;
 
 	/**
+	 * Array of banner instances to be rendered.
+	 *
+	 * @var AbstractNotice[]
+	 */
+	private array $banners;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Notices          $admin_notices The Notices instance.
 	 * @param AbstractNotice[] $notices Array of notice instances.
+	 * @param AbstractNotice[] $banners Array of banner instances.
 	 */
-	public function __construct( Notices $admin_notices, $notices ) {
+	public function __construct( Notices $admin_notices, $notices, $banners ) {
 		$this->notices       = $notices;
+		$this->banners       = $banners;
 		$this->admin_notices = $admin_notices;
 	}
 
@@ -47,6 +56,7 @@ class Subscriber implements SubscriberInterface {
 				[ 'display_update_notice' ],
 				[ 'display_license_notice' ],
 			],
+			'backwpup_banners'                   => 'render_banners',
 			'wp_ajax_backwpup_dismiss_notice'    => 'backwpup_dismiss_notices',
 			'admin_post_backwpup_dismiss_notice' => 'backwpup_dismiss_notices',
 		];
@@ -60,6 +70,17 @@ class Subscriber implements SubscriberInterface {
 	public function render_all_notices() {
 		foreach ( $this->notices as $notice ) {
 			$notice->maybe_render();
+		}
+	}
+
+	/**
+	 * Renders banners on the backwpup_custom_notices hook.
+	 *
+	 * @return void
+	 */
+	public function render_banners() {
+		foreach ( $this->banners as $banner ) {
+			$banner->maybe_render();
 		}
 	}
 

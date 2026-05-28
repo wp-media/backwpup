@@ -10,6 +10,13 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 	private const SERVICE_NAME = 'FTP';
 
 	/**
+	 * SFTP service name.
+	 *
+	 * @var string
+	 */
+	private const SFTP_SERVICE_NAME = 'SFTP';
+
+	/**
 	 * Returns default FTP options.
 	 *
 	 * @return array<string, mixed> Default options.
@@ -162,7 +169,7 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 			$ftp = new BackWPup_Destination_Ftp_Type_Ftp( [ $job_object, 'log' ] );
 		}
 		try {
-			$ftp->connect(
+			$connected = $ftp->connect(
 				$job_object->job['ftpuser'],
 				BackWPup_Encryption::decrypt( $job_object->job['ftppass'] ),
 				$job_object->job['ftphost'],
@@ -174,6 +181,11 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 					'privkey' => ! empty( $job_object->job['ftpsshprivkey'] ) ? BackWPup_Encryption::decrypt( $job_object->job['ftpsshprivkey'] ) : '',
 				]
 			);
+			if ( ! $connected ) {
+				$ftp->disconnect();
+
+				return false;
+			}
 
 			$current_ftp_dir = trailingslashit( $ftp->chdir( $job_object->job['ftpdir'] ) );
 			if ( ! $job_object->substeps_done ) {
@@ -299,7 +311,10 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 
 			$ftp->disconnect();
 		} catch ( Exception $e ) {
-			$context = $this->ftp_error_context( $e->getMessage() );
+			$context = $this->error_context(
+				$e->getMessage(),
+				! empty( $job_object->job['ftpssh'] ) && BackWPup::is_pro() ? 'SFTP' : 'FTP'
+			);
 			$job_object->log(
 				/* translators: %s: FTP error message. */
 				sprintf( esc_html__( 'FTP server error: %s', 'backwpup' ), $e->getMessage() ),
@@ -322,15 +337,20 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 	 * Test if the job can run.
 	 *
 	 * @param array $job_settings
+	 * @param bool  $test_connection Should test live connectivity.
 	 * @return boolean
 	 */
-	public function can_run( array $job_settings ): bool {
+	public function can_run( array $job_settings, bool $test_connection = true ): bool {
 		if ( empty( $job_settings['ftphost'] ) ) {
 			return false;
 		}
 
 		if ( empty( $job_settings['ftpuser'] ) ) {
 			return false;
+		}
+
+		if ( ! $test_connection ) {
+			return true;
 		}
 
 		if ( ! empty( $job_settings['ftpssh'] ) && BackWPup::is_pro() ) {
@@ -351,10 +371,14 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 					'privkey' => ! empty( $job_settings['ftpsshprivkey'] ) ? BackWPup_Encryption::decrypt( $job_settings['ftpsshprivkey'] ) : '',
 				]
 			);
-			if ( $login ) {
+			if ( ! $login ) {
 				$ftp->disconnect();
+
+				return false;
 			}
-			return $login;
+			$ftp->disconnect();
+
+			return true;
 		} catch ( Exception $e ) {
 			$ftp->disconnect();
 			return false;
@@ -371,45 +395,17 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 	/**
 	 * Build error context for FTP errors.
 	 *
-	 * @param string $message FTP error message.
+	 * @param string $message FTP or SFTP error message.
+	 * @param string $protocol Protocol identifier.
 	 * @return array
 	 */
-	private function ftp_error_context( string $message ): array {
-		$normalized = strtolower( $message );
-		$code       = '';
-
-		if ( preg_match( '/\b(4|5)\d{2}\b/', $message, $matches ) ) {
-			$code = $matches[0];
+	private function error_context( string $message, string $protocol = 'FTP' ): array {
+		if ( 'SFTP' === strtoupper( $protocol ) ) {
+			$mapper = new \WPMedia\BackWPup\Backup\FailureContext\Sftp\SftpFailureContextMapper();
+		} else {
+			$mapper = new \WPMedia\BackWPup\Backup\FailureContext\Ftp\FtpFailureContextMapper();
 		}
 
-		if (
-			'530' === $code
-			|| false !== strpos( $normalized, 'login' )
-			|| false !== strpos( $normalized, 'not logged' )
-			|| false !== strpos( $normalized, 'authentication' )
-		) {
-			return [
-				'reason_code'   => 'incorrect_login',
-				'destination'   => 'FTP',
-				'provider_code' => $code ?: 'login_failed',
-			];
-		}
-
-		if (
-			'552' === $code
-			|| '452' === $code
-			|| false !== strpos( $normalized, 'quota' )
-			|| false !== strpos( $normalized, 'disk full' )
-			|| false !== strpos( $normalized, 'no space' )
-			|| false !== strpos( $normalized, 'insufficient' )
-		) {
-			return [
-				'reason_code'   => 'not_enough_storage',
-				'destination'   => 'FTP',
-				'provider_code' => $code ?: 'insufficient_storage',
-			];
-		}
-
-		return [];
+		return $mapper->map( $message );
 	}
 }

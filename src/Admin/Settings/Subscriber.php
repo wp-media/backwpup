@@ -96,6 +96,7 @@ class Subscriber implements SubscriberInterface {
 		foreach ( $jobs as $job_id ) {
 			BackWPup_Option::update( $job_id, 'activetype', $value );
 			// Update schedule for wpcron type of job.
+			wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => (int) $job_id ] );
 			if ( 'wpcron' === $value ) {
 				$job = BackWPup_Option::get_job( $job_id );
 

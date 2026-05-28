@@ -127,13 +127,64 @@ class Database {
 			return '';
 		}
 
-		foreach ( $statuses as $status ) {
-			if ( 'completed' !== $status ) {
-				return 'failed';
+		$non_completed = array_filter(
+			$statuses,
+			static function ( string $s ): bool {
+				return 'completed' !== $s;
+			}
+		);
+
+		if ( empty( $non_completed ) ) {
+			return 'completed';
+		}
+
+		$all_aborted = count( array_unique( $non_completed ) ) === 1 && 'aborted' === reset( $non_completed );
+		if ( $all_aborted ) {
+			return 'aborted';
+		}
+
+		return 'failed';
+	}
+
+	/**
+	 * Check whether all backup rows for a job have left the 'created' state.
+	 *
+	 * After the user triggers an abort the background PHP process must still run
+	 * `end()` and update the backup rows from `created` to `aborted` (or
+	 * `failed`).  The JS abort handler polls this method via the REST endpoint
+	 * `/backwpup/v1/job-abort-status` so it can wait until the background
+	 * process has finished before reloading the history table.
+	 *
+	 * Returns `true` (i.e. "abort is complete") when:
+	 * - The job ID is invalid (nothing to wait for).
+	 * - No `backup_ids` are stored for the job (nothing was ever registered).
+	 * - Every registered backup row has a status other than `created`.
+	 *
+	 * Returns `false` when at least one row still has `created` status.
+	 *
+	 * @param int $job_id Job ID.
+	 *
+	 * @return bool
+	 */
+	public function is_abort_complete( int $job_id ): bool {
+		if ( $job_id <= 0 ) {
+			return true;
+		}
+
+		$backup_ids = BackWPup_Option::get( $job_id, 'backup_ids', [] );
+
+		if ( empty( $backup_ids ) ) {
+			return true;
+		}
+
+		foreach ( $backup_ids as $backup_id ) {
+			$row = $this->get_backup_row_by_id( (int) $backup_id );
+			if ( $row && 'created' === ( $row->status ?? '' ) ) {
+				return false;
 			}
 		}
 
-		return 'completed';
+		return true;
 	}
 
 	/**
@@ -163,7 +214,7 @@ class Database {
 	public function delete_failed_backup( int $backup_id ): bool {
 		$row = $this->get_backup_row_by_id( $backup_id );
 
-		if ( ! $row || 'failed' !== $row->status ) {
+		if ( ! $row || ( 'failed' !== $row->status && 'aborted' !== $row->status ) ) {
 			return false;
 		}
 
@@ -219,10 +270,26 @@ class Database {
 				continue;
 			}
 
-			$item_status     = 'failed';
 			$destination     = is_string( $backup->destination ) ? $backup->destination : '';
 			$failure_details = $this->get_failure_details( $job_id, $destination );
-			$this->backup_query->set_failed( $backup->id, $failure_details );
+
+			if ( $this->is_job_user_aborted( $job_id ) ) {
+				$item_status   = 'aborted';
+				$abort_details = [
+					'status'         => 'aborted',
+					'job_id'         => $job_id,
+					'backup_trigger' => $backup->backup_trigger,
+				];
+				$logfile       = $this->get_job_logfile( $job_id );
+				if ( '' !== $logfile ) {
+					$abort_details['logfile'] = $logfile;
+				}
+				$this->backup_query->update_item( $backup->id, $abort_details );
+			} else {
+				$item_status = 'failed';
+				$this->backup_query->set_failed( $backup->id, $failure_details );
+			}
+
 			$job_statuses[ $i ] = [
 				'status'        => $item_status,
 				'storage'       => $backup->destination,
@@ -240,6 +307,33 @@ class Database {
 		 * @param array $backup_trigger Backup job trigger.
 		 */
 		do_action( 'backwpup_track_end_job', $job_id, $job_statuses, $backup_trigger );
+	}
+
+	/**
+	 * Check whether a job was aborted by the user by scanning stored error signals.
+	 *
+	 * @param int $job_id Job ID.
+	 *
+	 * @return bool
+	 */
+	private function is_job_user_aborted( int $job_id ): bool {
+		if ( $job_id <= 0 ) {
+			return false;
+		}
+
+		$signals = $this->signals_store->latest();
+
+		foreach ( $signals as $signal ) {
+			if ( (int) ( $signal['job_id'] ?? 0 ) !== $job_id ) {
+				continue;
+			}
+
+			if ( ReasonCode::REASON_USER_ABORTED === ( $signal['reason_code'] ?? '' ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -490,6 +584,7 @@ class Database {
 		$statuses       = [
 			'completed',
 			'failed',
+			'aborted',
 		];
 
 		/**
@@ -498,9 +593,11 @@ class Database {
 		 *
 		 * @param array $statuses List of statuses.
 		 */
-		$statuses               = wpm_apply_filters_typed( 'array', 'backwpup_history_statuses', $statuses );
-		$include_failed_backups = empty( $statuses ) || in_array( 'failed', $statuses, true );
-		$failed_backups         = $include_failed_backups ? $this->backup_query->query( [ 'status' => 'failed' ] ) : [];
+		$statuses                = wpm_apply_filters_typed( 'array', 'backwpup_history_statuses', $statuses );
+		$include_failed_backups  = empty( $statuses ) || in_array( 'failed', $statuses, true );
+		$include_aborted_backups = empty( $statuses ) || in_array( 'aborted', $statuses, true );
+		$failed_backups          = $include_failed_backups ? $this->backup_query->query( [ 'status' => 'failed' ] ) : [];
+		$aborted_backups         = $include_aborted_backups ? $this->backup_query->query( [ 'status' => 'aborted' ] ) : [];
 
 		foreach ( $backups_list as &$item ) {
 			$backup_row    = $this->get_backup_row( $item['stored_on'], $item['filename'] );
@@ -518,12 +615,14 @@ class Database {
 			if ( ! empty( $backup_row ) ) {
 				$item['backup_trigger'] = $backup_row->backup_trigger ?? '';
 				$item['status']         = $backup_status;
+				$item['error_code']     = 'failed' === $backup_status ? (string) ( $backup_row->error_code ?? '' ) : '';
 				$item['error_message']  = 'failed' === $backup_status ? (string) ( $backup_row->error_message ?? '' ) : '';
 				$item['logfile']        = (string) ( $backup_row->logfile ?? '' );
 				$item['backup_id']      = (int) ( $backup_row->id ?? 0 );
 			} else {
 				$item['backup_trigger'] = '';
 				$item['status']         = $backup_status;
+				$item['error_code']     = '';
 				$item['error_message']  = '';
 				$item['logfile']        = '';
 				$item['backup_id']      = 0;
@@ -533,21 +632,24 @@ class Database {
 			$unique_backups[ $item['stored_on'] . $item['filename'] ] = $item;
 		}
 
-		if ( $include_failed_backups && ! empty( $failed_backups ) ) {
-			foreach ( $failed_backups as $failed_backup ) {
-				if ( ! $failed_backup instanceof BackupRow ) {
-					continue;
-				}
-				$failed_item = $this->build_failed_backup_item( $failed_backup );
-				if ( empty( $failed_item ) ) {
-					continue;
-				}
-				$key = $failed_item['stored_on'] . $failed_item['filename'];
-				if ( isset( $unique_backups[ $key ] ) ) {
-					continue;
-				}
-				$unique_backups[ $key ] = $failed_item;
+		$non_completed_rows = array_merge(
+			$include_failed_backups ? $failed_backups : [],
+			$include_aborted_backups ? $aborted_backups : []
+		);
+
+		foreach ( $non_completed_rows as $nc_backup ) {
+			if ( ! $nc_backup instanceof BackupRow ) {
+				continue;
 			}
+			$nc_item = $this->build_failed_backup_item( $nc_backup );
+			if ( empty( $nc_item ) ) {
+				continue;
+			}
+			$key = $nc_item['stored_on'] . $nc_item['filename'];
+			if ( isset( $unique_backups[ $key ] ) ) {
+				continue;
+			}
+			$unique_backups[ $key ] = $nc_item;
 		}
 
 		if ( empty( $unique_backups ) ) {
@@ -601,7 +703,8 @@ class Database {
 			'last_run'       => $job['lastrun'] ?? null,
 			'stored_on'      => $destination,
 			'backup_trigger' => $backup_row->backup_trigger ?? '',
-			'status'         => 'failed',
+			'status'         => is_string( $backup_row->status ) ? $backup_row->status : 'failed',
+			'error_code'     => (string) ( $backup_row->error_code ?? '' ),
 			'error_message'  => (string) ( $backup_row->error_message ?? '' ),
 			'backup_id'      => (int) $backup_row->id,
 		];

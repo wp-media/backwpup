@@ -21,7 +21,7 @@ if ($abs_folder_up) {
     $abs_path = dirname($abs_path);
 }
 
-$excludedFiles = BackWPup_Directory::get_folder_list_to_exclude("root",$abs_path, $job_id);
+$excludedFiles = BackWPup_Directory::get_folder_list_to_exclude("root",$abs_path, $job_id, false);
 
 BackWPupHelpers::component("closable-heading", [
   'title' => __("WordPress Core", 'backwpup') . " - " . __("Exclusion Settings", 'backwpup'),

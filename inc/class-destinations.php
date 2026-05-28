@@ -236,11 +236,12 @@ abstract class BackWPup_Destinations {
 	/**
 	 * Check whether destination can run.
 	 *
-	 * @param array $job_settings Job settings.
+	 * @param array $job_settings
+	 * @param bool  $test_connection Job settings.
 	 *
 	 * @return bool
 	 */
-	abstract public function can_run( array $job_settings ): bool;
+	abstract public function can_run( array $job_settings, bool $test_connection = true ): bool;
 
 	/**
 	 * Is Backup Archive.

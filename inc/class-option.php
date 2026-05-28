@@ -256,6 +256,13 @@ final class BackWPup_Option {
 	}
 
 	/**
+	 * Cache for job default options.
+	 *
+	 * @var array
+	 */
+	private static $defaults_cache = [];
+
+	/**
 	 * Get default option for BackWPup option.
 	 *
 	 * @param string $key Option key.
@@ -267,40 +274,46 @@ final class BackWPup_Option {
 	public static function defaults_job( $key = '' ) {
 		$key = sanitize_key( trim( $key ) );
 
-		// Set defaults.
-		$default                          = [];
-		$default['type']                  = [ 'DBDUMP', 'FILE', 'WPPLUGIN' ];
-		$default['destinations']          = [
-			'FOLDER',
-		];
-		$default['name']                  = __( 'New Job', 'backwpup' );
-		$default['activetype']            = 'wpcron';
-		$default['logfile']               = '';
-		$default['lastbackupdownloadurl'] = '';
-		$default['cronselect']            = 'basic';
-		$default['cron']                  = '0 0 1 * *';
-		$default['frequency']             = 'monthly';
-		$default['mailaddresslog']        = sanitize_email( get_bloginfo( 'admin_email' ) );
-		$default['mailaddresssenderlog']  = 'BackWPup ' . get_bloginfo( 'name' ) . ' <' . sanitize_email( get_bloginfo( 'admin_email' ) ) . '>';
-		$default['mailerroronly']         = true;
-		$default['backuptype']            = 'archive';
-		$default['archivename']           = '%Y-%m-%d_%H-%i-%s_%hash%';
-		$default['archivenamenohash']     = '%Y-%m-%d_%H-%i-%s_%hash%';
-		$default['archiveformat']         = get_site_option( 'backwpup_archiveformat', '.tar' );
-		$default['legacy']                = false;
-		$default['tempjob']               = false;
-		$default['backup_now']            = false;
-		// Defaults for destinations.
-		foreach ( BackWPup::get_registered_destinations() as $dest_key => $dest ) {
-			if ( ! empty( $dest['class'] ) ) {
-				$dest_object = BackWPup::get_destination( $dest_key );
-				$default     = array_merge( $default, $dest_object->option_defaults() );
+		if ( empty( self::$defaults_cache ) ) {
+			// Set defaults.
+			$default                          = [];
+			$default['type']                  = [ 'DBDUMP', 'FILE', 'WPPLUGIN' ];
+			$default['destinations']          = [
+				'FOLDER',
+			];
+			$default['name']                  = __( 'New Job', 'backwpup' );
+			$default['activetype']            = 'wpcron';
+			$default['logfile']               = '';
+			$default['lastbackupdownloadurl'] = '';
+			$default['cronselect']            = 'basic';
+			$default['cron']                  = '0 0 1 * *';
+			$default['frequency']             = 'monthly';
+			$default['mailaddresslog']        = sanitize_email( get_bloginfo( 'admin_email' ) );
+			$default['mailaddresssenderlog']  = 'BackWPup ' . get_bloginfo( 'name' ) . ' <' . sanitize_email( get_bloginfo( 'admin_email' ) ) . '>';
+			$default['mailerroronly']         = true;
+			$default['backuptype']            = 'archive';
+			$default['archivename']           = '%Y-%m-%d_%H-%i-%s_%hash%';
+			$default['archivenamenohash']     = '%Y-%m-%d_%H-%i-%s_%hash%';
+			$default['archiveformat']         = '.tar';
+			$default['legacy']                = false;
+			$default['tempjob']               = false;
+			$default['backup_now']            = false;
+			// Defaults for destinations.
+			foreach ( BackWPup::get_registered_destinations() as $dest_key => $dest ) {
+				if ( ! empty( $dest['class'] ) ) {
+					$dest_object = BackWPup::get_destination( $dest_key );
+					$default     = array_merge( $default, $dest_object->option_defaults() );
+				}
 			}
+			// Defaults for job types.
+			foreach ( BackWPup::get_job_types() as $job_type ) {
+				$default = array_merge( $default, $job_type->option_defaults() );
+			}
+			self::$defaults_cache = $default;
 		}
-		// Defaults for job types.
-		foreach ( BackWPup::get_job_types() as $job_type ) {
-			$default = array_merge( $default, $job_type->option_defaults() );
-		}
+
+		$default                  = self::$defaults_cache;
+		$default['archiveformat'] = get_site_option( 'backwpup_archiveformat', '.tar' );
 
 		// Return all.
 		if ( empty( $key ) ) {

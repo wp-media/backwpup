@@ -5,6 +5,10 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+if ( get_site_option( 'backwpup_onboarding', false ) ) {
+  return;
+}
+
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Advanced Settings", 'backwpup'),
   'type' => 'sidebar'

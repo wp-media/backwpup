@@ -27,9 +27,9 @@ $line_styles = "relative flex items-center gap-4 before:absolute before:w-[1px] 
 $line_styles_not_reached = "before:bg-primary-base";
 $line_styles_reached = "before:bg-secondary-base";
 
-$first_step_line_styles = "pt-20 pb-10 before:top-0";
-$other_step_line_styles = "py-10 before:top-[-50px]";
-$last_step_line_styles = "pt-10 pb-20 before:top-[-50px] after:absolute after:w-[1px] after:bg-primary-base after:left-5 after:bottom-[-100px] after:top-[50%]";
+$first_step_line_styles = "pt-10 pb-6 lg:pt-20 lg:pb-10 before:top-0";
+$other_step_line_styles = "py-6 before:top-[-26px] lg:py-10 lg:before:top-[-50px]";
+$last_step_line_styles = "pt-6 pb-10 lg:pt-10 lg:pb-20 before:top-[-26px] lg:before:top-[-50px] after:absolute after:w-[1px] after:bg-primary-base after:left-5 after:bottom-[-100px] after:top-[50%]";
 
 $reached_step_line_styles = "before:bg-secondary-base";
 

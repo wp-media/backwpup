@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $padding_sizes = [
   'small' => 'p-4',
   'medium' => 'p-6',
-  'large' => 'p-8',
+  'large' => 'p-4 sm:p-8',
 ];
 $padding_size = $padding_size ?? 'small';
 $display = $display ?? true;

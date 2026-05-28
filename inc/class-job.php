@@ -169,12 +169,6 @@ class BackWPup_Job {
 	 */
 	public $count_files_size = 0;
 	/**
-	 * Count of affected folders.
-	 *
-	 * @var int
-	 */
-	public $count_folder = 0;
-	/**
 	 * If job aborted from user.
 	 *
 	 * @var bool
@@ -508,7 +502,7 @@ class BackWPup_Job {
 				 * @var BackWPup_Destinations $dest_class
 				 */
 				$dest_class = BackWPup::get_destination( $id );
-				if ( $dest_class->can_run( $this->job ) ) {
+				if ( $dest_class->can_run( $this->job, false ) ) {
 					if ( 'sync' === $this->job['backuptype'] ) {
 						if ( $dest['can_sync'] ) {
 							$this->steps_todo[]                                      = 'DEST_SYNC_' . $id;
@@ -638,12 +632,12 @@ class BackWPup_Job {
 		}
 		if ( 'wpcron' === $this->job['activetype'] ) {
 			// Check next run.
-			$cron_next = wp_next_scheduled( 'backwpup_cron', [ 'arg' => $this->job['jobid'] ] );
+			$cron_next = wp_next_scheduled( 'backwpup_cron', [ 'arg' => (int) $this->job['jobid'] ] );
 			if ( ! $cron_next || $cron_next < time() ) {
-				wp_unschedule_event( $cron_next, 'backwpup_cron', [ 'arg' => $this->job['jobid'] ] );
+				wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => (int) $this->job['jobid'] ] );
 				$cron_next = BackWPup_Cron::cron_next( $this->job['cron'] );
-				wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $this->job['jobid'] ] );
-				$cron_next = wp_next_scheduled( 'backwpup_cron', [ 'arg' => $this->job['jobid'] ] );
+				wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => (int) $this->job['jobid'] ] );
+				$cron_next = wp_next_scheduled( 'backwpup_cron', [ 'arg' => (int) $this->job['jobid'] ] );
 			}
 			// Output scheduling.
 			if ( $this->is_debug() ) {
@@ -756,11 +750,16 @@ class BackWPup_Job {
 			if ( $this->is_debug() ) {
 				$backupfile = $this->backup_folder . $this->backup_file;
 			} else {
-				$backupfile = $this->backup_file;
+				$path       = '.../';
+				$path_parts = explode( '/', $this->backup_folder );
+				if ( 4 < count( $path_parts ) ) {
+					$path = implode( '/', array_slice( $path_parts, 0, - 4 ) ) . '/.../';
+				}
+				$backupfile = $path . $this->backup_file;
 			}
 			$info .= sprintf(
-			/* translators: %s: backup file name. */
-			__( '[INFO] Backup file is: %s', 'backwpup' ),
+			/* translators: %s: backup file and path. */
+			__( '[INFO] Backup file is located at: %s', 'backwpup' ),
 			$backupfile
 			) . '<br />' . PHP_EOL;
 		} else {
@@ -1135,10 +1134,7 @@ class BackWPup_Job {
 				2
 			) . '|Mem Limit: ' . ini_get( 'memory_limit' ) . '|PID: ' . self::get_pid() . ' | UniqID: ' . $this->uniqid . '|Queries: ' . get_num_queries() . ']"';
 		}
-		$timestamp = '<span datetime="' . wp_date( 'c', time() ) . '" ' . $debug_info . '>[' . wp_date(
-			'd-M-Y H:i:s',
-			time()
-		) . ']</span> ';
+		$timestamp = '<span datetime="' . gmdate( 'c', time() ) . '" ' . $debug_info . '>[' . gmdate( 'Y-m-d H:i:s', time() ) . ' UTC]</span> '; // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_gmdate
 
 		// Set last message.
 		if ( $error ) {
@@ -1154,12 +1150,25 @@ class BackWPup_Job {
 		// Write log file.
 		if ( $this->logfile ) {
 			$filesystem    = backwpup_wpfilesystem();
-			$existing_log  = $filesystem->get_contents( $this->logfile );
-			$existing_log  = false === $existing_log ? '' : $existing_log;
-			$logfile_write = $filesystem->put_contents(
-				$this->logfile,
-				$existing_log . $timestamp . $output_message . '<br />' . PHP_EOL
-			);
+			$html_line     = $timestamp . $output_message . '<br />' . PHP_EOL;
+			$container     = wpm_apply_filters_typed( '?object', 'backwpup_container', null );
+			$logfile_write = false;
+
+			if ( is_object( $container ) && method_exists( $container, 'has' ) && $container->has( 'log_facade' ) ) {
+				$log_facade = $container->get( 'log_facade' );
+				if ( is_object( $log_facade ) && method_exists( $log_facade, 'append' ) ) {
+					$logfile_write = $log_facade->append( $this->logfile, $html_line );
+				}
+			}
+
+			if ( false === $logfile_write ) {
+				$existing_log  = $filesystem->get_contents( $this->logfile );
+				$existing_log  = false === $existing_log ? '' : $existing_log;
+				$logfile_write = $filesystem->put_contents(
+					$this->logfile,
+					$existing_log . $html_line
+				);
+			}
 			if ( false === $logfile_write ) {
 				$this->logfile = '';
 				restore_error_handler();
@@ -1272,6 +1281,27 @@ class BackWPup_Job {
 	}
 
 	/**
+	 * Auto-disables debug log level after a countdown of backup runs,
+	 * unless WP_DEBUG is active (which implies a dev environment).
+	 */
+	private function maybe_reset_debug_log_level(): void {
+		if ( ! $this->is_debug() || ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ) {
+			return;
+		}
+
+		$count = (int) get_site_option( 'backwpup_debug_log_count', 0 );
+		if ( 1 >= $count ) {
+			$this->log( __( 'Resetting log level from debug to normal mode.', 'backwpup' ), E_USER_WARNING );
+			update_site_option( 'backwpup_cfg_loglevel', str_replace( 'debug', 'normal', $this->log_level ) );
+			delete_site_option( 'backwpup_debug_log_count' );
+		} else {
+			update_site_option( 'backwpup_debug_log_count', $count - 1 );
+			// translators: %d: number of runs before debug log mode will be set to normal.
+			$this->log( sprintf( __( 'Resetting log level from debug to normal mode after %d more executions.', 'backwpup' ), $count - 1 ) );
+		}
+	}
+
+	/**
 	 * Sanitize optional signal context data.
 	 *
 	 * @param mixed $context Optional context payload.
@@ -1347,7 +1377,7 @@ class BackWPup_Job {
 
 		foreach ( $storage_patterns as $pattern ) {
 			if ( false !== strpos( $normalized, $pattern ) ) {
-				return 'not_enough_storage';
+				return \WPMedia\BackWPup\Backup\ReasonCode::REASON_NOT_ENOUGH_STORAGE;
 			}
 		}
 
@@ -1502,8 +1532,16 @@ class BackWPup_Job {
 		$this->substeps_todo = 1;
 
 		if ( ! file_exists( BackWPup::get_plugin_data( 'running_file' ) ) ) {
-			$this->log( __( 'Backup aborted!', 'backwpup' ), E_USER_ERROR );
+			$this->log(
+				__( 'Backup aborted!', 'backwpup' ),
+				E_USER_WARNING,
+				'',
+				0,
+				[ 'reason_code' => \WPMedia\BackWPup\Backup\ReasonCode::REASON_USER_ABORTED ]
+			);
 		}
+
+		$this->maybe_reset_debug_log_level();
 
 		// Delete old logs.
 		if ( get_site_option( 'backwpup_cfg_maxlogs' ) ) {
@@ -1935,35 +1973,27 @@ class BackWPup_Job {
 		}
 
 		if ( ! empty( $authentication['user_id'] ) && 'user' === $authentication['method'] ) {
-			// Cache cookies for auth.
-			$cookies = get_site_transient( 'backwpup_cookies' );
-			if ( empty( $cookies ) ) {
-				$wp_admin_user = get_users(
-					[
-						'role'   => 'administrator',
-						'number' => 1,
-					]
-					);
-				if ( empty( $wp_admin_user ) ) {
-					$wp_admin_user = get_users(
-						[
-							'role'   => 'backwpup_admin',
-							'number' => 1,
-						]
-						);
-				}
-				if ( ! empty( $wp_admin_user[0]->ID ) ) {
+			// Cache cookies for auth, keyed by the configured user ID so that
+			// changing the user in settings always produces a fresh cookie.
+			$transient_key = 'backwpup_cookies_' . (int) $authentication['user_id'];
+			$cookies       = get_site_transient( $transient_key );
+			// Strict false check: empty array is a valid cached value (invalid user).
+			if ( false === $cookies || ! is_array( $cookies ) ) {
+				$cookies = [];
+				$user_id = (int) $authentication['user_id'];
+				$user    = get_userdata( $user_id );
+				if ( ! empty( $user ) && $user->exists() ) {
 					$expiration                  = time() + ( 2 * DAY_IN_SECONDS );
-					$manager                     = WP_Session_Tokens::get_instance( $wp_admin_user[0]->ID );
+					$manager                     = WP_Session_Tokens::get_instance( $user_id );
 					$token                       = $manager->create( $expiration );
 					$cookies[ LOGGED_IN_COOKIE ] = wp_generate_auth_cookie(
-						$wp_admin_user[0]->ID,
+						$user_id,
 						$expiration,
 						'logged_in',
 						$token
 					);
 				}
-				set_site_transient( 'backwpup_cookies', $cookies, 2 * DAY_IN_SECONDS );
+				set_site_transient( $transient_key, $cookies, 2 * DAY_IN_SECONDS );
 			}
 		} else {
 			$cookies = '';
@@ -2244,7 +2274,7 @@ class BackWPup_Job {
 		// Load folders to back up.
 		$folders_to_backup = $this->get_folders_to_backup();
 
-		$this->substeps_todo = $this->count_folder + 1;
+		$this->substeps_todo = count( $folders_to_backup ) + 1;
 
 		// Initial settings for restarts in archiving.
 		if ( ! isset( $this->steps_data[ $this->step_working ]['on_file'] ) ) {
@@ -2319,21 +2349,31 @@ class BackWPup_Job {
 			}
 
 			// Add normal files.
+			if ( $this->steps_data[ $this->step_working ]['on_folder'] && ! $this->is_debug() ) {
+				$current_folder = str_replace( trailingslashit( BackWPup_Path_Fixer::slashify( ABSPATH ) ), '', $this->steps_data[ $this->step_working ]['on_folder'] );
+				$this->log(
+					sprintf(
+						// translators: %s: folder name.
+						__( 'After restrat on folder: %s', 'backwpup' ),
+						$current_folder
+					)
+				);
+			}
+			// Jump over already done folders.
+			$folders_to_backup_as_key = array_flip( $folders_to_backup );
+			if ( $this->steps_data[ $this->step_working ]['on_folder'] && isset( $folders_to_backup_as_key[ $this->steps_data[ $this->step_working ]['on_folder'] ] ) ) {
+				$folders_to_backup = array_slice( $folders_to_backup, $folders_to_backup_as_key[ $this->steps_data[ $this->step_working ]['on_folder'] ] );
+			}
 			$folder = array_shift( $folders_to_backup );
 			while ( null !== $folder ) {
-				// Jump over already done folders.
-				if ( in_array( $this->steps_data[ $this->step_working ]['on_folder'], $folders_to_backup, true ) ) {
-					$folder = array_shift( $folders_to_backup );
-					continue;
-				}
 				if ( $this->is_debug() ) {
 					$this->log(
 						sprintf(
-						/* translators: %s: folder path. */
-						__( 'Archiving Folder: %s', 'backwpup' ),
-						$folder
-					)
-						);
+							/* translators: %s: folder path. */
+							__( 'Archiving Folder: %s', 'backwpup' ),
+							$folder
+						)
+					);
 				}
 				$this->steps_data[ $this->step_working ]['on_folder'] = $folder;
 				$files_in_folder                                      = $this->get_files_in_folder( $folder );
@@ -2348,13 +2388,13 @@ class BackWPup_Job {
 					continue;
 				}
 				// Add files.
+				// Jump over already done files.
+				$files_in_folder_as_key = array_flip( $files_in_folder );
+				if ( $this->steps_data[ $this->step_working ]['on_file'] && isset( $files_in_folder_as_key[ $this->steps_data[ $this->step_working ]['on_file'] ] ) ) {
+					$files_in_folder = array_slice( $files_in_folder, $files_in_folder_as_key[ $this->steps_data[ $this->step_working ]['on_file'] ] );
+				}
 				$file = array_shift( $files_in_folder );
 				while ( null !== $file ) {
-					// Jump over already done files.
-					if ( in_array( $this->steps_data[ $this->step_working ]['on_file'], $files_in_folder, true ) ) {
-						$file = array_shift( $files_in_folder );
-						continue;
-					}
 					if ( $this->maybe_sql_dump( $file ) ) {
 						$file = array_shift( $files_in_folder );
 						continue;
@@ -2381,7 +2421,6 @@ class BackWPup_Job {
 						unset( $backup_archive );
 						$this->steps_data[ $this->step_working ]['on_file']   = '';
 						$this->steps_data[ $this->step_working ]['on_folder'] = '';
-						$this->substeps_done                                  = 0;
 						$this->backup_filesize                                = filesize( $this->backup_folder . $this->backup_file );
 						if ( false === $this->backup_filesize ) {
 							$this->backup_filesize = PHP_INT_MAX;
@@ -2609,7 +2648,6 @@ class BackWPup_Job {
 		}
 		$folders = array_unique( $folders );
 		sort( $folders );
-		$this->count_folder = count( $folders );
 
 		return $folders;
 	}
@@ -2727,6 +2765,7 @@ class BackWPup_Job {
 				E_USER_WARNING
 			);
 		}
+		asort( $files );
 
 		return $files;
 	}
@@ -2961,9 +3000,6 @@ class BackWPup_Job {
 		if ( function_exists( 'wp_suspend_cache_addition' ) ) {
 			wp_suspend_cache_addition( true );
 		}
-		if ( function_exists( 'wp_cache_disable' ) ) {
-			wp_cache_disable();
-		}
 	}
 
 	/**
@@ -2974,6 +3010,26 @@ class BackWPup_Job {
 	 * @return array|bool
 	 */
 	public static function read_logheader( $logfile ) {
+		$container = wpm_apply_filters_typed( '?object', 'backwpup_container', null );
+		if ( is_object( $container ) && method_exists( $container, 'has' ) && $container->has( 'log_facade' ) ) {
+			$log_facade = $container->get( 'log_facade' );
+			if ( is_object( $log_facade ) && method_exists( $log_facade, 'read_header' ) ) {
+				$header = $log_facade->read_header( (string) $logfile );
+
+				return [
+					'logtime'        => (int) ( $header['logtime'] ?? 0 ),
+					'errors'         => (int) ( $header['errors'] ?? 0 ),
+					'warnings'       => (int) ( $header['warnings'] ?? 0 ),
+					'jobid'          => (int) ( $header['jobid'] ?? 0 ),
+					'name'           => (string) ( $header['name'] ?? '' ),
+					'type'           => (string) ( $header['type'] ?? '' ),
+					'runtime'        => (int) ( $header['runtime'] ?? 0 ),
+					'backupfilesize' => (int) ( $header['backupfilesize'] ?? 0 ),
+					'file'           => (string) $logfile,
+				];
+			}
+		}
+
 		$usedmetas = [
 			'date'                    => 'logtime',
 			'backwpup_logtime'        => 'logtime', // Old value of date.
@@ -3007,7 +3063,7 @@ class BackWPup_Job {
 
 		// Convert date.
 		if ( isset( $metas['date'] ) ) {
-			$joddata['logtime'] = strtotime( (string) $metas['date'] ) + ( get_option( 'gmt_offset' ) * 3600 );
+			$joddata['logtime'] = strtotime( (string) $metas['date'] );
 		}
 
 		// use file create date if none.
@@ -3445,7 +3501,7 @@ class BackWPup_Job {
 	 *
 	 * @param int $job_id The ID of the job to disable.
 	 */
-	public static function disable_job( $job_id ): void {
+	public static function disable_job( int $job_id ): void {
 		BackWPup_Option::update( $job_id, 'activetype', '' );
 		wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $job_id ] );
 	}
@@ -3459,7 +3515,7 @@ class BackWPup_Job {
 	 * @param int $job_id The ID of the job to schedule.
 	 * @return int|false The Unix timestamp of the next scheduled event, or false if an error occurred.
 	 */
-	public static function schedule_job( $job_id ) {
+	public static function schedule_job( int $job_id ) {
 		wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $job_id ] );
 		$cron_next = BackWPup_Cron::cron_next( BackWPup_Option::get( $job_id, 'cron' ) );
 		wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $job_id ] );
@@ -3556,10 +3612,9 @@ class BackWPup_Job {
 	 *
 	 * @param int $job_id The ID of the job to delete.
 	 */
-	public static function delete_job( $job_id ): bool {
+	public static function delete_job( int $job_id ): bool {
+		wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $job_id ] );
 		if ( BackWPup_Option::delete_job( $job_id ) ) {
-			// Clear any scheduled cron hooks for the job.
-			wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => $job_id ] );
 			return true;
 		}
 		return false;

@@ -13,7 +13,7 @@ if ( ! isset($job_id) ) {
 	return;
 }
 
-$excludedFiles = BackWPup_Directory::get_folder_list_to_exclude('themes',get_theme_root(), $job_id);
+$excludedFiles = BackWPup_Directory::get_folder_list_to_exclude('themes',get_theme_root(), $job_id, false);
 
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Themes", 'backwpup') . " - " . __("Exclusion Settings", 'backwpup'),

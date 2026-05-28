@@ -17,15 +17,15 @@ global $wpdb;
 
 // Only uninstall if no BackWPup Version active.
 if ( ! class_exists( \BackWPup::class ) ) {
-	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Base.php';
-	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Column.php';
-	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Schema.php';
-	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Query.php';
-	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Row.php';
-	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Table.php';
-	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Queries/Meta.php';
-	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Queries/Date.php';
-	require_once __DIR__ . '/src/Dependencies/BerlinDB/Database/Queries/Compare.php';
+	require_once __DIR__ . '/vendor/berlindb/core/src/Database/Base.php';
+	require_once __DIR__ . '/vendor/berlindb/core/src/Database/Column.php';
+	require_once __DIR__ . '/vendor/berlindb/core/src/Database/Schema.php';
+	require_once __DIR__ . '/vendor/berlindb/core/src/Database/Query.php';
+	require_once __DIR__ . '/vendor/berlindb/core/src/Database/Row.php';
+	require_once __DIR__ . '/vendor/berlindb/core/src/Database/Table.php';
+	require_once __DIR__ . '/vendor/berlindb/core/src/Database/Queries/Meta.php';
+	require_once __DIR__ . '/vendor/berlindb/core/src/Database/Queries/Date.php';
+	require_once __DIR__ . '/vendor/berlindb/core/src/Database/Queries/Compare.php';
 	require_once __DIR__ . '/src/Common/Database/TableInterface.php';
 	require_once __DIR__ . '/src/Common/Database/Tables/AbstractTable.php';
 	require_once __DIR__ . '/src/Backup/Database/Tables/Backup.php';

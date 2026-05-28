@@ -252,14 +252,25 @@ class BackWPup_Destination_Ftp_Type_Ftp implements BackWPup_Destination_Ftp_Type
 	 * @throws BackWPup_Destination_Ftp_Type_Exception On upload error.
 	 */
 	public function upload( string $remote_filename, $local_file ): bool {
+		$warning = '';
 
 		if ( feof( $local_file ) ) {
 			return false;
 		}
 		if ( FTP_MOREDATA === $this->ret ) {
-			$this->ret = ftp_nb_continue( $this->ftp_conn_id );
+			$this->ret = $this->call_ftp_upload_operation(
+				static function ( $ftp_conn_id ) {
+					return ftp_nb_continue( $ftp_conn_id );
+				},
+				$warning
+			);
 		} else {
-			$this->ret = ftp_nb_fput( $this->ftp_conn_id, $remote_filename, $local_file, FTP_BINARY, ftell( $local_file ) );
+			$this->ret = $this->call_ftp_upload_operation(
+				static function ( $ftp_conn_id ) use ( $remote_filename, $local_file ) {
+					return ftp_nb_fput( $ftp_conn_id, $remote_filename, $local_file, FTP_BINARY, ftell( $local_file ) );
+				},
+				$warning
+			);
 		}
 		if ( FTP_FINISHED === $this->ret ) {
 			return false;
@@ -269,10 +280,59 @@ class BackWPup_Destination_Ftp_Type_Ftp implements BackWPup_Destination_Ftp_Type
 		}
 		if ( FTP_FAILED === $this->ret ) {
 			throw new BackWPup_Destination_Ftp_Type_Exception(
-				esc_html__( 'FTP server response: Failed to upload file.', 'backwpup' ),
+				$this->upload_failure_message( $warning ), // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception message is consumed internally, not rendered directly.
 			);
 		}
 		return false;
+	}
+
+	/**
+	 * Execute an FTP upload operation while capturing native FTP warnings.
+	 *
+	 * @param callable $operation FTP operation callback.
+	 * @param string   $warning Captured warning message.
+	 *
+	 * @return int
+	 */
+	protected function call_ftp_upload_operation( callable $operation, string &$warning ): int {
+		$warning = '';
+
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler -- Required to preserve native FTP warnings and map the backup failure correctly.
+		set_error_handler(
+			static function ( int $error_number, string $error_message ) use ( &$warning ): bool {
+				$warning = $error_message;
+
+				return true;
+			}
+		);
+
+		try {
+			return (int) call_user_func( $operation, $this->ftp_conn_id );
+		} finally {
+			restore_error_handler();
+		}
+	}
+
+	/**
+	 * Build a failure message for FTP upload errors.
+	 *
+	 * @param string $warning Captured PHP warning.
+	 *
+	 * @return string
+	 */
+	private function upload_failure_message( string $warning ): string {
+		$warning = trim( $warning );
+		if ( '' === $warning ) {
+			return esc_html__( 'FTP server response: Failed to upload file.', 'backwpup' );
+		}
+
+		$warning = preg_replace( '/^ftp_[a-z_]+\(\):\s*/i', '', $warning ) ?: $warning;
+
+		return sprintf(
+			/* translators: %s: FTP server warning message. */
+			esc_html__( 'FTP server response: %s', 'backwpup' ),
+			esc_html( $warning )
+		);
 	}
 
 	/**
@@ -296,6 +356,7 @@ class BackWPup_Destination_Ftp_Type_Ftp implements BackWPup_Destination_Ftp_Type
 	 * @param string $path Directory path.
 	 *
 	 * @return string Current working directory.
+	 * @throws BackWPup_Destination_Ftp_Type_Exception On change directory error.
 	 */
 	public function chdir( string $path ): string {
 
@@ -314,10 +375,7 @@ class BackWPup_Destination_Ftp_Type_Ftp implements BackWPup_Destination_Ftp_Type
 				}
 
 				if ( ! @ftp_chdir( $this->ftp_conn_id, $ftpdir ) ) {  //phpcs:ignore
-					if ( ! $this->mkdir( $ftpdir ) ) {
-						return false;
-					}
-
+					$this->mkdir( $ftpdir );
 					ftp_chdir( $this->ftp_conn_id, $ftpdir );
 				}
 			}
@@ -332,6 +390,7 @@ class BackWPup_Destination_Ftp_Type_Ftp implements BackWPup_Destination_Ftp_Type
 	 * @param string $dir Directory path.
 	 *
 	 * @return bool success
+	 * @throws BackWPup_Destination_Ftp_Type_Exception On create directory error.
 	 */
 	public function mkdir( string $dir ): bool {
 		// Try to create the directory.
@@ -342,35 +401,29 @@ class BackWPup_Destination_Ftp_Type_Ftp implements BackWPup_Destination_Ftp_Type
 			$response = (bool) ftp_chmod( $this->ftp_conn_id, 0775, './' );
 
 			if ( ! $response ) {
-				$this->log(
+				throw new BackWPup_Destination_Ftp_Type_Exception(
 					sprintf(
 						// translators: %s: FTP Folder.
 						esc_html__(
 							'FTP Folder "%s" cannot be created! Parent directory may be not writable.',
 							'backwpup'
 						),
-						$dir
-					),
-					E_USER_ERROR
+						esc_html( $dir )
+					)
 				);
-
-				return $response;
 			}
 
 			// Try to create the directory for the second time.
 			$response = (bool) ftp_mkdir( $this->ftp_conn_id, $dir );
 
 			if ( ! $response ) {
-				$this->log(
+				throw new BackWPup_Destination_Ftp_Type_Exception(
 					sprintf(
 						// translators: %s: FTP Folder.
 						esc_html__( 'FTP Folder "%s" cannot be created!', 'backwpup' ),
-						$dir
-					),
-					E_USER_ERROR
+						esc_html( $dir )
+					)
 				);
-
-				return $response;
 			}
 		}
 

@@ -208,8 +208,8 @@ class BackWPup_Page_Logs extends WP_List_Table {
 		return sprintf(
 			// translators: %1$s: date, %2$s: time.
 			esc_html__( '%1$s at %2$s', 'backwpup' ),
-			esc_html( wp_date( get_option( 'date_format' ), $item['logtime'] ) ),
-			esc_html( wp_date( get_option( 'time_format' ), $item['logtime'] ) )
+			esc_html( self::format_log_date( (int) $item['logtime'] ) ),
+			esc_html( self::format_log_time( (int) $item['logtime'] ) )
 		);
 	}
 
@@ -583,13 +583,75 @@ class BackWPup_Page_Logs extends WP_List_Table {
 		];
 
 		if ( file_exists( $log_file . '.html' ) && is_readable( $log_file . '.html' ) ) {
-			echo wp_kses( $filesystem->get_contents( $log_file . '.html' ), $allowed_html );
+			$content = (string) $filesystem->get_contents( $log_file . '.html' );
+			echo wp_kses( self::render_log_content( $content ), $allowed_html );
 		} elseif ( file_exists( $log_file . '.html.gz' ) && is_readable( $log_file . '.html.gz' ) ) {
-			echo wp_kses( $filesystem->get_contents( 'compress.zlib://' . $log_file . '.html.gz' ), $allowed_html );
+			$content = (string) $filesystem->get_contents( 'compress.zlib://' . $log_file . '.html.gz' );
+			echo wp_kses( self::render_log_content( $content ), $allowed_html );
 		} else {
 			exit( esc_html__( 'Logfile not found!', 'backwpup' ) );
 		}
 
 		exit();
+	}
+
+	/**
+	 * Render log HTML through the shared log renderer when available.
+	 *
+	 * @param string $content Raw HTML log file content.
+	 *
+	 * @return string
+	 */
+	private static function render_log_content( string $content ): string {
+		$container = wpm_apply_filters_typed( '?object', 'backwpup_container', null );
+		if ( is_object( $container ) && method_exists( $container, 'has' ) && $container->has( 'log_facade' ) ) {
+			$log_facade = $container->get( 'log_facade' );
+			if ( is_object( $log_facade ) && method_exists( $log_facade, 'render_html' ) ) {
+				return $log_facade->render_html( $content );
+			}
+		}
+
+		$log_facade = new \WPMedia\BackWPup\Log\LogFacade();
+		return $log_facade->render_html( $content );
+	}
+
+	/**
+	 * Format a UTC timestamp for the site date format.
+	 *
+	 * @param int $timestamp UTC timestamp.
+	 *
+	 * @return string
+	 */
+	private static function format_log_date( int $timestamp ): string {
+		$container = wpm_apply_filters_typed( '?object', 'backwpup_container', null );
+		if ( is_object( $container ) && method_exists( $container, 'has' ) && $container->has( 'log_facade' ) ) {
+			$log_facade = $container->get( 'log_facade' );
+			if ( is_object( $log_facade ) && method_exists( $log_facade, 'format_date' ) ) {
+				return $log_facade->format_date( $timestamp );
+			}
+		}
+
+		$log_facade = new \WPMedia\BackWPup\Log\LogFacade();
+		return $log_facade->format_date( $timestamp );
+	}
+
+	/**
+	 * Format a UTC timestamp for the site time format.
+	 *
+	 * @param int $timestamp UTC timestamp.
+	 *
+	 * @return string
+	 */
+	private static function format_log_time( int $timestamp ): string {
+		$container = wpm_apply_filters_typed( '?object', 'backwpup_container', null );
+		if ( is_object( $container ) && method_exists( $container, 'has' ) && $container->has( 'log_facade' ) ) {
+			$log_facade = $container->get( 'log_facade' );
+			if ( is_object( $log_facade ) && method_exists( $log_facade, 'format_time' ) ) {
+				return $log_facade->format_time( $timestamp );
+			}
+		}
+
+		$log_facade = new \WPMedia\BackWPup\Log\LogFacade();
+		return $log_facade->format_time( $timestamp );
 	}
 }

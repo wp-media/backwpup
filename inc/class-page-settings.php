@@ -2,6 +2,7 @@
 
 use Inpsyde\BackWPup\Settings;
 use Inpsyde\BackWPup\Settings\SettingUpdatable;
+use ParagonIE\ConstantTime\Base64;
 use WPMedia\BackWPup\License\Infrastructure\LicenseOptions;
 use WPMedia\BackWPup\License\Infrastructure\WpOptionsLicenseRepository;
 
@@ -495,6 +496,15 @@ class BackWPup_Page_Settings {
 
 		if ( isset( $_POST['loglevel'] ) && in_array( $_POST['loglevel'], [ 'normal_translated', 'normal', 'debug_translated', 'debug' ], true ) ) {
 			$new_options['backwpup_cfg_loglevel'] = sanitize_text_field( wp_unslash( $_POST['loglevel'] ) );
+			// activate debug log count.
+			if ( $current_options['backwpup_cfg_loglevel'] !== $new_options['backwpup_cfg_loglevel'] ) {
+				if ( strpos( $new_options['backwpup_cfg_loglevel'], 'debug' ) !== false ) {
+					$count = wpm_apply_filters_typed( 'integer', 'backwpup_debug_log_count', 5 );
+					update_site_option( 'backwpup_debug_log_count', $count );
+				} else {
+					delete_site_option( 'backwpup_debug_log_count' );
+				}
+			}
 		}
 
 		if ( isset( $_POST['jobwaittimems'] ) && is_numeric( $_POST['jobwaittimems'] ) ) {
@@ -545,6 +555,8 @@ class BackWPup_Page_Settings {
 			$authentication['query_arg']                = isset( $_POST['authentication_query_arg'] ) ? sanitize_text_field( wp_unslash( $_POST['authentication_query_arg'] ) ) : '';
 			$authentication['user_id']                  = isset( $_POST['authentication_user_id'] ) ? absint( sanitize_text_field( wp_unslash( $_POST['authentication_user_id'] ) ) ) : 0;
 			$new_options['backwpup_cfg_authentication'] = $authentication;
+
+			$this->test_basic_authentication( $authentication );
 		}
 
 		$new_options['backwpup_cfg_keepplugindata'] = ! empty( $_POST['keepplugindata'] );
@@ -1369,5 +1381,51 @@ class BackWPup_Page_Settings {
 		</div>
 
 		<?php
+	}
+
+	/**
+	 * Test Basic Authentication data
+	 *
+	 * @param array $authentication Auth data.
+	 * @return void
+	 */
+	public function test_basic_authentication( array $authentication ): void {
+		if ( 'basic' !== $authentication['method'] ) {
+			return;
+		}
+		$url     = site_url( '/' );
+		$request = wp_remote_head(
+				$url,
+				[
+					'timeout'     => 5,
+					'redirection' => 0,
+					'headers'     => [
+						'Authorization' => 'Basic ' . Base64::encode( $authentication['basic_user'] . ':' . BackWPup_Encryption::decrypt( $authentication['basic_password'] ) ),
+					],
+				]
+		);
+
+		if ( is_wp_error( $request ) ) {
+			// translators: %s: Error message.
+			BackWPup_Admin::message( sprintf( __( 'Error testing authentication: $s', 'backwpup' ), $request->get_error_message() ), true );
+			return;
+		}
+
+		$status = (int) wp_remote_retrieve_response_code( $request );
+		if ( 401 === $status ) {
+			BackWPup_Admin::message( __( 'The Basic Auth username or password is incorrect.', 'backwpup' ), true );
+		} elseif ( 300 < $status ) {
+			BackWPup_Admin::message(
+				sprintf(
+					// translators: %d: HTTP status code.
+					__(
+						'Unexpected HTTP status code "%d" while testing authentication.',
+						'backwpup'
+					),
+					$status
+				),
+				true
+			);
+		}
 	}
 }

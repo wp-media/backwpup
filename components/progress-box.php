@@ -45,17 +45,17 @@ $abortUrl = $abortUrl ?? "";
     ?>
 
     <?php
-    $btn_args = [
-        "type" => "secondary",
-        "label" => __("Close", 'backwpup'),
-        "font" => "small",
-        "class" => "max-md:hidden",
-        "identifier" => "showworkingclose",
-        "data" => [
-	        "bwpup_redirect_url" => esc_url( network_admin_url( 'admin.php?page=backwpup' ) ),
-        ],
-    ];
-    BackWPupHelpers::component("form/button", $btn_args);
+      $btn_args = [
+          "type" => "secondary",
+          "label" => __("Close", 'backwpup'),
+          "font" => "small",
+          "class" => "max-md:hidden",
+          "identifier" => "showworkingclose",
+          "data" => [
+	          "bwpup_redirect_url" => esc_url( network_admin_url( 'admin.php?page=backwpup' ) ),
+          ],
+      ];
+      BackWPupHelpers::component("form/button", $btn_args);
     ?>
 
   </div>

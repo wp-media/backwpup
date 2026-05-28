@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace WPMedia\BackWPup\Admin\Beacon;
 
 use WPMedia\BackWPup\EventManagement\SubscriberInterface;
-use WPMedia\Mixpanel\Optin;
-use WPMedia\Mixpanel\TrackingPlugin;
+use WPMedia\BackWPup\Dependencies\WPMedia\Mixpanel\Optin;
+use WPMedia\BackWPup\Dependencies\WPMedia\Mixpanel\TrackingPlugin;
 
 class Subscriber implements SubscriberInterface {
 

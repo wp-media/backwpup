@@ -293,7 +293,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 				BackWPup_Option::update( $job_object->job['jobid'], 'lastbackupdownloadurl', network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=downloadmsazure&file=' . $job_object->job[ self::MSAZUREDIR ] . $job_object->backup_file . '&jobid=' . $job_object->job['jobid'] );
 			}
 		} catch ( Exception $e ) {
-			$context = $this->msazure_error_context( $e );
+			$context = $this->error_context( $e );
 			$job_object->log(
 				E_USER_ERROR,
 				sprintf(
@@ -339,7 +339,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 					$files[ $filecounter ]['filename']    = basename( $blob->getName() );
 					$files[ $filecounter ]['downloadurl'] = network_admin_url( 'admin.php' ) . '?page=backwpupbackups&action=downloadmsazure&file=' . $blob->getName() . '&jobid=' . $job_object->job['jobid'];
 					$files[ $filecounter ]['filesize']    = $blob->getProperties()->getContentLength();
-					$files[ $filecounter ]['time']        = $blob->getProperties()->getLastModified()->getTimestamp() + ( get_option( 'gmt_offset' ) * 3600 );
+					$files[ $filecounter ]['time']        = $blob->getProperties()->getLastModified()->getTimestamp();
 					++$filecounter;
 				}
 			}
@@ -386,7 +386,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 			}
 			set_site_transient( 'backwpup_' . $job_object->job['jobid'] . '_msazure', $files, YEAR_IN_SECONDS );
 		} catch ( Exception $e ) {
-			$context = $this->msazure_error_context( $e );
+			$context = $this->error_context( $e );
 			$job_object->log(
 				E_USER_ERROR,
 				sprintf(
@@ -410,11 +410,12 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 	/**
 	 * Check if Azure destination can run.
 	 *
-	 * @param array $job_settings Job settings.
+	 * @param array $job_settings
+	 * @param bool  $test_connection Job settings.
 	 *
 	 * @return bool
 	 */
-	public function can_run( array $job_settings ): bool {
+	public function can_run( array $job_settings, bool $test_connection = true ): bool {
 		if ( empty( $job_settings[ MsAzureDestinationConfiguration::MSAZURE_ACCNAME ] ) ) {
 			return false;
 		}
@@ -741,7 +742,7 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 	 * @param Exception $exception Exception instance.
 	 * @return array
 	 */
-	private function msazure_error_context( Exception $exception ): array {
+	protected function error_context( Exception $exception ): array {
 		$message     = strtolower( $exception->getMessage() );
 		$status      = (int) $exception->getCode();
 		$error_code  = '';
@@ -752,43 +753,166 @@ class BackWPup_Destination_MSAzure extends BackWPup_Destinations {
 			$error_lower = strtolower( $error_code );
 		}
 
+		return $this->timeout_or_network_context( $status, $message, $error_code )
+			?? $this->http_status_context( $status, $error_code )
+			?? $this->permissions_context_from_keywords( $message, $error_lower, $error_code )
+			?? $this->auth_context_from_keywords( $message, $error_lower, $error_code )
+			?? $this->storage_context_from_keywords( $message, $error_lower, $error_code )
+			?? [];
+	}
+
+	/**
+	 * Returns a context for timeout or network errors
+	 *
+	 * @param int    $status     HTTP status code or cURL error code.
+	 * @param string $message    Lowercased exception message.
+	 * @param string $error_code Azure SDK error code, empty string if unavailable.
+	 * @return array|null
+	 */
+	private function timeout_or_network_context( int $status, string $message, string $error_code ): ?array {
 		if (
-			in_array( $status, [ 401, 403 ], true )
-			|| false !== strpos( $error_lower, 'auth' )
-			|| false !== strpos( $error_lower, 'unauthorized' )
-			|| false !== strpos( $message, 'auth' )
-			|| false !== strpos( $message, 'unauthorized' )
+			! in_array( $status, [ 408, 504 ], true )
+			&& false === strpos( $message, 'timed out' )
+			&& false === strpos( $message, 'could not resolve' )
+			&& false === strpos( $message, 'failed to connect' )
 		) {
-			$context = [
-				'reason_code'   => 'incorrect_login',
-				'destination'   => 'MSAZURE',
-				'provider_code' => $error_code ?: 'auth_failed',
-			];
-			if ( $status > 0 ) {
-				$context['http_status'] = $status;
-			}
-			return $context;
+			return null;
 		}
 
-		if (
-			false !== strpos( $error_lower, 'insufficient' )
-			|| false !== strpos( $error_lower, 'quota' )
-			|| false !== strpos( $message, 'insufficient' )
-			|| false !== strpos( $message, 'quota' )
-			|| false !== strpos( $message, 'not enough' )
-		) {
-			$context = [
-				'reason_code'   => 'not_enough_storage',
-				'destination'   => 'MSAZURE',
-				'provider_code' => $error_code ?: 'quota_exceeded',
-			];
-			if ( $status > 0 ) {
-				$context['http_status'] = $status;
-			}
-			return $context;
+		$context = [
+			'reason_code'   => \WPMedia\BackWPup\Backup\ReasonCode::REASON_TIMEOUT_OR_NETWORK,
+			'destination'   => 'MSAZURE',
+			'provider_code' => $error_code ?: 'network_error',
+		];
+		if ( in_array( $status, [ 408, 504 ], true ) ) {
+			$context['http_status'] = $status;
+		}
+		return $context;
+	}
+
+	/**
+	 * Returns a context for known HTTP status codes
+	 *
+	 * @param int    $status     HTTP status code.
+	 * @param string $error_code Azure SDK error code, empty string if unavailable.
+	 * @return array|null
+	 */
+	private function http_status_context( int $status, string $error_code ): ?array {
+		switch ( $status ) {
+			case 401:
+			case 403:
+				$reason_code      = \WPMedia\BackWPup\Backup\ReasonCode::REASON_INCORRECT_LOGIN;
+				$default_provider = 'auth_failed';
+				break;
+			case 404:
+				$reason_code      = \WPMedia\BackWPup\Backup\ReasonCode::REASON_NOT_FOUND;
+				$default_provider = 'not_found';
+				break;
+			case 409:
+				$reason_code      = \WPMedia\BackWPup\Backup\ReasonCode::REASON_CONFLICT;
+				$default_provider = 'conflict';
+				break;
+			case 413:
+				$reason_code      = \WPMedia\BackWPup\Backup\ReasonCode::REASON_FILE_TOO_LARGE;
+				$default_provider = 'file_too_large';
+				break;
+			case 429:
+				$reason_code      = \WPMedia\BackWPup\Backup\ReasonCode::REASON_RATE_LIMITED;
+				$default_provider = 'rate_limited';
+				break;
+			case 507:
+				$reason_code      = \WPMedia\BackWPup\Backup\ReasonCode::REASON_NOT_ENOUGH_STORAGE;
+				$default_provider = 'insufficient_storage';
+				break;
+			default:
+				// We cannot provide a reasonable catch-all for other statuses < 500.
+				if ( $status < 500 ) {
+					return null;
+				}
+				$reason_code      = \WPMedia\BackWPup\Backup\ReasonCode::REASON_SERVICE_UNAVAILABLE;
+				$default_provider = 'service_unavailable';
 		}
 
-		return [];
+		return [
+			'reason_code'   => $reason_code,
+			'destination'   => 'MSAZURE',
+			'provider_code' => $error_code ?: $default_provider,
+			'http_status'   => $status,
+		];
+	}
+
+	/**
+	 * Returns a context for insufficient-permissions errors
+	 *
+	 * @param string $message     Lowercased exception message.
+	 * @param string $error_lower Lowercased Azure SDK error code, empty string if unavailable.
+	 * @param string $error_code  Azure SDK error code, empty string if unavailable.
+	 * @return array|null
+	 */
+	private function permissions_context_from_keywords( string $message, string $error_lower, string $error_code ): ?array {
+		if (
+			false === strpos( $error_lower, 'permission' )
+			&& false === strpos( $message, 'permission' )
+		) {
+			return null;
+		}
+
+		return [
+			'reason_code'   => \WPMedia\BackWPup\Backup\ReasonCode::REASON_INSUFFICIENT_PERMISSIONS,
+			'destination'   => 'MSAZURE',
+			'provider_code' => $error_code ?: 'insufficient_permissions',
+		];
+	}
+
+	/**
+	 * Returns an incorrect-login context
+	 *
+	 * @param string $message     Lowercased exception message.
+	 * @param string $error_lower Lowercased Azure SDK error code, empty string if unavailable.
+	 * @param string $error_code  Azure SDK error code, empty string if unavailable.
+	 * @return array|null
+	 */
+	private function auth_context_from_keywords( string $message, string $error_lower, string $error_code ): ?array {
+		if (
+			false === strpos( $error_lower, 'auth' )
+			&& false === strpos( $message, 'auth' )
+			&& false === strpos( $message, 'account key' )
+			&& false === strpos( $message, 'not a valid connection string' )
+		) {
+			return null;
+		}
+
+		return [
+			'reason_code'   => \WPMedia\BackWPup\Backup\ReasonCode::REASON_INCORRECT_LOGIN,
+			'destination'   => 'MSAZURE',
+			'provider_code' => $error_code ?: 'auth_failed',
+		];
+	}
+
+	/**
+	 * Returns a not-enough-storage context
+	 *
+	 * @param string $message     Lowercased exception message.
+	 * @param string $error_lower Lowercased Azure SDK error code, empty string if unavailable.
+	 * @param string $error_code  Azure SDK error code, empty string if unavailable.
+	 * @return array|null
+	 */
+	private function storage_context_from_keywords( string $message, string $error_lower, string $error_code ): ?array {
+		if (
+			false === strpos( $error_lower, 'insufficient' )
+			&& false === strpos( $error_lower, 'quota' )
+			&& false === strpos( $message, 'insufficient' )
+			&& false === strpos( $message, 'quota' )
+			&& false === strpos( $message, 'not enough' )
+		) {
+			return null;
+		}
+
+		return [
+			'reason_code'   => \WPMedia\BackWPup\Backup\ReasonCode::REASON_NOT_ENOUGH_STORAGE,
+			'destination'   => 'MSAZURE',
+			'provider_code' => $error_code ?: 'quota_exceeded',
+		];
 	}
 
 	/**

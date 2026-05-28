@@ -47,10 +47,9 @@ if ( BackWPup_JobTypes::$type_job_database === $job_type ) {
 	$icon      = 'file-alt';
 }
 ?>
-<div class="flex-1 p-8 bg-white rounded-lg flex flex-col relative backwpup-job-card
-backwpup-job-<?php echo esc_attr( $data_type ); ?> h-[200px]" id="<?php echo esc_attr( 'backwpup-' . $job_id . '-options' ); ?>">
+<div class="flex-1 p-4 sm:p-8 bg-white rounded-lg flex flex-col relative backwpup-job-card backwpup-job-<?php echo esc_attr( $data_type ); ?>" id="<?php echo esc_attr( 'backwpup-' . $job_id . '-options' ); ?>">
 
-    <div class="mb-2 flex items-center gap-4">
+    <div class="mb-2 flex flex-wrap items-center gap-4">
 		<?php
 		BackWPupHelpers::component(
 			'icon',
@@ -96,6 +95,7 @@ backwpup-job-<?php echo esc_attr( $data_type ); ?> h-[200px]" id="<?php echo esc
 			);
 			?>
         </div>
+        <div class="flex gap-4">
 		<?php
 		BackWPupHelpers::component(
 			'tooltip',
@@ -131,6 +131,7 @@ backwpup-job-<?php echo esc_attr( $data_type ); ?> h-[200px]" id="<?php echo esc
 			]
 		);
 		?>
+        </div>
     </div>
 
     <div class="mt-2 mb-4 flex flex-row items-center gap-2">
@@ -161,7 +162,7 @@ backwpup-job-<?php echo esc_attr( $data_type ); ?> h-[200px]" id="<?php echo esc
 		?>
     </div>
 
-    <p class="flex items-center gap-4">
+    <p class="flex flex-wrap items-center gap-3 sm:gap-4">
 		<?php
 		BackWPupHelpers::component(
 			'form/button',

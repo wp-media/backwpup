@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace WPMedia\BackWPup\Tracking;
 
 use WPMedia\BackWPup\Adapters\OptionAdapter;
-use WPMedia\Mixpanel\Optin;
-use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
+use WPMedia\BackWPup\Dependencies\WPMedia\Mixpanel\Optin;
+use WPMedia\BackWPup\Dependencies\WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

@@ -214,7 +214,7 @@ class BackWPup_Migrate {
 	 * @return void
 	 */
 	private static function convert_jobs( array $jobs_by_type ) {
-		update_site_option( 'backwpup_onboarding', false );
+		delete_site_option( 'backwpup_onboarding' );
 		$default_id_job_files    = get_site_option( Plugin::FILES_JOB_ID, BackWPup_Option::next_job_id() );
 		$default_id_job_database = (int) $default_id_job_files + 1;
 		update_site_option( Plugin::FILES_JOB_ID, $default_id_job_files );

@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! isset($job_id) ) {
 	return;
 }
-$excludedFiles = BackWPup_Directory::get_folder_list_to_exclude('plugins',WP_PLUGIN_DIR, $job_id);
+$excludedFiles = BackWPup_Directory::get_folder_list_to_exclude('plugins',WP_PLUGIN_DIR, $job_id, false);
 
 
 BackWPupHelpers::component("closable-heading", [

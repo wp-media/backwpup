@@ -29,7 +29,7 @@ $full_width = isset($full_width) && $full_width ? "w-full" : "";
 $id = $identifier ?? '';
 
 # Type
-$types = ["primary", "secondary", "link"];
+$types = ["primary", "secondary", "link", "upgrade"];
 $type = isset($type) && in_array($type, $types) ? $type : "link";
 switch ($type) {
   case "primary":
@@ -37,6 +37,9 @@ switch ($type) {
     break;
   case "secondary":
     $button_style = "inline-flex gap-2 rounded border border-primary-darker font-medium text-primary-darker flex items-center justify-center hover:bg-grey-200 hover:text-primary-darker";
+    break;
+  case "upgrade":
+    $button_style = "inline-flex gap-2 rounded bg-pro text-black font-title font-bold text-base px-4 py-2 transition hover:brightness-95 border-0 items-center justify-center";
     break;
   default:
     $button_style = "inline-flex gap-2 items-center leading-5 text-primary-darker border-b border-primary-darker font-title hover:text-primary-lighter hover:border-primary-lighter";

@@ -1,9 +1,14 @@
 jQuery(document).ready(function ($) {
 
+  var userAborted = false;
+
   $("#runningjob").show('slow');
   $('.js-backwpup-open-modal').prop('disabled', true);
   $(document).trigger('start-backupjob');
   backwpup_show_progress = function() {
+    if (userAborted) {
+      return;
+    }
     var save_log_pos = 0;
     $.ajax({
       type: 'GET',
@@ -43,22 +48,28 @@ jQuery(document).ready(function ($) {
           $("#backupgeneration-progress-box-title").html(rundata.last_msg);
           $('.backupgeneration-progress-box-step').remove();
           $('.js-backwpup-open-modal').prop('disabled', false);
-          if (window.location.search.includes('backwpupfirstbackup')) {
+          if (!userAborted && window.location.search.includes('backwpupfirstbackup')) {
             $('#info_container_2').hide();
             $('#first-congratulations').show();
           }
-          $(document).trigger('backup-complete');
+          if (!userAborted) {
+            $(document).trigger('backup-complete');
+          }
         } else {
           if (rundata.restart_url !== '') {
             backwpup_trigger_cron(rundata.restart_url);
           }
-          setTimeout('backwpup_show_progress()', 750);
+          if (!userAborted) {
+            setTimeout('backwpup_show_progress()', 750);
+          }
         }
       },
       error: function() {
         console.log('error');
         $('.js-backwpup-open-modal').prop('disabled', false);
-        setTimeout('backwpup_show_progress()', 750);
+        if (!userAborted) {
+          setTimeout('backwpup_show_progress()', 750);
+        }
       }
     });
   };
@@ -83,17 +94,77 @@ jQuery(document).ready(function ($) {
     return false;
   });
 
+  /**
+   * Redirect to redirectUrl if provided, otherwise reload the current page.
+   *
+   * @param {string|null} redirectUrl
+   */
+  function doReloadOrRedirect(redirectUrl) {
+    if (redirectUrl) {
+      window.location.href = redirectUrl;
+    } else {
+      window.location.reload();
+    }
+  }
+
+  /**
+   * Poll the job-abort-status endpoint until the background PHP process has
+   * finished updating the DB row from 'created' to 'aborted', then navigate.
+   *
+   * @param {string|null} redirectUrl  URL to redirect to, or null to reload.
+   * @param {number}      attempts     Number of polling attempts so far.
+   */
+  function pollAbortStatus(redirectUrl, attempts) {
+    var maxAttempts = 30;
+    if (attempts >= maxAttempts) {
+      doReloadOrRedirect(redirectUrl);
+      return;
+    }
+    $.ajax({
+      type: 'GET',
+      url: backwpupApi.job_abort_status,
+      data: { job_id: backwpupApi.job_id },
+      headers: { 'X-WP-Nonce': backwpupApi.nonce },
+      success: function(response) {
+        if (response && response.is_done) {
+          doReloadOrRedirect(redirectUrl);
+        } else {
+          setTimeout(function() {
+            pollAbortStatus(redirectUrl, attempts + 1);
+          }, 1000);
+        }
+      },
+      error: function() {
+        setTimeout(function() {
+          pollAbortStatus(redirectUrl, attempts + 1);
+        }, 1000);
+      }
+    });
+  }
+
   $('.js-backwpup-abortbutton').on('click', function() {
-    var url = $(this).data('url');
+    var $btn = $(this);
+    var url = $btn.data('url');
+    userAborted = true;
+    $btn.prop('disabled', true);
     if (url) {
       $.ajax({
         type: 'GET',
         url: url,
-        success: function(response) {
-          // Nothing to show there cause the UI will be updated by the next ajax call
+        success: function() {
+          $("#backwpup-adminbar-running").remove();
+          $('.js-backwpup-open-modal').prop('disabled', false);
+          var redirectUrl = window.location.search.includes('backwpupfirstbackup') ? backwpup.adminUrl : null;
+          if (backwpupApi.job_id && backwpupApi.job_id > 0) {
+            pollAbortStatus(redirectUrl, 0);
+          } else {
+            doReloadOrRedirect(redirectUrl);
+          }
         },
         error: function() {
-          console.log('Request failed');
+          userAborted = false;
+          $btn.prop('disabled', false);
+          console.log('Abort request failed');
         }
       });
     }

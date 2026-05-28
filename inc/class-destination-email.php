@@ -250,7 +250,7 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 				$lower_message = strtolower( $e->getMessage() );
 				if ( preg_match( '/auth|login|credential|username|password/', $lower_message ) ) {
 					$context = [
-						'reason_code'   => 'incorrect_login',
+						'reason_code'   => \WPMedia\BackWPup\Backup\ReasonCode::REASON_INCORRECT_LOGIN,
 						'destination'   => 'EMAIL',
 						'provider_code' => 'smtp_auth_failed',
 					];
@@ -280,11 +280,12 @@ class BackWPup_Destination_Email extends BackWPup_Destinations {
 	/**
 	 * Check if email destination can run.
 	 *
-	 * @param array $job_settings Job settings.
+	 * @param array $job_settings
+	 * @param bool  $test_connection Job settings.
 	 *
 	 * @return bool
 	 */
-	public function can_run( array $job_settings ): bool {
+	public function can_run( array $job_settings, bool $test_connection = true ): bool {
 		if ( empty( $job_settings['emailaddress'] ) ) {
 			return false;
 		}

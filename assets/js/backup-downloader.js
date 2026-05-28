@@ -102,8 +102,15 @@ window.BWU = window.BWU || {};
 
         done: function ()
         {
+            this.closeEventSource();
             this.showSuccessMsg();
-            window.location.href = this.currentTarget.dataset.url;
+
+            var anchor = document.createElement( 'a' );
+            anchor.href = this.currentTarget.dataset.url;
+            anchor.setAttribute( 'download', '' );
+            document.body.appendChild( anchor );
+            anchor.click();
+            document.body.removeChild( anchor );
 
             setTimeout( tbRemove, 3000 );
         },
@@ -161,6 +168,13 @@ window.BWU = window.BWU || {};
             return this;
         },
 
+        onNetworkError: function ()
+        {
+            this.closeEventSource();
+            this.cleanUi();
+            this.showErrorUi();
+        },
+
         initializeEventSource: function ()
         {
             if ( !_.isUndefined( this.eventSource ) ) {
@@ -178,6 +192,7 @@ window.BWU = window.BWU || {};
 
             this.eventSource.onmessage = this.onMessage;
             this.eventSource.addEventListener( 'log', this.onError );
+            this.eventSource.onerror = this.onNetworkError;
         },
 
         closeEventSource: function ()
@@ -236,6 +251,7 @@ window.BWU = window.BWU || {};
                 'done',
                 'onMessage',
                 'onError',
+                'onNetworkError',
                 'initializeEventSource',
                 'closeEventSource',
                 'startDownload',

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WPMedia\Mixpanel;
+namespace WPMedia\BackWPup\Dependencies\WPMedia\Mixpanel;
 
 class Optin {
 	/**

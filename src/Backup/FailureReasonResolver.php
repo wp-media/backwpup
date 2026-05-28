@@ -6,8 +6,22 @@ namespace WPMedia\BackWPup\Backup;
 use WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsContextStore;
 
 class FailureReasonResolver {
-	public const REASON_NOT_ENOUGH_STORAGE = 'not_enough_storage';
-	public const REASON_INCORRECT_LOGIN    = 'incorrect_login';
+	public const REASON_NOT_ENOUGH_STORAGE            = ReasonCode::REASON_NOT_ENOUGH_STORAGE;
+	public const REASON_INCORRECT_LOGIN               = ReasonCode::REASON_INCORRECT_LOGIN;
+	public const REASON_NOT_FOUND                     = ReasonCode::REASON_NOT_FOUND;
+	public const REASON_CONFLICT                      = ReasonCode::REASON_CONFLICT;
+	public const REASON_INVALID_REQUEST               = ReasonCode::REASON_INVALID_REQUEST;
+	public const REASON_INVALID_PATH_OR_NAME          = ReasonCode::REASON_INVALID_PATH_OR_NAME;
+	public const REASON_FILE_TOO_LARGE                = ReasonCode::REASON_FILE_TOO_LARGE;
+	public const REASON_RATE_LIMITED                  = ReasonCode::REASON_RATE_LIMITED;
+	public const REASON_QUOTA_EXCEEDED                = ReasonCode::REASON_QUOTA_EXCEEDED;
+	public const REASON_SERVICE_UNAVAILABLE           = ReasonCode::REASON_SERVICE_UNAVAILABLE;
+	public const REASON_TIMEOUT_OR_NETWORK            = ReasonCode::REASON_TIMEOUT_OR_NETWORK;
+	public const REASON_ACCOUNT_DISABLED_OR_SUSPENDED = ReasonCode::REASON_ACCOUNT_DISABLED_OR_SUSPENDED;
+	public const REASON_MALWARE_DETECTED              = ReasonCode::REASON_MALWARE_DETECTED;
+	public const REASON_INSUFFICIENT_PERMISSIONS      = ReasonCode::REASON_INSUFFICIENT_PERMISSIONS;
+	public const REASON_UNKNOWN_ERROR                 = ReasonCode::REASON_UNKNOWN_ERROR;
+
 
 	/**
 	 * Error signals context store.
@@ -81,6 +95,32 @@ class FailureReasonResolver {
 				return __( 'not enough storage', 'backwpup' );
 			case self::REASON_INCORRECT_LOGIN:
 				return __( 'incorrect login', 'backwpup' );
+			case self::REASON_NOT_FOUND:
+				return __( 'path not found', 'backwpup' );
+			case self::REASON_CONFLICT:
+				return __( 'conflict', 'backwpup' );
+			case self::REASON_INVALID_REQUEST:
+				return __( 'invalid request', 'backwpup' );
+			case self::REASON_INVALID_PATH_OR_NAME:
+				return __( 'invalid path or name', 'backwpup' );
+			case self::REASON_FILE_TOO_LARGE:
+				return __( 'file too large', 'backwpup' );
+			case self::REASON_RATE_LIMITED:
+				return __( 'rate limited', 'backwpup' );
+			case self::REASON_QUOTA_EXCEEDED:
+				return __( 'quota exceeded', 'backwpup' );
+			case self::REASON_SERVICE_UNAVAILABLE:
+				return __( 'server unreachable', 'backwpup' );
+			case self::REASON_TIMEOUT_OR_NETWORK:
+				return __( 'network or timeout error', 'backwpup' );
+			case self::REASON_ACCOUNT_DISABLED_OR_SUSPENDED:
+				return __( 'account disabled or suspended', 'backwpup' );
+			case self::REASON_MALWARE_DETECTED:
+				return __( 'malware detected', 'backwpup' );
+			case self::REASON_INSUFFICIENT_PERMISSIONS:
+				return __( 'permission denied', 'backwpup' );
+			case self::REASON_UNKNOWN_ERROR:
+				return __( 'unknown error', 'backwpup' );
 			default:
 				return '';
 		}

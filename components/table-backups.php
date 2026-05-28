@@ -26,6 +26,18 @@ if ( ! defined( 'ABSPATH' ) ) {
     </tr>
   </thead>
   <tbody class="max-md:flex max-md:flex-col max-md:gap-4">
-
+    <tr id="backwpup-backup-history-loading">
+      <td colspan="6" class="py-12 w-full">
+        <div class="flex justify-center">
+          <?php
+          BackWPupHelpers::component( 'icon', [
+            'name'  => 'loading',
+            'size'  => 'xl',
+            'class' => 'animate-spin text-secondary-base',
+          ] );
+          ?>
+        </div>
+      </td>
+    </tr>
   </tbody>
 </table>

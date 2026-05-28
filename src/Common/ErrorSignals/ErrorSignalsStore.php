@@ -47,6 +47,10 @@ class ErrorSignalsStore {
 			$item['destination'] = strtoupper( (string) $context['destination'] );
 		}
 
+		if ( is_array( $context ) && ! empty( $context['reason_code'] ) ) {
+			$item['reason_code'] = (string) $context['reason_code'];
+		}
+
 		if ( ! empty( $signal['file'] ) ) {
 			$item['file']    = (string) ( $signal['file'] );
 			$item['line']    = (int) ( $signal['line'] ?? 0 );

@@ -2,6 +2,8 @@
 
 require_once __DIR__ . '/class-destination-sugarsync-api-exception.php';
 
+use WPMedia\BackWPup\Backup\FailureContext\SugarSync\SugarSyncFailureContextMapper;
+
 class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 
 	/**
@@ -201,7 +203,7 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 					__FILE__,
 					__LINE__,
 					[
-						'reason_code'   => 'not_enough_storage',
+						'reason_code'   => \WPMedia\BackWPup\Backup\ReasonCode::REASON_NOT_ENOUGH_STORAGE,
 						'destination'   => 'SUGARSYNC',
 						'provider_code' => 'quota_exceeded',
 					]
@@ -276,7 +278,7 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 						$job_object->job['jobid']
 					);
 					$files[ $filecounter ]['filesize']    = (int) $getfile->size;
-					$files[ $filecounter ]['time']        = strtotime( $last_modified ) + ( get_option( 'gmt_offset' ) * 3600 );
+					$files[ $filecounter ]['time']        = strtotime( $last_modified );
 					++$filecounter;
 				}
 			}
@@ -322,7 +324,7 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 			}
 			set_site_transient( 'BackWPup_' . $job_object->job['jobid'] . '_SUGARSYNC', $files, YEAR_IN_SECONDS );
 		} catch ( Exception $e ) {
-			$context = $this->sugarsync_error_context( $e->getMessage() );
+			$context = ( new SugarSyncFailureContextMapper() )->map( $e );
 			$job_object->log(
 				sprintf(
 				/* translators: %s: error message. */
@@ -345,11 +347,12 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 	/**
 	 * Check if SugarSync destination can run.
 	 *
-	 * @param array $job_settings Job settings.
+	 * @param array $job_settings
+	 * @param bool  $test_connection Job settings.
 	 *
 	 * @return bool
 	 */
-	public function can_run( array $job_settings ): bool {
+	public function can_run( array $job_settings, bool $test_connection = true ): bool {
 		if ( empty( $job_settings['sugarrefreshtoken'] ) ) {
 			return false;
 		}
@@ -364,47 +367,5 @@ class BackWPup_Destination_SugarSync extends BackWPup_Destinations {
 	 */
 	public function get_service_name(): string {
 		return self::SERVICE_NAME;
-	}
-
-	/**
-	 * Build error context for SugarSync errors.
-	 *
-	 * @param string $message Error message.
-	 * @return array
-	 */
-	private function sugarsync_error_context( string $message ): array {
-		$normalized = strtolower( $message );
-		$status     = '';
-
-		if ( preg_match( '/\((\d{3})\)/', $message, $matches ) ) {
-			$status = $matches[1];
-		}
-
-		if (
-			'401' === $status
-			|| '403' === $status
-			|| false !== strpos( $normalized, 'unauthorized' )
-			|| false !== strpos( $normalized, 'authentication' )
-		) {
-			return [
-				'reason_code'   => 'incorrect_login',
-				'destination'   => 'SUGARSYNC',
-				'provider_code' => $status ?: 'auth_failed',
-			];
-		}
-
-		if (
-			false !== strpos( $normalized, 'quota' )
-			|| false !== strpos( $normalized, 'insufficient' )
-			|| false !== strpos( $normalized, 'not enough' )
-		) {
-			return [
-				'reason_code'   => 'not_enough_storage',
-				'destination'   => 'SUGARSYNC',
-				'provider_code' => $status ?: 'quota_exceeded',
-			];
-		}
-
-		return [];
 	}
 }

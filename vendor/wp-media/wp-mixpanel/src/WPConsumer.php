@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace WPMedia\Mixpanel;
+namespace WPMedia\BackWPup\Dependencies\WPMedia\Mixpanel;
 
-use WPMedia_ConsumerStrategies_AbstractConsumer;
+use BackWPup_WPMedia_ConsumerStrategies_AbstractConsumer as WPMedia_ConsumerStrategies_AbstractConsumer;
 
 /**
  * Consumes messages and sends them to a host/endpoint using WordPress's HTTP API

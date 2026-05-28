@@ -37,6 +37,10 @@ do_action( 'backwpup_track_dashboard_viewed' );
     "children" => "backups/top-menu",
   ]);
   ?>
+    <?php
+        // Render banners on the backwpup_banners hook.
+        do_action('backwpup_banners');
+    ?>
 
   <?php
   BackWPupHelpers::component("containers/grey-box", [
@@ -66,13 +70,6 @@ do_action( 'backwpup_track_dashboard_viewed' );
         ?>
       </div>
       <div id="backwpup-pagination">
-	      <?php
-	      BackWPupHelpers::component("navigation/pagination", [
-		      "max_pages" => 10,
-		      "trigger" => "table-pagination",
-		      "class" => "max-md:hidden",
-	      ]);
-	      ?>
       </div>
 
     </div>

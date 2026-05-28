@@ -28,6 +28,8 @@ if ( BackWPup::is_pro() ) {
         if ( ! is_file( $file ) ) {
             continue;
         }
+        // Unset $job_id before each include to prevent scope pollution between sidebar files.
+        unset( $job_id );
         $filename = pathinfo( $file, PATHINFO_FILENAME ); ?>
 
         <article class="flex flex-col flex-auto gap-4" id="sidebar-<?php echo esc_attr( $filename) ?>">
