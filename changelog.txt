@@ -1,4 +1,9 @@
 == Changelog ==
+= 5.6.11 =
+Release date: June 1, 2026
+
+* Fix: Addressed a Block Editor List View issue that caused some block names to appear blank.
+
 = 5.6.10 =
 Release date: May 28, 2026
 
