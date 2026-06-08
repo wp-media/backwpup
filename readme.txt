@@ -193,6 +193,11 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
 == Changelog ==
+= 5.7.1 =
+Release date: June 8, 2026
+
+* Fix: Resolved PHP namespace conflicts in bundled vendor libraries to prevent fatal errors caused by dependency collisions with other plugins.
+
 = 5.7.0 =
 Release date: June 8, 2026
 
