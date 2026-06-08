@@ -11,21 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Tracking {
-	/**
-	 * Optin instance.
-	 *
-	 * @var Optin
-	 */
-	private $optin;
-
-	/**
-	 * Mixpanel Tracking instance.
-	 *
-	 * @var MixpanelTracking
-	 */
-	private $mixpanel;
-
+class Tracking extends BaseTracking {
 	/**
 	 * Option Adapter instance.
 	 *
@@ -41,8 +27,7 @@ class Tracking {
 	 * @param OptionAdapter    $option_adapter Option Adapter instance.
 	 */
 	public function __construct( Optin $optin, MixpanelTracking $mixpanel, OptionAdapter $option_adapter ) {
-		$this->optin          = $optin;
-		$this->mixpanel       = $mixpanel;
+		parent::__construct( $optin, $mixpanel );
 		$this->option_adapter = $option_adapter;
 	}
 
@@ -199,10 +184,11 @@ class Tracking {
 	 * @param int    $job_id The job id.
 	 * @param array  $job_details The status of the job.
 	 * @param string $trigger Backup trigger.
+	 * @param string $context Mixpanel context (wp_plugin or wp_plugin_mcp).
 	 *
 	 * @return void
 	 */
-	public function track_end_job( $job_id, array $job_details, $trigger ): void {
+	public function track_end_job( $job_id, array $job_details, $trigger, string $context = 'wp_plugin' ): void {
 		if ( ! $this->optin->can_track() ) {
 			return;
 		}
@@ -214,7 +200,7 @@ class Tracking {
 		$this->mixpanel->identify( $email );
 		$status = true;
 
-		$properties                   = array_merge( $this->get_default_event_properties(), $this->get_backup_event_properties( $job, true ) );
+		$properties                   = array_merge( $this->get_default_event_properties( $context ), $this->get_backup_event_properties( $job, true ) );
 		$properties['backup_trigger'] = $trigger;
 
 		foreach ( $job_details as $job ) {
@@ -552,26 +538,5 @@ class Tracking {
 			'Backup log opened',
 			$properties
 		);
-	}
-
-	/**
-	 * Get the default event properties, including the license email hash if available.
-	 *
-	 * @return array
-	 */
-	private function get_default_event_properties(): array {
-		$defaults = [
-			'context' => 'wp_plugin',
-		];
-
-		if ( \BackWPup::is_pro() ) {
-			// Use string value directly instead of LicenseManager::LICENSE_EMAIL constant
-			// to avoid loading LicenseManager class (which doesn't exist in Free version).
-			$license_email_hash = get_site_option( 'backwpup_license_email', '' );
-			if ( '' !== $license_email_hash ) {
-				$defaults['license_owner'] = $license_email_hash;
-			}
-		}
-		return $defaults;
 	}
 }

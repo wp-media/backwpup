@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WPMedia\BackWPup\Dependencies\League\Container\Inflector;
+namespace League\Container\Inflector;
 
 interface InflectorInterface
 {

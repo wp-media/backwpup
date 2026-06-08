@@ -18,14 +18,15 @@ $providers = [
 	'WPMedia\BackWPup\StorageProviders\ServiceProvider',
 	'WPMedia\BackWPup\Tracking\ServiceProvider',
 	'WPMedia\BackWPup\Admin\ServiceProvider',
-	'WPMedia\BackWPup\Jobs\ServiceProvider',
 	'WPMedia\BackWPup\Backup\ServiceProvider',
+	'WPMedia\BackWPup\Jobs\ServiceProvider',
 	'WPMedia\BackWPup\Backups\ServiceProvider',
 	'WPMedia\BackWPup\Frontend\ServiceProvider',
 	'WPMedia\BackWPup\Beta\ServiceProvider',
 	'WPMedia\BackWPup\Cli\ServiceProvider',
 	'WPMedia\BackWPup\Hosting\ServiceProvider',
 	'WPMedia\BackWPup\Log\ServiceProvider',
+	'WPMedia\BackWPup\MCP\ServiceProvider',
 ];
 
 

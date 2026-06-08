@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace WPMedia\BackWPup\Dependencies\League\Container\Definition;
+namespace League\Container\Definition;
 
 use Generator;
-use WPMedia\BackWPup\Dependencies\League\Container\ContainerAwareTrait;
-use WPMedia\BackWPup\Dependencies\League\Container\Exception\NotFoundException;
+use League\Container\ContainerAwareTrait;
+use League\Container\Exception\NotFoundException;
 
 class DefinitionAggregate implements DefinitionAggregateInterface
 {

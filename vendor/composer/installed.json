@@ -178,7 +178,7 @@
             "installation-source": "dist",
             "autoload": {
                 "psr-4": {
-                    "WPMedia\\BackWPup\\Dependencies\\BerlinDB\\": "src/"
+                    "BerlinDB\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -256,17 +256,17 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.10.0",
-            "version_normalized": "7.10.0.0",
+            "version": "7.10.3",
+            "version_normalized": "7.10.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "b51ac707cfa420b7bfd4e4d5e510ba8008e822b4"
+                "reference": "47ba23c7a55247e2e1b7407aca90e9bbed0d9d86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/b51ac707cfa420b7bfd4e4d5e510ba8008e822b4",
-                "reference": "b51ac707cfa420b7bfd4e4d5e510ba8008e822b4",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/47ba23c7a55247e2e1b7407aca90e9bbed0d9d86",
+                "reference": "47ba23c7a55247e2e1b7407aca90e9bbed0d9d86",
                 "shasum": ""
             },
             "require": {
@@ -284,8 +284,9 @@
                 "bamarni/composer-bin-plugin": "^1.8.2",
                 "ext-curl": "*",
                 "guzzle/client-integration-tests": "3.0.2",
+                "guzzlehttp/test-server": "^0.3.2",
                 "php-http/message-factory": "^1.1",
-                "phpunit/phpunit": "^8.5.39 || ^9.6.20",
+                "phpunit/phpunit": "^8.5.52 || ^9.6.34",
                 "psr/log": "^1.1 || ^2.0 || ^3.0"
             },
             "suggest": {
@@ -293,7 +294,7 @@
                 "ext-intl": "Required for Internationalized Domain Name (IDN) support",
                 "psr/log": "Required for using the Log middleware"
             },
-            "time": "2025-08-23T22:36:01+00:00",
+            "time": "2026-05-20T22:59:19+00:00",
             "type": "library",
             "extra": {
                 "bamarni-bin": {
@@ -365,7 +366,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.10.0"
+                "source": "https://github.com/guzzle/guzzle/tree/7.10.3"
             },
             "funding": [
                 {
@@ -385,17 +386,17 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "2.3.0",
-            "version_normalized": "2.3.0.0",
+            "version": "2.4.1",
+            "version_normalized": "2.4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "481557b130ef3790cf82b713667b43030dc9c957"
+                "reference": "09e8a212562fb1fb6a512c4156ed71525969d6c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/481557b130ef3790cf82b713667b43030dc9c957",
-                "reference": "481557b130ef3790cf82b713667b43030dc9c957",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/09e8a212562fb1fb6a512c4156ed71525969d6c2",
+                "reference": "09e8a212562fb1fb6a512c4156ed71525969d6c2",
                 "shasum": ""
             },
             "require": {
@@ -403,9 +404,9 @@
             },
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.8.2",
-                "phpunit/phpunit": "^8.5.44 || ^9.6.25"
+                "phpunit/phpunit": "^8.5.52 || ^9.6.34"
             },
-            "time": "2025-08-22T14:34:08+00:00",
+            "time": "2026-05-20T22:57:30+00:00",
             "type": "library",
             "extra": {
                 "bamarni-bin": {
@@ -451,7 +452,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/2.3.0"
+                "source": "https://github.com/guzzle/promises/tree/2.4.1"
             },
             "funding": [
                 {
@@ -471,17 +472,17 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.9.0",
-            "version_normalized": "2.9.0.0",
+            "version": "2.10.1",
+            "version_normalized": "2.10.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "7d0ed42f28e42d61352a7a79de682e5e67fec884"
+                "reference": "73ab136360b5dfd858006eae9795e8fe43c80361"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/7d0ed42f28e42d61352a7a79de682e5e67fec884",
-                "reference": "7d0ed42f28e42d61352a7a79de682e5e67fec884",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/73ab136360b5dfd858006eae9795e8fe43c80361",
+                "reference": "73ab136360b5dfd858006eae9795e8fe43c80361",
                 "shasum": ""
             },
             "require": {
@@ -496,14 +497,14 @@
             },
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.8.2",
-                "http-interop/http-factory-tests": "0.9.0",
+                "http-interop/http-factory-tests": "1.1.0",
                 "jshttp/mime-db": "1.54.0.1",
-                "phpunit/phpunit": "^8.5.44 || ^9.6.25"
+                "phpunit/phpunit": "^8.5.52 || ^9.6.34"
             },
             "suggest": {
                 "laminas/laminas-httphandlerrunner": "Emit PSR-7 responses"
             },
-            "time": "2026-03-10T16:41:02+00:00",
+            "time": "2026-05-20T09:27:36+00:00",
             "type": "library",
             "extra": {
                 "bamarni-bin": {
@@ -571,7 +572,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.9.0"
+                "source": "https://github.com/guzzle/psr7/tree/2.10.1"
             },
             "funding": [
                 {
@@ -591,8 +592,8 @@
         },
         {
             "name": "inpsyde/assert",
-            "version": "dev-feat/nudge",
-            "version_normalized": "dev-feat/nudge",
+            "version": "dev-feature/mcp",
+            "version_normalized": "dev-feature/mcp",
             "dist": {
                 "type": "path",
                 "url": "packages/assert",
@@ -992,7 +993,7 @@
             "installation-source": "dist",
             "autoload": {
                 "psr-4": {
-                    "WPMedia\\BackWPup\\Dependencies\\League\\Container\\": "src"
+                    "League\\Container\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1226,7 +1227,8 @@
             "installation-source": "dist",
             "autoload": {
                 "psr-4": {
-                    "Microsoft\\Graph\\": "src/"
+                    "Microsoft\\Graph\\": "src/",
+                    "Beta\\Microsoft\\Graph\\": "src/Beta/Microsoft/Graph/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1583,11 +1585,7 @@
             "autoload": {
                 "psr-0": {
                     "Archive_Tar": ""
-                },
-                "classmap": [
-                    "",
-                    ""
-                ]
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "include-path": [
@@ -1987,7 +1985,7 @@
             "installation-source": "dist",
             "autoload": {
                 "psr-4": {
-                    "WPMedia\\BackWPup\\Dependencies\\Psr\\Container\\": "src/"
+                    "Psr\\Container\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2723,6 +2721,140 @@
             "install-path": "../webmozart/assert"
         },
         {
+            "name": "wordpress/mcp-adapter",
+            "version": "v0.5.0",
+            "version_normalized": "0.5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WordPress/mcp-adapter.git",
+                "reference": "7bfc49f46b3ea7544dded49d5a606089f825a80b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WordPress/mcp-adapter/zipball/7bfc49f46b3ea7544dded49d5a606089f825a80b",
+                "reference": "7bfc49f46b3ea7544dded49d5a606089f825a80b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.4 || ^8.0",
+                "wordpress/php-mcp-schema": "^0.1.0"
+            },
+            "require-dev": {
+                "automattic/vipwpcs": "^3.0",
+                "php-stubs/wordpress-stubs": "^6.9",
+                "php-stubs/wp-cli-stubs": "^2.12",
+                "phpcompatibility/php-compatibility": "10.x-dev as 9.99.99",
+                "phpcompatibility/phpcompatibility-wp": "^2.1",
+                "phpstan/extension-installer": "^1.3",
+                "phpstan/php-8-stubs": "^0.4.24",
+                "phpstan/phpstan": "^2.1.22",
+                "phpstan/phpstan-deprecation-rules": "^2.0.3",
+                "phpunit/phpunit": "^9.6",
+                "slevomat/coding-standard": "^8.0",
+                "szepeviktor/phpstan-wordpress": "^2.0",
+                "wp-phpunit/wp-phpunit": "^6.5",
+                "wpackagist-plugin/plugin-check": "^1.6",
+                "yoast/phpunit-polyfills": "^4.0"
+            },
+            "time": "2026-04-14T12:12:58+00:00",
+            "type": "wordpress-plugin",
+            "extra": {
+                "installer-paths": {
+                    "vendor/{$vendor}/{$name}/": [
+                        "wpackagist-plugin/plugin-check"
+                    ]
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "WP\\MCP\\": "includes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "WordPress AI Team",
+                    "homepage": "https://make.wordpress.org/ai/"
+                }
+            ],
+            "description": "Adapter for Abilities API, letting WordPress abilities to be used as MCP tools, resources or prompts",
+            "homepage": "https://github.com/wordpress/mcp-adapter",
+            "keywords": [
+                "abilities-api",
+                "adapter",
+                "ai",
+                "api",
+                "integration",
+                "mcp",
+                "model-context-protocol",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/wordpress/mcp-adapter/issues",
+                "source": "https://github.com/wordpress/mcp-adapter"
+            },
+            "install-path": "../wordpress/mcp-adapter"
+        },
+        {
+            "name": "wordpress/php-mcp-schema",
+            "version": "v0.1.1",
+            "version_normalized": "0.1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WordPress/php-mcp-schema.git",
+                "reference": "e2118ec421ead51a3e17a3d8160f4537727e91b9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WordPress/php-mcp-schema/zipball/e2118ec421ead51a3e17a3d8160f4537727e91b9",
+                "reference": "e2118ec421ead51a3e17a3d8160f4537727e91b9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.10"
+            },
+            "time": "2026-04-10T19:35:16+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "WP\\McpSchema\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "WordPress",
+                    "homepage": "https://wordpress.org"
+                }
+            ],
+            "description": "PHP DTOs for the Model Context Protocol (MCP) specification",
+            "homepage": "https://github.com/WordPress/php-mcp-schema",
+            "keywords": [
+                "dto",
+                "mcp",
+                "model-context-protocol",
+                "php",
+                "schema"
+            ],
+            "support": {
+                "issues": "https://github.com/WordPress/php-mcp-schema/issues",
+                "source": "https://github.com/WordPress/php-mcp-schema/tree/v0.1.1"
+            },
+            "install-path": "../wordpress/php-mcp-schema"
+        },
+        {
             "name": "wp-media/apply-filters-typed",
             "version": "v1.2",
             "version_normalized": "1.2.0.0",
@@ -2826,17 +2958,17 @@
         },
         {
             "name": "wp-media/wp-mixpanel",
-            "version": "v1.4.0",
-            "version_normalized": "1.4.0.0",
+            "version": "v1.4.1",
+            "version_normalized": "1.4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/wp-mixpanel.git",
-                "reference": "dfedab2014e816a1040c57d544a6180f1d446624"
+                "reference": "09dea8a51f97e8047defc9f8a995b87dec76baad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/wp-mixpanel/zipball/dfedab2014e816a1040c57d544a6180f1d446624",
-                "reference": "dfedab2014e816a1040c57d544a6180f1d446624",
+                "url": "https://api.github.com/repos/wp-media/wp-mixpanel/zipball/09dea8a51f97e8047defc9f8a995b87dec76baad",
+                "reference": "09dea8a51f97e8047defc9f8a995b87dec76baad",
                 "shasum": ""
             },
             "require": {
@@ -2853,12 +2985,12 @@
                 "wp-coding-standards/wpcs": "^3",
                 "wp-media/phpunit": "^3"
             },
-            "time": "2025-11-12T09:51:35+00:00",
+            "time": "2026-05-29T18:02:43+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
                 "psr-4": {
-                    "WPMedia\\BackWPup\\Dependencies\\WPMedia\\Mixpanel\\": "src/"
+                    "WPMedia\\Mixpanel\\": "src/"
                 },
                 "classmap": [
                     "src/Classes/"
@@ -2878,7 +3010,7 @@
             "description": "WordPress Mixpanel Integration",
             "support": {
                 "issues": "https://github.com/wp-media/wp-mixpanel/issues",
-                "source": "https://github.com/wp-media/wp-mixpanel/tree/v1.4.0"
+                "source": "https://github.com/wp-media/wp-mixpanel/tree/v1.4.1"
             },
             "install-path": "../wp-media/wp-mixpanel"
         }

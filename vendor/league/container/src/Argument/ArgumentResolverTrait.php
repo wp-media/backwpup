@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace WPMedia\BackWPup\Dependencies\League\Container\Argument;
+namespace League\Container\Argument;
 
-use WPMedia\BackWPup\Dependencies\League\Container\DefinitionContainerInterface;
-use WPMedia\BackWPup\Dependencies\League\Container\Exception\{ContainerException, NotFoundException};
-use WPMedia\BackWPup\Dependencies\League\Container\ReflectionContainer;
-use WPMedia\BackWPup\Dependencies\Psr\Container\ContainerInterface;
+use League\Container\DefinitionContainerInterface;
+use League\Container\Exception\{ContainerException, NotFoundException};
+use League\Container\ReflectionContainer;
+use Psr\Container\ContainerInterface;
 use ReflectionFunctionAbstract;
 use ReflectionNamedType;
 

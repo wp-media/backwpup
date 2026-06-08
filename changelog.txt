@@ -1,4 +1,9 @@
 == Changelog ==
+= 5.7.0 =
+Release date: June 8, 2026
+
+* New feature: Added MCP support, allowing AI assistants to manage backups, run jobs, monitor progress, cancel jobs, and access logs.
+
 = 5.6.11 =
 Release date: June 1, 2026
 

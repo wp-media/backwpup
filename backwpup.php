@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: BackWPup – WordPress Backup & Restore Plugin
  * Author URI: https://backwpup.com
- * Version: 5.6.11
+ * Version: 5.7.0
  * Requires at least: 5.1
  * Requires PHP: 7.4
  * Text Domain: backwpup
@@ -16,6 +16,7 @@
 
 use WPMedia\BackWPup\Dependencies\League\Container\Container;
 use WPMedia\BackWPup\Plugin\Plugin;
+use WP\MCP\Core\McpAdapter;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -31,6 +32,19 @@ define( 'BACKWPUP_PLUGIN_LOADED', true );
 // Include the Composer autoload file.
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
+}
+
+
+$can_boot_mcp_adapter =
+	class_exists( McpAdapter::class )
+	&& version_compare( $GLOBALS['wp_version'] ?? '0', '6.9', '>=' )
+	&& function_exists( 'wp_register_ability' )
+	&& function_exists( 'wp_get_ability' )
+	&& function_exists( 'wp_get_abilities' )
+	&& function_exists( 'wp_register_ability_category' );
+
+if ( $can_boot_mcp_adapter ) {
+	McpAdapter::instance();
 }
 
 require_once __DIR__ . '/inc/functions.php';

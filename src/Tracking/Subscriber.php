@@ -154,6 +154,10 @@ class Subscriber implements SubscriberInterface {
 	 * @return void
 	 */
 	public function track_start_job( $job, $filename, string $trigger ) {
+		if ( get_transient( 'backwpup_mcp_job_' . $job['jobid'] ) ) {
+			return; // McpTracking handles this via backwpup_mcp_backup_triggered.
+		}
+
 		$this->tracking->track_start_job( $job, $trigger );
 	}
 
@@ -167,7 +171,14 @@ class Subscriber implements SubscriberInterface {
 	 * @return void
 	 */
 	public function track_end_job( $job_id, array $job_details, string $trigger ) {
-		$this->tracking->track_end_job( $job_id, $job_details, $trigger );
+		$transient_key = 'backwpup_mcp_job_' . $job_id;
+		$context       = get_transient( $transient_key ) ? 'wp_plugin_mcp' : 'wp_plugin';
+
+		if ( 'wp_plugin_mcp' === $context ) {
+			delete_transient( $transient_key );
+		}
+
+		$this->tracking->track_end_job( $job_id, $job_details, $trigger, $context );
 	}
 
 	/**

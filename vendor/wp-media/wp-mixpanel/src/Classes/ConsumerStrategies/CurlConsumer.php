@@ -3,7 +3,7 @@
 /**
  * Consumes messages and sends them to a host/endpoint using cURL
  */
-class BackWPup_WPMedia_ConsumerStrategies_CurlConsumer extends BackWPup_WPMedia_ConsumerStrategies_AbstractConsumer {
+class WPMedia_ConsumerStrategies_CurlConsumer extends WPMedia_ConsumerStrategies_AbstractConsumer {
 
     /**
      * @var string the host to connect to (e.g. api.mixpanel.com)

@@ -98,9 +98,10 @@ class Beacon extends AbstractRender {
 					$prefixed_track_data[ 'bwu_event_property_' . $key ] = $value;
 				}
 			}
-			$selected_suggest['url'] = add_query_arg(
+			$prefixed_track_data['bwu_redirect'] = rawurlencode( $selected_suggest['url'] );
+			$selected_suggest['url']             = add_query_arg(
 				$prefixed_track_data,
-				'?bwu_redirect=' . $selected_suggest['url']
+				admin_url( 'admin.php' )
 			);
 			// Add nonce for security.
 			$selected_suggest['url'] = wp_nonce_url( $selected_suggest['url'], 'backwpup_redirect_nonce' );

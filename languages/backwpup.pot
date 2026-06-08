@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-01 15:02+0000\n"
+"POT-Creation-Date: 2026-06-08 07:06+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -35,7 +35,7 @@ msgid "https://backwpup.com"
 msgstr ""
 
 #. translators: %1$s is the minimum PHP version, %2$s is the minimum WordPress version.
-#: backwpup.php:59
+#: backwpup.php:73
 msgid "BackWPup requires PHP version %1$s with spl extension or greater and WordPress %2$s or greater."
 msgstr ""
 
@@ -82,7 +82,7 @@ msgstr ""
 msgid "Edit title"
 msgstr ""
 
-#: components/job-item.php:107, components/table-row-backups.php:141, components/table-row-backups.php:114, components/table-row-backups.php:299, inc/class-page-backups.php:246, inc/class-page-backups.php:801, inc/class-page-jobs.php:216, inc/class-page-jobs.php:300, inc/class-page-logs.php:168, inc/class-page-logs.php:256
+#: components/job-item.php:107, components/table-row-backups.php:141, components/table-row-backups.php:114, components/table-row-backups.php:302, inc/class-page-backups.php:246, inc/class-page-backups.php:801, inc/class-page-jobs.php:216, inc/class-page-jobs.php:300, inc/class-page-logs.php:168, inc/class-page-logs.php:256
 msgid "Delete"
 msgstr ""
 
@@ -90,7 +90,7 @@ msgstr ""
 msgid "Backup now"
 msgstr ""
 
-#: components/job-item.php:171, components/table-backups.php:24, components/table-row-backups.php:233
+#: components/job-item.php:171, components/table-backups.php:24, components/table-row-backups.php:236
 msgid "Data"
 msgstr ""
 
@@ -122,7 +122,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: components/selector-file-db.php:23, components/table-row-backups.php:240, inc/class-jobtype-file.php:10, inc/class-jobtypes.php:115
+#: components/selector-file-db.php:23, components/table-row-backups.php:243, inc/class-jobtype-file.php:10, inc/class-jobtypes.php:115
 msgid "Files"
 msgstr ""
 
@@ -134,7 +134,7 @@ msgstr ""
 msgid "Advanced settings"
 msgstr ""
 
-#: components/selector-file-db.php:72, components/table-row-backups.php:244, inc/class-jobtypes.php:124
+#: components/selector-file-db.php:72, components/table-row-backups.php:247, inc/class-jobtypes.php:124
 msgid "Database"
 msgstr ""
 
@@ -162,11 +162,11 @@ msgstr ""
 msgid "Created at"
 msgstr ""
 
-#: components/table-backups.php:22, components/table-row-backups.php:183, inc/class-page-editjob.php:790, inc/class-page-jobs.php:230, inc/class-page-logs.php:182
+#: components/table-backups.php:22, components/table-row-backups.php:186, inc/class-page-editjob.php:790, inc/class-page-jobs.php:230, inc/class-page-logs.php:182
 msgid "Type"
 msgstr ""
 
-#: components/table-backups.php:23, components/table-row-backups.php:223, components/table-row-backups.php:197
+#: components/table-backups.php:23, components/table-row-backups.php:226, components/table-row-backups.php:200
 msgid "Stored on"
 msgstr ""
 
@@ -207,23 +207,23 @@ msgstr ""
 msgid "Link"
 msgstr ""
 
-#: components/table-row-backups.php:95, components/table-row-backups.php:318, components/table-row-backups.php:280
+#: components/table-row-backups.php:95, components/table-row-backups.php:321, components/table-row-backups.php:283
 msgid "View log"
 msgstr ""
 
-#: components/table-row-backups.php:131, components/table-row-backups.php:343, inc/class-page-backups.php:419, inc/class-page-backups.php:831, inc/class-page-jobs.php:463, inc/class-page-jobs.php:514, inc/class-page-logs.php:258
+#: components/table-row-backups.php:131, components/table-row-backups.php:346, inc/class-page-backups.php:419, inc/class-page-backups.php:831, inc/class-page-jobs.php:463, inc/class-page-jobs.php:514, inc/class-page-logs.php:258
 msgid "Download"
 msgstr ""
 
-#: components/table-row-backups.php:248, inc/class-jobtype-wpplugin.php:9, parts/modal/exclude-files-plugins.php:20, parts/sidebar/parts/files-content-selector-pro.php:47
+#: components/table-row-backups.php:251, inc/class-jobtype-wpplugin.php:9, parts/modal/exclude-files-plugins.php:20, parts/sidebar/parts/files-content-selector-pro.php:47
 msgid "Plugins"
 msgstr ""
 
-#: components/table-row-backups.php:207, inc/class-page-logs.php:181
+#: components/table-row-backups.php:210, inc/class-page-logs.php:181
 msgid "Status"
 msgstr ""
 
-#: components/table-row-backups.php:356, inc/class-page-backups.php:436, parts/restore/start.php:39, views/restore/steps/step5_top.php:7
+#: components/table-row-backups.php:359, inc/class-page-backups.php:436, parts/restore/start.php:39, views/restore/steps/step5_top.php:7
 msgid "Restore"
 msgstr ""
 

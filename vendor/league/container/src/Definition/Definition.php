@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace WPMedia\BackWPup\Dependencies\League\Container\Definition;
+namespace League\Container\Definition;
 
-use WPMedia\BackWPup\Dependencies\League\Container\Argument\{
+use League\Container\Argument\{
     ArgumentResolverInterface,
     ArgumentResolverTrait,
     ArgumentInterface,
     LiteralArgumentInterface
 };
-use WPMedia\BackWPup\Dependencies\League\Container\ContainerAwareTrait;
-use WPMedia\BackWPup\Dependencies\League\Container\Exception\ContainerException;
-use WPMedia\BackWPup\Dependencies\Psr\Container\ContainerInterface;
+use League\Container\ContainerAwareTrait;
+use League\Container\Exception\ContainerException;
+use Psr\Container\ContainerInterface;
 use ReflectionClass;
 
 class Definition implements ArgumentResolverInterface, DefinitionInterface

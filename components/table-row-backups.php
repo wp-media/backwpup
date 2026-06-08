@@ -153,13 +153,16 @@ if ( ( $is_failed || $is_aborted ) && $backup_id > 0 ) {
 } elseif ( isset( $backup['dataset-delete'] ) ) {
 	$delete_dataset = $backup['dataset-delete'];
 }
-$row_attrs = $backup_id > 0 ? ' data-backup-id="' . esc_attr( $backup_id ) . '"' : '';
 
 // Start output buffering
 ob_start();
 ?>
 
-<tr class="*:py-6 *:border-b *:border-grey-300 max-md:bg-grey-100 max-md:rounded-lg max-md:block max-md:p-4"<?php echo esc_attr($row_attrs); ?>>
+<tr class="*:py-6 *:border-b *:border-grey-300 max-md:bg-grey-100 max-md:rounded-lg max-md:block max-md:p-4"<?php
+if ( $backup_id > 0 ) {
+	echo ' data-backup-id="' . esc_attr( $backup_id ) . '"';
+}
+?>>
   <td class="p-0 max-md:hidden">
     <?php
       BackWPupHelpers::component("form/checkbox", [

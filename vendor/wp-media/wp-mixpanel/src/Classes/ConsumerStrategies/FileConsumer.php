@@ -3,7 +3,7 @@
 /**
  * Consumes messages and writes them to a file
  */
-class BackWPup_WPMedia_ConsumerStrategies_FileConsumer extends BackWPup_WPMedia_ConsumerStrategies_AbstractConsumer {
+class WPMedia_ConsumerStrategies_FileConsumer extends WPMedia_ConsumerStrategies_AbstractConsumer {
 
     /**
      * @var string path to a file that we want to write the messages to

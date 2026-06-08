@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WPMedia\BackWPup\Dependencies\League\Container\Inflector;
+namespace League\Container\Inflector;
 
 use IteratorAggregate;
-use WPMedia\BackWPup\Dependencies\League\Container\ContainerAwareInterface;
+use League\Container\ContainerAwareInterface;
 
 interface InflectorAggregateInterface extends ContainerAwareInterface, IteratorAggregate
 {

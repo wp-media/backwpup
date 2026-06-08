@@ -3,7 +3,7 @@
 /**
  * Provides an API to create/update group profiles on Mixpanel
  */
-class BackWPup_WPMedia_Producers_MixpanelGroups extends BackWPup_WPMedia_Producers_MixpanelBaseProducer {
+class WPMedia_Producers_MixpanelGroups extends WPMedia_Producers_MixpanelBaseProducer {
 
     /**
      * Internal method to prepare a message given the message data

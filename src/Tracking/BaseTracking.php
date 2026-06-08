@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace WPMedia\BackWPup\Tracking;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 use WPMedia\BackWPup\Dependencies\WPMedia\Mixpanel\Optin;
 use WPMedia\BackWPup\Dependencies\WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Base class for tracking functionality.
  *

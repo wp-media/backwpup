@@ -28,7 +28,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		Optin::class,
 		TrackingPlugin::class,
 		Tracking::class,
+		McpTracking::class,
 		Subscriber::class,
+		McpTrackingSubscriber::class,
 		Notices::class,
 		NudgeTracking::class,
 	];
@@ -40,6 +42,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public $subscribers = [
 		Subscriber::class,
+		McpTrackingSubscriber::class,
 	];
 
 	/**
@@ -88,6 +91,14 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
+		$this->getContainer()->add( McpTracking::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( Optin::class ),
+					$this->getContainer()->get( TrackingPlugin::class ),
+				]
+			);
+
 		$this->getContainer()->add( Notices::class )
 			->addArguments(
 				[
@@ -109,6 +120,13 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( Tracking::class ),
 					$this->getContainer()->get( Notices::class ),
 					$this->getContainer()->get( NudgeTracking::class ),
+				]
+			);
+
+		$this->getContainer()->addShared( McpTrackingSubscriber::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( McpTracking::class ),
 				]
 			);
 	}

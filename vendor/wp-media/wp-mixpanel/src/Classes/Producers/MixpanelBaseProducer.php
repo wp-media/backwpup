@@ -7,7 +7,7 @@ if (!function_exists('json_encode')) {
 /**
  * Provides some base methods for use by a message Producer
  */
-abstract class BackWPup_WPMedia_Producers_MixpanelBaseProducer extends BackWPup_WPMedia_Base_MixpanelBase {
+abstract class WPMedia_Producers_MixpanelBaseProducer extends WPMedia_Base_MixpanelBase {
 
 
     /**
@@ -23,7 +23,7 @@ abstract class BackWPup_WPMedia_Producers_MixpanelBaseProducer extends BackWPup_
 
 
     /**
-     * @var BackWPup_WPMedia_ConsumerStrategies_AbstractConsumer the consumer to use when flushing messages
+     * @var WPMedia_ConsumerStrategies_AbstractConsumer the consumer to use when flushing messages
      */
     private $_consumer = null;
 
@@ -32,9 +32,9 @@ abstract class BackWPup_WPMedia_Producers_MixpanelBaseProducer extends BackWPup_
      * @var array The list of available consumers
      */
     private $_consumers = array(
-        "file"      =>  "BackWPup_WPMedia_ConsumerStrategies_FileConsumer",
-        "curl"      =>  "BackWPup_WPMedia_ConsumerStrategies_CurlConsumer",
-        "socket"    =>  "BackWPup_WPMedia_ConsumerStrategies_SocketConsumer",
+        "file"      =>  "WPMedia_ConsumerStrategies_FileConsumer",
+        "curl"      =>  "WPMedia_ConsumerStrategies_CurlConsumer",
+        "socket"    =>  "WPMedia_ConsumerStrategies_SocketConsumer",
     );
 
 
@@ -162,7 +162,7 @@ abstract class BackWPup_WPMedia_Producers_MixpanelBaseProducer extends BackWPup_
 
     /**
      * Given a strategy type, return a new PersistenceStrategy object
-     * @return BackWPup_WPMedia_ConsumerStrategies_AbstractConsumer
+     * @return WPMedia_ConsumerStrategies_AbstractConsumer
      */
     protected function _getConsumer() {
         $key = $this->_options['consumer'];

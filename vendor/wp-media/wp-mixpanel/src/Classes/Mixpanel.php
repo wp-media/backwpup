@@ -102,25 +102,25 @@
  * ));
  *
  */
-class BackWPup_WPMedia_Mixpanel extends BackWPup_WPMedia_Base_MixpanelBase {
+class WPMedia_Mixpanel extends WPMedia_Base_MixpanelBase {
 
 
     /**
      * An instance of the MixpanelPeople class (used to create/update profiles)
-     * @var BackWPup_WPMedia_Producers_MixpanelPeople
+     * @var WPMedia_Producers_MixpanelPeople
      */
     public $people;
 
 
     /**
      * An instance of the MixpanelEvents class
-     * @var BackWPup_WPMedia_Producers_MixpanelEvents
+     * @var WPMedia_Producers_MixpanelEvents
      */
     private $_events;
 
     /**
      * An instance of the MixpanelGroups class (used to create/update group profiles)
-     * @var BackWPup_WPMedia_Producers_MixpanelPeople
+     * @var WPMedia_Producers_MixpanelPeople
      */
     public $group;
  
@@ -128,7 +128,7 @@ class BackWPup_WPMedia_Mixpanel extends BackWPup_WPMedia_Base_MixpanelBase {
 
     /**
      * Instances' list of the Mixpanel class (for singleton use, splitted by token)
-     * @var BackWPup_WPMedia_Mixpanel[]
+     * @var WPMedia_Mixpanel[]
      */
     private static $_instances = array();
     
@@ -140,9 +140,9 @@ class BackWPup_WPMedia_Mixpanel extends BackWPup_WPMedia_Base_MixpanelBase {
      */
     public function __construct($token, $options = array()) {
         parent::__construct($options);
-        $this->people = new BackWPup_WPMedia_Producers_MixpanelPeople($token, $options);
-        $this->_events = new BackWPup_WPMedia_Producers_MixpanelEvents($token, $options);
-        $this->group = new BackWPup_WPMedia_Producers_MixpanelGroups($token, $options);
+        $this->people = new WPMedia_Producers_MixpanelPeople($token, $options);
+        $this->_events = new WPMedia_Producers_MixpanelEvents($token, $options);
+        $this->group = new WPMedia_Producers_MixpanelGroups($token, $options);
     }
 
 
@@ -150,11 +150,11 @@ class BackWPup_WPMedia_Mixpanel extends BackWPup_WPMedia_Base_MixpanelBase {
      * Returns a singleton instance of Mixpanel
      * @param $token
      * @param array $options
-     * @return BackWPup_WPMedia_Mixpanel
+     * @return WPMedia_Mixpanel
      */
     public static function getInstance($token, $options = array()) {
         if(!isset(self::$_instances[$token])) {
-            self::$_instances[$token] = new BackWPup_WPMedia_Mixpanel($token, $options);
+            self::$_instances[$token] = new WPMedia_Mixpanel($token, $options);
         }
         return self::$_instances[$token];
     }

@@ -13,7 +13,7 @@ $upgrade_url = wpm_apply_filters_typed(
 
 $cta_url = add_query_arg(
 	[
-		'bwu_redirect'                      => $upgrade_url,
+		'bwu_redirect'                      => rawurlencode( $upgrade_url ),
 		'bwu_event'                         => 'Upgrade nudge banner clicked',
 		'bwu_event_property_nudge_location' => 'backup_complete',
 		'_wpnonce'                          => wp_create_nonce( 'backwpup_redirect_nonce' ),

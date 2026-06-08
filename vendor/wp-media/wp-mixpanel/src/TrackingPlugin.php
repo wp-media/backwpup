@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WPMedia\BackWPup\Dependencies\WPMedia\Mixpanel;
+namespace WPMedia\Mixpanel;
 
 class TrackingPlugin extends Tracking {
 	/**
@@ -37,7 +37,7 @@ class TrackingPlugin extends Tracking {
 		$options = [
 			'consumer'  => 'wp',
 			'consumers' => [
-				'wp' => 'WPMedia\\BackWPup\\Dependencies\\WPMedia\\Mixpanel\\WPConsumer',
+				'wp' => 'WPMedia\\Mixpanel\\WPConsumer',
 			],
 		];
 

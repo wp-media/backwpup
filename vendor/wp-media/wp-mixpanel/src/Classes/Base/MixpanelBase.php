@@ -5,7 +5,7 @@
  * debugging and logging functionality. It also serves to persist $_options across the library.
  *
  */
-class BackWPup_WPMedia_Base_MixpanelBase {
+class WPMedia_Base_MixpanelBase {
 
 
     /**

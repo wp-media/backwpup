@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider;
+namespace League\Container\ServiceProvider;
 
 use Generator;
-use WPMedia\BackWPup\Dependencies\League\Container\Exception\ContainerException;
-use WPMedia\BackWPup\Dependencies\League\Container\{ContainerAwareInterface, ContainerAwareTrait};
+use League\Container\Exception\ContainerException;
+use League\Container\{ContainerAwareInterface, ContainerAwareTrait};
 
 class ServiceProviderAggregate implements ServiceProviderAggregateInterface
 {

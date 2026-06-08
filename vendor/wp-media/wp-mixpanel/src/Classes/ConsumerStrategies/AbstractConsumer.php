@@ -3,7 +3,7 @@
 /**
  * Provides some base methods for use by a Consumer implementation
  */
-abstract class BackWPup_WPMedia_ConsumerStrategies_AbstractConsumer extends BackWPup_WPMedia_Base_MixpanelBase {
+abstract class WPMedia_ConsumerStrategies_AbstractConsumer extends WPMedia_Base_MixpanelBase {
 
     /**
      * Creates a new AbstractConsumer

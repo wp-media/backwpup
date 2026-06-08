@@ -1,6 +1,6 @@
 <?php
 
-namespace WPMedia\BackWPup\Dependencies\Psr\Container;
+namespace Psr\Container;
 
 use Throwable;
 
