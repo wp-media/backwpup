@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace League\Container\Argument\Literal;
+namespace WPMedia\BackWPup\Dependencies\League\Container\Argument\Literal;
 
-use League\Container\Argument\LiteralArgument;
+use WPMedia\BackWPup\Dependencies\League\Container\Argument\LiteralArgument;
 
 class ObjectArgument extends LiteralArgument
 {

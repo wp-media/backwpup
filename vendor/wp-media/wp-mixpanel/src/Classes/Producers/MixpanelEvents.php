@@ -3,7 +3,7 @@
 /**
  * Provides an API to track events on Mixpanel
  */
-class WPMedia_Producers_MixpanelEvents extends WPMedia_Producers_MixpanelBaseProducer {
+class BackWPup_WPMedia_Producers_MixpanelEvents extends BackWPup_WPMedia_Producers_MixpanelBaseProducer {
 
     /**
      * An array of properties to attach to every tracked event

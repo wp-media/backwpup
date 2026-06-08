@@ -8,7 +8,7 @@
  * @license     https://opensource.org/licenses/MIT MIT
  * @since       1.0.0
  */
-namespace BerlinDB\Database;
+namespace WPMedia\BackWPup\Dependencies\BerlinDB\Database;
 
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
@@ -77,7 +77,7 @@ class Query extends Base {
 	 * @since 1.0.0
 	 * @var   string
 	 */
-	protected $table_schema = '\\BerlinDB\\Database\\Schema';
+	protected $table_schema = '\\WPMedia\\BackWPup\\Dependencies\\BerlinDB\\Database\\Schema';
 
 	/** Item ******************************************************************/
 
@@ -113,7 +113,7 @@ class Query extends Base {
 	 * @since 1.0.0
 	 * @var   mixed
 	 */
-	protected $item_shape = '\\BerlinDB\\Database\\Row';
+	protected $item_shape = '\\WPMedia\\BackWPup\\Dependencies\\BerlinDB\\Database\\Row';
 
     /**
      * Name of class used to turn IDs into first-class objects for the current request.

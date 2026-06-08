@@ -29,7 +29,6 @@ class ComposerStaticInite317687f879a2f45ca8a30958581596e
             'Webmozart\\Assert\\' => 17,
             'WP\\McpSchema\\' => 13,
             'WP\\MCP\\' => 7,
-            'WPMedia\\Mixpanel\\' => 17,
             'WPMedia\\Beta\\' => 13,
             'WPMedia\\BackWPup\\Tracking\\' => 26,
             'WPMedia\\BackWPup\\StorageProviders\\' => 34,
@@ -40,6 +39,10 @@ class ComposerStaticInite317687f879a2f45ca8a30958581596e
             'WPMedia\\BackWPup\\Jobs\\' => 22,
             'WPMedia\\BackWPup\\Hosting\\' => 25,
             'WPMedia\\BackWPup\\Frontend\\' => 26,
+            'WPMedia\\BackWPup\\Dependencies\\WPMedia\\Mixpanel\\' => 47,
+            'WPMedia\\BackWPup\\Dependencies\\Psr\\Container\\' => 44,
+            'WPMedia\\BackWPup\\Dependencies\\League\\Container\\' => 47,
+            'WPMedia\\BackWPup\\Dependencies\\BerlinDB\\' => 39,
             'WPMedia\\BackWPup\\Dependencies\\' => 30,
             'WPMedia\\BackWPup\\Common\\' => 24,
             'WPMedia\\BackWPup\\Cli\\' => 21,
@@ -62,7 +65,6 @@ class ComposerStaticInite317687f879a2f45ca8a30958581596e
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
-            'Psr\\Container\\' => 14,
             'ParagonIE\\ConstantTime\\' => 23,
         ),
         'M' =>
@@ -75,7 +77,6 @@ class ComposerStaticInite317687f879a2f45ca8a30958581596e
         'L' =>
         array (
             'Liborm85\\ComposerVendorCleaner\\' => 31,
-            'League\\Container\\' => 17,
         ),
         'K' =>
         array (
@@ -101,8 +102,6 @@ class ComposerStaticInite317687f879a2f45ca8a30958581596e
         ),
         'B' =>
         array (
-            'Beta\\Microsoft\\Graph\\' => 21,
-            'BerlinDB\\' => 9,
             'Base32\\' => 7,
         ),
         'A' =>
@@ -127,10 +126,6 @@ class ComposerStaticInite317687f879a2f45ca8a30958581596e
         'WP\\MCP\\' =>
         array (
             0 => __DIR__ . '/..' . '/wordpress/mcp-adapter/includes',
-        ),
-        'WPMedia\\Mixpanel\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src',
         ),
         'WPMedia\\Beta\\' =>
         array (
@@ -171,6 +166,22 @@ class ComposerStaticInite317687f879a2f45ca8a30958581596e
         'WPMedia\\BackWPup\\Frontend\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Frontend',
+        ),
+        'WPMedia\\BackWPup\\Dependencies\\WPMedia\\Mixpanel\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src',
+        ),
+        'WPMedia\\BackWPup\\Dependencies\\Psr\\Container\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'WPMedia\\BackWPup\\Dependencies\\League\\Container\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/league/container/src',
+        ),
+        'WPMedia\\BackWPup\\Dependencies\\BerlinDB\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/berlindb/core/src',
         ),
         'WPMedia\\BackWPup\\Dependencies\\' =>
         array (
@@ -237,10 +248,6 @@ class ComposerStaticInite317687f879a2f45ca8a30958581596e
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
         ),
-        'Psr\\Container\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/psr/container/src',
-        ),
         'ParagonIE\\ConstantTime\\' =>
         array (
             0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
@@ -264,10 +271,6 @@ class ComposerStaticInite317687f879a2f45ca8a30958581596e
         'Liborm85\\ComposerVendorCleaner\\' =>
         array (
             0 => __DIR__ . '/..' . '/liborm85/composer-vendor-cleaner/src',
-        ),
-        'League\\Container\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/league/container/src',
         ),
         'Krizalys\\Onedrive\\' =>
         array (
@@ -308,14 +311,6 @@ class ComposerStaticInite317687f879a2f45ca8a30958581596e
         'GuzzleHttp\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
-        ),
-        'Beta\\Microsoft\\Graph\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/microsoft/microsoft-graph/src/Beta/Microsoft/Graph',
-        ),
-        'BerlinDB\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/berlindb/core/src',
         ),
         'Base32\\' =>
         array (
@@ -375,6 +370,7 @@ class ComposerStaticInite317687f879a2f45ca8a30958581596e
         'AWS\\CRT\\NativeResource' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/NativeResource.php',
         'AWS\\CRT\\OptionValue' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Options.php',
         'AWS\\CRT\\Options' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Options.php',
+        'Archive_Tar' => __DIR__ . '/..' . '/pear/archive_tar/Archive/Tar.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'BackWPup' => __DIR__ . '/../..' . '/inc/BackWPup.php',
         'BackWPup\\ThirdParty\\Autoptimize' => __DIR__ . '/../..' . '/inc/ThirdParty/Autoptimize.php',
@@ -464,6 +460,16 @@ class ComposerStaticInite317687f879a2f45ca8a30958581596e
         'BackWPup_System_Tests' => __DIR__ . '/../..' . '/inc/class-system-tests.php',
         'BackWPup_System_Tests_Runner' => __DIR__ . '/../..' . '/inc/class-system-tests-runner.php',
         'BackWPup_ThirdParties' => __DIR__ . '/../..' . '/inc/class-thirdparties.php',
+        'BackWPup_WPMedia_Base_MixpanelBase' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Base/MixpanelBase.php',
+        'BackWPup_WPMedia_ConsumerStrategies_AbstractConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/AbstractConsumer.php',
+        'BackWPup_WPMedia_ConsumerStrategies_CurlConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/CurlConsumer.php',
+        'BackWPup_WPMedia_ConsumerStrategies_FileConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/FileConsumer.php',
+        'BackWPup_WPMedia_ConsumerStrategies_SocketConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/SocketConsumer.php',
+        'BackWPup_WPMedia_Mixpanel' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Mixpanel.php',
+        'BackWPup_WPMedia_Producers_MixpanelBaseProducer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelBaseProducer.php',
+        'BackWPup_WPMedia_Producers_MixpanelEvents' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelEvents.php',
+        'BackWPup_WPMedia_Producers_MixpanelGroups' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelGroups.php',
+        'BackWPup_WPMedia_Producers_MixpanelPeople' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelPeople.php',
         'BackWpUp_Destination_Downloader_Data' => __DIR__ . '/../..' . '/inc/class-destination-downloader-data.php',
         'BackWpup_Download_Handler' => __DIR__ . '/../..' . '/inc/class-download-handler.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
@@ -500,6 +506,7 @@ class ComposerStaticInite317687f879a2f45ca8a30958581596e
         'PEAR_Error' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR.php',
         'PEAR_ErrorStack' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR/ErrorStack.php',
         'PEAR_Exception' => __DIR__ . '/..' . '/pear/pear_exception/PEAR/Exception.php',
+        'PEAR_PHPTest' => __DIR__ . '/..' . '/pear/archive_tar/tests/phpt_test.php.inc',
         'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'System' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/System.php',
@@ -508,16 +515,6 @@ class ComposerStaticInite317687f879a2f45ca8a30958581596e
         'WPMedia\\BackWPup\\EventManagement\\EventManager' => __DIR__ . '/../..' . '/inc/dependencies/wp-media/event-manager/EventManager.php',
         'WPMedia\\BackWPup\\EventManagement\\EventManagerAwareSubscriberInterface' => __DIR__ . '/../..' . '/inc/dependencies/wp-media/event-manager/EventManagerAwareSubscriberInterface.php',
         'WPMedia\\BackWPup\\EventManagement\\SubscriberInterface' => __DIR__ . '/../..' . '/inc/dependencies/wp-media/event-manager/SubscriberInterface.php',
-        'WPMedia_Base_MixpanelBase' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Base/MixpanelBase.php',
-        'WPMedia_ConsumerStrategies_AbstractConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/AbstractConsumer.php',
-        'WPMedia_ConsumerStrategies_CurlConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/CurlConsumer.php',
-        'WPMedia_ConsumerStrategies_FileConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/FileConsumer.php',
-        'WPMedia_ConsumerStrategies_SocketConsumer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/ConsumerStrategies/SocketConsumer.php',
-        'WPMedia_Mixpanel' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Mixpanel.php',
-        'WPMedia_Producers_MixpanelBaseProducer' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelBaseProducer.php',
-        'WPMedia_Producers_MixpanelEvents' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelEvents.php',
-        'WPMedia_Producers_MixpanelGroups' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelGroups.php',
-        'WPMedia_Producers_MixpanelPeople' => __DIR__ . '/..' . '/wp-media/wp-mixpanel/src/Classes/Producers/MixpanelPeople.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

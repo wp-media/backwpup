@@ -3,7 +3,7 @@
 /**
  * Provides an API to create/update profiles on Mixpanel
  */
-class WPMedia_Producers_MixpanelPeople extends WPMedia_Producers_MixpanelBaseProducer {
+class BackWPup_WPMedia_Producers_MixpanelPeople extends BackWPup_WPMedia_Producers_MixpanelBaseProducer {
 
     /**
      * Internal method to prepare a message given the message data

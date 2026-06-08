@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace League\Container;
+namespace WPMedia\BackWPup\Dependencies\League\Container;
 
-use League\Container\Argument\{ArgumentResolverInterface, ArgumentResolverTrait};
-use League\Container\Exception\ContainerException;
-use League\Container\Exception\NotFoundException;
-use Psr\Container\ContainerInterface;
+use WPMedia\BackWPup\Dependencies\League\Container\Argument\{ArgumentResolverInterface, ArgumentResolverTrait};
+use WPMedia\BackWPup\Dependencies\League\Container\Exception\ContainerException;
+use WPMedia\BackWPup\Dependencies\League\Container\Exception\NotFoundException;
+use WPMedia\BackWPup\Dependencies\Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionFunction;
 use ReflectionMethod;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace League\Container\Argument;
+namespace WPMedia\BackWPup\Dependencies\League\Container\Argument;
 
 class ResolvableArgument implements ResolvableArgumentInterface
 {

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace League\Container;
+namespace WPMedia\BackWPup\Dependencies\League\Container;
 
-use League\Container\Definition\{DefinitionAggregate, DefinitionInterface, DefinitionAggregateInterface};
-use League\Container\Exception\{NotFoundException, ContainerException};
-use League\Container\Inflector\{InflectorAggregate, InflectorInterface, InflectorAggregateInterface};
-use League\Container\ServiceProvider\{ServiceProviderAggregate,
+use WPMedia\BackWPup\Dependencies\League\Container\Definition\{DefinitionAggregate, DefinitionInterface, DefinitionAggregateInterface};
+use WPMedia\BackWPup\Dependencies\League\Container\Exception\{NotFoundException, ContainerException};
+use WPMedia\BackWPup\Dependencies\League\Container\Inflector\{InflectorAggregate, InflectorInterface, InflectorAggregateInterface};
+use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\{ServiceProviderAggregate,
     ServiceProviderAggregateInterface,
     ServiceProviderInterface};
-use Psr\Container\ContainerInterface;
+use WPMedia\BackWPup\Dependencies\Psr\Container\ContainerInterface;
 
 class Container implements DefinitionContainerInterface
 {

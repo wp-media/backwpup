@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace League\Container;
+namespace WPMedia\BackWPup\Dependencies\League\Container;
 
 use BadMethodCallException;
-use League\Container\Exception\ContainerException;
+use WPMedia\BackWPup\Dependencies\League\Container\Exception\ContainerException;
 
 trait ContainerAwareTrait
 {

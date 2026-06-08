@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace League\Container;
+namespace WPMedia\BackWPup\Dependencies\League\Container;
 
-use League\Container\Definition\DefinitionInterface;
-use League\Container\Inflector\InflectorInterface;
-use League\Container\ServiceProvider\ServiceProviderInterface;
-use Psr\Container\ContainerInterface;
+use WPMedia\BackWPup\Dependencies\League\Container\Definition\DefinitionInterface;
+use WPMedia\BackWPup\Dependencies\League\Container\Inflector\InflectorInterface;
+use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\ServiceProviderInterface;
+use WPMedia\BackWPup\Dependencies\Psr\Container\ContainerInterface;
 
 interface DefinitionContainerInterface extends ContainerInterface
 {

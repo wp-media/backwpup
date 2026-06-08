@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace League\Container\ServiceProvider;
+namespace WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider;
 
 interface BootableServiceProviderInterface extends ServiceProviderInterface
 {

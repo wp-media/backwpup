@@ -8,12 +8,12 @@
  * @license     https://opensource.org/licenses/MIT MIT
  * @since       1.0.0
  */
-namespace BerlinDB\Database\Queries;
+namespace WPMedia\BackWPup\Dependencies\BerlinDB\Database\Queries;
 
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
-use BerlinDB\Database\Base;
+use WPMedia\BackWPup\Dependencies\BerlinDB\Database\Base;
 
 /**
  * Class for generating SQL clauses that filter a primary query according to date.

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace League\Container\ServiceProvider;
+namespace WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider;
 
-use League\Container\ContainerAwareInterface;
+use WPMedia\BackWPup\Dependencies\League\Container\ContainerAwareInterface;
 
 interface ServiceProviderInterface extends ContainerAwareInterface
 {

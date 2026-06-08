@@ -8,7 +8,7 @@
  * @license     https://opensource.org/licenses/MIT MIT
  * @since       1.1.0
  */
-namespace BerlinDB\Database\Queries;
+namespace WPMedia\BackWPup\Dependencies\BerlinDB\Database\Queries;
 
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;

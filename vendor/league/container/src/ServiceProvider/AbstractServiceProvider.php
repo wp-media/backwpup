@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace League\Container\ServiceProvider;
+namespace WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider;
 
-use League\Container\ContainerAwareTrait;
+use WPMedia\BackWPup\Dependencies\League\Container\ContainerAwareTrait;
 
 abstract class AbstractServiceProvider implements ServiceProviderInterface
 {

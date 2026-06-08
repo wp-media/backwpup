@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace League\Container\Exception;
+namespace WPMedia\BackWPup\Dependencies\League\Container\Exception;
 
-use Psr\Container\NotFoundExceptionInterface;
+use WPMedia\BackWPup\Dependencies\Psr\Container\NotFoundExceptionInterface;
 use InvalidArgumentException;
 
 class NotFoundException extends InvalidArgumentException implements NotFoundExceptionInterface

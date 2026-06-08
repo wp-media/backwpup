@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace League\Container\Argument;
+namespace WPMedia\BackWPup\Dependencies\League\Container\Argument;
 
-use League\Container\ContainerAwareInterface;
+use WPMedia\BackWPup\Dependencies\League\Container\ContainerAwareInterface;
 use ReflectionFunctionAbstract;
 
 interface ArgumentResolverInterface extends ContainerAwareInterface

@@ -1,6 +1,6 @@
 <?php
 
-namespace Psr\Container;
+namespace WPMedia\BackWPup\Dependencies\Psr\Container;
 
 /**
  * No entry was found in the container.

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace League\Container\Inflector;
+namespace WPMedia\BackWPup\Dependencies\League\Container\Inflector;
 
-use League\Container\Argument\ArgumentResolverInterface;
-use League\Container\Argument\ArgumentResolverTrait;
-use League\Container\ContainerAwareTrait;
+use WPMedia\BackWPup\Dependencies\League\Container\Argument\ArgumentResolverInterface;
+use WPMedia\BackWPup\Dependencies\League\Container\Argument\ArgumentResolverTrait;
+use WPMedia\BackWPup\Dependencies\League\Container\ContainerAwareTrait;
 
 class Inflector implements ArgumentResolverInterface, InflectorInterface
 {

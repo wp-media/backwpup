@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace League\Container\Definition;
+namespace WPMedia\BackWPup\Dependencies\League\Container\Definition;
 
-use League\Container\ContainerAwareInterface;
+use WPMedia\BackWPup\Dependencies\League\Container\ContainerAwareInterface;
 
 interface DefinitionInterface extends ContainerAwareInterface
 {

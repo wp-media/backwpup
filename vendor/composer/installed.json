@@ -178,7 +178,7 @@
             "installation-source": "dist",
             "autoload": {
                 "psr-4": {
-                    "BerlinDB\\": "src/"
+                    "WPMedia\\BackWPup\\Dependencies\\BerlinDB\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -993,7 +993,7 @@
             "installation-source": "dist",
             "autoload": {
                 "psr-4": {
-                    "League\\Container\\": "src"
+                    "WPMedia\\BackWPup\\Dependencies\\League\\Container\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1227,8 +1227,7 @@
             "installation-source": "dist",
             "autoload": {
                 "psr-4": {
-                    "Microsoft\\Graph\\": "src/",
-                    "Beta\\Microsoft\\Graph\\": "src/Beta/Microsoft/Graph/"
+                    "Microsoft\\Graph\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1585,7 +1584,11 @@
             "autoload": {
                 "psr-0": {
                     "Archive_Tar": ""
-                }
+                },
+                "classmap": [
+                    "",
+                    ""
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "include-path": [
@@ -1985,7 +1988,7 @@
             "installation-source": "dist",
             "autoload": {
                 "psr-4": {
-                    "Psr\\Container\\": "src/"
+                    "WPMedia\\BackWPup\\Dependencies\\Psr\\Container\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2990,7 +2993,7 @@
             "installation-source": "dist",
             "autoload": {
                 "psr-4": {
-                    "WPMedia\\Mixpanel\\": "src/"
+                    "WPMedia\\BackWPup\\Dependencies\\WPMedia\\Mixpanel\\": "src/"
                 },
                 "classmap": [
                     "src/Classes/"

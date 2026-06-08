@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace League\Container;
+namespace WPMedia\BackWPup\Dependencies\League\Container;
 
 interface ContainerAwareInterface
 {
