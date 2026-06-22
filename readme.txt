@@ -5,7 +5,7 @@ Tags: backup, restore, cloud backup, database backup, wordpress backup
 Requires at least: 4.9
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 5.7.2
+Stable tag: 5.7.3
 License: GPLv2+
 
 Create a complete WordPress backup easily. Schedule automatic backups, store securely, and restore effortlessly with the best WordPress backup plugin!
@@ -193,6 +193,14 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
 == Changelog ==
+= 5.7.3 =
+Release date: June 22, 2026
+
+* Enhancement: Added the backwpup_mcp_server_enabled filter to allow disabling MCP functionality.
+* Fix: MCP backup history now reports correct file sizes across all storage destinations.
+* Fix: Resolved a WooCommerce compatibility issue that could generate log errors.
+* Fix: Resolved PHP 8.1+ compatibility issues affecting MCP operations.
+
 = 5.7.2 =
 Release date: June 8, 2026
 
