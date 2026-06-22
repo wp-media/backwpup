@@ -45,6 +45,8 @@ class DocsOverview implements AbilitiesInterface {
 				'execute_callback'    => [ $this, 'execute' ],
 				'permission_callback' => [ $this, 'check_permissions' ],
 				'meta'                => [
+					// Backward-compat: mcp-adapter <0.5.0 (e.g. WooCommerce) expects the URI at the top level of meta.
+					'uri' => self::RESOURCE_URI,
 					'mcp' => [
 						'public'   => true,
 						'type'     => 'resource',

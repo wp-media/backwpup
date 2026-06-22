@@ -5,8 +5,8 @@
  * Description: WordPress Backup Plugin
  * Author: BackWPup – WordPress Backup & Restore Plugin
  * Author URI: https://backwpup.com
- * Version: 5.7.2
- * Requires at least: 5.1
+ * Version: 5.7.3
+ * Requires at least: 5.3
  * Requires PHP: 7.4
  * Text Domain: backwpup
  * Domain Path: /languages
@@ -44,7 +44,19 @@ $can_boot_mcp_adapter =
 	&& function_exists( 'wp_register_ability_category' );
 
 if ( $can_boot_mcp_adapter ) {
-	McpAdapter::instance();
+	/**
+	 * Filter whether the BackWPup MCP server is enabled or not.
+	 *
+	 * When this resolves to false, the MCP adapter is not instantiated, so the
+	 * MCP REST endpoint and abilities are never registered.
+	 *
+	 * @since 5.7.3
+	 *
+	 * @param bool $enabled Whether the MCP server is enabled or not. Default true.
+	 */
+	if ( wpm_apply_filters_typed( 'boolean', 'backwpup_mcp_server_enabled', true ) ) {
+		McpAdapter::instance();
+	}
 }
 
 require_once __DIR__ . '/inc/functions.php';

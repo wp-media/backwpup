@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 require_once __DIR__ . '/class-destination-sugarsync-api-exception.php';
 
 use Inpsyde\BackWPupShared\File\MimeTypeExtractor;

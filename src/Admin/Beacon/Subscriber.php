@@ -68,6 +68,8 @@ class Subscriber implements SubscriberInterface {
 		$allowed_domains   = [
 			'backwpup.com',
 			'backwpup.de',
+			'com.bwu.local',
+			'de.bwu.local',
 		];
 		$is_allowed_domain = false;
 		foreach ( $allowed_domains as $domain ) {

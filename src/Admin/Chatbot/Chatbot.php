@@ -8,6 +8,8 @@ use WPMedia\BackWPup\Common\AbstractRender;
 
 class Chatbot extends AbstractRender {
 
+	public const CHATBOT_URL = 'https://backwpup.com/support-redirect/chat/';
+
 	/**
 	 * Context Snapshot Builder instance.
 	 *
@@ -35,7 +37,8 @@ class Chatbot extends AbstractRender {
 	 * @return string
 	 */
 	public function get_chatbot_url(): string {
-		return (string) wpm_apply_filters_typesafe( 'backwpup_chatbot_url', 'https://backwpup.com/support-redirect/chat/' );
+		$chatbot_url = wpm_apply_filters_typesafe( 'backwpup_chatbot_url', self::CHATBOT_URL );
+		return (string) wpm_apply_filters_typesafe( 'backwpup_url_add_hash', $chatbot_url );
 	}
 
 	/**

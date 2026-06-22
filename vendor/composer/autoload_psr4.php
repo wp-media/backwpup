@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'phpseclib3\\' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
+    'cweagans\\Composer\\' => array($vendorDir . '/cweagans/composer-patches/src'),
     'Webmozart\\Assert\\' => array($vendorDir . '/webmozart/assert/src'),
     'WP\\McpSchema\\' => array($vendorDir . '/wordpress/php-mcp-schema/src'),
     'WP\\MCP\\' => array($vendorDir . '/wordpress/mcp-adapter/includes'),

@@ -1,8 +1,16 @@
 == Changelog ==
+= 5.7.3 =
+Release date: June 22, 2026
+
+* Enhancement: Added the backwpup_mcp_server_enabled filter to allow disabling MCP functionality.
+* Fix: MCP backup history now reports correct file sizes across all storage destinations.
+* Fix: Resolved a WooCommerce compatibility issue that could generate log errors.
+* Fix: Resolved PHP 8.1+ compatibility issues affecting MCP operations.
+
 = 5.7.2 =
 Release date: June 8, 2026
 
-* Fix: Resolved PHP namespace conflicts in bundled vendor libraries to prevent fatal errors caused by dependency collisions with other plugins.
+* Fix: Resolved PHP namespace conflicts in bundled vendor libraries to prevent fatal errors caused by dependency collisions with other plugins for free versions.
 
 = 5.7.0 =
 Release date: June 8, 2026

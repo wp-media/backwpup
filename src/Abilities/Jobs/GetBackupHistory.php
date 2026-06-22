@@ -135,65 +135,14 @@ class GetBackupHistory implements AbilitiesInterface {
 							'description' => __( 'Whether a backup job is currently active', 'backwpup' ),
 						],
 						'current_job'    => [
-							'oneOf'       => [
-								[ 'type' => 'null' ],
-								[
-									'type'       => 'object',
-									'properties' => [
-										'name'     => [
-											'type'        => 'string',
-											'description' => __( 'Name of the currently running job', 'backwpup' ),
-										],
-										'progress' => [
-											'type'        => 'integer',
-											'description' => __( 'Progress percentage (0-100)', 'backwpup' ),
-											'minimum'     => 0,
-											'maximum'     => 100,
-										],
-										'step'     => [
-											'type'        => 'string',
-											'description' => __( 'Current step being executed', 'backwpup' ),
-										],
-									],
-								],
-							],
+							'type'        => 'object',
 							'description' => __( 'Information about the currently running job, if any', 'backwpup' ),
 						],
 						'recent_backups' => [
 							'type'        => 'array',
 							'description' => __( 'List of recent backups', 'backwpup' ),
 							'items'       => [
-								'type'       => 'object',
-								'properties' => [
-									'filename'    => [
-										'type'        => 'string',
-										'description' => __( 'Backup file name', 'backwpup' ),
-									],
-									'job_id'      => [
-										'type'        => 'integer',
-										'description' => __( 'ID of the job that created the backup', 'backwpup' ),
-									],
-									'job_name'    => [
-										'type'        => 'string',
-										'description' => __( 'Name of the job that created the backup', 'backwpup' ),
-									],
-									'destination' => [
-										'type'        => 'string',
-										'description' => __( 'Destination where the backup is stored', 'backwpup' ),
-									],
-									'size'        => [
-										'type'        => 'integer',
-										'description' => __( 'Backup file size in bytes', 'backwpup' ),
-									],
-									'time'        => [
-										'type'        => 'integer',
-										'description' => __( 'Unix timestamp of when the backup was created', 'backwpup' ),
-									],
-									'status'      => [
-										'type'        => 'string',
-										'description' => __( 'Backup status (e.g. created, completed, failed)', 'backwpup' ),
-									],
-								],
+								'type' => 'object',
 							],
 						],
 					],
@@ -233,32 +182,36 @@ class GetBackupHistory implements AbilitiesInterface {
 	public function execute( array $args = [] ) {
 		$start_time = microtime( true );
 
-		$limit = isset( $args['limit'] ) ? (int) $args['limit'] : self::DEFAULT_LIMIT;
-		$limit = max( 1, min( 50, $limit ) );
+		try {
+			$limit = isset( $args['limit'] ) ? (int) $args['limit'] : self::DEFAULT_LIMIT;
+			$limit = max( 1, min( 50, $limit ) );
 
-		// Get running job status.
-		$running_data = $this->get_running_job_data();
+			// Get running job status.
+			$running_data = $this->get_running_job_data();
 
-		// Get recent backups.
-		$recent_backups = $this->get_recent_backups( $limit );
+			// Get recent backups.
+			$recent_backups = $this->get_recent_backups( $limit );
 
-		$success_result = [
-			'is_running'     => $running_data['is_running'],
-			'current_job'    => $running_data['current_job'],
-			'recent_backups' => $recent_backups,
-		];
+			$success_result = [
+				'is_running'     => (bool) $running_data['is_running'],
+				'current_job'    => is_array( $running_data['current_job'] ) ? $running_data['current_job'] : (object) [],
+				'recent_backups' => is_array( $recent_backups ) ? $recent_backups : [],
+			];
 
-		// Track successful execution.
-		do_action(
-			'backwpup_mcp_ability_executed',
-			self::ABILITY_ID,
-			self::TOOL_NAME,
-			$success_result,
-			$start_time,
-			$args
-		);
+			// Track successful execution.
+			do_action(
+				'backwpup_mcp_ability_executed',
+				self::ABILITY_ID,
+				self::TOOL_NAME,
+				$success_result,
+				$start_time,
+				$args
+			);
 
-		return $success_result;
+			return $success_result;
+		} catch ( \Throwable $e ) {
+			return new \WP_Error( 'backwpup_get_backup_history_error', $e->getMessage() );
+		}
 	}
 
 	/**
@@ -314,6 +267,7 @@ class GetBackupHistory implements AbilitiesInterface {
 	private function get_recent_backups_from_db( int $limit ): array {
 		$registered_destinations = $this->backwpup_adapter->get_registered_destinations();
 		$job_cache               = [];
+		$file_list_cache         = [];
 
 		$rows = $this->backups_query->query(
 			[
@@ -327,6 +281,45 @@ class GetBackupHistory implements AbilitiesInterface {
 			return [];
 		}
 
+		// Build a filename → filesize lookup map per (job_id, destination) pair.
+		$size_map = [];
+		foreach ( $rows as $row ) {
+			$job_id   = (int) ( $row->job_id ?? 0 );
+			$dest_key = strtoupper( (string) ( $row->destination ?? '' ) );
+
+			if ( '' === $dest_key ) {
+				continue;
+			}
+
+			$cache_key = $job_id . '_' . $dest_key;
+
+			if ( ! array_key_exists( $cache_key, $file_list_cache ) ) {
+				$dest_object = $this->backwpup_adapter->get_destination( $dest_key );
+
+				if ( is_array( $dest_object ) ) {
+					$file_list_cache[ $cache_key ] = [];
+				} else {
+					$items                         = $dest_object->file_get_list( $cache_key );
+					$file_list_cache[ $cache_key ] = is_array( $items ) ? $items : [];
+				}
+			}
+
+			if ( ! isset( $size_map[ $cache_key ] ) ) {
+				$size_map[ $cache_key ] = [];
+			}
+
+			foreach ( $file_list_cache[ $cache_key ] as $item ) {
+				if ( ! is_array( $item ) ) {
+					continue;
+				}
+
+				$filename = $item['filename'] ?? basename( $item['file'] ?? '' );
+				if ( '' !== $filename ) {
+					$size_map[ $cache_key ][ $filename ] = (int) ( $item['filesize'] ?? 0 );
+				}
+			}
+		}
+
 		$backups = [];
 		foreach ( $rows as $row ) {
 			$job_id = (int) ( $row->job_id ?? 0 );
@@ -337,13 +330,14 @@ class GetBackupHistory implements AbilitiesInterface {
 			}
 
 			$dest_key = strtoupper( (string) ( $row->destination ?? '' ) );
+			$filename = (string) ( $row->filename ?? '' );
 
 			$backups[] = [
-				'filename'    => (string) ( $row->filename ?? '' ),
+				'filename'    => $filename,
 				'job_id'      => $job_id,
 				'job_name'    => $job_cache[ $job_id ],
 				'destination' => $this->get_destination_label( $dest_key, $registered_destinations ),
-				'size'        => 0,
+				'size'        => (int) ( $size_map[ $job_id . '_' . $dest_key ][ $filename ] ?? 0 ),
 				'time'        => (int) ( $row->submitted_at ?? 0 ),
 				'status'      => (string) ( $row->status ?? '' ),
 			];
@@ -371,7 +365,7 @@ class GetBackupHistory implements AbilitiesInterface {
 			}
 
 			$job_name     = $job['name'] ?? __( 'Unknown Job', 'backwpup' );
-			$destinations = $job[' destinations'] ?? [];
+			$destinations = $job['destinations'] ?? [];
 
 			foreach ( $destinations as $dest ) {
 				$normalized_dest = strtoupper( (string) $dest );

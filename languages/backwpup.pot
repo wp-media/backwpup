@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-08 08:40+0000\n"
+"POT-Creation-Date: 2026-06-22 07:30+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -35,7 +35,7 @@ msgid "https://backwpup.com"
 msgstr ""
 
 #. translators: %1$s is the minimum PHP version, %2$s is the minimum WordPress version.
-#: backwpup.php:73
+#: backwpup.php:85
 msgid "BackWPup requires PHP version %1$s with spl extension or greater and WordPress %2$s or greater."
 msgstr ""
 
@@ -710,7 +710,7 @@ msgid "Uploaded file size and local file size don't match."
 msgstr ""
 
 #. translators: %s: destination path.
-#: inc/class-destination-dropbox.php:393, inc/class-destination-msazure.php:287, inc/class-destination-sugarsync.php:246, inc/Pro/class-destination-gdrive.php:527
+#: inc/class-destination-dropbox.php:393, inc/class-destination-msazure.php:287, inc/class-destination-sugarsync.php:250, inc/Pro/class-destination-gdrive.php:527
 msgid "Backup transferred to %s"
 msgstr ""
 
@@ -1138,57 +1138,57 @@ msgid "Backup transferred to %s."
 msgstr ""
 
 #. translators: %1$s: HTTP response error message.
-#: inc/class-destination-sugarsync-api.php:113
+#: inc/class-destination-sugarsync-api.php:117
 msgid "SugarSync error: %1$s"
 msgstr ""
 
 #. translators: %1$s: HTTP status code, %2$s: HTTP response message.
-#: inc/class-destination-sugarsync-api.php:133
+#: inc/class-destination-sugarsync-api.php:137
 msgid "SugarSync error: (%1$s) %2$s"
 msgstr ""
 
-#: inc/class-destination-sugarsync-api.php:219
+#: inc/class-destination-sugarsync-api.php:223
 msgid "Failed to create SugarSync account."
 msgstr ""
 
 #. translators: %d: attempt number.
-#: inc/class-destination-sugarsync.php:174
+#: inc/class-destination-sugarsync.php:178
 msgid "%d. Try to send backup to SugarSync&#160;&hellip;"
 msgstr ""
 
 #. translators: %s: SugarSync nickname.
-#: inc/class-destination-sugarsync.php:188
+#: inc/class-destination-sugarsync.php:192
 msgid "Authenticated to SugarSync with nickname %s"
 msgstr ""
 
 #. translators: %s: available space on SugarSync.
-#: inc/class-destination-sugarsync.php:199
+#: inc/class-destination-sugarsync.php:203
 msgctxt "Available space on SugarSync"
 msgid "Not enough disk space available on SugarSync. Available: %s."
 msgstr ""
 
 #. translators: %s: available space on SugarSync.
-#: inc/class-destination-sugarsync.php:217
+#: inc/class-destination-sugarsync.php:221
 msgid "%s available at SugarSync"
 msgstr ""
 
-#: inc/class-destination-sugarsync.php:224
+#: inc/class-destination-sugarsync.php:228
 msgid "Starting upload to SugarSync&#160;&hellip;"
 msgstr ""
 
-#: inc/class-destination-sugarsync.php:252
+#: inc/class-destination-sugarsync.php:256
 msgid "Cannot transfer backup to SugarSync!"
 msgstr ""
 
 #. translators: %d: number of files.
-#: inc/class-destination-sugarsync.php:310
+#: inc/class-destination-sugarsync.php:314
 msgid "%d file deleted on SugarSync folder"
 msgid_plural "%d files deleted on SugarSync folder"
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: error message.
-#: inc/class-destination-sugarsync.php:331
+#: inc/class-destination-sugarsync.php:335
 msgid "SugarSync API: %s"
 msgstr ""
 
