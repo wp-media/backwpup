@@ -29,7 +29,7 @@ final class Session implements NotificableStorableSessionInterface
     /**
      * {@inheritdoc}
      */
-    public function set($key, $value): void
+    public function set(string $key, $value): void // phpcs:ignore
     {
         $this->session[$key] = $value;
     }
@@ -37,7 +37,7 @@ final class Session implements NotificableStorableSessionInterface
     /**
      * {@inheritdoc}
      */
-    public function get($key)
+    public function get(string $key) // phpcs:ignore
     {
         return $this->session[$key] ?? null;
     }
@@ -45,7 +45,7 @@ final class Session implements NotificableStorableSessionInterface
     /**
      * {@inheritdoc}
      */
-    public function delete($key): void
+    public function delete(string $key): void
     {
         if (isset($this->session[$key])) {
             unset($this->session[$key]);
@@ -67,7 +67,7 @@ final class Session implements NotificableStorableSessionInterface
         Assert::allKeyExists($notifications, 'level');
         Assert::allKeyExists($notifications, 'msg');
 
-        return array_filter($notifications, static function ($notification): bool {
+        return array_filter($notifications, static function (array $notification): bool {
             return !(
                 !isset($notification['level']) || !is_string($notification['level'])
                 || !isset($notification['msg']) || !is_string($notification['msg'])

@@ -32,6 +32,7 @@ class Subscriber implements SubscriberInterface {
 			'admin_enqueue_scripts' => [
 				[ 'add_backwpup_job_script' ],
 				[ 'add_backwpup_onboarding_script' ],
+				[ 'add_delete_restore_files_script' ],
 			],
 			'admin_init'            => [
 				[ 'backwpup_redirect' ],
@@ -85,6 +86,29 @@ class Subscriber implements SubscriberInterface {
 		wp_register_script( 'backwpup-onboarding-admin-js',  $assets_path,  [],  $this->backwpup->get_plugin_data( 'Version' ),  true );
 
 		wp_enqueue_script( 'backwpup-onboarding-admin-js' );
+	}
+
+	/**
+	 * Enqueue the delete-restore-files script on all admin pages.
+	 *
+	 * The stale-restore-files notice can appear on any admin screen, so the
+	 * associated script must be available everywhere in the admin area.
+	 *
+	 * @since 5.7.3
+	 *
+	 * @return void
+	 */
+	public function add_delete_restore_files_script(): void {
+		$plugin_url  = $this->backwpup->get_plugin_data( 'URL' );
+		$assets_path = $plugin_url . '/assets/js/delete-restore-files.js';
+
+		wp_enqueue_script(
+			'backwpup-delete-restore-files',
+			$assets_path,
+			[],
+			$this->backwpup->get_plugin_data( 'Version' ),
+			true
+		);
 	}
 
 	/**

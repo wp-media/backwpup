@@ -8,7 +8,7 @@ use Inpsyde\BackWPup\Notice\DismissibleNoticeOption;
 use Inpsyde\BackWPup\Notice\NoticeView;
 
 /**
- * Notice to encourage users to upgrade to Pro after a successful backup scheduled job run. This notice is dismissible and will be shown a maximum of 5 times per user, with a limit of one impression per day.
+ * Notice to encourage users to upgrade to Pro after a successful backup scheduled job run. This notice is dismissible and will be shown a maximum of 5 times per user, with a limit of one impression per login session.
  */
 class NoticeUpgradeToPro extends AbstractNotice {
 
@@ -60,10 +60,10 @@ class NoticeUpgradeToPro extends AbstractNotice {
 			return false;
 		}
 
-		// Show once per session (1 session = 1 day).
+		// Show once per session (1 session = 1 WordPress auth session token).
 		$last_session    = get_user_meta( $user_id, self::LAST_SESSION_META_KEY, true );
-		$current_session = gmdate( 'Y-m-d' ); // 1 session = 1 day.
-		if ( $last_session === $current_session ) {
+		$current_session = wp_get_session_token();
+		if ( '' === $current_session || $last_session === $current_session ) {
 			return false;
 		}
 

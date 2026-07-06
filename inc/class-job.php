@@ -2354,11 +2354,16 @@ class BackWPup_Job {
 				$this->log(
 					sprintf(
 						// translators: %s: folder name.
-						__( 'After restrat on folder: %s', 'backwpup' ),
+						__( 'After restart on folder: %s', 'backwpup' ),
 						$current_folder
 					)
 				);
 			}
+			// Defensive re-index: array_flip() must return a positional offset (0..n) for
+			// array_slice() to resume at the correct location. get_folders_to_backup() already
+			// uses sort(), but array_values() guards against any future change that could
+			// introduce non-sequential keys (e.g. array_unique() or a future asort() call).
+			$folders_to_backup = array_values( $folders_to_backup );
 			// Jump over already done folders.
 			$folders_to_backup_as_key = array_flip( $folders_to_backup );
 			if ( $this->steps_data[ $this->step_working ]['on_folder'] && isset( $folders_to_backup_as_key[ $this->steps_data[ $this->step_working ]['on_folder'] ] ) ) {
@@ -2377,6 +2382,11 @@ class BackWPup_Job {
 				}
 				$this->steps_data[ $this->step_working ]['on_folder'] = $folder;
 				$files_in_folder                                      = $this->get_files_in_folder( $folder );
+				// Defensive re-index: keys must be sequential (0..n) so that array_flip() below
+				// returns a true positional offset for array_slice() to resume correctly.
+				// get_files_in_folder() uses sort(), but array_values() makes this contract
+				// explicit and resilient to future sort changes.
+				$files_in_folder = array_values( $files_in_folder );
 				// Add empty folders.
 				if ( empty( $files_in_folder ) ) {
 					$folder_name_in_archive = trim( ltrim( $this->get_destination_path_replacement( $folder ), '/' ) );
@@ -2765,7 +2775,12 @@ class BackWPup_Job {
 				E_USER_WARNING
 			);
 		}
-		asort( $files );
+		// sort() re-indexes keys to 0..n, which is required so that create_archive()'s
+		// resume slicing (array_flip + array_slice) computes the correct positional offset.
+		// Do NOT use asort() here: it preserves original numeric keys, making array_flip()
+		// return the original key rather than the positional index, causing files to be
+		// skipped or double-counted on every restart.
+		sort( $files );
 
 		return $files;
 	}

@@ -19,6 +19,10 @@ window.BWU.Restore.Functions = window.BWU.Restore.Functions || {};
 			 * @param {string} nonce The value for the nonce.
 			 */
 			loadNextStep: function ( id, nonce ) {
+				if ( typeof nonce === 'undefined' || nonce === null || nonce === '' ) {
+					var step = document.querySelector( '#restore_step' );
+					nonce = step ? step.getAttribute( 'data-nonce' ) : '';
+				}
 				var search = 'step=' + id;
 				location.replace(
 					location.origin + location.pathname + '?' + search + '&page=backwpuprestore&backwpup_action_nonce=' + nonce );

@@ -195,7 +195,7 @@ class JobController
         $this->registry->job_id = $job_id;
         //rest if uploaded again
         $this->registry->uploaded_file = $local_file_path;
-        $this->registry->decompression_state = null;
+        $this->registry->decompression_state = [];
 
         $factory = new BackWPup_Destination_Downloader_Factory();
         $downloader = $factory->create(
@@ -430,7 +430,14 @@ class JobController
 
         $user = wp_get_current_user();
 
-        wp_set_auth_cookie($user->ID, true);
+        // Headers may already be sent when the restore process streamed progress output.
+        // wp_set_auth_cookie() would emit E_WARNING in that case, which the ErrorHandler
+        // converts into a registry reset — aborting the cleanup. Skip cookie only; the
+        // wp_login action must still fire so downstream hooks (e.g. the confirmation flow)
+        // run correctly. The user will get a fresh cookie on the next page load.
+        if (!headers_sent()) {
+            wp_set_auth_cookie($user->ID, true);
+        }
 
         /*
          * Wp Login

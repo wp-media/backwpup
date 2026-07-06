@@ -155,7 +155,7 @@ class McpTracking extends BaseTracking {
 		}
 
 		$this->mixpanel->track(
-			'Scheduled Backup Job Started',
+			'MCP Backup Job Triggered',
 			$properties
 		);
 	}

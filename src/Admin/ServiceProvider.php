@@ -11,7 +11,9 @@ use WPMedia\BackWPup\Admin\Notices\Notices;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice52;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice522;
 use WPMedia\BackWPup\Admin\Notices\Notices\NoticeDataCorrupted;
+use WPMedia\BackWPup\Admin\Notices\Notices\NoticeStaleRestoreFiles;
 use WPMedia\BackWPup\Admin\Notices\Notices\NoticeUpgradeToPro;
+use WPMedia\BackWPup\Admin\Notices\StaleRestoreFilesDetector;
 use WPMedia\BackWPup\Admin\Notices\Subscriber as NoticeSubscriber;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice513;
 use Inpsyde\BackWPup\Notice\NoticeView;
@@ -43,6 +45,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		'notice_subscriber',
 		'notice_view_factory',
+		NoticeStaleRestoreFiles::class,
+		StaleRestoreFilesDetector::class,
 		SettingSubscriber::class,
 		AdminFrontendSubscriber::class,
 		'options',
@@ -174,6 +178,17 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( Notices\NoticeMissingCurl::ID );
 		$this->getContainer()->addShared( Notices\NoticeMissingCurl::class, Notices\NoticeMissingCurl::class )
 			->addArgument( Notices\NoticeMissingCurl::ID . '_view' );
+		// Notice for stale restore files.
+		$this->getContainer()->addShared( StaleRestoreFilesDetector::class, StaleRestoreFilesDetector::class );
+		$this->getContainer()->add( NoticeStaleRestoreFiles::ID . '_view', NoticeView::class )
+			->addArgument( NoticeStaleRestoreFiles::ID );
+		$this->getContainer()->addShared( NoticeStaleRestoreFiles::class, NoticeStaleRestoreFiles::class )
+			->addArguments(
+				[
+					NoticeStaleRestoreFiles::ID . '_view',
+					StaleRestoreFilesDetector::class,
+				]
+			);
 
 		// Register the Subscriber with an array of notice instances and banner instances.
 		$this->getContainer()->addShared( 'notice_subscriber', NoticeSubscriber::class )
@@ -187,6 +202,7 @@ class ServiceProvider extends AbstractServiceProvider {
 						$this->getContainer()->get( 'notice_datacorrupted' ),
 						$this->getContainer()->get( Notices\NoticeDebugLogLevel::class ),
 						$this->getContainer()->get( Notices\NoticeMissingCurl::class ),
+						$this->getContainer()->get( NoticeStaleRestoreFiles::class ),
 					],
 					[
 						$this->getContainer()->get( NoticeUpgradeToPro::class ),

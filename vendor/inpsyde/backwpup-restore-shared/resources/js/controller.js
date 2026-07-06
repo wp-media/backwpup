@@ -28,8 +28,14 @@ window.BWU.Restore.Factory = window.BWU.Restore.Factory || {};
 		 * @param successCallback
 		 */
 		function databaseConnection( save, successCallback ) {
+			var nonce = this.nonce;
+			if ( _.isUndefined( nonce ) || nonce === null || nonce === '' ) {
+				var step = document.querySelector( '#restore_step' );
+				nonce = step ? step.getAttribute( 'data-nonce' ) : '';
+				this.nonce = nonce;
+			}
 
-			var db = BWU.Restore.FactoryDatabase( this.url, this.nonce, JSON.stringify( {
+			var db = BWU.Restore.FactoryDatabase( this.url, nonce, JSON.stringify( {
 				dbhost: document.querySelector( '#db_host' ).value.trim(),
 				dbname: document.querySelector( '#db_name' ).value.trim(),
 				dbuser: document.querySelector( '#db_user' ).value.trim(),

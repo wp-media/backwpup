@@ -28,21 +28,22 @@ use InvalidArgumentException;
  * @property int                   $dbdumpsize              the size of the database file
  * @property string|null           $locale                  language locale, e.g. de_DE
  * @property int                   $migration_progress      migration_progress
- * @property string                $restore_strategy        states what strategy is chosen (DB only restore, complete restore)
+ * @property string                $restore_strategy        states what strategy is chosen
+ *                                                          (DB only restore, complete restore)
  * @property string                $project_root            absolute path to project root
  * @property string                $project_temp            absolute path to project temp folder
  * @property string                $uploaded_file           file name of upload
  * @property string                $file_prefix             The random prefix for the uploaded file
  * @property string                $upload_dir              absolute path to upload directory
- * @property string                $extract_folder          absolute path to decompressed backup directory
+ * @property string                $extract_folder          absolute path to decompressed backup dir
  * @property DecompressionState    $decompression_state     the state of the decompression process
  * @property string                $manifest_file           path to manifest.json
- * @property string[]              $extra_files             array holds files to ignore during file restore
- * @property string[]              $restore_list            list of directories seen so far to restore.
+ * @property string[]              $extra_files             files to ignore during restore
+ * @property string[]              $restore_list            directories seen so far to restore
  * @property string                $restore_file_start_from the file to begin restoring from
  * @property string                $restore_file_skip       file to skip in case of error
- * @property array<string, string> $restore_finished        array where jobs can mark themselves as finished
- * @property string                $uploads_folder          the uploads folder within the restore dir.
+ * @property array<string, string> $restore_finished        array where jobs can mark as finished
+ * @property string                $uploads_folder          uploads folder within the restore dir
  * @property string|null           $service_name
  * @property int|null              $job_id
  * @property string                $old_url                 the old URL to migrate from
@@ -70,7 +71,7 @@ class Registry
      *
      * @throws InvalidArgumentException
      */
-    public function __construct($path)
+    public function __construct(string $path)
     {
         $sanitizedPath = SanitizePath::sanitize($path);
 
@@ -92,7 +93,7 @@ class Registry
      *
      * @throws Exception In case the registry cannot be saved
      */
-    public function __set($key, $value): void
+    public function __set(string $key, $value): void // phpcs:ignore
     {
         $this->registry[$key] = $value;
 
@@ -106,7 +107,7 @@ class Registry
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name): bool
     {
         return \array_key_exists($name, $this->registry);
     }
@@ -176,7 +177,7 @@ class Registry
      *
      * @return mixed
      */
-    public function &__get($key)
+    public function &__get(string $key) // phpcs:ignore
     {
         if (!\array_key_exists($key, $this->registry)) {
             $this->registry[$key] = null;
@@ -305,9 +306,10 @@ class Registry
     /**
      * Reset registry to start a new restore process.
      *
-     * A hard and soft reset is possible. A hard one will delete the complete registry and the app will
-     * start from scratch. A soft reset will delete only information regarding the last restore. I.e.
-     * information about language translation, etc. are kept b/c this does not influence the restore itself.
+     * A hard and soft reset is possible. A hard one will delete the complete registry and the
+     * app will start from scratch. A soft reset will delete only information regarding the last
+     * restore. I.e. information about language translation, etc. are kept b/c this does not
+     * influence the restore itself.
      *
      * @throws Exception In case the registry cannot be saved
      *

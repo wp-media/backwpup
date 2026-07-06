@@ -33,7 +33,7 @@ class SqlFileImport implements ImportFileInterface
         $this->close_file();
     }
 
-    public function set_import_file($file): bool
+    public function set_import_file(string $file): bool
     {
         if (!is_file($file)) {
             throw new DatabaseFileException(
@@ -192,7 +192,7 @@ class SqlFileImport implements ImportFileInterface
      *
      * @return string|false
      */
-    protected function get_line_from_file()
+    protected function get_line_from_file() // phpcs:ignore
     {
         if (!$this->is_file_open()) {
             throw new DatabaseFileException(__('SQL file is not open', 'backwpup'));
@@ -291,7 +291,8 @@ class SqlFileImport implements ImportFileInterface
     /**
      * Calculate size of uncompressed files.
      *
-     * The size of compressed files cannot be calculated with `filesize()`, so we have to calculate it manually.
+     * The size of compressed files cannot be calculated with `filesize()`, so we have to
+     * calculate it manually.
      */
     private function calculateUncompressedFileSize(string $filePath): int
     {

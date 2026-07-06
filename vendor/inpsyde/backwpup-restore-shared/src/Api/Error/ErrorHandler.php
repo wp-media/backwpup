@@ -67,9 +67,12 @@ class ErrorHandler
      */
     public function handle_error(int $error_type, string $error_text, string $error_file, int $error_line): bool
     {
-        // Only reset registry if error not suppressed
+        // Only reset registry for fatal-class errors (E_ERROR, E_USER_ERROR, E_PARSE).
+        // Non-fatal PHP warnings/notices (e.g. "headers already sent") must not wipe
+        // the registry mid-restore, as that prevents the post-restore cleanup from running.
         // phpcs:disable WordPress.PHP.DiscouragedPHPFunctions, WordPress.PHP.DevelopmentFunctions
-        if ((error_reporting() & $error_type) !== 0) {
+        $fatalTypes = E_ERROR | E_USER_ERROR | E_PARSE;
+        if ((error_reporting() & $error_type) !== 0 && ($error_type & $fatalTypes) !== 0) {
             $this->registry->reset_registry();
         }
         // phpcs:enable

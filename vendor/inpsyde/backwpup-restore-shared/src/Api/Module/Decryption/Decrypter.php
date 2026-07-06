@@ -198,7 +198,7 @@ class Decrypter
             throw new DecryptException(
                 sprintf(
                     __("Expected version 2, but got %s", 'backwpup'),
-                    $this->version
+                    $version
                 )
             );
         }
@@ -284,18 +284,20 @@ class Decrypter
     /**
      * Verify we have decrypted the file.
      */
+    // phpcs:ignore
     private function test(string $decryptedFilePath): bool
     {
         $valid = false;
         $mime_type = MimeTypeExtractor::fromFilePath($decryptedFilePath);
         if ($mime_type === MimeTypeExtractor::DEFAULT_MIME_TYPE) {
-            if (false !== stripos($decryptedFilePath, '.zip' . self::ENCRYPTED_FILE_SUB_EXTENSION)) {
+            $encExt = self::ENCRYPTED_FILE_SUB_EXTENSION;
+            if (false !== stripos($decryptedFilePath, '.zip' . $encExt)) {
                 $mime_type = 'application/zip';
-            } elseif (false !== stripos($decryptedFilePath, '.tar' . self::ENCRYPTED_FILE_SUB_EXTENSION)) {
+            } elseif (false !== stripos($decryptedFilePath, '.tar' . $encExt)) {
                 $mime_type = 'application/x-tar';
-            } elseif (false !== stripos($decryptedFilePath, '.tar.gz' . self::ENCRYPTED_FILE_SUB_EXTENSION)) {
+            } elseif (false !== stripos($decryptedFilePath, '.tar.gz' . $encExt)) {
                 $mime_type = 'application/x-gzip';
-            } elseif (false !== stripos($decryptedFilePath, '.tar.bz2' . self::ENCRYPTED_FILE_SUB_EXTENSION)) {
+            } elseif (false !== stripos($decryptedFilePath, '.tar.bz2' . $encExt)) {
                 $mime_type = 'application/x-bzip2';
             }
         }

@@ -77,7 +77,7 @@ class State
      *
      * @return string|int
      */
-    private function stateProperty(string $property, $default)
+    private function stateProperty(string $property, $default) // phpcs:ignore
     {
         $state = $this->registry->decompression_state;
 

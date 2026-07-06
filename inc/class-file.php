@@ -319,12 +319,24 @@ class BackWPup_File {
 				);
 			}
 		} else {
-			if ( ! file_exists( $folder . '/.htaccess' ) ) {
+			$htaccess_path    = $folder . '/.htaccess';
+			$htaccess_content = '<Files "*">' . PHP_EOL .
+				'<IfModule mod_authz_core.c>' . PHP_EOL .
+				'Require all denied' . PHP_EOL .
+				'</IfModule>' . PHP_EOL .
+				'<IfModule !mod_authz_core.c>' . PHP_EOL .
+				'<IfModule mod_access_compat>' . PHP_EOL .
+				'Deny from all' . PHP_EOL .
+				'</IfModule>' . PHP_EOL .
+				'</IfModule>' . PHP_EOL .
+				'</Files>';
+
+			$needs_write = ! file_exists( $htaccess_path )
+				|| strpos( (string) file_get_contents( $htaccess_path ), 'mod_access.c' ) !== false; // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Reading a local file for stale-content detection.
+
+			if ( $needs_write ) {
 				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Writing small protection files in-place.
-				file_put_contents(
-					$folder . '/.htaccess',
-					'<Files "*">' . PHP_EOL . '<IfModule mod_access.c>' . PHP_EOL . 'Deny from all' . PHP_EOL . '</IfModule>' . PHP_EOL . '<IfModule !mod_access_compat>' . PHP_EOL . '<IfModule mod_authz_host.c>' . PHP_EOL . 'Deny from all' . PHP_EOL . '</IfModule>' . PHP_EOL . '</IfModule>' . PHP_EOL . '<IfModule mod_access_compat>' . PHP_EOL . 'Deny from all' . PHP_EOL . '</IfModule>' . PHP_EOL . '</Files>'
-				);
+				file_put_contents( $htaccess_path, $htaccess_content );
 			}
 			if ( ! file_exists( $folder . '/index.php' ) ) {
 				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Writing small protection files in-place.

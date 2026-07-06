@@ -45,7 +45,9 @@ class ManifestFile
 
         $manifest = json_decode(file_get_contents($file) ?: '');
         if (!$manifest instanceof \stdClass) {
-            throw new ManifestFileException(__('The manifest file is not formatted properly', 'backwpup'));
+            throw new ManifestFileException(
+                __('The manifest file is not formatted properly', 'backwpup')
+            );
         }
 
         $this->manifest = $manifest;
@@ -132,7 +134,11 @@ class ManifestFile
      */
     public function get_url(): string
     {
-        if ($this->manifest === null || !property_exists($this->manifest, 'blog_info') || $this->manifest->blog_info === null) {
+        if (
+            $this->manifest === null
+            || !property_exists($this->manifest, 'blog_info')
+            || $this->manifest->blog_info === null
+        ) {
             return '';
         }
 
@@ -146,7 +152,10 @@ class ManifestFile
     {
         if ($this->manifest === null) {
             throw new ManifestFileException(
-                __('Manifest file not found. Please check the file exists within the backup and extraction folder.', 'backwpup')
+                __(
+                    'Manifest file not found. Please check the file exists within the backup and extraction folder.',
+                    'backwpup'
+                )
             );
         }
 

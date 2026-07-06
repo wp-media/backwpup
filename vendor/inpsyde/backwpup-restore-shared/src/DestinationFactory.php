@@ -39,7 +39,7 @@ class DestinationFactory
     /**
      * @param string $destination The destination name
      */
-    public function __construct($destination)
+    public function __construct(string $destination)
     {
         $this->destination = $destination;
     }

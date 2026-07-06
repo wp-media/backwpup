@@ -40,7 +40,7 @@ final class MysqliDatabaseType implements DatabaseInterface
         $this->disconnect();
     }
 
-    public function connect(): void
+    public function connect(): void // phpcs:ignore
     {
         $connection = mysqli_init();
 
@@ -85,7 +85,7 @@ final class MysqliDatabaseType implements DatabaseInterface
 
         // Connect to Database.
         try {
-            $connect = @$this->mysqli->real_connect(
+            $connect = @$this->mysqli->real_connect( // phpcs:ignore
                 $dbhost,
                 $this->registry->dbuser,
                 $this->registry->dbpassword,
@@ -131,8 +131,9 @@ final class MysqliDatabaseType implements DatabaseInterface
         );
     }
 
-    public function query($query): int
+    public function query(string $query): int
     {
+        $res = null;
         try {
             $res = $this->mysqli->query($query);
         } catch (\mysqli_sql_exception $exception) {
@@ -158,7 +159,7 @@ final class MysqliDatabaseType implements DatabaseInterface
         return 0;
     }
 
-    public function escape($input): string
+    public function escape(string $input): string
     {
         return mysqli_real_escape_string($this->mysqli, $input);
     }

@@ -105,7 +105,7 @@ class ExceptionHandler
 
         // Redirect to page and show error message.
         // phpcs:disable WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.VIP.ValidatedSanitizedInput.InputNotValidated
-        $url = (string) filter_var($_SERVER['HTTP_REFERER'], FILTER_VALIDATE_URL);
+        $url = (string) filter_var($_SERVER['HTTP_REFERER'] ?? '', FILTER_VALIDATE_URL);
         $url || (string) filter_var($_SERVER['ORIGIN'], FILTER_VALIDATE_URL);
         // phpcs:enable
 

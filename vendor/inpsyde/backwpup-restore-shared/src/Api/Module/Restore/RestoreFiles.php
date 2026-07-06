@@ -70,7 +70,7 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
         $this->logger = $logger;
     }
 
-    public function restore(): int
+    public function restore(): int // phpcs:ignore
     {
         $errors = 0;
 
@@ -82,8 +82,7 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
 
         do {
             // Ignore extra files.
-            $extra_ignored_files = $this->registry->extra_files ?? [];
-
+            $extra_ignored_files = (array) ($this->registry->extra_files ?? []);
             $ignore = array_merge(self::$ignore_files_directories, $extra_ignored_files);
 
             // Set archive path and length used during copy files.
@@ -92,14 +91,14 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
             $this->current_archive_extracted_path_length = \strlen($archive_extracted_path);
 
             // The next directory to restore.
-            $next_dir = (string) $this->registry->next_dir_in_restore_list();
+            $next_dir = $this->registry->next_dir_in_restore_list();
 
             if ($archive_extracted_path === '') {
                 throw new RestorePathException(
                     ExceptionLinkHelper::translateWithAppropiatedLink(
                         sprintf(
                             __('Archive Path is not set; Archive Path: %1$s', 'backwpup'),
-                            $archive_extracted_path ?: '(empty string)'
+                            '(empty string)'
                         ),
                         'ARCHIVE_RESTORE_PATH_CANNOT_BE_SET'
                     )
@@ -182,7 +181,7 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
             'DB_HOST' => $this->registry->dbhost,
             'DB_CHARSET' => $this->registry->dbcharset,
         ];
-        array_walk($credentials, static function ($value, $key): void {
+        array_walk($credentials, static function (?string $value, string $key): void {
             if ($key !== 'DB_CHARSET' && empty($value)) {
                 throw new ConfigFileException(
                     sprintf(
@@ -203,7 +202,8 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
             }
 
             $config = preg_replace(
-                '/(define\s*\(\s*([\'"])' . preg_quote($key, '/') . '\2\s*,\s*([\'"])).*?(\3\s*\)\s*;)/i',
+                '/(define\s*\(\s*([\'"])' . preg_quote($key, '/') . '\2\s*,\s*([\'"])).*?'
+                . '(\3\s*\)\s*;)/i',
                 '${1}' . $value . '${4}',
                 (string) $config,
                 -1,
@@ -288,6 +288,7 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
      *
      * @throws FileSystemException
      */
+    // phpcs:ignore
     private function copy_files(
         string $source,
         string $dest,
@@ -361,7 +362,7 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
                     }
 
                     // 2.a. Restore files in destination path
-                    $result = @copy($src_file, $destinationAbsoluteFilePath);
+                    $result = @copy($src_file, $destinationAbsoluteFilePath); // phpcs:ignore
                     // If restore wasn't performed, let's add a line of debug, so we can know which files cannot be copied.
                     if (!$result) {
                         // Skip this file on the next iteration

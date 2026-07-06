@@ -68,8 +68,9 @@ final class BackupUpload implements FileUploadInterface
         $this->registry = $registry;
     }
 
-    public function run(): void
+    public function run(): void // phpcs:ignore
     {
+        /** @psalm-suppress PossiblyInvalidArrayAccess, PossiblyInvalidArrayOffset */
         $tmp_file_name = $_FILES['file']['tmp_name'];
         if (!is_uploaded_file($tmp_file_name)) {
             throw new UploadException(
@@ -91,7 +92,9 @@ final class BackupUpload implements FileUploadInterface
         $this->set_current_chunk((int) $chunk);
         $this->set_total_chunks((int) $chunks);
 
-        $file_name = $_REQUEST['name'] ?? $_FILES['file']['name'] ?? '';
+        /** @psalm-suppress PossiblyInvalidArrayAccess, PossiblyInvalidArrayOffset */
+        $file_name_raw = $_REQUEST['name'] ?? $_FILES['file']['name'] ?? '';
+        $file_name = is_string($file_name_raw) ? $file_name_raw : '';
 
         if (!$file_name) {
             throw new UploadException(
@@ -119,7 +122,7 @@ final class BackupUpload implements FileUploadInterface
             );
         }
 
-        while ($buff = fread($in, 4096)) {
+        while ($buff = fread($in, 4096)) { // phpcs:ignore
             fwrite($out, $buff);
         }
 
@@ -174,7 +177,7 @@ final class BackupUpload implements FileUploadInterface
      *
      * @return resource|bool Returns a file pointer resource on success, or FALSE on error
      */
-    private function open_file(string $file_path)
+    private function open_file(string $file_path) // phpcs:ignore
     {
         return fopen("{$file_path}.part", $this->get_current_chunk() === 0 ? 'wb' : 'ab');
     }

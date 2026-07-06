@@ -98,7 +98,7 @@ class DismissibleNoticeOption {
 			return;
 		}
 
-		$sitewide = $sitewide && is_multisite();
+		$sitewide = $sitewide && ( function_exists( 'is_multisite' ) ? is_multisite() : false );
 
 		$key = $sitewide ? 'sitewide' : 'blog';
 

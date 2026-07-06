@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-22 07:30+0000\n"
+"POT-Creation-Date: 2026-07-06 08:32+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -534,7 +534,7 @@ msgstr ""
 #. translators: %s: Error message.
 #. translators: %s: path.
 #. translators: %s: folder name.
-#: inc/class-cron.php:137, inc/class-destination-folder.php:190, inc/class-job.php:1566, inc/class-job.php:1819, inc/class-job.php:2762, inc/class-jobtype-file.php:524
+#: inc/class-cron.php:137, inc/class-destination-folder.php:190, inc/class-job.php:1566, inc/class-job.php:1819, inc/class-job.php:2772, inc/class-jobtype-file.php:524
 msgid "Could not open path: %s"
 msgstr ""
 
@@ -1221,7 +1221,7 @@ msgstr ""
 msgid "Folder \"%1$s\" is not writable"
 msgstr ""
 
-#: inc/class-file.php:353
+#: inc/class-file.php:365
 msgid "BackWPup will not backup folders and its sub folders when this file is inside."
 msgstr ""
 
@@ -1529,232 +1529,232 @@ msgstr ""
 msgid "Adding Extra files to Archive"
 msgstr ""
 
-#: inc/class-job.php:2340, inc/class-job.php:2429
+#: inc/class-job.php:2340, inc/class-job.php:2439
 msgid "Cannot create backup archive correctly. Aborting creation."
 msgstr ""
 
 #. translators: %s: folder name.
 #: inc/class-job.php:2357
-msgid "After restrat on folder: %s"
+msgid "After restart on folder: %s"
 msgstr ""
 
 #. translators: %s: folder path.
-#: inc/class-job.php:2373
+#: inc/class-job.php:2378
 msgid "Archiving Folder: %s"
 msgstr ""
 
-#: inc/class-job.php:2443
+#: inc/class-job.php:2453
 msgid "Backup archive created."
 msgstr ""
 
 #. translators: %s: archive size.
-#: inc/class-job.php:2468
+#: inc/class-job.php:2478
 msgid "Archive size is %s."
 msgstr ""
 
-#: inc/class-job.php:2457
+#: inc/class-job.php:2467
 msgid "The Backup archive will be too large for file operations with this PHP Version. You might want to consider splitting the backup job in multiple jobs with less files each."
 msgstr ""
 
 #. translators: 1: number of files, 2: total size.
-#: inc/class-job.php:2478
+#: inc/class-job.php:2488
 msgid "%1$d Files with %2$s in Archive."
 msgstr ""
 
-#: inc/class-job.php:2522
+#: inc/class-job.php:2532
 msgid "No encryption key was provided. Aborting encryption."
 msgstr ""
 
 #. translators: %d: attempt number.
-#: inc/class-job.php:2533
+#: inc/class-job.php:2543
 msgid "%d. Trying to encrypt archive &hellip;"
 msgstr ""
 
-#: inc/class-job.php:2543
+#: inc/class-job.php:2553
 msgid "Cannot open the archive for reading. Aborting encryption."
 msgstr ""
 
-#: inc/class-job.php:2551
+#: inc/class-job.php:2561
 msgid "Cannot write the encrypted archive. Aborting encryption."
 msgstr ""
 
-#: inc/class-job.php:2572
+#: inc/class-job.php:2582
 msgid "Could not initialize encryptor."
 msgstr ""
 
 #. translators: %s: encrypted data size.
-#: inc/class-job.php:2600
+#: inc/class-job.php:2610
 msgid "Encrypted %s of data."
 msgstr ""
 
-#: inc/class-job.php:2608
+#: inc/class-job.php:2618
 msgid "Unable to delete unencrypted archive."
 msgstr ""
 
-#: inc/class-job.php:2616
+#: inc/class-job.php:2626
 msgid "Unable to rename encrypted archive."
 msgstr ""
 
-#: inc/class-job.php:2622
+#: inc/class-job.php:2632
 msgid "Archive has been successfully encrypted."
 msgstr ""
 
 #. translators: %s: folder path.
-#: inc/class-job.php:2670
+#: inc/class-job.php:2680
 msgctxt "Folder name"
 msgid "Folder %s does not exist"
 msgstr ""
 
 #. translators: %s: folder path.
-#: inc/class-job.php:2683
+#: inc/class-job.php:2693
 msgctxt "Folder name"
 msgid "Folder %s is not readable"
 msgstr ""
 
 #. translators: %s: file path and size.
-#: inc/class-job.php:2743
+#: inc/class-job.php:2753
 msgid "File size of “%s” cannot be retrieved. File might be too large and will not be added to queue."
 msgstr ""
 
-#: inc/class-job.php:2732
+#: inc/class-job.php:2742
 msgid "File \"%s\" is not readable!"
 msgstr ""
 
-#: inc/class-job.php:2723
+#: inc/class-job.php:2733
 msgid "Link \"%s\" not following."
 msgstr ""
 
 #. translators: %d: attempt number.
-#: inc/class-job.php:2842
+#: inc/class-job.php:2857
 msgid "%d. Trying to generate a manifest file&#160;&hellip;"
 msgstr ""
 
-#: inc/class-job.php:2915
+#: inc/class-job.php:2930
 msgid "You may have noticed the manifest.json file in this archive."
 msgstr ""
 
-#: inc/class-job.php:2916
+#: inc/class-job.php:2931
 msgid "manifest.json might be needed for later restoring a backup from this archive."
 msgstr ""
 
-#: inc/class-job.php:2920
+#: inc/class-job.php:2935
 msgid "Please leave manifest.json untouched and in place. Otherwise it is safe to be ignored."
 msgstr ""
 
 #. translators: %s: file size.
-#: inc/class-job.php:2936
+#: inc/class-job.php:2951
 msgid "Added manifest.json file with %1$s to backup file list."
 msgstr ""
 
-#: inc/class-job.php:2965
+#: inc/class-job.php:2980
 msgid "Wrong BackWPup JobID"
 msgstr ""
 
-#: inc/class-job.php:2978
+#: inc/class-job.php:2993
 msgid "A BackWPup job is already running"
 msgstr ""
 
-#: inc/class-job.php:3132
+#: inc/class-job.php:3147
 msgctxt "SIGHUP: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Hangup detected on controlling terminal or death of controlling process"
 msgstr ""
 
-#: inc/class-job.php:3140
+#: inc/class-job.php:3155
 msgctxt "SIGINT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Interrupt from keyboard"
 msgstr ""
 
-#: inc/class-job.php:3148
+#: inc/class-job.php:3163
 msgctxt "SIGQUIT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Quit from keyboard"
 msgstr ""
 
-#: inc/class-job.php:3156
+#: inc/class-job.php:3171
 msgctxt "SIGILL: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Illegal Instruction"
 msgstr ""
 
-#: inc/class-job.php:3164
+#: inc/class-job.php:3179
 msgctxt "SIGABRT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Abort signal from abort(3)"
 msgstr ""
 
-#: inc/class-job.php:3172
+#: inc/class-job.php:3187
 msgctxt "SIGBUS: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Bus error (bad memory access)"
 msgstr ""
 
-#: inc/class-job.php:3180
+#: inc/class-job.php:3195
 msgctxt "SIGFPE: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Floating point exception"
 msgstr ""
 
-#: inc/class-job.php:3188
+#: inc/class-job.php:3203
 msgctxt "SIGSEGV: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Invalid memory reference"
 msgstr ""
 
-#: inc/class-job.php:3196
+#: inc/class-job.php:3211
 msgctxt "SIGTERM: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Termination signal"
 msgstr ""
 
-#: inc/class-job.php:3204
+#: inc/class-job.php:3219
 msgctxt "SIGSTKFLT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Stack fault on coprocessor"
 msgstr ""
 
-#: inc/class-job.php:3212
+#: inc/class-job.php:3227
 msgctxt "SIGUSR1: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "User-defined signal 1"
 msgstr ""
 
-#: inc/class-job.php:3220
+#: inc/class-job.php:3235
 msgctxt "SIGUSR2: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "User-defined signal 2"
 msgstr ""
 
-#: inc/class-job.php:3228
+#: inc/class-job.php:3243
 msgctxt "SIGURG: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Urgent condition on socket"
 msgstr ""
 
-#: inc/class-job.php:3236
+#: inc/class-job.php:3251
 msgctxt "SIGXCPU: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "CPU time limit exceeded"
 msgstr ""
 
-#: inc/class-job.php:3244
+#: inc/class-job.php:3259
 msgctxt "SIGXFSZ: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "File size limit exceeded"
 msgstr ""
 
-#: inc/class-job.php:3252
+#: inc/class-job.php:3267
 msgctxt "SIGPWR: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Power failure"
 msgstr ""
 
-#: inc/class-job.php:3260
+#: inc/class-job.php:3275
 msgctxt "SIGSYS: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Bad argument to routine"
 msgstr ""
 
 #. translators: 1: signal name, 2: signal description.
-#: inc/class-job.php:3274
+#: inc/class-job.php:3289
 msgid "Signal \"%1$s\" (%2$s) is sent to script!"
 msgstr ""
 
 #. translators: %s: system error.
-#: inc/class-job.php:3318, inc/class-job.php:3338
+#: inc/class-job.php:3333, inc/class-job.php:3353
 msgid "System: %s"
 msgstr ""
 
 #. translators: 1: exception class, 2: exception message.
-#: inc/class-job.php:3358
+#: inc/class-job.php:3373
 msgid "Exception caught in %1$s: %2$s"
 msgstr ""
 
-#: inc/class-job.php:3562, inc/class-page-jobs.php:567
+#: inc/class-job.php:3577, inc/class-page-jobs.php:567
 msgid "Copy of"
 msgstr ""
 
@@ -2128,7 +2128,7 @@ msgstr ""
 msgid "Files & Database"
 msgstr ""
 
-#: inc/class-message-box.php:101, views/notice/legacy_disabled_tasks.php:7, views/notice/notice_5_2.php:7, views/notice/notice_5_2_2.php:7, views/notice/notice_data_corrupted.php:7, views/notice/notice_missing_curl.php:7, views/notice/notice_tracking_opt_in.php:7, views/notice/notice_upgrade_to_pro.php:40
+#: inc/class-message-box.php:101, views/notice/legacy_disabled_tasks.php:7, views/notice/notice_5_2.php:7, views/notice/notice_5_2_2.php:7, views/notice/notice_data_corrupted.php:7, views/notice/notice_missing_curl.php:7, views/notice/notice_tracking_opt_in.php:7, views/notice/notice_upgrade_to_pro.php:40, views/notice/stale_restore_files.php:21
 msgid "Dismiss"
 msgstr ""
 
@@ -6066,6 +6066,18 @@ msgstr ""
 
 #: views/notice/restore_feature_information.php:10
 msgid " here !"
+msgstr ""
+
+#: views/notice/stale_restore_files.php:17
+msgid "Security Warning: Sensitive restore files detected"
+msgstr ""
+
+#: views/notice/stale_restore_files.php:26
+msgid "BackWPup detected leftover files from a previous restore operation in the restore working directory. These files may contain your database credentials in plain text. It is strongly recommended to delete them immediately."
+msgstr ""
+
+#: views/notice/stale_restore_files.php:40
+msgid "Delete restore files"
 msgstr ""
 
 #: views/notice/wordpress.php:6
