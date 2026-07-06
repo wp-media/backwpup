@@ -5,7 +5,7 @@ Tags: backup, restore, cloud backup, database backup, wordpress backup
 Requires at least: 5.3
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 5.7.3
+Stable tag: 5.7.4
 License: GPLv2+
 
 Back up, restore, and protect your WordPress website with automated backups, cloud storage, one-click recovery, and AI-assisted backup management.
@@ -23,7 +23,7 @@ BackWPup Free includes everything needed to automate, store, and restore WordPre
 = 🚀 Why Choose BackWPup =
 
 **Reliable backups when you need them most.**
-A backup is only valuable if it works when something goes wrong. BackWPup creates complete backups of your WordPress files and database, stores them securely, and gives you clear visibility into backup status and history. Trusted by more than 500,000 WordPress websites, it is built to protect your site without getting in your way.
+A backup is only valuable if it works when something goes wrong. BackWPup creates complete backups of your WordPress files and database, stores them securely, and gives you clear visibility into backup status and history.
 
 **Simple to get started. Powerful when you need more.**
 The guided setup helps you create your first backup in minutes. As your needs grow, BackWPup gives you the flexibility to customize schedules, destinations, retention rules, automation, and multisite workflows.
@@ -180,6 +180,14 @@ BackWPup is designed to run across a wide range of WordPress hosting environment
 
 
 == Changelog ==
+= 5.7.4 =
+Release date: July 6, 2026
+
+* New feature: Added a security notice that detects stale restore files and allows them to be deleted with one click.
+* Enhancement: Restore working directories are now automatically cleaned up after a successful restore.
+* Fix: Fixed inconsistent file counts in interrupted and resumed ZIP backups.
+* Fix: Resolved a fatal error caused by outdated `.htaccess` rules on Apache 2.4.
+
 = 5.7.3 =
 Release date: June 22, 2026
 
