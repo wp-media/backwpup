@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'inpsyde/backwpup-pro',
-        'pretty_version' => '5.7.4',
-        'version' => '5.7.4.0',
-        'reference' => 'aa3e829ca611de571da8cbe1f91bfcb09ab5b6a5',
+        'pretty_version' => '5.7.5',
+        'version' => '5.7.5.0',
+        'reference' => '3d968635ee41370124d5e5077b749401746df3ec',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -101,18 +101,18 @@
             'dev_requirement' => false,
         ),
         'inpsyde/backwpup-pro' => array(
-            'pretty_version' => '5.7.4',
-            'version' => '5.7.4.0',
-            'reference' => 'aa3e829ca611de571da8cbe1f91bfcb09ab5b6a5',
+            'pretty_version' => '5.7.5',
+            'version' => '5.7.5.0',
+            'reference' => '3d968635ee41370124d5e5077b749401746df3ec',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'inpsyde/backwpup-restore-shared' => array(
-            'pretty_version' => '0.20.9',
-            'version' => '0.20.9.0',
-            'reference' => '29c6d04927b8ec0892158e05b2aedf8dc43dd740',
+            'pretty_version' => '0.20.10',
+            'version' => '0.20.10.0',
+            'reference' => '15ef0b31510b1a68eb133d89c9b5c90912e01260',
             'type' => 'library',
             'install_path' => __DIR__ . '/../inpsyde/backwpup-restore-shared',
             'aliases' => array(),
@@ -121,7 +121,7 @@
         'inpsyde/backwpup-shared' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '9a31fe0bc6bce75c920dc6ab54b2180bfab54881',
+            'reference' => '11c6f78e6a3f975cbc38f5b8e0885c8ca70b0531',
             'type' => 'library',
             'install_path' => __DIR__ . '/../inpsyde/backwpup-shared',
             'aliases' => array(

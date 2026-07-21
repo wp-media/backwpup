@@ -429,7 +429,7 @@ window.BWU.Restore.Factory = window.BWU.Restore.Factory || {};
 							}
 
 							BWU.Functions.printMessageError(
-								`Unknown restore strategy ${strategy}. Please restart the restore wizard.`,
+								'Unknown restore strategy. Please restart the restore wizard.',
 								$('#restore_step')
 							);
 

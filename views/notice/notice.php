@@ -35,7 +35,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					id="<?php echo esc_attr( $bind->id ); ?>_dismiss"
 					href="<?php echo esc_url( $bind->dismiss_action_url ); ?>"
 				>
-					<?php echo esc_html_e( 'Don\'t show again', 'backwpup' ); ?>
+					<?php esc_html_e( 'Don\'t show again', 'backwpup' ); ?>
 				</a>
 			<?php } ?>
 		</p>

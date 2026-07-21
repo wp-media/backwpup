@@ -35,6 +35,17 @@ class AjaxHandler
     public const EVENT_SOURCE_CONTEXT = 'event_source';
 
     /**
+     * Allowed values for the restore strategy.
+     *
+     * @var string[]
+     */
+    private const ALLOWED_STRATEGIES = [
+        'complete restore',
+        'db only restore',
+        'files only restore',
+    ];
+
+    /**
      * Ajax Hooks.
      *
      * @var string[] list of the ajax hooks for the actions to perform
@@ -287,6 +298,12 @@ class AjaxHandler
         if (!is_string($strategy) || $strategy === '') {
             throw new InvalidArgumentException(
                 __('You have to select one strategy.', 'backwpup')
+            );
+        }
+
+        if (!in_array($strategy, self::ALLOWED_STRATEGIES, true)) {
+            throw new InvalidArgumentException(
+                __('The selected strategy is not valid.', 'backwpup')
             );
         }
 

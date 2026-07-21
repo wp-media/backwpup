@@ -22,7 +22,7 @@ jQuery(document).ready(function ($) {
    * @param function callback
    * @param string method (default: 'GET')
    */
-  requestWPApi = function requestWPApi(route, data, callback, method = 'GET', error_callback = null) {
+  requestWPApi = function requestWPApi(route, data, callback, method = 'GET', error_callback = null, timeout = 0) {
 	  const $trigger = $(document.activeElement);
 	  const $overlayTemplate = $('#backwpup-loading-overlay-template').children().first();
 	  const $jobCard = $trigger.closest('.backwpup-job-card');
@@ -45,6 +45,7 @@ jQuery(document).ready(function ($) {
 		  },
 		  method: method,
 		  data: data,
+		  timeout: timeout,
 		  success: function(response) {
 			  $overlay?.remove();
 			  $trigger.prop('disabled', false);
@@ -1198,8 +1199,24 @@ jQuery(document).ready(function ($) {
     function (request, error) {
       console.log(request);
       console.log(error);
+
+      if ( error === 'timeout' ) {
+        // The request timed out client-side, but the backup may already be
+        // starting server-side. The silent double-run guard (Bug 1) makes a
+        // stray second click harmless, so re-enable the button and steer the
+        // user to refresh.
+        backwpupDisplaySettingsToast(
+          'info',
+          'Your backup is taking longer than expected to start. Please refresh this page shortly to check its status.',
+          8000
+        );
+        enableBackupButton(true);
+        return;
+      }
+
       enableBackupButton(true);
-    });
+    },
+    30000);
   });
 
   // Exclude files in sidebar

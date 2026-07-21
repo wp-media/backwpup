@@ -17,6 +17,22 @@ class BackWPup_Job {
 	public const ENCRYPTION_ASYMMETRIC = 'asymmetric';
 
 	/**
+	 * Double-run guard decision: no live PID, proceed normally.
+	 */
+	public const DOUBLE_RUN_PROCEED = 'run';
+
+	/**
+	 * Double-run guard decision: PID set but running file is stale (>300s), restart.
+	 */
+	public const DOUBLE_RUN_RESTART = 'restart_inactivity';
+
+	/**
+	 * Double-run guard decision: PID set and running file is fresh, another
+	 * invocation is already running; abort this racing invocation.
+	 */
+	public const DOUBLE_RUN_ABORT = 'abort_double_run';
+
+	/**
 	 * Job settings.
 	 *
 	 * @var array
@@ -2043,6 +2059,29 @@ class BackWPup_Job {
 	}
 
 	/**
+	 * Decide what to do about a possible double run / stale running file.
+	 *
+	 * Pure, side-effect-free: reads only `$this->pid` and
+	 * `$this->timestamp_last_update`; "now" is injected for testability.
+	 *
+	 * @param float $now Current time as returned by `microtime( true )`.
+	 *
+	 * @return string One of the `self::DOUBLE_RUN_*` constants.
+	 */
+	private function double_run_decision( float $now ): string {
+		if ( empty( $this->pid ) ) {
+			return self::DOUBLE_RUN_PROCEED;
+		}
+
+		$last_update = $now - $this->timestamp_last_update;
+		if ( 300 < $last_update ) {
+			return self::DOUBLE_RUN_RESTART;
+		}
+
+		return self::DOUBLE_RUN_ABORT;
+	}
+
+	/**
 	 * Run baby run.
 	 */
 	public function run() {
@@ -2074,12 +2113,20 @@ class BackWPup_Job {
 		}
 
 		// Check double running and inactivity.
-		$last_update = microtime( true ) - $this->timestamp_last_update;
-		if ( ! empty( $this->pid ) && 300 < $last_update ) {
-			$this->log( __( 'Job restarts due to inactivity for more than 5 minutes.', 'backwpup' ), E_USER_WARNING );
-		} elseif ( ! empty( $this->pid ) ) {
-			BackWPup_Admin::message( __( 'Run aborted because no PID given!', 'backwpup' ), true );
-			return;
+		switch ( $this->double_run_decision( microtime( true ) ) ) {
+			case self::DOUBLE_RUN_RESTART:
+				$this->log( __( 'Job restarts due to inactivity for more than 5 minutes.', 'backwpup' ), E_USER_WARNING );
+				break;
+			case self::DOUBLE_RUN_ABORT:
+				// Double-run guard: another invocation is already running (fresh running file
+				// updated < 300s ago). Abort this racing invocation SILENTLY. Do NOT call
+				// BackWPup_Admin::message() (was a misleading false-positive notice, #1175) and
+				// do NOT call log()/write_running_file() — that would overwrite the active
+				// job's live working data. Return before timestamp_script_start / PID re-acquisition.
+				return;
+			case self::DOUBLE_RUN_PROCEED:
+			default:
+				break;
 		}
 		// Set timestamp of script start.
 		$this->timestamp_script_start = microtime( true );

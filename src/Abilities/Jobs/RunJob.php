@@ -9,6 +9,7 @@ use WPMedia\BackWPup\Adapters\FileAdapter;
 use WPMedia\BackWPup\Adapters\JobAdapter;
 use WPMedia\BackWPup\Adapters\OptionAdapter;
 use WPMedia\BackWPup\Adapters\JobTypesAdapter;
+use WPMedia\BackWPup\API\Capability;
 
 /**
  * RunJob Ability
@@ -149,11 +150,11 @@ class RunJob implements AbilitiesInterface {
 	 * @return bool
 	 */
 	public function check_permissions(): bool {
-		if ( current_user_can( 'backwpup' ) ) {
+		if ( current_user_can( Capability::JOBS_START ) ) {
 			return true;
 		}
 
-		do_action( 'backwpup_mcp_permission_denied', self::ABILITY_ID, self::TOOL_NAME, 'backwpup' );
+		do_action( 'backwpup_mcp_permission_denied', self::ABILITY_ID, self::TOOL_NAME, Capability::JOBS_START );
 
 		return false;
 	}

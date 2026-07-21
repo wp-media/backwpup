@@ -13,6 +13,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 use Exception;
 use WPMedia\BackWPup\API\Rest as RestInterface;
+use WPMedia\BackWPup\API\Capability;
 
 
 class Rest implements RestInterface {
@@ -127,7 +128,9 @@ class Rest implements RestInterface {
 			[
 				'methods'             => 'POST',
 				'callback'            => [ $this, 'start_backup' ],
-				'permission_callback' => [ $this, 'has_permission' ],
+				'permission_callback' => function () {
+					return current_user_can( Capability::JOBS_START );
+				},
 				'args'                => [
 					'job_id'       => [
 						'required'          => false,
@@ -155,7 +158,9 @@ class Rest implements RestInterface {
 			[
 				'methods'             => 'POST',
 				'callback'            => [ $this, 'process_bulk_actions' ],
-				'permission_callback' => [ $this, 'has_permission' ],
+				'permission_callback' => function () {
+					return current_user_can( Capability::BACKUPS_DELETE );
+				},
 				'args'                => [
 					'action'  => [
 						'required'          => true,

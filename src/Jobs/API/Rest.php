@@ -15,6 +15,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
 use WPMedia\BackWPup\API\Rest as RestInterface;
+use WPMedia\BackWPup\API\Capability;
 
 /**
  * REST API handler for BackWPup jobs.
@@ -85,7 +86,7 @@ class Rest implements RestInterface {
 	 * @return bool
 	 */
 	public function has_permission(): bool {
-		return current_user_can( 'backwpup' );
+		return current_user_can( Capability::JOBS_EDIT );
 	}
 
 	/**
@@ -335,7 +336,7 @@ class Rest implements RestInterface {
 				'methods'             => 'POST',
 				'callback'            => [ $this, 'save_site_option' ],
 				'permission_callback' => function () {
-					return current_user_can( 'backwpup_jobs_edit' ) || current_user_can( 'backwpup_settings' );
+					return current_user_can( Capability::JOBS_EDIT ) || current_user_can( Capability::SETTINGS );
 				},
 			]
 		);
