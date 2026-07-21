@@ -5,7 +5,7 @@ Tags: backup, restore, cloud backup, database backup, wordpress backup
 Requires at least: 5.3
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 5.7.4
+Stable tag: 5.7.5
 License: GPLv2+
 
 Back up, restore, and protect your WordPress website with automated backups, cloud storage, one-click recovery, and AI-assisted backup management.
