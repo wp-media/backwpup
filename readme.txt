@@ -180,6 +180,13 @@ BackWPup is designed to run across a wide range of WordPress hosting environment
 
 
 == Changelog ==
+= 5.7.5 =
+Release date: July 21, 2026
+
+* Security fix: Resolved a Cross-Site Scripting (XSS) vulnerability on the Restore page.
+* Fix: Fixed an incorrect backup aborted notice and a page freeze when using the Backup Now button.
+* Fix: Fixed an issue affecting the "Don't show again" admin notice action.
+
 = 5.7.4 =
 Release date: July 6, 2026
 
