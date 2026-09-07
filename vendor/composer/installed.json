@@ -1636,11 +1636,7 @@
             "autoload": {
                 "psr-0": {
                     "Archive_Tar": ""
-                },
-                "classmap": [
-                    "",
-                    ""
-                ]
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "include-path": [
@@ -3016,17 +3012,17 @@
         },
         {
             "name": "wp-media/wp-mixpanel",
-            "version": "v1.4.1",
-            "version_normalized": "1.4.1.0",
+            "version": "v1.4.3",
+            "version_normalized": "1.4.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/wp-mixpanel.git",
-                "reference": "09dea8a51f97e8047defc9f8a995b87dec76baad"
+                "reference": "3769c580be2f6b06ec3f70c9c4047d64d0246732"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/wp-mixpanel/zipball/09dea8a51f97e8047defc9f8a995b87dec76baad",
-                "reference": "09dea8a51f97e8047defc9f8a995b87dec76baad",
+                "url": "https://api.github.com/repos/wp-media/wp-mixpanel/zipball/3769c580be2f6b06ec3f70c9c4047d64d0246732",
+                "reference": "3769c580be2f6b06ec3f70c9c4047d64d0246732",
                 "shasum": ""
             },
             "require": {
@@ -3043,7 +3039,7 @@
                 "wp-coding-standards/wpcs": "^3",
                 "wp-media/phpunit": "^3"
             },
-            "time": "2026-05-29T18:02:43+00:00",
+            "time": "2026-08-05T06:50:45+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -3068,7 +3064,7 @@
             "description": "WordPress Mixpanel Integration",
             "support": {
                 "issues": "https://github.com/wp-media/wp-mixpanel/issues",
-                "source": "https://github.com/wp-media/wp-mixpanel/tree/v1.4.1"
+                "source": "https://github.com/wp-media/wp-mixpanel/tree/v1.4.3"
             },
             "install-path": "../wp-media/wp-mixpanel"
         }

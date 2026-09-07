@@ -77,6 +77,18 @@ class BackWPup_Job {
 	 */
 	public $backup_filesize = 0;
 	/**
+	 * The Tar/TarGz/Zip archive object currently being written by create_archive(), if any.
+	 *
+	 * Set only while create_archive() has an open BackWPup_Create_Archive instance on its call
+	 * stack; cleared on every normal exit from create_archive() (success or handled failure).
+	 * Lets end() (via cleanup_aborted_archive()) reach and abort the archive when the job is
+	 * cancelled or crashes mid-archiving, from any of the call sites that can detect this
+	 * (update_working_data(), do_restart(), and transitively shutdown() on a PHP fatal error).
+	 *
+	 * @var BackWPup_Create_Archive|null
+	 */
+	private $current_archive;
+	/**
 	 * Script process ID.
 	 *
 	 * @var int
@@ -1541,13 +1553,46 @@ class BackWPup_Job {
 	}
 
 	/**
+	 * Whether the job's running-file marker is currently missing, meaning the job has
+	 * been aborted (user cancelled, or the marker was otherwise removed) regardless of
+	 * which code path is asking. Both end() and do_restart() must treat this condition
+	 * identically; this method is the single source of truth for that check so the two
+	 * call sites can never drift out of sync again.
+	 *
+	 * @return bool
+	 */
+	private function is_running_file_missing(): bool {
+		clearstatcache( true, BackWPup::get_plugin_data( 'running_file' ) );
+
+		return ! file_exists( BackWPup::get_plugin_data( 'running_file' ) );
+	}
+
+	/**
+	 * Close and delete the archive that create_archive() left open, if any.
+	 *
+	 * Only has an effect when a job is aborted (running file missing) while create_archive()
+	 * is still on the call stack further up in this same request, or was left dangling by a
+	 * fatal error during archiving; a no-op otherwise.
+	 *
+	 * @return void
+	 */
+	private function cleanup_aborted_archive() {
+		if ( $this->current_archive instanceof BackWPup_Create_Archive ) {
+			$this->current_archive->abort();
+			$this->current_archive = null;
+		}
+	}
+
+	/**
 	 * Called on job stop makes cleanup and terminates the script.
 	 */
 	private function end() {
 		$this->step_working  = 'END';
 		$this->substeps_todo = 1;
 
-		if ( ! file_exists( BackWPup::get_plugin_data( 'running_file' ) ) ) {
+		if ( $this->is_running_file_missing() ) {
+			$this->cleanup_aborted_archive();
+
 			$this->log(
 				__( 'Backup aborted!', 'backwpup' ),
 				E_USER_WARNING,
@@ -1874,10 +1919,18 @@ class BackWPup_Job {
 			return;
 		}
 
-		// No restart if no working job.
-		clearstatcache( true, BackWPup::get_plugin_data( 'running_file' ) );
-		if ( ! file_exists( BackWPup::get_plugin_data( 'running_file' ) ) ) {
-			return;
+		// No restart if no working job — the running file disappearing here means the job was
+		// aborted (or crashed) while do_restart() was invoked from create_archive()'s restart-time
+		// check, the main step-retry loop, update_working_data()'s signal path, or shutdown() (fired
+		// by PHP on every fatal error, e.g. an OOM/timeout kill on a large encrypted backup — the
+		// scenario originally reported). Delegate to end() so the same abort teardown (cleanup of any
+		// still-open archive + sidecar, logging, exit) runs from every one of these call sites
+		// instead of only from update_working_data()'s own direct check.
+		if ( $this->is_running_file_missing() ) {
+			$this->cleanup_aborted_archive();
+			$this->end();
+
+			return; // Unreachable: end() always exit()s. Kept for readability/static analysis.
 		}
 
 		// Print message.
@@ -2347,7 +2400,8 @@ class BackWPup_Job {
 		}
 
 		try {
-			$backup_archive = new BackWPup_Create_Archive( $this->backup_folder . $this->backup_file );
+			$backup_archive        = new BackWPup_Create_Archive( $this->backup_folder . $this->backup_file );
+			$this->current_archive = $backup_archive;
 
 			// Show method for creation.
 			if ( 0 === $this->substeps_done ) {
@@ -2381,6 +2435,7 @@ class BackWPup_Job {
 							$this->update_working_data();
 						} else {
 							$backup_archive->close();
+							$this->current_archive                                = null;
 							$this->steps_data[ $this->step_working ]['on_file']   = '';
 							$this->steps_data[ $this->step_working ]['on_folder'] = '';
 							$this->log(
@@ -2476,6 +2531,7 @@ class BackWPup_Job {
 					} else {
 						$backup_archive->close();
 						unset( $backup_archive );
+						$this->current_archive                                = null;
 						$this->steps_data[ $this->step_working ]['on_file']   = '';
 						$this->steps_data[ $this->step_working ]['on_folder'] = '';
 						$this->backup_filesize                                = filesize( $this->backup_folder . $this->backup_file );
@@ -2497,6 +2553,7 @@ class BackWPup_Job {
 			}
 			$backup_archive->close();
 			unset( $backup_archive );
+			$this->current_archive = null;
 			$this->log( __( 'Backup archive created.', 'backwpup' ), E_USER_NOTICE );
 		} catch ( Exception $e ) {
 			$this->log( $e->getMessage(), E_USER_ERROR, $e->getFile(), $e->getLine() );

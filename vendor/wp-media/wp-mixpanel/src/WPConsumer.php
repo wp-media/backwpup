@@ -11,6 +11,16 @@ use BackWPup_WPMedia_ConsumerStrategies_AbstractConsumer as WPMedia_ConsumerStra
 class WPConsumer extends WPMedia_ConsumerStrategies_AbstractConsumer {
 
 	/**
+	 * Number of seconds to allow the request to execute.
+	 *
+	 * Not configurable: analytics must never delay a response. Also the lowest value
+	 * WordPress honours, as it clamps the cURL timeout to a minimum of 1 second.
+	 *
+	 * @var int
+	 */
+	const REQUEST_TIMEOUT = 1;
+
+	/**
 	 * The host to connect to (e.g. api.mixpanel.com)
 	 *
 	 * @var string
@@ -25,13 +35,6 @@ class WPConsumer extends WPMedia_ConsumerStrategies_AbstractConsumer {
 	protected $endpoint;
 
 	/**
-	 * The maximum number of seconds to allow the call to execute. Default is 30 seconds.
-	 *
-	 * @var int
-	 */
-	protected $timeout;
-
-	/**
 	 * The protocol to use for the cURL connection
 	 *
 	 * @var string
@@ -41,14 +44,15 @@ class WPConsumer extends WPMedia_ConsumerStrategies_AbstractConsumer {
 	/**
 	 * Creates a new WPConsumer and assigns properties from the $options array
 	 *
-	 * @param array{host:string, endpoint:string, timeout?: int, use_ssl?: bool} $options Options for the consumer.
+	 * The request timeout and blocking behaviour are fixed, and cannot be set here.
+	 *
+	 * @param array{host: string, endpoint: string, use_ssl?: bool} $options Options for the consumer.
 	 */
 	public function __construct( $options ) {
 		parent::__construct( $options );
 
 		$this->host     = $options['host'];
 		$this->endpoint = $options['endpoint'];
-		$this->timeout  = isset( $options['timeout'] ) ? $options['timeout'] : 30;
 		$this->protocol = isset( $options['use_ssl'] ) && ( true === $options['use_ssl'] ) ? 'https' : 'http';
 	}
 
@@ -67,19 +71,28 @@ class WPConsumer extends WPMedia_ConsumerStrategies_AbstractConsumer {
 		$url  = $this->protocol . '://' . $this->host . $this->endpoint;
 		$data = 'data=' . $this->_encode( $batch );
 
+		// Non-blocking still waits up to the timeout, it only discards the response:
+		// the timeout is what bounds the cost of a degraded endpoint.
 		$response = wp_remote_post(
 			$url,
 			[
-				'timeout' => $this->timeout,
-				'body'    => $data,
+				'timeout'  => self::REQUEST_TIMEOUT,
+				'blocking' => false,
+				'body'     => $data,
 			]
 		);
 
 		if ( is_wp_error( $response ) ) {
 			$this->_handleError( $response->get_error_code(), $response->get_error_message() );
-			return false;
 		}
 
+		/*
+		 * Report the batch as consumed even on failure. Returning false would make the
+		 * producer re-queue it and retry the flush up to 10 times at shutdown, once per
+		 * producer, multiplying the cost of an unreachable endpoint.
+		 *
+		 * @see \BackWPup_WPMedia_Producers_MixpanelBaseProducer::__destruct()
+		 */
 		return true;
 	}
 }

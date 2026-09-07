@@ -23,7 +23,7 @@ spl_autoload_register(
 	static function ( $class_name = '' ) {
 
 		// Project namespace & length.
-		$root_namespace = 'WPMedia\\BackWPup\\Dependencies\\BerlinDB\\';
+		$root_namespace = 'WPMedia\BackWPup\Dependencies\BerlinDB\\';
 		$project_namespace = 'WPMedia\\BackWPup\\Dependencies\\BerlinDB\\Database\\';
 		$length            = strlen( $project_namespace );
 

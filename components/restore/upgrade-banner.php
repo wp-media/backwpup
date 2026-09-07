@@ -1,5 +1,6 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
+use WPMedia\BackWPup\Admin\Frontend\Redirect;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -23,7 +24,7 @@ $cta_url = add_query_arg(
 		'bwu_redirect'                      => rawurlencode( $upgrade_url ),
 		'bwu_event'                         => 'Upgrade nudge banner clicked',
 		'bwu_event_property_nudge_location' => 'restore_upgrade',
-		'_wpnonce'                          => wp_create_nonce( 'backwpup_redirect_nonce' ),
+		'_wpnonce'                          => wp_create_nonce( Redirect::nonce_action( $upgrade_url ) ),
 	],
 	admin_url( 'admin.php' )
 );

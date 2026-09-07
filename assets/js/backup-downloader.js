@@ -161,7 +161,7 @@ window.BWU = window.BWU || {};
                 default:
                     this.cleanUi();
                     this.showErrorUi();
-                    this.errorUi.innerHTML = data.message;
+                    this.errorUi.textContent = data.message;
                     break;
             }
 

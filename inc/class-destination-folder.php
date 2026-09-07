@@ -73,6 +73,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 
 		if ( $backupfile && is_writable( $backupfile ) && ! is_dir( $backupfile ) && ! is_link( $backupfile ) ) { //phpcs:ignore
 			wp_delete_file( $backupfile );
+			BackWPup_Create_Archive::delete_sidecar_for( $backupfile );
 		} else {
 			// translators: %s: backup file path.
 			\BackWPup_Admin::message( sprintf( __( 'Could not delete backup archive "%s", check permissions!', 'backwpup' ), $backupfile ), true );
@@ -207,6 +208,7 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations {
 						break;
 					}
 					wp_delete_file( $file->getPathname() );
+					BackWPup_Create_Archive::delete_sidecar_for( $file->getPathname() );
 					$deleted_files[] = $file->getPathname();
 					foreach ( $files as $key => $filedata ) {
 						if ( $filedata['file'] === $file->getPathname() ) {

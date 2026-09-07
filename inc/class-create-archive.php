@@ -72,6 +72,36 @@ class BackWPup_Create_Archive {
 	private $file_count = 0;
 
 	/**
+	 * Tar/TarGz duplicate-entry index.
+	 *
+	 * In-memory reconstructed state of every Tar/TarGz entry written so far in this
+	 * archive, keyed by name_in_archive. Rebuilt on construction by replaying the
+	 * NDJSON sidecar log when resuming an existing archive.
+	 *
+	 * @var array
+	 */
+	private $tar_index = [];
+
+	/**
+	 * Tar/TarGz duplicate-entry index sidecar log file path.
+	 *
+	 * Empty string for all non-Tar/TarGz methods.
+	 *
+	 * @var string
+	 */
+	private $tar_index_file = '';
+
+	/**
+	 * Tar/TarGz duplicate-entry index sidecar log file handle.
+	 *
+	 * Append-mode resource kept open for the lifetime of the object, distinct from
+	 * $this->filehandler.
+	 *
+	 * @var resource|null
+	 */
+	private $tar_index_handle;
+
+	/**
 	 * BackWPup_Create_Archive constructor.
 	 *
 	 * @param string $file File with full path of the archive.
@@ -109,15 +139,21 @@ class BackWPup_Create_Archive {
 				);
 			}
 
-			$this->method      = 'TarGz';
-			$this->handlertype = 'gz';
-			$this->filehandler = $this->fopen( $this->file, 'ab' );
+			$this->method         = 'TarGz';
+			$this->handlertype    = 'gz';
+			$this->tar_index_file = $this->file . '.bwuidx';
+			$is_fresh_start       = ! is_file( $this->file );
+			$this->filehandler    = $this->fopen( $this->file, 'ab' );
+			$this->tar_index_init( $is_fresh_start );
 		}
 
 		// .TAR.
 		if ( ! $this->filehandler && '.tar' === strtolower( substr( $this->file, -4 ) ) ) {
-			$this->method      = 'Tar';
-			$this->filehandler = $this->fopen( $this->file, 'ab' ); // phpcs:ignore
+			$this->method         = 'Tar';
+			$this->tar_index_file = $this->file . '.bwuidx';
+			$is_fresh_start       = ! is_file( $this->file );
+			$this->filehandler    = $this->fopen( $this->file, 'ab' ); // phpcs:ignore
+			$this->tar_index_init( $is_fresh_start );
 		}
 
 		// .ZIP.
@@ -256,6 +292,49 @@ class BackWPup_Create_Archive {
 		}
 
 		$this->fclose();
+
+		// The archive is complete and will not be resumed again: close and delete the sidecar.
+		if ( is_resource( $this->tar_index_handle ) ) {
+			fclose( $this->tar_index_handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+			$this->tar_index_handle = null;
+		}
+
+		if ( '' !== $this->tar_index_file && file_exists( $this->tar_index_file ) ) {
+			@unlink( $this->tar_index_file ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.unlink_unlink
+		}
+	}
+
+	/**
+	 * Abort a partially-written archive.
+	 *
+	 * Unlike close(), this discards the in-progress archive: it is not a valid, complete
+	 * backup and must not be left on disk, together with its Tar/TarGz duplicate-entry
+	 * sidecar. Safe to call for any archive method (Tar, TarGz, Zip, PclZip, gz).
+	 *
+	 * @return void
+	 */
+	public function abort() {
+		if ( $this->ziparchive instanceof \ZipArchive ) {
+			$this->ziparchive->close();
+			$this->ziparchive = null;
+		}
+
+		if ( is_resource( $this->filehandler ) ) {
+			$this->fclose();
+		}
+
+		if ( is_resource( $this->tar_index_handle ) ) {
+			fclose( $this->tar_index_handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+			$this->tar_index_handle = null;
+		}
+
+		if ( '' !== $this->tar_index_file && file_exists( $this->tar_index_file ) ) {
+			@unlink( $this->tar_index_file ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.unlink_unlink
+		}
+
+		if ( '' !== $this->file && file_exists( $this->file ) ) {
+			@unlink( $this->file ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.unlink_unlink
+		}
 	}
 
 	/**
@@ -597,6 +676,14 @@ class BackWPup_Create_Archive {
 			return false;
 		}
 
+		$source_size = filesize( $file_name );
+		$source_size = false === $source_size ? null : $source_size;
+
+		$position = $this->tar_resolve_write_position( $name_in_archive, 'file', $source_size );
+		if ( 'skip' === $position['action'] ) {
+			return true;
+		}
+
 		if ( ! $this->check_archive_filesize( $file_name ) ) {
 			return false;
 		}
@@ -668,6 +755,9 @@ class BackWPup_Create_Archive {
 			$this->fwrite( $chunk );
 		}
 
+		$end_offset = $this->tar_current_offset();
+		$this->tar_index_mark_done( $name_in_archive, $end_offset, $file_stat['size'] );
+
 		return true;
 	}
 
@@ -685,6 +775,11 @@ class BackWPup_Create_Archive {
 		}
 
 		$name_in_archive = trailingslashit( $name_in_archive );
+
+		$position = $this->tar_resolve_write_position( $name_in_archive, 'dir', 0 );
+		if ( 'skip' === $position['action'] ) {
+			return true;
+		}
 
 		$tar_filename = $name_in_archive;
 
@@ -710,6 +805,9 @@ class BackWPup_Create_Archive {
 
 		$this->fwrite( $header );
 
+		$end_offset = $this->tar_current_offset();
+		$this->tar_index_mark_done( $name_in_archive, $end_offset, 0 );
+
 		return true;
 	}
 
@@ -732,8 +830,7 @@ class BackWPup_Create_Archive {
 		}
 
 		if ( is_resource( $this->filehandler ) ) {
-			$stats        = fstat( $this->filehandler );
-			$archive_size = $stats['size'];
+			$archive_size = $this->tar_current_offset();
 		} else {
 			$archive_size = filesize( $this->file );
 			if ( false === $archive_size ) {
@@ -855,6 +952,352 @@ class BackWPup_Create_Archive {
 		$chunk    = substr_replace( $chunk, $checksum, 148, 8 );
 
 		return $headers . $chunk;
+	}
+
+	/**
+	 * Delete the Tar/TarGz duplicate-entry sidecar file for a given archive path, if any.
+	 *
+	 * The sidecar only ever exists next to a Tar/TarGz archive (suffix `.bwuidx`); for
+	 * other archive methods this is a no-op. Callers should invoke this whenever a
+	 * backup archive is deleted from disk (manual deletion, retention cleanup, …) so
+	 * the sidecar does not linger as an orphan once its archive is gone.
+	 *
+	 * @param string $archive_file Full path of the backup archive file.
+	 *
+	 * @return void
+	 */
+	public static function delete_sidecar_for( $archive_file ) {
+		if ( ! is_string( $archive_file ) || '' === $archive_file ) {
+			return;
+		}
+
+		$sidecar_file = $archive_file . '.bwuidx';
+
+		if ( file_exists( $sidecar_file ) ) {
+			@unlink( $sidecar_file ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.unlink_unlink
+		}
+	}
+
+	/**
+	 * Initialize the Tar/TarGz duplicate-entry sidecar index.
+	 *
+	 * Called once from the constructor, right after the archive filehandler is
+	 * opened, for the Tar and TarGz branches only.
+	 *
+	 * @param bool $is_fresh_start Whether the archive file did not exist before this
+	 *                             instance opened it (i.e. this is not a resume).
+	 *
+	 * @return void
+	 */
+	private function tar_index_init( $is_fresh_start ) {
+		if ( $is_fresh_start ) {
+			if ( file_exists( $this->tar_index_file ) ) {
+				@unlink( $this->tar_index_file ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.unlink_unlink
+			}
+
+			$this->tar_index = [];
+		} else {
+			$this->tar_index = $this->tar_index_load();
+		}
+
+		$this->tar_index_handle = $this->fopen( $this->tar_index_file, 'ab' );
+	}
+
+	/**
+	 * Load and replay the NDJSON sidecar log into an in-memory index.
+	 *
+	 * Reads the log line by line (never the whole file at once) and replays each
+	 * decoded line into the index keyed by name_in_archive, so the last line written
+	 * for a given name always wins. Fails open (empty index, E_USER_WARNING) if the
+	 * log is missing or unreadable; a single corrupt/undecodable line is skipped with
+	 * its own warning rather than aborting the whole replay.
+	 *
+	 * @return array
+	 */
+	private function tar_index_load() {
+		$index      = [];
+		$last_entry = null;
+
+		if ( ! is_file( $this->tar_index_file ) || ! is_readable( $this->tar_index_file ) ) {
+			trigger_error(
+				esc_html__( 'Tar duplicate-entry index sidecar file is missing or unreadable; duplicate-entry protection is disabled for this run.', 'backwpup' ),
+				E_USER_WARNING
+			);
+
+			return $index;
+		}
+
+		$handle = fopen( $this->tar_index_file, 'rb' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
+
+		if ( ! is_resource( $handle ) ) {
+			trigger_error(
+				esc_html__( 'Tar duplicate-entry index sidecar file could not be opened; duplicate-entry protection is disabled for this run.', 'backwpup' ),
+				E_USER_WARNING
+			);
+
+			return $index;
+		}
+
+		while ( ! feof( $handle ) ) {
+			$line = fgets( $handle );
+
+			if ( false === $line ) {
+				break;
+			}
+
+			$line = trim( $line );
+
+			if ( '' === $line ) {
+				continue;
+			}
+
+			$decoded = json_decode( $line, true );
+
+			// A truncated or otherwise corrupt trailing line (e.g. a hard kill mid-write of
+			// the log line itself) fails to decode here and is conservatively dropped: the
+			// name simply falls back to whatever earlier, fully-written line already exists
+			// for it (or has no entry at all, treated as brand new).
+			if ( ! is_array( $decoded ) || ! isset( $decoded['name'] ) ) {
+				trigger_error(
+					esc_html__( 'Skipping corrupt line in Tar duplicate-entry index sidecar file.', 'backwpup' ),
+					E_USER_WARNING
+				);
+
+				continue;
+			}
+
+			$index[ $decoded['name'] ] = $decoded;
+			$last_entry                = $decoded;
+		}
+
+		fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+
+		// Size-only validation: reject the sidecar if the real archive file is smaller than
+		// what its last recorded entry implies. A legitimate resume can only ever make the
+		// real file at least as large as expected up to the last recorded entry (never
+		// smaller), so the comparison is strictly "<", never "!==" — a real archive is allowed
+		// to be larger (e.g. leftover unflushed bytes from a crash that
+		// tar_resolve_write_position() will truncate later). This intentionally does not
+		// detect a same-size-or-larger but different-content colliding archive: the goal is
+		// eliminating silent data loss (files wrongly skipped because a stale sidecar claimed
+		// they were already written), not full archive identity/content verification. No
+		// mtime-based secondary guard is used: a crash mid-content-write of a large file
+		// spanning multiple real seconds would advance the archive's real mtime past whatever
+		// mtime was recorded when the entry was marked pending, which would misclassify a
+		// legitimate resume as stale and cause tar_resolve_write_position() to append a fresh
+		// header after the leftover garbage bytes of the aborted write — real tar corruption.
+		if ( null !== $last_entry ) {
+			$expected_min_size = 'done' === ( $last_entry['status'] ?? null )
+				? ( $last_entry['end_offset'] ?? null )
+				: ( $last_entry['start_offset'] ?? null );
+
+			// A malformed/missing offset on the last entry is itself a reason not to trust the
+			// sidecar: fail closed (treat as PHP_INT_MAX, guaranteeing a mismatch) rather than
+			// silently trusting an entry we cannot actually validate.
+			if ( ! is_int( $expected_min_size ) ) {
+				$expected_min_size = PHP_INT_MAX;
+			}
+
+			$real_size = is_file( $this->file ) ? filesize( $this->file ) : false;
+
+			if ( false === $real_size || $real_size < $expected_min_size ) {
+				trigger_error(
+					esc_html__( 'Tar duplicate-entry index sidecar does not match its archive file (the archive is smaller than the sidecar expects); discarding the stale sidecar instead of trusting it, so no file already marked done is silently skipped from the new archive.', 'backwpup' ),
+					E_USER_WARNING
+				);
+
+				if ( file_exists( $this->tar_index_file ) ) {
+					@unlink( $this->tar_index_file ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.unlink_unlink
+				}
+
+				return [];
+			}
+		}
+
+		return $index;
+	}
+
+	/**
+	 * Append one entry as a single NDJSON line to the sidecar log.
+	 *
+	 * The only place that writes to the log file; never re-reads or rewrites prior
+	 * lines, so the cost is O(1) per call regardless of how many entries already
+	 * exist. No-op if the index handle is not a resource (non-Tar/TarGz methods).
+	 *
+	 * @param array $entry Entry to persist.
+	 *
+	 * @return void
+	 */
+	private function tar_index_append( array $entry ) {
+		if ( ! is_resource( $this->tar_index_handle ) ) {
+			return;
+		}
+
+		fwrite( $this->tar_index_handle, wp_json_encode( $entry ) . "\n" ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
+		fflush( $this->tar_index_handle );
+	}
+
+	/**
+	 * Record that a Tar/TarGz entry write has started, before any header/content
+	 * bytes are written for it.
+	 *
+	 * @param string $name         name_in_archive for the entry.
+	 * @param string $type         'file'|'dir'.
+	 * @param int    $start_offset Byte offset in $this->filehandler where the entry's
+	 *                             header begins.
+	 *
+	 * @return void
+	 */
+	private function tar_index_mark_pending( $name, $type, $start_offset ) {
+		$entry = [
+			'name'         => $name,
+			'type'         => $type,
+			'status'       => 'pending',
+			'start_offset' => $start_offset,
+			'end_offset'   => null,
+			'size'         => null,
+		];
+
+		$this->tar_index[ $name ] = $entry;
+
+		$this->tar_index_append( $entry );
+	}
+
+	/**
+	 * Record that a Tar/TarGz entry write has completed.
+	 *
+	 * @param string $name       name_in_archive for the entry.
+	 * @param int    $end_offset Byte offset in $this->filehandler right after the
+	 *                           entry's header/content have been fully written.
+	 * @param int    $size       Source size recorded at completion; 0 for directories.
+	 *
+	 * @return void
+	 */
+	private function tar_index_mark_done( $name, $end_offset, $size ) {
+		$existing = isset( $this->tar_index[ $name ] ) ? $this->tar_index[ $name ] : [];
+
+		$entry = array_merge(
+			$existing,
+			[
+				'name'       => $name,
+				'status'     => 'done',
+				'end_offset' => $end_offset,
+				'size'       => $size,
+			]
+		);
+
+		$this->tar_index[ $name ] = $entry;
+
+		$this->tar_index_append( $entry );
+	}
+
+	/**
+	 * Get the current, fully-flushed byte offset of the archive filehandler.
+	 *
+	 * Flushes PHP's userspace stream write buffer before reading fstat(), so this is
+	 * the single, guaranteed-fresh source of truth for every offset-capturing read in
+	 * this class (pending-start, done-end, pre-comparison size checks, and the
+	 * pre-truncate/seek read), rather than each call site reading fstat() directly.
+	 *
+	 * @return int
+	 */
+	private function tar_current_offset() {
+		if ( ! is_resource( $this->filehandler ) ) {
+			return 0;
+		}
+
+		fflush( $this->filehandler );
+
+		$stats = fstat( $this->filehandler );
+
+		return isset( $stats['size'] ) ? (int) $stats['size'] : 0;
+	}
+
+	/**
+	 * Resolve whether a Tar/TarGz entry write should proceed, be skipped, or overwrite
+	 * the last-written entry in place. Shared by tar_file() and tar_empty_folder() so
+	 * there is exactly one place that decides skip-vs-truncate-vs-write.
+	 *
+	 * Whenever the resolved action is 'write', the pending state (and, when a
+	 * truncate/fseek was performed, the truncation itself) is persisted to the
+	 * sidecar log by this method before it returns. This guarantees the on-disk
+	 * log can never observe a physically truncated archive without also recording
+	 * the corresponding 'pending' entry, even if the caller aborts on a later
+	 * check (e.g. check_archive_filesize() or stat() failure) before writing any
+	 * header/content bytes.
+	 *
+	 * @param string   $name_in_archive Name of entry within the archive.
+	 * @param string   $type            'file'|'dir'.
+	 * @param int|null $source_size     filesize() for files; 0 for directories; null if
+	 *                                  the source size could not be determined.
+	 *
+	 * @return array{action:string,offset:int}
+	 */
+	private function tar_resolve_write_position( $name_in_archive, $type, $source_size ) {
+		$current_offset = $this->tar_current_offset();
+		$existing       = isset( $this->tar_index[ $name_in_archive ] ) ? $this->tar_index[ $name_in_archive ] : null;
+
+		if ( null === $existing ) {
+			// Persist the pending state immediately, before returning, so the on-disk
+			// log always reflects the write about to start even if the caller aborts
+			// (e.g. a filesize()/stat() failure) right after this method returns.
+			$this->tar_index_mark_pending( $name_in_archive, $type, $current_offset );
+
+			return [
+				'action' => 'write',
+				'offset' => $current_offset,
+			];
+		}
+
+		$is_last_entry = 'pending' === $existing['status']
+			|| ( isset( $existing['end_offset'] ) && $existing['end_offset'] === $current_offset );
+
+		if (
+			'done' === $existing['status']
+			&& $existing['type'] === $type
+			&& null !== $source_size
+			&& $existing['size'] === $source_size
+		) {
+			// Identical entry already fully written — self-heal like the ZIP writer's statName() skip.
+			return [
+				'action' => 'skip',
+				'offset' => $current_offset,
+			];
+		}
+
+		if ( $is_last_entry ) {
+			// Safe to discard and rewrite: nothing has been written after this entry.
+			ftruncate( $this->filehandler, $existing['start_offset'] );
+			fseek( $this->filehandler, $existing['start_offset'] );
+
+			// Persist the truncation to the sidecar log immediately, in the same
+			// call that performed it, so the on-disk log can never end up stale
+			// relative to the physical archive even if the caller (tar_file()/
+			// tar_empty_folder()) aborts on a check that runs right after this
+			// method returns (e.g. check_archive_filesize() or stat() failure).
+			$this->tar_index_mark_pending( $name_in_archive, $type, $existing['start_offset'] );
+
+			return [
+				'action' => 'write',
+				'offset' => $existing['start_offset'],
+			];
+		}
+
+		// Entry differs but is not the last one written — cannot safely rewrite mid-stream
+		// without corrupting subsequent archive data. Skip, never duplicate.
+		trigger_error(
+			sprintf(
+				/* translators: %s: file name in archive. */
+				esc_html__( 'Skipping "%s": already present in archive at a different size and cannot be safely rewritten mid-stream.', 'backwpup' ),
+				esc_html( $name_in_archive )
+			),
+			E_USER_WARNING
+		);
+
+		return [
+			'action' => 'skip',
+			'offset' => $current_offset,
+		];
 	}
 
 	/**

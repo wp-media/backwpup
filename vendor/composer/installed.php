@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'inpsyde/backwpup-pro',
-        'pretty_version' => '5.7.5',
-        'version' => '5.7.5.0',
-        'reference' => '3d968635ee41370124d5e5077b749401746df3ec',
+        'pretty_version' => '5.7.6',
+        'version' => '5.7.6.0',
+        'reference' => '5f781c392f394fe29bc13d9a0a94196272c4622e',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -101,9 +101,9 @@
             'dev_requirement' => false,
         ),
         'inpsyde/backwpup-pro' => array(
-            'pretty_version' => '5.7.5',
-            'version' => '5.7.5.0',
-            'reference' => '3d968635ee41370124d5e5077b749401746df3ec',
+            'pretty_version' => '5.7.6',
+            'version' => '5.7.6.0',
+            'reference' => '5f781c392f394fe29bc13d9a0a94196272c4622e',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -460,9 +460,9 @@
             'dev_requirement' => false,
         ),
         'wp-media/wp-mixpanel' => array(
-            'pretty_version' => 'v1.4.1',
-            'version' => '1.4.1.0',
-            'reference' => '09dea8a51f97e8047defc9f8a995b87dec76baad',
+            'pretty_version' => 'v1.4.3',
+            'version' => '1.4.3.0',
+            'reference' => '3769c580be2f6b06ec3f70c9c4047d64d0246732',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wp-media/wp-mixpanel',
             'aliases' => array(),

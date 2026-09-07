@@ -55,7 +55,8 @@ BackWPupHelpers::component("closable-heading", [
   ?>
 
   <?php 
-    if (  \BackWPup::is_pro() ):
+    // Settings tier panels, hidden from users who cannot save them anyway.
+    if ( \BackWPup::is_pro() && current_user_can( 'backwpup_settings' ) ):
       BackWPupHelpers::component("form/button", [
         "type" => "settings",
         "label" => __("License", 'backwpup'),

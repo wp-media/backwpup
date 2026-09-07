@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitca3323293440d3c50bef34ad332ebf06
+class ComposerStaticInite766983b868b86113b58ee3b494ee455
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -378,7 +378,6 @@ class ComposerStaticInitca3323293440d3c50bef34ad332ebf06
         'AWS\\CRT\\NativeResource' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/NativeResource.php',
         'AWS\\CRT\\OptionValue' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Options.php',
         'AWS\\CRT\\Options' => __DIR__ . '/..' . '/aws/aws-crt-php/src/AWS/CRT/Options.php',
-        'Archive_Tar' => __DIR__ . '/..' . '/pear/archive_tar/Archive/Tar.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'BackWPup' => __DIR__ . '/../..' . '/inc/BackWPup.php',
         'BackWPup\\ThirdParty\\Autoptimize' => __DIR__ . '/../..' . '/inc/ThirdParty/Autoptimize.php',
@@ -514,7 +513,6 @@ class ComposerStaticInitca3323293440d3c50bef34ad332ebf06
         'PEAR_Error' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR.php',
         'PEAR_ErrorStack' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR/ErrorStack.php',
         'PEAR_Exception' => __DIR__ . '/..' . '/pear/pear_exception/PEAR/Exception.php',
-        'PEAR_PHPTest' => __DIR__ . '/..' . '/pear/archive_tar/tests/phpt_test.php.inc',
         'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'System' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/System.php',
@@ -528,10 +526,10 @@ class ComposerStaticInitca3323293440d3c50bef34ad332ebf06
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitca3323293440d3c50bef34ad332ebf06::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitca3323293440d3c50bef34ad332ebf06::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitca3323293440d3c50bef34ad332ebf06::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitca3323293440d3c50bef34ad332ebf06::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInite766983b868b86113b58ee3b494ee455::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInite766983b868b86113b58ee3b494ee455::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInite766983b868b86113b58ee3b494ee455::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInite766983b868b86113b58ee3b494ee455::$classMap;
 
         }, null, ClassLoader::class);
     }

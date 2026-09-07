@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WPMedia\BackWPup\Admin\Beacon;
 
+use WPMedia\BackWPup\Common\Domains;
 use WPMedia\BackWPup\EventManagement\SubscriberInterface;
 use WPMedia\BackWPup\Dependencies\WPMedia\Mixpanel\Optin;
 use WPMedia\BackWPup\Dependencies\WPMedia\Mixpanel\TrackingPlugin;
@@ -59,26 +60,9 @@ class Subscriber implements SubscriberInterface {
 			return $url;
 		}
 
-		// Parse host and ensure URL belongs to backwpup.com or backwpup.de (or their subdomains).
+		// Only our own sites get a hash.
 		$host = wp_parse_url( $url, PHP_URL_HOST );
-		if ( empty( $host ) ) {
-			return $url;
-		}
-		$host              = strtolower( $host );
-		$allowed_domains   = [
-			'backwpup.com',
-			'backwpup.de',
-			'com.bwu.local',
-			'de.bwu.local',
-		];
-		$is_allowed_domain = false;
-		foreach ( $allowed_domains as $domain ) {
-			if ( $host === $domain || ( strlen( $host ) > strlen( $domain ) && substr( $host, -strlen( '.' . $domain ) ) === '.' . $domain ) ) {
-				$is_allowed_domain = true;
-				break;
-			}
-		}
-		if ( ! $is_allowed_domain ) {
+		if ( empty( $host ) || ! Domains::is_owned( (string) $host ) ) {
 			return $url;
 		}
 		$user = wp_get_current_user();
