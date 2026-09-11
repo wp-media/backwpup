@@ -404,8 +404,9 @@ class BackWPup_Page_Jobs extends WP_List_Table {
 			$r .= '<div class="job-normal"' . $job_normal_hide . '>';
 		}
 		if ( 'wpcron' === BackWPup_Option::get( $item, 'activetype' ) ) {
-			$nextrun = wp_next_scheduled( 'backwpup_cron', [ 'arg' => $item ] ) + ( get_option( 'gmt_offset' ) * 3600 );
-			if ( $nextrun ) {
+			$nextrun = wp_next_scheduled( 'backwpup_cron', [ 'arg' => $item ] );
+			if ( false !== $nextrun ) {
+				$nextrun += get_option( 'gmt_offset' ) * 3600;
 				// translators: %s: cron expression.
 				$title = sprintf( esc_html__( 'Cron: %s', 'backwpup' ), BackWPup_Option::get( $item, 'cron' ) );
 				// translators: %1$s: date, %2$s: time.
