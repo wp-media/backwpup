@@ -4,29 +4,47 @@ declare(strict_types=1);
 
 namespace WPMedia\BackWPup\Admin\Notices;
 
+use function Inpsyde\BackWPup\Infrastructure\Restore\restore_dir_candidates;
+
 /**
  * Detects whether stale restore working-directory files are present.
  *
- * Resolves the restore base directory the same way commons.php does, then
- * checks for the presence of non-empty uploads/ or extract/ subdirectories,
+ * Checks every restore working directory commons.php knows about (current,
+ * legacy and orphaned ones) for non-empty uploads/ or extract/ subdirectories,
  * or the restore.dat.bkp credential file.
  */
 class StaleRestoreFilesDetector {
 
 	/**
-	 * Returns the absolute path to the restore base directory.
+	 * Returns the absolute paths of the restore working directories to check.
 	 *
-	 * @return string
+	 * Same list as the abandoned-restore sweep and the manual delete action, so the
+	 * notice never hides leftovers those two would act on (e.g. legacy residue
+	 * predating the tokenized directory name).
+	 *
+	 * @return string[]
 	 */
-	public function base_dir(): string {
-		$upload_dir = wp_upload_dir( null, true, false );
-		return untrailingslashit(
-			\BackWPup_File::get_absolute_path( $upload_dir['basedir'] )
-		) . '/backwpup-restore';
+	public function base_dirs(): array {
+		return restore_dir_candidates();
 	}
 
 	/**
-	 * Returns true when stale restore files are detected.
+	 * Returns true when stale restore files are detected in any restore working directory.
+	 *
+	 * @return bool
+	 */
+	public function has_files(): bool {
+		foreach ( $this->base_dirs() as $base_dir ) {
+			if ( $this->dir_has_files( $base_dir ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns true when stale restore files are detected in one working directory.
 	 *
 	 * Returns true if:
 	 *   - uploads/ OR extract/ exists AND has at least one non-dot child entry, OR
@@ -34,11 +52,11 @@ class StaleRestoreFilesDetector {
 	 *
 	 * Returns false if the base directory does not exist.
 	 *
+	 * @param string $base_dir Absolute path to a restore working directory.
+	 *
 	 * @return bool
 	 */
-	public function has_files(): bool {
-		$base_dir = $this->base_dir();
-
+	private function dir_has_files( string $base_dir ): bool {
 		if ( ! is_dir( $base_dir ) ) {
 			return false;
 		}

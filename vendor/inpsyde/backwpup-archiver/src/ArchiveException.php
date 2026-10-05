@@ -1,4 +1,4 @@
-<?php
+<?php # -*- coding: utf-8 -*-
 
 /*
  * This file is part of the BackWPup Archiver package.
@@ -100,5 +100,16 @@ class ArchiveException extends RuntimeException
     public static function forInvalidFileIndex($index)
     {
         return new static("Invalid file index: {$index}");
+    }
+
+    /**
+     * Create a new Exception When an Archive Entry Would Be Written Outside the Destination
+     *
+     * @param $entryName
+     * @return ArchiveException
+     */
+    public static function becauseEntryEscapesDestination($entryName)
+    {
+        return new static("Archive entry '{$entryName}' resolves outside the destination directory.");
     }
 }

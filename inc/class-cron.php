@@ -1,6 +1,7 @@
 <?php
 
 use WPMedia\BackWPup\Plugin\Plugin;
+use function Inpsyde\BackWPup\Infrastructure\Restore\maybe_cleanup_abandoned_restore;
 /**
  * Class for BackWPup cron methods.
  */
@@ -22,7 +23,7 @@ class BackWPup_Cron {
 			// Reschedule restart.
 			wp_schedule_single_event( time() + 60, 'backwpup_cron', [ 'arg' => 'restart' ] );
 			// Restart job if not working or a restart imitated.
-			self::cron_active( [ 'run' => 'restart' ] );
+			self::resume_scheduled_restart();
 
 			return;
 		}
@@ -56,12 +57,7 @@ class BackWPup_Cron {
 		wp_schedule_single_event( $cron_next, 'backwpup_cron', [ 'arg' => $arg ] );
 
 		// Start job.
-		self::cron_active(
-			[
-				'run'   => 'cronrun',
-				'jobid' => $arg,
-			]
-			);
+		self::start_scheduled_job( $arg );
 	}
 
 	/**
@@ -150,6 +146,11 @@ class BackWPup_Cron {
 			BackWPup_Job::clean_temp_folder();
 		}
 
+		// Sweep and clean up any abandoned restore working directory (Restore module owns the logic).
+		if ( function_exists( 'Inpsyde\BackWPup\Infrastructure\Restore\maybe_cleanup_abandoned_restore' ) ) {
+			maybe_cleanup_abandoned_restore();
+		}
+
 		// Check scheduling jobs that not found will removed because there are single scheduled.
 		$activejobs = BackWPup_Option::get_job_ids( 'activetype', 'wpcron' );
 
@@ -164,7 +165,94 @@ class BackWPup_Cron {
 	}
 
 	/**
-	 * Start job if in cron and run query args are set.
+	 * Start a BackWPup job. Isolated so tests can observe dispatch without
+	 * actually running a job.
+	 *
+	 * @param string $run   Run type.
+	 * @param int    $jobid Job ID, or 0 when not applicable to the run type.
+	 */
+	protected static function start_job( string $run, int $jobid = 0 ): void {
+		BackWPup_Job::start_http( $run, $jobid );
+	}
+
+	/**
+	 * Send the response headers used for every wp-cron.php-triggered job
+	 * dispatch, whether the request came from the HTTP entry point or was
+	 * fired in-process from a due scheduled event.
+	 */
+	private static function send_job_run_headers(): void {
+		if ( PHP_SESSION_ACTIVE === session_status() ) {
+			session_write_close();
+		}
+		if ( ! headers_sent() ) {
+			header( 'Content-Type: text/html; charset=' . get_bloginfo( 'charset' ), true );
+			header( 'X-Robots-Tag: noindex, nofollow', true );
+		}
+		nocache_headers();
+	}
+
+	/**
+	 * Restart the currently working job when it is missing, stalled, or not
+	 * actually running.
+	 */
+	private static function resume_working_job(): void {
+		$job_object = BackWPup_Job::get_working_data();
+		// Restart if cannot find job.
+		if ( ! $job_object ) {
+			static::start_job( 'restart' );
+
+			return;
+		}
+		// Restart job if not working or a restart wished.
+		$not_worked_time = microtime( true ) - $job_object->timestamp_last_update;
+		if ( ! $job_object->pid || $not_worked_time > 300 ) {
+			static::start_job( 'restart' );
+		}
+	}
+
+	/**
+	 * Resume the scheduled restart check without reading request data.
+	 *
+	 * This is the internal counterpart of the HTTP 'restart' run type
+	 * handled by self::cron_active(). It is called in-process by self::run()
+	 * and must never read $_GET / $_POST.
+	 */
+	private static function resume_scheduled_restart(): void {
+		if ( ! wp_doing_cron() ) {
+			return;
+		}
+
+		self::send_job_run_headers();
+		self::resume_working_job();
+	}
+
+	/**
+	 * Start a scheduled BackWPup job for the given job ID.
+	 *
+	 * This is the only legitimate producer of the 'cronrun' run type. It is
+	 * called in-process by self::run(), the 'backwpup_cron' WP-Cron hook
+	 * callback, and must never read $_GET / $_POST: the authority to start
+	 * the job comes from WordPress itself having fired a due scheduled
+	 * event for it, not from anything in the current request.
+	 *
+	 * @param int $jobid Job ID.
+	 */
+	private static function start_scheduled_job( int $jobid ): void {
+		if ( ! wp_doing_cron() ) {
+			return;
+		}
+
+		if ( $jobid < 1 || ! BackWPup_Job::is_job_enabled( $jobid ) ) {
+			return;
+		}
+
+		self::send_job_run_headers();
+		static::start_job( 'cronrun', $jobid );
+	}
+
+	/**
+	 * Start a job for the HTTP-triggered run types read from the current
+	 * request (wp-cron.php?backwpup_run=...).
 	 *
 	 * @param array $args Job args array.
 	 */
@@ -203,23 +291,16 @@ class BackWPup_Cron {
 			$args
 		);
 
+		// 'cronrun' is dispatched in-process by run() only; never accept it from a request.
 		if ( ! in_array(
 			$args['run'],
-			[ 'test', 'restart', 'runnow', 'runnowalt', 'runext', 'cronrun' ],
+			[ 'test', 'restart', 'runnow', 'runnowalt', 'runext' ],
 			true
 		) ) {
 			return;
 		}
 
-		// Special header.
-		if ( PHP_SESSION_ACTIVE === session_status() ) {
-			session_write_close();
-		}
-		if ( ! headers_sent() ) {
-			header( 'Content-Type: text/html; charset=' . get_bloginfo( 'charset' ), true );
-			header( 'X-Robots-Tag: noindex, nofollow', true );
-		}
-		nocache_headers();
+		self::send_job_run_headers();
 
 		// On test die for fast feedback.
 		if ( 'test' === $args['run'] ) {
@@ -230,14 +311,14 @@ class BackWPup_Cron {
 			$job_object = BackWPup_Job::get_working_data();
 			// Restart if cannot find job.
 			if ( ! $job_object ) {
-				BackWPup_Job::start_http( 'restart' );
+				static::start_job( 'restart' );
 
 				return;
 			}
 			// Restart job if not working or a restart wished.
 			$not_worked_time = microtime( true ) - $job_object->timestamp_last_update;
 			if ( ! $job_object->pid || $not_worked_time > 300 ) {
-				BackWPup_Job::start_http( 'restart' );
+				static::start_job( 'restart' );
 
 				return;
 			}
@@ -253,9 +334,6 @@ class BackWPup_Cron {
 			if ( preg_match( '/^[a-f0-9]{32}$/i', $args['nonce'] ) !== 1 ) {
 				$nonce = get_site_option( 'backwpup_cfg_jobrunauthkey' );
 			}
-		}
-		if ( 'cronrun' === $args['run'] ) {
-			$nonce = '';
 		}
 		// Check nonce.
 		if ( $nonce !== $args['nonce'] ) {
@@ -284,7 +362,7 @@ class BackWPup_Cron {
 		}
 
 		// Run BackWPup job.
-		BackWPup_Job::start_http( $args['run'], $args['jobid'] );
+		static::start_job( $args['run'], (int) $args['jobid'] );
 	}
 
 	/**

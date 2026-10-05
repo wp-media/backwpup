@@ -6,6 +6,7 @@ namespace Inpsyde\Restore\Api\Module;
 
 use Exception;
 use Inpsyde\Restore\Api\Exception\FileSystemException;
+use Inpsyde\Restore\Infrastructure\Restore\WorkingDirectoryProtector;
 use Inpsyde\Restore\Utils\SanitizePath;
 use InvalidArgumentException;
 
@@ -115,6 +116,11 @@ class Registry
     /**
      * Perform the basic tasks to make the registry work properly.
      *
+     * Also protects the restore working directory (the directory holding the
+     * registry file) on every call, before anything sensitive is written into
+     * it: the registry file itself, the uploaded archive, the log and
+     * `extract/` all live there.
+     *
      * @throws FileSystemException
      */
     public function init(): void
@@ -123,6 +129,7 @@ class Registry
             $data = file_get_contents($this->filePath) ?: '';
             $unserializedData = unserialize($data);
             $this->registry = \is_array($unserializedData) ? $unserializedData : [];
+            $this->protect_working_directory();
 
             return;
         }
@@ -136,6 +143,8 @@ class Registry
             mkdir(\dirname($this->filePath), FS_CHMOD_DIR, true);
         }
 
+        $this->protect_working_directory();
+
         // If file doesn't exists let's try to create it.
         $handle = fopen($this->filePath, 'a+');
 
@@ -148,6 +157,37 @@ class Registry
 
         // Release the resource.
         fclose($handle);
+    }
+
+    /**
+     * Protect the restore working directory with deny-all protection files.
+     *
+     * Applies regardless of pro's `backwpup_protect_folders` filter: that
+     * filter is a pro concept this library cannot read, and this directory
+     * holds the registry (database credentials). When the directory is the
+     * project root or one of its ancestors, protection is skipped with a
+     * warning instead of throwing, to avoid taking the site down over a
+     * misconfiguration.
+     *
+     * @throws FileSystemException in case a protection file cannot be written
+     */
+    private function protect_working_directory(): void
+    {
+        $directory = \dirname($this->filePath);
+        $projectRoot = $this->registry['project_root'] ?? '';
+
+        if ((new WorkingDirectoryProtector())->protect($directory, (string) $projectRoot)) {
+            return;
+        }
+
+        trigger_error( // phpcs:ignore
+            sprintf(
+                'Restore working directory %s is the site root or above it; '
+                . 'protection files were not written.',
+                $directory
+            ),
+            E_USER_WARNING
+        );
     }
 
     /**

@@ -1,4 +1,4 @@
-<?php
+<?php # -*- coding: utf-8 -*-
 
 /*
  * This file is part of the BackWPup Archiver package.
@@ -78,12 +78,12 @@ class CurrentExtractInfo implements JsonSerializable
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
-        $data = [];
+        $data = array();
 
         try {
             $reflection = new ReflectionClass($this);
         } catch (ReflectionException $exc) {
-            return [];
+            return array();
         }
         $properties = $reflection->getProperties(ReflectionProperty::IS_PRIVATE);
 

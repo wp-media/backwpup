@@ -5,7 +5,7 @@
  * Description: WordPress Backup Plugin
  * Author: BackWPup – WordPress Backup & Restore Plugin
  * Author URI: https://backwpup.com
- * Version: 5.7.6
+ * Version: 5.7.7
  * Requires at least: 5.3
  * Requires PHP: 7.4
  * Text Domain: backwpup
@@ -56,6 +56,19 @@ if ( $can_boot_mcp_adapter ) {
 	 */
 	if ( wpm_apply_filters_typed( 'boolean', 'backwpup_mcp_server_enabled', true ) ) {
 		McpAdapter::instance();
+
+		if ( class_exists( \WPMedia\MCP\OAuth\Bootstrap::class ) ) {
+			try {
+				\WPMedia\MCP\OAuth\Bootstrap::instance();
+			} catch ( \Throwable $throwable ) {
+				// Never let a failure in the shared OAuth library take down the whole site —
+				// the default MCP server booted above must keep working regardless.
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- WP_DEBUG-gated diagnostic only.
+					error_log( sprintf( 'BackWPup: MCP OAuth bootstrap failed: %s', $throwable->getMessage() ) );
+				}
+			}
+		}
 	}
 }
 

@@ -15,6 +15,14 @@ use RecursiveIteratorIterator;
  * `Registry::reset_registry()` has run. Never deletes `project_temp` itself.
  * All filesystem errors are caught, logged, and never rethrown so that the
  * restore success response is unaffected by cleanup failures.
+ *
+ * Native PHP warnings from unlink()/rmdir() are suppressed: each failure is
+ * already reported through the PSR-3 logger, and the native message embeds the
+ * absolute path of the (secret) working directory, which must never reach a
+ * potentially web-readable PHP error log.
+ *
+ * Symbolic links are never followed: a link found inside a target directory is
+ * removed itself, so cleanup can never delete anything outside `project_temp`.
  */
 class RestoreCleaner
 {
@@ -61,6 +69,15 @@ class RestoreCleaner
 
         foreach ([$this->projectTemp . '/uploads', $this->projectTemp . '/extract'] as $dir) {
             try {
+                if (is_link($dir)) {
+                    if (!@unlink($dir)) { // phpcs:ignore
+                        $this->logger->error(
+                            'BackWPup restore cleanup: failed to remove symbolic link.',
+                            ['path' => $dir]
+                        );
+                    }
+                    continue;
+                }
                 if (!is_dir($dir)) {
                     $this->logger->debug(
                         'BackWPup restore cleanup: directory not found, skipping.',
@@ -101,7 +118,7 @@ class RestoreCleaner
                     continue;
                 }
                 $this->logger->info('BackWPup restore cleanup: deleting file.', ['path' => $file]);
-                if (!unlink($file)) { // phpcs:ignore
+                if (!@unlink($file)) { // phpcs:ignore
                     $this->logger->error(
                         'BackWPup restore cleanup: failed to delete file.',
                         ['path' => $file]
@@ -127,6 +144,16 @@ class RestoreCleaner
         $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
 
         foreach ($files as $file) {
+            if ($file->isLink()) {
+                if (!@unlink($file->getPathname())) { // phpcs:ignore
+                    $this->logger->warning(
+                        'BackWPup restore cleanup: failed to remove symbolic link.',
+                        ['path' => $file->getPathname()]
+                    );
+                }
+                continue;
+            }
+
             $path = $file->getRealPath();
 
             if ($path === false) {
@@ -138,7 +165,7 @@ class RestoreCleaner
             }
 
             if ($file->isDir()) {
-                if (!rmdir($path)) { // phpcs:ignore
+                if (!@rmdir($path)) { // phpcs:ignore
                     $this->logger->warning(
                         'BackWPup restore cleanup: failed to remove subdirectory.',
                         ['path' => $path]
@@ -147,7 +174,7 @@ class RestoreCleaner
                 continue;
             }
 
-            if (!unlink($path)) { // phpcs:ignore
+            if (!@unlink($path)) { // phpcs:ignore
                 $this->logger->warning(
                     'BackWPup restore cleanup: failed to delete file inside directory.',
                     ['path' => $path]
@@ -155,7 +182,7 @@ class RestoreCleaner
             }
         }
 
-        if (!rmdir($dir)) { // phpcs:ignore
+        if (!@rmdir($dir)) { // phpcs:ignore
             $this->logger->error(
                 'BackWPup restore cleanup: failed to remove root directory.',
                 ['path' => $dir]

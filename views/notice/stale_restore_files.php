@@ -30,6 +30,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	?>
 </p>
 <p>
+	<?php
+	esc_html_e(
+		'BackWPup also periodically checks for and automatically removes abandoned restore files, but deleting them now is safer while they remain on disk.',
+		'backwpup'
+	);
+	?>
+</p>
+<p>
 	<button
 		type="button"
 		id="backwpup-delete-restore-files"

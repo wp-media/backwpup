@@ -80,10 +80,14 @@ class BackWPup_Job {
 	 * The Tar/TarGz/Zip archive object currently being written by create_archive(), if any.
 	 *
 	 * Set only while create_archive() has an open BackWPup_Create_Archive instance on its call
-	 * stack; cleared on every normal exit from create_archive() (success or handled failure).
-	 * Lets end() (via cleanup_aborted_archive()) reach and abort the archive when the job is
-	 * cancelled or crashes mid-archiving, from any of the call sites that can detect this
-	 * (update_working_data(), do_restart(), and transitively shutdown() on a PHP fatal error).
+	 * stack; cleared on every exit from create_archive() (success or failure, including the
+	 * catch( Exception ) branch). do_restart() also releases it, right before sending the
+	 * restart request, so that BackWPup_Create_Archive::__destruct() flushes the archive to disk
+	 * (ZipArchive::close(), PclZip queue) before the next process reopens it — see the #1781 fix.
+	 * The only time it is kept alive past that point is the abort path: do_restart()'s
+	 * is_running_file_missing() check runs first and, when it fires, delegates to
+	 * cleanup_aborted_archive() (via end()) so the reference is still available to abort() and
+	 * delete the partial archive, instead of being flushed and resumed.
 	 *
 	 * @var BackWPup_Create_Archive|null
 	 */
@@ -1887,6 +1891,18 @@ class BackWPup_Job {
 	}
 
 	/**
+	 * Whether the current request is running under the PHP CLI SAPI.
+	 *
+	 * Thin wrapper around php_sapi_name() so tests can override the CLI guard in do_restart()
+	 * without relying on a global function mock.
+	 *
+	 * @return bool
+	 */
+	protected function is_cli(): bool {
+		return 'cli' === php_sapi_name();
+	}
+
+	/**
 	 * Do a job restart.
 	 *
 	 * @param bool $must Whether restart must be done.
@@ -1903,7 +1919,7 @@ class BackWPup_Job {
 		}
 
 		// No restart on CLI usage.
-		if ( 'cli' === php_sapi_name() ) {
+		if ( $this->is_cli() ) {
 			return;
 		}
 
@@ -1956,6 +1972,16 @@ class BackWPup_Job {
 		// Restart job.
 		wp_clear_scheduled_hook( 'backwpup_cron', [ 'arg' => 'restart' ] );
 		wp_schedule_single_event( time() + 5, 'backwpup_cron', [ 'arg' => 'restart' ] );
+
+		// Release the archive being written by create_archive() so BackWPup_Create_Archive::__destruct()
+		// flushes it to disk (ZipArchive::close(), PclZip queue) BEFORE the non-blocking restart request
+		// starts the next process, which reopens the archive and resumes after the last saved file.
+		// Kept until here so the abort path above can still delete it via cleanup_aborted_archive(), and
+		// after the cron fallback is scheduled in case a long close() gets the request killed.
+		// Do NOT call close(): for Tar/TarGz it writes the end-of-archive block and deletes the .bwuidx
+		// sidecar, which would break resume.
+		$this->current_archive = null;
+
 		self::get_jobrun_url( 'restart' );
 
 		exit();
@@ -2556,6 +2582,10 @@ class BackWPup_Job {
 			$this->current_archive = null;
 			$this->log( __( 'Backup archive created.', 'backwpup' ), E_USER_NOTICE );
 		} catch ( Exception $e ) {
+			// Release the last reference to the open archive so BackWPup_Create_Archive::__destruct()
+			// flushes it to disk before run() restarts (usually in a new process) or retries
+			// create_archive() in this same process when do_restart() returns early.
+			$this->current_archive = null;
 			$this->log( $e->getMessage(), E_USER_ERROR, $e->getFile(), $e->getLine() );
 
 			return false;

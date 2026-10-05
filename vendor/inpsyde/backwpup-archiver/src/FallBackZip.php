@@ -1,4 +1,4 @@
-<?php
+<?php # -*- coding: utf-8 -*-
 
 /*
  * This file is part of the BackWPup Archiver package.
@@ -71,8 +71,18 @@ class FallBackZip implements ArchiveFileOperator
         Assert::path($destination);
 
         $destination = $this->extractDirNameByDestination($destination);
+
+        foreach ($this->content() as $entryName) {
+            $this->assertEntryWithinDestination($destination, $entryName);
+        }
+
         // phpcs:ignore NeutronStandard.Extract.DisallowExtract.Extract
-        $extracted = $this->pclZip->extract(PCLZIP_OPT_PATH, $destination);
+        $extracted = $this->pclZip->extract(
+            PCLZIP_OPT_PATH,
+            $destination,
+            PCLZIP_OPT_EXTRACT_DIR_RESTRICTION,
+            $destination
+        );
 
         if ($extracted <= 0) {
             throw ArchiveException::becauseArchiveCannotBeExtracted($this->fileName);
@@ -101,7 +111,15 @@ class FallBackZip implements ArchiveFileOperator
         Assert::greaterThanEq($index, 0);
         Assert::path($destination);
 
-        $extracted = $this->pclZip->extractByIndex($index, PCLZIP_OPT_PATH, $destination);
+        $this->assertEntryWithinDestination($destination, $this->fileNameByIndex($index));
+
+        $extracted = $this->pclZip->extractByIndex(
+            $index,
+            PCLZIP_OPT_PATH,
+            $destination,
+            PCLZIP_OPT_EXTRACT_DIR_RESTRICTION,
+            $destination
+        );
 
         if ($extracted <= 0) {
             throw ArchiveException::forInvalidFileIndex($index);
@@ -167,9 +185,14 @@ class FallBackZip implements ArchiveFileOperator
         $fileName = $file->getPathname();
         $temDir = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR);
         $filePath = "{$temDir}/{$fileName}";
+
+        $this->assertEntryWithinDestination($temDir, $fileName);
+
         // phpcs:ignore NeutronStandard.Extract.DisallowExtract.Extract
         $extracted = $this->pclZip->extract(
             PCLZIP_OPT_PATH,
+            $temDir,
+            PCLZIP_OPT_EXTRACT_DIR_RESTRICTION,
             $temDir,
             PCLZIP_OPT_BY_NAME,
             $fileName
@@ -253,5 +276,55 @@ class FallBackZip implements ArchiveFileOperator
         $destination = rtrim($destination, DIRECTORY_SEPARATOR) . "/{$baseName}";
 
         return $destination;
+    }
+
+    /**
+     * Assert an Archive Entry Resolves Inside the Extraction Destination
+     *
+     * PclZip's own PCLZIP_OPT_EXTRACT_DIR_RESTRICTION relies on PclZipUtilPathInclusion(),
+     * which, per its own docblock, "does not support '.' or '..' statements": it compares
+     * path segments position by position without resolving traversal sequences, so an entry
+     * name like "../../pwned.txt" passes that check undetected. This performs the actual
+     * path resolution ourselves before any extraction call is made, so a crafted entry
+     * cannot cause a file to be written outside $destination.
+     *
+     * @param string $destination
+     * @param string $entryName
+     * @throws ArchiveException
+     */
+    private function assertEntryWithinDestination($destination, $entryName)
+    {
+        $destinationPath = rtrim(self::normalizePath($destination), '/');
+        $entryPath = self::normalizePath($destinationPath . '/' . $entryName);
+
+        if ($entryPath !== $destinationPath && strpos($entryPath, $destinationPath . '/') !== 0) {
+            throw ArchiveException::becauseEntryEscapesDestination($entryName);
+        }
+    }
+
+    /**
+     * Resolve '.' and '..' Segments in a Path Without Touching the Filesystem
+     *
+     * @param string $path
+     * @return string
+     */
+    private static function normalizePath($path)
+    {
+        $path = str_replace('\\', '/', $path);
+        $isAbsolute = strpos($path, '/') === 0;
+
+        $resolved = array();
+        foreach (explode('/', $path) as $segment) {
+            if ($segment === '' || $segment === '.') {
+                continue;
+            }
+            if ($segment === '..') {
+                array_pop($resolved);
+                continue;
+            }
+            $resolved[] = $segment;
+        }
+
+        return ( $isAbsolute ? '/' : '' ) . implode('/', $resolved);
     }
 }

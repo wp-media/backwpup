@@ -185,7 +185,7 @@ class Archive_Tar extends PEAR
                             "Unsupported compression type '$p_compress'\n" .
                             "Supported types are 'gz', 'bz2' and 'lzma2'.\n"
                         );
-                        return false;
+                        return;
                     }
                 }
             }
@@ -213,7 +213,7 @@ class Archive_Tar extends PEAR
                     "Please make sure your version of PHP was built " .
                     "with '$extname' support.\n"
                 );
-                return false;
+                return;
             }
         }
 

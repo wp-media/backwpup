@@ -38,9 +38,9 @@ Also Lzma2 compressed archives are supported with xz extension.</description>
   <email>stig@php.net</email>
   <active>no</active>
  </helper>
- <date>2025-07-19</date>
+ <date>2026-08-19</date>
  <version>
-  <release>1.6.0</release>
+  <release>1.6.1</release>
   <api>1.6.0</api>
  </version>
  <stability>
@@ -49,11 +49,12 @@ Also Lzma2 compressed archives are supported with xz extension.</description>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
  <notes>
-This release drops support for PHP 5.4 and 5.5.
+This release adds PHP 8.6 compatibility.
 
-* PR #51: big file support
-* PR #53: Fix return value of _writeBlock
-* PR #58: Remove gzopen/gztell/gzseek shim
+* Update the stale compatible tag in package.xml: Archive_Tar could not
+  be installed without --force on any PEAR newer than 1.10.10
+* PR #61: avoid returning values from __construct() and __destruct()
+* CI: test against PHP 8.4, 8.5 and 8.6
  </notes>
  <contents>
   <dir name="/">
@@ -69,7 +70,7 @@ This release drops support for PHP 5.4 and 5.5.
   <name>PEAR</name>
   <channel>pear.php.net</channel>
   <min>1.8.0</min>
-  <max>1.10.10</max>
+  <max>1.10.18</max>
  </compatible>
  <dependencies>
   <required>
@@ -83,6 +84,26 @@ This release drops support for PHP 5.4 and 5.5.
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.6.1</release>
+    <api>1.6.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2026-08-19</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
+   <notes>
+    This release adds PHP 8.6 compatibility.
+
+    * Update the stale compatible tag in package.xml: Archive_Tar could not
+      be installed without --force on any PEAR newer than 1.10.10
+    * PR #61: avoid returning values from __construct() and __destruct()
+    * CI: test against PHP 8.4, 8.5 and 8.6
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.6.0</release>

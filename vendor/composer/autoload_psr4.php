@@ -11,6 +11,7 @@ return array(
     'Webmozart\\Assert\\' => array($vendorDir . '/webmozart/assert/src'),
     'WP\\McpSchema\\' => array($vendorDir . '/wordpress/php-mcp-schema/src'),
     'WP\\MCP\\' => array($vendorDir . '/wordpress/mcp-adapter/includes'),
+    'WPMedia\\MCP\\OAuth\\' => array($vendorDir . '/wp-media/mcp-oauth/inc'),
     'WPMedia\\Beta\\' => array($vendorDir . '/wp-media/wp-beta/src'),
     'WPMedia\\BackWPup\\Tracking\\' => array($baseDir . '/src/Tracking'),
     'WPMedia\\BackWPup\\StorageProviders\\' => array($baseDir . '/src/StorageProviders'),

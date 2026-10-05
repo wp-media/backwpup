@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace WPMedia\BackWPup\Admin\Notices;
 
-use Inpsyde\Restore\Infrastructure\Restore\RestoreCleaner;
-use Psr\Log\NullLogger;
 use WPMedia\BackWPup\EventManagement\SubscriberInterface;
 use WPMedia\BackWPup\Admin\Notices\Notices\AbstractNotice;
 
-use function Inpsyde\BackWPup\Infrastructure\Restore\restore_container;
+use function Inpsyde\BackWPup\Infrastructure\Restore\cleanup_restore_dir;
+use function Inpsyde\BackWPup\Infrastructure\Restore\restore_dir_candidates;
 
 /**
  * Subscriber class responsible for rendering admin notices.
@@ -119,9 +118,10 @@ class Subscriber implements SubscriberInterface {
 	/**
 	 * AJAX handler: delete stale restore working-directory files.
 	 *
-	 * Verifies nonce and capability, then delegates deletion to RestoreCleaner.
-	 * Returns wp_send_json_success() when files are gone, wp_send_json_error()
-	 * when files remain or an exception is thrown.
+	 * Verifies nonce and capability, then cleans up every restore working directory
+	 * (current, legacy and orphaned ones) unconditionally — the admin explicitly asked
+	 * for it, so no abandonment threshold applies. Returns wp_send_json_success() when
+	 * files are gone, wp_send_json_error() when files remain.
 	 *
 	 * @return void
 	 */
@@ -141,17 +141,8 @@ class Subscriber implements SubscriberInterface {
 			);
 		}
 
-		try {
-			$project_temp = (string) restore_container( 'project_temp' );
-			$cleaner      = new RestoreCleaner( $project_temp, new NullLogger() );
-			$cleaner->cleanup();
-		} catch ( \Throwable $e ) {
-			wp_send_json_error(
-				[
-					'message' => esc_html__( 'Failed to delete restore files. Please delete them manually.', 'backwpup' ),
-				],
-				500
-			);
+		foreach ( restore_dir_candidates() as $project_temp ) {
+			cleanup_restore_dir( $project_temp, false );
 		}
 
 		$detector = new StaleRestoreFilesDetector();

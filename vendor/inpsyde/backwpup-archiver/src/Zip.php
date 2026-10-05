@@ -1,4 +1,4 @@
-<?php
+<?php # -*- coding: utf-8 -*-
 
 /*
  * This file is part of the BackWPup Archiver package.
@@ -160,7 +160,7 @@ class Zip implements ArchiveFileOperator, Closable
     {
         $this->open();
 
-        $list = [];
+        $list = array();
         $numEntries = $this->zipArchive->numFiles;
 
         for ($count = 0; $count < $numEntries; ++$count) {

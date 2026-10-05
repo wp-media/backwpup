@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInite766983b868b86113b58ee3b494ee455
+class ComposerStaticInit864b16448bb03eeb25a84094b0bcc342
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -14,9 +14,9 @@ class ComposerStaticInite766983b868b86113b58ee3b494ee455
         'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '6c592737b91137905268e9a0eb968869' => __DIR__ . '/..' . '/wp-media/apply-filters-typed/functions.php',
         '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
-        '6c592737b91137905268e9a0eb968869' => __DIR__ . '/..' . '/wp-media/apply-filters-typed/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -33,6 +33,7 @@ class ComposerStaticInite766983b868b86113b58ee3b494ee455
             'Webmozart\\Assert\\' => 17,
             'WP\\McpSchema\\' => 13,
             'WP\\MCP\\' => 7,
+            'WPMedia\\MCP\\OAuth\\' => 18,
             'WPMedia\\Beta\\' => 13,
             'WPMedia\\BackWPup\\Tracking\\' => 26,
             'WPMedia\\BackWPup\\StorageProviders\\' => 34,
@@ -134,6 +135,10 @@ class ComposerStaticInite766983b868b86113b58ee3b494ee455
         'WP\\MCP\\' =>
         array (
             0 => __DIR__ . '/..' . '/wordpress/mcp-adapter/includes',
+        ),
+        'WPMedia\\MCP\\OAuth\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/wp-media/mcp-oauth/inc',
         ),
         'WPMedia\\Beta\\' =>
         array (
@@ -526,10 +531,10 @@ class ComposerStaticInite766983b868b86113b58ee3b494ee455
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInite766983b868b86113b58ee3b494ee455::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInite766983b868b86113b58ee3b494ee455::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInite766983b868b86113b58ee3b494ee455::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInite766983b868b86113b58ee3b494ee455::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit864b16448bb03eeb25a84094b0bcc342::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit864b16448bb03eeb25a84094b0bcc342::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit864b16448bb03eeb25a84094b0bcc342::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit864b16448bb03eeb25a84094b0bcc342::$classMap;
 
         }, null, ClassLoader::class);
     }
