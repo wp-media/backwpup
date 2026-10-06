@@ -482,7 +482,14 @@ class BackWPup_Destination_Ftp_Type_Ftp implements BackWPup_Destination_Ftp_Type
 			$list = ftp_mlsd( $this->ftp_conn_id, $path );
 		} else {
 			$nlist = ftp_nlist( $this->ftp_conn_id, '.' );
-			$list  = [];
+			if ( false === $nlist ) {
+				$this->log(
+					esc_html__( 'FTP server failed to list files in the current directory; skipping cleanup of old backups for this run.', 'backwpup' ),
+					E_USER_WARNING
+				);
+				$nlist = [];
+			}
+			$list = [];
 			foreach ( $nlist as $file ) {
 				if ( '.' === $file || '..' === $file ) {
 					continue;
