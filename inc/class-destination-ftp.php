@@ -196,7 +196,11 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 			}
 
 			// upload backup file.
-			$job_object->substeps_done = $ftp->size( $current_ftp_dir . $job_object->backup_file );
+			// Use a filename relative to the current directory rather than the server-reported
+			// absolute path: some restricted/jailed accounts (e.g. Hetzner Storage Box subusers)
+			// allow CWD navigation into their jail but reject absolute paths on SIZE/STOR, which
+			// otherwise causes every upload attempt to fail with "file does not exist".
+			$job_object->substeps_done = $ftp->size( $job_object->backup_file );
 			if ( $job_object->substeps_done < $job_object->backup_filesize ) {
 				$job_object->log( __( 'Starting upload to FTP &#160;&hellip;', 'backwpup' ) );
 				// get file size to resume upload and check if appending works.
@@ -209,14 +213,14 @@ class BackWPup_Destination_Ftp extends BackWPup_Destinations {
 				}
 				$fp = fopen( $job_object->backup_folder . $job_object->backup_file, 'rb' ); //phpcs:ignore
 				fseek( $fp, $job_object->substeps_done );
-				$continue                  = $ftp->upload( $current_ftp_dir . $job_object->backup_file, $fp );
+				$continue                  = $ftp->upload( $job_object->backup_file, $fp );
 				$job_object->substeps_done = ftell( $fp );
 				while ( $continue ) {
 					$job_object->update_working_data();
 					if ( $ftp->supports_appending() ) {
 						$job_object->do_restart_time();
 					}
-					$continue                  = $ftp->upload( $current_ftp_dir . $job_object->backup_file, $fp );
+					$continue                  = $ftp->upload( $job_object->backup_file, $fp );
 					$job_object->substeps_done = ftell( $fp );
 				}
 				fclose( $fp ); //phpcs:ignore
