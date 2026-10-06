@@ -142,19 +142,6 @@ class BackWPup_Destination_Ftp_Type_Ftp implements BackWPup_Destination_Ftp_Type
 		}
 
 		// translators: %s: FTP client command.
-		$this->log( sprintf( __( 'FTP client command: %s', 'backwpup' ), 'HELP' ) );
-		$response     = ftp_raw( $this->ftp_conn_id, 'HELP' );
-		$this->feat[] = 'CWD';
-		$features     = explode( ' ', implode( ' ', $response ) );
-		foreach ( $features as $feature ) {
-			if ( 4 === strlen( $feature ) ) {
-				$this->feat[] = strtoupper( $feature );
-			}
-		}
-		// translators: %s: FTP server response.
-		$this->log( sprintf( __( 'FTP server response: %s', 'backwpup' ), implode( ' ', $response ) ) );
-
-		// translators: %s: FTP client command.
 		$this->log( sprintf( __( 'FTP client command: %s', 'backwpup' ), 'USER ' . esc_html( $user ) ) );
 
 		$login = @ftp_login( $this->ftp_conn_id, $user, $password ); //phpcs:ignore
@@ -182,6 +169,22 @@ class BackWPup_Destination_Ftp_Type_Ftp implements BackWPup_Destination_Ftp_Type
 				throw new BackWPup_Destination_Ftp_Type_Exception( esc_html( $return[0] ) );
 			}
 		}
+
+		// Detect server capabilities. Must run after login: some servers (e.g. Hetzner Storage
+		// Box) refuse HELP pre-authentication and reply "530 Please login...", which would
+		// otherwise get mis-parsed as a bogus capability list.
+		// translators: %s: FTP client command.
+		$this->log( sprintf( __( 'FTP client command: %s', 'backwpup' ), 'HELP' ) );
+		$response     = ftp_raw( $this->ftp_conn_id, 'HELP' );
+		$this->feat[] = 'CWD';
+		$features     = explode( ' ', implode( ' ', $response ) );
+		foreach ( $features as $feature ) {
+			if ( 4 === strlen( $feature ) ) {
+				$this->feat[] = strtoupper( $feature );
+			}
+		}
+		// translators: %s: FTP server response.
+		$this->log( sprintf( __( 'FTP server response: %s', 'backwpup' ), implode( ' ', $response ) ) );
 
 		// The system type identifier of the remote FTP server.
 		if ( in_array( 'SYST', $this->feat, true ) ) {
