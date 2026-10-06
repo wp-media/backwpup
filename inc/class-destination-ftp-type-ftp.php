@@ -282,6 +282,23 @@ class BackWPup_Destination_Ftp_Type_Ftp implements BackWPup_Destination_Ftp_Type
 			return true;
 		}
 		if ( FTP_FAILED === $this->ret ) {
+			// Some servers/PHP ftp-extension combinations misreport a failed final reply on the
+			// control channel (observed with explicit FTPS) even though the data was fully written.
+			// Before failing the job, verify directly whether the remote file actually matches what
+			// we expected to send; if it does, the "failure" was spurious and the upload succeeded.
+			$stat = fstat( $local_file );
+			if ( $stat && $this->size( $remote_filename ) === $stat['size'] ) {
+				$this->log(
+					sprintf(
+						// translators: %s: remote file name.
+						__( 'FTP reported a transfer error for "%s", but the file already exists on the server with the correct size. Treating as a successful upload.', 'backwpup' ),
+						$remote_filename
+					),
+					E_USER_WARNING
+				);
+				return false;
+			}
+
 			throw new BackWPup_Destination_Ftp_Type_Exception(
 				$this->upload_failure_message( $warning ), // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception message is consumed internally, not rendered directly.
 			);
