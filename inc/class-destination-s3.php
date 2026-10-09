@@ -366,7 +366,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
         if (is_object($objects)) {
             foreach ($objects as $object) {
                 $file = basename((string) $object['Key']);
-                $changetime = strtotime((string) $object['LastModified']) + (get_option('gmt_offset') * 3600);
+                $changetime = strtotime((string) $object['LastModified']);
 
                 if ($this->is_backup_archive($file) && $this->is_backup_owned_by_job($file, $jobid)) {
                     $backupfilelist[$changetime] = $file;
