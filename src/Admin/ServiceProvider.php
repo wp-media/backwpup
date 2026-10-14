@@ -11,6 +11,7 @@ use WPMedia\BackWPup\Admin\Notices\Notices;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice52;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice522;
 use WPMedia\BackWPup\Admin\Notices\Notices\NoticeDataCorrupted;
+use WPMedia\BackWPup\Admin\Notices\Notices\NoticeMcpAdapterMigration;
 use WPMedia\BackWPup\Admin\Notices\Notices\NoticeStaleRestoreFiles;
 use WPMedia\BackWPup\Admin\Notices\Notices\NoticeUpgradeToPro;
 use WPMedia\BackWPup\Admin\Notices\StaleRestoreFilesDetector;
@@ -46,6 +47,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'notice_subscriber',
 		'notice_view_factory',
 		NoticeStaleRestoreFiles::class,
+		NoticeMcpAdapterMigration::class,
 		StaleRestoreFilesDetector::class,
 		SettingSubscriber::class,
 		AdminFrontendSubscriber::class,
@@ -178,6 +180,11 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( Notices\NoticeMissingCurl::ID );
 		$this->getContainer()->addShared( Notices\NoticeMissingCurl::class, Notices\NoticeMissingCurl::class )
 			->addArgument( Notices\NoticeMissingCurl::ID . '_view' );
+		// Notice for MCP Adapter migration.
+		$this->getContainer()->add( NoticeMcpAdapterMigration::ID . '_view', NoticeView::class )
+			->addArgument( NoticeMcpAdapterMigration::ID );
+		$this->getContainer()->addShared( NoticeMcpAdapterMigration::class, NoticeMcpAdapterMigration::class )
+			->addArgument( NoticeMcpAdapterMigration::ID . '_view' );
 		// Notice for stale restore files.
 		$this->getContainer()->addShared( StaleRestoreFilesDetector::class, StaleRestoreFilesDetector::class );
 		$this->getContainer()->add( NoticeStaleRestoreFiles::ID . '_view', NoticeView::class )
@@ -203,6 +210,7 @@ class ServiceProvider extends AbstractServiceProvider {
 						$this->getContainer()->get( Notices\NoticeDebugLogLevel::class ),
 						$this->getContainer()->get( Notices\NoticeMissingCurl::class ),
 						$this->getContainer()->get( NoticeStaleRestoreFiles::class ),
+						$this->getContainer()->get( NoticeMcpAdapterMigration::class ),
 					],
 					[
 						$this->getContainer()->get( NoticeUpgradeToPro::class ),

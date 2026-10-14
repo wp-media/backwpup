@@ -19,7 +19,6 @@ namespace WPMedia\MCP\OAuth\Auth\Discovery;
 
 use WP_Error;
 use WPMedia\MCP\OAuth\Context;
-use WPMedia\MCP\OAuth\Logging\McpLogger;
 
 class HealthCheck {
 
@@ -144,15 +143,6 @@ class HealthCheck {
 			}
 		}
 
-		McpLogger::log(
-			'DISCOVERY',
-			'self-check result',
-			[
-				'status'  => $worst_status,
-				'failing' => $failing,
-			]
-		);
-
 		$result = $this->build_result( $worst_status, $failing );
 
 		set_transient( self::TRANSIENT_KEY, $result, self::TRANSIENT_TTL );
@@ -212,6 +202,15 @@ class HealthCheck {
 	private function build_result( string $status, array $failing, string $summary = '' ): array {
 		$loopback_caveat = __( 'This check runs from the server to itself. A "Good" result here does not guarantee external clients can reach these documents: a CDN, WAF, or reverse proxy in front of the site can still 404 these paths for external traffic while the server\'s own loopback request bypasses it. Verify with an external <code>curl</code> request after applying any server-config change.', 'mcp-oauth' );
 
+		/*
+		 * The acme-challenge fingerprint is classified 'critical' internally so
+		 * the detailed guidance below is selected, but it is reported to Site
+		 * Health as 'recommended': the .well-known discovery documents are an
+		 * optional MCP feature, and a "critical" badge generates support tickets
+		 * for what is a non-blocking misconfiguration.
+		 */
+		$reported_status = 'critical' === $status ? 'recommended' : $status;
+
 		if ( '' !== $summary ) {
 			$description = sprintf( '<p>%s</p>', $summary );
 			$actions     = sprintf( '<p>%s</p>', $loopback_caveat );
@@ -260,7 +259,7 @@ class HealthCheck {
 
 		return [
 			'label'       => __( 'MCP OAuth discovery documents', 'mcp-oauth' ),
-			'status'      => $status,
+			'status'      => $reported_status,
 			'badge'       => [
 				'label' => __( 'Configuration', 'mcp-oauth' ),
 				'color' => 'blue',

@@ -7,6 +7,55 @@
 class BackWPup_File {
 
 	/**
+	 * Apache protection file written by protect_folder().
+	 *
+	 * @var string
+	 */
+	public const HTACCESS_FILE = '.htaccess';
+
+	/**
+	 * IIS protection file written by protect_folder().
+	 *
+	 * @var string
+	 */
+	public const WEB_CONFIG_FILE = 'Web.config';
+
+	/**
+	 * Directory-listing guard written by protect_folder() (Apache and nginx).
+	 *
+	 * @var string
+	 */
+	public const INDEX_FILE = 'index.php';
+
+	/**
+	 * Backup-exclusion marker written by write_do_not_backup_file().
+	 *
+	 * @var string
+	 */
+	public const DO_NOT_BACKUP_FILE = '.donotbackup';
+
+	/**
+	 * Returns the names of every file check_folder() may write to protect a folder.
+	 *
+	 * Lets other components tell these files apart from real folder content.
+	 *
+	 * Returns the names for every server type on purpose, not only the current
+	 * SERVER_SOFTWARE: a folder may have been protected under another server (or by a
+	 * request reporting a different one), so filtering by the current server would turn
+	 * BackWPup's own files into unknown content.
+	 *
+	 * @return string[]
+	 */
+	public static function protection_file_names(): array {
+		return [
+			self::HTACCESS_FILE,
+			self::WEB_CONFIG_FILE,
+			self::INDEX_FILE,
+			self::DO_NOT_BACKUP_FILE,
+		];
+	}
+
+	/**
 	 * Get the folder for blog uploads.
 	 *
 	 * @return string
@@ -297,10 +346,10 @@ class BackWPup_File {
 		$server_software = strtolower( $server_software );
 
 		if ( strstr( $server_software, 'microsoft-iis' ) ) {
-			if ( ! file_exists( $folder . '/Web.config' ) ) {
+			if ( ! file_exists( $folder . '/' . self::WEB_CONFIG_FILE ) ) {
 				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Writing small protection files in-place.
 				file_put_contents(
-					$folder . '/Web.config',
+					$folder . '/' . self::WEB_CONFIG_FILE,
 					'<configuration>' . PHP_EOL .
 				"\t<system.webServer>" . PHP_EOL .
 				"\t\t<authorization>" . PHP_EOL .
@@ -311,15 +360,15 @@ class BackWPup_File {
 				);
 			}
 		} elseif ( strstr( $server_software, 'nginx' ) ) {
-			if ( ! file_exists( $folder . '/index.php' ) ) {
+			if ( ! file_exists( $folder . '/' . self::INDEX_FILE ) ) {
 				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Writing small protection files in-place.
 				file_put_contents(
-					$folder . '/index.php',
+					$folder . '/' . self::INDEX_FILE,
 					'<?php' . PHP_EOL . "header( \$_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found' );" . PHP_EOL . "header( 'Status: 404 Not Found' );" . PHP_EOL
 				);
 			}
 		} else {
-			$htaccess_path    = $folder . '/.htaccess';
+			$htaccess_path    = $folder . '/' . self::HTACCESS_FILE;
 			$htaccess_content = '<Files "*">' . PHP_EOL .
 				'<IfModule mod_authz_core.c>' . PHP_EOL .
 				'Require all denied' . PHP_EOL .
@@ -338,10 +387,10 @@ class BackWPup_File {
 				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Writing small protection files in-place.
 				file_put_contents( $htaccess_path, $htaccess_content );
 			}
-			if ( ! file_exists( $folder . '/index.php' ) ) {
+			if ( ! file_exists( $folder . '/' . self::INDEX_FILE ) ) {
 				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Writing small protection files in-place.
 				file_put_contents(
-					$folder . '/index.php',
+					$folder . '/' . self::INDEX_FILE,
 					'<?php' . PHP_EOL . "header( \$_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found' );" . PHP_EOL . "header( 'Status: 404 Not Found' );" . PHP_EOL
 				);
 			}
@@ -356,7 +405,7 @@ class BackWPup_File {
 	 * @return void
 	 */
 	private static function write_do_not_backup_file( string $folder ): void {
-		$do_not_backup_file = "{$folder}/.donotbackup";
+		$do_not_backup_file = $folder . '/' . self::DO_NOT_BACKUP_FILE;
 
 		if ( ! file_exists( $do_not_backup_file ) ) {
 			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Writing small marker file in-place.

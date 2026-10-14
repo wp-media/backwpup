@@ -1,4 +1,10 @@
 == Changelog ==
+= 5.7.8 =
+Release date: October 14, 2026
+
+* Enhancement: Added a notice guiding MCP users to install the standalone MCP Adapter plugin, which is no longer bundled with BackWPup.
+* Fix: Fixed an issue where the restore files security warning reappeared after being dismissed.
+
 = 5.7.7 =
 Release date: October 5, 2026
 
