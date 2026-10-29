@@ -17,4 +17,8 @@ return array(
 	'restoringPrefix'             => esc_html__( 'Restoring: ', 'backwpup' ),
 	'noEventSourceInWindowObject' => esc_html__( 'No EventSource found in the brower. Cannot continue.', 'backwpup' ),
 	'successFilesRestored'        => esc_html__( 'Directories restored successfully.', 'backwpup' ),
+	'connectionFailed'            => esc_html__(
+		'The restore step could not be started, your session may have expired. Please log in again in another tab and press Start to continue.',
+		'backwpup'
+	),
 );

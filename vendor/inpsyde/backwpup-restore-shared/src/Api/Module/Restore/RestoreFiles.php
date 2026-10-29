@@ -173,6 +173,12 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
             );
         }
 
+        // Keep this site's authentication keys and salts. The backup's keys (e.g. from another
+        // host, or a Docker image's random fallbacks) would log the user out right after the
+        // file restore, so the following database restore request is rejected.
+        $config = $this->keepAuthKeys(file_get_contents($configPath) ?: '');
+        file_put_contents($configPath, $config);
+
         // See if we can replace all credentials.
         $credentials = [
             'DB_NAME' => $this->registry->dbname,
@@ -224,6 +230,55 @@ final class RestoreFiles implements ConfigRewriterInterface, RestoreInterface
         $this->logger->info(
             __('Config has been rewritten successfully.', 'backwpup')
         );
+    }
+
+    /**
+     * Replaces the authentication keys and salts in the given wp-config.php content
+     * with the values of the running site.
+     */
+    private function keepAuthKeys(string $config): string
+    {
+        $keys = [
+            'AUTH_KEY',
+            'SECURE_AUTH_KEY',
+            'LOGGED_IN_KEY',
+            'NONCE_KEY',
+            'AUTH_SALT',
+            'SECURE_AUTH_SALT',
+            'LOGGED_IN_SALT',
+            'NONCE_SALT',
+        ];
+
+        foreach ($keys as $key) {
+            if (!\defined($key)) {
+                continue;
+            }
+
+            $value = (string) \constant($key);
+            $replaced = preg_replace_callback(
+                '/^([ \t]*)define\s*\(\s*([\'"])' . $key . '\2\s*,.*\)\s*;[^\r\n]*$/m',
+                static function (array $matches) use ($key, $value): string {
+                    return $matches[1] . "define( '" . $key . "', " . var_export($value, true) . ' );';
+                },
+                $config,
+                1,
+                $count
+            );
+
+            if ($replaced === null || $count === 0) {
+                $this->logger->warning(
+                    sprintf(
+                        __('Could not keep the current value of %s', 'backwpup'),
+                        $key
+                    )
+                );
+                continue;
+            }
+
+            $config = $replaced;
+        }
+
+        return $config;
     }
 
     /**

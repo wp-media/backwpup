@@ -200,6 +200,16 @@ window.BWU = window.BWU || {};
 					this.url + '?action=restore_dir&context=event_source&controller=job&backwpup_action_nonce=' + this.nonce );
 				this.eventSource.onmessage = this.onMessage;
 				this.eventSource.onopen = this.onOpen;
+				// The request was rejected (e.g. logged out) or the connection broke: say so instead
+				// of silently leaving the page at "Start". Don't let the browser retry on its own.
+				this.eventSource.onerror = function () {
+					if ( !this.eventSource ) {
+						return;
+					}
+					this.eventSource.close();
+					$( '#start-restore' ).prop( 'disabled', false );
+					BWU.Functions.printMessageError( backwpupRestoreLocalized.connectionFailed, $( '#restore_step' ) );
+				}.bind( this );
 
 				this.eventSource.addEventListener( 'log', this.onError );
 
