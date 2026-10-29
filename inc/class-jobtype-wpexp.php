@@ -266,21 +266,13 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 
 		if ( 'cats' === $job_object->steps_data[ $job_object->step_working ]['substep'] ) {
 			if ( 'all' === $job_object->job['wpexportcontent'] ) {
-				$cats       = [];
 				$categories = (array) get_categories( [ 'get' => 'all' ] );
 				// Put categories in order with no child going before its parent.
-				while ( ! empty( $categories ) ) {
-					$cat = array_shift( $categories );
-					if ( 0 === (int) $cat->parent || isset( $cats[ $cat->parent ] ) ) {
-						$cats[ $cat->term_id ] = $cat;
-					} else {
-						$categories[] = $cat;
-					}
-				}
+				$cats     = $this->order_terms_by_parent( $categories );
 				$cats_xml = '';
 
 				foreach ( $cats as $c ) {
-					$parent_slug = $c->parent ? $cats[ $c->parent ]->slug : '';
+					$parent_slug = $c->parent && isset( $cats[ $c->parent ] ) ? $cats[ $c->parent ]->slug : '';
 					$cats_xml   .= "\t<wp:category><wp:term_id>" . $c->term_id . '</wp:term_id><wp:category_nicename>' . $c->slug . '</wp:category_nicename><wp:category_parent>' . $parent_slug . '</wp:category_parent>' . $this->wxr_cat_name( $c ) . $this->wxr_category_description( $c ) . "</wp:category>\n";
 				}
 				$written = file_put_contents( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'], $cats_xml, FILE_APPEND ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
@@ -321,28 +313,27 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 
 		if ( 'terms' === $job_object->steps_data[ $job_object->step_working ]['substep'] ) {
 			if ( 'all' === $job_object->job['wpexportcontent'] ) {
-				$terms             = [];
 				$custom_taxonomies = get_taxonomies( [ '_builtin' => false ] );
-				$custom_terms      = (array) get_terms(
-					[
-						'taxonomy'   => $custom_taxonomies,
-						'hide_empty' => false,
-					]
-				);
+				$custom_terms      = [];
+				// An empty taxonomy list makes get_terms() return the terms of all taxonomies,
+				// which would export categories and tags a second time.
+				if ( ! empty( $custom_taxonomies ) ) {
+					$custom_terms = get_terms(
+						[
+							'taxonomy'   => array_values( $custom_taxonomies ),
+							'hide_empty' => false,
+						]
+					);
+					// Casting a WP_Error to an array would turn its properties into "terms".
+					$custom_terms = is_array( $custom_terms ) ? $custom_terms : [];
+				}
 
 				// Put terms in order with no child going before its parent.
-				while ( ! empty( $custom_terms ) ) {
-					$t = array_shift( $custom_terms );
-					if ( 0 === (int) $t->parent || isset( $terms[ $t->parent ] ) ) {
-						$terms[ $t->term_id ] = $t;
-					} else {
-						$custom_terms[] = $t;
-					}
-				}
+				$terms     = $this->order_terms_by_parent( $custom_terms );
 				$terms_xml = '';
 
 				foreach ( $terms as $t ) {
-					$parent_slug = $t->parent ? $terms[ $t->parent ]->slug : '';
+					$parent_slug = $t->parent && isset( $terms[ $t->parent ] ) ? $terms[ $t->parent ]->slug : '';
 					$terms_xml  .= "\t<wp:term><wp:term_id>" . $t->term_id . '</wp:term_id><wp:term_taxonomy>' . $t->taxonomy . '</wp:term_taxonomy><wp:term_slug>' . $t->slug . '</wp:term_slug><wp:term_parent>' . $parent_slug . '</wp:term_parent>' . $this->wxr_term_name( $t ) . $this->wxr_term_description( $t ) . "</wp:term>\n";
 				}
 				$written = file_put_contents( $job_object->steps_data[ $job_object->step_working ]['wpexportfile'], $terms_xml, FILE_APPEND ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
@@ -405,6 +396,8 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 					// Begin loop.
 					/* @var WP_Post $post_item */
 					foreach ( $posts as $post_item ) {
+						// setup_postdata() doesn't set the global post, which get_post() relies on.
+						$GLOBALS['post'] = $post_item; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 						setup_postdata( $post_item );
 						$is_sticky = is_sticky( $post_item->ID ) ? 1 : 0;
 
@@ -432,7 +425,7 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 						if ( 'attachment' === $post_item->post_type ) {
 							$wxr_post .= "\t\t<wp:attachment_url>" . wp_get_attachment_url( $post_item->ID ) . "</wp:attachment_url>\n";
 						}
-						$wxr_post .= $this->wxr_post_taxonomy();
+						$wxr_post .= $this->wxr_post_taxonomy( $post_item );
 
 						$postmeta_key = 'postmeta_' . $post_item->ID;
 						$postmeta     = wp_cache_get( $postmeta_key, $cache_group );
@@ -639,7 +632,10 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 		}
 
 		if ( ! $is_valid_utf8 ) {
-			$str = utf8_encode( $str );
+			// utf8_encode() is deprecated as of PHP 8.2.
+			$str = function_exists( 'mb_convert_encoding' )
+				? (string) mb_convert_encoding( $str, 'UTF-8', 'ISO-8859-1' )
+				: utf8_encode( $str ); // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.utf8_encodeDeprecated
 		}
 
 		// Not allowed UTF-8 chars in XML.
@@ -837,9 +833,13 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 	 * Output list of taxonomy terms, in XML tag format, associated with a post.
 	 *
 	 * @since WordPress 2.3.0
+	 *
+	 * @param WP_Post|object|null $post_item The post to export the terms of, defaults to the global post.
+	 *
+	 * @return string
 	 */
-	private function wxr_post_taxonomy() {
-		$post = get_post();
+	private function wxr_post_taxonomy( $post_item = null ) {
+		$post = get_post( $post_item );
 
 		if ( ! $post instanceof WP_Post ) {
 			return '';
@@ -858,6 +858,47 @@ class BackWPup_JobType_WPEXP extends BackWPup_JobTypes {
 		}
 
 		return $wxr_post_tags;
+	}
+
+	/**
+	 * Put terms in order with no child going before its parent.
+	 *
+	 * Terms whose parent is not in the list (orphans) are treated as top level terms and
+	 * parent cycles are broken, otherwise the ordering loop would never end.
+	 *
+	 * @param array $terms List of term objects.
+	 *
+	 * @return array Ordered terms keyed by term ID.
+	 */
+	private function order_terms_by_parent( array $terms ) {
+		$ordered   = [];
+		$available = [];
+
+		foreach ( $terms as $term ) {
+			if ( is_object( $term ) && isset( $term->term_id ) ) {
+				$available[ $term->term_id ] = true;
+			}
+		}
+
+		$requeued = 0;
+
+		while ( ! empty( $terms ) ) {
+			$term = array_shift( $terms );
+			if ( ! is_object( $term ) || ! isset( $term->term_id ) ) {
+				continue;
+			}
+			$parent = (int) $term->parent;
+			// The requeue counter breaks parent cycles: no remaining term could be placed.
+			if ( 0 === $parent || isset( $ordered[ $parent ] ) || ! isset( $available[ $parent ] ) || $requeued > count( $terms ) ) {
+				$ordered[ $term->term_id ] = $term;
+				$requeued                  = 0;
+			} else {
+				$terms[] = $term;
+				++$requeued;
+			}
+		}
+
+		return $ordered;
 	}
 
 	/**
