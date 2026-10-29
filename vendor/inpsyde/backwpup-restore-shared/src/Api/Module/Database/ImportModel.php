@@ -12,6 +12,7 @@ namespace Inpsyde\Restore\Api\Module\Database;
 
 use Exception;
 use Inpsyde\Restore\AjaxHandler;
+use Inpsyde\Restore\Api\Module\Database\Exception\DatabaseQueryException;
 use Inpsyde\Restore\Api\Module\Database\Exception\SqlException;
 use Inpsyde\Restore\Api\Module\ImportInterface;
 use Inpsyde\Restore\Api\Module\Registry;
@@ -112,13 +113,36 @@ final class ImportModel implements ImportInterface
 
         $response = null;
 
+        // Leave some room for the protocol overhead.
+        $max_packet = method_exists($database, 'max_allowed_packet') ? $database->max_allowed_packet() : 0;
+        $max_query_length = $max_packet > 0 ? $max_packet - 1024 : 0;
+
         while (!empty($query)) {
             try {
                 $query = $this->replace($query, $database);
-                $response = $database->query($query);
+                $response = 0;
+                foreach ($this->split_query($query, $max_query_length) as $part) {
+                    $response += $database->query($part);
+                }
             } catch (Exception $exc) {
                 $this->logger->error($exc->getMessage());
                 ++$errors;
+
+                // Without a connection every following query fails too. Stop with a clear message.
+                if (method_exists($database, 'connection_lost') && $database->connection_lost()) {
+                    preg_match('/`(\w+)`/i', $query, $match);
+                    throw new DatabaseQueryException(
+                        sprintf(
+                            __(
+                                'The database server closed the connection while restoring table %1$s (query size %2$s, server limit max_allowed_packet %3$s). Increase max_allowed_packet on the database server and restore again.',
+                                'backwpup'
+                            ),
+                            $match[1] ?? '?',
+                            self::format_bytes(\strlen($query)),
+                            $max_packet > 0 ? self::format_bytes($max_packet) : '?'
+                        )
+                    );
+                }
             }
 
             // Only for event source calls and only when rows are stored into the db.
@@ -193,6 +217,77 @@ final class ImportModel implements ImportInterface
      *
      * @return string The replaced query
      */
+    /**
+     * Splits a multi-row INSERT that is larger than the server accepts into several INSERTs.
+     *
+     * BackWPup and mysqldump write one row per line ("(...),\n"); line breaks inside values are
+     * escaped, so a ")," followed by a line break and "(" always separates two rows.
+     *
+     * @return string[]
+     */
+    private function split_query(string $query, int $max_length): array
+    {
+        if ($max_length <= 0 || \strlen($query) <= $max_length) {
+            return [$query];
+        }
+
+        if (preg_match('/^(INSERT\s+INTO\s+.+?\s+VALUES\s*)\(/is', $query, $matches) !== 1) {
+            return [$query];
+        }
+
+        $header = rtrim($matches[1]) . "\n";
+        $body = rtrim(substr($query, \strlen($matches[1])));
+        if (substr($body, -1) === ';') {
+            $body = substr($body, 0, -1);
+        }
+
+        $rows = preg_split('/\),\r?\n(?=\()/', $body);
+        if (!\is_array($rows) || \count($rows) < 2) {
+            return [$query];
+        }
+
+        $last = \count($rows) - 1;
+        foreach ($rows as $index => $row) {
+            if ($index !== $last) {
+                $rows[$index] = $row . ')';
+            }
+        }
+
+        $parts = [];
+        $current = [];
+        $current_length = \strlen($header);
+        foreach ($rows as $row) {
+            $row_length = \strlen($row) + 2;
+            if ($current && $current_length + $row_length > $max_length) {
+                $parts[] = $header . implode(",\n", $current) . ';';
+                $current = [];
+                $current_length = \strlen($header);
+            }
+            $current[] = $row;
+            $current_length += $row_length;
+        }
+        if ($current) {
+            $parts[] = $header . implode(",\n", $current) . ';';
+        }
+
+        if (\count($parts) > 1) {
+            $this->logger->info(
+                sprintf(
+                    'Split a %1$s query into %2$d queries to stay below max_allowed_packet.',
+                    self::format_bytes(\strlen($query)),
+                    \count($parts)
+                )
+            );
+        }
+
+        return $parts;
+    }
+
+    private static function format_bytes(int $bytes): string
+    {
+        return \function_exists('size_format') ? (string) size_format($bytes, 1) : $bytes . ' B';
+    }
+
     private function replace(string $query, DatabaseInterface $database): string
     {
         if (!$this->registry->old_url || !$this->registry->new_url) {

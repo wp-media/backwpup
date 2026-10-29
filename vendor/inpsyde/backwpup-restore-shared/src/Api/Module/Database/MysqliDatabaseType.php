@@ -159,6 +159,34 @@ final class MysqliDatabaseType implements DatabaseInterface
         return 0;
     }
 
+    /**
+     * The largest query the server accepts in bytes, 0 if unknown.
+     */
+    public function max_allowed_packet(): int
+    {
+        try {
+            $res = $this->mysqli->query('SELECT @@max_allowed_packet');
+        } catch (\mysqli_sql_exception $exception) {
+            return 0;
+        }
+        if (!$res instanceof \mysqli_result) {
+            return 0;
+        }
+        $row = $res->fetch_row();
+        $res->free();
+
+        return isset($row[0]) ? (int) $row[0] : 0;
+    }
+
+    /**
+     * Whether the last error means the connection to the server was lost
+     * (1153 packet too large, 2006 server has gone away, 2013 lost connection during query).
+     */
+    public function connection_lost(): bool
+    {
+        return \in_array((int) $this->mysqli->errno, [1153, 2006, 2013], true);
+    }
+
     public function escape(string $input): string
     {
         return mysqli_real_escape_string($this->mysqli, $input);

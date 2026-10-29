@@ -750,17 +750,18 @@ class BackWPup_MySQLDump {
 					}
 					$values[] = $value;
 				}
-				// New query in dump on more than 50000 chars.
+				// New query in dump on more than 50000 chars. Close the current query before a row that
+				// would push it over the limit, so large rows (e.g. big options) get a query of their own
+				// and the restore doesn't exceed the server's max_allowed_packet.
+				$row = '(' . implode( ', ', $values ) . ')';
+				if ( ! empty( $dump ) && strlen( $dump ) + strlen( $row ) > 50000 ) {
+					$this->write( substr( $dump, 0, -2 ) . ";\n" );
+					$dump = '';
+				}
 				if ( empty( $dump ) ) {
 					$dump = 'INSERT INTO `' . $table . '` (`' . implode( '`, `', $fieldsarray ) . "`) VALUES \n";
 				}
-				if ( strlen( $dump ) <= 50000 ) {
-					$dump .= '(' . implode( ', ', $values ) . "),\n";
-				} else {
-					$dump .= '(' . implode( ', ', $values ) . ");\n";
-					$this->write( $dump );
-					$dump = '';
-				}
+				$dump .= $row . ",\n";
 				++$done_records;
 				$data = $query_result->fetch_assoc(); // Fetch row for the next loop.
 			}

@@ -29,6 +29,11 @@ final class WpdbDatabaseType implements DatabaseInterface
      */
     private $logger;
 
+    /**
+     * @var int|null MySQL error number of the last failed query
+     */
+    private $last_errno;
+
     public function __construct(Registry $registry)
     {
         $this->registry = $registry;
@@ -91,12 +96,32 @@ final class WpdbDatabaseType implements DatabaseInterface
         );
     }
 
+    /**
+     * The largest query the server accepts in bytes, 0 if unknown.
+     */
+    public function max_allowed_packet(): int
+    {
+        return (int) $this->wpdb->get_var('SELECT @@max_allowed_packet');
+    }
+
+    /**
+     * Whether the last failed query lost the connection to the server. wpdb reconnects on its own,
+     * but the session settings of the import (sql_mode, FOREIGN_KEY_CHECKS, SET NAMES) are lost then.
+     */
+    public function connection_lost(): bool
+    {
+        return $this->last_errno !== null && \in_array($this->last_errno, [1153, 2006, 2013], true);
+    }
+
     public function query(string $query): int
     {
+        $this->last_errno = null;
+
         // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Raw SQL import statements are executed as-is.
         $result = $this->wpdb->query($query);
 
         if ($this->wpdb->last_error !== '') {
+            $this->last_errno = $this->wpdb->dbh instanceof \mysqli ? (int) $this->wpdb->dbh->errno : 0;
             throw new DatabaseQueryException(
                 sprintf(
                     /* translators: 1: database error message, 2: SQL query. */
