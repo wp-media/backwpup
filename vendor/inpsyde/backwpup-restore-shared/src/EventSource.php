@@ -50,6 +50,9 @@ class EventSource
     public function increaseResources(): self
     {
         // phpcs:disable
+        // Keep going when the browser leaves the page (e.g. a click on a notice link):
+        // aborting mid copy leaves the site with a mix of old and restored files.
+        @ignore_user_abort(true);
         @set_time_limit(0);
         @ini_set('max_execution_time', '300');
         @ini_set('memory_limit', '-1');
