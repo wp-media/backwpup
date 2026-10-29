@@ -162,14 +162,33 @@ abstract class BackWPup_Destinations {
 					$destination
 				): void {
 					// Setup Destination service and download file.
-					$factory    = new BackWPup_Destination_Downloader_Factory();
-					$downloader = $factory->create(
-						$destination,
-						$jobid,
-						$file_path,
-						$filename
-					);
-					$downloader->download_by_chunks();
+					try {
+						// Copy into a temporary file, renamed to $filename only once complete.
+						$factory    = new BackWPup_Destination_Downloader_Factory();
+						$downloader = $factory->create(
+							$destination,
+							$jobid,
+							$file_path,
+							$filename . '.part'
+						);
+					} catch ( \Exception $e ) {
+						// Destination downloaders open the backup file or connect in their constructor,
+						// e.g. a backup that no longer exists on the storage. Report it instead of a fatal error.
+						echo "event: log\n";
+						echo 'data: ' . wp_json_encode(
+							[
+								'state'   => BackWPup_Destination_Downloader::STATE_ERROR,
+								'message' => $e->getMessage(),
+							]
+						) . "\n\n";
+						flush();
+
+						exit();
+					}
+
+					if ( ! $downloader->download_by_chunks( $filename ) ) {
+						wp_delete_file( $filename . '.part' );
+					}
 
 					exit();
 				},

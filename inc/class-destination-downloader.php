@@ -81,6 +81,8 @@ class BackWPup_Destination_Downloader {
 
 		// 2KB padding for IE.
 		echo esc_html( ':' . str_repeat( ' ', 2048 ) . "\n\n" );
+		// Never let the browser reconnect on its own: a reconnect restarts the whole copy and truncates the local file.
+		echo esc_html( "retry: 86400000\n\n" );
 
 		// Ensure we're not buffered.
 		wp_ob_end_flush_all();
@@ -102,25 +104,34 @@ class BackWPup_Destination_Downloader {
 	/**
 	 * Downloads the file by chunks.
 	 *
+	 * @param string $final_file_path Optional. When given, the chunks are written to the local file path of the
+	 *                                data object (a temporary file) which is renamed to this path once complete,
+	 *                                so a partially copied file is never served.
+	 *
 	 * @throws DecryptException When an encrypted archive needs a decryption key.
 	 *
 	 * @return bool True on success, false on error.
 	 */
-	public function download_by_chunks() {
+	public function download_by_chunks( string $final_file_path = '' ) {
 		$this->ensure_user_can_download();
 
 		$source_file_path = $this->data->source_file_path();
 		$local_file_path  = $this->data->local_file_path();
-		$size             = $this->destination->calculate_size();
 		$start_byte       = 0;
 		$chunk_size       = 2 * 1024 * 1024;
 		$end_byte         = $start_byte + $chunk_size - 1;
 
-		if ( $end_byte >= $size ) {
-			$end_byte = $size - 1;
-		}
-
 		try {
+			// Inside the try block, so a missing file or a connection error is reported to the user.
+			$size = (int) $this->destination->calculate_size();
+			if ( $size <= 0 ) {
+				throw new \RuntimeException( esc_html__( 'The backup file could not be found or is empty.', 'backwpup' ) );
+			}
+
+			if ( $end_byte >= $size ) {
+				$end_byte = $size - 1;
+			}
+
 			while ( $end_byte <= $size ) {
 				$this->destination->download_chunk( $start_byte, $end_byte );
 				self::send_message(
@@ -144,6 +155,22 @@ class BackWPup_Destination_Downloader {
 				if ( $start_byte < $size && $end_byte >= $size ) {
 					$end_byte = $size - 1;
 				}
+			}
+
+			if ( '' !== $final_file_path && $final_file_path !== $local_file_path ) {
+				// Release the destination so its file handles are closed before renaming.
+				$this->destination = null;
+				clearstatcache( true, $local_file_path );
+				if ( (int) filesize( $local_file_path ) !== $size ) {
+					throw new \RuntimeException( esc_html__( 'The downloaded file is incomplete. Please try again.', 'backwpup' ) );
+				}
+				if ( file_exists( $final_file_path ) ) {
+					wp_delete_file( $final_file_path );
+				}
+				if ( ! rename( $local_file_path, $final_file_path ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.rename_rename
+					throw new \RuntimeException( esc_html__( 'Could not move the downloaded file into place.', 'backwpup' ) );
+				}
+				$local_file_path = $final_file_path;
 			}
 
 			if ( BackWPup::is_pro() ) {
