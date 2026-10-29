@@ -18,9 +18,10 @@ if ( $bind->errors ) {
 	 * @var Log $log_error
 	 */
 	foreach ( $bind->errors as $log_error ) {
-		$message     = $log_error->message();
-		$sub_message = substr( $log_error->message(), 0, 32 );
-		$message     = count( $message ) > $sub_message ? $message . '&hellip;' : $message; ?>
+		// Show the full message: count() on a string is a TypeError on PHP 8 and the
+		// truncation never worked (it appended a literal "&hellip;" to the full message).
+		$message = $log_error->message();
+		?>
 		<div class="notice notice-error below-h2">
 			<p>
 				<?php echo esc_html( $message ); ?>
